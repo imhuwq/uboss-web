@@ -1,0 +1,15 @@
+
+	<h1>登　入</h1>
+	<%#= simple_form_for(:session,url: {},wrapper: :vertical_form) do |f| %>
+  <%= simple_form_for(:session,url: {:controller=>'admin/sessions',:action=>:create},wrapper: :vertical_form) do |f| %>
+  	<%= f.input :email %>
+  	<%= f.input :password %>
+    <div  class="button_div">
+      <%= f.button :submit, "登入",class: "btn btn-large btn-primary " %>
+    </div>
+	<% end %>
+  <p>
+    新用户?<%= link_to "马上注册",signup_path %>
+    <br/>
+    忘记密码?<%= link_to "重置密码",{:action=>:try_to_reset_password} %>
+  </p>

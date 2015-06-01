@@ -53,4 +53,11 @@ Rails.application.routes.draw do
   #     # (app/controllers/admin/products_controller.rb)
   #     resources :products
   #   end
+  match '/admin', to: 'admin/main#index',via: :get
+  namespace :admin do
+    resources :users do
+    end
+    resources :sessions do
+    end
+  end
 end
