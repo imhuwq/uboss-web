@@ -54,13 +54,6 @@ GEM
     builder (3.2.2)
     byebug (4.0.5)
       columnize (= 0.9.0)
-<<<<<<< HEAD
-    carrierwave (0.10.0)
-      activemodel (>= 3.2.0)
-      activesupport (>= 3.2.0)
-      json (>= 1.7)
-      mime-types (>= 1.16)
-=======
     cancancan (1.10.1)
     capistrano (3.4.0)
       i18n
@@ -75,9 +68,13 @@ GEM
     capistrano-rbenv (2.0.3)
       capistrano (~> 3.1)
       sshkit (~> 1.3)
+    carrierwave (0.10.0)
+      activemodel (>= 3.2.0)
+      activesupport (>= 3.2.0)
+      json (>= 1.7)
+      mime-types (>= 1.16)
     china_sms (0.0.7)
     coderay (1.1.0)
->>>>>>> 6f74b8f9c217ac6ef700762813de2fc09701a131
     coffee-rails (4.1.0)
       coffee-script (>= 2.2.0)
       railties (>= 4.0.0, < 5.0)
@@ -120,7 +117,7 @@ GEM
       rails-dom-testing (~> 1.0)
       railties (>= 4.2.0)
       thor (>= 0.14, < 2.0)
-    json (1.8.2)
+    json (1.8.3)
     jwt (1.5.0)
     kaminari (0.16.3)
       actionpack (>= 3.0.0)
@@ -274,28 +271,22 @@ DEPENDENCIES
   better_errors
   bootstrap-sass
   byebug
-<<<<<<< HEAD
-  carrierwave
-=======
   cancancan (~> 1.10)
   capistrano-rails
   capistrano-rbenv
+  carrierwave
   china_sms
->>>>>>> 6f74b8f9c217ac6ef700762813de2fc09701a131
   coffee-rails (~> 4.1.0)
   database_cleaner
   devise
   factory_girl_rails
   jbuilder (~> 2.0)
   jquery-rails
-<<<<<<< HEAD
-  mini_magick
-=======
   kaminari
+  mini_magick
   mocha (~> 0.14)
   mock_redis
   omniauth-oauth2
->>>>>>> 6f74b8f9c217ac6ef700762813de2fc09701a131
   pg
   pry-byebug
   pry-rails
@@ -313,10 +304,4 @@ DEPENDENCIES
   underscore-rails
   unicorn
   web-console (~> 2.0)
-<<<<<<< HEAD
-=======
   webmock
-
-BUNDLED WITH
-   1.10.2
->>>>>>> 6f74b8f9c217ac6ef700762813de2fc09701a131
