@@ -1,0 +1,60 @@
+<div class="row small-3">
+  <ul class="small-block-grid-3 text-center">
+    <li>
+      <dl>
+        <dd>今日发布</dd>
+        <dt style="font-size:3em;">3</dt>
+      </dl>
+    </li>
+    <li>
+      <dl>
+        <dd>总商品</dd>
+        <dt style="font-size:3em;">3</dt>
+      </dl>
+    </li>
+    <li>
+      <dl>
+        <dd>库存紧张</dd>
+        <dt style="font-size:3em;">3</dt>
+      </dl>
+    </li>
+  </ul>
+</div>
+<div class="row"><%= link_to("发布商品", '###' , :class=>"button small") %></div>
+<div class="row">
+  <div class="small-12 columns">
+    <table class="small-12">
+      <thead>
+        <tr>
+          <th width=10></th>
+          <th width=200>商品</th>
+          <th>UV/PV</th>
+          <th>库存</th>
+          <th>总销量</th>
+          <th>发布时间</th>
+          <th>分成方案</th>
+          <th width=50></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            <input type="checkbox" name="" value="" alt="全选" id="check_all"></label>
+          </td>
+          <td colspan='6'></td>
+          <td>删除</td>
+        </tr>
+        <tr>
+          <td><input id="product_<%=  %>" class="check" name="params[]" type="checkbox" value="<%=  %>" /></td>
+          <td>-</td>
+          <td>-</td>
+          <td>-</td>
+          <td>-</td>
+          <td>-</td>
+          <td>-</td>
+          <td>-</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

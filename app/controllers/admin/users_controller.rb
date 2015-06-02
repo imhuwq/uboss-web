@@ -123,15 +123,15 @@ class Admin::UsersController < Admin::BaseController
   end
 
 	def user_params
-		params.require(:user).permit(:email,:name,:logo,
+		params.require(:user).permit(:email,:name,:logo,:account
         :gender,:able_email,
         :asset_logo,:img_w,:img_h,:current_w,:img_file_path,
         :reset_secret_status,
         :password,:password_confirmation,:old_password)
 	end
   def logo_params
-    params.permit(:email,:name,:logo,
-        :gender,:able_email,
+    params.permit(:email,:name,:logo,:account
+        :gender,
         :asset_logo,:img_w,:img_h,:current_w,:img_file_path,
         :reset_secret_status,:password,:password_confirmation)
   end

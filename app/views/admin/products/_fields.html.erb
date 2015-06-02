@@ -1,0 +1,100 @@
+<%= stylesheet_link_tag 'jcrop/jquery.Jcrop' %>
+<%= javascript_include_tag 'jcrop/jquery.Jcrop' %>
+<%= javascript_include_tag 'jcrop/ajaxfileupload' %>
+<script type='text/javascript'>
+  var Jcroper;
+
+  function ajaxFileUpload(need_crop) {
+    if (Jcroper != null) Jcroper.destroy();
+    $('#ajax_info').html("正在生成预览，请等待...");
+    $.ajaxFileUpload({
+      url: '/users/add_avatar',
+      secureuri: false,
+      fileElementId: 'user_asset_logo',
+      dataType: 'text',
+      success: function (data, status)  //服务器成功响应处理函数
+      {
+        console.log(data)
+        console.log('src', '/tmp/' + data + '?' + new Date().getTime())
+        $('#preview').attr('src', '/tmp/' + data + '?' + new Date().getTime());
+        $("#img_file_path").val(data);
+        $('#preview').one('load', function () {
+          if (need_crop) { // 是否需要裁剪
+            Jcroper = $.Jcrop('#preview', {
+              aspectRatio: 1,
+              minSize: [100, 100],
+              onSelect: showCoords,
+              onChange: showCoords
+            });
+            $('#ajax_info').html("请在图片上点击并拖动，选中部分将裁剪为头像。若不选则不保存头像。");
+          } else {
+            $('#ajax_info').html('');
+          }
+          // 启用选择图片
+          $("#user_asset_logo").attr('disabled', false);
+        });
+      },
+      error: function (data, status, e)//服务器响应失败处理函数
+      {
+        alert(e);
+        // 启用选择图片
+        $("#user_asset_logo").attr('disabled', false);
+      }
+    });
+    return true;
+  }
+
+  //简单的事件处理程序，响应自onChange,onSelect事件，按照上面的Jcrop调用
+  function showCoords(obj) {
+    $("#img_x").val(obj.x);
+    $("#img_y").val(obj.y);
+    $("#img_w").val(obj.w);
+    $("#img_h").val(obj.h);
+    $("#current_w").val($("#preview").width());
+    if (parseInt(obj.w) > 0) {
+      //计算预览区域图片缩放的比例，通过计算显示区域的宽度(与高度)与剪裁的宽度(与高度)之比得到
+      var rx = $("#preview_box").width() / obj.w;
+      var ry = $("#preview_box").height() / obj.h;
+    }
+  }
+
+  $(function(){
+    document.getElementById('localImage').onselectstart = document.getElementById('localImage').ondrag = function(){
+      return false;
+    }
+  });
+</script>
+
+
+
+
+
+
+
+
+<div class="small-4 column">
+	<%= f.input :name,:as=>:string,:label_html=>{:class=>"left small-4"} %>
+	<%= f.input :original_price,:as=>:float,:label_html=>{:class=>"left small-4"} %>
+	<%= f.input :present_price,:as=>:float,:label_html=>{:class=>"left small-4"} %>
+	<%= f.input :count,:as=>:integer,:label_html=>{:class=>"left small-4"} %>
+	<%= f.label :asset_img %>
+	<label class="string optional">预览</label>
+	  <div>
+	    <%= hidden_field_tag "img_file_path", '', :id => 'img_file_path' %>
+	    <label id='ajax_info' style='color:darkred;margin-top: 5px;'></label>
+	    <div class="crop" id="localImage">
+	      <% max_width = '380px' %>
+	      <img id="preview" src="<%= @product.asset_img ? @product.asset_img : '' %>" alt="无图片" style="max-width: <%= max_width %>;" />
+	      <input type="hidden" id="img_x" name="img_x"/>
+	      <input type="hidden" id="img_y" name="img_y"/>
+	      <input type="hidden" id="img_w" name="img_w"/>
+	      <input type="hidden" id="img_h" name="img_h"/>
+	      <input type="hidden" id="current_w" name="current_w"/>
+	    </div>
+	  </div>
+
+	<%= f.file_field :asset_logo ,:name=>"asset_logo", :onchange => 'ajaxFileUpload(true);' %>
+</div>
+<div class="column">
+  <%= f.input :content,:as=>:text %>
+</div>

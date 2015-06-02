@@ -39,3 +39,5 @@ bower.json
 *.swp
 
 /config/database.yml
+/Gemfile.lock
+.DS_Store
