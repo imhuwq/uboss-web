@@ -1,8 +1,10 @@
 Rails.application.routes.draw do
-  root 'welcome#index'
 
-  match '/admin', to: 'admin/main#index',via: :get
   namespace :admin do
+  end
+
+  namespace :admin do
+    root 'home#index'
     resources :users do
     end
     resources :sessions do
@@ -10,4 +12,6 @@ Rails.application.routes.draw do
       post :send_reset_password_email, :on=>:collection
     end
   end
+
+  root 'welcome#index'
 end
