@@ -1,0 +1,7 @@
+zh-CN:
+  activerecord: 
+  activerecord:
+    attributes:
+      user:
+        login: 登录名
+        password: 密码
