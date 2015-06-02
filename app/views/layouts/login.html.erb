@@ -9,13 +9,7 @@
 <body>
 
 <div class="container">
-  <% if flash[:error].present? %>
-    <%= alert_box error, type: 'alert-danger' %>
-  <% elsif flash[:notice].present? %>
-    <%= alert_box notice %>
-  <% elsif flash[:alert].present? %>
-    <%= alert_box alert, type: 'alert-warning' %>
-  <% end -%>
+  <%= render 'layouts/flash_alert' %>
   <%= yield %>
 </div>
 
