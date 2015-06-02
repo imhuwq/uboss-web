@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <title>UBoss</title>
+<head> <title>UBoss</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <%= stylesheet_link_tag    'login', media: 'all'  %>
   <%= javascript_include_tag 'login' %>
@@ -11,11 +10,11 @@
 
 <div class="container">
   <% if flash[:error].present? %>
-    <%= alert_box error %>
+    <%= alert_box error, type: 'alert-danger' %>
   <% elsif flash[:notice].present? %>
     <%= alert_box notice %>
   <% elsif flash[:alert].present? %>
-    <%= alert_box alert %>
+    <%= alert_box alert, type: 'alert-warning' %>
   <% end -%>
   <%= yield %>
 </div>

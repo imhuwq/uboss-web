@@ -25,7 +25,7 @@ gem 'jquery-rails'
 gem 'jbuilder', '~> 2.0'
 
 # JavaScript/Css stuff
-gem "foundation-rails"
+gem "bootstrap-sass"
 gem "underscore-rails"
 
 # oauth

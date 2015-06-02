@@ -11,6 +11,6 @@
 // about supported directives.
 //
 //= require jquery
-//= require foundation
-
-$(function(){ $(document).foundation(); });
+//= require jquery_ujs
+//= require bootstrap-sprockets
+//= require_self
