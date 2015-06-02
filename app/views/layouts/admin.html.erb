@@ -11,7 +11,24 @@
 
 <%= render 'layouts/admin_navbar' %>
 
-<%= yield %>
+<div class="container admin-container">
+  <% if flash[:error].present? %>
+    <div class='alert alert-danger'>
+      <%= flash[:error] %>
+    </div>
+  <% elsif flash[:notice].present? %>
+    <div class='alert alert-success'>
+      <%= flash[:notice] %>
+    </div>
+  <% elsif flash[:alert].present? %>
+    <div class='alert alert-danger'>
+      <%= flash[:alert] %>
+    </div>
+  <% end -%>
+  <%= yield %>
+</div>
+
+<%= yield :page_specific_javascript %>
 
 </body>
 </html>

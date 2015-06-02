@@ -1,6 +1,6 @@
 #encoding:utf-8
 #自定义管理系统
-class Admin::ProductsController < Admin::BaseController
+class Admin::ProductsController < AdminController
   layout 'admin'
 	def index
     # @products = Product.all
