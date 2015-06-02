@@ -6,8 +6,11 @@ gem 'rails', '4.2.1'
 #DB
 gem "pg"
 
+# Reusable logic
 gem 'devise'
 gem 'china_sms'
+gem "cancancan", "~> 1.10"
+gem "kaminari"
 
 #Fornt
 gem 'sass-rails', '~> 5.0'
@@ -24,6 +27,9 @@ gem 'jbuilder', '~> 2.0'
 # JavaScript/Css stuff
 gem "foundation-rails"
 gem "underscore-rails"
+
+# oauth
+gem 'omniauth-oauth2'
 
 gem 'unicorn', require: false
 
