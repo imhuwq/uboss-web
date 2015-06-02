@@ -1,8 +1,7 @@
-class Admin::UserController < Admin::BaseController
+class Admin::UsersController < Admin::BaseController
 	before_filter :correct_user,  only:[:edit,:update]
   protect_from_forgery :except=>:add_avatar
   before_filter :signed_in_user,:only=>[:show,:index]
-  include MicropostsHelper
 	def index
     @users = User.all
   end

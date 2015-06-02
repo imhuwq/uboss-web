@@ -1,15 +1,19 @@
-
-	<h1>登　入</h1>
-	<%#= simple_form_for(:session,url: {},wrapper: :vertical_form) do |f| %>
-  <%= simple_form_for(:session,url: {:controller=>'admin/sessions',:action=>:create},wrapper: :vertical_form) do |f| %>
-  	<%= f.input :email %>
-  	<%= f.input :password %>
+<div style="padding:20px;text-align:center">
+  <h1>Uboss　平台</h1>
+</div>
+<div style="text-align:center;border:1px solid black;margin:40px 400px;padding:40px;">
+  <h2>登入uboss</h2>
+  <%= simple_form_for(:session,url: {:controller=>'admin/sessions',:action=>:create}) do |f| %>
+    <%= f.input :account %>
+    <%= f.input :password %>
     <div  class="button_div">
       <%= f.button :submit, "登入",class: "btn btn-large btn-primary " %>
     </div>
-	<% end %>
+  <% end %>
   <p>
-    新用户?<%= link_to "马上注册",signup_path %>
-    <br/>
+   <!--  新用户?<%#= link_to "马上注册",url_for(:controller=>'admin/users',:action=>:new) %>
+    <br/> -->
     忘记密码?<%= link_to "重置密码",{:action=>:try_to_reset_password} %>
   </p>
+
+</div>

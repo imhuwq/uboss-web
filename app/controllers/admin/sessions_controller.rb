@@ -1,10 +1,10 @@
-class Admin::SessionsController < Admin::BaseController 
+class Admin::SessionsController < Admin::BaseController
   
   def new
   end
   
   def create
-    user = User.find_by_email(params[:session][:email])
+    user = User.find_by_account(params[:session][:account])
     if user && user.authenticate(params[:session][:password]) && user.status == "start"
       sign_in(user)
       redirect_back_or(user)

@@ -5,19 +5,23 @@ class User < ActiveRecord::Base
 
   before_save :encrypt_password
   before_save :remember_me
-  before_save :create_user_purse
-  validates :name,presence: true,length:{maximum: 50},uniqueness: { case_sensitive: true }
+  # validates :name,presence: true,length:{maximum: 50},uniqueness: { case_sensitive: true }
+
+  # email
   VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
-  validates :email,presence: true,
+  validates :email,
   format:{with:VALID_EMAIL_REGEX},
   uniqueness: { case_sensitive: false }
+  #before_save {|user| user.email = email.downcase}
+  ###
+  # phone
+  validates :phone, presence: true,
+  :format=> {:with=> /^(\+\d+-)?[1-9]{1}[0-9]{10}$/, :message=> "手机格式不正确"}
+  ###
+
   validates :password, :confirmation=> { :allow_blank=> true }, :length=>{:maximum=>20,:minimum=>6} ,:if => :password_required?
-
-
-  has_one  :asset_logo, :class_name => "AssetLogo", :as => :resource, :dependent => :destroy #logo，只有一个
-
-
-  before_save {|user| user.email = email.downcase}
+  validates :account,presence: true,uniqueness: { case_sensitive: true }
+  
 
 
   # Authenticates a user by their login name and unencrypted password.  Returns the user or nil.
@@ -54,7 +58,7 @@ class User < ActiveRecord::Base
   protected
 	def encrypt_password
     return if password.blank?
-    self.salt = Digest::SHA1.hexdigest("--#{Time.now.to_s}--#{email}--") if new_record?
+    self.salt = Digest::SHA1.hexdigest("--#{Time.now.to_s}--#{account}--") if new_record?
     self.crypted_password = encrypt(password)
   end
   # Encrypts the password with the user salt
@@ -72,10 +76,5 @@ class User < ActiveRecord::Base
   private
     def create_remember_token
      self.remember_token = SecureRandom.urlsafe_base64
-    end
-    def create_user_purse
-      unless self.user_purse.present?
-        UserPurse.create(:user_id=>self.id)
-      end
     end
 end
