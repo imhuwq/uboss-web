@@ -11,6 +11,7 @@ gem 'devise'
 gem 'china_sms'
 gem "cancancan", "~> 1.10"
 gem "kaminari"
+gem 'simple_captcha2', require: 'simple_captcha'
 
 #Fornt
 gem 'sass-rails', '~> 5.0'
