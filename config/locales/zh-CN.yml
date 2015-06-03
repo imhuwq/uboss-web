@@ -1,5 +1,7 @@
 zh-CN:
-  activerecord: 
+  li_link:
+    dashboard: 首页
+    uboss_data: 数据
   activerecord:
     attributes:
       user:
