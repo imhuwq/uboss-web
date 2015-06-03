@@ -39,6 +39,6 @@ bower.json
 *.swp
 
 /config/database.yml
-/Gemfile.lock
+Gemfile.lock
 .DS_Store
 /db/schema.rb
