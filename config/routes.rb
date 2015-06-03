@@ -12,6 +12,7 @@ Rails.application.routes.draw do
     resources :users do
     end
     resources :products do
+      post :add_avatar, :on=>:collection
     end
     resources :orders do
     end

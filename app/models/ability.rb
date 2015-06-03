@@ -2,7 +2,7 @@ class Ability
   include CanCan::Ability
   def initialize(user)
     @user ||= User.new # for guest user (not logged in)
-    if user.admin?
+    if user.present? and user.admin?
       grant_admin_authority
     end
   end

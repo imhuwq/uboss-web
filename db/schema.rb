@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150602071955) do
+ActiveRecord::Schema.define(version: 20150603035931) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -22,6 +22,12 @@ ActiveRecord::Schema.define(version: 20150602071955) do
     t.float   "present_price"
     t.integer "count"
     t.text    "content"
+    t.float   "buyer_lv_1",         default: 0.0
+    t.float   "buyer_lv_2",         default: 0.0
+    t.float   "buyer_lv_3",         default: 0.0
+    t.float   "sharer_lv_1",        default: 0.0
+    t.integer "buyer_present_way",  default: 0
+    t.integer "sharer_present_way", default: 0
   end
 
   create_table "users", force: :cascade do |t|
