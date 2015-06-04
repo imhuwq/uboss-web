@@ -10,6 +10,12 @@ zh-CN:
         asset_img: 产品展示图
         buyer_pay: 付款方式
         traffic_expense: 运费
+  simple_captcha:
+    label: 验证码
+    placeholder: 请输入验证码
+    refresh_button_text: 刷新
+    message:
+      default: 验证码错误
   li_link:
     dashboard: 首页
     uboss_data: 数据

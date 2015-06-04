@@ -5,6 +5,7 @@
     <%= f.input :login, required: false, autofocus: true %>
     <%= f.input :password, required: false %>
     <%= f.input :remember_me, as: :boolean, label: '下次自动登录' if devise_mapping.rememberable? %>
+    <%= show_simple_captcha label: '验证码' %>
   </div>
 
   <div class="form-actions">
