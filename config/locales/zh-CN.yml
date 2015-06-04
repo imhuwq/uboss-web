@@ -1,4 +1,15 @@
 zh-CN:
+  simple_form:
+    labels:
+      product:
+        name: 产品名
+        original_price: 原价
+        present_price: 现价
+        count: 数量
+        content: 详细介绍
+        asset_img: 产品展示图
+        buyer_pay: 付款方式
+        traffic_expense: 运费
   li_link:
     dashboard: 首页
     uboss_data: 数据
@@ -7,3 +18,4 @@ zh-CN:
       user:
         login: 登录名
         password: 密码
+      

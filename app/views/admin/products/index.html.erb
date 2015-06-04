@@ -1,80 +1,55 @@
-    <div class="row">
-      <div class="span9">
-        Level 1 column
-        <div class="row">
-          <div class="span6">Level 2</div>
-          <div class="span3">Level 2</div>
-        </div>
-      </div>
-    </div>
+
 <div class="row">
-  <div class=" span6 text-center">
-    <div class="span2">
+  <div class="col-xs-6  col-md-offset-4 text-center">
+    <div class="col-xs-2">
       <div>今日发布</div>
-      <div>12</div>
+      <b style="font-size:3em;">12</b>
     </div>
-    <div class="span2">
-      <div>今日发布</div>
-      <div>12</div>
+    <div class="col-xs-2">
+      <div>总商品</div>
+      <b style="font-size:3em;">12</b>
+    </div>
+    <div class="col-xs-2">
+      <div>库存紧张</div>
+      <b style="font-size:3em;">12</b>
     </div>
   </div>
   
-  <div class="small-block-grid-3">
-    <li>
-      <dl>
-        <dd></dd>
-        <dt style="font-size:3em;">3</dt>
-      </dl>
-    </li>
-    <li>
-      <dl>
-        <dd>总商品</dd>
-        <dt style="font-size:3em;">3</dt>
-      </dl>
-    </li>
-    <li>
-      <dl>
-        <dd>库存紧张</dd>
-        <dt style="font-size:3em;">3</dt>
-      </dl>
-    </li>
-  </div>
+
 </div>
-<div class="row"><%= link_to("发布商品", '###' , :class=>"button small") %></div>
+<div class="row"><%= link_to("发布商品", '###' , :class=>"btn btn-primary active",:role=>"button") %></div>
 <div class="row">
-  <div class="small-12 columns">
-    <table class="small-12">
-      <thead>
-        <tr>
-          <th width=10></th>
-          <th width=200>商品</th>
-          <th>UV/PV</th>
-          <th>库存</th>
-          <th>总销量</th>
-          <th>发布时间</th>
-          <th>分成方案</th>
-          <th width=50></th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>
-            <input type="checkbox" name="" value="" alt="全选" id="check_all"></label>
-          </td>
-          <td colspan='6'></td>
-          <td>删除</td>
-        </tr>
-        <tr>
-          <td><input id="product_<%=  %>" class="check" name="params[]" type="checkbox" value="<%=  %>" /></td>
-          <td>-</td>
-          <td>-</td>
-          <td>-</td>
-          <td>-</td>
-          <td>-</td>
-          <td>-</td>
-          <td>-</td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
+  <table  class="table table-hover">
+    <thead>
+      <tr>
+        <th width=10></th>
+        <th width=200>商品</th>
+        <th>UV/PV</th>
+        <th>库存</th>
+        <th>总销量</th>
+        <th>发布时间</th>
+        <th>分成方案</th>
+        <th width=50></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          <input type="checkbox" name="" value="" alt="全选" id="check_all"></label>
+        </td>
+        <td colspan='6'></td>
+        <td>删除</td>
+      </tr>
+      <tr>
+        <td><input id="product_<%=  %>" class="check" name="params[]" type="checkbox" value="<%=  %>" /></td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+      </tr>
+    </tbody>
+  </table>
 </div>

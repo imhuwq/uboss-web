@@ -1,12 +1,12 @@
-<div  class="row large-3">
+<div  class="row">
   <div>商品管理>创建商品信息</div>
 </div>
 
 <div class="row">
-  <div class="column">
-    <%= simple_form_for :product,url: {:action=>:create} do |f| %>
+    <%= simple_form_for :product,url: {:action=>:create},wrapper: :horizontal_file_input do |f| %>
       <%= render 'fields', f: f %>
+      
     <% end %>
-  </div>
+
 </div>
 
