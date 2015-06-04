@@ -1,6 +1,7 @@
 GEM
   remote: https://ruby.taobao.org/
   specs:
+    aasm (4.1.1)
     actionmailer (4.2.1)
       actionpack (= 4.2.1)
       actionview (= 4.2.1)
@@ -233,6 +234,7 @@ GEM
       colorize (>= 0.7.0)
       net-scp (>= 1.1.2)
       net-ssh (>= 2.8.0)
+    tabletastic (0.1.3)
     test_after_commit (0.4.1)
       activerecord (>= 3.2)
     therubyracer (0.12.2)
@@ -270,6 +272,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  aasm
   better_errors
   bootstrap-sass
   byebug
@@ -300,6 +303,7 @@ DEPENDENCIES
   simple_form
   slackistrano
   spring
+  tabletastic
   test_after_commit
   therubyracer
   thin

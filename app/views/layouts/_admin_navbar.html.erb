@@ -9,9 +9,7 @@
         <li>
           <a href="/admin">商品</a>
         </li>
-        <li>
-          <a href="/admin">订单</a>
-        </li>
+        <%= li_link :orders, admin_orders_path %>
         <%= can_li_link :manage, :uboss_data, '/admin/data' %>
       </ul>
 
