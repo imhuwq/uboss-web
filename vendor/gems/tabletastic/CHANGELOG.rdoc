@@ -1,0 +1,45 @@
+v0.2.3 (Aug 10, 2011)
+
+* Add support for Rails 3.1
+
+v0.2.2 (Mar 26, 2011)
+
+* Add basic i18n support
+
+v0.2.1 (Nov 23, 2010)
+
+* [BUGFIX] No longer inappropriately escapes rows for Rails 3.0.3
+
+v0.2.0 (Oct 24, 2010)
+
+* This gem is now Rails 3 only
+* Update to Rails 3 API and idioms
+* [DEPRECATED] use of table.data method without = in erb or haml. See README for more information.
+* Add default table html options
+* Add default lambda (table block) so that table_for can be called without passing a block
+* Add has_one associations
+* Add heading html hook for <th> elements
+* Super-basic mongoid support (2.x branch)
+* Add ability to pass :action_prefix an array (Thanks, brunowernimont)
+
+v0.1.3 (Dec 28, 2009)
+
+* Changing destroy action to have confirmation by default
+
+v0.1.2 (Nov 25, 2009)
+
+* Added ability to namespace :actions links (i.e. /admin/posts/1)
+
+v0.1.1 (Nov 22, 2009)
+
+* Added :actions option to data method for common show, edit, destroy links
+
+v0.1.0 (Nov 17, 2009)
+
+* First useful release
+* Added documentation
+* "Lazy" attributes can be supplied as blocks to cell method
+
+v0.0.1 (Nov 15, 2009)
+
+* Beta release, proof-of-concept
