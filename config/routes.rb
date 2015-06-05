@@ -8,7 +8,7 @@ Rails.application.routes.draw do
 
   authenticate :user, lambda { |user| user.admin? } do
     namespace :admin do
-      resources :products do
+      resources :products, except: [:destroy] do
       end
       resources :orders 
       root 'dashboard#index'

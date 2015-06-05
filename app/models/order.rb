@@ -10,11 +10,16 @@ class Order < ActiveRecord::Base
   validates :number, :user, :address, presence: true
   validates_uniqueness_of :number
 
-  before_validation :set_number on: :create
+  before_validation :set_number, on: :create
+
+  delegate :mobile, :regist_mobile, to: :user, prefix: :buyer
+
+  scope :today, -> { where('created_at >= ?', Time.now.beginning_of_day) }
+  scope :selled, -> { where('state <> 0') }
 
   enum state: { unpay: 0, payed: 1, shiped: 3, signed: 4, closed: 5 }
 
-  aasm column: :state, enum: true do
+  aasm column: :state, enum: true, skip_validation_on_save: true do
     state :unpay
     state :payed
     state :shiped
@@ -36,7 +41,9 @@ class Order < ActiveRecord::Base
   end
 
   private
+
   def set_number
+    # TODO more friendly
     self.number = "#{Time.now.to_number(:nsec)}"
   end
 

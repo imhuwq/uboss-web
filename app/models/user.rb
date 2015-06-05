@@ -5,6 +5,8 @@ class User < ActiveRecord::Base
   validates :login, uniqueness: true, mobile: true
   validates :mobile, allow_nil: true, mobile: true
 
+  alias_attribute :regist_mobile, :login
+
   private
     def email_required?
       false
