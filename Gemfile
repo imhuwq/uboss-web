@@ -1,6 +1,7 @@
 source 'https://rubygems.org'
 # source 'https://ruby.taobao.org'
 
+ruby '2.2.2'
 gem 'rails', '4.2.1'
 
 #DB
@@ -15,6 +16,7 @@ gem 'simple_captcha2', require: 'simple_captcha'
 gem 'uuidtools'
 gem 'aasm'
 gem 'enum_help'
+gem 'pingpp'
 
 
 #Fornt

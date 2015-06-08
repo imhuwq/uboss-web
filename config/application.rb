@@ -11,7 +11,7 @@ module UBoss
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration should go into files in config/initializers
     # -- all .rb files in that directory are automatically loaded.
-    config.autoload_paths += %W(#{config.root}/app/validators)
+    # config.autoload_paths += %W(#{config.root}/app/validators)
 
     config.active_record.default_timezone = :local
     config.time_zone = 'Beijing'
@@ -19,6 +19,14 @@ module UBoss
     # The default locale is :en and all translations from config/locales/*.rb,yml are auto loaded.
     # config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}').to_s]
     config.i18n.default_locale = :"zh-CN"
+
+    config.generators do |g|
+      g.stylesheets false
+      g.javascripts false
+      g.helper false
+      g.helper_specs false
+      g.view_specs false
+    end
 
     # Do not swallow errors in after_commit/after_rollback callbacks.
     config.active_record.raise_in_transactional_callbacks = true

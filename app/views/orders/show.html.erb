@@ -1,0 +1,11 @@
+<p>
+  num: <%= @order.number %>
+</p>
+
+<p>
+  amount: <%= @order.pay_amount %>
+</p>
+
+<p>
+  <%= link_to '付款', pay_order_path(@order) %>
+</p>

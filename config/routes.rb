@@ -5,6 +5,18 @@ Rails.application.routes.draw do
     passwords: "users/passwords",
   }
 
+  resources :orders, only: [:new, :create, :show] do
+    get 'pay', on: :member
+    collection do
+      post 'pingpp_callback'
+      get 'success', to: 'orders#success_callback'
+      get 'failure', to: 'orders#failure_callback'
+    end
+  end
+
+  resource :charge, only: [:create] do
+    post 'callback', on: :collection
+  end
 
   authenticate :user, lambda { |user| user.admin? } do
     namespace :admin do
