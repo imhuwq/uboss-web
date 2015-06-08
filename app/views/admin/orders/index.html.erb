@@ -13,6 +13,8 @@
   </div>
 </div>
 
+<hr>
+
 <%= table_for(@orders) do |t| %>
   <%= t.cell :created_at %>
   <%= t.cell :number %>
@@ -20,6 +22,9 @@
   <%= t.cell(:state) { |order| order.state_i18n } %>
   <%= t.cell :action do |order| %>
     <%= link_to 'Show', [:admin, order] %>
+    <% if order.payed? %>
+      <%= link_to '发货', [:ship, :admin, order], method: :PATCH, remote: true, confirm: 'Are your sure?' %>
+    <%- end%>
   <%- end%>
 <%- end %>
 

@@ -10,7 +10,9 @@ Rails.application.routes.draw do
     namespace :admin do
       resources :products, except: [:destroy] do
       end
-      resources :orders 
+      resources :orders, except: [:destroy] do
+        patch :ship, on: :member
+      end
       root 'dashboard#index'
     end
   end
