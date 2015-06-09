@@ -1,5 +1,5 @@
-# source 'https://rubygems.org'
-source 'https://ruby.taobao.org'
+source 'https://rubygems.org'
+# source 'https://ruby.taobao.org'
 
 gem 'rails', '4.2.1'
 
@@ -13,13 +13,18 @@ gem "cancancan", "~> 1.10"
 gem "kaminari"
 gem 'simple_captcha2', require: 'simple_captcha'
 gem 'uuidtools'
+gem 'aasm'
+gem 'enum_help'
+
 
 #Fornt
 gem 'sass-rails', '~> 5.0'
 gem 'uglifier', '>= 1.3.0'
 gem 'coffee-rails', '~> 4.1.0'
-gem 'simple_form'
 gem 'will_paginate-bootstrap'
+gem "simple_form"
+gem "tabletastic", path: "vendor/gems"
+
 # See https://github.com/rails/execjs#readme for more supported runtimes
 gem 'therubyracer', platforms: :ruby
 

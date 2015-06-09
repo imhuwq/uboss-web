@@ -9,8 +9,9 @@ class Product < ActiveRecord::Base
 	has_one  :asset_img, :class_name => "AssetImg",dependent: :destroy,as: :resource
   has_many  :product_share_issue, :dependent=>:destroy
 
+
   before_create :generate_code
   def generate_code
-    self.code = UUIDTools::UUID.random_create.to_s.gsub!('-','')
+    self.code = UUIDTools::UUID.random_create.to_s.gsub!('-','')[0..10]
   end
 end

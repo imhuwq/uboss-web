@@ -31,6 +31,33 @@ ActiveRecord::Schema.define(version: 20150605052125) do
     t.string   "alt"
   end
 
+  create_table "order_items", force: :cascade do |t|
+    t.integer  "order_id"
+    t.integer  "product_id"
+    t.integer  "user_id"
+    t.integer  "amount"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "orders", force: :cascade do |t|
+    t.integer  "user_id"
+    t.integer  "seller_id"
+    t.string   "number"
+    t.string   "mobile"
+    t.string   "address"
+    t.string   "invoice_title"
+    t.integer  "state",         default: 0
+    t.integer  "payment"
+    t.datetime "pay_time"
+    t.float    "pay_amount"
+    t.string   "pay_message"
+    t.datetime "created_at",                null: false
+    t.datetime "updated_at",                null: false
+  end
+
+  add_index "orders", ["number"], name: "index_orders_on_number", unique: true, using: :btree
+
   create_table "product_share_issues", force: :cascade do |t|
     t.integer  "product_id"
     t.integer  "buyer_lv_1_id"
@@ -92,4 +119,9 @@ ActiveRecord::Schema.define(version: 20150605052125) do
   add_index "users", ["login"], name: "index_users_on_login", unique: true, using: :btree
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
 
+  add_foreign_key "order_items", "orders"
+  add_foreign_key "order_items", "products"
+  add_foreign_key "order_items", "users"
+  add_foreign_key "orders", "users"
+  add_foreign_key "orders", "users", column: "seller_id", name: "fk_order_seller_foreign_key"
 end

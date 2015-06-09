@@ -8,6 +8,10 @@ class ApplicationController < ActionController::Base
 
   protected
 
+  def param_page
+    params[:page] || 0
+  end
+
   def configure_permitted_parameters
     devise_parameter_sanitizer.for(:sign_up) { |u| u.permit(:login, :captcha, :password, :password_confirmation, :remember_me) }
     devise_parameter_sanitizer.for(:sign_in) { |u| u.permit(:login, :password, :remember_me, :captcha, :captcha_key) }

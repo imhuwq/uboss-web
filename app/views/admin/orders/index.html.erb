@@ -1,59 +1,31 @@
-<div class="row">
-  <div class="span6 text-center">
-    <div class="span2">
-      <div>等待发货</div>
-      <div>3</div>
-    </div>
+<div class='row text-center orders-heading-info'>
+  <div class='col-md-4'>
+    <p>等待发货</p>
+    <b><%= @unship_amount %></b>
+  </div>
+  <div class='col-md-4'>
+    <p>今日销量</p>
+    <b><%= @today_selled_amount %></b>
+  </div>
+  <div class='col-md-4'>
+    <p>售后处理</p>
+    <b><%= @shiped_amount %></b>
+  </div>
+</div>
 
-    <li>
-      <dl>
-        <dd>今日销量</dd>
-        <dt style="font-size:3em;">3</dt>
-      </dl>
-    </li>
-    <li>
-      <dl>
-        <dd>售后处理</dd>
-        <dt style="font-size:3em;">3</dt>
-      </dl>
-    </li>
-  </div>
-</div>
-<div class="row text-center">
-  <ul class="button-group">
-    <li><%= link_to("等待发货", '###' , :class=>"button") %></li>
-    <li><%= link_to("物流中", '###' , :class=>"button") %></li>
-    <li><%= link_to("交易完成", '###' , :class=>"button") %></li>
-    <li><%= link_to("售后处理", '###' , :class=>"button") %></li>
-  </ul>
-</div>
-<div class="row">
-  <div class="small-12 columns">
-    <table class="small-12">
-      <thead>
-        <tr>
-          <th>订单时间</th>
-          <th>商品名称|商品编号</th>
-          <th>数量</th>
-          <th>买家</th>
-          <th>金额</th>
-          <th>订单来源</th>
-          <th>状态</th>
-          <th>备注</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>-</td>
-          <td>-</td>
-          <td>-</td>
-          <td>-</td>
-          <td>-</td>
-          <td>-</td>
-          <td>-</td>
-          <td>-</td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-</div>
+<hr>
+
+<%= table_for(@orders) do |t| %>
+  <%= t.cell :created_at %>
+  <%= t.cell :number %>
+  <%= t.cell :buyer_regist_mobile %>
+  <%= t.cell(:state) { |order| order.state_i18n } %>
+  <%= t.cell :action do |order| %>
+    <%= link_to 'Show', [:admin, order] %>
+    <% if order.payed? %>
+      <%= link_to '发货', [:ship, :admin, order], method: :PATCH, remote: true, confirm: 'Are your sure?' %>
+    <%- end%>
+  <%- end%>
+<%- end %>
+
+<%= paginate @orders %>

@@ -55,10 +55,7 @@
           <td><%= obj.created_at.try(:strftime,'%Y-%m-%d') %></td>
           <td>-</td>
           <td>
-            <div><%= link_to("编辑", url_for(:action=>:edit,:id=>obj.id)) %></div>
-            <div><%= link_to("删除", url_for(:action=>:destroy,:id=>obj.id),:method=>:delete,
-           'data-confirm'=> "请确认") %></div>
-              
+            <div><%= link_to("编辑", url_for(:action=>:edit,:id=>obj.id)) %></div>    
           </td>
         </tr>
       <% end %>

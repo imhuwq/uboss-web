@@ -1,18 +1,17 @@
 Rails.application.routes.draw do
 
   devise_for :user, controllers: { 
-    registrations: "users/registrations",
     sessions: "users/sessions",
     passwords: "users/passwords",
-    omniauth_callbacks: "users/omniauth_callbacks"
   }
 
 
   authenticate :user, lambda { |user| user.admin? } do
     namespace :admin do
-      resources :products do
+      resources :products, except: [:destroy] do
       end
-      resources :orders do
+      resources :orders, except: [:destroy] do
+        patch :ship, on: :member
       end
       root 'dashboard#index'
     end

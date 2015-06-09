@@ -6,12 +6,9 @@
     <nav class="collapse navbar-collapse bs-navbar-collapse">
       <ul class="nav navbar-nav">
         <%= li_link(:dashboard, admin_root_path) %>
-        <li>
-          <a href="/admin/products">商品</a>
-        </li>
-        <li>
-          <a href="/admin">订单</a>
-        </li>
+        <%= li_link(:products, admin_products_path) %>
+        <%= li_link :orders, admin_orders_path %>
+
         <%= can_li_link :manage, :uboss_data, '/admin/data' %>
       </ul>
 
