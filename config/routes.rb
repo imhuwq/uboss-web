@@ -16,6 +16,10 @@ Rails.application.routes.draw do
       root 'dashboard#index'
     end
   end
-
+  namespace :mobile do
+    resources :products do
+    end
+  end
+  match '/mobile', to: "mobile/products#index",via: [:get]
   root 'home#index'
 end

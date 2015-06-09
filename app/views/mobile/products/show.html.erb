@@ -1,0 +1,70 @@
+<div class="row">
+  <div class="col-xs-12 text-center" style="padding:10px; 0">
+    <%= link_to url_for(:action=>:index) do %>
+    <div class="col-xs-2" style="font-size:1.5em;">
+      返回
+    </div>
+    <% end %>
+    <div class="col-xs-10" style="font-size:2em;">
+      商品详情
+    </div>
+  </div>
+</div>
+<div class="row"  style="font-size:2em">
+  <div class="col-xs-12">
+    <%= image_tag(url_for(@product.asset_img.try(:avatar).try(:url)),  alt: "-",:style=>"width:100%;") %>
+  </div>
+  <div class="col-xs-12" style="border-bottom:1px solid gray;padding:2%;"><%= @product.name %></div>
+  <div class="col-xs-12">
+    <span>￥<%= @product.present_price %></span>
+    <span style="text-decoration:line-through;color:gray;font-size:smaller;">￥<%= @product.original_price %></span>
+  </div>
+  <div class="col-xs-12" style="font-size:smaller;color:gray;">
+    <%= Product::DataBuyerPay[@product.buyer_pay] %>
+    <% if @product.buyer_pay %>
+    <%= ":￥#{@producttraffic_expense}" %>
+    <% end %>
+  </div>
+</div>
+<div class="row">
+  <div class="col-xs-12 text-center" style="margin:0; border:1px solid;font-size:2em">
+    图文详情
+  </div>
+  
+  <div class="col-xs-12" style="padding:2% 0">
+    <%= @product.content %>
+  </div>
+</div>
+<div class="row">
+  <div class="col-xs-12" style="padding:1%">
+    <!-- JiaThis Button BEGIN -->
+    <div class="jiathis_style_32x32">
+      <a class="jiathis_button_qzone"></a>
+      <a class="jiathis_button_tsina"></a>
+      <a class="jiathis_button_tqq"></a>
+      <a class="jiathis_button_weixin"></a>
+      <a class="jiathis_button_renren"></a>
+      <a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank"></a>
+      <a class="jiathis_counter_style"></a>
+    </div>
+    <script type="text/javascript">
+        var jiathis_config = { 
+          url: '<%= "http://#{request.env["HTTP_HOST"]}/products/#{@product.id}:code=123" %>', 
+          title: "<%= @product.name %>", 
+          summary:"<%= @product.name %>" 
+        } 
+    </script>
+    <script type="text/javascript" src="http://v2.jiathis.com/code/jia.js" charset="utf-8"></script>
+    <!-- JiaThis Button END -->
+  </div>
+</div>
+
+
+<div class="row">
+  <%= link_to '###' do %>
+  <div class="btn active col-xs-12 btn-lg btn-default" style="">
+    立即购买
+  </div>
+  <% end %>
+</div>
+
