@@ -1,1 +1,28 @@
+<h2>提交订单</h2>
 
+<p>商品名称: <%= @order_form.product.name %></p>
+
+<%= simple_form_for @order_form, url: orders_path, method: 'POST' do |f| %>
+  <div class="form-inputs">
+  <%= f.hidden_field :product_id %>
+  <%= f.input :amount %>
+  <% if current_user.blank? %>
+    <%= f.input :mobile %>
+    <%= f.input :captcha %>
+  <% end %>
+
+  <p>收获地址</p>
+  <% if current_user && current_user.default_address %>
+    <%= f.hidden_field_tag :user_address_id, current_user.default_address.id %>
+  <% else %>
+    <%= f.input :deliver_username %>
+    <%= f.input :deliver_mobile %>
+    <%= f.input :province %>
+    <%= f.input :city %>
+    <%= f.input :country, as: :text %>
+    <%= f.input :street %>
+  <% end %>
+  </div>
+
+  <%= submit_tag '提交订单' %>
+<% end %>

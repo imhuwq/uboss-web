@@ -3,14 +3,16 @@ class Order < ActiveRecord::Base
 
   belongs_to :user
   belongs_to :seller, class_name: "User"
+  belongs_to :user_address
   has_many :order_items
 
   accepts_nested_attributes_for :order_items
 
-  validates :number, :user, :address, presence: true
-  validates_uniqueness_of :number
+  validates :user, :user_address, presence: true
+  validates_uniqueness_of :number, allow_blank: true
 
-  before_validation :set_number, on: :create
+  before_save :set_info_by_user_address
+  after_create :set_number
 
   delegate :mobile, :regist_mobile, to: :user, prefix: :buyer
 
@@ -43,8 +45,13 @@ class Order < ActiveRecord::Base
   private
 
   def set_number
-    # TODO more friendly
-    self.number = "#{Time.now.to_number(:nsec)}"
+    update(number: "#{Time.now.to_s(:sec)[3..-3]}#{user_id}#{self.id}#{rand(1000)}")
+  end
+
+  def set_info_by_user_address
+    self.address = "#{user_address.province}#{user_address.city}#{user_address.country}#{user_address.street}"
+    self.mobile = user_address.mobile
+    self.username = user_address.username
   end
 
 end
