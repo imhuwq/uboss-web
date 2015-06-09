@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150605052125) do
+ActiveRecord::Schema.define(version: 20150609085414) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -36,8 +36,9 @@ ActiveRecord::Schema.define(version: 20150605052125) do
     t.integer  "product_id"
     t.integer  "user_id"
     t.integer  "amount"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at",               null: false
+    t.datetime "updated_at",               null: false
+    t.float    "pay_amount", default: 0.0
   end
 
   create_table "orders", force: :cascade do |t|
@@ -47,26 +48,18 @@ ActiveRecord::Schema.define(version: 20150605052125) do
     t.string   "mobile"
     t.string   "address"
     t.string   "invoice_title"
-    t.integer  "state",         default: 0
+    t.integer  "state",           default: 0
     t.integer  "payment"
     t.datetime "pay_time"
     t.float    "pay_amount"
     t.string   "pay_message"
-    t.datetime "created_at",                null: false
-    t.datetime "updated_at",                null: false
+    t.datetime "created_at",                  null: false
+    t.datetime "updated_at",                  null: false
+    t.integer  "user_address_id"
+    t.string   "username"
   end
 
   add_index "orders", ["number"], name: "index_orders_on_number", unique: true, using: :btree
-
-  create_table "product_share_issues", force: :cascade do |t|
-    t.integer  "product_id"
-    t.integer  "buyer_lv_1_id"
-    t.integer  "buyer_lv_2_id"
-    t.integer  "buyer_lv_3_id"
-    t.integer  "sharer_lv_1_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
 
   create_table "products", force: :cascade do |t|
     t.integer  "user_id"
@@ -98,6 +91,18 @@ ActiveRecord::Schema.define(version: 20150605052125) do
 
   add_index "simple_captcha_data", ["key"], name: "idx_key", using: :btree
 
+  create_table "user_addresses", force: :cascade do |t|
+    t.integer  "user_id"
+    t.string   "username"
+    t.string   "province"
+    t.string   "city"
+    t.string   "country"
+    t.string   "street"
+    t.string   "mobile"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "users", force: :cascade do |t|
     t.string   "login",                  default: "",    null: false
     t.string   "email"
@@ -114,6 +119,7 @@ ActiveRecord::Schema.define(version: 20150605052125) do
     t.datetime "updated_at",                             null: false
     t.string   "mobile"
     t.boolean  "admin",                  default: false
+    t.boolean  "need_reset_password",    default: false
   end
 
   add_index "users", ["login"], name: "index_users_on_login", unique: true, using: :btree
@@ -122,6 +128,8 @@ ActiveRecord::Schema.define(version: 20150605052125) do
   add_foreign_key "order_items", "orders"
   add_foreign_key "order_items", "products"
   add_foreign_key "order_items", "users"
+  add_foreign_key "orders", "user_addresses"
   add_foreign_key "orders", "users"
   add_foreign_key "orders", "users", column: "seller_id", name: "fk_order_seller_foreign_key"
+  add_foreign_key "user_addresses", "users"
 end

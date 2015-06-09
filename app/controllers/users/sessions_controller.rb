@@ -8,16 +8,16 @@ class Users::SessionsController < Devise::SessionsController
   # end
 
   # POST /resource/sign_in
-  def create
-    if simple_captcha_valid?
-      super
-    else
-      self.resource = resource_class.new(sign_in_params)
-      clean_up_passwords(resource)
-      set_flash_message(:notice, :invalid_captcha) if is_flashing_format?
-      render :new
-    end
-  end
+  # def create
+  #   if simple_captcha_valid?
+  #     super
+  #   else
+  #     self.resource = resource_class.new(sign_in_params)
+  #     clean_up_passwords(resource)
+  #     set_flash_message(:notice, :invalid_captcha) if is_flashing_format?
+  #     render :new
+  #   end
+  # end
 
   # DELETE /resource/sign_out
   # def destroy
