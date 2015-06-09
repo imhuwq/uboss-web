@@ -9,7 +9,7 @@ class OrdersController < ApplicationController
   end
 
   def create
-    @order_form = OrderForm.new(order_params)
+    @order_form = OrderForm.new(order_params.merge(buyer: current_user))
     if @order_form.save
       redirect_to pay_order_path(@order_form.order)
     else

@@ -18,14 +18,12 @@ class ChargesController < ApplicationController
   end
 
   # result=success&out_trade_no=19238484
-  def success_callback
+  def success
     @order = Order.find_by(number: params[:out_trade_no])
-    if params[:result] == 'success'
-      @order.pay!
-    end
   end
 
-  def failure_callback
+  def failure
+    @order = Order.find_by(number: params[:out_trade_no])
   end
 
 end

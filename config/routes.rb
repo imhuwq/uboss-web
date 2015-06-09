@@ -7,15 +7,14 @@ Rails.application.routes.draw do
 
   resources :orders, only: [:new, :create, :show] do
     get 'pay', on: :member
-    collection do
-      post 'pingpp_callback'
-      get 'success', to: 'orders#success_callback'
-      get 'failure', to: 'orders#failure_callback'
-    end
   end
 
   resource :charge, only: [:create] do
-    post 'callback', on: :collection
+    collection do
+      post 'pingpp_callback'
+      get 'success'
+      get 'failure'
+    end
   end
 
   authenticate :user, lambda { |user| user.admin? } do

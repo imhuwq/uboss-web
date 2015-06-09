@@ -9,7 +9,7 @@ class OrderForm
                 :order
 
   validates :product_id, presence: true
-  validates :mobile, presence: true, if: 'buyer.blank?'
+  validates :mobile, presence: true, if: :need_mobile?
   validate :captcha_must_be_valid, if: :need_verify_captcha?
   validate :check_amount
 
@@ -60,20 +60,28 @@ class OrderForm
   end
 
   def create_order_and_order_item
+    pay_amount = order_items_attributes.map { |order_item| order_item[:pay_amount] }.sum
     self.order = Order.create!(
       user: buyer,
       user_address: user_address,
-      order_items_attributes: gen_order_items_attributes)
+      pay_amount: pay_amount,
+      order_items_attributes: order_items_attributes)
   end
 
-  def gen_order_items_attributes
-    [ { product: product, user: buyer, amount: amount } ]
+  def order_items_attributes
+    @order_items ||= [ 
+      { product: product, user: buyer, amount: amount, pay_amount: product.present_price * amount.to_i } 
+    ]
   end
 
   def check_amount
     if amount.to_i > product.reload.count
       errors.add(:amount, '库存不足')
     end
+  end
+
+  def need_mobile?
+    self.buyer.blank?
   end
 
   def need_verify_captcha?

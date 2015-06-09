@@ -22,6 +22,7 @@ module ChargeService
         :body      => "Charge Body",
         :extra     => generate_extra(channel)
       )
+      order.update(payment: channel)
       ch.to_json
     rescue Pingpp::PingppError => error
       error.http_body
@@ -33,8 +34,8 @@ module ChargeService
 
     case params[:object]
     when 'charge'
-      'success'
       charge_success(params)
+      'success'
     when 'refund'
       'success'
     else
@@ -45,24 +46,27 @@ module ChargeService
   private
 
   def charge_success(params)
-    #TODO handle charge_success
+    order = Order.find_by(number: params[:order_no])
+    if params[:paid] == true
+      order.pay!
+    end
   end
 
   def generate_extra(channel)
     case channel
     when 'alipay_wap'
       extra = {
-        'success_url' => 'https://jqczxcrucf.localtunnel.me/charge/success',
-        'cancel_url'  => 'https://jqczxcrucf.localtunnel.me/charge/cancel'
+        'success_url' => 'http://uboss.local:3000/charge/success',
+        'cancel_url'  => 'http://uboss.local:3000/charge/cancel'
       }
     when 'upacp_wap', 'upmp_wap'
       extra = {
-        'result_url' => 'https://jqczxcrucf.localtunnel.me/charge/result?code='
+        'result_url' => 'http://uboss.local:3000/charge/result?code='
       }
     when 'bfb_wap'
       extra = {
         'bfb_login' => true,
-        'result_url' => 'https://jqczxcrucf.localtunnel.me/charge/success'
+        'result_url' => 'http://uboss.local:3000/charge/success'
       }
     when 'wx_pub'
       extra = {
