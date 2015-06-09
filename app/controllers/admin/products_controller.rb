@@ -12,6 +12,7 @@ class Admin::ProductsController < AdminController
 
 	def show
     @product = Product.find_by_id(params[:id])
+    redirect_to :action=>:index unless @product.present?
 	end
 
 	def new
@@ -36,6 +37,7 @@ class Admin::ProductsController < AdminController
 
 	def edit
     @product = Product.find_by_id(params[:id])
+    redirect_to :action=>:index unless @product.present?
 	end
 
 	def update
@@ -48,17 +50,6 @@ class Admin::ProductsController < AdminController
     end
     redirect_to :action=>:show,:id=>product.id
 	end
-
-  def destroy
-    product = Product.find_by_id(params[:id])
-    if product.present? and product.user_id == current_user.id and product.destroy
-      
-      flash[:success] = "删除成功"
-    else
-      flash[:error] = "无法删除。"
-    end
-    redirect_to :action=>:index
-  end
 
   private
   def product_params

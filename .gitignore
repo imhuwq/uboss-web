@@ -42,3 +42,4 @@ bower.json
 .DS_Store
 /db/schema.rb
 /db/schema.rb
+/public/uploads/asset_img
