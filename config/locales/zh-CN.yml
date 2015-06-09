@@ -9,10 +9,10 @@ zh-CN:
         original_price: 原价
         present_price: 现价
         count: 数量
-        content: 详细介绍
+        content: 图文详情
         buyer_pay: 付款方式
         traffic_expense: 运费
-        asset_img: 产品展示图
+        asset_img: 商品主图
   errors: &errors
     format: ! '%{attribute} %{message}'
     messages:
