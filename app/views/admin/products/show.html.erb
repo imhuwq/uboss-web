@@ -1,0 +1,131 @@
+<div  class="row">
+	<div>商品管理>查看商品信息</div>
+</div>
+<div class="row">
+
+	<div class="row">
+		<h3 class="col-md-offset-1">商品信息</h3>
+		<div class="col-xs-6  col-md-offset-2">
+			<div class="form-group clear">
+				<label class="string required text-right col-sm-3 control-label" for="product_name">
+					<abbr title="必填">*</abbr>
+					产品名
+				</label>
+				<div class="col-sm-9">
+					<%= @product.name %>
+				</div>
+			</div>
+			<div class="form-group clear">
+				<label class="string required text-right col-sm-3 control-label" for="product_name">
+					<abbr title="必填">*</abbr>
+				  原价
+				</label>
+				<div class="col-sm-9">
+					<%= '%.2f' % @product.original_price %>￥
+				</div>
+			</div>
+			<div class="form-group clear">
+				<label class="string required text-right col-sm-3 control-label" for="product_name">
+					<abbr title="必填">*</abbr>
+				  现价
+				</label>
+				<div class="col-sm-9">
+					<%= '%.2f' % @product.present_price %>￥
+				</div>
+			</div>
+			<div class="form-group clear">
+				<label class="string required text-right col-sm-3 control-label" for="product_name">
+					<abbr title="必填">*</abbr>
+				  数量
+				</label>
+				<div class="col-sm-9">
+					<%= '%.2f' % @product.count %>
+				</div>
+			</div>
+			<div class="form-group clear">
+				<label class="string required text-right col-sm-3 control-label" for="product_name">
+					<abbr title="必填">*</abbr>
+				  产品展示图
+				</label>
+				<div class="col-sm-9">
+					<%= image_tag(@product.asset_img.try(:avatar).try(:url), size: "100x80", alt: "-") %>
+				</div>
+			</div>
+			<div class="form-group clear">
+				<label class="string required text-right col-sm-3 control-label" for="product_name">
+					<abbr title="必填">*</abbr>
+				  详细介绍
+				</label>
+				<div class="col-sm-9">
+					<%= @product.content %>
+				</div>
+			</div>
+		</div>
+		<div class="col-xs-8 col-md-offset-1">
+
+		</div>
+
+	</div>
+	<div class="row">
+		<h3 class="col-md-offset-1">分成设置</h3>
+		<div class="col-xs-6 col-md-offset-2">
+			<table>
+				<thead>
+					<tr>
+						<th width=100>分成方式：</th>
+						<th width=180>购买分成：</th>
+						<th width=180>分享分成：</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>一级分成：</td>
+						<td><%= @product.buyer_lv_1 %>%</td>
+						<td><%= @product.sharer_lv_1 %>%</td>
+					</tr>
+					<tr>
+						<td>二级分成：</td>
+						<td><%= @product.buyer_lv_2 %>%</td>
+						<td></td>
+					</tr>
+					<tr>
+						<td>三级分成：</td>
+						<td><%= @product.buyer_lv_3 %>%</td>
+						<td></td>
+					</tr>
+					<tr>
+						<td>提现方式：</td>
+						<td><%= Product::DataPresentWay[@product.buyer_present_way] %></td>
+						<td>
+							<%= Product::DataPresentWay[@product.sharer_present_way] %>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+	<div class="row">
+		<h3 class="col-md-offset-1">物流及其他</h3>
+		<div class="col-xs-6 col-md-offset-2">
+      <div class="form-group clear">
+        <label class="string required text-right col-sm-3 control-label" for="product_name">
+          <abbr title="必填">*</abbr>
+          付款方式
+        </label>
+        <div class="col-sm-9">
+          <%= Product::DataBuyerPay[@product.buyer_pay] %>
+        </div>
+      </div>
+			<div class="form-group clear">
+        <label class="string required text-right col-sm-3 control-label" for="product_name">
+          <abbr title="必填">*</abbr>
+          运费
+        </label>
+        <div class="col-sm-9">
+          <%= @product.traffic_expense %>
+        </div>
+      </div>
+		</div>
+	</div>
+</div>
+

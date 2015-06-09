@@ -3,28 +3,28 @@
   <div class="col-xs-6  col-md-offset-4 text-center">
     <div class="col-xs-2">
       <div>今日发布</div>
-      <b style="font-size:3em;">12</b>
+      <b style="font-size:3em;"><%= @statistics[:create_today] %></b>
     </div>
     <div class="col-xs-2">
       <div>总商品</div>
-      <b style="font-size:3em;">12</b>
+      <b style="font-size:3em;"><%= @statistics[:count] %></b>
     </div>
     <div class="col-xs-2">
       <div>库存紧张</div>
-      <b style="font-size:3em;">12</b>
+      <b style="font-size:3em;"><%= @statistics[:not_enough] %></b>
     </div>
   </div>
   
 
 </div>
-<div class="row"><%= link_to("发布商品", '###' , :class=>"btn btn-primary active",:role=>"button") %></div>
+<div class="row"><%= link_to("发布商品", url_for(:action=>:new), :class=>"btn btn-primary active",:role=>"button") %></div>
 <div class="row">
   <table  class="table table-hover">
     <thead>
       <tr>
         <th width=10></th>
-        <th width=200>商品</th>
-        <th>UV/PV</th>
+        <th width=400>商品</th>
+        <th width=30>UV/PV</th>
         <th>库存</th>
         <th>总销量</th>
         <th>发布时间</th>
@@ -40,16 +40,29 @@
         <td colspan='6'></td>
         <td>删除</td>
       </tr>
-      <tr>
-        <td><input id="product_<%=  %>" class="check" name="params[]" type="checkbox" value="<%=  %>" /></td>
-        <td>-</td>
-        <td>-</td>
-        <td>-</td>
-        <td>-</td>
-        <td>-</td>
-        <td>-</td>
-        <td>-</td>
-      </tr>
+      <% (@products || []).each do |obj| %>
+        <tr>
+          <td><input id="product_<%= obj.id %>" class="check" name="params[]" type="checkbox" value="<%= obj.id %>" /></td>
+          <td>
+            <%= link_to url_for(:action=>:show,:id=>obj.id) do %>
+            <div class="col-xs-4"><%= image_tag(obj.asset_img.try(:avatar).try(:url), size: "100x80", alt: "-") %></div>
+            <div  class="col-xs-8"><%= obj.name %></div>
+            <% end %>
+          </td>
+          <td>-</td>
+          <td><%= obj.count %></td>
+          <td>-</td>
+          <td><%= obj.created_at.try(:strftime,'%Y-%m-%d') %></td>
+          <td>-</td>
+          <td>
+            <div><%= link_to("编辑", url_for(:action=>:edit,:id=>obj.id)) %></div>
+            <div><%= link_to("删除", url_for(:action=>:destroy,:id=>obj.id),:method=>:delete,
+           'data-confirm'=> "请确认") %></div>
+              
+          </td>
+        </tr>
+      <% end %>
     </tbody>
   </table>
+  <%= will_paginate @products, renderer: BootstrapPagination::Rails %>
 </div>

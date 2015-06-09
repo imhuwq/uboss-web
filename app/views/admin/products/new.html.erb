@@ -5,6 +5,9 @@
 <div class="row">
     <%= simple_form_for :product,url: {:action=>:create},wrapper: :horizontal_file_input do |f| %>
       <%= render 'fields', f: f %>
+      <div class="button_div col-xs-2  col-md-offset-4">
+        <%= f.submit "创建",class: "btn btn-large btn-primary" %>
+      </div>
       
     <% end %>
 

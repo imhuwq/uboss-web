@@ -15,10 +15,10 @@ class AssetImg < ActiveRecord::Base
   #   :processor => :MiniMagick, #:Rmagick
   #   :resize_to => '2000x2000>'
   #    :thumbnails => { :thumb => '140x105>' }
-  def swf_uploaded_data=(data)
-    c_t = MIME::Types.type_for(data.original_filename).join('')
-    c_t = 'image/jpeg' if c_t.blank?
-    data.content_type = c_t
-    self.uploaded_data = data
-  end
+  # def swf_uploaded_data=(data)
+  #   c_t = MIME::Types.type_for(data.original_filename).join('')
+  #   c_t = 'image/jpeg' if c_t.blank?
+  #   data.content_type = c_t
+  #   self.uploaded_data = data
+  # end
 end

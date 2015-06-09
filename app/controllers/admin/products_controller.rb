@@ -1,62 +1,72 @@
 #encoding:utf-8
 #自定义管理系统
 class Admin::ProductsController < AdminController
-  # layout 'admin'
 	def index
-    # @products = Product.all
+    products = Product.where(:user_id=>current_user.id).order("updated_at DESC")
+    @products = products.paginate(:page => (params[:page] || 1), :per_page => 10)
+    @statistics = {}
+    @statistics[:create_today] = products.where('created_at > ? and created_at < ?',Time.now.beginning_of_day,Time.now.end_of_day).count
+    @statistics[:count] = products.count
+    @statistics[:not_enough] = products.where('count < ?',10).count
 	end
+
 	def show
+    @product = Product.find_by_id(params[:id])
 	end
+
 	def new
     @product = Product.new
 	end
+
 	def create
-	end
-	def edit
-	end
-	def update
+    product = Product.new(product_params)
+    img = AssetImg.new
+    img.avatar = params[:asset_img]
+    product.asset_img = img
+    product.user_id = current_user.id
+    if product.save
+      flash[:success] = "产品创建成功"
+    else
+      flash[:error] = "#{product.errors.messages}"
+      render 'new'
+      return
+    end
+    redirect_to :action=>:index
 	end
 
-  # 上传图片
-  def add_avatar
-    # 文件上传
-    image = logo_params[:asset_img]
-    puts "asset_img#{image}"
-    tmp_path = Rails.root.join('public', 'tmp')
-    FileUtils.mkdir(tmp_path) unless File.exist?(tmp_path)
-    file_name = ''
-    if image.present?
-      file_name = Time.now.strftime('pic%m%d%H%M%S%L_') + rand(1000).to_s + '.' + image.original_filename.split('.').last.downcase
-      File.open(Rails.root.join('public', 'tmp', file_name), 'wb') do |file|
-        file.write(image.read)
-      end
+	def edit
+    @product = Product.find_by_id(params[:id])
+	end
+
+	def update
+    product = Product.find_by_id(params[:id])
+    if product.present? and product.user_id == current_user.id and product.update_attributes(product_params)
+      
+      flash[:success] = "保存成功"
+    else
+      flash[:error] = "保存失败。#{product.errors.messages}"
     end
-    render :text => file_name
+    redirect_to :action=>:show,:id=>product.id
+	end
+
+  def destroy
+    product = Product.find_by_id(params[:id])
+    if product.present? and product.user_id == current_user.id and product.destroy
+      
+      flash[:success] = "删除成功"
+    else
+      flash[:error] = "无法删除。"
+    end
+    redirect_to :action=>:index
   end
+
   private
-    # 图片裁剪
-  def crop_img
-    if @img.present?
-      # 图像裁剪的比例计算
-      @img_w = params[:img_w].to_i
-      @img_h = params[:img_h].to_i
-      @current_w = params[:current_w].to_i
-      @img_x  = params[:img_x].to_i
-      @img_y = params[:img_y].to_i
-      # 只有比例正确时才进行处理
-      if @img_w != 0 && @img_h != 0 && @current_w != 0
-        image = MiniMagick::Image.open "#{@img.avatar.current_path}"
-        @origin_width = image[:width]
-        @origin_img_w = ((@origin_width * 1.0 / @current_w) * @img_w).to_i
-        @origin_img_h = ((@origin_width * 1.0 / @current_w) * @img_h).to_i
-        @origin_img_x = ((@origin_width * 1.0 / @current_w) * @img_x).to_i
-        @origin_img_y = ((@origin_width * 1.0 / @current_w) * @img_y).to_i
-        image.combine_options do |c|
-          c.crop "#{@origin_img_w}x#{@origin_img_h}+#{@origin_img_x}+#{@origin_img_y}"
-          c.resize '800x600'
-        end
-        image.write "#{@img.avatar.thumb.current_path}"
-      end
-    end
+  def product_params
+    params.require(:product).permit(:name,:original_price,
+        :present_price,:count,:asset_img,:content,
+        :buyer_lv_1,:buyer_lv_2,:buyer_lv_3,:sharer_lv_1,
+        :buyer_present_way,:sharer_present_way,:buyer_pay, :traffic_expense
+        )
   end
+
 end

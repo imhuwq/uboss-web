@@ -6,6 +6,7 @@ class CreateProductShareIssue < ActiveRecord::Migration
       t.integer   :buyer_lv_2_id
       t.integer   :buyer_lv_3_id
       t.integer   :sharer_lv_1_id
+      t.timestamps
     end
   end
 end

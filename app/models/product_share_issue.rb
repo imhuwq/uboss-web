@@ -1,6 +1,6 @@
 #encoding:utf-8
 class ProductShareIssue < ActiveRecord::Base
-	validate_present_of :product_id
+	validates :product_id,presence: true
   belongs_to :product
 
 end

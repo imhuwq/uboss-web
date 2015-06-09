@@ -15,3 +15,8 @@
 //= require bootstrap-sprockets
 //= require_tree ./admin
 //= require_self
+$(document).ready(function() {
+  $("body").on('click',"#check_all", function(){
+    $(".check").attr("checked",this.checked);
+  })
+})
