@@ -4,13 +4,14 @@ class Admin::OrdersController < AdminController
   after_action :record_operation, only: [:update, :ship]
 
   def index
-    @orders = Order.page(param_page)
+    @orders = Order.recent.page(param_page)
     @unship_amount = @orders.payed.total_count
     @today_selled_amount = @orders.today.selled.total_count
     @shiped_amount = @orders.shiped.total_count
   end
 
   def show
+    @order_item = @order.order_items.first
   end
 
   def update

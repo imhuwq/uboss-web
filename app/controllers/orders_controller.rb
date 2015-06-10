@@ -5,7 +5,14 @@ class OrdersController < ApplicationController
   end
 
   def new
-    @order_form = OrderForm.new(buyer: current_user, product_id: params[:product_id])
+    
+    @order_form = OrderForm.new(
+      buyer: current_user, 
+      product_id: params[:product_id]
+    )
+    if current_user
+      @order_form.user_address_id = current_user.default_address.id,
+    end
   end
 
   def create

@@ -1,10 +1,13 @@
 class Order < ActiveRecord::Base
+
   include AASM
+  include Orderable
 
   belongs_to :user
   belongs_to :seller, class_name: "User"
   belongs_to :user_address
   has_many :order_items
+  has_many :order_charges
 
   accepts_nested_attributes_for :order_items
 
@@ -16,8 +19,7 @@ class Order < ActiveRecord::Base
 
   delegate :mobile, :regist_mobile, to: :user, prefix: :buyer
 
-  scope :today, -> { where('created_at >= ?', Time.now.beginning_of_day) }
-  scope :selled, -> { where('state <> 0') }
+  scope :selled, -> { where("orders.state <> 0") }
 
   enum state: { unpay: 0, payed: 1, shiped: 3, signed: 4, closed: 5 }
   enum payment: { alipay: 0, alipay_wap: 1, alipay_qr: 2, wx: 3, wx_pub: 4, wx_pub_qr: 5, yeepay_wap: 6 }

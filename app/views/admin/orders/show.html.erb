@@ -1,0 +1,42 @@
+
+<ol class="breadcrumb">
+  <li><%= link_to '订单', [:admin, :orders] %></li>
+  <li class="active">订单详情</li>
+</ol>
+
+<span class='label label-info'><%= @order.state_i18n %></span>
+<% if @order.payed? %>
+  <%= link_to '发货', [:ship, :admin, @order], 
+    class: 'btn btn-primary', method: :PATCH, data: { confirm: 'Are your sure?' } %>
+<%- end%>
+
+<br>
+
+<h3>订购信息</h3>
+<hr>
+<div class='row'>
+  <div class='col-md-6'>
+    <div><b>订单编号：</b><%= @order.number %></div>
+    <div><b>商品名称：</b><%= @order_item.product_name %></div>
+    <div><b>数量：</b><%= @order_item.amount %></div>
+  </div>
+  <div class='col-md-6'>
+    <div><b>收货人：</b><%= @order.username %></div>
+    <div><b>收获地址：</b><%= @order.address %></div>
+    <div><b>联系方式：</b><%= @order.mobile %></div>
+  </div>
+</div>
+
+<br>
+
+<h3>付款信息</h3>
+<hr>
+<div class='row'>
+  <div class='col-md-6'>
+    <div><b>付款方式：</b><%= @order.payment_i18n %></div>
+    <div><b>付款金额：</b><%= @order.pay_amount %></div>
+  </div>
+  <div class='col-md-6'>
+    <div><b>付款时间：</b><%= @order.pay_time %></div>
+  </div>
+</div>

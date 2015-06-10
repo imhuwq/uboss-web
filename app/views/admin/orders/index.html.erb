@@ -17,13 +17,17 @@
 
 <%= table_for(@orders) do |t| %>
   <%= t.cell :created_at %>
-  <%= t.cell :number %>
+  <%= t.cell :number do |order| %>
+    <%= link_to order.number, [:admin, order] %>
+  <% end %>
   <%= t.cell :buyer_regist_mobile %>
-  <%= t.cell(:state) { |order| order.state_i18n } %>
+  <%= t.cell(:state) do |order| %>
+    <span class='label label-info'><%= order.state_i18n %></span>
+  <% end %>
   <%= t.cell :action do |order| %>
-    <%= link_to 'Show', [:admin, order] %>
     <% if order.payed? %>
-      <%= link_to '发货', [:ship, :admin, order], method: :PATCH, remote: true, confirm: 'Are your sure?' %>
+      <%= link_to '发货', [:ship, :admin, order], 
+        class: 'btn btn-primary btn-xs', method: :PATCH, data: { confirm: 'Are your sure?' } %>
     <%- end%>
   <%- end%>
 <%- end %>

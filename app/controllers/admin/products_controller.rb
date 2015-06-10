@@ -3,7 +3,7 @@
 class Admin::ProductsController < AdminController
 	def index
     products = Product.where(:user_id=>current_user.id).order("updated_at DESC")
-    @products = products.paginate(:page => (params[:page] || 1), :per_page => 10)
+    @products = products.page(params[:page] || 1)
     @statistics = {}
     @statistics[:create_today] = products.where('created_at > ? and created_at < ?',Time.now.beginning_of_day,Time.now.end_of_day).count
     @statistics[:count] = products.count

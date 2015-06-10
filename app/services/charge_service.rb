@@ -7,11 +7,11 @@ module ChargeService
 
   def create_charge(params, request)
     order = Order.find(params[:order_id])
-    open_id = 'nil' #current_user.open_id
+    open_id = 'nil' # TODO current_user.wx_open_id
     client_ip = request.remote_ip
     channel = params[:channel].downcase
     begin
-      ch = Pingpp::Charge.create(
+      charge = Pingpp::Charge.create(
         :order_no  => order.number,
         :app       => {'id' => APP_ID},
         :channel   => channel,
@@ -22,8 +22,8 @@ module ChargeService
         :body      => "Charge Body",
         :extra     => generate_extra(channel)
       )
-      order.update(payment: channel)
-      ch.to_json
+      create_order_charge(order, charge)
+      charge.to_json
     rescue Pingpp::PingppError => error
       error.http_body
     end
@@ -44,6 +44,10 @@ module ChargeService
   end
 
   private
+
+  def create_order_charge order, charge
+    order.order_charges.create(channel: charge.channel, charge_id: charge.id)
+  end
 
   def charge_success(params)
     order = Order.find_by(number: params[:order_no])
