@@ -55,8 +55,10 @@ class Admin::ProductsController < AdminController
   def product_params
     params.require(:product).permit(:name,:original_price,
         :present_price,:count,:asset_img,:content,
-        :buyer_lv_1,:buyer_lv_2,:buyer_lv_3,:sharer_lv_1,
-        :buyer_present_way,:sharer_present_way,:buyer_pay, :traffic_expense
+        :has_share_lv,:calculate_way,
+        :share_amount_total,:share_amount_lv_1,:share_amount_lv_2,:share_amount_lv_3,
+        :share_rate_total,:share_rate_lv_1,:share_rate_lv_2,:share_rate_lv_3,
+        :buyer_pay, :traffic_expense
         )
   end
 

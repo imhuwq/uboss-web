@@ -69,6 +69,16 @@ ActiveRecord::Schema.define(version: 20150610080248) do
 
   add_index "orders", ["number"], name: "index_orders_on_number", unique: true, using: :btree
 
+  create_table "product_share_issues", force: :cascade do |t|
+    t.integer  "product_id"
+    t.integer  "buyer_lv_1_id"
+    t.integer  "buyer_lv_2_id"
+    t.integer  "buyer_lv_3_id"
+    t.integer  "sharer_lv_1_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "products", force: :cascade do |t|
     t.integer  "user_id"
     t.string   "name"
@@ -79,15 +89,18 @@ ActiveRecord::Schema.define(version: 20150610080248) do
     t.text     "content"
     t.boolean  "buyer_pay",          default: true
     t.float    "traffic_expense"
-    t.float    "buyer_lv_1",         default: 0.0
-    t.float    "buyer_lv_2",         default: 0.0
-    t.float    "buyer_lv_3",         default: 0.0
-    t.float    "sharer_lv_1",        default: 0.0
-    t.integer  "buyer_present_way",  default: 0
-    t.integer  "sharer_present_way", default: 0
-    t.string   "img_avatar"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "has_share_lv",       default: 3
+    t.float    "share_amount_total", default: 0.0
+    t.float    "share_amount_lv_1",  default: 0.0
+    t.float    "share_amount_lv_2",  default: 0.0
+    t.float    "share_amount_lv_3",  default: 0.0
+    t.float    "share_rate_lv_1",    default: 0.0
+    t.float    "share_rate_lv_2",    default: 0.0
+    t.float    "share_rate_lv_3",    default: 0.0
+    t.float    "share_rate_total",   default: 0.0
+    t.integer  "calculate_way",      default: 0
   end
 
   create_table "simple_captcha_data", force: :cascade do |t|

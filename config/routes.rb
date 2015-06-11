@@ -8,6 +8,8 @@ Rails.application.routes.draw do
   resources :orders, only: [:new, :create, :show] do
     get 'pay', on: :member
   end
+  resources :products do
+  end
 
   resource :charge, only: [:create] do
     collection do
@@ -27,10 +29,6 @@ Rails.application.routes.draw do
       root 'dashboard#index'
     end
   end
-  namespace :mobile do
-    resources :products do
-    end
-  end
-  match '/mobile', to: "mobile/products#index",via: [:get]
+
   root 'home#index'
 end

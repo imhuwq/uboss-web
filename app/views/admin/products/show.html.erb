@@ -5,7 +5,7 @@
 
 	<div class="col-xs-12" style="border:1px solid black;margin-top:30px;padding-bottom:30px;">
 		<h3 class="col-md-offset-1">商品信息</h3>
-		<div class="col-xs-6  col-md-offset-2">
+		<div class="col-xs-11 col-md-offset-1">
 			<div class="form-group clear">
 				<label class="string required text-right col-sm-3 control-label" for="product_name">
 					<abbr title="必填">*</abbr>
@@ -48,7 +48,7 @@
 				  数量
 				</label>
 				<div class="col-sm-9">
-					<%= '%.2f' % @product.count %>
+					<%= @product.count %>
 				</div>
 			</div>
 			<div class="form-group clear">
@@ -71,44 +71,67 @@
 	</div>
 	<div class="col-xs-12" style="border:1px solid black;margin-top:30px;padding-bottom:30px;">
 		<h3 class="col-md-offset-1">分成设置</h3>
-    <div class="col-xs-3 col-md-offset-2">
-      <table>
-        <tbody>
-          <tr>
-            <td>一级分成：</td>
-            <td><%= @product.buyer_lv_1 %>%</td>
-          </tr>
-          <tr>
-            <td>二级分成：</td>
-            <td><%= @product.buyer_lv_2 %>%</td>
-          </tr>
-          <tr>
-            <td>三级分成：</td>
-            <td><%= @product.buyer_lv_3 %>%</td>
-          </tr>
-          <tr>
-            <td>分享分成：</td>
-            <td><%= @product.sharer_lv_1 %>%</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-    <div  class="col-xs-6">
-      <table>
-        <tbody>
-          <tr>
-            <td>提现方式：</td>
-            <td width=300px><%= Product::DataPresentWay[@product.buyer_present_way] %></td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-
+    <% if @product.calculate_way == 1 %>
+      <div class="col-xs-5 col-md-offset-1">
+        <div class="form-group clear">
+          <label class="string required text-right col-sm-5 control-label" for="product_name">
+            <abbr title="必填">*</abbr>
+            分成比例
+          </label>
+          <div class="col-sm-4">
+            <%= @product.share_rate_total %>%
+          </div>
+        </div>
+      </div>
+    <% elsif @product.calculate_way == 0 %>
+      <div  class="col-xs-5 col-md-offset-1">
+        <div class="form-group clear">
+          <label class="string required text-right col-sm-5 control-label" for="product_name">
+            <abbr title="必填">*</abbr>
+            现金分成
+          </label>
+          <div class="col-sm-4">
+            <%= @product.share_amount_total %>元
+          </div>
+        </div>
+      </div>
+    <% end %>
+      <div class="col-xs-6">
+        <table>
+          <tbody>
+            <tr>
+              <td>一级分成：</td>
+              <td>
+                <span><%= @product.share_rate_lv_1*100 %>%</span>
+                -
+                <span><%= @product.share_amount_lv_1 %>元</span>
+              </td>
+            </tr>
+            <tr>
+              <td>二级分成：</td>
+              <td>
+                <span><%= @product.share_rate_lv_2*100 %>%</span>
+                -
+                <span><%= @product.share_amount_lv_2 %>元</span>
+                
+              </td>
+            </tr>
+            <tr>
+              <td>三级分成：</td>
+              <td>
+                <span><%= @product.share_rate_lv_3*100 %>%</span>
+                -
+                <span><%= @product.share_amount_lv_3 %>元</span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
 		
 	</div>
 	<div class="col-xs-12" style="border:1px solid black;margin-top:30px;padding-bottom:30px;">
 		<h3 class="col-md-offset-1">物流及其他</h3>
-		<div class="col-xs-6 col-md-offset-2">
+		<div class="col-xs-11 col-md-offset-1">
       <div class="form-group clear">
         <label class="string required text-right col-sm-3 control-label" for="product_name">
           <abbr title="必填">*</abbr>
