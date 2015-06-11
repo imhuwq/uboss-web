@@ -18,7 +18,6 @@ gem 'aasm'
 gem 'enum_help'
 gem 'pingpp'
 
-
 #Fornt
 gem 'sass-rails', '~> 5.0'
 gem 'uglifier', '>= 1.3.0'
@@ -37,11 +36,10 @@ gem 'jbuilder', '~> 2.0'
 gem "bootstrap-sass"
 gem "underscore-rails"
 
-
 # ImgTool
 gem "carrierwave"
+gem "carrierwave-upyun"
 gem 'mini_magick'
-
 
 # oauth
 gem 'omniauth-oauth2'
