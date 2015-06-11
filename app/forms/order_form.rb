@@ -8,8 +8,10 @@ class OrderForm
                 :deliver_username, :province, :city, :country, :street, :deliver_mobile,
                 :order
 
-  validates :product_id, presence: true
-  validates :mobile, presence: true, if: :need_mobile?
+  validates :product_id, :amount, presence: true
+  validates :mobile, presence: true, mobile: true, if: :need_mobile?
+  validates :deliver_mobile, :deliver_username, :street, presence: true, if: -> { self.user_address_id.blank? }
+  validates :deliver_mobile, mobile: true, allow_blank: true
   validate :captcha_must_be_valid, if: :need_verify_captcha?
   validate :check_amount
 
@@ -22,9 +24,12 @@ class OrderForm
   end
 
   def save
+    # - verify Mobile captcha
+    # - check product valid? 
+    # - check SKU amount
     if self.valid?
       ActiveRecord::Base.transaction do
-        create_user
+        create_or_find_user
         create_user_address
         create_order_and_order_item
       end
@@ -36,11 +41,12 @@ class OrderForm
 
   private
 
-  def create_user
+  def create_or_find_user
     return true if buyer.present?
 
-    self.buyer = User.create!(
-      login: mobile, 
+    self.buyer = User.find_by(login: mobile)
+    self.buyer ||= User.create!(
+      login: mobile,
       mobile: mobile, 
       password: 'ubossFakepa22w0rd', 
       need_reset_password: true)
