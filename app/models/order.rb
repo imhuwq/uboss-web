@@ -11,11 +11,11 @@ class Order < ActiveRecord::Base
 
   accepts_nested_attributes_for :order_items
 
-  validates :user, :user_address, presence: true
+  validates :user_id, :user_address, presence: true
   validates_uniqueness_of :number, allow_blank: true
 
   before_save :set_info_by_user_address, on: :create
-  after_create :set_number
+  before_create :set_number
 
   delegate :mobile, :regist_mobile, to: :user, prefix: :buyer
 
@@ -26,7 +26,7 @@ class Order < ActiveRecord::Base
 
   aasm column: :state, enum: true, skip_validation_on_save: true do
     state :unpay
-    state :payed, after_enter: :set_pay_time
+    state :payed
     state :shiped
     state :signed
     state :closed
@@ -45,20 +45,40 @@ class Order < ActiveRecord::Base
     end
   end
 
+  def paid?
+    pay_time.present?
+  end
+
+  def check_paid?
+    return false if self.state != 'unpay'
+    order_charges.each do |order_charge|
+      if order_charge.paid?
+        self.update(
+          payment: order_charge.charge[:channel],
+          pay_time: DateTime.strptime(order_charge.charge[:time_paid].to_s,'%s')
+        )
+        self.pay!
+        break
+      end
+    end
+  end
+
   private
 
   def set_number
-    update(number: "#{Time.now.to_s(:number)[2..-1]}#{user_id}#{self.id}#{rand(1000)}")
+    loop do
+      order_bumber = 
+        "#{(Time.now - Time.parse('2014-12-12')).to_i}#{(self.user_id + rand(1000)) % 10000}#{SecureRandom.hex(3).upcase}"
+      unless Order.find_by(number: order_bumber)
+        self.number = order_bumber and break
+      end
+    end
   end
 
   def set_info_by_user_address
     self.address = "#{user_address.province}#{user_address.city}#{user_address.country}#{user_address.street}"
     self.mobile = user_address.mobile
     self.username = user_address.username
-  end
-
-  def set_pay_time
-    update_column(:pay_time, DateTime.now)
   end
 
 end

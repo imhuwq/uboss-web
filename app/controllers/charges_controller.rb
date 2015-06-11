@@ -20,6 +20,7 @@ class ChargesController < ApplicationController
   # result=success&out_trade_no=19238484
   def success
     @order = Order.find_by(number: params[:out_trade_no])
+    @order.check_paid?
   end
 
   def failure

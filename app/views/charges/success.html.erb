@@ -1,3 +1,7 @@
-<h2> 付款成功 </h2>
+<% if @order.paid? %>
+  <h2>付款成功</h2>
+<% else %>
+  <h2> 付款确认中</h2>
+<% end %>
 
 订单号：<%= @order.number %>
