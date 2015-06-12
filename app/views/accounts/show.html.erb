@@ -1,0 +1,3 @@
+用户名： <%= link_to current_user.login, edit_account_path(current_user) %>
+
+订单待收货：<%= current_user.orders.shiped.count %>

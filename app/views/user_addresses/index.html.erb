@@ -1,0 +1,8 @@
+<hr>
+<%- @user_addresses.each do |user_address| %>
+  <p><%= user_address.username %></p>
+  <p><%= user_address.mobile %></p>
+  <p><%= "#{user_address}" %> </p>
+  <span><%= user_address.default? %></span>
+  <hr>
+<% end %>

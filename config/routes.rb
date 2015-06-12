@@ -8,15 +8,16 @@ Rails.application.routes.draw do
   resources :orders, only: [:new, :create, :show] do
     get 'pay', on: :member
   end
-  resources :products do
-  end
-
+  resources :products
   resource :charge, only: [:create] do
     collection do
       post 'pingpp_callback'
       get 'success'
       get 'failure'
     end
+  end
+  resource :account, only: [:show, :edit, :update] do
+    resources :user_addresses, only: [:index, :edit, :update, :destroy]
   end
 
   authenticate :user, lambda { |user| user.admin? } do

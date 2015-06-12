@@ -79,16 +79,6 @@ ActiveRecord::Schema.define(version: 20150611082934) do
 
   add_index "orders", ["number"], name: "index_orders_on_number", unique: true, using: :btree
 
-  create_table "product_share_issues", force: :cascade do |t|
-    t.integer  "product_id"
-    t.integer  "buyer_lv_1_id"
-    t.integer  "buyer_lv_2_id"
-    t.integer  "buyer_lv_3_id"
-    t.integer  "sharer_lv_1_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
   create_table "products", force: :cascade do |t|
     t.integer  "user_id"
     t.string   "name"
@@ -130,8 +120,9 @@ ActiveRecord::Schema.define(version: 20150611082934) do
     t.string   "country"
     t.string   "street"
     t.string   "mobile"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at",                 null: false
+    t.datetime "updated_at",                 null: false
+    t.boolean  "default",    default: false
   end
 
   create_table "users", force: :cascade do |t|
@@ -151,6 +142,7 @@ ActiveRecord::Schema.define(version: 20150611082934) do
     t.string   "mobile"
     t.boolean  "admin",                  default: false
     t.boolean  "need_reset_password",    default: false
+    t.string   "nickname"
   end
 
   add_index "users", ["login"], name: "index_users_on_login", unique: true, using: :btree
