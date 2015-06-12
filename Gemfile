@@ -1,5 +1,5 @@
-source 'https://rubygems.org'
-# source 'https://ruby.taobao.org'
+# source 'https://rubygems.org'
+source 'https://ruby.taobao.org'
 
 ruby '2.2.2'
 gem 'rails', '4.2.1'
@@ -47,6 +47,11 @@ gem 'omniauth-oauth2'
 
 # app server
 gem 'unicorn', require: false
+
+# redis
+gem "redis", "~> 3.0", require: ["redis/connection/hiredis", "redis"]
+gem "hiredis"
+gem 'redis-rails'
 
 # backend process
 gem 'sidekiq'
