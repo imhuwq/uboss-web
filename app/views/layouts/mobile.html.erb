@@ -3,17 +3,16 @@
 	<head>
 	  <title>UBoss</title>
 	  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	  <%= stylesheet_link_tag    'admin', media: 'all'  %>
-	  <%= javascript_include_tag 'admin' %>
+	  <%= stylesheet_link_tag    'mobile', media: 'all'  %>
+	  <%= javascript_include_tag 'mobile' %>
 	  <%= csrf_meta_tags %>
 	</head>
 	<body>
+    <div style="padding:0 1%;">
+      <%= render 'layouts/flash_alert' %>
+      <%= yield %>
+    </div>
 
-
-		<div class="container admin-container">
-		  <%= render 'layouts/flash_alert' %>
-		  <%= yield %>
-		</div>
 		<%= yield :page_specific_javascript %>
 
 	</body>

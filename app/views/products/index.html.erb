@@ -1,6 +1,16 @@
 <style type="text/css">
 a {color:black;}
 </style>
+<div class="row text-center">
+  <div class="col-xs-12" style="border:1px solid">
+    <div class="col-xs-2"></div>
+    <div class="col-xs-8">
+      <h1>首页</h1>
+    </div>
+    <div class="col-xs-2"></div>
+  </div>
+  
+</div>
 <div class="row" style="background-color:#cccccc">
   <% (@products||[]).each do |obj| %>
     <%= link_to url_for(:action=>:show,:id=>obj.id) do %>
@@ -11,12 +21,22 @@ a {color:black;}
             <%= image_tag(url_for(obj.asset_img.try(:avatar).try(:url)),  alt: "-",:style=>"width:100%;") %>
           </div>
         </div>
-        <div class="col-xs-12" style="font-size:1em"><%= obj.name %></div>
+        <div class="col-xs-12" style="font-size:1em">
+          <h3><%= obj.name %></h3>
+        </div>
         <div class="col-xs-12" style="font-size:2em">
-          <span>￥<%= obj.present_price %></span>
+          <span>
+            <h1>￥<%= obj.present_price %></h1>
+          </span>
         </div>
       </div>
     </div>
     <% end %>
   <% end %>
 </div>
+<h1 style="border:1px solid;margin:10px">h1</h1>
+<h2 style="border:1px solid;margin:10px">h2</h2>
+<h3 style="border:1px solid;margin:10px">h3</h3>
+<h4 style="border:1px solid;margin:10px">h4</h4>
+<h5 style="border:1px solid;margin:10px">h5</h5>
+<h6 style="border:1px solid;margin:10px">h6</h6>
