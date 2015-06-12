@@ -1,5 +1,5 @@
-# source 'https://rubygems.org'
-source 'https://ruby.taobao.org'
+source 'https://rubygems.org'
+# source 'https://ruby.taobao.org'
 
 ruby '2.2.2'
 gem 'rails', '4.2.1'
@@ -17,6 +17,7 @@ gem 'uuidtools'
 gem 'aasm'
 gem 'enum_help'
 gem 'pingpp'
+gem 'dalli' # memcache client
 
 #Fornt
 gem 'sass-rails', '~> 5.0'
@@ -44,8 +45,12 @@ gem 'mini_magick'
 # oauth
 gem 'omniauth-oauth2'
 
-
+# app server
 gem 'unicorn', require: false
+
+# backend process
+gem 'sidekiq'
+gem 'sidekiq-failures'
 
 group :development do
   gem "thin"
