@@ -12,6 +12,22 @@ module ApplicationHelper
     end
   end
 
+  def dropdown_list(name, &block)
+    list = capture &block
+
+    dropdown_list_string = <<-HTML
+    <li class="dropdown">
+      <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+        #{I18n.t("li_link.#{name}")} <span class="caret"></span>
+      </a>
+      <ul class="dropdown-menu" role="menu">
+        #{list}
+      </ul>
+    </li>
+    HTML
+    dropdown_list_string.html_safe
+  end
+
   def li_link name, path, opts = {}
     i18n_key = opts.delete(:i18n_key)
     active_class = active?(name) || active?(opts.delete(:another_active_name))

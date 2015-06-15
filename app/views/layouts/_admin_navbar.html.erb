@@ -7,8 +7,7 @@
       <ul class="nav navbar-nav">
         <%= li_link(:dashboard, admin_root_path) %>
         <%= li_link(:products, admin_products_path) %>
-        <%= li_link :orders, admin_orders_path %>
-
+        <%= li_link(:orders, admin_orders_path) %>
         <%= can_li_link :manage, :uboss_data, '/admin/data' %>
       </ul>
 
