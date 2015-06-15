@@ -10,7 +10,7 @@ class AccountsController < ApplicationController
   def update
     if current_user.update(account_params)
       flash[:notice] = '修改成功'
-      redirect_to account_user_addresses_path
+      redirect_to edit_account_path
     else
       render :edit
     end

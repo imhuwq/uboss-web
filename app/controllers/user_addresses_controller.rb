@@ -1,22 +1,20 @@
 class UserAddressesController < ApplicationController
 
   before_action :authenticate_user!
-  before_action :find_user_address, only: [:show, :edit, :update, :destroy]
+  before_action :find_user_address, only: [:edit, :update, :destroy]
 
   def index
-    @user_addresses = current_user.user_addresses
-  end
-
-  def show
+    @user_addresses = current_user.user_addresses.recent
   end
 
   def new
-    @user_address = current_user.user_address.new(mobile: current_user.mobile)
+    @user_address = UserAddress.new
   end
 
   def create
-    @user_address = current_user.user_address.new(address_params)
+    @user_address = current_user.user_addresses.new(address_params)
     if @user_address.save
+      flash[:notice] = '新增收货地址成功'
       redirect_to account_user_addresses_path 
     else
       render :new
@@ -46,11 +44,11 @@ class UserAddressesController < ApplicationController
 
   private
   def address_params
-    params.require(:user_address).premit(:username, :mobile, :province, :city, :country, :street)
+    params.require(:user_address).permit(:username, :mobile, :province, :city, :country, :street)
   end
 
   def find_user_address
-    @user_addresses ||= current_user.user_addresses.find(params[:id])
+    @user_address ||= current_user.user_addresses.find(params[:id])
   end
   
 end

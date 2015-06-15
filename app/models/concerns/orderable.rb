@@ -3,11 +3,11 @@ require 'active_support/concern'
 module Orderable
   extend ActiveSupport::Concern
 
-  module ClassMethods
-    def today
-      where("#{self.table_name}.created_at >= ?", Time.now.beginning_of_day)   
-    end
+  included do
+    scope :today, -> { where("#{self.table_name}.created_at >= ?", Time.now.beginning_of_day) }
+  end
 
+  module ClassMethods
     def recent order_column = "created_at"
       all.order("#{self.table_name }.#{ order_column || "created_at" } DESC")
     end

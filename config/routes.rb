@@ -17,7 +17,7 @@ Rails.application.routes.draw do
     end
   end
   resource :account, only: [:show, :edit, :update] do
-    resources :user_addresses, only: [:index, :edit, :update, :destroy]
+    resources :user_addresses, except: [:show]
   end
 
   authenticate :user, lambda { |user| user.admin? } do

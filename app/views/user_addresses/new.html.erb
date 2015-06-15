@@ -1,0 +1,11 @@
+<%= simple_form_for @user_address, url: account_user_addresses_path, method: :POST do |f| %>
+  <%= f.input :username %>
+  <%= f.input :mobile %>
+  <%= f.input :province %>
+  <%= f.input :city %>
+  <%= f.input :country, as: :string %>
+  <%= f.input :street %>
+  <%= f.input :default %>
+
+  <%= f.submit '保存' %>
+<% end %>
