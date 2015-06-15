@@ -8,3 +8,11 @@
     font-size: 3em;
   }
 }
+
+.label { 
+  &.state-unpay { @extend .label-default }
+  &.state-payed { @extend .label-primary }
+  &.state-shiped { @extend .label-info }
+  &.state-signed { @extend .label-success }
+  &.state-closed { @extend .label-warning }
+}
