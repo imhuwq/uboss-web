@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150612065452) do
+ActiveRecord::Schema.define(version: 20150615081403) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -107,18 +107,12 @@ ActiveRecord::Schema.define(version: 20150612065452) do
     t.integer  "product_id"
     t.integer  "order_id"
     t.string   "code"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.integer  "parent_id"
-    t.integer  "lft",                        null: false
-    t.integer  "rgt",                        null: false
-    t.integer  "depth",          default: 0, null: false
-    t.integer  "children_count", default: 0, null: false
-    t.datetime "created_at",                 null: false
-    t.datetime "updated_at",                 null: false
+    t.integer  "lft",        null: false
+    t.integer  "rgt",        null: false
   end
-
-  add_index "sharing_nodes", ["lft"], name: "index_sharing_nodes_on_lft", using: :btree
-  add_index "sharing_nodes", ["parent_id"], name: "index_sharing_nodes_on_parent_id", using: :btree
-  add_index "sharing_nodes", ["rgt"], name: "index_sharing_nodes_on_rgt", using: :btree
 
   create_table "simple_captcha_data", force: :cascade do |t|
     t.string   "key",        limit: 40
