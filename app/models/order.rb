@@ -67,10 +67,10 @@ class Order < ActiveRecord::Base
 
   def set_number
     loop do
-      order_bumber = 
+      order_number = 
         "#{(Time.now - Time.parse('2014-12-12')).to_i}#{(self.user_id + rand(1000)) % 10000}#{SecureRandom.hex(3).upcase}"
-      unless Order.find_by(number: order_bumber)
-        self.number = order_bumber and break
+      unless Order.find_by(number: order_number)
+        self.number = order_number and break
       end
     end
   end
