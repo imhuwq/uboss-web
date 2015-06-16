@@ -8,7 +8,7 @@
 <% if @order.payed? %>
   <%= link_to '发货', [:ship, :admin, @order], 
     class: 'btn btn-primary', method: :PATCH, data: { confirm: 'Are your sure?' } %>
-<%- end%>
+<%- end %>
 
 <br>
 

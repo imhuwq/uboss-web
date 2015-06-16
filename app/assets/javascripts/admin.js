@@ -13,8 +13,11 @@
 //= require jquery
 //= require jquery_ujs
 //= require bootstrap-sprockets
+//= require redactor-rails
+//= require redactor-rails/langs/zh_cn
 //= require_tree ./admin
 //= require_self
+
 $(document).ready(function() {
   $("body").on('click',"#check_all", function(){
     $(".check").attr("checked",this.checked);
