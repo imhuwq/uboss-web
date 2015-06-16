@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150616030755) do
+ActiveRecord::Schema.define(version: 20150616055616) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -177,6 +177,8 @@ ActiveRecord::Schema.define(version: 20150616030755) do
   add_foreign_key "orders", "user_addresses", on_delete: :nullify
   add_foreign_key "orders", "users"
   add_foreign_key "orders", "users", column: "seller_id", name: "fk_order_seller_foreign_key"
+  add_foreign_key "sharing_nodes", "products", on_delete: :cascade
+  add_foreign_key "sharing_nodes", "users", on_delete: :cascade
   add_foreign_key "user_addresses", "users"
   add_foreign_key "user_infos", "users", on_delete: :nullify
 end
