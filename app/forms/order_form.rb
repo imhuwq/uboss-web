@@ -45,11 +45,7 @@ class OrderForm
     return true if buyer.present?
 
     self.buyer = User.find_by(login: mobile)
-    self.buyer ||= User.create!(
-      login: mobile,
-      mobile: mobile, 
-      password: 'ubossFakepa22w0rd', 
-      need_reset_password: true)
+    self.buyer ||= User.create_guest_user!(mobile)
   end
 
   def create_user_address
