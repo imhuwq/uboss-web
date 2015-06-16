@@ -13,6 +13,20 @@ class User < ActiveRecord::Base
 
   delegate :sharing_counter, :income, :income_level_one, :income_level_two, :income_level_thr, to: :user_info, allow_nil: true
 
+  class << self
+    def new_guest(mobile)
+      new(login: mobile, mobile: mobile, password: 'ubossFakepa22w0rd', need_reset_password: true)
+    end
+
+    def create_guest(mobile)
+      new_guest(mobile).save
+    end
+
+    def create_guest!(mobile)
+      new_guest(mobile).save!
+    end
+  end
+
   # def user_info
   #   @user_info ||= super
   #   @user_info = create_user_info if @user_info.blank?
@@ -24,13 +38,6 @@ class User < ActiveRecord::Base
     @default_address ||= user_addresses.first
   end
 
-  def self.create_guest_user(mobile)
-    self.create(
-      login: mobile,
-      mobile: mobile, 
-      password: 'ubossFakepa22w0rd', 
-      need_reset_password: true)
-  end
 
   def set_default_address(address = nil)
     address ||= user_addresses.first
