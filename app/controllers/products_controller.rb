@@ -1,7 +1,6 @@
 #encoding:utf-8
 #商品展示
-class ProductsController < MobileController
-  layout "mobile"
+class ProductsController < ApplicationController
 	def index
     @products = Product.order("updated_at DESC").page(params[:page] || 1).per(10)
 	end
