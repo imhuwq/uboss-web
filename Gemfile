@@ -1,5 +1,5 @@
-# source 'https://rubygems.org'
-source 'https://ruby.taobao.org'
+source 'https://rubygems.org'
+# source 'https://ruby.taobao.org'
 
 ruby '2.2.2'
 gem 'rails', '4.2.1'
@@ -28,7 +28,7 @@ gem 'uglifier', '>= 1.3.0'
 gem 'coffee-rails', '~> 4.1.0'
 gem "simple_form"
 gem "tabletastic", path: "vendor/gems"
-gem 'redactor-rails'
+gem 'redactor-rails', github: 'xEasy/redactor-rails'
 
 # See https://github.com/rails/execjs#readme for more supported runtimes
 gem 'therubyracer', platforms: :ruby
