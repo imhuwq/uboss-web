@@ -42,6 +42,9 @@ class Admin::ProductsController < AdminController
 
 	def update
     product = Product.find_by_id(params[:id])
+    img = AssetImg.new
+    img.avatar = params[:asset_img]
+    product.asset_img = img
     if product.present? and product.user_id == current_user.id and product.update_attributes(product_params)
       
       flash[:success] = "保存成功"

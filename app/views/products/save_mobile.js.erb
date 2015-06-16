@@ -1,0 +1,19 @@
+// 向页面插入分享按钮
+$('#share_buttons').html('<%= escape_javascript render :partial =>'/products/share_buttons.html' %>');
+
+// jiathis的js包
+var script = document.createElement("script");
+script.type = "text/javascript";
+script.src = "http://v2.jiathis.com/code/jia.js";
+document.body.appendChild(script);  
+
+
+// 分享的内容
+var config = document.createElement("script");
+config.type = "text/javascript";
+config.innerHTML = 'var jiathis_config = { url: \'http://<%= "#{request.env["HTTP_HOST"]}/products/#{@product.id}?code=" %>' + '<%= @sharing_node.try(:code) %>'+'\', title: "<%= @product.try(:name) %>", summary:"原价：￥<%= @product.try(:original_price) %>,现价：￥<%= @product.try(:present_price) %>,快来抢购吧~"} '
+document.body.appendChild(config); 
+
+
+$('#save_mobile_mobile').attr('disabled','disabled')
+$('#save_mobile_submit').attr('disabled','disabled')

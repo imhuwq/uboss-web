@@ -12,13 +12,17 @@ class ProductsController < MobileController
 	end
 
   def save_mobile
-    mobile = params[:mobile]
+    mobile = params[:save_mobile][:mobile] rescue nil
     if mobile.present?
       if user = User.find_by_mobile(mobile)
-        #TODO 记录这次分享
+        #TODO 
       else
-        User.create_guest(mobile)
+        user = User.create_guest(mobile)
       end
+    end
+    @product = Product.find_by_id(params[:id])
+    if @product.present? and user.present?
+      @sharing_node=SharingNode.create(user_id: user.id, product_id: @product.id)
     end
     respond_to do |format|
       format.html { render :nothing => true }

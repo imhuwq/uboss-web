@@ -12,6 +12,7 @@ Rails.application.routes.draw do
   end
   resources :products do
     post :save_mobile, on: :collection
+    get :save_mobile, on: :collection
   end
   resource :charge, only: [:create] do
     collection do
