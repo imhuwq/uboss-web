@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150615094528) do
+ActiveRecord::Schema.define(version: 20150616030755) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -136,6 +136,17 @@ ActiveRecord::Schema.define(version: 20150615094528) do
     t.boolean  "default",    default: false
   end
 
+  create_table "user_infos", force: :cascade do |t|
+    t.integer  "user_id"
+    t.float    "income"
+    t.float    "income_level_one"
+    t.float    "income_level_two"
+    t.float    "income_level_thr"
+    t.float    "sharing_counter"
+    t.datetime "created_at",       null: false
+    t.datetime "updated_at",       null: false
+  end
+
   create_table "users", force: :cascade do |t|
     t.string   "login",                  default: "",    null: false
     t.string   "email"
@@ -167,4 +178,5 @@ ActiveRecord::Schema.define(version: 20150615094528) do
   add_foreign_key "orders", "users"
   add_foreign_key "orders", "users", column: "seller_id", name: "fk_order_seller_foreign_key"
   add_foreign_key "user_addresses", "users"
+  add_foreign_key "user_infos", "users", on_delete: :nullify
 end
