@@ -14,3 +14,4 @@
 //= require jquery_ujs
 //= require pingpp_pay
 //= require_self
+

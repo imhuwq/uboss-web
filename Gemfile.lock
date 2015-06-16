@@ -230,6 +230,10 @@ GEM
       thor (>= 0.18.1, < 2.0)
     raindrops (0.13.0)
     rake (10.4.2)
+    redactor-rails (0.5.0)
+      devise
+      mime-types
+      orm_adapter
     redis (3.2.1)
     redis-actionpack (4.0.0)
       actionpack (~> 4)
@@ -367,6 +371,7 @@ DEPENDENCIES
   pry-stack_explorer
   quiet_assets
   rails (= 4.2.1)
+  redactor-rails
   redis (~> 3.0)
   redis-rails
   sass-rails (~> 5.0)

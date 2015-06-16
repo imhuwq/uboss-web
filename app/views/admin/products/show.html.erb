@@ -24,6 +24,16 @@
           <%= @product.code %>
         </div>
       </div>
+      <div class="form-group clear">
+        <label class="string required text-right col-sm-3 control-label" for="product_name">
+          分享二维码
+        </label>
+        <div class="col-sm-9">
+          <img src="http://qr.liantu.com/api.php?&text=<%= "http://#{request.env["HTTP_HOST"]}/products/#{@product.id}?shared=true" %>" style="width:60%"/>
+          <%= "http://#{request.env["HTTP_HOST"]}/products/#{@product.id}?shared=true" %>
+        </div>
+      </div>
+      
 			<div class="form-group clear">
 				<label class="string required text-right col-sm-3 control-label" for="product_name">
 					<abbr title="必填">*</abbr>
@@ -57,7 +67,7 @@
 				  产品展示图
 				</label>
 				<div class="col-sm-9">
-					<%= image_tag(@product.asset_img.try(:avatar).try(:url), size: "100x80", alt: "-") %>
+					<%= image_tag(@product.asset_img.try(:avatar).try(:url), width: "60%", alt: "-") %>
 				</div>
 			</div>
 
@@ -65,7 +75,7 @@
     <div class="text-center col-xs-12" style="border-bottom:3px solid grey;color:grey;margin-bottom:30px;margin-top:30px;">更多信息</div>
     <div class="row col-xs-10 col-md-offset-1">
       <div style="border-bottom:2px solid grey;margin:10px;">图文详情</div>
-      <%= @product.content %>
+      <%= raw @product.content %>
     </div>
 
 	</div>

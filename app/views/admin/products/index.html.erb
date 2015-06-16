@@ -19,6 +19,7 @@
     <thead>
       <tr>
         <th class="text-center">商品</th>
+        <th>好评率</th>
         <th>库存</th>
         <th>总销量</th>
         <th>发布时间</th>
@@ -34,6 +35,7 @@
             <div  class="col-xs-8"><%= obj.name %></div>
             <% end %>
           </td>
+          <td>-</td>
           <td><%= obj.count %></td>
           <td>-</td>
           <td><%= obj.created_at.try(:strftime,'%Y-%m-%d') %></td>

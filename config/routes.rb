@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
 
+  mount RedactorRails::Engine => '/redactor_rails'
   devise_for :user, controllers: { 
     sessions: "users/sessions",
     passwords: "users/passwords",
@@ -8,7 +9,9 @@ Rails.application.routes.draw do
   resources :orders, only: [:new, :create, :show] do
     get 'pay', on: :member
   end
-  resources :products
+  resources :products do
+    post :save_mobile, on: :collection
+  end
   resource :charge, only: [:create] do
     collection do
       post 'pingpp_callback'

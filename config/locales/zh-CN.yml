@@ -17,6 +17,8 @@ zh-CN:
         share_amount_total: 分成总金额
         share_rate_total: 分成占售价比例
         calculate_way: 分成计算方式
+      mobile_auth_code:
+        mobile: 手机号码
   errors: 
     messages:
       accepted: 必须是可被接受的

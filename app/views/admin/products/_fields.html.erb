@@ -19,7 +19,7 @@
   <div class="text-center col-xs-12" style="border-bottom:3px solid grey;color:grey;margin-bottom:30px;margin-top:30px;">更多信息</div>
   <div class="row col-xs-10 col-md-offset-1">
     <div style="border-bottom:2px solid grey;margin:10px;">图文详情</div>
-    <%= f.input_field :content,:as=>:text,:class=>"col-xs-12" %>
+    <%= f.input_field :content,:as=>:text,:class=>"col-xs-12 redactor" %>
   </div>
 
 </div>
@@ -97,3 +97,5 @@ $(document).on('ready page:load', function() {
 <style type="text/css">
 .radio-inline {margin-top: 0px}
 </style>
+<%= stylesheet_link_tag "redactor-rails" %>
+<%= javascript_include_tag "redactor-rails","redactor-rails/langs/zh_cn" %>

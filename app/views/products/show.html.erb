@@ -40,34 +40,80 @@
   </div>
   
   <div class="col-xs-12 font_h3" style="padding:2% 3%">
-    <%= @product.content %>
+    <%= raw @product.content %>
   </div>
 </div>
 <div class="row">
   <div class="col-xs-12" style="padding:1%">
-    <!-- JiaThis Button BEGIN -->
-    <div class="jiathis_style_32x32">
-      <a class="jiathis_button_qzone"></a>
-      <a class="jiathis_button_tsina"></a>
-      <a class="jiathis_button_tqq"></a>
-      <a class="jiathis_button_weixin"></a>
-      <a class="jiathis_button_renren"></a>
-      <a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank"></a>
-      <a class="jiathis_counter_style"></a>
-    </div>
-    <script type="text/javascript">
-        var jiathis_config = { 
-          url: '<%= "http://#{request.env["HTTP_HOST"]}/products/#{@product.id}:code=123" %>', 
-          title: "<%= @product.name %>", 
-          summary:"<%= @product.name %>" 
-        } 
-    </script>
-    <script type="text/javascript" src="http://v2.jiathis.com/code/jia.js" charset="utf-8"></script>
-    <!-- JiaThis Button END -->
+    
   </div>
 </div>
 
+<div class="row">
+  <div class="col-xs-12">
+    <% if params.present? and params['shared'] == 'true' %>
+      <%= simple_form_for "mobile_auth_code",:wrapper=>:inline_form do |f| %>
+        <div class="col-xs-12">
+          
+          <%= f.input :mobile,hint:"留下手机号，现金礼品拿不停~",:placeholder=>"手机号" %>
+        </div>
+      <% end %>
 
+      <div class="col-xs-12">
+
+        <!-- JiaThis Button BEGIN -->
+        <div class="jiathis_style_32x32 col-xs-12 text-center" style="display:none;padding-bottom:30px;">
+          <div class="col-xs-12" style="padding:10px;">分享到：</div>
+          <a class="jiathis_button_qzone"></a>
+          <a class="jiathis_button_tsina"></a>
+          <a class="jiathis_button_tqq"></a>
+          <a class="jiathis_button_weixin"></a>
+          <a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank"></a>
+        </div>
+        <!-- JiaThis Button END -->
+
+      </div>
+
+      <script type="text/javascript">
+      $(document).on('ready page:load', function() {
+        var mobile = ''
+        $("#mobile_auth_code_mobile").on('keyup', this, function(event) {
+          mobile = event.target.value
+          var checkNum = /^(\+\d+-)?[1-9]{1}[0-9]{10}$/;
+          if (checkNum.test(mobile)) {
+            $(".jiathis_style_32x32").fadeIn('fast', function() {
+
+
+              var script = document.createElement("script");
+
+        　　　　script.type = "text/javascript";
+
+        　　　　script.src = "http://v2.jiathis.com/code/jia.js";
+
+        　　　　document.body.appendChild(script);  
+
+
+
+              var config = document.createElement("script");
+
+              config.type = "text/javascript";
+
+              config.innerHTML = 'var jiathis_config = { url: \'http://<%= "#{request.env["HTTP_HOST"]}/products/#{@product.id}:mobile=" %>' + mobile+'\', title: <%= @product.name %>, summary:<%= @product.name %>} '
+              document.body.appendChild(config); 
+
+            });
+           
+
+          };
+        });
+
+      })
+      </script>
+
+      
+    <% end %>
+  </div>
+</div>
 <div class="row">
   <%= link_to '###' do %>
   <div class="btn active col-xs-12 btn-lg btn-default font_h3" style="">
@@ -76,3 +122,25 @@
   <% end %>
 </div>
 
+<script type="text/javascript">
+$(".jiathis_style_32x32 a").on('click', this, function(event) {
+  var mobile = $("#mobile_auth_code_mobile").val()
+  console.log(mobile)
+  $.ajax({
+    url: '/products/save_mobile',
+    type: 'POST',
+    dataType: 'json',
+    data: {mobile: mobile},
+  })
+  .done(function() {
+    console.log("success");
+  })
+  .fail(function() {
+    console.log("error");
+  })
+  .always(function() {
+    console.log("complete");
+  });
+  
+});
+</script>
