@@ -98,7 +98,7 @@
 
               config.type = "text/javascript";
 
-              config.innerHTML = 'var jiathis_config = { url: \'http://<%= "#{request.env["HTTP_HOST"]}/products/#{@product.id}:mobile=" %>' + mobile+'\', title: <%= @product.name %>, summary:<%= @product.name %>} '
+              config.innerHTML = 'var jiathis_config = { url: \'http://<%= "#{request.env["HTTP_HOST"]}/products/#{@product.id}?mobile=" %>' + mobile+'\', title: <%= @product.name %>, summary:<%= @product.name %>} '
               document.body.appendChild(config); 
 
             });
@@ -115,7 +115,7 @@
   </div>
 </div>
 <div class="row">
-  <%= link_to '###' do %>
+  <%= link_to url_for(:controller=>:orders,:action=>:new,:id=>@product.id,:mobile=>params[:mobile]) do %>
   <div class="btn active col-xs-12 btn-lg btn-default font_h3" style="">
     立即购买
   </div>

@@ -12,8 +12,18 @@ class ProductsController < MobileController
 	end
 
   def save_mobile
-    puts params
-    redirect_to :action=>:index
+    mobile = params[:mobile]
+    if mobile.present?
+      if user = User.find_by_mobile(mobile)
+        #TODO 记录这次分享
+      else
+        User.create_guest(mobile)
+      end
+    end
+    respond_to do |format|
+      format.html { render :nothing => true }
+      format.js { }
+    end
   end
 
 end

@@ -38,6 +38,13 @@ class User < ActiveRecord::Base
     @default_address ||= user_addresses.first
   end
 
+  def self.create_guest(mobile)
+    self.create(
+      login: mobile,
+      mobile: mobile, 
+      password: 'ubossFakepa22w0rd', 
+      need_reset_password: true)
+  end
 
   def set_default_address(address = nil)
     address ||= user_addresses.first

@@ -11,8 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-
-ActiveRecord::Schema.define(version: 20150616055616) do
+ActiveRecord::Schema.define(version: 20150615143421) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -113,18 +112,6 @@ ActiveRecord::Schema.define(version: 20150616055616) do
     t.integer  "calculate_way",      default: 0
   end
 
-  create_table "sharing_nodes", force: :cascade do |t|
-    t.integer  "user_id"
-    t.integer  "product_id"
-    t.integer  "order_id"
-    t.string   "code"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.integer  "parent_id"
-    t.integer  "lft",        null: false
-    t.integer  "rgt",        null: false
-  end
-
   create_table "redactor_assets", force: :cascade do |t|
     t.string   "data_file_name",               null: false
     t.string   "data_content_type"
@@ -140,6 +127,22 @@ ActiveRecord::Schema.define(version: 20150616055616) do
 
   add_index "redactor_assets", ["assetable_type", "assetable_id"], name: "idx_redactor_assetable", using: :btree
   add_index "redactor_assets", ["assetable_type", "type", "assetable_id"], name: "idx_redactor_assetable_type", using: :btree
+
+  create_table "sharing_nodes", force: :cascade do |t|
+    t.integer  "user_id"
+    t.integer  "product_id"
+    t.integer  "order_id"
+    t.string   "code"
+    t.integer  "parent_id"
+    t.integer  "lft",        null: false
+    t.integer  "rgt",        null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_index "sharing_nodes", ["lft"], name: "index_sharing_nodes_on_lft", using: :btree
+  add_index "sharing_nodes", ["parent_id"], name: "index_sharing_nodes_on_parent_id", using: :btree
+  add_index "sharing_nodes", ["rgt"], name: "index_sharing_nodes_on_rgt", using: :btree
 
   create_table "simple_captcha_data", force: :cascade do |t|
     t.string   "key",        limit: 40
