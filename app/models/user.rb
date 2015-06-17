@@ -11,7 +11,10 @@ class User < ActiveRecord::Base
 
   alias_attribute :regist_mobile, :login
 
-  delegate :sharing_counter, :income, :income_level_one, :income_level_two, :income_level_thr, to: :user_info, allow_nil: true
+  delegate :sharing_counter, :income, :income_level_one, :income_level_two, :income_level_thr, 
+    to: :user_info, allow_nil: true
+
+  before_create :set_mobile
 
   class << self
     def new_guest(mobile)
@@ -27,11 +30,11 @@ class User < ActiveRecord::Base
     end
   end
 
-  # def user_info
-  #   @user_info ||= super
-  #   @user_info = create_user_info if @user_info.blank?
-  #   @user_info
-  # end
+  def user_info
+    @user_info ||= super
+    @user_info = create_user_info if @user_info.blank?
+    @user_info
+  end
 
   def default_address
     @default_address ||= user_addresses.where(default: true).first
@@ -55,5 +58,9 @@ class User < ActiveRecord::Base
   private
     def email_required?
       false
+    end
+
+    def set_mobile
+      self.mobile ||= login
     end
 end

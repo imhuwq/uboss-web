@@ -68,7 +68,6 @@ group :development do
   gem "slackistrano", require: false
   gem "better_errors"
   gem "quiet_assets"
-  gem "mock_redis" # Used for test
 end
 
 group :development, :test do
@@ -89,4 +88,6 @@ group :test do
   gem "mocha", '~> 0.14', require: false
   gem "test_after_commit"
   gem "webmock"
+  gem "mock_redis" # Used for test
+  gem "minitest-rails-capybara"
 end
