@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150616085636) do
+ActiveRecord::Schema.define(version: 20150617081946) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -119,6 +119,16 @@ ActiveRecord::Schema.define(version: 20150616085636) do
   add_index "redactor_assets", ["assetable_type", "assetable_id"], name: "idx_redactor_assetable", using: :btree
   add_index "redactor_assets", ["assetable_type", "type", "assetable_id"], name: "idx_redactor_assetable_type", using: :btree
 
+  create_table "sharing_incomes", force: :cascade do |t|
+    t.integer  "user_id"
+    t.integer  "seller_id"
+    t.integer  "sharing_node_id"
+    t.integer  "order_item_id"
+    t.float    "amount"
+    t.datetime "created_at",      null: false
+    t.datetime "updated_at",      null: false
+  end
+
   create_table "sharing_nodes", force: :cascade do |t|
     t.integer  "user_id"
     t.integer  "product_id"
@@ -194,6 +204,9 @@ ActiveRecord::Schema.define(version: 20150616085636) do
   add_foreign_key "orders", "user_addresses", on_delete: :nullify
   add_foreign_key "orders", "users"
   add_foreign_key "orders", "users", column: "seller_id", name: "fk_order_seller_foreign_key"
+  add_foreign_key "sharing_incomes", "order_items"
+  add_foreign_key "sharing_incomes", "users"
+  add_foreign_key "sharing_incomes", "users", column: "seller_id"
   add_foreign_key "sharing_nodes", "products", on_delete: :cascade
   add_foreign_key "sharing_nodes", "users", on_delete: :cascade
   add_foreign_key "user_addresses", "users"
