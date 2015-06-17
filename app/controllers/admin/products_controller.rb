@@ -61,7 +61,7 @@ class Admin::ProductsController < AdminController
       flash[:success] = '上架成功'
     elsif @product.status == 1
       @product.status = 0
-      flash[:success] = '下架成功'
+      flash[:success] = '取消上架成功'
     end
     @product.save
     redirect_to action: :show, id: @product.id

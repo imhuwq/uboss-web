@@ -171,7 +171,7 @@
     <% if @product.status == 0 %>
     <%= link_to("上架", url_for(:action=>:change_status,:id=>@product.id), :class=>"btn btn-primary active  col-xs-12",:role=>"button") %>
     <% else %>
-    <%= link_to("下架", url_for(:action=>:change_status,:id=>@product.id), :class=>"btn btn-primary active  col-xs-12",:role=>"button") %>
+    <%= link_to("取消上架", url_for(:action=>:change_status,:id=>@product.id), :class=>"btn btn-primary active  col-xs-12",:role=>"button") %>
     <% end %>
   </div>
   <div class="button_div  col-xs-4"  style="margin-top:30px;padding-bottom:30px;"><%= link_to("编辑", url_for(:action=>:edit,:id=>@product.id), :class=>"btn btn-primary active  col-xs-12",:role=>"button") %></div>
