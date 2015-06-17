@@ -49,10 +49,14 @@ zh-CN:
     refresh_button_text: 刷新
     message:
       default: 验证码错误
+  nav_groups:
+    orders: 订单
   li_link:
     dashboard: 首页
     uboss_data: 数据
-    orders: 订单
+    orders: 订单列表
+    sharing_incomes: 用户分成
+    withdraw_records: 用户提现
     products: 商品
   activerecord:
     attributes:

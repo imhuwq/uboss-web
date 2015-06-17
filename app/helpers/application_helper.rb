@@ -12,17 +12,15 @@ module ApplicationHelper
     end
   end
 
-  def dropdown_list(name, &block)
+  def nav_group(name, &block)
     list = capture &block
+    text = t(name, scope: "nav_groups", default: name.to_s.humanize)
+    active_status = /[^_\-a-aA-Z]active/.match(list) ? "active" : ""
 
     dropdown_list_string = <<-HTML
-    <li class="dropdown">
-      <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-        #{I18n.t("li_link.#{name}")} <span class="caret"></span>
-      </a>
-      <ul class="dropdown-menu" role="menu">
-        #{list}
-      </ul>
+    <li class="dropdown #{active_status}">
+      <a href="#" class="dropdown-toggle" data-toggle="dropdown">#{text}<span class="caret"></span></a>
+      <ul class="dropdown-menu" role="menu">#{list}</ul>
     </li>
     HTML
     dropdown_list_string.html_safe
