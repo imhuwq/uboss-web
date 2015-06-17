@@ -3,3 +3,20 @@
 @import 'redactor-rails';
 
 @import "admin/orders";
+
+
+.clear {clear: both;}
+.floor {
+    height: 620px;
+    margin: 0 auto;
+    min-width: 1244px;
+    position: relative;
+    width: 100%;
+}
+.mod-inner {
+/*    height: 720px;*/
+    margin: 0 auto;
+    position: relative;
+    width: 980px;
+}
+.border_block {border:1px solid black;margin-top:30px;padding-bottom:30px;}

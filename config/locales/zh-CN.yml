@@ -4,7 +4,7 @@ zh-CN:
     state: 状态
   simple_form:
     labels:
-      product:
+      product: &product
         name: 产品名
         original_price: 原价
         present_price: 现价
@@ -17,6 +17,10 @@ zh-CN:
         share_amount_total: 分成总金额
         share_rate_total: 分成占售价比例
         calculate_way: 分成计算方式
+        total_sells: 总销量
+        good_reputation: 好评率
+        created_at: 创建时间
+        methods: 操作
       mobile_auth_code:
         mobile: 手机号码
   errors: 
@@ -67,6 +71,8 @@ zh-CN:
         number: 订单编号
         buyer_regist_mobile: 买家
         created_at: 创建时间
+      product:
+        <<: *product
   enums:
     order:
       state: 

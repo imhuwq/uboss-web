@@ -1,9 +1,10 @@
-<div  class="row">
-	<div>商品管理>查看商品信息</div>
-</div>
-<div class="row">
+<ol class="breadcrumb">
+  <li><%= link_to '商品管理', [:admin, :products] %></li>
+  <li class="active">查看商品信息</li>
+</ol>
 
-	<div class="col-xs-12" style="border:1px solid black;margin-top:30px;padding-bottom:30px;">
+<div class="row">
+	<div class="col-xs-12 border_block">
 		<h3 class="col-md-offset-1">商品信息</h3>
 		<div class="col-xs-11 col-md-offset-1">
 			<div class="form-group clear">
@@ -29,8 +30,11 @@
           分享二维码
         </label>
         <div class="col-sm-9">
-          <img src="http://qr.liantu.com/api.php?&text=<%= "http://#{request.env["HTTP_HOST"]}/products/#{@product.id}?shared=true" %>" style="width:60%"/>
+
           <%= "http://#{request.env["HTTP_HOST"]}/products/#{@product.id}?shared=true" %>
+          <div class="clear"></div>
+          <img src="http://qr.liantu.com/api.php?&text=<%= "http://#{request.env["HTTP_HOST"]}/products/#{@product.id}?shared=true" %>" style="width:60%"/>
+
         </div>
       </div>
       
@@ -79,7 +83,7 @@
     </div>
 
 	</div>
-	<div class="col-xs-12" style="border:1px solid black;margin-top:30px;padding-bottom:30px;">
+	<div class="col-xs-12 border_block">
 		<h3 class="col-md-offset-1">分成设置</h3>
     <% if @product.calculate_way == 1 %>
       <div class="col-xs-5 col-md-offset-1">
@@ -139,7 +143,7 @@
       </div>
 		
 	</div>
-	<div class="col-xs-12" style="border:1px solid black;margin-top:30px;padding-bottom:30px;">
+	<div class="col-xs-12 border_block">
 		<h3 class="col-md-offset-1">物流及其他</h3>
 		<div class="col-xs-11 col-md-offset-1">
       <div class="form-group clear">
@@ -162,7 +166,15 @@
       </div>
 		</div>
 	</div>
-  <div class="button_div  col-xs-4  col-md-offset-4"  style="margin-top:30px;padding-bottom:30px;"><%= link_to("编辑", url_for(:action=>:edit,:id=>@product.id), :class=>"btn btn-primary active  col-xs-12",:role=>"button") %></div>
+  <div class="button_div  col-xs-4"  style="margin-top:30px;padding-bottom:30px;"><%= link_to("预览", url_for(:action=>:pre_view,:id=>@product.id), :class=>"btn btn-primary active col-xs-12",:role=>"button",:target=>"_blank") %></div>
+  <div class="button_div  col-xs-4"  style="margin-top:30px;padding-bottom:30px;">
+    <% if @product.status == 0 %>
+    <%= link_to("上架", url_for(:action=>:change_status,:id=>@product.id), :class=>"btn btn-primary active  col-xs-12",:role=>"button") %>
+    <% else %>
+    <%= link_to("下架", url_for(:action=>:change_status,:id=>@product.id), :class=>"btn btn-primary active  col-xs-12",:role=>"button") %>
+    <% end %>
+  </div>
+  <div class="button_div  col-xs-4"  style="margin-top:30px;padding-bottom:30px;"><%= link_to("编辑", url_for(:action=>:edit,:id=>@product.id), :class=>"btn btn-primary active  col-xs-12",:role=>"button") %></div>
 
 </div>
 

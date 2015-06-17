@@ -1,4 +1,4 @@
-<div class="col-xs-12" style="border:1px solid black;margin-top:30px;padding-bottom:30px;">
+<div class="col-xs-12 border_block">
   <h3 class="col-md-offset-1">商品信息</h3>
   <div class="col-xs-11  col-md-offset-1">
     <%= f.input :name,:as=>:string,:label_html=>{:class=>"text-right"} %>
@@ -17,13 +17,14 @@
   </div>
 
   <div class="text-center col-xs-12" style="border-bottom:3px solid grey;color:grey;margin-bottom:30px;margin-top:30px;">更多信息</div>
+  <hr>
   <div class="row col-xs-10 col-md-offset-1">
     <div style="border-bottom:2px solid grey;margin:10px;">图文详情</div>
     <%= f.input_field :content,:as=>:text,:class=>"col-xs-12 redactor" %>
   </div>
 
 </div>
-<div class="col-xs-12" style="border:1px solid black;margin-top:30px;padding-bottom:30px;">
+<div class="col-xs-12 border_block">
   <h3 class="col-md-offset-1">分成设置</h3>
   <div class="col-xs-11  col-md-offset-1">
     <div class="col-md-offset-1 col-xs-5">
@@ -53,7 +54,7 @@
     
   </div>
 </div>
-<div class="col-xs-12" style="border:1px solid black;margin-top:30px;padding-bottom:30px;">
+<div class="col-xs-12 border_block">
   <h3 class="col-md-offset-1">物流及其他</h3>
   <div class="col-xs-11 col-md-offset-1">
     <%= f.input :buyer_pay, :as=>:select,:include_blank => false ,:collection=>Product::DataBuyerPay.invert,:label_html=>{:class=>"text-right"} %>

@@ -9,12 +9,15 @@
 </head>
 <body>
 
-<%= render 'layouts/admin_navbar' %>
 
-<div class="container admin-container">
-  <%= render 'layouts/flash_alert' %>
-  <%= yield %>
+<div class="floor">
+  <%= render 'layouts/admin_navbar' %>
+  <div class="container admin-container mod-inner">
+    <%= render 'layouts/flash_alert' %>
+    <%= yield %>
+  </div>
 </div>
+
 <%= yield :page_specific_javascript %>
 
 </body>
