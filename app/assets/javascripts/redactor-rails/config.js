@@ -8,15 +8,16 @@ window.init_redactor = function(){
   }
 
   $('.redactor').redactor({
-    "plugins": ['fontsize', 'fontcolor', 'imagemanager'],
-    "imageManagerJson": '/redactor_rails/pictures',
-    "imageUpload":"/redactor_rails/pictures?" + params,
-    "imageGetJson":"/redactor_rails/pictures",
-    "fileUpload":"/redactor_rails/documents?" + params,
-    "fileGetJson":"/redactor_rails/documents",
-    "path":"/assets/redactor-rails",
-    "css":"style.css",
-    "lang":'zh_cn'
+    plugins: ['fontsize', 'fontcolor', 'imagemanager'],
+    imageManagerJson: '/redactor_rails/pictures',
+    imageUpload: "/redactor_rails/pictures?" + params,
+    imageGetJson: "/redactor_rails/pictures",
+    imageEditable: false,
+    fileUpload: "/redactor_rails/documents?" + params,
+    fileGetJson: "/redactor_rails/documents",
+    path: "/assets/redactor-rails",
+    css: "style.css",
+    lang: 'zh_cn'
   });
 }
 
