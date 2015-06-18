@@ -22,7 +22,7 @@ class Product < ActiveRecord::Base
   end
 
   def calculate_share_amount_total # 如果按比例进行分成，将分成比例换算成实质分成总金额
-    if calculate_way == 1
+    if self.calculate_way == 1
       self.share_amount_total = ('%.2f' % (present_price * share_rate_total * 0.01)).to_f # 价格×总分成比例=总分成金额
     end
   end

@@ -44,3 +44,4 @@ bower.json
 /db/schema.rb
 /db/schema.rb
 /public/uploads/asset_img
+.rubocop.yml
