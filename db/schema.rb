@@ -11,8 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-
-ActiveRecord::Schema.define(version: 20150617081946) do
+ActiveRecord::Schema.define(version: 20150618065040) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -54,9 +53,10 @@ ActiveRecord::Schema.define(version: 20150617081946) do
     t.integer  "product_id"
     t.integer  "user_id"
     t.integer  "amount"
-    t.datetime "created_at",               null: false
-    t.datetime "updated_at",               null: false
-    t.float    "pay_amount", default: 0.0
+    t.datetime "created_at",                    null: false
+    t.datetime "updated_at",                    null: false
+    t.float    "pay_amount",      default: 0.0
+    t.integer  "sharing_node_id"
   end
 
   create_table "orders", force: :cascade do |t|
@@ -78,16 +78,6 @@ ActiveRecord::Schema.define(version: 20150617081946) do
   end
 
   add_index "orders", ["number"], name: "index_orders_on_number", unique: true, using: :btree
-
-  create_table "product_share_issues", force: :cascade do |t|
-    t.integer  "product_id"
-    t.integer  "buyer_lv_1_id"
-    t.integer  "buyer_lv_2_id"
-    t.integer  "buyer_lv_3_id"
-    t.integer  "sharer_lv_1_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
 
   create_table "products", force: :cascade do |t|
     t.integer  "user_id"
@@ -137,8 +127,9 @@ ActiveRecord::Schema.define(version: 20150617081946) do
     t.integer  "sharing_node_id"
     t.integer  "order_item_id"
     t.float    "amount"
-    t.datetime "created_at",      null: false
-    t.datetime "updated_at",      null: false
+    t.datetime "created_at",                  null: false
+    t.datetime "updated_at",                  null: false
+    t.integer  "level",           default: 1
   end
 
   create_table "sharing_nodes", force: :cascade do |t|
@@ -146,16 +137,12 @@ ActiveRecord::Schema.define(version: 20150617081946) do
     t.integer  "product_id"
     t.integer  "order_id"
     t.string   "code"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.integer  "parent_id"
     t.integer  "lft",        null: false
     t.integer  "rgt",        null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
   end
-
-  add_index "sharing_nodes", ["lft"], name: "index_sharing_nodes_on_lft", using: :btree
-  add_index "sharing_nodes", ["parent_id"], name: "index_sharing_nodes_on_parent_id", using: :btree
-  add_index "sharing_nodes", ["rgt"], name: "index_sharing_nodes_on_rgt", using: :btree
 
   create_table "simple_captcha_data", force: :cascade do |t|
     t.string   "key",        limit: 40
@@ -216,6 +203,7 @@ ActiveRecord::Schema.define(version: 20150617081946) do
   add_foreign_key "order_charges", "orders"
   add_foreign_key "order_items", "orders"
   add_foreign_key "order_items", "products"
+  add_foreign_key "order_items", "sharing_nodes"
   add_foreign_key "order_items", "users"
   add_foreign_key "orders", "user_addresses", on_delete: :nullify
   add_foreign_key "orders", "users"

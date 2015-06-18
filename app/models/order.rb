@@ -14,7 +14,7 @@ class Order < ActiveRecord::Base
   validates :user_id, :user_address, presence: true
   validates_uniqueness_of :number, allow_blank: true
 
-  before_save :set_info_by_user_address, on: :create
+  before_save :set_info_by_user_address, on: :create 
   before_create :set_number
 
   delegate :mobile, :regist_mobile, to: :user, prefix: :buyer
@@ -26,7 +26,7 @@ class Order < ActiveRecord::Base
 
   aasm column: :state, enum: true, skip_validation_on_save: true do
     state :unpay
-    state :payed
+    state :payed, after_enter: :call_order_payed_handler
     state :shiped
     state :signed
     state :closed
@@ -79,6 +79,10 @@ class Order < ActiveRecord::Base
     self.address = "#{user_address.province}#{user_address.city}#{user_address.country}#{user_address.street}"
     self.mobile = user_address.mobile
     self.username = user_address.username
+  end
+
+  def call_order_payed_handler
+    OrderPayedHandlerJob.perform_later(self)
   end
 
 end

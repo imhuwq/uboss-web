@@ -6,7 +6,7 @@ class OrderForm
 
   attr_accessor :product, :product_id, :amount, :mobile, :captcha, :buyer, :user_address, :user_address_id,
                 :deliver_username, :province, :city, :country, :street, :deliver_mobile,
-                :order
+                :order, :sharing_code
 
   validates :product_id, :amount, presence: true
   validates :mobile, presence: true, mobile: true, if: :need_mobile?
@@ -17,6 +17,7 @@ class OrderForm
 
   def initialize(opts = {})
     super
+    self.sharing_node = SharingNode.find_by(code: self.sharing_code)
     self.product = Product.find(self.product_id)
     if buyer
       self.user_address = buyer.user_addresses.find(self.user_address_id) if self.user_address_id.present?
@@ -71,9 +72,13 @@ class OrderForm
   end
 
   def order_items_attributes
-    @order_items ||= [ 
-      { product: product, user: buyer, amount: amount, pay_amount: product.present_price * amount.to_i } 
-    ]
+    @order_items ||= [{ 
+      product: product, 
+      user: buyer,
+      amount: amount, 
+      pay_amount: product.present_price * amount.to_i,
+      sharing_node: sharing_node
+    }]
   end
 
   def check_amount

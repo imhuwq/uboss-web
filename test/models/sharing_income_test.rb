@@ -1,7 +1,10 @@
 require 'test_helper'
 
 class SharingIncomeTest < ActiveSupport::TestCase
-  # test "the truth" do
-  #   assert true
-  # end
+
+  test "after create increase_user_income" do
+    
+    assert true
+  end
+
 end
