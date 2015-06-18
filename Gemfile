@@ -85,7 +85,7 @@ end
 
 group :test do
   gem "database_cleaner"
-  gem "mocha", '~> 0.14', require: false
+  gem "mocha"
   gem "test_after_commit"
   gem "webmock"
   gem "mock_redis" # Used for test
