@@ -8,8 +8,8 @@ require 'minitest/spec'
 require "minitest/pride"
 require "minitest/rails/capybara"
 
-require 'mocha/setup'
-require 'mocha/mini_test'
+# require 'mocha/setup'
+# require 'mocha/mini_test'
 
 require 'webmock/minitest'
 require 'sidekiq/testing'
