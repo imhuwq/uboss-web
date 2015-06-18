@@ -25,6 +25,8 @@ class ActiveSupport::TestCase
   include FactoryGirl::Syntax::Methods
   extend MiniTest::Spec::DSL
 
+  Warden.test_mode!
+
   before :each do
     DatabaseCleaner.start
     Sidekiq::Worker.clear_all
@@ -32,6 +34,7 @@ class ActiveSupport::TestCase
 
   after :each do
     DatabaseCleaner.clean
+    Warden.test_reset!
   end
 
   def inline_sidekiq
