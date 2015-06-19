@@ -4,9 +4,16 @@ class OrderForm
   include ActiveModel::Validations
   include ActiveModel::Model
 
-  attr_accessor :product, :product_id, :amount, :mobile, :captcha, :buyer, :user_address, :user_address_id,
-                :deliver_username, :province, :city, :country, :street, :deliver_mobile,
-                :order, :sharing_code
+  ATTRIBUTES = [
+    :product_id, :amount, :mobile, :captcha, :user_address_id, :deliver_username,
+    :province, :city, :country, :street, :deliver_mobile, :sharing_code
+  ]
+
+  ATTRIBUTES.each do |order_attr|
+    attr_accessor order_attr
+  end
+
+  attr_accessor :sharing_node, :product, :buyer, :user_address, :order
 
   validates :product_id, :amount, presence: true
   validates :mobile, presence: true, mobile: true, if: :need_mobile?
@@ -26,7 +33,7 @@ class OrderForm
 
   def save
     # - verify Mobile captcha
-    # - check product valid? 
+    # - check product valid?
     # - check SKU amount
     if self.valid?
       ActiveRecord::Base.transaction do
@@ -72,10 +79,10 @@ class OrderForm
   end
 
   def order_items_attributes
-    @order_items ||= [{ 
-      product: product, 
+    @order_items ||= [{
+      product: product,
       user: buyer,
-      amount: amount, 
+      amount: amount,
       pay_amount: product.present_price * amount.to_i,
       sharing_node: sharing_node
     }]
@@ -100,5 +107,5 @@ class OrderForm
       errors.add(:captcha, '手机验证码错误')
     end
   end
-  
+
 end

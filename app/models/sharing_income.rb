@@ -15,9 +15,9 @@ class SharingIncome < ActiveRecord::Base
   validates_numericality_of :amount, greater_than: 0
 
   after_create :increase_user_income
-  
+
   private
-  
+
   def increase_user_income
     UserInfo.update_counters(user.user_info.id, user_incomes)
   end

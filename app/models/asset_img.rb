@@ -1,4 +1,3 @@
-#encoding:utf-8
 #矩形的资源，商品图像
 require 'mime/types'
 class AssetImg < ActiveRecord::Base

@@ -1,4 +1,3 @@
-# encoding:utf-8
 # 商品展示
 class ProductsController < ApplicationController
   def index
@@ -7,7 +6,7 @@ class ProductsController < ApplicationController
 
   def show
     @product = Product.where(status:1).find_by_id(params[:id])
-    redirect_to action: :index unless @product.present?
+    redirect_to action: :index if @product.blank?
   end
 
   def save_mobile
@@ -25,7 +24,7 @@ class ProductsController < ApplicationController
     end
     respond_to do |format|
       format.html { render nothing: true }
-      format.js {}
+      format.js
     end
   end
 end

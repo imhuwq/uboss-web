@@ -12,7 +12,7 @@ class ImageUploader < CarrierWave::Uploader::Base
     #   # To protected version name using, when it not defined, this will be give an error message in development environment
     #   raise "ImageUploader version_name:#{version_name} not allow."
     # end
-    [@url, version_name].join("-") # thumb split with "-" 
+    [@url, version_name].join("-") # thumb split with "-"
   end
 
   def extension_white_list

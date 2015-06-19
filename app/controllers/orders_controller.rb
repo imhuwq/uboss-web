@@ -7,9 +7,10 @@ class OrdersController < ApplicationController
   def new
     @order_form = OrderForm.new(
       buyer: current_user,
-      product_id: params[:product_id]
+      product_id: params[:product_id],
+      sharing_code: params[:sharing_code]
     )
-    if current_user
+    if current_user && current_user.default_address
       @order_form.user_address_id = current_user.default_address.id
     end
   end
@@ -29,7 +30,7 @@ class OrdersController < ApplicationController
 
   private
   def order_params
-    params.require(:order_form).permit!
+    params.require(:order_form).permit(OrderForm::ATTRIBUTES)
   end
 
   def find_order
