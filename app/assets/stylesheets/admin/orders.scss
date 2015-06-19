@@ -9,7 +9,7 @@
   }
 }
 
-.label { 
+.label {
   &.state-unpay { @extend .label-default }
   &.state-payed { @extend .label-primary }
   &.state-shiped { @extend .label-info }

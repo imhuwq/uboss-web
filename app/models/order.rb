@@ -14,7 +14,7 @@ class Order < ActiveRecord::Base
   validates :user_id, :user_address, presence: true
   validates_uniqueness_of :number, allow_blank: true
 
-  before_save :set_info_by_user_address, on: :create 
+  before_save :set_info_by_user_address, on: :create
   before_create :set_number
 
   delegate :mobile, :regist_mobile, to: :user, prefix: :buyer
@@ -35,13 +35,13 @@ class Order < ActiveRecord::Base
       transitions from: :unpay, to: :payed
     end
     event :ship do
-      transitions from: :payed, to: :shiped 
+      transitions from: :payed, to: :shiped
     end
     event :signed do
-      transitions from: :shiped, to: :signed 
+      transitions from: :shiped, to: :signed
     end
     event :close do
-      transitions from: :unpay, to: :closed 
+      transitions from: :unpay, to: :closed
     end
   end
 
@@ -67,7 +67,7 @@ class Order < ActiveRecord::Base
 
   def set_number
     loop do
-      order_number = 
+      order_number =
         "#{(Time.now - Time.parse('2014-12-12')).to_i}#{(self.user_id + rand(1000)) % 10000}#{SecureRandom.hex(3).upcase}"
       unless Order.find_by(number: order_number)
         self.number = order_number and break

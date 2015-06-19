@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150618065040) do
+ActiveRecord::Schema.define(version: 20150619063335) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -71,10 +71,11 @@ ActiveRecord::Schema.define(version: 20150618065040) do
     t.datetime "pay_time"
     t.float    "pay_amount"
     t.string   "pay_message"
-    t.datetime "created_at",                  null: false
-    t.datetime "updated_at",                  null: false
+    t.datetime "created_at",                    null: false
+    t.datetime "updated_at",                    null: false
     t.integer  "user_address_id"
     t.string   "username"
+    t.float    "income",          default: 0.0
   end
 
   add_index "orders", ["number"], name: "index_orders_on_number", unique: true, using: :btree
@@ -137,12 +138,16 @@ ActiveRecord::Schema.define(version: 20150618065040) do
     t.integer  "product_id"
     t.integer  "order_id"
     t.string   "code"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
     t.integer  "parent_id"
     t.integer  "lft",        null: false
     t.integer  "rgt",        null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
+
+  add_index "sharing_nodes", ["lft"], name: "index_sharing_nodes_on_lft", using: :btree
+  add_index "sharing_nodes", ["parent_id"], name: "index_sharing_nodes_on_parent_id", using: :btree
+  add_index "sharing_nodes", ["rgt"], name: "index_sharing_nodes_on_rgt", using: :btree
 
   create_table "simple_captcha_data", force: :cascade do |t|
     t.string   "key",        limit: 40
