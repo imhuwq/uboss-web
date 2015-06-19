@@ -16,19 +16,6 @@
 </div>
 <div class="row"><%= link_to("发布商品", url_for(:action=>:new), :class=>"btn btn-primary active",:role=>"button") %></div>
 <hr>
-<%= table_for(@products) do |t| %>
-  <%= t.cell :name do |obj| %>
-    <%= link_to [:admin, obj] do %>
-      <%= image_tag(obj.asset_img.try(:avatar).try(:url), size: "100x80", alt: "-") %>
-      <%= obj.name %>
-    <% end %>
-  <% end %>
-  <%= t.cell :good_reputation do |obj| '-' end %>
-  <%= t.cell :count %>
-  <%= t.cell :total_sells do |obj| '-' end %>
-  <%= t.cell :created_at %>
-  <%= t.cell :methods do |obj| %>
-    <%= link_to("编辑", url_for(:action=>:edit,:id=>obj.id)) %>
-  <% end %>
-<%- end %>
-<%= paginate @products %>
+<div id="index_list">
+  <%= render 'index_list' %>
+</div>

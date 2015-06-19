@@ -12,17 +12,20 @@ class Product < ActiveRecord::Base
   before_save :calculates_before_save
 
   def generate_code
-    self.code = UUIDTools::UUID.random_create.to_s.gsub!('-', '')[0..10]
+    loop do
+      self.code = SecureRandom.hex(10)
+      break if !Product.find_by(code: code)
+    end
   end
 
   def calculates_before_save
     calculate_share_amount_total
-    set_default_share_rate
+    set_share_rate
     calculate_shares
   end
 
   def calculate_share_amount_total # 如果按比例进行分成，将分成比例换算成实质分成总金额
-    if self.calculate_way == 1
+    if calculate_way == 1
       self.share_amount_total = ('%.2f' % (present_price * share_rate_total * 0.01)).to_f # 价格×总分成比例=总分成金额
     end
   end
@@ -30,22 +33,29 @@ class Product < ActiveRecord::Base
   def set_default_share_rate # 设置默认分成比例
     case has_share_lv  # 依据分成层数设定
     when 3 # 3层
-      self.share_rate_lv_3 = 0.2
-      self.share_rate_lv_2 = 0.3
-      self.share_rate_lv_1 = 0.5
+      @share_rate_lv_3 = 0.2
+      @share_rate_lv_2 = 0.3
+      @share_rate_lv_1 = 0.5
     when 2 # 2层
-      self.share_rate_lv_3 = 0.0
-      self.share_rate_lv_2 = 0.4
-      self.share_rate_lv_1 = 0.6
+      @share_rate_lv_3 = 0.0
+      @share_rate_lv_2 = 0.4
+      @share_rate_lv_1 = 0.6
     when 1 # 2层
-      self.share_rate_lv_3 = 0.0
-      self.share_rate_lv_2 = 0.0
-      self.share_rate_lv_1 = 1.0
+      @share_rate_lv_3 = 0.0
+      @share_rate_lv_2 = 0.0
+      @share_rate_lv_1 = 1.0
     when 0 # 不分成
-      self.share_rate_lv_3 = 0.0
-      self.share_rate_lv_2 = 0.0
-      self.share_rate_lv_1 = 0.0
+      @share_rate_lv_3 = 0.0
+      @share_rate_lv_2 = 0.0
+      @share_rate_lv_1 = 0.0
     end
+  end
+  
+  def set_share_rate(*args) # 设置分成比例
+    set_default_share_rate
+    self.share_rate_lv_3 = args[2] || @share_rate_lv_3
+    self.share_rate_lv_2 = args[1] || @share_rate_lv_2
+    self.share_rate_lv_1 = args[0] || @share_rate_lv_1
   end
 
   def calculate_shares # 计算具体的分成金额
