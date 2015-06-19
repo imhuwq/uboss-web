@@ -2,7 +2,7 @@ source 'https://rubygems.org'
 # source 'https://ruby.taobao.org'
 
 ruby '2.2.2'
-gem 'rails', '4.2.1'
+gem 'rails', '4.2.2'
 
 #DB
 gem "pg"
