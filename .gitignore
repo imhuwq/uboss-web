@@ -45,3 +45,4 @@ bower.json
 /db/schema.rb
 .rubocop.yml
 /public/uploads
+dump.rdb
