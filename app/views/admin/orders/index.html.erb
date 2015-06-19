@@ -26,7 +26,7 @@
   <% end %>
   <%= t.cell :action do |order| %>
     <% if order.payed? %>
-      <%= link_to '发货', [:ship, :admin, order], 
+      <%= link_to '发货', [:ship, :admin, order],
         class: 'btn btn-primary btn-xs', method: :PATCH, data: { confirm: 'Are your sure?' } %>
     <%- end%>
   <%- end%>

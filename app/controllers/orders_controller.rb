@@ -6,7 +6,7 @@ class OrdersController < ApplicationController
 
   def new
     @order_form = OrderForm.new(
-      buyer: current_user, 
+      buyer: current_user,
       product_id: params[:product_id]
     )
     if current_user
