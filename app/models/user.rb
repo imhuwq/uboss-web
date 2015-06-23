@@ -4,6 +4,7 @@ class User < ActiveRecord::Base
 
   has_many :user_addresses
   has_many :orders
+  has_many :sold_orders, class_name: 'Order', foreign_key: 'seller_id'
   has_one :user_info
 
   validates :login, uniqueness: true, mobile: true, presence: true
@@ -11,7 +12,7 @@ class User < ActiveRecord::Base
 
   alias_attribute :regist_mobile, :login
 
-  delegate :sharing_counter, :income, :income_level_one, :income_level_two, :income_level_thr, 
+  delegate :sharing_counter, :income, :income_level_one, :income_level_two, :income_level_thr,
     to: :user_info, allow_nil: true
 
   before_create :set_mobile
@@ -22,11 +23,15 @@ class User < ActiveRecord::Base
     end
 
     def create_guest(mobile)
-      new_guest(mobile).save
+      new_user = new_guest(mobile)
+      new_user.save
+      new_user
     end
 
     def create_guest!(mobile)
-      new_guest(mobile).save!
+      new_user = new_guest(mobile)
+      new_user.save!
+      new_user
     end
   end
 
@@ -39,14 +44,6 @@ class User < ActiveRecord::Base
   def default_address
     @default_address ||= user_addresses.where(default: true).first
     @default_address ||= user_addresses.first
-  end
-
-  def self.create_guest(mobile)
-    self.create(
-      login: mobile,
-      mobile: mobile, 
-      password: 'ubossFakepa22w0rd', 
-      need_reset_password: true)
   end
 
   def set_default_address(address = nil)
