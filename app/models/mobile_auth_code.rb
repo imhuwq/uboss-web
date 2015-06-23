@@ -3,6 +3,18 @@ class MobileAuthCode < ActiveRecord::Base
 
   before_save :steps_before_save
 
+  def self.auth_code(mobile, code) #验证
+    auth_code = MobileAuthCode.
+      where('expire_at > ?', Time.now).
+      find_by(mobile: mobile, code: code)
+
+    if auth_code.blank?
+      false
+    else
+      true
+    end
+  end
+
   def steps_before_save
     generate_code
     set_expire_time
@@ -14,15 +26,7 @@ class MobileAuthCode < ActiveRecord::Base
   end
 
   def set_expire_time #设定过期时间
-    self.expire_at = Time.now + 1.minute
-  end
-
-  def auth_code(code) #验证
-    if code.to_s == self.code
-      return true
-    else
-      return false
-    end
+    self.expire_at = Time.now + 30.minute
   end
 
   def send_code #发送验证码
