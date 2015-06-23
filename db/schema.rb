@@ -81,6 +81,16 @@ ActiveRecord::Schema.define(version: 20150623041214) do
 
   add_index "orders", ["number"], name: "index_orders_on_number", unique: true, using: :btree
 
+  create_table "product_share_issues", force: :cascade do |t|
+    t.integer  "product_id"
+    t.integer  "buyer_lv_1_id"
+    t.integer  "buyer_lv_2_id"
+    t.integer  "buyer_lv_3_id"
+    t.integer  "sharer_lv_1_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "products", force: :cascade do |t|
     t.integer  "user_id"
     t.string   "name"

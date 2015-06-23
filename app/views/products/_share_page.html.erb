@@ -1,0 +1,25 @@
+<div class="window">
+  <a onclick="close_window()">
+    <div style="width:100%;height:100%;float:left"></div>
+  </a>
+  <div class="block_bottom col-xs-12 bg_white">
+    <div style="padding:20px 10px 50px 10px;">
+      <h3 class="grey">留下手机号，现金礼品拿不停!</h3>
+      <div class="row">
+        <%# if params.present? and params['shared'] == 'true' %>
+        <%= simple_form_for(:save_mobile,url:{action: :save_mobile,:id=>@product.id}, wrapper: :inline_form,remote: true )do |f| %>
+        <div class="col-xs-8">
+          <%= f.input :mobile,placeholder:"手机号",label: false,input_html:{class:""} %>
+        </div>
+        <div class="col-xs-4"><%= f.submit "提交",class: "btn bg_green col-xs-12",id:"save_mobile_submit",disabled: "disabled" %></div>
+        <% end %>
+      <%# end %>
+      </div>
+      
+      <div id="share_buttons"></div>
+      <div class="row" style="padding:30px;">
+<!--         <a onclick="close_window()" class="btn bg_grey col-xs-12 black">关闭</a> -->
+      </div>
+    </div>
+  </div>
+</div>

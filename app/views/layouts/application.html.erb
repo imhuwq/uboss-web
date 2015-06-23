@@ -11,9 +11,10 @@
     <%= csrf_meta_tags %>
   </head>
 
-  <body>
-
-    <%= yield %>
+  <body class='mobile'>
+    <p><%= current_user.login if current_user %></p>
+    <div id="window"></div>
+      <%= yield %>
 
   </body>
 </html>

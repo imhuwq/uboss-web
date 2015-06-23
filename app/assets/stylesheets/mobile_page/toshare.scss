@@ -1,0 +1,81 @@
+.l_toshare {
+    display: block;
+    margin-bottom: 10px;
+    padding-bottom: 15px;
+    position: relative;
+}
+.l_toshare-hd {
+    float: left;
+    padding: 20px 10px 0 20px;
+}
+.l_toshare-bd li a {
+    background: rgba(0, 0, 0, 0) url("icons1.png") no-repeat scroll 0 0;
+    height: 36px;
+    width: 36px;
+}
+.l_toshare .l_toshare-bd ul {
+    float: left;
+    list-style: outside none none;
+}
+.l_toshare .l_toshare-bd li {
+    float: left;
+    height: 36px;
+    margin-right: 5px;
+    padding-top: 10px;
+    width: 36px;
+}
+.l_toshare .l_toshare-bd li a {
+    cursor: pointer;
+    display: block;
+    height: 36px;
+    opacity: 0.8;
+    padding-left: 36px;
+    transition: opacity 0.5s ease 0s;
+    width: 0;
+}
+.l_toshare .l_toshare-bd a:hover {
+    opacity: 0.6;
+}
+.l_toshare .l_toshare-bd a:visited {
+    opacity: 1;
+}
+
+.l_toshare .l_s_weixin {
+    background-position: -108px -590px;
+}
+.l_toshare .l_s_sina {
+    background-position: 0 -410px;
+}
+.l_toshare .l_s_qq {
+    background-position: -36px -410px;
+}
+.l_toshare .l_s_twitter {
+    background-position: -72px -410px;
+}
+.l_toshare .l_s_tweibo {
+    background-position: 0 -518px;
+}
+.l_toshare .l_s_more {
+    background-position: -36px -518px;
+}
+.l_toshare .l_s_qzone {
+    background-position: -72px -518px;
+}
+.l_toshare .l_s_pengyou {
+    background-position: 0 -590px;
+}
+.l_toshare .l_s_google {
+    background-position: -36px -590px;
+}
+.l_toshare .l_s_dou {
+    background-position: -72px -590px;
+}
+.l_toshare .l_s_facebook {
+    background-position: 0 -662px;
+}
+.l_toshare .l_s_renren {
+    background-position: -36px -662px;
+}
+.l_toshare .l_s_copy {
+    background-position: -72px -662px;
+}
