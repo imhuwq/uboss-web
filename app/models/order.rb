@@ -29,7 +29,7 @@ class Order < ActiveRecord::Base
     state :payed, after_enter: :call_order_payed_handler
     state :shiped
     state :signed
-    state :closed
+    state :closed, after_enter: :recover_product_stock
 
     event :pay do
       transitions from: :unpay, to: :payed
@@ -83,6 +83,10 @@ class Order < ActiveRecord::Base
 
   def call_order_payed_handler
     OrderPayedHandlerJob.perform_later(self)
+  end
+
+  def recover_product_stock
+    order_items.each { |order_item| order_item.recover_product_stock }
   end
 
 end
