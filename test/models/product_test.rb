@@ -1,8 +1,10 @@
 require 'test_helper'
 class ProductTest < ActiveSupport::TestCase
   test 'calculate_share_amount_total' do
-    assert_equal(10.0, Product.new(calculate_way: 1, present_price: 100, share_rate_total: 10).calculate_share_amount_total)
-    assert_equal(9.33, Product.new(calculate_way: 1, present_price: 100, share_rate_total: 9.333333).calculate_share_amount_total)
+    assert_equal(10.0,
+                 Product.new(calculate_way: 1, present_price: 100, share_rate_total: 10).calculate_share_amount_total)
+    assert_equal(9.33,
+                 Product.new(calculate_way: 1, present_price: 100, share_rate_total: 9.333333).calculate_share_amount_total)
   end
 
   test 'set_default_share_rate_lv_3' do

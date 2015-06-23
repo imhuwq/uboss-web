@@ -5,6 +5,7 @@ class Product < ActiveRecord::Base
 
   validates_presence_of :user_id, :name
 
+  belongs_to :user
   has_one :asset_img, class_name: 'AssetImg', dependent: :destroy, as: :resource
   has_many :product_share_issue, dependent: :destroy
 
@@ -50,7 +51,7 @@ class Product < ActiveRecord::Base
       @share_rate_lv_1 = 0.0
     end
   end
-  
+
   def set_share_rate(*args) # 设置分成比例
     set_default_share_rate
     self.share_rate_lv_3 = args[2] || @share_rate_lv_3
