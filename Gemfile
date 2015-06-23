@@ -1,4 +1,4 @@
-# source 'https://rubygems.org'
+#source 'https://rubygems.org'
 source 'https://ruby.taobao.org'
 
 ruby '2.2.2'
@@ -60,6 +60,7 @@ gem 'redis-rails'
 # backend process
 gem 'sidekiq'
 gem 'sidekiq-failures'
+gem 'sinatra', :require => nil
 
 group :development do
   gem "thin"
