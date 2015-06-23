@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150619063335) do
+ActiveRecord::Schema.define(version: 20150623041214) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -71,11 +71,12 @@ ActiveRecord::Schema.define(version: 20150619063335) do
     t.datetime "pay_time"
     t.float    "pay_amount"
     t.string   "pay_message"
-    t.datetime "created_at",                    null: false
-    t.datetime "updated_at",                    null: false
+    t.datetime "created_at",                      null: false
+    t.datetime "updated_at",                      null: false
     t.integer  "user_address_id"
     t.string   "username"
     t.float    "income",          default: 0.0
+    t.boolean  "sharing_rewared", default: false
   end
 
   add_index "orders", ["number"], name: "index_orders_on_number", unique: true, using: :btree

@@ -6,13 +6,15 @@ class OrderPayedHandlerJob < ActiveJob::Base
   def perform(order)
     @seller_income = order.pay_amount
 
-    order.order_items.each do |order_item|
-      reward_sharing_users order_item do |reward_amount|
-        @seller_income -= reward_amount
+    Order.transaction do
+      order.order_items.each do |order_item|
+        reward_sharing_users order_item do |reward_amount|
+          @seller_income -= reward_amount
+        end
       end
-    end
 
-    order.update_column(:income, @seller_income)
+      order.update_columns(income: @seller_income, sharing_rewared: true)
+    end
   end
 
   private
