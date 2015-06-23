@@ -3,7 +3,11 @@ class OrderPayedHandlerJob < ActiveJob::Base
 
   LEVEL_AMOUNT_FIELDS = [:share_amount_lv_1, :share_amount_lv_2, :share_amount_lv_3]
 
+  class OrderNotPayed < StandardError;;end
+
   def perform(order)
+    raise OrderNotPayed unless order.payed?
+
     @seller_income = order.pay_amount
 
     Order.transaction do
@@ -30,13 +34,13 @@ class OrderPayedHandlerJob < ActiveJob::Base
 
         yield reward_amount
 
-        SharingIncome.create(
+        SharingIncome.create!(
           level: index + 1,
-          user_id: sharing_node.user,
+          user_id: sharing_node.user_id,
           seller_id: product.user_id,
           order_item: order_item,
           sharing_node: sharing_node,
-          amount: product.read_attribute(LEVEL_AMOUNT_FIELDS[index])
+          amount: product.read_attribute(LEVEL_AMOUNT_FIELDS[index]) * order_item.amount
         )
       end
       sharing_node = sharing_node.parent

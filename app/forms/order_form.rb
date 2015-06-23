@@ -70,12 +70,10 @@ class OrderForm
   end
 
   def create_order_and_order_item
-    pay_amount = order_items_attributes.map { |order_item| order_item[:pay_amount] }.sum
     self.order = Order.create!(
       user: buyer,
       seller: product.user,
       user_address: user_address,
-      pay_amount: pay_amount,
       order_items_attributes: order_items_attributes)
   end
 
@@ -84,7 +82,6 @@ class OrderForm
       product: product,
       user: buyer,
       amount: amount,
-      pay_amount: product.present_price * amount.to_i,
       sharing_node: sharing_node
     }]
   end

@@ -11,7 +11,7 @@ class Order < ActiveRecord::Base
 
   accepts_nested_attributes_for :order_items
 
-  validates :user_id, :user_address, presence: true
+  validates :user_id, :user_address_id, presence: true
   validates_uniqueness_of :number, allow_blank: true
 
   before_save :set_info_by_user_address, on: :create
@@ -61,6 +61,10 @@ class Order < ActiveRecord::Base
         break
       end
     end
+  end
+
+  def update_pay_amount
+    update_column(:pay_amount, order_items.sum(:pay_amount))
   end
 
   private

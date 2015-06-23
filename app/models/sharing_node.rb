@@ -6,11 +6,20 @@ class SharingNode < ActiveRecord::Base
   belongs_to :product
 
   validates :user_id, :product_id, presence: true
-  validates_uniqueness_of :code
 
-  before_create :set_code
+  # NOTE also using databse uniq index
+  validates_uniqueness_of :user_id, scope: [:product_id, :parent_id]
+  validates_uniqueness_of :user_id, scope: [:product_id], if: -> { self.parent_id.blank? }
+
+  before_create :set_code, :set_product
 
   private
+  def set_product
+    if parent_id.present?
+      self.product_id = parent.product_id
+    end
+  end
+
   def set_code
     loop do
       self.code = SecureRandom.hex(10)
