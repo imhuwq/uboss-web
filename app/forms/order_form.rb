@@ -73,6 +73,7 @@ class OrderForm
     pay_amount = order_items_attributes.map { |order_item| order_item[:pay_amount] }.sum
     self.order = Order.create!(
       user: buyer,
+      seller: product.user,
       user_address: user_address,
       pay_amount: pay_amount,
       order_items_attributes: order_items_attributes)
@@ -103,7 +104,7 @@ class OrderForm
   end
 
   def captcha_must_be_valid
-    if captcha != '123'
+    if !MobileAuthCode.auth_code(mobile, captcha)
       errors.add(:captcha, '手机验证码错误')
     end
   end
