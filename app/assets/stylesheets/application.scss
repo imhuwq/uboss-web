@@ -1,6 +1,9 @@
 @import "bootstrap-sprockets";
 @import "bootstrap";
 
+@import 'pages/orders';
+
+/* FIXME move to a single file and import to application */
 .clear {clear: both;}
 h1,h2,h3,h4,h5,h6{margin-bottom: 0px;margin-top: 0px;}
 @media only screen and (min-device-width:980px),only screen and (min-width:980px){
