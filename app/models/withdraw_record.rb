@@ -1,13 +1,19 @@
 class WithdrawRecord < ActiveRecord::Base
 
+  class AdjuestUserIncomeTypeWrong < StandardError;;end
+
+  include AASM
+
   serialize :bank_info
 
   belongs_to :user
   belongs_to :bank_card
 
-  validates :user_id, :bank_card_id, :state, :amount, presence: true
-  validates_numericality_of :amount, greater_than: 0,
-    less_than: -> (withdraw) { withdraw.user.income.to_f }
+  validates :user_id, :bank_card_id, :amount, presence: true
+  validates_numericality_of :amount, greater_than: 0
+  validates_numericality_of :amount,
+    less_than: -> (withdraw) { withdraw.user.income.to_f },
+    if: :new_record?
 
   enum state: { unprocess: 0, processed: 1, done: 2, closed: 3 }
 
@@ -16,16 +22,16 @@ class WithdrawRecord < ActiveRecord::Base
 
   aasm column: :state, enum: true do
     state :unprocess
-    state :processed, after: :set_processed_info
-    state :done, after: :set_done_at
-    state :closed
+    state :processed, before_enter: :set_processed_info
+    state :done, before_enter: :set_done_at, after_enter: :remove_user_frozen_income
+    state :closed, after_enter: :recover_user_income
 
     event :process do
-      transitions from: :unprocess, to: :process
+      transitions from: :unprocess, to: :processed
     end
 
     event :finish do
-      transitions from: :process, to: :done
+      transitions from: :processed, to: :done
     end
 
     event :close do
@@ -36,19 +42,38 @@ class WithdrawRecord < ActiveRecord::Base
 
   private
   def set_bank_info
-    self.bank_info = { number: bank_card.number, name: bank_card.name }
+    if bank_card_id_changed?
+      self.bank_info = { number: bank_card.number, name: bank_card.name }
+    end
   end
 
   def set_processed_info
-    self.processed_at = DateTime.now
+    self.process_at = DateTime.now
   end
 
-  def set_closed_info
+  def set_done_at
     self.done_at = DateTime.now
   end
 
   def handle_user_income
-    UserInfo.update_counters(user.user_info.id, income: -amount, frozen_income: amount)
+    adjust_user_income(:dec)
+  end
+
+  def recover_user_income
+    adjust_user_income(:inc)
+  end
+
+  def adjust_user_income(type)
+    if [:inc, :dec].include?(type)
+      type = (type == :inc) ? 1 : -1
+      UserInfo.update_counters(user.user_info.id, income: amount * type, frozen_income: -amount * type)
+    else
+      raise AdjuestUserIncomeTypeWrong, "Type: #{type} is worong, accept is :inc or :dec"
+    end
+  end
+
+  def remove_user_frozen_income
+    UserInfo.update_counters(user.user_info.id, frozen_income: -amount)
   end
 
 end

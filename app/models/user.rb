@@ -12,7 +12,8 @@ class User < ActiveRecord::Base
 
   alias_attribute :regist_mobile, :login
 
-  delegate :sharing_counter, :income, :income_level_one, :income_level_two, :income_level_thr,
+  delegate :sharing_counter, :income, :income_level_one, :income_level_two,
+    :income_level_thr, :frozen_income,
     to: :user_info, allow_nil: true
 
   before_create :set_mobile
