@@ -6,7 +6,8 @@ class WithdrawRecord < ActiveRecord::Base
   belongs_to :bank_card
 
   validates :user_id, :bank_card_id, :state, :amount, presence: true
-  validates_numericality_of :amount, greater_than: 0
+  validates_numericality_of :amount, greater_than: 0,
+    less_than: -> (withdraw) { withdraw.user.income.to_f }
 
   enum state: { unprocess: 0, processed: 1, done: 2, closed: 3 }
 
