@@ -34,6 +34,7 @@ ActiveRecord::Schema.define(version: 20150625072553) do
     t.string   "url"
   end
 
+
   create_table "bank_cards", force: :cascade do |t|
     t.integer  "user_id"
     t.string   "number"
