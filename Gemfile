@@ -1,4 +1,4 @@
-#source 'https://rubygems.org'
+# source 'https://rubygems.org'
 source 'https://ruby.taobao.org'
 
 ruby '2.2.2'
