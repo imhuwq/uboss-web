@@ -23,7 +23,7 @@ zh-CN:
         methods: 操作
       mobile_auth_code:
         mobile: 手机号码
-  errors: 
+  errors:
     messages:
       accepted: 必须是可被接受的
       blank: 不能为空字符
@@ -59,7 +59,7 @@ zh-CN:
     dashboard: 首页
     uboss_data: 数据
     orders: 订单列表
-    sharing_incomes: 用户分成
+    sharing_incomes: 订单分成
     withdraw_records: 用户提现
     products: 商品
   activerecord:
@@ -75,7 +75,7 @@ zh-CN:
         <<: *product
   enums:
     order:
-      state: 
+      state:
         unpay: 未付款
         payed: 已付款
         shiped: 已发货

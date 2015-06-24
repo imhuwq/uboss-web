@@ -9,9 +9,9 @@
         <%= li_link(:products, admin_products_path) %>
         <%= nav_group :orders do %>
           <%= li_link(:orders, admin_orders_path) %>
-          <%= li_link(:withdraw_records, admin_orders_path) %>
           <%= li_link(:sharing_incomes, admin_orders_path) %>
         <% end %>
+        <%= li_link(:withdraw_records, admin_orders_path) %>
         <%= can_li_link :manage, :uboss_data, '/admin/data' %>
       </ul>
 

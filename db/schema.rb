@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150623084108) do
+ActiveRecord::Schema.define(version: 20150624063026) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -30,6 +30,14 @@ ActiveRecord::Schema.define(version: 20150623084108) do
     t.datetime "created_at"
     t.string   "alt"
     t.string   "url"
+  end
+
+  create_table "bank_cards", force: :cascade do |t|
+    t.integer  "user_id"
+    t.string   "number"
+    t.string   "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "mobile_auth_codes", force: :cascade do |t|
@@ -80,16 +88,6 @@ ActiveRecord::Schema.define(version: 20150623084108) do
   end
 
   add_index "orders", ["number"], name: "index_orders_on_number", unique: true, using: :btree
-
-  create_table "product_share_issues", force: :cascade do |t|
-    t.integer  "product_id"
-    t.integer  "buyer_lv_1_id"
-    t.integer  "buyer_lv_2_id"
-    t.integer  "buyer_lv_3_id"
-    t.integer  "sharer_lv_1_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
 
   create_table "products", force: :cascade do |t|
     t.integer  "user_id"
@@ -192,8 +190,9 @@ ActiveRecord::Schema.define(version: 20150623084108) do
     t.float    "income_level_two"
     t.float    "income_level_thr"
     t.float    "sharing_counter"
-    t.datetime "created_at",       null: false
-    t.datetime "updated_at",       null: false
+    t.datetime "created_at",                     null: false
+    t.datetime "updated_at",                     null: false
+    t.float    "frozen_income",    default: 0.0
   end
 
   create_table "users", force: :cascade do |t|
@@ -219,6 +218,19 @@ ActiveRecord::Schema.define(version: 20150623084108) do
   add_index "users", ["login"], name: "index_users_on_login", unique: true, using: :btree
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
 
+  create_table "withdraw_records", force: :cascade do |t|
+    t.integer  "user_id"
+    t.integer  "state",        default: 0
+    t.float    "amount",       default: 0.0
+    t.string   "bank_info"
+    t.datetime "process_at"
+    t.datetime "done_at"
+    t.datetime "created_at",                 null: false
+    t.datetime "updated_at",                 null: false
+    t.integer  "bank_card_id"
+  end
+
+  add_foreign_key "bank_cards", "users"
   add_foreign_key "order_charges", "orders"
   add_foreign_key "order_items", "orders"
   add_foreign_key "order_items", "products"
@@ -234,4 +246,6 @@ ActiveRecord::Schema.define(version: 20150623084108) do
   add_foreign_key "sharing_nodes", "users", on_delete: :cascade
   add_foreign_key "user_addresses", "users"
   add_foreign_key "user_infos", "users", on_delete: :nullify
+  add_foreign_key "withdraw_records", "bank_cards", on_delete: :nullify
+  add_foreign_key "withdraw_records", "users"
 end
