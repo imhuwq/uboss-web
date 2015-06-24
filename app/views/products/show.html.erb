@@ -21,7 +21,7 @@ a:hover {color: yellow;}
       <div>
         <span class="font_h3">价格:</span>
         <span class="green">
-          <span>￥</span><span class="font_h1"><%= @product.present_price %></span> 
+          <span>￥</span><span class="font_h1"><%= @product.present_price %></span>
         </span>
         <span  class="font_h4 line-through grey">
         ￥<%= @product.original_price %>
@@ -45,7 +45,8 @@ a:hover {color: yellow;}
 
 <div class="row">
   <div class="col-xs-12">
-    <%= link_to '立即购买',url_for(:controller=>:orders,:action=>:new,:id=>@product.id,:mobile=>params[:mobile]),:class=>"btn text-center bg_green white col-xs-12" %>
+    <%= link_to '立即购买',
+      new_order_path(product_id: @product.id), class: "btn text-center bg_green white col-xs-12" %>
   </div>
 </div>
 <script type="text/javascript">
