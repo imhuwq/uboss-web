@@ -36,7 +36,9 @@ Rails.application.routes.draw do
       end
       root 'dashboard#index'
     end
+  end
 
+  authenticate :user, lambda { |user| user.id == 1 } do
     mount Sidekiq::Web => '/sidekiq'
   end
 

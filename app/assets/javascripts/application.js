@@ -12,6 +12,6 @@
 //
 //= require jquery
 //= require jquery_ujs
-//= require reset_mobile_win
 //= require pingpp_pay
+//= require reset_mobile_win
 //= require_self

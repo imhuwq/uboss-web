@@ -2,7 +2,7 @@
 <html lang="zh-CN">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=320, initial-scale=1, maximum-scale=1, user-scalable=no" />
+    <meta id='MobileViewport' name="viewport" content="width=320, initial-scale=1, maximum-scale=1, user-scalable=no" />
 
     <title><%= content_for?(:title) ? yield(:title) : "UBoss" %></title>
 
@@ -12,9 +12,12 @@
   </head>
 
   <body class='mobile'>
-    <p><%= current_user.login if current_user %></p>
+
     <div id="window"></div>
+    <div class="box">
       <%= yield %>
+    </div>
 
   </body>
 </html>
+
