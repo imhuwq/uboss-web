@@ -2,6 +2,17 @@ require 'test_helper'
 
 class OrderPayedHandlerJobTest < ActiveJob::TestCase
 
+  describe 'Order pay' do
+    let(:order) { create(:order) }
+    it 'should enqueued this job' do
+      assert_enqueued_jobs 0
+      assert_enqueued_with(job: OrderPayedHandlerJob, args: [order]) do
+        order.pay!
+      end
+      assert_enqueued_jobs 1
+    end
+  end
+
   it 'should raise error if not payed' do
     @order = create(:order)
 
