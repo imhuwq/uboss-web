@@ -9,8 +9,8 @@ class WithdrawRecordTest < ActiveSupport::TestCase
       assert_equal 1000, user.income
       assert_equal 0, user.frozen_income
       create(:withdraw_record, user: user, amount: 200)
-      assert_equal 800, user.user_info.reload.income
-      assert_equal 200, user.user_info.reload.frozen_income
+      assert_equal 800, user_info.reload.income
+      assert_equal 200, user_info.reload.frozen_income
     end
   end
 
@@ -29,11 +29,11 @@ class WithdrawRecordTest < ActiveSupport::TestCase
   describe "close withdraw_record" do
     it 'should recover user income with amount' do
       record = create(:withdraw_record, user: user, amount: 200)
-      assert_equal 800, user.user_info.reload.income
-      assert_equal 200, user.user_info.reload.frozen_income
+      assert_equal 800, user_info.reload.income
+      assert_equal 200, user_info.reload.frozen_income
       record.close!
-      assert_equal 1000, user.user_info.reload.income
-      assert_equal 0, user.user_info.reload.frozen_income
+      assert_equal 1000, user_info.reload.income
+      assert_equal 0, user_info.reload.frozen_income
     end
   end
 end
