@@ -2,8 +2,6 @@ require 'sidekiq/web'
 
 Rails.application.routes.draw do
 
-  mount RedactorRails::Engine => '/redactor_rails'
-
   devise_for :user, controllers: {
     sessions: "users/sessions",
     passwords: "users/passwords",
@@ -36,6 +34,8 @@ Rails.application.routes.draw do
       end
       root 'dashboard#index'
     end
+
+    mount RedactorRails::Engine => '/redactor_rails'
   end
 
   authenticate :user, lambda { |user| user.id == 1 } do
