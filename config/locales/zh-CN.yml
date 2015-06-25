@@ -1,7 +1,12 @@
 zh-CN:
   attributes:
+    number: 编号
     action: 操作
     state: 状态
+    product_name: 产品名称
+    user_regist_mobile: 用户
+    created_at: 创建时间
+    updated_at: 更新时间
   simple_form:
     labels:
       product: &product
@@ -57,13 +62,16 @@ zh-CN:
     orders: 订单
   li_link:
     dashboard: 首页
-    uboss_data: 数据
+    data: 数据
     orders: 订单列表
     sharing_incomes: 订单分成
     withdraw_records: 用户提现
     products: 商品
   activerecord:
     attributes:
+      sharing_income:
+        amount: 收益
+        level: 分成类型
       user:
         login: 登录名
         password: 密码
@@ -74,6 +82,11 @@ zh-CN:
       product:
         <<: *product
   enums:
+    sharing_income:
+      level:
+        l1: 一级分成
+        l2: 二级分成
+        l3: 三级分成
     order:
       state:
         unpay: 未付款

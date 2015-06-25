@@ -1,0 +1,15 @@
+<h4>分成编号：<small><%= @sharing_income.number %></small></h4>
+
+<hr />
+
+<div class='row'>
+  <div class='col-md-6'>
+    <div><b>交易时间：</b><%= @sharing_income.created_at %></div>
+    <div><b>来源订单总价：</b><%= @sharing_income.order.pay_amount %></div>
+    <div><b>分成类型：</b><%= t("l#{@sharing_income.level}", scope: 'enums.sharing_income.level') %></div>
+  </div>
+  <div class='col-md-6'>
+    <div><b>来源订单编号：</b><%= link_to @sharing_income.order.number, [:admin, @sharing_income.order] %></div>
+    <div><b>分成收益：</b><%= @sharing_income.amount %></div>
+  </div>
+</>

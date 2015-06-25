@@ -13,7 +13,7 @@ module ApplicationHelper
   end
 
   def nav_group(name, &block)
-    list = capture &block
+    list = capture(&block)
     text = t(name, scope: "nav_groups", default: name.to_s.humanize)
     active_status = /[^_\-a-aA-Z]active/.match(list) ? "active" : ""
 

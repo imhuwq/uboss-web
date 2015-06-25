@@ -32,9 +32,13 @@ Rails.application.routes.draw do
       resources :orders, except: [:destroy] do
         patch :ship, on: :member
       end
+      resources :sharing_incomes, only: [:index, :show, :update]
+      resources :withdraw_records, only: [:index, :show, :update]
+
+      get '/data', to: 'data#index'
+
       root 'dashboard#index'
     end
-
     mount RedactorRails::Engine => '/redactor_rails'
   end
 

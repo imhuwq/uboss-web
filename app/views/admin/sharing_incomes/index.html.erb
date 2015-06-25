@@ -1,0 +1,16 @@
+<%= table_for(@sharing_incomes) do |table| %>
+  <%= table.cell :number do |income| %>
+    <%= link_to income.number, [:admin, income] %>
+  <% end %>
+  <%= table.cell(:level) do |income| %>
+    <%= I18n.t("l#{income.level}", scope: 'enums.sharing_income.level')%>
+  <% end %>
+  <%= table.cell :product_name do |income| %>
+    <%= link_to income.product_name, [:admin, income.product] %>
+  <% end %>
+  <%= table.cell :user_regist_mobile %>
+  <%= table.cell :amount %>
+  <%= table.cell :created_at %>
+<%- end %>
+
+<%= paginate @sharing_incomes %>

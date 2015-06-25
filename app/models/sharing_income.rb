@@ -1,5 +1,7 @@
 class SharingIncome < ActiveRecord::Base
 
+  include Orderable
+
   USER_LEVEL_INCOME_MAPKEYS = [
     :income_level_one,
     :income_level_two,
@@ -15,9 +17,24 @@ class SharingIncome < ActiveRecord::Base
   validates :level, inclusion: { in: 1..3 }
   validates_numericality_of :amount, greater_than: 0
 
+  delegate :nickname, :regist_mobile, to: :user, prefix: true
+  delegate :product_name, :product, to: :order_item
+  delegate :order, to: :order_item
+
+  before_create :set_number
   after_create :increase_user_income
 
   private
+
+  def set_number
+    loop do
+      income_number =
+        "#{(Time.now - Time.parse('2012-12-12')).to_i}#{rand(1000) % 10000}#{SecureRandom.hex(3).upcase}"
+      unless SharingIncome.find_by(number: income_number)
+        self.number = income_number and break
+      end
+    end
+  end
 
   def increase_user_income
     UserInfo.update_counters(user.user_info.id, user_incomes)

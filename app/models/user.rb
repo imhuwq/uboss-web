@@ -5,6 +5,8 @@ class User < ActiveRecord::Base
   has_many :user_addresses
   has_many :orders
   has_many :sold_orders, class_name: 'Order', foreign_key: 'seller_id'
+  has_many :sharing_incomes
+  has_many :sharing_outcomes, class_name: 'SharingIncome', foreign_key: 'seller_id'
   has_one :user_info
 
   validates :login, uniqueness: true, mobile: true, presence: true
