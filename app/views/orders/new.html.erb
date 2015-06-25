@@ -5,6 +5,7 @@
 <%= simple_form_for @order_form, url: orders_path, method: 'POST' do |f| %>
   <div class="form-inputs">
   <%= f.hidden_field :product_id %>
+  <%= f.hidden_field :sharing_code %>
   <%= f.input :amount %>
   <% if current_user.blank? %>
     <%= f.input :mobile %>
