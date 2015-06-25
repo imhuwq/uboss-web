@@ -69,6 +69,12 @@ zh-CN:
     products: 商品
   activerecord:
     attributes:
+      withdraw_record:
+        user_identify: 申请人
+        amount: 金额
+        card_info: 提现账号
+        card_username: 收款人
+        created_at: 申请时间
       sharing_income:
         amount: 收益
         level: 分成类型
@@ -82,6 +88,12 @@ zh-CN:
       product:
         <<: *product
   enums:
+    withdraw_record:
+      state:
+        unprocess: 未处理
+        processed: 交易中
+        done: 交易完成
+        closed: 关闭
     sharing_income:
       level:
         l1: 一级分成

@@ -20,7 +20,7 @@ module ChargeService
         :currency  => 'cny',
         :subject   => "Charge Subject: order #{order.id}",
         :body      => "Charge Body",
-        :extra     => generate_extra(channel)
+        :extra     => generate_extra(channel, open_id)
       )
       create_order_charge(order, charge)
       charge.to_json
@@ -56,21 +56,21 @@ module ChargeService
     end
   end
 
-  def generate_extra(channel)
+  def generate_extra(channel, open_id)
     case channel
     when 'alipay_wap'
       extra = {
-        'success_url' => 'http://uboss.local:3000/charge/success',
-        'cancel_url'  => 'http://uboss.local:3000/charge/cancel'
+        'success_url' => 'http://xeasy.local:3000/charge/success',
+        'cancel_url'  => 'http://xeasy.local:3000/charge/cancel'
       }
     when 'upacp_wap', 'upmp_wap'
       extra = {
-        'result_url' => 'http://uboss.local:3000/charge/result?code='
+        'result_url' => 'http://xeasy.local:3000/charge/result?code='
       }
     when 'bfb_wap'
       extra = {
         'bfb_login' => true,
-        'result_url' => 'http://uboss.local:3000/charge/success'
+        'result_url' => 'http://xeasy.local:3000/charge/success'
       }
     when 'wx_pub'
       extra = {

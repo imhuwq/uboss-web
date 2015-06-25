@@ -33,7 +33,13 @@ Rails.application.routes.draw do
         patch :ship, on: :member
       end
       resources :sharing_incomes, only: [:index, :show, :update]
-      resources :withdraw_records, only: [:index, :show, :update]
+      resources :withdraw_records, only: [:index, :show, :update] do
+        member do
+          patch :processed
+          patch :finish
+          patch :close
+        end
+      end
 
       get '/data', to: 'data#index'
 

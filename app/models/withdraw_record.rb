@@ -1,8 +1,12 @@
 class WithdrawRecord < ActiveRecord::Base
 
+  include AASM
+  include Orderable
+  include Numberable
+
   class AdjuestUserIncomeTypeWrong < StandardError;;end
 
-  include AASM
+  BANK_INFO_STORE_KEYS = [:username, :bankname, :number]
 
   serialize :bank_info
 
@@ -14,6 +18,8 @@ class WithdrawRecord < ActiveRecord::Base
   validates_numericality_of :amount,
     less_than: -> (withdraw) { withdraw.user.income.to_f },
     if: :new_record?
+
+  delegate :identify, to: :user, prefix: true
 
   enum state: { unprocess: 0, processed: 1, done: 2, closed: 3 }
 
@@ -39,11 +45,20 @@ class WithdrawRecord < ActiveRecord::Base
     end
   end
 
+  BANK_INFO_STORE_KEYS.each do |key|
+    define_method "card_#{key}" do
+      bank_info[key]
+    end
+  end
 
   private
+
   def set_bank_info
     if bank_card_id_changed?
-      self.bank_info = { number: bank_card.number, name: bank_card.name }
+      self.bank_info = {}
+      BANK_INFO_STORE_KEYS.each do |key|
+        self.bank_info[key] = bank_card[key]
+      end
     end
   end
 

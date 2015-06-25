@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150625054200) do
+ActiveRecord::Schema.define(version: 20150625071626) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -35,10 +35,10 @@ ActiveRecord::Schema.define(version: 20150625054200) do
   create_table "bank_cards", force: :cascade do |t|
     t.integer  "user_id"
     t.string   "number"
-    t.string   "name"
+    t.string   "username"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string   "bank_name"
+    t.string   "bankname"
   end
 
   create_table "mobile_auth_codes", force: :cascade do |t|
@@ -232,7 +232,10 @@ ActiveRecord::Schema.define(version: 20150625054200) do
     t.datetime "created_at",                 null: false
     t.datetime "updated_at",                 null: false
     t.integer  "bank_card_id"
+    t.string   "number"
   end
+
+  add_index "withdraw_records", ["number"], name: "index_withdraw_records_on_number", unique: true, using: :btree
 
   add_foreign_key "bank_cards", "users"
   add_foreign_key "order_charges", "orders"

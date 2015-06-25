@@ -2,12 +2,13 @@ class User < ActiveRecord::Base
 
   devise :database_authenticatable, :rememberable, :trackable, :validatable
 
+  has_one :user_info
   has_many :user_addresses
   has_many :orders
   has_many :sold_orders, class_name: 'Order', foreign_key: 'seller_id'
   has_many :sharing_incomes
   has_many :sharing_outcomes, class_name: 'SharingIncome', foreign_key: 'seller_id'
-  has_one :user_info
+  has_many :bank_cards
 
   validates :login, uniqueness: true, mobile: true, presence: true
   validates :mobile, allow_nil: true, mobile: true
@@ -36,6 +37,10 @@ class User < ActiveRecord::Base
       new_user.save!
       new_user
     end
+  end
+
+  def identify
+    nickname || regist_mobile
   end
 
   def user_info
