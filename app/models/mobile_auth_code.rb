@@ -29,7 +29,8 @@ class MobileAuthCode < ActiveRecord::Base
     self.expire_at = Time.now + 30.minute
   end
 
-  def send_code #发送验证码
+  #FIXME 发送验证码,应该在创建成功之后
+  def send_code
     #Messege.send(:mobile=>self.mobile,:message=>"您的验证码是：#{self.code}")
     return true
   end
