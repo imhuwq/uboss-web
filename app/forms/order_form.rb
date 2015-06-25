@@ -23,8 +23,9 @@ class OrderForm
   validate :check_amount
 
   def user_address
+    return @user_address if @user_address.present?
     if buyer && user_address_id.present?
-      @user_address ||= buyer.user_addresses.find(self.user_address_id)
+      @user_address = buyer.user_addresses.find(self.user_address_id)
     end
   end
 
@@ -78,7 +79,7 @@ class OrderForm
     self.order = Order.create!(
       user: buyer,
       seller: product.user,
-      user_address: user_address,
+      user_address: self.user_address,
       order_items_attributes: order_items_attributes)
   end
 
@@ -106,7 +107,7 @@ class OrderForm
   end
 
   def captcha_must_be_valid
-    if captcha != '123'#!MobileAuthCode.auth_code(mobile, captcha)
+    if !MobileAuthCode.auth_code(mobile, captcha)
       errors.add(:captcha, '手机验证码错误')
     end
   end
