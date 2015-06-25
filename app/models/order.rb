@@ -70,7 +70,9 @@ class Order < ActiveRecord::Base
   private
 
   def generate_number
-     "#{(Time.now - Time.parse('2014-12-12')).to_i}#{(self.user_id + rand(1000)) % 10000}#{SecureRandom.hex(3).upcase}"
+    time_stamp = (Time.now - Time.parse('2014-12-12')).to_i
+    rand_num = ((self.user_id + rand(10000)) % 100000).to_s.rjust(5, '0')
+    "#{time_stamp}#{rand_num}#{SecureRandom.hex(3).upcase}"
   end
 
   def set_info_by_user_address
