@@ -11,7 +11,9 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150625071626) do
+
+ActiveRecord::Schema.define(version: 20150625072553) do
+
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -41,6 +43,17 @@ ActiveRecord::Schema.define(version: 20150625071626) do
     t.string   "bankname"
   end
 
+  create_table "evaluations", force: :cascade do |t|
+    t.integer  "buyer_id"
+    t.integer  "sharer_id"
+    t.integer  "status",        default: 0
+    t.integer  "order_item_id"
+    t.integer  "product_id"
+    t.text     "content"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "mobile_auth_codes", force: :cascade do |t|
     t.string   "code"
     t.datetime "expire_at"
@@ -66,6 +79,7 @@ ActiveRecord::Schema.define(version: 20150625071626) do
     t.datetime "updated_at",                    null: false
     t.float    "pay_amount",      default: 0.0
     t.integer  "sharing_node_id"
+    t.integer  "evaluation_id"
   end
 
   create_table "orders", force: :cascade do |t|
@@ -89,6 +103,16 @@ ActiveRecord::Schema.define(version: 20150625071626) do
   end
 
   add_index "orders", ["number"], name: "index_orders_on_number", unique: true, using: :btree
+
+  create_table "product_share_issues", force: :cascade do |t|
+    t.integer  "product_id"
+    t.integer  "buyer_lv_1_id"
+    t.integer  "buyer_lv_2_id"
+    t.integer  "buyer_lv_3_id"
+    t.integer  "sharer_lv_1_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "products", force: :cascade do |t|
     t.integer  "user_id"

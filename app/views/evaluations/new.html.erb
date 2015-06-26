@@ -1,0 +1,85 @@
+<style type="text/css">
+a {color:white;}
+a:hover {color: yellow;}
+</style>
+
+<div class="row text-center bg_green font_h2 white heading">
+  <%= link_to root_path do %>
+    <div class="col-xs-2"><</div>
+  <% end %>
+    <div class="col-xs-8">收货评价</div>
+    <!-- <a class="col-xs-2" onclick="">分享</a> -->
+</div>
+<div class="row">
+  <div class="col-xs-12">
+    <div style="width:70px;margin:20px auto 0px auto;">
+      <img src="/t/mobile/ok.png" style="width:70px;">
+    </div>
+    <div class="text-center grey" style="margin-bottom:10px;">您已经确认收货，请给评价。</div>
+  </div>
+  <div class="col-xs-10 col-md-offset-1 evaluation">
+    <div class="col-xs-4">
+      <a onclick="good()">
+        <div class="col-xs-10 col-md-offset-1 bg_white" id="good">
+          <div  class="col-xs-12">
+            <div style="width:40px;margin:10px auto;">
+              <img src="/t/mobile/good.png" style="width:40px;margin-bottom:8px">
+              <div class="text-center green font_h2">好评</div>
+            </div>
+          </div>
+        </div>
+      </a>
+    </div>
+    <div class="col-xs-4">
+      <a onclick="normal()">
+        <div class="col-xs-10 col-md-offset-1 bg_white" id="normal">
+          <div  class="col-xs-12">
+            <div style="width:40px;margin:10px auto;">
+              <img src="/t/mobile/normal.png" style="width:40px;margin-bottom:8px">
+              <div class="text-center green font_h2">中评</div>
+            </div>
+          </div>
+        </div>
+      </a>
+    </div>
+    <div class="col-xs-4">
+      <a onclick="bad()">
+        <div class="col-xs-10 col-md-offset-1 bg_white"  id="bad">
+          <div  class="col-xs-12">
+            <div style="width:40px;margin:10px auto;">
+              <img src="/t/mobile/bad.png" style="width:40px;margin-bottom:8px">
+              <div class="text-center green font_h2">差评</div>
+            </div>
+          </div>
+        </div>
+      </a>
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="col-xs-10 col-md-offset-1">
+    <%= simple_form_for @evaluation do |f| %>
+    <%= f.input_field :status, style:"display:none;" %>
+    <div style="padding:30px 7px;">
+      <%= f.input_field :content, placeholder: '写点评价吧', class: "col-xs-12",style: "height:100px;padding:0;margin:0;" %>
+    </div>
+    <div class="col-xs-12">
+      <div  style="margin:30px 7px;padding-bottom:60px;">
+        <a class="btn text-center bg_green white col-xs-12" onclick="submitEvaluationStatus()">提交</a>
+        
+      </div>   
+    </div>
+    <% end %>
+  </div>
+</div>
+<script type="text/javascript">
+function good() {$("#evaluation_status").val("1");$("#good").addClass('active');$("#normal").removeClass('active');$("#bad").removeClass('active')};
+function normal() {$("#evaluation_status").val("2");$("#normal").addClass('active');$("#good").removeClass('active');$("#bad").removeClass('active')};
+function bad() {$("#evaluation_status").val("3");$("#bad").addClass('active');$("#normal").removeClass('active');$("#good").removeClass('active');};
+function submitEvaluationStatus() {
+  var val = $("#evaluation_status").val()
+  if (val == '0') {
+    alert("请评价");
+  }else{$('#new_evaluation').submit();};
+};
+</script>

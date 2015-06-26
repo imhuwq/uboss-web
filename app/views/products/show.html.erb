@@ -2,6 +2,7 @@
 a {color:white;}
 a:hover {color: yellow;}
 </style>
+
 <div class="row text-center bg_green font_h1 white heading">
   <%= link_to url_for(:action=>:index) do %>
     <div class="col-xs-2"><<</div>
@@ -13,10 +14,11 @@ a:hover {color: yellow;}
   <div class="col-xs-12">
     <%= image_tag(url_for(@product.asset_img.try(:avatar).try(:url)),  alt: "-",:style=>"width:100%;") %>
   </div>
-  <div class="col-xs-12 bg_grey">
-    <div style="padding:10px 3%;">
-      <div class="col-xs-12 font_h3" style="border-bottom:1px solid gray;padding:2%;">
-        <%= @product.name %>
+  <div class="col-xs-12">
+    <div style="padding:0 3% 5px 3%;">
+      <div class="col-xs-12 font_h3">
+        <div style="border-bottom:1px dotted gray;"><%= @product.name %></div>
+        
       </div>
       <div>
         <span class="font_h3">价格:</span>
@@ -36,21 +38,27 @@ a:hover {color: yellow;}
     </div>
   </div>
 </div>
-<div class="row">
+<div class="row" style="margin-bottom:60px;">
   <h2 class="text-center bg_green white">图文详情</h2>
-  <div class="col-xs-12 content">
+  <div class="col-xs-12 content bg_white">
     <%= raw @product.content %>
   </div>
 </div>
 
-<div class="row">
-  <div class="col-xs-12">
-    <%= link_to '立即购买',
-      new_order_path(product_id: @product.id, sharing_code: params[:sharing_code]),
-      class: "btn text-center bg_green white col-xs-12"
-    %>
+
+<div class="row bottom-flow">
+  <div class="col-xs-12 bg_white">
+    <div style="margin:10px;float:left;width:300px;">
+      <%= link_to '立即购买',
+        new_order_path(product_id: @product.id, sharing_code: params[:sharing_code]),
+        class: "btn text-center bg_green white col-xs-12"
+      %>
+    </div>   
   </div>
 </div>
+
+
+
 <script type="text/javascript">
 <% if params.present? and params['shared'] == 'true' %>
 render_share_page()

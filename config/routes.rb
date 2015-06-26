@@ -13,6 +13,8 @@ Rails.application.routes.draw do
   resources :products do
     post :save_mobile, on: :collection
   end
+  resource :evaluations do
+  end
   resource :charge, only: [:create] do
     collection do
       post 'pingpp_callback'
