@@ -17,7 +17,7 @@ class Order < ActiveRecord::Base
 
   before_save :set_info_by_user_address, on: :create
 
-  delegate :mobile, :regist_mobile, to: :user, prefix: :buyer
+  delegate :mobile, :regist_mobile, :identify, to: :user, prefix: :buyer
 
   scope :selled, -> { where("orders.state <> 0") }
 

@@ -8,7 +8,7 @@ class OrderItem < ActiveRecord::Base
 
   validates :product_id, presence: true
 
-  delegate :name, to: :product, prefix: true
+  delegate :name, :traffic_expense, :present_price, to: :product, prefix: true
 
   before_save :set_pay_amount
   after_create :decrease_product_stock

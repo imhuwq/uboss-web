@@ -17,13 +17,27 @@
 <div class='row'>
   <div class='col-md-6'>
     <div><b>订单编号：</b><%= @order.number %></div>
+    <div><b>成交单价：</b><%= @order_item.product_present_price %></div>
+    <div><b>运费：</b><%= @order_item.product_traffic_expense %></div>
+    <div><b>总价：</b><%= @order.pay_amount %></div>
+  </div>
+  <div class='col-md-6'>
+    <div><b>买家：</b><%= @order.buyer_identify %></div>
+    <div><b>下单时间：</b><%= @order.created_at %></div>
     <div><b>商品名称：</b><%= @order_item.product_name %></div>
     <div><b>数量：</b><%= @order_item.amount %></div>
   </div>
-  <div class='col-md-6'>
-    <div><b>收货人：</b><%= @order.username %></div>
-    <div><b>收获地址：</b><%= @order.address %></div>
-    <div><b>联系方式：</b><%= @order.mobile %></div>
+</div>
+
+<h3>发货信息</h3>
+<hr />
+<div class="row">
+  <div class="col-md-6">
+    <div> <b>收货人：</b> <%= @order.username %></div>
+    <div> <b>联系电话：</b> <%= @order.mobile %></div>
+  </div>
+  <div class="col-md-6">
+    <div> <b>收货地址：</b> <%= @order.address %></div>
   </div>
 </div>
 
