@@ -11,9 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-
 ActiveRecord::Schema.define(version: 20150625072553) do
-
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -34,7 +32,6 @@ ActiveRecord::Schema.define(version: 20150625072553) do
     t.string   "url"
   end
 
-
   create_table "bank_cards", force: :cascade do |t|
     t.integer  "user_id"
     t.string   "number"
@@ -47,7 +44,7 @@ ActiveRecord::Schema.define(version: 20150625072553) do
   create_table "evaluations", force: :cascade do |t|
     t.integer  "buyer_id"
     t.integer  "sharer_id"
-    t.integer  "status",        default: 0
+    t.integer  "status",        default: 3
     t.integer  "order_item_id"
     t.integer  "product_id"
     t.text     "content"
