@@ -70,6 +70,7 @@ GEM
     bootstrap-sass (3.3.4.1)
       autoprefixer-rails (>= 5.0.0.1)
       sass (>= 3.2.19)
+    browser (0.8.0)
     builder (3.2.2)
     byebug (4.0.5)
       columnize (= 0.9.0)
@@ -377,6 +378,7 @@ DEPENDENCIES
   awesome_nested_set
   better_errors
   bootstrap-sass
+  browser
   byebug
   cancancan (~> 1.10)
   capistrano-rails
@@ -429,4 +431,4 @@ DEPENDENCIES
   webmock
 
 BUNDLED WITH
-   1.10.4
+   1.10.5

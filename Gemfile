@@ -18,6 +18,7 @@ gem 'aasm'
 gem 'enum_help'
 gem 'pingpp'
 gem 'dalli' # memcache client
+gem "browser" # browser detection
 
 # nested sharing_node
 gem 'awesome_nested_set'
