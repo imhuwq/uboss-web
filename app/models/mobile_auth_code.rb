@@ -30,8 +30,8 @@ class MobileAuthCode < ActiveRecord::Base
   end
 
   def send_sms(phone,msg,tpl_id=1) # 发送短信
-    raise "send sms : phone is blank." if phone.blank?
-    raise "send sms : msg is blank." if msg.blank?
+    return {'msg'=> 'error',"detail"=>"电话号码不能为空"} if phone.blank?
+    return {'msg'=> 'error',"detail"=>"内容不能为空"} if msg.blank?
     begin
       sms = ChinaSMS.to(phone, {code:msg,company:'优来吧UBoss'}, tpl_id: tpl_id)
       return "OK" if sms['msg'] == "OK"

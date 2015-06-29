@@ -25,10 +25,10 @@ class Evaluation < ActiveRecord::Base
     evaluation = Evaluation.where(sharer_id: sharer_id)
     total = evaluation.count
     if total != 0
-      good = evaluation.where(status: 3).count
-      rate = good/total.try(:to_f)
+      good = evaluation.where(status: 1).count
+      rate = "#{'%.2f' % (good/total.try(:to_f)*100)}%"
     else
-      1
+      "100.00%"
     end
   end
 
@@ -36,10 +36,10 @@ class Evaluation < ActiveRecord::Base
     evaluation = Evaluation.where(product_id: product_id)
     total = evaluation.count
     if total != 0
-      good = evaluation.where(status: 3).count
-      rate = good/total.try(:to_f)
+      good = evaluation.where(status: 1).count
+      rate = "#{'%.2f' % (good/total.try(:to_f)*100)}%"
     else
-      1
+      "100.00%"
     end
   end
 end

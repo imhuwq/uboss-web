@@ -54,6 +54,7 @@ Rails.application.routes.draw do
     mount Sidekiq::Web => '/sidekiq'
   end
 
-  get 'sharing' => 'sharing#index'
   root 'products#index'
+  get 'sharing(.:code)' => 'sharing#show'
+
 end

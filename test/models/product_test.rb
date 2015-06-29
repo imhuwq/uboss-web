@@ -61,4 +61,23 @@ class ProductTest < ActiveSupport::TestCase
     assert_equal(0, p.share_amount_lv_2)
     assert_equal(0, p.share_amount_lv_1)
   end
+  test 'total_sells' do
+    buyer = create(:user)
+    product = create :product_with_1sharing
+    level1_node = create(:sharing_node, product: product)
+    level2_node = create(:sharing_node, product: product, parent: level1_node)
+    10.times do
+      order = create(:order,
+                        user: buyer,
+                        order_items_attributes: [{
+                          product: product,
+                          user: buyer,
+                          amount: 2,
+                          sharing_node: level2_node
+                        }],
+                        state: 'payed'
+                       )
+    end
+    assert_equal(20,Product.total_sells(product.id))
+  end
 end

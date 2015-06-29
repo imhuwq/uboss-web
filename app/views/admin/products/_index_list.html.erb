@@ -10,9 +10,13 @@
     </div>
     <% end %>
   <% end %>
-  <%= t.cell :good_reputation do |obj| '-' end %>
+  <%= t.cell :good_reputation do |obj| %>
+  <%= Evaluation.product_good_reputation_rage(obj.id) %>
+  <% end %>
   <%= t.cell :count %>
-  <%= t.cell :total_sells do |obj| '-' end %>
+  <%= t.cell :total_sells do |obj| %>
+  <%= Product.total_sells(obj) %>
+  <% end %>
   <%= t.cell :created_at %>
   <%= t.cell :methods do |obj| %>
     <%= link_to("编辑", url_for(:action=>:edit,:id=>obj.id)) %>

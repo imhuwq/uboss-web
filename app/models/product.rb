@@ -70,4 +70,10 @@ class Product < ActiveRecord::Base
       self.share_amount_lv_1 = 0.0
     end
   end
+
+  def self.total_sells(product_id) #商品总销量
+    orders = Order.where(state: 1)
+    order_items = OrderItem.where(order_id: orders.collect(&:id),product_id: product_id)
+    total_sells = order_items.collect(&:amount).inject(:+) || 0
+  end
 end
