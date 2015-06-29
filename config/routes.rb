@@ -43,6 +43,11 @@ Rails.application.routes.draw do
         end
       end
       resources :users, except: [:destroy]
+      resource :account, only: [:edit, :show, :update] do
+        get :password, on: :member
+        patch :password, to: 'accounts#update_password'
+      end
+
       get '/data', to: 'data#index'
 
       root 'dashboard#index'

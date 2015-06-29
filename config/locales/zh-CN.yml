@@ -1,5 +1,6 @@
 zh-CN:
   attributes:
+    current_password: 当前密码
     number: 编号
     action: 操作
     state: 状态
@@ -9,7 +10,7 @@ zh-CN:
     updated_at: 更新时间
     mobile: 手机
     email: 邮箱
-    nickname: 昵称
+    nickname: 名称
     role_display_name: 角色
     password_confirmation: 密码确认
   simple_form:
@@ -85,7 +86,7 @@ zh-CN:
         amount: 收益
         level: 分成类型
       user:
-        login: 登录名
+        login: 登录手机
         password: 密码
       order:
         number: 订单编号

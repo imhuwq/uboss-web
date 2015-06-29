@@ -1,0 +1,14 @@
+<div class="center-form-container">
+  <h4>设置</h4>
+  <hr />
+  <%= simple_form_for(current_user, url: admin_account_path, method: :patch) do |f| %>
+
+    <%= f.input :login, disabled: true %>
+    <%= f.input :mobile %>
+    <%= f.input :email %>
+    <%= f.input :nickname %>
+
+    <%= f.submit class: 'btn btn-primary' %>
+
+  <% end %>
+</div>

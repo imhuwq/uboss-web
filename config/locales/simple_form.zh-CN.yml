@@ -14,7 +14,6 @@ zh-CN:
       defaults:
         password: '密码'
       user:
-        login: "手机号码"
         user_role: 角色
         new:
           email: '登录E-mail'
