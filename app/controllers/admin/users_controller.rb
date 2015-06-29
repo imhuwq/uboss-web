@@ -1,5 +1,5 @@
 class Admin::UsersController < AdminController
-  before_action :set_user, only: [:show, :edit, :update]
+  load_and_authorize_resource
 
   def index
     @users = User.admin.recent.page(param_page)
@@ -13,7 +13,7 @@ class Admin::UsersController < AdminController
   end
 
   def create
-    @user = User.new(user_params.merge(admin: true))
+    @user.admin = true
     if @user.save
       redirect_to admin_user_path(@user)
     else
@@ -34,11 +34,7 @@ class Admin::UsersController < AdminController
 
   private
 
-  def set_user
-    @user = User.find(params[:id])
-  end
-
-  def user_params
+  def resource_params
     permit_keys = [:email, :mobile, :nickname, :user_role_id]
     if params[:action] == "create"
       permit_keys += [:login, :password, :password_confirmation]

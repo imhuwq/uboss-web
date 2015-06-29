@@ -2,7 +2,7 @@
 # 自定义管理系统
 class Admin::ProductsController < AdminController
   def index
-    products = Product.where(user_id: current_user.id, status: [0,1]).order('created_at DESC')
+    products = Product.accessible_by(current_ability).where(status: [0,1]).order('created_at DESC')
     @products = products.page(params[:page] || 1)
     @statistics = {}
     @statistics[:create_today] = products.where('created_at > ? and created_at < ?', Time.now.beginning_of_day, Time.now.end_of_day).count
@@ -58,7 +58,7 @@ class Admin::ProductsController < AdminController
     @product = Product.find_by_id(params[:id])
     if @product.status == 0 && !(params[:delete] == 'true')
       @product.status = 1
-      flash[:success] = '上架成功' 
+      flash[:success] = '上架成功'
     elsif @product.status == 1 && !(params[:delete] == 'true')
       @product.status = 0
       flash[:success] = '取消上架成功'

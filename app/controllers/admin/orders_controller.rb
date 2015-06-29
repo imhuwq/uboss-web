@@ -1,10 +1,11 @@
 class Admin::OrdersController < AdminController
+  load_and_authorize_resource
 
-  before_action :find_order, only: [:show, :update, :ship]
+  # TODO record use operations
   after_action :record_operation, only: [:update, :ship]
 
   def index
-    @orders = Order.recent.page(param_page)
+    @orders = @orders.recent.page(param_page)
     @unship_amount = @orders.payed.total_count
     @today_selled_amount = @orders.today.selled.total_count
     @shiped_amount = @orders.shiped.total_count
@@ -31,10 +32,6 @@ class Admin::OrdersController < AdminController
   private
   def order_params
     params.require(:order).permit(:mobile, :address)
-  end
-
-  def find_order
-    @order ||= Order.find(params[:id])
   end
 
   def record_operation
