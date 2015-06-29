@@ -7,7 +7,7 @@
       <h3 class="grey">留下手机号，现金礼品拿不停!</h3>
       <div class="row">
         <%# if params.present? and params['shared'] == 'true' %>
-        <%= simple_form_for(:save_mobile,url:{action: :save_mobile,:id=>@product.id}, wrapper: :inline_form,remote: true )do |f| %>
+        <%= simple_form_for(:save_mobile,url:{controller: :products, action: :save_mobile,:id=>@product.id}, wrapper: :inline_form,remote: true )do |f| %>
         <div class="col-xs-8">
           <%= f.input :mobile,placeholder:"手机号",label: false,input_html:{class:""} %>
         </div>

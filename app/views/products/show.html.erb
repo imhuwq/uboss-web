@@ -50,7 +50,7 @@ a:hover {color: yellow;}
   <div class="col-xs-12 bg_white">
     <div style="margin:10px;float:left;width:300px;">
       <%= link_to '立即购买',
-        new_order_path(product_id: @product.id, sharing_code: params[:sharing_code]),
+        new_order_path(product_id: @product.id, sharing_code: @sharing_node.try(:code)),
         class: "btn text-center bg_green white col-xs-12"
       %>
     </div>   

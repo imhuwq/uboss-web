@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150625072553) do
+ActiveRecord::Schema.define(version: 20150626102108) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -44,12 +44,13 @@ ActiveRecord::Schema.define(version: 20150625072553) do
   create_table "evaluations", force: :cascade do |t|
     t.integer  "buyer_id"
     t.integer  "sharer_id"
-    t.integer  "status",        default: 3
+    t.integer  "status",          default: 3
     t.integer  "order_item_id"
     t.integer  "product_id"
     t.text     "content"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "sharing_node_id"
   end
 
   create_table "mobile_auth_codes", force: :cascade do |t|

@@ -55,4 +55,6 @@ Rails.application.routes.draw do
   end
 
   root 'home#index'
+
+  get 'sharing' => 'sharing#index'
 end

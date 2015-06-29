@@ -60,13 +60,14 @@ a:hover {color: yellow;}
   <div class="col-xs-10 col-md-offset-1">
     <%= simple_form_for @evaluation do |f| %>
     <%= f.input_field :status, style:"display:none;" %>
+    <%= f.input_field :order_item_id, value: params[:id], style:"display:none;" %>
     <div style="padding:30px 7px;">
       <%= f.input_field :content, placeholder: '写点评价吧', class: "col-xs-12",style: "height:100px;padding:0;margin:0;" %>
     </div>
     <div class="col-xs-12">
       <div  style="margin:30px 7px;padding-bottom:60px;">
         <a class="btn text-center bg_green white col-xs-12" onclick="submitEvaluationStatus()">提交</a>
-        
+        <%= @order_item.inspect %>
       </div>   
     </div>
     <% end %>

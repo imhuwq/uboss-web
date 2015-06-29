@@ -3,6 +3,8 @@ class Evaluation < ActiveRecord::Base
 
   belongs_to :order_item
 
+  has_one    :sharing_node
+
   before_save :relate_attrs
   after_save :set_order_item_evaluation_id
 
