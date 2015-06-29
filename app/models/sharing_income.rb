@@ -27,7 +27,7 @@ class SharingIncome < ActiveRecord::Base
   private
 
   def generate_number
-    "#{(Time.now - Time.parse('1999-12-12')).to_i}#{rand(100000).rjust(5,'0')}#{SecureRandom.hex(3).upcase}"
+    "#{(Time.now - Time.parse('1999-12-12')).to_i}#{rand(100000).to_s.rjust(5,'0')}#{SecureRandom.hex(3).upcase}"
   end
 
   def increase_user_income
