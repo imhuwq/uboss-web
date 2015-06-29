@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150626102108) do
+ActiveRecord::Schema.define(version: 20150629035345) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -44,7 +44,7 @@ ActiveRecord::Schema.define(version: 20150626102108) do
   create_table "evaluations", force: :cascade do |t|
     t.integer  "buyer_id"
     t.integer  "sharer_id"
-    t.integer  "status",          default: 3
+    t.integer  "status",          default: 0
     t.integer  "order_item_id"
     t.integer  "product_id"
     t.text     "content"
@@ -102,16 +102,6 @@ ActiveRecord::Schema.define(version: 20150626102108) do
   end
 
   add_index "orders", ["number"], name: "index_orders_on_number", unique: true, using: :btree
-
-  create_table "product_share_issues", force: :cascade do |t|
-    t.integer  "product_id"
-    t.integer  "buyer_lv_1_id"
-    t.integer  "buyer_lv_2_id"
-    t.integer  "buyer_lv_3_id"
-    t.integer  "sharer_lv_1_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
 
   create_table "products", force: :cascade do |t|
     t.integer  "user_id"
@@ -222,6 +212,13 @@ ActiveRecord::Schema.define(version: 20150626102108) do
     t.float    "frozen_income",    default: 0.0
   end
 
+  create_table "user_roles", force: :cascade do |t|
+    t.string   "name"
+    t.string   "display_name"
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
+  end
+
   create_table "users", force: :cascade do |t|
     t.string   "login",                  default: "",    null: false
     t.string   "email"
@@ -240,6 +237,7 @@ ActiveRecord::Schema.define(version: 20150626102108) do
     t.boolean  "admin",                  default: false
     t.boolean  "need_reset_password",    default: false
     t.string   "nickname"
+    t.integer  "user_role_id"
   end
 
   add_index "users", ["login"], name: "index_users_on_login", unique: true, using: :btree
@@ -276,6 +274,7 @@ ActiveRecord::Schema.define(version: 20150626102108) do
   add_foreign_key "sharing_nodes", "users", on_delete: :cascade
   add_foreign_key "user_addresses", "users"
   add_foreign_key "user_infos", "users", on_delete: :nullify
+  add_foreign_key "users", "user_roles"
   add_foreign_key "withdraw_records", "bank_cards", on_delete: :nullify
   add_foreign_key "withdraw_records", "users"
 end

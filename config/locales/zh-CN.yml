@@ -7,6 +7,11 @@ zh-CN:
     user_regist_mobile: 用户
     created_at: 创建时间
     updated_at: 更新时间
+    mobile: 手机
+    email: 邮箱
+    nickname: 昵称
+    role_display_name: 角色
+    password_confirmation: 密码确认
   simple_form:
     labels:
       product: &product
@@ -67,6 +72,7 @@ zh-CN:
     sharing_incomes: 订单分成
     withdraw_records: 用户提现
     products: 商品
+    users: 后台账户
   activerecord:
     attributes:
       withdraw_record:
@@ -122,6 +128,9 @@ zh-CN:
       previous: '&lsaquo; 上一页'
       truncate: '&hellip;'
   helpers:
+    submit:
+      create: 创建
+      update: 更新
     page_entries_info:
       one_page:
         display_entries:

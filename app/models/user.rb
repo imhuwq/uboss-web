@@ -1,5 +1,7 @@
 class User < ActiveRecord::Base
 
+  include Orderable
+
   devise :database_authenticatable, :rememberable, :trackable, :validatable
 
   has_one :user_info
@@ -9,6 +11,7 @@ class User < ActiveRecord::Base
   has_many :sharing_incomes
   has_many :sharing_outcomes, class_name: 'SharingIncome', foreign_key: 'seller_id'
   has_many :bank_cards
+  belongs_to :user_role
 
   validates :login, uniqueness: true, mobile: true, presence: true
   validates :mobile, allow_nil: true, mobile: true
@@ -18,8 +21,11 @@ class User < ActiveRecord::Base
   delegate :sharing_counter, :income, :income_level_one, :income_level_two,
     :income_level_thr, :frozen_income,
     to: :user_info, allow_nil: true
+  delegate :name, :display_name, to: :user_role, prefix: :role, allow_nil: true
 
   before_create :set_mobile
+
+  scope :admin, -> { where(admin: true) }
 
   class << self
     def new_guest(mobile)

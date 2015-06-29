@@ -1,0 +1,12 @@
+<div class="block-actions">
+  <%= link_to '新增', new_admin_user_path, class: 'btn btn-default' %>
+</div>
+
+<%= table_for(@users) do |t| %>
+  <%= t.cell :login do |user| %>
+    <%= link_to user.login, [:admin, user] %>
+  <% end %>
+  <%= t.cell :mobile %>
+  <%= t.cell :nickname %>
+  <%= t.cell :role_display_name %>
+<% end %>

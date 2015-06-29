@@ -1,0 +1,31 @@
+<ol class="breadcrumb">
+  <li><%= link_to '账户', [:admin, :users] %></li>
+  <li class="active">账户详情</li>
+</ol>
+
+<h3>账户信息<small><%= @user.identify %></small></h3>
+<hr>
+<table class="table table-bordered table-hover table-striped">
+  <tbody>
+    <tr>
+      <th><%= User.human_attribute_name(:login) %></th>
+      <td><%= @user.login %></td>
+    </tr>
+    <tr>
+      <th><%= User.human_attribute_name(:mobile) %></th>
+      <td><%= @user.mobile %></td>
+    </tr>
+    <tr>
+      <th><%= User.human_attribute_name(:nickname) %></th>
+      <td><%= @user.nickname %></td>
+    </tr>
+    <tr>
+      <th><%= User.human_attribute_name(:role_display_name) %></th>
+      <td><%= @user.role_display_name %></td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="block-actions">
+  <%= link_to '编辑', edit_admin_user_path(@user), class: 'btn btn-default' %>
+</div>

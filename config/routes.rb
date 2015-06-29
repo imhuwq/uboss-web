@@ -42,7 +42,7 @@ Rails.application.routes.draw do
           patch :close
         end
       end
-
+      resources :users, except: [:destroy]
       get '/data', to: 'data#index'
 
       root 'dashboard#index'

@@ -15,10 +15,11 @@ zh-CN:
         password: '密码'
       user:
         login: "手机号码"
+        user_role: 角色
         new:
           email: '登录E-mail'
         edit:
-          email: 'E-mail.'
+          email: 'E-mail'
     hints:
       defaults:
         username: 'User name to sign in.'

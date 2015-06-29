@@ -16,11 +16,15 @@
 //= require redactor-rails
 //= require redactor-rails/plugins/imagemanager
 //= require redactor-rails/langs/zh_cn
+//= require chosen.jquery.min
 //= require_tree ./admin
 //= require_self
 
 $(document).ready(function() {
   $("body").on('click',"#check_all", function(){
     $(".check").attr("checked",this.checked);
-  })
-})
+  });
+
+  $("select").filter(":not([data-manual-chosen])").chosen();
+});
+

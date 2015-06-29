@@ -1,6 +1,7 @@
 @import "bootstrap-sprockets";
 @import "bootstrap";
 @import 'redactor-rails';
+@import "chosen.min";
 
 @import "admin/orders";
 
@@ -19,3 +20,10 @@
     width: 980px;
 }
 .border_block {border:1px solid black;margin-top:30px;padding-bottom:30px;}
+
+.block-actions {
+  margin: 10px 0 10px 0;
+  .btn {
+    margin-right: 10px;
+  }
+}

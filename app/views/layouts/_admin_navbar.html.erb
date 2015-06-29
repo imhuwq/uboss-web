@@ -12,6 +12,7 @@
           <%= li_link(:sharing_incomes, admin_sharing_incomes_path) %>
         <% end %>
         <%= li_link(:withdraw_records, admin_withdraw_records_path) %>
+        <%= can_li_link(:manage, :users, admin_users_path) %>
         <%= can_li_link :manage, :data, admin_data_path %>
       </ul>
 
