@@ -1,9 +1,7 @@
 <%= simple_form_for [:admin, @user] do |f| %>
   <%= f.input :login, disabled: !@user.new_record? %>
-  <% if @user.new_record? %>
-    <%= f.input :password %>
-    <%= f.input :password_confirmation %>
-  <% end %>
+  <%= f.input :password %>
+  <%= f.input :password_confirmation %>
   <%= f.input :nickname %>
   <%= f.association :user_role, label_method: :display_name, value_method: :id, include_blank: false %>
 

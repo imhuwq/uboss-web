@@ -35,9 +35,9 @@ class Admin::UsersController < AdminController
   private
 
   def resource_params
-    permit_keys = [:email, :mobile, :nickname, :user_role_id]
+    permit_keys = [:password, :password_confirmation, :email, :mobile, :nickname, :user_role_id]
     if params[:action] == "create"
-      permit_keys += [:login, :password, :password_confirmation]
+      permit_keys += [:login]
     end
     params.require(:user).permit(permit_keys)
   end
