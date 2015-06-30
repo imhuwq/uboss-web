@@ -1,7 +1,7 @@
 require 'pingpp'
 
 module ChargeService
-  APP_ID = Rails.application.secrets.pingpp_app_id
+  APP_ID = Rails.application.secrets.pingpp["app_id"]
 
   extend self
 
