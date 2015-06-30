@@ -1,5 +1,9 @@
 class ImageUploader < CarrierWave::Uploader::Base
 
+  def default_url
+    ActionController::Base.helpers.asset_path("fallback/" + [version_name, "default.gif"].compact.join('_'))
+  end
+
   def store_dir
     "#{model.class.to_s.underscore}/#{mounted_as}"
   end
