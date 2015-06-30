@@ -1,13 +1,11 @@
-# encoding: utf-8
-class RedactorRailsDocumentUploader < CarrierWave::Uploader::Base
+class RedactorRailsDocumentUploader < UpyunUploader
+
   include RedactorRails::Backend::CarrierWave
 
-  # storage :fog
-  storage :file
+  storage :upyun
 
-  def store_dir
-    "system/redactor_assets/documents/#{model.id}"
-  end
+  self.upyun_bucket = Rails.application.secrets.upyun_file_bucket
+  self.upyun_bucket_host = Rails.application.secrets.upyun_file_bucket_host
 
   def extension_white_list
     RedactorRails.document_file_types

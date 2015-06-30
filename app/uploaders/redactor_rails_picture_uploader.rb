@@ -1,53 +1,37 @@
-# encoding: utf-8
-class RedactorRailsPictureUploader < CarrierWave::Uploader::Base
+class RedactorRailsPictureUploader < UpyunUploader
+
   include RedactorRails::Backend::CarrierWave
-
-  # Include RMagick or ImageScience support:
-  # include CarrierWave::RMagick
   include CarrierWave::MiniMagick
-  # include CarrierWave::ImageScience
 
-  # Choose what kind of storage to use for this uploader:
-  storage :file
+  #def default_url
+    #"/images/fallback/" + [version_name, "default.png"].compact.join('_')
+  #end
 
-  # Override the directory where uploaded files will be stored.
-  # This is a sensible default for uploaders that are meant to be mounted:
-  def store_dir
-    "system/redactor_assets/pictures/#{model.id}"
+  def url(version_name = "")
+    @url ||= super({})
+    version_name = version_name.to_s
+    return @url if version_name.blank?
+    # if not version_name.in?(IMAGE_UPLOADER_ALLOW_IMAGE_VERSION_NAMES)
+    #   # To protected version name using, when it not defined, this will be give an error message in development environment
+    #   raise "ImageUploader version_name:#{version_name} not allow."
+    # end
+    [@url, version_name].join("-") # thumb split with "-"
   end
-
-  # Provide a default URL as a default if there hasn't been a file uploaded:
-  # def default_url
-  #   "/images/fallback/" + [version_name, "default.png"].compact.join('_')
-  # end
-
-  # Process files as they are uploaded:
-  # process :scale => [200, 300]
-  #
-  # def scale(width, height)
-  #   # do something
-  # end
 
   process :read_dimensions
 
-  # Create different versions of your uploaded files:
-  version :thumb do
-    process :resize_to_fill => [118, 100]
-  end
-
-  version :content do
-    process :resize_to_limit => [800, 800]
-  end
-
-  # Add a white list of extensions which are allowed to be uploaded.
-  # For images you might use something like this:
   def extension_white_list
     RedactorRails.image_file_types
   end
 
-  # Override the filename of the uploaded files:
-  # Avoid using model.id or version_name here, see uploader/store.rb for details.
-  # def filename
-  #   "something.jpg" if original_filename
-  # end
+  def filename
+    return nil unless original_filename
+    @name ||= Digest::MD5.hexdigest(cache_id)
+    if file.respond_to? :extension
+      "#{@name}.#{file.extension}"
+    elsif file.respond_to?(:path) # Upyun file
+      "#{@name}#{File.extname(file.path)}"
+    end
+  end
+
 end
