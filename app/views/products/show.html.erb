@@ -1,82 +1,66 @@
-<style type="text/css">
-a {color:white;}
-a:hover {color: yellow;}
-</style>
 
-<div class="row text-center bg_green font_h1 white heading">
+<header class="head">
   <%= link_to url_for(controller: :products,action: :index) do %>
-    <div class="col-xs-2"><<</div>
+  <div class="bottom left iconleft"></div>
   <% end %>
-    <div class="col-xs-8"><b>UBOSS</b></div>
-    <!-- <a class="col-xs-2" onclick="">分享</a> -->
-</div>
-<div class="row">
-  <div class="col-xs-12">
+  <div class="log_font">商品详情</div>
+  <div class="shar">分享</div>      
+</header>
+<div class="container">
+  <div class="prdv_img">
     <%= image_tag(url_for(@product.asset_img.try(:avatar).try(:url)),  alt: "-",:style=>"width:100%;") %>
   </div>
-  <div class="col-xs-12">
-    <div style="padding:0 3% 5px 3%;">
-      <div class="col-xs-12 font_h3">
-        <div style="border-bottom:1px dotted gray;"><%= @product.name %></div>
-        
-      </div>
-      <div>
-        <span class="font_h3">价格:</span>
-        <span class="green">
-          <span>￥</span><span class="font_h1"><%= @product.present_price %></span>
-        </span>
-        <span  class="font_h4 line-through grey">
+  <div class="prdv_cont">
+    <p><strong><%= @product.name %></strong></p>
+    <div class="contpric">
+      <span class="pric">价格：</span>
+      <span class="pric1">￥<span class="pric2 prvd_color"><%= @product.present_price %></span></span> 
+      <span class="pric3 prvd_colors line-through">
         ￥<%= @product.original_price %>
+      </span>
+    </p>
+    <div class="contpric2">
+      <div class="contpric_left">
+        <span class="prvd_colors">
+          <%= Product::DataBuyerPay[@product.buyer_pay] %>
+          <% if @product.buyer_pay %>
+          <%= ":￥#{@product.traffic_expense}" %>
+          <% end %>
         </span>
       </div>
-      <div class=" font_h4" style="color:gray;">
-        <%= Product::DataBuyerPay[@product.buyer_pay] %>
-        <% if @product.buyer_pay %>
-        <%= ":￥#{@product.traffic_expense}" %>
-        <% end %>
+      <div  class="contpric_right">
+        <span class="prvd_colors">好评率：</span>
+        <span class="pric1"><%= Evaluation.product_good_reputation_rate(@product.id) %></span>
+        <span class="prvd_colors">（<%= Evaluation.product_good_reputation(@product.id) %>人）</span>
       </div>
     </div>
   </div>
 </div>
-<div class="row" style="margin-bottom:60px;">
-  <h2 class="text-center bg_green white">图文详情</h2>
-  <div class="col-xs-12 content bg_white">
+<div class="prvid_content">
     <%= raw @product.content %>
-  </div>
 </div>
-
 <% if controller_name == 'products' %>
-<div class="row bottom-flow">
-  <div class="col-xs-12 bg_white">
-    <div style="margin:10px;float:left;width:300px;">
-      <%= link_to '立即购买',
-        new_order_path(product_id: @product.id, sharing_code: @sharing_node.try(:code)),
-        class: "btn text-center bg_green white col-xs-12"
-      %>
-    </div>   
-  </div>
+<div class="buy">
+  <%= link_to  new_order_path(product_id: @product.id, sharing_code: @sharing_node.try(:code)) do %>
+    <div class="buy"><input type="submit" value="立即购买" class="buy_btn"></div>
+  <% end %>
 </div>
 <% else %>
-<div class="row bottom-flow">
-  <div class="col-xs-12 bg_white">
-    <div style="margin:10px;float:left;width:300px;">
-      <div class="col-xs-6 font-h4">
-        <div class="col-xs-12">分享者：<%= @sharing_node.user.try(:nickname) || '未知用户' %></div>
-        <div class="col-xs-12">好评率：<%= Evaluation.sharer_good_reputation_rage(@sharing_node.user) %></div>
+  <div class="buy_short">
+    <div class="buy_shortcont">
+      <div class="prvd_header"></div>
+      <div class="prvd_buycont">
+        <p>分享者：<%= truncate (@sharing_node.user.try(:nickname) || '未知用户'),:length=>10,:omission=>'...' %></p>
+        <p>好评率：<%= Evaluation.sharer_good_reputation_rate(@sharing_node.user) %></p>
       </div>
-      <div class="col-xs-6">
-        <%= link_to '立即购买',
-        new_order_path(product_id: @product.id, sharing_code: @sharing_node.try(:code)),
-        class: "btn text-center bg_green white col-xs-11"
-      %>
+      <div class="prvd_buyrigt"><input type="submit" value="立即购买" class="buy_btnshort ">
+      <%= link_to  new_order_path(product_id: @product.id, sharing_code: @sharing_node.try(:code)) do %>
+        <div class="prvd_buyrigt"><input type="submit" value="立即购买" class="buy_btnshort "></div>
+      <% end %>
       </div>
-      
-    </div>   
+    </div>
   </div>
-</div>
-<% end %> 
-
-
+<% end %>
 
 <script type="text/javascript">
 <% if params.present? and params['shared'] == 'true' %>
@@ -95,5 +79,4 @@ function render_share_page() {
 }
 
 </script>
-
 

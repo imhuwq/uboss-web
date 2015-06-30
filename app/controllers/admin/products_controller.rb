@@ -1,6 +1,7 @@
 # encoding:utf-8
 # 自定义管理系统
 class Admin::ProductsController < AdminController
+  load_and_authorize_resource
   def index
     products = Product.accessible_by(current_ability).where(status: [0,1]).order('created_at DESC')
     @products = products.page(params[:page] || 1)
@@ -41,7 +42,7 @@ class Admin::ProductsController < AdminController
   end
 
   def update
-    product = Product.find_by_id(params[:id])
+    product = Product.find(params[:id])
     img = AssetImg.new
     img.avatar = params[:asset_img]
     product.asset_img = img
@@ -55,7 +56,7 @@ class Admin::ProductsController < AdminController
   end
 
   def change_status
-    @product = Product.find_by_id(params[:id])
+    @product = Product.find(params[:id])
     if @product.status == 0 && !(params[:delete] == 'true')
       @product.status = 1
       flash[:success] = '上架成功'
@@ -77,7 +78,7 @@ class Admin::ProductsController < AdminController
   end
 
   def pre_view
-    @product = Product.find_by_id(params[:id])
+    @product = Product.find(params[:id])
     render layout: 'application'
   end
 

@@ -2,10 +2,10 @@ class EvaluationsController < ApplicationController
   def new
     @order_item = OrderItem.find_by_id(params[:id])
     @evaluation = Evaluation.new
-    if @order_item.evaluation.present?
-      flash[:success] = "您已经评价过了"
-      redirect_to root_path
-    end
+    # if @order_item.evaluation.present?
+    #   flash[:success] = "您已经评价过了"
+    #   redirect_to root_path
+    # end
   end
 
   def show

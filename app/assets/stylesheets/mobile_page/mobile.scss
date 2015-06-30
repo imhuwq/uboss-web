@@ -1,5 +1,7 @@
 .text-center {text-align: center;}
 input:disabled {background-color: #aab0b1}
+input {background-color:#f9f6bd}
+
 textarea,input {
   border: 1px solid #cccccc;
   border_redius: 7px;
@@ -117,7 +119,6 @@ textarea,input {
   background-color: #30c4ab;
   &:disabled {background-color:#b5d4cf}
 }
-input {background-color:#f9f6bd}
 .bg_grey {background-color: #e9e9e7}
 .bg_white {background-color: white;}
 .content {padding:2% 0 2% 0;width:100%}
@@ -185,3 +186,10 @@ input {background-color:#f9f6bd}
   border-top: 1px solid #9a9a9a;
   z-index: 100;
 }
+
+
+
+
+
+
+

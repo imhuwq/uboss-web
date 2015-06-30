@@ -21,7 +21,12 @@ class Evaluation < ActiveRecord::Base
     OrderItem.find_by_id(order_item_id).update_attribute(:evaluation_id, id)
   end
 
-  def self.sharer_good_reputation_rage(sharer_id) # 分享者好评率
+  def self.sharer_good_reputation(sharer_id) # 分享者好评数
+    evaluation = Evaluation.where(sharer_id: sharer_id)
+    good = evaluation.where(status: 1).count
+  end
+
+  def self.sharer_good_reputation_rate(sharer_id) # 分享者好评率
     evaluation = Evaluation.where(sharer_id: sharer_id)
     total = evaluation.count
     if total != 0
@@ -32,7 +37,12 @@ class Evaluation < ActiveRecord::Base
     end
   end
 
-  def self.product_good_reputation_rage(product_id) # 商品好评率
+  def self.product_good_reputation(product_id) # 商品好评数
+    evaluation = Evaluation.where(product_id: product_id)
+    good = evaluation.where(status: 1).count
+  end
+
+  def self.product_good_reputation_rate(product_id) # 商品好评率
     evaluation = Evaluation.where(product_id: product_id)
     total = evaluation.count
     if total != 0

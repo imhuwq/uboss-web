@@ -1,37 +1,25 @@
-<style type="text/css">
-a {color:white;}
-a:hover {color: yellow;}
-</style>
-
-<div class="row text-center bg_green font_h2 white heading">
+<header class="head">
   <%= link_to root_path do %>
-  <div class="col-xs-2"><</div>
+  <div class="bottom left iconleft"></div>
   <% end %>
-  <div class="col-xs-8">已评价</div>
-  <!-- <a class="col-xs-2" onclick="">分享</a> -->
-</div>
-<div class="row">
-  <div class="col-xs-12 text-center">
+  <div class="log_font">已评价</div>
+</header>
+<div class="container">
+  <div class="p_comment">
     <% case @evaluation.status %>
     <% when 1 %>
-      <div style="width:70px;margin:20px auto 0px auto;">
-        <img src="/t/mobile/good.png" style="width:70px;">
-      </div>
-      <div class="green font_h1">好评</div>
+    <div class="p_img good"></div>
+    <strong>好评</strong>
     <% when 2 %>
-      <div style="width:70px;margin:20px auto 0px auto;">
-        <img src="/t/mobile/normal.png" style="width:70px;">
-      </div>
-      <div class="green font_h1">中评</div>
+    <div class="p_img normal"></div>
+    <strong>中评</strong>
     <% when 3 %>
-      <div style="width:70px;margin:20px auto 0px auto;">
-        <img src="/t/mobile/bad.png" style="width:70px;">
-      </div>
-      <div class="green font_h1">差评</div>
+    <div class="p_img bad"></div>
+    <strong>差评</strong>
     <% end %>
-    <div class="grey" style="margin:20px auto 40px auto;">感谢您的评价!</div>
+    <p>感谢你的评价!</p>
   </div>
-  <div class="col-xs-12 bg_white">
+  <div class="col-xs-12 bg_white" style="margin-bottom:30px;">
     <h4 class="green text-center" style="padding-top:20px;">分享到</h4>
     <div class="clear"></div>
     <div id="share-box" class="l_toshare clearfix">
@@ -93,13 +81,10 @@ a:hover {color: yellow;}
       </div>
     </div>
   </div>
-</div>
-<div class="row">
-  <div class="col-xs-12">
-    <div style="margin:20px;float:left;width:280px;">
-      <%= link_to '返回首页', root_path, class: "btn text-center bg_green white col-xs-12" %>
-    </div>   
-  </div>
+  <%= link_to root_path do %>
+  <div class="accunt_adil_box3"><input type="submit" value="返回首页" class="accunt_adilbtn"></div>
+  <% end %>
+  
 </div>
 <script type="text/javascript" src="http://v3.jiathis.com/code/jia.js"></script>
 <script type="text/javascript">
@@ -113,8 +98,31 @@ var jiathis_config = {
 function l_share() {
   $('#l_share_more').toggle();
 }
-function copyUrl() {
-  window.clipboardData.setData("Text", Url);
-  alert("复制成功！：" + Url);
+// function copyUrl() {
+//   window.clipboardData.setData("Text", Url);
+//   alert("复制成功！：" + Url);
+// }
+function copyUrl(){
+try{
+  if(window.clipboardData) {
+      window.clipboardData.setData("Text", Url);
+  } else if(window.netscape) {
+      netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect');
+      var clip = Components.classes['@mozilla.org/widget/clipboard;1'].createInstance(Components.interfaces.nsIClipboard);
+      if(!clip) return;
+      var trans = Components.classes['@mozilla.org/widget/transferable;1'].createInstance(Components.interfaces.nsITransferable);
+      if(!trans) return;
+      trans.addDataFlavor('text/unicode');
+      var str = new Object();
+      var len = new Object();
+      var str = Components.classes["@mozilla.org/supports-string;1"].createInstance(Components.interfaces.nsISupportsString);
+      var copytext = _sTxt;
+      str.data = copytext;
+      trans.setTransferData("text/unicode", str, copytext.length*2);
+      var clipid = Components.interfaces.nsIClipboard;
+      if (!clip) return false;
+      clip.setData(trans, null, clipid.kGlobalClipboard);
+  }
+  }catch(e){}
 }
 </script>

@@ -15,6 +15,7 @@
 //= require pingpp_pay
 //= require reset_mobile_win
 //= require mobile_page/mobile
+//= require mobile_page/autoStrap
 //= require_self
 
 
