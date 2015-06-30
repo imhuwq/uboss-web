@@ -1,3 +1,5 @@
+<h4>分成列表</h4>
+<hr />
 <%= table_for(@sharing_incomes) do |table| %>
   <%= table.cell :number do |income| %>
     <%= link_to income.number, [:admin, income] %>

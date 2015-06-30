@@ -1,3 +1,5 @@
+<h4>用户提现</h4>
+<hr />
 <%= table_for(@withdraw_records) do |table| %>
   <%= table.cell :number do |record| %>
     <%= link_to record.number, [:admin, record] %>
