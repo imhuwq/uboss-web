@@ -36,7 +36,7 @@
         </div>
         <dl>
           <dt>
-            <%= image_tag "http://#{obj.order_items.first.try(:product).try(:asset_img).try(:avatar).try(:url)}" %>
+            <%= image_tag obj.order_items.first.try(:product).try(:asset_img).try(:avatar).try(:url) %>
           </dt>
           <dd class="my_dd2">
             <p>

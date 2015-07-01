@@ -71,7 +71,7 @@
 				  产品展示图
 				</label>
 				<div class="col-sm-9">
-					<%= image_tag("http://#{@product.asset_img.try(:avatar).try(:url)}", width: "60%", alt: "-") %>
+					<%= image_tag(@product.asset_img.try(:avatar).try(:url), width: "60%", alt: "-") %>
 				</div>
 			</div>
 

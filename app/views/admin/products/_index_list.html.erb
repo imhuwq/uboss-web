@@ -2,7 +2,7 @@
   <%= t.cell :name do |obj| %>
     <%= link_to [:admin, obj] do %>
     <div class="col-sm-3">
-      <%= image_tag("http://#{obj.asset_img.try(:avatar).try(:url)}", size: "100x80", alt: "-") %>
+      <%= image_tag(obj.asset_img.avatar.url, size: "100x80", alt: "-") %>
     </div>
     <div class="col-sm-9">
       <div class="col-sm-12">商品名称：<%= obj.name %></div>

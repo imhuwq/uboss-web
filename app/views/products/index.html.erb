@@ -22,7 +22,7 @@
         <%= link_to url_for(:action=>:show,:id=>obj.id) do %>
         <li class="list_li">
           <div class="li_image">
-            <%= image_tag(("http://#{obj.asset_img.try(:avatar).try(:url)}" || '/t/noimage.gif'),  alt: "-") %>
+            <%= image_tag((obj.asset_img.try(:avatar).try(:url) || '/t/noimage.gif'),  alt: "-") %>
             </div>
             <div class="li_content">
               <div class="li_contentinteo">
