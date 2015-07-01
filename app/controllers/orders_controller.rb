@@ -30,7 +30,16 @@ class OrdersController < ApplicationController
     order_item = Order.find_by_id(params[:id]).order_items.first rescue nil
     if order.present? && order.payed? && order_item.present?
       flash[:success] = "付款成功"
-      redirect_to controller: :evaluations, action: :new, id: order_item.id
+      redirect_to action: :show
+    end
+  end
+
+  def received
+    order = Order.find_by_id(params[:id])
+    order.state = 1
+    if order.save
+      flash[:success] = "已确认收货"
+      redirect_to controller: :evaluations, action: :new, id: order.order_items.first.id
     end
   end
 

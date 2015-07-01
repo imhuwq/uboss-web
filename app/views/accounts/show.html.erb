@@ -1,3 +1,104 @@
 用户名： <%= link_to current_user.login, edit_account_path %>
 
 订单待收货：<%= current_user.orders.shiped.count %>
+<header class="head">
+  <%= link_to url_for(controller: :products,action: :index) do %>
+  <div class="bottom left iconleft"></div>
+  <% end %>
+  <div class="log_font">我的账户</div>
+</header>
+<div class="container">
+  <div class="my_acuntbox1">
+    <div class="my_acuntcont">
+      <span class="my_img"><img src="assets/uboss_29/header_img.jpg"></span>
+      <span class="my_text"><%= link_to current_user.login, edit_account_path %></span>
+      <span class="my_btn">
+        <%= link_to destroy_user_session_path do %>
+        <input type="submit" value="退出账户" class="my_retur">
+        <% end %>
+      </span>
+    </div>
+  </div>
+  <div class="my_acuntbox2">
+    <div class="my_menu">
+      <ul>
+        <li id="showlist" class="acticv"><a onclick="showList()">我的订单</a></li>
+        <li id="showincome"><a onclick="showIncome()">我的收益</a></li>
+      </ul>
+    </div>
+
+    <div class="my_con1">
+      <% current_user.orders.order("created_at DESC").each do |obj| %>
+      <div class="my_boxlist">
+        <div class="my_centop">
+          <span class="my_Ordernumber">订单号：<%= obj.number %>  </span>
+          <span class="my_date"><%= obj.created_at %></span>
+        </div>
+        <dl>
+          <dt>
+            <%= image_tag "http://#{obj.order_items.first.try(:product).try(:asset_img).try(:avatar).try(:url)}" %>
+          </dt>
+          <dd class="my_dd2">
+            <p>
+              <%= obj.order_items.first.try(:product).try(:name) %>
+              <span class="my_left">x<%=  obj.order_items.first.try(:count) %></span>
+            </p>
+            <p><span>补身体的好选择</span></p>
+          </dd>
+          <dd class="my_dd1">
+            <p>
+              价格:￥<%= obj.pay_amount %>
+              <span>
+              <% if obj.state == 'unpay' %>
+                <%= link_to received_order_path(obj) do %>
+                <input type="submit" value="确认收货" class="my_retur my_confir">
+                <% end %>
+              <% elsif obj.state == 'payed' %>
+                <input type="submit" value="已付款" class="my_retur my_confir" disabled="disabled">
+              <% elsif obj.state == 'shiped' %>
+                <input type="submit" value="已发货" class="my_retur my_confir" disabled="disabled">
+              <% elsif obj.state == 'signed' %>
+                <input type="submit" value="已签收" class="my_retur my_confir" disabled="disabled">
+              <% elsif obj.state == 'closed' %>
+                <input type="submit" value="交易关闭" class="my_retur my_confir" disabled="disabled">
+              <% end %>
+              </span>
+            </p>
+          </dd>
+        </dl>
+      </div>
+      <% end %>
+    </div>
+
+
+
+
+    <div class="accunt_adil undis">
+      <div class="accunt_adil_box1">
+        <p>总收益</p>
+        <strong><%= current_user.income %></strong><span>元</span>
+      </div>
+      <div class="accunt_adil_box2">
+        <p>可提现</p>
+        <strong><%= current_user.income %></strong><span>元</span>
+        <p>部分商家会以商品形式返现</p>
+        <p>商品提现请致电：XXXX-XXXX</p>
+      </div>
+      <div class="accunt_adil_box3"><input type="submit" value="提现" class="accunt_adilbtn"></div>
+    </div>
+  </div>
+</div>    
+<script type="text/javascript">
+function showList() {
+  $(".accunt_adil").addClass('undis');
+  $(".my_con1").removeClass('undis');
+  $("#showlist").addClass('acticv');
+  $("#showincome").removeClass('acticv');
+};
+function showIncome() {
+  $(".my_con1").addClass('undis');
+  $(".accunt_adil").removeClass('undis');
+  $("#showlist").removeClass('acticv');
+  $("#showincome").addClass('acticv');
+};
+</script>

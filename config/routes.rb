@@ -8,7 +8,7 @@ Rails.application.routes.draw do
   }
 
   resources :orders, only: [:new, :create, :show] do
-    get 'pay', on: :member
+    get 'pay','received', on: :member
   end
   resources :products do
     post :save_mobile, on: :collection

@@ -9,6 +9,9 @@ textarea,input {
   -moz-border-radius: 7px;
   border-radius: 7px;
 }
+.undis {
+    display: none;
+}
 .row:before, .row:after {
   content: " ";
   display: table;
@@ -123,16 +126,14 @@ textarea,input {
 .bg_white {background-color: white;}
 .content {padding:2% 0 2% 0;width:100%}
 .content img {width:100%;}
-.undis {
-    display: none;
-}
+
 
 
 .heading {
   height: 30px;
   padding-top: 10px;
 }
-.classify {
+/*.classify {
   padding-left: 4%;
   padding-right: 4%;
 }
@@ -145,7 +146,7 @@ textarea,input {
 .classify .active {
   background-color: #30c4ab;
   color: white;
-}
+}*/
 .margin {margin: 5px;}
 .product_list {
   background-color: white;
