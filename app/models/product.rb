@@ -9,6 +9,8 @@ class Product < ActiveRecord::Base
   has_one :asset_img, class_name: 'AssetImg', dependent: :destroy, as: :resource
   has_many :product_share_issue, dependent: :destroy
 
+  delegate :image_url, to: :asset_img, allow_nil: true
+
   before_create :generate_code
   before_save :calculates_before_save
 

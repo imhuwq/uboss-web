@@ -8,4 +8,8 @@ class AssetImg < ActiveRecord::Base
   belongs_to :resource, :polymorphic => true #指定图片的类型/对象
 
   mount_uploader :avatar, ImageUploader
+
+  def image_url(version = nil)
+    avatar.url(version)
+  end
 end
