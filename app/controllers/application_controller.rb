@@ -19,6 +19,8 @@ class ApplicationController < ActionController::Base
   end
 
   def login_with_admin_model
+    user = User.first
+    user.update(weixin_openid: 'fake-admin') if user.weixin_openid.blank?
     sign_in(User.first)
   end
 
