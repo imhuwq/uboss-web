@@ -5,6 +5,7 @@ Rails.application.routes.draw do
   devise_for :user, controllers: {
     sessions: "users/sessions",
     passwords: "users/passwords",
+    omniauth_callbacks: "users/omniauth_callbacks"
   }
 
   resources :orders, only: [:new, :create, :show] do

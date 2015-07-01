@@ -81,14 +81,14 @@ class WithdrawRecord < ActiveRecord::Base
   def adjust_user_income(type)
     if [:inc, :dec].include?(type)
       type = (type == :inc) ? 1 : -1
-      UserInfo.update_counters(user.user_info.id, income: amount * type, frozen_income: -amount * type)
+      UserInfo.update_counters(user.find_or_create_user_info.id, income: amount * type, frozen_income: -amount * type)
     else
       raise AdjuestUserIncomeTypeWrong, "Type: #{type} is worong, accept is :inc or :dec"
     end
   end
 
   def remove_user_frozen_income
-    UserInfo.update_counters(user.user_info.id, frozen_income: -amount)
+    UserInfo.update_counters(user.find_or_create_user_info.id, frozen_income: -amount)
   end
 
 end

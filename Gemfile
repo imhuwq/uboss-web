@@ -18,7 +18,7 @@ gem 'aasm'
 gem 'enum_help'
 gem 'pingpp'
 gem 'dalli' # memcache client
-gem "browser" # browser detection
+gem "browser", github: 'xEasy/browser'
 
 # nested sharing_node
 gem 'awesome_nested_set'
@@ -48,7 +48,7 @@ gem "carrierwave-upyun"
 gem 'mini_magick'
 
 # oauth
-gem 'omniauth-oauth2'
+gem 'omniauth-wechat-oauth2'
 
 # app server
 gem 'unicorn', require: false

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150629035345) do
+ActiveRecord::Schema.define(version: 20150701062329) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -220,6 +220,10 @@ ActiveRecord::Schema.define(version: 20150629035345) do
     t.datetime "created_at",                     null: false
     t.datetime "updated_at",                     null: false
     t.float    "frozen_income",    default: 0.0
+    t.integer  "sex"
+    t.string   "city"
+    t.string   "province"
+    t.string   "country"
   end
 
   create_table "user_roles", force: :cascade do |t|
@@ -248,6 +252,10 @@ ActiveRecord::Schema.define(version: 20150629035345) do
     t.boolean  "need_reset_password",    default: false
     t.string   "nickname"
     t.integer  "user_role_id"
+    t.string   "weixin_unionid"
+    t.string   "weixin_openid"
+    t.boolean  "need_set_login",         default: false
+    t.string   "avatar"
   end
 
   add_index "users", ["login"], name: "index_users_on_login", unique: true, using: :btree

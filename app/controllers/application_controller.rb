@@ -7,6 +7,12 @@ class ApplicationController < ActionController::Base
   before_action :configure_permitted_parameters, if: :devise_controller?
 
   protected
+  def authenticate_weixin_user
+    if current_user.blank? || current_user.weixin_openid.blank?
+      session[:oauth_callback_redirect_path] = request.fullpath
+      redirect_to user_omniauth_authorize_path(:wechat)
+    end
+  end
 
   def param_page
     params[:page] || 0
