@@ -8,7 +8,7 @@
 </header>
 <div class="container">
   <div class="prdv_img">
-    <%= image_tag(url_for(@product.asset_img.try(:avatar).try(:url)),  alt: "-",:style=>"width:100%;") %>
+    <%= image_tag("http://#{@product.asset_img.try(:avatar).try(:url)}",  alt: "-",:style=>"width:100%;") %>
   </div>
   <div class="prdv_cont">
     <p><strong><%= @product.name %></strong></p>
