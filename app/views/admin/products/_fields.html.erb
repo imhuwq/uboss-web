@@ -9,7 +9,7 @@
         <%= f.label :asset_img,:class=>" text-right col-sm-3 control-label" %>
       <div  class="col-xs-6">
         <% if @product.present? and @product.asset_img.try(:avatar).try(:url).present? %>
-          <img src="<%= @product.asset_img.try(:avatar).try(:url) %>" style="width:100%;">
+          <img src="<%= @product.image_url %>" style="width:100%;">
         <% end %>
         <%= f.file_field :asset_img ,:name=>"asset_img" %>
       </div>

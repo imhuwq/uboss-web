@@ -11,7 +11,9 @@
   <div class="my_acuntbox1">
     <div class="my_acuntcont">
       <span class="my_img"><img src="assets/uboss_29/header_img.jpg"></span>
-      <span class="my_text"><%= link_to current_user.login, edit_account_path %></span>
+      <span class="my_text">
+        <%= link_to (truncate current_user.identify,:length=>28,:omission=>'...' ), edit_account_path %>
+      </span>
       <span class="my_btn">
         <%= link_to destroy_user_session_path do %>
         <input type="submit" value="退出账户" class="my_retur">
@@ -32,16 +34,16 @@
       <div class="my_boxlist">
         <div class="my_centop">
           <span class="my_Ordernumber">订单号：<%= obj.number %>  </span>
-          <span class="my_date"><%= obj.created_at %></span>
+          <span class="my_date"><%= obj.created_at.strftime('%Y-%m-%d') %></span>
         </div>
         <dl>
           <dt>
-            <%= image_tag obj.order_items.first.try(:product).try(:asset_img).try(:avatar).try(:url) %>
+            <%= image_tag obj.order_items.first.try(:product).try(:image_url) %>
           </dt>
           <dd class="my_dd2">
             <p>
               <%= obj.order_items.first.try(:product).try(:name) %>
-              <span class="my_left">x<%=  obj.order_items.first.try(:count) %></span>
+              <span class="my_left">x<%=  obj.order_items.first.try(:amount) %></span>
             </p>
             <p><span>补身体的好选择</span></p>
           </dd>

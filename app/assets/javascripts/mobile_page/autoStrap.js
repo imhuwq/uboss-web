@@ -13,14 +13,14 @@ function renderPage() {
 		f = 1;
 	}
 	viewport.content = "width=320, initial-scale=" + f + ", maximum-scale=" + f + ", user-scalable=no";
-	if (320 != clientWidth && clientWidth == document.documentElement.clientWidth ||
-	 isWeixin() && (navigator.userAgent.indexOf("Android") > -1 ||
-	  navigator.userAgent.indexOf("Linux") > -1)) {
-		var i = 320 / g,
-			j = 486 / h,
-			k = Math.max(i, j);
-		k = k > 1 ? k : 160 * k, k = parseInt(k), viewport.content= "width=320, target-densitydpi=" + k ;
-	}
+  // if (320 != clientWidth && clientWidth == document.documentElement.clientWidth ||
+  //  isWeixin() && (navigator.userAgent.indexOf("Android") > -1 ||
+  //   navigator.userAgent.indexOf("Linux") > -1)) {
+  // 	var i = 320 / g,
+  // 		j = 486 / h,
+  // 		k = Math.max(i, j);
+  // 	k = k > 1 ? k : 160 * k, k = parseInt(k), viewport.content= "width=320, target-densitydpi=" + k ;
+  // }
 }
 renderPage();
 window.onresize = function(){
@@ -28,11 +28,3 @@ window.onresize = function(){
 		renderPage();
 	}
 };
-
-$(function(){
-	$(".my_menu ul li").click(function(){
-		var Index = $(this).index();
-		$(this).addClass('active').siblings().removeClass('active');
-		$('my_acuntbox2').children('.qre').eq(Index).show().siblings('.qre').hide();
-	});
-})

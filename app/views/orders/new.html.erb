@@ -35,7 +35,7 @@
 <div class="container">
   <div class="subOrd_box1">
     <dl>
-      <dt> <%= image_tag(url_for(@order_form.product.asset_img.try(:avatar).try(:url)),  alt: "-",:style=>"width:100%;") %></dt>
+      <dt> <%= image_tag(url_for(@order_form.product.image_url),  alt: "-",:style=>"width:100%;") %></dt>
       <dd>
         <strong><%= @order_form.product.name %><span>￥<%= @order_form.product.present_price %></span></strong>
         <p>规格：500g/盒</p>

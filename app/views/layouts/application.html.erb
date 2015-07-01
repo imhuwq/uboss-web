@@ -5,9 +5,11 @@
     <meta id='MobileViewport' name="viewport" content="width=320, initial-scale=1, maximum-scale=1, user-scalable=no" />
 
     <title><%= content_for?(:title) ? yield(:title) : "UBoss" %></title>
-
+    <%#= javascript_include_tag 'mobile_page/autoStrap' %>
+    <%#= stylesheet_link_tag    'mobile_page/autoStrap' %>
     <%= stylesheet_link_tag    "application" %>
     <%= javascript_include_tag "application" %>
+
     <%= csrf_meta_tags %>
   </head>
   <body class="bg_grey">

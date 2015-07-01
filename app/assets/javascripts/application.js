@@ -10,13 +10,21 @@
 // Read Sprockets README (https://github.com/rails/sprockets#sprockets-directives) for details
 // about supported directives.
 //
+//= require mobile_page/autoStrap
 //= require jquery
 //= require jquery_ujs
 //= require mobile_page/mobile
-//= require mobile_page/autoStrap
 //= require_self
 
 
 function close_window() {
-    $('#window').html('');
-  }
+  $('#window').html('');
+}
+$(function(){
+  $(".my_menu ul li").click(function(){
+    var Index = $(this).index();
+    $(this).addClass('active').siblings().removeClass('active');
+    $('my_acuntbox2').children('.qre').eq(Index).show().siblings('.qre').hide();
+  });
+})
+
