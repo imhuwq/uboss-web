@@ -16,9 +16,9 @@ gem 'simple_captcha2', require: 'simple_captcha'
 gem 'uuidtools'
 gem 'aasm'
 gem 'enum_help'
-gem 'pingpp'
 gem 'dalli' # memcache client
 gem "browser", github: 'xEasy/browser'
+gem 'wx_pay', github: 'jasl/wx_pay'
 
 # nested sharing_node
 gem 'awesome_nested_set'
