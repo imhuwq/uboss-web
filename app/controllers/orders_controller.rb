@@ -1,6 +1,6 @@
 class OrdersController < ApplicationController
 
-  before_action :authenticate_weixin_user, only: [:new], if: -> { true || browser.wechat?  }
+  before_action :authenticate_weixin_user, only: [:new]
   before_action :find_order, only: [:show, :pay]
 
   def show

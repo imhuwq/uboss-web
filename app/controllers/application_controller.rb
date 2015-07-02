@@ -8,13 +8,14 @@ class ApplicationController < ActionController::Base
 
   protected
   def authenticate_weixin_user
-    if current_user.blank? || current_user.weixin_openid.blank?
-      if Rails.env.development? && params[:mode] == 'admin'
-        login_with_admin_model
-      else
-        session[:oauth_callback_redirect_path] = request.fullpath
-        redirect_to user_omniauth_authorize_path(:wechat)
-      end
+    return false unless browser.wechat?
+    return false unless current_user.blank? || current_user.weixin_openid.blank?
+
+    if Rails.env.development? && params[:mode] == 'admin'
+      login_with_admin_model
+    else
+      session[:oauth_callback_redirect_path] = request.fullpath
+      redirect_to user_omniauth_authorize_path(:wechat)
     end
   end
 
