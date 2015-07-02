@@ -1,14 +1,3 @@
-<p>
-  num: <%= @order.number %>
-</p>
-
-<p>
-  amount: <%= @order.pay_amount %>
-</p>
-
-<p>
-  <%= link_to '付款', pay_order_path(@order) %>
-</p>
 <header class="head">
   <%= link_to account_path(@order) do %>
   <div class="bottom left iconleft"></div>
@@ -24,7 +13,7 @@
   <% elsif @order.state == 'closed' %>
     <div class="log_font">交易关闭</div>
   <% end %>
-  
+
 </header>
 <div class="container">
   <div class="subOrd_box1">
@@ -82,6 +71,7 @@
     </div>
   </div>
 </div>
+
 <% if @order.state == 'unpay' %>
   <div class="sub_p3">选择支付方式</div>
   <div class="weixin">
@@ -93,11 +83,43 @@
     <a href="#"><%= image_tag "uboss_29/zhifubao.png" %></a>
   </div>
 
-  <%= link_to pay_order_path(@order) do %>
+  <%= link_to order_charge_path(@order), id: 'wx-pay-btn' do %>
   <div class="accunt_adil_box3"><input type="submit" value="去支付" class="accunt_adilbtn"></div>
   <% end %>
 <% end %>
 
+<%= content_for :extra_javascript do %>
+  <%= render "weixin_js" %>
+<script type="text/javascript" charset="utf-8">
 
+wx.ready(function(){
 
+  $('#wx-pay-btn').on('click', function(event){
+    event.preventDefault();
+    var url = $(this).attr('href');
 
+    $.post(url, function(data){
+      wx.chooseWXPay({
+        "timestamp": data.timeStamp,
+        "nonceStr": data.nonceStr,
+        "package": data.package,
+        "signType": data.signType,
+        "paySign": data.paySign,
+        "success": function (res) {
+          window.location.href = "/orders/" + data.order_id + "/pay_success";
+        }
+      });
+    }).error(function(data){
+      alert('支付失败');
+    })
+
+  });
+
+  wx.onMenuShareTimeline({
+    title: "<%= @order.number %>",
+    link: "http://baidu.com",
+    imgUrl: "http://ssobu-dev.b0.upaiyun.com/user/avatar/f2285d00cdeda94eab43d5cef15a414b.jpeg-thumb",
+  });
+})
+</script>
+<% end %>

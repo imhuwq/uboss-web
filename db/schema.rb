@@ -44,7 +44,7 @@ ActiveRecord::Schema.define(version: 20150702043147) do
   create_table "evaluations", force: :cascade do |t|
     t.integer  "buyer_id"
     t.integer  "sharer_id"
-    t.integer  "status",          default: 3
+    t.integer  "status",          default: 0
     t.integer  "order_item_id"
     t.integer  "product_id"
     t.text     "content"
@@ -63,10 +63,15 @@ ActiveRecord::Schema.define(version: 20150702043147) do
 
   create_table "order_charges", force: :cascade do |t|
     t.integer  "order_id"
-    t.string   "charge_id"
     t.string   "channel"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at",           null: false
+    t.datetime "updated_at",           null: false
+    t.string   "prepay_id"
+    t.datetime "prepay_id_expired_at"
+    t.string   "pay_serial_number"
+    t.float    "paid_amount"
+    t.integer  "payment"
+    t.datetime "paid_at"
   end
 
   create_table "order_items", force: :cascade do |t|
@@ -89,8 +94,6 @@ ActiveRecord::Schema.define(version: 20150702043147) do
     t.string   "address"
     t.string   "invoice_title"
     t.integer  "state",           default: 0
-    t.integer  "payment"
-    t.datetime "pay_time"
     t.float    "pay_amount"
     t.string   "pay_message"
     t.datetime "created_at",                      null: false
@@ -102,16 +105,6 @@ ActiveRecord::Schema.define(version: 20150702043147) do
   end
 
   add_index "orders", ["number"], name: "index_orders_on_number", unique: true, using: :btree
-
-  create_table "product_share_issues", force: :cascade do |t|
-    t.integer  "product_id"
-    t.integer  "buyer_lv_1_id"
-    t.integer  "buyer_lv_2_id"
-    t.integer  "buyer_lv_3_id"
-    t.integer  "sharer_lv_1_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
 
   create_table "products", force: :cascade do |t|
     t.integer  "user_id"
@@ -154,6 +147,13 @@ ActiveRecord::Schema.define(version: 20150702043147) do
 
   add_index "redactor_assets", ["assetable_type", "assetable_id"], name: "idx_redactor_assetable", using: :btree
   add_index "redactor_assets", ["assetable_type", "type", "assetable_id"], name: "idx_redactor_assetable_type", using: :btree
+
+  create_table "service_notifies", force: :cascade do |t|
+    t.string   "service_type"
+    t.text     "content"
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
+  end
 
   create_table "sharing_incomes", force: :cascade do |t|
     t.integer  "user_id"

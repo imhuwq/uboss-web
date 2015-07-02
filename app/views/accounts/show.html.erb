@@ -54,17 +54,14 @@
               价格:￥<%= obj.pay_amount %>
               <span>
               <% if obj.state == 'unpay' %>
-                <%= link_to pay_order_path(obj) do %>
-                <input type="submit" value="去付款" class="my_retur my_confir" >
-                <% end %>
+                <%= link_to "付款", order_path(obj, showwxpaytitle: 1), class: 'my_retur my_confir' %>
               <% elsif obj.state == 'payed' %>
-                <input type="submit" value="已付款" class="my_retur my_confir" disabled="disabled">
+                待发货
               <% elsif obj.state == 'shiped' %>
                 <%= link_to received_order_path(obj) do %>
                 <input type="submit" value="确认收货" class="my_retur my_confir" >
                 <% end %>
               <% elsif obj.state == 'signed' %>
-                
                 <input type="submit" value="已签收" class="my_retur my_confir" disabled="disabled">
               <% elsif obj.state == 'closed' %>
                 <input type="submit" value="交易关闭" class="my_retur my_confir" disabled="disabled">
@@ -76,9 +73,6 @@
       </div>
       <% end %>
     </div>
-
-
-
 
     <div class="accunt_adil undis">
       <div class="accunt_adil_box1">
@@ -94,7 +88,7 @@
       <div class="accunt_adil_box3"><input type="submit" value="提现" class="accunt_adilbtn"></div>
     </div>
   </div>
-</div>    
+</div>
 <script type="text/javascript">
 function showList() {
   $(".accunt_adil").addClass('undis');

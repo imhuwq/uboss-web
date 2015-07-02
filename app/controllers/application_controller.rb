@@ -7,7 +7,16 @@ class ApplicationController < ActionController::Base
   before_action :configure_permitted_parameters, if: :devise_controller?
 
   protected
-  def authenticate_weixin_user
+
+  def authenticate_user!
+    if browser.wechat?
+      authenticate_weixin_user!
+    else
+      super
+    end
+  end
+
+  def authenticate_weixin_user!
     return false unless browser.wechat?
     return false unless current_user.blank? || current_user.weixin_openid.blank?
 

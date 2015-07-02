@@ -16,7 +16,6 @@
 //= require mobile_page/mobile
 //= require_self
 
-
 function close_window() {
   $('#window').html('');
 }

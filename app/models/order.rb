@@ -8,7 +8,7 @@ class Order < ActiveRecord::Base
   belongs_to :seller, class_name: "User"
   belongs_to :user_address
   has_many :order_items
-  has_many :order_charges
+  has_one :order_charge, autosave: true
 
   accepts_nested_attributes_for :order_items
 
@@ -18,6 +18,9 @@ class Order < ActiveRecord::Base
   before_save :set_info_by_user_address, on: :create
 
   delegate :mobile, :regist_mobile, :identify, to: :user, prefix: :buyer
+  delegate :prepay_id, :prepay_id=, :prepay_id_expired_at, :prepay_id_expired_at=,
+    :pay_serial_number, :pay_serial_number=, :payment, :payment_i18n, :paid_at,
+    to: :order_charge, allow_nil: true
 
   scope :selled, -> { where("orders.state <> 0") }
 
@@ -45,18 +48,18 @@ class Order < ActiveRecord::Base
     end
   end
 
+  def order_charge
+    super || build_order_charge
+  end
+
   def paid?
-    pay_time.present?
+    paid_at.present?
   end
 
   def check_paid?
     return false if self.state != 'unpay'
     order_charges.each do |order_charge|
       if order_charge.paid?
-        self.update(
-          payment: order_charge.charge[:channel],
-          pay_time: DateTime.strptime(order_charge.charge[:time_paid].to_s,'%s')
-        )
         self.pay!
         break
       end

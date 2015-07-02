@@ -111,6 +111,8 @@ class User < ActiveRecord::Base
     end
 
     def set_mobile
-      self.mobile ||= login
+      if !need_set_login?
+        self.mobile ||= login
+      end
     end
 end

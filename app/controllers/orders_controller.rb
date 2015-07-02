@@ -1,5 +1,6 @@
 class OrdersController < ApplicationController
-  # before_action :authenticate_weixin_user, only: [:new], if: -> { true || browser.wechat?  }
+
+  before_action :authenticate_user!, only: [:new, :pay]
   before_action :find_order, only: [:show, :pay, :received]
 
   def show
@@ -28,8 +29,9 @@ class OrdersController < ApplicationController
 
   def pay
     @order_item = @order.order_items.first rescue nil
-    if @order.present? && @order.payed? && @order_item.present?
-      flash[:success] = '付款成功'
+    # FIXME fake payed states
+    if Rails.env.development? && params[:mode] == 'test'
+      flash[:success] = "付款成功"
       redirect_to action: :show
     end
   end

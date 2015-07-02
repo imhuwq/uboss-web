@@ -1,82 +1,75 @@
-require 'pingpp'
-
 module ChargeService
-  APP_ID = Rails.application.secrets.pingpp["app_id"]
+
+  SITE_NAME = 'UBoss'
 
   extend self
 
-  def create_charge(params, request)
-    order = Order.find(params[:order_id])
-    open_id = 'nil' # TODO current_user.wx_open_id
-    client_ip = request.remote_ip
-    channel = params[:channel].downcase
-    begin
-      charge = Pingpp::Charge.create(
-        :order_no  => order.number,
-        :app       => {'id' => APP_ID},
-        :channel   => channel,
-        :amount    => order.pay_amount,
-        :client_ip => client_ip,
-        :currency  => 'cny',
-        :subject   => "Charge Subject: order #{order.id}",
-        :body      => "Charge Body",
-        :extra     => generate_extra(channel, open_id)
-      )
-      create_order_charge(order, charge)
-      charge.to_json
-    rescue Pingpp::PingppError => error
-      error.http_body
+  def find_or_create_charge(order, options)
+    order_charge = order.order_charge
+    if order_charge.new_record? || !order_charge.wx_prepay_valid?
+      create_or_refresh_order_wx_charge(order, options)
+    else
+      order_charge
     end
   end
 
-  def handle_pingpp_callback(params)
-    return 'fail' if params[:object].blank?
+  def handle_pay_notify(result)
+    pay_serial_number = result["out_trade_no"]
+    order_charge = OrderCharge.find_by(pay_serial_number: pay_serial_number)
 
-    case params[:object]
-    when 'charge'
-      charge_success(params)
-      'success'
-    when 'refund'
-      'success'
-    else
-      'fail'
-    end
+    order_charge.paid_amount = result["total_fee"]
+    order_charge.payment = 'wx'
+    order_charge.save(validate: false)
+
+    order_charge.order.pay!
   end
 
   private
 
-  def create_order_charge order, charge
-    order.order_charges.create(channel: charge.channel, charge_id: charge.id)
+  # 只有当微信支付时使用到，订单一旦确认(confirm)，即进行获取
+  def create_or_refresh_order_wx_charge(order, options)
+    # 重新更新支付流水号
+    order.pay_serial_number = "#{order.number}-#{Time.current.to_i}"
+
+    request_weixin_unifiedorder(order, options) do |res|
+      order.prepay_id = res["prepay_id"]
+      order.prepay_id_expired_at = Time.current + 2.hours
+      Rails.logger.debug("set prepay_id: #{order.prepay_id}")
+      order.save(validate: false)
+    end
+
+    order.order_charge
+  end
+
+  def request_weixin_unifiedorder(order, options)
+    unifiedorder = {
+      body: "#{SITE_NAME}-#{order.number}",
+      out_trade_no: order.pay_serial_number,
+      total_fee: (order.pay_amount * 100).to_i, # 需要转换为分
+      spbill_create_ip: options[:remote_ip] || '127.0.0.1',
+      notify_url: wx_notify_url,
+      trade_type: "JSAPI",
+      nonce_str: SecureRandom.hex,
+      openid: order.user.weixin_openid
+    }
+    Rails.logger.debug("unifiedorder_params: #{unifiedorder}")
+    res = WxPay::Service.invoke_unifiedorder(unifiedorder)
+    if res.success?
+      yield(res) if block_given?
+    else
+      Rails.logger.debug("set prepay_id fail: #{res}")
+      nil
+    end
+  end
+
+  def wx_notify_url
+    "#{Rails.application.secrets.host_url}/pay_notify/wechat_notify"
   end
 
   def charge_success(params)
     order = Order.find_by(number: params[:order_no])
     if params[:paid] == true
       order.pay!
-    end
-  end
-
-  def generate_extra(channel, open_id)
-    case channel
-    when 'alipay_wap'
-      extra = {
-        'success_url' => 'http://xeasy.local:3000/charge/success',
-        'cancel_url'  => 'http://xeasy.local:3000/charge/cancel'
-      }
-    when 'upacp_wap', 'upmp_wap'
-      extra = {
-        'result_url' => 'http://xeasy.local:3000/charge/result?code='
-      }
-    when 'bfb_wap'
-      extra = {
-        'bfb_login' => true,
-        'result_url' => 'http://xeasy.local:3000/charge/success'
-      }
-    when 'wx_pub'
-      extra = {
-        'trade_type' => 'JSAPI',
-        'open_id' => open_id
-      }
     end
   end
 

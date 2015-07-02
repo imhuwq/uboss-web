@@ -8,24 +8,27 @@ Rails.application.routes.draw do
     omniauth_callbacks: "users/omniauth_callbacks"
   }
 
+  get 'wxpay/test/:id', to: 'orders#show', as: :test_wxpay
+
   resources :orders, only: [:new, :create, :show] do
-    get 'pay','received', on: :member
     get :new_mobile, on: :collection
+    get 'received', on: :member
+    get 'pay_success', on: :member
+    resource :charge, only: [:create]
   end
   resources :products do
     post :save_mobile, on: :collection
   end
   resource :evaluations do
   end
-  resource :charge, only: [:create] do
-    collection do
-      post 'pingpp_callback'
-      get 'success'
-      get 'failure'
-    end
-  end
   resource :account, only: [:show, :edit, :update] do
     resources :user_addresses, except: [:show]
+  end
+  resource :pay_notify, only: [] do
+    collection do
+      post :wechat_notify
+      post :wechat_alarm
+    end
   end
 
   authenticate :user, lambda { |user| user.admin? } do

@@ -1,30 +1,26 @@
 class ChargesController < ApplicationController
+
   def create
-    result = ''
-    begin
-      result = ChargeService.create_charge(params, request)
-    ensure
-      render json: result
-    end
-  end
+    @order = Order.find(params[:order_id])
+    @order_charge = ChargeService.find_or_create_charge(@order, remote_ip: request.ip)
+    @pay_p = {
+      appId: WxPay.appid,
+      timeStamp: Time.now.to_i.to_s,
+      nonceStr: SecureRandom.hex,
+      package: "prepay_id=#{@order_charge.prepay_id}",
+      signType: "MD5"
+    }
+    p @pay_p
+    @pay_sign = WxPay::Sign.generate(@pay_p)
 
-  def pingpp_callback
-    result = 'fail'
-    begin
-      result = ChargeService.handle_pingpp_callback(params)
-    ensure
-      render text: result
-    end
-  end
-
-  # result=success&out_trade_no=19238484
-  def success
-    @order = Order.find_by(number: params[:out_trade_no])
-    @order.check_paid?
-  end
-
-  def failure
-    @order = Order.find_by(number: params[:out_trade_no])
+    render json: {
+      timestamp: @pay_p[:timeStamp],
+      nonceStr: @pay_p[:nonceStr],
+      package: @pay_p[:package],
+      signType: @pay_p[:signType],
+      paySign: @pay_sign,
+      order_id: @order.id
+    }
   end
 
 end

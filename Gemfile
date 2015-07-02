@@ -19,6 +19,7 @@ gem 'enum_help'
 gem 'dalli' # memcache client
 gem "browser", github: 'xEasy/browser'
 gem 'wx_pay', github: 'jasl/wx_pay'
+gem 'weixin_authorize', github: "lanrion/weixin_authorize"
 
 # nested sharing_node
 gem 'awesome_nested_set'
@@ -59,6 +60,7 @@ gem 'unicorn', require: false
 gem "redis", "~> 3.0", require: ["redis/connection/hiredis", "redis"]
 gem "hiredis"
 gem 'redis-rails'
+gem "redis-namespace"
 
 # backend process
 gem 'sidekiq'
