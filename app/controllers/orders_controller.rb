@@ -1,7 +1,7 @@
 class OrdersController < ApplicationController
 
   before_action :authenticate_user!, only: [:new, :pay]
-  before_action :find_order, only: [:show, :pay, :pay_success, :received]
+  before_action :find_order, only: [:show, :pay, :pay_complete, :received]
 
   def show
     if @order.unpay?

@@ -23,7 +23,7 @@ class OrderCharge < ActiveRecord::Base
   def update_with_wx_pay_result(result)
     self.paid_amount = result["total_fee"]
     self.payment = 'wx'
-    self.paied_at = result['time_end']
+    self.paid_at = result['time_end']
     self.save(validate: false)
   end
 

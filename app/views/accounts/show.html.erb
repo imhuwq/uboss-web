@@ -15,9 +15,7 @@
         <%= link_to (truncate current_user.identify,:length=>28,:omission=>'...' ), edit_account_path %>
       </span>
       <span class="my_btn">
-        <%= link_to destroy_user_session_path(current_user),method: :delete do %>
-        <input type="submit" value="退出账户" class="my_retur">
-        <% end %>
+        <%= link_to '退出', destroy_user_session_path(current_user), method: :delete, class: 'my_retur' %>
       </span>
     </div>
   </div>
@@ -28,7 +26,6 @@
         <li id="showincome"><a onclick="showIncome()">我的收益</a></li>
       </ul>
     </div>
-
     <div class="my_con1">
       <% current_user.orders.order("created_at DESC").each do |obj| %>
       <div class="my_boxlist">

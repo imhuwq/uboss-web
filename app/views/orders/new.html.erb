@@ -1,34 +1,3 @@
-<!-- <h2>提交订单</h2>
-
-<p>商品名称: <%#= @order_form.product.name %></p>
-
-<%#= simple_form_for @order_form, url: orders_path, method: 'POST' do |f| %>
-<div class="form-inputs">
-  <%#= f.hidden_field :product_id %>
-  <%#= f.hidden_field :sharing_code %>
-  <%#= f.input :amount %>
-  <%# if current_user.blank? %>
-  <%#= f.input :mobile %>
-  <%#= f.input :captcha %>
-  <%# end %>
-
-  <p>收货地址</p>
-  <%# if current_user && current_user.default_address %>
-  <%#= f.hidden_field :user_address_id %>
-  <%# else %>
-  <%#= f.input :deliver_username %>
-  <%#= f.input :deliver_mobile %>
-  <%#= f.input :province %>
-  <%#= f.input :city %>
-  <%#= f.input :country, as: :text %>
-  <%#= f.input :street %>
-  <%# end %>
-</div>
-
-<%#= submit_tag '提交订单' %>
-<%# end %>
- -->
-
 <header class="head">
   <%= link_to account_path do %>
   <div class="bottom left iconleft"></div>
@@ -49,7 +18,7 @@
       </dd>
     </dl>
   </div>
-  
+
   <div class="subOrd_box2">
     <div class="subOrd_boxcont">
       <p class="sub_p1">
@@ -64,15 +33,15 @@
         <span class="sub_leftl">合计（含运费）</span>
         <span class="sub_left"><strong>￥</strong><b id="total_price"><%= @order_form.product.present_price %></b></span>
       </p>
-      
+
     </div>
     <div class="sub_p3">个人信息确认</div>
     <div class="subOrd_boxcont subOrd_boxbtn">
-      <% if current_user.blank? %>
+      <% if current_user.need_set_login? %>
         <p class="sub_p">
           <span><%= text_field_tag "mobile[]",'',placeholder: '输入手机号', class:"sub_btphon",id:'new_mobile' %></span>
           <span><input type="buttom" value="发送验证码" class="sub_yanzhen text-center" onclick="sendNewMobile()" id="send_mobile" style="width:100px;"></span>
-          
+
         </p>
         <p class="sub_w"><span><%= f.input_field :captcha, placeholder: '填写短信验证码', class:"sub_yanzhcont"  %></p>
       <% end %>
@@ -83,7 +52,7 @@
       <%
        default_user_addresses = []
        user_address = current_user.default_address
-       default_user_addresses << user_address 
+       default_user_addresses << user_address
         %>
       <% if user_address %>
         <div class="sub_box3_cont1">
@@ -107,8 +76,8 @@
             <tr>
               <td></td>
               <td colspan="3" class="hidd">
-                <%= 
-                "#{user_address.country} #{user_address.province} #{user_address.city} #{user_address.area} #{user_address.street} #{user_address.building}" 
+                <%=
+                "#{user_address.country} #{user_address.province} #{user_address.city} #{user_address.area} #{user_address.street} #{user_address.building}"
                 %>
               </td>
             </tr>
@@ -117,7 +86,7 @@
       <% end %>
       <div class="sub_box3_cont2">
         <table width="100%" height="82" border="1" class="table2 table3">
-         
+
           <%= f.hidden_field :user_address_id %>
           <% all_address = current_user.user_addresses - default_user_addresses %>
           <% all_address.each do |obj| %>
@@ -217,7 +186,6 @@ function reduceAmount() {
     $('#amount').val(amount - 1);
     calulateTotalPrice(amount);
   };
-  
 }
 </script>
 <script type="text/javascript">

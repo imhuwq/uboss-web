@@ -38,7 +38,7 @@
       </p>
       <p class="sub_p sub_p2">
         <span class="sub_leftl">合计（含运费）</span>
-        <span class="sub_left"><strong>￥</strong><%=  @order.order_items.first.try(:pay_amount) %></span>
+        <span class="sub_left"><strong>￥</strong><%=  @order.pay_amount %></span>
       </p>
     </div>
     <% if @order.state == 'unpay' %>
@@ -72,20 +72,14 @@
   </div>
 </div>
 
-<% if @order.state == 'unpay' %>
-  <div class="sub_p3">选择支付方式</div>
-  <div class="weixin">
-    <a href="#">
-      <%= image_tag "uboss_29/weixin.png" %>
-    </a>
-  </div>
-  <div class="zhifu">
-    <a href="#"><%= image_tag "uboss_29/zhifubao.png" %></a>
-  </div>
+<br />
 
-  <%= link_to order_charge_path(@order), id: 'wx-pay-btn' do %>
-  <div class="accunt_adil_box3"><input type="submit" value="去支付" class="accunt_adilbtn"></div>
-  <% end %>
+<% if @order.state == 'unpay' %>
+  <div class="weixin">
+    <%= link_to order_charge_path(@order), id: 'wx-pay-btn' do %>
+      <%= image_tag "uboss_29/weixin.png" %>
+    <% end %>
+  </div>
 <% end %>
 
 <% if @order.state == 'unpay' %>
