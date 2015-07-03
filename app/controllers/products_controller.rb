@@ -5,7 +5,7 @@ class ProductsController < ApplicationController
   end
 
   def show
-    @product = Product.where(status:1).find_by_id(params[:id])
+    @product = Product.where(status:1).find(params[:id])
     @sharing_node = SharingNode.find_by_code(params[:code])
     redirect_to action: :index if @product.blank?
   end

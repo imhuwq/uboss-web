@@ -1,6 +1,6 @@
 class EvaluationsController < ApplicationController
   def new
-    @order_item = OrderItem.find_by_id(params[:id])
+    @order_item = OrderItem.find(params[:id])
     @evaluation = Evaluation.new
     # if @order_item.evaluation.present?
     #   flash[:success] = "您已经评价过了"
@@ -9,7 +9,7 @@ class EvaluationsController < ApplicationController
   end
 
   def show
-    @evaluation = Evaluation.find_by_id(params[:id])
+    @evaluation = Evaluation.find(params[:id])
     parent_id = @evaluation.order_item.try(:sharing_node).try(:id)
     if @evaluation.sharing_node_id.present?
       @sharing_node = @evaluation.sharing_node

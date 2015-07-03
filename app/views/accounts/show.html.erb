@@ -15,7 +15,7 @@
         <%= link_to (truncate current_user.identify,:length=>28,:omission=>'...' ), edit_account_path %>
       </span>
       <span class="my_btn">
-        <%= link_to destroy_user_session_path do %>
+        <%= link_to destroy_user_session_path(current_user),method: :delete do %>
         <input type="submit" value="退出账户" class="my_retur">
         <% end %>
       </span>
@@ -37,6 +37,7 @@
           <span class="my_date"><%= obj.created_at.strftime('%Y-%m-%d') %></span>
         </div>
         <dl>
+          <%= link_to order_path(obj) do %>
           <dt>
             <%= image_tag obj.order_items.first.try(:product).try(:image_url) %>
           </dt>
@@ -47,19 +48,23 @@
             </p>
             <p><span>补身体的好选择</span></p>
           </dd>
+          <% end %>
           <dd class="my_dd1">
             <p>
               价格:￥<%= obj.pay_amount %>
               <span>
               <% if obj.state == 'unpay' %>
-                <%= link_to received_order_path(obj) do %>
-                <input type="submit" value="确认收货" class="my_retur my_confir">
+                <%= link_to pay_order_path(obj) do %>
+                <input type="submit" value="去付款" class="my_retur my_confir" >
                 <% end %>
               <% elsif obj.state == 'payed' %>
                 <input type="submit" value="已付款" class="my_retur my_confir" disabled="disabled">
               <% elsif obj.state == 'shiped' %>
-                <input type="submit" value="已发货" class="my_retur my_confir" disabled="disabled">
+                <%= link_to received_order_path(obj) do %>
+                <input type="submit" value="确认收货" class="my_retur my_confir" >
+                <% end %>
               <% elsif obj.state == 'signed' %>
+                
                 <input type="submit" value="已签收" class="my_retur my_confir" disabled="disabled">
               <% elsif obj.state == 'closed' %>
                 <input type="submit" value="交易关闭" class="my_retur my_confir" disabled="disabled">

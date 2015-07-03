@@ -10,6 +10,7 @@ Rails.application.routes.draw do
 
   resources :orders, only: [:new, :create, :show] do
     get 'pay','received', on: :member
+    get :new_mobile, on: :collection
   end
   resources :products do
     post :save_mobile, on: :collection
