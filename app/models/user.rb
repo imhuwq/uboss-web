@@ -44,6 +44,7 @@ class User < ActiveRecord::Base
           province: oauth_info['province'],
           city: oauth_info["city"],
           country: oauth_info['country'],
+          nickname: oauth_info['nickname'],
           remote_avatar_url: oauth_info['headimgurl'],
           need_set_login: true,
           need_reset_password: true
@@ -70,6 +71,7 @@ class User < ActiveRecord::Base
 
   def update_with_wechat_oauth(oauth_info)
     update(
+      nickname: oauth_info['nickname'],
       sex: oauth_info['sex'],
       province: oauth_info['province'],
       city: oauth_info['city'],
