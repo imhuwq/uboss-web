@@ -64,31 +64,7 @@
         <span class="sub_leftl">合计（含运费）</span>
         <span class="sub_left"><strong>￥</strong><b id="total_price"><%= @order_form.product.present_price %></b></span>
       </p>
-      <script type="text/javascript">
-      $('#amount').on('keyup', this, function(event) {
-        var amount = $(this).val();
-        calulateTotalPrice(amount)
-      });
-
-      function calulateTotalPrice(amount) {
-        var present_price = <%= @order_form.product.present_price %>
-        var total_price = amount * present_price
-        $('#total_price').html(total_price)
-      }
-      function addAmount() {
-        var amount = parseInt($('#amount').val());
-        $('#amount').val(amount + 1)
-        calulateTotalPrice(amount);
-      }
-      function reduceAmount() {
-        var amount = parseInt($('#amount').val());
-        if (amount > 0) {
-          $('#amount').val(amount - 1);
-          calulateTotalPrice(amount);
-        };
-        
-      }
-      </script>
+      
     </div>
     <div class="sub_p3">个人信息确认</div>
     <div class="subOrd_boxcont subOrd_boxbtn">
@@ -106,9 +82,9 @@
     <div class="sub_box3_cont">
       <% default_user_addresses = [] %>
       <% if current_user && current_user.default_address %>
-        <%= f.hidden_field :user_address_id %>
+        
         <% 
-        user_address == UserAddress.where(user_id: current_user.id, default: true).first
+        user_address = UserAddress.where(user_id: current_user.id, default: true).first
         default_user_addresses << user_address 
         %>
         <div class="sub_box3_cont1">
@@ -143,18 +119,23 @@
       <div class="sub_box3_cont2">
         <table width="100%" height="82" border="1" class="table2 table3">
           <% if current_user %>
+            <%= f.hidden_field :user_address_id %>
             <% all_address = current_user.user_addresses - default_user_addresses %>
             <% all_address.each do |obj| %>
             <tr>
-              <td class="sub_rado"><input type="radio"></td>
+              <td class="sub_rado"><input type="radio" id="<%= obj.id %>"></td>
               <td class="sub_ads"><%= obj.username %></td>
               <% address = "#{obj.country} #{obj.province} #{obj.city} #{obj.area} #{obj.street} #{obj.building}" %>
               <td class="sub_over"><%= excerpt( address, obj.building,separator: ' ', radius: 2)  %></td>
             </tr>
             <% end %>
           <% end %>
+          <script type="text/javascript">
+
+          $('#order_form_user_address_id').val(user_address_id)
+          </script>
           <tr>
-            <td class="sub_newaddr" >
+            <td class="sub_newaddr" colspan='3'>
               <a href="###" onclick="toggleNewAddress()">
                 <div class="col-xs-2">
                   <%= image_tag("uboss_29/jia.png",style:"width:18px;") %>
@@ -219,6 +200,31 @@
       },1000);
     }
   }
+</script>
+<script type="text/javascript">
+$('#amount').on('keyup', this, function(event) {
+  var amount = $(this).val();
+  calulateTotalPrice(amount)
+});
+
+function calulateTotalPrice(amount) {
+  var present_price = <%= @order_form.product.present_price %>
+  var total_price = amount * present_price
+  $('#total_price').html(total_price)
+}
+function addAmount() {
+  var amount = parseInt($('#amount').val());
+  $('#amount').val(amount + 1)
+  calulateTotalPrice(amount);
+}
+function reduceAmount() {
+  var amount = parseInt($('#amount').val());
+  if (amount > 0) {
+    $('#amount').val(amount - 1);
+    calulateTotalPrice(amount);
+  };
+  
+}
 </script>
 <script type="text/javascript">
 function toggleNewAddress() {
