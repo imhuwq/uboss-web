@@ -11,7 +11,7 @@ class OrderCharge < ActiveRecord::Base
       nonce_str: SecureRandom.uuid.tr('-', ''),
       out_trade_no: pay_serial_number
     )
-    if response.success?
+    if response.success? && WxPay::Sign.verify?(response) && response['trade_state'] == 'SUCCESS'
       update_with_wx_pay_result(response)
       true
     else
