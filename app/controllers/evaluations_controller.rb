@@ -14,7 +14,7 @@ class EvaluationsController < ApplicationController
     if @evaluation.sharing_node_id.present?
       @sharing_node = @evaluation.sharing_node
     else
-      @sharing_node = SharingNode.create(user_id: current_user.id, product_id: @evaluation.product_id,parent_id: parent_id)
+      @sharing_node = SharingNode.create(user_id: current_user.id, product_id: @evaluation.product_id, parent_id: parent_id)
     end
   end
 

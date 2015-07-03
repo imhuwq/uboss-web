@@ -34,6 +34,15 @@ zh-CN:
         methods: 操作
       mobile_auth_code:
         mobile: 手机号码
+      order_form:
+        deliver_username: 收件人
+        deliver_mobile: 收件人电话
+        province:  省
+        country: 国家
+        city: 城市
+        area: 区/县
+        street: 街道
+        building: 详细地址
   errors:
     messages:
       accepted: 必须是可被接受的

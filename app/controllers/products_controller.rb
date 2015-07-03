@@ -1,11 +1,11 @@
 # 商品展示
 class ProductsController < ApplicationController
   def index
-    @products = Product.where(status:1).order('updated_at DESC').page(params[:page] || 1).per(10)
+    @products = Product.where(status: 1).order('updated_at DESC').page(params[:page] || 1).per(10)
   end
 
   def show
-    @product = Product.where(status:1).find(params[:id])
+    @product = Product.where(status: 1).find(params[:id])
     @sharing_node = SharingNode.find_by_code(params[:code])
     redirect_to action: :index if @product.blank?
   end

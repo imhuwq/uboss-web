@@ -1,6 +1,5 @@
 class OrdersController < ApplicationController
-
-  before_action :authenticate_weixin_user, only: [:new], if: -> { true || browser.wechat?  }
+  # before_action :authenticate_weixin_user, only: [:new], if: -> { true || browser.wechat?  }
   before_action :find_order, only: [:show, :pay, :received]
 
   def show
@@ -30,7 +29,7 @@ class OrdersController < ApplicationController
   def pay
     @order_item = @order.order_items.first rescue nil
     if @order.present? && @order.payed? && @order_item.present?
-      flash[:success] = "付款成功"
+      flash[:success] = '付款成功'
       redirect_to action: :show
     end
   end
@@ -38,17 +37,28 @@ class OrdersController < ApplicationController
   def received
     @order.state = 1
     if @order.save
-      flash[:success] = "已确认收货"
+      flash[:success] = '已确认收货'
       redirect_to controller: :evaluations, action: :new, id: @order.order_items.first.id
     end
   end
 
-  def new_mobile
-    puts params
-    render json: "success" 
+  def save_mobile
+    mobile = params[:mobile]
+    if mobile.present?
+      if User.find_by_mobile(mobile).present?
+        # TODO
+      else
+        User.create_guest(mobile)
+      end
+    end
+    respond_to do |format|
+      format.html { render nothing: true }
+      format.js { render nothing: true }
+    end
   end
 
   private
+
   def order_params
     params.require(:order_form).permit(OrderForm::ATTRIBUTES)
   end

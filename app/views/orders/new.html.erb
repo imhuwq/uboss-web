@@ -1,39 +1,41 @@
-<h2>提交订单</h2>
+<!-- <h2>提交订单</h2>
 
-<p>商品名称: <%= @order_form.product.name %></p>
+<p>商品名称: <%#= @order_form.product.name %></p>
 
-<%= simple_form_for @order_form, url: orders_path, method: 'POST' do |f| %>
+<%#= simple_form_for @order_form, url: orders_path, method: 'POST' do |f| %>
 <div class="form-inputs">
-  <%= f.hidden_field :product_id %>
-  <%= f.hidden_field :sharing_code %>
-  <%= f.input :amount %>
-  <% if current_user.blank? %>
-  <%= f.input :mobile %>
-  <%= f.input :captcha %>
-  <% end %>
+  <%#= f.hidden_field :product_id %>
+  <%#= f.hidden_field :sharing_code %>
+  <%#= f.input :amount %>
+  <%# if current_user.blank? %>
+  <%#= f.input :mobile %>
+  <%#= f.input :captcha %>
+  <%# end %>
 
   <p>收货地址</p>
-  <% if current_user && current_user.default_address %>
-  <%= f.hidden_field :user_address_id %>
-  <% else %>
-  <%= f.input :deliver_username %>
-  <%= f.input :deliver_mobile %>
-  <%= f.input :province %>
-  <%= f.input :city %>
-  <%= f.input :country, as: :text %>
-  <%= f.input :street %>
-  <% end %>
+  <%# if current_user && current_user.default_address %>
+  <%#= f.hidden_field :user_address_id %>
+  <%# else %>
+  <%#= f.input :deliver_username %>
+  <%#= f.input :deliver_mobile %>
+  <%#= f.input :province %>
+  <%#= f.input :city %>
+  <%#= f.input :country, as: :text %>
+  <%#= f.input :street %>
+  <%# end %>
 </div>
 
-<%= submit_tag '提交订单' %>
-<% end %>
+<%#= submit_tag '提交订单' %>
+<%# end %>
+ -->
+
 <header class="head">
   <%= link_to account_path do %>
   <div class="bottom left iconleft"></div>
   <% end %>
   <div class="log_font">提交订单</div>
 </header>
-<%= simple_form_for @order_form, url: orders_path, method: 'POST' do |f| %>
+<%= simple_form_for @order_form, url: orders_path, method: 'POST',wrapper: :default do |f| %>
 <%= f.hidden_field :product_id %>
 <%= f.hidden_field :sharing_code %>
 <div class="container">
@@ -53,76 +55,67 @@
       <p class="sub_p1">
         <span class="sub_left">数量</span>
         <span class="sub_right">
-          <a href="#" class="jia"><img src="/assets/uboss_29/jiann.png"></a>
-          <%= f.input_field :amount, class:"tow" %>
-          <a href="#" class="jian"><img src="/assets/uboss_29/jia.png"</a>
+          <a href="#" class="jia" onclick="reduceAmount()"><img src="/assets/uboss_29/jiann.png"></a>
+          <%= f.input_field :amount,value: 1, class:"tow",id: "amount" %>
+          <a href="#" class="jian" onclick="addAmount()"><img src="/assets/uboss_29/jia.png"></a>
         </span>
       </p>
       <p class="sub_p sub_p2">
         <span class="sub_leftl">合计（含运费）</span>
-        <span class="sub_left"><strong>￥</strong>138</span>
+        <span class="sub_left"><strong>￥</strong><b id="total_price"><%= @order_form.product.present_price %></b></span>
       </p>
+      <script type="text/javascript">
+      $('#amount').on('keyup', this, function(event) {
+        var amount = $(this).val();
+        calulateTotalPrice(amount)
+      });
+
+      function calulateTotalPrice(amount) {
+        var present_price = <%= @order_form.product.present_price %>
+        var total_price = amount * present_price
+        $('#total_price').html(total_price)
+      }
+      function addAmount() {
+        var amount = parseInt($('#amount').val());
+        $('#amount').val(amount + 1)
+        calulateTotalPrice(amount);
+      }
+      function reduceAmount() {
+        var amount = parseInt($('#amount').val());
+        if (amount > 0) {
+          $('#amount').val(amount - 1);
+          calulateTotalPrice(amount);
+        };
+        
+      }
+      </script>
     </div>
     <div class="sub_p3">个人信息确认</div>
     <div class="subOrd_boxcont subOrd_boxbtn">
       <% if current_user.blank? %>
-      <p class="sub_p">
-        <span><%= text_field_tag "mobile[]",'',placeholder: '输入手机号', class:"sub_btphon",id:'new_mobile' %></span>
-        <span><input type="buttom" value="发送验证码" class="sub_yanzhen text-center" onclick="sendNewMobile()" id="send_mobile" style="width:100px;"></span>
-        <script type="text/javascript">
-        function sendNewMobile() {
-          var mobile = $('#new_mobile').val();
-          var checkNum = /^(\+\d+-)?[1-9]{1}[0-9]{10}$/;
-          if (checkNum.test(mobile)) {
-            $.ajax({
-              url: '/orders/new_mobile',
-              type: 'GET',
-              data: {mobile: mobile},
-            })
-            .always(function() {
-              console.log("complete");
-              timedown($('#send_mobile'))
-            });
-          };
-          console.log(mobile);
-          if (!checkNum.test(mobile)) {alert("手机格式错误")};
+        <p class="sub_p">
+          <span><%= text_field_tag "mobile[]",'',placeholder: '输入手机号', class:"sub_btphon",id:'new_mobile' %></span>
+          <span><input type="buttom" value="发送验证码" class="sub_yanzhen text-center" onclick="sendNewMobile()" id="send_mobile" style="width:100px;"></span>
           
-        }
-
-        var _time = 60;
-        function timedown( t ){
-          console.log(t);
-          if( _time == 0 ){
-            t.prop("disabled",'');
-            t.attr('value',"发送验证码");
-            _time = 60;
-          }else {
-            t.prop("disabled", "disabled");
-            t.attr('value', ""+_time+"秒后再次获取");
-            _time--;
-            setTimeout(function() {
-              timedown(t)
-            },1000);
-          }
-        }
-        </script>
-      </p>
-      <p class="sub_w"><span><%= f.input_field :captcha, placeholder: '填写短信验证码', class:"sub_yanzhcont"  %></p>
+        </p>
+        <p class="sub_w"><span><%= f.input_field :captcha, placeholder: '填写短信验证码', class:"sub_yanzhcont"  %></p>
       <% end %>
-      <div>
-      </div>
     </div>
-    <div class="sub_box3">
-      <div class="sub_box3_cont">
-        <% if current_user %>
-        <% user_address = UserAddress.where(user_id: current_user.id, default: true).first || current_user.user_addresses[0] %>
+  </div>
+  <div class="sub_box3">
+    <div class="sub_box3_cont">
+      <% default_user_addresses = [] %>
+      <% if current_user && current_user.default_address %>
+        <%= f.hidden_field :user_address_id %>
+        <% 
+        user_address == UserAddress.where(user_id: current_user.id, default: true).first
+        default_user_addresses << user_address 
+        %>
         <div class="sub_box3_cont1">
           <table width="100%" height="82" border="1" class="table1">
             <tr>
               <td>
-                <% if user_address.default %>
                 <span class="mo">默认</span>
-                <% end %>
               </td>
               <td><span>收件人：</span></td>
               <td><span>电话：</span></td>
@@ -146,27 +139,89 @@
             </tr>
           </table>
         </div>
-        <% end %>
-        <div class="sub_box3_cont2">
-          <table width="100%" height="82" border="1" class="table2 table3">
-            <% if current_user %>
-              <% all_address = current_user.user_addresses - [user_address] %>
-              <% all_address.each do |obj| %>
-              <tr>
-                <td class="sub_rado"><input type="radio"></td>
-                <td class="sub_ads"><%= obj.username %></td>
-                <% address = "#{obj.country} #{obj.province} #{obj.city} #{obj.area} #{obj.street} #{obj.building}" %>
-                <td class="sub_over"><%= excerpt( address, obj.building,separator: ' ', radius: 2)  %></td>
-              </tr>
-              <% end %>
-            <% end %>
+      <% end %>
+      <div class="sub_box3_cont2">
+        <table width="100%" height="82" border="1" class="table2 table3">
+          <% if current_user %>
+            <% all_address = current_user.user_addresses - default_user_addresses %>
+            <% all_address.each do |obj| %>
             <tr>
-              <td class="sub_anniu"><a href=""></a></a></td>
-              <td class="sub_newaddr"><span>新增地址</span></td>
+              <td class="sub_rado"><input type="radio"></td>
+              <td class="sub_ads"><%= obj.username %></td>
+              <% address = "#{obj.country} #{obj.province} #{obj.city} #{obj.area} #{obj.street} #{obj.building}" %>
+              <td class="sub_over"><%= excerpt( address, obj.building,separator: ' ', radius: 2)  %></td>
             </tr>
-          </table>
+            <% end %>
+          <% end %>
+          <tr>
+            <td class="sub_newaddr" >
+              <a href="###" onclick="toggleNewAddress()">
+                <div class="col-xs-2">
+                  <%= image_tag("uboss_29/jia.png",style:"width:18px;") %>
+                </div>
+                <div class="sub_newaddr col-xs-8 font_h5" style="color:#43c3aa;">新增地址</div>
+              </a>
+            </td>
+          </tr>
+        </table>
+        <div class="undis" id="create_new_address">
+          <%= f.input :deliver_username %>
+          <%= f.input :deliver_mobile %>
+          <%= f.input :country %>
+          <%= f.input :province %>
+          <%= f.input :city %>
+          <%= f.input :area %>
+          <%= f.input :street %>
+          <%= f.input :building %>
         </div>
       </div>
     </div>
-    <div class="accunt_adil_box3"><input type="submit" value="提交订单" class="accunt_adilbtn"></div>
-    <% end %>
+  </div>
+</div>
+<div class="accunt_adil_box3">
+  <!-- <input type="submit" value="提交订单" class="accunt_adilbtn" > -->
+  <%= submit_tag '提交订单',class:"accunt_adilbtn" %>
+</div>
+<% end %>
+<script type="text/javascript">
+  function sendNewMobile() {
+    var mobile = $('#new_mobile').val();
+    var checkNum = /^(\+\d+-)?[1-9]{1}[0-9]{10}$/;
+    if (checkNum.test(mobile)) {
+      $.ajax({
+        url: '/orders/save_mobile',
+        type: 'GET',
+        data: {mobile: mobile},
+      })
+      .always(function() {
+        console.log("complete");
+        timedown($('#send_mobile'))
+      });
+    };
+    console.log(mobile);
+    if (!checkNum.test(mobile)) {alert("手机格式错误")};
+
+  }
+
+  var _time = 60;
+  function timedown( t ){
+    console.log(t);
+    if( _time == 0 ){
+      t.prop("disabled",'');
+      t.attr('value',"发送验证码");
+      _time = 60;
+    }else {
+      t.prop("disabled", "disabled");
+      t.attr('value', ""+_time+"秒后再次获取");
+      _time--;
+      setTimeout(function() {
+        timedown(t)
+      },1000);
+    }
+  }
+</script>
+<script type="text/javascript">
+function toggleNewAddress() {
+  $("#create_new_address").toggle('slow')
+}
+</script>

@@ -41,6 +41,8 @@ gem 'jbuilder', '~> 2.0'
 # JavaScript/Css stuff
 gem "bootstrap-sass"
 gem "underscore-rails"
+gem 'country_select'
+gem 'localized_country_select'
 
 # ImgTool
 gem "carrierwave"
