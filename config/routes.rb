@@ -60,7 +60,7 @@ Rails.application.routes.draw do
     mount RedactorRails::Engine => '/redactor_rails'
   end
 
-  authenticate :user, lambda { |user| user.id == 1 } do
+  authenticate :user, lambda { |user| user.admin? && user.super_admin? } do
     mount Sidekiq::Web => '/sidekiq'
   end
 
