@@ -88,34 +88,34 @@
   <% end %>
 <% end %>
 
-<%= content_for :extra_javascript do %>
-  <%= render "weixin_js" %>
-  <script type="text/javascript" charset="utf-8">
+<% if @order.state == 'unpay' %>
+  <%= content_for :extra_javascript do %>
+    <%= render "weixin_js" %>
+    <script type="text/javascript" charset="utf-8">
+  wx.ready(function(){
 
-wx.ready(function(){
+    $('#wx-pay-btn').on('click', function(event){
+      event.preventDefault();
+      wx.chooseWXPay({
+        "timestamp": "<%= @pay_p[:timeStamp] %>",
+        "nonceStr": "<%= @pay_p[:nonceStr] %>",
+        "package": "<%= @pay_p[:package] %>",
+        "signType": "<%= @pay_p[:signType] %>",
+        "paySign": "<%= @pay_sign %>", // 支付签名
+        "success": function (res) {
+          window.location.href = "/orders/" + "<%= @order.id %>" + "/pay_complete";
+        }
+      });
 
-  $('#wx-pay-btn').on('click', function(event){
-    event.preventDefault();
-    wx.chooseWXPay({
-      "timestamp": "<%= @pay_p[:timeStamp] %>",
-      "nonceStr": "<%= @pay_p[:nonceStr] %>",
-      "package": "<%= @pay_p[:package] %>",
-      "signType": "<%= @pay_p[:signType] %>",
-      "paySign": "<%= @pay_sign %>", // 支付签名
-      "success": function (res) {
-        window.location.href = "/orders/" + "<%= @order.id %>" + "/pay_complete";
-      }
     });
 
-  });
+    wx.onMenuShareTimeline({
+      title: "<%= @order.number %>",
+      link: "http://baidu.com",
+      imgUrl: "http://ssobu-dev.b0.upaiyun.com/user/avatar/f2285d00cdeda94eab43d5cef15a414b.jpeg-thumb",
+    });
 
-  wx.onMenuShareTimeline({
-    title: "<%= @order.number %>",
-    link: "http://baidu.com",
-    imgUrl: "http://ssobu-dev.b0.upaiyun.com/user/avatar/f2285d00cdeda94eab43d5cef15a414b.jpeg-thumb",
-  });
-
-})
-    </script>
+  })
+      </script>
   <% end %>
 <% end %>
