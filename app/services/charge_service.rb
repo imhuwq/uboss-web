@@ -17,9 +17,7 @@ module ChargeService
     pay_serial_number = result["out_trade_no"]
     order_charge = OrderCharge.find_by(pay_serial_number: pay_serial_number)
 
-    order_charge.paid_amount = result["total_fee"]
-    order_charge.payment = 'wx'
-    order_charge.save(validate: false)
+    order_charge.update_with_wx_pay_result(result)
 
     order_charge.order.pay!
   end
@@ -63,7 +61,7 @@ module ChargeService
   end
 
   def wx_notify_url
-    "#{Rails.application.secrets.host_url}/pay_notify/wechat_notify"
+    "#{Rails.application.secrets.pay_host}/pay_notify/wechat_notify"
   end
 
   def charge_success(params)

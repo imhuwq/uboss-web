@@ -90,28 +90,22 @@
 
 <%= content_for :extra_javascript do %>
   <%= render "weixin_js" %>
-<script type="text/javascript" charset="utf-8">
+  <script type="text/javascript" charset="utf-8">
 
 wx.ready(function(){
 
   $('#wx-pay-btn').on('click', function(event){
     event.preventDefault();
-    var url = $(this).attr('href');
-
-    $.post(url, function(data){
-      wx.chooseWXPay({
-        "timestamp": data.timeStamp,
-        "nonceStr": data.nonceStr,
-        "package": data.package,
-        "signType": data.signType,
-        "paySign": data.paySign,
-        "success": function (res) {
-          window.location.href = "/orders/" + data.order_id + "/pay_success";
-        }
-      });
-    }).error(function(data){
-      alert('支付失败');
-    })
+    wx.chooseWXPay({
+      "timestamp": "<%= @pay_p[:timeStamp] %>",
+      "nonceStr": "<%= @pay_p[:nonceStr] %>",
+      "package": "<%= @pay_p[:package] %>",
+      "signType": "<%= @pay_p[:signType] %>",
+      "paySign": "<%= @pay_sign %>", // 支付签名
+      "success": function (res) {
+        window.location.href = "/orders/" + "<%= @order.id %>" + "/pay_complete";
+      }
+    });
 
   });
 
@@ -120,6 +114,8 @@ wx.ready(function(){
     link: "http://baidu.com",
     imgUrl: "http://ssobu-dev.b0.upaiyun.com/user/avatar/f2285d00cdeda94eab43d5cef15a414b.jpeg-thumb",
   });
+
 })
-</script>
+    </script>
+  <% end %>
 <% end %>

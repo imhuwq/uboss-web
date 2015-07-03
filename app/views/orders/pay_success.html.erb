@@ -1,0 +1,11 @@
+<p>
+订单：<%= @order.number %>
+</p>
+<% if @order.paid? %>
+  付款成功。
+<% else %>
+  付款失败。
+<% end %>
+<p>
+  state：<%= @order.state_i18n %>。
+</p>

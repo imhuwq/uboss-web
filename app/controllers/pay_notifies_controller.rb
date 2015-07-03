@@ -1,4 +1,4 @@
-class PayNotifyController < ApplicationController
+class PayNotifiesController < ActionController::Base
 
   # 支付异步通知
   def wechat_notify

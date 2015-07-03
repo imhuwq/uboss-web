@@ -13,7 +13,7 @@ Rails.application.routes.draw do
   resources :orders, only: [:new, :create, :show] do
     get :new_mobile, on: :collection
     get 'received', on: :member
-    get 'pay_success', on: :member
+    get 'pay_complete', on: :member
     resource :charge, only: [:create]
   end
   resources :products do

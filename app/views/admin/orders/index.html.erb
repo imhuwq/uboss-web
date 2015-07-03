@@ -20,7 +20,7 @@
   <%= t.cell :number do |order| %>
     <%= link_to order.number, [:admin, order] %>
   <% end %>
-  <%= t.cell :buyer_regist_mobile %>
+  <%= t.cell :buyer_identify %>
   <%= t.cell(:state) do |order| %>
     <span class='label state-<%= order.state %>'><%= order.state_i18n %></span>
   <% end %>

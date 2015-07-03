@@ -56,13 +56,18 @@ class Order < ActiveRecord::Base
     paid_at.present?
   end
 
-  def check_paid?
-    return false if self.state != 'unpay'
-    order_charges.each do |order_charge|
-      if order_charge.paid?
-        self.pay!
-        break
-      end
+  def pay_amount
+    Rails.env.production? ? super : 0.01
+  end
+
+  def check_paid
+    return true if state != 'unpay' && state != 'closed'
+
+    if order_charge.paid?
+      self.pay! if state == 'unpay'
+      true
+    else
+      false
     end
   end
 

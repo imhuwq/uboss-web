@@ -1,9 +1,20 @@
 class OrdersController < ApplicationController
 
   before_action :authenticate_user!, only: [:new, :pay]
-  before_action :find_order, only: [:show, :pay, :received]
+  before_action :find_order, only: [:show, :pay, :pay_success, :received]
 
   def show
+    if @order.unpay?
+      @order_charge = ChargeService.find_or_create_charge(@order, remote_ip: request.ip)
+      @pay_p = {
+        appId: WxPay.appid,
+        timeStamp: Time.now.to_i.to_s,
+        nonceStr: SecureRandom.hex,
+        package: "prepay_id=#{@order_charge.prepay_id}",
+        signType: "MD5"
+      }
+      @pay_sign = WxPay::Sign.generate(@pay_p)
+    end
   end
 
   def new
@@ -27,13 +38,8 @@ class OrdersController < ApplicationController
     end
   end
 
-  def pay
-    @order_item = @order.order_items.first rescue nil
-    # FIXME fake payed states
-    if Rails.env.development? && params[:mode] == 'test'
-      flash[:success] = "付款成功"
-      redirect_to action: :show
-    end
+  def pay_complete
+    @order.check_paid if @order.unpay?
   end
 
   def received
