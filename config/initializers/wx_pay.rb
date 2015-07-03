@@ -10,8 +10,6 @@ module WxPay
 
       check_required_options(params, GENERATE_ORDERQUERY_REQUIRED_FIELDS)
 
-      params[:sign] = WxPay::Sign.generate(params)
-
       r = invoke_remote("#{GATEWAY_URL}/orderquery", make_payload(params))
 
       yield r if block_given?
