@@ -50,21 +50,6 @@ class OrdersController < ApplicationController
     end
   end
 
-  def save_mobile
-    mobile = params[:mobile]
-    if mobile.present?
-      if User.find_by_mobile(mobile).present?
-        # TODO
-      else
-        User.create_guest(mobile)
-      end
-    end
-    respond_to do |format|
-      format.html { render nothing: true }
-      format.js { render nothing: true }
-    end
-  end
-
   private
 
   def order_params

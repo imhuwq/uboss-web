@@ -12,6 +12,7 @@ class MobileAuthCode < ActiveRecord::Base
     if auth_code.blank?
       false
     else
+      auth_code.destroy
       true
     end
   end
@@ -43,10 +44,11 @@ class MobileAuthCode < ActiveRecord::Base
 
   def send_code # 发送验证码
     sms = send_sms(self.mobile,self.code)
+    puts sms
     if sms == "OK"
       return true
     else
-      raise sms
+      return false
     end
   end
 end

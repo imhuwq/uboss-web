@@ -9,9 +9,9 @@ Rails.application.routes.draw do
   }
 
   get 'wxpay/test/:id', to: 'orders#show', as: :test_wxpay
+  post 'mobile_auth_code/create', to: 'mobile_auth_code#create'
 
   resources :orders, only: [:new, :create, :show] do
-    get :new_mobile, on: :collection
     get 'received', on: :member
     get 'pay_complete', on: :member
     resource :charge, only: [:create]
