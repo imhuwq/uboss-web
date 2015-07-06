@@ -9,7 +9,7 @@ module OrdersHelper
   end
 
   def sign_package
-    $weixin_client.get_jssign_package(request.url)
+    @sign_package ||= $weixin_client.get_jssign_package(request.url)
   end
 
 end
