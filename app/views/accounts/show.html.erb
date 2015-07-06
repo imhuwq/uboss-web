@@ -1,6 +1,3 @@
-用户名： <%= link_to current_user.login, edit_account_path %>
-
-订单待收货：<%= current_user.orders.shiped.count %>
 <header class="head">
   <%= link_to url_for(controller: :products,action: :index) do %>
   <div class="bottom left iconleft"></div>
@@ -74,11 +71,11 @@
     <div class="accunt_adil undis">
       <div class="accunt_adil_box1">
         <p>总收益</p>
-        <strong><%= current_user.income %></strong><span>元</span>
+        <strong><%= current_user.income.to_f %></strong><span>元</span>
       </div>
       <div class="accunt_adil_box2">
         <p>可提现</p>
-        <strong><%= current_user.income %></strong><span>元</span>
+        <strong><%= current_user.income.to_f %></strong><span>元</span>
         <p>部分商家会以商品形式返现</p>
         <p>商品提现请致电：XXXX-XXXX</p>
       </div>
