@@ -8,6 +8,7 @@ class Product < ActiveRecord::Base
   belongs_to :user
   has_one :asset_img, class_name: 'AssetImg', dependent: :destroy, as: :resource
   has_many :product_share_issue, dependent: :destroy
+  has_many :order_items
 
   delegate :image_url, to: :asset_img, allow_nil: true
 
@@ -73,9 +74,11 @@ class Product < ActiveRecord::Base
     end
   end
 
+  def total_sells
+    order_items.joins(:order).where(orders: {state: 4}).sum(:amount)
+  end
+
   def self.total_sells(product_id) #商品总销量
-    orders = Order.where(state: 1)
-    order_items = OrderItem.where(order_id: orders.collect(&:id),product_id: product_id)
-    total_sells = order_items.collect(&:amount).inject(:+) || 0
+    Product.find(product_id).total_sells
   end
 end
