@@ -6,8 +6,9 @@ class ProductsController < ApplicationController
 
   def show
     @product = Product.where(status: 1).find(params[:id])
-    @sharing_node = SharingNode.find_by_code(params[:code])
-    redirect_to action: :index if @product.blank?
+    if flash[:sharing_code]
+      @sharing_node = SharingNode.find_by(code: flash[:sharing_code])
+    end
   end
 
   def save_mobile

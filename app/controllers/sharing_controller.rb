@@ -1,9 +1,8 @@
 # 分享链接
 class SharingController < ApplicationController
 	def show
-		@sharing_node = SharingNode.find_by_code(params[:code])
-    @product = @sharing_node.product
-    redirect_to controller: :products, action: :index if @product.blank?
-    render 'products/show'
+		@sharing_node = SharingNode.find_by!(code: params[:code])
+    flash[:sharing_code] = params[:code]
+    redirect_to product_path(@@sharing_node.product_id)
 	end
 end

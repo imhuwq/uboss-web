@@ -4,7 +4,7 @@
   <div class="bottom left iconleft"></div>
   <% end %>
   <div class="log_font">商品详情</div>
-  <div class="shar">分享</div>      
+  <div class="shar">分享</div>
 </header>
 <div class="container">
   <div class="prdv_img">
@@ -14,7 +14,7 @@
     <p><strong><%= @product.name %></strong></p>
     <div class="contpric">
       <span class="pric">价格：</span>
-      <span class="pric1">￥<span class="pric2 prvd_color"><%= @product.present_price %></span></span> 
+      <span class="pric1">￥<span class="pric2 prvd_color"><%= @product.present_price %></span></span>
       <span class="pric3 prvd_colors line-through">
         ￥<%= @product.original_price %>
       </span>
@@ -39,9 +39,9 @@
 <div class="prvid_content">
     <%= raw @product.content %>
 </div>
-<% if controller_name == 'products' %>
+<% if @sharing_node %>
 <div class="buy">
-  <%= link_to  new_order_path(product_id: @product.id, sharing_code: @sharing_node.try(:code)) do %>
+  <%= link_to  new_order_path(product_id: @product.id) do %>
     <div class="buy"><input type="submit" value="立即购买" class="buy_btn"></div>
   <% end %>
 </div>
@@ -50,11 +50,11 @@
     <div class="buy_shortcont">
       <div class="prvd_header"></div>
       <div class="prvd_buycont">
-        <p>分享者：<%= truncate (@sharing_node.user.try(:nickname) || '未知用户'),:length=>10,:omission=>'...' %></p>
+        <p>分享者：<%= truncate (@sharing_node.user.identify),:length=>10,:omission=>'...' %></p>
         <p>好评率：<%= Evaluation.sharer_good_reputation_rate(@sharing_node.user) %></p>
       </div>
       <div class="prvd_buyrigt"><input type="submit" value="立即购买" class="buy_btnshort ">
-      <%= link_to  new_order_path(product_id: @product.id, sharing_code: @sharing_node.try(:code)) do %>
+      <%= link_to  new_order_path(product_id: @product.id, sharing_code: @sharing_node.code) do %>
         <div class="prvd_buyrigt"><input type="submit" value="立即购买" class="buy_btnshort "></div>
       <% end %>
       </div>
