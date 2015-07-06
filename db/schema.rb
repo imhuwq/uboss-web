@@ -139,9 +139,9 @@ ActiveRecord::Schema.define(version: 20150706075120) do
     t.float    "share_rate_total",   default: 0.0
     t.integer  "calculate_way",      default: 0
     t.integer  "status",             default: 0
-    t.integer  "good"
-    t.integer  "normal"
-    t.integer  "bad"
+    t.integer  "good",               default: 0
+    t.integer  "normal",             default: 0
+    t.integer  "bad",                default: 0
   end
 
   create_table "redactor_assets", force: :cascade do |t|
