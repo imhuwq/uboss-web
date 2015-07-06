@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150702085152) do
+ActiveRecord::Schema.define(version: 20150706075120) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -139,6 +139,9 @@ ActiveRecord::Schema.define(version: 20150702085152) do
     t.float    "share_rate_total",   default: 0.0
     t.integer  "calculate_way",      default: 0
     t.integer  "status",             default: 0
+    t.integer  "good"
+    t.integer  "normal"
+    t.integer  "bad"
   end
 
   create_table "redactor_assets", force: :cascade do |t|
@@ -236,6 +239,9 @@ ActiveRecord::Schema.define(version: 20150702085152) do
     t.string   "city"
     t.string   "province"
     t.string   "country"
+    t.integer  "good"
+    t.integer  "normal"
+    t.integer  "bad"
   end
 
   create_table "user_roles", force: :cascade do |t|
