@@ -239,9 +239,9 @@ ActiveRecord::Schema.define(version: 20150706075120) do
     t.string   "city"
     t.string   "province"
     t.string   "country"
-    t.integer  "good"
-    t.integer  "normal"
-    t.integer  "bad"
+    t.integer  "good",             default: 0
+    t.integer  "normal",           default: 0
+    t.integer  "bad",              default: 0
   end
 
   create_table "user_roles", force: :cascade do |t|
