@@ -37,7 +37,7 @@
 
         </div>
       </div>
-      
+
 			<div class="form-group clear">
 				<label class="string required text-right col-sm-3 control-label" for="product_name">
 					<abbr title="必填">*</abbr>
@@ -127,7 +127,7 @@
                 <span><%= @product.share_rate_lv_2*100 %>%</span>
                 -
                 <span><%= @product.share_amount_lv_2 %>元</span>
-                
+
               </td>
             </tr>
             <tr>
@@ -138,10 +138,16 @@
                 <span><%= @product.share_amount_lv_3 %>元</span>
               </td>
             </tr>
+            <tr>
+              <td>分享优惠：</td>
+              <td>
+                <span><%= @product.privilege_amount %>元</span>
+              </td>
+            </tr>
           </tbody>
         </table>
       </div>
-		
+
 	</div>
 	<div class="col-xs-12 border_block">
 		<h3 class="col-md-offset-1">物流及其他</h3>
