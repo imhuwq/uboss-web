@@ -6,7 +6,6 @@
 </header>
 <%= simple_form_for @order_form, url: orders_path, method: 'POST',wrapper: :default do |f| %>
 <%= f.hidden_field :product_id %>
-<%= f.hidden_field :sharing_code %>
 <div class="container">
   <div class="subOrd_box1">
     <dl>
@@ -41,7 +40,6 @@
         <p class="sub_p">
           <span><%= text_field_tag "mobile[]",'',placeholder: '输入手机号', class:"sub_btphon",id:'new_mobile' %></span>
           <span><input type="buttom" value="发送验证码" class="sub_yanzhen text-center" onclick="sendNewMobile()" id="send_mobile" style="width:100px;"></span>
-
         </p>
         <p class="sub_w"><span><%= f.input_field :captcha, placeholder: '填写短信验证码', class:"sub_yanzhcont"  %></p>
       <% end %>

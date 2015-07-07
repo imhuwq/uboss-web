@@ -14,6 +14,10 @@ class SharingNode < ActiveRecord::Base
 
   before_create :set_code, :set_product
 
+  def privilege_card
+    @privilege_card ||= PrivilegeCard.find_by(user_id: user_id, product_id: product_id)
+  end
+
   private
   def limit_sharing_rate
     if self.class.where('created_at > ?', Time.now.beginning_of_day).where(user_id: user_id).exists?

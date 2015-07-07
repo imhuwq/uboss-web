@@ -12,6 +12,8 @@ class Product < ActiveRecord::Base
 
   delegate :image_url, to: :asset_img, allow_nil: true
 
+  enum status: { unpublish: 0, published: 1, closed: 2 }
+
   before_create :generate_code
   before_save :calculates_before_save
 

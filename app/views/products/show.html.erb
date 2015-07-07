@@ -53,8 +53,7 @@
         <p>分享者：<%= truncate (@sharing_node.user.identify),:length=>10,:omission=>'...' %></p>
         <p>好评率：<%= Evaluation.sharer_good_reputation_rate(@sharing_node.user) %></p>
       </div>
-      <div class="prvd_buyrigt"><input type="submit" value="立即购买" class="buy_btnshort ">
-      <%= link_to  new_order_path(product_id: @product.id, sharing_code: @sharing_node.code) do %>
+      <%= link_to  new_order_path(product_id: @product.id) do %>
         <div class="prvd_buyrigt"><input type="submit" value="立即购买" class="buy_btnshort "></div>
       <% end %>
       </div>

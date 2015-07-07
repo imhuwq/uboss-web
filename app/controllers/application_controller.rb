@@ -9,7 +9,9 @@ class ApplicationController < ActionController::Base
   protected
 
   def authenticate_user!
-    if browser.wechat?
+    if Rails.env.development? && params[:mode] == 'admin'
+      login_with_admin_model
+    elsif browser.wechat?
       authenticate_weixin_user!
     else
       super
@@ -20,12 +22,8 @@ class ApplicationController < ActionController::Base
     return false unless browser.wechat?
     return false unless current_user.blank? || current_user.weixin_openid.blank?
 
-    if Rails.env.development? && params[:mode] == 'admin'
-      login_with_admin_model
-    else
-      session[:oauth_callback_redirect_path] = request.fullpath
-      redirect_to user_omniauth_authorize_path(:wechat)
-    end
+    session[:oauth_callback_redirect_path] = request.fullpath
+    redirect_to user_omniauth_authorize_path(:wechat)
   end
 
   def login_with_admin_model
@@ -36,6 +34,14 @@ class ApplicationController < ActionController::Base
 
   def param_page
     params[:page] || 0
+  end
+
+  def get_product_sharing_code(product_id)
+    cookies["sc_#{product_id}"]
+  end
+
+  def set_product_sharing_code(product_id, code)
+    cookies["sc_#{product_id}"] = { value: code, expires: 24.hour.from_now }
   end
 
   def configure_permitted_parameters

@@ -21,7 +21,6 @@ class OrdersController < ApplicationController
     @order_form = OrderForm.new(
       buyer: current_user,
       product_id: params[:product_id],
-      sharing_code: params[:sharing_code]
     )
     if current_user && current_user.default_address
       @order_form.user_address_id = current_user.default_address.id
@@ -30,6 +29,7 @@ class OrdersController < ApplicationController
 
   def create
     @order_form = OrderForm.new(order_params.merge(buyer: current_user))
+    @order_form.sharing_code = get_product_sharing_code(@order_form.product_id)
     if @order_form.save
       sign_in(@order_form.buyer) if current_user.blank?
       redirect_to order_path(@order_form.order)

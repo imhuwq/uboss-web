@@ -1,13 +1,14 @@
 # 商品展示
 class ProductsController < ApplicationController
   def index
-    @products = Product.where(status: 1).order('updated_at DESC').page(params[:page] || 1).per(10)
+    @products = Product.published.order('updated_at DESC').page(params[:page] || 1).per(10)
   end
 
   def show
-    @product = Product.where(status: 1).find(params[:id])
-    if flash[:sharing_code]
-      @sharing_node = SharingNode.find_by(code: flash[:sharing_code])
+    @product = Product.published.find(params[:id])
+    if @scode = get_product_sharing_code(@product.id)
+      @sharing_node = SharingNode.find_by(code: @scode)
+      @privilege_card = @sharing_node.privilege_card
     end
   end
 
