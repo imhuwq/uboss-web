@@ -9,6 +9,8 @@ Rails.application.routes.draw do
   }
 
   get 'wxpay/test/:id', to: 'orders#show', as: :test_wxpay
+  get 'sharing/:code', to: 'sharing#show'
+
   post 'mobile_auth_code/create', to: 'mobile_auth_code#create'
 
   resources :orders, only: [:new, :create, :show] do
@@ -65,6 +67,5 @@ Rails.application.routes.draw do
   end
 
   root 'products#index'
-  get 'sharing(.:code)' => 'sharing#show'
 
 end
