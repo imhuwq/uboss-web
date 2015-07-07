@@ -34,43 +34,25 @@ class Product < ActiveRecord::Base
     end
   end
 
-  def set_default_share_rate # 设置默认分成比例
-    case has_share_lv  # 依据分成层数设定
-    when 3 # 3层
-      @share_rate_lv_3 = 0.2
-      @share_rate_lv_2 = 0.3
-      @share_rate_lv_1 = 0.5
-    when 2 # 2层
-      @share_rate_lv_3 = 0.0
-      @share_rate_lv_2 = 0.4
-      @share_rate_lv_1 = 0.6
-    when 1 # 2层
-      @share_rate_lv_3 = 0.0
-      @share_rate_lv_2 = 0.0
-      @share_rate_lv_1 = 1.0
-    when 0 # 不分成
-      @share_rate_lv_3 = 0.0
-      @share_rate_lv_2 = 0.0
-      @share_rate_lv_1 = 0.0
+  def set_share_rate(*args) # 设置分成比例
+    3.times do |index|
+      rate = args[index] || get_shraing_rate(has_share_lv, index+1)
+      self.__send__("share_rate_lv_#{index + 1}=", rate)
     end
   end
 
-  def set_share_rate(*args) # 设置分成比例
-    set_default_share_rate
-    self.share_rate_lv_3 = args[2] || @share_rate_lv_3
-    self.share_rate_lv_2 = args[1] || @share_rate_lv_2
-    self.share_rate_lv_1 = args[0] || @share_rate_lv_1
-  end
-
   def calculate_shares # 计算具体的分成金额
-    unless has_share_lv == 0 # 参与分成的情况
-      self.share_amount_lv_3 = ('%.2f' % (share_amount_total * share_rate_lv_3)).to_f
-      self.share_amount_lv_2 = ('%.2f' % (share_amount_total * share_rate_lv_2)).to_f
-      self.share_amount_lv_1 = (share_amount_total - share_amount_lv_2 - share_amount_lv_3)
-    else
-      self.share_amount_lv_3 = 0.0
-      self.share_amount_lv_2 = 0.0
-      self.share_amount_lv_1 = 0.0
+    if has_share_lv != 0 # 参与分成的情况
+      assigned_total = 0
+
+      3.times do |index|
+        level = index + 1
+        amount = ('%.2f' % (share_amount_total * self["share_rate_lv_#{level}"])).to_f
+        self.__send__("share_amount_lv_#{level}=", amount)
+        assigned_total += amount
+      end
+
+      self.privilege_amount = share_amount_total - assigned_total
     end
   end
 
@@ -81,4 +63,10 @@ class Product < ActiveRecord::Base
   def self.total_sells(product_id) #商品总销量
     Product.find(product_id).total_sells
   end
+
+  private
+  def get_shraing_rate(sharing_level, rate_level)
+    Rails.application.secrets.product_sharing["level#{sharing_level}"].try(:[], "rate#{rate_level}").to_f
+  end
+
 end
