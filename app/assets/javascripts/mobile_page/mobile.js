@@ -13,7 +13,7 @@ $('body').prop('class');
 
 // orders#new
 function toggleNewAddress() {
-  $("#create_new_address").toggle('slow')
+  $("#create_new_address").toggle()
 }
 
 function addAmount() {
