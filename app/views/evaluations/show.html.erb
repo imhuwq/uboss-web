@@ -7,13 +7,13 @@
 <div class="container">
   <div class="p_comment">
     <% case @evaluation.status %>
-    <% when 1 %>
+    <% when 'good' %>
     <div class="p_img good"></div>
     <strong>好评</strong>
-    <% when 2 %>
+    <% when 'normal' %>
     <div class="p_img normal"></div>
     <strong>中评</strong>
-    <% when 3 %>
+    <% when 'bad' %>
     <div class="p_img bad"></div>
     <strong>差评</strong>
     <% end %>
@@ -125,4 +125,20 @@ try{
   }
   }catch(e){}
 }
+</script>
+<%= render "weixin_js" %>
+<script type="text/javascript">
+wx.onMenuShareTimeline({
+  title: "<%= @evaluation.order_item.product.try(:name) %>", // 分享标题
+  link: 'http://<%= "#{request.env["HTTP_HOST"]}/products/#{@sharing_node.product_id}?code=#{ @sharing_node.try(:code)}" %>', // 分享链接
+  imgUrl: '<%= @evaluation.order_item.product.image_url %>', // 分享图标
+  success: function () { 
+    console.log('分享成功')
+      // 用户确认分享后执行的回调函数
+  },
+  cancel: function () { 
+    console.log('用户取消分享')
+      // 用户取消分享后执行的回调函数
+  }
+});
 </script>

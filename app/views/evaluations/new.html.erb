@@ -31,7 +31,7 @@
   <%= f.input_field :status, style:"display:none;" %>
   <%= f.input_field :order_item_id, value: params[:id], style:"display:none;" %>
   <div style="padding:30px 5px;">
-    <%= f.input_field :content, placeholder: '写点评价吧',style: "height:100px;padding:10px;width:200px;margin:0;margin-bottom: 24px" %>
+    <%= f.input_field :content, placeholder: '写点评价吧',style: "height:100px;padding:10px;width:255px;margin:0;margin-bottom: 24px" %>
   </div>
 </div>
 <a onclick="submitEvaluationStatus()">
@@ -44,9 +44,9 @@
 
 
 <script type="text/javascript">
-function good() {$("#evaluation_status").val("1");$("#good").addClass('y_hover');$("#normal").removeClass('y_hover');$("#bad").removeClass('y_hover')};
-function normal() {$("#evaluation_status").val("2");$("#normal").addClass('y_hover');$("#good").removeClass('y_hover');$("#bad").removeClass('y_hover')};
-function bad() {$("#evaluation_status").val("3");$("#bad").addClass('y_hover');$("#normal").removeClass('y_hover');$("#good").removeClass('y_hover');};
+function good() {$("#evaluation_status").val("good");$("#good").addClass('y_hover');$("#normal").removeClass('y_hover');$("#bad").removeClass('y_hover')};
+function normal() {$("#evaluation_status").val("normal");$("#normal").addClass('y_hover');$("#good").removeClass('y_hover');$("#bad").removeClass('y_hover')};
+function bad() {$("#evaluation_status").val("bad");$("#bad").addClass('y_hover');$("#normal").removeClass('y_hover');$("#good").removeClass('y_hover');};
 function submitEvaluationStatus() {
   var val = $("#evaluation_status").val()
   if (val == '0') {

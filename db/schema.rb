@@ -137,11 +137,17 @@ ActiveRecord::Schema.define(version: 20150707041308) do
     t.float    "share_rate_total",   default: 0.0
     t.integer  "calculate_way",      default: 0
     t.integer  "status",             default: 0
+<<<<<<< HEAD
     t.integer  "good",               default: 0
     t.integer  "normal",             default: 0
     t.integer  "bad",                default: 0
     t.float    "discount_amount"
     t.float    "privilege_amount",   default: 0.0
+=======
+    t.integer  "good_evaluation",    default: 0
+    t.integer  "normal_evaluation",  default: 0
+    t.integer  "bad_evaluation",     default: 0
+>>>>>>> change evaluation name
   end
 
   create_table "redactor_assets", force: :cascade do |t|
@@ -232,16 +238,16 @@ ActiveRecord::Schema.define(version: 20150707041308) do
     t.float    "income_level_two"
     t.float    "income_level_thr"
     t.float    "sharing_counter"
-    t.datetime "created_at",                     null: false
-    t.datetime "updated_at",                     null: false
-    t.float    "frozen_income",    default: 0.0
+    t.datetime "created_at",                      null: false
+    t.datetime "updated_at",                      null: false
+    t.float    "frozen_income",     default: 0.0
     t.integer  "sex"
     t.string   "city"
     t.string   "province"
     t.string   "country"
-    t.integer  "good",             default: 0
-    t.integer  "normal",           default: 0
-    t.integer  "bad",              default: 0
+    t.integer  "good_evaluation",   default: 0
+    t.integer  "normal_evaluation", default: 0
+    t.integer  "bad_evaluation",    default: 0
   end
 
   create_table "user_roles", force: :cascade do |t|

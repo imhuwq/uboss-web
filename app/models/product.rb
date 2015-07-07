@@ -58,12 +58,8 @@ class Product < ActiveRecord::Base
     end
   end
 
-  def total_sells
+  def total_sells #商品总销量
     order_items.joins(:order).where(orders: {state: 4}).sum(:amount)
-  end
-
-  def self.total_sells(product_id) #商品总销量
-    Product.find(product_id).total_sells
   end
 
   private

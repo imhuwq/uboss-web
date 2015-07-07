@@ -15,7 +15,7 @@
   <% end %>
   <%= t.cell :count %>
   <%= t.cell :total_sells do |obj| %>
-  <%= Product.total_sells(obj) %>
+  <%= obj.total_sells %>
   <% end %>
   <%= t.cell :created_at %>
   <%= t.cell :methods do |obj| %>

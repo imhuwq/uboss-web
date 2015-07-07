@@ -21,17 +21,19 @@ class Evaluation < ActiveRecord::Base
   end
 
   def count_evaluation # 计算出用户和产品的好、中、差评论数并保存
-    user_info_id = User.find_by_id(self.sharer_id).user_info.id
-    case self.status
-    when 'good'
-      UserInfo.update_counters user_info_id, good: 1
-      Product.update_counters self.product_id, good: 1
-    when 'normal'
-      UserInfo.update_counters user_info_id, normal: 1
-      Product.update_counters self.product_id, normal: 1
-    when 'bad'
-      UserInfo.update_counters user_info_id, normal: 1
-      Product.update_counters self.product_id, normal: 1
+    if self.sharer_id
+      user_info_id = User.find(self.sharer_id).user_info.id
+      case self.status
+      when 'good'
+        UserInfo.update_counters user_info_id, good: 1
+        Product.update_counters self.product_id, good: 1
+      when 'normal'
+        UserInfo.update_counters user_info_id, normal: 1
+        Product.update_counters self.product_id, normal: 1
+      when 'bad'
+        UserInfo.update_counters user_info_id, normal: 1
+        Product.update_counters self.product_id, normal: 1
+      end
     end
   end
 
@@ -55,14 +57,14 @@ class Evaluation < ActiveRecord::Base
     #   "100.00%"
     # end
     user_info = User.find_by_id(sharer_id).user_info
-    rate = user_info.good/(user_info.good + user_info.normal + user_info.bad) rescue 1
+    rate = user_info.good_evaluation/(user_info.good_evaluation + user_info.normal_evaluation + user_info.bad_evaluation) rescue 1
     "#{'%.2f' % (rate.try(:to_f)*100)}%"
   end
 
   def self.product_good_reputation(product_id) # 商品好评数
     # evaluation = Evaluation.where(product_id: product_id)
-    # good = evaluation.where(status: 1).count
-    Product.find_by_id(product_id).good
+    # good_evaluation = evaluation.where(status: 1).count
+    Product.find_by_id(product_id).good_evaluation
   end
 
   def self.product_good_reputation_rate(product_id) # 商品好评率
@@ -75,7 +77,7 @@ class Evaluation < ActiveRecord::Base
     #   "100.00%"
     # end
     product = Product.find_by_id(product_id)
-    rate = product.good/(product.good + product.normal + product.bad) rescue 1
+    rate = product.good_evaluation/(product.good_evaluation + product.normal_evaluation + product.bad_evaluation) rescue 1
     "#{'%.2f' % (rate.try(:to_f)*100)}%"
   end
 end
