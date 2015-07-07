@@ -1,16 +1,7 @@
 class MobileAuthCodeController < ApplicationController
   def create
-  	puts params
-  	mobile = params[:mobile]
-    if mobile.present?
-      if User.find_by_mobile(mobile).present?
-      	MobileAuthCode.find_by_mobile(mobile).destroy
-      	MobileAuthCode.create(mobile: mobile)
-      else
-        User.create_guest(mobile)
-        MobileAuthCode.find_by_mobile(mobile).destroy
-        MobileAuthCode.create(mobile: mobile)
-      end
+    if mobile = params[:mobile]
+      MobileAuthCode.send_captcha_with_mobile(mobile)
     end
     respond_to do |format|
       format.html { render nothing: true }
