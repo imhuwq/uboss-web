@@ -9,6 +9,7 @@ class OrderItem < ActiveRecord::Base
   validates :product_id, presence: true
 
   delegate :name, :traffic_expense, :present_price, to: :product, prefix: true
+  delegate :privilege_card, to: :sharing_node, allow_nil: true
 
   before_save :set_pay_amount
   after_create :decrease_product_stock
@@ -33,7 +34,8 @@ class OrderItem < ActiveRecord::Base
   end
 
   def set_pay_amount
-    self.pay_amount = product.present_price * amount.to_i
+    privilege_amount = privilege_card.present? ? privilege_card.amount : 0
+    self.pay_amount = (product.present_price - privilege_amount) * amount.to_i
   end
 
   def update_order_pay_amount

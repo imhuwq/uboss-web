@@ -101,7 +101,7 @@
                 <div class="col-xs-2">
                   <%= image_tag("uboss_29/jia.png",style:"width:18px;") %>
                 </div>
-                <div class="sub_newaddr col-xs-8 font_h5" style="color:#43c3aa;">新增地址</div>
+                <div class="sub_newaddr col-xs-8 font_h5" style="color:#43c3aa;">使用新地址</div>
               </a>
             </td>
           </tr>
@@ -109,7 +109,6 @@
         <div class="undis" id="create_new_address">
           <%= f.input :deliver_username %>
           <%= f.input :deliver_mobile %>
-          <%= f.input :country %>
           <%= f.input :province %>
           <%= f.input :city %>
           <%= f.input :area %>
@@ -121,7 +120,6 @@
   </div>
 </div>
 <div class="accunt_adil_box3">
-  <!-- <input type="submit" value="提交订单" class="accunt_adilbtn" > -->
   <%= submit_tag '提交订单',class:"accunt_adilbtn" %>
 </div>
 <% end %>
