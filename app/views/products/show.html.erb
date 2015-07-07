@@ -39,7 +39,7 @@
 <div class="prvid_content">
     <%= raw @product.content %>
 </div>
-<% if @sharing_node %>
+<% if @sharing_node.blank? %>
 <div class="buy">
   <%= link_to  new_order_path(product_id: @product.id) do %>
     <div class="buy"><input type="submit" value="立即购买" class="buy_btn"></div>
