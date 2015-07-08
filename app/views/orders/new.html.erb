@@ -31,15 +31,17 @@
       <p class="sub_p sub_p2">
         <span class="sub_leftl">合计（含运费）</span>
         <span class="sub_left"><strong>￥</strong><b id="total_price"><%= @order_form.product.present_price %></b></span>
+        <div class="clear"></div>
       </p>
 
     </div>
     <div class="sub_p3">个人信息确认</div>
     <div class="subOrd_boxcont subOrd_boxbtn">
-      <% if current_user.need_set_login? %>
+      <% if true#current_user.need_set_login? %>
         <p class="sub_p">
           <span><%= text_field_tag "mobile[]",'',placeholder: '输入手机号', class:"sub_btphon",id:'new_mobile' %></span>
           <span><input type="buttom" value="发送验证码" class="sub_yanzhen text-center" onclick="sendNewMobile()" id="send_mobile" style="width:100px;"></span>
+          <div class="clear"></div>
         </p>
         <p class="sub_w"><span><%= f.input_field :captcha, placeholder: '填写短信验证码', class:"sub_yanzhcont"  %></p>
       <% end %>
