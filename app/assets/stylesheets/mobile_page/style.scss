@@ -1030,11 +1030,16 @@
   height: 37px;
   line-height: 37px;
 }
+.product-info-title{
+  padding: 10px;
+  text-align: center;
+  background-color: rgba(67,195,170,1);
+  color: white;
+}
 .contpric{
   width: 100%;
 }
 .contpric .contpric_left{
-  width: 30%;
   float: left;
 }
 .contpric .contpric_right{

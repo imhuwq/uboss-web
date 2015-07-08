@@ -72,9 +72,8 @@
   </div>
 <% end %>
 
-<% if @order.state == 'unpay' %>
+<% if @order.state == 'unpay' && browser.wechat? %>
   <%= content_for :extra_javascript do %>
-    <%= render "weixin_js" %>
     <script type="text/javascript" charset="utf-8">
   wx.ready(function(){
 

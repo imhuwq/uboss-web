@@ -1,16 +1,20 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
   <head>
+
     <meta charset="utf-8" />
     <meta id='MobileViewport' name="viewport" content="width=320, initial-scale=1, maximum-scale=1, user-scalable=no" />
+    <%= yield(:extra_meta_tags) %>
 
     <title><%= content_for?(:title) ? yield(:title) : "UBoss" %></title>
-    <%#= javascript_include_tag 'mobile_page/autoStrap' %>
-    <%#= stylesheet_link_tag    'mobile_page/autoStrap' %>
+
     <%= stylesheet_link_tag    "application" %>
     <%= javascript_include_tag "application" %>
-
+    <% if browser.wechat? %>
+      <%= render "weixin_js" %>
+    <% end %>
     <%= csrf_meta_tags %>
+
   </head>
   <body class="bg_grey">
     <div id="window"></div>

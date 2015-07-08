@@ -9,7 +9,7 @@ Rails.application.routes.draw do
   }
 
   get 'wxpay/test/:id', to: 'orders#show', as: :test_wxpay
-  get 'sharing/:code', to: 'sharing#show'
+  get 'sharing/:code', to: 'sharing#show', as: :sharing
 
   post 'mobile_auth_code/create', to: 'mobile_auth_code#create'
 

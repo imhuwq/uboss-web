@@ -8,13 +8,25 @@ class SharingNode < ActiveRecord::Base
   validates :user_id, :product_id, presence: true
 
   # NOTE also using databse uniq index
-  validates_uniqueness_of :user_id, scope: [:product_id, :parent_id]
-  validates_uniqueness_of :user_id, scope: [:product_id], if: -> { self.parent_id.blank? }
+  # validates_uniqueness_of :user_id, scope: [:product_id, :parent_id]
+  # validates_uniqueness_of :user_id, scope: [:product_id], if: -> { self.parent_id.blank? }
   validate :limit_sharing_rate
 
   before_create :set_code, :set_product
 
   delegate :amount, to: :privilege_card, prefix: :privilege, allow_nil: true
+
+  def self.find_or_create_user_last_sharing_by_product(user, product)
+    node = where(user: user, product: product).order('id DESC').last
+    if node.blank?
+      node = create(user: user, product: product)
+    end
+    node
+  end
+
+  def to_param
+    code
+  end
 
   def privilege_card
     @privilege_card ||= PrivilegeCard.find_by(user_id: user_id, product_id: product_id)

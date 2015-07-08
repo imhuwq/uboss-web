@@ -84,15 +84,15 @@
   <%= link_to root_path do %>
   <div class="accunt_adil_box3"><input type="submit" value="返回首页" class="accunt_adilbtn"></div>
   <% end %>
-  
+
 </div>
 <script type="text/javascript" src="http://v3.jiathis.com/code/jia.js"></script>
 <script type="text/javascript">
 var jiathis_config = {
-  url: 'http://<%= "#{request.env["HTTP_HOST"]}/products/#{@sharing_node.product_id}?code=#{ @sharing_node.try(:code)}" %>', 
-  title: "<%= @product.try(:name) %>", 
+  url: 'http://<%= "#{request.env["HTTP_HOST"]}/products/#{@sharing_node.product_id}?code=#{ @sharing_node.try(:code)}" %>',
+  title: "<%= @product.try(:name) %>",
   summary:"原价：￥<%= @sharing_node.product.try(:original_price) %>,现价：￥<%= @sharing_node.product.try(:present_price) %>,快来抢购吧~"
-} 
+}
 </script>
 <script type="text/javascript">
 function l_share() {
@@ -126,17 +126,16 @@ try{
   }catch(e){}
 }
 </script>
-<%= render "weixin_js" %>
 <script type="text/javascript">
 wx.onMenuShareTimeline({
   title: "<%= @evaluation.order_item.product.try(:name) %>", // 分享标题
   link: 'http://<%= "#{request.env["HTTP_HOST"]}/products/#{@sharing_node.product_id}?code=#{ @sharing_node.try(:code)}" %>', // 分享链接
   imgUrl: '<%= @evaluation.order_item.product.image_url %>', // 分享图标
-  success: function () { 
+  success: function () {
     console.log('分享成功')
       // 用户确认分享后执行的回调函数
   },
-  cancel: function () { 
+  cancel: function () {
     console.log('用户取消分享')
       // 用户取消分享后执行的回调函数
   }

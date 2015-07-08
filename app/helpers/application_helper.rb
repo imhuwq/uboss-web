@@ -43,4 +43,10 @@ module ApplicationHelper
     controller_name == chapter.to_s ? "active" : nil
   end
 
+  def sharing_meta_tags(meta_tags)
+    meta_tags.collect do |key, value|
+      content_tag :meta, '', name: key, content: value
+    end.join.html_safe
+  end
+
 end

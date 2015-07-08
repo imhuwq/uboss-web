@@ -1,3 +1,9 @@
+<%= content_for :extra_meta_tags do %>
+  <%= sharing_meta_tags(
+    sharing_title: @product.name,
+    sharing_imgurl: @product.image_url(:thumb),
+    sharing_link: product_sharing_link(@product, @sharing_link_node)) %>
+<% end %>
 
 <header class="head">
   <%= link_to url_for(controller: :products,action: :index) do %>
@@ -6,6 +12,7 @@
   <div class="log_font">商品详情</div>
   <div class="shar">分享</div>
 </header>
+
 <div class="container">
   <div class="prdv_img">
     <%= image_tag(@product.image_url,  alt: "-",:style=>"width:100%;") %>
@@ -24,7 +31,7 @@
         <span class="prvd_colors">
           <%= Product::DataBuyerPay[@product.buyer_pay] %>
           <% if @product.buyer_pay %>
-          <%= ":￥#{@product.traffic_expense}" %>
+          <%= "：￥#{@product.traffic_expense}" %>
           <% end %>
         </span>
       </div>
@@ -35,6 +42,9 @@
       </div>
     </div>
   </div>
+</div>
+<div class="product-info-title">
+  图文详情
 </div>
 <div class="prvid_content">
     <%== @product.content %>
@@ -62,20 +72,29 @@
 <% end %>
 
 <script type="text/javascript">
-<% if params.present? and params['shared'] == 'true' %>
-render_share_page()
+<% if params['shared'] == 'true' %>
+  render_share_page()
 <% end %>
 function render_share_page() {
   $('#window').html('<%= escape_javascript render :partial =>'/products/share_page.html' %>');
 
   var mobile = ''
-  $("#save_mobile_mobile").on('keyup', this, function(event) {
-    mobile = event.target.value
-    var checkNum = /^(\+\d+-)?[1-9]{1}[0-9]{10}$/;
-    if (checkNum.test(mobile)) {$("#save_mobile_submit").removeAttr('disabled');};
-    if (!checkNum.test(mobile)) {$("#save_mobile_submit").attr('disabled','disabled');};
-  });
+    $("#save_mobile_mobile").on('keyup', this, function(event) {
+      mobile = event.target.value
+        var checkNum = /^(\+\d+-)?[1-9]{1}[0-9]{10}$/;
+      if (checkNum.test(mobile)) {$("#save_mobile_submit").removeAttr('disabled');};
+      if (!checkNum.test(mobile)) {$("#save_mobile_submit").attr('disabled','disabled');};
+    });
 }
-
 </script>
 
+<% if browser.wechat? %>
+  <%= content_for :extra_javascript do %>
+    <script type="text/javascript" charset="utf-8">
+wx.ready(function(){
+  var luffy = new GoingMerry.Luffy();
+  luffy.invokeSharing();
+});
+    </script>
+  <% end %>
+<% end %>
