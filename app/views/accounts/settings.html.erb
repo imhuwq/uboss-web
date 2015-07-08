@@ -1,0 +1,24 @@
+<header class="head">
+  <%= link_to url_for(controller: :products,action: :index) do %>
+  <div class="bottom left iconleft"></div>
+  <% end %>
+  <div class="log_font">个人信息</div>
+</header>
+<div class="row">
+  <div class="col-xs-6">昵称：<%= truncate current_user.identify,:length=>28,:omission=>'...' %></div>
+  <div class="col-xs-6"><%= link_to("修改", edit_account_path , class:"col-xs-12") %></div>
+</div>
+<div class="row">
+  <div class="col-xs-6">收货地址</div>
+  <div class="col-xs-6"><%= link_to("添加/修改", account_user_addresses_path , class:"col-xs-12") %></div>
+</div>
+<div class="row">
+  <div class="col-xs-6">绑定手机<%= current_user.mobile %></div>
+  <div class="col-xs-6"></div>
+</div>
+<div class="row">
+  <div class="col-xs-6">设置密码</div>
+  <div class="col-xs-6"><%= link_to("修改", '###' , class:"col-xs-12") %></div>
+</div>
+
+<%= link_to("退出", root_path , class:"btn") %>

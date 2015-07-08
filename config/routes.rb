@@ -24,6 +24,7 @@ Rails.application.routes.draw do
   resource :evaluations do
   end
   resource :account, only: [:show, :edit, :update] do
+    get :settings
     resources :user_addresses, except: [:show]
   end
   resource :pay_notify, only: [] do

@@ -16,6 +16,12 @@ class AccountsController < ApplicationController
     end
   end
 
+  def settings # 个人信息展示
+  end
+
+  def update_password_page # 修改密码页面
+  end
+
   def set_password
   end
 
