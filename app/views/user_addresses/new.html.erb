@@ -1,11 +1,26 @@
-<%= simple_form_for @user_address, url: account_user_addresses_path, method: :POST do |f| %>
-  <%= f.input :username %>
-  <%= f.input :mobile %>
-  <%= f.input :province %>
-  <%= f.input :city %>
-  <%= f.input :country, as: :string %>
-  <%= f.input :street %>
-  <%= f.input :default %>
+<header class="head">
+  <div class="bottom left iconleft"></div>
+  <div class="log_font">编辑地址</div>
+</header>
+<div class="upass main">
+<div class="container add_listall" >
+  <div class="add_conts">
+    <%= simple_form_for @user_address, url: account_user_addresses_path, method: :POST do |f| %>
+    <div class="add_inout">
+      <p>
+        <span class="add_textd">收货人</span>
+        <%= f.input_field :username, class:"add_text" %>
+      </p>
+      <p><span>联系电话</span><%= f.input_field :mobile, class:"add_text" %></p>
+      <p><span>所在地区</span><%= f.input_field :street, class:"add_text" %></p>
+      <p><span>详细地址</span><%= f.input_field :building, class:"add_text" %></p>
+      <p><span>设为默认</span><%= f.input_field :default, class:"add_text" %></p>
 
-  <%= f.submit '保存' %>
-<% end %>
+    </div>
+    <div class="accunt_adil_box3 adbtn">
+      <%= f.submit '保存', class:"accunt_adilbtn" %>
+     
+      <a href="#" class="accunt_addbtn">删除收货地址</a>
+    </div>
+    <% end %>
+</div>
