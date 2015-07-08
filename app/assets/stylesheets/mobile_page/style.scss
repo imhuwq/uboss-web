@@ -793,9 +793,8 @@
   font-size: 12px;
 }
 .subOrd_boxcont p span.sub_right{
-   float: right;
-   display: block;
-   width: 50%;
+  float: right;
+  display: block;
   text-align: right;
 }
 .subOrd_boxcont span img{
@@ -807,6 +806,7 @@
   text-decoration: none;
   color: rgba(139,139,139,1);
   display:inline-block;
+  padding: 0 8px;
 }
 .sub_leftl{
   color: rgba(67,195,170,1);

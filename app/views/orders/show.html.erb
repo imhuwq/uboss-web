@@ -2,29 +2,18 @@
   <%= link_to account_path(@order) do %>
   <div class="bottom left iconleft"></div>
   <% end %>
-  <% if @order.state == 'unpay' %>
-    <div class="log_font">未付款</div>
-  <% elsif @order.state == 'payed' %>
-    <div class="log_font">已付款</div>
-  <% elsif @order.state == 'shiped' %>
-    <div class="log_font">已发货</div>
-  <% elsif @order.state == 'signed' %>
-    <div class="log_font">已签收</div>
-  <% elsif @order.state == 'closed' %>
-    <div class="log_font">交易关闭</div>
-  <% end %>
-
+  <div class="log_font"><%= @order.state_i18n %></div>
 </header>
+
 <div class="container">
   <div class="subOrd_box1">
     <dl>
       <dt>
-        <%= image_tag @order.order_items.first.try(:product).try(:image_url,:thumb) %>
+        <%= image_tag @product.image_url(:thumb) %>
       </dt>
       <dd>
-        <strong><%= @order.order_items.first.product.name %><span>￥<%= @order.order_items.first.product.present_price %></span></strong>
-        <p>规格：500g/盒</p>
-        <p>大宇宙红枣公司</p>
+        <strong><%= @product.name %><span>￥<%= @order_item.present_price %></span></strong>
+        <p><%= @product.user.store_name %></p>
       </dd>
     </dl>
   </div>
@@ -33,12 +22,13 @@
       <p class="sub_p1">
         <span class="sub_left">数量</span>
         <span class="sub_right sub_num">
-          <a href="#"><%=  @order.order_items.first.try(:amount) %></a>
+          <a href="#"><%= @order_item.amount %></a>
         </span>
       </p>
       <p class="sub_p sub_p2">
         <span class="sub_leftl">合计（含运费）</span>
         <span class="sub_left"><strong>￥</strong><%=  @order.pay_amount %></span>
+        <div class="clear"></div>
       </p>
     </div>
     <% if @order.state == 'unpay' %>
@@ -49,7 +39,7 @@
 <div class="sub_box3">
   <div class="sub_box3_cont">
     <div class="sub_box3_cont1">
-      <table width="100%" height="82" border="1" class="table1">
+      <table width="100%" border="1" class="table1">
         <tr>
           <td><span>收件人：</span></td>
           <td><span>电话：</span></td>
@@ -103,11 +93,7 @@
 
     });
 
-    wx.onMenuShareTimeline({
-      title: "<%= @order.number %>",
-      link: "http://baidu.com",
-      imgUrl: "http://ssobu-dev.b0.upaiyun.com/user/avatar/f2285d00cdeda94eab43d5cef15a414b.jpeg-thumb",
-    });
+    wx.hideOptionMenu();
 
   })
       </script>

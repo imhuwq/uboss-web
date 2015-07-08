@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150707041308) do
+ActiveRecord::Schema.define(version: 20150708042517) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -84,6 +84,7 @@ ActiveRecord::Schema.define(version: 20150707041308) do
     t.float    "pay_amount",      default: 0.0
     t.integer  "sharing_node_id"
     t.integer  "evaluation_id"
+    t.float    "present_price",   default: 0.0
   end
 
   create_table "orders", force: :cascade do |t|
@@ -137,17 +138,11 @@ ActiveRecord::Schema.define(version: 20150707041308) do
     t.float    "share_rate_total",   default: 0.0
     t.integer  "calculate_way",      default: 0
     t.integer  "status",             default: 0
-<<<<<<< HEAD
-    t.integer  "good",               default: 0
-    t.integer  "normal",             default: 0
-    t.integer  "bad",                default: 0
-    t.float    "discount_amount"
-    t.float    "privilege_amount",   default: 0.0
-=======
     t.integer  "good_evaluation",    default: 0
     t.integer  "normal_evaluation",  default: 0
     t.integer  "bad_evaluation",     default: 0
->>>>>>> change evaluation name
+    t.float    "discount_amount"
+    t.float    "privilege_amount",   default: 0.0
   end
 
   create_table "redactor_assets", force: :cascade do |t|
@@ -248,6 +243,7 @@ ActiveRecord::Schema.define(version: 20150707041308) do
     t.integer  "good_evaluation",   default: 0
     t.integer  "normal_evaluation", default: 0
     t.integer  "bad_evaluation",    default: 0
+    t.string   "store_name"
   end
 
   create_table "user_roles", force: :cascade do |t|

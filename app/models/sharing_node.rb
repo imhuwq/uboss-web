@@ -14,6 +14,8 @@ class SharingNode < ActiveRecord::Base
 
   before_create :set_code, :set_product
 
+  delegate :amount, to: :privilege_card, prefix: :privilege, allow_nil: true
+
   def privilege_card
     @privilege_card ||= PrivilegeCard.find_by(user_id: user_id, product_id: product_id)
   end

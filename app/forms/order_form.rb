@@ -22,6 +22,8 @@ class OrderForm
   validate :captcha_must_be_valid, if: :need_verify_captcha?
   validate :check_amount
 
+  delegate :traffic_expense, to: :product, prefix: :product
+
   def user_address
     return @user_address if @user_address.present?
     if buyer && user_address_id.present?
@@ -35,6 +37,14 @@ class OrderForm
 
   def sharing_node
     @sharing_node ||= SharingNode.find_by(code: self.sharing_code)
+  end
+
+  def real_price
+    if sharing_node.present?
+      product.present_price - sharing_node.privilege_amount
+    else
+      product.present_price
+    end
   end
 
   def save

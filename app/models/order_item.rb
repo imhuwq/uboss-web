@@ -11,7 +11,7 @@ class OrderItem < ActiveRecord::Base
   delegate :name, :traffic_expense, :present_price, to: :product, prefix: true
   delegate :privilege_card, to: :sharing_node, allow_nil: true
 
-  before_save :set_pay_amount
+  before_save :set_present_price, :set_pay_amount
   after_create :decrease_product_stock
   after_save :update_order_pay_amount
 
@@ -33,9 +33,13 @@ class OrderItem < ActiveRecord::Base
     end
   end
 
-  def set_pay_amount
+  def set_present_price
     privilege_amount = privilege_card.present? ? privilege_card.amount : 0
-    self.pay_amount = (product.present_price - privilege_amount) * amount.to_i
+    self.present_price = product.present_price - privilege_amount
+  end
+
+  def set_pay_amount
+    self.pay_amount = present_price * amount.to_i + product.traffic_expense.to_f
   end
 
   def update_order_pay_amount
