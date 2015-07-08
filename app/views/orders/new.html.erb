@@ -37,7 +37,7 @@
     </div>
     <div class="sub_p3">个人信息确认</div>
     <div class="subOrd_boxcont subOrd_boxbtn">
-      <% if true#current_user.need_set_login? %>
+      <% if current_user.need_set_login? %>
         <p class="sub_p">
           <span><%= text_field_tag "mobile[]",'',placeholder: '输入手机号', class:"sub_btphon",id:'new_mobile' %></span>
           <span><input type="buttom" value="发送验证码" class="sub_yanzhen text-center" onclick="sendNewMobile()" id="send_mobile" style="width:100px;"></span>
