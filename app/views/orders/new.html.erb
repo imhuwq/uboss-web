@@ -20,36 +20,42 @@
   </div>
 
   <div class="subOrd_box2">
-    <div class="subOrd_boxcont">
-      <p class="sub_p1">
-        <span class="sub_left">数量</span>
-        <span class="sub_right">
-          <a href="#" class="jian"><img src="/assets/uboss_29/jiann.png"></a>
-          <%= f.input_field :amount,value: 1, class:"tow",id: "amount" %>
-          <a href="#" class="jia"><img src="/assets/uboss_29/jia.png"></a>
-        </span>
-      </p>
-      <p class="sub_p sub_p2">
-        <span class="sub_leftl">合计（含运费￥<%= @product.traffic_expense %>）</span>
-        <span class="sub_left">
-          <strong>￥</strong><b id="total_price"><%= @order_form.real_price + @product.traffic_expense  %></b>
-        </span>
-        <div class="clear"></div>
-      </p>
 
+
+    <div class="subOrd_boxcont">
+      <p class="sub_p1 order">
+        <span class="sub_leftl">数量</span>
+        <span class="sub_right ">
+          <a href="#" class="jia"><span>+</span></a>
+          <%= f.input_field :amount,value: 1, class:"tow",id: "amount" %>
+          <a href="#" class="jian"><span>-</span></a>
+        </span>
+      </p>
+      <p class="sub_p1 sub_p2">
+        <span class="sub_leftl">合计（含运费）</span>
+        <span class="sub_left"><strong>￥</strong>
+          <b id="total_price"><%= (@order_form.real_price || 0) + (@product.traffic_expense || 0)  %></b>
+        </span>
+      </p>
     </div>
+
+
+
+
     <div class="sub_p3">个人信息确认</div>
     <div class="subOrd_boxcont subOrd_boxbtn">
       <% if current_user.need_set_login? %>
+
         <p class="sub_p">
-          <span><%= text_field_tag "mobile[]",'',placeholder: '输入手机号', class:"sub_btphon",id:'new_mobile' %></span>
           <span>
-            <input type="buttom" value="发送验证码" class="sub_yanzhen text-center" onclick="sendNewMobile()" id="send_mobile" style="width:100px;">
+            <%= text_field_tag "mobile[]",'',placeholder: '输入手机号', class:"sub_btphon",id:'new_mobile' %>
           </span>
-          <div class="clear"></div>
+          <span><input type="submit" value="发送验证码" class="sub_yanzhen" onclick="sendNewMobile()" id="send_mobile">
+            
+          </span>
         </p>
-        <p class="sub_w"><span><%= f.input_field :captcha, placeholder: '填写短信验证码', class:"sub_yanzhcont"  %></p>
-      <% end %>
+        <p class="sub_w"><span><input type="text" value="填写短信验证码" class="sub_yanzhcont"></p>
+        <% end %>
     </div>
   </div>
   <div class="sub_box3">
@@ -131,9 +137,15 @@
 </div>
 <% end %>
 
+<<<<<<< HEAD
 <% if browser.wechat? %>
   <%= content_for :extra_javascript do %>
     <script type="text/javascript" charset="utf-8">
+=======
+<%= content_for :extra_javascript do %>
+  <%#= render "weixin_js" %>
+  <script type="text/javascript" charset="utf-8">
+>>>>>>> unfinished update
 wx.ready(function(){
   wx.hideOptionMenu();
 });

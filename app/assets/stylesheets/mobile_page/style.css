@@ -880,7 +880,7 @@ a{
   color:rgba(97,97,97,1);
 }
 .sub_btphon{
-  width: 60%;
+  width: 50%;
   height: 32px;
   line-height: 32px;
   border: none;
@@ -1210,7 +1210,7 @@ a{
 .fenxinagtow p{
   margin: 14px 0 8px 0;
 }
-.sub_right a{
+.order .sub_right a,.order .sub_right input{
   width: 26px;
     height: 21px;
     line-height: 21px;
@@ -1223,7 +1223,7 @@ a{
 .sub_right a span{
   color: rgba(67,195,170,1);
 }
-.sub_right a.tow{
+.sub_right tow{
   color: rgba(131,131,131,1);
   border-left: none;
   border-right: none;
