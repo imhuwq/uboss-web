@@ -1,4 +1,4 @@
-.upass.main{
+.upass.main {
   width: 100%;
   margin: 0 auto;
   overflow: hidden;
@@ -578,6 +578,7 @@
   outline: none;
   border-radius: 5px;
   font-size: 16px;
+  -webkit-appearance: none;
 }
 /*end_my account_dail*/
 
@@ -1030,12 +1031,6 @@
   height: 37px;
   line-height: 37px;
 }
-.product-info-title{
-  padding: 10px;
-  text-align: center;
-  background-color: rgba(67,195,170,1);
-  color: white;
-}
 .contpric{
   width: 100%;
 }
@@ -1067,6 +1062,7 @@
   line-height: 43px;
   font-size: 16px;
   margin-top: 8px;
+  display: inline-block;
 }
 .buy_btnshort{
   color: rgba(255,255,255,1);
@@ -1206,4 +1202,3 @@
   margin-left: -160px;
 }
 /*end_pro_dail*/
-

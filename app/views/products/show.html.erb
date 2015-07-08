@@ -51,21 +51,17 @@
 </div>
 <% if @sharing_node.blank? %>
 <div class="buy">
-  <%= link_to  new_order_path(product_id: @product.id) do %>
-    <div class="buy"><input type="submit" value="立即购买" class="buy_btn"></div>
-  <% end %>
+  <%= link_to '立即购买', new_order_path(product_id: @product.id), class: 'buy_btn' %>
 </div>
 <% else %>
   <div class="buy_short">
     <div class="buy_shortcont">
-      <div class="prvd_header"></div>
+      <%= image_tag @sharing_node.user.avatar_url(:thumb), class: 'prvd_header' %>
       <div class="prvd_buycont">
         <p>分享者：<%= truncate (@sharing_node.user.identify),:length=>10,:omission=>'...' %></p>
         <p>好评率：<%= Evaluation.sharer_good_reputation_rate(@sharing_node.user) %></p>
       </div>
-      <%= link_to  new_order_path(product_id: @product.id) do %>
-        <div class="prvd_buyrigt"><input type="submit" value="立即购买" class="buy_btnshort "></div>
-      <% end %>
+      <%= link_to '立即购买', new_order_path(product_id: @product.id), class: 'prvd_buyrigt buy_btnshort'%>
       </div>
     </div>
   </div>
