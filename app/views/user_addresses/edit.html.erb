@@ -2,15 +2,16 @@
   <%= link_to account_user_addresses_path do %>
   <div class="bottom left iconleft"></div>
   <% end %>
-  <div class="log_font">新建地址</div>
+  <div class="log_font">编辑地址</div>
 </header>
 <div class="upass main">
 <div class="container add_listall" >
   <div class="add_conts">
-    <%= simple_form_for @user_address, url: account_user_addresses_path, method: :POST do |f| %>
+    <%= simple_form_for @user_address, url: account_user_address_path(@user_address), method: :PUT do |f| %>
     <%= render 'field', f: f %>
     <div class="accunt_adil_box3 adbtn">
       <%= f.submit '保存', class:"accunt_adilbtn" %>
+      <%= link_to("删除收货地址", account_user_address_path(@user_address), method: :delete , data: { confirm: '确定要删除么？' },class:"accunt_addbtn") %>
     </div>
     <% end %>
 </div>

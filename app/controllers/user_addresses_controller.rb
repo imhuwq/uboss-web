@@ -44,7 +44,7 @@ class UserAddressesController < ApplicationController
 
   private
   def address_params
-    params.require(:user_address).permit(:username, :mobile, :province, :city, :country, :street)
+    params.require(:user_address).permit(:username, :mobile, :province, :city, :country, :street, :building, :default)
   end
 
   def find_user_address
