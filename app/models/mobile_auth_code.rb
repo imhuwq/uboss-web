@@ -53,11 +53,10 @@ class MobileAuthCode < ActiveRecord::Base
 
   def send_code # 发送验证码
     result = send_sms
-    puts result
     if result == "OK"
       return true
     else
-      return false
+      raise result
     end
   end
 end
