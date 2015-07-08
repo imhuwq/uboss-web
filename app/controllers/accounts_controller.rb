@@ -22,6 +22,17 @@ class AccountsController < ApplicationController
   def update_password_page # 修改密码页面
   end
 
+  def update_password
+    user_params = params.require(:user).permit(:password, :password_confirmation, :current_password)
+
+    if current_user.update_with_password(user_params)
+      sign_in current_user, :bypass => true
+      redirect_to root_path, notice: '修改密码成功'
+    else
+      render :update_password_page
+    end
+  end
+
   def set_password
   end
 

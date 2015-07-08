@@ -1,11 +1,25 @@
-<hr>
-<%- @user_addresses.each do |user_address| %>
-  <p><%= user_address.username %></p>
-  <p><%= user_address.mobile %></p>
-  <p><%= "#{user_address}" %> </p>
-  <span><%= user_address.default? %></span>
-  <%= link_to '删除', account_user_address_path(user_address), method: :DELETE, data: { confirm: '确定删除？' } %>
-  <hr>
-<% end %>
+<header class="head">
+  <div class="bottom left search"></div>
+  <%= link_to root_path do %>
+  <div class="bottom right"></div>
+  <% end %>
+  <div class="log_font">管理地址</div>
 
+</header>
+<div class="row">
+  <div class="col-xs-12 text-center font-h3" style="padding:15px;">收货地址列表</div>
+</div>
+<%- @user_addresses.each do |user_address| %>
+<ul class="index_ul">
+  <li>
+    <p><%= user_address.username %></p>
+    <p><%= user_address.mobile %></p>
+    <p><%= "#{user_address}" %> </p>
+    <span><%= user_address.default? %></span>
+    <%= link_to '删除', account_user_address_path(user_address), method: :DELETE, data: { confirm: '确定删除？' } %>
+    <hr>
+  </li>
+</ul>
+<% end %>
+<hr>
 <%= link_to '添加收货地址', new_account_user_address_path %>

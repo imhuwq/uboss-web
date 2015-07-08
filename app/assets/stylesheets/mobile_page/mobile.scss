@@ -1,4 +1,5 @@
 .text-center {text-align: center;}
+.text-right {text-align: right;}
 input:disabled {background-color: #aab0b1}
 /*textarea,input,select {background-color:#f9f6bd}*/
 
@@ -15,6 +16,9 @@ textarea,input,select {
 .row:before, .row:after {
   content: " ";
   display: table;
+}
+.row:after {
+    clear: both;
 }
 .col-xs-1 {
   width: 8.33333333%;
@@ -110,6 +114,7 @@ textarea,input,select {
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
+  text-decoration: none;
 }
 
 .white {color: white;}
@@ -122,6 +127,7 @@ textarea,input,select {
   background-color: #30c4ab;
   &:disabled {background-color:#b5d4cf}
 }
+
 .bg_grey {background-color: #e9e9e7}
 .bg_white {background-color: white;}
 .content {padding:2% 0 2% 0;width:100%}
@@ -175,10 +181,17 @@ textarea,input,select {
 }
 
 /*after adding new frontend 2015.7.8*/
-.user_addresses_index_ul li {
+.index_ul li {
   border-top: 1px solid black;
+  float: left;
+  width: 300px;
+  padding: 10px;
+  background-color: white;
 }
-.user_addresses_index_ul ul li:last-child {
+ul.index_ul li:last-child {
   border-bottom: 1px solid black;
 
+}
+.index_ul a {
+  text-decoration: none;
 }

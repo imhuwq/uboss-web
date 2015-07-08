@@ -1,6 +1,7 @@
 zh-CN:
   attributes:
     current_password: 当前密码
+    identify: 账户名称
     number: 编号
     action: 操作
     state: 状态
