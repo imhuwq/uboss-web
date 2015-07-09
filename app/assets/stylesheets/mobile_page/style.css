@@ -33,14 +33,14 @@ a{
 }
 .upass.main .head .bottom.search{
   left: 10px;
-  background-image: url("uboss_29/Search.png");
+  background-image: url("img/Search.png");
   background-size: 21px 21px;
   background-repeat: no-repeat;
   background-position: center;
 }
 .upass.main .head .bottom.right{
   right: 10px;
-  background-image: url("uboss_29/navbar.png");
+  background-image: url("img/navbar.png");
   background-size: 21px 22px;
   background-repeat: no-repeat;
   background-position: center;
@@ -51,7 +51,7 @@ a{
   position: absolute;
   left:  50%;
   margin-left: -32px;
-  background-image: url("uboss_29/logo.png");
+  background-image: url("img/logo.png");
   background-repeat: no-repeat;
   background-size: 90px 20px;
   background-position: center;
@@ -101,7 +101,7 @@ a{
 } 
 .menu ul li a:hover{
   height: 45px;
-  background:url(uboss_29/select_hover.png);
+  background:url(img/select_hover.png);
   background-size: 75px 45px;
   line-height: 36px;
   color: #fff;
@@ -114,7 +114,7 @@ a{
 .menu ul li.active a{
   width: 75px;
   height: 45px;
-  background:url(uboss_29/select_hover.png);
+  background:url(img/select_hover.png);
   background-size: 75px 45px;
   line-height: 36px;
   color: #fff;
@@ -179,12 +179,12 @@ a{
   font-size: 12px;
 }
 .posi_left ul .col_on {
-  background-image: url("uboss_29/jian.png");
+  background-image: url("img/jian.png");
   line-height: 19px;
   padding-left: 7px;
 }
 .posi_left ul .col_one {
-  background-image: url("uboss_29/top.png");
+  background-image: url("img/top.png");
   line-height: 19px;
   padding-left: 1px;
 }
@@ -220,7 +220,7 @@ a{
 /*order*/
 .upass.main .head .bottom.iconleft{
   left: 10px;
-  background-image: url("uboss_29/icon_left.png");
+  background-image: url("img/icon_left.png");
   background-size: 30px 24px;
   background-repeat: no-repeat;
   background-position: center;
@@ -404,7 +404,7 @@ a{
   position: absolute;
   top: 42px;
   right: 0px;
-  background-image: url("uboss_29/san.png");
+  background-image: url("img/san.png");
   width: 17px;
   height: 13px;
   background-size: 17px 13px;
@@ -476,7 +476,7 @@ a{
 .my_menu ul li.active a{
   width: 100%;
   height: 55px;
-  background-image: url("uboss_29/select_hover.png");
+  background-image: url("img/select_hover.png");
   background-repeat: no-repeat;
   background-size: 100% 55px;
   color: rgba(255,255,255,1);
@@ -485,7 +485,7 @@ a{
 .my_menu ul li.acticv a{
   width: 100%;
   height: 55px;
-  background-image: url("uboss_29/select_hover.png");
+  background-image: url("img/select_hover.png");
   background-repeat: no-repeat;
   background-size: 100% 55px;
   color: rgba(255,255,255,1);
@@ -636,7 +636,7 @@ a{
   width: 90%;
   height: 74px;
   margin:0px auto;
-  background-image: url("uboss_29/sucess.png");
+  background-image: url("img/sucess.png");
   background-repeat: no-repeat;
   background-size: 52px 52px;
   margin-top:14px;
@@ -680,15 +680,15 @@ a{
   height: 100px;
 }
 .y_commentnox2 ul li:nth-child(2n+1){
-  background-image: url("uboss_29/fav comment.png");
+  background-image: url("img/fav comment.png");
   float: left;
 }
 .y_commentnox2 ul li:nth-child(2n+2){
-  background-image: url("uboss_29/Average.png");
+  background-image: url("img/Average.png");
   margin-left: 4%;
 }
 .y_commentnox2 ul li:nth-child(2n+3){
-  background-image: url("uboss_29/Negative Ratings.png");
+  background-image: url("img/Negative Ratings.png");
   float: right;
 }
 .y_texare{
@@ -711,7 +711,7 @@ a{
   text-align: center;
 }
 .p_img{
-  background-image: url("uboss_29/fav comment.png");
+  background-image: url("img/fav comment.png");
   width: 80px;
   height: 80px;
   background-repeat: no-repeat;
@@ -975,7 +975,7 @@ a{
   width: 30px;
 }
 .sub_anniu{
-  background-image: url("uboss_29/jia.png");
+  background-image: url("img/jia.png");
   background-repeat: no-repeat;
   background-size: 18px 18px;
 }
@@ -1050,7 +1050,7 @@ a{
 }
 .addr_boxs {
   background-color: rgba(255,255,255,1);
-  background-image: url("uboss_29/btn_r.png");
+  background-image: url("img/btn_r.png");
   background-position:300px;
   background-repeat: no-repeat;
   background-size: 7px 13px;
@@ -1156,7 +1156,7 @@ a{
   border: 1px solid #ccc;
   border-radius: 30px;
   overflow: hidden;
-  background-image: url("uboss_29/header_img.jpg");
+  background-image: url("img/header_img.jpg");
   background-size: 45px 45px;
   margin-top:7px;
   
@@ -1250,7 +1250,7 @@ a{
   margin-bottom: 30px;
 }
 .posi_left ul .col_tow {
-  background-image: url("uboss_29/com.png");
+  background-image: url("img/com.png");
   line-height: 19px;
   padding-left: 1px;
 }
@@ -1301,7 +1301,7 @@ a{
 .add_line1{
   border-bottom: 1px solid rgba(204,204,204,1);
   color: rgba(0,0,0,1);
-  background-image: url("uboss_29/adicon.png");
+  background-image: url("img/adicon.png");
   background-position: 15px 8px;
   background-repeat: no-repeat;
   background-size: 8px 13.5px;
@@ -1319,7 +1319,7 @@ a{
   padding-right: 10px;
 }
 .add_more{
-  background-image: url("uboss_29/up.png");
+  background-image: url("img/up.png");
   background-position: 223px center;
   background-repeat: no-repeat;
   background-size: 13px 7px;
@@ -1334,7 +1334,7 @@ a{
   font-size: 14px;
 }
 .add_new{
-  background-image: url("uboss_29/right.png");
+  background-image: url("img/right.png");
   background-position: 300px center;
   background-repeat: no-repeat;
   background-size: 7px 13px;
