@@ -1,4 +1,4 @@
-input {
+input[type=submit] {
   -webkit-appearance: none;
 }
 .upass.main .head {
@@ -48,6 +48,7 @@ input {
 .add_inout .add_text,
 .sub_btphon, .sub_yanzhcont {
   color: #000;
+  -webkit-appearance: none;
 }
 .sub_box3_cont1 table {
   border-bottom: none;
