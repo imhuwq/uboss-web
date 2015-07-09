@@ -137,18 +137,12 @@
 </div>
 <% end %>
 
-<<<<<<< HEAD
 <% if browser.wechat? %>
   <%= content_for :extra_javascript do %>
     <script type="text/javascript" charset="utf-8">
-=======
-<%= content_for :extra_javascript do %>
-  <%#= render "weixin_js" %>
-  <script type="text/javascript" charset="utf-8">
->>>>>>> unfinished update
-wx.ready(function(){
-  wx.hideOptionMenu();
-});
+      wx.ready(function(){
+        wx.hideOptionMenu();
+      });
     </script>
   <% end %>
 <% end %>
