@@ -99,3 +99,39 @@ input[type=submit] {
   border-bottom: 1px solid rgba(204,204,204,1);
   font-size: 14px;
 }
+
+.y_commentnox2 a{
+  width:30.6%;
+  float: left;
+  border: 1px solid rgba(170,170,170,.46);
+  box-sizing:border-box;
+  height: 100px;
+  margin-bottom: 27px;
+  text-align: center;
+  color:rgba(68,194,170,1);
+  line-height: 142px;
+  background-repeat: no-repeat;
+  background-position:  center 13px;
+  background-size: 38px 39px;
+  background-color: rgba(255,255,255,1);
+}
+.y_commentnox2 a:hover{
+  border: 3px solid rgba(67,195,170,1);
+  border-radius: 5px;
+}
+a.y_hover {
+  border: 3px solid rgba(67,195,170,1);
+  border-radius: 5px;
+}
+.y_commentnox2 a:nth-child(2n+1){
+  background-image: url("img/fav comment.png");
+  float: left;
+}
+.y_commentnox2 a:nth-child(2n+2){
+  background-image: url("img/Average.png");
+  margin-left: 4%;
+}
+.y_commentnox2 a:nth-child(2n+3){
+  background-image: url("img/Negative Ratings.png");
+  float: right;
+}

@@ -215,3 +215,21 @@ ul.index_ul li:last-child {
   padding: 6px;
   border: none;
 }
+.loading {
+  border: 1px solid #ebebeb;
+  box-shadow: 0 1px 2px #cacaca;
+  color:#303030;
+  padding:0.2rem 0.4rem;
+  text-align:center;
+  width:100%;
+  float: left;
+  margin:1% auto;
+  border-radius: 0.2rem;
+}
+.footer {
+  line-height: normal;
+  padding: 1% 0;
+  width: 100%;
+  position: absolute;
+  bottom: 0;
+}

@@ -21,7 +21,7 @@
   <%= t.cell :methods do |obj| %>
     <%= link_to("编辑", url_for(:action=>:edit,:id=>obj.id)) %>
     <br>
-    <% if obj.status == 0 %>
+    <% if obj.status == 'unpublish' %>
     <%= link_to("上架",'###', onclick:"change_status(#{obj.id})") %>
     <% else %>
     <%= link_to("取消上架", '###', onclick:"change_status(#{obj.id})") %>

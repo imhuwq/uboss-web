@@ -2,31 +2,44 @@
 <div class="container">
   <div class="list">
     <ul class="list_ul">
-      <% @products.each_with_index do |obj, index| %>
-        <%= link_to url_for(:action=>:show,:id=>obj.id) do %>
-        <li class="list_li">
-          <div class="li_image">
-            <%= image_tag(obj.image_url(:thumb),  alt: "-") %>
-            </div>
-            <div class="li_content">
-              <div class="li_contentinteo">
-                <div class="con_title"><%= obj.name %></div>
-                <div class="intrdu"></div>
-                <div class="baoyou"><%= Product::DataBuyerPay[obj.buyer_pay] %></div>
-                <div class="pric"><strong>￥<%= obj.present_price %></strong><span><%= obj.total_sells %>人付款</span></div>
-              </div>
-              <% if index < 5 %>
-              <div class="posi_left">
-                <ul>
-                  <li class="col_on">荐</li>
-                  <li class="col_one">TOP</li>
-                </ul>
-              </div>
-              <% end %>
-           </div>
-        </li>
-        <% end %>
+      <% if @products.present? %>
+      <%= render "index_list_unit" %>
       <% end %>
     </ul>
   </div>
 </div>
+<input type="hidden" id="p" value="2"/> 
+<div class="loading row" id="loading">下滑加载更多内容</div>
+<script type="text/javascript">
+  $(function () {
+    // 下滑加载
+    var lock = false; // 锁定防止多次提交
+    var stop = false; // 终止
+    $(window).scroll(function () {
+      var targetTop = $('.footer').offset().top; // 目标位置
+      var scrollTop = $(window).scrollTop() + $(window).height(); // 当前滚动条的位置(滚动条顶部距离+窗口高度)
+      var docHeight = $(document).height(); // 整个页面的高度，包括未显示的
+      if ((scrollTop >= targetTop || scrollTop == docHeight) && !lock && !stop) {
+        lock = true;
+        $('#loading').text('请等待...');
+        $.ajax({
+          type: 'POST',
+          url: "/<%= controller_name %>/democontent",
+          data: {'page': $("#p").val()},
+          dataType: 'html',
+          success: function (data) {
+            lock = false;
+            $("#p").val(parseInt($("#p").val()) + 1);
+            if ($.trim(data) != '') {
+              // $('#loading').text('请等待');
+              $('.list_ul').append(data);
+            } else {
+              stop = true;
+              $('#loading').text('没有更多的内容.');
+            }
+          }
+        });
+      }
+    }).trigger('scroll');
+  });
+</script>

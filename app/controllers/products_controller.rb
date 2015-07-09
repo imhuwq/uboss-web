@@ -1,7 +1,11 @@
 # 商品展示
 class ProductsController < ApplicationController
   def index
-    @products = Product.published.order('updated_at DESC').page(params[:page] || 1).per(10)
+    @products = Product.published.order('updated_at DESC').page(params[:page] || 1).per(4)
+  end
+  def democontent
+    @products = Product.published.order('updated_at DESC').page(params[:page] || 1).per(4)
+    render  :layout=>false
   end
 
   def show
