@@ -66,16 +66,17 @@
       <% if true#current_user.need_set_login? %>
         <div class="subOrd_boxcont subOrd_boxbtn">
           <p class="sub_p">
-          <span><%= text_field_tag "mobile[]",'',placeholder: '输入手机号', class:"sub_btphon",id:'new_mobile' %></span>
-          <span>
-            <%= text_field_tag "mobile[]",'',placeholder: '输入手机号', class:"sub_btphon",id:'new_mobile' %>
-          </span>
-          <span><input type="submit" value="发送验证码" class="sub_yanzhen" onclick="sendNewMobile()" id="send_mobile">
-
-          </span>
-          <div class="clear"></div>
+            <span>
+              <%= f.input_field :mobile, type: :tel, placeholder: '输入手机号', class:"sub_btphon",id:'new_mobile' %>
+            </span>
+            <span>
+              <input type="submit" value="发送验证码" class="sub_yanzhen" onclick="sendNewMobile()" id="send_mobile">
+            </span>
+            <div class="clear"></div>
           </p>
-          <p class="sub_w"><span><%= f.input_field :captcha, placeholder: '填写短信验证码', class:"sub_yanzhcont"  %></p>
+          <p class="sub_w"><span>
+            <%= f.input_field :captcha, type: :tel, placeholder: '填写短信验证码', class: "sub_yanzhcont"  %>
+          </p>
         </div>
       <% end %>
 
