@@ -48,13 +48,13 @@
               <% if obj.state == 'unpay' %>
                 <%= link_to "付款", order_path(obj, showwxpaytitle: 1), class: 'my_retur my_confir' %>
               <% elsif obj.state == 'payed' %>
-                <a href="#" class="my_retur my_confir" disabled="disabled">待发货</a>
+                <input type="submit" value="待发货" class="my_retur my_confir" disabled="disabled">
               <% elsif obj.state == 'shiped' %>
                 <%= link_to("确认收货", received_order_path(obj) , class:"my_retur my_confir") %>
               <% elsif obj.state == 'signed' %>
-                <a href="#" class="my_retur my_confir" disabled="disabled">已签收</a>
+                <input type="submit" value="已签收" class="my_retur my_confir" disabled="disabled">
               <% elsif obj.state == 'closed' %>
-                <a href="#" class="my_retur my_confir" disabled="disabled">交易关闭</a>
+                <input type="submit" value="交易关闭" class="my_retur my_confir" disabled="disabled">
               <% end %>
               </span>
             </p>
