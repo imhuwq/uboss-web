@@ -40,7 +40,7 @@ module ChargeService
   end
 
   def request_weixin_unifiedorder(order, options)
-    pay_amount = Rails.evn.production? ? (order.pay_amount * 100).to_i : 1
+    pay_amount = Rails.env.production? ? (order.pay_amount * 100).to_i : 1
     unifiedorder = {
       body: "#{SITE_NAME}-#{order.number}",
       out_trade_no: order.pay_serial_number,

@@ -1,6 +1,6 @@
 class OrdersController < ApplicationController
 
-  before_action :authenticate_user!, only: [:new, :pay]
+  before_action :authenticate_user!
   before_action :find_order, only: [:show, :pay, :pay_complete, :received]
 
   def show
@@ -64,6 +64,6 @@ class OrdersController < ApplicationController
   end
 
   def find_order
-    @order = Order.find(params[:id])
+    @order = current_user.orders.find(params[:id])
   end
 end
