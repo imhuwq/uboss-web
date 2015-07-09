@@ -123,14 +123,15 @@ zh-CN:
         shiped: 已发货
         signed: 已签收
         closed: 关闭
+    order_charge:
       payment:
-        alipay: 支付宝手机支付
-        alipay_wap: 支付宝手机网页支付
-        alipay_qr: 支付宝扫码支付
-        wx: 微信支付
-        wx_pub: 微信公众账号支付
-        wx_pub_qr: 微信公众账号扫码支付
-        yeepay_wap: 易宝手机网页支付
+        alipay: 支付宝手机
+        alipay_wap: 支付宝手机网页
+        alipay_qr: 支付宝扫码
+        wx: 微信
+        wx_pub: 微信公众账号
+        wx_pub_qr: 微信公众账号扫码
+        yeepay_wap: 易宝手机网页
   views:
     pagination:
       first: '&laquo; 第一页'

@@ -25,7 +25,6 @@ class Order < ActiveRecord::Base
   scope :selled, -> { where("orders.state <> 0") }
 
   enum state: { unpay: 0, payed: 1, shiped: 3, signed: 4, closed: 5 }
-  enum payment: { alipay: 0, alipay_wap: 1, alipay_qr: 2, wx: 3, wx_pub: 4, wx_pub_qr: 5, yeepay_wap: 6 }
 
   aasm column: :state, enum: true, skip_validation_on_save: true do
     state :unpay
@@ -54,10 +53,6 @@ class Order < ActiveRecord::Base
 
   def paid?
     paid_at.present?
-  end
-
-  def pay_amount
-    Rails.env.production? ? super : 0.01
   end
 
   def check_paid

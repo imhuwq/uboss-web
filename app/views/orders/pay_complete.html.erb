@@ -1,11 +1,31 @@
-<p>
-订单：<%= @order.number %>
-</p>
-<% if @order.paid? %>
-  付款成功。
-<% else %>
-  付款失败。
+<%= content_for :page_title do %>
+  支付结果
 <% end %>
-<p>
-  state：<%= @order.state_i18n %>。
-</p>
+
+<% if @order.unpay? %>
+  <div class='pay-result'>
+    <p>暂未收到订单支付结果</p>
+  </div>
+  <div class='unpay-result'>
+    <p>
+      <span>订单编号：</span>
+      <span class="unpay-info"><%= @order.number %></span>
+    </p>
+    <p>
+      <span>商品名称：</span>
+      <span class="unpay-info"><%= @order.order_items.first.product_name %></span>
+    </p>
+  </div>
+  <p class="unpay-comment">支付结果可能会有几分钟延迟，您可以刷新结果或稍晚查看我的订单。</p>
+<% else %>
+  <div class='pay-result'>
+    <%= image_tag 'img/确认收货.png' %>
+    <h1>支付成功</h1>
+    <p>您已通过<%= @order.payment_i18n %>成功支付：￥<%= @order_charge.paid_amount / 100 %></p>
+    <p>订单编号：<%= @order.number %></p>
+  </div>
+<% end %>
+
+<div class='btn-container'>
+  <%= link_to "完成", account_path, class: 'accunt_adilbtn' %>
+</div>

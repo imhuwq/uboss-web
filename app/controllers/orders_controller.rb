@@ -1,6 +1,6 @@
 class OrdersController < ApplicationController
 
-  # before_action :authenticate_user!, only: [:new, :pay]
+  before_action :authenticate_user!, only: [:new, :pay]
   before_action :find_order, only: [:show, :pay, :pay_complete, :received]
 
   def show
@@ -46,6 +46,7 @@ class OrdersController < ApplicationController
 
   def pay_complete
     @order.check_paid if @order.unpay?
+    @order_charge = @order.order_charge
   end
 
   def received

@@ -40,10 +40,11 @@ module ChargeService
   end
 
   def request_weixin_unifiedorder(order, options)
+    pay_amount = Rails.evn.production? ? (order.pay_amount * 100).to_i : 1
     unifiedorder = {
       body: "#{SITE_NAME}-#{order.number}",
       out_trade_no: order.pay_serial_number,
-      total_fee: (order.pay_amount * 100).to_i, # 需要转换为分
+      total_fee: pay_amount, # 需要转换为分
       spbill_create_ip: options[:remote_ip] || '127.0.0.1',
       notify_url: wx_notify_url,
       trade_type: "JSAPI",
