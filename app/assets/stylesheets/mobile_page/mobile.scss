@@ -194,19 +194,32 @@ ul.index_ul li:last-child {
 .index_ul a {
   text-decoration: none;
 }
-.add_inout img {
+.highter_add_inout img {
   width: 7px;
   height: 14px;
   padding: 0 5px;
   margin-bottom: -2px;
 }
-.add_inout .center_content {
+.highter_add_inout .center_content {
     margin-left: 15px;
     width: 40%;
-    padding: 6px;
     border: none;
     display: inline-block;
 }
-.add_inout .right_content {
+.highter_add_inout .right_content {
     float: right;
+}
+.highter_add_inout p{
+  display: block;
+  line-height: 60px;
+  height: 60px;
+  padding-left: 15px;
+  border-bottom: 1px solid rgba(204,204,204,1);
+  font-size: 14px;
+}
+.highter_add_inout .add_text{
+  margin-left: 15px;
+  width: 65%;
+  padding: 6px;
+  border: none;
 }

@@ -1,19 +1,10 @@
 
-
-<header class="head">
-  <%= link_to account_path do %>
-  <div class="bottom left iconleft"></div>
-  <% end %>
-  <div class="log_font">个人信息</div>
-</header>
-
+<%= content_for :page_title do %>
+  个人信息
+<% end %>
 <div class="container add_listall" >
-  <div class="add_title">
-    <span>收货地址列表</span>
-    <!-- <div class="close"><a href="#"><img src="img/close.png"></a></div> -->
-  </div>
   
-    <div class="add_inout">
+    <div class="highter_add_inout">
       <p>
         <span>昵称</span>
         <span class="center_content">
