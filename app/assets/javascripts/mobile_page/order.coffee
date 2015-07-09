@@ -34,11 +34,16 @@ $ ->
     event.preventDefault()
     user = $('#order_form_deliver_username').val()
     mobile = $('#order_form_deliver_mobile').val()
-    detail = "#{$('#order_form_street').val()}#{$('#order_form_building').val()}"
-    if !!user and !!mobile and !!detail
-      fillNewOrderAddressInfo(user, mobile, detail)
-      $('#order_form_user_address_id').val('')
-      hideOrderAddressDlg()
+    street = $('#order_form_street').val()
+    building = $('#order_form_building').val()
+    if !!user and !!mobile and !!street and !!building
+      if UBoss.chopper.valifyMobile(mobile)
+        detail = "#{street}#{building}"
+        fillNewOrderAddressInfo(user, mobile, detail)
+        $('#order_form_user_address_id').val('')
+        hideOrderAddressDlg()
+      else
+        alert('手机号无效')
     else
       alert('请填写完整收货信息')
 
@@ -54,3 +59,4 @@ $ ->
     $('.new-order-addr-info .adr-user').text(user)
     $('.new-order-addr-info .adr-mobile').text(mobile)
     $('.new-order-addr-info .adr-detail').text(detail)
+    $('.new-order-addr-info').show()

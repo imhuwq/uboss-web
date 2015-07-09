@@ -10,7 +10,7 @@ class SharingNode < ActiveRecord::Base
   # NOTE also using databse uniq index
   # validates_uniqueness_of :user_id, scope: [:product_id, :parent_id]
   # validates_uniqueness_of :user_id, scope: [:product_id], if: -> { self.parent_id.blank? }
-  validate :limit_sharing_rate
+  # validate :limit_sharing_rate
 
   before_create :set_code, :set_product
 
@@ -21,7 +21,7 @@ class SharingNode < ActiveRecord::Base
     if node.blank?
       node = create(user: user, product: product)
     end
-    node
+    node.persisted? ? node : nil
   end
 
   def to_param

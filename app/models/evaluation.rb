@@ -1,21 +1,21 @@
 class Evaluation < ActiveRecord::Base
   validates_presence_of :order_item_id
 
+  belongs_to :sharing_node
   belongs_to :order_item
-
-  has_one    :sharing_node
+  belongs_to :user, foreign_key: :buyer_id
+  belongs_to :product
 
   before_save :relate_attrs
   after_save :set_order_item_evaluation_id
-  after_create :count_evaluation
+  after_create :count_evaluation, :create_or_attach_sharing_node
 
   enum status: { good: 1, normal: 2,bad: 3}
 
   def relate_attrs # 取出order_item的值并斌给Evaluation中对应的属性
-    order_item = OrderItem.find_by_id(order_item_id)
-    if order_item.present?
+    if order_item
       self.buyer_id = order_item.user_id
-      self.sharer_id = order_item.sharing_node.try(:user_id)
+      self.sharer_id = order_item.sharing_node_id
       self.product_id = order_item.product_id
     end
   end
@@ -79,5 +79,14 @@ class Evaluation < ActiveRecord::Base
     product = Product.find_by_id(product_id)
     rate = product.good_evaluation/(product.good_evaluation + product.normal_evaluation + product.bad_evaluation) rescue 1
     "#{'%.2f' % (rate.try(:to_f)*100)}%"
+  end
+
+  private
+
+  def create_or_attach_sharing_node
+    node_parent_id = order_item.sharing_node_id
+    node = SharingNode.find_or_create_by(
+      user_id: buyer_id, product_id: product_id, parent_id: node_parent_id)
+    self.update_column(:sharing_node_id, node.id)
   end
 end

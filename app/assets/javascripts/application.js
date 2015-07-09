@@ -14,9 +14,9 @@
 //= require jquery
 //= require jquery_ujs
 //= require fastclick
+//= require mobile_page/going_merry
 //= require mobile_page/mobile
 //= require mobile_page/order
-//= require mobile_page/going_merry
 //= require_self
 
 $(function() {

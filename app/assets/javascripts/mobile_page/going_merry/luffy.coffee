@@ -22,3 +22,6 @@ class GoingMerry.Luffy
     @sharing_link = info.link || $('meta[name=sharing_link]').attr('content')
     @sharing_imgurl = info.imgurl || $('meta[name=sharing_imgurl]').attr('content')
     @sharing_desc = info.desc || $('meta[name=sharing_desc]').attr('content')
+    @invokeSharing()
+
+UBoss.luffy = new GoingMerry.Luffy

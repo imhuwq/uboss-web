@@ -1,11 +1,7 @@
+<%= content_for :page_title do %>
+  收货评价
+<% end %>
 
-<header class="head">
-  <%= link_to root_path do %>
-    <div class="bottom left iconleft"></div>
-  <% end %>
-  
-  <div class="log_font">收货评价</div>
-</header>
 <div class="container">
 <%= simple_form_for @evaluation do |f| %>
 <div class="y_comment">
@@ -27,14 +23,14 @@
     </ul>
   </div>
 
-  
+
   <%= f.input_field :status, style:"display:none;" %>
   <%= f.input_field :order_item_id, value: params[:id], style:"display:none;" %>
   <div style="padding:30px 5px;">
     <%= f.input_field :content, placeholder: '写点评价吧',style: "height:100px;padding:10px;width:255px;margin:0;margin-bottom: 24px" %>
   </div>
 </div>
-<div class="accunt_adil_box3"><a onclick="submitEvaluationStatus()" class="accunt_adilbtn">提交</a></div> 
+<div class="accunt_adil_box3"><a onclick="submitEvaluationStatus()" class="accunt_adilbtn">提交</a></div>
 <% end %>
 </div>
 

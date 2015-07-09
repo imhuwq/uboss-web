@@ -1,9 +1,7 @@
-<header class="head">
-  <%= link_to root_path do %>
-  <div class="bottom left iconleft"></div>
-  <% end %>
-  <div class="log_font">已评价</div>
-</header>
+<%= content_for :page_title do %>
+  已评价
+<% end %>
+
 <div class="container">
   <div class="p_comment">
     <% case @evaluation.status %>
@@ -83,13 +81,13 @@
   </div>
   <div class="accunt_adil_box3">
     <%= link_to("返回首页", root_path, class:"accunt_adilbtn") %>
-  </div>  
+  </div>
 
 </div>
 <script type="text/javascript" src="http://v3.jiathis.com/code/jia.js"></script>
 <script type="text/javascript">
 var jiathis_config = {
-  url: 'http://<%= "#{request.env["HTTP_HOST"]}/products/#{@sharing_node.product_id}?code=#{ @sharing_node.try(:code)}" %>',
+  url: "<%= product_sharing_link(@evaluation.product, @sharing_node) %>",
   title: "<%= @product.try(:name) %>",
   summary:"原价：￥<%= @sharing_node.product.try(:original_price) %>,现价：￥<%= @sharing_node.product.try(:present_price) %>,快来抢购吧~"
 }
@@ -127,17 +125,12 @@ try{
 }
 </script>
 <script type="text/javascript">
-wx.onMenuShareTimeline({
-  title: "<%= @evaluation.order_item.product.try(:name) %>", // 分享标题
-  link: 'http://<%= "#{request.env["HTTP_HOST"]}/products/#{@sharing_node.product_id}?code=#{ @sharing_node.try(:code)}" %>', // 分享链接
-  imgUrl: '<%= @evaluation.order_item.product.image_url %>', // 分享图标
-  success: function () {
-    console.log('分享成功')
-      // 用户确认分享后执行的回调函数
-  },
-  cancel: function () {
-    console.log('用户取消分享')
-      // 用户取消分享后执行的回调函数
-  }
+wx.ready(function(){
+  UBoss.luffy.resetInvokeSharing({
+    title: "<%= @evaluation.order_item.product.try(:name) %>", // 分享标题
+    link: "<%= product_sharing_link(@evaluation.product, @sharing_node) %>",
+    imgurl: '<%= @evaluation.order_item.product.image_url %>', // 分享图标
+    desc: 'UBOSS'
+  });
 });
 </script>

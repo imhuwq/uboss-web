@@ -86,7 +86,6 @@
 
   </div>
 
-
   <div class='new-order-addr-info <%= displayable_class(@default_address.present?) %>'>
     <%= f.hidden_field :user_address_id %>
     <dl class="add_line1">
@@ -115,7 +114,7 @@
           <div class="close" id="closeModal"><a href="#"><%= image_tag 'img/close.png' %></a></div>
         </div>
         <dl class="add_conts">
-          <% @user_addresses.each do |user_address| %>
+          <% @order_form.buyer.user_addresses.each do |user_address| %>
             <dl class="add_line1" data-id='<%= user_address.id %>'>
               <dd>
               <span>收货人：<b class='adr-user'><%= user_address.try(:username) %></b></span>

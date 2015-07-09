@@ -10,12 +10,7 @@ class EvaluationsController < ApplicationController
 
   def show
     @evaluation = Evaluation.find(params[:id])
-    parent_id = @evaluation.order_item.try(:sharing_node).try(:id)
-    if @evaluation.sharing_node_id.present?
-      @sharing_node = @evaluation.sharing_node
-    else
-      @sharing_node = SharingNode.create(user_id: current_user.id, product_id: @evaluation.product_id, parent_id: parent_id)
-    end
+    @sharing_node = @evaluation.sharing_node
   end
 
   def index
