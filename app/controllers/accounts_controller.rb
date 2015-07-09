@@ -10,7 +10,7 @@ class AccountsController < ApplicationController
   def update
     if current_user.update(account_params)
       flash[:notice] = '修改成功'
-      redirect_to edit_account_path
+      redirect_to settings_account_path
     else
       render :edit
     end
@@ -27,7 +27,7 @@ class AccountsController < ApplicationController
 
     if current_user.update_with_password(user_params)
       sign_in current_user, :bypass => true
-      redirect_to root_path, notice: '修改密码成功'
+      redirect_to settings_account_path, notice: '修改密码成功'
     else
       render :update_password_page
     end

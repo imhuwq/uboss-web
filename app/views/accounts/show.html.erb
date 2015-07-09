@@ -7,7 +7,7 @@
     <div class="my_acuntcont">
       <span class="my_img"><%= image_tag current_user.avatar_url(:thumb) %></span>
       <span class="my_text">
-        <%= link_to (truncate current_user.identify,:length=>28,:omission=>'...' ), edit_account_path %>
+        <%= link_to (truncate current_user.identify,:length=>28,:omission=>'...' ), settings_account_path %>
       </span>
       <span class="my_btn">
         <%= link_to '退出', destroy_user_session_path(current_user), method: :delete, class: 'my_retur' %>
