@@ -1,148 +1,188 @@
-<header class="head">
-  <%= link_to account_path do %>
-  <div class="bottom left iconleft"></div>
-  <% end %>
-  <div class="log_font">提交订单</div>
-</header>
+<%= content_for :page_title do %>
+  提交订单
+<% end %>
+
+<style type="text/css">
+.dlg {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, .2);
+  display: none;
+}
+      .content {
+        transition: all 1s;
+        position: absolute;
+        width: 100%;
+        top: 45px;
+        background-color: rgba(255, 255, 255, 1);
+      }
+      .content.active {
+        -webkit-animation: fadeInUp .7s ease 0s 1 backwards;
+        animation: fadeInUp .7s ease 0s 1 backwards;
+      }
+</style>
+
 <%= simple_form_for @order_form, url: orders_path, method: 'POST',wrapper: :default do |f| %>
-<%= f.hidden_field :product_id %>
-<%= f.hidden_field :real_price %>
-<%= f.hidden_field :product_traffic_expense %>
-<div class="container">
-  <div class="subOrd_box1">
-    <dl>
-      <dt> <%= image_tag(url_for(@order_form.product.image_url),  alt: "-",:style=>"width:100%;") %></dt>
-      <dd>
+  <%= f.hidden_field :product_id %>
+  <%= f.hidden_field :real_price %>
+  <%= f.hidden_field :product_traffic_expense %>
+
+  <div class="container">
+    <div class="subOrd_box1">
+      <dl>
+        <dt> <%= image_tag(url_for(@order_form.product.image_url),  alt: "-",:style=>"width:100%;") %></dt>
+        <dd>
         <strong><%= @product.name %><span>￥<%= @order_form.real_price %></span></strong>
         <p><%= @product.user.store_name %></p>
-      </dd>
-    </dl>
-  </div>
-
-  <div class="subOrd_box2">
-
-
-    <div class="subOrd_boxcont">
-      <p class="sub_p1 order">
-        <span class="sub_leftl">数量</span>
-        <span class="sub_right ">
-          <a href="#" class="jia"><span>+</span></a>
-          <%= f.input_field :amount,value: 1, class:"tow",id: "amount" %>
-          <a href="#" class="jian"><span>-</span></a>
-        </span>
-      </p>
-      <p class="sub_p1 sub_p2">
-        <span class="sub_leftl">合计（含运费）</span>
-        <span class="sub_left"><strong>￥</strong>
-          <b id="total_price"><%= (@order_form.real_price || 0) + (@product.traffic_expense || 0)  %></b>
-        </span>
-      </p>
+        </dd>
+      </dl>
     </div>
 
+    <div class="subOrd_box2">
+      <div class="subOrd_boxcont">
+        <p class="sub_p1">
+        <span class="sub_left">数量</span>
+        <span class="sub_right">
+          <span class="sub_right">
+            <a href="#" class="jia"><span>+</span></a>
+            <%= f.input_field :amount,value: 1, class:"tow",id: "amount" %>
+            <a href="#" class="jian"><span>-</span></a>
+          </span>
+        </span>
+        </p>
+        <p class="sub_p1 sub_p2">
+        <span class="sub_leftl">合计（含运费￥<%= @product.traffic_expense %>）</span>
+        <span class="sub_left">
+          <strong>￥</strong><b id="total_price"><%= @order_form.real_price + @product.traffic_expense  %></b>
+        </span>
+        </p>
+      </div>
 
+      <div class="sub_p3">个人信息确认</div>
 
-
-    <div class="sub_p3">个人信息确认</div>
-    <div class="subOrd_boxcont subOrd_boxbtn">
-      <% if current_user.need_set_login? %>
-
-        <p class="sub_p">
+      <% if true#current_user.need_set_login? %>
+        <div class="subOrd_boxcont subOrd_boxbtn">
+          <p class="sub_p">
+          <span><%= text_field_tag "mobile[]",'',placeholder: '输入手机号', class:"sub_btphon",id:'new_mobile' %></span>
           <span>
             <%= text_field_tag "mobile[]",'',placeholder: '输入手机号', class:"sub_btphon",id:'new_mobile' %>
           </span>
           <span><input type="submit" value="发送验证码" class="sub_yanzhen" onclick="sendNewMobile()" id="send_mobile">
-            
+
           </span>
-        </p>
-        <p class="sub_w"><span><input type="text" value="填写短信验证码" class="sub_yanzhcont"></p>
-        <% end %>
-    </div>
-  </div>
-  <div class="sub_box3">
-    <div class="sub_box3_cont">
-      <%
-       default_user_addresses = []
-       user_address = current_user.default_address
-       default_user_addresses << user_address
-        %>
-      <% if user_address %>
-        <div class="sub_box3_cont1">
-          <table width="100%" height="82" border="1" class="table1">
-            <tr>
-              <td>
-                <span class="mo">默认</span>
-              </td>
-              <td><span>收件人：</span></td>
-              <td><span>电话：</span></td>
-            </tr>
-            <tr>
-              <td></td>
-              <td class="hidd"><%= user_address.username %></td>
-              <td class="hidd hidd"><%= user_address.mobile %></td>
-            </tr>
-            <tr>
-              <td></td>
-              <td colspan="3"><span>收件地址：</span></td>
-            </tr>
-            <tr>
-              <td></td>
-              <td colspan="3" class="hidd">
-                <%=
-                "#{user_address.country} #{user_address.province} #{user_address.city} #{user_address.area} #{user_address.street} #{user_address.building}"
-                %>
-              </td>
-            </tr>
-          </table>
+          <div class="clear"></div>
+          </p>
+          <p class="sub_w"><span><%= f.input_field :captcha, placeholder: '填写短信验证码', class:"sub_yanzhcont"  %></p>
         </div>
       <% end %>
-      <div class="sub_box3_cont2">
-        <table width="100%" height="82" border="1" class="table2 table3">
 
-          <%= f.hidden_field :user_address_id %>
-          <% all_address = current_user.user_addresses - default_user_addresses %>
-          <% all_address.each do |obj| %>
-          <tr>
-            <td class="sub_rado"><input type="radio" name="params[]" id="<%= obj.id %>"></td>
-            <td class="sub_ads"><%= obj.username %></td>
-            <% address = "#{obj.country} #{obj.province} #{obj.city} #{obj.area} #{obj.street} #{obj.building}" %>
-            <td class="sub_over"><%= excerpt( address, obj.building,separator: ' ', radius: 2)  %></td>
-          </tr>
-          <% end %>
-          <tr>
-            <td class="sub_newaddr" colspan='3'>
-              <a href="###" onclick="toggleNewAddress()">
-                <div class="col-xs-2">
-                  <%= image_tag("uboss_29/jia.png",style:"width:18px;") %>
-                </div>
-                <div class="sub_newaddr col-xs-8 font_h5" style="color:#43c3aa;">使用新地址</div>
-              </a>
-            </td>
-          </tr>
-        </table>
-        <div class="undis" id="create_new_address">
-          <%= f.input :deliver_username %>
-          <%= f.input :deliver_mobile %>
-          <%= f.input :province %>
-          <%= f.input :city %>
-          <%= f.input :area %>
-          <%= f.input :street %>
-          <%= f.input :building %>
+    </div>
+
+  </div>
+
+
+  <div class='new-order-addr-info <%= displayable_class(@default_address.present?) %>'>
+    <%= f.hidden_field :user_address_id %>
+    <dl class="add_line1">
+      <dd>
+      <span>收货人：<b class='adr-user'><%= @default_address.try(:username) %></b></span>
+      <strong class='adr-mobile'><%= @default_address.try(:mobile) %></strong></dd>
+      <dd>
+      <span>收货地址：<b class='adr-detail'><%= @default_address %></b></span></dd>
+    </dl>
+  </div>
+
+  <div class="addr_boxs">
+    <a href="#" class="addr" id="addr">收货地址</a>
+  </div>
+
+  <div class="accunt_adil_box3">
+    <%= submit_tag '提交订单',class:"accunt_adilbtn" %>
+  </div>
+
+  <!--弹出层开始-->
+  <div class="dlg order-address-dlg" id="dlg" status="0">
+    <div class="content" id="content">
+      <div class="add_listall" id="add_listall">
+        <div class="add_title">
+          <span>收货地址列表</span>
+          <div class="close" id="closeModal"><a href="#"><%= image_tag 'img/close.png' %></a></div>
         </div>
+        <dl class="add_conts">
+          <% @user_addresses.each do |user_address| %>
+            <dl class="add_line1" data-id='<%= user_address.id %>'>
+              <dd>
+              <span>收货人：<b class='adr-user'><%= user_address.try(:username) %></b></span>
+              <strong class='adr-mobile'><%= user_address.try(:mobile) %></strong></dd>
+              <dd>
+              <span>收货地址：<b class='adr-detail'><%= user_address %></b></span></dd>
+            </dl>
+          <% end %>
+
+          <div class="add_more"><a href="#">使用新地址</a></div>
+
+          <div class="add_inout">
+            <form id="add_inout_form">
+              <p>
+                <span class="add_textd">收货人</span>
+                <%= f.input_field :deliver_username, placeholder: '名字', class: 'add_text' %>
+              </p>
+              <p>
+                <span>联系电话</span>
+                <%= f.input_field :deliver_mobile, placeholder: '手机或固话', type: :tel, class: 'add_text' %>
+              </p>
+              <p>
+                <span>所在地区</span>
+                <%= f.input_field :street, class: 'add_text' %>
+              </p>
+              <p>
+                <span>详细地址</span>
+                <%= f.input_field :building, placeholder: '街道门牌信息', class: 'add_text' %>
+              </p>
+            </form>
+          </div>
+          <div class="accunt_adil_box3 adbtn">
+            <a href="#" class="accunt_adilbtn use-new-addr-btn">使用新地址</a>
+          </div>
       </div>
     </div>
   </div>
-</div>
-<div class="accunt_adil_box3">
-  <%= submit_tag '提交订单',class:"accunt_adilbtn" %>
-</div>
+  <!--弹出层结束-->
+
 <% end %>
+
 
 <% if browser.wechat? %>
   <%= content_for :extra_javascript do %>
     <script type="text/javascript" charset="utf-8">
-      wx.ready(function(){
-        wx.hideOptionMenu();
-      });
+
+wx.ready(function(){
+  wx.hideOptionMenu();
+});
+
     </script>
   <% end %>
 <% end %>
+
+<script>
+var addr = document.getElementById("addr");
+addr.addEventListener("click", function() {
+  var dlg = document.getElementById("dlg");
+  if (dlg.getAttribute("status") == 0) {
+    dlg.setAttribute("status", "1");
+    dlg.style.display = "block";
+    document.getElementById("content").setAttribute("class", "content active");
+  }
+})
+var closeModal = document.getElementById("closeModal");
+closeModal.addEventListener("click", function() {
+  if (dlg.getAttribute("status") == 1) {
+    dlg.setAttribute("status", "0");
+    dlg.style.display = "none";
+    document.getElementById("content").setAttribute("class", "content");
+  }
+})
+</script>

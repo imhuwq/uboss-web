@@ -79,10 +79,13 @@ class OrderForm
       user: buyer,
       mobile: deliver_mobile,
       username: deliver_username,
+      country: country,
       province: province,
       city: city,
-      country: country,
-      street: street)
+      area: area,
+      street: street,
+      building: building
+    )
   end
 
   def create_order_and_order_item

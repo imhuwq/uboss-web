@@ -49,4 +49,8 @@ module ApplicationHelper
     end.join.html_safe
   end
 
+  def displayable_class(boolean_value)
+    boolean_value ? '' : 'hidden'
+  end
+
 end

@@ -11,11 +11,6 @@ $('body').ajaxSuccess(function(){
 });
 $('body').prop('class');
 
-// orders#new
-function toggleNewAddress() {
-  $("#create_new_address").toggle()
-}
-
 function sendNewMobile() {
   var mobile = $('#new_mobile').val();
   var checkNum = /^(\+\d+-)?[1-9]{1}[0-9]{10}$/;

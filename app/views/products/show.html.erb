@@ -1,17 +1,13 @@
+<%= content_for :page_title do %>
+  商品详情
+<% end %>
+
 <%= content_for :extra_meta_tags do %>
   <%= sharing_meta_tags(
     sharing_title: @product.name,
     sharing_imgurl: @product.image_url(:thumb),
     sharing_link: product_sharing_link(@product, @sharing_link_node)) %>
 <% end %>
-
-<header class="head">
-  <%= link_to url_for(controller: :products,action: :index) do %>
-  <div class="bottom left iconleft"></div>
-  <% end %>
-  <div class="log_font">商品详情</div>
-  <div class="shar">分享</div>
-</header>
 
 <div class="container">
   <div class="prdv_img">

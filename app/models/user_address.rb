@@ -7,7 +7,7 @@ class UserAddress < ActiveRecord::Base
   validates :mobile, mobile: true
 
   def to_s
-    "#{province} #{city} #{area} #{street} #{building}"
+    "#{province}#{city}#{area}#{street}#{building}"
   end
 
 end

@@ -1,13 +1,11 @@
-<header class="head">
-  <%= link_to url_for(controller: :products,action: :index) do %>
-  <div class="bottom left iconleft"></div>
-  <% end %>
-  <div class="log_font">我的账户</div>
-</header>
+<%= content_for :page_title do %>
+  我的UBOSS
+<% end %>
+
 <div class="container">
   <div class="my_acuntbox1">
     <div class="my_acuntcont">
-      <span class="my_img"><img src="assets/img/header_img.jpg"></span>
+      <span class="my_img"><%= image_tag current_user.avatar_url(:thumb) %></span>
       <span class="my_text">
         <%= link_to (truncate current_user.identify,:length=>28,:omission=>'...' ), edit_account_path %>
       </span>

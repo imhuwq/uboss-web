@@ -25,9 +25,10 @@ class OrdersController < ApplicationController
       product_id: params[:product_id],
       sharing_code: get_product_sharing_code(params[:product_id])
     )
+    @user_addresses = UserAddress.where(user_id: current_user.try(:id))
     @product = @order_form.product
-    if current_user && current_user.default_address
-      @order_form.user_address_id = current_user.default_address.id
+    if current_user && @default_address = current_user.default_address
+      @order_form.user_address_id = @default_address.id
     end
   end
 
@@ -36,6 +37,7 @@ class OrdersController < ApplicationController
     @order_form.sharing_code = get_product_sharing_code(@order_form.product_id)
     if @order_form.save
       sign_in(@order_form.buyer) if current_user.blank?
+      flash[:order_confirm] = 'true'
       redirect_to order_path(@order_form.order)
     else
       render :new

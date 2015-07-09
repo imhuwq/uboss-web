@@ -1,24 +1,8 @@
 
-<header class="head">
-  <div class="bottom left search"></div>
-  <%= link_to account_path do %>
-  <div class="bottom right"></div>
-  <% end %>
-  <div class="logo"></div>
-
-</header>
 <div class="container">
-  <div class="menu">
-    <ul>
-      <li class="active"><a href="#">每日精选</a></li>
-      <li><a href="#">人气最高</a></li>
-      <li><a href="#">最新上架</a></li>
-      <li><a href="#">专题活动</a></li>
-    </ul>
-  </div>
   <div class="list">
     <ul class="list_ul">
-      <% (@products||[]).each do |obj| %>
+      <% @products.each_with_index do |obj, index| %>
         <%= link_to url_for(:action=>:show,:id=>obj.id) do %>
         <li class="list_li">
           <div class="li_image">
@@ -31,11 +15,13 @@
                 <div class="baoyou"><%= Product::DataBuyerPay[obj.buyer_pay] %></div>
                 <div class="pric"><strong>￥<%= obj.present_price %></strong><span><%= obj.total_sells %>人付款</span></div>
               </div>
+              <% if index < 5 %>
               <div class="posi_left">
                 <ul>
                   <li class="col_on">荐</li>
                   <li class="col_one">TOP</li>
                 </ul>
+              <% end %>
               </div>
            </div>
         </li>

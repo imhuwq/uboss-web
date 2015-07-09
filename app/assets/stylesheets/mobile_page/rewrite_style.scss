@@ -1,24 +1,24 @@
-.upass.main .head {
-  position: normal;
+input {
+  -webkit-appearance: none;
 }
-
+.upass.main .head {
+  position: relative;
+}
 .sub_btphon {
   width: 50%;
 }
-
 .sub_w {
-  border-top: 1px dashed  rgba(186,186,185,.7);
   margin-top: 5px;
 }
-
 .subOrd_boxcont p span.sub_right{
   width: auto;
 }
-
 .subOrd_boxcont span img{
   padding-top: 8px;
 }
-
+.dlg {
+  overflow: scroll;
+}
 .contpric .contpric_left{
   width: auto;
 }
@@ -32,4 +32,44 @@
 
 .accunt_adilbtn{
   -webkit-appearance: none;
+}
+
+.sub_right .tow{
+  @extend a;
+	color: rgba(131,131,131,1);
+	border-left: none;
+	border-right: none;
+  padding: 0;
+  border-radius: 0;
+}
+.add_line1 {
+  padding: 10px 0;
+}
+.add_inout .add_text,
+.sub_btphon, .sub_yanzhcont {
+  color: #000;
+}
+.sub_box3_cont1 table {
+  border-bottom: none;
+}
+.nav_bar {
+  background-color: rgba(67,195,170,1);
+  text-align: left;
+  font-weight: 500;
+  position: initial;
+}
+.nav_bar ul li{
+  height: auto;
+  padding: 10px;
+}
+.upass.main .container {
+  padding-top: 0;
+  margin-top: 0px;
+}
+.upass.main .head .bottom.right {
+  background-color: #eee;
+  border-radius: 3px;
+}
+.upass.main .head .log_font{
+  font-weight: 500;
 }

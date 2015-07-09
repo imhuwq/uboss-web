@@ -84,7 +84,7 @@ class Order < ActiveRecord::Base
   end
 
   def set_info_by_user_address
-    self.address = "#{user_address.province}#{user_address.city}#{user_address.country}#{user_address.street}"
+    self.address = "#{user_address}"
     self.mobile = user_address.mobile
     self.username = user_address.username
   end

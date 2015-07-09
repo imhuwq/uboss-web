@@ -1,9 +1,6 @@
-<header class="head">
-  <%= link_to account_path(@order) do %>
-  <div class="bottom left iconleft"></div>
-  <% end %>
-  <div class="log_font"><%= @order.state_i18n %></div>
-</header>
+<%= content_for :page_title do %>
+  <%= flash[:order_confirm].present? ? '确认订单' : @order.state_i18n %>
+<% end %>
 
 <div class="container">
   <div class="subOrd_box1">
@@ -25,17 +22,19 @@
           <a href="#"><%= @order_item.amount %></a>
         </span>
       </p>
-      <p class="sub_p sub_p2">
-        <span class="sub_leftl">合计（含运费）</span>
-        <span class="sub_left"><strong>￥</strong><%=  @order.pay_amount %></span>
-        <div class="clear"></div>
+      <p class="sub_p1 sub_p2">
+        <span class="sub_leftl">合计（含运费￥<%= @product.traffic_expense %>）</span>
+        <span class="sub_left">
+          <strong>￥</strong><b id="total_price"><%= @order.pay_amount %></b>
+        </span>
       </p>
     </div>
-    <% if @order.state == 'unpay' %>
-    <div class="sub_p3">订单确认</div>
-    <% end %>
+
+    <div class="sub_p3">个人信息</div>
+
   </div>
 </div>
+
 <div class="sub_box3">
   <div class="sub_box3_cont">
     <div class="sub_box3_cont1">
@@ -55,18 +54,15 @@
           <td colspan="3" class="hidd"><%= @order.address %></td>
         </tr>
       </table>
-      <% if @order.state == 'unpay' %>
-      <div class="xiugai"><span>修改订单</span></div>
-      <% end %>
     </div>
   </div>
 </div>
 
-<br />
+<br/>
 
-<% if @order.state == 'unpay' %>
+<% if @order.state == 'unpay' && browser.wechat? %>
   <div class="accunt_adil_box3">
-    <%= link_to "去支付", order_charge_path(@order), id: 'wx-pay-btn', class: 'accunt_adilbtn' %>
+    <%= link_to "支付", '#', id: 'wx-pay-btn', class: 'accunt_adilbtn' %>
   </div>
 <% end %>
 

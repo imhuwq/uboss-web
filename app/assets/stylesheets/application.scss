@@ -1,3 +1,4 @@
+@import 'animations';
 @import "mobile_page/reset";
 @import 'mobile_page/autoStrap';
 @import 'mobile_page/font_width';
@@ -6,8 +7,7 @@
 @import 'mobile_page/style';
 @import 'mobile_page/rewrite_style';
 @import 'mobile_page/ulaiber';
-
-@import 'pages/orders';
+@import 'mobile_page/order';
 
 .box {
   position: relative;
@@ -17,4 +17,8 @@
 
 .clear {
   clear: both;
+}
+
+.hidden {
+  display: none;
 }

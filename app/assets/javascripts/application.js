@@ -31,6 +31,10 @@ $(function() {
     }
   });
 
+	$(".right").click(function() {
+		$(".nav_bar").slideToggle();
+	});
+
   $(".my_menu ul li").click(function(){
     var Index = $(this).index();
     $(this).addClass('active').siblings().removeClass('active');
