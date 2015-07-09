@@ -1099,7 +1099,7 @@ a{
   width: 100%;
 }
 .contpric .contpric_left{
-  width: 30%;
+  /*width: 30%;*/
   float: left;  
 }
 .contpric .contpric_right{
