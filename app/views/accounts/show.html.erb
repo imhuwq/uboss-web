@@ -5,9 +5,10 @@
 <div class="container">
   <div class="my_acuntbox1">
     <div class="my_acuntcont">
+      <%= link_to settings_account_path do %>
       <span class="my_img"><%= image_tag current_user.avatar_url(:thumb) %></span>
       <span class="my_text">
-        <%= link_to (truncate current_user.identify,:length=>28,:omission=>'...' ), settings_account_path %>
+        <%= truncate current_user.identify,:length=>28,:omission=>'...' %>
       </span>
     </div>
   </div>

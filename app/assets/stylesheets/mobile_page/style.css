@@ -1361,14 +1361,7 @@ a{
 .adbtn{
   margin-top: 40px;
 }
-.add_inout p{
-  display: block;
-  height: 41px;
-  line-height: 41px;
-  padding-left: 15px;
-  border-bottom: 1px solid rgba(204,204,204,1);
-  font-size: 14px;
-}
+
 .add_inout .add_text{
   margin-left: 15px;
   width: 65%;
