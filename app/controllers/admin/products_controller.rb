@@ -43,9 +43,11 @@ class Admin::ProductsController < AdminController
 
   def update
     product = Product.find(params[:id])
-    img = AssetImg.new
-    img.avatar = params[:asset_img]
-    product.asset_img = img
+    if params[:asset_img].present?
+      img = AssetImg.new
+      img.avatar = params[:asset_img]
+      product.asset_img = img
+    end
     if product.present? && product.user_id == current_user.id && product.update_attributes(product_params)
 
       flash[:success] = '保存成功'
@@ -57,14 +59,14 @@ class Admin::ProductsController < AdminController
 
   def change_status
     @product = Product.find(params[:id])
-    if @product.status == 0 && !(params[:delete] == 'true')
-      @product.status = 1
+    if @product.status == 'unpublish' && !(params[:delete] == 'true')
+      @product.status = 'published'
       flash[:success] = '上架成功'
-    elsif @product.status == 1 && !(params[:delete] == 'true')
-      @product.status = 0
+    elsif @product.status == 'published' && !(params[:delete] == 'true')
+      @product.status = 'unpublish'
       flash[:success] = '取消上架成功'
     elsif params[:delete] == 'true'
-      @product.status = 2
+      @product.status = 'closed'
       flash[:success] = '删除成功'
     end
     @product.save

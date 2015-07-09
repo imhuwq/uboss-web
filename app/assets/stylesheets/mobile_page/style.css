@@ -431,10 +431,7 @@ a{
   overflow: hidden;
   float: left;
 }
-.my_acuntcont .my_img img{
-  width: 100%;
-  padding-top: 10px;
-}
+
 .my_acuntcont .my_text{
   width: 40%;
   height:78px !important;
@@ -445,18 +442,7 @@ a{
 .my_acuntcont .my_btn{
   float: right;
 }
-.my_retur{
-  width: 75px;
-  height: 32px;
-  background-color:rgba(67,195,170,1);
-  border: none;
-  color: rgba(255,255,255,1);
-  border-radius: 5px;
-  text-align: center;
-  letter-spacing: 1px;
-  font-size: 12px;
-    font-weight: normal;
-}
+
 .my_menu{
   width: 94%;
   margin:4px auto;
