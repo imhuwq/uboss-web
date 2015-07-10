@@ -5,6 +5,7 @@
     <%= f.input :original_price,:as=>:float,:label_html=>{:class=>"text-right"} %>
     <%= f.input :present_price,:as=>:float,:label_html=>{:class=>"text-right"} %>
     <%= f.input :count,:as=>:integer,:label_html=>{:class=>"text-right"} %>
+    <%= f.input :short_description,:as=>:string,:label_html=>{:class=>"text-right"} %>
     <div class="form-group">
         <%= f.label :asset_img,:class=>" text-right col-sm-3 control-label" %>
       <div  class="col-xs-6">
@@ -51,7 +52,7 @@
     <div class="col-xs-6">
       <%= f.input :has_share_lv,as: :radio_buttons ,:collection=>{'不分成'=>0,'1'=>1,'2'=>2,'3'=>3},:item_wrapper_class => "radio-inline" %>
     </div>
-    
+
   </div>
 </div>
 <div class="col-xs-12 border_block">

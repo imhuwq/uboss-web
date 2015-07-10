@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150710032520) do
+ActiveRecord::Schema.define(version: 20150710072709) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -155,6 +155,7 @@ ActiveRecord::Schema.define(version: 20150710032520) do
     t.integer  "bad_evaluation",     default: 0
     t.float    "discount_amount"
     t.float    "privilege_amount",   default: 0.0
+    t.string   "short_description"
   end
 
   create_table "redactor_assets", force: :cascade do |t|

@@ -12,8 +12,7 @@ class Admin::ProductsController < AdminController
   end
 
   def show
-    @product = Product.find_by_id(params[:id])
-    redirect_to action: :index unless @product.present?
+    @product = Product.find(params[:id])
   end
 
   def new
@@ -37,8 +36,7 @@ class Admin::ProductsController < AdminController
   end
 
   def edit
-    @product = Product.find_by_id(params[:id])
-    redirect_to action: :index unless @product.present?
+    @product = Product.find(params[:id])
   end
 
   def update
@@ -92,7 +90,7 @@ class Admin::ProductsController < AdminController
                                     :has_share_lv, :calculate_way,
                                     :share_amount_total, :share_amount_lv_1, :share_amount_lv_2, :share_amount_lv_3,
                                     :share_rate_total, :share_rate_lv_1, :share_rate_lv_2, :share_rate_lv_3,
-                                    :buyer_pay, :traffic_expense
+                                    :buyer_pay, :traffic_expense, :short_description
                                    )
   end
 end

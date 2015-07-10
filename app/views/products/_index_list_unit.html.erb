@@ -1,15 +1,15 @@
-<% @products.each_with_index do |obj, index| %>
-    <%= link_to url_for(:action=>:show,:id=>obj.id) do %>
+<% @products.each_with_index do |product, index| %>
+    <%= link_to url_for(:action=>:show,:id=>product.id) do %>
     <li class="list_li">
       <div class="li_image">
-        <%= image_tag(obj.image_url(:thumb),  alt: "-") %>
+        <%= image_tag(product.image_url(:thumb),  alt: "-") %>
         </div>
         <div class="li_content">
           <div class="li_contentinteo">
-            <div class="con_title"><%= obj.name %></div>
-            <div class="intrdu"></div>
-            <div class="baoyou"><%= Product::DataBuyerPay[obj.buyer_pay] %></div>
-            <div class="pric"><strong>￥<%= obj.present_price %></strong><span><%= obj.total_sells %>人付款</span></div>
+            <div class="con_title"><%= product.name %></div>
+            <div class="intrdu"><%= product.short_description %></div>
+            <div class="baoyou">邮费：<%= Product::DataBuyerPay[product.buyer_pay] %></div>
+            <div class="pric"><strong>￥<%= product.present_price %></strong><span><%= product.total_sells %>人付款</span></div>
           </div>
           <% if index < 5 %>
           <div class="posi_left">

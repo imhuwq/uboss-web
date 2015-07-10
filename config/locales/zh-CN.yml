@@ -15,6 +15,7 @@ zh-CN:
     nickname: 名称
     role_display_name: 角色
     password_confirmation: 密码确认
+    short_description: 描述
   simple_form:
     labels:
       product: &product
