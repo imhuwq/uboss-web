@@ -86,6 +86,8 @@
   </div>
 </div>
 
+<br />
+
 <% if @order.state == 'unpay' && browser.wechat? %>
   <div class="accunt_adil_box3">
     <%= link_to "支付", '#', id: 'wx-pay-btn', class: 'accunt_adilbtn' %>

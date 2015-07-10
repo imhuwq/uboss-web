@@ -1,5 +1,5 @@
 <% @products.each_with_index do |product, index| %>
-    <%= link_to url_for(:action=>:show,:id=>product.id) do %>
+    <%= link_to product_path(product) do %>
     <li class="list_li">
       <div class="li_image">
         <%= image_tag(product.image_url(:thumb),  alt: "-") %>
