@@ -71,16 +71,19 @@ class User < ActiveRecord::Base
   end
 
   def update_with_wechat_oauth(oauth_info)
-    update(
-      nickname: oauth_info['nickname'],
-      sex: oauth_info['sex'],
-      province: oauth_info['province'],
-      city: oauth_info['city'],
-      country: oauth_info['country'],
-      remote_avatar_url: oauth_info['headimgurl'],
+    info = {
+      nickname: nickname || oauth_info['nickname'],
+      sex: sex || oauth_info['sex'],
+      province: province || oauth_info['province'],
+      city: city || oauth_info['city'],
+      country: country || oauth_info['country'],
       weixin_unionid: oauth_info['unionid'],
       weixin_openid: oauth_info['openid']
-    )
+    }
+    if avatar.blank?
+      info.merge(remote_avatar_url: oauth_info['headimgurl'])
+    end
+    update(info)
   end
 
   def identify
