@@ -15,7 +15,7 @@ class Evaluation < ActiveRecord::Base
   def relate_attrs # 取出order_item的值并斌给Evaluation中对应的属性
     if order_item
       self.buyer_id = order_item.user_id
-      self.sharer_id = order_item.sharing_node_id
+      self.sharer_id = order_item.sharing_node.user_id
       self.product_id = order_item.product_id
     end
   end
@@ -25,14 +25,14 @@ class Evaluation < ActiveRecord::Base
       user_info_id = User.find(self.sharer_id).user_info.id
       case self.status
       when 'good'
-        UserInfo.update_counters user_info_id, good: 1
-        Product.update_counters self.product_id, good: 1
+        UserInfo.update_counters user_info_id, good_evaluation: 1
+        Product.update_counters self.product_id, good_evaluation: 1
       when 'normal'
-        UserInfo.update_counters user_info_id, normal: 1
-        Product.update_counters self.product_id, normal: 1
+        UserInfo.update_counters user_info_id, normal_evaluation: 1
+        Product.update_counters self.product_id, normal_evaluation: 1
       when 'bad'
-        UserInfo.update_counters user_info_id, normal: 1
-        Product.update_counters self.product_id, normal: 1
+        UserInfo.update_counters user_info_id, bad_evaluation: 1
+        Product.update_counters self.product_id, bad_evaluation: 1
       end
     end
   end
@@ -47,7 +47,7 @@ class Evaluation < ActiveRecord::Base
     User.find_by_id(sharer_id).user_info.good
   end
 
-  def self.sharer_good_reputation_rate(sharer_id) # 分享者好评率
+  def self.sharer_good_reputation_rate(sharer) # 分享者好评率
     # evaluation = Evaluation.where(sharer_id: sharer_id)
     # total = evaluation.count
     # if total != 0
@@ -56,8 +56,8 @@ class Evaluation < ActiveRecord::Base
     # else
     #   "100.00%"
     # end
-    user_info = User.find_by_id(sharer_id).user_info
-    rate = user_info.good_evaluation/(user_info.good_evaluation + user_info.normal_evaluation + user_info.bad_evaluation) rescue 1
+    user_info = sharer.user_info
+    rate = user_info.good_evaluation.to_f/(user_info.good_evaluation + user_info.normal_evaluation + user_info.bad_evaluation) rescue 1
     "#{'%.2f' % (rate.try(:to_f)*100)}%"
   end
 
