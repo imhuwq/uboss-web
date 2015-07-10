@@ -15,7 +15,7 @@ class Evaluation < ActiveRecord::Base
   def relate_attrs # 取出order_item的值并斌给Evaluation中对应的属性
     if order_item
       self.buyer_id = order_item.user_id
-      self.sharer_id = order_item.sharing_node.user_id
+      self.sharer_id = order_item.sharing_node.try(:user_id)
       self.product_id = order_item.product_id
     end
   end

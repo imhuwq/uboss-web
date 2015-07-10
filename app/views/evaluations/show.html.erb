@@ -17,68 +17,7 @@
     <% end %>
     <p>感谢你的评价!</p>
   </div>
-  <div class="col-xs-12 bg_white" style="margin-bottom:30px;">
-    <h4 class="green text-center" style="padding-top:20px;">分享到</h4>
-    <div class="clear"></div>
-    <div id="share-box" class="l_toshare clearfix">
-      <div id="l_share_more" class="l_toshare-bd undis" style="position:relative;height:50px;">
-        <ul style="position:absolute;left:50%;margin-left:-120px;">
-          <li>
-            <a class="jiathis_button_xiaoyou l_s_pengyou">
-            </a>
-          </li>
-          <li>
-            <a class="jiathis_button_googleplus l_s_google">
-            </a>
-          </li>
-          <li>
-            <a class="jiathis_button_douban l_s_dou">
-            </a>
-          </li>
-          <li>
-            <a class="jiathis_button_fb l_s_facebook">
-            </a>
-          </li>
-          <li>
-            <a class="jiathis_button_renren l_s_renren">
-            </a>
-          </li>
-          <li>
-            <a class="l_s_copy" title="复制链接" alt="复制链接" onclick="copyUrl()" href="JavaScript: copyUrl()">
-            </a>
-          </li>
-        </ul>
-        <span> </span>
-      </div>
-      <div class="l_toshare-bd" style="position:relative;height:50px;">
-        <ul class="l_toshare24" style="position:absolute;left:50%;margin-left:-120px;">
-          <li>
-            <a class="jiathis_button_weixin l_s_weixin">
-            </a>
-          </li>
-          <li>
-            <a class="jiathis_button_tsina l_s_sina">
-            </a>
-          </li>
-          <li>
-            <a class="jiathis_button_cqq l_s_qq">
-            </a>
-          </li>
-          <li>
-            <a class="jiathis_button_qzone l_s_qzone"></a>
-          </li>
-          <li>
-            <a class="jiathis_button_tqq l_s_tweibo">
-            </a>
-          </li>
-          <li>
-            <a id="tmblogbt" class="l_s_more" title="更多" alt="更多" onclick="l_share()" href="javascript:void(0)">
-            </a>
-          </li>
-        </ul>
-      </div>
-    </div>
-  </div>
+  <%= render '/application/share_buttoms' %>
   <div class="accunt_adil_box3">
     <%= link_to("返回首页", root_path, class:"accunt_adilbtn") %>
   </div>
@@ -92,38 +31,7 @@ var jiathis_config = {
   summary:"原价：￥<%= @sharing_node.product.try(:original_price) %>,现价：￥<%= @sharing_node.product.try(:present_price) %>,快来抢购吧~"
 }
 </script>
-<script type="text/javascript">
-function l_share() {
-  $('#l_share_more').toggle();
-}
-// function copyUrl() {
-//   window.clipboardData.setData("Text", Url);
-//   alert("复制成功！：" + Url);
-// }
-function copyUrl(){
-try{
-  if(window.clipboardData) {
-      window.clipboardData.setData("Text", Url);
-  } else if(window.netscape) {
-      netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect');
-      var clip = Components.classes['@mozilla.org/widget/clipboard;1'].createInstance(Components.interfaces.nsIClipboard);
-      if(!clip) return;
-      var trans = Components.classes['@mozilla.org/widget/transferable;1'].createInstance(Components.interfaces.nsITransferable);
-      if(!trans) return;
-      trans.addDataFlavor('text/unicode');
-      var str = new Object();
-      var len = new Object();
-      var str = Components.classes["@mozilla.org/supports-string;1"].createInstance(Components.interfaces.nsISupportsString);
-      var copytext = _sTxt;
-      str.data = copytext;
-      trans.setTransferData("text/unicode", str, copytext.length*2);
-      var clipid = Components.interfaces.nsIClipboard;
-      if (!clip) return false;
-      clip.setData(trans, null, clipid.kGlobalClipboard);
-  }
-  }catch(e){}
-}
-</script>
+
 <script type="text/javascript">
 wx.ready(function(){
   UBoss.luffy.resetInvokeSharing({
