@@ -9,7 +9,7 @@ module OrdersHelper
   end
 
   def sign_package
-    if params[:js_mode] = 'admin'
+    if params[:js_mode] == 'admin'
       {
         appId: '123',
         timestamp: Time.now.to_i,
