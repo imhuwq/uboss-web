@@ -384,17 +384,7 @@ a{
   background-color: rgba(233,233,231,1);
   text-align: left;
  }
- .wd_box ul li p .wd_input{
-  width: 100%;
-  height: 32px;
-  line-height: 32px;
-  display: block;
-  color: rgba(189,189,189,1);
-  font-size: 14px;
-  border:none;
-  background-color: rgba(233,233,231,1);
-  text-align: left;
- }
+
 .greedr{
   color: rgba(67,195,170,1) !important;
   width: 100%;
