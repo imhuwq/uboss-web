@@ -13,10 +13,10 @@ class WithdrawRecord < ActiveRecord::Base
   belongs_to :user
   belongs_to :bank_card
 
-  validates :user_id, :bank_card_id, :amount, presence: true
+  validates :user_id, :amount, presence: true
   validates_numericality_of :amount, greater_than: 0
   validates_numericality_of :amount,
-    less_or_equal_than: -> (withdraw) { withdraw.user.income.to_f },
+    less_than_or_equal_to: -> (withdraw) { withdraw.user.income.to_f },
     if: :new_record?
 
   delegate :identify, to: :user, prefix: true

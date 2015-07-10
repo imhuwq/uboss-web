@@ -23,6 +23,9 @@ Rails.application.routes.draw do
   end
   resource :evaluations do
   end
+  resource :withdraw_records, only: [:show, :new, :create] do
+    get :success, on: :member
+  end
   resource :account, only: [:show, :edit, :update] do
     get :settings, :update_password_page
     patch :password, to: 'accounts#update_password'

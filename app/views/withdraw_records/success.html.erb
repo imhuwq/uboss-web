@@ -1,0 +1,19 @@
+<%= content_for :page_title do %>
+  完成订单
+<% end %>
+<div class="container">
+	<div class="oder_box">
+		<div class="oder_imgsucess">
+      <!-- <img src="img/sucess.png"> -->
+      <%= image_tag("img/sucess.png") %>
+    </div>
+		<div class="oder_cont">
+			<div class="titsucess">提现成功!</div>
+			<p class="oder_p oder_pcont">您已成功提现￥<%= @withdraw_record.amount %></p>
+			<p><span>资金预计在<%= (@withdraw_record.created_at + 7.days).try(:to_date) %>到账</span></p>
+		</div>
+	</div>
+	<div class="oder_anniu">
+    <%= link_to("返回首页", root_path , id: "oder_over") %>
+	</div>
+</div>	

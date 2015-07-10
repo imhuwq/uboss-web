@@ -1,0 +1,50 @@
+<%= content_for :page_title do %>
+  提现
+<% end %>
+<div class="container">
+  <div class="wd_box">
+    <%= simple_form_for @withdraw_record, url: withdraw_records_path,method: :POST do |f| %>
+    <ul>
+   <!--    <li class="wd_sele">
+        <p>开户账号</p>
+        <p><select class="wd_actnumeber"><option>请在此输入</option></select></p>
+        <div class="san"></div>
+      </li>
+      <li>
+        <p>开户姓名</p>
+        <p><input type="select" class="wd_input wd_usrname" value="请在此输入" ></p>
+      </li>
+      <li>
+        <p>开户银行</p>
+        <p><input type="select" class="wd_input wd_bank" value="请在此输入" ></p>
+      </li>
+      <li>
+        <p>手机号</p>
+        <p><input type="select" class="wd_input wd_phone" value="请在此输入" ></p>
+      </li> -->
+      <li>
+        <p class="greedr">当前可提现金额：<%= @income %> 元</p>
+        <p class="greedr">最低提现金额：100 元</p>
+        <p>提现金额</p>
+        <p>
+          <%= f.input_field :amount, placeholder: '请在此输入提现金额', type: :tel, class:'wd_input wd_phone' %>
+        </p>
+      </li>
+    </ul>
+    <div class="oder_anniu">
+      <a href="#" id="oder_over">提现</a>
+    </div>
+    <% end %>
+  </div>
+</div>
+<script type="text/javascript">
+$('#oder_over').on('click', function(event) {
+  var amount = $('#withdraw_record_amount').val()
+  console.log(amount)
+  if (<%= @income %> > amount && amount > 99) {
+    $('#new_withdraw_record').submit();
+  }else{
+    alert('最低金额100元,最高金额<%= @income %>元。');
+  };
+});
+</script>
