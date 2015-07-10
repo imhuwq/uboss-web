@@ -27,7 +27,7 @@
 <script type="text/javascript">
 var jiathis_config = {
   url: "<%= product_sharing_link(@evaluation.product, @sharing_node) %>",
-  title: "<%= @product.try(:name) %>",
+  title: "<%= @evaluation.order_item.product.try(:name) %>",
   summary:"原价：￥<%= @sharing_node.product.try(:original_price) %>,现价：￥<%= @sharing_node.product.try(:present_price) %>,快来抢购吧~"
 }
 </script>

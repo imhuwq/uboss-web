@@ -60,48 +60,40 @@
 </div> -->
 <div class="fenxinag fenxinrated">
 	<p>分享到</p>
+  
+  
 	<ul>
 		<li><a><%= image_tag("img/01.png") %></a></li>
 		<li><a class="jiathis_button_tsina"><%= image_tag("img/02.png") %></a></li>
 		<li><a class="jiathis_button_tqq"><%= image_tag("img/03.png") %></a></li>
 		<li>
-			<a onclick="copyUrl()"><%= image_tag("img/04.png") %></a>
+      <button id="copycardid" style="border:0;background-color: white;padding:0;"><%= image_tag("img/04.png") %></button>
 		</li>
 	</ul>
+  <div class="col-xs-12 font_h6 undis" id="share_link" style="padding:20px 0 20px 0;">
+    <%= product_sharing_link(@evaluation.product, @sharing_node) %>
+  </div>
 </div>
 
 <script type="text/javascript">
 function l_share() {
   $('#l_share_more').toggle();
 }
-// function copyUrl() {
-//   window.clipboardData.setData("Text", Url);
-//   alert("复制成功！：" + Url);
-// }
-function copyUrl(){
-try{
-  if(window.clipboardData) {
-      window.clipboardData.setData("Text", "<%= product_sharing_link(@evaluation.product, @sharing_node) %>");
-      alert('复制成功')
-  } else if(window.netscape) {
-      netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect');
-      var clip = Components.classes['@mozilla.org/widget/clipboard;1'].createInstance(Components.interfaces.nsIClipboard);
-      if(!clip) return;
-      var trans = Components.classes['@mozilla.org/widget/transferable;1'].createInstance(Components.interfaces.nsITransferable);
-      if(!trans) return;
-      trans.addDataFlavor('text/unicode');
-      var str = new Object();
-      var len = new Object();
-      var str = Components.classes["@mozilla.org/supports-string;1"].createInstance(Components.interfaces.nsISupportsString);
-      // var copytext = _sTxt;
-      var copytext = "<%= product_sharing_link(@evaluation.product, @sharing_node) %>"
-      str.data = copytext;
-      trans.setTransferData("text/unicode", str, copytext.length*2);
-      var clipid = Components.interfaces.nsIClipboard;
-      if (!clip) return false;
-      clip.setData(trans, null, clipid.kGlobalClipboard);
-      alert('复制成功')
-  }
-  }catch(e){}
-}
+
+$('#copycardid').on('click', this,function(event) {
+  $('#share_link').toggle();
+  
+});
+
+ZeroClipboard.setMoviePath( "ZeroClipboard.swf" ); 
+var clip = null;
+// function init() {
+  
+// clip = new ZeroClipboard.Client();
+// clip.setText("<%= product_sharing_link(@evaluation.product, @sharing_node) %>");
+// clip.addEventListener( "mouseUp", function(client) {
+//   alert("复制链接成功！");
+// });
+// clip.glue('copycardid');
+// } 
 </script>
