@@ -17,6 +17,9 @@ class OrdersController < ApplicationController
       }
       @pay_sign = WxPay::Sign.generate(@pay_p)
     end
+    if @order.signed?
+      @sharing_link_node = @order_item.sharing_link_node
+    end
   end
 
   def new

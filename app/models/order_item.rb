@@ -15,6 +15,14 @@ class OrderItem < ActiveRecord::Base
   after_create :decrease_product_stock
   after_save :update_order_pay_amount
 
+  def sharing_link_node
+    @sharing_link_node ||= SharingNode.find_or_create_by(
+      user_id: user_id,
+      product_id: product_id,
+      parent_id: sharing_node_id
+    )
+  end
+
   def recover_product_stock
     adjust_product_stock(1)
   end

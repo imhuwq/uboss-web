@@ -66,29 +66,47 @@
   </div>
 <% end %>
 
-<% if @order.state == 'unpay' && browser.wechat? %>
-  <%= content_for :extra_javascript do %>
-    <script type="text/javascript" charset="utf-8">
-  wx.ready(function(){
+<% if browser.wechat? %>
+  <% if @order.unpay?%>
+    <%= content_for :extra_javascript do %>
+      <script type="text/javascript" charset="utf-8">
+wx.ready(function(){
 
-    $('#wx-pay-btn').on('click', function(event){
-      event.preventDefault();
-      wx.chooseWXPay({
-        "timestamp": "<%= @pay_p[:timeStamp] %>",
-        "nonceStr": "<%= @pay_p[:nonceStr] %>",
-        "package": "<%= @pay_p[:package] %>",
-        "signType": "<%= @pay_p[:signType] %>",
-        "paySign": "<%= @pay_sign %>", // 支付签名
-        "success": function (res) {
-          window.location.href = "/orders/" + "<%= @order.id %>" + "/pay_complete";
-        }
-      });
-
+  $('#wx-pay-btn').on('click', function(event){
+    event.preventDefault();
+    wx.chooseWXPay({
+      "timestamp": "<%= @pay_p[:timeStamp] %>",
+      "nonceStr": "<%= @pay_p[:nonceStr] %>",
+      "package": "<%= @pay_p[:package] %>",
+      "signType": "<%= @pay_p[:signType] %>",
+      "paySign": "<%= @pay_sign %>", // 支付签名
+      "success": function (res) {
+        window.location.href = "/orders/" + "<%= @order.id %>" + "/pay_complete";
+      }
     });
 
-    wx.hideOptionMenu();
+  });
 
-  })
+  wx.hideOptionMenu();
+
+})
       </script>
+    <% end %>
+  <% end %>
+  <% if @order.signed? %>
+    <%= content_for :extra_javascript do %>
+    <script type="text/javascript" charset="utf-8">
+
+wx.ready(function(){
+  UBoss.luffy.resetInvokeSharing({
+    title: "<%= @product.name %>", // 分享标题
+    link: "<%= product_sharing_link(@product, @sharing_link_node) %>",
+    imgurl: '<%= @product.image_url %>', // 分享图标
+    desc: 'UBOSS'
+  });
+})
+
+    </script>
+    <% end %>
   <% end %>
 <% end %>
