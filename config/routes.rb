@@ -22,7 +22,7 @@ Rails.application.routes.draw do
   resources :products do
     post :save_mobile, :democontent,  on: :collection
   end
-  resource :evaluations do
+  resources :evaluations do
   end
   resource :withdraw_records, only: [:show, :new, :create] do
     get :success, on: :member
