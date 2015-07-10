@@ -1,4 +1,8 @@
-
+<% if @seller %>
+  <%= content_for :page_title do %>
+    <%= @seller.store_identify %>
+  <% end %>
+<% end %>
 <div class="container">
   <div class="list">
     <ul class="list_ul">
