@@ -15,11 +15,9 @@ module ChargeService
 
   def handle_pay_notify(result)
     pay_serial_number = result["out_trade_no"]
-    if result['trade_state'] == 'SUCCESS'
-      order_charge = OrderCharge.find_by(pay_serial_number: pay_serial_number)
-      order_charge.update_with_wx_pay_result(result)
-      order_charge.order.pay!
-    end
+    order_charge = OrderCharge.find_by(pay_serial_number: pay_serial_number)
+    order_charge.update_with_wx_pay_result(result)
+    order_charge.order.pay!
   end
 
   private
