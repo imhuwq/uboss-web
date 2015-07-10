@@ -15,7 +15,7 @@ class Order < ActiveRecord::Base
   validates :user_id, :user_address_id, presence: true
   validates_uniqueness_of :number, allow_blank: true
 
-  before_save :set_info_by_user_address, on: :create
+  before_create :set_info_by_user_address
 
   delegate :mobile, :regist_mobile, :identify, to: :user, prefix: :buyer
   delegate :prepay_id, :prepay_id=, :prepay_id_expired_at, :prepay_id_expired_at=,
@@ -26,11 +26,11 @@ class Order < ActiveRecord::Base
 
   enum state: { unpay: 0, payed: 1, shiped: 3, signed: 4, closed: 5 }
 
-  aasm column: :state, enum: true, skip_validation_on_save: true do
+  aasm column: :state, enum: true, skip_validation_on_save: true, whiny_transitions: false do
     state :unpay
-    state :payed, after_enter: :call_order_payed_handler
-    state :shiped
-    state :signed
+    state :payed
+    state :shiped, after_enter: :fill_shiped_at
+    state :signed, after_enter: [:fill_signed_at, :call_order_complete_handler]
     state :closed, after_enter: :recover_product_stock
 
     event :pay do
@@ -39,7 +39,7 @@ class Order < ActiveRecord::Base
     event :ship do
       transitions from: :payed, to: :shiped
     end
-    event :signed do
+    event :sign do
       transitions from: :shiped, to: :signed
     end
     event :close do
@@ -78,13 +78,21 @@ class Order < ActiveRecord::Base
     "#{time_stamp}#{rand_num}#{SecureRandom.hex(3).upcase}"
   end
 
+  def fill_shiped_at
+    update_column(:signed_at, Time.now)
+  end
+
+  def fill_signed_at
+    update_column(:signed_at, Time.now)
+  end
+
   def set_info_by_user_address
     self.address = "#{user_address}"
     self.mobile = user_address.mobile
     self.username = user_address.username
   end
 
-  def call_order_payed_handler
+  def call_order_complete_handler
     OrderPayedHandlerJob.perform_later(self)
   end
 

@@ -26,7 +26,7 @@ class WithdrawRecord < ActiveRecord::Base
   before_save :set_bank_info
   after_create :handle_user_income
 
-  aasm column: :state, enum: true do
+  aasm column: :state, enum: true, whiny_transitions: false do
     state :unprocess
     state :processed, before_enter: :set_processed_info
     state :done, before_enter: :set_done_at, after_enter: :remove_user_frozen_income

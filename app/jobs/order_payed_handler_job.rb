@@ -3,10 +3,10 @@ class OrderPayedHandlerJob < ActiveJob::Base
 
   LEVEL_AMOUNT_FIELDS = [:share_amount_lv_1, :share_amount_lv_2, :share_amount_lv_3]
 
-  class OrderNotPayed < StandardError;;end
+  class OrderNotSigned < StandardError;;end
 
   def perform(order)
-    raise OrderNotPayed unless order.payed?
+    raise OrderNotPayed unless order.signed?
 
     @seller_income = order.pay_amount
 

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150708042517) do
+ActiveRecord::Schema.define(version: 20150710032520) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -44,7 +44,7 @@ ActiveRecord::Schema.define(version: 20150708042517) do
   create_table "evaluations", force: :cascade do |t|
     t.integer  "buyer_id"
     t.integer  "sharer_id"
-    t.integer  "status",          default: 3
+    t.integer  "status",          default: 0
     t.integer  "order_item_id"
     t.integer  "product_id"
     t.text     "content"
@@ -103,6 +103,8 @@ ActiveRecord::Schema.define(version: 20150708042517) do
     t.string   "username"
     t.float    "income",          default: 0.0
     t.boolean  "sharing_rewared", default: false
+    t.datetime "signed_at"
+    t.datetime "shiped_at"
   end
 
   add_index "orders", ["number"], name: "index_orders_on_number", unique: true, using: :btree
@@ -113,16 +115,6 @@ ActiveRecord::Schema.define(version: 20150708042517) do
     t.float    "amount",     default: 0.0
     t.datetime "created_at",               null: false
     t.datetime "updated_at",               null: false
-  end
-
-  create_table "product_share_issues", force: :cascade do |t|
-    t.integer  "product_id"
-    t.integer  "buyer_lv_1_id"
-    t.integer  "buyer_lv_2_id"
-    t.integer  "buyer_lv_3_id"
-    t.integer  "sharer_lv_1_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
   end
 
   create_table "products", force: :cascade do |t|
