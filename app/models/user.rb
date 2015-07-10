@@ -90,6 +90,10 @@ class User < ActiveRecord::Base
     nickname || regist_mobile
   end
 
+  def store_identify
+    store_name || nickname || regist_mobile
+  end
+
   def user_info
     super || build_user_info
   end

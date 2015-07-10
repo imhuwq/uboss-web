@@ -106,6 +106,12 @@ zh-CN:
         created_at: 创建时间
       product:
         <<: *product
+  order_status_bar:
+    unpay: 等待买家付款
+    payed: 等待卖家发货
+    shiped: 等待买家收货
+    signed: 交易完成
+    closed: 订单关闭
   enums:
     withdraw_record:
       state:

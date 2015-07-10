@@ -2,6 +2,10 @@
   <%= flash[:order_confirm].present? ? '确认订单' : @order.state_i18n %>
 <% end %>
 
+<div class="order-status-bar">
+  <%= I18n.t("order_status_bar.#{@order.state}") %>
+</div>
+
 <div class="container">
   <div class="subOrd_box1">
     <dl>
@@ -10,7 +14,8 @@
       </dt>
       <dd>
         <strong><%= @product.name %><span>￥<%= @order_item.present_price %></span></strong>
-        <p><%= @product.user.store_name %></p>
+        <p><%= @product.short_description %></p>
+        <p><%= @product.user.store_identify %></p>
       </dd>
     </dl>
   </div>
@@ -60,6 +65,25 @@
 
 <br/>
 
+<div class="pay-comment order-store-info">
+  <div>
+    <%= link_to "#{@product.user.store_identify}", store_path(@product.user) %>
+  </div>
+  <div>
+    <p> <small>订单编号:<%= @order.number %></small> </p>
+    <p> <small>创建时间:<%= @order.created_at %></small> </p>
+    <% if @order.paid_at %>
+      <p> <small>付款时间:<%= @order.created_at %></small> </p>
+    <% end %>
+    <% if @order.shiped_at %>
+      <p> <small>发货时间:<%= @order.created_at %></small> </p>
+    <% end %>
+    <% if @order.signed_at %>
+      <p> <small>成交时间:<%= @order.created_at %></small> </p>
+    <% end %>
+  </div>
+</div>
+
 <% if @order.state == 'unpay' && browser.wechat? %>
   <div class="accunt_adil_box3">
     <%= link_to "支付", '#', id: 'wx-pay-btn', class: 'accunt_adilbtn' %>
@@ -67,7 +91,7 @@
 <% end %>
 
 <% if browser.wechat? %>
-  <% if @order.unpay?%>
+  <% if @order.unpay? %>
     <%= content_for :extra_javascript do %>
       <script type="text/javascript" charset="utf-8">
 wx.ready(function(){

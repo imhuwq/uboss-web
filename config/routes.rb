@@ -13,6 +13,7 @@ Rails.application.routes.draw do
 
   post 'mobile_auth_code/create', to: 'mobile_auth_code#create'
 
+  resources :stores, only: [:show]
   resources :orders, only: [:new, :create, :show] do
     get 'received', on: :member
     get 'pay_complete', on: :member

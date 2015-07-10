@@ -36,3 +36,21 @@
 .btn-container {
   padding: 15px;
 }
+.order-status-bar {
+  padding: 8px 15px;
+  background-color: #777;
+  color: #fff;
+  font-size: 14px;
+}
+.order-store-info {
+  padding: 8px 15px;
+  background: #fff;
+  &> div{
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 5px;
+    margin-bottom: 5px;
+    &:last-child {
+      border-bottom: none;
+    }
+  }
+}
