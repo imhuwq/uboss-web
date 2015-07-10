@@ -66,8 +66,10 @@
 <br/>
 
 <div class="pay-comment order-store-info">
-  <div>
-    <%= link_to "#{@product.user.store_identify}", store_path(@product.user) %>
+  <div class='store-title'>
+    <%= link_to store_path(@product.user) do%>
+      <%= "#{@product.user.store_identify}" %> <%= image_tag("uboss_29/right.png" ) %>
+    <% end %>
   </div>
   <div>
     <p> <small>订单编号:<%= @order.number %></small> </p>
