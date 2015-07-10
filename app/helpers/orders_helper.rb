@@ -9,7 +9,16 @@ module OrdersHelper
   end
 
   def sign_package
-    @sign_package ||= $weixin_client.get_jssign_package(request.url)
+    if params[:js_mode] = 'admin'
+      {
+        appId: '123',
+        timestamp: Time.now.to_i,
+        nonceStr: '34567uinffg',
+        signature: 'cfgyhncfghjkkhb'
+      }
+    else
+      @sign_package ||= $weixin_client.get_jssign_package(request.url)
+    end
   end
 
 end
