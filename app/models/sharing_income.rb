@@ -18,7 +18,7 @@ class SharingIncome < ActiveRecord::Base
   validates :level, inclusion: { in: 1..3 }
   validates_numericality_of :amount, greater_than: 0
 
-  delegate :nickname, :regist_mobile, to: :user, prefix: true
+  delegate :nickname, :regist_mobile, :identify, to: :user, prefix: true
   delegate :product_name, :product, to: :order_item
   delegate :order, to: :order_item
 
