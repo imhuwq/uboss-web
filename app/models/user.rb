@@ -6,12 +6,15 @@ class User < ActiveRecord::Base
   mount_uploader :avatar, ImageUploader
 
   has_one :user_info, autosave: true
+  belongs_to :user_role
+  # for buyer
   has_many :user_addresses
   has_many :orders
-  has_many :sold_orders, class_name: 'Order', foreign_key: 'seller_id'
   has_many :sharing_incomes
   has_many :bank_cards
-  belongs_to :user_role
+  # for seller
+  has_many :sold_orders, class_name: 'Order', foreign_key: 'seller_id'
+  has_many :products
 
   validates :login, uniqueness: true, mobile: true, presence: true, if: -> { !need_set_login? }
   validates :mobile, allow_nil: true, mobile: true
