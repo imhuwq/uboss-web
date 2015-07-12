@@ -42,6 +42,7 @@ class OrdersController < ApplicationController
       flash[:order_confirm] = 'true'
       redirect_to order_path(@order_form.order)
     else
+      @order_form.captcha = nil
       @product = @order_form.product
       render :new
     end
