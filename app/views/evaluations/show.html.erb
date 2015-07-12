@@ -32,7 +32,9 @@ var jiathis_config = {
 }
 </script>
 
-<script type="text/javascript">
+<% if browser.wechat? %>
+  <%= content_for :extra_javascript do %>
+    <script type="text/javascript">
 wx.ready(function(){
   UBoss.luffy.resetInvokeSharing({
     title: "<%= @evaluation.order_item.product.try(:name) %>", // 分享标题
@@ -41,4 +43,6 @@ wx.ready(function(){
     desc: 'UBOSS'
   });
 });
-</script>
+    </script>
+  <% end %>
+<% end %>
