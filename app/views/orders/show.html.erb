@@ -75,13 +75,13 @@
     <p> <small>订单编号:<%= @order.number %></small> </p>
     <p> <small>创建时间:<%= @order.created_at %></small> </p>
     <% if @order.paid_at %>
-      <p> <small>付款时间:<%= @order.created_at %></small> </p>
+      <p> <small>付款时间:<%= @order.paid_at %></small> </p>
     <% end %>
     <% if @order.shiped_at %>
-      <p> <small>发货时间:<%= @order.created_at %></small> </p>
+      <p> <small>发货时间:<%= @order.shiped_at %></small> </p>
     <% end %>
     <% if @order.signed_at %>
-      <p> <small>成交时间:<%= @order.created_at %></small> </p>
+      <p> <small>成交时间:<%= @order.signed_at %></small> </p>
     <% end %>
   </div>
 </div>
