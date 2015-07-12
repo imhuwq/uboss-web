@@ -47,7 +47,7 @@ class WithdrawRecord < ActiveRecord::Base
 
   BANK_INFO_STORE_KEYS.each do |key|
     define_method "card_#{key}" do
-      bank_info[key]
+      bank_info.respond_to?(:[], key) ? bank_info[key] : nil
     end
   end
 
