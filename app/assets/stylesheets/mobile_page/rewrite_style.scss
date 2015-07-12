@@ -126,15 +126,15 @@ a.y_hover {
   border-radius: 5px;
 }
 .y_commentnox2 a:nth-child(2n+1){
-  background-image: url("img/fav comment.png");
+  background-image: image-url("img/fav_comment.png");
   float: left;
 }
 .y_commentnox2 a:nth-child(2n+2){
-  background-image: url("img/Average.png");
+  background-image: image-url("img/Average.png");
   margin-left: 4%;
 }
 .y_commentnox2 a:nth-child(2n+3){
-  background-image: url("img/Negative Ratings.png");
+  background-image: image-url("img/Negative_Ratings.png");
   float: right;
 }
 .prdv_img img {
@@ -158,4 +158,7 @@ a.y_hover {
   border:none;
   background-color: rgba(233,233,231,1);
   text-align: left;
+ }
+ .sub_right a, .sub_right .tow {
+   width:36px;
  }
