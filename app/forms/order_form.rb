@@ -53,7 +53,7 @@ class OrderForm
     # - check SKU amount
     if self.valid?
       ActiveRecord::Base.transaction do
-        create_or_find_user
+        create_or_update_user
         create_user_address
         create_order_and_order_item
       end
@@ -65,11 +65,18 @@ class OrderForm
 
   private
 
-  def create_or_find_user
-    return true if buyer.present?
+  def create_or_update_user
+    if buyer.present? || (self.buyer = User.find_by(login: mobile))
+      set_user_login
+    else
+      self.buyer = User.create_guest!(mobile)
+    end
+  end
 
-    self.buyer = User.find_by(login: mobile)
-    self.buyer ||= User.create_guest!(mobile)
+  def set_user_login
+    if buyer.need_set_login?
+      buyer.update_column(login: mobile, need_set_login: false)
+    end
   end
 
   def create_user_address
@@ -112,7 +119,7 @@ class OrderForm
   end
 
   def need_mobile?
-    self.buyer.blank?
+    self.buyer.blank? || self.buyer.need_set_login?
   end
 
   def need_verify_captcha?
