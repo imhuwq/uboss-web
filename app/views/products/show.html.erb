@@ -11,7 +11,7 @@
 
 <div class="container">
   <div class="prdv_img">
-    <%= image_tag(@product.image_url,  alt: "#{@product.name}") %>
+    <%= image_tag(@product.image_url(:w640),  alt: "#{@product.name}") %>
   </div>
   <div class="prdv_cont">
     <p><strong><%= @product.name %></strong></p>

@@ -75,7 +75,7 @@ class OrderForm
 
   def set_user_login
     if buyer.need_set_login?
-      buyer.update_column(login: mobile, need_set_login: false)
+      buyer.update_columns(login: mobile, need_set_login: false)
     end
   end
 
@@ -119,16 +119,18 @@ class OrderForm
   end
 
   def need_mobile?
-    self.buyer.blank? || self.buyer.need_set_login?
+    buyer.blank? ? true : buyer.need_set_login?
   end
 
   def need_verify_captcha?
-    buyer.blank? && mobile.present?
+    buyer.blank? ? mobile.present? : buyer.need_set_login?
   end
 
   def captcha_must_be_valid
     if !MobileAuthCode.auth_code(mobile, captcha)
       errors.add(:captcha, '手机验证码错误')
+    elsif buyer.present? && User.find_by(login: mobile)
+      errors.add(:mobile, '该手机号码已绑定账号')
     end
   end
 

@@ -63,14 +63,14 @@
 
       <div class="sub_p3">个人信息确认</div>
 
-      <% if current_user.need_set_login? %>
+      <% if true#current_user.need_set_login? %>
         <div class="subOrd_boxcont subOrd_boxbtn">
           <p class="sub_p">
             <span>
               <%= f.input_field :mobile, type: :tel, placeholder: '输入手机号', class:"sub_btphon",id:'new_mobile' %>
             </span>
             <span>
-              <input type="submit" value="发送验证码" class="sub_yanzhen" onclick="sendNewMobile()" id="send_mobile">
+              <a style='color:#fff;' href='#' class="sub_yanzhen" id="send_mobile">发送验证码</a>
             </span>
             <div class="clear"></div>
           </p>
@@ -86,14 +86,14 @@
 
   </div>
 
-  <div class='new-order-addr-info <%= displayable_class(@default_address.present?) %>'>
+  <div class='new-order-addr-info <%= displayable_class(@order_form.user_address.present?) %>'>
     <%= f.hidden_field :user_address_id %>
     <dl class="add_line1">
       <dd>
-      <span>收货人：<b class='adr-user'><%= @default_address.try(:username) %></b></span>
-      <strong class='adr-mobile'><%= @default_address.try(:mobile) %></strong></dd>
+      <span>收货人：<b class='adr-user'><%= @order_form.user_address.try(:username) %></b></span>
+      <strong class='adr-mobile'><%= @order_form.user_address.try(:mobile) %></strong></dd>
       <dd>
-      <span>收货地址：<b class='adr-detail'><%= @default_address %></b></span></dd>
+      <span>收货地址：<b class='adr-detail'><%= @order_form.user_address %></b></span></dd>
     </dl>
   </div>
 
