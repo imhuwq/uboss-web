@@ -4,7 +4,7 @@ module OrdersHelper
     if Rails.env.development?
       test_wxpay_path(order, options)
     else
-      order_path(order, options)
+      order_path(order, options.merge(showwxpaytitle: 1))
     end
   end
 

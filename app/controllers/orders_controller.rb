@@ -40,7 +40,7 @@ class OrdersController < ApplicationController
     if @order_form.save
       sign_in(@order_form.buyer) if current_user.blank?
       flash[:order_confirm] = 'true'
-      redirect_to order_path(@order_form.order)
+      redirect_to order_path(@order_form.order, showwxpaytitle: 1)
     else
       @order_form.captcha = nil
       @product = @order_form.product

@@ -28,7 +28,7 @@
           <span class="my_date"><%= obj.created_at.strftime('%Y-%m-%d') %></span>
         </div>
         <dl>
-          <%= link_to order_path(obj) do %>
+          <%= link_to order_path(obj, showwxpaytitle: 1) do %>
           <dt>
             <%= image_tag obj.order_items.first.try(:product).try(:image_url) %>
           </dt>
