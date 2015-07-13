@@ -1150,23 +1150,14 @@ a{
   margin-top:7px;
 
 }
-.prvd_buycont{
-  float: left;
-  width: 95px;
-  height: 58px;
-  margin-left: 5px;
-  overflow: hidden;
-}
+
 .prvd_buycont p{
   font-size: 10px;
     line-height: 0px;
     padding: 20px 0 0px 0px;
     color: rgba(93,93,93,1);
 }
-.buy_shortcont{
-  width: 90%;
-  margin: 0px auto;
-}
+
 .prvd_buyrigt{
   width: 130px;
   float: right;

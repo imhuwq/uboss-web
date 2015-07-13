@@ -45,7 +45,6 @@
 <div class="prvid_content">
     <%== @product.content %>
 </div>
-<a href="http://www.baidu.com" target="_blank" id="baidu">baidu</a>
 <% if @sharing_node.blank? %>
 <div class="buy">
   <%= link_to '立即购买', new_order_path(product_id: @product.id), class: 'buy_btn' %>
