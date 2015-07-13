@@ -17,3 +17,13 @@ document.body.appendChild(config);
 
 $('#save_mobile_mobile').attr('disabled','disabled')
 $('#save_mobile_submit').attr('disabled','disabled')
+
+
+var share_content = "url=http://<%= "#{request.env["HTTP_HOST"]}/products/#{@product.id}?code=" %>&type=3&pic=<%= @product.image_url %>&title=<%= @product.try(:name) %>:原价：￥<%= @product.try(:original_price) %>,现价：￥<%= @product.try(:present_price) %>,快来抢购吧~&appkey="
+<% if @job == 'sina' %>
+window.open("http://service.weibo.com/share/share.php?" + share_content)
+<% elsif @job == "tqq" %>
+window.open("http://share.v.t.qq.com/index.php?c=share&a=index&" + share_content)
+<% elsif @job == "copy" %>
+  $('#share_link').show();
+<% end %>
