@@ -8,7 +8,7 @@ class WithdrawRecord < ActiveRecord::Base
 
   BANK_INFO_STORE_KEYS = [:username, :bankname, :number]
 
-  serialize :bank_info
+  serialize :bank_info, :error_info
 
   belongs_to :user
   belongs_to :bank_card
@@ -52,7 +52,9 @@ class WithdrawRecord < ActiveRecord::Base
   end
 
   def transfer_money(options = {})
-    WxPay::Service.invoke_transfer(
+    return false if self.processed?
+
+    response = WxPay::Service.invoke_transfer(
       partner_trade_no: number,
       openid: user.weixin_openid,
       check_name: 'NO_CHECK',
@@ -60,6 +62,16 @@ class WithdrawRecord < ActiveRecord::Base
       desc: '提现',
       spbill_create_ip: options[:remote_ip] || '127.0.0.1'
     )
+    if response.success?
+      update(
+        wx_payment_no: response['payment_no'],
+        wx_payment_time: response['payment_time'],
+        error_info: nil
+      )
+      self.finish!
+    else
+      update(error_info: {code: response['return_code'], msg: response['return_msg']})
+    end
   end
 
   private

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150710072709) do
+ActiveRecord::Schema.define(version: 20150713095120) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -44,7 +44,7 @@ ActiveRecord::Schema.define(version: 20150710072709) do
   create_table "evaluations", force: :cascade do |t|
     t.integer  "buyer_id"
     t.integer  "sharer_id"
-    t.integer  "status",          default: 3
+    t.integer  "status",          default: 0
     t.integer  "order_item_id"
     t.integer  "product_id"
     t.text     "content"
@@ -115,16 +115,6 @@ ActiveRecord::Schema.define(version: 20150710072709) do
     t.float    "amount",     default: 0.0
     t.datetime "created_at",               null: false
     t.datetime "updated_at",               null: false
-  end
-
-  create_table "product_share_issues", force: :cascade do |t|
-    t.integer  "product_id"
-    t.integer  "buyer_lv_1_id"
-    t.integer  "buyer_lv_2_id"
-    t.integer  "buyer_lv_3_id"
-    t.integer  "sharer_lv_1_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
   end
 
   create_table "products", force: :cascade do |t|
@@ -296,15 +286,18 @@ ActiveRecord::Schema.define(version: 20150710072709) do
 
   create_table "withdraw_records", force: :cascade do |t|
     t.integer  "user_id"
-    t.integer  "state",        default: 0
-    t.float    "amount",       default: 0.0
+    t.integer  "state",           default: 0
+    t.float    "amount",          default: 0.0
     t.string   "bank_info"
     t.datetime "process_at"
     t.datetime "done_at"
-    t.datetime "created_at",                 null: false
-    t.datetime "updated_at",                 null: false
+    t.datetime "created_at",                    null: false
+    t.datetime "updated_at",                    null: false
     t.integer  "bank_card_id"
     t.string   "number"
+    t.string   "wx_payment_no"
+    t.string   "wx_payment_time"
+    t.string   "error_info"
   end
 
   add_index "withdraw_records", ["number"], name: "index_withdraw_records_on_number", unique: true, using: :btree
