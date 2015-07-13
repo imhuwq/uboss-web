@@ -51,6 +51,17 @@ class WithdrawRecord < ActiveRecord::Base
     end
   end
 
+  def transfer_money(options = {})
+    WxPay::Service.invoke_transfer(
+      partner_trade_no: number,
+      openid: user.weixin_openid,
+      check_name: 'NO_CHECK',
+      amount: (amount * 100).to_i,
+      desc: '提现',
+      spbill_create_ip: options[:remote_ip] || '127.0.0.1'
+    )
+  end
+
   private
 
   def set_bank_info
