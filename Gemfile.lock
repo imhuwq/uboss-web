@@ -1,12 +1,4 @@
 GIT
-  remote: git://github.com/jasl/wx_pay.git
-  revision: 448c7d01e6a2f6af1c646290725e94744c32e57d
-  specs:
-    wx_pay (0.0.4)
-      activesupport (>= 4)
-      rest-client (>= 1.7)
-
-GIT
   remote: git://github.com/lanrion/weixin_authorize.git
   revision: d41ed9169b7cba2b7dff96c59900cba1801c429c
   specs:
@@ -32,6 +24,14 @@ GIT
       mime-types
       orm_adapter
       sprockets-rails
+
+GIT
+  remote: git://github.com/xEasy/wx_pay.git
+  revision: 05dcbec422c0416bc2d9dfc306f55b120e8a09e1
+  specs:
+    wx_pay (0.0.4)
+      activesupport (>= 4)
+      rest-client (>= 1.7)
 
 PATH
   remote: vendor/gems
