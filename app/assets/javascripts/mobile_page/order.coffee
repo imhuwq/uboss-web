@@ -26,7 +26,7 @@ $ ->
       t.text("发送验证码")
     else
       t.addClass("disabled")
-      t.text(""+mobile_submit_time+"秒后再次获取")
+      t.text("#{mobile_submit_time} 秒后再次获取")
       mobile_submit_time--
       setTimeout () ->
         timedown(t)

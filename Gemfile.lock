@@ -40,7 +40,7 @@ PATH
       activesupport (> 3.0)
 
 GEM
-  remote: https://rubygems.org/
+  remote: https://ruby.taobao.org/
   specs:
     aasm (4.1.1)
     actionmailer (4.2.2)
@@ -98,6 +98,8 @@ GEM
     builder (3.2.2)
     byebug (4.0.5)
       columnize (= 0.9.0)
+    calculated_attributes (0.0.22)
+      activerecord (>= 3.2.20)
     cancancan (1.10.1)
     capistrano (3.4.0)
       i18n
@@ -404,6 +406,7 @@ DEPENDENCIES
   bootstrap-sass
   browser!
   byebug
+  calculated_attributes
   cancancan (~> 1.10)
   capistrano-rails
   capistrano-rbenv
