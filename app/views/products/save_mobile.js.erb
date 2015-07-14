@@ -10,17 +10,21 @@ document.body.appendChild(script);
 
 // 分享的内容
 var config = document.createElement("script");
+<% if @sharing_link_node.present? %>
+var shared_url = 'http://<%= "#{request.env["HTTP_HOST"]}/sharing/#{@sharing_link_node.code}" %>'
+<% else %>
+var shared_url = 'http://<%= "#{request.env["HTTP_HOST"]}/products/#{@product.id}" %>'
+<% end %>
 
 config.type = "text/javascript";
-config.innerHTML = 'var jiathis_config = { url: \'http://<%= "#{request.env["HTTP_HOST"]}/sharing/#{@sharing_node.code}" %>' + '<%= @sharing_node.try(:code) %>'+'\', title: "<%= @product.try(:name) %>", summary:"原价：￥<%= @product.try(:original_price) %>,现价：￥<%= @product.try(:present_price) %>,快来抢购吧~"} '
+config.innerHTML = 'var jiathis_config = { url: \'' + shared_url +'\', title: "<%= @product.try(:name) %>", summary:"原价：￥<%= @product.try(:original_price) %>,现价：￥<%= @product.try(:present_price) %>,快来抢购吧~"} '
 document.body.appendChild(config);
 
 
 $('#save_mobile_mobile').attr('disabled','disabled')
 $('#save_mobile_submit').attr('disabled','disabled')
 
-
-var share_content = "url=http://<%= "#{request.env["HTTP_HOST"]}/sharing/#{@sharing_node.code}" %>&type=3&pic=<%= @product.image_url %>&title=<%= @product.try(:name) %>:原价：￥<%= @product.try(:original_price) %>,现价：￥<%= @product.try(:present_price) %>,快来抢购吧~&appkey="
+var share_content = "url="+shared_url+"&type=3&pic=<%= @product.image_url %>&title=<%= @product.try(:name) %>:原价：￥<%= @product.try(:original_price) %>,现价：￥<%= @product.try(:present_price) %>,快来抢购吧~&appkey="
 <% if @job == 'sina' %>
 window.open("http://service.weibo.com/share/share.php?" + share_content)
 <% elsif @job == "tqq" %>

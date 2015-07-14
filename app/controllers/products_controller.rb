@@ -34,7 +34,7 @@ class ProductsController < ApplicationController
     end
     @product = Product.find_by_id(params[:id])
     if @product.present? && user.present?
-      @sharing_node = SharingNode.find_or_create_by(user_id: user.id, product_id: @product.id)
+      @sharing_link_node = SharingNode.find_or_create_by(user_id: user.id, product_id: @product.id)
     end
     respond_to do |format|
       format.html { render nothing: true }

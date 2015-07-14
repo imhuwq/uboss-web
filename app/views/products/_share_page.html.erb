@@ -29,6 +29,7 @@
 <script type="text/javascript">
 
 $('#pre_jiathis_button_tsina').on('click', function(event) {
+
   sendMobie('sina')
 });
 
@@ -51,7 +52,18 @@ function sendMobie(job) {
     })
   };
   if (!checkNum.test(mobile)) {
-    alert("手机格式不正确")
+    if (confirm("手机格式不正确,此次分享您将得不到收益，确认分享么？")) {
+      $.ajax({
+        url: '/products/save_mobile?id=<%= @product.id %>',
+        type: 'POST',
+        dataType: 'script',
+        data: {
+          job: job,
+        },
+      })
+    }
+
+
   };
 }
 
