@@ -1,21 +1,21 @@
 
-	<p>分享到</p>
-	<ul id="share_buttoms">
-		<li><a><%= image_tag("img/01.png") %></a></li>
-		<li><a class="jiathis_button_tsina"><%= image_tag("img/02.png") %></a></li>
-		<li><a class="jiathis_button_tqq"><%= image_tag("img/03.png") %></a></li>
-		<li>
-      <button id="copycardid" style="border:0;background-color: white;padding:0;"><%= image_tag("img/04.png") %></button>
-		</li>
-	</ul>
-  <div class="font-h4 undis bg_white" id="share_link" style="padding:20px 10px;width:300px;word-wrap: break-word;float:left;">
-    <%= product_sharing_link((@product || @evaluation.try(:product)), @sharing_node) %>
-  </div>
+<p>分享到</p>
+<ul id="share_buttoms">
+	<li><a><%= image_tag("img/01.png") %></a></li>
+	<li><a class="jiathis_button_tsina"><%= image_tag("img/02.png") %></a></li>
+	<li><a class="jiathis_button_tqq"><%= image_tag("img/03.png") %></a></li>
+	<li>
+    <button id="copycardid" style="border:0;background-color: white;padding:0;"><%= image_tag("img/04.png") %></button>
+	</li>
+</ul>
+<div class="font-h4 undis bg_white" id="share_link" style="padding:20px 10px;width:300px;word-wrap: break-word;float:left;">
+  <%= product_sharing_link((@product || @evaluation.try(:product)), @sharing_link_node) %>
+</div>
 
-
+<!-- // jiathis的js包 -->
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js"></script>
 <script type="text/javascript">
 $('#copycardid').on('click', this,function(event) {
   $('#share_link').toggle();
 });
 </script>
-

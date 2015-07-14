@@ -1,11 +1,7 @@
 // 向页面插入分享按钮
 $('#share_buttons').html('<%= escape_javascript render :partial =>'/application/share_buttoms.html' %>');
 
-// jiathis的js包
-var script = document.createElement("script");
-script.type = "text/javascript";
-script.src = "http://v3.jiathis.com/code/jia.js";
-document.body.appendChild(script);
+
 
 
 // 分享的内容
@@ -22,7 +18,6 @@ document.body.appendChild(config);
 
 
 $('#save_mobile_mobile').attr('disabled','disabled')
-$('#save_mobile_submit').attr('disabled','disabled')
 
 var share_content = "url="+shared_url+"&type=3&pic=<%= @product.image_url %>&title=<%= @product.try(:name) %>:原价：￥<%= @product.try(:original_price) %>,现价：￥<%= @product.try(:present_price) %>,快来抢购吧~&appkey="
 <% if @job == 'sina' %>

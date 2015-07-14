@@ -6,11 +6,9 @@
     <div class="fenxinag_line1">留下手机号，现金礼品拿不停！</div>
     <div class="fenxinag_line2">
       <span class="fenxinag_box1">手机号码</span>
-      <%= simple_form_for(:save_mobile,url:{controller: :products, action: :save_mobile,:id=>@product.id},wrapper: :inline_form,remote: true )do |f| %>
       <span class="fenxinag_box2">
-        <%= f.input :mobile,placeholder:"手机号",label: false,input_html:{class:"fenxinag_text"} %>
+        <%= text_field_tag 'mobile[]','', type:"tel",placeholder:"手机号",class:"fenxinag_text",id:"save_mobile_mobile" %>
       </span>
-      <% end %>
       <input id="sharing_code" style="display: none;">
     </div>
     <div id="share_buttons">
@@ -26,6 +24,7 @@
     </div>
   </div>
 </div>
+
 <script type="text/javascript">
 
 $('#pre_jiathis_button_tsina').on('click', function(event) {
@@ -62,8 +61,6 @@ function sendMobie(job) {
         },
       })
     }
-
-
   };
 }
 
