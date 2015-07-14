@@ -1,2 +1,67 @@
-<h1>Admin::WithdrawRecords#show</h1>
-<p>Find me in app/views/admin/withdraw_records/show.html.erb</p>
+<ol class="breadcrumb">
+  <li><%= link_to '提现列表', [:admin, :withdraw_records] %></li>
+  <li class="active">提现详情</li>
+</ol>
+
+<h3>提现信息</h3>
+<hr />
+<table class='table table-bordered'>
+  <tbody>
+    <tr>
+      <th><%= WithdrawRecord.human_attribute_name(:number) %></th>
+      <td><%= @withdraw_record.number %></td>
+    </tr>
+    <tr>
+      <th><%= WithdrawRecord.human_attribute_name(:user_identify) %></th>
+      <td><%= @withdraw_record.user_identify %></td>
+    </tr>
+    <tr>
+      <th><%= WithdrawRecord.human_attribute_name(:user_total_income) %></th>
+      <td><%= @withdraw_record.user_total_income %></td>
+    </tr>
+    <tr>
+      <th><%= WithdrawRecord.human_attribute_name(:created_at ) %></th>
+      <td><%= @withdraw_record.created_at %></td>
+    </tr>
+    <tr>
+      <th><%= WithdrawRecord.human_attribute_name(:amount) %></th>
+      <td><%= @withdraw_record.amount %></td>
+    </tr>
+    <tr>
+      <th><%= WithdrawRecord.human_attribute_name(:state) %></th>
+      <td>
+        <span class='label state-<%= @withdraw_record.state %>'><%= @withdraw_record.state_i18n %></span>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<h3>处理信息</h3>
+<hr />
+<table class="table table-bordered">
+  <tbody>
+    <tr>
+      <th><%= WithdrawRecord.human_attribute_name(:wx_payment_no) %></th>
+      <td><%= @withdraw_record.wx_payment_no %></td>
+    </tr>
+    <tr>
+      <th><%= WithdrawRecord.human_attribute_name(:wx_payment_time) %></th>
+      <td><%= @withdraw_record.wx_payment_time %></td>
+    </tr>
+    <% if @withdraw_record.error_info %>
+      <tr>
+        <th><%= WithdrawRecord.human_attribute_name(:error_info) %></th>
+        <th><%= @withdraw_record.error_info %></th>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<div class="actions">
+  <% if @withdraw_record.unprocess? %>
+    <%= link_to '打款', processed_admin_withdraw_record_path(@withdraw_record),
+      method: :PATCH, data: {confirm: '确认打款？'}, class: "btn btn-primary #{abled_class(@withdraw_record.user.weixin_openid.present?)}" %>
+    <%= link_to '拒绝', close_admin_withdraw_record_path(@withdraw_record),
+      method: :PATCH, data: {confirm: '确认拒绝，并关闭此提现申请？'}, class: 'btn btn-danger' %>
+  <% end %>
+</div>

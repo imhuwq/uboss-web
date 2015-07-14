@@ -8,7 +8,8 @@ class WithdrawRecord < ActiveRecord::Base
 
   BANK_INFO_STORE_KEYS = [:username, :bankname, :number]
 
-  serialize :bank_info, :error_info
+  serialize :bank_info
+  serialize :error_info
 
   belongs_to :user
   belongs_to :bank_card
@@ -19,7 +20,7 @@ class WithdrawRecord < ActiveRecord::Base
     less_than_or_equal_to: -> (withdraw) { withdraw.user.income.to_f },
     if: :new_record?
 
-  delegate :identify, to: :user, prefix: true
+  delegate :identify, :total_income, to: :user, prefix: true
 
   enum state: { unprocess: 0, processed: 1, done: 2, closed: 3 }
 
@@ -77,7 +78,7 @@ class WithdrawRecord < ActiveRecord::Base
   private
 
   def set_bank_info
-    if bank_card_id_changed?
+    if bank_card_id_changed? && bank_card_id.present?
       self.bank_info = {}
       BANK_INFO_STORE_KEYS.each do |key|
         self.bank_info[key] = bank_card[key]

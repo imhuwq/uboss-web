@@ -97,6 +97,10 @@ class User < ActiveRecord::Base
     store_name || nickname || regist_mobile
   end
 
+  def total_income
+    income + frozen_income
+  end
+
   def user_info
     super || build_user_info
   end

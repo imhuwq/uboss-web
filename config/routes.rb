@@ -51,7 +51,6 @@ Rails.application.routes.draw do
       resources :withdraw_records, only: [:index, :show, :update] do
         member do
           patch :processed
-          patch :finish
           patch :close
         end
       end

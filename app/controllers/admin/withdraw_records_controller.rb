@@ -13,9 +13,9 @@ class Admin::WithdrawRecordsController < AdminController
     change_record_state(:process!)
   end
 
-  def finish
-    change_record_state(:finish!)
-  end
+  #def finish
+    #change_record_state(:finish!)
+  #end
 
   def close
     change_record_state(:close!)

@@ -5,10 +5,6 @@
     <%= link_to record.number, [:admin, record] %>
   <% end %>
   <%= table.cell :user_identify %>
-  <%= table.cell :card_info do |record| %>
-    <div>银行: <%= record.card_bankname %> </div>
-    <div>账号: <%= record.card_number %> </div>
-  <% end %>
   <%= table.cell :card_username %>
   <%= table.cell :created_at %>
   <%= table.cell :amount %>
@@ -19,12 +15,8 @@
     <% if record.unprocess? %>
       <%= link_to '打款', processed_admin_withdraw_record_path(record),
         method: :PATCH, data: {confirm: '确认打款？'} %>
-      <%= link_to '关闭', close_admin_withdraw_record_path(record),
-        method: :PATCH, data: {confirm: '确认关闭？'}, class: 'text-danger' %>
-    <% end %>
-    <% if record.processed? %>
-      <%= link_to '完成', finish_admin_withdraw_record_path(record),
-        method: :PATCH, data: {confirm: '确认？'} %>
+      <%= link_to '拒绝', close_admin_withdraw_record_path(record),
+        method: :PATCH, data: {confirm: '确认拒绝，并关闭此提现申请？'}, class: 'text-danger' %>
     <% end %>
   <% end %>
 <%- end %>

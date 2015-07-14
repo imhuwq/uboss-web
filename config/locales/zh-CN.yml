@@ -3,6 +3,8 @@ zh-CN:
     current_password: 当前密码
     identify: 账户名称
     user_identify: 用户
+    total_income: 总收益
+    user_total_income: 用户总收益
     number: 编号
     action: 操作
     state: 状态
@@ -16,6 +18,9 @@ zh-CN:
     role_display_name: 角色
     password_confirmation: 密码确认
     short_description: 描述
+    wx_payment_no: 微信交易号
+    wx_payment_time: 微信交易时间
+    error_info: 错误信息
   simple_form:
     labels:
       product: &product
@@ -87,6 +92,8 @@ zh-CN:
     products: 商品
     users: 后台账户
   activerecord:
+    models:
+      withdraw_record: 提现记录
     attributes:
       withdraw_record:
         user_identify: 申请人

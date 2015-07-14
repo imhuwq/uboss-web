@@ -53,4 +53,8 @@ module ApplicationHelper
     boolean_value ? '' : 'hidden'
   end
 
+  def abled_class(boolean_value)
+    boolean_value ? '' : 'disabled'
+  end
+
 end
