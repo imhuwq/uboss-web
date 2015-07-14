@@ -8,6 +8,8 @@ class WithdrawRecord < ActiveRecord::Base
 
   BANK_INFO_STORE_KEYS = [:username, :bankname, :number]
 
+  attr_accessor :transfer_remote_ip
+
   serialize :bank_info
   serialize :error_info
 
@@ -29,7 +31,7 @@ class WithdrawRecord < ActiveRecord::Base
 
   aasm column: :state, enum: true, whiny_transitions: false do
     state :unprocess
-    state :processed, before_enter: :set_processed_info
+    state :processed, before_enter: :set_processed_info, after_enter: :delay_transfer_money
     state :done, before_enter: :set_done_at, after_enter: :remove_user_frozen_income
     state :closed, after_enter: :recover_user_income
 
@@ -52,30 +54,11 @@ class WithdrawRecord < ActiveRecord::Base
     end
   end
 
-  def transfer_money(options = {})
-    return false if self.processed?
-
-    response = WxPay::Service.invoke_transfer(
-      partner_trade_no: number,
-      openid: user.weixin_openid,
-      check_name: 'NO_CHECK',
-      amount: (amount * 100).to_i,
-      desc: '提现',
-      spbill_create_ip: options[:remote_ip] || '127.0.0.1'
-    )
-    if response.success?
-      update(
-        wx_payment_no: response['payment_no'],
-        wx_payment_time: response['payment_time'],
-        error_info: nil
-      )
-      self.finish!
-    else
-      update(error_info: {code: response['return_code'], msg: response['return_msg']})
-    end
-  end
-
   private
+
+  def delay_transfer_money
+    WithdrawJob.perform_later(self, self.transfer_remote_ip)
+  end
 
   def set_bank_info
     if bank_card_id_changed? && bank_card_id.present?

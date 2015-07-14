@@ -10,6 +10,7 @@ class Admin::WithdrawRecordsController < AdminController
   end
 
   def processed
+    @withdraw_record.transfer_remote_ip = request.ip
     change_record_state(:process!)
   end
 
