@@ -57,7 +57,12 @@ class Evaluation < ActiveRecord::Base
     #   "100.00%"
     # end
     user_info = sharer.user_info
-    rate = user_info.good_evaluation.to_f/(user_info.good_evaluation + user_info.normal_evaluation + user_info.bad_evaluation) rescue 1
+    total = user_info.good_evaluation + user_info.normal_evaluation + user_info.bad_evaluation
+    if total > 0
+    rate = user_info.good_evaluation.to_f/total
+    else
+      rate = 1
+    end
     "#{'%.2f' % (rate.try(:to_f)*100)}%"
   end
 

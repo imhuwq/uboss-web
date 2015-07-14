@@ -233,3 +233,12 @@ ul.index_ul li:last-child {
   position: absolute;
   bottom: 0;
 }
+.p_img.good{
+    background-image: url("img/fav comment.png");
+}
+.p_img.normal{
+    background-image: url("img/Average.png");
+}
+.p_img.bad{
+    background-image: url("img/Negative Ratings.png");
+}

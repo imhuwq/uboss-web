@@ -21,9 +21,12 @@ class ProductsController < ApplicationController
   end
 
   def save_mobile
-    mobile = params[:save_mobile][:mobile] rescue nil
+    mobile = params[:mobile] rescue nil
+    @job = params[:job]
+    puts "@job=#{@job}"
     if mobile.present?
-      if user = User.find_by_mobile(mobile)
+      user = User.find_by_mobile(mobile)
+      if user.present?
         # TODO
       else
         user = User.create_guest(mobile)
@@ -31,7 +34,7 @@ class ProductsController < ApplicationController
     end
     @product = Product.find_by_id(params[:id])
     if @product.present? && user.present?
-      @sharing_node = SharingNode.find_or_create_by(user_id: user.id, product_id: @product.id)
+      @sharing_link_node = SharingNode.find_or_create_by(user_id: user.id, product_id: @product.id)
     end
     respond_to do |format|
       format.html { render nothing: true }

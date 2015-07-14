@@ -140,16 +140,7 @@ a.y_hover {
 .prdv_img img {
   height: 100%;
 }
-.fenxinag{
-  width: 100%;
-  background-color: rgba(255,255,255,1);
-  border-top: 1px solid  rgba(186,186,185,.5);
-  border-bottom: 1px solid  rgba(186,186,185,.5);
-  text-align: center;
-  color: rgba(67,195,170,1);
-  height: 171px;
-}
- .wd_box ul li p .wd_input{
+.wd_box ul li p .wd_input{
   width: 100%;
   height: 32px;
   line-height: 32px;
@@ -158,11 +149,35 @@ a.y_hover {
   border:none;
   background-color: rgba(233,233,231,1);
   text-align: left;
- }
- .sub_right a, .sub_right .tow {
-   width:36px;
- }
- .sub_yanzhen {
-   color: #fff;
-   padding: 3px 10px;
- }
+}
+.sub_right a, .sub_right .tow {
+  width:36px;
+}
+.sub_yanzhen {
+  color: #fff;
+  padding: 3px 10px;
+}
+.fenxinagtow{
+  padding-bottom: 10px;
+  bottom: 0px;
+  position: absolute;
+}
+.p_img{
+  width: 80px;
+  height: 80px;
+  background-repeat: no-repeat;
+  background-position: center;
+  margin:0px auto;
+  margin-top: 54px;
+}
+.prvd_buycont{
+  float: left;
+  width: 106px;
+  height: 58px;
+  margin-left: 5px;
+  overflow: hidden;
+}
+.buy_shortcont{
+  width: 97%;
+  margin: 0px auto;
+}

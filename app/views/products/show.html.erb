@@ -69,15 +69,11 @@
 <% end %>
 function render_share_page() {
   $('#window').html('<%= escape_javascript render :partial =>'/products/share_page.html' %>');
-
-  var mobile = ''
-    $("#save_mobile_mobile").on('keyup', this, function(event) {
-      mobile = event.target.value
-        var checkNum = /^(\+\d+-)?[1-9]{1}[0-9]{10}$/;
-      if (checkNum.test(mobile)) {$("#save_mobile_submit").removeAttr('disabled');};
-      if (!checkNum.test(mobile)) {$("#save_mobile_submit").attr('disabled','disabled');};
-    });
 }
+
+$('#copycardid').on('click', this,function(event) {
+  $('#share_link').toggle();
+});
 </script>
 
 <% if browser.wechat? %>

@@ -310,7 +310,7 @@ a{
 /*end_order*/
 
 /*pro_dail*/
-.shar{
+.shar a{
   height: 45px;
   position: absolute;
   right: 15px;
@@ -318,10 +318,34 @@ a{
   color: rgba(255,255,255,1);
   font-size: 16px;
   background-size: 30px 24px;
+  display: block;
   }
 .contpric span{
   margin:5px 0 0 0;
   display: inline-block;
+}
+
+.accunt_adilbtnt{
+  width: 100%;
+  height: 40px;
+  line-height: 40px;
+  color: rgba(255,255,255,1);
+  text-align: center;
+  background-color: rgba(67,195,170,1);
+  border: none;
+  outline: none;
+  border-radius: 5px;
+  font-size: 16px;
+  display: block;
+  position: fixed;
+  bottom: 0px;
+}
+
+.accunt_adil_box4 {
+    width: 100%;
+    height: 40px;
+    position: fixed;
+    bottom: 0px;
 }
 .pric3 {
   padding-left: 10px;
@@ -667,17 +691,14 @@ a{
   background-image: image-url("img/Negative_Ratings.png");
   float: right;
 }
-.y_texare{
-  height: 114px;
-  border: 1px solid rgba(170,170,170,.46);
-  border-radius: 5px;
-  margin-bottom: 24px;
-  font-size: 11px;
-  color: rgba(189,189,189,1);
-  padding:10px;
-  margin-top:17px;
-  background-color: rgba(255,255,255,1);
+#y_textarea{
+  width: 276px;
+  height: 94px;
+  border: none;
+  padding: 5px;
+  overflow: hidden;
 }
+
 /*end_receiving assessment*/
 
 /*rated*/
@@ -686,6 +707,7 @@ a{
   margin:0px auto;
   text-align: center;
 }
+
 .p_img{
   background-image: image-url("img/fav_comment.png");
   width: 80px;
@@ -695,6 +717,7 @@ a{
   margin:0px auto;
   margin-top: 54px;
 }
+
 .p_comment strong{
   font-size: 20px;
   color: rgba(67,195,170,1);
@@ -710,7 +733,18 @@ a{
   display: block;
   font-weight: normal;
 }
-
+.fenxinag{
+  width: 100%;
+  background-color: rgba(255,255,255,1);
+  border-top: 1px solid  rgba(186,186,185,.5);
+  border-bottom: 1px solid  rgba(186,186,185,.5);
+  text-align: center;
+  color: rgba(67,195,170,1);
+  transition: all 1s;
+  position: absolute;
+  bottom: 0px;
+  padding-bottom: 20px;
+}
 .fenxinag p{
   margin:27px 0 8px 0;
 }
@@ -891,9 +925,6 @@ a{
   width: 90%;
   margin:0px auto;
   padding-top: 10px;
-}
-.sub_box3_cont1 table{
-  border-bottom: 1px dashed  rgba(186,186,185,.7);
 }
 .sub_box3_cont1 table span{
   color: rgba(67,195,170,1);
@@ -1129,23 +1160,14 @@ a{
   margin-top:7px;
 
 }
-.prvd_buycont{
-  float: left;
-  width: 95px;
-  height: 58px;
-  margin-left: 5px;
-  overflow: hidden;
-}
+
 .prvd_buycont p{
   font-size: 10px;
     line-height: 0px;
     padding: 20px 0 0px 0px;
     color: rgba(93,93,93,1);
 }
-.buy_shortcont{
-  width: 90%;
-  margin: 0px auto;
-}
+
 .prvd_buyrigt{
   width: 130px;
   float: right;
@@ -1208,15 +1230,39 @@ a{
     line-height: 24px;
     border: none;
 }
-.fenxinagtow{
-  height: 180px;
-  padding-bottom: 10px;
-  bottom: 0px;
-    position: absolute;
-}
 .fenxinrated{
-  margin-bottom: 30px;
+       width: 100%;
+       background-color: rgba(255,255,255,1);
+       border-top: 1px solid  rgba(186,186,185,.5);
+       border-bottom: 1px solid  rgba(186,186,185,.5);
+       text-align: center;
+       color: rgba(67,195,170,1);
+       transition: all 1s;
+       padding-bottom: 20px;
+       position: relative;
 }
+.fenxinrated p{
+       margin:27px 0 8px 0;
+}
+
+.fenxinrated ul{
+       width: 90%;
+       margin:0px auto;
+       overflow: hidden;
+}
+.fenxinrated ul li{
+       width: 25%;
+       box-sizing:border-box;
+       background-repeat: no-repeat;
+       float: left;
+       background-size: 62px 62px;
+       background-position: center;
+}
+.fenxinrated ul li img{
+       width: 62px;
+       height: 62px;
+}
+
 .posi_left ul .col_tow {
   background-image: image-url("img/com.png");
   line-height: 19px;
@@ -1383,15 +1429,30 @@ a{
 
 /*end_add_listall*/
 
-/*遮罩*/
-#tan_mask{
-  background:#000;
-  filter:alpha(opacity=50); /*IE滤镜，透明度50%*/
-  -moz-opacity:0.5; /*Firefox私有，透明度50%*/
-  opacity:0.5;/*其他，透明度50%*/
-  position:absolute;
-  left:0;
-  top:0;
-  z-index:1000;
+/*alert*/
+.dlg {
+       position: absolute;
+       top: 0px;
+       left: 0px;
+       width: 100%;
+       height: 100%;
+       background-color: rgba(0, 0, 0, .2);
+       display: none;
 }
-/*遮罩结束*/
+.content {
+       transition: all 1s;
+       position: absolute;
+       width: 100%;
+       top: 45px;
+       background-color: rgba(255, 255, 255, 1);
+}
+.content.active {
+       -webkit-animation: fadeInUp .7s ease 0s 1 backwards;
+       animation: fadeInUp .7s ease 0s 1 backwards;
+}
+.fenxinag.active{
+       -webkit-animation: fadeInUp .7s ease 0s 1 backwards;
+       animation: fadeInUp .7s ease 0s 1 backwards;
+}
+
+/*end_alert*/
