@@ -1,5 +1,7 @@
 zh-CN:
   attributes:
+    process_at: 处理时间
+    done_at: 完成时间
     current_password: 当前密码
     identify: 账户名称
     user_identify: 用户
