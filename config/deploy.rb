@@ -16,6 +16,8 @@ set :rbenv_map_bins, %w{rake gem bundle ruby rails}
 set :unicorn_config_path, -> { File.join(current_path, "config", "unicorn.rb") }
 set :unicorn_rack_env, -> { fetch(:rails_env) == "development" ? "development" : "staging" }
 
+set :assets_roles, [:web, :app]
+
 set :keep_releases, 5
 
 set :linked_files, fetch(:linked_files, []).push(
