@@ -75,6 +75,7 @@ group :development do
   gem "capistrano-rails"
   gem 'capistrano3-unicorn'
   gem 'capistrano-sidekiq', github: 'seuros/capistrano-sidekiq'
+  gem 'rails-assets-for-upyun', '>= 0.0.9'
   gem "slackistrano", require: false
   gem "better_errors"
   gem "quiet_assets"
