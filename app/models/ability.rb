@@ -6,7 +6,7 @@ class Ability
       begin
         grant_method = "grant_permissions_to_#{user.role_name}"
         __send__ grant_method, user
-      rescue NomethodError
+      rescue NoMethodError
         no_permissions
       end
     else
