@@ -1,25 +1,15 @@
-app_env = ENV['RACK_ENV'] || ENV["RAILS_ENV"] || "production"
+APP_ROOT = File.expand_path("../..", __FILE__)
+ENV["RACK_ENV"] = ENV["RAILS_ENV"] ||= "production"
 
-worker_processes(app_env == "production" ? 6 : 2)
+working_directory APP_ROOT
+pid "#{APP_ROOT}/tmp/pids/unicorn.pid"
+stderr_path "#{APP_ROOT}/log/unicorn.stderr.log"
+stdout_path "#{APP_ROOT}/log/unicorn.stdout.log"
 
-app_root = File.expand_path("../..", __FILE__)
-working_directory app_root
-
-# Listen on fs socket for better performance
-listen "/tmp/unicorn.uboss.sock", :backlog => 64
+listen "#{APP_ROOT}/tmp/unicorn.uboss.sock", :backlog => 64
 listen 4096, :tcp_nopush => false
-
-# Nuke workers after 30 seconds instead of 60 seconds (the default)
+worker_processes ENV["RAILS_ENV"] == "production" ? 8 : 1
 timeout 30
-
-# App PID
-pid "#{app_root}/tmp/pids/unicorn.pid"
-
-# By default, the Unicorn logger will write to stderr.
-# Additionally, some applications/frameworks log to stderr or stdout,
-# so prevent them from going to /dev/null when daemonized here:
-stderr_path "#{app_root}/log/unicorn.stderr.log"
-stdout_path "#{app_root}/log/unicorn.stdout.log"
 
 # To save some memory and improve performance
 preload_app true
@@ -29,12 +19,12 @@ GC.respond_to?(:copy_on_write_friendly=) and
 # Force the bundler gemfile environment variable to
 # reference the Сapistrano "current" symlink
 before_exec do |_|
-  ENV["BUNDLE_GEMFILE"] = File.join(app_root, 'Gemfile')
+  ENV["BUNDLE_GEMFILE"] = File.join(APP_ROOT, 'Gemfile')
 end
 
 before_fork do |server, worker|
-  # http://unicorn.bogomips.org/SIGNALS.html
-  old_pid = app_root + '/tmp/pids/unicorn.pid.oldbin'
+
+  old_pid = File.join APP_ROOT, "tmp/pids/unicorn.pid.oldbin"
   if File.exists?(old_pid) && server.pid != old_pid
     begin
       Process.kill("QUIT", File.read(old_pid).to_i)
@@ -52,7 +42,10 @@ end
 after_fork do |server, worker|
   # disable GC，using OOB，to reduce requesting time
   GC.disable
-  # the following is *required* for Rails + "preload_app true",
+
   defined?(ActiveRecord::Base) and
     ActiveRecord::Base.establish_connection
+
+  child_pid = server.config[:pid].sub(".pid", ".#{worker.nr}.pid")
+  system("echo #{Process.pid} > #{child_pid}")
 end
