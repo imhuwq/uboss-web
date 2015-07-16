@@ -29,10 +29,8 @@ set :linked_dirs, fetch(:linked_dirs, []).push(
 namespace :deploy do
 
   after 'deploy:publishing', 'deploy:restart'
-  namespace :deploy do
-    task :restart do
-      invoke 'unicorn:restart'
-    end
+  task :restart do
+    invoke 'unicorn:restart'
   end
 
   after :finishing, 'deploy:cleanup'

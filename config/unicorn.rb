@@ -33,8 +33,7 @@ before_exec do |_|
 end
 
 before_fork do |server, worker|
-  # 参考 http://unicorn.bogomips.org/SIGNALS.html
-  # 使用USR2信号，以及在进程完成后用QUIT信号来实现无缝重启
+  # http://unicorn.bogomips.org/SIGNALS.html
   old_pid = app_root + '/tmp/pids/unicorn.pid.oldbin'
   if File.exists?(old_pid) && server.pid != old_pid
     begin
@@ -51,7 +50,7 @@ before_fork do |server, worker|
 end
 
 after_fork do |server, worker|
-  # 禁止GC，配合后续的OOB，来减少请求的执行时间
+  # disable GC，using OOB，to reduce requesting time
   GC.disable
   # the following is *required* for Rails + "preload_app true",
   defined?(ActiveRecord::Base) and
