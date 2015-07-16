@@ -6,7 +6,7 @@ pid "#{APP_ROOT}/tmp/pids/unicorn.pid"
 stderr_path "#{APP_ROOT}/log/unicorn.stderr.log"
 stdout_path "#{APP_ROOT}/log/unicorn.stdout.log"
 
-listen "#{APP_ROOT}/tmp/unicorn.uboss.sock", :backlog => 64
+listen "#{APP_ROOT}/tmp/sockets/unicorn.uboss.sock", :backlog => 64
 listen 4096, :tcp_nopush => false
 worker_processes ENV["RAILS_ENV"] == "production" ? 8 : 1
 timeout 30

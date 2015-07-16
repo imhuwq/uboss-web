@@ -4,7 +4,7 @@ gzip_types application/json;
 
 #每台机器都运行nginx+unicorn，本机用domain socket，方便切换
 upstream uboss_backend {
-    server unix:/tmp/unicorn.uboss.sock fail_timeout=0;
+    server unix:/home/deploy/rails/uboss/current/tmp/sockets/unicorn.uboss.sock fail_timeout=0;
 }
 
 #用try_files方式和proxy执行rails动态请求
