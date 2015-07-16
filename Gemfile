@@ -1,5 +1,5 @@
 #source 'https://rubygems.org'
- source 'https://ruby.taobao.org'
+source 'https://ruby.taobao.org'
 
 ruby '2.2.2'
 gem 'rails', '4.2.2'
@@ -54,6 +54,7 @@ gem 'omniauth-wechat-oauth2'
 
 # app server
 gem 'unicorn', require: false
+gem 'unicorn-worker-killer', require: false
 
 # redis
 gem "redis", "~> 3.0", require: ["redis/connection/hiredis", "redis"]
@@ -68,8 +69,11 @@ gem 'sinatra', :require => nil
 
 group :development do
   gem "thin"
-  gem "capistrano-rails"
+  gem "capistrano"
   gem 'capistrano-rbenv'
+  gem "capistrano-bundler"
+  gem "capistrano-rails"
+  gem 'capistrano3-unicorn'
   gem "slackistrano", require: false
   gem "better_errors"
   gem "quiet_assets"
