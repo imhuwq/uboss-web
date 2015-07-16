@@ -20,6 +20,8 @@ set :sidekiq_config, -> { File.join(current_path, "config", "sidekiq.yml") }
 
 set :conditionally_migrate, true
 
+set :assets_roles, [:web, :app]
+
 set :keep_releases, 5
 
 set :linked_files, fetch(:linked_files, []).push(
@@ -27,20 +29,10 @@ set :linked_files, fetch(:linked_files, []).push(
 )
 
 set :linked_dirs, fetch(:linked_dirs, []).push(
-  'log', 'tmp/pids', 'tmp/cache', 'tmp/sockets', 'vendor/bundle', 'public/system'
+  'log', 'tmp/pids', 'tmp/cache', 'tmp/sockets', 'vendor/bundle', 'public/system', 'public/assets'
 )
 
 namespace :deploy do
-
-  task :upload_assets do
-    run_locally do
-      with rails_env: fetch(:rails_env) do
-        rake 'assets:precompile'
-        rake 'assets:publish_my_holy_shinning_precompiled_miraculous_assets_to_the_almighty_upyun'
-      end
-    end
-  end
-  after 'deploy:updated', 'deploy:upload_assets'
 
   after 'deploy:publishing', 'deploy:restart'
   task :restart do
