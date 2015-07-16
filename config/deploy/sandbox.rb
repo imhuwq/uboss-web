@@ -1,5 +1,5 @@
 
-server '192.168.33.10', user: 'deploy', roles: %w{web app db}
+server 'ssobu.vagrant.lo', user: 'deploy', roles: %w{web app db}
 
 set :deploy_user, 'deploy'
 set :branch, 'master'
