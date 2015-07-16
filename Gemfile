@@ -74,6 +74,7 @@ group :development do
   gem "capistrano-bundler"
   gem "capistrano-rails"
   gem 'capistrano3-unicorn'
+  gem 'capistrano-sidekiq', github: 'seuros/capistrano-sidekiq'
   gem "slackistrano", require: false
   gem "better_errors"
   gem "quiet_assets"

@@ -10,6 +10,14 @@ GIT
       yajl-ruby (>= 1.2.0)
 
 GIT
+  remote: git://github.com/seuros/capistrano-sidekiq.git
+  revision: 7bc73100681805c88ef58bb6984ac48b8662241c
+  specs:
+    capistrano-sidekiq (0.5.3)
+      capistrano
+      sidekiq
+
+GIT
   remote: git://github.com/xEasy/browser.git
   revision: c58be5f8e9715294a4506b97e57045d64dbdc3fe
   specs:
@@ -418,6 +426,7 @@ DEPENDENCIES
   capistrano-bundler
   capistrano-rails
   capistrano-rbenv
+  capistrano-sidekiq!
   capistrano3-unicorn
   carrierwave
   carrierwave-upyun
