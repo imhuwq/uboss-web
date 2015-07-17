@@ -209,12 +209,6 @@ ul.index_ul li:last-child {
 .add_inout .right_content {
     float: right;
 }
-.add_inout .add_text{
-  margin-left: 15px;
-  width: 65%;
-  padding: 6px;
-  border: none;
-}
 .loading {
   border: 1px solid #ebebeb;
   box-shadow: 0 1px 2px #cacaca;
@@ -234,11 +228,24 @@ ul.index_ul li:last-child {
   bottom: 0;
 }
 .p_img.good{
-    background-image: image-url("img/fav_comment.png");
+  background-image: image-url("img/fav_comment.png");
 }
 .p_img.normal{
-    background-image: image-url("img/Average.png");
+  background-image: image-url("img/Average.png");
 }
 .p_img.bad{
-    background-image: image-url("img/Negative_Ratings.png");
+  background-image: image-url("img/Negative_Ratings.png");
+}
+.add_text_2 {
+  border:0;
+}
+.add_text_2#send_mobile{
+  border-radius: 5px;
+  background-color: #43c3aa;
+  font-size: 12px;
+  margin-left: 10px;
+  width: 100px;
+}
+.add_text_2#new_mobile{
+  width:180px;
 }

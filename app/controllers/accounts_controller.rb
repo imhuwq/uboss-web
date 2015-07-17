@@ -23,9 +23,18 @@ class AccountsController < ApplicationController
   end
 
   def update_password
-    user_params = params.require(:user).permit(:password, :password_confirmation, :current_password)
-
-    if current_user.update_with_password(user_params)
+    user_params = params.require(:user).permit(:password, :password_confirmation, :current_password,:code)
+    update_with_password_params = params.require(:user).permit(:password, :password_confirmation, :current_password)
+    if  current_user.need_reset_password
+      if MobileAuthCode.auth_code(current_user.mobile, user_params[:code])
+        current_user.update(password: user_params[:password], password_confirmation: user_params[:password_confirmation],need_reset_password:false)
+        sign_in current_user, :bypass => true
+        redirect_to settings_account_path, notice: '修改密码成功'
+      else
+        render :update_password_page
+        return
+      end
+    elsif current_user.update_with_password(update_with_password_params)
       sign_in current_user, :bypass => true
       redirect_to settings_account_path, notice: '修改密码成功'
     else

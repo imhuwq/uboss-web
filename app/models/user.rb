@@ -2,6 +2,8 @@ class User < ActiveRecord::Base
 
   include Orderable
 
+  attr_accessor :code
+
   devise :database_authenticatable, :rememberable, :trackable, :validatable, :omniauthable
   mount_uploader :avatar, ImageUploader
 
