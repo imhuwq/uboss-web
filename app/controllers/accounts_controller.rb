@@ -58,6 +58,11 @@ class AccountsController < ApplicationController
   def set_password
   end
 
+  def reset_password
+    current_user.update(need_reset_password: true)
+    redirect_to update_password_page_account_path
+  end
+
   private
   def account_params
     if current_user.login.present?
