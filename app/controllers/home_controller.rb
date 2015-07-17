@@ -1,7 +1,6 @@
 class HomeController < ApplicationController
 
-  layout :detct_device_layout, only: [:index]
-  before_action :detect_device_type
+  detect_device only: [:index]
 
   def index
     if !desktop_request?
