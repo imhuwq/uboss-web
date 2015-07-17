@@ -71,6 +71,6 @@ Rails.application.routes.draw do
     mount Sidekiq::Web => '/sidekiq'
   end
 
-  root 'products#index'
+  root 'home#index'
 
 end

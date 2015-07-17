@@ -1,6 +1,7 @@
 class ApplicationController < ActionController::Base
 
   include SimpleCaptcha::ControllerHelpers
+  include DetectDevise
 
   protect_from_forgery with: :exception
 
