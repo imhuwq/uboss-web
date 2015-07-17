@@ -31,17 +31,27 @@
         <span class="center_content">
           <%= current_user.login %>
         </span>
-      </p>
-      <p>
-        <span>设置密码</span>
-        <span class="center_content">
-        </span>
+        <% if !current_user.login.present? %>
         <span class="right_content">
-          <%= link_to update_password_page_account_path do %>
-          修改<%= image_tag("uboss_29/right.png") %>
+          <%= link_to edit_mobile_page_account_path do %>
+          设置<%= image_tag("uboss_29/right.png") %>
           <% end %>
         </span>
+        <% end %>
       </p>
+      <% if current_user.login.present? %>
+        <p>
+          <span>设置密码</span>
+          <span class="center_content">
+          </span>
+          <span class="right_content">
+            <%= link_to update_password_page_account_path do %>
+            修改<%= image_tag("uboss_29/right.png") %>
+            <% end %>
+          </span>
+        </p>
+      <% end %>
+
     </div>
 
 </div>

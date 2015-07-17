@@ -28,7 +28,7 @@ Rails.application.routes.draw do
     get :success, on: :member
   end
   resource :account, only: [:show, :edit, :update] do
-    get :settings, :update_password_page
+    get :settings, :update_password_page, :edit_mobile_page
     patch :password, to: 'accounts#update_password'
     resources :user_addresses, except: [:show]
   end

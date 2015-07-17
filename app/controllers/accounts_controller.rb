@@ -8,7 +8,13 @@ class AccountsController < ApplicationController
   end
 
   def update
-    if current_user.update(account_params)
+    if account_params[:login].present? and account_params[:code].present?
+     MobileAuthCode.auth_code(account_params[:login], account_params[:code])
+     current_user.update(login: account_params[:login])
+     flash[:notice] = '绑定成功'
+     redirect_to settings_account_path
+     return
+    elsif current_user.update(account_params)
       flash[:notice] = '修改成功'
       redirect_to settings_account_path
     else
@@ -22,11 +28,18 @@ class AccountsController < ApplicationController
   def update_password_page # 修改密码页面
   end
 
+  def edit_mobile_page
+    if current_user.login.present?
+      flash[:info] = "你已经有帐号了"
+      redirect_to settings_account_path
+    end
+  end
+
   def update_password
     user_params = params.require(:user).permit(:password, :password_confirmation, :current_password,:code)
     update_with_password_params = params.require(:user).permit(:password, :password_confirmation, :current_password)
     if  current_user.need_reset_password
-      if MobileAuthCode.auth_code(current_user.mobile, user_params[:code])
+      if MobileAuthCode.auth_code(current_user.login, user_params[:code])
         current_user.update(password: user_params[:password], password_confirmation: user_params[:password_confirmation],need_reset_password:false)
         sign_in current_user, :bypass => true
         redirect_to settings_account_path, notice: '修改密码成功'
@@ -47,7 +60,11 @@ class AccountsController < ApplicationController
 
   private
   def account_params
-    params.require(:user).permit(:mobile, :nickname)
+    if current_user.login.present?
+      params.require(:user).permit(:mobile, :nickname, :login)
+    else
+      params.require(:user).permit(:nickname)
+    end
   end
 
 end
