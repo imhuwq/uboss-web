@@ -6,7 +6,7 @@ class OrdersController < ApplicationController
   def show
     @order_item = @order.order_items.first
     @product = @order_item.product
-    if @order.unpay?
+    if @order.unpay? && browser.wechat?
       @order_charge = ChargeService.find_or_create_charge(@order, remote_ip: request.ip)
       @pay_p = {
         appId: WxPay.appid,
