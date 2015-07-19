@@ -1,0 +1,102 @@
+/* 
+	版本：1.1
+	文件名：base.css（通用基类）
+*/
+/*标签样式重置开始*/
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video {
+		margin: 0;
+		padding: 0;
+		border: 0;
+		font-size: 100%;
+		font: inherit;
+		vertical-align: baseline;
+		list-style:none;
+		}
+article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section {
+	display: block;
+}
+/*标签样式重置结束*/
+input{margin:0 0px;padding:0;filter:chroma(color=#000000);border:none;}
+blockquote:before, blockquote:after,q:before, q:after {
+	content: '';
+	content: none;
+}
+/*清除浮动开始*/
+.clear{
+	margin:0px auto;
+	width:100%;
+	height:10px;
+	font-size:1px;
+	clear:both;
+	background:none;
+	overflow:hidden;
+}
+/*清除浮动结束*/
+/*通用父子盒子嵌套浮动问题解决，开始*/
+.clearfix:after {  
+	content: "."; 
+	display: block; 
+	height: 0; 
+	clear: both; 
+	visibility: hidden; 
+} 
+.clearfix {
+	display: inline-block;
+} 
+* html .clearfix {
+	height: 1%;
+}  
+a{
+	text-decoration:none;
+	color:#747474;
+	}
+a:hover{
+	text-decoration:none;
+	color:#F00;
+	}
+/*通用父子盒子嵌套浮动问题解决，结束*/
+/*间隙层开始*/
+.space_hx { /*横向间隙*/
+	clear:both;
+	width:100%;
+	height:10px;
+	font-size:1px;
+	overflow:hidden;
+}
+.space_zx { /*纵向间隙*/
+	float:left;
+	width:10px;
+	font-size:1px;
+	overflow:hidden;
+}
+/*间隙层结束*/
+
+
+/*常用颜色原子类开始*/
+.left{
+	float:left;
+	}
+.right{
+	float:right;
+	}
+.font_12{
+	font-size:12px;
+	}
+.font_16{
+	font-size:16px;
+	font-weight:bold;
+	color:#000;
+	}
+.font_18{
+	font-size:18px;
+	font-weight:bold;
+	color:B3B3B3;
+	}
+.font_14{
+	font-size:14px;
+	}
+/*设置开始*/
+.white{
+	color:#B3B3B3;
+	}
+

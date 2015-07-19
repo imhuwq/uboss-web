@@ -10,8 +10,28 @@
   <body>
 
     <div class="container">
+      <div class="header">
+  			<div class="index_banner" id="index_banner">
+  				<div class="index_banner_m">
+            <%= image_tag "desktop_image/header_02.jpg" %>
+  				</div>
+  			</div>
+  			<div class="header_top">
+  				<div class="header_cont">
+  					<div class="header_logo"><%= image_tag "desktop_image/logo.png" %><span class="header_font">消费者变身销售员</span></div>
+  					<div class="header_login"><%= link_to "登录", new_user_session_path %></div>
+  				</div>
+  			</div>
+  		</div>
       <%= render 'layouts/flash_alert' %>
       <%= yield %>
+      <div class="footer">
+  			<div class="footer_cont">
+  				<p class="foot">UBOSS 优博</p>
+  				<p>联系我们：0755-86182704</p>
+  				<p>Copyright    2015 www.uboss.cc. All Rights Reserved 深圳市优来吧科技有限公司版权所有 粤ICP备15032292号-1 </p>
+  			</div>
+  		</div>
     </div>
 
   </body>
