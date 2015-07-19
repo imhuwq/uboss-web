@@ -243,3 +243,54 @@ ul.index_ul li:last-child {
 .add_text_2#new_mobile{
   width:180px;
 }
+.flash_css{
+    padding-left: 1%;
+    padding-right: 1%;
+  padding-bottom: 1%;
+}
+
+.alert .close {
+    line-height: 20px;
+    position: relative;
+    right: 0px;
+    top: 0px;
+  // font-size: smaller;
+}
+
+.alert {
+    padding: 15px;
+    border: 1px solid transparent;
+    border-radius: 4px;
+}
+button.close {
+    padding: 0;
+    cursor: pointer;
+    background: transparent;
+    border: 0;
+    -webkit-appearance: none;
+}
+.close {
+    float: right;
+    font-size: 21px;
+    font-weight: bold;
+    line-height: 1;
+    color: #000;
+    text-shadow: 0 1px 0 #fff;
+    opacity: 0.2;
+    filter: alpha(opacity=20);
+}
+.alert-info {
+    background-color: #d9edf7;
+    border-color: #bce8f1;
+    color: #31708f;
+}
+.alert-success {
+    background-color: #dff0d8;
+    border-color: #d6e9c6;
+    color: #3c763d;
+}
+.alert-error {
+    background-color: #f2dede;
+    border-color: #ebccd1;
+    color: #a94442;
+}

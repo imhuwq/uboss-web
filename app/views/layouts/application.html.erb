@@ -36,7 +36,7 @@
           <li><a href="#">关于</a></li>
         </ul>
       </div>
-
+      <%= render 'layouts/mobile_flash_alert' %>
       <%= yield %>
 
     </div>
@@ -44,4 +44,3 @@
     <%= yield(:extra_javascript) %>
   </body>
 </html>
-
