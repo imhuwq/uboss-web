@@ -15,8 +15,9 @@ class UserAddressesController < ApplicationController
     @user_address = current_user.user_addresses.new(address_params)
     if @user_address.save
       flash[:notice] = '新增收货地址成功'
-      redirect_to account_user_addresses_path 
+      redirect_to account_user_addresses_path
     else
+      flash[:error] = @user_address.errors.full_messages.join("</br>")
       render :new
     end
   end
@@ -50,5 +51,5 @@ class UserAddressesController < ApplicationController
   def find_user_address
     @user_address ||= current_user.user_addresses.find(params[:id])
   end
-  
+
 end

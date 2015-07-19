@@ -5,34 +5,21 @@
         <div class="alert alert-success">
           <a class="close" data-dismiss="alert">x</a>
 
-          <p class="p_class"><%= flash[:success] %></p>
+          <p class="p_class"><%== flash[:success] %></p>
         </div>
       <% end %>
       <% if flash[:info] %>
         <div class="alert alert-info">
           <a class="close" data-dismiss="alert">x</a>
-          <%= flash[:info] %>
+          <%== flash[:info] %>
         </div>
       <% end %>
       <% if flash[:error] %>
         <div class="alert alert-error">
           <a class="close" data-dismiss="alert">x</a>
-          <%= flash[:error] %>
+          <%== flash[:error] %>
         </div>
       <% end %>
     </div>
-    <script type="text/javascript">
-      $(document).ready(function () {
-        var flash = $(".flash_css");
-        setTimeout(function () {
-          flash.fadeOut(function () {
-            $(this).remove();
-          });
-        }, 10000);
-      })
-      $(".alert .close").on("click",function(){
-        $(".flash_css").remove();
-      })
-    </script>
   </div>
 <% end %>

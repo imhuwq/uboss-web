@@ -244,23 +244,20 @@ ul.index_ul li:last-child {
   width:180px;
 }
 .flash_css{
-    padding-left: 1%;
-    padding-right: 1%;
-  padding-bottom: 1%;
+  margin: 5px 0;
 }
 
 .alert .close {
-    line-height: 20px;
-    position: relative;
-    right: 0px;
-    top: 0px;
+  line-height: 20px;
+  position: relative;
+  right: 0px;
+  top: 0px;
   // font-size: smaller;
 }
 
 .alert {
-    padding: 15px;
-    border: 1px solid transparent;
-    border-radius: 4px;
+  padding: 15px;
+  border: 1px solid transparent;
 }
 button.close {
     padding: 0;

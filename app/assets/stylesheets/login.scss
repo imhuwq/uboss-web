@@ -1,2 +1,9 @@
 @import "bootstrap-sprockets";
 @import "bootstrap";
+
+.simple_form {
+  &.new_user {
+    width: 380px;
+    margin: 50px auto;
+  }
+}
