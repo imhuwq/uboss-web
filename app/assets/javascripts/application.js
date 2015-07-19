@@ -35,11 +35,11 @@ $(function() {
 		$(".nav_bar").slideToggle();
 	});
 
-  $(".my_menu ul li").click(function(){
-    var Index = $(this).index();
-    $(this).addClass('active').siblings().removeClass('active');
-    $('my_acuntbox2').children('.qre').eq(Index).show().siblings('.qre').hide();
-  });
+  // $(".my_menu ul li").click(function(){
+  //   var Index = $(this).index();
+  //   $(this).addClass('active').siblings().removeClass('active');
+  //   $('my_acuntbox2').children('.qre').eq(Index).show().siblings('.qre').hide();
+  // });
 
 });
 

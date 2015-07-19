@@ -473,7 +473,7 @@ a{
   text-decoration: none;
   color: rgba(67,195,170,1);
 }
-.my_menu ul li.active a{
+.my_menu ul li a.active{
   width: 100%;
   height: 55px;
   background-image: image-url("img/select_hover.png");
@@ -482,15 +482,15 @@ a{
   color: rgba(255,255,255,1);
   display:block;
 }
-.my_menu ul li.acticv a{
-  width: 100%;
-  height: 55px;
-  background-image: image-url("img/select_hover.png");
-  background-repeat: no-repeat;
-  background-size: 100% 55px;
-  color: rgba(255,255,255,1);
-  display:block;
-}
+// .my_menu ul li.acticv a{
+//   width: 100%;
+//   height: 55px;
+//   background-image: image-url("img/select_hover.png");
+//   background-repeat: no-repeat;
+//   background-size: 100% 55px;
+//   color: rgba(255,255,255,1);
+//   display:block;
+// }
 .my_boxlist{
   width: 94%;
   height: 94px;
