@@ -181,3 +181,12 @@ a.y_hover {
   width: 97%;
   margin: 0px auto;
 }
+.my_menu ul li a.active{
+  width: 100%;
+  height: 55px;
+  background-image: image-url("img/select_hover.png");
+  background-repeat: no-repeat;
+  background-size: 100% 55px;
+  color: rgba(255,255,255,1);
+  display:block;
+}
