@@ -8,20 +8,48 @@ class OrderPayedHandlerJob < ActiveJob::Base
   def perform(order)
     raise OrderNotSigned unless order.signed?
 
-    @seller_income = order.pay_amount
+    seller_income = order.pay_amount
 
+    # NOTE
+    # ----------------------
+    # Any fail transaction should raise Exception
+    # Never rescue the ActiveRecord::StatementInvalid OR any PGError
+    # Read More in http://api.rubyonrails.org/classes/ActiveRecord/Transactions/ClassMethods.html
+    # ----------------------
     Order.transaction do
       order.order_items.each do |order_item|
         reward_sharing_users order_item do |reward_amount|
-          @seller_income -= reward_amount
+          seller_income -= reward_amount
         end
       end
 
-      order.update_columns(income: @seller_income, sharing_rewared: true)
+      divide_income_for_official_or_agent order, seller_income do |divide_amount|
+        seller_income -= divide_amount
+      end
+
+      SellingIncome.create!(user: order.seller, amount: seller_income, order: order)
+      order.update_columns(income: seller_income, sharing_rewared: true)
     end
   end
 
   private
+
+  def divide_income_for_official_or_agent(order, income)
+    seller = order.seller
+    if seller.service_rate
+      divide_income = income * seller.service_rate / 100
+      agent_divide_income = 0
+
+      if agent = seller.agent
+        agent_divide_income = divide_income / 2
+        DivideIncome.create!(order: order, amount: agent_divide_income, user: agent)
+      end
+      DivideIncome.create!(order: order, amount: divide_income - agent_divide_income, user: User.official_account)
+
+      yield divide_income
+
+    end
+  end
 
   def reward_sharing_users order_item, &block
     sharing_node = order_item.sharing_node

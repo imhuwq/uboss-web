@@ -28,7 +28,7 @@ class User < ActiveRecord::Base
 
   delegate :sex, :sex=, :province, :province=, :city, :city=, :country, :country=,
     :store_name, :store_name=, to: :user_info, allow_nil: true
-  delegate :sharing_counter, :income, :income_level_one, :income_level_two,
+  delegate :sharing_counter, :income, :income_level_one, :income_level_two, :service_rate,
     :income_level_thr, :frozen_income,
     to: :user_info, allow_nil: true
   delegate :name, :display_name, to: :user_role, prefix: :role, allow_nil: true
