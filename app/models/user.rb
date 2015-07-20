@@ -3,12 +3,14 @@ class User < ActiveRecord::Base
   include Orderable
 
   attr_accessor :code
+  OFFICIAL_ACCOUNT_LOGIN = '13800000000'
 
   devise :database_authenticatable, :rememberable, :trackable, :validatable, :omniauthable
   mount_uploader :avatar, ImageUploader
 
   has_one :user_info, autosave: true
   belongs_to :user_role
+  has_many :transactions
   # for buyer
   has_many :user_addresses
   has_many :orders
@@ -17,6 +19,7 @@ class User < ActiveRecord::Base
   # for seller
   has_many :sold_orders, class_name: 'Order', foreign_key: 'seller_id'
   has_many :products
+  belongs_to :agent, class_name: 'User'
 
   validates :login, uniqueness: true, mobile: true, presence: true, if: -> { !need_set_login? }
   validates :mobile, allow_nil: true, mobile: true
@@ -30,11 +33,20 @@ class User < ActiveRecord::Base
     to: :user_info, allow_nil: true
   delegate :name, :display_name, to: :user_role, prefix: :role, allow_nil: true
 
+  before_destroy do # prevent destroy official account
+    if login == OFFICIAL_ACCOUNT_LOGIN
+      false
+    end
+  end
   before_create :set_mobile
 
   scope :admin, -> { where(admin: true) }
 
   class << self
+    def official_account
+      @@official_account ||= find_by(login: OFFICIAL_ACCOUNT_LOGIN)
+    end
+
     def find_or_create_by_wechat_oauth(oauth_info)
       user = User.find_by(weixin_openid: oauth_info['openid'])
       if user
