@@ -6,7 +6,7 @@ class OrderPayedHandlerJob < ActiveJob::Base
   class OrderNotSigned < StandardError;;end
 
   def perform(order)
-    raise OrderNotPayed unless order.signed?
+    raise OrderNotSigned unless order.signed?
 
     @seller_income = order.pay_amount
 
