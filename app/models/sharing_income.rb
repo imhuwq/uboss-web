@@ -22,7 +22,7 @@ class SharingIncome < ActiveRecord::Base
   delegate :product_name, :product, to: :order_item
   delegate :order, to: :order_item
 
-  after_create :increase_user_income
+  after_create :increase_user_income, :record_trade
 
   private
 
@@ -40,4 +40,7 @@ class SharingIncome < ActiveRecord::Base
     @user_incomes.merge!(USER_LEVEL_INCOME_MAPKEYS[self.level - 1] => amount)
   end
 
+  def record_trade
+    Transaction.record_trade(user, self, amount, user.income, 'sharing')
+  end
 end

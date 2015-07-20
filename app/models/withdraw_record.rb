@@ -32,7 +32,7 @@ class WithdrawRecord < ActiveRecord::Base
   aasm column: :state, enum: true, whiny_transitions: false do
     state :unprocess
     state :processed, before_enter: :set_processed_info, after_enter: :delay_transfer_money
-    state :done, before_enter: :set_done_at, after_enter: :remove_user_frozen_income
+    state :done, before_enter: :set_done_at, after_enter: [:remove_user_frozen_income, :record_trade]
     state :closed, after_enter: :recover_user_income
 
     event :process do
@@ -96,6 +96,10 @@ class WithdrawRecord < ActiveRecord::Base
 
   def remove_user_frozen_income
     UserInfo.update_counters(user.find_or_create_user_info.id, frozen_income: -amount)
+  end
+
+  def record_trade
+    Transaction.record_trade(user, self, -amount, user.income, 'withdraw')
   end
 
 end

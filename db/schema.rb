@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150714055208) do
+ActiveRecord::Schema.define(version: 20150720055816) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -44,7 +44,7 @@ ActiveRecord::Schema.define(version: 20150714055208) do
   create_table "evaluations", force: :cascade do |t|
     t.integer  "buyer_id"
     t.integer  "sharer_id"
-    t.integer  "status",          default: 3
+    t.integer  "status",          default: 0
     t.integer  "order_item_id"
     t.integer  "product_id"
     t.text     "content"
@@ -115,16 +115,6 @@ ActiveRecord::Schema.define(version: 20150714055208) do
     t.float    "amount",     default: 0.0
     t.datetime "created_at",               null: false
     t.datetime "updated_at",               null: false
-  end
-
-  create_table "product_share_issues", force: :cascade do |t|
-    t.integer  "product_id"
-    t.integer  "buyer_lv_1_id"
-    t.integer  "buyer_lv_2_id"
-    t.integer  "buyer_lv_3_id"
-    t.integer  "sharer_lv_1_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
   end
 
   create_table "products", force: :cascade do |t|
@@ -224,6 +214,17 @@ ActiveRecord::Schema.define(version: 20150714055208) do
 
   add_index "simple_captcha_data", ["key"], name: "idx_key", using: :btree
 
+  create_table "transactions", force: :cascade do |t|
+    t.integer  "user_id"
+    t.float    "current_amount"
+    t.float    "adjust_amount"
+    t.integer  "soruce_id"
+    t.string   "source_type"
+    t.integer  "trade_type"
+    t.datetime "created_at",     null: false
+    t.datetime "updated_at",     null: false
+  end
+
   create_table "user_addresses", force: :cascade do |t|
     t.integer  "user_id"
     t.string   "username"
@@ -241,20 +242,27 @@ ActiveRecord::Schema.define(version: 20150714055208) do
 
   create_table "user_infos", force: :cascade do |t|
     t.integer  "user_id"
-    t.float    "income",            default: 0.0
+    t.float    "income",               default: 0.0
     t.float    "sharing_counter"
-    t.datetime "created_at",                      null: false
-    t.datetime "updated_at",                      null: false
-    t.float    "frozen_income",     default: 0.0
+    t.datetime "created_at",                         null: false
+    t.datetime "updated_at",                         null: false
+    t.float    "frozen_income",        default: 0.0
     t.integer  "sex"
     t.string   "city"
     t.string   "province"
     t.string   "country"
-    t.integer  "good_evaluation",   default: 0
-    t.integer  "normal_evaluation", default: 0
-    t.integer  "bad_evaluation",    default: 0
+    t.integer  "good_evaluation",      default: 0
+    t.integer  "normal_evaluation",    default: 0
+    t.integer  "bad_evaluation",       default: 0
     t.string   "store_name"
+    t.float    "seller_income"
+    t.float    "seller_forzen_income"
+    t.float    "agent_income"
+    t.float    "agent_forzen_income"
+    t.integer  "service_rate",         default: 5
   end
+
+  add_index "user_infos", ["user_id"], name: "index_user_infos_on_user_id", unique: true, using: :btree
 
   create_table "user_roles", force: :cascade do |t|
     t.string   "name"
@@ -286,6 +294,7 @@ ActiveRecord::Schema.define(version: 20150714055208) do
     t.string   "weixin_openid"
     t.boolean  "need_set_login",         default: false
     t.string   "avatar"
+    t.integer  "agent_id"
   end
 
   add_index "users", ["login"], name: "index_users_on_login", unique: true, using: :btree
@@ -325,9 +334,11 @@ ActiveRecord::Schema.define(version: 20150714055208) do
   add_foreign_key "sharing_incomes", "users", column: "seller_id"
   add_foreign_key "sharing_nodes", "products", on_delete: :cascade
   add_foreign_key "sharing_nodes", "users", on_delete: :cascade
+  add_foreign_key "transactions", "users"
   add_foreign_key "user_addresses", "users"
   add_foreign_key "user_infos", "users", on_delete: :nullify
   add_foreign_key "users", "user_roles"
+  add_foreign_key "users", "users", column: "agent_id"
   add_foreign_key "withdraw_records", "bank_cards", on_delete: :nullify
   add_foreign_key "withdraw_records", "users"
 end

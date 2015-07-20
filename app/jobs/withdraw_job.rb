@@ -4,6 +4,24 @@ class WithdrawJob < ActiveJob::Base
   def perform(withdraw_record, ip='127.0.0.1')
     return false if withdraw_valid?(withdraw_record)
 
+    if %w(development test).include?(Rails.env) && ENV['ENABLE_WX'] != 'true'
+      invoke_fake_transfer(withdraw_record)
+    else
+      invoke_weixin_transfer(withdraw_record, ip)
+    end
+  end
+
+  private
+  def invoke_fake_transfer(withdraw_record)
+    withdraw_record.update(
+      wx_payment_no: 'fake-pay',
+      wx_payment_time: Time.now,
+      error_info: nil
+    )
+    withdraw_record.finish!
+  end
+
+  def invoke_weixin_transfer(withdraw_record, ip)
     transfer_amount  = if Rails.env.production?
                          (withdraw_record.amount * 100).to_i
                        else
@@ -31,23 +49,20 @@ class WithdrawJob < ActiveJob::Base
     else
       withdraw_record.update(error_info: {code: result['return_code'], msg: result['return_msg']})
     end
-
   end
-
-  private
 
   def withdraw_valid?(withdraw_record)
     if !withdraw_record.processed?
-      withdraw_record.upate(
+      withdraw_record.update(
         error_info: {code: 'SYSTEM', msg: '状态错误'}
       )
     elsif withdraw_record.wx_payment_time.present?
-      withdraw_record.upate(
+      withdraw_record.update(
         error_info: {code: 'SYSTEM', msg: '已打款', request_time: Time.now}
       )
     # 正在提现的资金存入的是frozen_income
     elsif withdraw_record.amount > withdraw_record.user.frozen_income
-      withdraw_record.upate(
+      withdraw_record.update(
         error_info: {code: 'USER', msg: '非法的提现金额'}
       )
     end
