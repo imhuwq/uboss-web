@@ -41,6 +41,12 @@ class SharingIncome < ActiveRecord::Base
   end
 
   def record_trade
-    Transaction.record_trade(user, self, amount, user.income, 'sharing')
+    Transaction.create!(
+      user: user,
+      source: self,
+      adjust_amount: amount,
+      current_amount: user.income,
+      trade_type: 'sharing'
+    )
   end
 end

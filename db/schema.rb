@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150720055816) do
+ActiveRecord::Schema.define(version: 20150720080316) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -39,6 +39,14 @@ ActiveRecord::Schema.define(version: 20150720055816) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string   "bankname"
+  end
+
+  create_table "divide_incomes", force: :cascade do |t|
+    t.integer  "user_id"
+    t.integer  "order_id"
+    t.decimal  "amount"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "evaluations", force: :cascade do |t|
@@ -165,6 +173,11 @@ ActiveRecord::Schema.define(version: 20150720055816) do
   add_index "redactor_assets", ["assetable_type", "assetable_id"], name: "idx_redactor_assetable", using: :btree
   add_index "redactor_assets", ["assetable_type", "type", "assetable_id"], name: "idx_redactor_assetable_type", using: :btree
 
+  create_table "selling_incomes", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "service_notifies", force: :cascade do |t|
     t.string   "service_type"
     t.text     "content"
@@ -242,24 +255,20 @@ ActiveRecord::Schema.define(version: 20150720055816) do
 
   create_table "user_infos", force: :cascade do |t|
     t.integer  "user_id"
-    t.float    "income",               default: 0.0
+    t.float    "income",            default: 0.0
     t.float    "sharing_counter"
-    t.datetime "created_at",                         null: false
-    t.datetime "updated_at",                         null: false
-    t.float    "frozen_income",        default: 0.0
+    t.datetime "created_at",                      null: false
+    t.datetime "updated_at",                      null: false
+    t.float    "frozen_income",     default: 0.0
     t.integer  "sex"
     t.string   "city"
     t.string   "province"
     t.string   "country"
-    t.integer  "good_evaluation",      default: 0
-    t.integer  "normal_evaluation",    default: 0
-    t.integer  "bad_evaluation",       default: 0
+    t.integer  "good_evaluation",   default: 0
+    t.integer  "normal_evaluation", default: 0
+    t.integer  "bad_evaluation",    default: 0
     t.string   "store_name"
-    t.float    "seller_income"
-    t.float    "seller_forzen_income"
-    t.float    "agent_income"
-    t.float    "agent_forzen_income"
-    t.integer  "service_rate",         default: 5
+    t.integer  "service_rate",      default: 5
   end
 
   add_index "user_infos", ["user_id"], name: "index_user_infos_on_user_id", unique: true, using: :btree

@@ -99,7 +99,13 @@ class WithdrawRecord < ActiveRecord::Base
   end
 
   def record_trade
-    Transaction.record_trade(user, self, -amount, user.income, 'withdraw')
+    Transaction.create!(
+      user: user,
+      source: self,
+      adjust_amount: -amount,
+      current_amount: user.income,
+      trade_type: 'withdraw'
+    )
   end
 
 end

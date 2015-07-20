@@ -2,11 +2,22 @@ class DivideIncome < ActiveRecord::Base
 
   validates :user_id, :order_id, :amount, presence: true
 
-  after_create :increase_agent_income
+  after_create :increase_user_income, :record_trade
 
   private
-  def increase_agent_income
-    UserInfo.update_counters(user.find_or_create_user_info.id, agent_income: amount)
+
+  def increase_user_income
+    UserInfo.update_counters(user.find_or_create_user_info.id, income: amount)
+  end
+
+  def record_trade
+    Transaction.create!(
+      user_id: user_id,
+      source: self,
+      adjust_amount: amount,
+      current_amount: user.income,
+      trade_type: 'agent'
+    )
   end
 
 end
