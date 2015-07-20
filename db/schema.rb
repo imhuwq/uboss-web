@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150720080316) do
+ActiveRecord::Schema.define(version: 20150720083546) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -77,7 +77,7 @@ ActiveRecord::Schema.define(version: 20150720080316) do
     t.string   "prepay_id"
     t.datetime "prepay_id_expired_at"
     t.string   "pay_serial_number"
-    t.float    "paid_amount"
+    t.decimal  "paid_amount"
     t.integer  "payment"
     t.datetime "paid_at"
   end
@@ -89,10 +89,10 @@ ActiveRecord::Schema.define(version: 20150720080316) do
     t.integer  "amount"
     t.datetime "created_at",                    null: false
     t.datetime "updated_at",                    null: false
-    t.float    "pay_amount",      default: 0.0
+    t.decimal  "pay_amount",      default: 0.0
     t.integer  "sharing_node_id"
     t.integer  "evaluation_id"
-    t.float    "present_price",   default: 0.0
+    t.decimal  "present_price",   default: 0.0
   end
 
   create_table "orders", force: :cascade do |t|
@@ -103,13 +103,13 @@ ActiveRecord::Schema.define(version: 20150720080316) do
     t.string   "address"
     t.string   "invoice_title"
     t.integer  "state",           default: 0
-    t.float    "pay_amount"
+    t.decimal  "pay_amount"
     t.string   "pay_message"
     t.datetime "created_at",                      null: false
     t.datetime "updated_at",                      null: false
     t.integer  "user_address_id"
     t.string   "username"
-    t.float    "income",          default: 0.0
+    t.decimal  "income",          default: 0.0
     t.boolean  "sharing_rewared", default: false
     t.datetime "signed_at"
     t.datetime "shiped_at"
@@ -120,7 +120,7 @@ ActiveRecord::Schema.define(version: 20150720080316) do
   create_table "privilege_cards", force: :cascade do |t|
     t.integer  "product_id"
     t.integer  "user_id"
-    t.float    "amount",     default: 0.0
+    t.decimal  "amount",     default: 0.0
     t.datetime "created_at",               null: false
     t.datetime "updated_at",               null: false
   end
@@ -129,30 +129,29 @@ ActiveRecord::Schema.define(version: 20150720080316) do
     t.integer  "user_id"
     t.string   "name"
     t.string   "code"
-    t.float    "original_price",     default: 0.0
-    t.float    "present_price",      default: 0.0
+    t.decimal  "original_price",     default: 0.0
+    t.decimal  "present_price",      default: 0.0
     t.integer  "count",              default: 0
     t.text     "content"
     t.boolean  "buyer_pay",          default: true
-    t.float    "traffic_expense"
+    t.decimal  "traffic_expense"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "has_share_lv",       default: 3
-    t.float    "share_amount_total", default: 0.0
-    t.float    "share_amount_lv_1",  default: 0.0
-    t.float    "share_amount_lv_2",  default: 0.0
-    t.float    "share_amount_lv_3",  default: 0.0
-    t.float    "share_rate_lv_1",    default: 0.0
-    t.float    "share_rate_lv_2",    default: 0.0
-    t.float    "share_rate_lv_3",    default: 0.0
-    t.float    "share_rate_total",   default: 0.0
+    t.decimal  "share_amount_total", default: 0.0
+    t.decimal  "share_amount_lv_1",  default: 0.0
+    t.decimal  "share_amount_lv_2",  default: 0.0
+    t.decimal  "share_amount_lv_3",  default: 0.0
+    t.decimal  "share_rate_lv_1",    default: 0.0
+    t.decimal  "share_rate_lv_2",    default: 0.0
+    t.decimal  "share_rate_lv_3",    default: 0.0
+    t.decimal  "share_rate_total",   default: 0.0
     t.integer  "calculate_way",      default: 0
     t.integer  "status",             default: 0
     t.integer  "good_evaluation",    default: 0
     t.integer  "normal_evaluation",  default: 0
     t.integer  "bad_evaluation",     default: 0
-    t.float    "discount_amount"
-    t.float    "privilege_amount",   default: 0.0
+    t.decimal  "privilege_amount",   default: 0.0
     t.string   "short_description"
   end
 
@@ -190,7 +189,7 @@ ActiveRecord::Schema.define(version: 20150720080316) do
     t.integer  "seller_id"
     t.integer  "sharing_node_id"
     t.integer  "order_item_id"
-    t.float    "amount"
+    t.decimal  "amount"
     t.datetime "created_at",                  null: false
     t.datetime "updated_at",                  null: false
     t.integer  "level",           default: 1
@@ -229,9 +228,9 @@ ActiveRecord::Schema.define(version: 20150720080316) do
 
   create_table "transactions", force: :cascade do |t|
     t.integer  "user_id"
-    t.float    "current_amount"
-    t.float    "adjust_amount"
-    t.integer  "soruce_id"
+    t.decimal  "current_amount"
+    t.decimal  "adjust_amount"
+    t.integer  "source_id"
     t.string   "source_type"
     t.integer  "trade_type"
     t.datetime "created_at",     null: false
@@ -255,11 +254,10 @@ ActiveRecord::Schema.define(version: 20150720080316) do
 
   create_table "user_infos", force: :cascade do |t|
     t.integer  "user_id"
-    t.float    "income",            default: 0.0
-    t.float    "sharing_counter"
+    t.decimal  "income",            default: 0.0
     t.datetime "created_at",                      null: false
     t.datetime "updated_at",                      null: false
-    t.float    "frozen_income",     default: 0.0
+    t.decimal  "frozen_income",     default: 0.0
     t.integer  "sex"
     t.string   "city"
     t.string   "province"
@@ -312,7 +310,7 @@ ActiveRecord::Schema.define(version: 20150720080316) do
   create_table "withdraw_records", force: :cascade do |t|
     t.integer  "user_id"
     t.integer  "state",           default: 0
-    t.float    "amount",          default: 0.0
+    t.decimal  "amount",          default: 0.0
     t.string   "bank_info"
     t.datetime "process_at"
     t.datetime "done_at"
