@@ -17,17 +17,13 @@ set :unicorn_config_path, -> { File.join(current_path, "config", "unicorn.rb") }
 set :unicorn_rack_env, -> { fetch(:rails_env) == "development" ? "development" : "staging" }
 
 set :sidekiq_config, -> { File.join(current_path, "config", "sidekiq.yml") }
-
 set :conditionally_migrate, true
-
 set :assets_roles, [:web, :app]
-
 set :keep_releases, 5
 
 set :linked_files, fetch(:linked_files, []).push(
   'config/database.yml', 'config/secrets.yml', 'config/apiclient_cert.p12'
 )
-
 set :linked_dirs, fetch(:linked_dirs, []).push(
   'log', 'tmp/pids', 'tmp/cache', 'tmp/sockets', 'vendor/bundle', 'public/system', 'public/assets'
 )

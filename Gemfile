@@ -52,10 +52,6 @@ gem 'mini_magick'
 # oauth
 gem 'omniauth-wechat-oauth2'
 
-# app server
-gem 'unicorn', require: false
-gem 'unicorn-worker-killer', require: false
-
 # redis
 gem "redis", "~> 3.0", require: ["redis/connection/hiredis", "redis"]
 gem "hiredis"
@@ -66,6 +62,13 @@ gem "redis-namespace"
 gem 'sidekiq'
 gem 'sidekiq-failures'
 gem 'sinatra', :require => nil
+
+# TOOLS
+# app server
+gem 'unicorn', require: false
+gem 'unicorn-worker-killer', require: false
+# cronjob
+gem 'whenever', :require => false
 
 group :development do
   gem "thin"

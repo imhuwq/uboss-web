@@ -2,6 +2,11 @@ class DailyReport < ActiveRecord::Base
 
   enum report_type: { selling: 0, divide: 1, sharing: 2 }
 
+  def self.start_generate_yestoday_report
+    FinanceJob.perform_later('selling')
+    FinanceJob.perform_later('divide')
+  end
+
   def self.insert_or_update_daily_report record
     record = record.merge(
       created_at: DateTime.now,

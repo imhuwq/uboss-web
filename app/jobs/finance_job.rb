@@ -10,7 +10,7 @@ class FinanceJob < ActiveJob::Base
     "[#{severity}] #{datetime}: #{msg}\n"
   end
 
-  def perform(date=Date.yesterday, report_type='selling')
+  def perform(report_type='selling', date=Date.yesterday)
     logger.info("START: generate report, Date: #{date}, TYPE: #{report_type}")
     begin
       __send__("generate_#{report_type}_daily_report", date)
