@@ -56,6 +56,8 @@ ActiveRecord::Schema.define(version: 20150721030336) do
     t.decimal  "amount"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
   create_table "enterprise_authentications", force: :cascade do |t|
     t.integer "user_id"
     t.integer "status",                               default: 0
@@ -70,7 +72,7 @@ ActiveRecord::Schema.define(version: 20150721030336) do
   create_table "evaluations", force: :cascade do |t|
     t.integer  "buyer_id"
     t.integer  "sharer_id"
-    t.integer  "status",          default: 0
+    t.integer  "status",          default: 3
     t.integer  "order_item_id"
     t.integer  "product_id"
     t.text     "content"
@@ -152,6 +154,16 @@ ActiveRecord::Schema.define(version: 20150721030336) do
     t.decimal  "amount",     default: 0.0
     t.datetime "created_at",               null: false
     t.datetime "updated_at",               null: false
+  end
+
+  create_table "product_share_issues", force: :cascade do |t|
+    t.integer  "product_id"
+    t.integer  "buyer_lv_1_id"
+    t.integer  "buyer_lv_2_id"
+    t.integer  "buyer_lv_3_id"
+    t.integer  "sharer_lv_1_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "products", force: :cascade do |t|

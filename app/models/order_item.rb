@@ -47,7 +47,7 @@ class OrderItem < ActiveRecord::Base
   end
 
   def set_pay_amount
-    self.pay_amount = present_price * amount.to_i + product.traffic_expense.to_f
+    self.pay_amount = present_price * amount + product.traffic_expense
   end
 
   def update_order_pay_amount
