@@ -4,22 +4,10 @@ class WithdrawJob < ActiveJob::Base
   def perform(withdraw_record, ip='127.0.0.1')
     return false if withdraw_valid?(withdraw_record)
 
-    if %w(development test).include?(Rails.env) && ENV['ENABLE_WX'] != 'true'
-      invoke_fake_transfer(withdraw_record)
-    else
-      invoke_weixin_transfer(withdraw_record, ip)
-    end
+    invoke_weixin_transfer(withdraw_record, ip)
   end
 
   private
-  def invoke_fake_transfer(withdraw_record)
-    withdraw_record.update(
-      wx_payment_no: 'fake-pay',
-      wx_payment_time: Time.now,
-      error_info: nil
-    )
-    withdraw_record.finish!
-  end
 
   def invoke_weixin_transfer(withdraw_record, ip)
     transfer_amount  = if Rails.env.production?
