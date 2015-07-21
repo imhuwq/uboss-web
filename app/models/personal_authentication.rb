@@ -16,10 +16,10 @@ class PersonalAuthentication < ActiveRecord::Base
   enum status: { posted: 0, review: 1, pass: 2, no_pass: 3 }
 
   def identity_card_code_regex
-    if self.identity_card_code =~ CODE15 || self.identity_card_code =~ CODE18
+    if identity_card_code =~ CODE15 || identity_card_code =~ CODE18
       return true
     else
-      errors.add(:dentity_card_code, "身份证格式错误.")
+      errors.add(:dentity_card_code, '身份证格式错误.')
     end
   end
 end

@@ -1,7 +1,7 @@
 class Admin::PersonalAuthenticationsController < AdminController
   def new
     if PersonalAuthentication.find_by(user_id: current_user).present?
-      flash[:alert] = "您的验证信息已经提交，请检查。"
+      flash[:alert] = '您的验证信息已经提交，请检查。'
       redirect_to action: :show
     else
       @personal_authentication = PersonalAuthentication.new
@@ -10,16 +10,16 @@ class Admin::PersonalAuthenticationsController < AdminController
 
   def show
     @personal_authentication = PersonalAuthentication.find_by!(user_id: current_user)
-    if !@personal_authentication.present?
-      flash[:notice] = "您还没有认证"
+    unless @personal_authentication.present?
+      flash[:notice] = '您还没有认证'
       redirect_to action: :new
     end
   end
 
   def edit
     personal_authentication = PersonalAuthentication.find_by!(user_id: current_user)
-    if [:review , :pass].include?(personal_authentication.status)
-      flash[:alert] = "当前状态不允许修改。"
+    if [:review, :pass].include?(personal_authentication.status)
+      flash[:alert] = '当前状态不允许修改。'
       redirect_to action: :show
     else
       @personal_authentication = personal_authentication
@@ -38,7 +38,7 @@ class Admin::PersonalAuthenticationsController < AdminController
       @personal_authentication.face_with_identity_card_img = params[:face_with_identity_card_img]
       @personal_authentication.identity_card_front_img = params[:identity_card_front_img]
       if @personal_authentication.save
-        flash[:success] = "保存成功"
+        flash[:success] = '保存成功'
         redirect_to action: :show
       else
         flash[:error] = "保存失败：#{@personal_authentication.errors}"
@@ -59,7 +59,7 @@ class Admin::PersonalAuthenticationsController < AdminController
       @personal_authentication.face_with_identity_card_img = params[:face_with_identity_card_img] if params[:face_with_identity_card_img]
       @personal_authentication.identity_card_front_img = params[:identity_card_front_img] if params[:identity_card_front_img]
       if @personal_authentication.save
-        flash[:success] = "保存成功"
+        flash[:success] = '保存成功'
         redirect_to action: :show
       else
         flash[:error] = "保存失败：#{@personal_authentication.errors}"
@@ -69,9 +69,11 @@ class Admin::PersonalAuthenticationsController < AdminController
   end
 
   private
+
   def allow_params
     params.require(:personal_authentication).permit(:mobile, :address, :name, :identity_card_code, :mobile_auth_code)
   end
+
   def valid_create_params
     @errors = []
     code15 = /^[1-9]\d{7}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}$/ # 15位身份证号
@@ -86,12 +88,11 @@ class Admin::PersonalAuthenticationsController < AdminController
       '地址不能为空。': allow_params[:address],
       '您不能操作这个用户。': current_user.id == (params[:user_id].to_i || nil)
     }
-    hash.each do |k,v|
-      if !v.present?
-        @errors << k
-      end
+    hash.each do |k, v|
+      @errors << k unless v.present?
     end
   end
+
   def valid_update_params
     @errors = []
     code15 = /^[1-9]\d{7}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}$/ # 15位身份证号
@@ -104,10 +105,8 @@ class Admin::PersonalAuthenticationsController < AdminController
       '地址不能为空。': allow_params[:address],
       '您不能操作这个用户。': current_user.id == (params[:user_id].to_i || nil)
     }
-    hash.each do |k,v|
-      if !v.present?
-        @errors << k
-      end
+    hash.each do |k, v|
+      @errors << k unless v.present?
     end
   end
 end

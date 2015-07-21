@@ -7,11 +7,10 @@ class EnterpriseAuthentication < ActiveRecord::Base
   mount_uploader :legal_person_identity_card_end_img, ImageUploader
 
   validates :mobile, mobile: true
-  validates_presence_of :enterprise_name, :address, :business_license_img,:legal_person_identity_card_front_img,
+  validates_presence_of :enterprise_name, :address, :business_license_img, :legal_person_identity_card_front_img,
                         :legal_person_identity_card_end_img, :mobile
   validates_uniqueness_of :mobile, :user_id
 
   belongs_to :user
   enum status: { posted: 0, review: 1, pass: 2, no_pass: 3 }
-
 end

@@ -1,7 +1,7 @@
 class Admin::EnterpriseAuthenticationsController < AdminController
   def new
     if EnterpriseAuthentication.find_by(user_id: current_user).present?
-      flash[:alert] = "您的验证信息已经提交，请检查。"
+      flash[:alert] = '您的验证信息已经提交，请检查。'
       redirect_to action: :show
     else
       @enterprise_authentication = EnterpriseAuthentication.new
@@ -10,16 +10,16 @@ class Admin::EnterpriseAuthenticationsController < AdminController
 
   def show
     @enterprise_authentication = EnterpriseAuthentication.find_by(user_id: current_user)
-    if !@enterprise_authentication.present?
-      flash[:notice] = "您还没有认证"
+    unless @enterprise_authentication.present?
+      flash[:notice] = '您还没有认证'
       redirect_to action: :new
     end
   end
 
   def edit
     enterprise_authentication = EnterpriseAuthentication.find_by!(user_id: current_user)
-    if [:review , :pass].include?(enterprise_authentication.status)
-      flash[:alert] = "当前状态不允许修改。"
+    if [:review, :pass].include?(enterprise_authentication.status)
+      flash[:alert] = '当前状态不允许修改。'
       redirect_to action: :show
     else
       @enterprise_authentication = enterprise_authentication
@@ -39,7 +39,7 @@ class Admin::EnterpriseAuthenticationsController < AdminController
       @enterprise_authentication.legal_person_identity_card_front_img = params[:legal_person_identity_card_front_img]
       @enterprise_authentication.legal_person_identity_card_end_img = params[:legal_person_identity_card_end_img]
       if @enterprise_authentication.save
-        flash[:success] = "保存成功"
+        flash[:success] = '保存成功'
         redirect_to action: :show
       else
         flash[:error] = "保存失败：#{@enterprise_authentication.errors}"
@@ -61,7 +61,7 @@ class Admin::EnterpriseAuthenticationsController < AdminController
       @enterprise_authentication.legal_person_identity_card_front_img = params[:legal_person_identity_card_front_img] if params[:legal_person_identity_card_front_img]
       @enterprise_authentication.legal_person_identity_card_end_img = params[:legal_person_identity_card_end_img] if  params[:legal_person_identity_card_end_img]
       if @enterprise_authentication.save
-        flash[:success] = "保存成功"
+        flash[:success] = '保存成功'
         redirect_to action: :show
       else
         flash[:error] = "保存失败：#{@enterprise_authentication.errors}"
@@ -71,9 +71,11 @@ class Admin::EnterpriseAuthenticationsController < AdminController
   end
 
   private
+
   def allow_params
     params.require(:enterprise_authentication).permit(:mobile, :address, :enterprise_name, :mobile_auth_code)
   end
+
   def valid_create_params
     @errors = []
     hash = {
@@ -85,12 +87,11 @@ class Admin::EnterpriseAuthenticationsController < AdminController
       '地址不能为空。': allow_params[:address],
       '您不能操作这个用户。': current_user.id == (params[:user_id].to_i || nil)
     }
-    hash.each do |k,v|
-      if !v.present?
-        @errors << k
-      end
+    hash.each do |k, v|
+      @errors << k unless v.present?
     end
   end
+
   def valid_update_params
     hash = {
       '验证码错误或已过期。': MobileAuthCode.auth_code(allow_params[:mobile], allow_params[:mobile_auth_code]),
@@ -98,10 +99,8 @@ class Admin::EnterpriseAuthenticationsController < AdminController
       '地址不能为空。': allow_params[:address],
       '您不能操作这个用户。': current_user.id == (params[:user_id].to_i || nil)
     }
-    hash.each do |k,v|
-      if !v.present?
-        @errors << k
-      end
+    hash.each do |k, v|
+      @errors << k unless v.present?
     end
   end
 end
