@@ -54,7 +54,10 @@ Rails.application.routes.draw do
           patch :close
         end
       end
-      resources :users, except: [:destroy]
+      resources :users, except: [:destroy] do
+        resource :personal_authentications
+        resource :enterprise_authentications   
+      end
       resource :account, only: [:edit, :show, :update] do
         get :password, on: :member
         patch :password, to: 'accounts#update_password'

@@ -42,6 +42,7 @@ zh-CN:
         good_reputation: 好评率
         created_at: 创建时间
         methods: 操作
+        short_description: 简介
       mobile_auth_code:
         mobile: 手机号码
       order_form:
@@ -53,6 +54,24 @@ zh-CN:
         area: 区/县
         street: 街道
         building: 详细地址
+      personal_authentication:
+        status:                        状态
+        name:                          姓名
+        identity_card_code:            身份证号码
+        face_with_identity_card_img:   手持身份证图片
+        identity_card_front_img:       身份证正面
+        address:                       地址
+        mobile:                        手机号码
+        mobile_auth_code:              验证码
+      enterprise_authentication:
+        status:                                  状态
+        enterprise_name:                         公司名
+        business_license_img:                    营业执照
+        legal_person_identity_card_front_img:    法人身份证正面
+        legal_person_identity_card_end_img:      法人身份证反面
+        address:                                 地址
+        mobile:                                  手机号码
+        mobile_auth_code:                        验证码
   errors:
     messages:
       accepted: 必须是可被接受的

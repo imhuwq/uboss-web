@@ -56,6 +56,15 @@ ActiveRecord::Schema.define(version: 20150721030336) do
     t.decimal  "amount"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  create_table "enterprise_authentications", force: :cascade do |t|
+    t.integer "user_id"
+    t.integer "status",                               default: 0
+    t.string  "enterprise_name"
+    t.string  "business_license_img"
+    t.string  "legal_person_identity_card_front_img"
+    t.string  "legal_person_identity_card_end_img"
+    t.string  "address"
+    t.string  "mobile"
   end
 
   create_table "evaluations", force: :cascade do |t|
@@ -125,6 +134,17 @@ ActiveRecord::Schema.define(version: 20150721030336) do
   end
 
   add_index "orders", ["number"], name: "index_orders_on_number", unique: true, using: :btree
+
+  create_table "personal_authentications", force: :cascade do |t|
+    t.integer "user_id"
+    t.integer "status",                      default: 0
+    t.string  "name"
+    t.string  "identity_card_code"
+    t.string  "face_with_identity_card_img"
+    t.string  "identity_card_front_img"
+    t.string  "address"
+    t.string  "mobile"
+  end
 
   create_table "privilege_cards", force: :cascade do |t|
     t.integer  "product_id"

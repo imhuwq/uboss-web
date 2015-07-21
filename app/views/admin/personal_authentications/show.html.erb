@@ -1,0 +1,80 @@
+<div class="row">
+  <div class="col-xs-4"></div>
+  <div class="col-xs-2">
+    <a href='###' class="btn btn-default col-xs-12">个人认证</a>
+  </div>
+  <div class="col-xs-2"><%= link_to "企业认证", new_admin_user_enterprise_authentications_path, class:"btn btn-primary col-xs-12" %></div>
+</div>
+<div class="row">
+	<div class="col-xs-12 border_block">
+		<h3 class="col-md-offset-1">个人信息认证</h3>
+		<div class="col-xs-11 col-md-offset-1">
+      <div class="form-group clear">
+				<label class="string required text-right col-sm-3 control-label" for="product_name">
+					<abbr title="必填">*</abbr>
+					状态
+				</label>
+				<div class="col-sm-9">
+          <%= PersonalAuthentication::DATA_STATUS[@personal_authentication.status.to_sym] %>
+				</div>
+			</div>
+			<div class="form-group clear">
+				<label class="string required text-right col-sm-3 control-label" for="product_name">
+					<abbr title="必填">*</abbr>
+					姓名
+				</label>
+				<div class="col-sm-9">
+					<%= @personal_authentication.name %>
+				</div>
+			</div>
+      <div class="form-group clear">
+        <label class="string required text-right col-sm-3 control-label" for="product_name">
+          <abbr title="必填">*</abbr>
+          身份证号码
+        </label>
+        <div class="col-sm-9">
+          <%= @personal_authentication.identity_card_code %>
+        </div>
+      </div>
+			<div class="form-group clear">
+				<label class="string required text-right col-sm-3 control-label" for="product_name">
+					<abbr title="必填">*</abbr>
+				  手持身份证图片
+				</label>
+				<div class="col-sm-9">
+					<%= image_tag(@personal_authentication.face_with_identity_card_img, width: "60%", alt: "-") %>
+				</div>
+			</div>
+      <div class="form-group clear">
+				<label class="string required text-right col-sm-3 control-label" for="product_name">
+					<abbr title="必填">*</abbr>
+				  身份证正面
+				</label>
+				<div class="col-sm-9">
+					<%= image_tag(@personal_authentication.identity_card_front_img, width: "60%", alt: "-") %>
+				</div>
+			</div>
+      <div class="form-group clear">
+        <label class="string required text-right col-sm-3 control-label" for="product_name">
+          <abbr title="必填">*</abbr>
+          地址
+        </label>
+        <div class="col-sm-9">
+          <%= @personal_authentication.address %>
+        </div>
+      </div>
+      <div class="form-group clear">
+        <label class="string required text-right col-sm-3 control-label" for="product_name">
+          <abbr title="必填">*</abbr>
+          手机号码
+        </label>
+        <div class="col-sm-9">
+          <%= @personal_authentication.mobile %>
+        </div>
+      </div>
+		</div>
+	</div>
+  <% if ['posted','no_pass'].include?(@personal_authentication.status) %>
+  <div class="button_div  col-xs-4 col-md-offset-4"  style="margin-top:30px;padding-bottom:30px;"><%= link_to("编辑", url_for(:action=>:edit), :class=>"btn btn-primary active  col-xs-12",:role=>"button") %></div>
+  <% end %>
+</div>
