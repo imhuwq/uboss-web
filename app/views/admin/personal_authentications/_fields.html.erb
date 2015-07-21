@@ -6,18 +6,14 @@
 <div class="form-group row">
     <%= f.label :face_with_identity_card_img,:class=>" text-right col-sm-3 control-label" %>
   <div  class="col-xs-6">
-    <% if @personal_authentication.present? and @personal_authentication.face_with_identity_card_img %>
-      <%= image_tag(@personal_authentication.face_with_identity_card_img, width: "100%", alt: "-") %>
-    <% end %>
+    <%= image_tag(@personal_authentication.face_with_identity_card_img, width: "100%", alt: "-") %>
     <%= f.file_field :face_with_identity_card_img ,:name=>"face_with_identity_card_img" %>
   </div>
 </div>
 <div class="form-group row">
     <%= f.label :identity_card_front_img,:class=>" text-right col-sm-3 control-label" %>
   <div  class="col-xs-6">
-    <% if @personal_authentication.present? and @personal_authentication.identity_card_front_img %>
-      <%= image_tag(@personal_authentication.identity_card_front_img, width: "100%", alt: "-") %>
-    <% end %>
+    <%= image_tag(@personal_authentication.identity_card_front_img, width: "100%", alt: "-") %>
     <%= f.file_field :identity_card_front_img ,:name=>"identity_card_front_img" %>
   </div>
 </div>

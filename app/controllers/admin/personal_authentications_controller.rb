@@ -10,6 +10,10 @@ class Admin::PersonalAuthenticationsController < AdminController
 
   def show
     @personal_authentication = PersonalAuthentication.find_by!(user_id: current_user)
+    if !@personal_authentication.present?
+      flash[:notice] = "您还没有认证"
+      redirect_to action: :new
+    end
   end
 
   def edit
@@ -45,12 +49,12 @@ class Admin::PersonalAuthenticationsController < AdminController
 
   def update
     valid_update_params
+    @personal_authentication = PersonalAuthentication.find_by!(user_id: current_user)
     if @errors.present?
       flash[:error] = @errors.join("\n")
       redirect_to action: :edit
       return
     else
-      @personal_authentication = PersonalAuthentication.find_by!(user_id: current_user)
       @personal_authentication.update_attributes(allow_params)
       @personal_authentication.face_with_identity_card_img = params[:face_with_identity_card_img] if params[:face_with_identity_card_img]
       @personal_authentication.identity_card_front_img = params[:identity_card_front_img] if params[:identity_card_front_img]

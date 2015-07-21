@@ -1,0 +1,40 @@
+<div class="row">
+  <%= f.input :enterprise_name, as: :string, :label_html=>{:class=>"text-right"} %>
+</div>
+<div class="form-group row">
+    <%= f.label :business_license_img,:class=>" text-right col-sm-3 control-label" %>
+  <div  class="col-xs-6">
+    <%= image_tag(@enterprise_authentication.business_license_img, width: "100%", alt: "-") %>
+    <%= f.file_field :business_license_img ,:name=>"business_license_img" %>
+  </div>
+</div>
+<div class="form-group row">
+    <%= f.label :legal_person_identity_card_front_img,:class=>" text-right col-sm-3 control-label" %>
+  <div  class="col-xs-6">
+    <%= image_tag(@enterprise_authentication.legal_person_identity_card_front_img, width: "100%", alt: "-") %>
+    <%= f.file_field :legal_person_identity_card_front_img ,:name=>"legal_person_identity_card_front_img" %>
+  </div>
+</div>
+<div class="form-group row">
+    <%= f.label :legal_person_identity_card_end_img,:class=>" text-right col-sm-3 control-label" %>
+  <div  class="col-xs-6">
+    <%= image_tag(@enterprise_authentication.legal_person_identity_card_end_img, width: "100%", alt: "-") %>
+    <%= f.file_field :legal_person_identity_card_end_img ,:name=>"legal_person_identity_card_end_img" %>
+  </div>
+</div>
+<div class="row"><%= f.input :address, as: :string, :label_html=>{:class=>"text-right"},input_html: {class:"col-sm-8"} %></div>
+
+<div class="form-group row">
+  <%= f.label :mobile,:class=>"text-right col-sm-3 control-label" %>
+  <div class="col-xs-3"><%= f.input_field :mobile , as: :tel, id:"new_mobile", style:"width:100%;" %></div>
+  <div class="col-xs-3"><%= link_to '发送', '###',class: "btn btn-default btn-xs",id:"send_mobile" %></div>
+</div>
+<div class="row"><%= f.input :mobile_auth_code, as: :tel, required: true, :label_html=>{:class=>"text-right"} %></div>
+<script>
+$('#enterprise_authentication_mobile_auth_code').on('keyup',function(m){
+  var code = $(this).val()
+  console.log(code.length == 5)
+  if (code.length == 5) { $('#submit_bottom').removeAttr('disabled')}
+  if (code.length != 5) { $('#submit_bottom').attr('disabled','disabled')}
+})
+</script>
