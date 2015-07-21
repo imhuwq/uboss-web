@@ -39,6 +39,7 @@ class User < ActiveRecord::Base
     end
   end
   before_create :set_mobile
+  before_create :build_user_info, if: -> { user_info.blank? }
 
   scope :admin, -> { where(admin: true) }
 
@@ -117,13 +118,6 @@ class User < ActiveRecord::Base
 
   def user_info
     super || build_user_info
-  end
-
-  def find_or_create_user_info
-    if user_info.new_record?
-      user_info.save
-    end
-    user_info
   end
 
   def default_address

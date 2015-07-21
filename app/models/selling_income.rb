@@ -1,5 +1,8 @@
 class SellingIncome < ActiveRecord::Base
 
+  belongs_to :user
+  belongs_to :order
+
   validates :order_id, :user_id, :amount, presence: true
 
   after_create :increase_user_income, :record_trade
@@ -7,7 +10,7 @@ class SellingIncome < ActiveRecord::Base
   private
 
   def increase_user_income
-    UserInfo.update_counters(user.find_or_create_user_info.id, income: amount)
+    UserInfo.update_counters(user.user_info.id, income: amount)
   end
 
   def record_trade

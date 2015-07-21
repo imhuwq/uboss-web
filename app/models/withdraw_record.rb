@@ -27,7 +27,7 @@ class WithdrawRecord < ActiveRecord::Base
   enum state: { unprocess: 0, processed: 1, done: 2, closed: 3 }
 
   before_save :set_bank_info
-  after_create :handle_user_income
+  after_create :decrease_user_income
 
   aasm column: :state, enum: true, whiny_transitions: false do
     state :unprocess
@@ -77,7 +77,7 @@ class WithdrawRecord < ActiveRecord::Base
     self.done_at = DateTime.now
   end
 
-  def handle_user_income
+  def decrease_user_income
     adjust_user_income(:dec)
   end
 
@@ -88,14 +88,14 @@ class WithdrawRecord < ActiveRecord::Base
   def adjust_user_income(type)
     if [:inc, :dec].include?(type)
       type = (type == :inc) ? 1 : -1
-      UserInfo.update_counters(user.find_or_create_user_info.id, income: amount * type, frozen_income: -amount * type)
+      UserInfo.update_counters(user.user_info.id, income: amount * type, frozen_income: -amount * type)
     else
       raise AdjuestUserIncomeTypeWrong, "Type: #{type} is worong, accept is :inc or :dec"
     end
   end
 
   def remove_user_frozen_income
-    UserInfo.update_counters(user.find_or_create_user_info.id, frozen_income: -amount)
+    UserInfo.update_counters(user.user_info.id, frozen_income: -amount)
   end
 
   def record_trade

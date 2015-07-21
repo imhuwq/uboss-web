@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150721030336) do
+ActiveRecord::Schema.define(version: 20150721033218) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -46,9 +46,12 @@ ActiveRecord::Schema.define(version: 20150721030336) do
     t.decimal  "amount"
     t.integer  "user_id"
     t.integer  "report_type"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
+    t.string   "uniq_identify"
   end
+
+  add_index "daily_reports", ["uniq_identify"], name: "index_daily_reports_on_uniq_identify", unique: true, using: :btree
 
   create_table "divide_incomes", force: :cascade do |t|
     t.integer  "user_id"

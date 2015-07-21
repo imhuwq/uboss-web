@@ -31,7 +31,7 @@ class SharingIncome < ActiveRecord::Base
   end
 
   def increase_user_income
-    UserInfo.update_counters(user.find_or_create_user_info.id, user_incomes)
+    UserInfo.update_counters(user.user_info.id, user_incomes)
   end
 
   def user_incomes
