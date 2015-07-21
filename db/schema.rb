@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150720083546) do
+ActiveRecord::Schema.define(version: 20150721030336) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -39,6 +39,15 @@ ActiveRecord::Schema.define(version: 20150720083546) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string   "bankname"
+  end
+
+  create_table "daily_reports", force: :cascade do |t|
+    t.date     "day"
+    t.decimal  "amount"
+    t.integer  "user_id"
+    t.integer  "report_type"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
   end
 
   create_table "divide_incomes", force: :cascade do |t|
@@ -175,6 +184,9 @@ ActiveRecord::Schema.define(version: 20150720083546) do
   create_table "selling_incomes", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer  "user_id"
+    t.integer  "order_id"
+    t.decimal  "amount"
   end
 
   create_table "service_notifies", force: :cascade do |t|
@@ -336,6 +348,8 @@ ActiveRecord::Schema.define(version: 20150720083546) do
   add_foreign_key "orders", "users", column: "seller_id", name: "fk_order_seller_foreign_key"
   add_foreign_key "privilege_cards", "products"
   add_foreign_key "privilege_cards", "users"
+  add_foreign_key "selling_incomes", "orders"
+  add_foreign_key "selling_incomes", "users"
   add_foreign_key "sharing_incomes", "order_items"
   add_foreign_key "sharing_incomes", "users"
   add_foreign_key "sharing_incomes", "users", column: "seller_id"
