@@ -31,10 +31,16 @@ class Ability
   def grant_permissions_to_seller user
     can :manage, Order, seller_id: user.id
     can :manage, Product, user_id: user.id
+    can :manage, PersonalAuthentication, user_id: user.id
+    can :manage, EnterpriseAuthentication, user_id: user.id
     can :read, SharingIncome, seller_id: user.id
     can :read, DivideIncome, user_id: user.id
     can :read, SellingIncome, user_id: user.id
     can :read, SellingIncome, user: { agent_id: user.id }
+  end
+
+  def grant_permissions_to_agent user
+    can :manage, User, agent_id: user.id
   end
 
 end
