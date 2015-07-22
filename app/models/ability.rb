@@ -4,10 +4,13 @@ class Ability
 
   def initialize(user)
     user ||= User.new # for guest user (not logged in)
-    if user.admin?
+    roles = user.user_roles
+    if user.admin? && roles.present?
       begin
-        grant_method = "grant_permissions_to_#{user.role_name}"
-        __send__ grant_method, user
+        roles.each do |role|
+          grant_method = "grant_permissions_to_#{role.name}"
+          __send__ grant_method, user
+        end
       rescue NoMethodError
         no_permissions
       end
