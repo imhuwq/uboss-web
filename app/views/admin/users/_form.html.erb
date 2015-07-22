@@ -3,7 +3,7 @@
   <%= f.input :password %>
   <%= f.input :password_confirmation %>
   <%= f.input :nickname %>
-  <%= f.association :user_role, label_method: :display_name, value_method: :id, include_blank: false %>
+  <%= f.association :user_roles, label_method: :display_name, value_method: :id, include_blank: false %>
 
   <%= f.submit class: 'btn btn-default' %>
 <% end %>

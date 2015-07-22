@@ -8,7 +8,11 @@
   <% end %>
   <%= t.cell :mobile %>
   <%= t.cell :nickname %>
-  <%= t.cell :role_display_name %>
+  <%= t.cell :role_display_name do |user| %>
+    <% user.user_roles.each do |role| %>
+      <span class='label label-info'><%= role.display_name %></span>
+    <% end %>
+  <% end %>
   <%= t.cell :action do |user| %>
     <%= link_to '编辑', edit_admin_user_path(user) %>
   <% end %>
