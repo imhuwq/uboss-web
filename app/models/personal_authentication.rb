@@ -1,4 +1,5 @@
 class PersonalAuthentication < ActiveRecord::Base
+  # FIXME use custom validator
   CODE15 = /^[1-9]\d{7}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}$/ # 15位身份证号
   CODE18 = /^[1-9]\d{5}[1-9]\d{3}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}([0-9]|X)$/ # 18位身份证号
   DATA_STATUS = { posted: '已提交', review: '验证中', pass: '已通过', no_pass: '未通过' }

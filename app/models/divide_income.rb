@@ -1,5 +1,8 @@
 class DivideIncome < ActiveRecord::Base
 
+  belongs_to :user
+  belongs_to :order
+
   validates :user_id, :order_id, :amount, presence: true
 
   after_create :increase_user_income, :record_trade

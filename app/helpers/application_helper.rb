@@ -28,7 +28,7 @@ module ApplicationHelper
 
   def li_link name, path, opts = {}
     i18n_key = opts.delete(:i18n_key)
-    active_class = active?(name) || active?(opts.delete(:another_active_name))
+    active_class = active?(opts.delete(:another_active_name) || name)
     content_tag :li, { class: active_class.to_s }.merge(opts) do
       content_tag :a, I18n.t("li_link.#{i18n_key || name}"), href: path
     end
@@ -40,7 +40,11 @@ module ApplicationHelper
   end
 
   def active? chapter
-    controller_name == chapter.to_s ? "active" : nil
+    if action_name == chapter.to_s
+      'active'
+    elsif controller_name == chapter.to_s
+      'active'
+    end
   end
 
   def sharing_meta_tags(meta_tags)

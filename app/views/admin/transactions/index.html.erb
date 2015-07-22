@@ -1,0 +1,14 @@
+<%= table_for(@transactions) do |t| %>
+  <%= t.cell :created_at %>
+  <%= t.cell :user_identify %>
+  <%= t.cell :current_amount %>
+  <%= t.cell :adjust_amount %>
+  <%= t.cell :source_type do |transaction| %>
+    <% if transaction.source_type.present? %>
+      <%= transaction.source_type.constantize.model_name.human %>
+    <% end %>
+  <% end %>
+  <%= t.cell :source_id  %>
+<% end %>
+
+<%= paginate @transactions %>

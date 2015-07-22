@@ -23,6 +23,10 @@ zh-CN:
     wx_payment_no: 微信交易号
     wx_payment_time: 微信交易时间
     error_info: 错误信息
+    current_amount: 余额
+    adjust_amount: 调整额度
+    source_type: 来源
+    source_id: 来源ID
   simple_form:
     labels:
       product: &product
@@ -112,9 +116,14 @@ zh-CN:
     withdraw_records: 用户提现
     products: 商品
     users: 后台账户
+    backend_status: Sidekiq
+    transactions: 交易数据
   activerecord:
     models:
       withdraw_record: 提现记录
+      sharing_income: 分享收入
+      selling_income: 销售收入
+      divide_income: 分成收入
     attributes:
       withdraw_record:
         user_identify: 申请人

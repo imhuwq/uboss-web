@@ -56,14 +56,16 @@ Rails.application.routes.draw do
       end
       resources :users, except: [:destroy] do
         resource :personal_authentications
-        resource :enterprise_authentications   
+        resource :enterprise_authentications
       end
       resource :account, only: [:edit, :show, :update] do
         get :password, on: :member
         patch :password, to: 'accounts#update_password'
       end
+      resources :transactions, only: [:index]
 
       get '/data', to: 'data#index'
+      get '/backend_status', to: 'dashboard#backend_status'
 
       root 'dashboard#index'
     end
