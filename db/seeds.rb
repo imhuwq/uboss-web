@@ -38,7 +38,7 @@ u3 = User.create(
   mobile: '13800000002',
   password: '111111',
   nickname: "seller1",
-  agent_id: u2.id
+  agent_id: u2.id,
   admin: false
 )
 u3.user_roles = [seller_role]
