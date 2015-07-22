@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150721033218) do
+ActiveRecord::Schema.define(version: 20150722080849) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -62,14 +62,16 @@ ActiveRecord::Schema.define(version: 20150721033218) do
   end
 
   create_table "enterprise_authentications", force: :cascade do |t|
-    t.integer "user_id"
-    t.integer "status",                               default: 0
-    t.string  "enterprise_name"
-    t.string  "business_license_img"
-    t.string  "legal_person_identity_card_front_img"
-    t.string  "legal_person_identity_card_end_img"
-    t.string  "address"
-    t.string  "mobile"
+    t.integer  "user_id"
+    t.integer  "status",                               default: 0
+    t.string   "enterprise_name"
+    t.string   "business_license_img"
+    t.string   "legal_person_identity_card_front_img"
+    t.string   "legal_person_identity_card_end_img"
+    t.string   "address"
+    t.string   "mobile"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "evaluations", force: :cascade do |t|
@@ -141,14 +143,16 @@ ActiveRecord::Schema.define(version: 20150721033218) do
   add_index "orders", ["number"], name: "index_orders_on_number", unique: true, using: :btree
 
   create_table "personal_authentications", force: :cascade do |t|
-    t.integer "user_id"
-    t.integer "status",                      default: 0
-    t.string  "name"
-    t.string  "identity_card_code"
-    t.string  "face_with_identity_card_img"
-    t.string  "identity_card_front_img"
-    t.string  "address"
-    t.string  "mobile"
+    t.integer  "user_id"
+    t.integer  "status",                      default: 0
+    t.string   "name"
+    t.string   "identity_card_code"
+    t.string   "face_with_identity_card_img"
+    t.string   "identity_card_front_img"
+    t.string   "address"
+    t.string   "mobile"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "privilege_cards", force: :cascade do |t|
@@ -308,6 +312,11 @@ ActiveRecord::Schema.define(version: 20150721033218) do
 
   add_index "user_infos", ["user_id"], name: "index_user_infos_on_user_id", unique: true, using: :btree
 
+  create_table "user_role_relations", force: :cascade do |t|
+    t.integer "user_id"
+    t.integer "user_role_id"
+  end
+
   create_table "user_roles", force: :cascade do |t|
     t.string   "name"
     t.string   "display_name"
@@ -333,7 +342,6 @@ ActiveRecord::Schema.define(version: 20150721033218) do
     t.boolean  "admin",                  default: false
     t.boolean  "need_reset_password",    default: false
     t.string   "nickname"
-    t.integer  "user_role_id"
     t.string   "weixin_unionid"
     t.string   "weixin_openid"
     t.boolean  "need_set_login",         default: false
@@ -383,7 +391,6 @@ ActiveRecord::Schema.define(version: 20150721033218) do
   add_foreign_key "transactions", "users"
   add_foreign_key "user_addresses", "users"
   add_foreign_key "user_infos", "users", on_delete: :nullify
-  add_foreign_key "users", "user_roles"
   add_foreign_key "users", "users", column: "agent_id"
   add_foreign_key "withdraw_records", "bank_cards", on_delete: :nullify
   add_foreign_key "withdraw_records", "users"

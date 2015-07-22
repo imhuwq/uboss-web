@@ -27,6 +27,9 @@ zh-CN:
     adjust_amount: 调整额度
     source_type: 来源
     source_id: 来源ID
+    agent_name: 创客名称
+    seller_today_joins: 今日简约商家
+    seller_total_joins: 累计签约商家
   simple_form:
     labels:
       product: &product

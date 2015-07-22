@@ -55,8 +55,10 @@ Rails.application.routes.draw do
         end
       end
       resources :users, except: [:destroy] do
-        resource :personal_authentications
-        resource :enterprise_authentications
+        resource :personal_authentication
+        resource :enterprise_authentication
+      end
+      resources :agents, except: [:new, :edit, :update, :destroy] do
       end
       resource :account, only: [:edit, :show, :update] do
         get :password, on: :member

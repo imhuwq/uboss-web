@@ -1,0 +1,34 @@
+<div class="row text-center">
+  <div class="col-xs-4"></div>
+  <div class="col-xs-2">
+    <div>今日签约创客</div>
+    <b style="font-size:3em;"><%= User.agent_today_joins %></b>
+  </div>
+  <div class="col-xs-2">
+    <div>总签约创客</div>
+    <b style="font-size:3em;"><%= User.agent_total_joins %></b>
+  </div>
+</div>
+<div id="index_list">
+  <%= table_for(@agents) do |t| %>
+    <%= t.cell :agent_name do |obj| %>
+      <%= link_to [:admin, obj] do %>
+      <div class="col-sm-3">
+        <%= image_tag(obj.avatar, size: "100x80", alt: "-") %>
+      </div>
+      <div class="col-sm-9">
+        <div class="col-sm-12">创客名称：<%= obj.identify %></div>
+      </div>
+      <% end %>
+    <% end %>
+    <%= t.cell :login %>
+    <%= t.cell :seller_today_joins do |obj| %>
+      <%= obj.seller_today_joins %>
+    <% end %>
+    <%= t.cell :seller_total_joins do |obj| %>
+    <%= obj.seller_total_joins %>
+    <% end %>
+    <%= t.cell :created_at %>
+  <%- end %>
+  <%= paginate @agents %>
+</div>

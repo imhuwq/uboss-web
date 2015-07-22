@@ -9,7 +9,6 @@ class User < ActiveRecord::Base
   mount_uploader :avatar, ImageUploader
 
   has_one :user_info, autosave: true
-  belongs_to :user_role
   has_many :transactions
   # for buyer
   has_many :user_addresses
@@ -19,6 +18,8 @@ class User < ActiveRecord::Base
   # for seller
   has_many :sold_orders, class_name: 'Order', foreign_key: 'seller_id'
   has_many :products
+  has_many :user_role_relations, dependent: :destroy
+  has_many :user_roles, through: :user_role_relations
   belongs_to :agent, class_name: 'User'
 
   validates :login, uniqueness: true, mobile: true, presence: true, if: -> { !need_set_login? }
@@ -31,7 +32,6 @@ class User < ActiveRecord::Base
   delegate :income, :income_level_one, :income_level_two, :service_rate,
     :income_level_thr, :frozen_income,
     to: :user_info, allow_nil: true
-  delegate :name, :display_name, to: :user_role, prefix: :role, allow_nil: true
 
   before_destroy do # prevent destroy official account
     if login == OFFICIAL_ACCOUNT_LOGIN
@@ -129,6 +129,22 @@ class User < ActiveRecord::Base
     address ||= user_addresses.first
     user_addresses.where(default: true).update_all(default: false)
     address.update(default: true)
+  end
+
+  def seller_today_joins
+    User.where("agent_id = ? and created_at > ? and created_at < ?", self.id, Time.now.beginning_of_day, Time.now.end_of_day).count
+  end
+
+  def seller_total_joins
+    User.where("agent_id = ?", self.id).count
+  end
+
+  def self.agent_today_joins
+    UserRole.find_by(name: "agent").users.where("created_at > ? and created_at < ?", Time.now.beginning_of_day, Time.now.end_of_day).count
+  end
+
+  def self.agent_total_joins
+    UserRole.find_by(name: "agent").users.count
   end
 
   private

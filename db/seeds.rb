@@ -7,24 +7,39 @@
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 
 # Create two necessary user_role
-super_role  = UserRole.create(name: 'super_admin', display_name: '超级管理员')
-seller_role = UserRole.create(name: 'seller', display_name: '商户')
+super_role = UserRole.find_or_create(name: 'super_admin', display_name: '超级管理员')
+agent_role = UserRole.find_or_create(name: 'agent', display_name: '创客')
+seller_role = UserRole.find_or_create(name: 'seller', display_name: '商户')
 
 # Create UBOSS official account
-User.create(
+u1 = User.create(
   login: '13800000000',
   mobile: '13800000000',
-  password: 'superpassword',
-  user_role: super_role,
+  password: '111111',
   nickname: "UBOSS",
   store_name: "UBOSS官方",
   admin: true
 )
+u1.user_roles = [super_role,agent_role,seller_role]
+u1.save
 
-User.create(
+u2 = User.create(
   login: '13800000001',
   mobile: '13800000001',
-  password: 'superpassword',
-  user_role: seller_role,
-  admin: true
+  password: '111111',
+  nickname: "agent1",
+  admin: false
 )
+u2.user_roles = [agent_role,seller_role]
+u2.save
+
+u3 = User.create(
+  login: '13800000002',
+  mobile: '13800000002',
+  password: '111111',
+  nickname: "seller1",
+  agent_id: u2.id
+  admin: false
+)
+u3.user_roles = [seller_role]
+u3.save
