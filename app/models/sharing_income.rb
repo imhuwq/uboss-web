@@ -3,12 +3,6 @@ class SharingIncome < ActiveRecord::Base
   include Orderable
   include Numberable
 
-  USER_LEVEL_INCOME_MAPKEYS = [
-    :income_level_one,
-    :income_level_two,
-    :income_level_thr
-  ]
-
   belongs_to :user
   belongs_to :seller, class_name: 'User'
   belongs_to :order_item
@@ -37,7 +31,6 @@ class SharingIncome < ActiveRecord::Base
   def user_incomes
     return @user_incomes if @user_incomes.present?
     @user_incomes = { income: amount }
-    @user_incomes.merge!(USER_LEVEL_INCOME_MAPKEYS[self.level - 1] => amount)
   end
 
   def record_trade

@@ -40,9 +40,7 @@ module ApplicationHelper
   end
 
   def active? chapter
-    if action_name == chapter.to_s
-      'active'
-    elsif controller_name == chapter.to_s
+    if controller_name == chapter.to_s
       'active'
     end
   end

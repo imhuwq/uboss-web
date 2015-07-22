@@ -5,7 +5,7 @@
     </div>
     <nav class="collapse navbar-collapse bs-navbar-collapse">
       <ul class="nav navbar-nav">
-        <%= li_link(:dashboard, admin_root_path, another_active_name: :index) %>
+        <%= li_link(:dashboard, admin_root_path, action_check: false) %>
         <%= li_link(:products, admin_products_path) %>
         <%= nav_group :orders do %>
           <%= li_link(:orders, admin_orders_path) %>

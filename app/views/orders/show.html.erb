@@ -100,9 +100,10 @@
       <script type="text/javascript" charset="utf-8">
 wx.ready(function(){
 
+  UBoss.nami.setPayenv("<%= $wechat_env %>");
   $('#wx-pay-btn').on('click', function(event){
     event.preventDefault();
-    wx.chooseWXPay({
+    UBoss.nami.chooseWXPay({
       "timestamp": "<%= @pay_p[:timeStamp] %>",
       "nonceStr": "<%= @pay_p[:nonceStr] %>",
       "package": "<%= @pay_p[:package] %>",

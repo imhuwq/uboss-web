@@ -1,5 +1,6 @@
 zh-CN:
   attributes:
+    store_name: 店铺名称
     process_at: 处理时间
     done_at: 完成时间
     current_password: 当前密码

@@ -27,11 +27,18 @@ module ChargeService
     # 重新更新支付流水号
     order.pay_serial_number = "#{order.number}-#{Time.current.to_i}"
 
-    request_weixin_unifiedorder(order, options) do |res|
-      order.prepay_id = res["prepay_id"]
+    if $wechat_env.test?
+      order.prepay_id = OrderCharge::FAKE_PREPAY_ID
       order.prepay_id_expired_at = Time.current + 2.hours
-      Rails.logger.debug("set prepay_id: #{order.prepay_id}")
+      Rails.logger.debug("set FAKE prepay_id: #{order.prepay_id}")
       order.save(validate: false)
+    else
+      request_weixin_unifiedorder(order, options) do |res|
+        order.prepay_id = res["prepay_id"]
+        order.prepay_id_expired_at = Time.current + 2.hours
+        Rails.logger.debug("set prepay_id: #{order.prepay_id}")
+        order.save(validate: false)
+      end
     end
 
     order.order_charge
