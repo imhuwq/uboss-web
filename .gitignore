@@ -43,7 +43,6 @@ bower.json
 /config/database.yml
 .DS_Store
 /db/schema.rb
-/db/schema.rb
 .rubocop.yml
 /public/uploads
 dump.rdb
