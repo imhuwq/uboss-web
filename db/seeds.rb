@@ -7,9 +7,9 @@
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 
 # Create two necessary user_role
-super_role = UserRole.find_or_create(name: 'super_admin', display_name: '超级管理员')
-agent_role = UserRole.find_or_create(name: 'agent', display_name: '创客')
-seller_role = UserRole.find_or_create(name: 'seller', display_name: '商户')
+super_role = UserRole.create(name: 'super_admin', display_name: '超级管理员')
+agent_role = UserRole.create(name: 'agent', display_name: '创客')
+seller_role = UserRole.create(name: 'seller', display_name: '商户')
 
 # Create UBOSS official account
 u1 = User.create(
