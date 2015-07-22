@@ -79,7 +79,7 @@ class Order < ActiveRecord::Base
   end
 
   def fill_shiped_at
-    update_column(:signed_at, Time.now)
+    update_column(:shiped_at, Time.now)
   end
 
   def fill_signed_at
