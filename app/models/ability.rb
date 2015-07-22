@@ -27,6 +27,9 @@ class Ability
     can :manage, Order, seller_id: user.id
     can :manage, Product, user_id: user.id
     can :read, SharingIncome, seller_id: user.id
+    can :read, DivideIncome, user_id: user.id
+    can :read, SellingIncome, user_id: user.id
+    can :read, SellingIncome, user: { agent_id: user.id }
   end
 
 end
