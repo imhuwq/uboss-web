@@ -1,12 +1,15 @@
 @import 'animations';
 @import "mobile_page/reset";
-@import 'mobile_page/autoStrap';
+@import 'mobile_page/frontjobs/autoStrap';
+@import 'mobile_page/frontjobs/comm';
+@import 'mobile_page/frontjobs/style';
+@import 'mobile_page/frontjobs/pro_dail';
+@import 'mobile_page/frontjobs/appraisal';
+@import 'mobile_page/frontjobs/successful_payment';
 @import 'mobile_page/font_width';
 @import 'mobile_page/toshare';
 @import 'mobile_page/mobile';
-@import 'mobile_page/style';
 @import 'mobile_page/rewrite_style';
-@import 'mobile_page/ulaiber';
 @import 'mobile_page/order';
 
 .box {
