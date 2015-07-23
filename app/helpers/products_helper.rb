@@ -8,4 +8,11 @@ module ProductsHelper
     end
   end
 
+  def product_traffic(product)
+    if @product.buyer_pay
+      "￥#{@product.traffic_expense}"
+    else
+      '包邮'
+    end
+  end
 end

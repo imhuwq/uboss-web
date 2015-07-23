@@ -28,12 +28,14 @@
   <div class="appr_box2">
     <div class="appr_box2_cont">
       <div class="appr_header">
-        <span class="appr_header_img"><%= image_tag "img/hed.jpg" %><span class="appr_header_zhe"></span></span>
-        <span class="appr_header_tit"><strong>0</strong>积分</span>
+        <span class="appr_header_img">
+          <%= image_tag User.last.avatar_url(:h50) %>
+        </span>
+        <span class="appr_header_tit">将获得<strong>0</strong>积分</span>
       </div>
       <div class="appr_header_content">
-        <P class="appr_line1"><strong>8</strong><span>折</span></P>
-        <P class="appr_line2">购买本商品每件省</P>
+        <p class="appr_line1"><strong>8</strong><span>折</span></p>
+        <p class="appr_line2">购买本商品每件省</p>
         <p class="appr_line3">省<strong>25</strong>元/件</p>
         <p class="appr_line4">返<strong>20</strong>积分/件</p>
       </div>

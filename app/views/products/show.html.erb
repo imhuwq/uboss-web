@@ -13,38 +13,60 @@
   <div class="prdv_img">
     <%= image_tag(@product.image_url(:w640),  alt: "#{@product.name}") %>
   </div>
-  <div class="prdv_cont">
-    <p><strong><%= @product.name %></strong></p>
-    <div class="contpric">
-      <span class="pric">价格：</span>
-      <span class="pric1">￥<span class="pric2 prvd_color"><%= @product.present_price %></span></span>
-      <span class="pric3 prvd_colors line-through">
-        ￥<%= @product.original_price %>
-      </span>
+  <div class="dail_box">
+    <div class="dail_contitl">
+      <p class="dail_title"><%= @product.name %></p>
+      <p class="dail_prics">
+      <span class="pricc">价格：</span>
+      <span class="pric1v">￥<%= @product.present_price %></span>
+      <span class="pric3 prvd_colors"><%= @product.original_price %></span>
+      </p>
+      <p class="dail_pric3">
+      <span class="pricc_v1">快递：<%= product_traffic(@product) %></span>
+      <span class="pricc_v2">
+        好评率：
+        <span class="pricc"><%= Evaluation.product_good_reputation_rate(@product.id) %> </span>
+        （<%= Evaluation.product_good_reputation(@product.id) %>人）</span>
+      </p>
+    </div>
+  </div>
+  <div class="comming">
+    <p class="comming_cont">
+    <span class="comming_v1">
+      <% if @product.user.avatar.present? %>
+        <%= image_tag @seller.avatar_url(:h50) %>
+      <% else %>
+        <%= @seller.store_name %>
+      <% end %>
+    </span>
+    <span class="comming_v2"><a href="#">进入商铺</a></span>
     </p>
-    <div class="contpric2">
-      <div class="contpric_left">
-        <span class="prvd_colors">
-          <%= Product::DataBuyerPay[@product.buyer_pay] %>
-          <% if @product.buyer_pay %>
-          <%= "：￥#{@product.traffic_expense}" %>
-          <% end %>
+  </div>
+</div>
+
+<% if @privilege_card %>
+  <div class="appr_box2">
+    <div class="appr_box2_cont">
+      <div class="appr_header">
+        <span class="appr_header_img">
+          <%= image_tag @privilege_card.user.avatar_url(:h50) %>
         </span>
+        <span class="normal_appr_header_tit"><%= @privilege_card.user.identify %>的友情卡</span>
       </div>
-      <div  class="contpric_right">
-        <span class="prvd_colors">好评率：</span>
-        <span class="pric1"><%= Evaluation.product_good_reputation_rate(@product.id) %></span>
-        <span class="prvd_colors">（<%= Evaluation.product_good_reputation(@product.id) %>人）</span>
+      <div class="appr_header_content">
+        <p class="appr_line1"><strong>8</strong><span>折</span></p>
+        <p class="appr_line2">购买本商品每件省</p>
+        <p class="appr_line3">省<strong>25</strong>元/件</p>
       </div>
     </div>
   </div>
-</div>
-<div class="product-info-title">
-  图文详情
-</div>
+<% end %>
+
 <div class="prvid_content">
-    <%== @product.content %>
+  <p class="prvid_content_tit">图文详情</p>
+  <%== @product.content %>
 </div>
+
 <% if @sharing_node.blank? %>
 <div class="buy">
   <%= link_to '立即购买', new_order_path(product_id: @product.id), class: 'buy_btn' %>

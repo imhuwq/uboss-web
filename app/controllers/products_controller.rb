@@ -11,6 +11,8 @@ class ProductsController < ApplicationController
 
   def show
     @product = Product.published.find(params[:id])
+    @seller = @product.user
+    @privilege_card = PrivilegeCard.first
     if current_user
       @sharing_link_node = SharingNode.find_or_create_user_last_sharing_by_product(current_user, @product)
     end
