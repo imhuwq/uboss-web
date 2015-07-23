@@ -74,7 +74,7 @@ Rails.application.routes.draw do
     mount RedactorRails::Engine => '/redactor_rails'
   end
 
-  authenticate :user, lambda { |user| user.admin? && user.user_roles.collect(&:name).include?("super_admin") } do
+  authenticate :user, lambda { |user| user.admin? && user.is_role?('super_admin') } do
     mount Sidekiq::Web => '/sidekiq'
   end
 

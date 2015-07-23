@@ -131,6 +131,14 @@ class User < ActiveRecord::Base
     address.update(default: true)
   end
 
+  def role_names
+    @role_names ||= user_roles.pluck(:name)
+  end
+
+  def is_role?(role_name)
+    role_names.include?(role_name)
+  end
+
   def seller_today_joins
     User.where("agent_id = ? and created_at > ? and created_at < ?", self.id, Time.now.beginning_of_day, Time.now.end_of_day).count
   end
