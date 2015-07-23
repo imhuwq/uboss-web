@@ -39,7 +39,7 @@ class OrdersController < ApplicationController
     @order_form.sharing_code = get_product_sharing_code(@order_form.product_id)
     if @order_form.save
       sign_in(@order_form.buyer) if current_user.blank?
-      flash[:order_confirm] = 'true'
+      @order_title = '确认订单'
       redirect_to order_path(@order_form.order, showwxpaytitle: 1)
     else
       @order_form.captcha = nil

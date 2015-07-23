@@ -1,5 +1,5 @@
 <%= content_for :page_title do %>
-  <%= flash[:order_confirm].present? ? '确认订单' : @order.state_i18n %>
+  <%= @order_title || @order.state_i18n %>
 <% end %>
 
 <div class="order-status-bar">
