@@ -15,22 +15,23 @@ class Order < ActiveRecord::Base
   validates :user_id, :user_address_id, :seller_id, presence: true
   validates_uniqueness_of :number, allow_blank: true
 
-  before_create :set_info_by_user_address
-
   delegate :mobile, :regist_mobile, :identify, to: :user, prefix: :buyer
   delegate :prepay_id, :prepay_id=, :prepay_id_expired_at, :prepay_id_expired_at=,
     :pay_serial_number, :pay_serial_number=, :payment, :payment_i18n, :paid_at,
     to: :order_charge, allow_nil: true
 
+  enum state: { unpay: 0, payed: 1, shiped: 3, signed: 4, closed: 5, completed: 6 }
+
   scope :selled, -> { where("orders.state <> 0") }
 
-  enum state: { unpay: 0, payed: 1, shiped: 3, signed: 4, closed: 5 }
+  before_create :set_info_by_user_address
 
   aasm column: :state, enum: true, skip_validation_on_save: true, whiny_transitions: false do
     state :unpay
     state :payed
     state :shiped, after_enter: :fill_shiped_at
-    state :signed, after_enter: [:fill_signed_at, :call_order_complete_handler]
+    state :signed, after_enter: :fill_signed_at
+    state :completed, after_enter: :fill_completed_at
     state :closed, after_enter: :recover_product_stock
 
     event :pay do
@@ -39,11 +40,14 @@ class Order < ActiveRecord::Base
     event :ship do
       transitions from: :payed, to: :shiped
     end
-    event :sign do
+    event :sign, after_commit: :call_order_complete_handler do
       transitions from: :shiped, to: :signed
     end
     event :close do
       transitions from: :unpay, to: :closed
+    end
+    event :complete do
+      transitions from: :signed, to: :completed
     end
   end
 
@@ -84,6 +88,10 @@ class Order < ActiveRecord::Base
 
   def fill_signed_at
     update_column(:signed_at, Time.now)
+  end
+
+  def fill_completed_at
+    update_column(:completed_at, Time.now)
   end
 
   def set_info_by_user_address

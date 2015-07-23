@@ -171,6 +171,7 @@ zh-CN:
         payed: 已付款
         shiped: 已发货
         signed: 已签收
+        completed: 已完成
         closed: 关闭
     order_charge:
       payment:

@@ -4,9 +4,11 @@ class OrderPayedHandlerJob < ActiveJob::Base
   LEVEL_AMOUNT_FIELDS = [:share_amount_lv_1, :share_amount_lv_2, :share_amount_lv_3]
 
   class OrderNotSigned < StandardError;;end
+  class OrderProcessed < StandardError;;end
 
   def perform(order)
     raise OrderNotSigned unless order.reload.signed?
+    raise OrderProcessed if order.sharing_rewared?
 
     seller_income = order.pay_amount
 
@@ -17,18 +19,23 @@ class OrderPayedHandlerJob < ActiveJob::Base
     # Read More in http://api.rubyonrails.org/classes/ActiveRecord/Transactions/ClassMethods.html
     # ----------------------
     Order.transaction do
-      order.order_items.each do |order_item|
-        reward_sharing_users order_item do |reward_amount|
-          seller_income -= reward_amount
+      begin
+        order.order_items.each do |order_item|
+          reward_sharing_users order_item do |reward_amount|
+            seller_income -= reward_amount
+          end
         end
-      end
 
-      divide_income_for_official_or_agent order, seller_income do |divide_amount|
-        seller_income -= divide_amount
-      end
+        divide_income_for_official_or_agent order, seller_income do |divide_amount|
+          seller_income -= divide_amount
+        end
 
-      SellingIncome.create!(user: order.seller, amount: seller_income, order: order)
-      order.update_columns(income: seller_income, sharing_rewared: true)
+        SellingIncome.create!(user: order.seller, amount: seller_income, order: order)
+        order.update_columns(income: seller_income, sharing_rewared: true)
+        order.complete!
+      rescue => e
+        raise e
+      end
     end
   end
 

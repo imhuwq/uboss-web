@@ -54,6 +54,8 @@
                 <input type="submit" value="已签收" class="my_retur my_confir btn" disabled="disabled">
               <% elsif obj.state == 'closed' %>
                 <input type="submit" value="交易关闭" class="my_retur my_confir btn" disabled="disabled">
+              <% elsif obj.completed? %>
+                <input type="submit" value="交易完成" class="my_retur my_confir btn" disabled="disabled">
               <% end %>
               </span>
             </p>

@@ -12,6 +12,7 @@
 .label {
   &.state-unpay, &.state-unprocess { @extend .label-default }
   &.state-payed, &.state-processed { @extend .label-primary }
+  &.state-completed { @extend .label-warning }
   &.state-shiped { @extend .label-info }
   &.state-signed, &.state-done { @extend .label-success }
   &.state-closed { @extend .label-warning }
