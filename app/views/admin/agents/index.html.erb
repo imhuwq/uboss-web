@@ -12,7 +12,7 @@
 <div id="index_list">
   <%= table_for(@agents) do |t| %>
     <%= t.cell :agent_name do |obj| %>
-      <%= link_to [:admin, obj] do %>
+      <%= link_to url_for(controller: 'admin/agents', action: :show, id: obj) do %>
       <div class="col-sm-3">
         <%= image_tag(obj.avatar, size: "100x80", alt: "-") %>
       </div>

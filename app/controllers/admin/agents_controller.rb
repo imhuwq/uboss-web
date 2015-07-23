@@ -4,7 +4,7 @@ class Admin::AgentsController < AdminController
   end
 
   def show
-    @agent = UserRole.where(name: 'agent').users.find(params[:id])
+    @agent = UserRole.find_by(name: 'agent').users.find(params[:id])
   end
 
 end
