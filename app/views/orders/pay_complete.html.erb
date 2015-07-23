@@ -18,14 +18,31 @@
   </div>
   <p class="pay-comment">支付结果可能会有几分钟延迟，您可以刷新结果或稍晚查看我的订单。</p>
 <% else %>
-  <div class='pay-result'>
-    <%= image_tag 'img/确认收货.png' %>
-    <h1>支付成功</h1>
-    <p>您已通过<%= @order.payment_i18n %>成功支付：￥<%= @order_charge.paid_amount / 100 %></p>
-    <p>订单编号：<%= @order.number %></p>
+  <div class="pay_box1">
+    <div class="pay_sucss">
+      <%= image_tag 'img/pay_sucsss.png' %>
+      <span>支付成功</span>
+    </div>
+    <p>您已通过微信支付成功支付￥<%= @order_charge.paid_amount / 100.0 %>元</p>
+    <p>订单编号 ：<%= @order.number %></p>
   </div>
+  <div class="pay_sidba">您获得本商品的友情卡，确认收货后生效</div>
+  <div class="pay_content">
+    <div class="pay_box2">
+      <p class="pay_line1"><strong>9</strong><span>折</span></p>
+      <p class="pay_line2">购买本商品每件省</p>
+      <p class="pay_line3">
+      <a href="#" class="jian">-</a>
+      <a href="#"><input type="text" value="25" id="pay_text"></a>
+      <a href="#" class="jia">+</a>
+      <span>元</span>
+      </P>
+      <P class="pay_line4">返回<span>30</span>积分</P>
+    </div>
+  </div>
+  <div class="pay_laugh">
+    <%= image_tag 'img/laugh.png' %>
+    <span>友情卡可以分享给朋友使用哟……</span>
+  </div>
+  <a href="#" class="pay-bottom" id="pay-bottom">完成</a>
 <% end %>
-
-<div class='btn-container'>
-  <%= link_to "完成", account_path, class: 'accunt_adilbtn' %>
-</div>

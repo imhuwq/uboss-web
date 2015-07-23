@@ -11,7 +11,7 @@ class OrderCharge < ActiveRecord::Base
 
     if $wechat_env.test?
       update_with_wx_pay_result(
-        "total_fee" => order.pay_amount,
+        "total_fee" => order.pay_amount * 100,
         "payment" => 'wx',
         "time_end" => Time.now
       )
