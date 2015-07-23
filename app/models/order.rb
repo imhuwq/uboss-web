@@ -30,7 +30,7 @@ class Order < ActiveRecord::Base
     state :unpay
     state :payed
     state :shiped, after_enter: :fill_shiped_at
-    state :signed, after_enter: :fill_signed_at
+    state :signed, after_enter: [:fill_signed_at, :active_privilege_card]
     state :completed, after_enter: :fill_completed_at
     state :closed, after_enter: :recover_product_stock
 
@@ -106,6 +106,10 @@ class Order < ActiveRecord::Base
 
   def recover_product_stock
     order_items.each { |order_item| order_item.recover_product_stock }
+  end
+
+  def active_privilege_card
+    order_items.each(&:active_privilege_card)
   end
 
 end

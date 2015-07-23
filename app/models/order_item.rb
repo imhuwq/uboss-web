@@ -23,6 +23,12 @@ class OrderItem < ActiveRecord::Base
     )
   end
 
+  def active_privilege_card
+    if card = PrivilegeCard.find_by(user_id: user_id, product_id: product_id, actived: false)
+      card.update_column(:actived, true)
+    end
+  end
+
   def recover_product_stock
     adjust_product_stock(1)
   end
