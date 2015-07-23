@@ -26,7 +26,7 @@ $(function() {
 
   // $(".my_menu ul li").click(function(){
   //   var Index = $(this).index();
-  //   $(this).addClass('active').siblings().removeClass('active');
+  //   $(this).addClass('active').siblings().removeClass('act∏∏ive');
   //   $('my_acuntbox2').children('.qre').eq(Index).show().siblings('.qre').hide();
   // });
 
@@ -35,3 +35,19 @@ $(function() {
 function close_window() {
   $('#window').html('');
 }
+
+
+window.onresize = function(){
+  // if (g == document.documentElement.clientHeight && h == document.documentElement.clientWidth){
+  //   renderPage();
+  //   console.log('renderPage')
+  // }
+  if (g/h > document.documentElement.clientHeight/document.documentElement.clientWidth){
+    renderPage();
+    console.log('renderPage')
+  }
+  // console.log('g= ' + g)
+  // console.log('document.documentElement.clientHeight= ' + document.documentElement.clientHeight)
+  // console.log('h= ' + h)
+  // console.log('document.documentElement.clientWidth= ' + document.documentElement.clientWidth)
+};
