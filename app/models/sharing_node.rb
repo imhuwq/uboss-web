@@ -24,12 +24,16 @@ class SharingNode < ActiveRecord::Base
     node.persisted? ? node : nil
   end
 
+  def privilege_amount
+    privilege_card.present? ? privilege_card.privilege_amount : 0
+  end
+
   def to_param
     code
   end
 
   def privilege_card
-    @privilege_card ||= PrivilegeCard.find_by(user_id: user_id, product_id: product_id)
+    @privilege_card ||= PrivilegeCard.find_by(user_id: user_id, product_id: product_id, actived: true)
   end
 
   private

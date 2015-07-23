@@ -9,6 +9,14 @@ class PrivilegeCard < ActiveRecord::Base
     less_than_or_equal_to: :product_first_level_reward,
     greater_than_or_equal_to: 0
 
+  def discount
+    (product.present_price - privilege_amount) * 10 / product.present_price
+  end
+
+  def privilege_amount
+    amount + product.privilege_amount
+  end
+
   private
 
   def product_first_level_reward

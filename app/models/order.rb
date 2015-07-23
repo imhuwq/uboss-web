@@ -28,7 +28,7 @@ class Order < ActiveRecord::Base
 
   aasm column: :state, enum: true, skip_validation_on_save: true, whiny_transitions: false do
     state :unpay
-    state :payed
+    state :payed, after_enter: :create_privilege_card_if_none
     state :shiped, after_enter: :fill_shiped_at
     state :signed, after_enter: [:fill_signed_at, :active_privilege_card]
     state :completed, after_enter: :fill_completed_at
@@ -106,6 +106,10 @@ class Order < ActiveRecord::Base
 
   def recover_product_stock
     order_items.each { |order_item| order_item.recover_product_stock }
+  end
+
+  def create_privilege_card_if_none
+    order_items.each(&:create_privilege_card_if_none)
   end
 
   def active_privilege_card

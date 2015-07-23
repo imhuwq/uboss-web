@@ -23,6 +23,10 @@ class OrderItem < ActiveRecord::Base
     )
   end
 
+  def create_privilege_card_if_none
+    PrivilegeCard.find_or_create_by(user_id: user_id, product_id: product_id)
+  end
+
   def active_privilege_card
     if card = PrivilegeCard.find_by(user_id: user_id, product_id: product_id, actived: false)
       card.update_column(:actived, true)
@@ -48,7 +52,7 @@ class OrderItem < ActiveRecord::Base
   end
 
   def set_present_price
-    privilege_amount = privilege_card.present? ? privilege_card.amount : 0
+    privilege_amount = privilege_card.present? ? privilege_card.privilege_amount : 0
     self.present_price = product.present_price - privilege_amount
   end
 

@@ -81,6 +81,7 @@ group :development do
   gem "slackistrano", require: false
   gem "better_errors"
   gem "quiet_assets"
+  gem 'rack-mini-profiler'
 end
 
 group :development, :test do

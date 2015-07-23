@@ -54,9 +54,11 @@
         <span class="normal_appr_header_tit"><%= @privilege_card.user.identify %>的友情卡</span>
       </div>
       <div class="appr_header_content">
-        <p class="appr_line1"><strong>8</strong><span>折</span></p>
+        <p class="appr_line1">
+        <strong><%= number_with_precision(@privilege_card.discount, precision: 2) %></strong><span>折</span>
+        </p>
         <p class="appr_line2">购买本商品每件省</p>
-        <p class="appr_line3">省<strong>25</strong>元/件</p>
+        <p class="appr_line3">省<strong><%= @privilege_card.privilege_amount %></strong>元/件</p>
       </div>
     </div>
   </div>
