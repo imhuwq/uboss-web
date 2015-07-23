@@ -2,38 +2,58 @@
   收货评价
 <% end %>
 
-<div class="container">
 <%= simple_form_for @evaluation do |f| %>
-<div class="y_comment">
-  <div class="y_commentnox1">
-    <div class="y_img"></div>
-    <p>您已经确认收货，请给评价。</p>
-  </div>
-  <div class="y_commentnox2">
-
-      <a id="good" onclick="good()">
-      好评
-      </a>
-      <a id="normal" onclick="normal()">
-      中评
-      </a>
-      <a id="bad" onclick="bad()">
-      差评
-      </a>
-    </ul>
+  <div class="appr_box">
+    <p><%= image_tag 'img/pay_sucsss.png' %></p>
+    <p>亲，您已确认收货，给个评价吧！</p>
+    <div class="appr_feelbox">
+      <div class="appr_feellist">
+        <a class="laugh" id="good" onclick="good()"> <p>好评</p></a>
+        <a class="averg"id="normal" onclick="normal()"> <p>中评</p> </a>
+        <a class="kry" id="bad" onclick="bad()"> <p>差评</p> </a>
+        <%= f.input_field :status, style:"display:none;" %>
+        <%= f.input_field :order_item_id, value: params[:id], style:"display:none;" %>
+      </div>
+    </div>
   </div>
 
+  <div style="background-color: white; text-align: center; padding-bottom:1px;">
+    <%= f.text_area :content, placeholder: '写点评价吧', id:"y_textarea" %>
 
-  <%= f.input_field :status, style:"display:none;" %>
-  <%= f.input_field :order_item_id, value: params[:id], style:"display:none;" %>
-  <div style="padding:30px 5px;">
-    <%= f.text_area :content, placeholder: '写点评价吧',id:"y_textarea" %>
+    <div class="accunt_adil_box3" style='margin-top: 25px;'>
+      <a onclick="submitEvaluationStatus()" class="accunt_adilbtn">提交</a>
+    </div>
   </div>
-</div>
-<div class="accunt_adil_box3"><a onclick="submitEvaluationStatus()" class="accunt_adilbtn">提交</a></div>
+
+  <div class="appr_box2">
+    <div class="appr_box2_cont">
+      <div class="appr_header">
+        <span class="appr_header_img"><%= image_tag "img/hed.jpg" %><span class="appr_header_zhe"></span></span>
+        <span class="appr_header_tit">累计<strong>0</strong>积分</span>
+      </div>
+      <div class="appr_header_content">
+        <P class="appr_line1"><strong>8</strong><span>折</span></P>
+        <P class="appr_line2">购买本商品每件省</P>
+        <p class="appr_line3">省<strong>25</strong>元/件</p>
+        <p class="appr_line4">返<strong>20</strong>积分/件</p>
+      </div>
+      <div class="appr_shar"><a href="#">分享给朋友</a></div>
+    </div>
+  </div>
+
+  <div class="appr_header_pro">
+    <div class="appr_header_pro_c">
+      <div class="space_hx"></div>
+      <div class="appr_header_pro_ct">
+        <strong>使用说明：</strong>
+        <p>1、友情卡用于打折并积分，<a href="#" class="dail_a">查看说明</a></p>
+        <p>2、本友情卡所有权归某某用户</p>
+        <p>3、任何通过此页面下单的用户都可享受此卡打折优惠</p>
+        <p>4、通过此卡消费所获积分归某某用户所有</p>
+      </div>
+    </div>
+  </div>
 <% end %>
-</div>
-
 
 <script type="text/javascript">
 function good() {$("#evaluation_status").val("good");$("#good").addClass('y_hover');$("#normal").removeClass('y_hover');$("#bad").removeClass('y_hover')};

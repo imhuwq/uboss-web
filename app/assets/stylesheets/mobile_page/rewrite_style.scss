@@ -52,6 +52,12 @@ input[type=submit] {
 .sub_box3_cont1 table {
   border-bottom: none;
 }
+#y_textarea {
+  width: 250px;
+  height: 54px;
+  border: none;
+  padding: 0 15px 15px;
+}
 .nav_bar {
   background-color: rgba(67,195,170,1);
   text-align: left;
@@ -114,10 +120,6 @@ input[type=submit] {
   background-color: rgba(255,255,255,1);
 }
 .y_commentnox2 a:hover{
-  border: 3px solid rgba(67,195,170,1);
-  border-radius: 5px;
-}
-a.y_hover {
   border: 3px solid rgba(67,195,170,1);
   border-radius: 5px;
 }

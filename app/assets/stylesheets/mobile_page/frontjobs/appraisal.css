@@ -1,7 +1,7 @@
 .appr_box{
 	width: 100%;
 	background-color:rgba(255,255,255,1);
-	padding-bottom: 15px;
+	padding: 15px 0;
 	text-align: center;
 	font-size: 14px;
 }
@@ -35,7 +35,7 @@
 	background-image: image-url("img/fav_commen.png");
 	height: 42px;
 }
-.appr_feellist .laugh:hover{
+.appr_feellist .laugh.y_hover{
 	background-image: image-url("img/fav_commen_hover.png") !important;
 	height: 42px;
 }
@@ -43,7 +43,7 @@
 	background-image: image-url("img/Averag.png");
 	height: 42px;
 }
-.appr_feellist .averg:hover{
+.appr_feellist .averg.y_hover{
 	background-image: image-url("img/Averag_hover.png") !important;
 	height: 42px;
 }
@@ -51,7 +51,7 @@
 	background-image: image-url("img/Negative_Rating.png");
 	height: 42px;
 }
-.appr_feellist .kry:hover{
+.appr_feellist .kry.y_hover{
 	background-image: image-url("img/Negative_Rating_hover.png") !important;
 	height: 42px;
 }
@@ -59,7 +59,7 @@
 	color: rgba(67,195,170,1);
 	padding-top: 52px;
 	}
-.appr_feellist a p:hover{
+.appr_feellist a.y_hover p{
 	color: rgba(255,192,37,1);
 }
 .appr_box2{

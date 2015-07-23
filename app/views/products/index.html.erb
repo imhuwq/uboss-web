@@ -1,6 +1,8 @@
-<% if @seller %>
-  <%= content_for :page_title do %>
+<%= content_for :page_title do %>
+  <% if @seller %>
     <%= @seller.store_identify %>
+  <% else %>
+    <div class="log_font"> UBOSS </div>
   <% end %>
 <% end %>
 <div class="container">
