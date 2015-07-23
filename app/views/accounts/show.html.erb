@@ -49,7 +49,8 @@
               <% elsif obj.state == 'payed' %>
                 <input type="submit" value="待发货" class="my_retur my_confir btn" disabled="disabled">
               <% elsif obj.state == 'shiped' %>
-                <%= link_to "确认收货", received_order_path(obj) , class:"my_retur my_confir", data: { confirm: '确认收货？' } %>
+                <%= link_to "确认收货", received_order_path(obj),
+                  class:"my_retur my_confir", data: { confirm: '确认收货？' } %>
               <% elsif obj.state == 'signed' %>
                 <input type="submit" value="已签收" class="my_retur my_confir btn" disabled="disabled">
               <% elsif obj.state == 'closed' %>
