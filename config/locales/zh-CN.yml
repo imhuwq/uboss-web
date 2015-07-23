@@ -122,6 +122,9 @@ zh-CN:
     users: 后台账户
     backend_status: Sidekiq
     transactions: 交易数据
+    agents:  创客
+    sellers:  商家
+    banking:  提现
   activerecord:
     models:
       withdraw_record: 提现记录

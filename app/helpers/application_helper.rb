@@ -35,7 +35,8 @@ module ApplicationHelper
   end
 
   def can_li_link operate, resource, path, opt = {}
-    link_name = resource.is_a?(Class) ? resource.name.tableize : resource
+    link_name = opt[:link_name]
+    link_name ||= resource.is_a?(Class) ? resource.name.tableize : resource
     li_link(link_name, path, opt) if can?(operate, resource)
   end
 

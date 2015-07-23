@@ -11,9 +11,12 @@
           <%= li_link(:orders, admin_orders_path) %>
           <%= li_link(:sharing_incomes, admin_sharing_incomes_path) %>
         <% end %>
-        <%= can_li_link(:manage, :withdraw_records, admin_withdraw_records_path) %>
-        <%= can_li_link(:manage, :users, admin_users_path) %>
-        <%= can_li_link(:manage, :transactions, admin_transactions_path) %>
+        <%= can_li_link(:manage, :sellers, admin_root_path) %>
+        <%= can_li_link(:manage, :banking, admin_root_path, link_name: 'banking') %>
+        <%= can_li_link(:manage, :agents, admin_agents_path) %>
+        <%= can_li_link(:all, WithdrawRecord, admin_withdraw_records_path, link_name: 'withdraw_records') %>
+        <%= can_li_link(:manage, User, admin_users_path) %>
+        <%= can_li_link(:manage, Transaction, admin_transactions_path) %>
         <%= can_li_link(:manage, :backend_status, admin_backend_status_path, another_active_name: :backend_status) %>
       </ul>
 

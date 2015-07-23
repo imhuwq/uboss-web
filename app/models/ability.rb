@@ -33,6 +33,8 @@ class Ability
     can :manage, Product, user_id: user.id
     can :manage, PersonalAuthentication, user_id: user.id
     can :manage, EnterpriseAuthentication, user_id: user.id
+    # can :manage, WithdrawRecord, user_id: user.id
+    can :manage, :banking
     can :read, SharingIncome, seller_id: user.id
     can :read, DivideIncome, user_id: user.id
     can :read, SellingIncome, user_id: user.id
@@ -41,6 +43,8 @@ class Ability
 
   def grant_permissions_to_agent user
     can :manage, User, agent_id: user.id
+    can :manage, :sellers
+    can :manage, :banking
   end
 
 end
