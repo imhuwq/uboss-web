@@ -155,6 +155,10 @@ class User < ActiveRecord::Base
     UserRole.find_by(name: "agent").users.count
   end
 
+  def seller
+    User.where(agent_id: self.id)
+  end
+
   private
     def email_required?
       false
