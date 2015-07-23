@@ -27,12 +27,14 @@
 	border: 1px solid rgba(255,255,255,1);
 	background-color: rgba(204, 204, 204, 0.01);
 	color: rgba(253,185,38,1);
-	font-size: 25px;
 	font-size: 17px;
 	text-align: center;
+  border-radius: 5px;
+  padding: 2px;
 }
-.pay_line3 .jian,.jia{
+.pay_line3 .jian, .pay_line3 .jia{
 	color: rgba(255,255,255,1);;
+  padding: 10px 5px;
 }
 .pay_sidba{
 	width: 100%;
@@ -44,7 +46,6 @@
 	font-size: 12px;
 }
 .pay_content{
-	width: 320px;
 	height: 230px;
 	background-image: image-url("img/pay_bg2.png");
 	background-position:center;
@@ -56,9 +57,7 @@
 	text-align: center;
 }
 .pay_box2 .pay_line1{
-	position: absolute;
-  	top: 34px;
-  	left: 134px;
+  padding-top: 35px;
 }
 .pay_box2 .pay_line1 strong{
 	font-size: 50px;
@@ -72,25 +71,19 @@
 .pay_box2 .pay_line2{
 	color:rgba(255,255,255,1);
 	font-size: 12px;
-	position: absolute;
-  	top: 102px;
-  	left: 115px;
+  padding-top: 15px;
 }
 .pay_box2 .pay_line3{
-	position: absolute;
-  	top: 126px;
-  	left: 122px;
+  padding-top: 15px;
 }
 .pay_line3 span{
 	font-size: 12px;
 	color: #FFFFFF;
 }
 .pay_box2 .pay_line4{
-	position: absolute;
-  	top: 164px;
-  	left: 132px;
-  	font-size: 12px;
-  	color:rgba(255,255,255,1);
+  padding-top: 15px;
+  font-size: 12px;
+  color:rgba(255,255,255,1);
 }
 .pay_laugh{
 	text-align: center;
@@ -117,4 +110,14 @@
 	background-color: rgba(67,195,170,1);
 	margin-top: 30px;
 	margin-bottom: 30px;
+  border: none;
+}
+.pay-complete-actions {
+  button { display: block; }
+  a.pay-bottom {display: none; }
+
+  &.sharing-active {
+    button { display: none; }
+    a.pay-bottom {display: block; }
+  }
 }

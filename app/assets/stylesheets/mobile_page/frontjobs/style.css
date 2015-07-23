@@ -57,15 +57,13 @@ a{
 	background-position: center;
 }
 .nav_bar{
-	display: none;
-	}
-.nav_bar{
 	width: 100%;
 	background-color: rgba(10, 10, 10, .9);
 	text-align: left;
 	position: absolute;
 	top:45px;
 	right: 0px;
+  overflow-x: scroll;
 }
 .nav_bar ul li{
 	height: 30px;
@@ -1312,14 +1310,13 @@ a{
 	position: fixed;
 	bottom:0px;
 }
-.prvd_header{
+.prvd_header {
 	float: left;
 	width: 45px;
 	height: 45px;
 	border: 1px solid #ccc;
 	border-radius: 30px;
 	overflow: hidden;
-	background-image: image-url("img/header_img.jpg");
 	background-size: 45px 45px;
 	margin-top:7px;
 }
@@ -1342,10 +1339,9 @@ a{
 	line-height: 62px;
 }
 .prvd_buycont p{
-    line-height: 0px;
-   padding: 14px 0px 0px 0px;
-    color: rgba(93,93,93,1);
-    font-size: 12px;
+  padding: 10px 0px 0px 10px;
+  color: rgba(93,93,93,1);
+  font-size: 12px;
 }
 .buy_shortcont{
 	width: 90%;

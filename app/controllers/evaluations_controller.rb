@@ -2,6 +2,7 @@ class EvaluationsController < ApplicationController
   def new
     @order_item = OrderItem.find(params[:id])
     @evaluation = Evaluation.new
+    @privilege_card = PrivilegeCard.find_by(user: current_user, product: @order_item.product, actived: true)
     # if @order_item.evaluation.present?
     #   flash[:success] = "您已经评价过了"
     #   redirect_to root_path

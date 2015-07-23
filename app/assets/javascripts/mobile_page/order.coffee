@@ -1,5 +1,60 @@
 $ ->
 
+  sharing_lv1_amount = Number($('.sharing_lv1_amount').text())
+  privilege_amount = Number($('#pay_text').val())
+  present_price = Number($('#privilege_card_present_price').val())
+  origin_privilege_amount = Number($('#origin_privilege_amount').val())
+  origin_sharing_amount = Number($('#origin_sharing_amount').val())
+  maxPrivilegeAmount = origin_sharing_amount + origin_privilege_amount
+  set_privilege_card_info = ->
+    discount = (present_price - privilege_amount) * 10 / present_price
+    $('.pay_line1 > strong').text(discount.toFixed(2))
+    $('.sharing_lv1_amount').text(sharing_lv1_amount)
+    $('#pay_text').val(privilege_amount)
+
+  $('#pay_text').on 'keyup', (e)->
+    if this.value > maxPrivilegeAmount
+      alert "亲，最高优惠#{maxPrivilegeAmount}"
+      privilege_amount = maxPrivilegeAmount
+      sharing_lv1_amount = 0
+    else if this.value < privilege_amount
+      alert '亲，给朋友留点折扣吧'
+      privilege_amount = origin_privilege_amount
+      sharing_lv1_amount = origin_sharing_amount
+    else
+      privilege_amount = this.value
+      sharing_lv1_amount = maxPrivilegeAmount - privilege_amount
+    set_privilege_card_info()
+
+  $('.edit_privilege_card .jia').on 'click', (e)->
+    e.preventDefault()
+    if sharing_lv1_amount >= 1
+      sharing_lv1_amount -= 1
+      privilege_amount += 1
+      set_privilege_card_info()
+
+  $('.edit_privilege_card .jian').on 'click', (e)->
+    e.preventDefault()
+    if privilege_amount >= origin_privilege_amount + 1
+      sharing_lv1_amount += 1
+      privilege_amount -= 1
+      set_privilege_card_info()
+    else
+      alert '亲，给朋友留点折扣吧'
+
+  $('.edit_privilege_card').on 'ajax:success', (e, data)->
+    if data.actived
+      want_sharing = confirm 'BOSS，您的友情卡已激活，分享给朋友打折吧！'
+      if want_sharing
+        $('.pay-complete-actions').addClass('sharing-active')
+      else
+        window.location = $('.pay-complete-actions a').attr('href')
+    else
+      window.location = $('.pay-complete-actions a').attr('href')
+
+  $('.edit_privilege_card').on 'ajax:error', (event, xhr, status, error) ->
+    alert xhr.responseText
+
   mobile_submit_time = 0
   $('#send_mobile').on 'click', (e) ->
     e.preventDefault()

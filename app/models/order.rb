@@ -60,7 +60,7 @@ class Order < ActiveRecord::Base
   end
 
   def check_paid
-    return true if state != 'unpay' && state != 'closed'
+    return true if !unpay?
 
     if order_charge.paid?
       self.pay! if state == 'unpay'

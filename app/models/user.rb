@@ -15,6 +15,7 @@ class User < ActiveRecord::Base
   has_many :orders
   has_many :sharing_incomes
   has_many :bank_cards
+  has_many :privilege_cards
   # for seller
   has_many :sold_orders, class_name: 'Order', foreign_key: 'seller_id'
   has_many :products

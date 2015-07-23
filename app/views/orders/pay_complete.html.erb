@@ -3,6 +3,7 @@
 <% end %>
 
 <% if @order.unpay? %>
+
   <div class='pay-result'>
     <p>暂未收到订单支付结果</p>
   </div>
@@ -17,7 +18,9 @@
     </p>
   </div>
   <p class="pay-comment">支付结果可能会有几分钟延迟，您可以刷新结果或稍晚查看我的订单。</p>
+
 <% else %>
+
   <div class="pay_box1">
     <div class="pay_sucss">
       <%= image_tag 'img/pay_sucsss.png' %>
@@ -26,23 +29,46 @@
     <p>您已通过微信支付成功支付￥<%= @order_charge.paid_amount / 100.0 %>元</p>
     <p>订单编号 ：<%= @order.number %></p>
   </div>
-  <div class="pay_sidba">您获得本商品的友情卡，确认收货后生效</div>
-  <div class="pay_content">
-    <div class="pay_box2">
-      <p class="pay_line1"><strong>9</strong><span>折</span></p>
-      <p class="pay_line2">购买本商品每件省</p>
-      <p class="pay_line3">
-      <a href="#" class="jian">-</a>
-      <a href="#"><input type="text" value="25" id="pay_text"></a>
-      <a href="#" class="jia">+</a>
-      <span>元</span>
-      </P>
-      <P class="pay_line4">返回<span>30</span>积分</P>
-    </div>
-  </div>
-  <div class="pay_laugh">
-    <%= image_tag 'img/laugh.png' %>
-    <span>友情卡可以分享给朋友使用哟……</span>
-  </div>
-  <a href="#" class="pay-bottom" id="pay-bottom">完成</a>
+
+  <% if @privilege_card.present? %>
+    <div class="pay_sidba">您获得本商品的友情卡，确认收货后生效</div>
+
+    <%= simple_form_for @privilege_card, remote: true do |f| %>
+      <%= f.hidden_field_tag :origin_privilege_amount, @product.privilege_amount  %>
+      <%= f.hidden_field_tag :origin_sharing_amount, @product.share_amount_lv_1  %>
+      <%= f.hidden_field :present_price %>
+      <div class="pay_content">
+        <div class="pay_box2">
+
+          <p class="pay_line1">
+          <strong><%= number_with_precision(@privilege_card.discount, precision: 2) %></strong><span>折</span>
+          </p>
+
+          <p class="pay_line2">购买本商品每件多省</p>
+
+          <p class="pay_line3">
+          <a href="#" class="jian">-</a>
+          <%= f.input_field :privilege_amount, id: 'pay_text', type: :number %>
+          <a href="#" class="jia">+</a>
+          <span>元</span>
+          </p>
+
+          <p class="pay_line4">
+          返回<span class='sharing_lv1_amount'><%= @product.share_amount_lv_1 - @privilege_card.amount %></span>积分
+          </p>
+
+        </div>
+      </div>
+
+      <div class="pay_laugh">
+        <%= image_tag 'img/laugh.png' %>
+        <span>友情卡可以分享给朋友使用哟……</span>
+      </div>
+      <div class='pay-complete-actions'>
+        <button type='submit' class="pay-bottom" id="pay-bottom">完成</button>
+        <%= link_to "查看订单", order_path(@order), class: "pay-bottom" %>
+      </div>
+    <% end %>
+  <% end %>
+
 <% end %>

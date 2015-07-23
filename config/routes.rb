@@ -38,6 +38,7 @@ Rails.application.routes.draw do
       post :wechat_alarm
     end
   end
+  resources :privilege_cards, only: [:show, :index, :update]
 
   authenticate :user, lambda { |user| user.admin? } do
     namespace :admin do

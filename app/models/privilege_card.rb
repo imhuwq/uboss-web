@@ -9,8 +9,18 @@ class PrivilegeCard < ActiveRecord::Base
     less_than_or_equal_to: :product_first_level_reward,
     greater_than_or_equal_to: 0
 
+  delegate :present_price, to: :product
+
   def discount
     (product.present_price - privilege_amount) * 10 / product.present_price
+  end
+
+  def returning_amount
+    product.share_amount_lv_1 - amount
+  end
+
+  def privilege_amount= total_amount
+    write_attribute(:amount, BigDecimal.new(total_amount) - product.privilege_amount)
   end
 
   def privilege_amount
