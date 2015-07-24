@@ -21,6 +21,18 @@ class FinanceJob < ActiveJob::Base
   end
 
   private
+  def generate_order_daily_report(date)
+    report_type = DailyReport.report_types['user_order']
+    result = ActiveRecord::Base.connection.execute <<-SQL.squish!
+      SELECT orders.seller_id AS user_id, SUM(orders.pay_amount) AS total_amount, DATE(order_charges.paid_at) AS date
+      FROM orders
+      INNER JOIN order_charges ON order_charges.order_id = orders.id
+      WHERE order_charges.paid_at > '#{date}' AND order_charges.paid_at < '#{date + 1.day}'
+      GROUP BY date, orders.seller_id
+    SQL
+
+    batch_insert(result, report_type)
+  end
 
   def generate_selling_daily_report(date)
     report_type = DailyReport.report_types['selling']

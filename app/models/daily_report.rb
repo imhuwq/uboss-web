@@ -1,8 +1,9 @@
 class DailyReport < ActiveRecord::Base
 
-  enum report_type: { selling: 0, divide: 1, sharing: 2 }
+  enum report_type: { selling: 0, divide: 1, sharing: 2, user_order: 3 }
 
   def self.start_generate_yestoday_report
+    FinanceJob.perform_later('order')
     FinanceJob.perform_later('selling')
     FinanceJob.perform_later('divide')
   end

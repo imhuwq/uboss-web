@@ -5,15 +5,16 @@ class OrderItem < ActiveRecord::Base
   belongs_to :product
   belongs_to :sharing_node
   has_one    :evaluation
+  has_many :sharing_incomes
 
   validates :product_id, presence: true
 
   delegate :name, :traffic_expense, :present_price, to: :product, prefix: true
   delegate :privilege_card, to: :sharing_node, allow_nil: true
 
-  before_save :set_present_price, :set_pay_amount
+  before_save :set_present_price, :set_pay_amount, if: -> { order.paid_at.blank? }
   after_create :decrease_product_stock
-  after_save :update_order_pay_amount
+  after_commit :update_order_pay_amount
 
   def sharing_link_node
     @sharing_link_node ||= SharingNode.find_or_create_by(
