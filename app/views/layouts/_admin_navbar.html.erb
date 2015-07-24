@@ -8,16 +8,18 @@
         <%= li_link(:dashboard, admin_root_path, action_check: false) %>
         <%= li_link(:products, admin_products_path) %>
         <%= nav_group :orders do %>
-          <%= li_link(:orders, admin_orders_path) %>
-          <%= li_link(:sharing_incomes, admin_sharing_incomes_path) %>
+          <%= can_li_link(:manage, Order, admin_orders_path) %>
+          <%= can_li_link(:read, SharingIncome, admin_sharing_incomes_path) %>
         <% end %>
         <%= can_li_link(:manage, :sellers, admin_root_path) %>
         <%= can_li_link(:manage, :banking, admin_root_path, link_name: 'banking') %>
         <%= can_li_link(:manage, :agents, admin_agents_path) %>
-        <%= can_li_link(:all, WithdrawRecord, admin_withdraw_records_path, link_name: 'withdraw_records') %>
-        <%= can_li_link(:manage, User, admin_users_path) %>
-        <%= can_li_link(:manage, Transaction, admin_transactions_path) %>
-        <%= can_li_link(:manage, :backend_status, admin_backend_status_path, another_active_name: :backend_status) %>
+        <%= nav_group :uboss do %>
+          <%= can_li_link(:manage, WithdrawRecord, admin_withdraw_records_path, link_name: 'withdraw_records') %>
+          <%= can_li_link(:manage, User, admin_users_path) %>
+          <%= can_li_link(:manage, Transaction, admin_transactions_path) %>
+          <%= can_li_link(:manage, :backend_status, admin_backend_status_path, another_active_name: :backend_status) %>
+        <% end %>
       </ul>
 
       <ul class="nav navbar-nav navbar-right">

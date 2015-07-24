@@ -14,6 +14,8 @@ module ApplicationHelper
 
   def nav_group(name, &block)
     list = capture(&block)
+    return '' if list.blank?
+
     text = t(name, scope: "nav_groups", default: name.to_s.humanize)
     active_status = /[^_\-a-aA-Z]active/.match(list) ? "active" : ""
 
