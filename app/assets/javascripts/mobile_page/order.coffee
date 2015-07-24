@@ -44,7 +44,7 @@ $ ->
 
   $('.edit_privilege_card').on 'ajax:success', (e, data)->
     if data.actived
-      want_sharing = confirm 'BOSS，您的友情卡已激活，分享给朋友打折吧！'
+      want_sharing = confirm 'BOSS，您的友情卡已激活，收货后分享给朋友打折吧！'
       if want_sharing
         $('.pay-complete-actions').addClass('sharing-active')
       else

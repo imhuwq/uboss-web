@@ -1,5 +1,6 @@
 zh-CN:
   attributes:
+    buyer_identify: 买家
     store_name: 店铺名称
     process_at: 处理时间
     done_at: 完成时间
