@@ -17,7 +17,7 @@ class OrdersController < ApplicationController
       }
       @pay_sign = WxPay::Sign.generate(@pay_p)
     end
-    if @order.signed?
+    if @order.signed? || @order.completed?
       @sharing_link_node = @order_item.sharing_link_node
     end
   end

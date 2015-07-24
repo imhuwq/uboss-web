@@ -97,6 +97,12 @@
   <% end %>
 </div>
 
+<% if @order.signed? || @order.completed? %>
+  <div class="fenxinrated">
+    <%= render partial: 'application/share_buttoms', locals: { product: @product, node: @sharing_link_node } %>
+  </div>
+<% end %>
+
 <% if browser.wechat? %>
   <% if @order.unpay? %>
     <%= content_for :extra_javascript do %>

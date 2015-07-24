@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
   <head>
-
     <meta charset="utf-8" />
     <meta id='MobileViewport' name="viewport" content="width=320, initial-scale=1, maximum-scale=1, user-scalable=no" />
     <%= yield(:extra_meta_tags) %>
@@ -14,8 +13,8 @@
       <%= render "weixin_js" %>
     <% end %>
     <%= csrf_meta_tags %>
-
   </head>
+
   <body class="bg_grey">
     <div id="window"></div>
     <div class="box upass main bg_grey">
@@ -37,11 +36,17 @@
           <li><a href="#">关于</a></li>
         </ul>
       </div>
+
       <%= render 'layouts/mobile_flash_alert' %>
       <%= yield %>
 
     </div>
-<!--     <div class="footer"></div> -->
+
+    <div class="wx-mod-pop" id="pop-share">
+      <span class="text-share"></span>
+    </div>
+
     <%= yield(:extra_javascript) %>
+
   </body>
 </html>

@@ -1,21 +1,18 @@
 // 向页面插入分享按钮
-$('#share_buttons').html('<%= escape_javascript render :partial =>'/application/share_buttoms.html' %>');
-
-
-
+$('#share_buttons').html(
+  '<%= escape_javascript render(
+    partial: '/application/share_buttoms.html',
+    locals: { product: @product, node: @sharing_link_node }
+  ) %>'
+);
 
 // 分享的内容
 var config = document.createElement("script");
-<% if @sharing_link_node.present? %>
-var shared_url = 'http://<%= "#{request.env["HTTP_HOST"]}/sharing/#{@sharing_link_node.code}" %>'
-<% else %>
-var shared_url = 'http://<%= "#{request.env["HTTP_HOST"]}/products/#{@product.id}" %>'
-<% end %>
+var shared_url = '<%= product_sharing_link(@product, @sharing_link_node) %>'
 
 config.type = "text/javascript";
 config.innerHTML = 'var jiathis_config = { url: \'' + shared_url +'\', title: "<%= @product.try(:name) %>", summary:"原价：￥<%= @product.try(:original_price) %>,现价：￥<%= @product.try(:present_price) %>,快来抢购吧~"} '
 document.body.appendChild(config);
-
 
 $('#save_mobile_mobile').attr('disabled','disabled')
 
