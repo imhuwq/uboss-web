@@ -1,0 +1,24 @@
+
+<div class="row">
+  <%= simple_form_for(:seller, url: url_for(controller: :sellers, action: :create), method: 'POST',wrapper: :horizontal_file_input) do |f| %>
+    <%= hidden_field_tag "seller[agent_id]", @agent.id %>
+    <div class="col-xs-12 border_block">
+      <div class="col-xs-11  col-md-offset-1">
+        <h3 class="col-md-offset-1">注册绑定UBOSS</h3>
+        <h5 class="col-md-offset-4">您将与<%= @agent.try(:identify) %>创客进行绑定</h5>
+        <div class="form-group clearfix">
+          <%= f.label :mobile,:class=>"text-right col-sm-3 control-label" %>
+          <div class="col-xs-3"><%= f.input_field :mobile , as: :tel, id:"new_mobile", style:"width:100%;" %></div>
+          <div class="col-xs-3"><%= link_to '发送', '###',class: "btn btn-default btn-xs",id:"send_mobile" %></div>
+        </div>
+        <%= f.input :mobile_auth_code, as: :tel, required: true, :label_html=>{:class=>"text-right"},:input_html=>{:id=>"mobile_auth_code"} %>
+        <%= f.input :password, required: true, hint: ("#{@minimum_password_length} characters minimum" if @minimum_password_length),:label_html=>{:class=>"text-right"}  %>
+        <%= f.input :password_confirmation, required: true,:label_html=>{:class=>"text-right"}  %>
+      </div>
+    </div>
+    <div class="button_div  col-xs-4  col-md-offset-4"  style="margin-top:30px;padding-bottom:30px;">
+      <%= f.submit "创建",class: "btn btn-large btn-primary col-xs-12", id:"submit_bottom", disabled: 'disabled' %>
+    </div>
+  <% end %>
+</div>
+<%= params %>

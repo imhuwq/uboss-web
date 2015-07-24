@@ -38,11 +38,11 @@
 		<div class="col-xs-11 col-md-offset-1">
 			<div class="col-xs-2">
         <span>今日签约</span>
-        <span style="font-size:2em;"><%= @agent.seller_today_joins %></span>
+        <span style="font-size:2em;"><%= @agent.seller_today_joins.count %></span>
 			</div>
       <div class="col-xs-2">
         <span>总共签约</span>
-        <span style="font-size:2em;"><%= @agent.seller_total_joins %></span>
+        <span style="font-size:2em;"><%= @agent.seller_total_joins.count %></span>
 			</div>
 		</div>
     <%= table_for(@agent.seller) do |t| %>

@@ -29,12 +29,4 @@
   <div class="col-xs-3"><%= f.input_field :mobile , as: :tel, id:"new_mobile", style:"width:100%;" %></div>
   <div class="col-xs-3"><%= link_to '发送', '###',class: "btn btn-default btn-xs",id:"send_mobile" %></div>
 </div>
-<%= f.input :mobile_auth_code, as: :tel, required: true, :label_html=>{:class=>"text-right"} %>
-<script>
-$('#enterprise_authentication_mobile_auth_code').on('keyup',function(m){
-  var code = $(this).val()
-  console.log(code.length == 5)
-  if (code.length == 5) { $('#submit_bottom').removeAttr('disabled')}
-  if (code.length != 5) { $('#submit_bottom').attr('disabled','disabled')}
-})
-</script>
+<%= f.input :mobile_auth_code, as: :tel, required: true, :label_html=>{:class=>"text-right"},:input_html=>{:id=>"mobile_auth_code"} %>

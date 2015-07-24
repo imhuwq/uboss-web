@@ -21,7 +21,11 @@
     </tr>
     <tr>
       <th><%= User.human_attribute_name(:role_display_name) %></th>
-      <td><%= @user.user_roles.collect(&:name%></td>
+      <td>
+        <% @user.user_roles.each do |role| %>
+          <span class='label label-info'><%= role.display_name %></span>
+        <% end %>
+      </td>
     </tr>
   </tbody>
 </table>

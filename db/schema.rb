@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150723074137) do
+ActiveRecord::Schema.define(version: 20150724064407) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -359,6 +359,8 @@ ActiveRecord::Schema.define(version: 20150723074137) do
     t.boolean  "need_set_login",         default: false
     t.string   "avatar"
     t.integer  "agent_id"
+    t.string   "domain_name"
+    t.integer  "authenticated",          default: 0
   end
 
   add_index "users", ["login"], name: "index_users_on_login", unique: true, using: :btree

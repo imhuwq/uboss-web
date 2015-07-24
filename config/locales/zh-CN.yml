@@ -1,7 +1,8 @@
 zh-CN:
-  attributes:
+  attributes: &attributes
     buyer_identify: 买家
     store_name: 店铺名称
+    domain_name: 域名关键字
     process_at: 处理时间
     done_at: 完成时间
     current_password: 当前密码
@@ -21,6 +22,7 @@ zh-CN:
     nickname: 名称
     role_display_name: 角色
     password_confirmation: 密码确认
+    mobile_auth_code:              验证码
     short_description: 描述
     wx_payment_no: 微信交易号
     wx_payment_time: 微信交易时间
@@ -81,6 +83,8 @@ zh-CN:
         address:                                 地址
         mobile:                                  手机号码
         mobile_auth_code:                        验证码
+      seller:
+        <<: *attributes
   errors:
     messages:
       accepted: 必须是可被接受的

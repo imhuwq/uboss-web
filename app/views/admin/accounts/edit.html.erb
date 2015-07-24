@@ -6,13 +6,20 @@
     <span class='label label-info'><%= role.display_name %></span>
   <% end %>
   <hr/>
+  <% if user = User.find_by(id: current_user.agent_id) %>
+    <hr />
+    您的的代理商：<%= user.identify %>
+    <hr/>
+  <% end %>
   <%= simple_form_for(current_user, url: admin_account_path, method: :patch) do |f| %>
 
     <%= f.input :login, disabled: true %>
     <%= f.input :mobile %>
     <%= f.input :store_name %>
     <%= f.input :nickname %>
-
+    <% if current_user.user_roles.collect(&:name).include?('agent') %>
+      <%= f.input :domain_name, hint: "此域名将作为你分享商家注册链接时的链接关键字,如'123'将转换为'http://#{request.env["HTTP_HOST"]}/sellers/new?domain_name=123'" %>
+    <% end %>
     <%= f.submit class: 'btn btn-primary' %>
 
   <% end %>

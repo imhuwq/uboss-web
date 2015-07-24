@@ -5,6 +5,8 @@ class User < ActiveRecord::Base
   attr_accessor :code
   OFFICIAL_ACCOUNT_LOGIN = '13800000000'
 
+  attr_accessor :mobile_auth_code
+
   devise :database_authenticatable, :rememberable, :trackable, :validatable, :omniauthable
   mount_uploader :avatar, ImageUploader
 
@@ -25,6 +27,7 @@ class User < ActiveRecord::Base
 
   validates :login, uniqueness: true, mobile: true, presence: true, if: -> { !need_set_login? }
   validates :mobile, allow_nil: true, mobile: true
+  validates :domain_name, uniqueness: true, allow_nil: true
 
   alias_attribute :regist_mobile, :login
 
@@ -141,19 +144,19 @@ class User < ActiveRecord::Base
   end
 
   def seller_today_joins
-    User.where("agent_id = ? and created_at > ? and created_at < ?", self.id, Time.now.beginning_of_day, Time.now.end_of_day).count
+    User.where("agent_id = ? and created_at > ? and created_at < ?", self.id, Time.now.beginning_of_day, Time.now.end_of_day)
   end
 
   def seller_total_joins
-    User.where("agent_id = ?", self.id).count
+    User.where("agent_id = ?", self.id)
   end
 
   def self.agent_today_joins
-    UserRole.find_by(name: "agent").users.where("created_at > ? and created_at < ?", Time.now.beginning_of_day, Time.now.end_of_day).count
+    UserRole.find_by(name: "agent").users.where("created_at > ? and created_at < ?", Time.now.beginning_of_day, Time.now.end_of_day)
   end
 
   def self.agent_total_joins
-    UserRole.find_by(name: "agent").users.count
+    UserRole.find_by(name: "agent").users
   end
 
   def seller

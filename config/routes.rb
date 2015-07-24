@@ -39,6 +39,7 @@ Rails.application.routes.draw do
     end
   end
   resources :privilege_cards, only: [:show, :index, :update]
+  resources :sellers, only: [:new, :create]
 
   authenticate :user, lambda { |user| user.admin? } do
     namespace :admin do
@@ -60,6 +61,10 @@ Rails.application.routes.draw do
         resource :enterprise_authentication
       end
       resources :agents, except: [:new, :edit, :update, :destroy] do
+      end
+      resources :sellers, except: [:new, :edit, :update, :destroy] do
+      end
+      resources :banking, except: [:new, :edit, :update, :destroy] do
       end
       resource :account, only: [:edit, :show, :update] do
         get :password, on: :member
