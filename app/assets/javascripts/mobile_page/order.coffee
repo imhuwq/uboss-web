@@ -12,7 +12,7 @@ $ ->
     $('.sharing_lv1_amount').text(sharing_lv1_amount)
     $('#pay_text').val(privilege_amount)
 
-  $('#pay_text').on 'keyup', (e)->
+  $('#pay_text').on 'blur', (e)->
     if this.value > maxPrivilegeAmount
       alert "亲，最高优惠#{maxPrivilegeAmount}"
       privilege_amount = maxPrivilegeAmount
@@ -50,6 +50,7 @@ $ ->
       else
         window.location = $('.pay-complete-actions a').attr('href')
     else
+      alert '恭喜您获得本商品的友情卡，收货后激活可以给朋友打折哦！'
       window.location = $('.pay-complete-actions a').attr('href')
 
   $('.edit_privilege_card').on 'ajax:error', (event, xhr, status, error) ->

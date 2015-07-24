@@ -88,11 +88,14 @@
 
 <br />
 
-<% if @order.state == 'unpay' && browser.wechat? %>
-  <div class="accunt_adil_box3">
+<div class="accunt_adil_box3">
+  <% if @order.unpay? && browser.wechat? %>
     <%= link_to "支付", '#', id: 'wx-pay-btn', class: 'accunt_adilbtn' %>
-  </div>
-<% end %>
+  <% elsif @order.shiped? %>
+    <%= link_to "确认收货", received_order_path(@order),
+      class:"accunt_adilbtn", data: { confirm: '确认收货？' } %>
+  <% end %>
+</div>
 
 <% if browser.wechat? %>
   <% if @order.unpay? %>
@@ -121,7 +124,7 @@ wx.ready(function(){
       </script>
     <% end %>
   <% end %>
-  <% if @order.signed? %>
+  <% if @order.signed? || @order.completed? %>
     <%= content_for :extra_javascript do %>
     <script type="text/javascript" charset="utf-8">
 
