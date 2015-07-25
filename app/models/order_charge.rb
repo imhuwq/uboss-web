@@ -11,7 +11,7 @@ class OrderCharge < ActiveRecord::Base
 
     if $wechat_env.test?
       update_with_wx_pay_result(
-        "total_fee" => order.pay_amount,
+        "total_fee" => order.pay_amount * 100,
         "payment" => 'wx',
         "time_end" => Time.now
       )
@@ -23,7 +23,7 @@ class OrderCharge < ActiveRecord::Base
   alias_method :paid?, :check_paid?
 
   def update_with_wx_pay_result(result)
-    self.paid_amount = result["total_fee"] / 100
+    self.paid_amount = BigDecimal(result["total_fee"]) / 100
     self.payment = 'wx'
     self.paid_at = result['time_end']
     self.save(validate: false)

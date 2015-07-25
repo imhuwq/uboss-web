@@ -17,7 +17,7 @@ class OrderItem < ActiveRecord::Base
   after_create :decrease_product_stock
   after_commit :update_order_pay_amount, if: -> {
     previous_changes.include?(:pay_amount) &&
-    previous_changes[:pay_amount].first != record.previous_changes[:pay_amount].last
+    previous_changes[:pay_amount].first != previous_changes[:pay_amount].last
   }
 
   def sharing_link_node

@@ -114,7 +114,7 @@ class OrderForm
 
   def check_amount
     if amount.to_i > product.reload.count
-      errors.add(:amount, '库存不足')
+      errors.add(:amount, :not_enough)
     end
   end
 
@@ -128,9 +128,9 @@ class OrderForm
 
   def captcha_must_be_valid
     if !MobileAuthCode.auth_code(mobile, captcha)
-      errors.add(:captcha, '手机验证码错误')
+      errors.add(:captcha, :invalid)
     elsif buyer.present? && User.find_by(login: mobile)
-      errors.add(:mobile, '该手机号码已绑定账号')
+      errors.add(:mobile, '已绑定账号')
     end
   end
 

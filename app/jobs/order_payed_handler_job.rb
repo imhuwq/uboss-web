@@ -64,7 +64,8 @@ class OrderPayedHandlerJob < ActiveJob::Base
     product = order_item.product
 
     LEVEL_AMOUNT_FIELDS.each_with_index do |key, index|
-      reward_amount = get_reward_amount_by_product_level_and_order_item(key, order_item)
+      reward_amount = get_reward_amount_by_product_level_and_order_item(product, key, order_item)
+      reward_amount = reward_amount * order_item.amount
 
       if reward_amount > 0
         SharingIncome.create!(
@@ -73,7 +74,7 @@ class OrderPayedHandlerJob < ActiveJob::Base
           seller_id: product.user_id,
           order_item: order_item,
           sharing_node: sharing_node,
-          amount: product.read_attribute(key) * order_item.amount
+          amount: reward_amount
         )
         yield reward_amount
       end
@@ -83,7 +84,7 @@ class OrderPayedHandlerJob < ActiveJob::Base
     end
   end
 
-  def get_reward_amount_by_product_level_and_order_item(level, order_item)
+  def get_reward_amount_by_product_level_and_order_item(product, level, order_item)
     reward_amount = product.read_attribute(level)
     if level == :share_amount_lv_1
       reward_amount -= order_item.privilege_amount
