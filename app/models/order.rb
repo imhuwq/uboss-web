@@ -20,7 +20,7 @@ class Order < ActiveRecord::Base
 
   delegate :mobile, :regist_mobile, :identify, to: :user, prefix: :buyer
   delegate :prepay_id, :prepay_id=, :prepay_id_expired_at, :prepay_id_expired_at=,
-    :pay_serial_number, :pay_serial_number=, :payment, :payment_i18n, :paid_at,
+    :pay_serial_number, :pay_serial_number=, :payment, :payment_i18n, :paid_at, :paid_amount,
     to: :order_charge, allow_nil: true
 
   enum state: { unpay: 0, payed: 1, shiped: 3, signed: 4, closed: 5, completed: 6 }
