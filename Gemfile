@@ -20,6 +20,7 @@ gem 'dalli' # memcache client
 gem "browser", github: 'xEasy/browser'
 gem 'wx_pay', github: 'xEasy/wx_pay'
 gem 'weixin_authorize', github: "lanrion/weixin_authorize"
+gem 'ransack'
 
 # nested sharing_node
 gem 'awesome_nested_set'
