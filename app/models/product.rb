@@ -17,15 +17,6 @@ class Product < ActiveRecord::Base
   before_create :generate_code
   before_save :calculates_before_save
 
-  calculated :selled_count, -> {
-    <<-SQL
-    SELECT SUM("order_items"."amount")
-    FROM "order_items"
-    INNER JOIN "orders" ON "orders"."id" = "order_items"."order_id"
-    WHERE "order_items"."product_id" = products.id AND "orders"."state" = 4
-    SQL
-  }
-
   def generate_code
     loop do
       self.code = SecureRandom.hex(10)

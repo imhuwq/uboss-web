@@ -1,5 +1,6 @@
 zh-CN:
   attributes: &attributes
+    user_store_identify: 商家名称
     buyer_identify: 买家
     store_name: 店铺名称
     domain_name: 域名关键字
@@ -130,6 +131,7 @@ zh-CN:
     agents:  创客
     sellers:  商家
     banking:  提现
+    daily_reports: 收益
   activerecord:
     models:
       withdraw_record: 提现记录
@@ -137,6 +139,11 @@ zh-CN:
       selling_income: 销售收入
       divide_income: 分成收入
     attributes:
+      daily_report:
+        user_service_rate: 提成比例
+        amount: 营业额
+        day: 日期
+        pre_divide_income: 预期收益
       withdraw_record:
         user_identify: 申请人
         amount: 金额

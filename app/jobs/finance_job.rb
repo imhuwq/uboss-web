@@ -21,6 +21,24 @@ class FinanceJob < ActiveJob::Base
   end
 
   private
+
+  def generate_seller_divide_daily_report(date)
+    report_type = DailyReport.report_types['seller_divide']
+
+    result = ActiveRecord::Base.connection.execute <<-SQL.squish!
+      SELECT divide_incomes.user_id AS user_id,
+        orders.seller_id AS seller_id,
+        SUM(amount) AS total_amount,
+        DATE(divide_incomes.created_at) AS date
+      FROM divide_incomes
+      INNER JOIN orders ON orders.id = divide_incomes.order_id
+      WHERE divide_incomes.created_at > '#{date}' AND divide_incomes.created_at < '#{date + 1.day}'
+      GROUP BY date, divide_incomes.user_id, orders.seller_id
+    SQL
+
+    batch_insert(result, report_type)
+  end
+
   def generate_order_daily_report(date)
     report_type = DailyReport.report_types['user_order']
     result = ActiveRecord::Base.connection.execute <<-SQL.squish!
@@ -66,8 +84,9 @@ class FinanceJob < ActiveJob::Base
         day: record['date'],
         amount: record['total_amount'],
         user_id: record['user_id'],
+        seller_id: record['seller_id'],
         report_type: report_type,
-        uniq_identify: "#{record['date']}_#{record['user_id']}_#{report_type}"
+        uniq_identify: "#{record['date']}_#{record['user_id']}_#{report_type}_#{record['seller_id']}"
       )
     end
   end

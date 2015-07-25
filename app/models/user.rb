@@ -12,6 +12,10 @@ class User < ActiveRecord::Base
 
   has_one :user_info, autosave: true
   has_many :transactions
+  has_many :user_role_relations, dependent: :destroy
+  has_many :user_roles, through: :user_role_relations
+  # for agent
+  has_many :divide_incomes
   # for buyer
   has_many :user_addresses
   has_many :orders
@@ -21,8 +25,6 @@ class User < ActiveRecord::Base
   # for seller
   has_many :sold_orders, class_name: 'Order', foreign_key: 'seller_id'
   has_many :products
-  has_many :user_role_relations, dependent: :destroy
-  has_many :user_roles, through: :user_role_relations
   belongs_to :agent, class_name: 'User'
 
   validates :login, uniqueness: true, mobile: true, presence: true, if: -> { !need_set_login? }

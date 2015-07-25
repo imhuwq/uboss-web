@@ -1,11 +1,22 @@
 class DailyReport < ActiveRecord::Base
 
-  enum report_type: { selling: 0, divide: 1, sharing: 2, user_order: 3 }
+  include Orderable
+
+  belongs_to :user
+
+  enum report_type: { selling: 0, divide: 1, sharing: 2, user_order: 3, seller_divide: 4 }
+
+  delegate :service_rate, :store_identify, to: :user, prefix: true, allow_nil: true
+
+  def pre_divide_income
+    amount * user_service_rate / 100
+  end
 
   def self.start_generate_yestoday_report
     FinanceJob.perform_later('order')
     FinanceJob.perform_later('selling')
     FinanceJob.perform_later('divide')
+    FinanceJob.perform_later('seller_divide')
   end
 
   def self.insert_or_update_daily_report record

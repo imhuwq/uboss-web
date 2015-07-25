@@ -29,6 +29,7 @@ class Ability
   end
 
   def grant_permissions_to_seller user
+    can :read, User, id: user.id
     can :manage, Order, seller_id: user.id
     can :manage, Product, user_id: user.id
     can :manage, PersonalAuthentication, user_id: user.id
@@ -38,11 +39,13 @@ class Ability
     can :read, SharingIncome, seller_id: user.id
     can :read, DivideIncome, user_id: user.id
     can :read, SellingIncome, user_id: user.id
-    can :read, SellingIncome, user: { agent_id: user.id }
   end
 
   def grant_permissions_to_agent user
-    can :read, User, id: user.id
+    can :read, User, agent_id: user.id
+    can :read, DailyReport, user: { agent_id: user.id }
+    can :read, SellingIncome, user: { agent_id: user.id }
+    can :read, DivideIncome, user_id: user.id
     can :manage, :sellers
     can :manage, :banking
   end

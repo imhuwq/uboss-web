@@ -63,6 +63,9 @@ Rails.application.routes.draw do
       resources :agents, except: [:new, :edit, :update, :destroy] do
       end
       resources :sellers, except: [:new, :edit, :update, :destroy] do
+        resources :income_reports, only: [:index, :show] do
+          get :details, on: :collection
+        end
       end
       resources :banking, except: [:new, :edit, :update, :destroy] do
       end
@@ -71,6 +74,7 @@ Rails.application.routes.draw do
         patch :password, to: 'accounts#update_password'
       end
       resources :transactions, only: [:index]
+      resources :income_reports, only: [:index, :show]
 
       get '/data', to: 'data#index'
       get '/backend_status', to: 'dashboard#backend_status'

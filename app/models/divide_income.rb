@@ -1,5 +1,7 @@
 class DivideIncome < ActiveRecord::Base
 
+  include Orderable
+
   belongs_to :user
   belongs_to :order
 

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150724064407) do
+ActiveRecord::Schema.define(version: 20150725085031) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -49,6 +49,7 @@ ActiveRecord::Schema.define(version: 20150724064407) do
     t.datetime "created_at",    null: false
     t.datetime "updated_at",    null: false
     t.string   "uniq_identify"
+    t.integer  "seller_id"
   end
 
   add_index "daily_reports", ["uniq_identify"], name: "index_daily_reports_on_uniq_identify", unique: true, using: :btree

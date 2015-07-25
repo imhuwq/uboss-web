@@ -11,6 +11,7 @@
           <%= can_li_link(:manage, Order, admin_orders_path) %>
           <%= can_li_link(:read, SharingIncome, admin_sharing_incomes_path) %>
         <% end %>
+        <%= can_li_link(:read, DailyReport, admin_income_reports_path, another_active_name: :income_reports) %>
         <%= can_li_link(:manage, :sellers, admin_sellers_path) %>
         <%= can_li_link(:manage, :banking, admin_banking_index_path) %>
         <%= can_li_link(:manage, :agents, admin_agents_path) %>
