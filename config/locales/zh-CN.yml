@@ -141,7 +141,7 @@ zh-CN:
     attributes:
       daily_report:
         user_service_rate: 提成比例
-        amount: 营业额
+        amount: 收入
         day: 日期
         pre_divide_income: 预期收益
       withdraw_record:
