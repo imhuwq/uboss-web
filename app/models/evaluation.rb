@@ -23,19 +23,21 @@ class Evaluation < ActiveRecord::Base
   end
 
   def count_evaluation # 计算出用户和产品的好、中、差评论数并保存
-    if self.sharer_id
-      user_info_id = User.find(self.sharer_id).user_info.id
-      case self.status
-      when 'good'
-        UserInfo.update_counters user_info_id, good_evaluation: 1
-        Product.update_counters self.product_id, good_evaluation: 1
-      when 'normal'
-        UserInfo.update_counters user_info_id, normal_evaluation: 1
-        Product.update_counters self.product_id, normal_evaluation: 1
-      when 'bad'
-        UserInfo.update_counters user_info_id, bad_evaluation: 1
-        Product.update_counters self.product_id, bad_evaluation: 1
-      end
+    seller_user_info_id = Product.find(self.product_id).user.user_info.id
+    sharer_user_info_id = User.find_by_id(self.sharer_id).try(:user_info).id
+    case self.status
+    when 'good'
+      UserInfo.update_counters seller_user_info_id, good_evaluation: 1
+      UserInfo.update_counters sharer_user_info_id, good_evaluation: 1
+      Product.update_counters self.product_id, good_evaluation: 1
+    when 'normal'
+      UserInfo.update_counters seller_user_info_id, normal_evaluation: 1
+      UserInfo.update_counters sharer_user_info_id, normal_evaluation: 1
+      Product.update_counters self.product_id, normal_evaluation: 1
+    when 'bad'
+      UserInfo.update_counters seller_user_info_id, bad_evaluation: 1
+      UserInfo.update_counters sharer_user_info_id, bad_evaluation: 1
+      Product.update_counters self.product_id, bad_evaluation: 1
     end
   end
 

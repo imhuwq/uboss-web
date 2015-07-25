@@ -1,6 +1,12 @@
 zh-CN:
   attributes: &attributes
+<<<<<<< HEAD
     user_store_identify: 商家名称
+=======
+    sharer_good_reputation_rate: 个人好评率
+    seller_name:  商家名
+    authenticated:  状态
+>>>>>>> sellers index
     buyer_identify: 买家
     store_name: 店铺名称
     domain_name: 域名关键字

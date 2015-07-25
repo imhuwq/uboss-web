@@ -1,4 +1,5 @@
 class User < ActiveRecord::Base
+  DATA_AUTHENTICATED = {'no'=> '未认证', 'yes'=> '已认证'}
 
   include Orderable
 
@@ -38,6 +39,8 @@ class User < ActiveRecord::Base
   delegate :income, :income_level_one, :income_level_two, :service_rate,
     :income_level_thr, :frozen_income,
     to: :user_info, allow_nil: true
+
+  enum authenticated: {no: 0, yes: 1}
 
   before_destroy do # prevent destroy official account
     if login == OFFICIAL_ACCOUNT_LOGIN
