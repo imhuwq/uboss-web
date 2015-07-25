@@ -10,7 +10,7 @@ class OrderPayedHandlerJob < ActiveJob::Base
     raise OrderNotSigned unless order.reload.signed?
     raise OrderProcessed if order.sharing_rewared?
 
-    seller_income = order.pay_amount
+    seller_income = order.paid_amount
 
     # NOTE
     # ----------------------
@@ -58,30 +58,37 @@ class OrderPayedHandlerJob < ActiveJob::Base
     end
   end
 
-  def reward_sharing_users order_item, &block
+  def reward_sharing_users(order_item, &block)
     sharing_node = order_item.sharing_node
     return false if sharing_node.blank?
     product = order_item.product
 
     LEVEL_AMOUNT_FIELDS.each_with_index do |key, index|
-      reward_amount = product.read_attribute(LEVEL_AMOUNT_FIELDS[index])
+      reward_amount = get_reward_amount_by_product_level_and_order_item(key, order_item)
+
       if reward_amount > 0
-
-        yield reward_amount
-
         SharingIncome.create!(
           level: index + 1,
           user_id: sharing_node.user_id,
           seller_id: product.user_id,
           order_item: order_item,
           sharing_node: sharing_node,
-          amount: product.read_attribute(LEVEL_AMOUNT_FIELDS[index]) * order_item.amount
+          amount: product.read_attribute(key) * order_item.amount
         )
+        yield reward_amount
       end
-      sharing_node = sharing_node.parent
 
+      sharing_node = sharing_node.parent
       break if sharing_node.blank?
     end
+  end
+
+  def get_reward_amount_by_product_level_and_order_item(level, order_item)
+    reward_amount = product.read_attribute(level)
+    if level == :share_amount_lv_1
+      reward_amount -= order_item.privilege_amount
+    end
+    reward_amount
   end
 
 end

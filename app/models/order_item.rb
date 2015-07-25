@@ -12,9 +12,13 @@ class OrderItem < ActiveRecord::Base
   delegate :name, :traffic_expense, :present_price, to: :product, prefix: true
   delegate :privilege_card, to: :sharing_node, allow_nil: true
 
-  before_save :set_present_price, :set_pay_amount, if: -> { order.paid_at.blank? }
+  before_save :set_privilege_amount, :set_present_price,
+    :set_pay_amount, :set_privilege_amount, if: -> { order.paid_at.blank? }
   after_create :decrease_product_stock
-  after_commit :update_order_pay_amount
+  after_commit :update_order_pay_amount, if: -> {
+    previous_changes.include?(:pay_amount) &&
+    previous_changes[:pay_amount].first != record.previous_changes[:pay_amount].last
+  }
 
   def sharing_link_node
     @sharing_link_node ||= SharingNode.find_or_create_by(
@@ -52,14 +56,18 @@ class OrderItem < ActiveRecord::Base
     end
   end
 
+  def set_privilege_amount
+    self.privilege_amount = privilege_card.present? ? privilege_card.privilege_amount : 0
+  end
+
   def set_present_price
-    privilege_amount = privilege_card.present? ? privilege_card.privilege_amount : 0
-    self.present_price = product.present_price - privilege_amount
+    self.present_price = product.present_price
   end
 
   def set_pay_amount
-    self.pay_amount = present_price * amount + product.traffic_expense
+    self.pay_amount = (present_price - privilege_amount) * amount + product.traffic_expense
   end
+
 
   def update_order_pay_amount
     order.update_pay_amount
