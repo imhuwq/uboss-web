@@ -46,9 +46,9 @@ $ ->
     if data.actived
       want_sharing = confirm 'BOSS，您的友情卡已激活，收货后分享给朋友打折吧！'
       if want_sharing
-        $('.pay-complete-actions').addClass('sharing-active')
-      else
         window.location = $('.pay-complete-actions a').attr('href')
+      else
+        $('.pay-complete-actions').addClass('sharing-active')
     else
       alert '恭喜您获得本商品的友情卡，收货后激活可以给朋友打折哦！'
       window.location = $('.pay-complete-actions a').attr('href')

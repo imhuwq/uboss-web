@@ -35,6 +35,10 @@ zh-CN:
     agent_name: 创客名称
     seller_today_joins: 今日简约商家
     seller_total_joins: 累计签约商家
+    amount: 数量
+    deliver_mobile: 收货手机
+    deliver_username: 收件人
+    street: 详细地址
   simple_form:
     labels:
       product: &product
@@ -86,30 +90,6 @@ zh-CN:
         mobile_auth_code:                        验证码
       seller:
         <<: *attributes
-  errors:
-    messages:
-      accepted: 必须是可被接受的
-      blank: 不能为空字符
-      confirmation: 与确认值不匹配
-      empty: 不能留空
-      equal_to: 必须等于 %{count}
-      even: 必须为双数
-      exclusion: 不可使用的字段
-      greater_than: 必须大于 %{count}
-      greater_than_or_equal_to: 必须大于或等于 %{count}
-      inclusion: 不包含于列表中
-      invalid: 是无效的
-      less_than: 必须小于 %{count}
-      less_than_or_equal_to: 必须小于或等于 %{count}
-      not_a_number: 不是数字
-      not_an_integer: 必须是整数
-      odd: 必须为单数
-      record_invalid: '验证失败: %{errors}'
-      taken: 已经被使用
-      too_long: 过长（最长为 %{count} 个字符）
-      too_short: 过短（最短为 %{count} 个字符）
-      wrong_length: 长度非法（必须为 %{count} 个字符）
-      extension_white_list_error: 123
   simple_captcha:
     label: 验证码
     placeholder: 请输入验证码
@@ -205,15 +185,3 @@ zh-CN:
       next: 下一页 &rsaquo;
       previous: '&lsaquo; 上一页'
       truncate: '&hellip;'
-  helpers:
-    submit:
-      create: 创建
-      update: 更新
-    page_entries_info:
-      one_page:
-        display_entries:
-          zero: "无 %{entry_name}"
-          one: "显示 <b>1</b> %{entry_name}"
-          other: "显示 <b>所有 %{count}</b> %{entry_name}"
-      more_pages:
-        display_entries: "显示 %{entry_name} <b>%{first}&nbsp;-&nbsp;%{last}</b> 总 <b>%{total}</b>"

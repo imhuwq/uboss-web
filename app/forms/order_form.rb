@@ -114,7 +114,7 @@ class OrderForm
 
   def check_amount
     if amount.to_i > product.reload.count
-      errors.add(:amount, :not_enough)
+      errors.add(:amount, :invalid)
     end
   end
 
