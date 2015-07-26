@@ -7,9 +7,10 @@ class SharingNode < ActiveRecord::Base
 
   validates :user_id, :product_id, presence: true
 
-  # NOTE also using databse uniq index
+  # NOTE now using databse uniq index
   # validates_uniqueness_of :user_id, scope: [:product_id, :parent_id]
   # validates_uniqueness_of :user_id, scope: [:product_id], if: -> { self.parent_id.blank? }
+  # NOTE not now!
   # validate :limit_sharing_rate
 
   before_create :set_code, :set_product
