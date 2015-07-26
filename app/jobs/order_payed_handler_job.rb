@@ -1,15 +1,35 @@
 class OrderPayedHandlerJob < ActiveJob::Base
+
+  mattr_accessor :logger
+
   queue_as :orders
 
   LEVEL_AMOUNT_FIELDS = [:share_amount_lv_1, :share_amount_lv_2, :share_amount_lv_3]
 
-  class OrderNotSigned < StandardError;;end
-  class OrderProcessed < StandardError;;end
+  logger ||= Logger.new(File.expand_path(File.join(Rails.root, "log/divide_order.log"), __FILE__), 10, 1024_000)
+  logger.level = Logger::INFO
+  logger.formatter = proc do |severity, datetime, progname, msg|
+    "[#{severity}] #{datetime}: #{msg}\n"
+  end
 
   def perform(order)
-    raise OrderNotSigned unless order.reload.signed?
-    raise OrderProcessed if order.sharing_rewared?
+    logger.info "Start divide order: #{order.number}"
+    if order.reload.signed?
+      logger.info "Break divide order: #{order.number} as it is not signed!"
+      return false
+    end
+    if order.sharing_rewared?
+      logger.info "Break divide order: #{order.number} as it had divided!"
+      return false
+    end
 
+    start_divide_order_paid_amount(order)
+    logger.info "Done divide order: #{order.number}"
+  end
+
+  private
+
+  def start_divide_order_paid_amount(order)
     seller_income = order.paid_amount
 
     # NOTE
@@ -34,12 +54,11 @@ class OrderPayedHandlerJob < ActiveJob::Base
         order.update_columns(income: seller_income, sharing_rewared: true)
         order.complete!
       rescue => e
+        logger.info "Exception raise up! Dividing order: #{order.number} ! Message: #{e.message}"
         raise e
       end
     end
   end
-
-  private
 
   def divide_income_for_official_or_agent(order, income)
     seller = order.seller
