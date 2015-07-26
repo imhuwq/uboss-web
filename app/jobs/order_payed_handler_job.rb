@@ -1,16 +1,10 @@
 class OrderPayedHandlerJob < ActiveJob::Base
 
-  mattr_accessor :logger
+  include Loggerable
 
   queue_as :orders
 
   LEVEL_AMOUNT_FIELDS = [:share_amount_lv_1, :share_amount_lv_2, :share_amount_lv_3]
-
-  logger ||= Logger.new(File.expand_path(File.join(Rails.root, "log/divide_order.log"), __FILE__), 10, 1024_000)
-  logger.level = Logger::INFO
-  logger.formatter = proc do |severity, datetime, progname, msg|
-    "[#{severity}] #{datetime}: #{msg}\n"
-  end
 
   def perform(order)
     logger.info "Start divide order: #{order.number}"

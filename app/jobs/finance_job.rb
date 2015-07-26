@@ -1,14 +1,8 @@
 class FinanceJob < ActiveJob::Base
 
-  mattr_accessor :logger
+  include Loggerable
 
   queue_as :default
-
-  logger ||= Logger.new(File.expand_path(File.join(Rails.root, "log/daily_reports.log"), __FILE__), 10, 1024_000)
-  logger.level = Logger::INFO
-  logger.formatter = proc do |severity, datetime, progname, msg|
-    "[#{severity}] #{datetime}: #{msg}\n"
-  end
 
   def perform(report_type='selling', date=Date.yesterday)
 
