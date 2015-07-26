@@ -1,11 +1,11 @@
 <div class='row text-center orders-heading-info'>
-  <div class='col-md-4'>
+  <div class='col-md-6'>
     <p>今日收益</p>
-    <b><%= @today_divide_income %></b>
+    <b><%= number_to_human @today_divide_income %></b>
   </div>
-  <div class='col-md-4'>
+  <div class='col-md-6'>
     <p>累计收益</p>
-    <b><%= @total_divide_income %></b>
+    <b><%= number_to_human @total_divide_income %></b>
   </div>
 </div>
 
