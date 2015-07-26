@@ -12,7 +12,7 @@ class SharingNode < ActiveRecord::Base
   # validates_uniqueness_of :user_id, scope: [:product_id], if: -> { self.parent_id.blank? }
   # validate :limit_sharing_rate
 
-  before_create :set_code, :set_product
+  before_create :set_code, :set_product, :set_order_id
 
   delegate :amount, to: :privilege_card, prefix: :privilege, allow_nil: true
 
@@ -54,5 +54,9 @@ class SharingNode < ActiveRecord::Base
       self.code = SecureRandom.hex(10)
       break if !SharingNode.find_by(code: code)
     end
+  end
+
+  def set_order_id
+    order_item_id.present? && self.order_id ||= order_item.order_id
   end
 end

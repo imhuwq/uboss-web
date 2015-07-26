@@ -116,7 +116,7 @@ class OrderPayedHandlerJob < ActiveJob::Base
   def get_reward_amount_by_product_level_and_order_item(product, level, order_item)
     reward_amount = product.read_attribute(level)
     if level == :share_amount_lv_1
-      reward_amount -= order_item.privilege_amount
+      reward_amount -= (order_item.privilege_amount - product.privilege_amount)
     end
     reward_amount
   end

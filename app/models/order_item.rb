@@ -13,7 +13,7 @@ class OrderItem < ActiveRecord::Base
   delegate :privilege_card, to: :sharing_node, allow_nil: true
 
   before_save :set_privilege_amount, :set_present_price,
-    :set_pay_amount, :set_privilege_amount, if: -> { order.paid_at.blank? }
+    :set_pay_amount, if: -> { order.paid_at.blank? }
   after_create :decrease_product_stock
   after_commit :update_order_pay_amount, if: -> {
     previous_changes.include?(:pay_amount) &&
