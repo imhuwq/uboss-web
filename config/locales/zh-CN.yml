@@ -1,9 +1,11 @@
 zh-CN:
   attributes: &attributes
     user: 用户
+    income: 收入
+    share_rate: 分成比例
     status: 状态
     user_store_identify: 商家名称
-    sharer_good_reputation_rate: 个人好评率
+    sharer_good_reputation_rate: 店铺好评率
     seller_name:  商家名
     authenticated:  状态
     buyer_identify: 买家

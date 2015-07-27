@@ -91,10 +91,10 @@ class Admin::PersonalAuthenticationsController < AdminController
         @personal_authentication.check_and_set_user_authenticated_to_no
       end
       if @personal_authentication.save
-        flash[:success] = '状态被修改'
+        flash.now[:success] = '状态被修改'
       else
         @personal_authentication.valid?
-        flash[:error] = "保存失败：#{@personal_authentication.errors.full_messages.join('<br/>')}"
+        flash.now[:error] = "保存失败：#{@personal_authentication.errors.full_messages.join('<br/>')}"
       end
     end
 

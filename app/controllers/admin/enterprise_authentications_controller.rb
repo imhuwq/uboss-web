@@ -90,10 +90,10 @@ class Admin::EnterpriseAuthenticationsController < AdminController
       end
 
       if @enterprise_authentication.save
-        flash[:success] = '状态被修改'
+        flash.now[:success] = '状态被修改'
       else
         @enterprise_authentication.valid?
-        flash[:error] = "保存失败：#{@enterprise_authentication.errors.full_messages.join('<br/>')}"
+        flash.now[:error] = "保存失败：#{@enterprise_authentication.errors.full_messages.join('<br/>')}"
       end
     end
 

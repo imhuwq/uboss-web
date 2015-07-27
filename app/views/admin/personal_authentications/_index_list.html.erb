@@ -1,4 +1,23 @@
 <%= render 'layouts/flash_alert' %>
+<div class="row text-center">
+  <div class="col-xs-2"></div>
+  <div class="col-xs-2">
+    <div>已提交</div>
+    <b style="font-size:3em;"><%= PersonalAuthentication.posted.count %></b>
+  </div>
+  <div class="col-xs-2">
+    <div>审核中</div>
+    <b style="font-size:3em;"><%= PersonalAuthentication.review.count %></b>
+  </div>
+  <div class="col-xs-2">
+    <div>已通过</div>
+    <b style="font-size:3em;"><%= PersonalAuthentication.pass.count %></b>
+  </div>
+  <div class="col-xs-2">
+    <div>未通过</div>
+    <b style="font-size:3em;"><%= PersonalAuthentication.no_pass.count %></b>
+  </div>
+</div>
 <%= table_for(@personal_authentications) do |t| %>
   <%= t.cell :user_store_identify do |obj| %>
     <%= link_to url_for(controller: 'admin/personal_authentications', action: :show, user_id: obj.user_id) do %>
