@@ -28,15 +28,15 @@ class Evaluation < ActiveRecord::Base
     case self.status
     when 'good'
       UserInfo.update_counters seller_user_info_id, good_evaluation: 1
-      UserInfo.update_counters sharer_user_info_id, good_evaluation: 1
+      UserInfo.update_counters(sharer_user_info_id, good_evaluation: 1) if sharer_user_info_id.present?
       Product.update_counters self.product_id, good_evaluation: 1
     when 'normal'
       UserInfo.update_counters seller_user_info_id, normal_evaluation: 1
-      UserInfo.update_counters sharer_user_info_id, normal_evaluation: 1
+      UserInfo.update_counters( sharer_user_info_id, normal_evaluation: 1) if sharer_user_info_id.present?
       Product.update_counters self.product_id, normal_evaluation: 1
     when 'bad'
       UserInfo.update_counters seller_user_info_id, bad_evaluation: 1
-      UserInfo.update_counters sharer_user_info_id, bad_evaluation: 1
+      UserInfo.update_counters( sharer_user_info_id, bad_evaluation: 1) if sharer_user_info_id.present?
       Product.update_counters self.product_id, bad_evaluation: 1
     end
   end
