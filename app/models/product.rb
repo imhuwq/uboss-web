@@ -59,7 +59,7 @@ class Product < ActiveRecord::Base
   end
 
   def is_official_agent?
-    user_id == User.official_account.id && name == 'UBOSS代理权'
+    user_id == User.official_account.id && name == 'UBOSS创客权'
   end
 
   def total_sells
