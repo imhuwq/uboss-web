@@ -1,5 +1,6 @@
 zh-CN:
   attributes: &attributes
+    user: 用户
     user_store_identify: 商家名称
     sharer_good_reputation_rate: 个人好评率
     seller_name:  商家名
@@ -188,3 +189,6 @@ zh-CN:
       next: 下一页 &rsaquo;
       previous: '&lsaquo; 上一页'
       truncate: '&hellip;'
+  errors:
+    messages:
+      already_has_role: 已经拥有该角色
