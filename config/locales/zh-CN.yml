@@ -1,6 +1,7 @@
 zh-CN:
   attributes: &attributes
     user: 用户
+    status: 状态
     user_store_identify: 商家名称
     sharer_good_reputation_rate: 个人好评率
     seller_name:  商家名
@@ -23,6 +24,7 @@ zh-CN:
     created_at: 创建时间
     updated_at: 更新时间
     mobile: 手机
+    login: 帐号
     email: 邮箱
     nickname: 名称
     role_display_name: 角色

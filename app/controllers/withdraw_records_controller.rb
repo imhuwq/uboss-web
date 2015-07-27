@@ -15,8 +15,8 @@ class WithdrawRecordsController < ApplicationController
     if @withdraw_record.save
       redirect_to action: :success, id: @withdraw_record.id
     else
-      puts @withdraw_record.errors.messages
-      flash.now[:error] = @withdraw_record.errors.messages
+      puts @withdraw_record.errors.full_messages.join('<br/>')
+      flash[:error] = @withdraw_record.errors.full_messages.join('<br/>')
       redirect_to 'new'
     end
   end

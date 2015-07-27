@@ -49,7 +49,7 @@ class OrdersController < ApplicationController
     else
       @order_form.captcha = nil
       @product = @order_form.product
-      flash.now[:error] = @order_form.errors.full_messages.join('<br/>')
+      flash[:error] = @order_form.errors.full_messages.join('<br/>')
       render :new
     end
   end
@@ -63,7 +63,7 @@ class OrdersController < ApplicationController
 
   def received
     if @order.sign!
-      flash.now[:success] = '已确认收货'
+      flash[:success] = '已确认收货'
       redirect_to controller: :evaluations, action: :new, id: @order.order_items.first.id
     end
   end

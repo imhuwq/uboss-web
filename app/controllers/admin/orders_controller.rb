@@ -21,10 +21,10 @@ class Admin::OrdersController < AdminController
 
   def ship
     if @order.ship!
-      flash.now[:notice] = '发货成功'
+      flash[:notice] = '发货成功'
       redirect_to :back
     else
-      flash.now[:notice] = '发货失败'
+      flash[:notice] = '发货失败'
       redirect_to :back
     end
   end

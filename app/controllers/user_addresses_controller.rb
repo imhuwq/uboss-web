@@ -14,10 +14,10 @@ class UserAddressesController < ApplicationController
   def create
     @user_address = current_user.user_addresses.new(address_params)
     if @user_address.save
-      flash.now[:notice] = '新增收货地址成功'
+      flash[:notice] = '新增收货地址成功'
       redirect_to account_user_addresses_path
     else
-      flash.now[:error] = @user_address.errors.full_messages.join("</br>")
+      flash[:error] = @user_address.errors.full_messages.join("</br>")
       render :new
     end
   end
@@ -35,10 +35,10 @@ class UserAddressesController < ApplicationController
 
   def destroy
     if @user_address.destroy
-      flash.now[:notice] = '删除收货地址成功'
+      flash[:notice] = '删除收货地址成功'
       redirect_to account_user_addresses_path
     else
-      flash.now[:error] = '删除收货地址失败'
+      flash[:error] = '删除收货地址失败'
       redirect_to account_user_addresses_path
     end
   end

@@ -7,7 +7,7 @@ class SellersController < AdminController
   def create
     valid_create_params
     if @errors.present?
-      flash.now[:error] = @errors.join("\n")
+      flash[:error] = @errors.join("\n")
       redirect_to action: :new
       return
     else
@@ -15,12 +15,12 @@ class SellersController < AdminController
       user.login = allow_params[:mobile]
       user.admin = true
       if user.save and user.user_roles << @user_role and user.save
-        flash.now[:success] = "绑定注册成功"
+        flash[:success] = "绑定注册成功"
         sign_in user
         redirect_to '/admin'
         return
       else
-        flash.now[:error] = user.errors
+        flash[:error] = user.errors.full_messages.join('<br/>')
         redirect_to action: :new
       end
     end

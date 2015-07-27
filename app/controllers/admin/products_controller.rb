@@ -26,9 +26,9 @@ class Admin::ProductsController < AdminController
     product.asset_img = img
     product.user_id = current_user.id
     if product.save
-      flash.now[:success] = '产品创建成功'
+      flash[:success] = '产品创建成功'
     else
-      flash.now[:error] = "#{product.errors.messages}"
+      flash[:error] = "#{product.errors.full_messages.join('<br/>')}"
       render 'new'
       return
     end
@@ -48,9 +48,9 @@ class Admin::ProductsController < AdminController
     end
     if product.present? && product.user_id == current_user.id && product.update_attributes(product_params)
 
-      flash.now[:success] = '保存成功'
+      flash[:success] = '保存成功'
     else
-      flash.now[:error] = "保存失败。#{product.errors.messages}"
+      flash[:error] = "保存失败。#{product.errors.full_messages.join('<br/>')}"
     end
     redirect_to action: :show, id: product.id
   end
@@ -62,7 +62,7 @@ class Admin::ProductsController < AdminController
         @product.status = 'published'
         flash.now[:success] = '上架成功'
       else
-        flash.now[:notice] = '请先验证'
+        flash.now[:notice] = '请先验证:点击右上角用户名，进入“个人/企业认证”'
       end
     elsif params[:status] == 'unpublish'
       @product.status = 'unpublish'
@@ -72,7 +72,7 @@ class Admin::ProductsController < AdminController
       flash.now[:success] = '删除成功'
     end
     @product.save
-    puts @product.errors.messages
+    puts @product.errors.full_messages.join('<br/>')
     respond_to do |format|
       format.html { redirect_to action: :show, id: @product.id }
       format.js do

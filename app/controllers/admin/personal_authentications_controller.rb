@@ -3,13 +3,13 @@ class Admin::PersonalAuthenticationsController < AdminController
     if super_admin?
       @personal_authentications = PersonalAuthentication.order("updated_at DESC").page(params[:page] || 1)
     else
-      flash.now[:notice] = "需要管理员权限"
+      flash[:notice] = "需要管理员权限"
       redirect_to action: :show
     end
   end
   def new
     if PersonalAuthentication.find_by(user_id: current_user).present?
-      flash.now[:alert] = '您的验证信息已经提交，请检查。'
+      flash[:alert] = '您的验证信息已经提交，请检查。'
       redirect_to action: :show
     else
       @personal_authentication = PersonalAuthentication.new
@@ -23,7 +23,7 @@ class Admin::PersonalAuthenticationsController < AdminController
       @personal_authentication = PersonalAuthentication.find_by(user_id: current_user)
     end
     unless @personal_authentication.present?
-      flash.now[:notice] = '您还没有认证'
+      flash[:notice] = '您还没有认证'
       redirect_to action: :new
     end
   end
@@ -31,7 +31,7 @@ class Admin::PersonalAuthenticationsController < AdminController
   def edit
     personal_authentication = PersonalAuthentication.find_by(user_id: current_user)
     if [:review, :pass].include?(personal_authentication.status)
-      flash.now[:alert] = '当前状态不允许修改。'
+      flash[:alert] = '当前状态不允许修改。'
       redirect_to action: :show
     else
       @personal_authentication = personal_authentication
@@ -42,18 +42,16 @@ class Admin::PersonalAuthenticationsController < AdminController
     @personal_authentication = PersonalAuthentication.new(allow_params)
     valid_create_params
     if @errors.present?
-      flash.now[:error] = @errors.join("\n")
+      flash[:error] = @errors.join("\n")
       render 'new'
       return
     else
-      @personal_authentication.user_id = params[:user_id]
-      @personal_authentication.face_with_identity_card_img = params[:face_with_identity_card_img]
-      @personal_authentication.identity_card_front_img = params[:identity_card_front_img]
       if @personal_authentication.save
-        flash.now[:success] = '保存成功'
+        flash[:success] = '保存成功'
         redirect_to action: :show
       else
-        flash.now[:error] = "保存失败：#{@personal_authentication.errors}"
+        @personal_authentication.valid?
+        flash[:error] = "保存失败：#{@personal_authentication.errors.full_messages.join('<br/>')}"
         render 'new'
       end
     end
@@ -63,7 +61,7 @@ class Admin::PersonalAuthenticationsController < AdminController
     valid_update_params
     @personal_authentication = PersonalAuthentication.find_by!(user_id: current_user)
     if @errors.present?
-      flash.now[:error] = @errors.join("\n")
+      flash[:error] = @errors.join("\n")
       redirect_to action: :edit
       return
     else
@@ -71,11 +69,13 @@ class Admin::PersonalAuthenticationsController < AdminController
       @personal_authentication.face_with_identity_card_img = params[:face_with_identity_card_img] if params[:face_with_identity_card_img]
       @personal_authentication.identity_card_front_img = params[:identity_card_front_img] if params[:identity_card_front_img]
       @personal_authentication.status = 'posted'
+
       if @personal_authentication.save
-        flash.now[:success] = '保存成功'
+        flash[:success] = '保存成功'
         redirect_to action: :show
       else
-        flash.now[:error] = "保存失败：#{@personal_authentication.errors}"
+        @personal_authentication.valid?
+        flash[:error] = "保存失败：#{@personal_authentication.errors.full_messages.join('<br/>')}"
         redirect_to action: :edit
       end
     end
@@ -133,7 +133,7 @@ class Admin::PersonalAuthenticationsController < AdminController
     code18 = /^[1-9]\d{5}[1-9]\d{3}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}([0-9]|X)$/ # 18位身份证号
     identity_card_match = (allow_params[:identity_card_code] =~ code15 || allow_params[:identity_card_code] =~ code18)
     hash = {
-      '验证码错误或已过期。': MobileAuthCode.auth_code(allow_params[:mobile], allow_params[:mobile_auth_code]),
+      # '验证码错误或已过期。': MobileAuthCode.auth_code(allow_params[:mobile], allow_params[:mobile_auth_code]),
       '姓名不能为空。': allow_params[:name],
       '身份证号码错误。': identity_card_match,
       '地址不能为空。': allow_params[:address],

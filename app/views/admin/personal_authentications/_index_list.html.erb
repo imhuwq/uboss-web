@@ -1,6 +1,6 @@
 <%= render 'layouts/flash_alert' %>
 <%= table_for(@personal_authentications) do |t| %>
-  <%= t.cell :name do |obj| %>
+  <%= t.cell :user_store_identify do |obj| %>
     <%= link_to url_for(controller: 'admin/personal_authentications', action: :show, user_id: obj.user_id) do %>
     <div class="col-sm-3">
       <%= image_tag(obj.user.avatar, size: "100x80", alt: "-") %>
