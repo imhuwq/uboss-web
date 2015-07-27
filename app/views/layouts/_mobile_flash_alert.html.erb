@@ -4,14 +4,13 @@
       <% if flash[:success] %>
         <div class="alert alert-success">
           <a class="close" data-dismiss="alert">x</a>
-
           <p class="p_class"><%== flash[:success] %></p>
         </div>
       <% end %>
-      <% if flash[:info] %>
+      <% if flash[:info] || flash[:notice] %>
         <div class="alert alert-info">
           <a class="close" data-dismiss="alert">x</a>
-          <%== flash[:info] %>
+          <%== flash[:info] || flash[:notice] %>
         </div>
       <% end %>
       <% if flash[:error] %>

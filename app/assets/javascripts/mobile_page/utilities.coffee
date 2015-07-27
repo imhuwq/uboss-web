@@ -13,5 +13,5 @@ $ ->
       $(this).remove()
   , 10000
 
-  $(".alert .close").on "click", ->
+  $(".alert").on "click", ->
     $(this).closest('.flash_css').remove()

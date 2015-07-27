@@ -8,16 +8,18 @@ class UserRole < ActiveRecord::Base
 
   validates :name, uniqueness: true, inclusion: { in: ROLE_NAMES }
 
-  def self.agent
-    find_by(name: 'agent')
-  end
+  class << self
+    def agent
+      find_by(name: 'agent')
+    end
 
-  def super_admin
-    find_by(name: 'super_admin')
-  end
+    def super_admin
+      find_by(name: 'super_admin')
+    end
 
-  def seller
-    find_by(name: 'seller')
+    def seller
+      find_by(name: 'seller')
+    end
   end
 
 end

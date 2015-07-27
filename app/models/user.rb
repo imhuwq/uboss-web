@@ -50,6 +50,14 @@ class User < ActiveRecord::Base
 
   scope :admin, -> { where(admin: true) }
 
+  UserRole::ROLE_NAMES.each do |role|
+    User.class_eval do
+      define_method "is_#{role}?" do
+        user_roles.exists?(name: role)
+      end
+    end
+  end
+
   class << self
     def official_account
       @@official_account ||= find_by(login: OFFICIAL_ACCOUNT_LOGIN)
