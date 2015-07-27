@@ -10,11 +10,11 @@ class OrderPayedHandlerJob < ActiveJob::Base
     @order = order
     logger.info "Start divide @order: #{order.number}, total_paid: #{order.paid_amount}"
     if not order.reload.signed?
-      logger.info "Break divide order: #{@order.number} as it is not signed!"
+      logger.error "Break divide order: #{@order.number} as it is not signed!"
       return false
     end
     if order.sharing_rewared?
-      logger.info "Break divide order: #{@order.number} as it had divided!"
+      logger.error "Break divide order: #{@order.number} as it had divided!"
       return false
     end
 
@@ -49,7 +49,7 @@ class OrderPayedHandlerJob < ActiveJob::Base
         @order.update_columns(income: seller_income, sharing_rewared: true)
         @order.complete!
       rescue => e
-        logger.info "!!!Exception raise up! Dividing order: #{@order.number} ! Message: #{e.message} !!!"
+        logger.error "!!!Exception raise up! Dividing order: #{@order.number} ! Message: #{e.message} !!!"
         raise e
       end
     end
