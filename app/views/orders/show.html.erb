@@ -10,7 +10,9 @@
   <div class="subOrd_box1">
     <dl>
       <dt>
+      <%= link_to product_path(@product) do %>
         <%= image_tag @product.image_url(:thumb) %>
+      <% end %>
       </dt>
       <dd>
         <strong><%= @product.name %><span>￥<%= @order_item.present_price %></span></strong>
@@ -94,7 +96,7 @@
       创客权订单信息
     </div>
     <p>恭喜您成功购买UBOSS创客权，订单已提交后台自动处理。</p>
-    <p>订单处理完成后，您将成为UBOSS创客，请到个人设置设置您的密码(如果您还没有设置过密码)。</p>
+    <p>订单处理完成后，您将成为UBOSS创客，请到<%= link_to "个人设置", settings_account_path %>设置您的密码(如果您还没有设置过密码)。</p>
   </div>
 <% end %>
 <% if @order.completed? && @product.is_official_agent? %>
@@ -103,7 +105,7 @@
       创客权订单信息
     </div>
     <p>恭喜您的UBOSS创客权订单已处理完毕。</p>
-    <p>您已成为UBOSS创客，请到个人设置设置您的密码(如果您还没有设置过密码)。</p>
+    <p>您已成为UBOSS创客，请到<%= link_to "个人设置", settings_account_path %>设置您的密码(如果您还没有设置过密码)。</p>
     <p>电脑端打开UBOSS官网 <a ref="http://uboss.cc">http://uboss.cc</a> 登陆您的后台，登陆账号为您初次在UBOSS购买登记的手机号。</p>
   </div>
 <% end %>
