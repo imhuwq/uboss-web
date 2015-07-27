@@ -1,0 +1,53 @@
+<%= table_for(@personal_authentications) do |t| %>
+  <%= t.cell :name do |obj| %>
+    <%= link_to url_for(controller: 'admin/personal_authentications', action: :show, user_id: obj.user_id) do %>
+    <div class="col-sm-3">
+      <%= image_tag(obj.user.avatar, size: "100x80", alt: "-") %>
+    </div>
+    <div class="col-sm-9">
+      <div class="col-sm-12">商家名称：<%= obj.user.identify %></div>
+    </div>
+    <% end %>
+  <% end %>
+  <%= t.cell :created_at %>
+  <%= t.cell :login do |obj| %>
+    <%= obj.user.login %>
+  <% end %>
+  <%= t.cell :status do |obj| %>
+    <span class='label label-info'><%= PersonalAuthentication::DATA_STATUS[obj.status] %></span>
+  <% end %>
+  <%= t.cell :action do |obj| %>
+    <% case obj.status %>
+    <% when 'posted' %>
+      <%= link_to '锁定资料', '###', onclick:"change_status(#{obj.user_id},'review')" %>
+      <%= link_to '通过', '###', onclick:"change_status(#{obj.user_id},'pass')"  %>
+      <%= link_to '不通过', '###', onclick:"change_status(#{obj.user_id},'no_pass')" %>
+    <% when 'review' %>
+      <%= link_to '通过', '###', onclick:"change_status(#{obj.user_id},'pass')"  %>
+      <%= link_to '不通过', '###', onclick:"change_status(#{obj.user_id},'no_pass')" %>
+    <% when 'pass' %>
+      <%= link_to '不通过', '###', onclick:"change_status(#{obj.user_id},'no_pass')" %>
+    <% end %>
+  <% end %>
+<%- end %>
+<%= paginate @personal_authentications %>
+<script type="text/javascript">
+function change_status(user_id,status) {
+  var id = id
+  console.log(id)
+  $.ajax({
+    url: '/admin/users/' + user_id + '/personal_authentication/change_status',
+    dataType: 'script',
+    data: {user_id: user_id, status: status},
+  })
+  .done(function() {
+    console.log("success");
+  })
+  .fail(function() {
+    console.log("error");
+  })
+  .always(function() {
+    console.log("complete");
+  });
+}
+</script>

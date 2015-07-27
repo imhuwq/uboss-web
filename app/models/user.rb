@@ -3,10 +3,8 @@ class User < ActiveRecord::Base
 
   include Orderable
 
-  attr_accessor :code
+  attr_accessor :code, :mobile_auth_code
   OFFICIAL_ACCOUNT_LOGIN = '13800000000'
-
-  attr_accessor :mobile_auth_code
 
   devise :database_authenticatable, :rememberable, :trackable, :validatable, :omniauthable
   mount_uploader :avatar, ImageUploader

@@ -1,0 +1,24 @@
+<div class="row text-center">
+  <div class="col-xs-3"></div>
+  <div class="col-xs-2">
+    <div>已提交</div>
+    <b style="font-size:3em;"><%= PersonalAuthentication.posted.count %></b>
+  </div>
+  <div class="col-xs-2">
+    <div>审核中</div>
+    <b style="font-size:3em;"><%= PersonalAuthentication.review.count %></b>
+  </div>
+  <div class="col-xs-2">
+    <div>已通过</div>
+    <b style="font-size:3em;"><%= PersonalAuthentication.pass.count %></b>
+  </div>
+  <div class="col-xs-2">
+    <div>未通过</div>
+    <b style="font-size:3em;"><%= PersonalAuthentication.no_pass.count %></b>
+  </div>
+</div>
+<div id="index_list">
+
+  <%= render "index_list" %>
+
+</div>
