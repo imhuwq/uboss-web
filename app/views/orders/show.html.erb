@@ -14,7 +14,7 @@
       </dt>
       <dd>
         <strong><%= @product.name %><span>￥<%= @order_item.present_price %></span></strong>
-        <p><%= @product.short_description %></p>
+        <p><%= truncate @product.short_description, length: 18 %></p>
         <p><%= @product.user.store_identify %></p>
       </dd>
     </dl>
