@@ -28,6 +28,10 @@
     </div>
     <p>您已通过微信支付成功支付￥<%= @order_charge.paid_amount %>元</p>
     <p>订单编号 ：<%= @order.number %></p>
+    <% if @product.is_official_agent? %>
+      <p>恭喜您成功购买UBOSS创客权，订单已提交后台自动处理。</p>
+      <p>订单处理完成后，您将成为UBOSS创客，请到个人设置设置您的密码(如果您还没有设置过密码)。</p>
+    <% end %>
   </div>
 
   <% if @privilege_card.present? %>

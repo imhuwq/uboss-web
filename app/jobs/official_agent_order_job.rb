@@ -1,13 +1,18 @@
 class OfficialAgentOrderJob < ActiveJob::Base
-  queue_as :default
+  queue_as :agent_orders
 
   def perform(order)
     if order.order_items.first.product.is_official_agent?
-      order.user.update_attribute(:admin, true)
-      order.user.user_roles << UserRole.agent
+      user = order.user
 
-      order.ship!
-      order.sign!
+      User.transaction do
+        user.update_attribute(:admin, true)
+        if not user.user_roles.exists?(name: 'agent')
+          user.user_roles << UserRole.agent
+        end
+
+        order.sign!
+      end
     end
   end
 

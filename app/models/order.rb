@@ -45,6 +45,7 @@ class Order < ActiveRecord::Base
     end
     event :sign, after_commit: :call_order_complete_handler do
       transitions from: :shiped, to: :signed
+      transitions from: :payed, to: :signed, guards: :is_official_agent?
     end
     event :close do
       transitions from: :unpay, to: :closed
@@ -75,6 +76,10 @@ class Order < ActiveRecord::Base
 
   def update_pay_amount
     update_column(:pay_amount, order_items.sum(:pay_amount))
+  end
+
+  def is_official_agent?
+    order_items.first.product.is_official_agent?
   end
 
   private
