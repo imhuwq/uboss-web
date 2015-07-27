@@ -8,12 +8,16 @@ class UserRole < ActiveRecord::Base
 
   validates :name, uniqueness: true, inclusion: { in: ROLE_NAMES }
 
-  User.class_eval do
-    ROLE_NAMES.each do |key|
-      define_method "#{key}?" do
-        role_name == key
-      end
-    end
+  def self.agent
+    find_by(name: 'agent')
+  end
+
+  def super_admin
+    find_by(name: 'super_admin')
+  end
+
+  def seller
+    find_by(name: 'seller')
   end
 
 end

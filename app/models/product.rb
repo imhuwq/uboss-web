@@ -58,8 +58,11 @@ class Product < ActiveRecord::Base
     end
   end
 
-  # FIXME performance better
-  def total_sells #商品总销量
+  def is_official_agent?
+    user_id == User.official_account.id && name == 'UBOSS代理权'
+  end
+
+  def total_sells
     order_items.joins(:order).where(orders: {state: 4}).sum(:amount)
   end
 

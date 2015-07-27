@@ -37,7 +37,7 @@ class Order < ActiveRecord::Base
     state :completed, after_enter: :fill_completed_at
     state :closed, after_enter: :recover_product_stock
 
-    event :pay do
+    event :pay, after_commit: :invoke_official_agent_order_process do
       transitions from: :unpay, to: :payed
     end
     event :ship do
@@ -117,6 +117,12 @@ class Order < ActiveRecord::Base
 
   def active_privilege_card
     order_items.each(&:active_privilege_card)
+  end
+
+  def invoke_official_agent_order_process
+    if order_items.first.product.is_official_agent?
+      OfficialAgentOrderJob.perform_later(self)
+    end
   end
 
 end
