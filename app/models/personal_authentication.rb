@@ -1,7 +1,6 @@
 class PersonalAuthentication < ActiveRecord::Base
   include AASM
 
-
   DATA_STATUS = { 'posted'=>'已提交', 'review'=> '验证中', 'pass'=> '已通过', 'no_pass'=> '未通过' }
 
   attr_accessor :mobile_auth_code

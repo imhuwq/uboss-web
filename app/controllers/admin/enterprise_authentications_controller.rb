@@ -1,4 +1,13 @@
 class Admin::EnterpriseAuthenticationsController < AdminController
+  def index
+    if super_admin?
+      @enterprise_authentications = EnterpriseAuthentication.order("updated_at DESC").page(params[:page] || 1)
+    else
+      flash[:notice] = "需要管理员权限"
+      redirect_to action: :show
+    end
+  end
+
   def new
     if EnterpriseAuthentication.find_by(user_id: current_user).present?
       flash[:alert] = '您的验证信息已经提交，请检查。'
@@ -66,6 +75,32 @@ class Admin::EnterpriseAuthenticationsController < AdminController
       else
         flash[:error] = "保存失败：#{@enterprise_authentication.errors.full_messages.join('<br/>')}"
         redirect_to action: :edit
+      end
+    end
+  end
+
+  def change_status
+    @enterprise_authentication = EnterpriseAuthentication.find_by(user_id: params[:user_id])
+    if @enterprise_authentication.present? && params[:status]
+      @enterprise_authentication.status = params[:status]
+      if params[:status] == "pass"
+        @enterprise_authentication.check_and_set_user_authenticated_to_yes
+      else
+        @enterprise_authentication.check_and_set_user_authenticated_to_no
+      end
+
+      if @enterprise_authentication.save
+        flash[:success] = '状态被修改'
+      else
+        @enterprise_authentication.valid?
+        flash[:error] = "保存失败：#{@enterprise_authentication.errors.full_messages.join('<br/>')}"
+      end
+    end
+
+    respond_to do |format|
+      format.html { redirect_to action: :show, user_id: @enterprise_authentication.user_id }
+      format.js do
+        @enterprise_authentications = EnterpriseAuthentication.order("updated_at DESC").page(params[:page] || 1)
       end
     end
   end

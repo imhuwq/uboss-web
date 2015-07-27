@@ -90,8 +90,12 @@ class Admin::PersonalAuthenticationsController < AdminController
       else
         @personal_authentication.check_and_set_user_authenticated_to_no
       end
-      flash.now[:success] = '状态被修改'
-      @personal_authentication.save
+      if @personal_authentication.save
+        flash[:success] = '状态被修改'
+      else
+        @personal_authentication.valid?
+        flash[:error] = "保存失败：#{@personal_authentication.errors.full_messages.join('<br/>')}"
+      end
     end
 
     respond_to do |format|
@@ -114,7 +118,7 @@ class Admin::PersonalAuthenticationsController < AdminController
     code18 = /^[1-9]\d{5}[1-9]\d{3}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}([0-9]|X)$/ # 18位身份证号
     identity_card_match = (allow_params[:identity_card_code] =~ code15 || allow_params[:identity_card_code] =~ code18)
     hash = {
-      # '验证码错误或已过期。': MobileAuthCode.auth_code(allow_params[:mobile], allow_params[:mobile_auth_code]),
+      '验证码错误或已过期。': MobileAuthCode.auth_code(allow_params[:mobile], allow_params[:mobile_auth_code]),
       '手持身份证照片不能为空。': params[:face_with_identity_card_img],
       '身份证照片不能为空。': params[:identity_card_front_img],
       '姓名不能为空。': allow_params[:name],

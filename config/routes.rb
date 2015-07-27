@@ -57,13 +57,13 @@ Rails.application.routes.draw do
         end
       end
       resources :personal_authentications, only: [:index]
-      resources :enterprise_authentication, only: [:index]
+      resources :enterprise_authentications, only: [:index]
       resources :users, except: [:destroy] do
         resource :personal_authentication do
           get :change_status, on: :member
         end
         resource :enterprise_authentication do
-        get :change_status, on: :member
+          get :change_status, on: :member
         end
       end
       resources :agents, except: [:new, :edit, :update, :destroy] do
