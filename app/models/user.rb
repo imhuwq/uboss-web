@@ -166,6 +166,14 @@ class User < ActiveRecord::Base
     User.where(agent_id: self.id)
   end
 
+  def authenticated?
+    if self.authenticated == 'yes'
+      return true
+    else
+      return false
+    end
+  end
+
   private
     def email_required?
       false

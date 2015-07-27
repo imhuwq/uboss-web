@@ -26,9 +26,9 @@ class Admin::ProductsController < AdminController
     product.asset_img = img
     product.user_id = current_user.id
     if product.save
-      flash[:success] = '产品创建成功'
+      flash.now[:success] = '产品创建成功'
     else
-      flash[:error] = "#{product.errors.messages}"
+      flash.now[:error] = "#{product.errors.messages}"
       render 'new'
       return
     end
@@ -48,26 +48,31 @@ class Admin::ProductsController < AdminController
     end
     if product.present? && product.user_id == current_user.id && product.update_attributes(product_params)
 
-      flash[:success] = '保存成功'
+      flash.now[:success] = '保存成功'
     else
-      flash[:error] = "保存失败。#{product.errors.messages}"
+      flash.now[:error] = "保存失败。#{product.errors.messages}"
     end
     redirect_to action: :show, id: product.id
   end
 
   def change_status
     @product = Product.find(params[:id])
-    if @product.status == 'unpublish' && !(params[:delete] == 'true')
-      @product.status = 'published'
-      flash[:success] = '上架成功'
-    elsif @product.status == 'published' && !(params[:delete] == 'true')
+    if params[:status] == 'published'
+      if current_user.authenticated?
+        @product.status = 'published'
+        flash.now[:success] = '上架成功'
+      else
+        flash.now[:notice] = '请先验证'
+      end
+    elsif params[:status] == 'unpublish'
       @product.status = 'unpublish'
-      flash[:success] = '取消上架成功'
-    elsif params[:delete] == 'true'
+      flash.now[:success] = '取消上架成功'
+    elsif params[:status] == 'closed'
       @product.status = 'closed'
-      flash[:success] = '删除成功'
+      flash.now[:success] = '删除成功'
     end
     @product.save
+    puts @product.errors.messages
     respond_to do |format|
       format.html { redirect_to action: :show, id: @product.id }
       format.js do

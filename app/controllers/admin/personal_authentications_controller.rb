@@ -3,13 +3,13 @@ class Admin::PersonalAuthenticationsController < AdminController
     if super_admin?
       @personal_authentications = PersonalAuthentication.order("updated_at DESC").page(params[:page] || 1)
     else
-      flash[:notice] = "需要管理员权限"
+      flash.now[:notice] = "需要管理员权限"
       redirect_to action: :show
     end
   end
   def new
     if PersonalAuthentication.find_by(user_id: current_user).present?
-      flash[:alert] = '您的验证信息已经提交，请检查。'
+      flash.now[:alert] = '您的验证信息已经提交，请检查。'
       redirect_to action: :show
     else
       @personal_authentication = PersonalAuthentication.new
@@ -23,7 +23,7 @@ class Admin::PersonalAuthenticationsController < AdminController
       @personal_authentication = PersonalAuthentication.find_by(user_id: current_user)
     end
     unless @personal_authentication.present?
-      flash[:notice] = '您还没有认证'
+      flash.now[:notice] = '您还没有认证'
       redirect_to action: :new
     end
   end
@@ -31,7 +31,7 @@ class Admin::PersonalAuthenticationsController < AdminController
   def edit
     personal_authentication = PersonalAuthentication.find_by(user_id: current_user)
     if [:review, :pass].include?(personal_authentication.status)
-      flash[:alert] = '当前状态不允许修改。'
+      flash.now[:alert] = '当前状态不允许修改。'
       redirect_to action: :show
     else
       @personal_authentication = personal_authentication
@@ -42,7 +42,7 @@ class Admin::PersonalAuthenticationsController < AdminController
     @personal_authentication = PersonalAuthentication.new(allow_params)
     valid_create_params
     if @errors.present?
-      flash[:error] = @errors.join("\n")
+      flash.now[:error] = @errors.join("\n")
       render 'new'
       return
     else
@@ -50,10 +50,10 @@ class Admin::PersonalAuthenticationsController < AdminController
       @personal_authentication.face_with_identity_card_img = params[:face_with_identity_card_img]
       @personal_authentication.identity_card_front_img = params[:identity_card_front_img]
       if @personal_authentication.save
-        flash[:success] = '保存成功'
+        flash.now[:success] = '保存成功'
         redirect_to action: :show
       else
-        flash[:error] = "保存失败：#{@personal_authentication.errors}"
+        flash.now[:error] = "保存失败：#{@personal_authentication.errors}"
         render 'new'
       end
     end
@@ -63,18 +63,19 @@ class Admin::PersonalAuthenticationsController < AdminController
     valid_update_params
     @personal_authentication = PersonalAuthentication.find_by!(user_id: current_user)
     if @errors.present?
-      flash[:error] = @errors.join("\n")
+      flash.now[:error] = @errors.join("\n")
       redirect_to action: :edit
       return
     else
       @personal_authentication.update_attributes(allow_params)
       @personal_authentication.face_with_identity_card_img = params[:face_with_identity_card_img] if params[:face_with_identity_card_img]
       @personal_authentication.identity_card_front_img = params[:identity_card_front_img] if params[:identity_card_front_img]
+      @personal_authentication.status = 'posted'
       if @personal_authentication.save
-        flash[:success] = '保存成功'
+        flash.now[:success] = '保存成功'
         redirect_to action: :show
       else
-        flash[:error] = "保存失败：#{@personal_authentication.errors}"
+        flash.now[:error] = "保存失败：#{@personal_authentication.errors}"
         redirect_to action: :edit
       end
     end
@@ -84,7 +85,12 @@ class Admin::PersonalAuthenticationsController < AdminController
     @personal_authentication = PersonalAuthentication.find_by(user_id: params[:user_id])
     if @personal_authentication.present? && params[:status]
       @personal_authentication.status = params[:status]
-      flash[:success] = '状态被修改'
+      if params[:status] == "pass"
+        @personal_authentication.check_and_set_user_authenticated_to_yes
+      else
+        @personal_authentication.check_and_set_user_authenticated_to_no
+      end
+      flash.now[:success] = '状态被修改'
       @personal_authentication.save
     end
 

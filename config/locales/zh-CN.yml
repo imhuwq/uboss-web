@@ -116,6 +116,7 @@ zh-CN:
     sellers:  商家
     banking:  提现
     daily_reports: 收益
+    authentications: 认证
   activerecord:
     models:
       withdraw_record: 提现记录

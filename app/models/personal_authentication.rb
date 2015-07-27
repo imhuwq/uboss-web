@@ -43,15 +43,15 @@ class PersonalAuthentication < ActiveRecord::Base
   end
 
   def self.posted
-    PersonalAuthentication.where(status: 'posted')
+    PersonalAuthentication.where(status: 0)
   end
   def self.review
-    PersonalAuthentication.where(status: 'review')
+    PersonalAuthentication.where(status: 1)
   end
   def self.pass
-    PersonalAuthentication.where(status: 'pass')
+    PersonalAuthentication.where(status: 2)
   end
   def self.no_pass
-    PersonalAuthentication.where(status: 'no_pass')
+    PersonalAuthentication.where(status: 3)
   end
 end

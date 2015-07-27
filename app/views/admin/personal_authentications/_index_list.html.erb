@@ -1,3 +1,4 @@
+<%= render 'layouts/flash_alert' %>
 <%= table_for(@personal_authentications) do |t| %>
   <%= t.cell :name do |obj| %>
     <%= link_to url_for(controller: 'admin/personal_authentications', action: :show, user_id: obj.user_id) do %>
@@ -27,6 +28,8 @@
       <%= link_to '不通过', '###', onclick:"change_status(#{obj.user_id},'no_pass')" %>
     <% when 'pass' %>
       <%= link_to '不通过', '###', onclick:"change_status(#{obj.user_id},'no_pass')" %>
+    <% when 'no_pass' %>
+      <%= link_to '通过', '###', onclick:"change_status(#{obj.user_id},'pass')"  %>
     <% end %>
   <% end %>
 <%- end %>

@@ -11,11 +11,11 @@ class AccountsController < ApplicationController
     if account_params[:login].present? and account_params[:code].present?
      MobileAuthCode.auth_code(account_params[:login], account_params[:code])
      current_user.update(login: account_params[:login])
-     flash[:notice] = '绑定成功'
+     flash.now[:notice] = '绑定成功'
      redirect_to settings_account_path
      return
     elsif current_user.update(account_params)
-      flash[:notice] = '修改成功'
+      flash.now[:notice] = '修改成功'
       redirect_to settings_account_path
     else
       render :edit
@@ -30,7 +30,7 @@ class AccountsController < ApplicationController
 
   def edit_mobile_page
     if current_user.login.present?
-      flash[:info] = "你已经有帐号了"
+      flash.now[:info] = "你已经有帐号了"
       redirect_to settings_account_path
     end
   end

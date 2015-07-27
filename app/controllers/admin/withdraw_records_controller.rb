@@ -29,10 +29,10 @@ class Admin::WithdrawRecordsController < AdminController
 
   def change_record_state(action)
     if @withdraw_record.send(action)
-      flash[:notice] = "编号：#{@withdraw_record.number} 处理成功。"
+      flash.now[:notice] = "编号：#{@withdraw_record.number} 处理成功。"
       redirect_to :back
     else
-      flash[:error] = "编号：#{@withdraw_record.number} 处理失败。"
+      flash.now[:error] = "编号：#{@withdraw_record.number} 处理失败。"
       redirect_to :back
     end
   end

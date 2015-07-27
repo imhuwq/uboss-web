@@ -4,7 +4,7 @@ class EvaluationsController < ApplicationController
     @evaluation = Evaluation.new
     @privilege_card = PrivilegeCard.find_by(user: current_user, product: @order_item.product, actived: true)
     # if @order_item.evaluation.present?
-    #   flash[:success] = "您已经评价过了"
+    #   flash.now[:success] = "您已经评价过了"
     #   redirect_to root_path
     # end
   end
@@ -20,10 +20,10 @@ class EvaluationsController < ApplicationController
   def create
     evaluation = Evaluation.new(validate_attrs)
     if evaluation.save!
-      flash[:success] = '评价成功'
+      flash.now[:success] = '评价成功'
       redirect_to action: :show, id: evaluation.id
     else
-      flash[:error] = '评价失败'
+      flash.now[:error] = '评价失败'
       render action: :new, id: params[:id]
     end
   end

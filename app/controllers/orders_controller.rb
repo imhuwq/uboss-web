@@ -58,7 +58,7 @@ class OrdersController < ApplicationController
 
   def received
     if @order.sign!
-      flash[:success] = '已确认收货'
+      flash.now[:success] = '已确认收货'
       redirect_to controller: :evaluations, action: :new, id: @order.order_items.first.id
     end
   end

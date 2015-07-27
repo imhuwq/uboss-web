@@ -1,11 +1,14 @@
 
 <div class="row">
+
   <%= simple_form_for(:seller, url: url_for(controller: :sellers, action: :create), method: 'POST',wrapper: :horizontal_file_input) do |f| %>
-    <%= hidden_field_tag "seller[agent_id]", @agent.id %>
-    <div class="col-xs-12 border_block">
+    <%= hidden_field_tag "seller[agent_id]", @agent.try(:id) %>
+    <div class="col-xs-12 border_block" style="border: 0">
       <div class="col-xs-11  col-md-offset-1">
         <h3 class="col-md-offset-1">注册绑定UBOSS</h3>
+        <% if @agent.present? %>
         <h5 class="col-md-offset-4">您将与<%= @agent.try(:identify) %>创客进行绑定</h5>
+        <% end %>
         <div class="form-group clearfix">
           <%= f.label :mobile,:class=>"text-right col-sm-3 control-label" %>
           <div class="col-xs-3"><%= f.input_field :mobile , as: :tel, id:"new_mobile", style:"width:100%;" %></div>
@@ -21,4 +24,3 @@
     </div>
   <% end %>
 </div>
-<%= params %>
