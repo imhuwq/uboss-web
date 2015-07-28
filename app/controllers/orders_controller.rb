@@ -1,6 +1,6 @@
 class OrdersController < ApplicationController
 
-  before_action :authenticate_user!
+  before_action :authenticate_user!, except: [:new, :create]
   before_action :find_order, only: [:show, :pay, :pay_complete, :received]
 
   def show
@@ -23,6 +23,7 @@ class OrdersController < ApplicationController
   end
 
   def new
+    authenticate_user! if browser.wechat?
     @order_form = OrderForm.new(
       buyer: current_user,
       product_id: params[:product_id],
@@ -40,6 +41,7 @@ class OrdersController < ApplicationController
   end
 
   def create
+    authenticate_user! if browser.wechat?
     @order_form = OrderForm.new(order_params.merge(buyer: current_user))
     @order_form.sharing_code = get_product_sharing_code(@order_form.product_id)
     if @order_form.save

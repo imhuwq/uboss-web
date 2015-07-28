@@ -63,7 +63,7 @@
 
       <div class="sub_p3">个人信息确认</div>
 
-      <% if current_user.need_set_login? %>
+      <% if current_user.blank? || (current_user && current_user.need_set_login?) %>
         <div class="subOrd_boxcont subOrd_boxbtn">
           <p class="sub_p">
             <span>
@@ -114,14 +114,16 @@
           <div class="close" id="closeModal"><a href="#"><%= image_tag 'img/close.png' %></a></div>
         </div>
         <dl class="add_conts">
-          <% @order_form.buyer.user_addresses.each do |user_address| %>
-            <dl class="add_line1" data-id='<%= user_address.id %>'>
-              <dd>
-              <span>收货人：<b class='adr-user'><%= user_address.try(:username) %></b></span>
-              <strong class='adr-mobile'><%= user_address.try(:mobile) %></strong></dd>
-              <dd>
-              <span>收货地址：<b class='adr-detail'><%= user_address %></b></span></dd>
-            </dl>
+          <% if @order_form.buyer %>
+            <% @order_form.buyer.user_addresses.each do |user_address| %>
+              <dl class="add_line1" data-id='<%= user_address.id %>'>
+                <dd>
+                <span>收货人：<b class='adr-user'><%= user_address.try(:username) %></b></span>
+                <strong class='adr-mobile'><%= user_address.try(:mobile) %></strong></dd>
+                <dd>
+                <span>收货地址：<b class='adr-detail'><%= user_address %></b></span></dd>
+              </dl>
+            <% end %>
           <% end %>
 
           <div class="add_more"><a href="#">使用新地址</a></div>
