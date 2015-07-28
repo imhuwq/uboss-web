@@ -1,0 +1,69 @@
+<div class="col-xs-12 bg-warning">
+  <div class="col-xs-2">
+    <%= link_to '商家信息', '###', class:"text-muted" %>
+  </div>
+  <div class="col-xs-2">
+    <%= link_to '营收状况', '###' %>
+  </div>
+  <div class="col-xs-3 pull-right">
+    <%= link_to "商家名：#{@seller.identify}", '###' %>
+  </div>
+</div>
+<div class="row">
+	<div class="col-xs-12 border_block">
+		<h3 class="col-md-offset-1">基本信息</h3>
+		<div class="col-xs-11 col-md-offset-1">
+			<div class="form-group clearfix">
+				<label class="string required text-right col-sm-3 control-label" for="product_name">
+					<abbr title="必填">*</abbr>
+					注册帐号
+				</label>
+				<div class="col-sm-9">
+					<%= @seller.login %>
+				</div>
+			</div>
+      <div class="form-group clearfix">
+				<label class="string required text-right col-sm-3 control-label" for="product_name">
+					<abbr title="必填">*</abbr>
+					注册时间
+				</label>
+				<div class="col-sm-9">
+					<%= @seller.created_at.to_date %>
+				</div>
+			</div>
+		</div>
+	</div>
+  <div class="col-xs-12 border_block">
+    <div class="col-xs-12" style="border-bottom:2px solid grey;margin-top:10px;">
+       认证状态：<%= @seller.authenticated %>
+    </div>
+    <div class="row">
+      <div class="col-xs-3">
+        <div class="clearfix">企业营业执照副本：</div>
+        <%= image_tag(@enterprise_authentication.try(:business_license_img), width: "94%", alt: "-") %>
+      </div>
+      <div class="col-xs-6 ">
+        <div class="clearfix">法人身份证：</div>
+        <%= image_tag(@enterprise_authentication.try(:legal_person_identity_card_front_img), class:"col-xs-6", alt: "-") %>
+        <%= image_tag(@enterprise_authentication.try(:legal_person_identity_card_end_img), class:"col-xs-6", alt: "-") %>
+      </div>
+    </div>
+    <hr/>
+    <div class="row">
+      <div class="col-xs-3 col-md-offset-3">
+        <div class="clearfix">手持身份证图片：</div>
+        <%= image_tag(@personal_authentication.try(:face_with_identity_card_img), width: "94%", alt: "-") %>
+      </div>
+      <div class="col-xs-3">
+        <div class="clearfix">身份证正面：</div>
+        <%= image_tag(@personal_authentication.try(:identity_card_front_img), width: "94%", alt: "-") %>
+      </div>
+    </div>
+
+	</div>
+  <div class="col-xs-12 border_block">
+    <div class="col-xs-12" style="border-bottom:2px solid grey;margin-top:10px;">
+       当前平台费率：<%= @seller.try(:user_info).try(:service_rate) %>%
+    </div>
+	</div>
+</div>
