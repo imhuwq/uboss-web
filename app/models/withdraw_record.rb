@@ -17,10 +17,11 @@ class WithdrawRecord < ActiveRecord::Base
   belongs_to :bank_card
 
   validates :user_id, :amount, presence: true
-  validates_numericality_of :amount, greater_than: 0
+  validates_numericality_of :amount, greater_than_or_equal_to: 100
   validates_numericality_of :amount,
-    less_than_or_equal_to: -> (withdraw) { withdraw.user.income.to_f },
+    less_than_or_equal_to: ->(record) { record.user.income.to_f },
     if: :new_record?
+  validates :bank_card_id, presence: true, if: -> { user.weixin_openid.blank? }
 
   delegate :identify, :total_income, to: :user, prefix: true
 
@@ -29,13 +30,13 @@ class WithdrawRecord < ActiveRecord::Base
   before_save :set_bank_info
   after_create :decrease_user_income
 
-  aasm column: :state, enum: true, whiny_transitions: false do
+  aasm column: :state, enum: true, skip_validation_on_save: true, whiny_transitions: false do
     state :unprocess
-    state :processed, before_enter: :set_processed_info, after_enter: :delay_transfer_money
+    state :processed, before_enter: :set_processed_info
     state :done, before_enter: :set_done_at, after_enter: [:remove_user_frozen_income, :record_trade]
     state :closed, after_enter: :recover_user_income
 
-    event :process do
+    event :process, after_commit: :delay_transfer_money do
       transitions from: :unprocess, to: :processed
     end
 
@@ -54,10 +55,16 @@ class WithdrawRecord < ActiveRecord::Base
     end
   end
 
+  def wechat_available?
+    bank_info.blank? && user.weixin_openid.present?
+  end
+
   private
 
   def delay_transfer_money
-    WithdrawJob.perform_later(self, self.transfer_remote_ip)
+    if wechat_available?
+      WithdrawJob.perform_later(self, self.transfer_remote_ip)
+    end
   end
 
   def set_bank_info
@@ -70,11 +77,11 @@ class WithdrawRecord < ActiveRecord::Base
   end
 
   def set_processed_info
-    self.process_at = DateTime.now
+    touch(:process_at)
   end
 
   def set_done_at
-    self.done_at = DateTime.now
+    touch(:done_at)
   end
 
   def decrease_user_income

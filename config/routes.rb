@@ -50,7 +50,7 @@ Rails.application.routes.draw do
         patch :ship, on: :member
       end
       resources :sharing_incomes, only: [:index, :show, :update]
-      resources :withdraw_records, only: [:index, :show, :update] do
+      resources :withdraw_records, only: [:index, :show, :new, :create] do
         member do
           patch :processed
           patch :close
@@ -73,14 +73,13 @@ Rails.application.routes.draw do
           get :details, on: :collection
         end
       end
-      resources :banking, except: [:new, :edit, :update, :destroy] do
-      end
       resource :account, only: [:edit, :show, :update] do
         get :password, on: :member
         patch :password, to: 'accounts#update_password'
       end
       resources :transactions, only: [:index]
       resources :income_reports, only: [:index, :show]
+      resources :bank_cards, only: [:index, :show, :new, :create, :destroy]
 
       get '/data', to: 'data#index'
       get '/backend_status', to: 'dashboard#backend_status'

@@ -4,4 +4,8 @@ class BankCard < ActiveRecord::Base
 
   validates :number, :username, :user_id, :bankname, presence: true
 
+  def identify
+    "#{bankname}: #{number}"
+  end
+
 end

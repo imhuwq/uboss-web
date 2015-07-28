@@ -12,8 +12,6 @@ class Evaluation < ActiveRecord::Base
 
   enum status: { good: 1, normal: 2,bad: 3}
 
-
-
   def relate_attrs # 取出order_item的值并斌给Evaluation中对应的属性
     if order_item
       self.buyer_id = order_item.user_id

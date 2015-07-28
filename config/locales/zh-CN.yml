@@ -1,5 +1,7 @@
 zh-CN:
   attributes: &attributes
+    bank_card: 银行卡
+    bankname: 银行名称
     user: 用户
     income: 收入
     share_rate: 分成比例
@@ -106,12 +108,14 @@ zh-CN:
       default: 验证码错误
   nav_groups:
     orders: 订单
+    withdraw_records: 提现
   li_link:
     dashboard: 首页
     data: 数据
     orders: 订单列表
     sharing_incomes: 订单分成
-    withdraw_records: 用户提现
+    withdraw_records: 提现
+    bank_cards: 银行卡
     products: 商品
     users: 后台账户
     backend_status: Sidekiq
@@ -127,7 +131,11 @@ zh-CN:
       sharing_income: 分享收入
       selling_income: 销售收入
       divide_income: 分成收入
+      bank_card: 银行卡
     attributes:
+      bank_card:
+        number: 银行卡号
+        username: 姓名
       daily_report:
         user_service_rate: 提成比例
         amount: 收入
@@ -164,7 +172,7 @@ zh-CN:
         unprocess: 未处理
         processed: 交易中
         done: 交易完成
-        closed: 关闭
+        closed: 拒绝
     sharing_income:
       level:
         l1: 一级分成

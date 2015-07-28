@@ -1,0 +1,14 @@
+<ol class="breadcrumb">
+  <li><%= link_to '银行卡列表', [:admin, :bank_cards] %></li>
+  <li class="active">添加银行卡</li>
+</ol>
+
+<h3>添加银行卡</h3>
+<hr />
+
+<%= simple_form_for [:admin, @bank_card] do |f| %>
+  <%= f.input :bankname %>
+  <%= f.input :username, hint: '' %>
+  <%= f.input :number %>
+  <%= f.submit class: 'btn btn-primary' %>
+<% end %>

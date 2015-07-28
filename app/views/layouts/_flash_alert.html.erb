@@ -1,9 +1,9 @@
 <% if flash[:error].present? %>
-  <%= alert_box flash[:error], type: 'alert-danger' %>
+  <%== alert_box flash[:error], type: 'alert-danger' %>
 <% elsif flash[:notice].present? %>
-  <%= alert_box flash[:notice] %>
+  <%== alert_box flash[:notice] %>
 <% elsif flash[:alert].present? %>
-  <%= alert_box flash[:alert], type: 'alert-warning' %>
+  <%== alert_box flash[:alert], type: 'alert-warning' %>
 <% elsif flash[:success].present? %>
-  <%= alert_box flash[:success], type: 'alert-success' %>
+  <%== alert_box flash[:success], type: 'alert-success' %>
 <% end -%>

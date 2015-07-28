@@ -8,8 +8,8 @@ module Orderable
   end
 
   module ClassMethods
-    def recent order_column = "created_at"
-      all.order("#{self.table_name }.#{ order_column || "created_at" } DESC")
+    def recent order_column = "id"
+      all.order("#{self.table_name }.#{ order_column} DESC")
     end
   end
 

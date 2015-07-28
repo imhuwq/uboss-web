@@ -13,11 +13,13 @@
         <% end %>
         <%= can_li_link(:read, DailyReport, admin_income_reports_path, another_active_name: :income_reports) %>
         <%= can_li_link(:manage, :sellers, admin_sellers_path) %>
-        <%= can_li_link(:manage, :banking, admin_banking_index_path) %>
         <%= can_li_link(:manage, :agents, admin_agents_path) %>
+        <%= nav_group :withdraw_records do %>
+          <%= can_li_link(:read, WithdrawRecord, admin_withdraw_records_path) %>
+          <%= can_li_link(:manage, BankCard, admin_bank_cards_path) %>
+        <% end %>
         <%= can_li_link(:manage, :authentications, admin_personal_authentications_path) %>
         <%= nav_group :uboss do %>
-          <%= can_li_link(:manage, WithdrawRecord, admin_withdraw_records_path) %>
           <%= can_li_link(:manage, User, admin_users_path) %>
           <%= can_li_link(:manage, Transaction, admin_transactions_path) %>
           <%= can_li_link(:manage, :backend_status, admin_backend_status_path, another_active_name: :backend_status) %>

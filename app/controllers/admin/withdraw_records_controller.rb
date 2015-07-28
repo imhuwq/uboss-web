@@ -1,12 +1,29 @@
 class Admin::WithdrawRecordsController < AdminController
 
-  before_action :find_record, only: [:show, :processed, :finish, :close]
+  load_and_authorize_resource
 
   def index
-    @withdraw_records = WithdrawRecord.order('state ASC, id DESC').page(param_page)
+    @withdraw_records = @withdraw_records.order('id DESC').page(param_page)
   end
 
   def show
+  end
+
+  def new
+    if current_user.weixin_openid.blank? && current_user.bank_cards.count < 1
+      flash[:notice] = "请添加银行卡以用于提现"
+      redirect_to new_admin_bank_card_path
+    else
+      @withdraw_record.user = current_user
+    end
+  end
+
+  def create
+    if @withdraw_record.save
+      redirect_to [:admin, @withdraw_record]
+    else
+      render :new
+    end
   end
 
   def processed
@@ -14,17 +31,13 @@ class Admin::WithdrawRecordsController < AdminController
     change_record_state(:process!)
   end
 
-  #def finish
-    #change_record_state(:finish!)
-  #end
-
   def close
     change_record_state(:close!)
   end
 
   private
-  def find_record
-    @withdraw_record = WithdrawRecord.find(params[:id])
+  def create_params
+    params.require(:withdraw_record).permit(:amount, :bank_card_id)
   end
 
   def change_record_state(action)
@@ -32,7 +45,7 @@ class Admin::WithdrawRecordsController < AdminController
       flash[:notice] = "编号：#{@withdraw_record.number} 处理成功。"
       redirect_to :back
     else
-      flash[:error] = "编号：#{@withdraw_record.number} 处理失败。"
+      flash[:error] = "编号：#{@withdraw_record.number} 处理失败。<br/>错误信息：#{@withdraw_record.errors.full_messages.join('<br/>')}"
       redirect_to :back
     end
   end

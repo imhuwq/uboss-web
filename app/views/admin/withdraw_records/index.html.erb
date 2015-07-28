@@ -1,4 +1,6 @@
-<h4>用户提现</h4>
+<% if can?(:create, WithdrawRecord) %>
+  <%= link_to "申请提现", new_admin_withdraw_record_path, class: 'btn btn-primary' %>
+<% end %>
 <hr />
 <%= table_for(@withdraw_records) do |table| %>
   <%= table.cell :number do |record| %>
@@ -12,9 +14,9 @@
     <span class='label state-<%= record.state %>'><%= record.state_i18n %></span>
   <% end %>
   <%= table.cell :action do |record| %>
-    <% if record.unprocess? %>
-      <%= link_to '打款', processed_admin_withdraw_record_path(record),
-        method: :PATCH, data: {confirm: '确认打款？'} %>
+    <% if record.unprocess? && can?(:manage, WithdrawRecord) %>
+      <%= link_to withdraw_process_txt(record), processed_admin_withdraw_record_path(record),
+        method: :PATCH, data: {confirm: '确认打款？'}, class: "btn btn-sm #{withdraw_process_class(record)}" %>
       <%= link_to '拒绝', close_admin_withdraw_record_path(record),
         method: :PATCH, data: {confirm: '确认拒绝，并关闭此提现申请？'}, class: 'text-danger' %>
     <% end %>

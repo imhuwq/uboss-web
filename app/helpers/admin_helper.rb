@@ -19,4 +19,11 @@ module AdminHelper
     dropdown_list_string.html_safe
   end
 
+  def withdraw_process_txt(record)
+    record.wechat_available? ? "微信打款" : "银行打款"
+  end
+
+  def withdraw_process_class(record)
+    record.wechat_available? ? "btn-success" : "btn-primary"
+  end
 end
