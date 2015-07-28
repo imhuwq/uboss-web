@@ -11,6 +11,11 @@
         <%= truncate current_user.identify,:length=>28,:omission=>'...' %>
       </span>
       <% end %>
+      <% if not browser.wechat? %>
+      <span class="my_btn">
+        <%= link_to "退出账户", destroy_user_session_path, method: :delete, class:'my_retur', style: 'padding:13px;' %>
+      </span>
+      <% end %>
     </div>
   </div>
   <div class="my_acuntbox2">

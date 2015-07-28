@@ -3,9 +3,8 @@
   <li class="active">提现详情</li>
 </ol>
 
-<h4>提现信息</h4>
-<hr />
-<table class='table table-bordered'>
+<table class='table table-bordered table-condensed'>
+  <caption>提现信息</caption>
   <tbody>
     <tr>
       <th><%= WithdrawRecord.human_attribute_name(:number) %></th>
@@ -36,10 +35,9 @@
   </tbody>
 </table>
 
-<h4>银行卡信息</h4>
-<hr />
 <% if @withdraw_record.bank_info.present? %>
-  <table class="table table-bordered">
+  <table class="table table-bordered table-condensed">
+    <caption>银行卡信息</caption>
     <tbody>
       <tr>
         <th><%= BankCard.human_attribute_name(:bankname) %></th>
@@ -59,10 +57,9 @@
   <p class="alert alert-info">未添加银行卡信息，已绑定微信，通过微信打款。</p>
 <% end %>
 
-<h4>处理信息</h4>
-<hr />
-<table class="table table-bordered">
+<table class="table table-bordered table-condensed">
   <tbody>
+    <caption>处理信息</caption>
     <tr>
       <th><%= WithdrawRecord.human_attribute_name(:process_at) %></th>
       <td><%= @withdraw_record.process_at %></td>

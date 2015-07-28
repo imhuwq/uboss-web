@@ -1,13 +1,19 @@
-<%= simple_form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
-  <h2>登录UBoss</h2>
-  <hr />
-  <div class="form-inputs">
-    <%= f.input :login, required: false, autofocus: true %>
-    <%= f.input :password, required: false %>
-    <%= f.input :remember_me, as: :boolean, label: '下次自动登录' if devise_mapping.rememberable? %>
-  </div>
-
-  <div class="form-actions">
-    <%= f.button :submit, "登录" %>
-  </div>
+<%= content_for :page_title do %>
+  登录UBoss
 <% end %>
+
+<div class='login-container'>
+  <%= simple_form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
+    <h2>UBoss</h2>
+    <hr />
+    <div class="form-inputs">
+      <%= f.input :login, required: false, autofocus: true %>
+      <%= f.input :password, required: false %>
+      <%= f.input :remember_me, as: :boolean, label: '下次自动登录' if devise_mapping.rememberable? %>
+    </div>
+
+    <div class="form-actions">
+      <%= f.button :submit, "登录" %>
+    </div>
+  <% end %>
+</div>

@@ -1,5 +1,5 @@
 class Users::SessionsController < Devise::SessionsController
-  layout 'login'
+  layout :login_layout
   # before_filter :configure_sign_in_params, only: [:create]
 
   # GET /resource/sign_in
@@ -30,4 +30,12 @@ class Users::SessionsController < Devise::SessionsController
   # def configure_sign_in_params
   #   devise_parameter_sanitizer.for(:sign_in) << :attribute
   # end
+  private
+  def login_layout
+    if !browser.mobile? && !browser.tablet?
+      'login'
+    else
+      'application'
+    end
+  end
 end
