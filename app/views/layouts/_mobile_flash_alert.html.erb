@@ -13,10 +13,10 @@
           <%== flash[:info] || flash[:notice] %>
         </div>
       <% end %>
-      <% if flash[:error] %>
+      <% if flash[:error] || flash[:alert] %>
         <div class="alert alert-error">
           <a class="close" data-dismiss="alert">x</a>
-          <%== flash[:error] %>
+          <%== flash[:error] || flash[:alert] %>
         </div>
       <% end %>
     </div>
