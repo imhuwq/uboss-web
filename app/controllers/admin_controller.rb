@@ -1,5 +1,5 @@
 class AdminController < ApplicationController
-  include SessionHelper
+  include SessionsHelper
   layout 'admin'
 
   if Rails.env.production? || Rails.env.staging?

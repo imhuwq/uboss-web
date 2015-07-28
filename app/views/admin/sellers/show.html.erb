@@ -31,6 +31,17 @@
 					<%= @seller.created_at.to_date %>
 				</div>
 			</div>
+      <div class="form-group clearfix">
+				<label class="string required text-right col-sm-3 control-label" for="product_name">
+					<abbr title="必填">*</abbr>
+					店铺链接
+				</label>
+				<div class="col-sm-9">
+					<%= "http://#{request.env["HTTP_HOST"]}/stores/#{@seller.id}" %>
+          <div class="clearfix"></div>
+          <img src="http://qr.liantu.com/api.php?&text=<%= "http://#{request.env["HTTP_HOST"]}/stores/#{@seller.id}" %>" style="width:30%"/>
+				</div>
+			</div>
 		</div>
 	</div>
   <div class="col-xs-12 border_block">
