@@ -69,6 +69,7 @@ Rails.application.routes.draw do
       resources :agents, except: [:new, :edit, :update, :destroy] do
       end
       resources :sellers, except: [:new, :edit, :update, :destroy] do
+        post :update_service_rate, on: :collection
         resources :income_reports, only: [:index, :show] do
           get :details, on: :collection
         end

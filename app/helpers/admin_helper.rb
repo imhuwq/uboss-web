@@ -26,4 +26,5 @@ module AdminHelper
   def withdraw_process_class(record)
     record.wechat_available? ? "btn-success" : "btn-primary"
   end
+
 end

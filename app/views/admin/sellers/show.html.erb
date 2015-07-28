@@ -63,7 +63,27 @@
 	</div>
   <div class="col-xs-12 border_block">
     <div class="col-xs-12" style="border-bottom:2px solid grey;margin-top:10px;">
-       当前平台费率：<%= @seller.try(:user_info).try(:service_rate) %>%
+      <%= form_for 'seller', url: url_for(controller: :sellers, action: :update_service_rate), method: :post do |f| %>
+        <%= hidden_field_tag 'seller[id]', params[:id] %>
+        当前平台费率：
+        <%= text_field_tag 'seller[service_rate]', @seller.try(:user_info).try(:service_rate), type: :tel %>%
+        <%= submit_tag '调整', class:"btn btn-info btn-xs" %>
+      <% end %>
+
     </div>
+    <table class="table table-hover">
+      <tr>
+        <th colspan='1'>调整时间</th>
+        <th>调整前费率</th>
+        <th>调整后费率</th>
+      </tr>
+      <% (@seller.try(:user_info).try(:service_rate_histroy) || {}).each do |k,v| %>
+      <tr>
+        <td><%= k %></td>
+        <td><%= v['from_service_rate'] %>%</td>
+        <td><%= v['to_service_rate'] %>%</td>
+      </tr>
+      <% end %>
+    </table>
 	</div>
 </div>

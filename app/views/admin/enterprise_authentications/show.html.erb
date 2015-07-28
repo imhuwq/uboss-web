@@ -1,4 +1,4 @@
-<% if !current_user.admin? %>
+<% if !super_admin? %>
 <div class="row">
   <div class="col-xs-4"></div>
   <div class="col-xs-2">
@@ -76,7 +76,7 @@
       </div>
 		</div>
 	</div>
-  <% if current_user.admin? %>
+  <% if super_admin? %>
     <% case @enterprise_authentication.status %>
     <% when 'posted' %>
       <div class="button_div  col-xs-3"  style="margin-top:30px;padding-bottom:30px;">

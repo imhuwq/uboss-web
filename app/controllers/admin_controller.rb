@@ -1,4 +1,5 @@
 class AdminController < ApplicationController
+  include SessionHelper
   layout 'admin'
 
   if Rails.env.production? || Rails.env.staging?
@@ -9,14 +10,4 @@ class AdminController < ApplicationController
       end
     end
   end
-
-  def super_admin?
-    if current_user.user_roles.collect(&:name).include?('super_admin')
-      return true
-    else
-      return false
-    end
-  end
-
-
 end
