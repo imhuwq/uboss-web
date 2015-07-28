@@ -70,6 +70,7 @@ Rails.application.routes.draw do
       end
       resources :sellers, except: [:new, :edit, :update, :destroy] do
         post :update_service_rate, on: :collection
+        get  :withdraw_records, on: :member
         resources :income_reports, only: [:index, :show] do
           get :details, on: :collection
         end

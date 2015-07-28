@@ -2,6 +2,7 @@ zh-CN:
   attributes: &attributes
     bank_card: 银行卡
     bankname: 银行名称
+    user_name: 账户名
     user: 用户
     income: 收入
     share_rate: 分成比例

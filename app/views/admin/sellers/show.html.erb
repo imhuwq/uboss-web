@@ -3,7 +3,7 @@
     <%= link_to '商家信息', '###', class:"text-muted" %>
   </div>
   <div class="col-xs-2">
-    <%= link_to '营收状况', '###' %>
+    <%= link_to '提现', url_for(action: :withdraw_records, id: params[:id]) %>
   </div>
   <div class="col-xs-3 pull-right">
     <%= link_to "商家名：#{@seller.identify}", '###' %>
@@ -46,28 +46,31 @@
 	</div>
   <div class="col-xs-12 border_block">
     <div class="col-xs-12" style="border-bottom:2px solid grey;margin-top:10px;">
-       认证状态：<%= @seller.authenticated %>
+       认证状态：<%= {'yes'=>'已认证','no'=>'未认证'}[@seller.authenticated] %>
     </div>
     <div class="row">
       <div class="col-xs-3">
         <div class="clearfix">企业营业执照副本：</div>
-        <%= image_tag(@enterprise_authentication.try(:business_license_img), width: "94%", alt: "-") %>
+        <%= image_tag(@enterprise_authentication.try(:business_license_img), class:"col-xs-12", alt: "-") %>
       </div>
-      <div class="col-xs-6 ">
-        <div class="clearfix">法人身份证：</div>
-        <%= image_tag(@enterprise_authentication.try(:legal_person_identity_card_front_img), class:"col-xs-6", alt: "-") %>
-        <%= image_tag(@enterprise_authentication.try(:legal_person_identity_card_end_img), class:"col-xs-6", alt: "-") %>
+      <div class="col-xs-3 ">
+        <div class="clearfix">法人身份证正面：</div>
+        <%= image_tag(@enterprise_authentication.try(:legal_person_identity_card_front_img), class:"col-xs-12", alt: "-") %>
+      </div>
+      <div class="col-xs-3">
+        <div class="clearfix">法人身份证反面：</div>
+        <%= image_tag(@enterprise_authentication.try(:legal_person_identity_card_end_img), class:"col-xs-12", alt: "-") %>
       </div>
     </div>
     <hr/>
     <div class="row">
       <div class="col-xs-3 col-md-offset-3">
         <div class="clearfix">手持身份证图片：</div>
-        <%= image_tag(@personal_authentication.try(:face_with_identity_card_img), width: "94%", alt: "-") %>
+        <%= image_tag(@personal_authentication.try(:face_with_identity_card_img), class:"col-xs-12", alt: "-") %>
       </div>
       <div class="col-xs-3">
         <div class="clearfix">身份证正面：</div>
-        <%= image_tag(@personal_authentication.try(:identity_card_front_img), width: "94%", alt: "-") %>
+        <%= image_tag(@personal_authentication.try(:identity_card_front_img), class:"col-xs-12", alt: "-") %>
       </div>
     </div>
 

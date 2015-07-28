@@ -9,6 +9,11 @@ class Admin::SellersController < AdminController
     @enterprise_authentication = EnterpriseAuthentication.find_by(user_id: @seller.id) || EnterpriseAuthentication.new
   end
 
+  def withdraw_records
+    @seller = User.find_by(id: params[:id])
+    @withdraw_records = WithdrawRecord.where(user_id: @seller).page(params[:page] || 1)
+  end
+
   def update_service_rate
     user_info = UserInfo.find_by(id: params['seller']['id'])
     to_service_rate = params['seller']['service_rate']
