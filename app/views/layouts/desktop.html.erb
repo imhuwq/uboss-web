@@ -19,7 +19,14 @@
   			<div class="header_top">
   				<div class="header_cont">
   					<div class="header_logo"><%= image_tag "desktop_image/logo.png" %><span class="header_font">消费者变身销售员</span></div>
-  					<div class="header_login"><%= link_to "登录", new_user_session_path %></div>
+  					<div class="header_login">
+              <% if current_user and current_user.admin? %>
+                <%= link_to "去后台", admin_root_path %>
+              <% elsif current_user %>
+              <% else %>
+              <%= link_to "登录", new_user_session_path %>
+              <% end %>
+            </div>
   				</div>
   			</div>
   		</div>
