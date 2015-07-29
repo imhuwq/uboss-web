@@ -122,9 +122,15 @@
 </div>
 
 <% if @order.signed? || @order.completed? %>
-  <div class="fenxinrated">
-    <%= render partial: 'application/share_buttoms', locals: { product: @product, node: @sharing_link_node } %>
-  </div>
+  <% if @order_item.evaluation_id.blank? %>
+    <div class="accunt_adil_box3">
+      <%= link_to "评价", new_evaluation_path(id: @order_item.id), class: 'accunt_adilbtn' %>
+    </div>
+  <% else %>
+    <div class="fenxinrated">
+      <%= render partial: 'application/share_buttoms', locals: { product: @product, node: @sharing_link_node } %>
+    </div>
+  <% end %>
 <% end %>
 
 <% if browser.wechat? %>
