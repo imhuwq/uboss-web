@@ -2,7 +2,7 @@
 class ProductsController < ApplicationController
 
   def index
-    @products = append_default_filter Product.published, order_column: :updated_at
+    @products = append_default_filter Product.published.includes(:asset_img), order_column: :updated_at
     if request.xhr?
       render partial: 'products/product', collection: @products
     end

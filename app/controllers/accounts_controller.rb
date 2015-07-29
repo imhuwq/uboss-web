@@ -2,11 +2,11 @@ class AccountsController < ApplicationController
   before_action :authenticate_user!
 
   def show
-    @orders = append_default_filter current_user.orders, page_size: 20
+    @orders = append_default_filter account_orders, page_size: 20
   end
 
   def orders
-    @orders = append_default_filter current_user.orders, page_size: 20
+    @orders = append_default_filter account_orders, page_size: 20
     render partial: 'accounts/order', collection: @orders
   end
 
@@ -70,6 +70,10 @@ class AccountsController < ApplicationController
   end
 
   private
+  def account_orders
+    current_user.orders.includes(order_items: { product: :asset_img })
+  end
+
   def account_params
     if current_user.login.present?
       params.require(:user).permit(:mobile, :nickname, :login)
