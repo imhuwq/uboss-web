@@ -7,44 +7,12 @@
 <% end %>
 <div class="container">
   <div class="list">
-    <ul class="list_ul">
+    <ul class="list_ul clearfix">
       <% if @products.present? %>
         <%= render partial: 'products/product', collection: @products %>
       <% end %>
     </ul>
   </div>
 </div>
-<!-- <input type="hidden" id="p" value="2"/>
-<div class="loading row" id="loading">下滑加载更多内容</div> -->
-<script type="text/javascript">
-  // $(function () {
-  //   // 下滑加载
-  //   var lock = false; // 锁定防止多次提交
-  //   var stop = false; // 终止
-  //   $(window).scroll(function () {
-  //     var targetTop = $('.footer').offset().top; // 目标位置
-  //     var scrollTop = $(window).scrollTop() + $(window).height(); // 当前滚动条的位置(滚动条顶部距离+窗口高度)
-  //     var docHeight = $(document).height(); // 整个页面的高度，包括未显示的
-  //     if ((scrollTop >= targetTop || scrollTop == docHeight) && !lock && !stop) {
-  //       lock = true;
-  //       $('#loading').text('请等待...');
-  //       $.ajax({
-  //         type: 'POST',
-  //         url: "/<%= controller_name %>/democontent",
-  //         data: {'page': $("#p").val()},
-  //         dataType: 'html',
-  //         success: function (data) {
-  //           lock = false;
-  //           $("#p").val(parseInt($("#p").val()) + 1);
-  //           if ($.trim(data) != '') {
-  //             $('.list_ul').append(data);
-  //           } else {
-  //             stop = true;
-  //             $('#loading').text('没有更多的内容.');
-  //           }
-  //         }
-  //       });
-  //     }
-  //   }).trigger('scroll');
-  // });
-</script>
+
+<div id="load-more" data-container='.list_ul' data-ele='.p-item' data-ref='/products'>加载更多</div>

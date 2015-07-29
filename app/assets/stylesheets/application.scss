@@ -11,13 +11,20 @@
 @import 'mobile_page/rewrite_style';
 @import 'mobile_page/order';
 @import 'mobile_page/login';
+@import 'mobile_page/product';
 
 .box {
   position: relative;
   margin: 0 auto;
   overflow: hidden;
 }
-
+.clearfix:before, .clearfix:after {
+  content: " ";
+  display: table;
+}
+.clearfix:after {
+  clear: both;
+}
 .clear {
   clear: both;
 }
