@@ -1,12 +1,10 @@
 # 商品展示
 class ProductsController < ApplicationController
   def index
-    @products = Product.published.order('updated_at DESC')
-    # .page(params[:page] || 1).per(4)
-  end
-  def democontent
-    @products = Product.published.order('updated_at DESC').page(params[:page] || 1).per(4)
-    render  :layout=>false
+    @products = Product.published.order('updated_at DESC').page(param_page)
+    if request.xhr?
+      render partial: 'products/product', collection: @products
+    end
   end
 
   def show
