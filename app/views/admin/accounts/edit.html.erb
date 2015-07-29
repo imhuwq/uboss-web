@@ -8,13 +8,16 @@
   <hr/>
   <% if user = User.find_by(id: current_user.agent_id) %>
     <hr />
-    您的的代理商：<%= user.identify %>
+    您的代理商：<%= user.identify %>
+    <div class="clearfix">
+      当前平台费率：<%= user.user_info.try(:service_rate) %>%
+    </div>
     <hr/>
+
   <% end %>
   <%= simple_form_for(current_user, url: admin_account_path, method: :patch) do |f| %>
 
-    <%= f.input :login, disabled: true %>
-    <%= f.input :mobile %>
+    <%= f.input :login, input_html:{readonly:''} %>
     <%= f.input :store_name %>
     <%= f.input :nickname %>
     <% if current_user.user_roles.collect(&:name).include?('agent') %>

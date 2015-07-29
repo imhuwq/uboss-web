@@ -26,29 +26,39 @@
     </div>
     <div class="col-sm-9">
       <div class="col-sm-12">商家名称：<%= obj.user.identify %></div>
+      <div class="col-sm-12">绑定手机：<%= obj.user.login %></div>
     </div>
     <% end %>
   <% end %>
   <%= t.cell :created_at %>
-  <%= t.cell :login do |obj| %>
-    <%= obj.user.login %>
-  <% end %>
   <%= t.cell :status do |obj| %>
-    <span class='label label-info'><%= PersonalAuthentication::DATA_STATUS[obj.status] %></span>
+    <% case obj.status %>
+    <% when 'posted' %>
+    <span class='label label-info'>
+    <% when 'review' %>
+    <span class='label label-warning'>
+    <% when 'pass' %>
+    <span class='label label-success'>
+    <% when 'no_pass' %>
+    <span class='label label-danger'>
+    <% else %>
+    <span class='label label-default'>
+    <% end %>
+    <%= PersonalAuthentication::DATA_STATUS[obj.status] %></span>
   <% end %>
   <%= t.cell :action do |obj| %>
     <% case obj.status %>
     <% when 'posted' %>
-      <%= link_to '锁定资料', '###', onclick:"change_status(#{obj.user_id},'review')" %>
-      <%= link_to '通过', '###', onclick:"change_status(#{obj.user_id},'pass')"  %>
-      <%= link_to '不通过', '###', onclick:"change_status(#{obj.user_id},'no_pass')" %>
+      <%= link_to '锁定资料', '###', onclick:"change_status(#{obj.user_id},'review')", class:"label label-warning" %>
+      <%= link_to '通过', '###', onclick:"change_status(#{obj.user_id},'pass')", class:'label label-success'  %>
+      <%= link_to '不通过', '###', onclick:"change_status(#{obj.user_id},'no_pass')", class:'label label-danger' %>
     <% when 'review' %>
-      <%= link_to '通过', '###', onclick:"change_status(#{obj.user_id},'pass')"  %>
-      <%= link_to '不通过', '###', onclick:"change_status(#{obj.user_id},'no_pass')" %>
+      <%= link_to '通过', '###', onclick:"change_status(#{obj.user_id},'pass')", class:'label label-success'  %>
+      <%= link_to '不通过', '###', onclick:"change_status(#{obj.user_id},'no_pass')", class:'label label-danger' %>
     <% when 'pass' %>
-      <%= link_to '不通过', '###', onclick:"change_status(#{obj.user_id},'no_pass')" %>
+      <%= link_to '不通过', '###', onclick:"change_status(#{obj.user_id},'no_pass')", class:'label label-danger' %>
     <% when 'no_pass' %>
-      <%= link_to '通过', '###', onclick:"change_status(#{obj.user_id},'pass')"  %>
+      <%= link_to '通过', '###', onclick:"change_status(#{obj.user_id},'pass')", class:'label label-success'  %>
     <% end %>
   <% end %>
 <%- end %>

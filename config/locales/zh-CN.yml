@@ -7,6 +7,7 @@ zh-CN:
     income: 收入
     share_rate: 分成比例
     status: 状态
+    service_rate: 平台费率
     user_store_identify: 商家名称
     sharer_good_reputation_rate: 店铺好评率
     seller_name:  商家名
@@ -56,7 +57,7 @@ zh-CN:
         name: 产品名
         original_price: 原价
         present_price: 现价
-        count: 数量
+        count: 库存
         content: 图文详情
         buyer_pay: 付款方式
         traffic_expense: 运费

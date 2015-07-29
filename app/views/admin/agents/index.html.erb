@@ -18,10 +18,10 @@
       </div>
       <div class="col-sm-9">
         <div class="col-sm-12">创客名称：<%= obj.identify %></div>
+        <div class="col-sm-12">绑定手机：<%= obj.login %></div>
       </div>
       <% end %>
     <% end %>
-    <%= t.cell :login %>
     <%= t.cell :seller_today_joins do |obj| %>
       <%= obj.seller_today_joins.count %>
     <% end %>

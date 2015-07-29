@@ -16,7 +16,11 @@
 <hr/>
 <div class="row text-center">
   <% if current_user.domain_name.present? %>
-    我的商家绑定链接:<%= "http://#{request.env["HTTP_HOST"]}/sellers/new?domain_name=#{current_user.domain_name}" %>
+    我的商家绑定链接:
+    <div class="bg-warning">
+      <%= "http://#{request.env["HTTP_HOST"]}/sellers/new?domain_name=#{current_user.domain_name}" %>
+    </div>
+
   <% else %>
     您的域名还未设置,请点击<%= link_to '这里', edit_admin_account_path %>设置域名
   <% end %>
@@ -31,6 +35,7 @@
       </div>
       <div class="col-sm-9">
         <div class="col-sm-12">商家名称：<%= obj.identify %></div>
+        <div class="col-sm-12">绑定手机：<%= obj.login %></div>
       </div>
       <% end %>
     <% end %>
@@ -38,9 +43,16 @@
       <%= Evaluation.sharer_good_reputation_rate(obj) %>
     <% end %>
     <%= t.cell :created_at %>
-    <%= t.cell :login %>
+    <%= t.cell :service_rate do |obj| %>
+      <%= obj.user_info.try(:service_rate) %>%
+    <% end %>
     <%= t.cell :authenticated do |obj| %>
-      <%= User::DATA_AUTHENTICATED[obj.authenticated] %>
+      <% if obj.authenticated == 'no' %>
+        <span class='label label-danger'><%=  User::DATA_AUTHENTICATED[obj.authenticated] %></span>
+      <% else %>
+        <span class='label label-success'><%=  User::DATA_AUTHENTICATED[obj.authenticated] %></span>
+      <% end %>
+
     <% end %>
   <%- end %>
   <%= paginate @sellers %>
