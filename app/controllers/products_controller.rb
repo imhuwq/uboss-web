@@ -5,9 +5,8 @@ class ProductsController < ApplicationController
     if params[:before_timestamp]
       @products = @products.where('updated_at < ?', params[:before_timestamp])
     end
-    @products = @products.order('updated_at DESC').page(param_page).per(6)
+    @products = @products.order('updated_at DESC').page(param_page)
     if request.xhr?
-      sleep 1
       render partial: 'products/product', collection: @products
     end
   end
