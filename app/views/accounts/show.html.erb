@@ -35,11 +35,11 @@
     <div class="accunt_adil undis">
       <div class="accunt_adil_box1">
         <p>总收益</p>
-        <strong><%= current_user.income.to_f + current_user.frozen_income.to_f %></strong><span>元</span>
+        <strong><%= number_to_currency(current_user.income.to_f + current_user.frozen_income.to_f) %></strong><span>元</span>
       </div>
       <div class="accunt_adil_box2">
         <p>可提现</p>
-        <strong><%= current_user.income.to_f %></strong><span>元</span>
+        <strong><%= number_to_currency(current_user.income.to_f) %></strong><span>元</span>
       </div>
       <div class="accunt_adil_box3">
         <%= link_to("提现", new_withdraw_records_path , class:"accunt_adilbtn") %>
