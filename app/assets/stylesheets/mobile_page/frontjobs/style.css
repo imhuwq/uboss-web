@@ -12,7 +12,6 @@ a{
 .upass.main .head{
 	position: fixed;
 	background-color: rgba(67,195,170,1);
-	width: 320px;
 	height: 45px;
 	top: 0px;
 	z-index: 999;
@@ -449,7 +448,7 @@ a{
 	background-color:rgba(255,255,255,1);
 	margin-bottom: 8px;
 	background-image: image-url("img/right.png");
-	background-position: 305px;
+	background-position: 99%;
 	background-repeat: no-repeat;
 	background-size: 7px 13px;
   padding: 0 15px;
@@ -620,12 +619,11 @@ a{
 }
 .my_boxlist{
 	width: 94%;
-	height: 94px;
 	background-color: rgba(255,255,255,1);
-	height: 94px;
 	border: 1px solid  rgba(186,186,185,.7);
 	margin:0px auto;
 	margin-bottom: 7px;
+  padding: 5px;
 }
 .my_centop{
 	width:96%;
@@ -643,7 +641,6 @@ a{
 }
 .my_boxlist dl dt{
 	width: 20%;
-	height: 58px;
 	overflow: hidden;
 	float: left;
 	padding-left: 6px;
@@ -923,12 +920,10 @@ a{
 .subOrd_box1{
 	width: 90%;
 	margin:10px auto;
-	height:57px;
 }
 .subOrd_box1 dl dt{
 	float: left;
 	width: 20%;
-	height:58px;
 	border: 1px solid rgba(186,186,185,.7);
 	box-sizing:border-box;
 }
@@ -1202,7 +1197,7 @@ a{
 .addr_boxs {
 	background-color: rgba(255,255,255,1);
 	background-image: image-url("img/btn_r.png");
-	background-position:300px;
+	background-position:95%;
 	background-repeat: no-repeat;
 	background-size: 7px 13px;
 }

@@ -3,7 +3,7 @@
     <span class="my_Ordernumber">订单号：<%= order.number %>  </span>
     <span class="my_date"><%= order.created_at.strftime('%Y-%m-%d') %></span>
   </div>
-  <dl>
+  <dl class='clearfix'>
     <%= link_to order_path(order, showwxpaytitle: 1) do %>
     <dt>
       <%= image_tag order.order_items.first.try(:product).try(:image_url) %>

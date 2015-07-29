@@ -18,18 +18,15 @@
 	width: 100%;
 	height: 80px;
 	padding-top: 20px;
+  text-align: center;
 }
 .appr_feellist a{
-	float: left;
-	padding: 0px 26px;
+	padding: 0px 16px;
 	width: 42px;
 	background-size: 42px 42px;
 	background-position:center;
 	background-repeat: no-repeat;
-	display: block;
-}
-.laugh{
-	padding: 0px 26px;
+	display: inline-block;
 }
 .appr_feellist .laugh{
 	background-image: image-url("img/fav_commen.png");
@@ -63,7 +60,7 @@
 	color: rgba(255,192,37,1);
 }
 .appr_box2{
-	width: 320px;
+  background-color: rgba(255,192,37,1);
 	height: 224px;
 	background-image: image-url("img/pay_bg1.png");
 	background-position:center;
@@ -71,7 +68,7 @@
 	background-size: 320px 224px;
 }
 .appr_box2_cont{
-	width: 90%;
+	width: 300px;
 	margin: 0px auto;
 }
 .appr_header{

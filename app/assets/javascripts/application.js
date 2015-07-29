@@ -1,4 +1,3 @@
-//= require mobile_page/autoStrap
 //= require jquery
 //= require jquery_ujs
 //= require fastclick
