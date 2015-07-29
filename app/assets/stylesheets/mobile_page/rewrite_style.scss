@@ -70,6 +70,9 @@ input[type=submit] {
 .nav_bar ul li{
   height: auto;
   padding: 10px;
+  a {
+    display: block;
+  }
 }
 .upass.main .container {
   padding-top: 0;

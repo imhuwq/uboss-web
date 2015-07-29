@@ -1,7 +1,7 @@
 class EvaluationsController < ApplicationController
   def new
     @order_item = OrderItem.find(params[:id])
-    @evaluation = Evaluation.new
+    @evaluation = Evaluation.new(order_item: @order_item)
     @privilege_card = PrivilegeCard.find_by(user: current_user, product: @order_item.product, actived: true)
     # if @order_item.evaluation.present?
     #   flash[:success] = "您已经评价过了"
@@ -18,12 +18,12 @@ class EvaluationsController < ApplicationController
   end
 
   def create
-    evaluation = Evaluation.new(validate_attrs)
-    if evaluation.save!
+    @evaluation = Evaluation.new(validate_attrs)
+    if @evaluation.save
       flash[:success] = '评价成功'
-      redirect_to action: :show, id: evaluation.id
+      redirect_to action: :show, id: @evaluation.id
     else
-      flash[:error] = '评价失败'
+      flash[:error] = @evaluation.errors.full_messages.join('<br/>')
       render action: :new, id: params[:id]
     end
   end

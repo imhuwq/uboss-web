@@ -12,7 +12,7 @@
         <a class="averg"id="normal" onclick="normal()"> <p>中评</p> </a>
         <a class="kry" id="bad" onclick="bad()"> <p>差评</p> </a>
         <%= f.input_field :status, style:"display:none;" %>
-        <%= f.input_field :order_item_id, value: params[:id], style:"display:none;" %>
+        <%= f.hidden_field :order_item_id, style:"display:none;" %>
       </div>
     </div>
   </div>

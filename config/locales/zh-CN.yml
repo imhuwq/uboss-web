@@ -135,6 +135,8 @@ zh-CN:
       divide_income: 分成收入
       bank_card: 银行卡
     attributes:
+      evaluation:
+        status: 评价
       bank_card:
         number: 银行卡号
         username: 姓名

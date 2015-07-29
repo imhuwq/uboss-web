@@ -1,5 +1,4 @@
 class Evaluation < ActiveRecord::Base
-  validates_presence_of :order_item_id
 
   belongs_to :sharing_node
   belongs_to :order_item
@@ -9,6 +8,8 @@ class Evaluation < ActiveRecord::Base
   before_save :relate_attrs
   after_save :set_order_item_evaluation_id
   after_create :count_evaluation, :create_or_attach_sharing_node
+
+  validates :order_item_id, :status, presence: true
 
   enum status: { good: 1, normal: 2,bad: 3}
 
