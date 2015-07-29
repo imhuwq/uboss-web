@@ -6,7 +6,7 @@
   </div>
   <div class="col-xs-2">
     <div>待审核商家</div>
-    <b style="font-size:3em;"><%= current_user.seller_total_joins.where(authenticated: 0).count %></b>
+    <b style="font-size:3em;"><%= current_user.seller_total_joins.group(:authenticated).count[0] %></b>
   </div>
   <div class="col-xs-2">
     <div>总签约商家</div>

@@ -44,7 +44,7 @@
     <% else %>
     <span class='label label-default'>
     <% end %>
-    <%= EnterpriseAuthentication::DATA_STATUS[obj.status] %></span>
+    <%= obj.status_i18n %></span>
   <% end %>
   <%= t.cell :action do |obj| %>
     <% case obj.status %>

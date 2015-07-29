@@ -17,7 +17,7 @@
 					状态
 				</label>
 				<div class="col-sm-9">
-          <%= EnterpriseAuthentication::DATA_STATUS[@enterprise_authentication.status] %>
+          <%= @enterprise_authentication.status_i18n%>
 				</div>
 			</div>
 			<div class="form-group clear">

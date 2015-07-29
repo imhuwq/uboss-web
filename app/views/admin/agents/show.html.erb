@@ -44,7 +44,7 @@
 		</div>
     <%= table_for(@agent.seller) do |t| %>
       <%= t.cell :seller_name do |obj| %>
-        <%= link_to obj.identify, url_for(controller: 'admin/users', action: :show, id: obj) %>
+        <%= link_to obj.identify, url_for(controller: 'admin/sellers', action: :show, id: obj) %>
       <% end %>
       <%= t.cell :created_at %>
       <%= t.cell :share_rate do |obj| %>

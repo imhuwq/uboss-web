@@ -169,6 +169,15 @@ zh-CN:
     completed: 交易完成
     closed: 订单关闭
   enums:
+    personal_authentication:
+      status: &status
+        posted: 已提交
+        review:  验证中
+        pass:  已通过
+        no_pass:  未通过
+    enterprise_authentication:
+      status:
+        <<: *status
     withdraw_record:
       state:
         unprocess: 未处理

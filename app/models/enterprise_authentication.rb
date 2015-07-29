@@ -1,8 +1,6 @@
 class EnterpriseAuthentication < ActiveRecord::Base
   include AASM
 
-  DATA_STATUS = { 'posted'=>'已提交', 'review'=> '验证中', 'pass'=> '已通过', 'no_pass'=> '未通过' }
-
   attr_accessor :mobile_auth_code
   mount_uploader :business_license_img, ImageUploader
   mount_uploader :legal_person_identity_card_front_img, ImageUploader
