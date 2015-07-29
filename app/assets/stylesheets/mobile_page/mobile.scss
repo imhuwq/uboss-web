@@ -203,16 +203,22 @@ ul.index_ul li:last-child {
 .add_inout .right_content {
     float: right;
 }
-.loading {
-  border: 1px solid #ebebeb;
-  box-shadow: 0 1px 2px #cacaca;
-  color:#303030;
-  padding:0.2rem 0.4rem;
-  text-align:center;
-  width:100%;
-  float: left;
-  margin:1% auto;
+#load-more {
+  color: #fff;
+  padding: 8px;
+  text-align: center;
+  width: 200px;
+  margin: 5px auto;
   border-radius: 0.2rem;
+  background-color: lighten(#43c3aa, 10%);
+  &.done {
+    background-color: lighten(#43c3aa, 20%);
+  }
+  &.loading {
+    background: image-url("ajax-loader.gif") no-repeat 50px;
+    background-size: 16px;
+    background-color: lighten(#43c3aa, 10%);
+  }
 }
 .footer {
   line-height: normal;
