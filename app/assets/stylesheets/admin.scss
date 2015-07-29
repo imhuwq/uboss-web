@@ -35,4 +35,6 @@
 }
 .border_block {
   label,.form-group div{margin-top: 10px;}
+  span label{margin-top: 0px;}
+  .form-group div div {margin-top: 0px;}
 }

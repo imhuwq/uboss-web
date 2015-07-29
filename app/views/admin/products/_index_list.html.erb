@@ -20,15 +20,13 @@
   <% end %>
   <%= t.cell :created_at %>
   <%= t.cell :methods do |obj| %>
-    <%= link_to("编辑", url_for(:action=>:edit,:id=>obj.id)) %>
-    <br>
     <% if obj.status == 'unpublish' %>
-    <%= link_to("上架",'###', onclick:"change_status(#{obj.id},'published')") %>
+    <%= link_to("上架",'###', onclick:"change_status(#{obj.id},'published')", class:"btn btn-xs btn-success") %>
     <% else %>
-    <%= link_to("取消上架", '###', onclick:"change_status(#{obj.id},'unpublish')") %>
+    <%= link_to("取消上架", '###', onclick:"change_status(#{obj.id},'unpublish')", class:"btn btn-xs btn-default") %>
     <% end %>
-    <br>
-    <%= link_to("删除",  '###', onclick:"delete_this(#{obj.id})") %>
+    <%= link_to("编辑", url_for(:action=>:edit,:id=>obj.id), class:"btn btn-xs btn-warning")%>
+    <%= link_to("删除",  '###', onclick:"delete_this(#{obj.id})", class:"btn btn-xs btn-danger") %>
   <% end %>
 <%- end %>
 <%= paginate @products %>
