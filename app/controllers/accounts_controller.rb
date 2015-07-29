@@ -2,6 +2,12 @@ class AccountsController < ApplicationController
   before_action :authenticate_user!
 
   def show
+    @orders = append_default_filter current_user.orders, page_size: 10
+  end
+
+  def orders
+    @orders = append_default_filter current_user.orders, page_size: 10
+    render partial: 'accounts/order', collection: @orders
   end
 
   def edit

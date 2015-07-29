@@ -1,5 +1,8 @@
 # encoding:utf-8
 class Product < ActiveRecord::Base
+
+  include Orderable
+
   DataCalculateWay = { 0 => '按金额', 1 => '按售价比例' }
   DataBuyerPay = { true => '买家付款', false => '包邮' }
 

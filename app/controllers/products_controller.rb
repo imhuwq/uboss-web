@@ -1,11 +1,8 @@
 # 商品展示
 class ProductsController < ApplicationController
+
   def index
-    @products = Product.published
-    if params[:before_timestamp]
-      @products = @products.where('updated_at < ?', params[:before_timestamp])
-    end
-    @products = @products.order('updated_at DESC').page(param_page)
+    @products = append_default_filter Product.published, order_column: :updated_at
     if request.xhr?
       render partial: 'products/product', collection: @products
     end

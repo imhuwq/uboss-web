@@ -25,10 +25,10 @@ $ ->
     element = $(this.element)
     if not element.hasClass('loading') and direction == 'down'
       Waypoint.destroyAll()
-      if $(element.data('ele')).length > 5
+      if $(element.data('ele')).length > 6 # nothing but set it anyway
         element.addClass('loading')
         element.text('加载中...')
-        params = { before_timestamp: $(element.data('ele')).last().attr('timestamp') }
+        params = { before_published_at: $(element.data('ele')).last().attr('timestamp') }
         $.get element.data('ref'), params, (data) ->
           if $.trim(data).length
             $(element.data('container')).append(data)
