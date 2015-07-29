@@ -25,6 +25,7 @@ class Admin::ProductsController < AdminController
     img.avatar = params[:asset_img]
     product.asset_img = img
     product.user_id = current_user.id
+    product.privilege_carg = PrivilegeCard
     if product.save
       flash[:success] = '产品创建成功'
     else
@@ -84,6 +85,7 @@ class Admin::ProductsController < AdminController
 
   def pre_view
     @product = Product.find(params[:id])
+    @seller = @product.user
     render layout: 'application'
   end
 
