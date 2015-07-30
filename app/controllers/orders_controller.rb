@@ -30,7 +30,7 @@ class OrdersController < ApplicationController
       sharing_code: get_product_sharing_code(params[:product_id])
     )
     @product = @order_form.product
-    if @product.is_official_agent? && current_user.is_agent?
+    if @product.is_official_agent? && current_user && current_user.is_agent?
       flash[:error] = "您已经是UBOSS创客，请勿重复购买"
       redirect_to root_path
     else
