@@ -8,7 +8,7 @@ stdout_path "#{APP_ROOT}/log/unicorn.stdout.log"
 
 listen "#{APP_ROOT}/tmp/sockets/unicorn.uboss.sock", :backlog => 64
 listen 4096, :tcp_nopush => false
-worker_processes ENV["RAILS_ENV"] == "production" ? 8 : 1
+worker_processes ENV["RAILS_ENV"] == "production" ? 16 : 4
 timeout 30
 
 # To save some memory and improve performance

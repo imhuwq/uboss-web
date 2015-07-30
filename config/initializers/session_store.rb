@@ -4,7 +4,6 @@ if Rails.env.production? || Rails.env.staging?
     host: Rails.application.secrets.redis_host,
     port: 6379,
     db: 0,
-    password: "mysecret",
     namespace: "uboss_session",
     domain: :all,
   },
