@@ -3,7 +3,7 @@ module DetectDevise
 
   module ClassMethods
     def detect_device options={}
-      layout :detect_device_layout, options
+      # layout :detect_device_layout, options
       before_action :detect_device_type, options
     end
   end

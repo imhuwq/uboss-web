@@ -1,5 +1,5 @@
 class HomeController < ApplicationController
-
+  layout 'desktop'
   detect_device only: [:index,:help]
 
   def index

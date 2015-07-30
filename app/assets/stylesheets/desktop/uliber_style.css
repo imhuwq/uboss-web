@@ -1,0 +1,2319 @@
+﻿/*!
+ * ulaiberCSS v1.2.0 (http://ulaiber.com)
+ * Copyright 2015 Vern, Inc.
+ * Licensed under MIT (https://github.com/tkvern)
+ */
+
+*,
+body {
+	font-family: "microsoft yahei"
+}
+* {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	-o-user-select: none;
+	user-select: none
+}
+body {
+	background-color: #ddd;
+	overflow-x: hidden
+}
+.navbar-header {
+	height: 55px
+}
+.navbar-brand {
+	padding: 0 0 0 100px
+}
+.navbar-brand .logo {
+	height: 54px;
+	width: 140px;
+	margin-left: 5px;
+	background-image: image-url("ulaiber/logo.png");
+	background-position: 50%;
+	background-repeat: no-repeat;
+	background-size: cover;
+	overflow: hidden
+}
+@media (min-width: 768px) {
+	.ulaiber.page1 .black.one.active {
+		-webkit-animation: rubberBand 1s ease .6s 1 backwards;
+		animation: rubberBand 1s ease .6s 1 backwards
+	}
+	.ulaiber.page1 .black.two.active {
+		-webkit-animation: zoomIn .6s ease 0s 1 both;
+		animation: zoomIn .6s ease 0s 1 both
+	}
+	.ulaiber.page1 .black.three.active {
+		-webkit-animation: fadeInUp .6s ease .2s both;
+		animation: fadeInUp .6s ease .2s both
+	}
+	.ulaiber.page1 .black.four.active .context {
+		-webkit-animation: fadeInLeft 2s ease .7s 1 backwards;
+		animation: fadeInLeft 2s ease .7s 1 backwards
+	}
+	.ulaiber.page2 .product.four.active .element {
+		-webkit-animation: zoomIn 1s ease .6s 1 backwards;
+		animation: zoomIn 1s ease .6s 1 backwards
+	}
+	.ulaiber.page2 .product.five.active .element {
+		-webkit-animation: bounceInLeft .4s ease .6s both;
+		animation: bounceInLeft .4s ease .6s both
+	}
+	.ulaiber.page2 .product.six.active .element {
+		-webkit-animation: fadeInUp 1s ease 1s 1 backwards;
+		animation: fadeInUp 1s ease 1s 1 backwards
+	}
+	.ulaiber.page2 .product.seven.active li.pice10 {
+		-webkit-animation: zoomIn .4s ease .2s 1 backwards;
+		animation: zoomIn .4s ease .2s 1 backwards
+	}
+	.ulaiber.page2 .product.seven.active li.pice9 {
+		-webkit-animation: zoomIn .4s ease .4s 1 backwards;
+		animation: zoomIn .4s ease .4s 1 backwards
+	}
+	.ulaiber.page2 .product.seven.active li.pice8 {
+		-webkit-animation: zoomIn .4s ease .6s 1 backwards;
+		animation: zoomIn .4s ease .6s 1 backwards
+	}
+	.ulaiber.page2 .product.seven.active li.pice7 {
+		-webkit-animation: zoomIn .4s ease .7s 1 backwards;
+		animation: zoomIn .4s ease .7s 1 backwards
+	}
+	.ulaiber.page2 .product.seven.active li.pice6 {
+		-webkit-animation: zoomIn .4s ease .8s 1 backwards;
+		animation: zoomIn .4s ease .8s 1 backwards
+	}
+	.ulaiber.page2 .product.seven.active li.pice5 {
+		-webkit-animation: zoomIn .5s ease .9s 1 backwards;
+		animation: zoomIn .5s ease .9s 1 backwards
+	}
+	.ulaiber.page2 .product.seven.active li.pice4 {
+		-webkit-animation: zoomIn .4s ease 1.2s 1 backwards;
+		animation: zoomIn .4s ease 1.2s 1 backwards
+	}
+	.ulaiber.page2 .product.seven.active li.pice3 {
+		-webkit-animation: zoomIn .4s ease 1.3s 1 backwards;
+		animation: zoomIn .6s ease 1.3s 1 backwards
+	}
+	.ulaiber.page2 .product.seven.active li.pice2 {
+		-webkit-animation: zoomIn .4s ease 1.5s 1 backwards;
+		animation: zoomIn .6s ease 1.5s 1 backwards
+	}
+	.ulaiber.page2 .product.seven.active li.pice1 {
+		-webkit-animation: zoomIn .5s ease 1.6s 1 backwards;
+		animation: zoomIn .5s ease 1.6s 1 backwards
+	}
+	.ulaiber.page2 .product.eight.active .element {
+		-webkit-animation: fadeInUp 1s ease 1s 1 backwards;
+		animation: fadeInUp 1s ease 1s 1 backwards
+	}
+	.ulaiber.page2 .product.nine.active .element {
+		-webkit-animation: swing 2s ease 0s 1 backwards;
+		animation: swing 2s ease 0s 1 backwards
+	}
+	.ulaiber.page2 .product.upass.active .element {
+		-webkit-animation: rollIn 1s ease .6s 1 backwards;
+		animation: rollIn 1s ease .6s 1 backwards
+	}
+	.ulaiber.page2 .product.upasslog.active .element {
+		-webkit-animation: bounceInDown 1s ease .5s 1 backwards;
+		animation: bounceInDown 1s ease .5s 1 backwards
+	}
+	.ulaiber.page2 .product.upassbtn.active .element,
+	.ulaiber.page2 .product.upasstext.active .element {
+		-webkit-animation: bounceInUp 1s ease .5s 1 backwards;
+		animation: bounceInUp 1s ease .5s 1 backwards
+	}
+	.ulaiber.page2 .product.ubosspo.active li.pice1 {
+		-webkit-animation: bounceIn 1s ease .2s 1 backwards;
+		animation: bounceIn 2s ease .2s 1 backwards
+	}
+	.ulaiber.page2 .product.ubosspo.active li.pice2 {
+		-webkit-animation: bounceIn 1s ease .4s 1 backwards;
+		animation: bounceIn 2s ease .4s 1 backwards
+	}
+	.ulaiber.page2 .product.ubosspo.active li.pice3 {
+		-webkit-animation: bounceIn 1s ease .6s 1 backwards;
+		animation: bounceIn 2s ease .6s 1 backwards
+	}
+	.ulaiber.page2 .product.ubosspo.active li.pice4 {
+		-webkit-animation: bounceIn 1s ease .2s 1 backwards;
+		animation: bounceIn 2s ease .2s 1 backwards
+	}
+	.ulaiber.page2 .product.ubosspo.active li.pice5 {
+		-webkit-animation: bounceIn 1s ease .3s 1 backwards;
+		animation: bounceIn 2s ease .3s 1 backwards
+	}
+	.ulaiber.page2 .product.ubosspo.active li.pice6 {
+		-webkit-animation: bounceIn 1s ease .4s 1 backwards;
+		animation: bounceIn 2s ease .4s 1 backwards
+	}
+	.ulaiber.page2 .product.ubosspo.active li.pice7,
+	.ulaiber.page2 .product.ubosspo.active li.pice8 {
+		-webkit-animation: bounceIn 1s ease .7s 1 backwards;
+		animation: bounceIn 2s ease .7s 1 backwards
+	}
+	.ulaiber.page2 .product.ubosspo.active li.pice9 {
+		-webkit-animation: bounceIn 1s ease .9s 1 backwards;
+		animation: bounceIn 2s ease .9s 1 backwards
+	}
+	.ulaiber.page2 .product.ubosspo.active li.pice10 {
+		-webkit-animation: bounceIn 1s ease .5s 1 backwards;
+		animation: bounceIn 2s ease .5s 1 backwards
+	}
+	.ulaiber.page2 .product.ubosspo.active li.pice11 {
+		-webkit-animation: bounceIn 1s ease .3s 1 backwards;
+		animation: bounceIn 2s ease .3s 1 backwards
+	}
+	.ulaiber.page2 .product.ubosspo.active li.pice12 {
+		-webkit-animation: bounceIn 1s ease .4s 1 backwards;
+		animation: bounceIn 2s ease .4s 1 backwards
+	}
+	.nav.navbar-nav {
+		float: right
+	}
+	.ulaiber.page2 .product.eleven .element:hover,
+	.ulaiber.page2 .product.six .element:hover {
+		box-shadow: 0 0 50px #fff
+	}
+	.ulaiber.page1 {
+		height: 800px;
+		width: 1024px;
+		top: 56px;
+		left: 50%;
+		margin-left: -512px;
+		position: absolute
+	}
+	.ulaiber.page1 .black.one {
+		position: absolute;
+		width: 360px;
+		height: 699px;
+		overflow: hidden;
+		right: 50px;
+		top: 66px
+	}
+	.ulaiber.page1 .black.two {
+		position: absolute;
+		width: 330px;
+		height: 175px;
+		top: 130px;
+		left: 110px;
+		background-image: image-url("ulaiber/blacktwo.png");
+		background-position: 50%;
+		background-repeat: no-repeat;
+		background-size: cover;
+		overflow: hidden
+	}
+	.ulaiber.page1 .black.two h1 {
+		font-size: 60px;
+		font-weight: 700;
+		letter-spacing: inherit;
+		text-align: center;
+		margin-top: 12px;
+		margin-bottom: 0
+	}
+	.ulaiber.page1 .black.two h2 {
+		margin: 0;
+		font-size: 39px;
+		font-weight: 700;
+		letter-spacing: inherit;
+		text-align: center
+	}
+	.ulaiber.page1 .black.two h3 {
+		font-size: 18px;
+		font-weight: 300;
+		margin: 0;
+		letter-spacing: inherit;
+		text-align: center
+	}
+	.ulaiber.page1 .black.four .context h5,
+	.ulaiber.page2 .product.one h5 {
+		font-size: 24px;
+		font-weight: 300;
+		/*background-color: #edece1;*/
+	}
+	.ulaiber.page1 .black.three {
+		position: absolute;
+		width: 110px;
+		height: 126px;
+		top: 350px;
+		left: 215px;
+		overflow: hidden
+	}
+	.ulaiber.page1 .black.three img {
+		width: 110px;
+		height: 126px
+	}
+	.ulaiber.page1 .black.four {
+		position: absolute;
+		height: 250px;
+		width: 1024px;
+		background: rgba(255, 255, 255, .5);
+		bottom: 0
+	}
+	.ulaiber.page2 .product.one,
+	.ulaiber.page2 .product.three,
+	.ulaiber.page2 .product.two,
+	.ulaiber.page3 .join.one,
+	.ulaiber.page3 .join.two,
+	.ulaiber.page4 .about.one,
+	.ulaiber.page4 .about.two,
+	.ulaiber.page5 .contact.four,
+	.ulaiber.page5 .contact.one,
+	.ulaiber.page6 .contact.four,
+	.ulaiber.page6 .join.one {
+		position: absolute;
+		background-repeat: no-repeat;
+		overflow: hidden
+	}
+	.ulaiber.page1 .black.four .context {
+		position: absolute;
+		top: 90px;
+		left: 110px;
+		text-align: center
+	}
+	.ulaiber.page2 {
+		width: 1024px;
+		height: 3020px;
+		top: 856px;
+		left: 50%;
+		margin-left: -512px;
+		position: absolute
+	}
+	.ulaiber.page2 .product.one {
+		width: 284px;
+		height: 54px;
+		top: 70px;
+		background-image: image-url('ulaiber/logoback.png');
+		background-size: inherit
+	}
+	.ulaiber.page2 .product.three,
+	.ulaiber.page2 .product.two {
+		background-position: 50%;
+		width: 1024px;
+		height: 804px;
+		background-size: cover
+	}
+	.ulaiber.page2 .product.one h5 {
+		margin-left: 50px
+	}
+	.ulaiber.page2 .product.two {
+		top: 0px;
+		background-image: image-url('ulaiber/orange.png')
+	}
+	.ulaiber.page2 .product.three {
+		top: 760px;
+		background-image: image-url('ulaiber/orange2.png')
+	}
+	.ulaiber.page2 .product.four {
+		position: absolute;
+		width: 151px;
+		height: 151px;
+		top: 246px;
+		left: 164px;
+		overflow: hidden
+	}
+	.ulaiber.page2 .product.five {
+		position: absolute;
+		width: 254px;
+		height: 72px;
+		top: 412px;
+		left: 112px;
+		color: #fff;
+		text-align: center
+	}
+	.ulaiber.page2 .product.five h5 {
+		padding: 0;
+		margin: 0;
+		font-size: 40px;
+		font-weight: 500;
+		border-bottom: 4px solid #fff
+	}
+	.ulaiber.page2 .product.five h2 {
+		margin: 5px;
+		font-size: 24px;
+		padding: 0 2px
+	}
+	.ulaiber.page2 .product.six {
+		position: absolute;
+		width: 253px;
+		height: 68px;
+		top: 526px;
+		left: 112px;
+		color: #fff
+	}
+	.ulaiber.page2 .product.six a {
+		text-decoration: none;
+		color: #fff
+	}
+	.ulaiber.page2 .product.six .element {
+		height: 253px;
+		height: 68px;
+		text-align: center;
+		line-height: 52px;
+		border: 8px solid #fff;
+		font-size: 24px;
+		font-weight: 300;
+		cursor: pointer;
+		transition: all .5s
+	}
+	.ulaiber.page2 .product.eight p,
+	.ulaiber.page2 .product.ten p {
+		font-size: 24px;
+		color: #fff;
+		font-weight: lighter
+	}
+	.ulaiber.page2 .product.seven {
+		position: absolute;
+		width: 1px;
+		height: 615px;
+		top: 128px;
+		left: 456px
+	}
+	.ulaiber.page2 .product.seven li {
+		position: absolute
+	}
+	.ulaiber.page2 .product.seven .pice1 {
+		width: 140px;
+		height: 48px;
+		left: 285px;
+		background-color: #97a8a0
+	}
+	.ulaiber.page2 .product.seven .pice1 .Triangle {
+		position: absolute;
+		width: 0;
+		height: 0;
+		border-left: 10px solid transparent;
+		border-right: 10px solid transparent;
+		border-top: 10px solid #97a8a0;
+		bottom: -10px;
+		left: 20px
+	}
+	.ulaiber.page2 .product.seven .pice1 img {
+		position: absolute;
+		width: 22px;
+		height: 22px;
+		right: 11px;
+		top: 12px
+	}
+	.ulaiber.page2 .product.seven .pice2 {
+		width: 320px;
+		height: 110px;
+		left: 32px;
+		top: 58px;
+		background-color: #e9525b;
+		z-index: 9
+	}
+	.ulaiber.page2 .product.seven .pice2 .Triangle {
+		position: absolute;
+		width: 0;
+		height: 0;
+		border-left: 20px solid transparent;
+		border-right: 20px solid transparent;
+		border-top: 20px solid #e9525b;
+		bottom: -20px;
+		left: 40px
+	}
+	.ulaiber.page2 .product.seven .pice3 .Triangle,
+	.ulaiber.page2 .product.seven .pice4 .Triangle,
+	.ulaiber.page2 .product.seven .pice5 .Triangle {
+		position: absolute;
+		border-left: 15px solid transparent;
+		border-right: 15px solid transparent;
+		bottom: -15px
+	}
+	.ulaiber.page2 .product.seven .pice2 img {
+		position: absolute;
+		width: 51px;
+		height: 51px;
+		right: 25px;
+		top: 30px
+	}
+	.ulaiber.page2 .product.seven .pice3 {
+		width: 220px;
+		height: 75px;
+		left: 213px;
+		top: 160px;
+		background-color: #eda64e;
+		z-index: 8
+	}
+	.ulaiber.page2 .product.seven .pice3 .Triangle {
+		width: 0;
+		height: 0;
+		border-top: 15px solid #eda64e;
+		right: 30px
+	}
+	.ulaiber.page2 .product.seven .pice3 img {
+		position: absolute;
+		width: 35px;
+		height: 35px;
+		left: 20px;
+		top: 20px
+	}
+	.ulaiber.page2 .product.seven .pice4 {
+		width: 220px;
+		height: 75px;
+		left: 0;
+		top: 210px;
+		background-color: #97a8a0;
+		z-index: 7
+	}
+	.ulaiber.page2 .product.seven .pice4 .Triangle {
+		width: 0;
+		height: 0;
+		border-top: 15px solid #97a8a0;
+		left: 30px
+	}
+	.ulaiber.page2 .product.seven .pice4 img {
+		position: absolute;
+		width: 35px;
+		height: 35px;
+		right: 20px;
+		top: 20px
+	}
+	.ulaiber.page2 .product.seven .pice5 {
+		width: 186px;
+		height: 64px;
+		left: 272px;
+		top: 252px;
+		background-color: #e9525b;
+		z-index: 6
+	}
+	.ulaiber.page2 .product.seven .pice5 .Triangle {
+		width: 0;
+		height: 0;
+		border-top: 15px solid #e9525b;
+		left: 30px
+	}
+	.ulaiber.page2 .product.seven .pice5 img {
+		position: absolute;
+		width: 28px;
+		height: 28px;
+		right: 15px;
+		top: 18px
+	}
+	.ulaiber.page2 .product.seven .pice6 {
+		width: 278px;
+		height: 96px;
+		left: 176px;
+		top: 266px;
+		background-color: #3d3c41;
+		z-index: 5
+	}
+	.ulaiber.page2 .product.seven .pice6 .Triangle {
+		position: absolute;
+		width: 0;
+		height: 0;
+		border-left: 22px solid transparent;
+		border-right: 22px solid transparent;
+		border-top: 22px solid #3d3c41;
+		bottom: -20px;
+		right: 40px
+	}
+	.ulaiber.page2 .product.seven .pice6 img {
+		position: absolute;
+		width: 28px;
+		height: 28px;
+		right: 15px;
+		top: 18px
+	}
+	.ulaiber.page2 .product.seven .pice7 {
+		width: 186px;
+		height: 65px;
+		left: 115px;
+		top: 366px;
+		background-color: #d6bd9f;
+		z-index: 5
+	}
+	.ulaiber.page2 .product.seven .pice7 .Triangle {
+		position: absolute;
+		width: 0;
+		height: 0;
+		border-left: 15px solid transparent;
+		border-right: 15px solid transparent;
+		border-top: 15px solid #d6bd9f;
+		bottom: -15px;
+		left: 30px
+	}
+	.ulaiber.page2 .product.seven .pice8 .Triangle,
+	.ulaiber.page2 .product.seven .pice9 .Triangle {
+		position: absolute;
+		border-left: 10px solid transparent;
+		border-right: 10px solid transparent;
+		bottom: -10px
+	}
+	.ulaiber.page2 .product.seven .pice7 img {
+		position: absolute;
+		width: 28px;
+		height: 28px;
+		right: 15px;
+		top: 18px
+	}
+	.ulaiber.page2 .product.seven .pice8 {
+		width: 133px;
+		height: 46px;
+		left: 210px;
+		top: 413px;
+		background-color: #3d3c41;
+		z-index: 5
+	}
+	.ulaiber.page2 .product.seven .pice8 .Triangle {
+		width: 0;
+		height: 0;
+		border-top: 10px solid #3d3c41;
+		right: 30px
+	}
+	.ulaiber.page2 .product.seven .pice8 img {
+		position: absolute;
+		width: 21px;
+		height: 21px;
+		left: 12px;
+		top: 12px
+	}
+	.ulaiber.page2 .product.seven .pice9 {
+		width: 94px;
+		height: 32px;
+		left: 159px;
+		top: 448px;
+		background-color: #eda64e;
+		z-index: 5
+	}
+	.ulaiber.page2 .product.seven .pice9 .Triangle {
+		width: 0;
+		height: 0;
+		border-top: 10px solid #eda64e;
+		right: 20px
+	}
+	.ulaiber.page2 .product.seven .pice9 img {
+		position: absolute;
+		width: 15px;
+		height: 15px;
+		left: 8px;
+		top: 8px
+	}
+	.ulaiber.page2 .product.seven .pice10 {
+		width: 74px;
+		height: 124px;
+		left: 213px;
+		top: 500px;
+		z-index: 5
+	}
+	.ulaiber.page2 .product.seven .pice10 img {
+		position: absolute;
+		width: 74px;
+		height: 124px
+	}
+	.ulaiber.page2 .product.eight {
+		position: absolute;
+		top: 630px;
+		left: 112px
+	}
+	.ulaiber.page2 .product.nine {
+		position: absolute;
+		width: 250px;
+		height: 305px;
+		top: 900px;
+		left: 50%;
+		margin-left: -125px
+	}
+	.ulaiber.page2 .product.ten {
+		position: absolute;
+		width: 400px;
+		height: 90px;
+		top: 1200px;
+		left: 50%;
+		margin-left: -200px
+	}
+	.ulaiber.page2 .product.ten p {
+		text-align: center;
+		line-height: 40px;
+		text-shadow: 0 0 15px rgba(0, 0, 0, .7)
+	}
+	.ulaiber.page2 .product.eleven {
+		position: absolute;
+		width: 253px;
+		height: 68px;
+		top: 1332px;
+		left: 50%;
+		margin-left: -125px;
+		color: #fff
+	}
+	.ulaiber.page2 .product.eleven a {
+		text-decoration: none;
+		color: #fff
+	}
+	.ulaiber.page2 .product.eleven .element {
+		width: 253px;
+		height: 68px;
+		text-align: center;
+		line-height: 52px;
+		border: 8px solid #fff;
+		font-size: 24px;
+		font-weight: 300;
+		cursor: pointer;
+		transition: all .5s
+	}
+	.ulaiber.page2 .product.upass {
+		position: absolute;
+		top: 1640px;
+		left: 30px
+	}
+	.ulaiber.page2 .product.upassback {
+		position: absolute;
+		top: 1480px;
+		width: 1024px;
+		height: 800px;
+		background-color: rgba(252, 201, 201, .6);
+		z-index: -1
+	}
+	.ulaiber.page2 .product.ubossbtn .element,
+	.ulaiber.page2 .product.upassbtn .element {
+		cursor: pointer;
+		transition: all .5s;
+		font-size: 24px;
+		text-align: center;
+		width: 253px;
+		height: 68px;
+		line-height: 52px
+	}
+	.ulaiber.page2 .product.upasslog {
+		position: absolute;
+		top: 1615px;
+		right: 130px
+	}
+	.ulaiber.page2 .product.upasstext {
+		position: absolute;
+		top: 1930px;
+		right: 30px;
+		text-align: center
+	}
+	.ulaiber.page2 .product.upasstext p {
+		color: rgba(0, 0, 0, .9);
+		font-size: 24px;
+		font-weight: 300
+	}
+	.ulaiber.page2 .product.upassbtn {
+		position: absolute;
+		top: 2050px;
+		right: 130px;
+		color: rgba(0, 0, 0, .8)
+	}
+	.ulaiber.page2 .product.upassbtn a {
+		text-decoration: none;
+		color: rgba(0, 0, 0, .9)
+	}
+	.ulaiber.page2 .product.upassbtn .element {
+		border: 8px solid rgba(225, 170, 199, .8);
+		font-weight: 300
+	}
+	.ulaiber.page2 .product.upassbtn .element:hover {
+		box-shadow: 0 0 100px rgba(255, 255, 255, 1)
+	}
+	.ulaiber.page2 .product.uboss {
+		position: absolute;
+		top: 100px
+	}
+	.ulaiber.page2 .product.ubosslog {
+		position: absolute;
+		top: 230px;
+		left: 50%;
+		margin-left: -45px;
+		z-index: 5
+	}
+	.ulaiber.page2 .product.ubosstext {
+		position: absolute;
+		top: 445px;
+		left: 50%;
+		margin-left: -40px;
+		text-align: center;
+		z-index: 5
+	}
+	.ulaiber.page2 .product.ubosstext p {
+		color: rgba(255, 255, 255, 1);
+		font-size: 24px;
+		font-weight: 400
+	}
+	.ulaiber.page2 .product.ubossbtn {
+		position: absolute;
+		top: 530px;
+		left: 50%;
+		margin-left: -126px;
+		color: #fff;
+		z-index: 5
+	}
+	.ulaiber.page2 .product.ubossbtn a {
+		text-decoration: none;
+		color: rgba(255, 255, 255, 1)
+	}
+	.ulaiber.page2 .product.ubossbtn .element {
+		border: 8px solid rgba(255, 2555, 255, 1);
+		font-weight: 300
+	}
+	.ulaiber.page2 .product.ubossbtn .element:hover {
+		box-shadow: 0 0 50px rgba(255, 255, 255, 1)
+	}
+	.ulaiber.page2 .product.ubossdetail {
+		position: absolute;
+		top: 630px;
+		left: 50%;
+		margin-left: -134px;
+		text-align: center;
+		z-index: 5
+	}
+	.ulaiber.page2 .product.ubossdetail p {
+		color: rgba(255, 255, 255, 1);
+		font-size: 24px;
+		font-weight: 300
+	}
+	.ulaiber.page2 .product.ubosspo {
+		position: absolute;
+		width: 1px;
+		height: 650px;
+		top: 200px;
+		left: 50px;
+		z-index: 1
+	}
+	.ulaiber.page2 .product.ubosspo .pice1 {
+		position: absolute;
+		width: 70px;
+		height: 70px;
+		top: 120px;
+		left: 240px;
+		background-color: rgba(3, 134, 94, .6);
+		z-index: 10;
+		border-radius: 50%
+	}
+	.ulaiber.page2 .product.ubosspo .pice2 {
+		position: absolute;
+		width: 118px;
+		height: 118px;
+		top: 168px;
+		left: 162px;
+		background-color: rgba(22, 170, 140, .7);
+		z-index: 10;
+		border-radius: 50%
+	}
+	.ulaiber.page2 .product.ubosspo .pice3 {
+		position: absolute;
+		width: 157px;
+		height: 157px;
+		top: 362px;
+		left: 0;
+		background-color: rgba(14, 174, 134, .8);
+		z-index: 10;
+		border-radius: 50%
+	}
+	.ulaiber.page2 .product.ubosspo .pice4 {
+		position: absolute;
+		width: 216px;
+		height: 216px;
+		top: 220px;
+		left: 40px;
+		background-color: rgba(3, 134, 94, .6);
+		z-index: 12;
+		border-radius: 50%
+	}
+	.ulaiber.page2 .product.ubosspo .pice5 {
+		position: absolute;
+		width: 384px;
+		height: 384px;
+		top: 120px;
+		left: 220px;
+		background-color: rgba(14, 174, 134, .8);
+		z-index: 11;
+		border-radius: 50%
+	}
+	.ulaiber.page2 .product.ubosspo .pice6 {
+		position: absolute;
+		width: 307px;
+		height: 307px;
+		top: 290px;
+		left: 360px;
+		background-color: rgba(3, 134, 94, .5);
+		z-index: 13;
+		border-radius: 50%
+	}
+	.ulaiber.page2 .product.ubosspo .pice7 {
+		position: absolute;
+		width: 280px;
+		height: 280px;
+		top: 213px;
+		left: 464px;
+		background-color: rgba(12, 160, 121, .3);
+		z-index: 12;
+		border-radius: 50%
+	}
+	.ulaiber.page2 .product.ubosspo .pice8 {
+		position: absolute;
+		width: 157px;
+		height: 157px;
+		top: 287px;
+		left: 610px;
+		background-color: rgba(2, 116, 73, .3);
+		z-index: 12;
+		border-radius: 50%
+	}
+	.ulaiber.page2 .product.ubosspo .pice9 {
+		position: absolute;
+		width: 157px;
+		height: 157px;
+		top: 170px;
+		left: 655px;
+		background-color: rgba(3, 134, 94, .6);
+		z-index: 12;
+		border-radius: 50%
+	}
+	.ulaiber.page2 .product.ubosspo .pice10 {
+		position: absolute;
+		width: 198px;
+		height: 198px;
+		top: 293px;
+		left: 726px;
+		background-color: rgba(22, 170, 140, .6);
+		z-index: 11;
+		border-radius: 50%
+	}
+	.ulaiber.page2 .product.ubosspo .pice11,
+	.ulaiber.page2 .product.ubosspo .pice12 {
+		position: absolute;
+		background-color: rgba(12, 160, 121, .6);
+		z-index: 14;
+		border-radius: 50%
+	}
+	.ulaiber.page2 .product.ubosspo .pice11 {
+		width: 58px;
+		height: 58px;
+		top: 444px;
+		left: 747px
+	}
+	.ulaiber.page2 .product.ubosspo .pice12 {
+		width: 70px;
+		height: 70px;
+		top: 482px;
+		left: 206px
+	}
+	.ulaiber.page3 {
+		width: 1024px;
+		height: 501px;
+		top: 1936px;
+		left: 50%;
+		margin-left: -512px;
+		position: absolute
+	}
+	.ulaiber.page3 .join.one {
+		width: 284px;
+		height: 54px;
+		top: 0;
+		background-image: image-url('ulaiber/logoback.png');
+		background-size: inherit
+	}
+	.ulaiber.page3 .join.one h5 {
+		font-size: 24px;
+		font-weight: 300;
+		margin-left: 50px
+	}
+	.ulaiber.page3 .join.two {
+		width: 1024px;
+		height: 428px;
+		top: 74px;
+		background-image: image-url('ulaiber/joinhand.png');
+		background-position: 50%;
+		background-size: cover
+	}
+	.ulaiber.page3 .join.three {
+		position: absolute;
+		top: 104px;
+		right: 30px
+	}
+	.ulaiber.page3 .join.three p {
+		margin-top: 10px;
+		color: #fff;
+		text-align: right;
+		font-size: 17px;
+		font-weight: 300
+	}
+	.ulaiber.page3 .join.three h5 {
+		padding: 0;
+		margin: 0;
+		color: #fff;
+		text-align: right;
+		font-weight: 700;
+		font-size: 60px;
+		letter-spacing: -5px
+	}
+	.ulaiber.page3 .join.four {
+		position: absolute;
+		width: 209px;
+		height: 64px;
+		background-color: #fff;
+		right: 30px;
+		top: 400px
+	}
+	.ulaiber.page3 .join.four a {
+		color: #000;
+		text-decoration: none
+	}
+	.ulaiber.page3 .join.four .element {
+		text-align: center;
+		line-height: 64px;
+		font-size: 22px;
+		font-weight: 300;
+		cursor: pointer;
+		transition: all .5s
+	}
+	.ulaiber.page3 .join.four .element:hover {
+		box-shadow: 0 0 50px #fff
+	}
+	.ulaiber.page4 {
+		width: 1024px;
+		height: 968px;
+		top: 2437px;
+		left: 50%;
+		margin-left: -512px;
+		position: absolute
+	}
+	.ulaiber.page4 .about.one {
+		width: 284px;
+		height: 54px;
+		top: 102px;
+		background-image: image-url('ulaiber/logoback.png');
+		background-size: inherit
+	}
+	.ulaiber.page4 .about.one h5 {
+		font-size: 24px;
+		font-weight: 300;
+		margin-left: 50px
+	}
+	.ulaiber.page4 .about.two {
+		width: 1024px;
+		height: 285px;
+		top: 176px;
+		background-image: image-url('ulaiber/aboutsky.png');
+		background-position: 50%;
+		background-size: cover
+	}
+	.ulaiber.page5 .contact.four,
+	.ulaiber.page5 .contact.one {
+		background-size: inherit
+	}
+	.ulaiber.page4 .about.three {
+		position: absolute;
+		height: 183px;
+		width: 183px;
+		top: 260px;
+		left: 50%;
+		margin-left: -91px
+	}
+	.ulaiber.page4 .about.four {
+		position: absolute;
+		width: 800px;
+		height: 368px;
+		top: 500px;
+		left: 50%;
+		margin-left: -400px
+	}
+	.ulaiber.page4 .about.four p {
+		font-size: 20px;
+		font-weight: 300
+	}
+	.ulaiber.page5 {
+		width: 1024px;
+		height: 690px;
+		top: 3405px;
+		left: 50%;
+		margin-left: -512px;
+		position: absolute
+	}
+	.ulaiber.page5 .contact.one {
+		width: 284px;
+		height: 54px;
+		background-image: image-url('ulaiber/logoback.png')
+	}
+	.ulaiber.page5 .contact.one h5 {
+		font-size: 24px;
+		font-weight: 300;
+		margin-left: 50px
+	}
+	.ulaiber.page5 .contact.two {
+		position: absolute;
+		width: 1024px;
+		height: 455px;
+		top: 75px;
+		background-color: rgba(248, 248, 248, .9)
+	}
+	.ulaiber.page5 .contact.two ul {
+		position: absolute;
+		width: 600px;
+		left: 50%;
+		top: 40px;
+		margin-left: -300px
+	}
+	.ulaiber.page5 .contact.two li {
+		width: 600px;
+		float: left;
+		height: 60px;
+		margin-bottom: 10px
+	}
+	.ulaiber.page5 .contact.two img {
+		max-width: 33px;
+		max-height: 33px;
+		margin-right: 24px;
+		float: left
+	}
+	.ulaiber.page5 .contact.two h5 {
+		padding: 0;
+		margin: 0;
+		font-size: 18px;
+		float: left;
+		line-height: 33px
+	}
+	.ulaiber.page5 .contact.two h5.tact1 {
+		font-size: 64px;
+		font-weight: 300
+	}
+	.ulaiber.page5 .contact.two h5.tact2 {
+		font-size: 84px;
+		font-weight: 700
+	}
+	.ulaiber.page5 .contact.two h5.tact3 {
+		font-size: 34px;
+		font-weight: 300
+	}
+	.ulaiber.page5 .contact.two h5.tact4 {
+		font-size: 34px;
+		font-weight: 700;
+		color: rgba(0, 0, 0, .8)
+	}
+	.ulaiber.page5 .contact.two a {
+		line-height: 33px;
+		font-size: 18px
+	}
+	.ulaiber.page5 .contact.three {
+		color: #fff;
+		position: absolute;
+		height: 162px;
+		width: 1024px;
+		bottom: 0;
+		background-color: #000
+	}
+	.ulaiber.page5 .contact.three p {
+		position: absolute;
+		bottom: 0;
+		left: 50%;
+		margin-left: -165px
+	}
+	.ulaiber.page5 .contact.four {
+		height: 221px;
+		width: 221px;
+		background-image: image-url('ulaiber/UB-red.png');
+		left: 50%;
+		margin-left: -110px;
+		bottom: 50px
+	}
+	.ulaiber.page6 {
+		width: 1024px;
+		height: 2750px;
+		left: 50%;
+		top: 70px;
+		margin-left: -512px;
+		position: absolute
+	}
+	.ulaiber.page6 .join.one {
+		width: 1024px;
+		height: 428px;
+		background-image: image-url('ulaiber/joinhand.png');
+		background-position: 50%;
+		background-size: cover
+	}
+	.ulaiber.page6 .join.two {
+		position: absolute;
+		top: 30px;
+		right: 30px
+	}
+	.ulaiber.page6 .join.two p {
+		margin-top: 10px;
+		color: #fff;
+		text-align: right;
+		font-size: 17px;
+		font-weight: 300
+	}
+	.ulaiber.page6 .join.two h5 {
+		padding: 0;
+		margin: 0;
+		color: #fff;
+		text-align: right;
+		font-weight: 700;
+		font-size: 60px;
+		letter-spacing: -5px
+	}
+	.ulaiber.page6 .join.job {
+		position: absolute;
+		width: 1024px;
+		top: 500px
+	}
+	.ulaiber.page6 .join.job li {
+		padding: 20px;
+		margin-bottom: 20px;
+		background-color: #fff
+	}
+	.ulaiber.page6 .contact.three {
+		position: absolute;
+		height: 162px;
+		width: 1024px;
+		bottom: 0;
+		background-color: #000;
+		text-align: center;
+		color: #fff
+	}
+	.ulaiber.page6 .contact.three p {
+		position: absolute;
+		bottom: 0;
+		left: 50%;
+		margin-left: -105px
+	}
+	.ulaiber.page6 .contact.four {
+		height: 221px;
+		width: 221px;
+		background-image: image-url('ulaiber/bottom.png');
+		background-size: inherit;
+		left: 50%;
+		margin-left: -110px;
+		bottom: 50px
+	}
+	.ulaiber.page7 {
+		position: absolute;
+		width: 1024px;
+		top: 70px
+	}
+	.ulaiber.page7 .row {
+		padding: 0;
+		margin: 0
+	}
+	.ulaiber.page7 .tab-content {
+		background-color: #fff
+	}
+	.ulaiber.page7 .tab-content .lead {
+		text-indent: 2em;
+		padding: 20px;
+		font-size: 16px!important
+	}
+}
+@media (max-width: 767px) {
+	body {
+		overflow-x: hidden;
+		min-width: 320px
+	}
+	.container.ulaiber {
+		padding: 0
+	}
+	.ulaiber.page1 {
+		height: 1000px;
+		width: 100%;
+		top: 56px;
+		position: absolute
+	}
+	.ulaiber.page1 .black.one {
+		position: absolute;
+		width: 320px;
+		height: 699px;
+		top: 300px;
+		left: 50%;
+		margin-left: -180px
+	}
+	.ulaiber.page1 .black.one img {
+		-webkit-transform: scale(.6);
+		transform: scale(.6)
+	}
+	.ulaiber.page1 .black.two {
+		position: absolute;
+		width: 330px;
+		height: 175px;
+		top: 50px;
+		left: 50%;
+		margin-left: -165px;
+		background-image: image-url('ulaiber/blacktwo.png');
+		background-position: 50%;
+		background-repeat: no-repeat;
+		background-size: cover;
+		overflow: hidden;
+		-webkit-transform: scale(.8);
+		transform: scale(.8)
+	}
+	.ulaiber.page1 .black.two h1 {
+		font-size: 60px;
+		font-weight: 700;
+		letter-spacing: inherit;
+		text-align: center;
+		margin-top: 12px;
+		margin-bottom: 0
+	}
+	.ulaiber.page1 .black.two h2 {
+		margin: 0;
+		font-size: 39px;
+		font-weight: 700;
+		letter-spacing: inherit;
+		text-align: center
+	}
+	.ulaiber.page1 .black.two h3 {
+		font-size: 18px;
+		font-weight: 300;
+		margin: 0;
+		letter-spacing: inherit;
+		text-align: center
+	}
+	.ulaiber.page1 .black.three {
+		position: absolute;
+		width: 110px;
+		height: 126px;
+		top: 260px;
+		left: 50%;
+		margin-left: -55px
+	}
+	.ulaiber.page1 .black.three img {
+		width: 100%;
+		height: 100%
+	}
+	.ulaiber.page1 .black.four {
+		position: absolute;
+		height: 250px;
+		width: 100%;
+		background: rgba(255, 255, 255, .5);
+		bottom: 0;
+		overflow: hidden
+	}
+	.ulaiber.page2 .product.one,
+	.ulaiber.page3 .join.one,
+	.ulaiber.page3 .join.two,
+	.ulaiber.page4 .about.one,
+	.ulaiber.page4 .about.two,
+	.ulaiber.page5 .contact.four,
+	.ulaiber.page5 .contact.one,
+	.ulaiber.page6 .contact.four,
+	.ulaiber.page6 .join.one {
+		position: absolute;
+		background-repeat: no-repeat
+	}
+	.ulaiber.page1 .black.four .context {
+		position: absolute;
+		width: 374px;
+		top: 90px;
+		left: 50%;
+		margin-left: -186px;
+		text-align: center
+	}
+	.ulaiber.page1 .black.four .context h5 {
+		font-weight: 300;
+		font-size: 20px
+	}
+	.ulaiber.page2 {
+		width: 100%;
+		height: 1265px;
+		top: 1055px;
+		position: absolute
+	}
+	.ulaiber.page2 .product.one {
+		width: 284px;
+		height: 54px;
+		margin-top: 50px;
+		left: 0;
+		margin-left: -55px;
+		background-image: image-url('ulaiber/logoback.png');
+		background-size: inherit;
+		-webkit-transform: scale(.6);
+		transform: scale(.6)
+	}
+	.ulaiber.page2 .product.three,
+	.ulaiber.page2 .product.two {
+		background-position: 50%;
+		background-repeat: no-repeat;
+		position: absolute;
+		width: 100%;
+		height: 804px;
+		background-size: cover
+	}
+	.ulaiber.page2 .product.one h5 {
+		font-size: 24px;
+		font-weight: 300;
+		margin-left: 50px
+	}
+	.ulaiber.page2 .product.two {
+		top: 55px;
+		background-image: image-url('ulaiber/orange.png')
+	}
+	.ulaiber.page2 .product.three {
+		top: 760px;
+		background-image: image-url('ulaiber/orange2.png')
+	}
+	.ulaiber.page2 .product.four {
+		position: absolute;
+		width: 151px;
+		height: 151px;
+		top: 105px;
+		left: 50%;
+		margin-left: -76px;
+		overflow: hidden;
+		-webkit-transform: scale(.6);
+		transform: scale(.6)
+	}
+	.ulaiber.page2 .product.five {
+		width: 280px;
+		height: 72px;
+		top: 222px;
+		margin-left: -130px;
+		transform: scale(.6)
+	}
+	.ulaiber.page2 .product.five,
+	.ulaiber.page2 .product.six {
+		color: #fff;
+		position: absolute;
+		left: 50%;
+		-webkit-transform: scale(.6)
+	}
+	.ulaiber.page2 .product.five h5 {
+		padding: 0;
+		margin: 0;
+		font-size: 40px;
+		font-weight: 700;
+		border-bottom: 4px solid #fff
+	}
+	.ulaiber.page2 .product.five h2 {
+		text-align: center;
+		margin: 0;
+		font-size: 24px;
+		padding: 0 2px
+	}
+	.ulaiber.page2 .product.six {
+		width: 253px;
+		height: 68px;
+		top: 280px;
+		margin-left: -127px;
+		transform: scale(.6)
+	}
+	.ulaiber.page2 .product.six a {
+		text-decoration: none;
+		color: #fff
+	}
+	.ulaiber.page2 .product.six .element {
+		height: 253px;
+		height: 68px;
+		text-align: center;
+		line-height: 52px;
+		border: 8px solid #fff;
+		font-size: 24px;
+		font-weight: 300;
+		cursor: pointer;
+		transition: all .5s
+	}
+	.ulaiber.page2 .product.eight p,
+	.ulaiber.page2 .product.ten p {
+		font-size: 24px;
+		color: #fff;
+		font-weight: lighter
+	}
+	.ulaiber.page2 .product.seven {
+		position: absolute;
+		width: 1px;
+		height: 615px;
+		top: 270px;
+		left: 50%;
+		margin-left: -137px;
+		-webkit-transform: scale(.6);
+		transform: scale(.6)
+	}
+	.ulaiber.page2 .product.seven li {
+		position: absolute
+	}
+	.ulaiber.page2 .product.seven .pice1 {
+		width: 140px;
+		height: 48px;
+		left: 285px;
+		background-color: #97a8a0
+	}
+	.ulaiber.page2 .product.seven .pice1 .Triangle {
+		position: absolute;
+		width: 0;
+		height: 0;
+		border-left: 10px solid transparent;
+		border-right: 10px solid transparent;
+		border-top: 10px solid #97a8a0;
+		bottom: -10px;
+		left: 20px
+	}
+	.ulaiber.page2 .product.seven .pice1 img {
+		position: absolute;
+		width: 22px;
+		height: 22px;
+		right: 11px;
+		top: 12px
+	}
+	.ulaiber.page2 .product.seven .pice2 {
+		width: 320px;
+		height: 110px;
+		left: 32px;
+		top: 58px;
+		background-color: #e9525b;
+		z-index: 9
+	}
+	.ulaiber.page2 .product.seven .pice2 .Triangle {
+		position: absolute;
+		width: 0;
+		height: 0;
+		border-left: 20px solid transparent;
+		border-right: 20px solid transparent;
+		border-top: 20px solid #e9525b;
+		bottom: -20px;
+		left: 40px
+	}
+	.ulaiber.page2 .product.seven .pice3 .Triangle,
+	.ulaiber.page2 .product.seven .pice4 .Triangle,
+	.ulaiber.page2 .product.seven .pice5 .Triangle {
+		position: absolute;
+		border-left: 15px solid transparent;
+		border-right: 15px solid transparent;
+		bottom: -15px
+	}
+	.ulaiber.page2 .product.seven .pice2 img {
+		position: absolute;
+		width: 51px;
+		height: 51px;
+		right: 25px;
+		top: 30px
+	}
+	.ulaiber.page2 .product.seven .pice3 {
+		width: 220px;
+		height: 75px;
+		left: 213px;
+		top: 160px;
+		background-color: #eda64e;
+		z-index: 8
+	}
+	.ulaiber.page2 .product.seven .pice3 .Triangle {
+		width: 0;
+		height: 0;
+		border-top: 15px solid #eda64e;
+		right: 30px
+	}
+	.ulaiber.page2 .product.seven .pice3 img {
+		position: absolute;
+		width: 35px;
+		height: 35px;
+		left: 20px;
+		top: 20px
+	}
+	.ulaiber.page2 .product.seven .pice4 {
+		width: 220px;
+		height: 75px;
+		left: 0;
+		top: 210px;
+		background-color: #97a8a0;
+		z-index: 7
+	}
+	.ulaiber.page2 .product.seven .pice4 .Triangle {
+		width: 0;
+		height: 0;
+		border-top: 15px solid #97a8a0;
+		left: 30px
+	}
+	.ulaiber.page2 .product.seven .pice4 img {
+		position: absolute;
+		width: 35px;
+		height: 35px;
+		right: 20px;
+		top: 20px
+	}
+	.ulaiber.page2 .product.seven .pice5 {
+		width: 186px;
+		height: 64px;
+		left: 272px;
+		top: 252px;
+		background-color: #e9525b;
+		z-index: 6
+	}
+	.ulaiber.page2 .product.seven .pice5 .Triangle {
+		width: 0;
+		height: 0;
+		border-top: 15px solid #e9525b;
+		left: 30px
+	}
+	.ulaiber.page2 .product.seven .pice5 img {
+		position: absolute;
+		width: 28px;
+		height: 28px;
+		right: 15px;
+		top: 18px
+	}
+	.ulaiber.page2 .product.seven .pice6 {
+		width: 278px;
+		height: 96px;
+		left: 176px;
+		top: 266px;
+		background-color: #3d3c41;
+		z-index: 5
+	}
+	.ulaiber.page2 .product.seven .pice6 .Triangle {
+		position: absolute;
+		width: 0;
+		height: 0;
+		border-left: 22px solid transparent;
+		border-right: 22px solid transparent;
+		border-top: 22px solid #3d3c41;
+		bottom: -20px;
+		right: 40px
+	}
+	.ulaiber.page2 .product.seven .pice6 img {
+		position: absolute;
+		width: 28px;
+		height: 28px;
+		right: 15px;
+		top: 18px
+	}
+	.ulaiber.page2 .product.seven .pice7 {
+		width: 186px;
+		height: 65px;
+		left: 115px;
+		top: 366px;
+		background-color: #d6bd9f;
+		z-index: 5
+	}
+	.ulaiber.page2 .product.seven .pice7 .Triangle {
+		position: absolute;
+		width: 0;
+		height: 0;
+		border-left: 15px solid transparent;
+		border-right: 15px solid transparent;
+		border-top: 15px solid #d6bd9f;
+		bottom: -15px;
+		left: 30px
+	}
+	.ulaiber.page2 .product.seven .pice8 .Triangle,
+	.ulaiber.page2 .product.seven .pice9 .Triangle {
+		position: absolute;
+		border-left: 10px solid transparent;
+		border-right: 10px solid transparent;
+		bottom: -10px
+	}
+	.ulaiber.page2 .product.seven .pice7 img {
+		position: absolute;
+		width: 28px;
+		height: 28px;
+		right: 15px;
+		top: 18px
+	}
+	.ulaiber.page2 .product.seven .pice8 {
+		width: 133px;
+		height: 46px;
+		left: 210px;
+		top: 413px;
+		background-color: #3d3c41;
+		z-index: 5
+	}
+	.ulaiber.page2 .product.seven .pice8 .Triangle {
+		width: 0;
+		height: 0;
+		border-top: 10px solid #3d3c41;
+		right: 30px
+	}
+	.ulaiber.page2 .product.seven .pice8 img {
+		position: absolute;
+		width: 21px;
+		height: 21px;
+		left: 12px;
+		top: 12px
+	}
+	.ulaiber.page2 .product.seven .pice9 {
+		width: 94px;
+		height: 32px;
+		left: 159px;
+		top: 448px;
+		background-color: #eda64e;
+		z-index: 5
+	}
+	.ulaiber.page2 .product.seven .pice9 .Triangle {
+		width: 0;
+		height: 0;
+		border-top: 10px solid #eda64e;
+		right: 20px
+	}
+	.ulaiber.page2 .product.seven .pice9 img {
+		position: absolute;
+		width: 15px;
+		height: 15px;
+		left: 8px;
+		top: 8px
+	}
+	.ulaiber.page2 .product.seven .pice10 {
+		width: 74px;
+		height: 124px;
+		left: 213px;
+		top: 500px;
+		z-index: 5
+	}
+	.ulaiber.page2 .product.seven .pice10 img {
+		position: absolute;
+		width: 74px;
+		height: 124px
+	}
+	.ulaiber.page2 .product.eight {
+		position: absolute;
+		width: 384px;
+		top: 325px;
+		left: 50%;
+		margin-left: -150px;
+		-webkit-transform: scale(.6);
+		transform: scale(.6)
+	}
+	.ulaiber.page2 .product.nine {
+		position: absolute;
+		width: 250px;
+		height: 305px;
+		top: 840px;
+		left: 50%;
+		margin-left: -125px;
+		-webkit-transform: scale(.7);
+		transform: scale(.7)
+	}
+	.ulaiber.page2 .product.ten {
+		position: absolute;
+		width: 400px;
+		height: 90px;
+		top: 1150px;
+		left: 50%;
+		margin-left: -200px;
+		-webkit-transform: scale(.7);
+		transform: scale(.7)
+	}
+	.ulaiber.page2 .product.ten p {
+		text-align: center;
+		line-height: 40px;
+		text-shadow: 0 0 15px rgba(0, 0, 0, .7)
+	}
+	.ulaiber.page2 .product.eleven .element,
+	.ulaiber.page2 .product.ubossbtn .element,
+	.ulaiber.page2 .product.upassbtn .element {
+		cursor: pointer;
+		transition: all .5s;
+		font-size: 24px;
+		text-align: center;
+		line-height: 52px
+	}
+	.ulaiber.page2 .product.eleven {
+		position: absolute;
+		width: 253px;
+		height: 68px;
+		top: 1280px;
+		left: 50%;
+		margin-left: -125px;
+		color: #fff;
+		-webkit-transform: scale(.6);
+		transform: scale(.6)
+	}
+	.ulaiber.page2 .product.eleven a {
+		text-decoration: none;
+		color: #fff
+	}
+	.ulaiber.page2 .product.eleven .element {
+		height: 253px;
+		height: 68px;
+		border: 8px solid #fff;
+		font-weight: 300
+	}
+	.ulaiber.page2 .product.eleven .element:hover {
+		box-shadow: 0 0 50px #fff
+	}
+	.ulaiber.page2 .product.upass {
+		position: absolute;
+		top: 1580px;
+		left: 50%;
+		margin-left: -150px
+	}
+	.ulaiber.page2 .product.upass .element,
+	.ulaiber.page2 .product.upass .element img {
+		height: 300px;
+		width: 300px
+	}
+	.ulaiber.page2 .product.upassback {
+		position: absolute;
+		top: 1480px;
+		width: 100%;
+		height: 800px;
+		background-color: rgba(252, 201, 201, .6);
+		z-index: -1
+	}
+	.ulaiber.page2 .product.upasslog {
+		position: absolute;
+		top: 1840px;
+		left: 50%;
+		margin-left: -120px;
+		-webkit-transform: scale(.6);
+		transform: scale(.6)
+	}
+	.ulaiber.page2 .product.upasstext {
+		position: absolute;
+		width: 450px;
+		top: 2040px;
+		left: 50%;
+		margin-left: -225px;
+		text-align: center;
+		-webkit-transform: scale(.6);
+		transform: scale(.6)
+	}
+	.ulaiber.page2 .product.upasstext p {
+		color: rgba(0, 0, 0, .9);
+		font-size: 24px;
+		font-weight: 300
+	}
+	.ulaiber.page2 .product.upassbtn {
+		position: absolute;
+		top: 2100px;
+		left: 50%;
+		margin-left: -126px;
+		color: rgba(0, 0, 0, .8);
+		-webkit-transform: scale(.6);
+		transform: scale(.6)
+	}
+	.ulaiber.page2 .product.upassbtn a {
+		text-decoration: none;
+		color: rgba(0, 0, 0, .9)
+	}
+	.ulaiber.page2 .product.upassbtn .element {
+		width: 253px;
+		height: 68px;
+		border: 8px solid rgba(225, 170, 199, .8);
+		font-weight: 300
+	}
+	.ulaiber.page2 .product.upassbtn .element:hover {
+		box-shadow: 0 0 100px rgba(255, 255, 255, 1)
+	}
+	.ulaiber.page2 .product.uboss {
+		position: absolute;
+		top: 2200px
+	}
+	.ulaiber.page2 .product.uboss img {
+		width: 100%;
+		height: 600px
+	}
+	.ulaiber.page2 .product.ubosslog {
+		position: absolute;
+		top: 300px;
+		left: 50%;
+		margin-left: -45px;
+		z-index: 5
+	}
+	.ulaiber.page2 .product.ubosstext {
+		position: absolute;
+		top: 530px;
+		left: 50%;
+		margin-left: -45px;
+		text-align: center;
+		z-index: 5
+	}
+	.ulaiber.page2 .product.ubosstext p {
+		color: rgba(255, 255, 255, 1);
+		font-size: 24px;
+		font-weight: 400
+	}
+	.ulaiber.page2 .product.ubossbtn {
+		position: absolute;
+		top: 560px;
+		left: 50%;
+		margin-left: -126px;
+		color: #fff;
+		z-index: 5;
+		-webkit-transform: scale(.6);
+		transform: scale(.6)
+	}
+	.ulaiber.page2 .product.ubossbtn a {
+		text-decoration: none;
+		color: rgba(255, 255, 255, 1)
+	}
+	.ulaiber.page2 .product.ubossbtn .element {
+		width: 253px;
+		height: 68px;
+		border: 8px solid rgba(255, 2555, 255, 1);
+		font-weight: 300
+	}
+	.ulaiber.page2 .product.ubossbtn .element:hover {
+		box-shadow: 0 0 50px rgba(255, 255, 255, 1)
+	}
+	.ulaiber.page2 .product.ubossdetail {
+		position: absolute;
+		top: 620px;
+		left: 50%;
+		margin-left: -134px;
+		text-align: center;
+		z-index: 5;
+		-webkit-transform: scale(.6);
+		transform: scale(.6)
+	}
+	.ulaiber.page2 .product.ubossdetail p {
+		color: rgba(255, 255, 255, 1);
+		font-size: 24px;
+		font-weight: 300
+	}
+	.ulaiber.page2 .product.ubosspo {
+		position: absolute;
+		width: 320px;
+		left: 50%;
+		margin-left: -160px;
+		height: 650px;
+		top: 2400px;
+		z-index: 1
+	}
+	.ulaiber.page2 .product.ubosspo ul {
+		-webkit-transform: scale(.3);
+		transform: scale(.3);
+		margin-left: -160px
+	}
+	.ulaiber.page2 .product.ubosspo .pice1 {
+		position: absolute;
+		width: 70px;
+		height: 70px;
+		top: 120px;
+		left: 240px;
+		background-color: rgba(3, 134, 94, .6);
+		z-index: 10;
+		border-radius: 50%
+	}
+	.ulaiber.page2 .product.ubosspo .pice2 {
+		position: absolute;
+		width: 118px;
+		height: 118px;
+		top: 168px;
+		left: 162px;
+		background-color: rgba(22, 170, 140, .7);
+		z-index: 10;
+		border-radius: 50%
+	}
+	.ulaiber.page2 .product.ubosspo .pice3 {
+		position: absolute;
+		width: 157px;
+		height: 157px;
+		top: 362px;
+		left: 0;
+		background-color: rgba(14, 174, 134, .8);
+		z-index: 10;
+		border-radius: 50%
+	}
+	.ulaiber.page2 .product.ubosspo .pice4 {
+		position: absolute;
+		width: 216px;
+		height: 216px;
+		top: 220px;
+		left: 40px;
+		background-color: rgba(3, 134, 94, .6);
+		z-index: 12;
+		border-radius: 50%
+	}
+	.ulaiber.page2 .product.ubosspo .pice5 {
+		position: absolute;
+		width: 384px;
+		height: 384px;
+		top: 120px;
+		left: 220px;
+		background-color: rgba(14, 174, 134, .8);
+		z-index: 11;
+		border-radius: 50%
+	}
+	.ulaiber.page2 .product.ubosspo .pice6 {
+		position: absolute;
+		width: 307px;
+		height: 307px;
+		top: 290px;
+		left: 360px;
+		background-color: rgba(3, 134, 94, .5);
+		z-index: 13;
+		border-radius: 50%
+	}
+	.ulaiber.page2 .product.ubosspo .pice7 {
+		position: absolute;
+		width: 280px;
+		height: 280px;
+		top: 213px;
+		left: 464px;
+		background-color: rgba(12, 160, 121, .3);
+		z-index: 12;
+		border-radius: 50%
+	}
+	.ulaiber.page2 .product.ubosspo .pice8 {
+		position: absolute;
+		width: 157px;
+		height: 157px;
+		top: 287px;
+		left: 610px;
+		background-color: rgba(2, 116, 73, .3);
+		z-index: 12;
+		border-radius: 50%
+	}
+	.ulaiber.page2 .product.ubosspo .pice9 {
+		position: absolute;
+		width: 157px;
+		height: 157px;
+		top: 170px;
+		left: 655px;
+		background-color: rgba(3, 134, 94, .6);
+		z-index: 12;
+		border-radius: 50%
+	}
+	.ulaiber.page2 .product.ubosspo .pice10 {
+		position: absolute;
+		width: 198px;
+		height: 198px;
+		top: 293px;
+		left: 726px;
+		background-color: rgba(22, 170, 140, .6);
+		z-index: 11;
+		border-radius: 50%
+	}
+	.ulaiber.page2 .product.ubosspo .pice11,
+	.ulaiber.page2 .product.ubosspo .pice12 {
+		position: absolute;
+		background-color: rgba(12, 160, 121, .6);
+		z-index: 14;
+		border-radius: 50%
+	}
+	.ulaiber.page2 .product.ubosspo .pice11 {
+		width: 58px;
+		height: 58px;
+		top: 444px;
+		left: 747px
+	}
+	.ulaiber.page2 .product.ubosspo .pice12 {
+		width: 70px;
+		height: 70px;
+		top: 482px;
+		left: 206px
+	}
+	.ulaiber.page3 {
+		width: 100%;
+		height: 501px;
+		top: 3880px;
+		position: absolute
+	}
+	.ulaiber.page3 .join.one {
+		width: 284px;
+		height: 54px;
+		top: 0;
+		margin-left: -55px;
+		background-image: image-url('ulaiber/logoback.png');
+		background-size: inherit;
+		-webkit-transform: scale(.6);
+		transform: scale(.6)
+	}
+	.ulaiber.page3 .join.one h5 {
+		font-size: 24px;
+		font-weight: 300;
+		margin-left: 50px
+	}
+	.ulaiber.page3 .join.two {
+		width: 100%;
+		height: 174px;
+		top: 55px;
+		background-image: image-url('ulaiber/joinhand.png');
+		background-position: 50%;
+		background-size: cover
+	}
+	.ulaiber.page3 .join.three {
+		position: absolute;
+		top: 60px;
+		right: 10px
+	}
+	.ulaiber.page3 .join.three p {
+		margin-top: 10px;
+		color: #fff;
+		text-align: right;
+		font-size: 13px;
+		font-weight: 300
+	}
+	.ulaiber.page3 .join.three h5 {
+		padding: 0;
+		margin: 0;
+		color: #fff;
+		text-align: right;
+		font-weight: 700;
+		font-size: 30px;
+		letter-spacing: -5px
+	}
+	.ulaiber.page3 .join.four {
+		position: absolute;
+		width: 209px;
+		height: 64px;
+		background-color: #fff;
+		right: 0;
+		top: 250px;
+		-webkit-transform: scale(.6);
+		transform: scale(.6)
+	}
+	.ulaiber.page3 .join.four a {
+		color: #000;
+		text-decoration: none
+	}
+	.ulaiber.page3 .join.four .element {
+		text-align: center;
+		line-height: 64px;
+		font-size: 22px;
+		font-weight: 300;
+		cursor: pointer;
+		transition: all .5s
+	}
+	.ulaiber.page3 .join.four .element:hover {
+		box-shadow: 0 0 50px #fff
+	}
+	.ulaiber.page4 {
+		width: 100%;
+		height: 968px;
+		top: 4215px;
+		position: absolute
+	}
+	.ulaiber.page4 .about.one {
+		width: 284px;
+		height: 54px;
+		margin-left: -55px;
+		background-image: image-url('ulaiber/logoback.png');
+		background-size: inherit;
+		overflow: hidden;
+		-webkit-transform: scale(.6);
+		transform: scale(.6)
+	}
+	.ulaiber.page4 .about.one h5 {
+		font-size: 24px;
+		font-weight: 300;
+		margin-left: 50px
+	}
+	.ulaiber.page4 .about.two {
+		width: 100%;
+		height: 140px;
+		top: 55px;
+		background-image: image-url('ulaiber/aboutsky.png');
+		background-position: 50%;
+		background-size: cover
+	}
+	.ulaiber.page5 .contact.four,
+	.ulaiber.page5 .contact.one {
+		background-size: inherit
+	}
+	.ulaiber.page4 .about.three {
+		position: absolute;
+		height: 183px;
+		width: 183px;
+		top: 35px;
+		left: 50%;
+		margin-left: -91px;
+		-webkit-transform: scale(.5);
+		transform: scale(.5)
+	}
+	.ulaiber.page4 .about.four {
+		position: absolute;
+		width: 300px;
+		height: 368px;
+		top: 230px;
+		left: 50%;
+		margin-left: -150px
+	}
+	.ulaiber.page4 .about.four p {
+		font-size: 14px;
+		font-weight: 300
+	}
+	.ulaiber.page5 {
+		width: 100%;
+		height: 430px;
+		top: 4905px;
+		position: absolute
+	}
+	.ulaiber.page5 .contact.one {
+		width: 284px;
+		height: 54px;
+		margin-left: -55px;
+		background-image: image-url('ulaiber/logoback.png');
+		overflow: hidden;
+		-webkit-transform: scale(.6);
+		transform: scale(.6)
+	}
+	.ulaiber.page5 .contact.one h5 {
+		font-size: 24px;
+		font-weight: 300;
+		margin-left: 50px
+	}
+	.ulaiber.page5 .contact.two {
+		position: absolute;
+		width: 100%;
+		height: 325px;
+		top: 55px;
+		background-color: rgba(248, 248, 248, .9)
+	}
+	.ulaiber.page5 .contact.two ul {
+		position: absolute;
+		width: 300px;
+		top: 30px;
+		left: 50%;
+		margin-left: -150px
+	}
+	.ulaiber.page5 .contact.two li {
+		width: 100%;
+		float: left;
+		margin-bottom: 10px
+	}
+	.ulaiber.page5 .contact.two img {
+		max-width: 30px;
+		max-height: 30px;
+		float: left;
+		-webkit-transform: scale(.6);
+		transform: scale(.6)
+	}
+	.ulaiber.page5 .contact.two h5 {
+		padding: 0;
+		margin: 0;
+		font-size: 14px;
+		line-height: 30px
+	}
+	.ulaiber.page5 .contact.two h5.tact1 {
+		font-size: 24px;
+		font-weight: 300
+	}
+	.ulaiber.page5 .contact.two h5.tact2 {
+		font-size: 44px;
+		font-weight: 700
+	}
+	.ulaiber.page5 .contact.two h5.tact3 {
+		font-size: 14px;
+		font-weight: 300
+	}
+	.ulaiber.page5 .contact.two h5.tact4 {
+		font-size: 14px;
+		font-weight: 700;
+		width: 155px;
+		float: left;
+		color: rgba(0, 0, 0, .8)
+	}
+	.ulaiber.page5 .contact.two a {
+		line-height: 20px;
+		font-size: 14px;
+		padding-left: 12px
+	}
+	.ulaiber.page5 .contact.three {
+		position: absolute;
+		height: 102px;
+		width: 100%;
+		bottom: 0;
+		background-color: #000
+	}
+	.ulaiber.page5 .contact.three p {
+		position: absolute;
+		bottom: 0;
+		left: 50%;
+		margin-left: -125px;
+		width: 250px;
+		color: #fff;
+		bottom: -5px;
+	}
+	.ulaiber.page5 .contact.four {
+		height: 221px;
+		width: 221px;
+		left: 50%;
+		margin-left: -110px;
+		background-image: image-url('ulaiber/bottom.png');
+		bottom: 0;
+		-webkit-transform: scale(.6);
+		transform: scale(.6)
+	}
+	.ulaiber.page6 {
+		width: 100%;
+		min-height: 2750px;
+		position: absolute
+	}
+	.ulaiber.page6 .join.one {
+		width: 100%;
+		height: 174px;
+		top: 70px;
+		background-image: image-url('ulaiber/joinhand.png');
+		background-position: 50%;
+		background-size: cover
+	}
+	.ulaiber.page6 .join.two {
+		position: absolute;
+		top: 75px;
+		right: 10px
+	}
+	.ulaiber.page6 .join.two p {
+		margin-top: 10px;
+		color: #fff;
+		text-align: right;
+		font-size: 13px;
+		font-weight: 300
+	}
+	.ulaiber.page6 .join.two h5 {
+		padding: 0;
+		margin: 0;
+		color: #fff;
+		text-align: right;
+		font-weight: 700;
+		font-size: 30px;
+		letter-spacing: -5px
+	}
+	.ulaiber.page6 .join.job {
+		position: absolute;
+		width: 100%;
+		min-height: 2478px;
+		-webkit-transform: scale(.9);
+		transform: scale(.9)
+	}
+	.ulaiber.page6 .join.job li {
+		padding: 20px;
+		margin-bottom: 20px;
+		background-color: #fff
+	}
+	.ulaiber.page6 .contact.three {
+		position: absolute;
+		height: 102px;
+		width: 100%;
+		bottom: 0;
+		background-color: #000
+	}
+	.ulaiber.page6 .contact.three p {
+		position: absolute;
+		bottom: 0;
+		left: 50%;
+		margin-left: -105px;
+		color: #fff
+	}
+	.ulaiber.page6 .contact.four {
+		height: 221px;
+		width: 221px;
+		left: 50%;
+		margin-left: -110px;
+		background-image: image-url('ulaiber/bottom.png');
+		background-size: inherit;
+		bottom: 0;
+		-webkit-transform: scale(.6);
+		transform: scale(.6)
+	}
+	.ulaiber.page7 {
+		position: absolute;
+		width: 100%;
+		top: 70px
+	}
+	.ulaiber.page7 .tab-content {
+		background-color: #fff
+	}
+	.ulaiber.page7 .tab-content .lead {
+		text-indent: 2em;
+		padding: 20px;
+		line-height: 24px;
+		-webkit-transform: scale(.9);
+		transform: scale(.9)
+	}
+
+}
+
+.newlogo{
+	margin-top: 50px;
+	margin-left: 160px;
+}
+.blackhorse{
+	position: relative;
+	margin-top: 0px;
+	margin-left: 100px;
+}
