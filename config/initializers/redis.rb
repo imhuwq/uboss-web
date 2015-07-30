@@ -1,1 +1,4 @@
-$redis = Redis.new(url: "redis://127.0.0.1:6379/2", driver: :hiredis)
+$redis = Redis.new(
+  url: "redis://#{Rails.application.secrets.redis_host}:6379/2",
+  driver: :hiredis
+)
