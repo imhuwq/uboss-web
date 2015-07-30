@@ -3,7 +3,6 @@
 	margin: 0 auto;
 	overflow: hidden;
 	padding-bottom: 20px;
-  position: relative;
 }
 a{
   text-decoration: none;
@@ -464,19 +463,6 @@ a{
 .comming_cont .comming_v2{
   float: right;
   padding-right: 15px;
-}
-.prvid_content {
-  margin-top: 10px;
-  background-color:white;
-}
-.prvid_content_tit{
-	display: block;
-	height: 32px;
-	line-height: 32px;
-  background-color:rgba(255,255,255,1);
-  padding: 2px 10px;
-  border-bottom: 1px solid #ccc;
-  margin-bottom: 15px;
 }
 /*end_pro_dail*/
 
@@ -1209,7 +1195,7 @@ a{
 	font-size: 14px;
 	font-weight:normal;
 	color:rgba(67,195,170,1);
-	margin-bottom: 70px;
+	margin-bottom: 20px;
 
 }
 /*end_submit order*/
@@ -1570,7 +1556,6 @@ a{
 /*add_listall*/
 .add_listall{
 	background-color:rgba(255,255,255,1);
-	padding-bottom: 20px;
 }
 .add_newbd{
 	border-bottom: 1px solid rgba(204,204,204,1);
