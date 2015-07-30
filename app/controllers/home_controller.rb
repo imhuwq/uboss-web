@@ -1,6 +1,6 @@
 class HomeController < ApplicationController
 
-  detect_device only: [:index]
+  detect_device only: [:index,:help]
 
   def index
     if !desktop_request?
@@ -8,4 +8,6 @@ class HomeController < ApplicationController
     end
   end
 
+  def help
+  end
 end

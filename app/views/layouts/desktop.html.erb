@@ -6,40 +6,53 @@
     <%= stylesheet_link_tag    'desktop', media: 'all'  %>
     <%= javascript_include_tag 'desktop' %>
     <%= csrf_meta_tags %>
+    <script type="text/javascript">
+      $(function(){
+        new WOW().init();
+    //				$('.img_animation').animate('tile',{
+    //					"duration":6000,
+    //					"rows":5,
+    //					"sequent": false,
+    //				    "effect": "slideFromDown"
+    //				})
+      })
+    </script>
   </head>
-  <body>
-
-    <div class="container">
+  <body style="text-align: center;">
       <div class="header">
-  			<div class="index_banner" id="index_banner">
-  				<div class="index_banner_m">
-            <%= image_tag "desktop_image/header_02.jpg" %>
-  				</div>
-  			</div>
+  			
   			<div class="header_top">
   				<div class="header_cont">
-  					<div class="header_logo"><%= image_tag "desktop_image/logo.png" %><span class="header_font">消费者变身销售员</span></div>
-  					<div class="header_login">
-              <% if current_user and current_user.admin? %>
-                <%= link_to "去后台", admin_root_path %>
-              <% elsif current_user %>
-              <% else %>
-              <%= link_to "登录", new_user_session_path %>
+  					<div class="header_logo">
+              <%= link_to root_path do %>
+              <%= image_tag "desktop_image/UBss.png" %>
               <% end %>
             </div>
+  					<nav>
+              <% if current_user and current_user.admin? %>
+              <div class="header_login"><a href="<%= admin_root_path %>"  onmouseover="this.style.color='#66CDAA'" onmouseout="this.style.color='#FFFFFF'">后台</a></div>
+
+              <% else %>
+              <div class="header_login"><a href="<%= new_user_session_path %>"  onmouseover="this.style.color='#66CDAA'" onmouseout="this.style.color='#FFFFFF'">登录</a></div>
+              <div class="header_login"><a href="#"  onmouseover="this.style.color='#66CDAA'" onmouseout="this.style.color='#FFFFFF'">注册</a></div>
+              <% end %>
+
+  						<div class="header_login"><a href="help"  onmouseover="this.style.color='#66CDAA'" onmouseout="this.style.color='#FFFFFF'">服务中心</a></div>
+  						<div class="header_login"><a href="#"  onmouseover="this.style.color='#66CDAA'" onmouseout="this.style.color='#FFFFFF'">关于UBOSS</a></div>
+  					</nav>
   				</div>
   			</div>
   		</div>
       <%= render 'layouts/flash_alert' %>
       <%= yield %>
       <div class="footer">
-  			<div class="footer_cont">
-  				<p class="foot">UBOSS</p>
-  				<p>联系我们：0755-86182704</p>
-  				<p>Copyright    2015 www.uboss.cc. All Rights Reserved 深圳市优来吧科技有限公司版权所有 粤ICP备15032292号-1 </p>
-  			</div>
-  		</div>
-    </div>
+      	<div class="footer_cont">
+      		<p class="foot">UBOSS</p>
+      		<p>联系我们：0755-86182704</p>
+      		<p>Copyright    2015 www.uboss.cc. All Rights Reserved 粤ICP备15032292号-1 </p>
+      	</div>
+      </div>
+
 
   </body>
 </html>

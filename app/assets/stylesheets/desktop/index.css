@@ -3,9 +3,10 @@
   height: 800px;
   overflow: hidden;
   position: relative;
-  margin: 0 auto;
+  margin: 100px auto 0 auto;
 }
 .index_banner_m{
+max-width: 100%;
  Z-INDEX: 0;
   width: 1920px;
   height: 800px;
@@ -17,16 +18,16 @@
 	width: 100%;
 	height: 100px;
 	line-height: 100px;
-	background-color: rgba(41,38,31,.8);
 	position: absolute;
-	top: 0px;
+	top: 0;
 	color: #ffffff;
-	font-size: 36px;
+	font-size: 26px;
 	font-weight: bold;
+	background: #1e1f1d;
 }
 .header_cont{
 	width: 1346px;
-	margin: 0px auto;
+	margin: 0 auto;
 }
 .header_logo{
 	float: left;
@@ -36,26 +37,27 @@
 }
 .header_login a{
 	color: #FFFFFF;
+	margin: 15px;
 }
 .header_cont .header_logo img{
 	position: absolute;
 	top: 28px;
 }
 .header_font{
-	padding-left: 180px;
+	padding-left: 120px;
 }
 .container{
 	width: 100%;
 	position: relative;
 }
 .page1{
-	width: 100%;
+	max-width: 100%;
 	height: 800px;
-	background-color: #e1f6f2;	
+	background-color: #e1f6f2;
 }
 .page1_cont{
 	width: 1346px;
-	margin: 0px auto;
+	margin: 0 auto;
 	padding: 40px;
 }
 .line{
@@ -71,7 +73,7 @@
 	background-color: #e1f6f2;
 	position: absolute;
 	top: -23px;
-	left: 94px;	
+	left: 94px;
 	font-size: 48px;
 	color: #43c3aa;
 	text-align: center;
@@ -81,6 +83,31 @@
 	width: 100%;
 	margin: 155px 0;
 }
+.page4_cont_dl{
+	width: 100%;
+	text-align: center;
+	margin: 55px 120px;
+	position: relative;
+
+}
+.page4_cont_list{
+	float:left;
+	text-align: center;
+	margin:40px;
+}
+.page4_cont_title_margin{
+	margin: 400px;
+}
+.page4_cont_list .page4_cont_title2{
+	margin:41px 0 44px 0;
+	font-size: 36px;
+	font-weight: bold;
+}
+.page4_cont_list .page4_cont_title1{
+	margin:66px 0 44px 0;
+	font-size: 36px;
+	font-weight: bold;
+}
 .page1_cont_list{
 	float: left;
 	text-align: center;
@@ -89,12 +116,12 @@
 .page1_cont_list dt{
 	width: 447px;
 	height: 232;
-	
+
 }
-.page1_cont_list dd.page1_cont_title{
+.page1_cont_list .page1_cont_title{
 	margin:41px 0 44px 0;
 	font-size: 36px;
-	font-weight: bold;	
+	font-weight: bold;
 }
 .page1_cont_last{
 	margin-top: 40px;
@@ -104,25 +131,25 @@
 	width: 330px;
 	text-align: center;
 	line-height: 40px;
-	margin: 0px auto;
+	margin: 0 auto;
 	font-weight: bold;
 	color: #4c5453;
 	overflow: hidden;
 }
 .page2{
-	width: 100%;
+	max-width: 100%;
 	height: 760px;
-	background-color: #ffffff;	
+	background-color: #ffffff;
 }
 
 .page3{
-	width: 100%;
+	max-width: 100%;
 	height: 800px;
 	background-color: #ffffff;
 }
 .page3_cont{
 	width: 1346px;
-	margin: 0px auto;
+	margin: 0 auto;
 	position: relative;
 	}
 .page3_img_m{
@@ -131,7 +158,7 @@
 }
 .page3_img_m img{
 	width: 1346px;
-	margin: 0px auto;
+	margin: 0 auto;
 	text-align: center;
 }
 .page3_cont .page3_title{
@@ -143,7 +170,7 @@
 .page3_cont .page3_titles{
   width: 220px;
   font-size: 48px;
-  color: #43c3aa;
+  color:#43c3aa;
   text-align: center;
   font-weight: bold;
   position: absolute;
@@ -162,6 +189,31 @@
 .page3_img_mg{
 	width: 80%;
 	padding-left: 232px;
+}
+.page4_cont{
+	width: 1346px;
+	margin: 0 auto;
+	position: relative;
+	}
+.page4_cont .page4_title{
+  width: 806px;
+  height: 2px;
+  background-color: rgb(255,205,0);
+  margin-top:45px;
+  margin:0 auto;
+  text-align:center;
+}
+
+.page4_cont .page4_titles{
+  width: 220px;
+  text-align: center;
+  margin: 0 auto;
+  font-size: 48px;
+  color:#ff9000;
+  font-weight: bold;
+  top: -23px;
+  position: relative;
+  background-color: #ffffff;
 }
 .page_list{
 	width: 440px;
@@ -184,6 +236,7 @@
   display: block;
   line-height: 34px;
   padding-top: 39px;
+  color: #43c3aa;
 }
 .curis{
 	position: absolute;
@@ -192,7 +245,7 @@
 	width: 35px;
 	height: 35px;
 	line-height: 35px;
-	background-color:#43c3aa;
+	background-color:#ff9000;
 	text-align: center;
 	color: #fff;
 	border-radius: 35px;
