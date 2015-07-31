@@ -5,8 +5,8 @@ redis_options = {
   driver: :hiredis
 }
 
-if Rails.env.production?
-  redis_options = redis_options.merge(password: Rails.application.secrets.redis_pwd)
-end
+#if Rails.env.production?
+  #redis_options = redis_options.merge(password: Rails.application.secrets.redis_pwd)
+#end
 
 $redis = Redis.new(redis_options)
