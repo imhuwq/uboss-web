@@ -41,7 +41,7 @@ Rails.application.routes.draw do
     end
   end
   resources :privilege_cards, only: [:show, :index, :update]
-  resources :sellers, only: [:new, :create]
+  resources :sellers, only: [:new, :create, :update]
 
   authenticate :user, lambda { |user| user.admin? } do
     namespace :admin do

@@ -46,6 +46,10 @@ class Admin::PersonalAuthenticationsController < AdminController
       render 'new'
       return
     else
+      @personal_authentication.user_id = current_user.id
+      @personal_authentication.update_attributes(allow_params)
+      @personal_authentication.face_with_identity_card_img = params[:face_with_identity_card_img] if params[:face_with_identity_card_img]
+      @personal_authentication.identity_card_front_img = params[:identity_card_front_img] if params[:identity_card_front_img]
       if @personal_authentication.save
         flash[:success] = '保存成功'
         redirect_to action: :show
@@ -137,7 +141,7 @@ class Admin::PersonalAuthenticationsController < AdminController
     code18 = /^[1-9]\d{5}[1-9]\d{3}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}([0-9]|X)$/ # 18位身份证号
     identity_card_match = (allow_params[:identity_card_code] =~ code15 || allow_params[:identity_card_code] =~ code18)
     hash = {
-      # '验证码错误或已过期。': MobileAuthCode.auth_code(allow_params[:mobile], allow_params[:mobile_auth_code]),
+      '验证码错误或已过期。': MobileAuthCode.auth_code(allow_params[:mobile], allow_params[:mobile_auth_code]),
       '姓名不能为空。': allow_params[:name],
       '身份证号码错误。': identity_card_match,
       '地址不能为空。': allow_params[:address],

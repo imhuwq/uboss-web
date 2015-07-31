@@ -1,6 +1,48 @@
 
 <div class="row">
+<% if current_user.seller? and !current_user.authenticated? %>
+  <%= simple_form_for(:seller, url: seller_path(current_user), method: 'PUT',wrapper: :horizontal_file_input) do |f| %>
+    <%= hidden_field_tag "seller[agent_id]", @agent.try(:id) %>
+    <div class="col-xs-12 border_block" style="border: 0">
+      <div class="col-xs-11  col-md-offset-1">
+        <h3 class="col-md-offset-1">注册绑定UBOSS</h3>
+        <hr/>
+        <% if @agent.present? %>
+        <h5 class="col-md-offset-4">您将与<%= @agent.try(:identify) %>创客进行绑定</h5>
+        <% end %>
+        <div class="form-group clearfix">
+          <%= f.label :mobile,:class=>"text-right col-sm-3 control-label" %>
+          <div class="col-xs-3"><%= text_field_tag :mobile ,  current_user.login, id:"new_mobile", style:"width:100%;", readonly: 'readonly' %></div>
+          <div class="col-xs-3"><%= link_to '发送', '###',class: "btn btn-default btn-sm",id:"send_mobile" %></div>
+        </div>
+        <%= f.input :mobile_auth_code, as: :tel, required: true, :label_html=>{:class=>"text-right"},:input_html=>{:id=>"mobile_auth_code"} %>
+      </div>
+    </div>
+    <div class="button_div  col-xs-4  col-md-offset-4"  style="margin-top:30px;">
+      <%= f.submit "绑定",class: "btn btn-large btn-primary col-xs-12", id:"submit_bottom", disabled: 'disabled' %>
+    </div>
+    <div class="button_div  col-xs-4  col-md-offset-4"  style="margin-top:10px;padding-bottom:30px;">
+      <%= link_to "返回登录界面", '/user/sign_in', class: "btn btn-large btn-default col-xs-12"%>
+    </div>
+  <% end %>
+<% elsif current_user.authenticated? %>
+<div class="col-xs-12 border_block" style="border: 0">
+  <div class="col-xs-11  col-md-offset-1">
+    <h3 class="col-md-offset-1">注册绑定UBOSS</h3>
+    <hr/>
+    <% if @agent.present? %>
+    <h5 class="col-md-offset-4">您将与<%= @agent.try(:identify) %>创客进行绑定</h5>
+    <% end %>
+    <div class="col-xs-10 text-center">您已经是认证商家，不能更换绑定</div>
+  </div>
+</div>
 
+<div class="button_div  col-xs-4  col-md-offset-4"  style="margin-top:10px;padding-bottom:30px;">
+  <%= link_to "返回登录界面", '/user/sign_in', class: "btn btn-large btn-default col-xs-12"%>
+</div>
+
+
+<% else %>
   <%= simple_form_for(:seller, url: url_for(controller: :sellers, action: :create), method: 'POST',wrapper: :horizontal_file_input) do |f| %>
     <%= hidden_field_tag "seller[agent_id]", @agent.try(:id) %>
     <div class="col-xs-12 border_block" style="border: 0">
@@ -27,4 +69,5 @@
       <%= link_to "返回登录界面", '/user/sign_in', class: "btn btn-large btn-default col-xs-12"%>
     </div>
   <% end %>
+<% end %>
 </div>

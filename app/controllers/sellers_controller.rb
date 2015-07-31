@@ -25,6 +25,24 @@ class SellersController < AdminController
       end
     end
   end
+
+  def update
+    valid_create_params
+    if current_user.seller? and !current_user.authenticated?
+      if @errors.present?
+        flash[:error] = @errors.join("\n")
+      else
+        current_user.update(agent_id: allow_params[:agent_id])
+        flash[:success] = "绑定成功！"
+        redirect_to admin_root_path
+        return
+      end
+    else
+      flash[:error] = "您已经是认证商家，不能更换绑定."
+    end
+
+    redirect_to action: :new
+  end
   private
   def allow_params
     params.require(:seller).permit(:mobile, :mobile_auth_code, :password, :password_confirmation, :agent_id)

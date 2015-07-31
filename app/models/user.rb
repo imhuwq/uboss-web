@@ -174,6 +174,17 @@ class User < ActiveRecord::Base
     User.where(agent_id: self.id)
   end
 
+  def seller?
+    user_roles.collect(&:name).include?('seller')
+  end
+
+  def agent?
+    user_roles.collect(&:name).include?('agent')
+  end
+  def super_admin?
+    user_roles.collect(&:name).include?('super_admin')
+  end
+
   def authenticated?
     if self.authenticated == 'yes'
       return true

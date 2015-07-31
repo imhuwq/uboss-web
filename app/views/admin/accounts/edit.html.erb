@@ -5,6 +5,15 @@
   <% current_user.user_roles.each do |role| %>
     <span class='label label-info'><%= role.display_name %></span>
   <% end %>
+  <% if current_user.authenticated? %>
+  <span class="label label-success">
+    已认证
+  </span>
+  <% else %>
+  <span class="label label-danger">
+    未认证
+  </span>
+  <% end %>
   <hr/>
   <% if user = User.find_by(id: current_user.agent_id) %>
     <hr />

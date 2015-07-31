@@ -38,6 +38,7 @@ class Admin::EnterpriseAuthenticationsController < AdminController
   def create
     valid_create_params
     @enterprise_authentication = EnterpriseAuthentication.new(allow_params)
+    @enterprise_authentication.user_id = current_user.id
     if @errors.present?
       flash[:error] = @errors.join("\n")
       render 'new'
