@@ -20,11 +20,11 @@
   </head>
   <body style="text-align: center;">
       <div class="header">
-
+  			
   			<div class="header_top">
   				<div class="header_cont">
   					<div class="header_logo">
-              <%= link_to desktop_ulaiber_index_path do %>
+              <%= link_to root_path do %>
               <%= image_tag "desktop_image/UBss.png" %>
               <% end %>
             </div>
@@ -34,11 +34,11 @@
 
               <% else %>
               <div class="header_login"><a href="<%= new_user_session_path %>"  onmouseover="this.style.color='#66CDAA'" onmouseout="this.style.color='#FFFFFF'">登录</a></div>
-              <div class="header_login"><a href="sellers/new"  onmouseover="this.style.color='#66CDAA'" onmouseout="this.style.color='#FFFFFF'">注册</a></div>
+              <div class="header_login"><a href="#"  onmouseover="this.style.color='#66CDAA'" onmouseout="this.style.color='#FFFFFF'">注册</a></div>
               <% end %>
 
   						<div class="header_login"><a href="help"  onmouseover="this.style.color='#66CDAA'" onmouseout="this.style.color='#FFFFFF'">服务中心</a></div>
-  						<div class="header_login"><a href="<%= root_path %>"  onmouseover="this.style.color='#66CDAA'" onmouseout="this.style.color='#FFFFFF'">关于UBOSS</a></div>
+  						<div class="header_login"><a href="#"  onmouseover="this.style.color='#66CDAA'" onmouseout="this.style.color='#FFFFFF'">关于UBOSS</a></div>
   					</nav>
   				</div>
   			</div>

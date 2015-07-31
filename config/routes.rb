@@ -97,13 +97,6 @@ Rails.application.routes.draw do
     mount Sidekiq::Web => '/sidekiq'
   end
 
-  namespace :desktop do
-    resources :ulaiber do
-      get :join, on: :collection
-
-    end
-  end
-
   root 'home#index'
 
 end
