@@ -27,6 +27,11 @@ class UserAddressesController < ApplicationController
 
   def update
     if @user_address.update(address_params)
+      if @user_address.default == true
+        UserAddress.where(default: true).where('id != ?', @user_address.id).each do |obj|
+          obj.update(default: false)
+        end
+      end
       redirect_to account_user_addresses_path
     else
       render :edit
