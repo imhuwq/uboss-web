@@ -5,6 +5,9 @@
   <div class="col-xs-2">
     <%= link_to '提现', url_for(action: :withdraw_records, id: params[:id]) %>
   </div>
+  <div class="col-xs-3 pull-right">
+    <%= link_to "商家名：#{@seller.identify}", '###' %>
+  </div>
 </div>
 <div class="row">
 	<div class="col-xs-12 border_block">
