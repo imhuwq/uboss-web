@@ -1,4 +1,4 @@
-<div class="center-form-container">
+<div class="center-form-container" style="margin-bottom:200px;">
   <h4>设置</h4>
   <hr />
   当前角色：
@@ -30,9 +30,29 @@
     <%= f.input :store_name %>
     <%= f.input :nickname %>
     <% if current_user.user_roles.collect(&:name).include?('agent') %>
-      <%= f.input :domain_name, hint: "此域名将作为你分享商家注册链接时的链接关键字,如'123'将转换为'http://#{request.env["HTTP_HOST"]}/sellers/new?domain_name=123'" %>
+    <div class="" style="background-color:rgb(255, 232, 249);padding:10px;margin-bottom:20px;">
+      <%= f.input :domain_name %>
+      <div class="">
+        <p>
+          此域名将作为你分享商家注册链接时的链接关键字,
+        </p>
+        <p>
+          如
+          <span style="color:blue">'123'</span>
+
+        </p>
+        <p>
+          将转换为:
+        </p>
+        <p  style="color:blue">
+          <%= "'http://#{request.env["HTTP_HOST"]}/sellers/new?domain_name=123'" %>
+        </p>
+
+      </div>
+    </div>
+
     <% end %>
-    <%= f.submit class: 'btn btn-primary' %>
+    <%= f.submit class: 'btn btn-primary col-xs-12' %>
 
   <% end %>
 </div>

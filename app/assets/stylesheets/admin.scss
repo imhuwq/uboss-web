@@ -20,7 +20,9 @@
     position: relative;
     width: 980px;
 }
-.border_block {border:1px solid black;margin-top:30px;padding-bottom:30px;}
+.border_block {border: 1px solid rgb(232, 232, 232);margin-top:30px;padding-bottom:30px;}
+
+.border_block:hover {background-color: rgb(235, 249, 231)}
 
 .block-actions {
   margin: 10px 0 10px 0;
