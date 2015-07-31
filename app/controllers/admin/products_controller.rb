@@ -60,16 +60,16 @@ class Admin::ProductsController < AdminController
     if params[:status] == 'published'
       if current_user.authenticated?
         @product.status = 'published'
-        flash.now[:success] = '上架成功'
+        flash[:success] = '上架成功'
       else
-        flash.now[:notice] = '请先验证:点击右上角用户名，进入“个人/企业认证”'
+        flash[:notice] = '请先验证:点击右上角用户名，进入“个人/企业认证”'
       end
     elsif params[:status] == 'unpublish'
       @product.status = 'unpublish'
-      flash.now[:success] = '取消上架成功'
+      flash[:success] = '取消上架成功'
     elsif params[:status] == 'closed'
       @product.status = 'closed'
-      flash.now[:success] = '删除成功'
+      flash[:success] = '删除成功'
     end
     @product.save
     puts @product.errors.full_messages.join('<br/>')
