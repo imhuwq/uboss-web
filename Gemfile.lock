@@ -87,6 +87,9 @@ GEM
       thread_safe (~> 0.3, >= 0.3.4)
       tzinfo (~> 1.1)
     addressable (2.3.8)
+    airbrake (4.3.0)
+      builder
+      multi_json
     arel (6.0.2)
     autoprefixer-rails (5.2.0)
       execjs
@@ -426,6 +429,7 @@ PLATFORMS
 
 DEPENDENCIES
   aasm
+  airbrake
   awesome_nested_set
   better_errors
   bootstrap-sass
