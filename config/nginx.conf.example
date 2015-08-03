@@ -1,21 +1,21 @@
-gzip  on;
+#gzip  on;
 #开启gzip，同时对于api请求的json格式也开启gzip
 gzip_types application/json;
 
 #每台机器都运行nginx+unicorn，本机用domain socket，方便切换
 upstream uboss_backend {
-    server unix:/home/deploy/rails/uboss/current/tmp/sockets/unicorn.uboss.sock fail_timeout=0;
+    server unix:/home/deploy/rails/ssobu/current/tmp/sockets/unicorn.uboss.sock fail_timeout=0;
 }
 
 #用try_files方式和proxy执行rails动态请求
 server {
     listen       80;
     server_name  uboss.cc www.uboss.cc;
-    root         /home/deploy/rails/uboss/current/public;
+    root         /home/deploy/rails/ssobu/current/public;
 
     try_files $uri/index.html $uri.html $uri @user1;
 
-    location @user2 {
+    location @user1 {
       proxy_redirect     off;
       proxy_set_header   Host $host;
       proxy_set_header   X-Forwarded-Host $host;
@@ -31,10 +31,10 @@ server {
 server {
     listen       80;
     server_name  cdn.uboss.cc cdnsource.uboss.cc;
-    root         /home/deploy/rails/uboss/current/public;
+    root         /home/deploy/rails/ssobu/current/public;
 
     location ~ ^/(assets)/  {
-      root /home/deploy/rails/uboss/current/public;
+      root /home/deploy/rails/ssobu/current/public;
       gzip_static on; # to serve pre-gzipped version
       expires max;
       add_header Cache-Control public;

@@ -11,6 +11,7 @@ u1 = User.create(
   password: '111111',
   nickname: "UBOSS",
   store_name: "UBOSS官方",
+  authenticated: 'yes',
   admin: true
 )
 u1.user_roles = [super_role,agent_role,seller_role]
