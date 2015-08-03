@@ -6,7 +6,7 @@
     <nav class="collapse navbar-collapse bs-navbar-collapse">
       <ul class="nav navbar-nav">
         <%= li_link(:dashboard, admin_root_path, action_check: false) %>
-        <%= li_link(:products, admin_products_path) %>
+        <%= can_li_link(:read, Product, admin_products_path) %>
         <%= nav_group :orders do %>
           <%= can_li_link(:manage, Order, admin_orders_path) %>
           <%= can_li_link(:read, SharingIncome, admin_sharing_incomes_path) %>
