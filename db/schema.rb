@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150803063058) do
+ActiveRecord::Schema.define(version: 20150803070021) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -57,9 +57,9 @@ ActiveRecord::Schema.define(version: 20150803063058) do
   create_table "divide_incomes", force: :cascade do |t|
     t.integer  "user_id"
     t.integer  "order_id"
-    t.decimal  "amount"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.decimal  "amount",     default: 0.0
+    t.datetime "created_at",               null: false
+    t.datetime "updated_at",               null: false
   end
 
   create_table "enterprise_authentications", force: :cascade do |t|
@@ -98,12 +98,12 @@ ActiveRecord::Schema.define(version: 20150803063058) do
   create_table "order_charges", force: :cascade do |t|
     t.integer  "order_id"
     t.string   "channel"
-    t.datetime "created_at",           null: false
-    t.datetime "updated_at",           null: false
+    t.datetime "created_at",                         null: false
+    t.datetime "updated_at",                         null: false
     t.string   "prepay_id"
     t.datetime "prepay_id_expired_at"
     t.string   "pay_serial_number"
-    t.decimal  "paid_amount"
+    t.decimal  "paid_amount",          default: 0.0
     t.integer  "payment"
     t.datetime "paid_at"
   end
@@ -130,7 +130,7 @@ ActiveRecord::Schema.define(version: 20150803063058) do
     t.string   "address"
     t.string   "invoice_title"
     t.integer  "state",           default: 0
-    t.decimal  "pay_amount"
+    t.decimal  "pay_amount",      default: 0.0
     t.string   "pay_message"
     t.datetime "created_at",                      null: false
     t.datetime "updated_at",                      null: false
@@ -225,11 +225,11 @@ ActiveRecord::Schema.define(version: 20150803063058) do
   add_index "redactor_assets", ["assetable_type", "type", "assetable_id"], name: "idx_redactor_assetable_type", using: :btree
 
   create_table "selling_incomes", force: :cascade do |t|
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at",               null: false
+    t.datetime "updated_at",               null: false
     t.integer  "user_id"
     t.integer  "order_id"
-    t.decimal  "amount"
+    t.decimal  "amount",     default: 0.0
   end
 
   create_table "service_notifies", force: :cascade do |t|
@@ -244,9 +244,9 @@ ActiveRecord::Schema.define(version: 20150803063058) do
     t.integer  "seller_id"
     t.integer  "sharing_node_id"
     t.integer  "order_item_id"
-    t.decimal  "amount"
-    t.datetime "created_at",                  null: false
-    t.datetime "updated_at",                  null: false
+    t.decimal  "amount",          default: 0.0
+    t.datetime "created_at",                    null: false
+    t.datetime "updated_at",                    null: false
     t.integer  "level",           default: 1
     t.string   "number"
   end
@@ -282,13 +282,13 @@ ActiveRecord::Schema.define(version: 20150803063058) do
 
   create_table "transactions", force: :cascade do |t|
     t.integer  "user_id"
-    t.decimal  "current_amount"
-    t.decimal  "adjust_amount"
+    t.decimal  "current_amount", default: 0.0
+    t.decimal  "adjust_amount",  default: 0.0
     t.integer  "source_id"
     t.string   "source_type"
     t.integer  "trade_type"
-    t.datetime "created_at",     null: false
-    t.datetime "updated_at",     null: false
+    t.datetime "created_at",                   null: false
+    t.datetime "updated_at",                   null: false
   end
 
   create_table "user_addresses", force: :cascade do |t|
