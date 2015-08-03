@@ -1,4 +1,4 @@
-if Rails.evn.production?
+if Rails.env.production?
   Airbrake.configure do |config|
     config.api_key = '3b73c8421cf90fccd9b574d237caf97d'
     config.host    = 'errbit.uboss.cc'
