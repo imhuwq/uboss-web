@@ -6,7 +6,7 @@ class PersonalAuthentication < ActiveRecord::Base
   mount_uploader :identity_card_front_img, ImageUploader
 
   validates :mobile, mobile: true
-  validates_presence_of :name, :address, :mobile, :identity_card_code
+  validates_presence_of :name, :address, :mobile, :identity_card_code, :user_id
   validates_uniqueness_of :identity_card_code, :mobile, :user_id
   validates :identity_card_code, identity_card_code: true
 

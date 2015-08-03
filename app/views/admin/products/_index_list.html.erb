@@ -2,13 +2,16 @@
 <%= table_for(@products) do |t| %>
   <%= t.cell :name do |obj| %>
     <%= link_to [:admin, obj] do %>
-    <div class="col-sm-3">
-      <%= image_tag(obj.image_url, size: "100x80", alt: "-") %>
+    <div class="" style="width:370px;float:left;">
+      <div class="col-sm-3">
+        <%= image_tag(obj.image_url, size: "100x80", alt: "-") %>
+      </div>
+      <div class="col-sm-9"  style="padding-top:15px;">
+        <div class="col-sm-12">商品名称：<%= obj.name %></div>
+        <div class="col-sm-12">价格：<%= obj.present_price %></div>
+      </div>
     </div>
-    <div class="col-sm-9"  style="padding-top:15px;">
-      <div class="col-sm-12">商品名称：<%= obj.name %></div>
-      <div class="col-sm-12">价格：<%= obj.present_price %></div>
-    </div>
+
     <% end %>
   <% end %>
   <%= t.cell :good_reputation do |obj| %>
@@ -20,7 +23,7 @@
   <% end %>
   <%= t.cell :created_at %>
   <%= t.cell :methods do |obj| %>
-  <div class="col-xs-10" style="padding-top:15px;">
+  <div style="padding-top:15px;width:240;float:left;">
     <div class="col-xs-4">
       <%= link_to("编辑", url_for(:action=>:edit,:id=>obj.id), class:"btn btn-xs btn-warning",style:"margin-bottom:5px;")%>
       <br />
@@ -28,9 +31,9 @@
     </div>
     <div class="col-xs-5">
       <% if obj.status == 'unpublish' %>
-      <%= link_to("上架",'###', onclick:"change_status(#{obj.id},'published')", class:"btn btn-large btn-success", style:"height:50px;padding:16px 22px 0 22px;") %>
+      <%= link_to("上架",'###', onclick:"change_status(#{obj.id},'published')", class:"btn btn-large btn-success", style:"height:50px;padding:14px 22px 0 22px;") %>
       <% else %>
-      <%= link_to("取消上架", '###', onclick:"change_status(#{obj.id},'unpublish')", class:"btn btn-large btn-default", style:"height:50px;padding:16px 8px 0 8px;") %>
+      <%= link_to("取消上架", '###', onclick:"change_status(#{obj.id},'unpublish')", class:"btn btn-large btn-default", style:"height:50px;padding:14px 8px 0 8px;") %>
       <% end %>
     </div>
   </div>
