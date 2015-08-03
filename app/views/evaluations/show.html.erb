@@ -32,10 +32,10 @@
     <script type="text/javascript">
 wx.ready(function(){
   UBoss.luffy.resetInvokeSharing({
-    title: "<%= @evaluation.order_item.product.try(:name) %>", // 分享标题
+    title: "<%= product_sharing_title(@product) %>", // 分享标题
     link: "<%= product_sharing_link(@evaluation.product, @sharing_node) %>",
     imgurl: '<%= @evaluation.order_item.product.image_url %>', // 分享图标
-    desc: 'UBOSS'
+    desc: '<%= product_sharing_desc(@product) %>'
   });
 });
     </script>

@@ -15,4 +15,12 @@ module ProductsHelper
       '包邮'
     end
   end
+
+  def product_sharing_title(product)
+    "【#{product.name}】#{number_to_currency(product.present_price)}优惠购买，分享还能拿返利，快来UBOSS看看吧"
+  end
+
+  def product_sharing_desc(product)
+    "#{product.short_description}"
+  end
 end

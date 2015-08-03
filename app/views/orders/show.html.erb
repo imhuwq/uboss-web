@@ -166,10 +166,10 @@ wx.ready(function(){
 
 wx.ready(function(){
   UBoss.luffy.resetInvokeSharing({
-    title: "<%= @product.name %>", // 分享标题
+    title: "<%= product_sharing_title(@product) %>", // 分享标题
     link: "<%= product_sharing_link(@product, @sharing_link_node) %>",
     imgurl: '<%= @product.image_url %>', // 分享图标
-    desc: 'UBOSS'
+    desc: '<%= product_sharing_desc(@product) %>' // 分享描述
   });
 })
 
