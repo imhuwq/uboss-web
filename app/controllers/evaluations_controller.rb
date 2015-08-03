@@ -12,6 +12,7 @@ class EvaluationsController < ApplicationController
 
   def show
     @evaluation = Evaluation.find(params[:id])
+    @product = @evaluation.product
     @sharing_node = @evaluation.sharing_node
   end
 
