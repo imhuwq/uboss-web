@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150728050701) do
+ActiveRecord::Schema.define(version: 20150803063058) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -78,7 +78,7 @@ ActiveRecord::Schema.define(version: 20150728050701) do
   create_table "evaluations", force: :cascade do |t|
     t.integer  "buyer_id"
     t.integer  "sharer_id"
-    t.integer  "status",          default: 0
+    t.integer  "status",          default: 3
     t.integer  "order_item_id"
     t.integer  "product_id"
     t.text     "content"
@@ -167,6 +167,16 @@ ActiveRecord::Schema.define(version: 20150728050701) do
     t.boolean  "actived",    default: false
   end
 
+  create_table "product_share_issues", force: :cascade do |t|
+    t.integer  "product_id"
+    t.integer  "buyer_lv_1_id"
+    t.integer  "buyer_lv_2_id"
+    t.integer  "buyer_lv_3_id"
+    t.integer  "sharer_lv_1_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "products", force: :cascade do |t|
     t.integer  "user_id"
     t.string   "name"
@@ -176,7 +186,7 @@ ActiveRecord::Schema.define(version: 20150728050701) do
     t.integer  "count",              default: 0
     t.text     "content"
     t.boolean  "buyer_pay",          default: true
-    t.decimal  "traffic_expense"
+    t.decimal  "traffic_expense",    default: 0.0
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "has_share_lv",       default: 3
