@@ -19,7 +19,7 @@
   </div>
   <div class="fenxinrated">
     <%= render partial: 'application/share_buttoms',
-      locals: { product: (@product || @evaluation.try(:product)), node: @sharing_link_node } %>
+      locals: { product: @product, node: @sharing_link_node } %>
   </div>
   <div class="accunt_adil_box4">
     <%= link_to("返回首页", root_path, class:"accunt_adilbtnt") %>
@@ -33,8 +33,8 @@
 wx.ready(function(){
   UBoss.luffy.resetInvokeSharing({
     title: "<%= product_sharing_title(@product) %>", // 分享标题
-    link: "<%= product_sharing_link(@evaluation.product, @sharing_node) %>",
-    imgurl: '<%= @evaluation.order_item.product.image_url %>', // 分享图标
+    link: "<%= product_sharing_link(@product, @sharing_node) %>",
+    imgurl: '<%= @product.image_url %>', // 分享图标
     desc: '<%= product_sharing_desc(@product) %>'
   });
 });
