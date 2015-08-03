@@ -40,8 +40,7 @@ class SellersController < AdminController
     else
       flash[:error] = "您已经是认证商家，不能更换绑定."
     end
-
-    redirect_to action: :new
+    redirect_to action: :new, domain_name: User.find_by(id: allow_params[:agent_id]).try(:domain_name)
   end
   private
   def allow_params
