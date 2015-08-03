@@ -25,7 +25,7 @@ class OrderPayedHandlerJob < ActiveJob::Base
   private
 
   def start_divide_order_paid_amount
-    seller_income = @order.paid_amount
+    seller_income = Rails.env.production? ? @order.paid_amount : @order.pay_amount
 
     # NOTE
     # ----------------------

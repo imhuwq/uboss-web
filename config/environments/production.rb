@@ -58,7 +58,7 @@ Rails.application.configure do
   config.cache_store = :dalli_store, "127.0.0.1:11211", { namespace: 'ssobu-cache' }
 
   # Enable serving of images, stylesheets, and JavaScripts from an asset server.
-  config.action_controller.asset_host = 'http://cdn.uboss.cc'
+  config.action_controller.asset_host = Rails.application.secrets.asset_host
 
   # Ignore bad email addresses and do not raise email delivery errors.
   # Set this to true and configure the email server for immediate delivery to raise delivery errors.
