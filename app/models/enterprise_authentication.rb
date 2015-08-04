@@ -28,7 +28,7 @@ class EnterpriseAuthentication < ActiveRecord::Base
     end
   end
 
-  def check_and_set_user_authenticated_to_no
+  def check_and_set_user_authenticated_to_no # 检查个人信息验证情况,若已经通过,则保存用户验证状态为通过;反之则设为未验证
     user = User.find_by(id: self.user_id)
     ea = PersonalAuthentication.find_by(user_id: self.user_id)
     if ea.present? and ea.status == 'pass'
