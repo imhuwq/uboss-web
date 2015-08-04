@@ -1,6 +1,17 @@
 <div>
 	<%= image_tag "desktop_image/header3.jpg", class:"header_img", alt:"header" %>
 </div>
+<div class="page_video" onclick="showVideo()">
+	<div >
+
+	</div>
+</div>
+<!--弹框-->
+<div id="video">
+				<iframe class="video_iframe" style="z-index: 1;"src="http://v.qq.com/iframe/player.html?vid=o0161da2c7v&amp;width=800&amp;height=600&amp;auto=0" allowfullscreen="" frameborder="0" height="600" width="800"></iframe>
+				<!-- <input  type="button" value="Close" onclick="hideVideo();"/> -->
+				<%= image_tag "desktop_image/cancel.png", alt:"cancle", onclick:"hideVideo()" %>
+</div>
 <div class="page1">
 	<div class="page_title"><span class="page_titles">平台价值</span></div>
 	<div class="page1_content">
@@ -50,3 +61,13 @@
 			</dl>
 		</div>
 </div>
+<script type="text/javascript" >
+			function showVideo(){
+				$("#video").css('display','block');
+				// $('#closeVideo').css('display','block');
+			}
+			function hideVideo(){
+				$("#video").css('display','none');
+				// $('#closeVideo').css('display','none');				
+			}
+</script>

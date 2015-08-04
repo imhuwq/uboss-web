@@ -35,6 +35,34 @@
 	width: 100%;
 	margin-bottom: 80px;
 }
+.page_video{
+	width: 100%;
+	height:400px;
+	background-color:#e1f6f2;
+	text-align:center;
+}
+.video_list{
+	display: inline-block;
+}
+.video_iframe{
+	margin:0 auto;
+}
+#video{
+	position: absolute;
+	width: 100%;
+	height: 600px;
+	top:700px;
+	/*margin: 0 auto;*/
+	display: none;
+	/*background-color: #FF9000;*/
+	text-align: center;
+}
+/*#closeVideo{
+	position: absolute;
+
+	display: none;
+
+}*/
 .page1 {
 	width: 100%;
 	/*height: 800px;*/
