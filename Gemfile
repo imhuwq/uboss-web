@@ -69,7 +69,9 @@ gem 'unicorn', require: false
 gem 'unicorn-worker-killer', require: false
 # cronjob
 gem 'whenever', :require => false
+
 gem 'airbrake'
+gem 'sucker_punch' # airbrake async use this
 
 group :development do
   gem "thin"

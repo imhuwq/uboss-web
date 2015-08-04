@@ -377,6 +377,8 @@ GEM
       colorize (>= 0.7.0)
       net-scp (>= 1.1.2)
       net-ssh (>= 2.8.0)
+    sucker_punch (1.5.0)
+      celluloid (~> 0.16.0)
     test_after_commit (0.4.1)
       activerecord (>= 3.2)
     therubyracer (0.12.2)
@@ -480,6 +482,7 @@ DEPENDENCIES
   sinatra
   slackistrano
   spring
+  sucker_punch
   tabletastic!
   test_after_commit
   therubyracer
