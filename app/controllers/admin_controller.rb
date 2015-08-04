@@ -4,7 +4,7 @@ class AdminController < ApplicationController
 
   layout 'admin'
 
-  if Rails.env.production? || Rails.env.staging?
+  if not Rails.env.development?
     rescue_from CanCan::AccessDenied do |exception|
       respond_to do |format|
         format.json { render nothing: true, status: :forbidden }
@@ -12,4 +12,5 @@ class AdminController < ApplicationController
       end
     end
   end
+
 end
