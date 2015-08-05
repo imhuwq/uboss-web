@@ -30,26 +30,11 @@
     <%= f.input :store_name %>
     <%= f.input :nickname %>
     <% if current_user.user_roles.collect(&:name).include?('agent') %>
-    <div class="" style="background-color:rgb(255, 232, 249);padding:10px;margin-bottom:20px;">
-      <%= f.input :agent_code %>
-      <div class="">
-        <p>
-          此域名将作为你分享商家注册链接时的链接关键字,
-        </p>
-        <p>
-          如
-          <span style="color:blue">'123'</span>
-
-        </p>
-        <p>
-          将转换为:
-        </p>
-        <p  style="color:blue">
-          <%= "'http://#{request.env["HTTP_HOST"]}/sellers/new?agent_code=123'" %>
-        </p>
-
-      </div>
+    <div class="form-group string optional user_login">
+      <label class="string optional control-label" for="user_agent_code">创客邀请码</label>
+      <input readonly="readonly" class="string optional form-control" type="text" value="<%= current_user.find_or_create_agent_code %>" name="user[agent_code]" id="user_login">
     </div>
+
 
     <% end %>
     <%= f.submit class: 'btn btn-primary col-xs-12' %>
