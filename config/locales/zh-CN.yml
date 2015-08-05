@@ -14,7 +14,7 @@ zh-CN:
     authenticated:  状态
     buyer_identify: 买家
     store_name: 店铺名称
-    domain_name: 域名关键字
+    agent_code: 创客邀请码
     process_at: 处理时间
     done_at: 完成时间
     current_password: 当前密码

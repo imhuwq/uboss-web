@@ -1,7 +1,7 @@
 class SellersController < AdminController
   layout 'login'
   def new
-    @agent = User.find_by(domain_name: params[:domain_name]) if params[:domain_name].present?
+    @agent = User.find_by(agent_code: params[:agent_code]) if params[:agent_code].present?
   end
 
   def create
@@ -40,7 +40,7 @@ class SellersController < AdminController
     else
       flash[:error] = "您已经是认证商家，不能更换绑定."
     end
-    redirect_to action: :new, domain_name: User.find_by(id: allow_params[:agent_id]).try(:domain_name)
+    redirect_to action: :new, agent_code: User.find_by(id: allow_params[:agent_id]).try(:agent_code)
   end
   private
   def allow_params

@@ -31,7 +31,7 @@
     <%= f.input :nickname %>
     <% if current_user.user_roles.collect(&:name).include?('agent') %>
     <div class="" style="background-color:rgb(255, 232, 249);padding:10px;margin-bottom:20px;">
-      <%= f.input :domain_name %>
+      <%= f.input :agent_code %>
       <div class="">
         <p>
           此域名将作为你分享商家注册链接时的链接关键字,
@@ -45,7 +45,7 @@
           将转换为:
         </p>
         <p  style="color:blue">
-          <%= "'http://#{request.env["HTTP_HOST"]}/sellers/new?domain_name=123'" %>
+          <%= "'http://#{request.env["HTTP_HOST"]}/sellers/new?agent_code=123'" %>
         </p>
 
       </div>

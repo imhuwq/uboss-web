@@ -15,10 +15,10 @@
 </div>
 <hr/>
 <div class="row text-center">
-  <% if current_user.domain_name.present? %>
+  <% if current_user.agent_code.present? %>
     我的商家绑定链接:
     <div class="bg-warning">
-      <%= "http://#{request.env["HTTP_HOST"]}/sellers/new?domain_name=#{current_user.domain_name}" %>
+      <%= "http://#{request.env["HTTP_HOST"]}/sellers/new?agent_code=#{current_user.agent_code}" %>
     </div>
 
   <% else %>
