@@ -31,9 +31,15 @@
 	position: absolute;
 	top: 28px;
 }
+.header_img_con {
+  margin-top: 100px;
+}
+.header_img_con img {
+  vertical-align: bottom;
+}
 .header_img {
 	width: 100%;
-	margin-bottom: 80px;
+  margin-bottom: 80px;
 }
 .page_video{
 	width: 100%;
