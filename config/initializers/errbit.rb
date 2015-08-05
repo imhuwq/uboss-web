@@ -10,4 +10,5 @@ Airbrake.configure do |config|
   config.async   = true
   config.logger  = Logger.new("log/airbrake.log")
   config.rescue_rake_exceptions = true
+  config.ignore_only  = []
 end
