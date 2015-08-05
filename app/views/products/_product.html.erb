@@ -7,7 +7,7 @@
       <div class="li_content">
         <div class="li_contentinteo">
           <div class="con_title"><%= product.name %></div>
-          <div class="intrdu"><%= truncate product.short_description, length: 12 %></div>
+          <div class="intrdu"><%= product.short_description %></div>
           <div class="baoyou">邮费：<%= Product::DataBuyerPay[product.buyer_pay] %></div>
           <div class="pric"><strong>￥<%= product.present_price %></strong><span><%= product.total_sells %>人付款</span></div>
         </div>

@@ -172,11 +172,15 @@ a{
   font-size: 13px;
   color: rgba(255,255,255,1);
   padding: 6px 0px 0px 0px;
+  height: 1em;
+  overflow: hidden;
 }
 .intrdu{font-size: 11px;
   color: rgba(176,213,204,1);
   line-height: 15px;
   padding: 2px 0px 0px 0px;
+  height: 1em;
+  overflow: hidden;
 }
 .baoyou{font-size: 12px;
   color: rgba(255,255,255,1);
