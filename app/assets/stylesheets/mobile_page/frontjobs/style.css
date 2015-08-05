@@ -117,7 +117,6 @@ a{
 	padding-top: 45px;
 }
 .upass.main .container .list{
-	width: 310px;
 	margin: 0 auto;
 }
 .list{
@@ -127,12 +126,17 @@ a{
 	width: 100%;
 }
 .li_image{
-	width:100%;
-	height:100px;
-	}
+  width: 100%;
+  height: 0px;
+  padding: 30% 0;
+  position: relative;
+  overflow: hidden;
+}
 .list_li img{
-	width: 100%;
-	height: 100%;
+  width: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
 }
 .li_content{
 	width: 100%;
