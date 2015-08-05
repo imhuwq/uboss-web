@@ -1,5 +1,6 @@
 zh-CN:
   attributes: &attributes
+    captcha: 验证码
     bank_card: 银行卡
     bankname: 银行名称
     user_name: 账户名

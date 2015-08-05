@@ -50,6 +50,7 @@ class AccountsController < ApplicationController
         sign_in current_user, :bypass => true
         redirect_to settings_account_path, notice: '修改密码成功'
       else
+        flash.now[:error] = '验证码错误'
         render :update_password_page
         return
       end
@@ -57,6 +58,7 @@ class AccountsController < ApplicationController
       sign_in current_user, :bypass => true
       redirect_to settings_account_path, notice: '修改密码成功'
     else
+      flash.now[:error] = current_user.errors.full_messages.joins('<br/>')
       render :update_password_page
     end
   end
