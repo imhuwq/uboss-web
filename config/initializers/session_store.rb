@@ -13,7 +13,7 @@ if Rails.env.production? || Rails.env.staging?
     #redis_options = redis_options.merge(password: Rails.application.secrets.redis_pwd)
   #end
 
-  Rails.application.config.session_store :redis_store, servers: redis_options, :expires_in => 120.minutes
+  Rails.application.config.session_store :redis_store, servers: redis_options, :expires_in => 2.weeks
 
 else
 
