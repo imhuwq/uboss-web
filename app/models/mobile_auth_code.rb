@@ -34,9 +34,10 @@ class MobileAuthCode < ActiveRecord::Base
   end
 
 	def regenerate_code
-    self.code = rand(9999..100000).to_s.ljust(5,'0')
-    self.expire_at = Time.now + 30.minute
-    self
+    self.tap do |mobile_auth_code|
+      mobile_auth_code.code = rand(9999..100000).to_s.ljust(5,'0')
+      mobile_auth_code.expire_at = Time.now + 30.minute
+    end
   end
 
   def send_sms(tpl_id=1) # 发送短信
@@ -46,7 +47,8 @@ class MobileAuthCode < ActiveRecord::Base
       sms = ChinaSMS.to(mobile, {code:code,company:'优来吧UBoss'}, tpl_id: tpl_id)
       return "OK" if sms['msg'] == "OK"
       return sms
-    rescue Exception => e
+    rescue e
+      Airbrake.notify_or_ignore(e, parameters: {mobile: mobile, code: code}, cgi_data: ENV.to_hash)
       return e.message
     end
   end

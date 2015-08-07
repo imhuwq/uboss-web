@@ -7,7 +7,17 @@ class ApplicationController < ActionController::Base
 
   before_action :configure_permitted_parameters, if: :devise_controller?
 
+  layout :login_layout, if: :devise_controller?
+
   protected
+  def login_layout
+    if !browser.mobile? && !browser.tablet?
+      'login'
+    else
+      'application'
+    end
+  end
+
   # default: order by created_at, limit 20, page 1
   # order_column to change order column and page columns
   # page_size to change limit size

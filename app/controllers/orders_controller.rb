@@ -23,7 +23,9 @@ class OrdersController < ApplicationController
   end
 
   def new
-    authenticate_user! if browser.wechat?
+    if browser.wechat? && session['devise.wechat_data'].blank?
+      authenticate_user!
+    end
     @order_form = OrderForm.new(
       buyer: current_user,
       product_id: params[:product_id],
@@ -41,9 +43,14 @@ class OrdersController < ApplicationController
   end
 
   def create
-    authenticate_user! if browser.wechat?
-    @order_form = OrderForm.new(order_params.merge(buyer: current_user))
+    @order_form = OrderForm.new(
+      order_params.merge(
+        buyer: current_user,
+        session: session
+      )
+    )
     @order_form.sharing_code = get_product_sharing_code(@order_form.product_id)
+
     if @order_form.save
       sign_in(@order_form.buyer) if current_user.blank?
       @order_title = '确认订单'
@@ -51,7 +58,7 @@ class OrdersController < ApplicationController
     else
       @order_form.captcha = nil
       @product = @order_form.product
-      flash[:error] = @order_form.errors.full_messages.join('<br/>')
+      flash.now[:error] = @order_form.errors.full_messages.join('<br/>')
       render :new
     end
   end

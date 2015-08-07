@@ -6,7 +6,9 @@ class User < ActiveRecord::Base
   attr_accessor :code, :mobile_auth_code
   OFFICIAL_ACCOUNT_LOGIN = '13800000000'
 
-  devise :database_authenticatable, :rememberable, :trackable, :validatable, :omniauthable
+  devise :database_authenticatable, :rememberable, :trackable, :validatable,
+    :omniauthable, :registerable
+
   mount_uploader :avatar, ImageUploader
 
   has_one :user_info, autosave: true
@@ -63,27 +65,12 @@ class User < ActiveRecord::Base
       @@official_account ||= find_by(login: OFFICIAL_ACCOUNT_LOGIN)
     end
 
-    def find_or_create_by_wechat_oauth(oauth_info)
+    def find_or_update_by_wechat_oauth(oauth_info)
       user = User.find_by(weixin_openid: oauth_info['openid'])
-      if user
+      if user.present?
         user.update_with_wechat_oauth(oauth_info)
-        user
-      else
-        User.create!(
-          weixin_openid: oauth_info['openid'],
-          weixin_unionid: oauth_info['unionid'],
-          login: oauth_info['openid'],
-          password: Devise.friendly_token,
-          province: oauth_info['province'],
-          city: oauth_info["city"],
-          country: oauth_info['country'],
-          nickname: oauth_info['nickname'],
-          sex: oauth_info['sex'],
-          remote_avatar_url: oauth_info['headimgurl'],
-          need_set_login: true,
-          need_reset_password: true
-        )
       end
+      user
     end
 
     def new_guest(mobile)
@@ -101,20 +88,35 @@ class User < ActiveRecord::Base
       new_user.save!
       new_user
     end
+
+    def new_with_session(params, session)
+      super.tap do |user|
+        if data = session["devise.wechat_data"] && session["devise.wechat_data"]["extra"]["raw_info"]
+          user.nickname       ||= data["nickname"]
+          user.sex            ||= data["sex"]
+          user.province       ||= data['province']
+          user.city           ||= data['city']
+          user.country        ||= data['country']
+          user.weixin_unionid   = data['unionid']
+          user.weixin_openid    = data['openid']
+          user.remote_avatar_url = data['headimgurl']
+        end
+      end
+    end
   end
 
   def update_with_wechat_oauth(oauth_info)
     info = {
-      nickname: nickname || oauth_info['nickname'],
-      sex: sex || oauth_info['sex'],
-      province: province || oauth_info['province'],
-      city: city || oauth_info['city'],
-      country: country || oauth_info['country'],
+      nickname:       nickname || oauth_info['nickname'],
+      sex:            sex      || oauth_info['sex'],
+      province:       province || oauth_info['province'],
+      city:           city     || oauth_info['city'],
+      country:        country  || oauth_info['country'],
       weixin_unionid: oauth_info['unionid'],
-      weixin_openid: oauth_info['openid']
+      weixin_openid:  oauth_info['openid']
     }
     if avatar.blank?
-      info.merge(remote_avatar_url: oauth_info['headimgurl'])
+      info.merge!(remote_avatar_url: oauth_info['headimgurl'])
     end
     update(info)
   end

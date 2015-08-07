@@ -2,7 +2,8 @@ require 'sidekiq/web'
 
 Rails.application.routes.draw do
 
-  devise_for :user, controllers: {
+  devise_for :user, path: '/', controllers: {
+    registrations: "users/registrations",
     sessions: "users/sessions",
     passwords: "users/passwords",
     omniauth_callbacks: "users/omniauth_callbacks"
