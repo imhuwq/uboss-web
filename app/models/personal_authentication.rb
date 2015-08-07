@@ -7,7 +7,7 @@ class PersonalAuthentication < ActiveRecord::Base
 
   validates :mobile, mobile: true
   validates_presence_of :name, :address, :mobile, :identity_card_code, :user_id
-  validates_uniqueness_of :identity_card_code, :mobile, :user_id
+  validates_uniqueness_of :identity_card_code, :user_id
   validates :identity_card_code, identity_card_code: true
 
   belongs_to :user
@@ -25,6 +25,10 @@ class PersonalAuthentication < ActiveRecord::Base
     if user.authenticated == 'no'
       user.authenticated = 'yes'
       user.save
+      aish = AgentInviteSellerHistroy.find_by(mobile: user.login)
+      if aish.present? and user.agent_id == aish.agent_id
+        aish.update(status: 2)
+      end
     end
   end
 
@@ -36,6 +40,12 @@ class PersonalAuthentication < ActiveRecord::Base
     else
       user.authenticated = 'no'
       user.save
+      aish = AgentInviteSellerHistroy.find_by(mobile: user.login)
+      if aish.present? and user.agent_id == aish.agent_id
+        aish.update(status: 1)
+      elsif aish.present?
+        aish.update(status: 0)
+      end
     end
   end
 

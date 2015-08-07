@@ -43,7 +43,7 @@ class MobileAuthCode < ActiveRecord::Base
     return {'msg'=> 'error',"detail"=>"电话号码不能为空"} if mobile.blank?
     return {'msg'=> 'error',"detail"=>"内容不能为空"} if code.blank?
     begin
-      sms = ChinaSMS.to(mobile, {code:code,company:'优来吧UBoss'}, tpl_id: tpl_id)
+      sms = ChinaSMS.to(mobile, {code:code, company:'优巭UBOSS'}, tpl_id: tpl_id)
       return "OK" if sms['msg'] == "OK"
       return sms
     rescue Exception => e

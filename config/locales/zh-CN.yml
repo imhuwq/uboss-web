@@ -173,6 +173,11 @@ zh-CN:
     completed: 交易完成
     closed: 订单关闭
   enums:
+    agent_invite_seller_histroy:
+      status:
+        invited: 已邀请
+        bind:    已绑定
+        authenticated: 已认证
     personal_authentication:
       status: &status
         posted: 已提交

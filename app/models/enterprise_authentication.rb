@@ -8,7 +8,7 @@ class EnterpriseAuthentication < ActiveRecord::Base
 
   validates :mobile, mobile: true
   validates_presence_of :enterprise_name, :address, :mobile, :user_id
-  validates_uniqueness_of :mobile, :user_id
+  validates_uniqueness_of :user_id
 
   belongs_to :user
   enum status: { posted: 0, review: 1, pass: 2, no_pass: 3 }
@@ -25,6 +25,10 @@ class EnterpriseAuthentication < ActiveRecord::Base
     if user.authenticated == 'no'
       user.authenticated = 'yes'
       user.save
+      aish = AgentInviteSellerHistroy.find_by(mobile: user.login)
+      if aish.present? and user.agent_id == aish.agent_id
+        aish.update(status: 2)
+      end
     end
   end
 
@@ -35,7 +39,14 @@ class EnterpriseAuthentication < ActiveRecord::Base
       #DO_NOTHING
     else
       user.authenticated = 'no'
+      aish = AgentInviteSellerHistroy.find_by(mobile: user.login)
       user.save
+      aish = AgentInviteSellerHistroy.find_by(mobile: user.login)
+      if aish.present? and user.agent_id == aish.agent_id
+        aish.update(status: 1)
+      elsif aish.present?
+        aish.update(status: 0)
+      end
     end
   end
 

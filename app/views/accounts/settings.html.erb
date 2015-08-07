@@ -51,16 +51,30 @@
           </span>
         </p>
       <% end %>
+      <% if !current_user.authenticated? %>
       <p>
-        <span>商家绑定</span>
+        <span>绑定创客</span>
         <span class="center_content">
         </span>
         <span class="right_content">
-          <%= link_to '###' do %>
+          <%= link_to new_agent_binding_account_path do %>
           绑定<%= image_tag("uboss_29/right.png") %>
           <% end %>
         </span>
-      </p
+      </p>
+      <% end %>
+      <% if current_user.agent? %>
+      <p>
+        <span>创客</span>
+        <span class="center_content">
+        </span>
+        <span class="right_content">
+          <%= link_to agent_invite_seller_account_path do %>
+          邀请<%= image_tag("uboss_29/right.png") %>
+          <% end %>
+        </span>
+      </p>
+      <% end %>
 
     </div>
 

@@ -11,10 +11,20 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150805081038) do
+ActiveRecord::Schema.define(version: 20150806065044) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "agent_invite_seller_histroys", force: :cascade do |t|
+    t.string   "mobile"
+    t.integer  "agent_id"
+    t.integer  "seller_id"
+    t.integer  "status",     default: 0
+    t.string   "note"
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
+  end
 
   create_table "asset_imgs", force: :cascade do |t|
     t.string   "filename"
