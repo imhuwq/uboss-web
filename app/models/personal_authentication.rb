@@ -21,27 +21,25 @@ class PersonalAuthentication < ActiveRecord::Base
   end
 
   def check_and_set_user_authenticated_to_yes
-    user = User.find_by(id: self.user_id)
+    user = User.find_by(id: user_id)
     if user.authenticated == 'no'
       user.authenticated = 'yes'
       user.save
       aish = AgentInviteSellerHistroy.find_by(mobile: user.login)
-      if aish.present? and user.agent_id == aish.agent_id
-        aish.update(status: 2)
-      end
+      aish.update(status: 2) if aish.present? && user.agent_id == aish.agent_id
     end
   end
 
   def check_and_set_user_authenticated_to_no # 检查企业信息验证情况,若已经通过,则保存用户验证状态为通过;反之则设为未验证
-    user = User.find_by(id: self.user_id)
-    ea = EnterpriseAuthentication.find_by(user_id: self.user_id)
-    if ea.present? and ea.status == 'pass'
-      #DO_NOTHING
+    user = User.find_by(id: user_id)
+    ea = EnterpriseAuthentication.find_by(user_id: user_id)
+    if ea.present? && ea.status == 'pass'
+      # DO_NOTHING
     else
       user.authenticated = 'no'
       user.save
       aish = AgentInviteSellerHistroy.find_by(mobile: user.login)
-      if aish.present? and user.agent_id == aish.agent_id
+      if aish.present? && user.agent_id == aish.agent_id
         aish.update(status: 1)
       elsif aish.present?
         aish.update(status: 0)
