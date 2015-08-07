@@ -1,5 +1,7 @@
 class Users::SessionsController < Devise::SessionsController
+
   layout :login_layout
+
   before_filter :configure_sign_in_params, only: [:create]
 
   # GET /resource/sign_in
@@ -13,7 +15,7 @@ class Users::SessionsController < Devise::SessionsController
      if true#simple_captcha_valid?
        if sign_in_params[:mobile_auth_code].present?
          if true#MobileAuthCode.auth_code(sign_in_params[:login], sign_in_params[:mobile_auth_code])
-           self.resource = User.find_or_create_guest(sign_in_params[:login])
+           self.resource = User.find_or_create_guest_with_session(sign_in_params[:login], session)
            if resource.persisted?
              sign_in(resource)
              respond_with resource, location: after_sign_in_path_for(resource)
@@ -27,7 +29,9 @@ class Users::SessionsController < Devise::SessionsController
            render :new
          end
        else
-        super
+        super do |user|
+          user.update_with_oauth_session(session)
+        end
        end
      else
        self.resource = resource_class.new(sign_in_params)

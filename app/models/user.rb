@@ -89,43 +89,38 @@ class User < ActiveRecord::Base
       new_user
     end
 
-    def find_or_create_guest(mobile)
+    def find_or_create_guest_with_session(mobile, session)
       user = find_by(login: mobile)
       user ||= new_guest(mobile)
-      user.new_record? && user.save
+      user.update_with_oauth_session(session)
       user
     end
 
     def new_with_session(params, session)
       super.tap do |user|
-        if data = session["devise.wechat_data"] && session["devise.wechat_data"]["extra"]["raw_info"]
-          user.nickname       ||= data["nickname"]
-          user.sex            ||= data["sex"]
-          user.province       ||= data['province']
-          user.city           ||= data['city']
-          user.country        ||= data['country']
-          user.weixin_unionid   = data['unionid']
-          user.weixin_openid    = data['openid']
-          user.remote_avatar_url = data['headimgurl']
+        get_valuable_session(session) do |data|
+          user.set_wechat_data(data)
         end
       end
+    end
+
+  end
+
+  def update_with_oauth_session(session)
+    get_valuable_session(session) do |data|
+      set_wechat_data(data)
+      save
     end
   end
 
   def update_with_wechat_oauth(oauth_info)
-    info = {
-      nickname:       nickname || oauth_info['nickname'],
-      sex:            sex      || oauth_info['sex'],
-      province:       province || oauth_info['province'],
-      city:           city     || oauth_info['city'],
-      country:        country  || oauth_info['country'],
-      weixin_unionid: oauth_info['unionid'],
-      weixin_openid:  oauth_info['openid']
-    }
-    if avatar.blank?
-      info.merge!(remote_avatar_url: oauth_info['headimgurl'])
+    self.tap do
+      set_wechat_data(oauth_info)
+      if avatar_url.present?
+        self.remote_avatar_url = nil
+      end
+      save
     end
-    update(info)
   end
 
   def identify
@@ -203,13 +198,31 @@ class User < ActiveRecord::Base
   end
 
   private
-    def email_required?
-      false
-    end
 
-    def set_mobile
-      if !need_set_login?
-        self.mobile ||= login
-      end
+  def set_wechat_data(data)
+    self.nickname       ||= data["nickname"]
+    self.sex            ||= data["sex"]
+    self.province       ||= data['province']
+    self.city           ||= data['city']
+    self.country        ||= data['country']
+    self.weixin_unionid   = data['unionid']
+    self.weixin_openid    = data['openid']
+    self.remote_avatar_url = data['headimgurl']
+  end
+
+  def get_valuable_session(session)
+    if data = session["devise.wechat_data"] && session["devise.wechat_data"]["extra"]["raw_info"]
+      yield data if block_given?
     end
+  end
+
+  def email_required?
+    false
+  end
+
+  def set_mobile
+    if !need_set_login?
+      self.mobile ||= login
+    end
+  end
 end
