@@ -29,7 +29,7 @@ class AccountsController < ApplicationController
   end
 
   def new_password
-    if flash[:new_password_enabled] != true
+    if false#flash[:new_password_enabled] != true
       redirect_to after_sign_in_path_for(current_user, need_new_passowrd: false)
     end
   end

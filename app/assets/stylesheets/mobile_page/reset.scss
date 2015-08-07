@@ -212,6 +212,8 @@ hr {
   -moz-box-sizing: content-box;
   box-sizing: content-box;
   height: 0;
+  border: none;
+  border-top: 1px solid #ccc;
 }
 
 /**
