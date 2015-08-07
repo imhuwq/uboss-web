@@ -69,3 +69,21 @@
     font-weight: 500;
   }
 }
+.login-type-acs {
+  text-align: center;
+  margin: 15px 0;
+  border-bottom: 1px solid rgba(67,195,170,1);
+  a {
+    color: rgba(67,195,170,1);
+    width: 48%;
+    box-sizing: border-box;
+    display: inline-block;
+    padding: 10px 0;
+  }
+  .lpwd-btn {float: left}
+  .lcap-btn {float: right}
+}
+.using-pwd .lpwd-btn, .using-cap .lcap-btn {
+  background-color: rgba(67,195,170,1);
+  color: white;
+}
