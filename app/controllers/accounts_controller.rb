@@ -28,10 +28,21 @@ class AccountsController < ApplicationController
     end
   end
 
-  def settings # 个人信息展示
+  def new_password
+    if flash[:new_password_enabled] != true
+      redirect_to after_sign_in_path_for(current_user, need_new_passowrd: false)
+    end
   end
 
-  def update_password_page # 修改密码页面
+  def set_password
+    password_params = params.require(:user).permit(:password, :password_confirmation)
+    if current_user.update(password_params.merge(need_reset_password: false))
+      redirect_to after_sign_in_path_for(current_user)
+    else
+      flash.now[:new_password_enabled] = true
+      flash.now[:error] = current_user.errors.full_messages.join('<br/>')
+      render :new_password
+    end
   end
 
   def edit_mobile_page
@@ -61,9 +72,6 @@ class AccountsController < ApplicationController
       flash.now[:error] = current_user.errors.full_messages.joins('<br/>')
       render :update_password_page
     end
-  end
-
-  def set_password
   end
 
   def reset_password

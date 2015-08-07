@@ -89,6 +89,13 @@ class User < ActiveRecord::Base
       new_user
     end
 
+    def find_or_create_guest(mobile)
+      user = find_by(login: mobile)
+      user ||= new_guest(mobile)
+      user.new_record? && user.save
+      user
+    end
+
     def new_with_session(params, session)
       super.tap do |user|
         if data = session["devise.wechat_data"] && session["devise.wechat_data"]["extra"]["raw_info"]

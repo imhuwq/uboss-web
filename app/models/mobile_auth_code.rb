@@ -6,21 +6,21 @@ class MobileAuthCode < ActiveRecord::Base
   before_validation :generate_code, :set_expire_time
   after_save :send_code
 
-  def self.auth_code(login, code) #验证
-    auth_code = MobileAuthCode.
+  def self.auth_code(auth_mobile, auth_code) #验证
+    mobile_auth_code = MobileAuthCode.
       where('expire_at > ?', Time.now).
-      find_by(mobile: login, code: code)
+      find_by(mobile: auth_mobile, code: auth_code)
 
-    if auth_code.blank?
+    if mobile_auth_code.blank?
       false
     else
-      auth_code.destroy
+      mobile_auth_code.destroy
       true
     end
   end
 
-  def self.send_captcha_with_mobile(mobile)
-    auth_code = MobileAuthCode.find_or_initialize_by(mobile: mobile)
+  def self.send_captcha_with_mobile(auth_mobile)
+    auth_code = MobileAuthCode.find_or_initialize_by(mobile: auth_mobile)
     auth_code.regenerate_code unless auth_code.new_record?
     auth_code.save
   end

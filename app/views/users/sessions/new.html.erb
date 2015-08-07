@@ -2,25 +2,39 @@
   登录UBoss
 <% end %>
 
-<div class='login-container'>
+<div class='login-container <%= @using_password ? 'using-pwd' : 'using-cap' %>'>
   <%= simple_form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
     <h2>UBoss</h2>
     <hr />
+
+    <div class='login-type-acs'>
+      <a class="lpwd-btn" href="#">已有账户</a>
+      <a class="lcap-btn" href="#">验证码登陆</a>
+    </div>
+
     <div class="form-inputs">
-      <%= f.input :login, required: false, autofocus: true %>
-      <%= f.input :password, required: false %>
-      <%= f.input :remember_me, as: :boolean, label_html: {class:'pull-right'}, label: '下次自动登录' if devise_mapping.rememberable? %>
+      <%= f.input :login, required: false, autofocus: true, input_html: {id: 'new_mobile'} %>
+
+      <div class="cap-inputs">
+        <%= f.input :mobile_auth_code %>
+        <a id="send_mobile" href="#">发送验证码</a>
+      </div>
+
+      <div class='pwd-inputs'>
+        <%= f.input :password, required: false %>
+        <%= f.input :remember_me, as: :boolean, label_html: {class:'pull-right'}, label: '下次自动登录' if devise_mapping.rememberable? %>
+      </div>
+
     </div>
-    <div class="button_div  col-xs-12 clearfix"  style="padding: 30px 0 10px 0;">
-      <%= f.button :submit, "登录", class: "btn btn-large btn-primary col-xs-12" %>
+
+    <div class="button_div  col-xs-12 clearfix">
+      <%= f.button :submit, "确认", class: "btn btn-large btn-primary col-xs-12" %>
     </div>
+
     <% if !browser.wechat? %>
-    <div class="button_div  col-xs-12"  style="padding: 10px 0 10px 0;">
-      <%= link_to "返回主页", root_path, class: "btn btn-large btn-default col-xs-12"%>
-    </div>
-    <div class="form-actions">
-      <span class="pull-right" style="margin-top:10px;">还没有帐号？点击<%= link_to '这里', '/sellers/new',style:"font-size:larger;" %>注册成为商家。</span>
-    </div>
+      <div class="button_div  col-xs-12"  style="padding: 10px 0 10px 0;">
+        <%= link_to "返回主页", root_path, class: "btn btn-large btn-default col-xs-12"%>
+      </div>
     <% end %>
   <% end %>
 </div>

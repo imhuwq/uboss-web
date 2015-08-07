@@ -7,17 +7,7 @@ class ApplicationController < ActionController::Base
 
   before_action :configure_permitted_parameters, if: :devise_controller?
 
-  layout :login_layout, if: :devise_controller?
-
   protected
-  def login_layout
-    if !browser.mobile? && !browser.tablet?
-      'login'
-    else
-      'application'
-    end
-  end
-
   # default: order by created_at, limit 20, page 1
   # order_column to change order column and page columns
   # page_size to change limit size
@@ -91,7 +81,17 @@ class ApplicationController < ActionController::Base
 
   def configure_permitted_parameters
     devise_parameter_sanitizer.for(:sign_up) { |u| u.permit(:login, :captcha, :password, :password_confirmation, :remember_me) }
-    devise_parameter_sanitizer.for(:sign_in) { |u| u.permit(:login, :password, :remember_me, :captcha, :captcha_key) }
+    devise_parameter_sanitizer.for(:sign_in) { |u| u.permit(:login, :password, :remember_me, :mobile_auth_code, :captcha, :captcha_key) }
     devise_parameter_sanitizer.for(:account_update) { |u| u.permit(:login, :password, :password_confirmation, :current_password) }
   end
+
+  def after_sign_in_path_for(resource, opts = {need_new_passowrd: true})
+    if current_user.need_reset_password? && opts[:need_new_passowrd]
+      flash[:new_password_enabled] = true
+      set_password_path
+    else
+      request.env['omniauth.origin'] || stored_location_for(resource) || root_path
+    end
+  end
+  helper_method :after_sign_in_path_for
 end

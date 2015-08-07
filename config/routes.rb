@@ -9,7 +9,8 @@ Rails.application.routes.draw do
     omniauth_callbacks: "users/omniauth_callbacks"
   }
 
-  get 'wxpay/test/:id', to: 'orders#show', as: :test_wxpay
+  get 'set_password', to: 'accounts#new_password'
+  patch 'set_password', to: 'accounts#set_password'
   get 'sharing/:code', to: 'sharing#show', as: :sharing
   get 'help', to: 'home#help'
 

@@ -1,3 +1,5 @@
+@import 'shared/login';
+
 .login-container{
   input[type=text], input[type=password] {
     -webkit-appearance: none;
@@ -41,9 +43,6 @@
     background-image: none;
     border: 1px solid #ccc;
     border-radius: 4px;
-  }
-  .form-inputs {
-    margin-top: 35px;
   }
   .help-block {
     display: none;
