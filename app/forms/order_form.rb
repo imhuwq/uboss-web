@@ -126,7 +126,7 @@ class OrderForm
   end
 
   def captcha_must_be_valid
-    if false#!MobileAuthCode.auth_code(mobile, captcha)
+    if !MobileAuthCode.auth_code(mobile, captcha)
       errors.add(:captcha, :invalid)
     end
   end
