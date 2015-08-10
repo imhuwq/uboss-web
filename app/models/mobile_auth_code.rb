@@ -47,7 +47,7 @@ class MobileAuthCode < ActiveRecord::Base
       sms = ChinaSMS.to(mobile, {code:code,company:'优来吧UBoss'}, tpl_id: tpl_id)
       return "OK" if sms['msg'] == "OK"
       return sms
-    rescue e
+    rescue => e
       Airbrake.notify_or_ignore(e, parameters: {mobile: mobile, code: code}, cgi_data: ENV.to_hash)
       return e.message
     end

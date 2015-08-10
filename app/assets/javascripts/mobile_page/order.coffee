@@ -68,11 +68,13 @@ $ ->
         url: '/mobile_auth_code/create',
         type: 'POST',
         data: {mobile: mobile},
-      .always ->
+      .done ->
         console.log("complete")
         console.log(mobile_submit_time)
         mobile_submit_time = 60
         timedown $('#send_mobile')
+      .fail ->
+        alert('验证码发送失败')
     else
       alert "手机格式错误"
 
