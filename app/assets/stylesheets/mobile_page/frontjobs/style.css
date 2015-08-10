@@ -1576,11 +1576,9 @@ a{
 	position: relative;
 }
 .add_line2 img{
-	display: block;
-	width: 7px;
-	height: 13px;
+	height: 15px;
 	position: absolute;
-	top: 18px;
+	top: 25px;
     right: 12px;
 }
 .addrr dd strong{

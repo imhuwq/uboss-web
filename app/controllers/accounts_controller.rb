@@ -100,7 +100,7 @@ class AccountsController < ApplicationController
     agent_action
     mobile = params[:send_message][:mobile] rescue nil
     if mobile.present? && mobile =~ /\A(\s*)(?:\(?[0\+]?\d{1,3}\)?)[\s-]?(?:0|\d{1,4})[\s-]?(?:(?:13\d{9})|(?:\d{7,8}))(\s*)\Z|\A[569][0-9]{7}\Z/
-      sms = send_sms(mobile, current_user.agent_code)
+      sms = send_sms(mobile, current_user.find_or_create_agent_code )
       if sms == 'OK'
         aish = AgentInviteSellerHistroy.find_by(mobile: mobile)
         unless aish.present?
