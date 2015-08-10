@@ -29,7 +29,7 @@ class AccountsController < ApplicationController
   end
 
   def new_password
-    if false#flash[:new_password_enabled] != true
+    if flash[:new_password_enabled] != true
       redirect_to after_sign_in_path_for(current_user, need_new_passowrd: false)
     end
   end
@@ -37,6 +37,7 @@ class AccountsController < ApplicationController
   def set_password
     password_params = params.require(:user).permit(:password, :password_confirmation)
     if current_user.update(password_params.merge(need_reset_password: false))
+      sign_in(current_user)
       redirect_to after_sign_in_path_for(current_user)
     else
       flash.now[:new_password_enabled] = true
