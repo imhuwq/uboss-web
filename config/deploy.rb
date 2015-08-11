@@ -37,4 +37,10 @@ namespace :deploy do
 
   after :finishing, 'deploy:cleanup'
 
+  task :notify do
+    uri = URI(URI.encode("https://jianliao.com/v1/services/webhook/608331ce12bc4e491d7f358c467a71a6e2fa9d9f"))
+    Net::HTTP.post_form(uri, authorName: `git config user.name`, title: "Deploy branch #{fetch(:branch)}")
+  end
+  after 'deploy:restart', 'deploy:notify'
+
 end
