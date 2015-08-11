@@ -39,12 +39,14 @@
   <%= table_for(@sellers) do |t| %>
     <%= t.cell :seller_name do |obj| %>
       <%= link_to url_for(controller: 'admin/sellers', action: :show, id: obj) do %>
-      <div class="col-sm-3">
-        <%= image_tag(obj.avatar, size: "100x80", alt: "-") %>
-      </div>
-      <div class="col-sm-9">
-        <div class="col-sm-12">商家名称：<%= obj.identify %></div>
-        <div class="col-sm-12">绑定手机：<%= obj.login %></div>
+      <div class="" style="width:370px;float:left;">
+        <div class="col-sm-3">
+          <%= image_tag(obj.avatar, size: "100x80", alt: "-") %>
+        </div>
+        <div class="col-sm-9"  style="padding-top:15px;">
+          <div class="col-sm-12">商家名称：<%= obj.identify %></div>
+          <div class="col-sm-12">绑定手机：<%= obj.login %></div>
+        </div>
       </div>
       <% end %>
     <% end %>
@@ -54,6 +56,11 @@
     <%= t.cell :created_at %>
     <%= t.cell :service_rate do |obj| %>
       <%= obj.user_info.try(:service_rate) %>%
+    <% end %>
+    <% if current_user.super_admin? %>
+      <%= t.cell :agent do |obj| %>
+        <%= link_to User.find_by(id: obj.agent_id).try(:identify), url_for(controller: :agents, action: :show, id: obj.agent_id) %>
+      <% end %>
     <% end %>
     <%= t.cell :authenticated do |obj| %>
       <% if obj.authenticated == 'no' %>

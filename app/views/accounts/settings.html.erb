@@ -55,7 +55,18 @@
           </span>
         </p>
       <% end %>
-      <% if !current_user.authenticated? %>
+      <% if !current_user.seller? && !current_user.authenticated? %>
+      <p>
+        <span>成为商家</span>
+        <span class="center_content">
+        </span>
+        <span class="right_content">
+          <%= link_to url_for(action: :seller_agreement_page) do %>
+          绑定<%= image_tag("uboss_29/right.png") %>
+          <% end %>
+        </span>
+      </p>
+      <% elsif !current_user.authenticated? %>
       <p>
         <%= image_tag("uboss_29/touxiang.png") %>
         <span>绑定创客</span>
@@ -81,7 +92,5 @@
         </span>
       </p>
       <% end %>
-
     </div>
-
 </div>

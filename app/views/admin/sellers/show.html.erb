@@ -34,6 +34,15 @@
       <div class="form-group clearfix">
 				<label class="string required text-right col-sm-3 control-label" for="product_name">
 					<abbr title="必填">*</abbr>
+					关联创客
+				</label>
+				<div class="col-sm-9">
+					<%= link_to User.find_by(id: @seller.agent_id).try(:identify), url_for(controller: :agents, action: :show, id: @seller.agent_id) %>
+				</div>
+			</div>
+      <div class="form-group clearfix">
+				<label class="string required text-right col-sm-3 control-label" for="product_name">
+					<abbr title="必填">*</abbr>
 					店铺链接
 				</label>
 				<div class="col-sm-9">

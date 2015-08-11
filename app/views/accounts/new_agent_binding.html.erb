@@ -16,10 +16,13 @@
       <p class="text-center">
         <span class="add_text text-center">需要更换绑定,请填写下列信息.</span>
       </p>
-      <p>
+      <p style="border-bottom:0">
         <span class="add_textd">邀请码</span>
         <%= text_field_tag :agent_code, params[:agent_code],placeholder: '创客邀请码', class:"add_text" %>
       </p>
+      <div class="row font_h5 grey" style="padding:10px;border-bottom:1px solid #cccccc">
+        填写创客发与您的邀请码即可与创客绑定入驻UBOSS平台，您也可以不填写邀请码直接入驻UBOSS平台.
+      </div>
       <p>
         <span><%= f.input_field :login, type: :tel, placeholder: '输入手机号', class:"add_text_2",id:'new_mobile', disabled:"disabled" %></span>
         <span>

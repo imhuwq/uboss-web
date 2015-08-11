@@ -51,6 +51,7 @@ class Admin::PersonalAuthenticationsController < AdminController
       @personal_authentication.face_with_identity_card_img = params[:face_with_identity_card_img] if params[:face_with_identity_card_img]
       @personal_authentication.identity_card_front_img = params[:identity_card_front_img] if params[:identity_card_front_img]
       if @personal_authentication.save
+        MobileAuthCode.find_by(code: allow_params[:mobile_auth_code]).try(:destroy)
         flash[:success] = '保存成功'
         redirect_to action: :show
       else
@@ -75,6 +76,7 @@ class Admin::PersonalAuthenticationsController < AdminController
       @personal_authentication.status = 'posted'
 
       if @personal_authentication.save
+        MobileAuthCode.find_by(code: allow_params[:mobile_auth_code]).try(:destroy)
         flash[:success] = '保存成功'
         redirect_to action: :show
       else

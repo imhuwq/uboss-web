@@ -17,6 +17,7 @@ class AccountsController < ApplicationController
     if account_params[:login].present? && account_params[:code].present?
       MobileAuthCode.auth_code(account_params[:login], account_params[:code])
       current_user.update(login: account_params[:login])
+      MobileAuthCode.find_by(code: account_params[:code]).try(:destroy)
       flash[:notice] = '绑定成功'
       redirect_to settings_account_path
       return
@@ -50,6 +51,7 @@ class AccountsController < ApplicationController
     if  current_user.need_reset_password
       if MobileAuthCode.auth_code(current_user.login, user_params[:code])
         current_user.update(password: user_params[:password], password_confirmation: user_params[:password_confirmation], need_reset_password: false)
+        MobileAuthCode.find_by(code: user_params[:code]).try(:destroy)
         sign_in current_user, bypass: true
         redirect_to settings_account_path, notice: '修改密码成功'
       else
@@ -100,7 +102,7 @@ class AccountsController < ApplicationController
     agent_action
     mobile = params[:send_message][:mobile] rescue nil
     if mobile.present? && mobile =~ /\A(\s*)(?:\(?[0\+]?\d{1,3}\)?)[\s-]?(?:0|\d{1,4})[\s-]?(?:(?:13\d{9})|(?:\d{7,8}))(\s*)\Z|\A[569][0-9]{7}\Z/
-      sms = send_sms(mobile, current_user.find_or_create_agent_code )
+      sms = send_sms(mobile, current_user.find_or_create_agent_code)
       if sms == 'OK'
         aish = AgentInviteSellerHistroy.find_by(mobile: mobile)
         unless aish.present?
@@ -138,16 +140,24 @@ class AccountsController < ApplicationController
         redirect_to action: :new_agent_binding, agent_code: params[:agent_code]
         return
       else
-        agent = User.find_by(agent_code: params[:agent_code])
+        if params[:agent_code].present?
+          agent = User.find_by(agent_code: params[:agent_code])
+        else
+          agent = User.joins(:user_roles).where(user_roles:{name: 'super_admin'}).first
+        end
         current_user.agent_id = agent.id
         current_user.admin = true
         current_user.save
         aish = AgentInviteSellerHistroy.find_by(mobile: current_user.login)
         aish.update(status: 1) if aish.present?
+        MobileAuthCode.find_by(code: account_params[:mobile_auth_code]).try(:destroy)
         flash[:success] = "绑定成功,#{agent.identify}成为您的创客。"
       end
     end
     redirect_to action: :new_agent_binding
+  end
+
+  def seller_agreement_page # 商家协议
   end
 
   private
@@ -168,7 +178,7 @@ class AccountsController < ApplicationController
     @errors = []
     hash = {
       '验证码错误或已过期。': MobileAuthCode.auth_code(account_params[:mobile], account_params[:mobile_auth_code]),
-      '创客邀请码错误。': User.find_by(agent_code: params[:agent_code])
+      # '创客邀请码错误。': User.find_by(agent_code: params[:agent_code])
     }
     hash.each do |k, v|
       @errors << k unless v.present?

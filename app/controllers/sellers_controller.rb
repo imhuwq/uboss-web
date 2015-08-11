@@ -15,6 +15,7 @@ class SellersController < AdminController
       user.login = allow_params[:mobile]
       user.admin = true
       if user.save and user.user_roles << @user_role and user.save
+        MobileAuthCode.find_by(code: allow_params[:mobile_auth_code]).try(:destroy)
         flash[:success] = "绑定注册成功"
         sign_in user
         redirect_to '/admin'
