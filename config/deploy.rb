@@ -6,7 +6,7 @@ set :deploy_user, 'deploy'
 set :deploy_to, "/home/#{fetch(:deploy_user)}/rails/#{fetch(:application)}"
 
 set :scm, :git
-set :repo_url, 'git@git.oschina.net:ulaiber/uboss.git'
+set :repo_url, 'git@gitlab.ulaiber.com:uboss/uboss-web.git'
 
 set :rbenv_type, :user
 set :rbenv_ruby, '2.2.2'
