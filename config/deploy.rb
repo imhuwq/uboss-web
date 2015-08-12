@@ -28,6 +28,8 @@ set :linked_dirs, fetch(:linked_dirs, []).push(
   'log', 'tmp/pids', 'tmp/cache', 'tmp/sockets', 'vendor/bundle', 'public/system', 'public/assets'
 )
 
+set :jianliao_uri, URI(URI.encode("https://jianliao.com/v1/services/webhook/608331ce12bc4e491d7f358c467a71a6e2fa9d9f"))
+
 namespace :deploy do
 
   after 'deploy:publishing', 'deploy:restart'
@@ -37,10 +39,18 @@ namespace :deploy do
 
   after :finishing, 'deploy:cleanup'
 
-  task :notify do
-    uri = URI(URI.encode("https://jianliao.com/v1/services/webhook/608331ce12bc4e491d7f358c467a71a6e2fa9d9f"))
-    Net::HTTP.post_form(uri, authorName: `git config user.name`, title: "Deploy branch #{fetch(:branch)}")
+  task :starting_notify do
+    Net::HTTP.post_form(fetch(:jianliao_uri),
+                        authorName: `git config user.name`,
+                        title: "Starting Deploy branch #{fetch(:branch)}")
   end
-  after 'deploy:restart', 'deploy:notify'
+  after 'deploy:starting', 'deploy:starting_notify'
+
+  task :notify do
+    Net::HTTP.post_form(fetch(:jianliao_uri),
+                        authorName: `git config user.name`,
+                        title: "Deploy branch #{fetch(:branch)} SUCCESS.")
+  end
+  after 'deploy:finished', 'deploy:notify'
 
 end
