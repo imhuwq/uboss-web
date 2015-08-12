@@ -1,5 +1,6 @@
-@import 'shared/variables';
 @import "bootstrap-sprockets";
+@import 'shared/variables';
+@import 'shared/bootswatch';
 @import "bootstrap";
 @import 'redactor-rails';
 @import "chosen.min";
