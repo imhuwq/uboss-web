@@ -1,5 +1,6 @@
 class AccountsController < ApplicationController
   before_action :authenticate_user!
+  before_action :authenticate_agent, only: [:send_sms, :send_message, :agent_invite_seller, :edit_seller_note, :update_histroy_note]
 
   def show
     @orders = append_default_filter account_orders, page_size: 20
@@ -20,7 +21,6 @@ class AccountsController < ApplicationController
       MobileAuthCode.find_by(code: account_params[:code]).try(:destroy)
       flash[:notice] = '绑定成功'
       redirect_to settings_account_path
-      return
     elsif current_user.update(account_params)
       flash[:notice] = '修改成功'
       redirect_to settings_account_path
@@ -75,18 +75,15 @@ class AccountsController < ApplicationController
   end
 
   def agent_invite_seller # 创客通过短信邀请的商家
-    agent_action
     @histroys = AgentInviteSellerHistroy.where(agent_id: current_user.id)
     @bind = User.where(agent_id: current_user, authenticated: 1).count
   end
 
   def edit_seller_note # 编辑发送信息备注
-    agent_action
     @histroy = AgentInviteSellerHistroy.find(params[:id])
   end
 
   def update_histroy_note # 修改发送信息备注
-    agent_action
     note = params[:histroy][:note] rescue nil
     histroy = AgentInviteSellerHistroy.find_by(id: params[:id])
     if histroy.present? && note.present? && histroy.agent_id == current_user.id
@@ -99,14 +96,12 @@ class AccountsController < ApplicationController
   end
 
   def send_message # 保存发送短信给商家的信息
-    agent_action
     mobile = params[:send_message][:mobile] rescue nil
     if mobile.present? && mobile =~ /\A(\s*)(?:\(?[0\+]?\d{1,3}\)?)[\s-]?(?:0|\d{1,4})[\s-]?(?:(?:13\d{9})|(?:\d{7,8}))(\s*)\Z|\A[569][0-9]{7}\Z/
       sms = send_sms(mobile, current_user.find_or_create_agent_code)
       if sms == 'OK'
-        aish = AgentInviteSellerHistroy.find_by(mobile: mobile)
-        unless aish.present?
-          AgentInviteSellerHistroy.create(agent_id: current_user.id, mobile: mobile)
+        aish = AgentInviteSellerHistroy.find_or_create_by(mobile: mobile) do |obj|
+          obj.agent_id = current_user.id
         end
       else
         flash[:error] = "短信发送失败,#{sms}."
@@ -118,16 +113,11 @@ class AccountsController < ApplicationController
   end
 
   def send_sms(mobile, msg, tpl_id = 923_651) # 发送短信
-    agent_action
     return { 'msg' => 'error', 'detail' => '电话号码不能为空' } if mobile.blank?
     return { 'msg' => 'error', 'detail' => '内容不能为空' } if msg.blank?
-    begin
-      sms = ChinaSMS.to(mobile, { code: msg }, tpl_id: tpl_id)
-      return 'OK' if sms['msg'] == 'OK'
-      return sms
-    rescue Exception => e
-      return e.message
-    end
+    sms = ChinaSMS.to(mobile, { code: msg }, tpl_id: tpl_id)
+    return 'OK' if sms['msg'] == 'OK'
+    return sms
   end
 
   def binding_agent # 商家绑定创客
@@ -140,16 +130,7 @@ class AccountsController < ApplicationController
         redirect_to action: :new_agent_binding, agent_code: params[:agent_code]
         return
       else
-        if params[:agent_code].present?
-          agent = User.find_by(agent_code: params[:agent_code])
-        else
-          agent = User.joins(:user_roles).where(user_roles:{name: 'super_admin'}).first
-        end
-        current_user.agent_id = agent.id
-        current_user.admin = true
-        current_user.save
-        aish = AgentInviteSellerHistroy.find_by(mobile: current_user.login)
-        aish.update(status: 1) if aish.present?
+        current_user.binding_agent(params[:agent_code])
         MobileAuthCode.find_by(code: account_params[:mobile_auth_code]).try(:destroy)
         flash[:success] = "绑定成功,#{agent.identify}成为您的创客。"
       end
@@ -185,7 +166,7 @@ class AccountsController < ApplicationController
     end
   end
 
-  def agent_action # 创客可以使用的action
+  def authenticate_agent # 创客可以使用的action
     unless current_user.agent?
       flash[:error] = '您还不是创客.'
       redirect_to action: :settings

@@ -210,6 +210,18 @@ class User < ActiveRecord::Base
     end
   end
 
+  def binding_agent(code)
+    if code.present?
+      agent = User.find_by(agent_code: code)
+    else
+      agent = User.joins(:user_roles).where(user_roles:{name: 'super_admin'}).first
+    end
+    self.agent_id = agent.id
+    self.admin = true
+    self.save
+    AgentInviteSellerHistroy.find_by(mobile: login).try(:update, status: 1)
+  end
+
 
   private
     def email_required?
