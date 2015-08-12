@@ -6,3 +6,42 @@
   .cap-inputs {display: block;}
   .pwd-inputs {display: none;}
 }
+
+.login-type-acs {
+  text-align: center;
+  margin: 15px 0;
+  border-bottom: 1px solid rgba(67,195,170,1);
+  a {
+    color: rgba(67,195,170,1);
+    width: 48%;
+    box-sizing: border-box;
+    display: inline-block;
+    padding: 10px 0;
+  }
+  .lpwd-btn {float: left}
+  .lcap-btn {float: right}
+}
+.using-pwd .lpwd-btn, .using-cap .lcap-btn {
+  background-color: rgba(67,195,170,1);
+  color: white;
+}
+.cap-inputs {
+  position: relative;
+  .send_mobile {
+    display: inline-block;
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    padding: 0 10px;
+    background-color: #43c3aa;
+    color: white;
+    border-radius: 0 5px 5px 0;
+    box-sizing: border-box;
+    height: 34px;
+    overflow: hidden;
+    line-height: 34px;
+    &.disabled {
+      background-color: #ccc;
+    }
+  }
+}

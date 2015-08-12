@@ -9,7 +9,7 @@
 
     <div class='login-type-acs clearfix'>
       <a class="lpwd-btn" href="#">已有账户</a>
-      <a class="lcap-btn" href="#">验证码登陆</a>
+      <a class="lcap-btn" href="#">验证码登陆/注册</a>
     </div>
 
     <div class="form-inputs">
@@ -27,13 +27,13 @@
 
     </div>
 
-    <div class="button_div  col-xs-12 clearfix">
+    <div class="button_div col-xs-12 clearfix">
       <%= f.button :submit, "确认", class: "btn btn-large btn-primary col-xs-12" %>
     </div>
 
     <% if !browser.wechat? %>
-      <div class="button_div  col-xs-12"  style="padding: 10px 0 10px 0;">
-        <%= link_to "返回主页", root_path, class: "btn btn-large btn-default col-xs-12"%>
+      <div class="button_div  col-xs-12"  style="margin: 10px 0 10px 0;">
+        <%= link_to "返回主页", root_path, class: "btn btn-large btn-link col-xs-12"%>
       </div>
     <% end %>
   <% end %>
