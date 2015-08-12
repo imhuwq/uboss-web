@@ -179,8 +179,9 @@ class User < ActiveRecord::Base
   end
 
   def agent?
-    user_roles.pluck(:name)include?('agent')
+    user_roles.pluck(:name).include?('agent')
   end
+  
   def super_admin?
     user_roles.pluck(:name).include?('super_admin')
   end
