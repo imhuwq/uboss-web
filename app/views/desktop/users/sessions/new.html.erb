@@ -26,7 +26,7 @@
 
       <div class='pwd-inputs'>
         <%= f.input :password, required: false %>
-        <%= f.input :remember_me, as: :boolean, label_html: {class:'pull-right'}, label: '下次自动登录' if devise_mapping.rememberable? %>
+        <%= f.input :remember_me, as: :boolean, label: '下次自动登录' if devise_mapping.rememberable? %>
       </div>
 
     </div>

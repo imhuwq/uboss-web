@@ -2,6 +2,8 @@ class AdminController < ApplicationController
 
   include SessionsHelper
 
+  before_action :set_password, if: ->{ current_user.need_reset_password? }
+
   layout 'admin'
 
   if not Rails.env.development?
@@ -11,6 +13,13 @@ class AdminController < ApplicationController
         format.html { redirect_to admin_root_url, alert: '您无权访问该资源。' }
       end
     end
+  end
+
+  protected
+
+  def set_password
+    flash[:notice] = '继续操作前请设置您的登录密码'
+    redirect_to set_password_path
   end
 
 end

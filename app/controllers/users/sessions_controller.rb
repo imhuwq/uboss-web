@@ -1,5 +1,7 @@
 class Users::SessionsController < Devise::SessionsController
 
+  detect_device only: [:new]
+
   layout :login_layout
 
   before_filter :configure_sign_in_params, only: [:create]
@@ -47,7 +49,7 @@ class Users::SessionsController < Devise::SessionsController
   end
 
   def login_layout
-    if !browser.mobile? && !browser.tablet?
+    if desktop_request?
       'login'
     else
       'application'
