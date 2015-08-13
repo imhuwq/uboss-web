@@ -21,6 +21,9 @@ class Admin::ProductsController < AdminController
 
   def create
     product = Product.new(product_params)
+    product.content = Sanitize.fragment(product_params[:content], Sanitize::Config.merge(Sanitize::Config::BASIC,
+                        :elements        => Sanitize::Config::BASIC[:elements] - ['a']
+                        ))
     img = AssetImg.new
     img.avatar = params[:asset_img]
     product.asset_img = img

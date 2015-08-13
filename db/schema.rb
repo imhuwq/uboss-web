@@ -11,10 +11,20 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150803070021) do
+ActiveRecord::Schema.define(version: 20150813030637) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "agent_invite_seller_histroys", force: :cascade do |t|
+    t.string   "mobile"
+    t.integer  "agent_id"
+    t.integer  "seller_id"
+    t.integer  "status",     default: 0
+    t.string   "note"
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
+  end
 
   create_table "asset_imgs", force: :cascade do |t|
     t.string   "filename"
@@ -78,7 +88,7 @@ ActiveRecord::Schema.define(version: 20150803070021) do
   create_table "evaluations", force: :cascade do |t|
     t.integer  "buyer_id"
     t.integer  "sharer_id"
-    t.integer  "status",          default: 0
+    t.integer  "status",          default: 3
     t.integer  "order_item_id"
     t.integer  "product_id"
     t.text     "content"
@@ -167,6 +177,16 @@ ActiveRecord::Schema.define(version: 20150803070021) do
     t.boolean  "actived",    default: false
   end
 
+  create_table "product_share_issues", force: :cascade do |t|
+    t.integer  "product_id"
+    t.integer  "buyer_lv_1_id"
+    t.integer  "buyer_lv_2_id"
+    t.integer  "buyer_lv_3_id"
+    t.integer  "sharer_lv_1_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "products", force: :cascade do |t|
     t.integer  "user_id"
     t.string   "name"
@@ -213,6 +233,11 @@ ActiveRecord::Schema.define(version: 20150803070021) do
 
   add_index "redactor_assets", ["assetable_type", "assetable_id"], name: "idx_redactor_assetable", using: :btree
   add_index "redactor_assets", ["assetable_type", "type", "assetable_id"], name: "idx_redactor_assetable_type", using: :btree
+
+  create_table "rich_text_collections", force: :cascade do |t|
+    t.integer "resource_id"
+    t.text    "content"
+  end
 
   create_table "selling_incomes", force: :cascade do |t|
     t.datetime "created_at",               null: false
@@ -351,8 +376,8 @@ ActiveRecord::Schema.define(version: 20150803070021) do
     t.boolean  "need_set_login",         default: false
     t.string   "avatar"
     t.integer  "agent_id"
-    t.string   "domain_name"
     t.integer  "authenticated",          default: 0
+    t.integer  "agent_code"
   end
 
   add_index "users", ["login"], name: "index_users_on_login", unique: true, using: :btree
