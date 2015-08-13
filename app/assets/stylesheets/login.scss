@@ -4,9 +4,13 @@
 @import 'shared/bootswatch';
 @import 'shared/login';
 
+.container-sm {
+  width: 380px;
+  margin: 50px auto;
+}
+
 .simple_form {
-  &.new_user {
-    width: 380px;
-    margin: 50px auto;
+  &.new_user, &.edit_user {
+    @extend .container-sm
   }
 }

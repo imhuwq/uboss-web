@@ -32,7 +32,8 @@ Rails.application.routes.draw do
   end
   resource :account, only: [:show, :edit, :update] do
     get :settings, :update_password_page, :edit_mobile_page, :reset_password,
-      :orders
+      :orders, :merchant_confirm
+    patch :merchant_confirm, to: 'accounts#merchant_confirmed'
     patch :password, to: 'accounts#update_password'
     resources :user_addresses, except: [:show]
   end
@@ -81,6 +82,8 @@ Rails.application.routes.draw do
       end
       resource :account, only: [:edit, :show, :update] do
         get :password, on: :member
+        get :binding_agent
+        patch :binding_agent, to: 'accounts#bind_agent'
         patch :password, to: 'accounts#update_password'
       end
       resources :transactions, only: [:index]

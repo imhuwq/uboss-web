@@ -1,4 +1,6 @@
 class AccountsController < ApplicationController
+
+  layout :login_layout, only: [:set_password, :new_password, :merchant_confirm]
   before_action :authenticate_user!
 
   def show
@@ -37,12 +39,23 @@ class AccountsController < ApplicationController
   def set_password
     password_params = params.require(:user).permit(:password, :password_confirmation)
     if current_user.update(password_params.merge(need_reset_password: false))
-      sign_in(current_user)
+      sign_in(current_user, bypass: true)
+      flash[:notice] = '密码设定成功'
       redirect_to after_sign_in_path_for(current_user)
     else
       flash.now[:new_password_enabled] = true
       flash.now[:error] = current_user.errors.full_messages.join('<br/>')
       render :new_password
+    end
+  end
+
+  def merchant_confirmed
+    if current_user.is_seller?
+      flash[:notice] = '您已经是UBoss商家'
+      redirect_to after_sign_in_path_for(current_user)
+    else
+      current_user.become_uboss_seller
+      redirect_to binding_agent_admin_account_path
     end
   end
 

@@ -2,7 +2,7 @@ class AdminController < ApplicationController
 
   include SessionsHelper
 
-  before_action :set_password, if: ->{ current_user.need_reset_password? }
+  before_action :set_password, if: ->{ request.get? && current_user.need_reset_password? }
 
   layout 'admin'
 
@@ -19,6 +19,8 @@ class AdminController < ApplicationController
 
   def set_password
     flash[:notice] = '继续操作前请设置您的登录密码'
+    flash[:new_password_enabled] = true
+    store_location_for(current_user, request.fullpath)
     redirect_to set_password_path
   end
 

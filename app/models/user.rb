@@ -106,6 +106,15 @@ class User < ActiveRecord::Base
 
   end
 
+  def bind_agent(code)
+    if code == '123'
+      true
+    else
+      errors.add(:code, :invalid)
+      false
+    end
+  end
+
   def update_with_oauth_session(session)
     get_valuable_session(session) do |data|
       set_wechat_data(data)
@@ -120,6 +129,13 @@ class User < ActiveRecord::Base
         self.remote_avatar_url = nil
       end
       save
+    end
+  end
+
+  def become_uboss_seller
+    transaction do
+      update_columns(admin: true)
+      user_roles << UserRole.seller
     end
   end
 

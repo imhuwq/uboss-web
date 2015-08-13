@@ -25,6 +25,10 @@ class MobileAuthCode < ActiveRecord::Base
     auth_code.save
   end
 
+  def self.clear_captcha(auth_mobile)
+    MobileAuthCode.where(mobile: auth_mobile).delete_all
+  end
+
 	def generate_code #生成验证码
     self.code ||= rand(9999..100000).to_s.ljust(5,'0')
   end

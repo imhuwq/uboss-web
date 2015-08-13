@@ -3,6 +3,8 @@ class ApplicationController < ActionController::Base
   include SimpleCaptcha::ControllerHelpers
   include DetectDevise
 
+  helper_method :desktop_request?
+
   protect_from_forgery with: :exception
 
   before_action :configure_permitted_parameters, if: :devise_controller?
@@ -79,6 +81,14 @@ class ApplicationController < ActionController::Base
     cookies["sc_#{product_id}"] = { value: code, expires: 24.hour.from_now }
   end
 
+  def login_layout
+    if desktop_request?
+      'login'
+    else
+      'application'
+    end
+  end
+
   def configure_permitted_parameters
     devise_parameter_sanitizer.for(:sign_up) { |u| u.permit(:login, :captcha, :password, :password_confirmation, :remember_me) }
     devise_parameter_sanitizer.for(:sign_in) { |u| u.permit(:login, :password, :remember_me, :mobile_auth_code, :captcha, :captcha_key) }
@@ -86,11 +96,13 @@ class ApplicationController < ActionController::Base
   end
 
   def after_sign_in_path_for(resource, opts = {need_new_passowrd: true})
-    if current_user.need_reset_password? && opts[:need_new_passowrd]
+    if desktop_request? && !current_user.admin?
+      merchant_confirm_account_path
+    elsif current_user.need_reset_password? && opts[:need_new_passowrd]
       flash[:new_password_enabled] = true
       set_password_path
     else
-      request.env['omniauth.origin'] || stored_location_for(resource) || root_path
+      request.env['omniauth.origin'] || stored_location_for(resource) || (current_user.admin? ? admin_root_path : root_path)
     end
   end
   helper_method :after_sign_in_path_for
