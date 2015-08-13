@@ -1,6 +1,7 @@
 class Product < ActiveRecord::Base
 
   include Orderable
+  include Contentable
 
   DataCalculateWay = { 0 => '按金额', 1 => '按售价比例' }
   DataBuyerPay = { true => '买家付款', false => '包邮' }
@@ -9,18 +10,15 @@ class Product < ActiveRecord::Base
 
   belongs_to :user
   has_one :asset_img, class_name: 'AssetImg', dependent: :destroy, as: :resource
-  has_one :rich_text_collection, dependent: :destroy, as: :resource
   has_many :product_share_issue, dependent: :destroy
   has_many :order_items
 
   delegate :image_url, to: :asset_img, allow_nil: true
-  delegate :content, to: :rich_text_collection, allow_nil: true
 
   enum status: { unpublish: 0, published: 1, closed: 2 }
 
   before_create :generate_code
-  before_save :calculates_before_save, :save_content
-  before_create :build_rich_text_collection, if: -> { rich_text_collection.blank? }
+  before_save :calculates_before_save
 
   def generate_code
     loop do
@@ -61,18 +59,6 @@ class Product < ActiveRecord::Base
 
       self.privilege_amount = share_amount_total - assigned_total
     end
-  end
-
-  def save_content
-    rich_text_collection.try(:save)
-  end
-
-  def content=(content)
-    rich_text_collection.content = content
-  end
-
-  def rich_text_collection
-    super || build_rich_text_collection
   end
 
   def is_official_agent?

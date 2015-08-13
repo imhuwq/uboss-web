@@ -1,11 +1,16 @@
 class RichTextCollection < ActiveRecord::Base
+
   belongs_to :resource
 
-  before_save :sanitize_content
+  def content=(text)
+    sanitized_content = Sanitize.fragment(
+      text,
+      Sanitize::Config.merge(
+        Sanitize::Config::RELAXED,
+        elements: Sanitize::Config::RELAXED[:elements] - ['a']
+      )
+    )
 
-  def sanitize_content
-    self.content = Sanitize.fragment(self.content, Sanitize::Config.merge(Sanitize::Config::RELAXED,
-                        :elements        => Sanitize::Config::RELAXED[:elements] - ['a']
-                        ))
+    write_attribute(:content, sanitized_content)
   end
 end
