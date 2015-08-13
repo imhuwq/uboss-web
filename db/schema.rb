@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150813030637) do
+ActiveRecord::Schema.define(version: 20150813063615) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -194,7 +194,6 @@ ActiveRecord::Schema.define(version: 20150813030637) do
     t.decimal  "original_price",     default: 0.0
     t.decimal  "present_price",      default: 0.0
     t.integer  "count",              default: 0
-    t.text     "content"
     t.boolean  "buyer_pay",          default: true
     t.decimal  "traffic_expense",    default: 0.0
     t.datetime "created_at"
@@ -236,6 +235,7 @@ ActiveRecord::Schema.define(version: 20150813030637) do
 
   create_table "rich_text_collections", force: :cascade do |t|
     t.integer "resource_id"
+    t.string  "resource_type"
     t.text    "content"
   end
 
