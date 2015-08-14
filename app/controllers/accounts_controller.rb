@@ -45,7 +45,6 @@ class AccountsController < ApplicationController
     end
   end
 
-<<<<<<< HEAD
   def merchant_confirmed
     if current_user.is_seller?
       flash[:notice] = '您已经是UBoss商家'
@@ -54,9 +53,9 @@ class AccountsController < ApplicationController
       current_user.become_uboss_seller
       redirect_to binding_agent_admin_account_path
     end
-=======
+  end
+
   def edit_password # 修改密码页面
->>>>>>> feature/agent_invest_seller
   end
 
   def new_agent_binding # 商家绑定创客
@@ -74,23 +73,14 @@ class AccountsController < ApplicationController
         redirect_to settings_account_path, notice: '修改密码成功'
       else
         flash.now[:error] = '验证码错误'
-<<<<<<< HEAD
-        render :update_password_page
-        return
-=======
         render :edit_password
->>>>>>> feature/agent_invest_seller
       end
     elsif current_user.update_with_password(user_params)
       sign_in current_user, bypass: true
       redirect_to settings_account_path, notice: '修改密码成功'
     else
-<<<<<<< HEAD
       flash.now[:error] = current_user.errors.full_messages.joins('<br/>')
-      render :update_password_page
-=======
       render :edit_password
->>>>>>> feature/agent_invest_seller
     end
   end
 
