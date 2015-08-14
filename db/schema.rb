@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150813063615) do
+ActiveRecord::Schema.define(version: 20150813110434) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -49,6 +49,12 @@ ActiveRecord::Schema.define(version: 20150813063615) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string   "bankname"
+  end
+
+  create_table "contents", force: :cascade do |t|
+    t.integer "resource_id"
+    t.string  "resource_type"
+    t.text    "content"
   end
 
   create_table "daily_reports", force: :cascade do |t|
@@ -232,12 +238,6 @@ ActiveRecord::Schema.define(version: 20150813063615) do
 
   add_index "redactor_assets", ["assetable_type", "assetable_id"], name: "idx_redactor_assetable", using: :btree
   add_index "redactor_assets", ["assetable_type", "type", "assetable_id"], name: "idx_redactor_assetable_type", using: :btree
-
-  create_table "rich_text_collections", force: :cascade do |t|
-    t.integer "resource_id"
-    t.string  "resource_type"
-    t.text    "content"
-  end
 
   create_table "selling_incomes", force: :cascade do |t|
     t.datetime "created_at",               null: false

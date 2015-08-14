@@ -1,7 +1,7 @@
 class Product < ActiveRecord::Base
 
   include Orderable
-  include Contentable
+  include Descriptiontable
 
   DataCalculateWay = { 0 => '按金额', 1 => '按售价比例' }
   DataBuyerPay = { true => '买家付款', false => '包邮' }
@@ -59,6 +59,14 @@ class Product < ActiveRecord::Base
 
       self.privilege_amount = share_amount_total - assigned_total
     end
+  end
+
+  def description=(description)
+    content.content = description
+  end
+
+  def content
+    super || build_content
   end
 
   def is_official_agent?

@@ -1,5 +1,4 @@
-class RichTextCollection < ActiveRecord::Base
-
+class Content < ActiveRecord::Base
   belongs_to :resource
 
   def content=(text)
@@ -10,7 +9,7 @@ class RichTextCollection < ActiveRecord::Base
         elements: Sanitize::Config::RELAXED[:elements] - ['a']
       )
     )
-
+    
     write_attribute(:content, sanitized_content)
   end
 end
