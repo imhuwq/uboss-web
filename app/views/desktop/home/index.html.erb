@@ -1,16 +1,19 @@
 <div class='header_img_con'>
-	<%= image_tag "desktop_image/header3.jpg", class:"header_img", alt:"header" %>
+	<%= image_tag "desktop_image/header.png", class:"header_img", alt:"header" %>
 </div>
+<div class="container">
 <div class="page_video" >
 	<div class="video_list"  onclick="showVideo()">
 		<%=image_tag "desktop_image/playVideo.png", alt:"playVideo" %>
 	</div>
 </div>
 <!--弹框-->
-<div id="video">
-				<iframe style="z-index: 1;" allowfullscreen="" frameborder="0" ></iframe>
+<div id="video" class="video_min">
+				<iframe style="z-index: 1;" allowfullscreen="" frameborder="0" 
+					src="http://v.qq.com/iframe/player.html?vid=o0161da2c7v&tiny=0&auto=0" width="600" height="450">
+				</iframe>
 				<!-- <input  type="button" value="Close" onclick="hideVideo();"/> -->
-				<%= image_tag "desktop_image/cancel.png", alt:"cancle", onclick:"hideVideo()" %>
+				<%= image_tag "desktop_image/cancel.png", alt:"cancle", onclick:"hideVideo()", style:"z-index:1;"%>
 </div>
 <div class="page1">
 	<div class="page_title"><span class="page_titles">平台价值</span></div>
@@ -61,6 +64,7 @@
 			</dl>
 		</div>
 </div>
+</div>
 <script type="text/javascript" >
 			function showVideo(){
 				$("#video").css('display','block');
@@ -68,6 +72,10 @@
 			}
 			function hideVideo(){
 				$("#video").css('display','none');
+				// $('iframe').remove();
 				// $('#closeVideo').css('display','none');
 			}
+			$(function(){
+				$('.header_top').css("opacity",".6")
+			})
 </script>
