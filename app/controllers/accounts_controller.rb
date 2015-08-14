@@ -1,7 +1,7 @@
 class AccountsController < ApplicationController
 
   before_action :authenticate_user!
-  before_action :authenticate_agent, only: [:send_message, :agent_invite_seller, :edit_seller_note, :update_histroy_note]
+  before_action :authenticate_agent, only: [:send_message, :invite_seller, :edit_seller_note, :update_histroy_note]
 
   def show
     @orders = append_default_filter account_orders, page_size: 20
@@ -16,13 +16,7 @@ class AccountsController < ApplicationController
   end
 
   def update
-    if account_params[:login].present? && account_params[:code].present?
-      MobileAuthCode.auth_code(account_params[:login], account_params[:code])
-      current_user.update(login: account_params[:login])
-      MobileAuthCode.find_by(code: account_params[:code]).try(:destroy)
-      flash[:notice] = '绑定成功'
-      redirect_to settings_account_path
-    elsif current_user.update(account_params)
+    if current_user.update(account_params)
       flash[:notice] = '修改成功'
       redirect_to settings_account_path
     else
@@ -39,27 +33,21 @@ class AccountsController < ApplicationController
   def new_agent_binding # 商家绑定创客
   end
 
-  def edit_mobile
-    if current_user.login.present?
-      flash[:info] = '你已经有帐号了'
-      redirect_to settings_account_path
-    end
-  end
-
   def update_password
     user_params = params.require(:user).permit(:password, :password_confirmation, :current_password, :code)
-    update_with_password_params = params.require(:user).permit(:password, :password_confirmation, :current_password)
-    if  current_user.need_reset_password
-      if MobileAuthCode.auth_code(current_user.login, user_params[:code])
-        current_user.update(password: user_params[:password], password_confirmation: user_params[:password_confirmation], need_reset_password: false)
-        MobileAuthCode.find_by(code: user_params[:code]).try(:destroy)
+    if current_user.need_reset_password
+      user_params.delete(:current_password)
+      auth_code = user_params.delete(:code)
+      if MobileAuthCode.auth_code(current_user.login, auth_code)
+        current_user.update(user_params.merge(need_reset_password: false))
+        MobileAuthCode.where(mobile: current_user.login).delete_all
         sign_in current_user, bypass: true
         redirect_to settings_account_path, notice: '修改密码成功'
       else
+        flash.now[:error] = '验证码错误'
         render :edit_password
-        return
       end
-    elsif current_user.update_with_password(update_with_password_params)
+    elsif current_user.update_with_password(user_params)
       sign_in current_user, bypass: true
       redirect_to settings_account_path, notice: '修改密码成功'
     else
@@ -75,7 +63,7 @@ class AccountsController < ApplicationController
     redirect_to edit_password_account_path
   end
 
-  def agent_invite_seller # 创客通过短信邀请的商家
+  def invite_seller # 创客通过短信邀请的商家
     @histroys = AgentInviteSellerHistroy.where(agent_id: current_user.id)
     @bind = User.where(agent_id: current_user, authenticated: 1).count
   end
@@ -93,7 +81,7 @@ class AccountsController < ApplicationController
     else
       flash[:error] = "修改失败#{histroy.errors.messages}."
     end
-    redirect_to action: :agent_invite_seller
+    redirect_to action: :invite_seller
   end
 
   def send_message # 保存发送短信给商家的信息
@@ -110,7 +98,7 @@ class AccountsController < ApplicationController
     else
       flash[:error] = '手机格式不正确'
     end
-    redirect_to action: :agent_invite_seller
+    redirect_to action: :invite_seller
   end
 
   def binding_agent # 商家绑定创客
@@ -147,11 +135,7 @@ class AccountsController < ApplicationController
   end
 
   def account_params
-    if current_user.login.present?
-      params.require(:user).permit(:mobile, :nickname, :login)
-    else
-      params.require(:user).permit(:nickname)
-    end
+    params.require(:user).permit(:mobile, :nickname, :code, :mobile_auth_code)
   end
 
   def valid_code

@@ -18,9 +18,6 @@
       <div class="font_h2 text-center">
         <%= @bind %>
       </div>
-
-
-
     <% (@histroys || []).each do |obj| %>
     <p class="clearfix" style="border-bottom:0;overflow:hidden;">
       <span class=col-xs-6><%=  truncate (obj.note || obj.mobile),:length=>15,:omission=>'...'  %></span>
