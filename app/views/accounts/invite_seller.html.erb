@@ -1,0 +1,38 @@
+<%= content_for :page_title do %>
+  创客
+<% end %>
+<div class="container add_listall" >
+  <div class="add_inout">
+    <%= simple_form_for 'send_message', url: send_message_account_path, method: :put do |f| %>
+    <p style="border-bottom:0;">
+      <span class="add_textd">商家手机号</span>
+      <%= f.input_field :mobile, type: :tel, placeholder: '商家手机号', class:"add_text"  %>
+    </p>
+    <p style="padding-top:10px;padding-right:10px;">
+      <%= f.submit '发送', class:"accunt_adilbtn" %>
+    </p>
+    <% end %>
+      <div class="font_h4 text-center">
+        绑定数量
+      </div>
+      <div class="font_h2 text-center">
+        <%= @bind %>
+      </div>
+    <% (@histroys || []).each do |obj| %>
+    <p class="clearfix" style="border-bottom:0;overflow:hidden;">
+      <span class=col-xs-6><%=  truncate (obj.note || obj.mobile),:length=>15,:omission=>'...'  %></span>
+      <span class="col-xs-2 text-right">
+        <%= obj.created_at.strftime('%m/%d') %>
+      </span>
+      <span class="col-xs-2 text-right">
+        <%= obj.status_i18n %>
+      </span>
+      <span class="col-xs-2 text-right">
+        <%= link_to edit_seller_note_account_path(id: obj.id) do %>
+        <%= image_tag("uboss_29/edit.png" ) %>
+        <% end %>
+      </span>
+    </p>
+    <% end %>
+  </div>
+</div>

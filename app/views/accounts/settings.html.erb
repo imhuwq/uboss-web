@@ -6,6 +6,7 @@
 
     <div class="add_inout">
       <p>
+        <%= image_tag("uboss_29/touxiang.png") %>
         <span>昵称</span>
         <span class="center_content">
           <%= truncate current_user.identify,:length=>28,:omission=>'...' %>
@@ -17,23 +18,25 @@
         </span>
       </p>
       <p>
+        <%= image_tag("uboss_29/dizhi.png") %>
         <span>收货地址</span>
         <span class="center_content">
         </span>
         <span class="right_content">
           <%= link_to account_user_addresses_path do %>
-          添加/修改<%= image_tag("uboss_29/right.png" ) %>
+          修改<%= image_tag("uboss_29/right.png" ) %>
           <% end %>
         </span>
       </p>
       <p>
+        <%= image_tag("uboss_29/phone.png") %>
         <span>绑定手机</span>
         <span class="center_content">
           <%= current_user.login %>
         </span>
         <% if !current_user.login.present? %>
         <span class="right_content">
-          <%= link_to edit_mobile_page_account_path do %>
+          <%= link_to edit_mobile_account_path do %>
           设置<%= image_tag("uboss_29/right.png") %>
           <% end %>
         </span>
@@ -41,17 +44,54 @@
       </p>
       <% if current_user.login.present? %>
         <p>
+          <%= image_tag("uboss_29/mima.png") %>
           <span>设置密码</span>
           <span class="center_content">
           </span>
           <span class="right_content">
-            <%= link_to update_password_page_account_path do %>
+            <%= link_to edit_password_account_path do %>
             修改<%= image_tag("uboss_29/right.png") %>
             <% end %>
           </span>
         </p>
       <% end %>
-
+      <% if !current_user.seller? && !current_user.authenticated? %>
+      <p>
+        <%= image_tag("uboss_29/touxiang.png") %>
+        <span>成为商家</span>
+        <span class="center_content">
+        </span>
+        <span class="right_content">
+          <%= link_to url_for(action: :seller_agreement) do %>
+          绑定<%= image_tag("uboss_29/right.png") %>
+          <% end %>
+        </span>
+      </p>
+      <% elsif !current_user.authenticated? %>
+      <p>
+        <%= image_tag("uboss_29/touxiang.png") %>
+        <span>绑定创客</span>
+        <span class="center_content">
+        </span>
+        <span class="right_content">
+          <%= link_to new_agent_binding_account_path do %>
+          绑定<%= image_tag("uboss_29/right.png") %>
+          <% end %>
+        </span>
+      </p>
+      <% end %>
+      <% if current_user.agent? %>
+      <p>
+        <%= image_tag("uboss_29/shangjia.png") %>
+        <span>创客</span>
+        <span class="center_content">
+        </span>
+        <span class="right_content">
+          <%= link_to invite_seller_account_path do %>
+            邀请<%= image_tag("uboss_29/right.png") %>
+          <% end %>
+        </span>
+      </p>
+      <% end %>
     </div>
-
 </div>

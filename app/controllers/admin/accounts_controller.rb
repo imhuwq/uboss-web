@@ -3,7 +3,7 @@ class Admin::AccountsController < AdminController
   skip_before_action :set_password, only: [:binding_agent]
 
   def update
-    user_params = params.require(:user).permit(:mobile, :email, :nickname, :store_name, :domain_name)
+    user_params = params.require(:user).permit(:mobile, :email, :nickname, :store_name, :agent_code, :avatar)
 
     if current_user.update(user_params)
       redirect_to admin_root_path, notice: '修改成功'

@@ -30,7 +30,7 @@ class User < ActiveRecord::Base
 
   validates :login, uniqueness: true, mobile: true, presence: true, if: -> { !need_set_login? }
   validates :mobile, allow_nil: true, mobile: true
-  validates :domain_name, uniqueness: true, allow_nil: true
+  validates :agent_code, uniqueness: true, allow_nil: true
 
   alias_attribute :regist_mobile, :login
 
@@ -212,6 +212,36 @@ class User < ActiveRecord::Base
       return false
     end
   end
+
+  def generate_agent_code
+    loop do
+      self.agent_code = rand(9999..100000).to_s.ljust(6,'0')
+      break if !User.find_by(agent_code: agent_code)
+    end
+    save
+  end
+
+  def find_or_create_agent_code
+    if agent_code.present?
+      return agent_code
+    else
+      generate_agent_code
+      return self.agent_code
+    end
+  end
+
+  def binding_agent(code)
+    if code.present?
+      agent = User.find_by(agent_code: code)
+    else
+      agent = User.joins(:user_roles).where(user_roles:{name: 'super_admin'}).first
+    end
+    self.agent_id = agent.id
+    self.admin = true
+    self.save
+    AgentInviteSellerHistroy.find_by(mobile: login).try(:update, status: 1)
+  end
+
 
   private
 

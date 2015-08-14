@@ -13,12 +13,14 @@
   <%= table_for(@agents) do |t| %>
     <%= t.cell :agent_name do |obj| %>
       <%= link_to url_for(controller: 'admin/agents', action: :show, id: obj) do %>
-      <div class="col-sm-3">
-        <%= image_tag(obj.avatar, size: "100x80", alt: "-") %>
-      </div>
-      <div class="col-sm-9">
-        <div class="col-sm-12">创客名称：<%= obj.identify %></div>
-        <div class="col-sm-12">绑定手机：<%= obj.login %></div>
+      <div style="width:370px;float:left;">
+        <div class="col-sm-3">
+          <%= image_tag(obj.avatar, size: "100x80", alt: "-") %>
+        </div>
+        <div class="col-sm-9"  style="padding-top:15px;">
+          <div class="col-sm-12">创客名称：<%= obj.identify %></div>
+          <div class="col-sm-12">绑定手机：<%= obj.login %></div>
+        </div>
       </div>
       <% end %>
     <% end %>

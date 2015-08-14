@@ -1420,8 +1420,6 @@ a{
   z-index: 999;
   top: 0px;
   background-color: rgba(0,0,0,.5);
-  left: 50%;
-  margin-left: -160px;
 }
 .fenxinrated{
 	width: 100%;
@@ -1570,14 +1568,7 @@ a{
 .adbtn{
 	margin-top: 40px;
 }
-.add_inout p{
-	display: block;
-	height: 41px;
-	line-height: 41px;
-	padding-left: 15px;
-	border-bottom: 1px solid rgba(204,204,204,1);
-	font-size: 14px;
-}
+
 .add_inout .add_text{
 	margin-left: 15px;
 	width: 65%;
@@ -1591,11 +1582,9 @@ a{
 	position: relative;
 }
 .add_line2 img{
-	display: block;
-	width: 7px;
-	height: 13px;
+	height: 15px;
 	position: absolute;
-	top: 18px;
+	top: 25px;
     right: 12px;
 }
 .addrr dd strong{

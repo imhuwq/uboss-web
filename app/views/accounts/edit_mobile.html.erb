@@ -4,8 +4,9 @@
 <div class="upass main">
 <div class="container add_listall" >
   <div class="add_conts">
-    <%= simple_form_for current_user, url: account_path, method: :PATCH do |f| %>
+    <%= simple_form_for current_user, url: edit_login_account_path, method: :PATCH do |f| %>
     <div class="add_inout">
+      <p>当前登陆手机：<%= current_user.login %></p>
       <p>
         <span><%= f.input_field :login, type: :tel, placeholder: '输入手机号', class:"add_text_2",id:'new_mobile' %></span>
         <span>

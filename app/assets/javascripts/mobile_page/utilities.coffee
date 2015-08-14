@@ -7,7 +7,7 @@ $ ->
   $(".wx-mod-pop").on 'click', ->
     $(this).hide()
 
-  flash = $(".flash_css")
+  flash = $(".auto_close_flash_css")
   setTimeout ->
     flash.fadeOut ->
       $(this).remove()

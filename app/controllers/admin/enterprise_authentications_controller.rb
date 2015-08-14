@@ -49,6 +49,7 @@ class Admin::EnterpriseAuthenticationsController < AdminController
       @enterprise_authentication.legal_person_identity_card_front_img = params[:legal_person_identity_card_front_img]
       @enterprise_authentication.legal_person_identity_card_end_img = params[:legal_person_identity_card_end_img]
       if @enterprise_authentication.save
+        MobileAuthCode.find_by(code: allow_params[:mobile_auth_code]).try(:destroy)
         flash[:success] = '保存成功'
         redirect_to action: :show
       else
@@ -71,6 +72,7 @@ class Admin::EnterpriseAuthenticationsController < AdminController
       @enterprise_authentication.legal_person_identity_card_front_img = params[:legal_person_identity_card_front_img] if params[:legal_person_identity_card_front_img]
       @enterprise_authentication.legal_person_identity_card_end_img = params[:legal_person_identity_card_end_img] if  params[:legal_person_identity_card_end_img]
       if @enterprise_authentication.save
+        MobileAuthCode.find_by(code: allow_params[:mobile_auth_code]).try(:destroy)
         flash[:success] = '保存成功'
         redirect_to action: :show
       else
