@@ -29,7 +29,7 @@ Rails.application.routes.draw do
     get :success, on: :member
   end
   resource :account, only: [:show, :edit, :update] do
-    get :settings, :update_password_page, :edit_mobile_page, :reset_password,
+    get :settings, :edit_password, :edit_mobile, :reset_password,
       :orders, :new_agent_binding, :agent_invite_seller, :edit_seller_histroy,
       :edit_seller_note, :seller_agreement_page
     put :binding_agent, :send_message, :update_histroy_note

@@ -36,7 +36,7 @@
         </span>
         <% if !current_user.login.present? %>
         <span class="right_content">
-          <%= link_to edit_mobile_page_account_path do %>
+          <%= link_to edit_mobile_account_path do %>
           设置<%= image_tag("uboss_29/right.png") %>
           <% end %>
         </span>
@@ -49,7 +49,7 @@
           <span class="center_content">
           </span>
           <span class="right_content">
-            <%= link_to update_password_page_account_path do %>
+            <%= link_to edit_password_account_path do %>
             修改<%= image_tag("uboss_29/right.png") %>
             <% end %>
           </span>

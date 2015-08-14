@@ -33,13 +33,13 @@ class AccountsController < ApplicationController
   def settings # 个人信息展示
   end
 
-  def update_password_page # 修改密码页面
+  def edit_password # 修改密码页面
   end
 
   def new_agent_binding # 商家绑定创客
   end
 
-  def edit_mobile_page
+  def edit_mobile
     if current_user.login.present?
       flash[:info] = '你已经有帐号了'
       redirect_to settings_account_path
@@ -56,14 +56,14 @@ class AccountsController < ApplicationController
         sign_in current_user, bypass: true
         redirect_to settings_account_path, notice: '修改密码成功'
       else
-        render :update_password_page
+        render :edit_password
         return
       end
     elsif current_user.update_with_password(update_with_password_params)
       sign_in current_user, bypass: true
       redirect_to settings_account_path, notice: '修改密码成功'
     else
-      render :update_password_page
+      render :edit_password
     end
   end
 
@@ -72,7 +72,7 @@ class AccountsController < ApplicationController
 
   def reset_password
     current_user.update(need_reset_password: true)
-    redirect_to update_password_page_account_path
+    redirect_to edit_password_account_path
   end
 
   def agent_invite_seller # 创客通过短信邀请的商家
