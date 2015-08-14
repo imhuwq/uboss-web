@@ -7,32 +7,32 @@
     <h2>UBoss</h2>
     <hr />
 
-    <div class='login-type-acs clearfix'>
-      <a class="lpwd-btn" href="#">已有账户</a>
-      <a class="lcap-btn" href="#">验证码登陆/注册</a>
+    <div class='login-type-acs row'>
+      <a class="lpwd-btn col-md-6" href="#">已有账户</a>
+      <a class="lcap-btn col-md-6" href="#">验证码登陆/注册</a>
     </div>
 
     <div class="form-inputs">
       <%= f.input :login, required: false, autofocus: true, input_html: {id: 'new_mobile'} %>
 
       <div class="cap-inputs">
+        <a id="send_mobile" class="btn btn-primary" href="#">发送验证码</a>
         <%= f.input :mobile_auth_code %>
-        <a id="send_mobile" class="send_mobile" href="#">发送验证码</a>
-
       </div>
+
       <div class="cap-inputs form-group">
         <small>未开通UBOSS账号的用户，点击确认表明您已同意<a href="#">《UBOSS用户注册协议》</a>，自动为您开通UBOSS账号</small>
       </div>
 
       <div class='pwd-inputs'>
         <%= f.input :password, required: false %>
-        <%= f.input :remember_me, as: :boolean, label_html: {class:'pull-right'}, label: '下次自动登录' if devise_mapping.rememberable? %>
+        <%= f.input :remember_me, as: :boolean, label: '下次自动登录' if devise_mapping.rememberable? %>
       </div>
 
     </div>
 
     <div class="button_div">
-      <%= f.button :submit, "确认", class: "btn btn-large btn-primary col-xs-12" %>
+      <%= f.submit "确认", class: 'btn btn-primary col-md-12' %>
     </div>
 
     <% if !browser.wechat? %>

@@ -6,6 +6,7 @@
 //= require mobile_page/mobile
 //= require mobile_page/order
 //= require mobile_page/utilities
+//= require shared/login
 //= require_self
 
 $(function() {

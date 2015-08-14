@@ -13,13 +13,13 @@ class OrderForm
     attr_accessor order_attr
   end
 
-  attr_accessor :sharing_node, :product, :buyer, :user_address, :order
+  attr_accessor :sharing_node, :product, :buyer, :user_address, :order, :session
 
   validates :product_id, :amount, presence: true
-  validates :mobile, presence: true, mobile: true, if: :need_mobile?
+  validates :mobile, presence: true, mobile: true, if: -> { self.buyer.blank? }
   validates :deliver_mobile, :deliver_username, :street, presence: true, if: -> { self.user_address_id.blank? }
   validates :deliver_mobile, mobile: true, allow_blank: true
-  validate :captcha_must_be_valid, if: :need_verify_captcha?
+  validate :captcha_must_be_valid, :mobile_blank_with_oauth, if: -> { self.buyer.blank? }
   validate :check_amount
 
   delegate :traffic_expense, to: :product, prefix: :product
@@ -66,17 +66,24 @@ class OrderForm
   private
 
   def create_or_update_user
-    if buyer.present? || (self.buyer = User.find_by(login: mobile))
-      set_user_login
-    else
-      self.buyer = User.create_guest!(mobile)
+    self.buyer ||= User.find_by(login: mobile)
+    if need_update_oauth_info?
+      buyer.update_with_wechat_oauth(session['devise.wechat_data'].extra['raw_info'])
+    elsif buyer.blank?
+      self.buyer = User.new_with_session(
+        {
+          login: mobile,
+          password: Devise.friendly_token,
+          need_reset_password: true
+        },
+        session
+      )
+      self.buyer.save!
     end
   end
 
-  def set_user_login
-    if buyer.need_set_login?
-      buyer.update_columns(login: mobile, need_set_login: false)
-    end
+  def need_update_oauth_info?
+    buyer.present? && session['devise.wechat_data'] && session['devise.wechat_data'].extra['raw_info']
   end
 
   def create_user_address
@@ -118,19 +125,17 @@ class OrderForm
     end
   end
 
-  def need_mobile?
-    buyer.blank? ? true : buyer.need_set_login?
-  end
-
-  def need_verify_captcha?
-    buyer.blank? ? mobile.present? : buyer.need_set_login?
-  end
-
   def captcha_must_be_valid
     if !MobileAuthCode.auth_code(mobile, captcha)
       errors.add(:captcha, :invalid)
-    elsif buyer.present? && User.find_by(login: mobile)
-      errors.add(:mobile, '已绑定账号')
+    end
+  end
+
+  def mobile_blank_with_oauth
+    user = User.find_by(login: mobile)
+    if user.present? && user.weixin_openid.present? && session['devise.wechat_data'] &&
+        session['devise.wechat_data'].extra['raw_info']['weixin_openid'] != user.weixin_openid
+      errors.add(:mobile, '已绑定微信账号')
     end
   end
 

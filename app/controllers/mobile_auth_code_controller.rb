@@ -3,15 +3,11 @@ class MobileAuthCodeController < ApplicationController
     if mobile = params[:mobile]
       # FIXME handle fail message
       begin
-        send_message = MobileAuthCode.send_captcha_with_mobile(mobile)
-      rescue Exception => e
-        @error = e
+        MobileAuthCode.send_captcha_with_mobile(mobile)
+      rescue => e
+        Airbrake.notify_or_ignore(e, parameters: {mobile: mobile}, cgi_data: ENV.to_hash)
       end
-      puts @error if @error
     end
-    respond_to do |format|
-      format.html { render nothing: true }
-      format.js { render nothing: true }
-    end
+    render json: {success: !@error.present?}, status: @error.present? ? :failure : :ok
   end
 end

@@ -1,5 +1,7 @@
 @import "bootstrap-sprockets";
+@import 'shared/variables';
 @import "bootstrap";
+@import 'shared/bootswatch';
 @import 'redactor-rails';
 @import "chosen.min";
 
@@ -39,4 +41,8 @@
   label,.form-group div{margin-top: 10px;}
   span label{margin-top: 0px;}
   .form-group div div {margin-top: 0px;}
+}
+.container-sm {
+  width: 380px;
+  margin: 50px auto;
 }

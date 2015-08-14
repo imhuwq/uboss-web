@@ -6,7 +6,9 @@ class User < ActiveRecord::Base
   attr_accessor :code, :mobile_auth_code
   OFFICIAL_ACCOUNT_LOGIN = '13800000000'
 
-  devise :database_authenticatable, :rememberable, :trackable, :validatable, :omniauthable
+  devise :database_authenticatable, :rememberable, :trackable, :validatable,
+    :omniauthable, :registerable
+
   mount_uploader :avatar, ImageUploader
 
   has_one :user_info, autosave: true
@@ -63,27 +65,12 @@ class User < ActiveRecord::Base
       @@official_account ||= find_by(login: OFFICIAL_ACCOUNT_LOGIN)
     end
 
-    def find_or_create_by_wechat_oauth(oauth_info)
+    def find_or_update_by_wechat_oauth(oauth_info)
       user = User.find_by(weixin_openid: oauth_info['openid'])
-      if user
+      if user.present?
         user.update_with_wechat_oauth(oauth_info)
-        user
-      else
-        User.create!(
-          weixin_openid: oauth_info['openid'],
-          weixin_unionid: oauth_info['unionid'],
-          login: oauth_info['openid'],
-          password: Devise.friendly_token,
-          province: oauth_info['province'],
-          city: oauth_info["city"],
-          country: oauth_info['country'],
-          nickname: oauth_info['nickname'],
-          sex: oauth_info['sex'],
-          remote_avatar_url: oauth_info['headimgurl'],
-          need_set_login: true,
-          need_reset_password: true
-        )
       end
+      user
     end
 
     def new_guest(mobile)
@@ -101,22 +88,55 @@ class User < ActiveRecord::Base
       new_user.save!
       new_user
     end
+
+    def find_or_create_guest_with_session(mobile, session)
+      user = find_by(login: mobile)
+      user ||= create_guest(mobile)
+      user.update_with_oauth_session(session)
+      user
+    end
+
+    def new_with_session(params, session)
+      super.tap do |user|
+        get_valuable_session(session) do |data|
+          user.set_wechat_data(data)
+        end
+      end
+    end
+
+  end
+
+  def bind_agent(code)
+    if code == '123'
+      true
+    else
+      errors.add(:code, :invalid)
+      false
+    end
+  end
+
+  def update_with_oauth_session(session)
+    get_valuable_session(session) do |data|
+      set_wechat_data(data)
+      save
+    end
   end
 
   def update_with_wechat_oauth(oauth_info)
-    info = {
-      nickname: nickname || oauth_info['nickname'],
-      sex: sex || oauth_info['sex'],
-      province: province || oauth_info['province'],
-      city: city || oauth_info['city'],
-      country: country || oauth_info['country'],
-      weixin_unionid: oauth_info['unionid'],
-      weixin_openid: oauth_info['openid']
-    }
-    if avatar.blank?
-      info.merge(remote_avatar_url: oauth_info['headimgurl'])
+    self.tap do
+      set_wechat_data(oauth_info)
+      if avatar_url.present?
+        self.remote_avatar_url = nil
+      end
+      save
     end
-    update(info)
+  end
+
+  def become_uboss_seller
+    transaction do
+      update_columns(admin: true)
+      user_roles << UserRole.seller
+    end
   end
 
   def identify
@@ -194,13 +214,31 @@ class User < ActiveRecord::Base
   end
 
   private
-    def email_required?
-      false
-    end
 
-    def set_mobile
-      if !need_set_login?
-        self.mobile ||= login
-      end
+  def set_wechat_data(data)
+    self.nickname       ||= data["nickname"]
+    self.sex            ||= data["sex"]
+    self.province       ||= data['province']
+    self.city           ||= data['city']
+    self.country        ||= data['country']
+    self.weixin_unionid   = data['unionid']
+    self.weixin_openid    = data['openid']
+    self.remote_avatar_url = data['headimgurl']
+  end
+
+  def get_valuable_session(session)
+    if data = session["devise.wechat_data"] && session["devise.wechat_data"]["extra"]["raw_info"]
+      yield data if block_given?
     end
+  end
+
+  def email_required?
+    false
+  end
+
+  def set_mobile
+    if !need_set_login?
+      self.mobile ||= login
+    end
+  end
 end

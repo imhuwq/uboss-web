@@ -2,13 +2,15 @@ require 'sidekiq/web'
 
 Rails.application.routes.draw do
 
-  devise_for :user, controllers: {
+  devise_for :user, path: '/', controllers: {
+    registrations: "users/registrations",
     sessions: "users/sessions",
     passwords: "users/passwords",
     omniauth_callbacks: "users/omniauth_callbacks"
   }
 
-  get 'wxpay/test/:id', to: 'orders#show', as: :test_wxpay
+  get 'set_password', to: 'accounts#new_password'
+  patch 'set_password', to: 'accounts#set_password'
   get 'sharing/:code', to: 'sharing#show', as: :sharing
   get 'help', to: 'home#help'
 
@@ -30,7 +32,8 @@ Rails.application.routes.draw do
   end
   resource :account, only: [:show, :edit, :update] do
     get :settings, :update_password_page, :edit_mobile_page, :reset_password,
-      :orders
+      :orders, :merchant_confirm
+    patch :merchant_confirm, to: 'accounts#merchant_confirmed'
     patch :password, to: 'accounts#update_password'
     resources :user_addresses, except: [:show]
   end
@@ -79,6 +82,8 @@ Rails.application.routes.draw do
       end
       resource :account, only: [:edit, :show, :update] do
         get :password, on: :member
+        get :binding_agent
+        patch :binding_agent, to: 'accounts#bind_agent'
         patch :password, to: 'accounts#update_password'
       end
       resources :transactions, only: [:index]
