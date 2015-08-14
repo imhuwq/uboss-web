@@ -10,9 +10,9 @@
 .login-type-acs {
   text-align: center;
   margin: 15px 0;
-  border-bottom: 1px solid rgba(67,195,170,1);
+  border-bottom: 1px solid $brand-primary;
   a {
-    color: rgba(67,195,170,1);
+    color: $brand-primary;
     width: 48%;
     box-sizing: border-box;
     display: inline-block;
@@ -22,7 +22,7 @@
   .lcap-btn {float: right}
 }
 .using-pwd .lpwd-btn, .using-cap .lcap-btn {
-  background-color: rgba(67,195,170,1);
+  background-color: $brand-primary;
   color: white;
 }
 .cap-inputs {
@@ -33,7 +33,7 @@
     right: 0;
     bottom: 0;
     padding: 0 10px;
-    background-color: #43c3aa;
+    background-color: $brand-primary;
     color: white;
     border-radius: 0 5px 5px 0;
     box-sizing: border-box;
