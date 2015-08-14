@@ -13,11 +13,11 @@
         /*屏幕适配*/
         var width = $(document).width();
         if(width < 1367){
-          if(width < 1025) 
+          if(width < 1025)
             $('.img').addClass('img_mini');
           else
             $('.img').addClass('img_min');
-        $('.page4_cont_list').addClass('page4_cont_list_min');  
+        $('.page4_cont_list').addClass('page4_cont_list_min');
          /* 视频适配*/
         // $("#video").addClass('video_min');
 
@@ -25,9 +25,9 @@
         //   .attr('width','600').attr('height','450');
         }else{
           $('.img').addClass('img_max');
-          $('.page4_cont_list').addClass('page4_cont_list_max');    
+          $('.page4_cont_list').addClass('page4_cont_list_max');
           /*视频适配*/
-          $('#video').addClass('video_max');  
+          $('#video').addClass('video_max');
           $('iframe').attr('src',"http://v.qq.com/iframe/player.html?vid=o0161da2c7v&tiny=0&auto=0")
           .attr('width','800').attr ('height','600');
         }
@@ -40,16 +40,16 @@
           else{
             $('.img').addClass('img_min').removeClass('img_mini').removeClass('img_max');
           }
-        $('.page4_cont_list').addClass('page4_cont_list_min').removeClass('page4_cont_list_max');  
+        $('.page4_cont_list').addClass('page4_cont_list_min').removeClass('page4_cont_list_max');
          /* 视频适配*/
         $("#video").addClass('video_min');
         $('iframe').attr('src',"http://v.qq.com/iframe/player.html?vid=o0161da2c7v&tiny=0&auto=0")
           .attr('width','600').attr('height','450');
         }else{
           $('.img').addClass('img_max').removeClass('img_mini').removeClass('img_min');
-          $('.page4_cont_list').addClass('page4_cont_list_max').removeClass('page4_cont_list_min');    
+          $('.page4_cont_list').addClass('page4_cont_list_max').removeClass('page4_cont_list_min');
           /*视频适配*/
-          $('#video').addClass('video_max');  
+          $('#video').addClass('video_max');
           $('iframe').attr('src',"http://v.qq.com/iframe/player.html?vid=o0161da2c7v&tiny=0&auto=0")
           .attr('width','800').attr ('height','600');
         }
@@ -79,9 +79,7 @@
         <div class="header_tag"><a href="<%= root_path  %>"  onmouseover="this.style.color='#66CDAA'" onmouseout="this.style.color='#FFFFFF'">关于UBOSS</a></div>
 			</nav>
 		</div>
-		
 
-      <%= render 'layouts/flash_alert' %>
       <%= yield %>
 
       <div class="footer">
