@@ -14,13 +14,12 @@ class AccountsController < ApplicationController
   end
 
   def update
-    if account_params[:login].present? and account_params[:code].present?
-     MobileAuthCode.auth_code(account_params[:login], account_params[:code])
-     current_user.update(login: account_params[:login])
-     flash[:notice] = '绑定成功'
-     redirect_to settings_account_path
-     return
-    elsif current_user.update(account_params)
+    if account_params[:login].present? && account_params[:code].present? && MobileAuthCode.auth_code(account_params[:login], account_params[:code])
+      current_user.update(login: account_params[:login])
+      flash[:notice] = '绑定成功'
+      redirect_to settings_account_path
+      return
+    elsif current_user.update(nickname: account_params[:nickname])
       flash[:notice] = '修改成功'
       redirect_to settings_account_path
     else
@@ -75,8 +74,8 @@ class AccountsController < ApplicationController
   end
 
   def account_params
-    if current_user.login.present?
-      params.require(:user).permit(:mobile, :nickname, :login)
+    if params[:mobile].present?
+      params.require(:user).permit(:mobile, :nickname, :login, :code)
     else
       params.require(:user).permit(:nickname)
     end
