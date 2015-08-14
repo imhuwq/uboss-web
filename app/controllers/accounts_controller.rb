@@ -1,6 +1,7 @@
 class AccountsController < ApplicationController
+
   before_action :authenticate_user!
-  before_action :authenticate_agent, only: [:send_sms, :send_message, :agent_invite_seller, :edit_seller_note, :update_histroy_note]
+  before_action :authenticate_agent, only: [:send_message, :agent_invite_seller, :edit_seller_note, :update_histroy_note]
 
   def show
     @orders = append_default_filter account_orders, page_size: 20
@@ -100,7 +101,7 @@ class AccountsController < ApplicationController
     if mobile.present? && mobile =~ /\A(\s*)(?:\(?[0\+]?\d{1,3}\)?)[\s-]?(?:0|\d{1,4})[\s-]?(?:(?:13\d{9})|(?:\d{7,8}))(\s*)\Z|\A[569][0-9]{7}\Z/
       sms = send_sms(mobile, current_user.find_or_create_agent_code)
       if sms == 'OK'
-        aish = AgentInviteSellerHistroy.find_or_create_by(mobile: mobile) do |obj|
+        AgentInviteSellerHistroy.find_or_create_by(mobile: mobile) do |obj|
           obj.agent_id = current_user.id
         end
       else
@@ -110,14 +111,6 @@ class AccountsController < ApplicationController
       flash[:error] = '手机格式不正确'
     end
     redirect_to action: :agent_invite_seller
-  end
-
-  def send_sms(mobile, msg, tpl_id = 923_651) # 发送短信
-    return { 'msg' => 'error', 'detail' => '电话号码不能为空' } if mobile.blank?
-    return { 'msg' => 'error', 'detail' => '内容不能为空' } if msg.blank?
-    sms = ChinaSMS.to(mobile, { code: msg }, tpl_id: tpl_id)
-    return 'OK' if sms['msg'] == 'OK'
-    return sms
   end
 
   def binding_agent # 商家绑定创客
@@ -142,6 +135,12 @@ class AccountsController < ApplicationController
   end
 
   private
+  def send_sms(mobile, msg, tpl_id = 923_651) # 发送短信
+    return { 'msg' => 'error', 'detail' => '电话号码不能为空' } if mobile.blank?
+    return { 'msg' => 'error', 'detail' => '内容不能为空' } if msg.blank?
+    sms = ChinaSMS.to(mobile, { code: msg }, tpl_id: tpl_id)
+    sms['msg'] == 'OK' ? 'OK' : sms
+  end
 
   def account_orders
     current_user.orders.includes(order_items: { product: :asset_img })
@@ -170,7 +169,6 @@ class AccountsController < ApplicationController
     unless current_user.agent?
       flash[:error] = '您还不是创客.'
       redirect_to action: :settings
-      return
     end
   end
 end
