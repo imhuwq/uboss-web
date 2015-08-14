@@ -21,7 +21,7 @@
           我的商家绑定链接:
         </div>
         <div class="col-xs-9">
-          <%= "http://#{request.env["HTTP_HOST"]}/sellers/new?agent_code=#{current_user.find_or_create_agent_code}" %>
+          <%= new_seller_url(agent_code: current_user.agent_code) %>
         </div>
       </div>
       <div class="col-xs-12">
