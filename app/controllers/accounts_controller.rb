@@ -119,7 +119,7 @@ class AccountsController < ApplicationController
     redirect_to action: :new_agent_binding
   end
 
-  def seller_agreement_page # 商家协议
+  def seller_agreement # 商家协议
   end
 
   private

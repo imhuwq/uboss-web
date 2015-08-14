@@ -31,7 +31,7 @@ Rails.application.routes.draw do
   resource :account, only: [:show, :edit, :update] do
     get :settings, :edit_password, :reset_password,
       :orders, :new_agent_binding, :invite_seller, :edit_seller_histroy,
-      :edit_seller_note, :seller_agreement_page
+      :edit_seller_note, :seller_agreement
     put :binding_agent, :send_message, :update_histroy_note
     patch :password, to: 'accounts#update_password'
     resources :user_addresses, except: [:show]
