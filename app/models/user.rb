@@ -106,9 +106,11 @@ class User < ActiveRecord::Base
 
   end
 
-  def bind_agent(code)
-    if code == '123'
-      true
+  def bind_agent(binding_code)
+    binding_agent = User.agent.where(agent_code: binding_code)
+    if binding_agent.present?
+      user.agent = binding_agent
+      user.save
     else
       errors.add(:code, :invalid)
       false
