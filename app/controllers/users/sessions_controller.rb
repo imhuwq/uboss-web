@@ -1,6 +1,6 @@
 class Users::SessionsController < Devise::SessionsController
 
-  detect_device only: [:new]
+  detect_device only: [:new, :create]
 
   layout :login_layout
 
