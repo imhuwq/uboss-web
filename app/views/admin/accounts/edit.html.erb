@@ -1,56 +1,56 @@
-  <h4>设置</h4>
-  <hr />
+<h4>设置</h4>
+<hr />
 
-  <%= horizon_form_for current_user, url: admin_account_path, method: :patch do |f| %>
+<%= horizon_form_for current_user, url: admin_account_path, method: :patch do |f| %>
 
-    <div class="well">
-      <%= f.input :user_role, label: '当前角色' do %>
-        <h5>
-          <% current_user.user_roles.each do |role| %>
-            <span class='label label-info'><%= role.display_name %></span>
-          <% end %>
-        </h5>
-      <% end %>
-
-      <%= f.input :agent, label: '绑定创客' do %>
-        <h5>
-          <% if current_user.agent.present? %>
-            <%= current_user.agent.identify %>
-          <% else %>
-            <%= link_to "绑定创客", binding_agent_admin_account_path, class: 'btn btn-primary btn-xs' %>
-          <% end %>
-        </h5>
-      <% end %>
-
-      <%= f.input :seller_role, label: '商家权限' do %>
-        <% if f.object.authenticated? %>
-          <h5><span class="label label-success">已开通</span></h5>
-        <% elsif f.object.is_seller? %>
-          <h5>
-            <span class="label label-warning">未认证</span>
-            <%= link_to "我要认证", admin_user_personal_authentication_path(current_user),
-              class: 'btn btn-primary btn-xs'
-            %>
-          </h5>
-        <% else %>
+  <div class="well">
+    <%= f.input :user_role, label: '当前角色' do %>
+      <h5>
+        <% current_user.user_roles.each do |role| %>
+          <span class='label label-info'><%= role.display_name %></span>
         <% end %>
-      <% end %>
+      </h5>
+    <% end %>
 
-      <%= f.input :service_rate, label: '当前平台费率' do %>
-        <h5><%= number_to_percentage(f.object.service_rate, precision: 0) %></h5>
-      <% end %>
-    </div>
+    <%= f.input :agent, label: '绑定创客' do %>
+      <h5>
+        <% if current_user.agent.present? %>
+          <%= current_user.agent.identify %>
+        <% else %>
+          <%= link_to "绑定创客", binding_agent_admin_account_path, class: 'btn btn-primary btn-xs' %>
+        <% end %>
+      </h5>
+    <% end %>
 
-    <div class="well">
-      <%= f.input :avatar, hint: image_tag(current_user.avatar.url(:thumb))  %>
-      <%= f.input :login, disabled: true %>
-      <%= f.input :store_name %>
-      <%= f.input :nickname %>
-      <% if current_user.is_agent? %>
-        <%= f.input :agent_code, disabled: true %>
+    <%= f.input :seller_role, label: '商家权限' do %>
+      <% if f.object.authenticated? %>
+        <h5><span class="label label-success">已开通</span></h5>
+      <% elsif f.object.is_seller? %>
+        <h5>
+          <span class="label label-warning">未认证</span>
+          <%= link_to "我要认证", admin_user_personal_authentication_path(current_user),
+            class: 'btn btn-primary btn-xs'
+          %>
+        </h5>
+      <% else %>
       <% end %>
-    </div>
-    <div class="form-actions">
-      <%= f.submit '提交', class: 'btn btn-primary' %>
-    </div>
-  <% end %>
+    <% end %>
+
+    <%= f.input :service_rate, label: '当前平台费率' do %>
+      <h5><%= number_to_percentage(f.object.service_rate, precision: 0) %></h5>
+    <% end %>
+  </div>
+
+  <div class="well">
+    <%= f.input :avatar, hint: image_tag(current_user.avatar.url(:thumb))  %>
+    <%= f.input :login, disabled: true %>
+    <%= f.input :store_name %>
+    <%= f.input :nickname %>
+    <% if current_user.is_agent? %>
+      <%= f.input :agent_code, disabled: true %>
+    <% end %>
+  </div>
+  <div class="form-actions">
+    <%= f.submit '提交', class: 'btn btn-primary' %>
+  </div>
+<% end %>
