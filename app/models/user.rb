@@ -223,10 +223,10 @@ class User < ActiveRecord::Base
 
   def find_or_create_agent_code
     if agent_code.present?
-      return agent_code
+      agent_code
     else
       generate_agent_code
-      return self.agent_code
+      self.agent_code
     end
   end
 
@@ -234,7 +234,7 @@ class User < ActiveRecord::Base
     if code.present?
       agent = User.find_by(agent_code: code)
     else
-      agent = User.joins(:user_roles).where(user_roles:{name: 'super_admin'}).first
+      agent = User.official_account
     end
     self.agent_id = agent.id
     self.admin = true
