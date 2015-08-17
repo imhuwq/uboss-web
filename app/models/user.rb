@@ -206,11 +206,7 @@ class User < ActiveRecord::Base
   end
 
   def authenticated?
-    if self.authenticated == 'yes'
-      return true
-    else
-      return false
-    end
+    self.authenticated == 'yes'
   end
 
   def generate_agent_code

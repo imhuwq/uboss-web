@@ -19,7 +19,7 @@ $(document).on('ready page:load', function() {
         }
 
         if (!imageTag.attr('width')) {
-          imageTag.attr('width', '100%');
+          imageTag.attr('height', '240px;');
         }
         imageTag.attr('src', dataURL);
       };
