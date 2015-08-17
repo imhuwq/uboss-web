@@ -28,7 +28,7 @@
 
       <ul class="nav navbar-nav navbar-right">
         <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" style="font-weight:200;color:rgb(21, 131, 210)"><%= current_user.login %><span class="caret"></span></a>
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><%= current_user.login %><span class="caret"></span></a>
           <ul class="dropdown-menu" role="menu">
             <li><%= link_to '个人设置', edit_admin_account_path %></li>
             <li><%= link_to "修改密码", password_admin_account_path %></li>
