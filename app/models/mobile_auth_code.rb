@@ -6,7 +6,7 @@ class MobileAuthCode < ActiveRecord::Base
   after_save :send_code
 
   def self.auth_code(auth_mobile, auth_code) #验证
-    MobileAuthCode.where('expire_at > ?', Time.now).delete_all
+    MobileAuthCode.where('expire_at < ?', Time.now).delete_all
     mobile_auth_code = MobileAuthCode.
       find_by(mobile: auth_mobile, code: auth_code)
 
