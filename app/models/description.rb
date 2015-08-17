@@ -1,4 +1,4 @@
-class Content < ActiveRecord::Base
+class Description < ActiveRecord::Base
   belongs_to :resource
 
   def content=(text)
@@ -9,7 +9,7 @@ class Content < ActiveRecord::Base
         elements: Sanitize::Config::RELAXED[:elements] - ['a']
       )
     )
-    
+
     write_attribute(:content, sanitized_content)
   end
 end

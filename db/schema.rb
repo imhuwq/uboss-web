@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150813110434) do
+ActiveRecord::Schema.define(version: 20150813030637) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -51,12 +51,6 @@ ActiveRecord::Schema.define(version: 20150813110434) do
     t.string   "bankname"
   end
 
-  create_table "contents", force: :cascade do |t|
-    t.integer "resource_id"
-    t.string  "resource_type"
-    t.text    "content"
-  end
-
   create_table "daily_reports", force: :cascade do |t|
     t.date     "day"
     t.decimal  "amount"
@@ -69,6 +63,12 @@ ActiveRecord::Schema.define(version: 20150813110434) do
   end
 
   add_index "daily_reports", ["uniq_identify"], name: "index_daily_reports_on_uniq_identify", unique: true, using: :btree
+
+  create_table "descriptions", force: :cascade do |t|
+    t.integer "resource_id"
+    t.string  "resource_type"
+    t.text    "content"
+  end
 
   create_table "divide_incomes", force: :cascade do |t|
     t.integer  "user_id"
@@ -220,6 +220,7 @@ ActiveRecord::Schema.define(version: 20150813110434) do
     t.integer  "bad_evaluation",     default: 0
     t.decimal  "privilege_amount",   default: 0.0
     t.string   "short_description"
+    t.text     "content"
   end
 
   create_table "redactor_assets", force: :cascade do |t|
