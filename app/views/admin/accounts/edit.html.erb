@@ -1,15 +1,7 @@
   <h4>设置</h4>
   <hr />
 
-  <%= simple_form_for current_user, url: admin_account_path, method: :patch,
-    html: { class: 'form-horizontal' },
-    wrapper: :horizontal_form,
-    wrapper_mappings: {
-      check_boxes: :horizontal_radio_and_checkboxes,
-      radio_buttons: :horizontal_radio_and_checkboxes,
-      file: :horizontal_file_input,
-      boolean: :horizontal_boolean
-    } do |f| %>
+  <%= horizon_form_for current_user, url: admin_account_path, method: :patch do |f| %>
 
     <div class="well">
       <%= f.input :user_role, label: '当前角色' do %>
