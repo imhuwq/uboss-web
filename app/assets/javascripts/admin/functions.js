@@ -15,7 +15,7 @@ $(document).on('ready page:load', function() {
 
         if (imageTag.length == 0) {
           imageTag = $('<img>');
-          imageTag.insertBefore($(input));
+          imageTag.insertAfter($(input));
         }
 
         if (!imageTag.attr('width')) {
