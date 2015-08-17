@@ -1,30 +1,33 @@
 <div class="center-form-container" style="margin-bottom:200px;">
   <h4>设置</h4>
   <hr />
+
   当前角色：
   <% current_user.user_roles.each do |role| %>
     <span class='label label-info'><%= role.display_name %></span>
   <% end %>
+
   <% if current_user.authenticated? %>
-  <span class="label label-success">
-    已认证
-  </span>
+    <span class="label label-success">
+      已认证
+    </span>
   <% else %>
-  <span class="label label-danger">
-    未认证
-  </span>
+    <span class="label label-danger">
+      未认证
+    </span>
   <% end %>
   <hr/>
+
   <% if user = User.find_by(id: current_user.agent_id) %>
-    <hr />
     绑定创客：<%= user.identify %>
     <div class="clearfix">
       当前平台费率：<%= user.user_info.try(:service_rate) %>%
     </div>
     <hr/>
-
   <% end %>
+
   <%= simple_form_for(current_user, url: admin_account_path, method: :patch) do |f| %>
+
     <div class="form-group string optional file clearfix">
         <%= f.label :avatar, :class=>"optional control-label" %>
       <div  class="clearfix">
@@ -34,15 +37,16 @@
         <%= f.file_field :avatar ,:name=>"user[avatar]" %>
       </div>
     </div>
-    <%= f.input :login, input_html:{readonly:''} %>
+
+    <%= f.input :login, disabled: true %>
     <%= f.input :store_name %>
     <%= f.input :nickname %>
     <% if current_user.user_roles.collect(&:name).include?('agent') %>
-    <div class="form-group string optional user_login">
-      <label class="string optional control-label" for="user_agent_code">创客邀请码</label>
-      <input readonly="readonly" class="string optional form-control" type="text" value="<%= current_user.find_or_create_agent_code %>" name="user[agent_code]" id="user_login">
-    </div>
+      <div class="form-group string optional user_login">
+        <label class="string optional control-label" for="user_agent_code">创客邀请码</label>
+        <input disabled="disabled" class="string optional form-control" type="text" value="<%= current_user.find_or_create_agent_code %>" name="user[agent_code]" id="user_login">
+      </div>
     <% end %>
-    <%= f.submit class: 'btn btn-primary col-xs-12' %>
+    <%= f.submit '提交', class: 'btn btn-primary col-xs-12' %>
   <% end %>
 </div>
