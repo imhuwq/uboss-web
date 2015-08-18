@@ -28,7 +28,7 @@ set :linked_dirs, fetch(:linked_dirs, []).push(
   'log', 'tmp/pids', 'tmp/cache', 'tmp/sockets', 'vendor/bundle', 'public/system', 'public/assets'
 )
 
-set :jianliao_uri, URI(URI.encode("https://hook.lesschat.com/incoming/f4636adaa386472ebd218d9ef83d423b"))
+set :chat_robot, URI(URI.encode("https://hook.bearychat.com/=bw6K7/incoming/de9d932ea70a1f7f34addd4ab0fa3fd7"))
 
 namespace :deploy do
 
@@ -40,14 +40,18 @@ namespace :deploy do
   after :finishing, 'deploy:cleanup'
 
   task :starting_notify do
-    Net::HTTP.post_form(fetch(:jianliao_uri),
-                        text: "#{`git config user.name`} Starting Deploy branch `#{fetch(:branch)}`")
+    Net::HTTP.post_form(
+      fetch(:chat_robot),
+      payload: {text: "#{`git config user.name`} Starting Deploy branch `#{fetch(:branch)}`"}.to_json
+    )
   end
-  after 'deploy:starting', 'deploy:starting_notify'
+  after 'deploy:started', 'deploy:starting_notify'
 
   task :notify do
-    Net::HTTP.post_form(fetch(:jianliao_uri),
-                        text: "#{`git config user.name`} Deploy branch `#{fetch(:branch)}` SUCCESS.")
+    Net::HTTP.post_form(
+      fetch(:chat_robot),
+      payload: {text: "#{`git config user.name`} Deploy branch `#{fetch(:branch)}` SUCCESS."}.to_json
+    )
   end
   after 'deploy:finished', 'deploy:notify'
 
