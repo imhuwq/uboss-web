@@ -1,11 +1,8 @@
 # 商品展示
 class ProductsController < ApplicationController
-
   def index
     @products = append_default_filter Product.published.includes(:asset_img), order_column: :updated_at
-    if request.xhr?
-      render partial: 'products/product', collection: @products
-    end
+    render partial: 'products/product', collection: @products if request.xhr?
   end
 
   def show
@@ -22,19 +19,13 @@ class ProductsController < ApplicationController
 
   def save_mobile
     mobile = params[:mobile] rescue nil
-    @job = params[:job]
-    puts "@job=#{@job}"
     if mobile.present?
-      user = User.find_by_mobile(mobile)
-      if user.present?
-        # TODO
-      else
-        user = User.create_guest(mobile)
-      end
+      user = User.find_or_create_guest_with_session(mobile, session)
+      sign_in(user) if user.need_reset_password
     end
     @product = Product.find_by_id(params[:id])
     if @product.present? && user.present?
-      @sharing_link_node = SharingNode.find_or_create_by(user_id: user.id, product_id: @product.id)
+      @sharing_link_node = SharingNode.find_or_create_by(user_id: current_user.id, product_id: @product.id)
     end
     respond_to do |format|
       format.html { render nothing: true }

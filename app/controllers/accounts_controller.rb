@@ -1,5 +1,4 @@
 class AccountsController < ApplicationController
-
   layout :login_layout, only: [:set_password, :new_password, :merchant_confirm]
 
   before_action :authenticate_user!
@@ -113,11 +112,12 @@ class AccountsController < ApplicationController
   def send_message # 保存发送短信给商家的信息
     mobile = params[:send_message][:mobile] rescue nil
     if mobile.present? && mobile =~ /\A(\s*)(?:\(?[0\+]?\d{1,3}\)?)[\s-]?(?:0|\d{1,4})[\s-]?(?:(?:13\d{9})|(?:\d{7,8}))(\s*)\Z|\A[569][0-9]{7}\Z/
-      sms = send_sms(mobile, current_user.find_or_create_agent_code)
+      sms = send_sms(mobile, current_user.find_or_create_agent_code, 923_651)
       if sms == 'OK'
         AgentInviteSellerHistroy.find_or_create_by(mobile: mobile) do |obj|
           obj.agent_id = current_user.id
         end
+        flash[:success] = "您的创客码已经发送到：#{mobile}."
       else
         flash[:error] = "短信发送失败,#{sms}."
       end
@@ -149,12 +149,6 @@ class AccountsController < ApplicationController
   end
 
   private
-  def send_sms(mobile, msg, tpl_id = 923_651) # 发送短信
-    return { 'msg' => 'error', 'detail' => '电话号码不能为空' } if mobile.blank?
-    return { 'msg' => 'error', 'detail' => '内容不能为空' } if msg.blank?
-    sms = ChinaSMS.to(mobile, { code: msg }, tpl_id: tpl_id)
-    sms['msg'] == 'OK' ? 'OK' : sms
-  end
 
   def account_orders
     current_user.orders.includes(order_items: { product: :asset_img })
