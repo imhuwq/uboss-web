@@ -109,8 +109,8 @@ class User < ActiveRecord::Base
   def bind_agent(binding_code)
     agent_user = User.agent.where(agent_code: binding_code)
     if angent_user.present?
-      user.agent = agent_user
-      user.save
+      self.agent = agent_user
+      self.save
     else
       errors.add(:code, :invalid)
       false
