@@ -16,24 +16,3 @@ u1 = User.create(
 )
 u1.user_roles = [super_role,agent_role,seller_role]
 u1.save
-
-u2 = User.create(
-  login: '13800000001',
-  mobile: '13800000001',
-  password: '111111',
-  nickname: "agent1",
-  admin: true
-)
-u2.user_roles = [agent_role,seller_role]
-u2.save
-
-u3 = User.create(
-  login: '13800000002',
-  mobile: '13800000002',
-  password: '111111',
-  nickname: "seller1",
-  agent_id: u2.id,
-  admin: true
-)
-u3.user_roles = [seller_role]
-u3.save
