@@ -10,7 +10,12 @@ module Descriptiontable
   end
 
   def content=(text)
-    description.content = text
+    description.content = Sanitize.fragment(text,
+      Sanitize::Config.merge(
+        Sanitize::Config::BASIC,
+        elements: Sanitize::Config::BASIC[:elements] - ['a']
+      )
+    )
     text
   end
 
