@@ -83,6 +83,15 @@ class User < ActiveRecord::Base
       new_user
     end
 
+    def find_or_create_guest(mobile)
+      user = User.find_by(login: mobile)
+      unless user.present?
+        user = new_guest(mobile)
+        user.save
+        user
+      end
+    end
+
     def create_guest!(mobile)
       new_user = new_guest(mobile)
       new_user.save!

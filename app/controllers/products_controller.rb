@@ -20,7 +20,7 @@ class ProductsController < ApplicationController
   def save_mobile
     mobile = params[:mobile] rescue nil
     if mobile.present?
-      user = User.find_or_create_guest_with_session(mobile, session)
+      user = User.find_or_create_guest(mobile)
       sign_in(user) if user.need_reset_password
     end
     @product = Product.find_by_id(params[:id])
