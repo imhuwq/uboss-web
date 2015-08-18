@@ -5,6 +5,7 @@
 @import 'redactor-rails';
 @import "chosen.min";
 
+@import "admin/form";
 @import "admin/orders";
 @import "admin/user";
 
@@ -17,10 +18,9 @@
     width: 100%;
 }
 .mod-inner {
-/*    height: 720px;*/
-    margin: 0 auto;
-    position: relative;
-    width: 980px;
+  margin: 0 auto;
+  position: relative;
+  width: 980px;
 }
 .border_block {border: 1px solid rgb(232, 232, 232);margin-top:30px;padding-bottom:30px;}
 
@@ -32,7 +32,6 @@
     margin-right: 10px;
   }
 }
-
 .center-form-container {
   width: 300px;
   margin: 30px auto 0;
@@ -45,4 +44,7 @@
 .container-sm {
   width: 380px;
   margin: 50px auto;
+}
+.admin-container {
+  padding-bottom: 100px;
 }
