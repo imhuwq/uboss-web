@@ -104,6 +104,12 @@ class User < ActiveRecord::Base
       end
     end
 
+    def get_valuable_session(session)
+      if data = session["devise.wechat_data"] && session["devise.wechat_data"]["extra"]["raw_info"]
+        yield data if block_given?
+      end
+    end
+
   end
 
   def bind_agent(code)
@@ -116,7 +122,7 @@ class User < ActiveRecord::Base
   end
 
   def update_with_oauth_session(session)
-    get_valuable_session(session) do |data|
+    self.class.get_valuable_session(session) do |data|
       set_wechat_data(data)
       save
     end
@@ -201,6 +207,7 @@ class User < ActiveRecord::Base
   def agent?
     user_roles.collect(&:name).include?('agent')
   end
+
   def super_admin?
     user_roles.collect(&:name).include?('super_admin')
   end
@@ -238,9 +245,6 @@ class User < ActiveRecord::Base
     AgentInviteSellerHistroy.find_by(mobile: login).try(:update, status: 1)
   end
 
-
-  private
-
   def set_wechat_data(data)
     self.nickname       ||= data["nickname"]
     self.sex            ||= data["sex"]
@@ -252,11 +256,7 @@ class User < ActiveRecord::Base
     self.remote_avatar_url = data['headimgurl']
   end
 
-  def get_valuable_session(session)
-    if data = session["devise.wechat_data"] && session["devise.wechat_data"]["extra"]["raw_info"]
-      yield data if block_given?
-    end
-  end
+  private
 
   def email_required?
     false
