@@ -6,6 +6,8 @@ class TryRemoveProductContentColumn < ActiveRecord::Migration
   end
 
   def down
-    add_column :products, :content, :text
+    if not Product.column_names.include?('content')
+      add_column :products, :content, :text
+    end
   end
 end
