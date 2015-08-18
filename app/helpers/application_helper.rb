@@ -1,5 +1,19 @@
 module ApplicationHelper
 
+  def horizon_form_for(record, options = {}, &block)
+    options = options.merge(
+      html: { class: 'form-horizontal' },
+      wrapper: :horizontal_form,
+      wrapper_mappings: {
+        check_boxes: :horizontal_radio_and_checkboxes,
+        radio_buttons: :horizontal_radio_and_checkboxes,
+        file: :horizontal_file_input,
+        boolean: :horizontal_boolean
+      }
+    )
+    simple_form_for(record, options, &block)
+  end
+
   def alert_box(message, opts = {})
     alert_type = opts.delete(:type) || 'alert-info'
     content_tag :div, message, class: "alert #{alert_type}", role: 'alert', data: {dismiss: 'alert'} do

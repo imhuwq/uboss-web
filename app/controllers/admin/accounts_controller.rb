@@ -1,6 +1,10 @@
 class Admin::AccountsController < AdminController
 
-  skip_before_action :set_password, only: [:binding_agent]
+  def edit
+    if current_user.is_agent?
+      current_user.find_or_create_agent_code
+    end
+  end
 
   def update
     user_params = params.require(:user).permit(:mobile, :email, :nickname, :store_name, :agent_code, :avatar)

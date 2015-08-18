@@ -1,0 +1,7 @@
+.form-actions {
+  @extend .well;
+  padding-left: 18%;
+  .btn {
+    margin-right: 15px;
+  }
+}

@@ -3,95 +3,103 @@
   <li class="active">提现详情</li>
 </ol>
 
-<table class='table table-bordered table-condensed'>
-  <caption>提现信息</caption>
-  <tbody>
-    <tr>
-      <th><%= WithdrawRecord.human_attribute_name(:number) %></th>
-      <td><%= @withdraw_record.number %></td>
-    </tr>
-    <tr>
-      <th><%= WithdrawRecord.human_attribute_name(:user_identify) %></th>
-      <td><%= @withdraw_record.user_identify %></td>
-    </tr>
-    <tr>
-      <th><%= WithdrawRecord.human_attribute_name(:user_total_income) %></th>
-      <td><%= @withdraw_record.user_total_income %></td>
-    </tr>
-    <tr>
-      <th><%= WithdrawRecord.human_attribute_name(:created_at ) %></th>
-      <td><%= @withdraw_record.created_at %></td>
-    </tr>
-    <tr>
-      <th><%= WithdrawRecord.human_attribute_name(:amount) %></th>
-      <td><%= @withdraw_record.amount %></td>
-    </tr>
-    <tr>
-      <th><%= WithdrawRecord.human_attribute_name(:state) %></th>
-      <td>
-        <span class='label state-<%= @withdraw_record.state %>'><%= @withdraw_record.state_i18n %></span>
-      </td>
-    </tr>
-  </tbody>
-</table>
-
-<% if @withdraw_record.bank_info.present? %>
-  <table class="table table-bordered table-condensed">
-    <caption>银行卡信息</caption>
+<div class="well">
+  <h4>提现信息</h4>
+  <hr />
+  <table class='table'>
     <tbody>
       <tr>
-        <th><%= BankCard.human_attribute_name(:bankname) %></th>
-        <td><%= @withdraw_record.card_bankname %></td>
+        <th><%= WithdrawRecord.human_attribute_name(:number) %></th>
+        <td><%= @withdraw_record.number %></td>
       </tr>
       <tr>
-        <th><%= BankCard.human_attribute_name(:username) %></th>
-        <td><%= @withdraw_record.card_username %></td>
+        <th><%= WithdrawRecord.human_attribute_name(:user_identify) %></th>
+        <td><%= @withdraw_record.user_identify %></td>
       </tr>
       <tr>
-        <th><%= BankCard.human_attribute_name(:number) %></th>
-        <td><%= @withdraw_record.card_number %></td>
+        <th><%= WithdrawRecord.human_attribute_name(:user_total_income) %></th>
+        <td><%= @withdraw_record.user_total_income %></td>
+      </tr>
+      <tr>
+        <th><%= WithdrawRecord.human_attribute_name(:created_at ) %></th>
+        <td><%= @withdraw_record.created_at %></td>
+      </tr>
+      <tr>
+        <th><%= WithdrawRecord.human_attribute_name(:amount) %></th>
+        <td><%= @withdraw_record.amount %></td>
+      </tr>
+      <tr>
+        <th><%= WithdrawRecord.human_attribute_name(:state) %></th>
+        <td>
+          <span class='label state-<%= @withdraw_record.state %>'><%= @withdraw_record.state_i18n %></span>
+        </td>
       </tr>
     </tbody>
   </table>
+</div>
+
+<% if @withdraw_record.bank_info.present? %>
+  <div class="well">
+    <h4>银行卡信息</h4>
+    <table class="table table-bordered table-condensed">
+      <tbody>
+        <tr>
+          <th><%= BankCard.human_attribute_name(:bankname) %></th>
+          <td><%= @withdraw_record.card_bankname %></td>
+        </tr>
+        <tr>
+          <th><%= BankCard.human_attribute_name(:username) %></th>
+          <td><%= @withdraw_record.card_username %></td>
+        </tr>
+        <tr>
+          <th><%= BankCard.human_attribute_name(:number) %></th>
+          <td><%= @withdraw_record.card_number %></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 <% elsif @withdraw_record.user.weixin_openid.present? %>
   <p class="alert alert-info">未添加银行卡信息，已绑定微信，通过微信打款。</p>
 <% end %>
 
-<table class="table table-bordered table-condensed">
-  <tbody>
-    <caption>处理信息</caption>
-    <tr>
-      <th><%= WithdrawRecord.human_attribute_name(:process_at) %></th>
-      <td><%= @withdraw_record.process_at %></td>
-    </tr>
-    <% if can?(:manage, WithdrawRecord) %>
+<div class="well">
+  <h4>处理信息</h4>
+  <hr />
+  <table class="table table-bordered table-condensed">
+    <tbody>
       <tr>
-        <th><%= User.human_attribute_name(:weixin_openid) %></th>
-        <td><%= @withdraw_record.user.weixin_openid %></td>
+        <th><%= WithdrawRecord.human_attribute_name(:process_at) %></th>
+        <td><%= @withdraw_record.process_at %></td>
       </tr>
-    <% end %>
-    <tr>
-      <th><%= WithdrawRecord.human_attribute_name(:wx_payment_no) %></th>
-      <td><%= @withdraw_record.wx_payment_no %></td>
-    </tr>
-    <tr>
-      <th><%= WithdrawRecord.human_attribute_name(:wx_payment_time) %></th>
-      <td><%= @withdraw_record.wx_payment_time %></td>
-    </tr>
-    <tr>
-      <th><%= WithdrawRecord.human_attribute_name(:done_at) %></th>
-      <td><%= @withdraw_record.done_at %></td>
-    </tr>
-    <% if @withdraw_record.error_info && can?(:manage, WithdrawRecord) %>
+      <% if can?(:manage, WithdrawRecord) %>
+        <tr>
+          <th><%= User.human_attribute_name(:weixin_openid) %></th>
+          <td><%= @withdraw_record.user.weixin_openid %></td>
+        </tr>
+      <% end %>
       <tr>
-        <th><%= WithdrawRecord.human_attribute_name(:error_info) %></th>
-        <th><%= @withdraw_record.error_info %></th>
+        <th><%= WithdrawRecord.human_attribute_name(:wx_payment_no) %></th>
+        <td><%= @withdraw_record.wx_payment_no %></td>
       </tr>
-    <% end %>
-  </tbody>
-</table>
+      <tr>
+        <th><%= WithdrawRecord.human_attribute_name(:wx_payment_time) %></th>
+        <td><%= @withdraw_record.wx_payment_time %></td>
+      </tr>
+      <tr>
+        <th><%= WithdrawRecord.human_attribute_name(:done_at) %></th>
+        <td><%= @withdraw_record.done_at %></td>
+      </tr>
+      <% if @withdraw_record.error_info && can?(:manage, WithdrawRecord) %>
+        <tr>
+          <th><%= WithdrawRecord.human_attribute_name(:error_info) %></th>
+          <th><%= @withdraw_record.error_info %></th>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
 
-<div class="actions">
+<div class="form-actions">
   <% if @withdraw_record.unprocess? && can?(:manage, WithdrawRecord) %>
 
     <%= link_to withdraw_process_txt(@withdraw_record),
@@ -101,7 +109,7 @@
 
     <%= link_to '拒绝', close_admin_withdraw_record_path(@withdraw_record),
       method: :PATCH, data: {confirm: '确认拒绝，并关闭此提现申请？'},
-      class: 'btn text-danger' %>
+      class: 'btn btn-danger' %>
 
   <% end %>
 </div>
