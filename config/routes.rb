@@ -36,7 +36,7 @@ Rails.application.routes.draw do
         :edit_seller_histroy, :edit_seller_note, :seller_agreement,
         :merchant_confirm
 
-    put :binding_agent, :send_message, :update_histroy_note
+    put :binding_agent, :send_message, :update_histroy_note, :update_nickname
     patch :merchant_confirm, to: 'accounts#merchant_confirmed'
     patch :password, to: 'accounts#update_password'
     resources :user_addresses, except: [:show]

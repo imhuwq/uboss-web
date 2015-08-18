@@ -16,10 +16,10 @@ class AccountsController < ApplicationController
   def edit
   end
 
-  def update
-    if current_user.update(account_params)
+  def update_nickname
+    if current_user.update(nickname: params[:user][:nickname])
       flash[:notice] = '修改成功'
-      redirect_to settings_account_path
+      redirect_to action: :edit
     else
       render :edit
     end
@@ -138,7 +138,7 @@ class AccountsController < ApplicationController
         return
       else
         current_user.binding_agent(params[:agent_code])
-        MobileAuthCode.find_by(code: account_params[:mobile_auth_code]).try(:destroy)
+        MobileAuthCode.find_by(code: params[:user][:mobile_auth_code]).try(:destroy)
         flash[:success] = "绑定成功,#{agent.identify}成为您的创客。"
       end
     end
@@ -154,14 +154,10 @@ class AccountsController < ApplicationController
     current_user.orders.includes(order_items: { product: :asset_img })
   end
 
-  def account_params
-    params.require(:user).permit(:mobile, :nickname, :code, :mobile_auth_code)
-  end
-
   def valid_code
     @errors = []
     hash = {
-      '验证码错误或已过期。': MobileAuthCode.auth_code(account_params[:mobile], account_params[:mobile_auth_code]),
+      '验证码错误或已过期。' => MobileAuthCode.auth_code(params[:user][:mobile], params[:user][:mobile_auth_code]),
       # '创客邀请码错误。': User.find_by(agent_code: params[:agent_code])
     }
     hash.each do |k, v|

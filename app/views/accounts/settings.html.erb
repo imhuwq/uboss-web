@@ -34,13 +34,6 @@
         <span class="center_content">
           <%= current_user.login %>
         </span>
-        <% if !current_user.login.present? %>
-        <span class="right_content">
-          <%= link_to edit_mobile_account_path do %>
-          设置<%= image_tag("uboss_29/right.png") %>
-          <% end %>
-        </span>
-        <% end %>
       </p>
       <% if current_user.login.present? %>
         <p>
