@@ -245,9 +245,6 @@ class User < ActiveRecord::Base
     AgentInviteSellerHistroy.find_by(mobile: login).try(:update, status: 1)
   end
 
-
-  private
-
   def set_wechat_data(data)
     self.nickname       ||= data["nickname"]
     self.sex            ||= data["sex"]
@@ -258,6 +255,8 @@ class User < ActiveRecord::Base
     self.weixin_openid    = data['openid']
     self.remote_avatar_url = data['headimgurl']
   end
+
+  private
 
   def email_required?
     false
