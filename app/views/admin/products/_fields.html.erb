@@ -6,7 +6,9 @@
   <%= f.input :present_price %>
   <%= f.input :count %>
   <%= f.input :short_description %>
-  <%= f.input :asset_img, as: :file, hint: image_tag(@product.image_url(:thumb))  %>
+  <%= f.input :asset_img, as: :file, hint: image_tag(@product.image_url(:thumb)) do %>
+    <%= f.file_field :asset_img, name: :asset_img %>
+  <% end%>
 </div>
 
 <div class="well">
