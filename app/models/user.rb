@@ -107,8 +107,8 @@ class User < ActiveRecord::Base
   end
 
   def bind_agent(binding_code)
-    agent_user = User.agent.where(agent_code: binding_code)
-    if angent_user.present?
+    agent_user = User.agent.find_by(agent_code: binding_code)
+    if agent_user.present?
       self.agent = agent_user
       self.save
     else
@@ -243,7 +243,6 @@ class User < ActiveRecord::Base
     self.save
     AgentInviteSellerHistroy.find_by(mobile: login).try(:update, status: 1)
   end
-
 
   private
 
