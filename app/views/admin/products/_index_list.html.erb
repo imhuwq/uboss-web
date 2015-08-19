@@ -4,7 +4,7 @@
     <%= link_to [:admin, obj] do %>
     <div class="" style="width:370px;float:left;">
       <div class="col-sm-3">
-        <%= image_tag(obj.image_url(:h50), size: "100x80", alt: "-") %>
+        <%= image_tag(obj.image_url(:thumb), size: "100x80", alt: "-") %>
       </div>
       <div class="col-sm-9"  style="padding-top:15px;">
         <div class="col-sm-12">商品名称：<%= obj.name %></div>
