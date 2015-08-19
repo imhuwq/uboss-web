@@ -76,4 +76,10 @@ module ApplicationHelper
     boolean_value ? '' : 'disabled'
   end
 
+  def production_meta_tag
+    content_tag :meta, '', name: :title,       content: Rails.application.secrets.metas.title
+    content_tag :meta, '', name: :Keywords,    content: Rails.application.secrets.metas.keywords
+    content_tag :meta, '', name: :description, content: Rails.application.secrets.metas.description
+  end
+
 end

@@ -3,6 +3,9 @@
   <head>
     <meta charset="utf-8" />
     <meta id='MobileViewport' name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+    <% if Rails.env.production? %>
+      <%= production_meta_tag %>
+    <% end %>
     <%= yield(:extra_meta_tags) %>
 
     <title><%= content_for?(:title) ? yield(:title) : "UBoss" %></title>
