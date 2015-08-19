@@ -25,6 +25,17 @@
           <%= @product.code %>
         </div>
       </div>
+      <% if current_user.supper_admin? %>
+      <div class="form-group clearfix">
+        <label class="string required text-right col-sm-3 control-label" for="product_name">
+          <abbr title="必填">*</abbr>
+          所属商家
+        </label>
+        <div class="col-sm-9">
+          <%= @product.user.indentify %>
+        </div>
+      </div>
+      <% end %>
       <div class="form-group clearfix">
         <label class="string required text-right col-sm-3 control-label" for="product_name">
           <abbr title="必填">*</abbr>

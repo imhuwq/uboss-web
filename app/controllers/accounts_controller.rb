@@ -135,7 +135,6 @@ class AccountsController < ApplicationController
       if @errors.present?
         flash[:error] = @errors.join("\n")
         redirect_to action: :new_agent_binding, agent_code: params[:agent_code]
-        return
       else
         current_user.binding_agent(params[:agent_code])
         MobileAuthCode.find_by(code: params[:user][:mobile_auth_code]).try(:destroy)

@@ -26,6 +26,9 @@ class Ability
 
   def grant_permissions_to_super_admin user
     can :manage, :all
+    cannot :edit, Product
+    cannot :create, Product
+    cannot :update, Product
   end
 
   def grant_permissions_to_seller user
