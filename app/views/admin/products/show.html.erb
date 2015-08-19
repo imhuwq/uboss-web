@@ -197,7 +197,7 @@
 	</div>
 
   <div class="button_div  col-xs-4"  style="margin-top:30px;padding-bottom:30px;">
-    <% if t.user_id.to_s == current_user.id.to_s %>
+    <% if t.user_id == current_user.id %>
       <%= link_to("编辑", url_for(:action=>:edit,:id=>@product.id), :class=>"btn btn-warning active  col-xs-12",:role=>"button") %>
     <% end %>
   </div>

@@ -57,7 +57,7 @@ class Admin::ProductsController < AdminController
 
   def change_status
     @product = Product.find(params[:id])
-    if @product.user_id.to_s == current_user.id.to_s
+    if @product.user_id == current_user.id
       if params[:status] == 'published'
         if @product.user.authenticated?
           @product.status = 'published'

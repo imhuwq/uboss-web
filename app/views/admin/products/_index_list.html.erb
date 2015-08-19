@@ -28,7 +28,7 @@
   <% end %>
   <%= t.cell :created_at %>
   <%= t.cell :methods do |obj| %>
-  <% if t.user_id.to_s == current_user.id.to_s %>
+  <% if t.user_id == current_user.id %>
     <div style="padding-top:15px;width:240;float:left;">
       <div class="col-xs-4">
         <%= link_to("编辑", url_for(:action=>:edit,:id=>obj.id), class:"btn btn-xs btn-warning",style:"margin-bottom:5px;")%>
