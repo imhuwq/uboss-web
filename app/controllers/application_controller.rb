@@ -2,7 +2,6 @@ class ApplicationController < ActionController::Base
 
   include SimpleCaptcha::ControllerHelpers
   include DetectDevise
-  include SMS
 
   helper_method :desktop_request?
 
