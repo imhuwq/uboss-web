@@ -76,7 +76,7 @@ class Admin::ProductsController < AdminController
     respond_to do |format|
       format.html { redirect_to action: :show, id: @product.id }
       format.js do
-        products = Product.where(user_id: current_user.id, status: [0,1]).order('created_at DESC')
+        products = Product.accessible_by(current_ability).where(status: [0,1]).order('created_at DESC')
         @products = products.page(params[:page] || 1)
       end
     end
