@@ -112,9 +112,12 @@ class User < ActiveRecord::Base
 
   end
 
-  def bind_agent(code)
-    if code == '123'
-      true
+  def bind_agent(binding_code)
+    agent_user = User.agent.find_by(agent_code: binding_code)
+    if agent_user.present?
+      self.agent = agent_user
+      self.become_uboss_seller
+      self.save
     else
       errors.add(:code, :invalid)
       false
@@ -139,9 +142,11 @@ class User < ActiveRecord::Base
   end
 
   def become_uboss_seller
-    transaction do
-      update_columns(admin: true)
-      user_roles << UserRole.seller
+    if not self.is_seller?
+      transaction do
+        update_columns(admin: true)
+        user_roles << UserRole.seller
+      end
     end
   end
 

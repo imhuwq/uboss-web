@@ -167,7 +167,7 @@ class AccountsController < ApplicationController
   def valid_code
     @errors = []
     hash = {
-      '验证码错误或已过期。': MobileAuthCode.auth_code(account_params[:mobile], account_params[:mobile_auth_code]),
+      '验证码错误或已过期。' => MobileAuthCode.auth_code(account_params[:mobile], account_params[:mobile_auth_code]),
       # '创客邀请码错误。': User.find_by(agent_code: params[:agent_code])
     }
     hash.each do |k, v|
