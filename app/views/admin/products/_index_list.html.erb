@@ -1,4 +1,4 @@
-<%= render 'layouts/flash_alert' %>
+<%= render 'layouts/flash_alert' if action_name == "change_status" %>
 <%= table_for(@products) do |t| %>
   <%= t.cell :name do |obj| %>
     <%= link_to [:admin, obj] do %>
