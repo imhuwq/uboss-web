@@ -64,6 +64,12 @@ ActiveRecord::Schema.define(version: 20150806065044) do
 
   add_index "daily_reports", ["uniq_identify"], name: "index_daily_reports_on_uniq_identify", unique: true, using: :btree
 
+  create_table "descriptions", force: :cascade do |t|
+    t.integer "resource_id"
+    t.string  "resource_type"
+    t.text    "content"
+  end
+
   create_table "divide_incomes", force: :cascade do |t|
     t.integer  "user_id"
     t.integer  "order_id"
@@ -184,7 +190,6 @@ ActiveRecord::Schema.define(version: 20150806065044) do
     t.decimal  "original_price",     default: 0.0
     t.decimal  "present_price",      default: 0.0
     t.integer  "count",              default: 0
-    t.text     "content"
     t.boolean  "buyer_pay",          default: true
     t.decimal  "traffic_expense",    default: 0.0
     t.datetime "created_at"
