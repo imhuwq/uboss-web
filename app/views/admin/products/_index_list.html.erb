@@ -14,6 +14,11 @@
 
     <% end %>
   <% end %>
+  <% if current_user.super_admin? %>
+    <%= t.cell :seller do |obj| %>
+      <%= link_to obj.user.identify, url_for(controller: 'admin/sellers', action: :show, id: obj.user) %>
+    <% end %>
+  <% end %>
   <%= t.cell :good_reputation do |obj| %>
   <%= Evaluation.product_good_reputation_rate(obj.id) %>
   <% end %>
