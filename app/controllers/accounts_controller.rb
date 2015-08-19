@@ -16,7 +16,7 @@ class AccountsController < ApplicationController
   def edit
   end
 
-  def update_nickname
+  def update
     if current_user.update(nickname: params[:user][:nickname])
       flash[:notice] = '修改成功'
       redirect_to action: :edit
