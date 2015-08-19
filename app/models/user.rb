@@ -243,6 +243,7 @@ class User < ActiveRecord::Base
     end
     self.agent_id = agent.id
     self.admin = true
+    self.user_roles << UserRole.seller unless self.seller?
     self.save
     AgentInviteSellerHistroy.find_by(mobile: login).try(:update, status: 1)
   end
