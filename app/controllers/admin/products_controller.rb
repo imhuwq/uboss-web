@@ -57,22 +57,25 @@ class Admin::ProductsController < AdminController
 
   def change_status
     @product = Product.find(params[:id])
-    if params[:status] == 'published'
-      if current_user.authenticated?
-        @product.status = 'published'
-        flash[:success] = '上架成功'
-      else
-        flash[:notice] = '请先验证:点击右上角用户名，进入“个人/企业认证”'
+    if @product.user.id == current_user.id
+      if params[:status] == 'published'
+        if @product.user.authenticated?
+          @product.status = 'published'
+          flash[:success] = '上架成功'
+        else
+          flash[:notice] = '该帐号还未通过身份样子，请先验证:点击右上角用户名，进入“个人/企业认证”'
+        end
+      elsif params[:status] == 'unpublish'
+        @product.status = 'unpublish'
+        flash[:success] = '取消上架成功'
+      elsif params[:status] == 'closed'
+        @product.status = 'closed'
+        flash[:success] = '删除成功'
       end
-    elsif params[:status] == 'unpublish'
-      @product.status = 'unpublish'
-      flash[:success] = '取消上架成功'
-    elsif params[:status] == 'closed'
-      @product.status = 'closed'
-      flash[:success] = '删除成功'
+      @product.save
+    else
+      flash[:error] = "您不是该商品的发布者。"
     end
-    @product.save
-    puts @product.errors.full_messages.join('<br/>')
     respond_to do |format|
       format.html { redirect_to action: :show, id: @product.id }
       format.js do
