@@ -51,6 +51,7 @@ class User < ActiveRecord::Base
   before_create :build_user_info, if: -> { user_info.blank? }
 
   scope :admin, -> { where(admin: true) }
+  scope :agent, -> { joins(:user_roles).where(user_roles: {name: 'agent'}) }
 
   UserRole::ROLE_NAMES.each do |role|
     User.class_eval do
