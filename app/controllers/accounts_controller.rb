@@ -58,6 +58,9 @@ class AccountsController < ApplicationController
   end
 
   def new_agent_binding # 商家绑定创客
+    if current_user.agent.present?
+      redirect_to action: :binding_success_page
+    end
   end
 
   def update_password
@@ -128,8 +131,8 @@ class AccountsController < ApplicationController
   end
 
   def binding_agent # 商家绑定创客
-    if current_user.authenticated?
-      flash[:notice] = '您已经是认证商家，不能更换绑定'
+    if current_user.agent.present?
+      redirect_to action: :binding_success_page
     else
       valid_code
       if @errors.present?
@@ -138,13 +141,15 @@ class AccountsController < ApplicationController
       else
         current_user.binding_agent(params[:agent_code])
         MobileAuthCode.find_by(code: params[:user][:mobile_auth_code]).try(:destroy)
-        flash[:success] = "绑定成功,#{agent.identify}成为您的创客。"
+        redirect_to action: :binding_success_page
       end
     end
-    redirect_to action: :new_agent_binding
   end
 
   def seller_agreement # 商家协议
+  end
+
+  def binding_success_page
   end
 
   private
