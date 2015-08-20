@@ -3,11 +3,7 @@
 <% end %>
 
 <%= content_for :extra_meta_tags do %>
-  <%= sharing_meta_tags(
-    sharing_title: product_sharing_title(@product),
-    sharing_desc: product_sharing_desc(@product),
-    sharing_imgurl: @product.image_url(:thumb),
-    sharing_link: product_sharing_link(@product, @sharing_link_node)) %>
+  <%= sharing_meta_tags(@product, @sharing_link_node) %>
 <% end %>
 
 <div class="container">
@@ -101,9 +97,7 @@ $('#copycardid').on('click', this,function(event) {
 <% if browser.wechat? %>
   <%= content_for :extra_javascript do %>
     <script type="text/javascript" charset="utf-8">
-      wx.ready(function(){
-        UBoss.luffy.invokeSharing();
-      });
+      wx.ready(function(){ UBoss.luffy.invokeSharing(); });
     </script>
   <% end %>
 <% end %>
