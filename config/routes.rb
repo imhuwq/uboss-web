@@ -1,6 +1,8 @@
 require 'sidekiq/web'
+require 'okay_responder'
 
 Rails.application.routes.draw do
+  mount OkayResponder.new, at: "__upyun_uploaded"
 
   devise_for :user, path: '/', controllers: {
     registrations: "users/registrations",
