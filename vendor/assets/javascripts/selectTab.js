@@ -64,3 +64,9 @@
 			default:break;
 		}
 	});
+
+	$(function(){
+			 if($(document).width()<1630){
+				 $('.page1_tab .tabs').css('margin','39px 60px');
+			 }
+		 })
