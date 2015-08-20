@@ -5,17 +5,6 @@ a{
 	text-decoration: none;
 	color:black;
 }
-<<<<<<< HEAD
-body a {
-	text-decoration: none;
-	color: #1E1F1D;
-}
-=======
-/*body a {
-	text-decoration: none;
-	color: #1E1F1D;
-}*/
->>>>>>> bf808d4... Merge branch 'feature/official-uboss-frontend' into staging
 
 .currentPage{
 	background:#43C3AA;
@@ -31,10 +20,7 @@ body a {
 	font-weight: bold;
 	font-size: 48px;
 	letter-spacing: 8px;
-<<<<<<< HEAD
-=======
 	margin-top:108px;
->>>>>>> bf808d4... Merge branch 'feature/official-uboss-frontend' into staging
 }
 .service_centre_nav {
 	text-align: center;
@@ -58,21 +44,11 @@ body a {
 }
 .consumer_nav nav {
 	/*float:left;*/
-<<<<<<< HEAD
-	
-=======
-
->>>>>>> bf808d4... Merge branch 'feature/official-uboss-frontend' into staging
 	margin-left: -80px;
 }
 .consumer_nav hr {
 	border: 1px #66CDAA solid;
 	/*color: #66CDAA;*/
-<<<<<<< HEAD
-	
-=======
-
->>>>>>> bf808d4... Merge branch 'feature/official-uboss-frontend' into staging
 	margin-top: 10px;
 }
 .content1 {
@@ -82,7 +58,6 @@ body a {
 	border-color: #66CDAA;
 	height: 300px;
 	/*overflow:-webkit-paged-x;*/
-<<<<<<< HEAD
 }
 .questions {
 	margin: 20px 60px 0px 20px;
@@ -92,17 +67,6 @@ body a {
 	margin-left: 300px;
 	margin-top: -285px;
 }
-=======
-}
-.questions {
-	margin: 20px 60px 0px 20px;
-	position: inherit;
-}
-.content1_list2 {
-	margin-left: 300px;
-	margin-top: -285px;
-}
->>>>>>> bf808d4... Merge branch 'feature/official-uboss-frontend' into staging
 .content1_list3 {
 	margin-top: -285px;
 	margin-left: 600px;
@@ -125,11 +89,6 @@ body a {
 	color: #FFCD00;
 	font-weight: bold;
 	/*margin-top: 110px;*/
-<<<<<<< HEAD
-	
-=======
-
->>>>>>> bf808d4... Merge branch 'feature/official-uboss-frontend' into staging
 	margin-left: 54px;
 	top: -23px;
 	position: relative;
@@ -145,11 +104,6 @@ body a {
 .page1_tab .tabs {
 	/*margin: 0 auto;*/
 	display: inline-block;
-<<<<<<< HEAD
-	
-=======
-
->>>>>>> bf808d4... Merge branch 'feature/official-uboss-frontend' into staging
 	margin: 39px 120px;
 	position: relative;
 }
@@ -160,15 +114,6 @@ body a {
 	text-align: center;
 	position: relative;
 	margin-top: -40px;
-<<<<<<< HEAD
-}
-.page2_tab .tabs {
-	/*margin: 0 auto;*/
-	display: inline-block;
-	margin: 52px 105px;
-	position:relative;
-}
-=======
 }
 .page2_tab .tabs {
 	/*margin: 0 auto;*/
@@ -176,7 +121,6 @@ body a {
 	margin: 52px 100px;
 	position:relative;
 }
->>>>>>> bf808d4... Merge branch 'feature/official-uboss-frontend' into staging
 .content2 {
 	margin-top: 34px;
 	border: double;
@@ -188,11 +132,7 @@ body a {
 	display: none;
 }
 /*
-<<<<<<< HEAD
- * 
-=======
  *
->>>>>>> bf808d4... Merge branch 'feature/official-uboss-frontend' into staging
  * 图形绘制
  */
 
@@ -454,11 +394,6 @@ background-color: rgb( 67, 195, 170 );
 	color:#ffffff;
 }
 .ui-issues-tab-unswitched{
-<<<<<<< HEAD
-	
-=======
-
->>>>>>> bf808d4... Merge branch 'feature/official-uboss-frontend' into staging
 	top:0px;
 	background-color: #e5e5e5;
   position: absolute;
@@ -471,8 +406,4 @@ background-color: rgb( 67, 195, 170 );
 	margin: 10px auto;
 	font-size: 18px;
 	color:#aaa5a7;
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> bf808d4... Merge branch 'feature/official-uboss-frontend' into staging
