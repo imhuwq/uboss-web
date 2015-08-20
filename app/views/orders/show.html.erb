@@ -65,6 +65,11 @@
   </div>
 </div>
 
+<% if @privilege_card.present? %>
+  <br />
+  <%= render partial: 'privilege_card', locals: { privilege_card: @privilege_card } %>
+<% end %>
+
 <br/>
 
 <div class="pay-comment order-store-info">
@@ -88,9 +93,9 @@
   </div>
 </div>
 
-<br />
 
 <% if @order.payed? && @product.is_official_agent? %>
+  <br />
   <div class="pay-comment order-store-info">
     <div class="store-title">
       创客权订单信息
@@ -99,6 +104,7 @@
     <p>订单处理完成后，您将成为UBOSS创客，请到<%= link_to "个人设置", settings_account_path %>设置您的密码(如果您还没有设置过密码)。</p>
   </div>
 <% end %>
+
 <% if @order.completed? && @product.is_official_agent? %>
   <div class="pay-comment order-store-info">
     <div class="store-title">
@@ -112,25 +118,25 @@
 
 <br />
 
-<div class="accunt_adil_box3">
-  <% if @order.unpay? && browser.wechat? %>
+<% if @order.unpay? && browser.wechat? %>
+  <div class="accunt_adil_box3">
     <%= link_to "支付", '#', id: 'wx-pay-btn', class: 'accunt_adilbtn' %>
-  <% elsif @order.shiped? %>
-    <%= link_to "确认收货", received_order_path(@order),
-      class:"accunt_adilbtn", data: { confirm: '确认收货？' } %>
-  <% end %>
-</div>
+  </div>
+<% elsif @order.shiped? %>
+  <div class="accunt_adil_box3">
+    <%= link_to "确认收货", received_order_path(@order), class:"accunt_adilbtn", data: { confirm: '确认收货？' } %>
+  </div>
+<% end %>
 
 <% if @order.signed? || @order.completed? %>
   <% if @order_item.evaluation_id.blank? %>
     <div class="accunt_adil_box3">
       <%= link_to "评价", new_evaluation_path(id: @order_item.id), class: 'accunt_adilbtn' %>
     </div>
-  <% else %>
-    <div class="fenxinrated">
-      <%= render partial: 'application/share_buttoms', locals: { product: @product, node: @sharing_link_node } %>
-    </div>
   <% end %>
+  <div class="fenxinrated">
+    <%= render partial: 'application/share_buttoms', locals: { product: @product, node: @sharing_link_node } %>
+  </div>
 <% end %>
 
 <% if browser.wechat? %>

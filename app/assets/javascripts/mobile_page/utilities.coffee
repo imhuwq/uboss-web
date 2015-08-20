@@ -2,7 +2,10 @@ $ ->
 
   $('.share-wx-btn').on 'click', (e)->
     e.preventDefault()
-    $(".wx-mod-pop").show()
+    if window.wx != undefined
+      $(".wx-mod-pop").show()
+    else
+      window.location.replace('#share_buttoms')
 
   $(".wx-mod-pop").on 'click', ->
     $(this).hide()
