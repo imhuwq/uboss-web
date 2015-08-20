@@ -164,10 +164,7 @@
   <% if @order.signed? || @order.completed? %>
     <%= content_for :extra_javascript do %>
       <script type="text/javascript" charset="utf-8">
-        wx.ready(function(){
-          alert('sharing init');
-          UBoss.luffy.invokeSharing();
-        });
+        wx.ready(function(){ UBoss.luffy.invokeSharing(); });
       </script>
     <% end %>
   <% end %>
