@@ -81,7 +81,7 @@ class AccountsController < ApplicationController
       sign_in current_user, bypass: true
       redirect_to settings_account_path, notice: '修改密码成功'
     else
-      flash.now[:error] = current_user.errors.full_messages.joins('<br/>')
+      flash.now[:error] = current_user.errors.full_messages.join('<br/>')
       render :edit_password
     end
   end

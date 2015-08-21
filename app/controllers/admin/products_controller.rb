@@ -56,26 +56,21 @@ class Admin::ProductsController < AdminController
   end
 
   def change_status
-    @product = Product.find(params[:id])
-    if @product.user_id == current_user.id
-      if params[:status] == 'published'
-        if @product.user.authenticated?
-          @product.status = 'published'
-          flash[:success] = '上架成功'
-        else
-          flash[:notice] = '该帐号还未通过身份样子，请先验证:点击右上角用户名，进入“个人/企业认证”'
-        end
-      elsif params[:status] == 'unpublish'
-        @product.status = 'unpublish'
-        flash[:success] = '取消上架成功'
-      elsif params[:status] == 'closed'
-        @product.status = 'closed'
-        flash[:success] = '删除成功'
+    if params[:status] == 'published'
+      if @product.user.authenticated?
+        @product.status = 'published'
+        flash[:success] = '上架成功'
+      else
+        flash[:notice] = '该帐号还未通过身份样子，请先验证:点击右上角用户名，进入“个人/企业认证”'
       end
-      @product.save
-    else
-      flash[:error] = "您不是该商品的发布者。"
+    elsif params[:status] == 'unpublish'
+      @product.status = 'unpublish'
+      flash[:success] = '取消上架成功'
+    elsif params[:status] == 'closed'
+      @product.status = 'closed'
+      flash[:success] = '删除成功'
     end
+    @product.save
     respond_to do |format|
       format.html { redirect_to action: :show, id: @product.id }
       format.js do
@@ -86,7 +81,6 @@ class Admin::ProductsController < AdminController
   end
 
   def pre_view
-    @product = Product.find(params[:id])
     @seller = @product.user
     render layout: 'application'
   end

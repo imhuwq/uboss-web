@@ -197,16 +197,18 @@
 	</div>
 
   <div class="button_div  col-xs-4"  style="margin-top:30px;padding-bottom:30px;">
-    <% if @product.user_id == current_user.id %>
+    <% if can? :edit, @product %>
       <%= link_to("编辑", url_for(:action=>:edit,:id=>@product.id), :class=>"btn btn-warning active  col-xs-12",:role=>"button") %>
     <% end %>
   </div>
   <div class="button_div  col-xs-4"  style="margin-top:30px;padding-bottom:30px;"><%= link_to("预览", url_for(:action=>:pre_view,:id=>@product.id), :class=>"btn btn-info active col-xs-12",:role=>"button",:target=>"_blank") %></div>
   <div class="button_div  col-xs-4"  style="margin-top:30px;padding-bottom:30px;">
-    <% if @product.status == 'unpublish' %>
-    <%= link_to("上架", url_for(action: :change_status, id: @product.id, status: :published), :class=>"btn btn-success active  col-xs-12",:role=>"button") %>
-    <% else %>
-    <%= link_to("取消上架", url_for(action: :change_status,id: @product.id, status: :unpublish), :class=>"btn btn-default active  col-xs-12",:role=>"button") %>
+    <% if can? :update, @product %>
+      <% if @product.status == 'unpublish' %>
+      <%= link_to("上架", url_for(action: :change_status, id: @product.id, status: :published), :class=>"btn btn-success active  col-xs-12",:role=>"button") %>
+      <% else %>
+      <%= link_to("取消上架", url_for(action: :change_status,id: @product.id, status: :unpublish), :class=>"btn btn-default active  col-xs-12",:role=>"button") %>
+      <% end %>
     <% end %>
   </div>
 </div>
