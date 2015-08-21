@@ -32,6 +32,7 @@ gem 'coffee-rails', '~> 4.1.0'
 gem "simple_form"
 gem "tabletastic", path: "vendor/gems"
 gem 'redactor-rails', github: 'xEasy/redactor-rails'
+gem "jquery-fileupload-rails"
 
 # See https://github.com/rails/execjs#readme for more supported runtimes
 gem 'therubyracer', platforms: :ruby

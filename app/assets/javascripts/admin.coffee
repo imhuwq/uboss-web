@@ -5,6 +5,9 @@
 #= require redactor-rails/plugins/imagemanager
 #= require redactor-rails/langs/zh_cn
 #= require chosen.jquery.min
+#= require jquery-fileupload/basic
+#= require querystring
+#= require shared/upyun
 #= require_tree ./admin
 #= require_self
 

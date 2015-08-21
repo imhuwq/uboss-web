@@ -12,4 +12,5 @@ class AssetImg < ActiveRecord::Base
   def image_url(version = nil)
     avatar.url(version)
   end
+
 end

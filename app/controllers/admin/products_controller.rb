@@ -21,9 +21,6 @@ class Admin::ProductsController < AdminController
 
   def create
     product = Product.new(product_params)
-    img = AssetImg.new
-    img.avatar = params[:asset_img]
-    product.asset_img = img
     product.user_id = current_user.id
     if product.save
       flash[:success] = '产品创建成功'
@@ -41,13 +38,7 @@ class Admin::ProductsController < AdminController
 
   def update
     product = Product.find(params[:id])
-    if params[:asset_img].present?
-      img = AssetImg.new
-      img.avatar = params[:asset_img]
-      product.asset_img = img
-    end
-    if product.present? && product.user_id == current_user.id && product.update_attributes(product_params)
-
+    if product.present? && product.user_id == current_user.id && product.update(product_params)
       flash[:success] = '保存成功'
     else
       flash[:error] = "保存失败。#{product.errors.full_messages.join('<br/>')}"
@@ -91,7 +82,7 @@ class Admin::ProductsController < AdminController
   private
 
   def product_params
-    params.require(:product).permit(:name, :original_price,
+    params.require(:product).permit(:name, :original_price, :avatar,
                                     :present_price, :count, :asset_img, :content,
                                     :has_share_lv, :calculate_way,
                                     :share_amount_total, :share_amount_lv_1, :share_amount_lv_2, :share_amount_lv_3,
