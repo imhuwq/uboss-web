@@ -7,7 +7,7 @@
     <div class="fenxinag_line2">
       <span class="fenxinag_box1">手机号码</span>
       <span class="fenxinag_box2">
-        <%= text_field_tag 'mobile[]','', type:"tel",placeholder:"手机号",class:"fenxinag_text",id:"save_mobile_mobile" %>
+        <%= text_field_tag 'mobile[]', current_user.try(:login), type:"tel",placeholder:"手机号",class:"fenxinag_text",id:"save_mobile_mobile" %>
       </span>
       <input id="sharing_code" style="display: none;">
     </div>

@@ -149,7 +149,7 @@ class AccountsController < ApplicationController
   def seller_agreement # 商家协议
   end
 
-  def binding_success_page
+  def binding_successed
   end
 
   private
