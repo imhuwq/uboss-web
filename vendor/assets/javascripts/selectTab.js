@@ -1,6 +1,8 @@
 /*
  * 入门教程点击切换
  */
+ $(window).load(function() {
+
 	window.flag1_id = "tutorial1";			//消费者入门教程，上次选中标签的标识
 	$('.page1_tab .tabs').click(function(){
 		var exElement = $('#'+flag1_id+' div');
@@ -64,9 +66,9 @@
 			default:break;
 		}
 	});
-
-	$(function(){
-			 if($(document).width()<1630){
-				 $('.page1_tab .tabs').css('margin','39px 60px');
-			 }
-		 })
+});
+$(function(){
+	if($(document).width()<1630){
+		$('.page1_tab .tabs').css('margin','39px 60px');
+	}
+});
