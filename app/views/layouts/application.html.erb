@@ -3,9 +3,11 @@
   <head>
     <meta charset="utf-8" />
     <meta id='MobileViewport' name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+    <link href="<%= image_url("desktop_image/favicon.ico") %>" type="image/x-icon" rel="shortcut icon">
+
     <%= yield(:extra_meta_tags) %>
 
-    <title><%= content_for?(:title) ? yield(:title) : "UBoss" %></title>
+    <%= render partial: 'page_title' %>
 
     <%= stylesheet_link_tag    "application" %>
     <%= javascript_include_tag "application" %>
@@ -19,24 +21,7 @@
     <div id="window"></div>
     <div class="upass main bg_grey">
 
-			<header class="head">
-        <div class="bottom right"></div>
-        <% if content_for?(:page_title) %>
-          <div class="log_font"><%= yield(:page_title) %></div>
-        <% else %>
-				  <div class="logo"></div>
-        <% end %>
-			</header>
-
-      <div class="nav_bar">
-        <ul>
-          <li><%= link_to '首页', products_path %></li>
-          <li><%= link_to '我的UBOSS', account_path %></li>
-          <li><%= link_to '设置', settings_account_path %></li>
-          <li><a href="#">关于</a></li>
-        </ul>
-      </div>
-
+      <%= render partial: 'layouts/mobile_nav' %>
       <%= render 'layouts/mobile_flash_alert' %>
       <%= yield %>
 

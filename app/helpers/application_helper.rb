@@ -76,4 +76,11 @@ module ApplicationHelper
     boolean_value ? '' : 'disabled'
   end
 
+  def seo_meta_tag
+    [
+      content_tag(:meta, '', name: :Keywords,    content: Rails.application.secrets.metas['keywords']),
+      content_tag(:meta, '', name: :description, content: Rails.application.secrets.metas["description"])
+    ].join.html_safe
+  end
+
 end
