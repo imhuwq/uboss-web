@@ -62,7 +62,13 @@ module ApplicationHelper
     end
   end
 
-  def sharing_meta_tags(meta_tags)
+  def sharing_meta_tags(product, sharing_link_node = nil)
+    meta_tags = {
+      sharing_title:  product_sharing_title(product),
+      sharing_desc:   product_sharing_desc(product),
+      sharing_imgurl: product.image_url(:thumb),
+      sharing_link:   product_sharing_link(product, sharing_link_node)
+    }
     meta_tags.collect do |key, value|
       content_tag :meta, '', name: key, content: value
     end.join.html_safe

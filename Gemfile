@@ -33,6 +33,7 @@ gem "simple_form"
 gem "tabletastic", path: "vendor/gems"
 gem 'redactor-rails', github: 'xEasy/redactor-rails'
 gem "jquery-fileupload-rails"
+gem 'sanitize'
 
 # See https://github.com/rails/execjs#readme for more supported runtimes
 gem 'therubyracer', platforms: :ruby

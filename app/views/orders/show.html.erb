@@ -2,6 +2,10 @@
   <%= @order_title || @order.state_i18n %>
 <% end %>
 
+<%= content_for :extra_meta_tags do %>
+  <%= sharing_meta_tags(@product, @sharing_link_node) %>
+<% end %>
+
 <div class="order-status-bar">
   <%= I18n.t("order_status_bar.#{@order.state}") %>
 </div>
@@ -143,43 +147,31 @@
   <% if @order.unpay? %>
     <%= content_for :extra_javascript do %>
       <script type="text/javascript" charset="utf-8">
-wx.ready(function(){
-
-  UBoss.nami.setPayenv("<%= $wechat_env %>");
-  $('#wx-pay-btn').on('click', function(event){
-    event.preventDefault();
-    UBoss.nami.chooseWXPay({
-      "timestamp": "<%= @pay_p[:timeStamp] %>",
-      "nonceStr": "<%= @pay_p[:nonceStr] %>",
-      "package": "<%= @pay_p[:package] %>",
-      "signType": "<%= @pay_p[:signType] %>",
-      "paySign": "<%= @pay_sign %>", // 支付签名
-      "success": function (res) {
-        window.location.href = "/orders/" + "<%= @order.id %>" + "/pay_complete";
-      }
-    });
-  });
-
-  wx.hideOptionMenu();
-
-})
+         wx.ready(function(){
+           UBoss.nami.setPayenv("<%= $wechat_env %>");
+           $('#wx-pay-btn').on('click', function(event){
+             event.preventDefault();
+             UBoss.nami.chooseWXPay({
+               "timestamp": "<%= @pay_p[:timeStamp] %>",
+               "nonceStr": "<%= @pay_p[:nonceStr] %>",
+               "package": "<%= @pay_p[:package] %>",
+               "signType": "<%= @pay_p[:signType] %>",
+               "paySign": "<%= @pay_sign %>", // 支付签名
+               "success": function (res) {
+                 window.location.href = "/orders/" + "<%= @order.id %>" + "/pay_complete";
+               }
+             });
+           });
+           wx.hideOptionMenu();
+         })
       </script>
     <% end %>
   <% end %>
   <% if @order.signed? || @order.completed? %>
     <%= content_for :extra_javascript do %>
-    <script type="text/javascript" charset="utf-8">
-
-wx.ready(function(){
-  UBoss.luffy.resetInvokeSharing({
-    title: "<%= product_sharing_title(@product) %>", // 分享标题
-    link: "<%= product_sharing_link(@product, @sharing_link_node) %>",
-    imgurl: '<%= @product.image_url %>', // 分享图标
-    desc: '<%= product_sharing_desc(@product) %>' // 分享描述
-  });
-})
-
-    </script>
+      <script type="text/javascript" charset="utf-8">
+        wx.ready(function(){ UBoss.luffy.invokeSharing(); });
+      </script>
     <% end %>
   <% end %>
 <% end %>
