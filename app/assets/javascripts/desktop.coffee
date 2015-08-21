@@ -1,4 +1,4 @@
 #= require jquery2
 #= require wow
-#= require desktop/selectTab
+#= require selectTab
 #= require_self
