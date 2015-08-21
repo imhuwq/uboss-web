@@ -8,19 +8,19 @@ window.init_redactor = function(){
   }
 
   $('.redactor').redactor({
-    buttons: [
+    buttons:          [
       'html',          'formatting',  'bold',    'italic', 'deleted', 'underline',
       'unorderedlist', 'orderedlist', 'outdent', 'indent',
       'image',         'alignment',   'horizontalrule'
     ],
-    plugins: ['fontsize', 'fontcolor', 'imagemanager'],
+    plugins:          ['fontsize', 'fontcolor', 'imagemanager'],
     imageManagerJson: '/redactor_rails/pictures',
-    imageUpload: "/redactor_rails/pictures?" + params,
-    imageGetJson: "/redactor_rails/pictures",
-    imageEditable: false,
-    path: "/assets/redactor-rails",
-    css: "style.css",
-    lang: 'zh_cn'
+    imageUpload:      "/redactor_rails/pictures?" + params,
+    imageGetJson:     "/redactor_rails/pictures",
+    imageEditable:    false,
+    path:             "/assets/redactor-rails",
+    css:              "style.css",
+    lang:             'zh_cn'
   });
 }
 
