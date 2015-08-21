@@ -88,8 +88,8 @@ class User < ActiveRecord::Base
       unless user.present?
         user = new_guest(mobile)
         user.save
-        user
       end
+      user
     end
 
     def create_guest!(mobile)

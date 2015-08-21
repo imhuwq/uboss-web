@@ -1449,7 +1449,8 @@ a{
 	background-size: 62px 62px;
 	background-position: center;
 }
-.fenxinrated ul li img{
+
+#sharing_buttoms img{
 	width: 62px;
 	height: 62px;
 }

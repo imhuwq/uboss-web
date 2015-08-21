@@ -8,28 +8,15 @@ class ProductsController < ApplicationController
   def show
     @product = Product.published.find(params[:id])
     @seller = @product.user
-    if current_user
+    if current_user.present?
       @sharing_link_node = SharingNode.find_or_create_user_last_sharing_by_product(current_user, @product)
+    else
+      flash[:notice] = "请先登录"
+      redirect_to settings_account_path
     end
     if @scode = get_product_sharing_code(@product.id)
       @sharing_node = SharingNode.find_by(code: @scode)
       @privilege_card = @sharing_node.privilege_card
-    end
-  end
-
-  def save_mobile
-    mobile = params[:mobile] rescue nil
-    if mobile.present?
-      user = User.find_or_create_guest(mobile)
-      sign_in(user) if user.need_reset_password
-    end
-    @product = Product.find_by_id(params[:id])
-    if @product.present? && user.present?
-      @sharing_link_node = SharingNode.find_or_create_by(user_id: current_user.id, product_id: @product.id)
-    end
-    respond_to do |format|
-      format.html { render nothing: true }
-      format.js
     end
   end
 end

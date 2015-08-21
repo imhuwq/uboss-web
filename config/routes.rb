@@ -23,7 +23,7 @@ Rails.application.routes.draw do
     resource :charge, only: [:create]
   end
   resources :products do
-    post :save_mobile, :democontent,  on: :collection
+    post :democontent,  on: :collection
   end
   resources :evaluations do
   end

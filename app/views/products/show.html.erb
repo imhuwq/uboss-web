@@ -87,16 +87,18 @@
     </div>
   </div>
 <% end %>
-
-<script type="text/javascript">
 <% if params['shared'] == 'true' %>
-  $('#window').html('<%= escape_javascript render :partial =>'/products/share_page.html' %>');
-<% end %>
+<div class="menb">
+  <a onclick="close_window()">
+    <div style="width:100%;height:100%;float:left"></div>
+  </a>
+  <div class="fenxinag fenxinagtow">
+    <%= render partial: 'application/share_buttoms',
+      locals: { product: @product, node: @sharing_link_node } %>
+  </div>
+</div>
 
-$('#copycardid').on('click', this,function(event) {
-  $('#share_link').toggle();
-});
-</script>
+<% end %>
 
 <% if browser.wechat? %>
   <%= content_for :extra_javascript do %>
