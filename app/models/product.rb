@@ -22,11 +22,14 @@ class Product < ActiveRecord::Base
   before_save :calculates_before_save
 
   def avatar=(file)
-    if file.is_a?(String)
-      asset_img.write_uploader :avatar, file
-    else
-      asset_img.avatar = file
+    if file.present?
+      if file.is_a?(String)
+        asset_img.write_uploader :avatar, file
+      else
+        asset_img.avatar = file
+      end
     end
+    asset_img.avatar
   end
 
   def asset_img
