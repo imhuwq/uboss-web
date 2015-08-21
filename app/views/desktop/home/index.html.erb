@@ -1,3 +1,9 @@
+<%= content_for :extra_meta_tags do %>
+  <% if Rails.env.production? %>
+    <%= seo_meta_tag %>
+  <% end %>
+<% end %>
+
 <div class='header_img_con'>
 	<%= image_tag "desktop_image/header.png", class:"header_img", alt:"header" %>
 </div>
@@ -9,7 +15,7 @@
 </div>
 <!--弹框-->
 <div id="video" class="video_min">
-				<iframe style="z-index: 1;" allowfullscreen="" frameborder="0" 
+				<iframe style="z-index: 1;" allowfullscreen="" frameborder="0"
 					src="http://v.qq.com/iframe/player.html?vid=o0161da2c7v&tiny=0&auto=0" width="600" height="450">
 				</iframe>
 				<!-- <input  type="button" value="Close" onclick="hideVideo();"/> -->
