@@ -1,5 +1,5 @@
+<meta name='logo' content="<%= image_url('uboss_logo.png') %>" />
 <script src="//res.wx.qq.com/open/js/jweixin-1.0.0.js" type="text/javascript" charset="utf-8"></script>
-
 <script type="text/javascript" charset="utf-8">
   wx.config({
     debug: false,
@@ -12,6 +12,7 @@
       'onMenuShareAppMessage',
       'onMenuShareQQ',
       'onMenuShareWeibo',
+      'onMenuShareQZone',
       'hideMenuItems',
       'showMenuItems',
       'hideAllNonBaseMenuItem',
@@ -42,5 +43,10 @@
       'chooseCard',
       'openCard'
     ]
+  });
+
+  wx.ready(function(){
+    UBoss.luffy.showOptionMenu();
+    UBoss.luffy.invokeDefaultSharing();
   });
 </script>

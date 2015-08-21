@@ -11,9 +11,6 @@
     <%= javascript_include_tag "application" %>
     <% if browser.wechat? %>
       <%= render "weixin_js" %>
-      <script type="text/javascript" charset="utf-8">
-         wx.ready(function(){ UBoss.luffy.showOptionMenu(); });
-      </script>
     <% end %>
     <%= csrf_meta_tags %>
   </head>
