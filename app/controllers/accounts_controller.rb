@@ -115,7 +115,7 @@ class AccountsController < ApplicationController
   def send_message # 保存发送短信给商家的信息
     mobile = params[:send_message][:mobile] rescue nil
     if mobile.present? && mobile =~ /\A(\s*)(?:\(?[0\+]?\d{1,3}\)?)[\s-]?(?:0|\d{1,4})[\s-]?(?:(?:13\d{9})|(?:\d{7,8}))(\s*)\Z|\A[569][0-9]{7}\Z/
-      sms = ChargeService.send_sms(mobile, current_user.find_or_create_agent_code, 923_651)
+      sms = send_sms(mobile, current_user.find_or_create_agent_code, 923_651)
       if sms == 'OK'
         AgentInviteSellerHistroy.find_or_create_by(mobile: mobile) do |obj|
           obj.agent_id = current_user.id

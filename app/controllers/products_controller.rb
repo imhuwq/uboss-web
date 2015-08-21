@@ -8,7 +8,7 @@ class ProductsController < ApplicationController
   def show
     @product = Product.published.find(params[:id])
     @seller = @product.user
-    if current_user.present?
+    if current_user.login.present?
       @sharing_link_node = SharingNode.find_or_create_user_last_sharing_by_product(current_user, @product)
     else
       flash[:notice] = "请先登录"
