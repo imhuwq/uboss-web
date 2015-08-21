@@ -9,9 +9,13 @@ body {
   text-align: center;
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   margin: 0;
-  width: 800px;
+  width: 90%;
   margin: auto;
   font-size: 14px;
+}
+
+a {
+  color: rgba(67,195,170,1);
 }
 
 h1 {
@@ -45,5 +49,16 @@ hr {
   <hr />
   <p>请尝试刷新页面，或者回退到上一页面再操作。</p>
   <p>如果此问题继续存在请联系 UBOSS 客服人员。</p>
+
+  <p><a class='back-home' href="#" onclick="location.href = '/';">7 秒后返回首页</a></p>
+
+  <script type="text/javascript" charset="utf-8">
+    var timeLeft = 7;
+    setInterval(function(){
+      timeLeft -= 1;
+      document.getElementsByClassName('back-home')[0].text = timeLeft + " 秒后返回首页";
+    }, 1000)
+    setTimeout(function(){location.href='/'}, 7000)
+  </script>
 </body>
 </html>
