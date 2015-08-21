@@ -11,6 +11,7 @@
 
     <%= stylesheet_link_tag    "application" %>
     <%= javascript_include_tag "application" %>
+    <%= render partial: 'baidu_tongji' %>
     <% if browser.wechat? %>
       <%= render "weixin_js" %>
     <% end %>
