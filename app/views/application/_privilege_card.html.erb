@@ -1,0 +1,30 @@
+<div class="appr_box2">
+  <div class="appr_box2_cont">
+    <div class="appr_header">
+      <span class="appr_header_img">
+        <%= image_tag current_user.avatar_url(:h50) %>
+      </span>
+      <span class="appr_header_tit">将获得<strong><%= @privilege_card.returning_amount %></strong>积分</span>
+    </div>
+    <div class="appr_header_content">
+      <p class="appr_line1"><strong><%= number_with_precision(@privilege_card.discount, precision: 2) %></strong><span>折</span></p>
+      <p class="appr_line2">购买本商品每件省</p>
+      <p class="appr_line3">省<strong><%= @privilege_card.privilege_amount %></strong>元/件</p>
+      <p class="appr_line4">返<strong><%= @privilege_card.returning_amount %></strong>积分/件</p>
+    </div>
+    <div class="appr_shar"><a href="#" class="share-wx-btn">分享给朋友</a></div>
+  </div>
+</div>
+
+<div class="appr_header_pro">
+  <div class="appr_header_pro_c">
+    <div class="space_hx"></div>
+    <div class="appr_header_pro_ct">
+      <strong>使用说明：</strong>
+      <p>1、友情卡用于打折并积分，<a href="#" class="dail_a">查看说明</a></p>
+      <p>2、本友情卡所有权归某某用户</p>
+      <p>3、任何通过此页面下单的用户都可享受此卡打折优惠</p>
+      <p>4、通过此卡消费所获积分归某某用户所有</p>
+    </div>
+  </div>
+</div>
