@@ -5,11 +5,13 @@
   </div>
   <div class="col-xs-2"><%= link_to "企业认证", url_for(controller: :enterprise_authentications, action: :new), class:"btn btn-default col-xs-12" %></div>
 </div>
+<br />
 <div class="row">
   <%= simple_form_for :personal_authentication,url: {:action=>:create},wrapper: :horizontal_file_input do |f| %>
-    <div class="col-xs-12 border_block">
+    <div class="col-xs-12 well">
       <div class="col-xs-11  col-md-offset-1">
         <h3 class="col-md-offset-1">创建个人信息认证</h3>
+        <hr />
         <%= render 'fields', f: f %>
       </div>
     </div>

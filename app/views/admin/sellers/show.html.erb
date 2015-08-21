@@ -10,8 +10,9 @@
   </div>
 </div>
 <div class="row">
-	<div class="col-xs-12 border_block">
+	<div class="col-xs-12 well">
 		<h3 class="col-md-offset-1">基本信息</h3>
+    <hr />
 		<div class="col-xs-11 col-md-offset-1">
 			<div class="form-group clearfix">
 				<label class="string required text-right col-sm-3 control-label" for="product_name">
@@ -53,7 +54,7 @@
 			</div>
 		</div>
 	</div>
-  <div class="col-xs-12 border_block">
+  <div class="col-xs-12 well">
     <div class="col-xs-12" style="border-bottom:2px solid grey;margin-top:10px;">
        认证状态：<%= {'yes'=>'已认证','no'=>'未认证'}[@seller.authenticated] %>
     </div>
@@ -84,7 +85,7 @@
     </div>
 
 	</div>
-  <div class="col-xs-12 border_block">
+  <div class="col-xs-12 well">
     <div class="col-xs-12" style="border-bottom:2px solid grey;padding:10px 0;">
       <%= form_for 'seller', url: url_for(controller: :sellers, action: :update_service_rate), method: :post do |f| %>
         <%= hidden_field_tag 'seller[id]', @seller.id %>

@@ -9,8 +9,8 @@
   </div>
 </div>
 <div class="row">
-  <%= simple_form_for :enterprise_authentication,url: {:action=>:update}, method: 'PATCH',wrapper: :horizontal_file_input do |f| %>
-    <div class="col-xs-12 border_block">
+  <%= simple_form_for :enterprise_authentication, url: {:action=>:update}, method: 'PATCH',wrapper: :horizontal_file_input do |f| %>
+    <div class="col-xs-12 well">
       <div class="col-xs-11  col-md-offset-1">
         <h3 class="col-md-offset-1">编辑企业信息认证</h3>
         <%= render 'fields', f: f %>
