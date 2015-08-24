@@ -59,7 +59,7 @@ class AccountsController < ApplicationController
 
   def new_agent_binding # 商家绑定创客
     if current_user.agent.present?
-      redirect_to action: :binding_success_page
+      redirect_to action: :binding_successed
     end
   end
 
@@ -132,7 +132,7 @@ class AccountsController < ApplicationController
 
   def binding_agent # 商家绑定创客
     if current_user.agent.present?
-      redirect_to action: :binding_success_page
+      redirect_to action: :binding_successed
     else
       valid_code
       if @errors.present?
@@ -141,7 +141,7 @@ class AccountsController < ApplicationController
       else
         current_user.binding_agent(params[:agent_code])
         MobileAuthCode.find_by(code: params[:user][:mobile_auth_code]).try(:destroy)
-        redirect_to action: :binding_success_page
+        redirect_to action: :binding_successed
       end
     end
   end
