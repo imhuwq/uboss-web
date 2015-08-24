@@ -1,0 +1,39 @@
+<div class="menb">
+  <a onclick="close_window()">
+    <div style="width:100%;height:100%;float:left"></div>
+  </a>
+  <div class="fenxinag fenxinagtow" id="share_buttons">
+    <% if @sharing_link_node.present? %>
+    <%= render partial: 'application/share_buttoms',
+      locals: { product: @product, node: @sharing_link_node } %>
+    <% else %>
+      <div class="fenxinag_line1">留下手机号，现金礼品拿不停！</div>
+      <div class="fenxinag_line2">
+        <span class="fenxinag_box1">手机号码</span>
+        <span class="fenxinag_box2">
+          <%= text_field_tag 'mobile[]','', type:"tel",placeholder:"手机号",class:"fenxinag_text",id:"save_mobile_mobile" %>
+        </span>
+        <input id="sharing_code" style="display: none;">
+      </div>
+      <script type="text/javascript">
+      $("#sharing_code").on('click',function(){
+        var mobile = $("#save_mobile_mobile").val()
+        var checkNum = /^(\+\d+-)?[1-9]{1}[0-9]{10}$/;
+        if (checkNum.test(mobile)) {
+          $.ajax({
+            url: '/products/save_mobile?id=<%= @product.id %>',
+            type: 'POST',
+            dataType: 'script',
+            data: {
+              mobile: mobile
+            },
+          })
+        };
+        if (!checkNum.test(mobile)) {
+          alert("手机格式不正确")
+        };
+      });
+      </script>
+    <% end %>
+  </div>
+</div>

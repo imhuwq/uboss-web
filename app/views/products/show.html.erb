@@ -88,16 +88,7 @@
   </div>
 <% end %>
 <% if params['shared'] == 'true' %>
-<div class="menb">
-  <a onclick="close_window()">
-    <div style="width:100%;height:100%;float:left"></div>
-  </a>
-  <div class="fenxinag fenxinagtow">
-    <%= render partial: 'application/share_buttoms',
-      locals: { product: @product, node: @sharing_link_node } %>
-  </div>
-</div>
-
+  <%= render partial: 'share_pge' %>
 <% end %>
 
 <% if browser.wechat? %>
