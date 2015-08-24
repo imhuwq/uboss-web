@@ -63,7 +63,7 @@ class FinanceJob < ActiveJob::Base
   end
 
   def generate_divide_daily_report(date)
-    report_type = DailyReport.report_types['selling']
+    report_type = DailyReport.report_types['divide']
 
     result = ActiveRecord::Base.connection.execute <<-SQL.squish!
       SELECT user_id, SUM(amount) AS total_amount, DATE(created_at) AS date
