@@ -23,7 +23,7 @@ $(function() {
     }
   });
 
-	$("header .right").tap(function() {
+	$("header .right").on('tap', function() {
     height = 200
     if ($('.nav_bar').height() > 0) {
       height = 0
