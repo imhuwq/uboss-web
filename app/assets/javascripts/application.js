@@ -1,17 +1,19 @@
-//= require jquery
-//= require jquery_ujs
-//= require fastclick
-//= require jquery.waypoints
-//= require mobile_page/going_merry
-//= require mobile_page/mobile
-//= require mobile_page/order
+//= require zepto/zepto.min
+//= require zepto/plugins/fx
+//= require zepto/plugins/fx_methods
+//= require zepto/plugins/touch
+//= require zepto/plugins/callbacks
+//= require zepto/plugins/deferred
+//= require rails-behaviors/index
+//= require zepto.waypoints.min.js
 //= require mobile_page/utilities
+//= require mobile_page/going_merry
+//= require mobile_page/order
+//= require mobile_page/account
 //= require shared/login
 //= require_self
 
 $(function() {
-
-  FastClick.attach(document.body);
 
   $('form').on('keyup keypress', function(e) {
     var code = e.keyCode || e.which;
@@ -21,7 +23,7 @@ $(function() {
     }
   });
 
-	$(".right").click(function() {
+	$("header .right").tap(function() {
     height = 200
     if ($('.nav_bar').height() > 0) {
       height = 0

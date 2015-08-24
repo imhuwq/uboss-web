@@ -5,6 +5,7 @@ class MobileAuthCodeController < ApplicationController
       begin
         MobileAuthCode.send_captcha_with_mobile(mobile)
       rescue => e
+        @error = e.message
         Airbrake.notify_or_ignore(e, parameters: {mobile: mobile}, cgi_data: ENV.to_hash)
       end
     end

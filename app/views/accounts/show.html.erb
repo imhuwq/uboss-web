@@ -21,8 +21,8 @@
   <div class="my_acuntbox2">
     <div class="my_menu">
       <ul>
-        <li ><a onclick="showList()" id="showlist" class="active">我的订单</a></li>
-        <li><a onclick="showIncome()"  id="showincome">我的收益</a></li>
+        <li ><a id="showlist" class="active">我的订单</a></li>
+        <li><a id="showincome">我的收益</a></li>
       </ul>
     </div>
     <div class="my_con1">
@@ -47,17 +47,3 @@
     </div>
   </div>
 </div>
-<script type="text/javascript">
-function showList() {
-  $(".accunt_adil").addClass('undis');
-  $(".my_con1").removeClass('undis');
-  $("#showlist").addClass('active');
-  $("#showincome").removeClass('active');
-};
-function showIncome() {
-  $(".my_con1").addClass('undis');
-  $(".accunt_adil").removeClass('undis');
-  $("#showlist").removeClass('active');
-  $("#showincome").addClass('active');
-};
-</script>
