@@ -26,14 +26,14 @@ $ ->
       sharing_lv1_amount = maxPrivilegeAmount - privilege_amount
     set_privilege_card_info()
 
-  $('.edit_privilege_card .jia').on 'click', (e)->
+  $('.edit_privilege_card .jia').on 'tap', (e)->
     e.preventDefault()
     if sharing_lv1_amount >= 1
       sharing_lv1_amount -= 1
       privilege_amount += 1
       set_privilege_card_info()
 
-  $('.edit_privilege_card .jian').on 'click', (e)->
+  $('.edit_privilege_card .jian').on 'tap', (e)->
     e.preventDefault()
     if privilege_amount >= origin_privilege_amount + 1
       sharing_lv1_amount += 1
@@ -42,7 +42,7 @@ $ ->
     else
       alert '亲，给朋友留点折扣吧'
 
-  $('.edit_privilege_card').on 'ajax:success', (e, data)->
+  $('.edit_privilege_card').on 'ajaxSuccess', (e, data)->
     if data.actived
       want_sharing = confirm 'BOSS，您的友情卡已激活，收货后分享给朋友打折吧！'
       if want_sharing
@@ -53,11 +53,11 @@ $ ->
       alert '恭喜您获得本商品的友情卡，收货后激活可以给朋友打折哦！'
       window.location = $('.pay-complete-actions a').attr('href')
 
-  $('.edit_privilege_card').on 'ajax:error', (event, xhr, status, error) ->
+  $('.edit_privilege_card').on 'ajaxError', (event, xhr, status, error) ->
     alert xhr.responseText
 
   mobile_submit_time = 0
-  $('#send_mobile').on 'click', (e) ->
+  $('#send_mobile').on 'tap', (e) ->
     e.preventDefault()
     sendBtn = $(this)
     mobile = $('#new_mobile').val()
@@ -71,8 +71,6 @@ $ ->
         type: 'POST',
         data: {mobile: mobile},
       .done ->
-        console.log("complete")
-        console.log(mobile_submit_time)
         mobile_submit_time = 60
         timedown $('#send_mobile')
       .fail ->
@@ -100,13 +98,13 @@ $ ->
       $('#submit_bottom').attr('disabled','disabled')
 
 
-  $('#new_order_form .jia').on 'click', (e)->
+  $('#new_order_form .jia').on 'tap', (e)->
     e.preventDefault()
     amount = parseInt($('#amount').val())
     $('#amount').val(amount + 1)
     calulateTotalPrice(amount + 1)
 
-  $('#new_order_form .jian').on 'click', (e)->
+  $('#new_order_form .jian').on 'tap', (e)->
     e.preventDefault()
     amount = parseInt($('#amount').val())
     if amount > 1
@@ -121,7 +119,7 @@ $ ->
     price = Number($('#order_form_real_price').val())
     $('#total_price').html(amount * price + Number($('#order_form_product_traffic_expense').val()))
 
-  $('.order-address-dlg .add_line1').on 'click', ()->
+  $('.order-address-dlg .add_line1').on 'tap', ()->
     $('#order_form_user_address_id').val($(this).data('id'))
     fillNewOrderAddressInfo(
       $(this).find('.adr-user').text(),
@@ -130,7 +128,7 @@ $ ->
     )
     hideOrderAddressDlg()
 
-  $('.order-address-dlg .use-new-addr-btn').on 'click', (event)->
+  $('.order-address-dlg .use-new-addr-btn').on 'tap', (event)->
     event.preventDefault()
     user = $('#order_form_deliver_username').val()
     mobile = $('#order_form_deliver_mobile').val()
