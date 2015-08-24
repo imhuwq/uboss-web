@@ -4,7 +4,21 @@ class DailyReport < ActiveRecord::Base
 
   belongs_to :user
 
-  enum report_type: { selling: 0, divide: 1, sharing: 2, user_order: 3, seller_divide: 4 }
+
+  #
+  # selling       商家销售收入流水
+  # divide        创客分成收入流水
+  # sharing       分享流水(暂无)
+  # user_order    商家订单付款流水
+  # seller_divide 商家对应给创客的分成流水
+  #
+  enum report_type: {
+    selling:       0,
+    divide:        1,
+    sharing:       2,
+    user_order:    3,
+    seller_divide: 4
+  }
 
   delegate :service_rate, :store_identify, to: :user, prefix: true, allow_nil: true
 
@@ -42,7 +56,5 @@ class DailyReport < ActiveRecord::Base
       INSERT INTO "daily_reports" (#{ columns.join(',') }) SELECT #{ values.join(',') } WHERE NOT EXISTS (SELECT * FROM upsert);
     SQL
   end
-
-  private
 
 end
