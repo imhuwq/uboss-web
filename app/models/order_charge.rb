@@ -23,7 +23,8 @@ class OrderCharge < ActiveRecord::Base
   alias_method :paid?, :check_paid?
 
   def update_with_wx_pay_result(result)
-    self.paid_amount = BigDecimal(result["total_fee"]) / 100
+    paid_amount_result = Rails.env.production? ? (BigDecimal(result["total_fee"]) / 100) : order.paid_amount
+    self.paid_amount = paid_amount_result
     self.payment = 'wx'
     self.paid_at = result['time_end']
     self.save(validate: false)
