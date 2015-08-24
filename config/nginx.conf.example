@@ -10,7 +10,7 @@ upstream uboss_backend {
 #用try_files方式和proxy执行rails动态请求
 server {
     listen       80;
-    server_name  uboss.cc www.uboss.cc;
+    server_name  uboss.me www.uboss.me;
     root         /home/deploy/rails/ssobu/current/public;
 
     try_files $uri/index.html $uri.html $uri @user1;
@@ -30,7 +30,7 @@ server {
 #用不同的域名提供静态资源服务，减少主域名带来的cookie请求和方便做cdn源
 server {
     listen       80;
-    server_name  cdn.uboss.cc cdnsource.uboss.cc;
+    server_name  cdn.uboss.me cdnsource.uboss.me;
     root         /home/deploy/rails/ssobu/current/public;
 
     location ~ ^/(assets)/  {
