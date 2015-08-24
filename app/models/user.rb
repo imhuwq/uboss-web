@@ -51,14 +51,17 @@ class User < ActiveRecord::Base
   before_create :build_user_info, if: -> { user_info.blank? }
 
   scope :admin, -> { where(admin: true) }
-  scope :agent, -> { joins(:user_roles).where(user_roles: {name: 'agent'}) }
 
   UserRole::ROLE_NAMES.each do |role|
+
+    scope role.to_s.pluralize, -> { joins(:user_roles).where(user_roles: {name: role}) }
+
     User.class_eval do
       define_method "is_#{role}?" do
         user_roles.exists?(name: role)
       end
     end
+
   end
 
   class << self
@@ -114,7 +117,7 @@ class User < ActiveRecord::Base
   end
 
   def bind_agent(binding_code)
-    agent_user = User.agent.find_by(agent_code: binding_code)
+    agent_user = User.agents.find_by(agent_code: binding_code)
     if agent_user.present?
       self.agent = agent_user
       self.become_uboss_seller
