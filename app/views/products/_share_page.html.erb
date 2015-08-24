@@ -8,13 +8,13 @@
       locals: { product: @product, node: @sharing_link_node } %>
     <% else %>
       <div class="fenxinag_line1">留下手机号，现金礼品拿不停！</div>
-      <div class="fenxinag_line2">
-        <span class="fenxinag_box1">手机号码</span>
-        <span class="fenxinag_box2">
-          <%= text_field_tag 'mobile[]','', type:"tel",placeholder:"手机号",class:"fenxinag_text",id:"save_mobile_mobile" %>
-        </span>
-        <input id="sharing_code" style="display: none;">
+      <div style="min-height:40px;padding-top:20px;">
+        <div style="position:absolute;width:70px;margin-left:0;float:left;padding:3px 0 0 10px;">手机号码</div>
+        <div style="margin-left:90px;">
+          <%= text_field_tag 'mobile[]','', type:"tel",placeholder:"手机号",class:"fenxinag_text",id:"save_mobile_mobile", style:"width:90%;float:left;" %>
+        </div>
       </div>
+      <%= link_to("提交", '###',class:"accunt_adilbtn", id:"sharing_code") %>
       <script type="text/javascript">
       $("#sharing_code").on('click',function(){
         var mobile = $("#save_mobile_mobile").val()
