@@ -51,6 +51,10 @@ class ApplicationController < ActionController::Base
     (params['page'] && params['page'].to_i > 0) ? params['page'].to_i : 1
   end
 
+  def model_errors(model)
+    model.errors.full_messages
+  end
+
   def authenticate_user!
     if Rails.env.development? && params[:mode] == 'admin'
       login_with_admin_model

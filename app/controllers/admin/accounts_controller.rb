@@ -31,6 +31,7 @@ class Admin::AccountsController < AdminController
     agent_code = params[:user][:code]
     if params['binding_submit'].present?
       if current_user.bind_agent(agent_code)
+        AgentInviteSellerHistroy.find_by(mobile: login).try(:update, status: 1)
         flash[:notice] = '绑定成功<br/>'
         redirect_to after_binding_agent_path
       else

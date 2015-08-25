@@ -51,14 +51,14 @@ class AccountsController < ApplicationController
       redirect_to after_sign_in_path_for(current_user)
     else
       current_user.become_uboss_seller
-      redirect_to binding_agent_admin_account_path
+      redirect_to bind_agent_admin_account_path
     end
   end
 
   def edit_password # 修改密码页面
   end
 
-  def new_agent_binding # 商家绑定创客
+  def binding_agent # 商家绑定创客
     if current_user.agent.present?
       redirect_to action: :binding_successed
     end
@@ -127,44 +127,27 @@ class AccountsController < ApplicationController
     redirect_to action: :invite_seller
   end
 
-  def binding_agent # 商家绑定创客
+  def bind_agent # 商家绑定创客
     if current_user.agent.present?
       redirect_to action: :binding_successed
+    elsif not MobileAuthCode.auth_code(current_user.login, params[:user][:mobile_auth_code])
+      flash[:error] = '验证码错误或已过期。'
+      redirect_to action: :binding_agent, agent_code: params[:agent_code]
+    elsif current_user.bind_agent(params[:agent_code])
+      AgentInviteSellerHistroy.find_by(mobile: login).try(:update, status: 1)
+      MobileAuthCode.find_by(code: params[:user][:mobile_auth_code]).try(:destroy)
+      flash[:success] = "绑定成功,#{current_user.agent.identify}成为您的创客。"
+      redirect_to action: :binding_successed
     else
-      valid_code
-      if @errors.present?
-        flash[:error] = @errors.join("\n")
-        redirect_to action: :new_agent_binding, agent_code: params[:agent_code]
-      else
-        current_user.binding_agent(params[:agent_code])
-        MobileAuthCode.find_by(code: params[:user][:mobile_auth_code]).try(:destroy)
-        flash[:success] = "绑定成功,#{current_user.agent.identify}成为您的创客。"
-        redirect_to action: :binding_successed
-      end
+      flash[:error] = model_errors(current_user).join('<br/>')
+      redirect_to action: :binding_agent, agent_code: params[:agent_code]
     end
-  end
-
-  def seller_agreement # 商家协议
-  end
-
-  def binding_successed
   end
 
   private
 
   def account_orders
     current_user.orders.includes(order_items: { product: :asset_img })
-  end
-
-  def valid_code
-    @errors = []
-    hash = {
-      '验证码错误或已过期。' => MobileAuthCode.auth_code(current_user.login, params[:user][:mobile_auth_code]),
-      # '创客邀请码错误。': User.find_by(agent_code: params[:agent_code])
-    }
-    hash.each do |k, v|
-      @errors << k unless v.present?
-    end
   end
 
   def authenticate_agent # 创客可以使用的action
