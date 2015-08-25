@@ -17,7 +17,8 @@ class AccountsController < ApplicationController
   end
 
   def update
-    if current_user.update(nickname: params[:user][:nickname])
+    user_params = params.require(:user).permit(:nickname)
+    if current_user.update(user_params)
       flash[:notice] = '修改成功'
       redirect_to action: :edit
     else
@@ -113,19 +114,15 @@ class AccountsController < ApplicationController
   end
 
   def send_message # 保存发送短信给商家的信息
-    mobile = params[:send_message][:mobile] rescue nil
-    if mobile.present? && mobile =~ /\A(\s*)(?:\(?[0\+]?\d{1,3}\)?)[\s-]?(?:0|\d{1,4})[\s-]?(?:(?:13\d{9})|(?:\d{7,8}))(\s*)\Z|\A[569][0-9]{7}\Z/
-      sms = SMS.send_sms(mobile, current_user.find_or_create_agent_code, 923_651)
-      if sms == 'OK'
-        AgentInviteSellerHistroy.find_or_create_by(mobile: mobile) do |obj|
-          obj.agent_id = current_user.id
-        end
-        flash[:success] = "您的创客码已经发送到：#{mobile}."
-      else
-        flash[:error] = "短信发送失败,#{sms}."
+    mobile = params[:send_message][:mobile]
+    result = PostMan.send_sms(mobile, current_user.find_or_create_agent_code, 923_651)
+    if result[:success]
+      AgentInviteSellerHistroy.find_or_create_by(mobile: mobile) do |history|
+        history.agent_id = current_user.id
       end
+      flash[:success] = "您的创客码已经发送到：#{mobile}."
     else
-      flash[:error] = '手机格式不正确'
+      flash[:error] = result[:message]
     end
     redirect_to action: :invite_seller
   end
