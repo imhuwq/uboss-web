@@ -1,4 +1,6 @@
 class User < ActiveRecord::Base
+
+  # FIXME 如果只是需要在页面转换请使用helper方法，或者I18n
   DATA_AUTHENTICATED = {'no'=> '未认证', 'yes'=> '已认证'}
 
   include Orderable
