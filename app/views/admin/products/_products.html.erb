@@ -1,4 +1,4 @@
-<%= render 'layouts/flash_alert' %>
+<%= render 'layouts/flash_alert' if request.xhr? %>
 
 <%= table_for(products) do |t| %>
   <%= t.cell :name do |product| %>
@@ -41,19 +41,19 @@
                     class:"btn btn-xs btn-warning",style:"margin-bottom:5px;")%>
         <br />
         <%= link_to("删除", change_status_admin_product_path(product, status: 'closed'),
-                    remote: true, method: :patch, disable_with: '删除中...',
+                    remote: true, method: :patch, data: { disable_with: '删除中...' },
                     class:"btn btn-xs btn-danger change-status-btn") %>
       </div>
 
       <div class="col-xs-5">
         <% if product.status == 'unpublish' %>
           <%= link_to("上架", change_status_admin_product_path(product, status: 'published'),
-                      remote: true, method: :patch, disable_with: '上架中...',
+                      remote: true, method: :patch, data: { disable_with: '上架中...' },
                       class: "btn btn-large btn-success change-status-btn",
                       style: "height:50px;padding:14px 22px 0 22px;") %>
         <% else %>
           <%= link_to("取消上架", change_status_admin_product_path(product, status: 'unpublish'),
-                      remote: true, method: :patch, disable_with: '下架中...',
+                      remote: true, method: :patch, data: { disable_with: '下架中...' },
                       class: "btn btn-large btn-default change-status-btn",
                       style: "height:50px;padding:14px 8px 0 8px;") %>
         <% end %>
