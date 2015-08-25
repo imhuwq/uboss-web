@@ -60,7 +60,7 @@ class MobileAuthCode < ActiveRecord::Base
     if result == 'OK'
       return true
     else
-      fail result
+      return result
     end
   end
 end

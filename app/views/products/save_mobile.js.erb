@@ -5,22 +5,3 @@ $('#share_buttons').html(
     locals: { product: @product, node: @sharing_link_node }
   ) %>'
 );
-
-// 分享的内容
-var config = document.createElement("script");
-var shared_url = '<%= product_sharing_link(@product, @sharing_link_node) %>'
-
-config.type = "text/javascript";
-config.innerHTML = 'var jiathis_config = { url: \'' + shared_url +'\', title: "<%= product_sharing_title(@product) %>", summary:"<%= product_sharing_desc(@product) %>"} '
-document.body.appendChild(config);
-
-$('#save_mobile_mobile').attr('disabled','disabled')
-
-var share_content = "url="+shared_url+"&type=3&pic=<%= @product.image_url %>&title=<%= product_sharing_title(@product) %>&appkey="
-<% if @job == 'sina' %>
-window.open("http://service.weibo.com/share/share.php?" + share_content)
-<% elsif @job == "tqq" %>
-window.open("http://share.v.t.qq.com/index.php?c=share&a=index&" + share_content)
-<% elsif @job == "copy" %>
-  $('#share_link').show();
-<% end %>

@@ -16,8 +16,8 @@
     <% if user_address %>
     <dl class="add_line1 addrr bg_green">
       <%= link_to edit_account_user_address_path(user_address), class:"add_line2" do %>
-        <dd><span>收货人：<%= user_address.username %></span><strong><%= user_address.mobile %></strong></dd>
-        <dd><span>收货地址：<%= excerpt( "#{user_address}", "#{user_address}".split('')[-1],separator: '', radius: 12)  %></span></dd>
+        <dd><span style="color:white;">收货人：<%= user_address.username %></span><strong><%= user_address.mobile %></strong></dd>
+        <dd><span style="color:white;">收货地址：<%= excerpt( "#{user_address}", "#{user_address}".split('')[-1],separator: '', radius: 12)  %></span></dd>
 
         <!-- <%= image_tag("img/right.png" ) %> -->
         <%= image_tag("uboss_29/edit.png" ) %>

@@ -1,12 +1,12 @@
+
 <%= content_for :page_title do %>
   商品详情
 <% end %>
+
 <%= content_for :extra_meta_tags do %>
-  <%= sharing_meta_tags(
-    sharing_title: @product.name,
-    sharing_imgurl: @product.image_url(:thumb),
-    sharing_link: '###') %>
+  <%= sharing_meta_tags(@product, @sharing_link_node) %>
 <% end %>
+
 
 <div class="container">
   <div class="prdv_img">

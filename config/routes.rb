@@ -36,11 +36,11 @@ Rails.application.routes.draw do
   end
   resource :account, only: [:show, :edit, :update] do
     get :settings,         :edit_password,     :reset_password,
-        :orders,           :new_agent_binding, :invite_seller,
+        :orders,           :binding_agent, :invite_seller,
         :edit_seller_histroy, :edit_seller_note, :seller_agreement,
-        :merchant_confirm
+        :merchant_confirm,    :binding_successed
 
-    put :binding_agent, :send_message, :update_histroy_note
+    put :bind_agent, :send_message, :update_histroy_note
     patch :merchant_confirm, to: 'accounts#merchant_confirmed'
     patch :password, to: 'accounts#update_password'
     resources :user_addresses, except: [:show]
@@ -57,7 +57,8 @@ Rails.application.routes.draw do
   authenticate :user, lambda { |user| user.admin? } do
     namespace :admin do
       resources :products, except: [:destroy] do
-        get :change_status, :pre_view, on: :member
+        patch :change_status, on: :member
+        get :pre_view, on: :member
       end
       resources :orders, except: [:destroy] do
         patch :ship, on: :member

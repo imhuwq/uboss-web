@@ -7,9 +7,10 @@
 </div>
 <div class="row">
   <%= simple_form_for :personal_authentication,url: {:action=>:update}, method: 'PATCH',wrapper: :horizontal_file_input do |f| %>
-    <div class="col-xs-12 border_block">
+    <div class="col-xs-12 well">
       <div class="col-xs-11  col-md-offset-1">
         <h3 class="col-md-offset-1">编辑个人信息认证</h3>
+        <hr />
         <%= render 'fields', f: f %>
       </div>
     </div>
@@ -17,7 +18,7 @@
       <%= link_to('返回', url_for(action: :show), :class=>"btn btn-primary active  col-xs-12",:role=>"button") %>
     </div>
     <div class="button_div  col-xs-4"  style="margin-top:30px;padding-bottom:30px;">
-      <%= f.submit "提交",class: "btn btn-large btn-primary col-xs-12", id:"submit_bottom", disabled: 'disabled' %>
+      <%= f.submit "提交",class: "btn btn-large btn-primary col-xs-12" %>
     </div>
   <% end %>
 

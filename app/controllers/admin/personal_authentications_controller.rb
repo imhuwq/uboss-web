@@ -1,18 +1,15 @@
 class Admin::PersonalAuthenticationsController < AdminController
+
+  load_and_authorize_resource
+
   def index
-    if super_admin?
-      @personal_authentications = PersonalAuthentication.order("updated_at DESC").page(params[:page] || 1)
-    else
-      flash[:notice] = "需要管理员权限"
-      redirect_to action: :show
-    end
+    @personal_authentications = PersonalAuthentication.accessible_by(current_ability).order("updated_at DESC").page(params[:page] || 1)
   end
+
   def new
     if PersonalAuthentication.find_by(user_id: current_user).present?
       flash[:alert] = '您的验证信息已经提交，请检查。'
       redirect_to action: :show
-    else
-      @personal_authentication = PersonalAuthentication.new
     end
   end
 
@@ -39,15 +36,12 @@ class Admin::PersonalAuthenticationsController < AdminController
   end
 
   def create
-    @personal_authentication = PersonalAuthentication.new(allow_params)
     valid_create_params
     if @errors.present?
       flash[:error] = @errors.join("\n")
       render 'new'
       return
     else
-      @personal_authentication.user_id = current_user.id
-      @personal_authentication.update_attributes(allow_params)
       @personal_authentication.face_with_identity_card_img = params[:face_with_identity_card_img] if params[:face_with_identity_card_img]
       @personal_authentication.identity_card_front_img = params[:identity_card_front_img] if params[:identity_card_front_img]
       if @personal_authentication.save
@@ -55,8 +49,7 @@ class Admin::PersonalAuthenticationsController < AdminController
         flash[:success] = '保存成功'
         redirect_to action: :show
       else
-        @personal_authentication.valid?
-        flash[:error] = "保存失败：#{@personal_authentication.errors.full_messages.join('<br/>')}"
+        flash[:error] = "保存失败：#{model_errors(@personal_authentication).join('<br/>')}"
         render 'new'
       end
     end
@@ -70,17 +63,15 @@ class Admin::PersonalAuthenticationsController < AdminController
       redirect_to action: :edit
       return
     else
-      @personal_authentication.update_attributes(allow_params)
       @personal_authentication.face_with_identity_card_img = params[:face_with_identity_card_img] if params[:face_with_identity_card_img]
       @personal_authentication.identity_card_front_img = params[:identity_card_front_img] if params[:identity_card_front_img]
       @personal_authentication.status = 'posted'
 
-      if @personal_authentication.save
+      if @personal_authentication.update(allow_params)
         MobileAuthCode.find_by(code: allow_params[:mobile_auth_code]).try(:destroy)
         flash[:success] = '保存成功'
         redirect_to action: :show
       else
-        @personal_authentication.valid?
         flash[:error] = "保存失败：#{@personal_authentication.errors.full_messages.join('<br/>')}"
         redirect_to action: :edit
       end
@@ -115,8 +106,11 @@ class Admin::PersonalAuthenticationsController < AdminController
   private
 
   def allow_params
-    params.require(:personal_authentication).permit(:mobile, :address, :name, :identity_card_code, :mobile_auth_code)
+    params.require(:personal_authentication).
+      permit(:mobile, :address, :name, :identity_card_code, :mobile_auth_code)
   end
+  alias :create_params :allow_params
+  alias :update_params :allow_params
 
   def valid_create_params
     @errors = []
@@ -124,16 +118,16 @@ class Admin::PersonalAuthenticationsController < AdminController
     code18 = /^[1-9]\d{5}[1-9]\d{3}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}([0-9]|X)$/ # 18位身份证号
     identity_card_match = (allow_params[:identity_card_code] =~ code15 || allow_params[:identity_card_code] =~ code18)
     hash = {
-      '验证码错误或已过期。': MobileAuthCode.auth_code(allow_params[:mobile], allow_params[:mobile_auth_code]),
-      '手持身份证照片不能为空。': params[:face_with_identity_card_img],
-      '身份证照片不能为空。': params[:identity_card_front_img],
-      '姓名不能为空。': allow_params[:name],
-      '身份证号码错误。': identity_card_match,
-      '地址不能为空。': allow_params[:address],
-      '您不能操作这个用户。': current_user.id == (params[:user_id].to_i || nil)
+      # '验证码错误或已过期。': MobileAuthCode.auth_code(allow_params[:mobile], allow_params[:mobile_auth_code]),
+      '手持身份证照片不能为空。' => params[:face_with_identity_card_img],
+      '身份证照片不能为空。'     => params[:identity_card_front_img],
+      '姓名不能为空。'           => allow_params[:name],
+      '身份证号码错误。'         => identity_card_match,
+      '地址不能为空。'           => allow_params[:address],
+      '您不能操作这个用户。'     => current_user.id == (params[:user_id].to_i || nil)
     }
     hash.each do |k, v|
-      @errors << k unless v.present?
+      @errors << k if v.blank?
     end
   end
 
@@ -143,14 +137,14 @@ class Admin::PersonalAuthenticationsController < AdminController
     code18 = /^[1-9]\d{5}[1-9]\d{3}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}([0-9]|X)$/ # 18位身份证号
     identity_card_match = (allow_params[:identity_card_code] =~ code15 || allow_params[:identity_card_code] =~ code18)
     hash = {
-      '验证码错误或已过期。': MobileAuthCode.auth_code(allow_params[:mobile], allow_params[:mobile_auth_code]),
-      '姓名不能为空。': allow_params[:name],
-      '身份证号码错误。': identity_card_match,
-      '地址不能为空。': allow_params[:address],
-      '您不能操作这个用户。': current_user.id == (params[:user_id].to_i || nil)
+      '验证码错误或已过期。' => MobileAuthCode.auth_code(allow_params[:mobile], allow_params[:mobile_auth_code]),
+      '姓名不能为空。'       => allow_params[:name],
+      '身份证号码错误。'     => identity_card_match,
+      '地址不能为空。'       => allow_params[:address],
+      '您不能操作这个用户。' => current_user.id == (params[:user_id].to_i || nil)
     }
     hash.each do |k, v|
-      @errors << k unless v.present?
+      @errors << k if v.blank?
     end
   end
 end
