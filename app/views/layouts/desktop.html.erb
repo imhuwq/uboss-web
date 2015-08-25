@@ -1,10 +1,12 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>UBoss</title>
+    <%= render partial: 'page_title' %>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <%= yield(:extra_meta_tags) %>
     <%= stylesheet_link_tag    'desktop', media: 'all'  %>
     <%= javascript_include_tag 'desktop' %>
+    <%= render partial: 'baidu_tongji' %>
     <%= csrf_meta_tags %>
     <link href="<%= image_url("desktop_image/favicon.ico") %>" type="image/x-icon" rel="shortcut icon">
     <script type="text/javascript">
@@ -57,7 +59,7 @@
       })
     </script>
   </head>
-  <body style="min-width:1366px">
+  <body style="min-width:1366px;font-family:'microsoft yahei'">
     <div class="header_top">
 			<div class="header_logo">
         <%= link_to 'http://www.uboss.me' do %>
@@ -67,17 +69,18 @@
       </div>
 
 			<nav class="header_nav">
-        <% if current_user and current_user.admin? %>
-          <div class="header_tag">
-            <a href="<%= admin_root_path %>"  onmouseover="this.style.color='#66CDAA'" onmouseout="this.style.color='#FFFFFF'">后台</a>
-          </div>
-        <% else %>
-          <div class="header_tag">
-            <a href="<%= new_user_session_path %>"  onmouseover="this.style.color='#66CDAA'" onmouseout="this.style.color='#FFFFFF'">登录/注册</a>
-          </div>
+        <% if not Rails.env.production? %>
+          <% if current_user and current_user.admin? %>
+            <div class="header_tag">
+              <a href="<%= admin_root_path %>"  onmouseover="this.style.color='#66CDAA'" onmouseout="this.style.color='#FFFFFF'">后台</a>
+            </div>
+          <% else %>
+            <div class="header_tag">
+              <a href="<%= new_user_session_path %>"  onmouseover="this.style.color='#66CDAA'" onmouseout="this.style.color='#FFFFFF'">登录/注册</a>
+            </div>
+          <% end %>
         <% end %>
-
-        <div class="header_tag"><a href="help"  onmouseover="this.style.color='#66CDAA'" onmouseout="this.style.color='#FFFFFF'">服务中心</a></div>
+        <div class="header_tag"><a href="service_centre_consumer"  onmouseover="this.style.color='#66CDAA'" onmouseout="this.style.color='#FFFFFF'">服务中心</a></div>
         <div class="header_tag"><a href="<%= root_path  %>"  onmouseover="this.style.color='#66CDAA'" onmouseout="this.style.color='#FFFFFF'">关于UBOSS</a></div>
 			</nav>
 		</div>
@@ -86,8 +89,8 @@
 
       <div class="footer">
   				<p class="footer_cont">UBOSS</p>
-  				<p class="footer_cont">联系我们：0755-86182704</p>
-  				<p class="footer_cont">Copyright    2015 www.uboss.cc. All Rights Reserved 粤ICP备15032292号-1 </p>
+  				<p class="footer_cont">联系我们：0755-66691053</p>
+  				<p class="footer_cont">Copyright    2015 www.uboss.me. All Rights Reserved 粤ICP备15032292号-1 </p>
   		</div>
 
   </body>

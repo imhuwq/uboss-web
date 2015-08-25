@@ -86,12 +86,12 @@
 
   </div>
 
-  <div class='new-order-addr-info <%= displayable_class(@order_form.user_address.present?) %>'>
+  <div class='new-order-addr-info <%= displayable_class(@order_form.user_address.username.present?) %>'>
     <%= f.hidden_field :user_address_id %>
     <dl class="add_line1">
       <dd>
-      <span>收货人：<b class='adr-user'><%= @order_form.user_address.try(:username) %></b></span>
-      <strong class='adr-mobile'><%= @order_form.user_address.try(:mobile) %></strong></dd>
+      <span>收货人：<b class='adr-user'><%= @order_form.user_address.username %></b></span>
+      <strong class='adr-mobile'><%= @order_form.user_address.mobile %></strong></dd>
       <dd>
       <span>收货地址：<b class='adr-detail'><%= @order_form.user_address %></b></span></dd>
     </dl>

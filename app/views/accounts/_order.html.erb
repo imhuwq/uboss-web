@@ -5,16 +5,13 @@
   </div>
   <dl class='clearfix'>
     <%= link_to order_path(order, showwxpaytitle: 1) do %>
-    <dt>
-      <%= image_tag order.order_items.first.try(:product).try(:image_url) %>
-    </dt>
-    <dd class="my_dd2">
+      <dt> <%= image_tag order.order_items.first.try(:product).try(:image_url, 'w120') %> </dt>
+      <dd class="my_dd2">
       <p>
-        <%= order.order_items.first.try(:product).try(:name) %>
-        <span class="my_left">x<%=  order.order_items.first.try(:amount) %></span>
+      <%= order.order_items.first.try(:product).try(:name) %>
+      <span class="my_left">x<%=  order.order_items.first.try(:amount) %></span>
       </p>
-      <p><span></span></p>
-    </dd>
+      </dd>
     <% end %>
     <dd class="my_dd1">
       <p>

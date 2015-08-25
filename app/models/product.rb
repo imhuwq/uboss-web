@@ -1,7 +1,7 @@
-# encoding:utf-8
 class Product < ActiveRecord::Base
 
   include Orderable
+  include Descriptiontable
 
   DataCalculateWay = { 0 => '按金额', 1 => '按售价比例' }
   DataBuyerPay = { true => '买家付款', false => '包邮' }
@@ -9,16 +9,32 @@ class Product < ActiveRecord::Base
   validates_presence_of :user_id, :name, :short_description
 
   belongs_to :user
-  has_one :asset_img, class_name: 'AssetImg', dependent: :destroy, as: :resource
+  has_one :asset_img, class_name: 'AssetImg', autosave: true, as: :resource
   has_many :product_share_issue, dependent: :destroy
   has_many :order_items
 
   delegate :image_url, to: :asset_img, allow_nil: true
+  delegate :avatar=, :avatar, to: :asset_img
 
   enum status: { unpublish: 0, published: 1, closed: 2 }
 
   before_create :generate_code
   before_save :calculates_before_save
+
+  def avatar=(file)
+    if file.present?
+      if file.is_a?(String)
+        asset_img.write_uploader :avatar, file
+      else
+        asset_img.avatar = file
+      end
+    end
+    asset_img.avatar
+  end
+
+  def asset_img
+    super || build_asset_img
+  end
 
   def generate_code
     loop do

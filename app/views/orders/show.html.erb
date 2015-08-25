@@ -2,6 +2,10 @@
   <%= @order_title || @order.state_i18n %>
 <% end %>
 
+<%= content_for :extra_meta_tags do %>
+  <%= sharing_meta_tags(@product, @sharing_link_node) %>
+<% end %>
+
 <div class="order-status-bar">
   <%= I18n.t("order_status_bar.#{@order.state}") %>
 </div>
@@ -65,6 +69,11 @@
   </div>
 </div>
 
+<% if @privilege_card.present? %>
+  <br />
+  <%= render partial: 'privilege_card', locals: { privilege_card: @privilege_card } %>
+<% end %>
+
 <br/>
 
 <div class="pay-comment order-store-info">
@@ -88,9 +97,9 @@
   </div>
 </div>
 
-<br />
 
 <% if @order.payed? && @product.is_official_agent? %>
+  <br />
   <div class="pay-comment order-store-info">
     <div class="store-title">
       创客权订单信息
@@ -99,6 +108,7 @@
     <p>订单处理完成后，您将成为UBOSS创客，请到<%= link_to "个人设置", settings_account_path %>设置您的密码(如果您还没有设置过密码)。</p>
   </div>
 <% end %>
+
 <% if @order.completed? && @product.is_official_agent? %>
   <div class="pay-comment order-store-info">
     <div class="store-title">
@@ -106,74 +116,62 @@
     </div>
     <p>恭喜您的UBOSS创客权订单已处理完毕。</p>
     <p>您已成为UBOSS创客，请到<%= link_to "个人设置", settings_account_path %>设置您的密码(如果您还没有设置过密码)。</p>
-    <p>电脑端打开UBOSS官网 <a ref="http://uboss.cc">http://uboss.cc</a> 登陆您的后台，登陆账号为您初次在UBOSS购买登记的手机号。</p>
+    <p>电脑端打开UBOSS官网 <a ref="http://uboss.me">http://uboss.me</a> 登陆您的后台，登陆账号为您初次在UBOSS购买登记的手机号。</p>
   </div>
 <% end %>
 
 <br />
 
-<div class="accunt_adil_box3">
-  <% if @order.unpay? && browser.wechat? %>
+<% if @order.unpay? && browser.wechat? %>
+  <div class="accunt_adil_box3">
     <%= link_to "支付", '#', id: 'wx-pay-btn', class: 'accunt_adilbtn' %>
-  <% elsif @order.shiped? %>
-    <%= link_to "确认收货", received_order_path(@order),
-      class:"accunt_adilbtn", data: { confirm: '确认收货？' } %>
-  <% end %>
-</div>
+  </div>
+<% elsif @order.shiped? %>
+  <div class="accunt_adil_box3">
+    <%= link_to "确认收货", received_order_path(@order), class:"accunt_adilbtn", data: { confirm: '确认收货？' } %>
+  </div>
+<% end %>
 
 <% if @order.signed? || @order.completed? %>
   <% if @order_item.evaluation_id.blank? %>
     <div class="accunt_adil_box3">
       <%= link_to "评价", new_evaluation_path(id: @order_item.id), class: 'accunt_adilbtn' %>
     </div>
-  <% else %>
-    <div class="fenxinrated">
-      <%= render partial: 'application/share_buttoms', locals: { product: @product, node: @sharing_link_node } %>
-    </div>
   <% end %>
+  <div class="fenxinrated">
+    <%= render partial: 'application/share_buttoms', locals: { product: @product, node: @sharing_link_node } %>
+  </div>
 <% end %>
 
 <% if browser.wechat? %>
   <% if @order.unpay? %>
     <%= content_for :extra_javascript do %>
       <script type="text/javascript" charset="utf-8">
-wx.ready(function(){
-
-  UBoss.nami.setPayenv("<%= $wechat_env %>");
-  $('#wx-pay-btn').on('click', function(event){
-    event.preventDefault();
-    UBoss.nami.chooseWXPay({
-      "timestamp": "<%= @pay_p[:timeStamp] %>",
-      "nonceStr": "<%= @pay_p[:nonceStr] %>",
-      "package": "<%= @pay_p[:package] %>",
-      "signType": "<%= @pay_p[:signType] %>",
-      "paySign": "<%= @pay_sign %>", // 支付签名
-      "success": function (res) {
-        window.location.href = "/orders/" + "<%= @order.id %>" + "/pay_complete";
-      }
-    });
-  });
-
-  wx.hideOptionMenu();
-
-})
+         wx.ready(function(){
+           UBoss.nami.setPayenv("<%= $wechat_env %>");
+           $('#wx-pay-btn').on('click', function(event){
+             event.preventDefault();
+             UBoss.nami.chooseWXPay({
+               "timestamp": "<%= @pay_p[:timeStamp] %>",
+               "nonceStr": "<%= @pay_p[:nonceStr] %>",
+               "package": "<%= @pay_p[:package] %>",
+               "signType": "<%= @pay_p[:signType] %>",
+               "paySign": "<%= @pay_sign %>", // 支付签名
+               "success": function (res) {
+                 window.location.href = "/orders/" + "<%= @order.id %>" + "/pay_complete";
+               }
+             });
+           });
+           wx.hideOptionMenu();
+         })
       </script>
     <% end %>
   <% end %>
   <% if @order.signed? || @order.completed? %>
     <%= content_for :extra_javascript do %>
-    <script type="text/javascript" charset="utf-8">
-
-wx.ready(function(){
-  UBoss.luffy.resetInvokeSharing({
-    title: "<%= product_sharing_title(@product) %>", // 分享标题
-    link: "<%= product_sharing_link(@product, @sharing_link_node) %>",
-    imgurl: '<%= @product.image_url %>', // 分享图标
-    desc: '<%= product_sharing_desc(@product) %>' // 分享描述
-  });
-})
-
-    </script>
+      <script type="text/javascript" charset="utf-8">
+        wx.ready(function(){ UBoss.luffy.invokeSharing(); });
+      </script>
     <% end %>
   <% end %>
 <% end %>

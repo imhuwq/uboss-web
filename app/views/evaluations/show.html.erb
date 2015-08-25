@@ -2,25 +2,23 @@
   已评价
 <% end %>
 
+<%= content_for :extra_meta_tags do %>
+  <%= sharing_meta_tags(@product, @sharing_node) %>
+<% end %>
+
 <div class="container">
+
   <div class="p_comment">
-    <% case @evaluation.status %>
-    <% when 'good' %>
-    <div class="p_img good"></div>
-    <strong>好评</strong>
-    <% when 'normal' %>
-    <div class="p_img normal"></div>
-    <strong>中评</strong>
-    <% when 'bad' %>
-    <div class="p_img bad"></div>
-    <strong>差评</strong>
-    <% end %>
+    <div class="p_img <%= @evaluation.status %>"></div>
+    <strong><%= @evaluation.status_i18n %></strong>
     <p>感谢你的评价!</p>
   </div>
+
   <div class="fenxinrated">
     <%= render partial: 'application/share_buttoms',
       locals: { product: @product, node: @sharing_link_node } %>
   </div>
+
   <div class="accunt_adil_box4">
     <%= link_to("返回首页", root_path, class:"accunt_adilbtnt") %>
   </div>
@@ -30,14 +28,7 @@
 <% if browser.wechat? %>
   <%= content_for :extra_javascript do %>
     <script type="text/javascript">
-wx.ready(function(){
-  UBoss.luffy.resetInvokeSharing({
-    title: "<%= product_sharing_title(@product) %>", // 分享标题
-    link: "<%= product_sharing_link(@product, @sharing_node) %>",
-    imgurl: '<%= @product.image_url %>', // 分享图标
-    desc: '<%= product_sharing_desc(@product) %>'
-  });
-});
+      wx.ready(function(){ UBoss.luffy.invokeSharing(); });
     </script>
   <% end %>
 <% end %>

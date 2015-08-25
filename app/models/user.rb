@@ -4,7 +4,7 @@ class User < ActiveRecord::Base
   include Orderable
 
   attr_accessor :code, :mobile_auth_code
-  OFFICIAL_ACCOUNT_LOGIN = '13800000000'
+  OFFICIAL_ACCOUNT_LOGIN = '13800000000'.freeze
 
   devise :database_authenticatable, :rememberable, :trackable, :validatable,
     :omniauthable, :registerable
@@ -207,15 +207,15 @@ class User < ActiveRecord::Base
   end
 
   def seller?
-    user_roles.collect(&:name).include?('seller')
+    user_roles.pluck(:name).include?('seller')
   end
 
   def agent?
-    user_roles.collect(&:name).include?('agent')
+    user_roles.pluck(:name).include?('agent')
   end
 
   def super_admin?
-    user_roles.collect(&:name).include?('super_admin')
+    user_roles.pluck(:name).include?('super_admin')
   end
 
   def authenticated?
