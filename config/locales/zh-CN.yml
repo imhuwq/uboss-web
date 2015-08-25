@@ -176,6 +176,11 @@ zh-CN:
     completed: 交易完成
     closed: 订单关闭
   enums:
+    evaluation:
+      status:
+        good:   好评
+        normal: 中评
+        bad:    差评
     agent_invite_seller_histroy:
       status:
         invited: 已邀请

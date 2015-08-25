@@ -59,7 +59,9 @@
     <% end %>
     <% if current_user.super_admin? %>
       <%= t.cell :agent do |obj| %>
-        <%= link_to User.find_by(id: obj.agent_id).try(:identify), url_for(controller: :agents, action: :show, id: obj.agent_id) %>
+        <% if obj.agent.present? %>
+          <%= link_to obj.agent.identify, url_for(controller: :agents, action: :show, id: obj.agent_id) %>
+        <% end %>
       <% end %>
     <% end %>
     <%= t.cell :authenticated do |obj| %>

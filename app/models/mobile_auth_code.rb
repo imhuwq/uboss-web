@@ -6,7 +6,7 @@ class MobileAuthCode < ActiveRecord::Base
   after_save :send_code
 
   def self.auth_code(auth_mobile, auth_code) #验证
-    MobileAuthCode.where('expire_at < ?', Time.now).delete_all
+    MobileAuthCode.where('expire_at < ?', DateTime.now).delete_all
     mobile_auth_code = MobileAuthCode.
       find_by(mobile: auth_mobile, code: auth_code)
 
@@ -32,13 +32,13 @@ class MobileAuthCode < ActiveRecord::Base
   end
 
   def set_expire_time # 设定过期时间
-    self.expire_at ||= Time.now + 30.minute
+    self.expire_at ||= DateTime.now + 30.minute
   end
 
 	def regenerate_code
     self.tap do |mobile_auth_code|
       mobile_auth_code.code = rand(9999..100_000).to_s.ljust(5,'0')
-      mobile_auth_code.expire_at = Time.now + 30.minute
+      mobile_auth_code.expire_at = DateTime.now + 30.minute
     end
   end
 

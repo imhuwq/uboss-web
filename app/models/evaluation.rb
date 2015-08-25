@@ -11,7 +11,7 @@ class Evaluation < ActiveRecord::Base
 
   validates :order_item_id, :status, presence: true
 
-  enum status: { good: 1, normal: 2,bad: 3}
+  enum status: { good: 1, normal: 2, bad: 3 }
 
   def relate_attrs # 取出order_item的值并斌给Evaluation中对应的属性
     if order_item

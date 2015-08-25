@@ -1,3 +1,4 @@
+<%= upyun_meta_tags prefix: 'asset_img/avatar' %>
 <div class="well">
   <h4>商品信息</h4>
   <hr />
@@ -6,7 +7,13 @@
   <%= f.input :present_price %>
   <%= f.input :count %>
   <%= f.input :short_description %>
-  <%= f.input :asset_img, as: :file, hint: image_tag(@product.image_url(:thumb))  %>
+  <%= f.input :asset_img, hint: image_tag(@product.image_url(:thumb)) do %>
+    <%= f.input_field :avatar, type: :hidden, as: :file %>
+    <span class="btn btn-primary fileinput-button">
+      <span>选择图片</span>
+      <%= file_field_tag "image", class: "upyun_file" %>
+    </span>
+  <% end %>
 </div>
 
 <div class="well">

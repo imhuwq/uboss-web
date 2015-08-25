@@ -4,7 +4,7 @@ class User < ActiveRecord::Base
   include Orderable
 
   attr_accessor :code, :mobile_auth_code
-  OFFICIAL_ACCOUNT_LOGIN = '13800000000'
+  OFFICIAL_ACCOUNT_LOGIN = '13800000000'.freeze
 
   devise :database_authenticatable, :rememberable, :trackable, :validatable,
     :omniauthable, :registerable
@@ -51,6 +51,7 @@ class User < ActiveRecord::Base
   before_create :build_user_info, if: -> { user_info.blank? }
 
   scope :admin, -> { where(admin: true) }
+  scope :agent, -> { joins(:user_roles).where(user_roles: {name: 'agent'}) }
 
   UserRole::ROLE_NAMES.each do |role|
     User.class_eval do
@@ -113,11 +114,20 @@ class User < ActiveRecord::Base
       end
     end
 
+    def get_valuable_session(session)
+      if data = session["devise.wechat_data"] && session["devise.wechat_data"]["extra"]["raw_info"]
+        yield data if block_given?
+      end
+    end
+
   end
 
-  def bind_agent(code)
-    if code == '123'
-      true
+  def bind_agent(binding_code)
+    agent_user = User.agent.find_by(agent_code: binding_code)
+    if agent_user.present?
+      self.agent = agent_user
+      self.become_uboss_seller
+      self.save
     else
       errors.add(:code, :invalid)
       false
@@ -125,7 +135,7 @@ class User < ActiveRecord::Base
   end
 
   def update_with_oauth_session(session)
-    get_valuable_session(session) do |data|
+    self.class.get_valuable_session(session) do |data|
       set_wechat_data(data)
       save
     end
@@ -142,9 +152,11 @@ class User < ActiveRecord::Base
   end
 
   def become_uboss_seller
-    transaction do
-      update_columns(admin: true)
-      user_roles << UserRole.seller
+    if not self.is_seller?
+      transaction do
+        update_columns(admin: true)
+        user_roles << UserRole.seller
+      end
     end
   end
 
@@ -204,14 +216,15 @@ class User < ActiveRecord::Base
   end
 
   def seller?
-    user_roles.collect(&:name).include?('seller')
+    user_roles.pluck(:name).include?('seller')
   end
 
   def agent?
-    user_roles.collect(&:name).include?('agent')
+    user_roles.pluck(:name).include?('agent')
   end
+
   def super_admin?
-    user_roles.collect(&:name).include?('super_admin')
+    user_roles.pluck(:name).include?('super_admin')
   end
 
   def authenticated?
@@ -248,9 +261,6 @@ class User < ActiveRecord::Base
     AgentInviteSellerHistroy.find_by(mobile: login).try(:update, status: 1)
   end
 
-
-  private
-
   def set_wechat_data(data)
     self.nickname       ||= data["nickname"]
     self.sex            ||= data["sex"]
@@ -262,11 +272,7 @@ class User < ActiveRecord::Base
     self.remote_avatar_url = data['headimgurl']
   end
 
-  def get_valuable_session(session)
-    if data = session["devise.wechat_data"] && session["devise.wechat_data"]["extra"]["raw_info"]
-      yield data if block_given?
-    end
-  end
+  private
 
   def email_required?
     false

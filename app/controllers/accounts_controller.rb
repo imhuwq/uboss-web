@@ -138,6 +138,7 @@ class AccountsController < ApplicationController
       else
         current_user.binding_agent(params[:agent_code])
         MobileAuthCode.find_by(code: params[:user][:mobile_auth_code]).try(:destroy)
+        flash[:success] = "绑定成功,#{current_user.agent.identify}成为您的创客。"
         redirect_to action: :binding_successed
       end
     end
@@ -158,7 +159,7 @@ class AccountsController < ApplicationController
   def valid_code
     @errors = []
     hash = {
-      '验证码错误或已过期。' => MobileAuthCode.auth_code(params[:user][:mobile], params[:user][:mobile_auth_code]),
+      '验证码错误或已过期。' => MobileAuthCode.auth_code(current_user.login, params[:user][:mobile_auth_code]),
       # '创客邀请码错误。': User.find_by(agent_code: params[:agent_code])
     }
     hash.each do |k, v|

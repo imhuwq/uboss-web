@@ -45,7 +45,7 @@
 
 <div class="prvid_content">
   <p class="prvid_content_tit">图文详情</p>
-  <%== @product.content %>
+  <%= raw @product.content %>
 </div>
 <div class="buy">
   <%= link_to '返回',  url_for(:action=>:show,:id=>@product.id), class: 'buy_btn' %>

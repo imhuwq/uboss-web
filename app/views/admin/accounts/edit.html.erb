@@ -33,6 +33,10 @@
           %>
         </h5>
       <% else %>
+        <h5>
+          <span class="label label-info">未开通</span>
+          <%= link_to "我要开通", binding_agent_admin_account_path, class: 'btn btn-primary btn-xs' %>
+        </h5>
       <% end %>
     <% end %>
 

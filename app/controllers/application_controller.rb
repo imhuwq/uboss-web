@@ -7,9 +7,15 @@ class ApplicationController < ActionController::Base
 
   protect_from_forgery with: :exception
 
+  before_action :redire_to_home
   before_action :configure_permitted_parameters, if: :devise_controller?
 
   protected
+  def redire_to_home
+    if !desktop_request? && Rails.env.production? && request.path != root_path
+      redirect_to root_path
+    end
+  end
   # default: order by created_at, limit 20, page 1
   # order_column to change order column and page columns
   # page_size to change limit size

@@ -19,8 +19,8 @@ class OrderForm
   validates :mobile, presence: true, mobile: true, if: -> { self.buyer.blank? }
   validates :deliver_mobile, :deliver_username, :street, presence: true, if: -> { self.user_address_id.blank? }
   validates :deliver_mobile, mobile: true, allow_blank: true
-  validate :captcha_must_be_valid, :mobile_blank_with_oauth, if: -> { self.buyer.blank? }
-  validate :check_amount
+  validate  :captcha_must_be_valid, :mobile_blank_with_oauth, if: -> { self.buyer.blank? }
+  validate  :check_amount
 
   delegate :traffic_expense, to: :product, prefix: :product
 
@@ -28,6 +28,18 @@ class OrderForm
     return @user_address if @user_address.present?
     if buyer && user_address_id.present?
       @user_address = buyer.user_addresses.find(self.user_address_id)
+    else
+      @user_address = UserAddress.new(
+        user: buyer,
+        mobile: deliver_mobile,
+        username: deliver_username,
+        country: country,
+        province: province,
+        city: city,
+        area: area,
+        street: street,
+        building: building
+      )
     end
   end
 
@@ -87,19 +99,9 @@ class OrderForm
   end
 
   def create_user_address
-    return true if user_address.present?
-
-    self.user_address = UserAddress.create!(
-      user: buyer,
-      mobile: deliver_mobile,
-      username: deliver_username,
-      country: country,
-      province: province,
-      city: city,
-      area: area,
-      street: street,
-      building: building
-    )
+    if user_address_id.blank? && user_address.new_record?
+      user_address.save!
+    end
   end
 
   def create_order_and_order_item
