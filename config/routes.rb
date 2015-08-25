@@ -38,7 +38,7 @@ Rails.application.routes.draw do
     get :settings,         :edit_password,     :reset_password,
         :orders,           :new_agent_binding, :invite_seller,
         :edit_seller_histroy, :edit_seller_note, :seller_agreement,
-        :merchant_confirm
+        :merchant_confirm, :about_us
 
     put :binding_agent, :send_message, :update_histroy_note
     patch :merchant_confirm, to: 'accounts#merchant_confirmed'
