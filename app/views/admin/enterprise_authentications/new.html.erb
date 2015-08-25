@@ -5,16 +5,13 @@
   </div>
   <div class="col-xs-2"><%= link_to "企业认证", '###', class:"btn btn-primary col-xs-12" %></div>
 </div>
-<div class="row">
-  <%= simple_form_for :enterprise_authentication,url: {:action=>:create},wrapper: :horizontal_file_input do |f| %>
-    <div class="col-xs-12 border_block">
-      <div class="col-xs-11  col-md-offset-1">
-        <h3 class="col-md-offset-1">创建企业信息认证</h3>
-        <%= render 'fields', f: f %>
-      </div>
-    </div>
-    <div class="button_div  col-xs-4  col-md-offset-4"  style="margin-top:30px;padding-bottom:30px;">
-      <%= f.submit "创建",class: "btn btn-large btn-primary col-xs-12", id:"submit_bottom", disabled: 'disabled' %>
-    </div>
-  <% end %>
-</div>
+
+<h4>创建企业信息认证</h4>
+<hr />
+<%= horizon_form_for :enterprise_authentication,url: {:action=>:create} do |f| %>
+  <%= render 'fields', f: f %>
+
+  <div class="form-actions">
+    <%= f.submit '提交', class: 'btn btn-primary' %>
+  </div>
+<% end %>
