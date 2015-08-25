@@ -208,9 +208,15 @@
   <div class="button_div  col-xs-4"  style="margin-top:30px;padding-bottom:30px;">
     <% if can? :update, @product %>
       <% if @product.status == 'unpublish' %>
-      <%= link_to("上架", url_for(action: :change_status, id: @product.id, status: :published), :class=>"btn btn-success active  col-xs-12",:role=>"button") %>
+        <%= link_to("上架",
+                    url_for(action: :change_status, id: @product.id, status: :published),
+                    method: :patch,
+                    class: "btn btn-success active  col-xs-12",:role=>"button") %>
       <% else %>
-      <%= link_to("取消上架", url_for(action: :change_status,id: @product.id, status: :unpublish), :class=>"btn btn-default active  col-xs-12",:role=>"button") %>
+        <%= link_to("取消上架",
+                    url_for(action: :change_status,id: @product.id, status: :unpublish),
+                    method: :patch,
+                    class: "btn btn-default active  col-xs-12",:role=>"button") %>
       <% end %>
     <% end %>
   </div>

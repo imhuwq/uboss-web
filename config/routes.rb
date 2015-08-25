@@ -57,7 +57,8 @@ Rails.application.routes.draw do
   authenticate :user, lambda { |user| user.admin? } do
     namespace :admin do
       resources :products, except: [:destroy] do
-        get :change_status, :pre_view, on: :member
+        patch :change_status, on: :member
+        get :pre_view, on: :member
       end
       resources :orders, except: [:destroy] do
         patch :ship, on: :member

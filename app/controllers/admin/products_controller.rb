@@ -37,24 +37,29 @@ class Admin::ProductsController < AdminController
     if params[:status] == 'published'
       if @product.user.authenticated?
         @product.status = 'published'
-        flash[:success] = '上架成功'
+        @notice = '上架成功'
       else
-        flash[:notice] = '该帐号还未通过身份样子，请先验证:点击右上角用户名，进入“个人/企业认证”'
+        @error = '该帐号还未通过身份样子，请先验证:点击右上角用户名，进入“个人/企业认证”'
       end
     elsif params[:status] == 'unpublish'
       @product.status = 'unpublish'
-      flash[:success] = '取消上架成功'
+      @notice = '取消上架成功'
     elsif params[:status] == 'closed'
       @product.status = 'closed'
-      flash[:success] = '删除成功'
+      @notice = '删除成功'
     end
-    @product.save
-    respond_to do |format|
-      format.html { redirect_to action: :show, id: @product.id }
-      format.js do
-        products = Product.accessible_by(current_ability).where(status: [0,1]).order('created_at DESC')
-        @products = products.page(params[:page] || 1)
-      end
+    if not @product.save
+      @error = model_errors(@product).join('<br/>')
+    end
+    if request.xhr?
+      flash.now[:success] = @notice
+      flash.now[:error] = @error
+      product_collection = @product.closed? ? [] : [@product]
+      render(partial: 'products', locals: { products: product_collection })
+    else
+      flash[:success] = @notice
+      flash[:error] = @error
+      redirect_to action: :show, id: @product.id
     end
   end
 
