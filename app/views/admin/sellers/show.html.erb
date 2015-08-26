@@ -38,7 +38,12 @@
 					关联创客
 				</label>
 				<div class="col-sm-9">
-					<%= link_to User.find_by(id: @seller.agent_id).try(:identify), url_for(controller: :agents, action: :show, id: @seller.agent_id) %>
+          <% if @seller.agent_id.present? %>
+            <%= link_to User.find_by(id: @seller.agent_id).try(:identify), url_for(controller: :agents, action: :show, id: @seller.agent_id) %>
+          <% else %>
+          尚未关联创客
+          <% end %>
+
 				</div>
 			</div>
       <div class="form-group clearfix">
