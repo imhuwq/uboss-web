@@ -134,7 +134,7 @@ class AccountsController < ApplicationController
       flash[:error] = '验证码错误或已过期。'
       redirect_to action: :binding_agent, agent_code: params[:agent_code]
     elsif current_user.bind_agent(params[:agent_code])
-      AgentInviteSellerHistroy.find_by(mobile: login).try(:update, status: 1)
+      AgentInviteSellerHistroy.find_by(mobile: current_user.login).try(:update, status: 1)
       MobileAuthCode.find_by(code: params[:user][:mobile_auth_code]).try(:destroy)
       flash[:success] = "绑定成功,#{current_user.agent.identify}成为您的创客。"
       redirect_to action: :binding_successed
