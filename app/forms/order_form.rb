@@ -53,9 +53,9 @@ class OrderForm
 
   def real_price
     if sharing_node.present?
-      product.present_price.to_f - sharing_node.privilege_amount.to_f
+      product.present_price.to_f.to_d - sharing_node.privilege_amount.to_f.to_d
     else
-      product.present_price.to_f
+      product.present_price.to_f.to_d
     end
   end
 
