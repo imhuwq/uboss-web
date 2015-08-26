@@ -7,7 +7,7 @@
     成为UBOSS商家
   </div>
   <div class="row font_h4 text-center" style="padding:10px;">
-    亲爱的 <%= current_user.identify %>，在您确认成为UBOSS商家前，请审慎阅读《UBOSS商家入驻协议》
+    亲爱的 <%= current_user.identify %>，在您确认成为UBOSS商家前，请审慎阅读 <%= link_to "《UBOSS商家入驻协议》", agreements_seller_path, target: '_blank' %>
   </div>
   <div class="add_conts">
     <div class="accunt_adil_box3 adbtn">

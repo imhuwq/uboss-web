@@ -17,7 +17,10 @@ Rails.application.routes.draw do
   get 'service_centre_consumer', to: 'home#service_centre_consumer'
   get 'service_centre_agent', to: 'home#service_centre_agent'
   get 'service_centre_tutorial', to: 'home#service_centre_tutorial'
-  get 'home/about_us'
+  get 'about', to: 'home#about_us'
+  get 'agreements/seller'
+  get 'agreements/maker'
+  get 'agreements/register'
 
   post 'mobile_auth_code/create', to: 'mobile_auth_code#create'
 
