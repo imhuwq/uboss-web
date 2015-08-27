@@ -33,7 +33,7 @@ module PostMan extend self
     Airbrake.notify_or_ignore(e,
                               parameters: {mobile: mobile},
                               cgi_data: ENV.to_hash)
-    result_message('短信发送失败', false)
+    result_message('短信服务失败', false)
   end
 
   private

@@ -13,7 +13,6 @@ class MobileAuthCode < ActiveRecord::Base
   def self.send_captcha_with_mobile(auth_mobile)
     auth_code = MobileAuthCode.find_or_initialize_by(mobile: auth_mobile)
     auth_code.regenerate_code unless auth_code.new_record?
-    auth_code.save
     { success: auth_code.save, mobile_auth_code: auth_code }
   end
 
