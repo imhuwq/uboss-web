@@ -1,6 +1,6 @@
 $ ->
   mobile_submit_time = 0
-  $('#send_mobile').on 'tap', (e) ->
+  $('#send_mobile').on 'click', (e) ->
     e.preventDefault()
     sendBtn = $(this)
     mobile = $('#new_mobile').val()
