@@ -49,6 +49,7 @@ $ ->
         captcha_key: captcha_key
       },
     .done ->
+      $('#refresh_img_captcha_btn').click()
       mobile_submit_time = 60
       timedown sendBtn
     .fail (xhr, textStatus) ->
