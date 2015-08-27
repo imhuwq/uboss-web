@@ -16,8 +16,22 @@
       <%= f.input :login, required: false, autofocus: true, input_html: {id: 'new_mobile'} %>
 
       <div class="cap-inputs">
-        <%= f.input :mobile_auth_code %>
-        <a id="send_mobile" class="send_mobile" href="#">发送验证码</a>
+        <%= f.input :image_captcha do %>
+          <div class='simple-captcha'>
+            <div class="simple-captcha-img">
+              <%= simple_captcha_options[:image] %>
+            </div>
+            <div class="simple-captcha-field">
+              <%= simple_captcha_options[:field] %>
+            </div>
+            <%= simple_captcha_options[:refresh_button] %>
+          </div>
+        <% end %>
+
+        <%= f.input :mobile_auth_code do %>
+          <%= f.input_field :mobile_auth_code, class: 'form-control' %>
+          <a id="request_mobile_captcha" class="send_mobile" href="#">发送验证码</a>
+        <% end %>
 
       </div>
       <div class="cap-inputs form-group">
