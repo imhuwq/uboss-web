@@ -3,7 +3,7 @@ class MobileAuthCode < ActiveRecord::Base
   validates :code, :expire_at, presence: true
 
   before_validation :generate_code, :set_expire_time
-  after_save :send_code
+  before_save :send_code
 
   def self.auth_code(auth_mobile, auth_code) #验证
     MobileAuthCode.where('expire_at < ?', DateTime.now).delete_all
@@ -14,6 +14,7 @@ class MobileAuthCode < ActiveRecord::Base
     auth_code = MobileAuthCode.find_or_initialize_by(mobile: auth_mobile)
     auth_code.regenerate_code unless auth_code.new_record?
     auth_code.save
+    { success: auth_code.save, mobile_auth_code: auth_code }
   end
 
   def self.clear_captcha(auth_mobile)
@@ -41,6 +42,7 @@ class MobileAuthCode < ActiveRecord::Base
 
   def send_code # 发送验证码
     result = send_sms
+    errors.add(:code, result[:message]) if not result[:success]
     result[:success]
   end
 end
