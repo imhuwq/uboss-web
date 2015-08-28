@@ -1,3 +1,13 @@
+module CarrierWave::Storage
+  class UpYun
+    class File
+      def delete
+        true
+      end
+    end
+  end
+end
+
 if !Rails.env.test?
   CarrierWave.configure do |config|
     config.storage = :upyun
