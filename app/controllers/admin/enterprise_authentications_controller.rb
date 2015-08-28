@@ -44,9 +44,6 @@ class Admin::EnterpriseAuthenticationsController < AdminController
       return
     else
       @enterprise_authentication.user_id = current_user.id
-      # @enterprise_authentication.business_license_img = params[:enterprise_authentication][:business_license_img]
-      # @enterprise_authentication.legal_person_identity_card_front_img = params[:enterprise_authentication][:legal_person_identity_card_front_img]
-      # @enterprise_authentication.legal_person_identity_card_end_img = params[:enterprise_authentication][:legal_person_identity_card_end_img]
       if @enterprise_authentication.save
         MobileAuthCode.find_by(code: enterprise_authentication_params[:mobile_auth_code]).try(:destroy)
         flash[:success] = '保存成功'
@@ -67,9 +64,6 @@ class Admin::EnterpriseAuthenticationsController < AdminController
     else
       @enterprise_authentication = EnterpriseAuthentication.find_by!(user_id: current_user)
       @enterprise_authentication.update(enterprise_authentication_params)
-      # @enterprise_authentication.business_license_img = params[:enterprise_authentication][:business_license_img] if params[:enterprise_authentication][:business_license_img]
-      # @enterprise_authentication.legal_person_identity_card_front_img = params[:enterprise_authentication][:legal_person_identity_card_front_img] if params[:enterprise_authentication][:legal_person_identity_card_front_img]
-      # @enterprise_authentication.legal_person_identity_card_end_img = params[:enterprise_authentication][:legal_person_identity_card_end_img] if  params[:enterprise_authentication][:legal_person_identity_card_end_img]
       if @enterprise_authentication.save
         MobileAuthCode.find_by(code: enterprise_authentication_params[:mobile_auth_code]).try(:destroy)
         flash[:success] = '保存成功'
@@ -133,6 +127,7 @@ class Admin::EnterpriseAuthenticationsController < AdminController
   end
 
   def valid_update_params
+    @errors = []
     hash = {
       '验证码错误或已过期。': MobileAuthCode.auth_code(enterprise_authentication_params[:mobile], enterprise_authentication_params[:mobile_auth_code]),
       '公司名不能为空。': enterprise_authentication_params[:enterprise_name],
