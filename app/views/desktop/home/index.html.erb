@@ -3,85 +3,140 @@
     <%= seo_meta_tag %>
   <% end %>
 <% end %>
+<div class='header-img'>
+	<div class="container nogap">
+		<div class="box-w40"><%=image_tag "desktop_image/phone.png",alt:"Uboss"%></div>
+		<div class="box-w60"><div class="wenzi"><%=image_tag "desktop_image/wenzi.png",alt:"Uboss"%></div></div>
+	</div>
+</div><!-- header-img -->
+<br/>
+<div class="container nogap" >
+	<div class="box-w33">
+			<div class="video-banner">
+				<%=image_tag "desktop_image/video1.jpg", alt:"关于Uboss宣传片" %>
+				<div class="play-icon" data-src="http://player.youku.com/player.php/sid/XMTI5ODg1NTM2MA==/v.swf"><i class="fa fa-play"></i> 点击播放</div><!-- play-icon -->
+		</div><!-- video-banner -->
+	</div><!-- box-w33 -->
+	<div class="box-w33">
+		<div class="video-banner">
+			<%=image_tag "desktop_image/video.jpg", alt:"什么是UBoss产品" %>
+			<div class="play-icon" data-src="http://player.youku.com/player.php/sid/XMTMxNTI0NTE0NA==/v.swf"><i class="fa fa-play"></i> 点击播放</div><!-- play-icon -->	
+		</div><!-- vido-banner -->
+	</div><!-- box-w33 -->
+</div><!-- container -->
 
-<div class='header_img_con'>
-	<%= image_tag "desktop_image/header.png", class:"header_img", alt:"header" %>
-</div>
-<div class="container">
-<div class="page_video" >
-	<div class="video_list"  onclick="showVideo()">
-		<%=image_tag "desktop_image/playVideo.png", alt:"playVideo" %>
-	</div>
-</div>
-<!--弹框-->
-<div id="video" class="video_min">
-				<iframe style="z-index: 1;" allowfullscreen="" frameborder="0"
-					src="http://v.qq.com/iframe/player.html?vid=o0161da2c7v&tiny=0&auto=0" width="600" height="450">
-				</iframe>
-				<!-- <input  type="button" value="Close" onclick="hideVideo();"/> -->
-				<%= image_tag "desktop_image/cancel.png", alt:"cancle", onclick:"hideVideo()", style:"z-index:1;"%>
-</div>
-<div class="page1">
-	<div class="page_title"><span class="page_titles">平台价值</span></div>
-	<div class="page1_content">
-		<div class="img">
-			<%= image_tag "desktop_image/page_img_1.png", class:"wow lightSpeedIn" %>
-		</div>
-		<div class="img">
-			<%= image_tag "desktop_image/page_img_2.png", class:"wow shake" %>
-		</div>
-		<div class="img">
-			<%= image_tag "desktop_image/page_img_3.png", class:"wow lightSpeedIn" %>
-		</div>
-	</div>
-</div>
-<div class="page2" id="page2">
-	<div class="page2_cont">
-		<div class="page_title"><span class="page_titles">平台优势</span></div>
-		<div >
-			<%= image_tag "desktop_image/page2_img.png", class:"page2_img_m", alt:"平台优势" %>
-		</div>
-	</div>
-</div>
-<div class="page3" id="page3">
-	<div class="page_title"><span class="page_titles">产品流程</span></div>
-	<div >
-		<%= image_tag "desktop_image/page3_img.png", class:"page3_img_m", alt:"产品流程" %>
-	</div>
-</div>
-<div class="page4" id="page4">
-		<div class="page4_title"><span class="page4_titles">简单两步拥有UBOSS商铺</span></div>
-		<div class="page4_cont_dl">
-			<dl class="page4_cont_list">
-				<dt class="wow slideInLeft" data-wow-duration="1s"><%= image_tag "desktop_image/openShop.png", alt:"openShop" %></dt>
-				<dd class="page4_cont_btn">
-					<%= link_to '/sellers/new' do %>
-					<%= image_tag "desktop_image/openShopBtn.png", alt:"openShop" %>
-					<% end %>
-				</dd>
-			</dl>
-			<dl class="page4_cont_list">
-				<dt class="wow slideInRight" data-wow-duration="1s"><%= image_tag "desktop_image/toApprove.png", alt:"shop" %></dt>
-				<dd class="page4_cont_btn">
-					<%= link_to "/admin/users/#{current_user.try(:id) || 1}/personal_authentication/new" do %>
-					<%= image_tag "desktop_image/toApproveBtn.png", alt:"toApprove" %>
-					<% end %>
-				</dd>
-			</dl>
-		</div>
-</div>
-</div>
-<script type="text/javascript" >
-			function showVideo(){
-				$("#video").css('display','block');
-				// $('#closeVideo').css('display','block');
-			}
-			function hideVideo(){
-				$("#video").css('display','none');
-				// $('iframe').remove();
-				// $('#closeVideo').css('display','none');
-			}
-			$(function(){
-				$('.header_top').css("opacity",".6")
-			})
+<div class="video-bg" style="display: none;">
+	<div class="video-content">
+		<div class="video-box">
+		</div><!--video-box -->
+	</div><!-- video-content -->
+</div><!-- video-bg -->
+<br/>
+<div class="gray-bg ">
+	<br/>		
+	<div class="page1">
+		<div class="container" ><h3 class="page-title"><span>平台价值</span></h3></div><!-- container -->
+		<br/>
+		<div class="container nogap  text-center" >		
+			<div class="box-w33 wow lightSpeedIn">
+				<div><%= image_tag "desktop_image/page_img_1.png" %></div>
+				<br/>
+				<h4 class="main-color">海量忠诚粉丝</h4>
+				<div>为品牌迅速聚拢大量忠诚粉丝</div>
+			</div>
+			<div class="box-w33 wow shake">
+				<div><%= image_tag "desktop_image/page_img_2.png"%></div>
+				<br/>
+				<h4 class="main-color">快速引流</h4>
+				<div>一键分享社交网络，社交平台<br/>强关系快速引流</div>
+			</div>
+			<div class="box-w33 wow lightSpeedIn">
+				<div><%= image_tag "desktop_image/page_img_3.png" %></div>
+				<br/>
+				<h4 class="main-color">二次销售</h4>
+				<div>增加商品曝光度，扩大品牌<br/>影响力，让你的销售额速猛飙升</div>
+			</div>
+		</div><!-- container -->
+	</div><!-- page1 -->
+	<br/>		
+	<div class="page2">
+			<div class="container" ><h3 class="page-title"><span>平台优势</span></h3></div>
+			<br/>
+			<div class="container  text-center wow zoomIn" >
+				<%= image_tag "desktop_image/page2_img.png", alt:"平台优势" %>
+			</div><!-- container -->
+	</div><!-- page2 -->
+	<br/>		
+	<div class="page3">
+			<div class="container" ><h3 class="page-title"><span >产品流程</span></h3></div><!-- container-->
+			<br/>
+			<div class="container  text-center wow flipInX">
+				<%= image_tag "desktop_image/page3_img.png", alt:"产品流程" %>
+			</div><!-- container -->
+			<br/>
+	</div><!-- page3 -->
+	<br/>
+</div><!-- gray-bg -->
+<br/>
+<div class="page4">
+		<div class="container"><h2 class="orange-page-title text-center"><span>简单两步拥有UBOSS商铺</span></h2></div><!-- container -->
+		<br/>
+		<div class="container nogap  text-center">
+			<br/>
+			<div class="box-w50">
+				<div class="step-box wow slideInLeft" data-wow-duration=".5s">
+					<span>01</span>
+					<p><%= image_tag "desktop_image/openShop.png", alt:"openShop" %></p>
+					<br/>
+					<h3 class="main-color">注册开店</h3>
+					<br/>
+				  <p class="text-info">开店完全免费，注册即开店</p>
+						<p>
+						<%= link_to '/sellers/new',class:'btn btn-shadow'  do %>
+							注册开店
+						<% end %>
+					</p>
+				</div><!-- step-box -->
+			</div><!-- box-w50 -->
+			<div class="box-w50">
+				<div class="step-box wow slideInRight" data-wow-duration=".5s">
+					<span>02</span>
+					<p><%= image_tag "desktop_image/toApprove.png", alt:"shop" %></p>
+					<br/>
+					<h3 class="main-color">认证店铺</h3>
+					<br/>
+				    <p class="text-info">为保证结算打款顺利，商家需要对店铺<br/>进行认证，否则无法提现</p>
+					<p>
+						<%= link_to "/admin/users/#{current_user.try(:id) || 1}/personal_authentication/new",class:'btn btn-shadow' do %>
+							我要认证
+						<% end %>
+					</p>
+				</div><!-- step-box -->
+			</div><!-- box-w50 -->
+		</div><!-- container -->
+</div><!-- page4 -->
+<br/>
+<script type="text/javascript">
+  $(window).load(function() {
+    new WOW().init();    
+  })
+  $(document).ready(function (){
+  	$("header").css({
+				"position":"absolute",
+				"background":"rgba(0,0,0,0.3)",
+				"top":"0",
+				"left":"0",
+				"z-index":"2"
+    });
+    $(".play-icon").click(function (){
+    	var isrc=$(this).attr('data-src'); 
+    	$(".video-bg").fadeIn();   	
+    	$(".video-box").prepend('<embed class="player" src="'+isrc+'" allowFullScreen="true" quality="high" width="600" height="400" align="middle" allowScriptAccess="always" type="application/x-shockwave-flash"></embed><div class="close"><i class="fa fa-times"></i></div>')
+    });
+    $(".video-box").on("click",".close",function(){
+    	$(".video-bg").fadeOut();
+    	$(".video-box").empty();
+    });
+  })
 </script>
+

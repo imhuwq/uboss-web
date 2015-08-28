@@ -2,96 +2,53 @@
 <html>
   <head>
     <%= render partial: 'page_title' %>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=1200" />
+    <meta http-equiv="X-UA-Compatible" content="chrome=1,IE=edge" />
     <%= yield(:extra_meta_tags) %>
     <%= stylesheet_link_tag    'desktop', media: 'all'  %>
     <%= javascript_include_tag 'desktop' %>
     <%= render partial: 'baidu_tongji' %>
     <%= csrf_meta_tags %>
+    
     <link href="<%= image_url("desktop_image/favicon.ico") %>" type="image/x-icon" rel="shortcut icon">
-    <script type="text/javascript">
-      $(function() {
-        new WOW().init();
-        /*屏幕适配*/
-        var width = $(document).width();
-        if(width < 1367){
-          if(width < 1025)
-            $('.img').addClass('img_mini');
-          else
-            $('.img').addClass('img_min');
-        $('.page4_cont_list').addClass('page4_cont_list_min');
-         /* 视频适配*/
-        // $("#video").addClass('video_min');
-
-        // $('iframe').attr('src',"http://v.qq.com/iframe/player.html?vid=o0161da2c7v&tiny=0&auto=0")
-        //   .attr('width','600').attr('height','450');
-        }else{
-          $('.img').addClass('img_max');
-          $('.page4_cont_list').addClass('page4_cont_list_max');
-          /*视频适配*/
-          $('#video').addClass('video_max');
-          $('iframe').attr('src',"http://v.qq.com/iframe/player.html?vid=o0161da2c7v&tiny=0&auto=0")
-          .attr('width','800').attr ('height','600');
-        }
-        $(window).resize(function(){
-        if($(window).width() < 1367){
-          if($(window).width()< 1025) {
-            $('.img').addClass('img_mini').removeClass('img_min').removeClass('img_max');
-            // alert("<1025");
-          }
-          else{
-            $('.img').addClass('img_min').removeClass('img_mini').removeClass('img_max');
-          }
-        $('.page4_cont_list').addClass('page4_cont_list_min').removeClass('page4_cont_list_max');
-         /* 视频适配*/
-        $("#video").addClass('video_min');
-        $('iframe').attr('src',"http://v.qq.com/iframe/player.html?vid=o0161da2c7v&tiny=0&auto=0")
-          .attr('width','600').attr('height','450');
-        }else{
-          $('.img').addClass('img_max').removeClass('img_mini').removeClass('img_min');
-          $('.page4_cont_list').addClass('page4_cont_list_max').removeClass('page4_cont_list_min');
-          /*视频适配*/
-          $('#video').addClass('video_max');
-          $('iframe').attr('src',"http://v.qq.com/iframe/player.html?vid=o0161da2c7v&tiny=0&auto=0")
-          .attr('width','800').attr ('height','600');
-        }
-        })
-      })
-    </script>
-  </head>
-  <body style="min-width:1366px;font-family:'microsoft yahei'">
-    <div class="header_top">
-			<div class="header_logo">
-        <%= link_to 'http://www.uboss.me' do %>
-        <%= image_tag "desktop_image/UBss.png" %>
-        <% end %>
-				<!--<span class="header_font">基于人，超乎想象</span>-->
-      </div>
-
-			<nav class="header_nav">
-        <% if not Rails.env.production? %>
-          <% if current_user and current_user.admin? %>
-            <div class="header_tag">
-              <a href="<%= admin_root_path %>"  onmouseover="this.style.color='#66CDAA'" onmouseout="this.style.color='#FFFFFF'">后台</a>
-            </div>
-          <% else %>
-            <div class="header_tag">
-              <a href="<%= new_user_session_path %>"  onmouseover="this.style.color='#66CDAA'" onmouseout="this.style.color='#FFFFFF'">登录/注册</a>
-            </div>
-          <% end %>
-        <% end %>
-        <div class="header_tag"><a href="service_centre_consumer"  onmouseover="this.style.color='#66CDAA'" onmouseout="this.style.color='#FFFFFF'">服务中心</a></div>
-        <div class="header_tag"><a href="<%= root_path  %>"  onmouseover="this.style.color='#66CDAA'" onmouseout="this.style.color='#FFFFFF'">关于UBOSS</a></div>
-			</nav>
-		</div>
-
-      <%= yield %>
-
-      <div class="footer">
-  				<p class="footer_cont">UBOSS</p>
-  				<p class="footer_cont">联系我们：0755-66691053</p>
-  				<p class="footer_cont">Copyright    2015 www.uboss.me. All Rights Reserved 粤ICP备15032292号-1 </p>
-  		</div>
-
-  </body>
+   </head>
+  <body>
+    <div class="wrapper">
+			<header>
+				<div class="container">
+					<div class="header">
+						<div class="logo">
+							<%= link_to 'http://www.uboss.me' do %>
+							<%= image_tag "desktop_image/UBss.png" %>
+							<% end %>
+						</div>
+						<nav class="text-right">
+							<ul>								
+								<li class="header_tag"><a href="<%= root_path  %>" >关于UBOSS</a></li>
+								<li class="header_tag"><a href="service_centre_consumer">服务中心</a></li>
+								<% if not Rails.env.production? %>
+								  <% if current_user and current_user.admin? %>
+									<li >
+									  <a href="<%= admin_root_path %>">后台</a>
+									</li>
+								  <% else %>
+									<li>
+									  <a href="<%= new_user_session_path %>" >登录/注册</a>
+									</li>
+								  <% end %>
+								<% end %>
+						</ul>
+					</nav>
+				</div><!-- .header -->
+			</div><!-- container -->
+		</header>
+		<%= yield %>
+		<div class="push"></div>
+</div><!-- wrapper -->
+<footer class="text-center">
+			<h3 class="footer-name">UBOSS</h3>
+			<p class="footer_tel">联系我们：0755-66691053</p>
+			<p class="copyright">Copyright    2015 www.uboss.me. All Rights Reserved 粤ICP备15032292号-1 </p>
+ </footer>
+</body>
 </html>
