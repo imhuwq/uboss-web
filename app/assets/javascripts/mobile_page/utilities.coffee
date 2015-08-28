@@ -1,13 +1,13 @@
 $ ->
 
-  $('.share-wx-btn').on 'tap', (e)->
+  $('.share-wx-btn').on 'click', (e)->
     e.preventDefault()
     if window.wx != undefined
       $(".wx-mod-pop").show()
     else
       window.location.replace('#share_buttoms')
 
-  $(".wx-mod-pop").on 'tap', ->
+  $(".wx-mod-pop").on 'click', ->
     $(this).hide()
 
   flash = $(".auto_close_flash_css")
@@ -16,7 +16,7 @@ $ ->
       $(this).remove()
   , 5000
 
-  $(".alert").on "tap", ->
+  $(".alert").on "click", ->
     $(this).closest('.flash_css').remove()
 
   disabledLoadMore = (e)->
