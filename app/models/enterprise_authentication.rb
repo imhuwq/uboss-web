@@ -59,4 +59,37 @@ class EnterpriseAuthentication < ActiveRecord::Base
   def self.no_pass
     EnterpriseAuthentication.where(status: 3)
   end
+
+  def business_license_img=(file)
+    if file.present?
+      if file.is_a?(String)
+        write_uploader :business_license_img, file
+      else
+        business_license_img = file
+      end
+    end
+    business_license_img
+  end
+
+  def legal_person_identity_card_front_img=(file)
+    if file.present?
+      if file.is_a?(String)
+        write_uploader :legal_person_identity_card_front_img, file
+      else
+        legal_person_identity_card_front_img = file
+      end
+    end
+    legal_person_identity_card_front_img
+  end
+
+  def legal_person_identity_card_end_img=(file)
+    if file.present?
+      if file.is_a?(String)
+        write_uploader :legal_person_identity_card_end_img, file
+      else
+        legal_person_identity_card_end_img = file
+      end
+    end
+    legal_person_identity_card_end_img
+  end
 end

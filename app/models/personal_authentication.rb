@@ -58,4 +58,26 @@ class PersonalAuthentication < ActiveRecord::Base
   def self.no_pass
     PersonalAuthentication.where(status: 3)
   end
+
+  def face_with_identity_card_img=(file)
+    if file.present?
+      if file.is_a?(String)
+        write_uploader :face_with_identity_card_img, file
+      else
+        face_with_identity_card_img = file
+      end
+    end
+    face_with_identity_card_img
+  end
+
+  def identity_card_front_img=(file)
+    if file.present?
+      if file.is_a?(String)
+        write_uploader :identity_card_front_img, file
+      else
+        identity_card_front_img = file
+      end
+    end
+    identity_card_front_img
+  end
 end
