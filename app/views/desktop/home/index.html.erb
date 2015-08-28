@@ -118,6 +118,7 @@
 <br/>
 <script type="text/javascript">
   $(window).load(function() {
+  	if(navigator.appName == "Microsoft Internet Explorer" && navigator.appVersion .split(";")[1].replace(/[ ]/g,"")=="MSIE8.0") 
     new WOW().init();    
   })
   $(document).ready(function (){
@@ -128,6 +129,8 @@
 				"left":"0",
 				"z-index":"2"
     });
+    if(navigator.appName == "Microsoft Internet Explorer" && navigator.appVersion .split(";")[1].replace(/[ ]/g,"")=="MSIE8.0") 
+    	$("header").css("background","#4c4c4c");
     $(".play-icon").click(function (){
     	var isrc=$(this).attr('data-src'); 
     	$(".video-bg").fadeIn();   	
