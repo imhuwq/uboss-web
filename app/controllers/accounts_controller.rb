@@ -51,7 +51,7 @@ class AccountsController < ApplicationController
       redirect_to after_sign_in_path_for(current_user)
     else
       current_user.become_uboss_seller
-      redirect_to bind_agent_admin_account_path
+      redirect_to binding_agent_admin_account_path
     end
   end
 
