@@ -6,20 +6,33 @@
 <div class='header-img'>
 	<div class="container nogap">
 		<div class="box-w40"><%=image_tag "desktop_image/phone.png",alt:"Uboss"%></div>
-		<div class="box-w60"><div class="wenzi"><%=image_tag "desktop_image/wenzi.png",alt:"Uboss"%></div></div>
+		<div class="box-w60">
+			<div class="wenzi">
+				<p><%=image_tag "desktop_image/wenzi.png",alt:"Uboss"%></p>
+				<h1>新概念移动社会化电商平台</h1>
+				<br />
+				<h4>帮助商家零成本轻松建立线上分销商场</h4>
+				<h4>用户分享商品获取返利</h4>
+				<h4>为商家增加线上商品销量</h4>
+			</div>
+		</div>
 	</div>
 </div><!-- header-img -->
 <br/>
 <div class="container nogap" >
 	<div class="box-w33">
-			<div class="video-banner">
-				<%=image_tag "desktop_image/video1.jpg", alt:"关于Uboss宣传片" %>
-				<div class="play-icon" data-src="http://player.youku.com/player.php/sid/XMTI5ODg1NTM2MA==/v.swf"><i class="fa fa-play"></i> 点击播放</div><!-- play-icon -->
+		<div class="video-banner banner-1">
+			<h4>关于UBOSS宣传片</h4>
+			<p>【创客】 【商家】 【分享客】</p>
+			<p>　让你的商品，引爆社交圈</p>
+			<div class="play-icon" data-src="http://player.youku.com/player.php/sid/XMTI5ODg1NTM2MA==/v.swf"><i class="fa fa-play"></i> 点击播放</div><!-- play-icon -->
 		</div><!-- video-banner -->
 	</div><!-- box-w33 -->
 	<div class="box-w33">
-		<div class="video-banner">
-			<%=image_tag "desktop_image/video.jpg", alt:"什么是UBoss产品" %>
+		<div class="video-banner banner-2">
+			<h4>什么是UBOSS产品？</h4>
+			<p>　　　　【全国首创】</p>
+			<p>　　以人为本的社群微电商</p>
 			<div class="play-icon" data-src="http://player.youku.com/player.php/sid/XMTMxNTI0NTE0NA==/v.swf"><i class="fa fa-play"></i> 点击播放</div><!-- play-icon -->	
 		</div><!-- vido-banner -->
 	</div><!-- box-w33 -->
@@ -118,8 +131,11 @@
 <br/>
 <script type="text/javascript">
   $(window).load(function() {
-  	if(navigator.appName == "Microsoft Internet Explorer" && navigator.appVersion .split(";")[1].replace(/[ ]/g,"")=="MSIE8.0") 
+  	if(navigator.appName == "Microsoft Internet Explorer" && navigator.appVersion .split(";")[1].replace(/[ ]/g,"")=="MSIE8.0"){
+  		
+  	}else{
     new WOW().init();    
+    } 
   })
   $(document).ready(function (){
   	$("header").css({
