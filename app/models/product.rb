@@ -82,7 +82,7 @@ class Product < ActiveRecord::Base
   end
 
   def total_sells
-    order_items.joins(:order).where(orders: {state: 4}).sum(:amount)
+    order_items.joins(:order).where('orders.state > 2 AND orders.state <> 5').sum(:amount)
   end
 
   private
