@@ -1,10 +1,8 @@
-module CarrierWave::Storage
-  class UpYun
-    class File
-      def delete
-        true
-      end
-    end
+require 'carrierwave-upyun'
+
+class CarrierWave::Storage::UpYun::File
+  def delete
+    true
   end
 end
 
