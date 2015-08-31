@@ -141,6 +141,9 @@ GEM
       faraday (>= 0.8.0)
     celluloid (0.16.0)
       timers (~> 4.0.0)
+    china_city (0.0.4)
+      jquery-rails
+      rails (>= 3.1.0)
     china_sms (0.0.7)
     chronic (0.10.2)
     coderay (1.1.0)
@@ -457,6 +460,7 @@ DEPENDENCIES
   capistrano3-unicorn
   carrierwave
   carrierwave-upyun
+  china_city
   china_sms
   coffee-rails (~> 4.1.0)
   dalli

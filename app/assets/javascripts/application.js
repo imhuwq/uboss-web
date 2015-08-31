@@ -12,6 +12,8 @@
 //= require mobile_page/account
 //= require mobile_page/sms
 //= require shared/login
+//= require china_city/jquery.china_city
+//= require shared/city_select
 //= require_self
 
 $(function() {

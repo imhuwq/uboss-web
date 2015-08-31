@@ -3,6 +3,7 @@ require 'okay_responder'
 
 Rails.application.routes.draw do
   mount OkayResponder.new, at: "__upyun_uploaded"
+  mount ChinaCity::Engine => '/china_city'
 
   devise_for :user, path: '/', controllers: {
     registrations: "users/registrations",
@@ -51,7 +52,9 @@ Rails.application.routes.draw do
     put :bind_agent, :send_message, :update_histroy_note
     patch :merchant_confirm, to: 'accounts#merchant_confirmed'
     patch :password, to: 'accounts#update_password'
-    resources :user_addresses, except: [:show]
+    resources :user_addresses, except: [:show] do
+      get :update_select, on: :collection
+    end
   end
   resource :pay_notify, only: [] do
     collection do
