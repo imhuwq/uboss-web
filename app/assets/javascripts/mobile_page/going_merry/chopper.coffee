@@ -5,4 +5,4 @@ class GoingMerry.Chopper
   valifyMobile: (mobile) ->
     @mobileRegx.test(mobile)
 
-UBoss.chopper = new GoingMerry.Chopper
+UBOSS.chopper = new GoingMerry.Chopper

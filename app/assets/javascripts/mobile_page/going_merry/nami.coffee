@@ -12,4 +12,4 @@ class GoingMerry.Nami
     else
       wx.chooseWXPay(args)
 
-UBoss.nami = new GoingMerry.Nami
+UBOSS.nami = new GoingMerry.Nami

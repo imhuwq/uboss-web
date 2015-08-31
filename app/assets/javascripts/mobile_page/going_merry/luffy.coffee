@@ -53,4 +53,4 @@ class GoingMerry.Luffy
       wx.onMenuShareWeibo(with_detail_info)
       wx.onMenuShareQZone(with_detail_info)
 
-UBoss.luffy = new GoingMerry.Luffy
+UBOSS.luffy = new GoingMerry.Luffy

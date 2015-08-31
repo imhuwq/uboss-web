@@ -161,10 +161,10 @@
     <%= content_for :extra_javascript do %>
       <script type="text/javascript" charset="utf-8">
          wx.ready(function(){
-           UBoss.nami.setPayenv("<%= $wechat_env %>");
+           UBOSS.nami.setPayenv("<%= $wechat_env %>");
            $('#wx-pay-btn').on('click', function(event){
              event.preventDefault();
-             UBoss.nami.chooseWXPay({
+             UBOSS.nami.chooseWXPay({
                "timestamp": "<%= @pay_p[:timeStamp] %>",
                "nonceStr": "<%= @pay_p[:nonceStr] %>",
                "package": "<%= @pay_p[:package] %>",
@@ -183,7 +183,7 @@
   <% if @order.signed? || @order.completed? %>
     <%= content_for :extra_javascript do %>
       <script type="text/javascript" charset="utf-8">
-        wx.ready(function(){ UBoss.luffy.invokeSharing(); });
+        wx.ready(function(){ UBOSS.luffy.invokeSharing(); });
       </script>
     <% end %>
   <% end %>

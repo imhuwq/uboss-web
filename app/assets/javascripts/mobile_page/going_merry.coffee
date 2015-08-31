@@ -6,6 +6,6 @@
 ((root)->
 
   root.GoingMerry = {}
-  root.UBoss = {}
+  root.UBOSS = {}
 
 )(window)
