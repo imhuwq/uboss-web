@@ -129,9 +129,7 @@ textarea,input,select {
 .bg_grey {background-color: #e9e9e7}
 .bg_white {background-color: white;}
 .content {padding:2% 0 2% 0;width:100%}
-.content img {width:100%;}
-
-
+/*.content img {width:100%;}*/
 
 .heading {
   height: 30px;
@@ -276,8 +274,8 @@ button.close {
     line-height: 1;
     color: #000;
     text-shadow: 0 1px 0 #fff;
-    opacity: 0.2;
-    filter: alpha(opacity=20);
+    opacity: 0.5;
+    filter: alpha(opacity=50);
 }
 .alert-info {
     background-color: #d9edf7;
