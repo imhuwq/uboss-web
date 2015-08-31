@@ -90,11 +90,19 @@ $ ->
     event.preventDefault()
     user = $('#order_form_deliver_username').val()
     mobile = $('#order_form_deliver_mobile').val()
-    street = $('#order_form_street').val()
+    province_val = $('.city-select#province').val()
+    province_str = ".city-select#province option[value$=\"#{province_val}\"]"
+    province = $(province_str).text()
+    city_val = $('.city-select#city').val()
+    city_str = ".city-select#city option[value$=\"#{city_val}\"]"
+    city = $(city_str).text()
+    area_val = $('.city-select#area').val()
+    area_str = ".city-select#area option[value$=\"#{area_val}\"]"
+    area = $(area_str).text()
     building = $('#order_form_building').val()
-    if !!user and !!mobile and !!street and !!building
+    if !!user and !!mobile and !!province and !!city and !! area and !!building
       if UBoss.chopper.valifyMobile(mobile)
-        detail = "#{street}#{building}"
+        detail = "#{province}#{city}#{area}#{building}"
         fillNewOrderAddressInfo(user, mobile, detail)
         $('#order_form_user_address_id').val('')
         hideOrderAddressDlg()

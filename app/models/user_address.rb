@@ -7,7 +7,10 @@ class UserAddress < ActiveRecord::Base
   validates :mobile, mobile: true
 
   def to_s
-    "#{ChinaCity.get(province)}#{ChinaCity.get(city)}#{ChinaCity.get(area)}#{street}#{building}"
+    @province = ChinaCity.get(province) rescue province
+    @city = ChinaCity.get(city) rescue city
+    @area = ChinaCity.get(area) rescue area
+    "#{@province}#{@city}#{@area}#{street}#{building}"
   end
 
 end

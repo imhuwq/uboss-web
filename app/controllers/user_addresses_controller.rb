@@ -54,6 +54,7 @@ class UserAddressesController < ApplicationController
     if params[:city].present? || @citys.present?
       @areas = ChinaCity.list(params[:city].present? ? params[:city] : @citys.try(:first).try(:last))
     end
+    render 'user_addresses/update_select'
   end
 
   private
