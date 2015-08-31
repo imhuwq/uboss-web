@@ -25,13 +25,14 @@ $(function() {
   });
 
 	$("header .right").on('tap', function() {
-    height = 200
-    if ($('.nav_bar').height() > 0) {
-      height = 0
-    }
-    $(".nav_bar").css({
-      'height': height
-    })
+    // height = 200
+    // if ($('.nav_bar').height() > 0) {
+    //   height = 0
+    // }
+    // $(".nav_bar").css({
+    //   'height': height
+    // })
+    $('.nav_bar').toggle();
 	});
 
 });
