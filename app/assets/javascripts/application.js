@@ -10,6 +10,7 @@
 //= require mobile_page/going_merry
 //= require mobile_page/order
 //= require mobile_page/account
+//= require mobile_page/sms
 //= require shared/login
 //= require_self
 
