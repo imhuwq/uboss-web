@@ -8,7 +8,20 @@ class ApiBaseController < ActionController::API
   before_action :authenticate_user_from_token!
   before_action :authenticate_user!
 
+  if !Rails.env.development?
+    rescue_from CanCan::AccessDenied do |exception|
+      render_error :forbidden, exception.message, 403
+    end
+    rescue_from ActionController::ParameterMissing do |exception|
+      render_error :wrong_params, exception.message
+    end
+  end
+
   protected
+
+  def render_error(errid, error_message = nil, status_code = 422)
+    render json: { errid: errid, errmsg: error_message }, status: status_code
+  end
 
   def authentication_token
     request.headers["User-Token"] || params[:accesstoken]
