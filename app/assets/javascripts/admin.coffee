@@ -1,4 +1,5 @@
 #= require jquery
+#= require modernizr-2.6.2.min
 #= require jquery_ujs
 #= require bootstrap-sprockets
 #= require redactor-rails

@@ -115,10 +115,10 @@ zh-CN:
     orders: 订单
     withdraw_records: 提现
   li_link:
-    dashboard: 首页
+    dashboard: 主页
     data: 数据
-    orders: 订单列表
-    sharing_incomes: 分享分成
+    orders: 订单
+    sharing_incomes: 分成
     withdraw_records: 提现
     bank_cards: 银行卡
     products: 商品

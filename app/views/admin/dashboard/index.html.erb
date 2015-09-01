@@ -1,1 +1,90 @@
-welcome
+<div class="container">
+	<ul class="breadcrumb">
+		<li>主页</li>
+	</ul>
+</div>
+<br />
+<div class="container nogap">
+	<div class="box-w60 nogap">
+		<div class="box-w33">
+			<div class="admin-box main-bg-color">
+				<h4>总签约商家</h4>
+				<br />
+				<h1 class="num"><%= current_user.seller_total_joins.count %></h1>
+			</div>
+			<br />
+			<div class="admin-box red-bg-color">
+				<h4>今日签约商家</h4>
+				<br />
+				<h1 class="num"><%= current_user.seller_today_joins.count %></h1>
+			</div>
+		</div>
+		<div class="box-w66">
+			<div class="admin-box chart">
+				图表
+			</div>
+			<br />
+		</div>
+		<div class="box-w40">
+			<a href="" class="admin-box main-bg-color">
+				<div class="withdraw">提现<br/>申请</div>
+				<br />
+				<div class="text-right"><%= image_tag("admin/long-arrow.png") %></div>
+			</a>
+			<br />			
+		</div>
+		<div class="box-w30">
+			<div class="admin-box blue-bg-color">
+				<h4>账户余额</h4>
+				<br />
+				<h1 class="num">324</h1>
+			</div>
+			<br />
+		</div>
+		<div class="box-w30">
+			<div class="admin-box yellow-bg-color">
+				<h4>未入账</h4>
+				<br />
+				<h1 class="num">324</h1>
+			</div>
+			<br />
+		</div>
+	</div>
+	
+	<div class="box-w40 nogap">
+		<div class="box-w50">
+			<div class="admin-box blue-bg-color">
+				<h4>总收益</h4>
+				<br />
+				<h1 class="num">324</h1>
+			</div>
+			<br />
+		</div>
+		<div class="box-w50">
+			<div class="admin-box red-bg-color">
+				<h4>今日预期收益</h4>
+				<br />
+				<h1 class="num">324</h1>
+			</div>
+			<br />
+		</div>
+		<div class="box-w100">
+			<div class="admin-box chart">
+				图表
+			</div>
+			<br />
+		</div>
+	</div>
+</div>
+<script>
+	$(document).ready(function(){
+		$(".admin-box .num").each(function(){
+			var ls=$(this).html().length;			
+			if(ls>9){
+				$(this).css("font-size","30px")
+			}
+		})
+		
+		
+	})
+</script>

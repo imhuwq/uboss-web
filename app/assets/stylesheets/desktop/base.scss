@@ -5,35 +5,24 @@ a,body{ color: #444;}
 html, body {min-width:1220px}
 .container{ margin: 0 auto; padding:0 10px;width:1200px;overflow: hidden;box-sizing:border-box; }
 .container:after { clear:both;content: ".";   display: block;overflow: hidden; visibility: hidden;    font-size: 0;    line-height: 0;    width: 0;    height: 0;}
-.box-w40,.box-w33,.box-w50,.box-w60{ box-sizing:border-box;padding:0 10px;float:left; }
-.box-w40{ width:40%;}
+.box-w15,.box-w20,.box-w30,.box-w33,.box-w35,.box-w40,.box-w50,.box-w55,.box-w60,.box-w66,.box-w70,.box-w80,.box-w100{ box-sizing:border-box;padding:0 10px;float:left; }
+.box-w15{ width:15%;}
+.box-w20{ width:20%;}
+.box-w30{ width:30%;}
 .box-w33{ width:33%;}
+.box-w35{ width:35%;}
+.box-w40{ width:40%;}
 .box-w50{ width:50%;}
+.box-w55{ width:55%;}
 .box-w60{ width:60%;}
+.box-w66{ width:66%;}
+.box-w70{ width:70%;}
+.box-w80{ width:80%;}
+.box-w100{ width:100%;}
 .text-center { text-align: center;}
 .text-left{ text-align: left;}
 .text-right{ text-align: right;}
 .main-color { color:#43C3AA}
 .nogap{padding:0}
-.head-title { margin: 40px 0 20px;}
-header,footer{ background: rgba(0,0,0,0.7); background: #4C4C4C\9; overflow: hidden;color:#fff;width:100%;min-width:1220px}
-header .header{ padding: 15px 0;}
-header .logo { float: left;}
-header nav > ul{ margin: 0;}
-header nav > ul > li { display: inline-block;*zoom:1;*display:inline; margin-left: 60px; padding: 15px 0;}
-header nav > ul > li > a {font-size: 16px; font-weight: bold; color: #fff;}
-header nav > ul > li > a:hover,header nav > ul > li > a:focus{ color: #43C3AA; }
 
-footer { padding: 30px 0 0; height: 120px;}
-footer p{ margin: 0 0 20px;}
-footer .footer-tel{ font-size: 15px;}
-
-/*空白置底*/
-html, body { height: 100%;}
-.wrapper { min-height: 100%;   height: auto !important;   height: 100%;   margin: 0 auto -150px;}
-.push { height: 150px}
-/*btn*/
-.btn{display:inline-block; padding:8px 15px;background:#FF9000;color:#fff;border-radius:4px}
-.btn-shadow{ box-shadow:2px 2px 2px #999}
-.btn:hover ,.btn:active{ background:#DC7C00}
 

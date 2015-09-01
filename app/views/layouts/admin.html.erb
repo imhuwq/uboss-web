@@ -10,17 +10,11 @@
   <%= csrf_meta_tags %>
 </head>
 <body>
-
-
-<div class="floor">
-  <%= render 'layouts/admin_navbar' %>
-  <div class="container admin-container mod-inner">
-    <%= render 'layouts/flash_alert' %>
-    <%= yield %>
-  </div>
-</div>
-
+  <%= render 'layouts/admin_navbar' %>  
+	<%= render 'layouts/flash_alert' %>
+	<%= yield %>
 <%= yield :page_specific_javascript %>
-
+<br />
+<p class="text-center">copyright &copy; ULAIBER</p>
 </body>
 </html>
