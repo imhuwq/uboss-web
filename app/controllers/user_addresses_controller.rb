@@ -1,6 +1,6 @@
 class UserAddressesController < ApplicationController
 
-  before_action :authenticate_user!
+  before_action :authenticate_user!, except: [:update_select]
   before_action :find_user_address, only: [:edit, :update, :destroy]
 
   def index
