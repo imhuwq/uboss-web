@@ -36,22 +36,14 @@ class Admin::PersonalAuthenticationsController < AdminController
   end
 
   def create
-<<<<<<< HEAD
     @personal_authentication = PersonalAuthentication.new(personal_authentication_params)
-=======
->>>>>>> developer
     valid_create_params
     if @errors.present?
       flash[:error] = @errors.join("\n")
       render 'new'
       return
     else
-<<<<<<< HEAD
       @personal_authentication.user_id = current_user.id
-=======
-      @personal_authentication.face_with_identity_card_img = params[:face_with_identity_card_img] if params[:face_with_identity_card_img]
-      @personal_authentication.identity_card_front_img = params[:identity_card_front_img] if params[:identity_card_front_img]
->>>>>>> developer
       if @personal_authentication.save
         MobileAuthCode.find_by(code: personal_authentication_params[:mobile_auth_code]).try(:destroy)
         flash[:success] = '保存成功'
@@ -71,20 +63,11 @@ class Admin::PersonalAuthenticationsController < AdminController
       redirect_to action: :edit
       return
     else
-<<<<<<< HEAD
       @personal_authentication.update(personal_authentication_params)
       @personal_authentication.status = 'posted'
 
       if @personal_authentication.save
         MobileAuthCode.find_by(code: personal_authentication_params[:mobile_auth_code]).try(:destroy)
-=======
-      @personal_authentication.face_with_identity_card_img = params[:face_with_identity_card_img] if params[:face_with_identity_card_img]
-      @personal_authentication.identity_card_front_img = params[:identity_card_front_img] if params[:identity_card_front_img]
-      @personal_authentication.status = 'posted'
-
-      if @personal_authentication.update(allow_params)
-        MobileAuthCode.find_by(code: allow_params[:mobile_auth_code]).try(:destroy)
->>>>>>> developer
         flash[:success] = '保存成功'
         redirect_to action: :show
       else
