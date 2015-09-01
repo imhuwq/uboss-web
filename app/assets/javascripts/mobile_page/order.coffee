@@ -93,7 +93,7 @@ $ ->
     street = $('#order_form_street').val()
     building = $('#order_form_building').val()
     if !!user and !!mobile and !!street and !!building
-      if UBOSS.chopper.valifyMobile(mobile)
+      if UBoss.chopper.valifyMobile(mobile)
         detail = "#{street}#{building}"
         fillNewOrderAddressInfo(user, mobile, detail)
         $('#order_form_user_address_id').val('')
