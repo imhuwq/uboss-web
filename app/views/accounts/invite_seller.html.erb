@@ -4,10 +4,12 @@
 <div class="container add_listall" >
   <div class="add_inout">
     <%= simple_form_for 'send_message', url: send_message_account_path, method: :put do |f| %>
-    <p style="border-bottom:0;">
-      <span class="add_textd">商家手机号</span>
-      <%= f.input_field :mobile, type: :tel, placeholder: '商家手机号', class:"add_text"  %>
-    </p>
+    <div style="min-height:30px;padding-top:10px;">
+      <div style="position:absolute;width:90px;margin-left:0;float:left;padding:8px 0 0 10px;">商家手机号</div>
+      <div style="margin-left:90px;">
+        <%= f.input_field :mobile, type: :tel, placeholder: '商家手机号', class:"add_text", style:"width:90%;float:left;"  %>
+      </div>
+    </div>
     <p style="padding-top:10px;padding-right:10px;">
       <%= f.submit '发送', class:"accunt_adilbtn" %>
     </p>

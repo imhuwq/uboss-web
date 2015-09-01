@@ -37,6 +37,9 @@ class GoingMerry.Luffy
   showOptionMenu: ->
     wx.showOptionMenu()
 
+  disableSharing: ->
+    wx.hideOptionMenu()
+
   resetInvokeSharing: (info = {}) ->
     @sharing_title = info.title || $('meta[name=sharing_title]').attr('content')
     @sharing_link = info.link || $('meta[name=sharing_link]').attr('content')

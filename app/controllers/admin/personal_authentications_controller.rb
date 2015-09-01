@@ -1,18 +1,15 @@
 class Admin::PersonalAuthenticationsController < AdminController
+
+  load_and_authorize_resource
+
   def index
-    if super_admin?
-      @personal_authentications = PersonalAuthentication.order("updated_at DESC").page(params[:page] || 1)
-    else
-      flash[:notice] = "需要管理员权限"
-      redirect_to action: :show
-    end
+    @personal_authentications = PersonalAuthentication.accessible_by(current_ability).order("updated_at DESC").page(params[:page] || 1)
   end
+
   def new
     if PersonalAuthentication.find_by(user_id: current_user).present?
       flash[:alert] = '您的验证信息已经提交，请检查。'
       redirect_to action: :show
-    else
-      @personal_authentication = PersonalAuthentication.new
     end
   end
 
@@ -39,21 +36,28 @@ class Admin::PersonalAuthenticationsController < AdminController
   end
 
   def create
+<<<<<<< HEAD
     @personal_authentication = PersonalAuthentication.new(personal_authentication_params)
+=======
+>>>>>>> developer
     valid_create_params
     if @errors.present?
       flash[:error] = @errors.join("\n")
       render 'new'
       return
     else
+<<<<<<< HEAD
       @personal_authentication.user_id = current_user.id
+=======
+      @personal_authentication.face_with_identity_card_img = params[:face_with_identity_card_img] if params[:face_with_identity_card_img]
+      @personal_authentication.identity_card_front_img = params[:identity_card_front_img] if params[:identity_card_front_img]
+>>>>>>> developer
       if @personal_authentication.save
         MobileAuthCode.find_by(code: personal_authentication_params[:mobile_auth_code]).try(:destroy)
         flash[:success] = '保存成功'
         redirect_to action: :show
       else
-        @personal_authentication.valid?
-        flash[:error] = "保存失败：#{@personal_authentication.errors.full_messages.join('<br/>')}"
+        flash[:error] = "保存失败：#{model_errors(@personal_authentication).join('<br/>')}"
         render 'new'
       end
     end
@@ -67,15 +71,23 @@ class Admin::PersonalAuthenticationsController < AdminController
       redirect_to action: :edit
       return
     else
+<<<<<<< HEAD
       @personal_authentication.update(personal_authentication_params)
       @personal_authentication.status = 'posted'
 
       if @personal_authentication.save
         MobileAuthCode.find_by(code: personal_authentication_params[:mobile_auth_code]).try(:destroy)
+=======
+      @personal_authentication.face_with_identity_card_img = params[:face_with_identity_card_img] if params[:face_with_identity_card_img]
+      @personal_authentication.identity_card_front_img = params[:identity_card_front_img] if params[:identity_card_front_img]
+      @personal_authentication.status = 'posted'
+
+      if @personal_authentication.update(allow_params)
+        MobileAuthCode.find_by(code: allow_params[:mobile_auth_code]).try(:destroy)
+>>>>>>> developer
         flash[:success] = '保存成功'
         redirect_to action: :show
       else
-        @personal_authentication.valid?
         flash[:error] = "保存失败：#{@personal_authentication.errors.full_messages.join('<br/>')}"
         redirect_to action: :edit
       end
@@ -115,6 +127,8 @@ class Admin::PersonalAuthenticationsController < AdminController
                   :identity_card_front_img
                   )
   end
+  alias :create_params :allow_params
+  alias :update_params :allow_params
 
   def valid_create_params
     @errors = []
@@ -131,7 +145,7 @@ class Admin::PersonalAuthenticationsController < AdminController
       '您不能操作这个用户。': current_user.id == (params[:user_id].to_i || nil)
     }
     hash.each do |k, v|
-      @errors << k unless v.present?
+      @errors << k if v.blank?
     end
   end
 
@@ -148,7 +162,7 @@ class Admin::PersonalAuthenticationsController < AdminController
       '您不能操作这个用户。': current_user.id == (params[:user_id].to_i || nil)
     }
     hash.each do |k, v|
-      @errors << k unless v.present?
+      @errors << k if v.blank?
     end
   end
 end

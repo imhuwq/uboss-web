@@ -3,24 +3,17 @@ class MobileAuthCode < ActiveRecord::Base
   validates :code, :expire_at, presence: true
 
   before_validation :generate_code, :set_expire_time
-  after_save :send_code
+  before_save :send_code
 
   def self.auth_code(auth_mobile, auth_code) #验证
     MobileAuthCode.where('expire_at < ?', DateTime.now).delete_all
-    mobile_auth_code = MobileAuthCode.
-      find_by(mobile: auth_mobile, code: auth_code)
-
-    if mobile_auth_code.blank?
-      false
-    else
-      true
-    end
+    MobileAuthCode.exists?(mobile: auth_mobile, code: auth_code)
   end
 
   def self.send_captcha_with_mobile(auth_mobile)
     auth_code = MobileAuthCode.find_or_initialize_by(mobile: auth_mobile)
     auth_code.regenerate_code unless auth_code.new_record?
-    auth_code.save
+    { success: auth_code.save, mobile_auth_code: auth_code }
   end
 
   def self.clear_captcha(auth_mobile)
@@ -43,24 +36,12 @@ class MobileAuthCode < ActiveRecord::Base
   end
 
   def send_sms(tpl_id = 1) # 发送短信
-    return { 'msg' => 'error', 'detail' => '电话号码不能为空' } if mobile.blank?
-    return { 'msg' => 'error', 'detail' => '内容不能为空' } if code.blank?
-    begin
-      sms = ChinaSMS.to(mobile, { code: code, company: '优巭UBOSS' }, tpl_id: tpl_id)
-      return 'OK' if sms['msg'] == 'OK'
-      return sms
-    rescue => e
-      Airbrake.notify_or_ignore(e, parameters: {mobile: mobile, code: code}, cgi_data: ENV.to_hash)
-      return e.message
-    end
+    PostMan.send_sms(mobile, code, tpl_id)
   end
 
   def send_code # 发送验证码
     result = send_sms
-    if result == 'OK'
-      return true
-    else
-      fail result
-    end
+    errors.add(:code, result[:message]) if not result[:success]
+    result[:success]
   end
 end

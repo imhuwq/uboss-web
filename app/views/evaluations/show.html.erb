@@ -6,7 +6,7 @@
   <%= sharing_meta_tags(@product, @sharing_node) %>
 <% end %>
 
-<div class="container">
+<div class="container" style='margin-bottom: 60px;'>
 
   <div class="p_comment">
     <div class="p_img <%= @evaluation.status %>"></div>
@@ -14,9 +14,13 @@
     <p>感谢你的评价!</p>
   </div>
 
+  <% if @privilege_card.present? %>
+    <%= render partial: 'privilege_card', locals: { privilege_card: @privilege_card } %>
+  <% end %>
+
   <div class="fenxinrated">
     <%= render partial: 'application/share_buttoms',
-      locals: { product: @product, node: @sharing_link_node } %>
+      locals: { product: @product, node: @sharing_node } %>
   </div>
 
   <div class="accunt_adil_box4">

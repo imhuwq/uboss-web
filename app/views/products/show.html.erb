@@ -83,16 +83,9 @@
     </div>
   </div>
 <% end %>
-
-<script type="text/javascript">
 <% if params['shared'] == 'true' %>
-  $('#window').html('<%= escape_javascript render :partial =>'/products/share_page.html' %>');
+  <%= render partial: 'share_page' %>
 <% end %>
-
-$('#copycardid').on('click', this,function(event) {
-  $('#share_link').toggle();
-});
-</script>
 
 <% if browser.wechat? %>
   <%= content_for :extra_javascript do %>

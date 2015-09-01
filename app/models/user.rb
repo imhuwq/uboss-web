@@ -1,4 +1,6 @@
 class User < ActiveRecord::Base
+
+  # FIXME 如果只是需要在页面转换请使用helper方法，或者I18n
   DATA_AUTHENTICATED = {'no'=> '未认证', 'yes'=> '已认证'}
 
   include Orderable
@@ -84,6 +86,15 @@ class User < ActiveRecord::Base
       new_user
     end
 
+    def find_or_create_guest(mobile)
+      user = User.find_by(login: mobile)
+      unless user.present?
+        user = new_guest(mobile)
+        user.save
+      end
+      user
+    end
+
     def create_guest!(mobile)
       new_user = new_guest(mobile)
       new_user.save!
@@ -114,13 +125,19 @@ class User < ActiveRecord::Base
   end
 
   def bind_agent(binding_code)
-    agent_user = User.agent.find_by(agent_code: binding_code)
+    agent_user = if binding_code.present?
+                   User.agent.find_by(agent_code: binding_code)
+                 else
+                   User.official_account
+                 end
+
     if agent_user.present?
       self.agent = agent_user
-      self.become_uboss_seller
+      self.admin = true
+      self.user_roles << UserRole.seller if not self.seller?
       self.save
     else
-      errors.add(:code, :invalid)
+      errors.add(:agent_code, :invalid)
       false
     end
   end
@@ -237,18 +254,6 @@ class User < ActiveRecord::Base
       generate_agent_code
       self.agent_code
     end
-  end
-
-  def binding_agent(code)
-    if code.present?
-      agent = User.find_by(agent_code: code)
-    else
-      agent = User.official_account
-    end
-    self.agent_id = agent.id
-    self.admin = true
-    self.save
-    AgentInviteSellerHistroy.find_by(mobile: login).try(:update, status: 1)
   end
 
   def set_wechat_data(data)
