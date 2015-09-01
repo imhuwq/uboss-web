@@ -1,7 +1,6 @@
 class EvaluationsController < ApplicationController
   def new
     @order_item = OrderItem.find(params[:id])
-    @privilege_card = PrivilegeCard.find_by(user: current_user, product: @order_item.product, actived: true)
     if @order_item.evaluation.present?
       flash[:success] = "您已经评价过了"
       redirect_to order_path(@order_item.order_id)
@@ -14,6 +13,7 @@ class EvaluationsController < ApplicationController
     @evaluation = Evaluation.find(params[:id])
     @product = @evaluation.product
     @sharing_node = @evaluation.sharing_node
+    @privilege_card = PrivilegeCard.find_by(user: current_user, product: @product, actived: true)
   end
 
   def index

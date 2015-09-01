@@ -1,6 +1,21 @@
 module Descriptiontable
   extend ActiveSupport::Concern
 
+  WHITE_LIST_CONPONER = {
+    elements: %w(br p h1 h2 h3 h4 h5 blockquote strong em del u ul li ol img),
+    attributes: {
+      'all' => %w[style],
+      'img' => %w(src alt),
+    },
+    add_attributes: { a: { rel: "nofollow" } },
+    css: {
+      properties: %w[margin-left text-align]
+    },
+    protocols: {
+      img: { src:  %w(http https) }
+    }
+  }.freeze
+
   included do
     has_one :description, dependent: :destroy, as: :resource, autosave: true
   end
@@ -10,12 +25,7 @@ module Descriptiontable
   end
 
   def content=(text)
-    description.content = Sanitize.fragment(text,
-      Sanitize::Config.merge(
-        Sanitize::Config::BASIC,
-        elements: Sanitize::Config::BASIC[:elements] - ['a']
-      )
-    )
+    description.content = Sanitize.fragment(text, WHITE_LIST_CONPONER)
     text
   end
 

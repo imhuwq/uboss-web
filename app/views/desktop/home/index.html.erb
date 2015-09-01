@@ -33,7 +33,7 @@
 			<h4>什么是UBOSS产品？</h4>
 			<p>　　　　【全国首创】</p>
 			<p>　　以人为本的社群微电商</p>
-			<div class="play-icon" data-src="http://player.youku.com/player.php/sid/XMTMxNTI0NTE0NA==/v.swf"><i class="fa fa-play"></i> 点击播放</div><!-- play-icon -->	
+			<div class="play-icon" data-src="http://player.youku.com/player.php/sid/XMTMxNTI0NTE0NA==/v.swf"><i class="fa fa-play"></i> 点击播放</div><!-- play-icon -->
 		</div><!-- vido-banner -->
 	</div><!-- box-w33 -->
 </div><!-- container -->
@@ -46,11 +46,11 @@
 </div><!-- video-bg -->
 <br/>
 <div class="gray-bg ">
-	<br/>		
+	<br/>
 	<div class="page1">
 		<div class="container" ><h3 class="page-title"><span>平台价值</span></h3></div><!-- container -->
 		<br/>
-		<div class="container nogap  text-center" >		
+		<div class="container nogap  text-center" >
 			<div class="box-w33 wow lightSpeedIn">
 				<div><%= image_tag "desktop_image/page_img_1.png" %></div>
 				<br/>
@@ -71,7 +71,7 @@
 			</div>
 		</div><!-- container -->
 	</div><!-- page1 -->
-	<br/>		
+	<br/>
 	<div class="page2">
 			<div class="container" ><h3 class="page-title"><span>平台优势</span></h3></div>
 			<br/>
@@ -79,7 +79,7 @@
 				<%= image_tag "desktop_image/page2_img.png", alt:"平台优势" %>
 			</div><!-- container -->
 	</div><!-- page2 -->
-	<br/>		
+	<br/>
 	<div class="page3">
 			<div class="container" ><h3 class="page-title"><span >产品流程</span></h3></div><!-- container-->
 			<br/>
@@ -132,10 +132,10 @@
 <script type="text/javascript">
   $(window).load(function() {
   	if(navigator.appName == "Microsoft Internet Explorer" && navigator.appVersion .split(";")[1].replace(/[ ]/g,"")=="MSIE8.0"){
-  		
+
   	}else{
-    new WOW().init();    
-    } 
+    new WOW().init();
+    }
   })
   $(document).ready(function (){
   	$("header").css({
@@ -145,11 +145,11 @@
 				"left":"0",
 				"z-index":"2"
     });
-    if(navigator.appName == "Microsoft Internet Explorer" && navigator.appVersion .split(";")[1].replace(/[ ]/g,"")=="MSIE8.0") 
+    if(navigator.appName == "Microsoft Internet Explorer" && navigator.appVersion .split(";")[1].replace(/[ ]/g,"")=="MSIE8.0")
     	$("header").css("background","#4c4c4c");
     $(".play-icon").click(function (){
-    	var isrc=$(this).attr('data-src'); 
-    	$(".video-bg").fadeIn();   	
+    	var isrc=$(this).attr('data-src');
+    	$(".video-bg").fadeIn();
     	$(".video-box").prepend('<embed class="player" src="'+isrc+'" allowFullScreen="true" quality="high" width="600" height="400" align="middle" allowScriptAccess="always" type="application/x-shockwave-flash"></embed><div class="close"><i class="fa fa-times"></i></div>')
     });
     $(".video-box").on("click",".close",function(){
@@ -158,4 +158,3 @@
     });
   })
 </script>
-

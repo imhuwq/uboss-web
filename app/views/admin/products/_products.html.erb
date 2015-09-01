@@ -1,0 +1,65 @@
+<%= render 'layouts/flash_alert' if request.xhr? %>
+
+<%= table_for(products) do |t| %>
+  <%= t.cell :name do |product| %>
+    <%= link_to [:admin, product] do %>
+      <div class="" style="width:370px;float:left;">
+        <div class="col-sm-3">
+          <%= image_tag(product.image_url(:thumb), size: "100x80", alt: "-") %>
+        </div>
+        <div class="col-sm-9"  style="padding-top:15px;">
+          <div class="col-sm-12">商品名称：<%= product.name %></div>
+          <div class="col-sm-12">价格：<%= product.present_price %></div>
+        </div>
+      </div>
+    <% end %>
+  <% end %>
+
+  <% if current_user.super_admin? %>
+    <%= t.cell :seller do |product| %>
+      <%= link_to product.user.identify, url_for(controller: 'admin/sellers', action: :show, id: product.user) %>
+    <% end %>
+  <% end %>
+
+  <%= t.cell :good_reputation do |product| %>
+    <%= Evaluation.product_good_reputation_rate(product.id) %>
+  <% end %>
+
+  <%= t.cell :count %>
+
+  <%= t.cell :total_sells do |product| %>
+    <%= product.total_sells %>
+  <% end %>
+
+  <%= t.cell :created_at %>
+
+  <%= t.cell :methods do |product| %>
+  <% if can? :update, product %>
+    <div style="padding-top:15px;width:240;float:left;">
+      <div class="col-xs-4">
+        <%= link_to("编辑", url_for(action: :edit, id: product.id),
+                    class:"btn btn-xs btn-warning",style:"margin-bottom:5px;")%>
+        <br />
+        <%= link_to("删除", change_status_admin_product_path(product, status: 'closed'),
+                    remote: true, method: :patch, data: { disable_with: '删除中...' },
+                    class:"btn btn-xs btn-danger change-status-btn") %>
+      </div>
+
+      <div class="col-xs-5">
+        <% if product.status == 'unpublish' %>
+          <%= link_to("上架", change_status_admin_product_path(product, status: 'published'),
+                      remote: true, method: :patch, data: { disable_with: '上架中...' },
+                      class: "btn btn-large btn-success change-status-btn",
+                      style: "height:50px;padding:14px 22px 0 22px;") %>
+        <% else %>
+          <%= link_to("取消上架", change_status_admin_product_path(product, status: 'unpublish'),
+                      remote: true, method: :patch, data: { disable_with: '下架中...' },
+                      class: "btn btn-large btn-default change-status-btn",
+                      style: "height:50px;padding:14px 8px 0 8px;") %>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+
+  <% end %>
+<% end %>

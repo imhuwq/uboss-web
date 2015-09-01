@@ -27,21 +27,4 @@
 }
 .cap-inputs {
   position: relative;
-  .send_mobile {
-    display: inline-block;
-    position: absolute;
-    right: 0;
-    bottom: 0;
-    padding: 0 10px;
-    background-color: $brand-primary;
-    color: white;
-    border-radius: 0 5px 5px 0;
-    box-sizing: border-box;
-    height: 34px;
-    overflow: hidden;
-    line-height: 34px;
-    &.disabled {
-      background-color: #ccc;
-    }
-  }
 }

@@ -8,8 +8,9 @@
 </div>
 <% end %>
 <div class="row">
-	<div class="col-xs-12 border_block">
+	<div class="col-xs-12 well">
 		<h3 class="col-md-offset-1">个人信息认证</h3>
+    <hr />
 		<div class="col-xs-11 col-md-offset-1">
       <div class="form-group clear">
 				<label class="string required text-right col-sm-3 control-label" for="product_name">
@@ -44,7 +45,9 @@
 				  手持身份证图片
 				</label>
 				<div class="col-sm-9">
-					<%= image_tag(@personal_authentication.face_with_identity_card_img, width: "60%", alt: "-") %>
+          <%= link_to(@personal_authentication.face_with_identity_card_img.to_s, target:'_blank') do %>
+					<%= image_tag(@personal_authentication.face_with_identity_card_img.url(:w320), width: "60%", alt: "-", title:"点击查看原图") %>
+          <% end %>
 				</div>
 			</div>
       <div class="form-group clear">
@@ -53,7 +56,9 @@
 				  身份证正面
 				</label>
 				<div class="col-sm-9">
-					<%= image_tag(@personal_authentication.identity_card_front_img, width: "60%", alt: "-") %>
+          <%= link_to(@personal_authentication.identity_card_front_img.to_s, target:'_blank') do %>
+					<%= image_tag(@personal_authentication.identity_card_front_img.url(:w320), width: "60%", alt: "-", title:"点击查看原图") %>
+          <% end %>
 				</div>
 			</div>
       <div class="form-group clear">

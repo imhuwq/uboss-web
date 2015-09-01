@@ -22,7 +22,7 @@
   <%= t.cell :user_store_identify do |obj| %>
     <%= link_to url_for(controller: 'admin/personal_authentications', action: :show, user_id: obj.user_id) do %>
     <div class="col-sm-3">
-      <%= image_tag(obj.user.avatar, size: "100x80", alt: "-") %>
+      <%= image_tag(obj.user.avatar.url(:thumb), size: "100x80", alt: "-") %>
     </div>
     <div class="col-sm-9">
       <div class="col-sm-12">商家名称：<%= obj.user.identify %></div>

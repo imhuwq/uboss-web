@@ -2,69 +2,38 @@
   <a onclick="close_window()">
     <div style="width:100%;height:100%;float:left"></div>
   </a>
-  <div class="fenxinag fenxinagtow">
-    <div class="fenxinag_line1">留下手机号，现金礼品拿不停！</div>
-    <div class="fenxinag_line2">
-      <span class="fenxinag_box1">手机号码</span>
-      <span class="fenxinag_box2">
-        <%= text_field_tag 'mobile[]','', type:"tel",placeholder:"手机号",class:"fenxinag_text",id:"save_mobile_mobile" %>
-      </span>
-      <input id="sharing_code" style="display: none;">
-    </div>
-    <div id="share_buttons">
-      <p>分享到</p>
-      <ul>
-        <li><a><%= image_tag("img/01.png") %></a></li>
-        <li><a id="pre_jiathis_button_tsina"><%= image_tag("img/02.png") %></a></li>
-        <li><a id="pre_jiathis_button_tqq"><%= image_tag("img/03.png") %></a></li>
-        <li>
-          <button id="copycardid" style="border:0;background-color: white;padding:0;"><%= image_tag("img/04.png") %></button>
-        </li>
-      </ul>
-    </div>
+  <div class="fenxinag fenxinagtow" id="share_buttons">
+    <% if @sharing_link_node.present? %>
+    <%= render partial: 'application/share_buttoms',
+      locals: { product: @product, node: @sharing_link_node } %>
+    <% else %>
+      <div class="fenxinag_line1">留下手机号，现金礼品拿不停！</div>
+      <div style="min-height:40px;padding-top:20px;">
+        <div style="position:absolute;width:70px;margin-left:0;float:left;padding:3px 0 0 10px;">手机号码</div>
+        <div style="margin-left:90px;">
+          <%= text_field_tag 'mobile[]','', type:"tel",placeholder:"手机号",class:"fenxinag_text",id:"save_mobile_mobile", style:"width:90%;float:left;" %>
+        </div>
+      </div>
+      <%= link_to("提交", '###',class:"accunt_adilbtn", id:"sharing_code") %>
+      <script type="text/javascript">
+      $("#sharing_code").on('click',function(){
+        var mobile = $("#save_mobile_mobile").val()
+        var checkNum = /^(\+\d+-)?[1-9]{1}[0-9]{10}$/;
+        if (checkNum.test(mobile)) {
+          $.ajax({
+            url: '/products/save_mobile?id=<%= @product.id %>',
+            type: 'POST',
+            dataType: 'script',
+            data: {
+              mobile: mobile
+            },
+          })
+        };
+        if (!checkNum.test(mobile)) {
+          alert("手机格式不正确")
+        };
+      });
+      </script>
+    <% end %>
   </div>
 </div>
-
-<script type="text/javascript">
-
-$('#pre_jiathis_button_tsina').on('click', function(event) {
-
-  sendMobie('sina')
-});
-
-$('#pre_jiathis_button_tqq').on('click', function(event) {
-  sendMobie('tqq')
-});
-
-function sendMobie(job) {
-  var mobile = $("#save_mobile_mobile").val()
-  var checkNum = /^(\+\d+-)?[1-9]{1}[0-9]{10}$/;
-  if (checkNum.test(mobile)) {
-    $.ajax({
-      url: '/products/save_mobile?id=<%= @product.id %>',
-      type: 'POST',
-      dataType: 'script',
-      data: {
-        job: job,
-        mobile: mobile
-      },
-    })
-  };
-  if (!checkNum.test(mobile)) {
-    if (confirm("手机格式不正确,此次分享您将得不到收益，确认分享么？")) {
-      $.ajax({
-        url: '/products/save_mobile?id=<%= @product.id %>',
-        type: 'POST',
-        dataType: 'script',
-        data: {
-          job: job,
-        },
-      })
-    }
-  };
-}
-
-$('#copycardid').on('click', this,function(event) {
-  sendMobie('copy')
-});
-</script>

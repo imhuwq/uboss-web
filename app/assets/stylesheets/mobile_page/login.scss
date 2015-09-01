@@ -27,6 +27,7 @@
   }
   .form-group {
     margin-bottom: 15px;
+    position:relative;
   }
   label {
     display: inline-block;
@@ -76,5 +77,35 @@
     padding: 10px;
     color: #fff;
     font-weight: 500;
+  }
+  #captcha {
+    @extend .form-control
+  }
+  .simple-captcha-img {
+    float: left;
+    img {
+      height: 34px;
+      border-radius: 5px;
+    }
+  }
+  .simple-captcha-field {
+    margin-left: 90px;
+  }
+  .simple-captcha a, .send_mobile {
+    display: inline-block;
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    padding: 0 10px;
+    background-color: $brand-primary;
+    color: white;
+    border-radius: 0 5px 5px 0;
+    box-sizing: border-box;
+    height: 34px;
+    overflow: hidden;
+    line-height: 34px;
+    &.disabled {
+      background-color: #ccc;
+    }
   }
 }

@@ -5,7 +5,6 @@
 @import 'mobile_page/frontjobs/style';
 @import 'mobile_page/frontjobs/appraisal';
 @import 'mobile_page/frontjobs/successful_payment';
-@import 'mobile_page/font_width';
 @import 'mobile_page/toshare';
 @import 'mobile_page/mobile';
 @import 'mobile_page/rewrite_style';
@@ -49,4 +48,8 @@
   background-size: contain;
   top: 0;
   display: block;
+}
+.agreement-pre {
+  padding: 10px;
+  white-space: pre-line;
 }

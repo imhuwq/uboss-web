@@ -8,7 +8,7 @@
 </div>
 <% end %>
 <div class="row">
-	<div class="col-xs-12 border_block">
+	<div class="col-xs-12 well">
 		<h3 class="col-md-offset-1">企业信息认证</h3>
 		<div class="col-xs-11 col-md-offset-1">
       <div class="form-group clear">
@@ -17,7 +17,7 @@
 					状态
 				</label>
 				<div class="col-sm-9">
-          <%= @enterprise_authentication.status_i18n%>
+          <%= @enterprise_authentication.status_i18n %>
 				</div>
 			</div>
 			<div class="form-group clear">
@@ -35,7 +35,9 @@
 				  营业执照
 				</label>
 				<div class="col-sm-9">
-					<%= image_tag(@enterprise_authentication.business_license_img, width: "60%", alt: "-") %>
+          <%= link_to(@enterprise_authentication.business_license_img.to_s, target:'_blank') do %>
+					<%= image_tag(@enterprise_authentication.business_license_img.url(:w320), width: "60%", alt: "-", title:"点击查看原图") %>
+          <% end %>
 				</div>
 			</div>
 			<div class="form-group clear">
@@ -44,7 +46,9 @@
 				  法人身份证正面
 				</label>
 				<div class="col-sm-9">
-					<%= image_tag(@enterprise_authentication.legal_person_identity_card_front_img, width: "60%", alt: "-") %>
+          <%= link_to(@enterprise_authentication.legal_person_identity_card_front_img.to_s, target:'_blank') do %>
+					<%= image_tag(@enterprise_authentication.legal_person_identity_card_front_img.url(:w320), width: "60%", alt: "-", title:"点击查看原图") %>
+          <% end %>
 				</div>
 			</div>
       <div class="form-group clear">
@@ -53,7 +57,9 @@
 				  法人身份证反面
 				</label>
 				<div class="col-sm-9">
-					<%= image_tag(@enterprise_authentication.legal_person_identity_card_end_img, width: "60%", alt: "-") %>
+          <%= link_to(@enterprise_authentication.legal_person_identity_card_end_img.to_s, target:'_blank') do %>
+					<%= image_tag(@enterprise_authentication.legal_person_identity_card_end_img.url(:w320), width: "60%", alt: "-", title:"点击查看原图") %>
+          <% end %>
 				</div>
 			</div>
       <div class="form-group clear">

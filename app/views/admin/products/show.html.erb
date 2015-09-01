@@ -4,8 +4,9 @@
 </ol>
 
 <div class="row">
-	<div class="col-xs-12 border_block">
+	<div class="col-xs-12 well">
 		<h3 class="col-md-offset-1">商品信息</h3>
+    <hr />
 		<div class="col-xs-11 col-md-offset-1">
 			<div class="form-group clearfix">
 				<label class="string required text-right col-sm-3 control-label" for="product_name">
@@ -25,6 +26,17 @@
           <%= @product.code %>
         </div>
       </div>
+      <% if current_user.super_admin? %>
+      <div class="form-group clearfix">
+        <label class="string required text-right col-sm-3 control-label" for="product_name">
+          <abbr title="必填">*</abbr>
+          所属商家
+        </label>
+        <div class="col-sm-9">
+          <%= link_to @product.user.identify, url_for(controller: 'admin/sellers', action: :show, id: @product.user) %>
+        </div>
+      </div>
+      <% end %>
       <div class="form-group clearfix">
         <label class="string required text-right col-sm-3 control-label" for="product_name">
           <abbr title="必填">*</abbr>
@@ -95,8 +107,9 @@
     </div>
 
 	</div>
-	<div class="col-xs-12 border_block">
+	<div class="col-xs-12 well">
 		<h3 class="col-md-offset-1">分成设置</h3>
+    <hr />
     <% if @product.calculate_way == 1 %>
       <div class="col-xs-5 col-md-offset-1">
         <div class="form-group clearfix">
@@ -161,8 +174,9 @@
       </div>
 
 	</div>
-	<div class="col-xs-12 border_block">
+	<div class="col-xs-12 well">
 		<h3 class="col-md-offset-1">物流及其他</h3>
+    <hr />
 		<div class="col-xs-11 col-md-offset-1">
       <div class="form-group clearfix">
         <label class="string required text-right col-sm-3 control-label" for="product_name">
@@ -185,13 +199,25 @@
 		</div>
 	</div>
 
-  <div class="button_div  col-xs-4"  style="margin-top:30px;padding-bottom:30px;"><%= link_to("编辑", url_for(:action=>:edit,:id=>@product.id), :class=>"btn btn-warning active  col-xs-12",:role=>"button") %></div>
+  <div class="button_div  col-xs-4"  style="margin-top:30px;padding-bottom:30px;">
+    <% if can? :edit, @product %>
+      <%= link_to("编辑", url_for(:action=>:edit,:id=>@product.id), :class=>"btn btn-warning active  col-xs-12",:role=>"button") %>
+    <% end %>
+  </div>
   <div class="button_div  col-xs-4"  style="margin-top:30px;padding-bottom:30px;"><%= link_to("预览", url_for(:action=>:pre_view,:id=>@product.id), :class=>"btn btn-info active col-xs-12",:role=>"button",:target=>"_blank") %></div>
   <div class="button_div  col-xs-4"  style="margin-top:30px;padding-bottom:30px;">
-    <% if @product.status == 'unpublish' %>
-    <%= link_to("上架", url_for(action: :change_status, id: @product.id, status: :published), :class=>"btn btn-success active  col-xs-12",:role=>"button") %>
-    <% else %>
-    <%= link_to("取消上架", url_for(action: :change_status,id: @product.id, status: :unpublish), :class=>"btn btn-default active  col-xs-12",:role=>"button") %>
+    <% if can? :update, @product %>
+      <% if @product.status == 'unpublish' %>
+        <%= link_to("上架",
+                    url_for(action: :change_status, id: @product.id, status: :published),
+                    method: :patch,
+                    class: "btn btn-success active  col-xs-12",:role=>"button") %>
+      <% else %>
+        <%= link_to("取消上架",
+                    url_for(action: :change_status,id: @product.id, status: :unpublish),
+                    method: :patch,
+                    class: "btn btn-default active  col-xs-12",:role=>"button") %>
+      <% end %>
     <% end %>
   </div>
 </div>

@@ -1,6 +1,8 @@
 zh-CN:
   attributes: &attributes
     captcha: 验证码
+    image_captcha: 图片验证码
+    mobile_captcha: 手机验证码
     bank_card: 银行卡
     bankname: 银行名称
     user_name: 账户名
@@ -138,6 +140,8 @@ zh-CN:
       divide_income: 分成收入
       bank_card: 银行卡
     attributes:
+      mobile_auth_code:
+        code: 手机验证码
       user_address:
         username: 收件人
       evaluation:
