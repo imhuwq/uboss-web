@@ -1,10 +1,16 @@
 class EnterpriseAuthentication < ActiveRecord::Base
-  include AASM
 
+  include AASM
+  include Imagable
+
+  # FIXME 貌似没有地方用到
   attr_accessor :mobile_auth_code
+
   mount_uploader :business_license_img, ImageUploader
   mount_uploader :legal_person_identity_card_front_img, ImageUploader
   mount_uploader :legal_person_identity_card_end_img, ImageUploader
+
+  compatible_with_form_api_images :business_license_img, :legal_person_identity_card_end_img, :legal_person_identity_card_front_img
 
   validates :mobile, mobile: true
   validates_presence_of :enterprise_name, :address, :mobile, :user_id
@@ -47,49 +53,4 @@ class EnterpriseAuthentication < ActiveRecord::Base
     end
   end
 
-  def self.posted
-    EnterpriseAuthentication.where(status: 0)
-  end
-  def self.review
-    EnterpriseAuthentication.where(status: 1)
-  end
-  def self.pass
-    EnterpriseAuthentication.where(status: 2)
-  end
-  def self.no_pass
-    EnterpriseAuthentication.where(status: 3)
-  end
-
-  def business_license_img=(file)
-    if file.present?
-      if file.is_a?(String)
-        write_uploader :business_license_img, file
-      else
-        business_license_img = file
-      end
-    end
-    business_license_img
-  end
-
-  def legal_person_identity_card_front_img=(file)
-    if file.present?
-      if file.is_a?(String)
-        write_uploader :legal_person_identity_card_front_img, file
-      else
-        legal_person_identity_card_front_img = file
-      end
-    end
-    legal_person_identity_card_front_img
-  end
-
-  def legal_person_identity_card_end_img=(file)
-    if file.present?
-      if file.is_a?(String)
-        write_uploader :legal_person_identity_card_end_img, file
-      else
-        legal_person_identity_card_end_img = file
-      end
-    end
-    legal_person_identity_card_end_img
-  end
 end
