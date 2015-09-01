@@ -29,7 +29,9 @@
   <%= f.hidden_field :product_id %>
   <%= f.hidden_field :real_price %>
   <%= f.hidden_field :product_traffic_expense %>
-
+  <div class="addr_boxs">
+    <a href="#" class="addr" id="addr">收货地址</a>
+  </div>
   <div class="container">
     <div class="subOrd_box1 clearfix">
       <dl>
@@ -97,9 +99,7 @@
     </dl>
   </div>
 
-  <div class="addr_boxs">
-    <a href="#" class="addr" id="addr">收货地址</a>
-  </div>
+
 
   <div class="accunt_adil_box3">
     <%= submit_tag '提交订单',class:"accunt_adilbtn" %>
