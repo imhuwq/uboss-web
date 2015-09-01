@@ -1,6 +1,8 @@
 <header>
   <div class="container">
-    <a href="/" class="logo"><%=image_tag "admin/logo.png",alt:"Uboss"%></a>
+  	<%= link_to admin_root_path,class:'logo' do %>
+    	<%=image_tag "admin/logo.png",alt:"Uboss"%>
+		<% end %>
     <%= link_to edit_admin_account_path,class:'config' do %>
 			<%= image_tag(current_user.avatar.url(:thumb)) %>
 		<% end %>
