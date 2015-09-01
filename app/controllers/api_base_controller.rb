@@ -25,6 +25,8 @@ class ApiBaseController < ActionController::API
     # in the database with the token given in the params, mitigating
     # timing attacks.
     if user && Devise.secure_compare(user.authentication_token, authentication_token)
+      # disable tracking user each times cos we enable it
+      env['devise.skip_trackable'] = true
       sign_in user, store: false
     end
   end
