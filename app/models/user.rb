@@ -33,6 +33,7 @@ class User < ActiveRecord::Base
   validates :login, uniqueness: true, mobile: true, presence: true, if: -> { !need_set_login? }
   validates :mobile, allow_nil: true, mobile: true
   validates :agent_code, uniqueness: true, allow_nil: true
+  validates :authentication_token, uniqueness: true, presence: true
 
   alias_attribute :regist_mobile, :login
 
@@ -49,6 +50,7 @@ class User < ActiveRecord::Base
       false
     end
   end
+  before_validation :ensure_authentication_token
   before_create :set_mobile
   before_create :build_user_info, if: -> { user_info.blank? }
 
@@ -268,6 +270,19 @@ class User < ActiveRecord::Base
   end
 
   private
+
+  def ensure_authentication_token
+    if authentication_token.blank?
+      self.authentication_token = generate_authentication_token
+    end
+  end
+
+  def generate_authentication_token
+    loop do
+      token = Devise.friendly_token
+      break token unless User.where(authentication_token: token).first
+    end
+  end
 
   def email_required?
     false
