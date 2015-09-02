@@ -63,7 +63,7 @@ input[type=submit] {
   text-align: left;
   font-weight: 500;
   position: initial;
-  height: 0px;
+  display: none;
   transition: height 0.5s ease-in-out;
   -webkit-transition: height 0.5s ease-in-out;
 }
