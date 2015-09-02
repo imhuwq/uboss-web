@@ -1,10 +1,10 @@
 <%= content_for :page_title do %>
-  登录UBoss
+  登录UBOSS
 <% end %>
 
 <div class='login-container <%= @using_password ? 'using-pwd' : 'using-cap' %>'>
   <%= simple_form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
-    <h2>UBoss</h2>
+    <h2>UBOSS</h2>
     <hr />
 
     <div class='login-type-acs row'>
@@ -15,13 +15,30 @@
     <div class="form-inputs">
       <%= f.input :login, required: false, autofocus: true, input_html: {id: 'new_mobile'} %>
 
+
       <div class="cap-inputs">
-        <a id="send_mobile" class="btn btn-primary" href="#">发送验证码</a>
+        <%= f.input :image_captcha do %>
+          <div class='clearfix'>
+            <div class='simple_captcha_image pull-left'>
+              <%= login_simple_captcha_components[:image] %>
+            </div>
+
+            <div class='simple_captcha_field'>
+              <%= login_simple_captcha_components[:field] %>
+            </div>
+          </div>
+        <% end %>
+
+        <%= login_simple_captcha_components[:refresh_button] %>
+
+        <a id="request_mobile_captcha" class="btn btn-primary" href="#">发送短信验证码</a>
+
         <%= f.input :mobile_auth_code %>
+
       </div>
 
       <div class="cap-inputs form-group">
-        <small>未开通UBOSS账号的用户，点击确认表明您已同意<a href="#">《UBOSS用户注册协议》</a>，自动为您开通UBOSS账号</small>
+        <small>未开通UBOSS账号的用户，点击确认表明您已同意<a href="<%= agreements_register_path %>" target='_blank'>《UBOSS用户注册协议》</a>，自动为您开通UBOSS账号</small>
       </div>
 
       <div class='pwd-inputs'>

@@ -109,7 +109,7 @@ class Order < ActiveRecord::Base
   end
 
   def call_order_complete_handler
-    OrderPayedHandlerJob.perform_later(self)
+    OrderPayedHandlerJob.set(wait: 5.seconds).perform_later(self)
   end
 
   def recover_product_stock
@@ -126,7 +126,7 @@ class Order < ActiveRecord::Base
 
   def invoke_official_agent_order_process
     if order_items.first.product.is_official_agent?
-      OfficialAgentOrderJob.perform_later(self)
+      OfficialAgentOrderJob.set(wait: 5.seconds).perform_later(self)
     end
   end
 

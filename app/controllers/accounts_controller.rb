@@ -47,11 +47,11 @@ class AccountsController < ApplicationController
 
   def merchant_confirmed
     if current_user.is_seller?
-      flash[:notice] = '您已经是UBoss商家'
+      flash[:notice] = '您已经是UBOSS商家'
       redirect_to after_sign_in_path_for(current_user)
     else
       current_user.become_uboss_seller
-      redirect_to bind_agent_admin_account_path
+      redirect_to binding_agent_admin_account_path
     end
   end
 
@@ -134,7 +134,7 @@ class AccountsController < ApplicationController
       flash[:error] = '验证码错误或已过期。'
       redirect_to action: :binding_agent, agent_code: params[:agent_code]
     elsif current_user.bind_agent(params[:agent_code])
-      AgentInviteSellerHistroy.find_by(mobile: login).try(:update, status: 1)
+      AgentInviteSellerHistroy.find_by(mobile: current_user.login).try(:update, status: 1)
       MobileAuthCode.find_by(code: params[:user][:mobile_auth_code]).try(:destroy)
       flash[:success] = "绑定成功,#{current_user.agent.identify}成为您的创客。"
       redirect_to action: :binding_successed

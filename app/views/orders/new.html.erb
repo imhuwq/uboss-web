@@ -3,43 +3,45 @@
 <% end %>
 
 <style type="text/css">
-.stable-dlg {
-  /*position: absolute;
-  top: 0px;
-  left: 0px;*/
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, .2);
-  display: none;
-}
-      .content {
-        transition: all 1s;
-        position: absolute;
-        width: 100%;
-        top: 45px;
-        background-color: rgba(255, 255, 255, 1);
-      }
-      .content.active {
-        -webkit-animation: fadeInUp .7s ease 0s 1 backwards;
-        animation: fadeInUp .7s ease 0s 1 backwards;
-      }
+  .stable-dlg {
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, .2);
+    display: none;
+  }
+  .content {
+    transition: all 1s;
+    position: absolute;
+    width: 100%;
+    top: 45px;
+    background-color: rgba(255, 255, 255, 1);
+  }
+  .content.active {
+    -webkit-animation: fadeInUp .7s ease 0s 1 backwards;
+    animation: fadeInUp .7s ease 0s 1 backwards;
+  }
 </style>
 
 <%= simple_form_for @order_form, url: orders_path, method: 'POST',wrapper: :default do |f| %>
   <%= f.hidden_field :product_id %>
   <%= f.hidden_field :real_price %>
   <%= f.hidden_field :product_traffic_expense %>
-  <div class='new-order-addr-info  <%= displayable_class(@order_form.user_address.username.present?) %>'>
-      <%= f.hidden_field :user_address_id %>
-      <dl class="add_line1">
-        <dd>
-        <span>收货人：<b class='adr-user'><%= @order_form.user_address.username %></b></span>
-        <strong class='adr-mobile'><%= @order_form.user_address.mobile %></strong></dd>
-        <dd>
-        <span>收货地址：<b class='adr-detail'><%= @order_form.user_address %></b></span></dd>
-      </dl>
+  <div id="addr">
+    <div class='addr_boxs new-order-addr-info  <%= displayable_class(@order_form.user_address.username.present?) %>'>
+        <%= f.hidden_field :user_address_id %>
+        <dl class="add_line1">
+          <dd>
+          <span>收货人：<b class='adr-user'><%= @order_form.user_address.username %></b></span>
+          <strong class='adr-mobile'><%= @order_form.user_address.mobile %></strong></dd>
+          <dd>
+          <span>收货地址：<b class='adr-detail'><%= @order_form.user_address %></b></span></dd>
+        </dl>
+    </div>
+    <% if !@order_form.user_address.username.present? %>
+    <a href="#" class="addr addr_boxs">收货地址</a>
+    <% end %>
   </div>
-  <a href="#" class="addr addr_boxs" id="addr">收货地址</a>
+
 
   <div class="container">
     <div class="subOrd_box1 clearfix">
@@ -97,14 +99,9 @@
 
   </div>
 
-
-
-
-
   <div class="accunt_adil_box3">
-    <%= submit_tag '提交订单',class:"accunt_adilbtn" %>
+    <%= submit_tag '提交订单',class:"accunt_adilbtn", data: { disable_with: '提交订单中...' } %>
   </div>
-
   <!--弹出层开始-->
   <div class="stable-dlg order-address-dlg" id="dlg" status="0">
     <div class="content" id="content">

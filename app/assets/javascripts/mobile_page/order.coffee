@@ -26,14 +26,14 @@ $ ->
       sharing_lv1_amount = maxPrivilegeAmount - privilege_amount
     set_privilege_card_info()
 
-  $('.edit_privilege_card .jia').on 'tap', (e)->
+  $('.edit_privilege_card .jia').on 'click', (e)->
     e.preventDefault()
     if sharing_lv1_amount >= 1
       sharing_lv1_amount -= 1
       privilege_amount += 1
       set_privilege_card_info()
 
-  $('.edit_privilege_card .jian').on 'tap', (e)->
+  $('.edit_privilege_card .jian').on 'click', (e)->
     e.preventDefault()
     if privilege_amount >= origin_privilege_amount + 1
       sharing_lv1_amount += 1
@@ -56,55 +56,13 @@ $ ->
   $('.edit_privilege_card').on 'ajaxError', (event, xhr, status, error) ->
     alert xhr.responseText
 
-  mobile_submit_time = 0
-  $('#send_mobile').on 'tap', (e) ->
-    e.preventDefault()
-    sendBtn = $(this)
-    mobile = $('#new_mobile').val()
-    checkNum = /^(\+\d+-)?[1-9]{1}[0-9]{10}$/
-    if checkNum.test(mobile)
-      console.log mobile_submit_time
-      return false if mobile_submit_time != 0
-      sendBtn.addClass("disabled")
-      $.ajax
-        url: '/mobile_auth_code/create',
-        type: 'POST',
-        data: {mobile: mobile},
-      .done ->
-        mobile_submit_time = 60
-        timedown $('#send_mobile')
-      .fail ->
-        alert('验证码发送失败')
-        sendBtn.removeClass("disabled")
-    else
-      alert "手机格式错误"
-
-  timedown = (t) ->
-    if mobile_submit_time == 0
-      t.removeClass("disabled")
-      t.text("发送验证码")
-    else
-      t.text("#{mobile_submit_time}s后重新获取")
-      mobile_submit_time--
-      setTimeout () ->
-        timedown(t)
-      , 1000
-
-  $('#mobile_auth_code').on 'keyup', (m)->
-    code = $(this).val()
-    if code.length == 5
-      $('#submit_bottom').removeAttr('disabled')
-    else
-      $('#submit_bottom').attr('disabled','disabled')
-
-
-  $('#new_order_form .jia').on 'tap', (e)->
+  $('#new_order_form .jia').on 'click', (e)->
     e.preventDefault()
     amount = parseInt($('#amount').val())
     $('#amount').val(amount + 1)
     calulateTotalPrice(amount + 1)
 
-  $('#new_order_form .jian').on 'tap', (e)->
+  $('#new_order_form .jian').on 'click', (e)->
     e.preventDefault()
     amount = parseInt($('#amount').val())
     if amount > 1
@@ -119,7 +77,7 @@ $ ->
     price = Number($('#order_form_real_price').val())
     $('#total_price').html(amount * price + Number($('#order_form_product_traffic_expense').val()))
 
-  $('.order-address-dlg .add_line1').on 'tap', ()->
+  $('.order-address-dlg .add_line1').on 'click', ()->
     $('#order_form_user_address_id').val($(this).data('id'))
     fillNewOrderAddressInfo(
       $(this).find('.adr-user').text(),
@@ -128,7 +86,7 @@ $ ->
     )
     hideOrderAddressDlg()
 
-  $('.order-address-dlg .use-new-addr-btn').on 'tap', (event)->
+  $('.order-address-dlg .use-new-addr-btn').on 'click', (event)->
     event.preventDefault()
     user = $('#order_form_deliver_username').val()
     mobile = $('#order_form_deliver_mobile').val()

@@ -6,7 +6,7 @@ class OrdersController < ApplicationController
   def show
     @order_item = @order.order_items.first
     @product = @order_item.product
-    if @order.unpay? && browser.wechat?
+    if available_pay?(@order, @product)
       @order_charge = ChargeService.find_or_create_charge(@order, remote_ip: request.ip)
       @pay_p = {
         appId: WxPay.appid,
@@ -16,8 +16,7 @@ class OrdersController < ApplicationController
         signType: "MD5"
       }
       @pay_sign = WxPay::Sign.generate(@pay_p)
-    end
-    if @order.signed? || @order.completed?
+    elsif @order.signed? || @order.completed?
       @privilege_card = PrivilegeCard.find_by(user: current_user, product: @product, actived: true)
       @sharing_link_node = @order_item.sharing_link_node
     end
@@ -87,4 +86,11 @@ class OrdersController < ApplicationController
   def find_order
     @order = current_user.orders.find(params[:id])
   end
+
+  def available_pay?(order, product)
+    order.unpay? &&
+      browser.wechat? &&
+      (product.is_official_agent? && current_user && !current_user.is_agent?)
+  end
+  helper_method :available_pay?
 end

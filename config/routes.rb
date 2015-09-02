@@ -11,15 +11,22 @@ Rails.application.routes.draw do
     omniauth_callbacks: "users/omniauth_callbacks"
   }
 
-  get 'set_password', to: 'accounts#new_password'
   patch 'set_password', to: 'accounts#set_password'
+  get 'set_password', to: 'accounts#new_password'
+
   get 'sharing/:code', to: 'sharing#show', as: :sharing
+
   get 'service_centre_consumer', to: 'home#service_centre_consumer'
   get 'service_centre_agent', to: 'home#service_centre_agent'
   get 'service_centre_tutorial', to: 'home#service_centre_tutorial'
-  get 'home/about_us'
+  get 'about', to: 'home#about_us'
+
+  get 'agreements/seller'
+  get 'agreements/maker'
+  get 'agreements/register'
 
   post 'mobile_auth_code/create', to: 'mobile_auth_code#create'
+  get  'mobile_captcha/send_with_captcha', to: 'mobile_auth_code#send_with_captcha'
 
   resources :stores, only: [:show]
   resources :orders, only: [:new, :create, :show] do

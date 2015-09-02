@@ -1510,7 +1510,8 @@ a{
 .add_line1 dd strong{
 	float: right;
 	font-weight: normal;
-	padding-right: 10px;
+	padding-right: 40px;
+	padding-top: 3px;
 }
 .add_more{
 	background-image: image-url("img/up.png");

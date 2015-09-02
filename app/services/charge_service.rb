@@ -1,6 +1,6 @@
 module ChargeService
 
-  SITE_NAME = 'UBoss'
+  SITE_NAME = 'UBOSS'
 
   extend self
 

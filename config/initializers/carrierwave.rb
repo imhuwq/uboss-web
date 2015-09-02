@@ -1,3 +1,11 @@
+require 'carrierwave-upyun'
+
+class CarrierWave::Storage::UpYun::File
+  def delete
+    true
+  end
+end
+
 if !Rails.env.test?
   CarrierWave.configure do |config|
     config.storage = :upyun

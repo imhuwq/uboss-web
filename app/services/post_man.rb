@@ -1,5 +1,7 @@
 module PostMan extend self
 
+  TPL_WITH_COMPLAY = %w(1 2 3 4 5 6 7 8 9).freeze
+
   class SendFail < StandardError
     attr_reader :fail_result
 
@@ -13,7 +15,10 @@ module PostMan extend self
     return result_message('电话号码不能为空', false) if mobile.blank?
     return result_message('内容不能为空',     false) if message.blank?
 
-    result = ChinaSMS.to(mobile, { code: message }, tpl_id: tpl_id)
+    message_params = { code: message }
+    message_params.merge!(company: '优巭UBOSS') if TPL_WITH_COMPLAY.include?(tpl_id.to_s)
+
+    result = ChinaSMS.to(mobile, message_params, tpl_id: tpl_id)
 
     if result['code'] == 0
       result_message('发送成功')
@@ -22,16 +27,18 @@ module PostMan extend self
     end
 
   rescue SendFail => e
+    raise e if Rails.env.development?
     Airbrake.notify_or_ignore(e,
                               parameters: e.fail_result.merge(mobile: mobile),
                               cgi_data: ENV.to_hash)
     result_message('短信发送失败', false)
 
   rescue StandardError => e
+    raise e if Rails.env.development?
     Airbrake.notify_or_ignore(e,
                               parameters: {mobile: mobile},
                               cgi_data: ENV.to_hash)
-    result_message('短信发送失败', false)
+    result_message('短信服务失败', false)
   end
 
   private

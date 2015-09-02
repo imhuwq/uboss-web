@@ -1,8 +1,8 @@
 <div class='container-sm'>
 
-  <h2>成为UBoss商家</h2>
+  <h2>成为UBOSS商家</h2>
   <hr/>
-  <p>亲爱的 <%= current_user.identify %>，在您确认成为UBOSS商家前，请审慎阅读 <a href="#">《UBOSS商家入驻协议》</a></p>
+  <p>亲爱的 <%= current_user.identify %>，在您确认成为UBOSS商家前，请审慎阅读 <a href="<%= agreements_seller_path %>" target='_blank'>《UBOSS商家入驻协议》</a></p>
 
   <%= link_to "我已阅读并同意协议", merchant_confirm_account_path, method: :patch, class: 'btn btn-primary col-md-12' %>
   <%= link_to '暂不成为UBOSS商家', destroy_user_session_path, method: :delete, class: 'btn btn-link col-md-12' %>
