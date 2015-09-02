@@ -18,10 +18,10 @@ class Admin::PersonalAuthenticationsController < AdminController
       @personal_authentication = PersonalAuthentication.find_by(user_id:( params[:user_id] || current_user))
     else
       @personal_authentication = PersonalAuthentication.find_by(user_id: current_user)
-    end
-    unless @personal_authentication.present?
-      flash[:notice] = '您还没有认证'
-      redirect_to action: :new
+      unless @personal_authentication.present?
+        flash[:notice] = '您还没有认证'
+        redirect_to action: :new
+      end
     end
   end
 
