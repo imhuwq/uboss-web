@@ -1,13 +1,13 @@
-#矩形的资源，商品图像
-require 'mime/types'
 class AssetImg < ActiveRecord::Base
 
-  attr_accessor :uploaded_data
+  include Imagable
 
   has_many :children, :class_name=>'AssetImg', :foreign_key=>'parent_id'
   belongs_to :resource, :polymorphic => true #指定图片的类型/对象
 
   mount_uploader :avatar, ImageUploader
+
+  compatible_with_form_api_images :avatar
 
   def image_url(version = nil)
     avatar.url(version)
