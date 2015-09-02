@@ -29,9 +29,18 @@
   <%= f.hidden_field :product_id %>
   <%= f.hidden_field :real_price %>
   <%= f.hidden_field :product_traffic_expense %>
-  <div class="addr_boxs">
-    <a href="#" class="addr" id="addr">收货地址</a>
+  <div class='new-order-addr-info  <%= displayable_class(@order_form.user_address.username.present?) %>'>
+      <%= f.hidden_field :user_address_id %>
+      <dl class="add_line1">
+        <dd>
+        <span>收货人：<b class='adr-user'><%= @order_form.user_address.username %></b></span>
+        <strong class='adr-mobile'><%= @order_form.user_address.mobile %></strong></dd>
+        <dd>
+        <span>收货地址：<b class='adr-detail'><%= @order_form.user_address %></b></span></dd>
+      </dl>
   </div>
+  <a href="#" class="addr addr_boxs" id="addr">收货地址</a>
+
   <div class="container">
     <div class="subOrd_box1 clearfix">
       <dl>
@@ -88,16 +97,7 @@
 
   </div>
 
-  <div class='new-order-addr-info <%= displayable_class(@order_form.user_address.username.present?) %>'>
-    <%= f.hidden_field :user_address_id %>
-    <dl class="add_line1">
-      <dd>
-      <span>收货人：<b class='adr-user'><%= @order_form.user_address.username %></b></span>
-      <strong class='adr-mobile'><%= @order_form.user_address.mobile %></strong></dd>
-      <dd>
-      <span>收货地址：<b class='adr-detail'><%= @order_form.user_address %></b></span></dd>
-    </dl>
-  </div>
+
 
 
 
