@@ -105,7 +105,7 @@
 					<br/>
 				  <p class="text-info">开店完全免费，注册即开店</p>
 						<p>
-						<%= link_to '/sellers/new',class:'btn btn-shadow'  do %>
+						<%= link_to new_user_session_path, class:'btn btn-shadow'  do %>
 							注册开店
 						<% end %>
 					</p>
@@ -120,7 +120,7 @@
 					<br/>
 				    <p class="text-info">为保证结算打款顺利，商家需要对店铺<br/>进行认证，否则无法提现</p>
 					<p>
-						<%= link_to "/admin/users/#{current_user.try(:id) || 1}/personal_authentication/new",class:'btn btn-shadow' do %>
+						<%= link_to "/admin/users/#{current_user.try(:id) || 1}/personal_authentication/new", class:'btn btn-shadow' do %>
 							我要认证
 						<% end %>
 					</p>
