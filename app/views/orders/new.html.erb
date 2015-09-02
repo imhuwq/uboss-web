@@ -100,7 +100,11 @@
   </div>
 
   <div class="accunt_adil_box3">
+    <% if @order_form.user_address.username.present?  %>
     <%= submit_tag '提交订单',class:"accunt_adilbtn", data: { disable_with: '提交订单中...' } %>
+    <% else %>
+    <%= submit_tag '提交订单',class:"accunt_adilbtn", data: { disable_with: '提交订单中...' }, disabled: :disabled %>
+    <% end %>
   </div>
   <!--弹出层开始-->
   <div class="stable-dlg order-address-dlg" id="dlg" status="0">
