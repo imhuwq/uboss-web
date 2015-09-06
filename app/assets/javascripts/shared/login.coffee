@@ -17,7 +17,4 @@ $ ->
       $('#user_password').val('')
       $('#user_mobile_auth_code').val(tmpCap)
 
-  if typeof(Zepto) != 'undefined'
-    bindLoginListener('tap')
-  else
-    bindLoginListener('click')
+  bindLoginListener('click')

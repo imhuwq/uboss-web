@@ -1,12 +1,13 @@
 <header>
   <div class="container">
+
   	<%= link_to admin_root_path,class:'logo' do %>
     	<%=image_tag "admin/logo.png",alt:"Uboss"%>
 		<% end %>
     <%= link_to edit_admin_account_path,class:'config' do %>
 			<%= image_tag(current_user.avatar.url(:thumb)) %>
 		<% end %>
-		
+
     <!--
 	  <ul class="nav navbar-nav navbar-right">
 	    <li class="dropdown">
@@ -35,11 +36,11 @@
           <%= can_li_link(:manage, Transaction, admin_transactions_path) %>
           <%= can_li_link(:manage, :backend_status, admin_backend_status_path, another_active_name: :backend_status) %>
         <% end %>
-        <%#= nav_group :orders do %>          
+        <%#= nav_group :orders do %>
         <%# end %>
-        <%#= can_li_link(:read, DailyReport, admin_income_reports_path, another_active_name: :income_reports) %>        
-        
-        <%#= nav_group :withdraw_records do %>          
+        <%#= can_li_link(:read, DailyReport, admin_income_reports_path, another_active_name: :income_reports) %>
+
+        <%#= nav_group :withdraw_records do %>
           <%#= can_li_link(:manage, BankCard, admin_bank_cards_path) %>
         <%# end %>
         <%#= can_li_link(:manage, :authentications, admin_personal_authentications_path) %>

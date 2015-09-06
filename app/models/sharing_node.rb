@@ -40,7 +40,7 @@ class SharingNode < ActiveRecord::Base
   private
   def limit_sharing_rate
     if self.class.where('created_at > ?', Time.now.beginning_of_day).where(user_id: user_id).exists?
-      errors[:base] << '您今天已经分享，UBoss限制每天分享一件商品，感谢您的支持。'
+      errors[:base] << '您今天已经分享，UBOSS限制每天分享一件商品，感谢您的支持。'
     end
   end
 

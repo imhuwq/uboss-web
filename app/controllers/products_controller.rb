@@ -13,7 +13,7 @@ class ProductsController < ApplicationController
     end
     if @scode = get_product_sharing_code(@product.id)
       @sharing_node = SharingNode.find_by(code: @scode)
-      @privilege_card = @sharing_node.privilege_card
+      @privilege_card = @sharing_node.try(:privilege_card)
     end
   end
 

@@ -47,11 +47,11 @@ class AccountsController < ApplicationController
 
   def merchant_confirmed
     if current_user.is_seller?
-      flash[:notice] = '您已经是UBoss商家'
+      flash[:notice] = '您已经是UBOSS商家'
       redirect_to after_sign_in_path_for(current_user)
     else
       current_user.become_uboss_seller
-      redirect_to bind_agent_admin_account_path
+      redirect_to binding_agent_admin_account_path
     end
   end
 
