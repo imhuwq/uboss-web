@@ -1,20 +1,21 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <%= render partial: 'page_title' %>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link href="<%= image_url("desktop_image/favicon.ico") %>" type="image/x-icon" rel="shortcut icon">
-  <%= stylesheet_link_tag    'admin', media: 'all'  %>
-  <%= javascript_include_tag 'admin', 'data-turbolinks-track' => true %>
-  <%= render partial: 'baidu_tongji' %>
-  <%= csrf_meta_tags %>
-</head>
-<body>
-  <%= render 'layouts/admin_navbar' %>  
-	<%= render 'layouts/flash_alert' %>
-	<%= yield %>
-<%= yield :page_specific_javascript %>
-<br />
-<p class="text-center">copyright &copy; ULAIBER</p>
-</body>
+	<head>
+	  <%= render partial: 'page_title' %>
+	  <meta name="viewport" content="width=1200" />
+	  <meta http-equiv="X-UA-Compatible" content="chrome=1,IE=edge" />
+	  <link href="<%= image_url("desktop_image/favicon.ico") %>" type="image/x-icon" rel="shortcut icon">
+	  <%= stylesheet_link_tag    'admin', media: 'all'  %>
+	  <%= javascript_include_tag 'admin', 'data-turbolinks-track' => true %>
+	  <%= render partial: 'baidu_tongji' %>
+	  <%= csrf_meta_tags %>
+	</head>
+	<body>
+	  <%= render 'layouts/admin_navbar' %>  
+		<%= render 'layouts/flash_alert' %>
+		<%= yield %>
+		<%= yield :page_specific_javascript %>
+		<br />
+		<p class="text-center">copyright &copy; ULAIBER</p>
+	</body>
 </html>

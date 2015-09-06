@@ -30,6 +30,11 @@
         <%= can_li_link(:manage, Order, admin_orders_path) %>
         <%= can_li_link(:read, SharingIncome, admin_sharing_incomes_path) %>
         <%= can_li_link(:read, WithdrawRecord, admin_withdraw_records_path) %>
+        <%= nav_group :uboss do %>
+          <%= can_li_link(:manage, User, admin_users_path) %>
+          <%= can_li_link(:manage, Transaction, admin_transactions_path) %>
+          <%= can_li_link(:manage, :backend_status, admin_backend_status_path, another_active_name: :backend_status) %>
+        <% end %>
         <%#= nav_group :orders do %>          
         <%# end %>
         <%#= can_li_link(:read, DailyReport, admin_income_reports_path, another_active_name: :income_reports) %>        
