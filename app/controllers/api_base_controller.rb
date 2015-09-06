@@ -4,6 +4,8 @@ class ApiBaseController < ActionController::API
   include AbstractController::Translation
   include ActionController::ImplicitRender
 
+  include FilterLogic
+
   before_action :force_request_format
   before_action :authenticate_user_from_token!
   before_action :authenticate_user!
