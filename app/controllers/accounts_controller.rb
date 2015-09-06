@@ -151,7 +151,7 @@ class AccountsController < ApplicationController
   end
 
   def authenticate_agent # 创客可以使用的action
-    unless current_user.agent?
+    unless current_user.is_agent?
       flash[:error] = '您还不是创客.'
       redirect_to action: :settings
     end

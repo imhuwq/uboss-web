@@ -1,6 +1,6 @@
 class Admin::EnterpriseAuthenticationsController < AdminController
   def index
-    if super_admin?
+    if is_super_admin?
       @enterprise_authentications = EnterpriseAuthentication.order("updated_at DESC").page(params[:page] || 1)
     else
       flash[:notice] = "需要管理员权限"
@@ -18,7 +18,7 @@ class Admin::EnterpriseAuthenticationsController < AdminController
   end
 
   def show
-    if super_admin?
+    if is_super_admin?
       @enterprise_authentication = EnterpriseAuthentication.find_by(user_id:( params[:user_id] || current_user))
     else
       @enterprise_authentication = EnterpriseAuthentication.find_by(user_id: current_user)

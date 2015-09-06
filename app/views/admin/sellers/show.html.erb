@@ -95,8 +95,8 @@
       <%= form_for 'seller', url: url_for(controller: :sellers, action: :update_service_rate), method: :post do |f| %>
         <%= hidden_field_tag 'seller[id]', @seller.id %>
         当前平台费率：
-        <%= text_field_tag 'seller[service_rate]', @seller.try(:user_info).try(:service_rate), type: :tel %>%
-        <%= submit_tag '调整', class:"btn btn-info btn-xs" %>
+        <%= text_field_tag 'seller[service_rate]', @seller.try(:user_info).try(:service_rate), type: :tel, disabled: :distabled %>%
+        <%#= submit_tag '调整', class:"btn btn-info btn-xs" %>
       <% end %>
     </div>
     <table class="table table-hover">
