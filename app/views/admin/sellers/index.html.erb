@@ -53,74 +53,55 @@
 </div>
 
 <div class="container">
-	<div class="header-scoller text-center">
-		<div class="box-w25">商家</div>
-		<div class="box-w10">好评率</div>
-		<div class="box-w10">提成比例</div>
-		<div class="box-w25">入驻时间</div>
-		<div class="box-w10">账号</div>		
-		<% if current_user.super_admin? %>
-			<div class="box-w10">创客</div>
-			<div class="box-w10">
-		<% else %>
-			<div class="box-w20">
-		<% end %>				
-		状态</div>
-		<div class="clear"></div>
-	</div>
-	<div id="scroller">
-		<div class="scroller-container">
-			<% @sellers.each do |sellers| %>	
-			<div class="admin-list-box text-center
-				<% if sellers.authenticated == 'no' %>
-					red-bg-color					
-				<% end %>
-			">			
-				<div class="box-w25 admin-info">
-					<%= link_to url_for(controller: 'admin/sellers', action: :show, id: sellers) do %>
-						<div class="cover"><%= image_tag(sellers.avatar, size: "60x60", alt: "-") %></div>						
-						<div class="name"><%= sellers.identify %></div>
-					<% end %>
-				</div>
-				<div class="box-w10">
-					<%= Evaluation.sharer_good_reputation_rate(sellers) %>
-				</div>
-				<div class="box-w10"><%= sellers.user_info.try(:service_rate) %></div>					
-				<div class="box-w25"><%= sellers.created_at %></div>
-				<div class="box-w10"><%= sellers.login %></div> 
-				<% if current_user.super_admin? %>
-					<div class="box-w10">
-						&nbsp;
-						<% if sellers.agent.present? %>
-				          <%= link_to sellers.agent.identify, url_for(controller: :agents, action: :show, id: sellers.agent_id) %>
-				        <% end %>
-				        &nbsp;
-					</div>
-					<div class="box-w10">
-				<% else%>
-					<div class="box-w20">
-			    <% end %>
-				    <%=  User::DATA_AUTHENTICATED[sellers.authenticated] %>
-				</div>
-			</div>	    
+	<table class="list-table">
+		<thead>
+			<th>&nbsp;</th>
+			<th>商家</th>
+			<th>好评率</th>
+			<th>提成比例</th>
+			<th>入驻时间</th>
+			<th>账号</th>
+			<% if current_user.super_admin? %>
+			<th>创客</th>
 			<% end %>
+			<th>状态</th>
+		</thead>
+		<% @sellers.each do |sellers| %>	
+		<tr class="
+			<% if sellers.authenticated == 'no' %>
+				red-bg-color					
+			<% end %>
+		">			
+			<td>
+				<%= link_to url_for(controller: 'admin/sellers', action: :show, id: sellers) do %>	
+					<%= image_tag(sellers.avatar, size: "60x60", alt: "-") %>
+				<% end %>
+			</td>
+			<td>				
+				<%= link_to url_for(controller: 'admin/sellers', action: :show, id: sellers) do %>											
+					<%= sellers.identify %>
+				<% end %>				
+			</td>
+			<td>
+				<%= Evaluation.sharer_good_reputation_rate(sellers) %>
+			</td>
+			<td><%= sellers.user_info.try(:service_rate) %></td>					
+			<td><%= sellers.created_at %></td>
+			<td><%= sellers.login %></td> 
+			<% if current_user.super_admin? %>
+				<td>
+					&nbsp;
+					<% if sellers.agent.present? %>
+			          <%= link_to sellers.agent.identify, url_for(controller: :agents, action: :show, id: sellers.agent_id) %>
+			        <% end %>
+			        &nbsp;
+				</td>
+		    <% end %>
+			<td><%=  User::DATA_AUTHENTICATED[sellers.authenticated] %></td>
+		</tr>	    
+		<% end %>
 			
-		</div><!-- srcoller -->
-		<div class="scroller-bar-wrapper">
-	        <div class="scroller-bar"></div>
-	 	</div><!-- scroller__bar-wrapper -->
- 	</div><!-- scroller -->
+	</table>
     <%= paginate @sellers %>
 </div>
-<script>
-	window.onload = function() {
-    window.dima = baron({
-        root: '#scroller',
-        scroller: '.scroller-container',
-        bar: '.scroller-bar',
-        barOnCls: 'baron'
-    });
 
-};
-	
-</script>

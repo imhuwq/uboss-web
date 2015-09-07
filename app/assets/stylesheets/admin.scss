@@ -8,7 +8,6 @@
 @import "admin/form";
 @import "admin/orders";
 @import "admin/user";
-@import "admin/baron";
 @import "desktop/base";
 
 body{background: #1A1A1A;color:#A6A6A6;}
@@ -80,14 +79,16 @@ a.admin-box:hover{opacity: 0.9;  filter: alpha(opacity=90);color:#fff;}
 }
 .qrcode-box { background: #fff;padding:20px 0 0; height: 260px;}
 .qrcode-box h4{ height: 40px;margin: 0;color:#1A1A1A;font-weight: normal;}
-.header-scoller{ padding: 10px 50px 10px 20px; background: #EAEAEA;color:#1A1A1A; margin-bottom: 10px;}
-.admin-list-box {padding:10px 20px;background:#383838; margin-bottom: 10px; overflow: hidden;}
-.admin-list-box:hover{ opacity: .8;filter: alpha(opacity=80);}
-.admin-list-box > div{ padding: 20px 0 0;max-height:40px; overflow: hidden;word-break: break-all}
-.admin-list-box .admin-info{ padding: 0; max-height: none;}
-.admin-list-box .admin-info a{ display: block;overflow: hidden;}
-.admin-list-box .admin-info .cover{ width: 60px;height: 60px;float: left;margin-right: 10px;}
-.admin-list-box .admin-info .name { max-height: 40px; overflow: hidden; padding-top: 20px; text-align: left;}
+.list-table{ width: 100%; border: none; box-sizing: border-box; font-size: 15px;}
+.list-table th{ background: #EAEAEA;;color:#1A1A1A;border-bottom:10px solid #1A1A1A ; padding: 10px; font-weight: normal;}
+.list-table td{ padding:10px; background: #383838; text-align: center;border-bottom:10px solid #1A1A1A ; vertical-align: middle;}
+.list-table tr:hover td{ opacity: .8;filter: alpha(opacity=80);}
+.list-table tr.red-bg-color td{ background: #E74C3C;color:#fff;}
+
+.list-box { position: relative; overflow: hidden; text-align: center;}
+.list-box:before{display: block;content: ' ';height: 10px; width: 1px; background: #E5E5E5; position: absolute; bottom: 0;left: 50%; z-index: 2;}
+.list-box:after { height: 100%; width: 1px; background: #1A1A1A; display: block;content: ' ';left:50%;top:10px; position: absolute; z-index: 1; }
+.list-box .list-title{ color: #6B6B6B; }
 
 .header-tab {font-size: 18px;background: #DCDCDC; overflow: hidden;color:#686868;}
 .header-tab .tab-title{ float: left; border-right:1px solid #1A1A1A ; padding: 10px 30px; cursor: pointer;}

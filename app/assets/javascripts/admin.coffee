@@ -8,7 +8,6 @@
 #= require chosen.jquery.min
 #= require jquery-fileupload/basic
 #= require querystring
-#= require admin/baron.min
 #= require shared/upyun
 #= require_tree ./admin
 #= require_self
