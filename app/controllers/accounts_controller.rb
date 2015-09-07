@@ -121,9 +121,9 @@ class AccountsController < ApplicationController
       AgentInviteSellerHistroy.find_or_create_by(mobile: mobile) do |history|
         history.agent_id = current_user.id
       end
-      flash[:success] = "您的创客码已经发送到：#{mobile}."
+      flash.now[:success] = "您的创客码已经发送到：#{mobile}."
     else
-      flash[:error] = result[:message]
+      flash.now[:error] = result[:message]
     end
     respond_to do |format|
       format.html { render nothing: true }
