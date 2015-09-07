@@ -2,7 +2,9 @@
 	<ul class="breadcrumb">
 		<li>主页</li>
 		<li class="divider"><i class="fa fa-angle-right"></i></li>
-		<li>创客</li>
+		<li><%= link_to '创客', [:admin, :agents] %></li>
+		<li class="divider"><i class="fa fa-caret-right"></i></li>
+		<li class="active"><%= @agent.identify %></li>
 	</ul>
 </div><!-- container -->
 <br />
@@ -104,8 +106,8 @@
 						<td><%= obj.user_name.bank_info%></td>
 						<td><%= obj.user_name%></td>
 						<td><%= obj.done_at%></td>
-						<td><%= obj.state%></td>
 						<td><%= obj.state_i18n %></td>
+						<td><a class="btn">打款</a></td>
 					</tr>
 				<% end %>
 				</table>
