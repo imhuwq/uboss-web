@@ -1,7 +1,7 @@
 <%= upyun_meta_tags prefix: 'asset_img/avatar' %>
 <div class="box-w50">
 	<div class="admin-box beige-bg-color">
-	  <h4>商品信息</h4>
+	  <h4 class="edit-title">商品信息</h4>
 	  <%= f.input :name %>
 	  <%= f.input :original_price %>
 	  <%= f.input :present_price %>
@@ -16,61 +16,61 @@
 	      		<%= image_tag(@product.image_url(:thumb))%>
 	      	<% end %>	      
 	      <%= file_field_tag "image", class: "upyun_file" %>
+	      <b class="loading"><i class="fa fa-spinner"></i></b>
 	    </p>
 	  <% end %>
-	
-	  <h4>图文详情</h4>
-	  <hr />
-	  <%= f.input_field :content, as: :text, class: "redactor" %>
-	 
+		<div class="form-group ">
+		  <label class="control-label">图文详情</label>
+		  <div class="control-input">
+		  	<%= f.input_field :content, as: :text, class: "redactor" %>
+		  </div>		  
+	 	</div>
 	</div>
 </div>
-<div class="box-w50">
-<div class="well">
-  <h4>分成设置</h4>
-  <hr />
-  <div class='form-group'>
-    <div class='form-label col-sm-2'>
-      <% if @product.present? and @product.calculate_way == 1 %>
-        <%= radio_button_tag('product[calculate_way]',1,:html=>{:checked=>'checked'}) %>
-      <% else %>
-        <%= radio_button_tag('product[calculate_way]',1) %>
-      <% end %>
-      <label style="padding-right:20px">分成比例</label>
-    </div>
-    <div class='col-sm-3'>
-      <%= f.input_field :share_rate_total, class: 'form-control' %>
-    </div>
-    <h4 class="col-sm-1"> %/单 </h4>
-  </div>
+	<div class="box-w50">
+		<div class="admin-box beige-bg-color">
+		  <h4 class="edit-title">分成设置</h4>
+		  <div class='form-group'>    
+		  	<label class='control-label'>
+		  		分成比例   		
+		  	</label>  
+		   	<label class='control-label pull-right'>
+		   		%　  	
+		  		<% if @product.present? and @product.calculate_way == 1 %>
+		        <%= radio_button_tag('product[calculate_way]',1,:html=>{:checked=>'checked'}) %>
+		      <% else %>
+		        <%= radio_button_tag('product[calculate_way]',1) %>
+		      <% end %>
+		   	</label>
+		    <div class='control-input'>
+		      <%= f.input_field :share_rate_total, class: 'form-control' %>
+		    </div>
+		  </div>
+		  <div class='form-group'>
+		  	<label class='control-label'>现金分成</label>
+		    <label class='control-label pull-right'>
+		    	元　
+		      <% if @product.present? and @product.calculate_way == 0 %>
+		        <%= radio_button_tag 'product[calculate_way]',0,:html=>{:checked=>'checked'} %>
+		      <% else %>
+		        <%= radio_button_tag 'product[calculate_way]',0 %>
+		      <% end %>      	
+		    </label>
+		    <div class='control-input'>
+		      <%= f.input_field :share_amount_total, class: 'form-control' %>
+		    </div>
+		  </div>
+		  <%= f.input :has_share_lv, as: :radio_buttons,
+		    collection: {'不分成'=>0,'1'=>1,'2'=>2,'3'=>3},
+		    item_wrapper_class: "radio-inline"
+		  %>
+		
+		</div><!-- admin-box -->
+		<br  />
+		<div class="admin-box beige-bg-color">
+		  <h4 class="edit-title">物流及其他</h4>
+		  <%= f.input :buyer_pay,as: :radio_buttons ,:collection=>Product::DataBuyerPay.invert,:item_wrapper_class => "radio-inline",:label_html=>{:class=>"text-right"} %>
+		  <%= f.input :traffic_expense, :as=>:float,:include_blank => false ,:label_html=>{:class=>"text-right"} %>
+		</div><!-- admin-box -->
+	
 
-  <div class='form-group'>
-    <div class='form-label col-sm-2'>
-      <% if @product.present? and @product.calculate_way == 0 %>
-        <%= radio_button_tag 'product[calculate_way]',0,:html=>{:checked=>'checked'} %>
-      <% else %>
-        <%= radio_button_tag 'product[calculate_way]',0 %>
-      <% end %>
-      <label style="padding-right:20px">现金分成</label>
-    </div>
-    <div class='col-sm-3'>
-      <%= f.input_field :share_amount_total, class: 'form-control' %>
-    </div>
-    <h4 class='col-sm-1'>元/单</h4>
-  </div>
-
-  <%= f.input :has_share_lv, as: :radio_buttons,
-    collection: {'不分成'=>0,'1'=>1,'2'=>2,'3'=>3},
-    item_wrapper_class: "radio-inline"
-  %>
-
-</div>
-
-<div class="well">
-  <h4>物流及其他</h4>
-  <hr />
-
-  <%= f.input :buyer_pay,as: :radio_buttons ,:collection=>Product::DataBuyerPay.invert,:item_wrapper_class => "radio-inline",:label_html=>{:class=>"text-right"} %>
-  <%= f.input :traffic_expense, :as=>:float,:include_blank => false ,:label_html=>{:class=>"text-right"} %>
-</div>
-</div>

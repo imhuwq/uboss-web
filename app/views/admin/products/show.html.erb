@@ -1,223 +1,184 @@
-<ol class="breadcrumb">
-  <li><%= link_to '商品管理', [:admin, :products] %></li>
-  <li class="active">查看商品信息</li>
-</ol>
+<div class="container admin-container">
+	<ul class="breadcrumb">
+		<li>主页</li>
+		<li class="divider"><i class="fa fa-angle-right"></i></li>
+		<li><%= link_to '商品管理', [:admin, :products] %></li>
+		<li class="divider"><i class="fa fa-caret-right"></i></li>
+		<li class="active">查看商品信息</li>
+	</ul>
+</div><!-- container -->
+<br />
+<div class="container nogap">
+	<div class="box-w50">
+		<div class="admin-box beige-bg-color">
+			<h4 class="edit-title">商品信息</h4>
+			<% if current_user.super_admin? %>
+	    	<div class="form-group">
+	    		<label class="control-label">所属商家</label>
+	    		<div class="control-input">
+	    			<span><%= link_to @product.user.identify, url_for(controller: 'admin/sellers', action: :show, id: @product.user) %></span>
+	    		</div>
+	    	</div>	
+	    	<% end %>
+	    	<div class="form-group">
+	    		<label class="control-label">产品名</label>
+	    		<div class="control-input">
+	    			<span class="control-txt"><%= @product.name %></span>
+	    		</div>
+	    	</div>
+	    	<div class="form-group">
+	    		<label class="control-label">原价</label>
+	    		<div class="control-input">
+	    			<span class="control-txt">￥<%= '%.2f' % @product.original_price %></span>
+	    		</div>
+	    	</div>
+	    	<div class="form-group">
+	    		<label class="control-label">现价</label>
+	    		<div class="control-input">
+	    			<span class="control-txt">￥<%= '%.2f' % @product.present_price %></span>
+	    		</div>
+	    	</div>
+	    	<div class="form-group">
+	    		<label class="control-label">库存</label>
+	    		<div class="control-input">
+	    			<span class="control-txt"><%= @product.count %></span>
+	    		</div>
+	    	</div>      
+	      <div class="form-group">
+	        <label class="control-label">          
+						描述
+	        </label>
+	        <div class="control-input">
+	          <span class="control-txt"><%= @product.short_description %></span>
+	        </div>
+	      </div>
+	      <div class="form-group">
+	        <label class="control-label">          
+						商品主图
+	        </label>
+	        <div class="control-input">
+	          <span><%= image_tag(@product.image_url) %></span>
+	        </div>
+	      </div>
+	      <div class="form-group">
+	        <label class="control-label">          
+						图文详情
+	        </label>
+	        <div class="control-input">
+	          <div class="control-txt"><%= raw @product.content %>　</div>
+	        </div>
+	      </div>
+	  	</div><!-- admin-box -->
+	  	<br />
+	  	<div class="text-center">
+		    <% if can? :edit, @product %>
+		      <%= link_to("编辑", url_for(:action=>:edit,:id=>@product.id), :class=>"btn btn-large blue-btn",:role=>"button") %>
+		    <% end %>　
+		    <%= link_to("预览", url_for(:action=>:pre_view,:id=>@product.id), :class=>"btn btn-large yellow-btn",:role=>"button",:target=>"_blank") %>　
+		    <% if can? :update, @product %>
+		      <% if @product.status == 'unpublish' %>
+		        <%= link_to("上架",
+		                    url_for(action: :change_status, id: @product.id, status: :published),
+		                    method: :patch,
+		                    class: "btn btn-large red-btn",:role=>"button") %>
+		      <% else %>
+		        <%= link_to("取消上架",
+		                    url_for(action: :change_status,id: @product.id, status: :unpublish),
+		                    method: :patch,
+		                    class: "btn btn-large ",:role=>"button") %>
+		      <% end %>
+		    <% end %>
+	    
+	    </div>
 
-<div class="row">
-	<div class="col-xs-12 well">
-		<h3 class="col-md-offset-1">商品信息</h3>
-    <hr />
-		<div class="col-xs-11 col-md-offset-1">
-			<div class="form-group clearfix">
-				<label class="string required text-right col-sm-3 control-label" for="product_name">
-					<abbr title="必填">*</abbr>
-					产品名
-				</label>
-				<div class="col-sm-9">
-					<%= @product.name %>
-				</div>
+	</div><!-- box-w50 -->
+	<div class="box-w50">
+		<div class="admin-box beige-bg-color">
+			<h4 class="edit-title">分成设置</h4>
+			<% if @product.calculate_way == 1 %>
+				<div class="form-group">    
+			  	<label class="control-label">
+			  		分成比例   		
+			  	</label>  
+			   	<label class="control-label pull-right">
+			   		%　  			        
+			   	</label>
+			    <div class="control-input">
+			      <div class="control-txt"><%= @product.share_rate_total %></div>
+			    </div>
+			  </div>
+			<% elsif @product.calculate_way == 0 %>
+					 <div class="form-group">    
+				  	<label class="control-label">
+				  		现金分成   		
+				  	</label>  
+				   	<label class="control-label pull-right">
+				   		元　  			        
+				   	</label>
+				    <div class="control-input">
+				      <div class="control-txt"><%= @product.share_amount_total %></div>
+				    </div>
+				  </div>
+		  <% end %>
+		  <div class="form-group">
+		  	<label class="control-label">
+		  		一级分成
+		  	</label>
+		  	<div class="control-input">
+		  		<span><%= @product.share_rate_lv_1*100 %>%　-　<%= @product.share_amount_lv_1 %>元</span>
+		  	</div>
+		  </div>
+		  <div class="form-group">
+		  	<label class="control-label">二级分成</label>
+		  	<div class="control-input">
+		  		<span><%= @product.share_rate_lv_2*100 %>%　-　<%= @product.share_amount_lv_2 %>元</span>
+		  	</div>
+		  </div>		  
+		  <div class="form-group">
+		  	<label class="control-label">三级分成</label>
+		  	<div class="control-input">
+		  		<span><%= @product.share_rate_lv_3*100 %>%　-　<%= @product.share_amount_lv_3 %>元</span>
+		  	</div>
+		  </div>
+		  <div class="form-group">
+		  	<label class="control-label">分享优惠</label>
+		  	<div class="control-input">
+		  		<span><%= @product.privilege_amount %>元</span>
+		  	</div>
+		  </div>
+	 	</div>
+	 	<br />
+	 	<div class="admin-box beige-bg-color">
+	 		<h4 class="edit-title">物流及其他</h4>
+	 		<div class="form-group">
+			  	<label class="control-label">付款方式</label>
+			  	<div class="control-input">
+			  		<span><%= Product::DataBuyerPay[@product.buyer_pay] %></span>
+			  	</div>
 			</div>
-      <div class="form-group clearfix">
-        <label class="string required text-right col-sm-3 control-label" for="product_name">
-          <abbr title="必填">*</abbr>
-          产品编号
-        </label>
-        <div class="col-sm-9">
-          <%= @product.code %>
-        </div>
-      </div>
-      <% if current_user.super_admin? %>
-      <div class="form-group clearfix">
-        <label class="string required text-right col-sm-3 control-label" for="product_name">
-          <abbr title="必填">*</abbr>
-          所属商家
-        </label>
-        <div class="col-sm-9">
-          <%= link_to @product.user.identify, url_for(controller: 'admin/sellers', action: :show, id: @product.user) %>
-        </div>
-      </div>
-      <% end %>
-      <div class="form-group clearfix">
-        <label class="string required text-right col-sm-3 control-label" for="product_name">
-          <abbr title="必填">*</abbr>
-          描述
-        </label>
-        <div class="col-sm-9">
-          <%= @product.short_description %>
-        </div>
-      </div>
-      <div class="form-group clearfix">
-        <label class="string required text-right col-sm-3 control-label" for="product_name">
-          分享二维码
-        </label>
-        <div class="col-sm-9">
-
-          <%= "http://#{request.env["HTTP_HOST"]}/products/#{@product.id}?shared=true" %>
-          <div class="clearfix"></div>
-          <img src="http://qr.liantu.com/api.php?&text=<%= "http://#{request.env["HTTP_HOST"]}/products/#{@product.id}?shared=true" %>" style="width:60%"/>
-
-        </div>
-      </div>
-
-			<div class="form-group clearfix">
-				<label class="string required text-right col-sm-3 control-label" for="product_name">
-					<abbr title="必填">*</abbr>
-				  原价
-				</label>
-				<div class="col-sm-9">
-					<%= '%.2f' % @product.original_price %>￥
-				</div>
+			<div class="form-group">
+			  	<label class="control-label">运费</label>
+			  	<div class="control-input">
+			  		<div class="control-txt"><%= @product.traffic_expense %></div>
+			  	</div>
 			</div>
-			<div class="form-group clearfix">
-				<label class="string required text-right col-sm-3 control-label" for="product_name">
-					<abbr title="必填">*</abbr>
-				  现价
-				</label>
-				<div class="col-sm-9">
-					<%= '%.2f' % @product.present_price %>￥
-				</div>
-			</div>
-			<div class="form-group clearfix">
-				<label class="string required text-right col-sm-3 control-label" for="product_name">
-					<abbr title="必填">*</abbr>
-				  库存
-				</label>
-				<div class="col-sm-9">
-					<%= @product.count %>
-				</div>
-			</div>
-			<div class="form-group clearfix">
-				<label class="string required text-right col-sm-3 control-label" for="product_name">
-					<abbr title="必填">*</abbr>
-				  产品展示图
-				</label>
-				<div class="col-sm-9">
-					<%= image_tag(@product.image_url, width: "60%", alt: "-") %>
-				</div>
-			</div>
+	 	</div>
+	 	<br />
+	 	<div class="admin-box beige-bg-color">
+	 		<h4 class="edit-title">二维码</h4>
+	 		<div class="box-w100">
+	 			<div class="box-w70">
+	 				<br />
+	 				<p>复制右边专属二维码</p>
+	 				<p>即可在各大社交平台</p>
+	 				<p>传播你的商品</p>
+	 			</div>
+	 			<div class="box-w30">
+	 				<img src="http://qr.liantu.com/api.php?&text=<%= "http://#{request.env["HTTP_HOST"]}/products/#{@product.id}?shared=true" %>"/>
+	 			</div>
+	 		</div>
+	 		
+	 	</div><!-- admin-box -->
+	</div><!-- box-w50 -->
+</div><!-- container -->
 
-		</div>
-    <div class="text-center col-xs-12" style="border-bottom:3px solid grey;color:grey;margin-bottom:30px;margin-top:30px;">更多信息</div>
-    <div class="row col-xs-6 col-md-offset-3">
-      <div style="border-bottom:2px solid grey;margin:10px;">图文详情</div>
-      <div class="redactor-editor">
-        <%= raw @product.content %>
-      </div>
-
-    </div>
-
-	</div>
-	<div class="col-xs-12 well">
-		<h3 class="col-md-offset-1">分成设置</h3>
-    <hr />
-    <% if @product.calculate_way == 1 %>
-      <div class="col-xs-5 col-md-offset-1">
-        <div class="form-group clearfix">
-          <label class="string required text-right col-sm-5 control-label" for="product_name">
-            分成比例
-            <abbr title="必填">*</abbr>
-          </label>
-          <div class="col-sm-4">
-            <%= @product.share_rate_total %>%
-          </div>
-        </div>
-      </div>
-    <% elsif @product.calculate_way == 0 %>
-      <div  class="col-xs-5 col-md-offset-1">
-        <div class="form-group clearfix">
-          <label class="string required text-right col-sm-5 control-label" for="product_name">
-            <abbr title="必填">*</abbr>
-            现金分成
-          </label>
-          <div class="col-sm-4">
-            <%= @product.share_amount_total %>元
-          </div>
-        </div>
-      </div>
-    <% end %>
-      <div class="col-xs-6">
-        <table>
-          <tbody>
-            <tr>
-              <td>一级分成：</td>
-              <td>
-                <span><%= @product.share_rate_lv_1*100 %>%</span>
-                -
-                <span><%= @product.share_amount_lv_1 %>元</span>
-              </td>
-            </tr>
-            <tr>
-              <td>二级分成：</td>
-              <td>
-                <span><%= @product.share_rate_lv_2*100 %>%</span>
-                -
-                <span><%= @product.share_amount_lv_2 %>元</span>
-
-              </td>
-            </tr>
-            <tr>
-              <td>三级分成：</td>
-              <td>
-                <span><%= @product.share_rate_lv_3*100 %>%</span>
-                -
-                <span><%= @product.share_amount_lv_3 %>元</span>
-              </td>
-            </tr>
-            <tr>
-              <td>分享优惠：</td>
-              <td>
-                <span><%= @product.privilege_amount %>元</span>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-
-	</div>
-	<div class="col-xs-12 well">
-		<h3 class="col-md-offset-1">物流及其他</h3>
-    <hr />
-		<div class="col-xs-11 col-md-offset-1">
-      <div class="form-group clearfix">
-        <label class="string required text-right col-sm-3 control-label" for="product_name">
-          <abbr title="必填">*</abbr>
-          付款方式
-        </label>
-        <div class="col-sm-9">
-          <%= Product::DataBuyerPay[@product.buyer_pay] %>
-        </div>
-      </div>
-			<div class="form-group clearfix">
-        <label class="string required text-right col-sm-3 control-label" for="product_name">
-          <abbr title="必填">*</abbr>
-          运费
-        </label>
-        <div class="col-sm-9">
-          <%= @product.traffic_expense %>
-        </div>
-      </div>
-		</div>
-	</div>
-
-  <div class="button_div  col-xs-4"  style="margin-top:30px;padding-bottom:30px;">
-    <% if can? :edit, @product %>
-      <%= link_to("编辑", url_for(:action=>:edit,:id=>@product.id), :class=>"btn btn-warning active  col-xs-12",:role=>"button") %>
-    <% end %>
-  </div>
-  <div class="button_div  col-xs-4"  style="margin-top:30px;padding-bottom:30px;"><%= link_to("预览", url_for(:action=>:pre_view,:id=>@product.id), :class=>"btn btn-info active col-xs-12",:role=>"button",:target=>"_blank") %></div>
-  <div class="button_div  col-xs-4"  style="margin-top:30px;padding-bottom:30px;">
-    <% if can? :update, @product %>
-      <% if @product.status == 'unpublish' %>
-        <%= link_to("上架",
-                    url_for(action: :change_status, id: @product.id, status: :published),
-                    method: :patch,
-                    class: "btn btn-success active  col-xs-12",:role=>"button") %>
-      <% else %>
-        <%= link_to("取消上架",
-                    url_for(action: :change_status,id: @product.id, status: :unpublish),
-                    method: :patch,
-                    class: "btn btn-default active  col-xs-12",:role=>"button") %>
-      <% end %>
-    <% end %>
-  </div>
-</div>
