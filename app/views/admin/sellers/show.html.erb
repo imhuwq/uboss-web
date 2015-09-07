@@ -10,15 +10,15 @@
 <br />
 <div class="container"> 
 	<div class="header-tab">
-		<div class="tab-title" data-title = "#content1">商家信息</div>
-		<div class="tab-title active" data-title = "#content2">营收概况</div>
+		<div class="tab-title active" data-title = "#content1">商家信息</div>
+		<div class="tab-title" data-title = "#content2">营收概况</div>
 		<div class="tab-title" data-title = "#content3">我的收益</div>
 		<div class="seller-name">商家名：<%= @seller.identify %></div>
 	</div><!-- header-tab -->
 </div><!-- container -->
 <br />
 <div class="tab-container">
-	<div id="content1" class="tab-content">
+	<div id="content1" class="tab-content" style="display: block;">
 		<div class="container">
 		<h3 class="page-title"><span class="date">注册时间： <%= @seller.created_at.to_date %></span>基本信息</h3>
 		<div class="seller-qrcode">
@@ -95,10 +95,12 @@
 			-->
 			<!-- end -->
 		</div><!-- admin-box -->
+		<br />
+		<h3 class="page-title">当前平台费率：<%= @seller.user_info.service_rate %>%</h3>
 		</div><!-- container -->
 		<br />
 	</div><!-- content1 -->
-	<div id="content2" class="tab-content"  style="display: block;">
+	<div id="content2" class="tab-content">
 		<br />
 		<div class="container nogap">
 			<div class="box-w25">
@@ -140,11 +142,11 @@
 			<div class="box-w50">
 				<h3 class="page-title">
 					月营业额 
-					<select id="select">
+					<select class="date-select">
 						<option value="2015">2015年</option>
 						<option value="2014">2014年</option>
 					</select>
-					<select id="select">
+					<select class="date-select">
 						<option value="8">8月</option>
 						<option value="7">7月</option>
 						<option value="6">6月</option>
@@ -207,11 +209,11 @@
 			<div class="box-w50">
 				<h3 class="page-title">
 					月营业额 
-					<select id="select">
+					<select class="date-select">
 						<option value="2015">2015年</option>
 						<option value="2014">2014年</option>
 					</select>
-					<select id="select">
+					<select class="date-select">
 						<option value="8">8月</option>
 						<option value="7">7月</option>
 						<option value="6">6月</option>
@@ -281,8 +283,9 @@ $(document).ready(function(){
 			$(".tab-content").hide();
 			var tabid=$(this).attr("data-title");
 			$(tabid).fadeIn();
-			$("select").chosen();
+			$(tabid).find(".date-select").chosen();
 		}
+		
 	})
 })	
 

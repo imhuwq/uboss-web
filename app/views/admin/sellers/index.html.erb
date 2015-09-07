@@ -55,7 +55,6 @@
 <div class="container">
 	<table class="list-table">
 		<thead>
-			<th>&nbsp;</th>
 			<th>商家</th>
 			<th>好评率</th>
 			<th>提成比例</th>
@@ -72,15 +71,11 @@
 				red-bg-color					
 			<% end %>
 		">			
-			<td>
+			<td class="text-left">
 				<%= link_to url_for(controller: 'admin/sellers', action: :show, id: sellers) do %>	
-					<%= image_tag(sellers.avatar, size: "60x60", alt: "-") %>
-				<% end %>
-			</td>
-			<td>				
-				<%= link_to url_for(controller: 'admin/sellers', action: :show, id: sellers) do %>											
+					<%= image_tag(sellers.avatar, size: "60x60", alt: "-") %>　
 					<%= sellers.identify %>
-				<% end %>				
+				<% end %>
 			</td>
 			<td>
 				<%= Evaluation.sharer_good_reputation_rate(sellers) %>

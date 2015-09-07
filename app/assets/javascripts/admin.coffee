@@ -16,7 +16,7 @@ $ ->
   $("body").on 'click',"#check_all", ->
     $(".check").attr("checked",this.checked)
 
-  $("select").filter(":not([data-manual-chosen])").chosen()
+  
 
   $('[data-toggle="tooltip"]').tooltip()
 

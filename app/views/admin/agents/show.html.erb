@@ -1,66 +1,122 @@
-<div class="bg-warning clearfix"  style="font-size:larger;">
-  <div class="col-xs-2">
-    <%= link_to '创客信息', '###', class:"text-muted" %>
-  </div>
-  <div class="col-xs-3 pull-right">
-    <%= link_to "创客名：#{@agent.identify}", '###' %>
-  </div>
-</div>
+<div class="container">
+	<ul class="breadcrumb">
+		<li>主页</li>
+		<li class="divider"><i class="fa fa-angle-right"></i></li>
+		<li>创客</li>
+	</ul>
+</div><!-- container -->
 <br />
-<div class="row">
-	<div class="col-xs-12 well">
-		<h3 class="col-md-offset-1">基本信息</h3>
-    <hr />
-		<div class="col-xs-11 col-md-offset-1">
-			<div class="form-group clearfix">
-				<label class="string required text-right col-sm-3 control-label" for="product_name">
-					<abbr title="必填">*</abbr>
-					注册帐号
-				</label>
-				<div class="col-sm-9">
-					<%= @agent.login %>
-				</div>
+<div class="container"> 
+	<div class="header-tab">
+		<div class="tab-title active" data-title = "#content1">创客信息</div>
+		<div class="tab-title" data-title = "#content2">创客收益</div>
+		<div class="seller-name">创客名：<%= @agent.identify %></div>
+	</div><!-- header-tab -->
+</div><!-- container -->
+<br />
+<div class="tab-container">
+	<div id="content1" class="tab-content" style="display: block;">
+		<div class="container">
+			<h3 class="page-title"><span class="date">注册时间： <%= @agent.created_at.to_date %></span>基本信息</h3>
+			<div class="admin-box">
+				<div class="box-w50"><p>注册账号：<%= @agent.login %></p></div>
+				<div class="box-w50"><p>联系人：(获取名称)</p></div>
+			</div><!-- admin-box -->
+		</div><!-- container -->
+		<br />
+		<div class="container nogap">
+			<div class="box-w100"><h3 class="page-title">签约商家</h3></div>
+			<div class="box-w25">
+				<div class="admin-box main-bg-color">
+					<h4>今日签约</h4>
+					<h1 class="num"><%= @agent.seller_today_joins.count %></h1>
+				</div><!-- admin-box -->
+			</div><!-- box-w25 -->
+			<div class="box-w25">
+				<div class="admin-box red-bg-color">
+					<h4>总签约</h4>
+					<h1 class="num"><%= @agent.seller_total_joins.count %></h1>
+				</div><!-- admin-box -->
+			</div><!-- box-w25 -->
+			<div class="clear"></div>
+			<br />
+			<div class="box-w100">
+				<table class="list-table">
+					<thead>
+						<th>商家名</th>
+						<th>绑定时间</th>
+						<th>累积营业额</th>
+						<th>分成比例</th>
+						<th>收益</th>
+					</thead>
+					<% @agent.seller.each do |obj| %>
+					<tr>
+						<td><%= link_to obj.identify, url_for(controller: 'admin/sellers', action: :show, id: obj) %></td>
+						<td><%= obj.created_at %></td>
+						<td>(获取累积营业额)</td>
+						<td><%= obj.user_info.service_rate %>%</td>
+						<td><%= obj.user_info.income %></td>
+					</tr>
+					<% end %>
+				</table>
 			</div>
-      <div class="form-group clearfix">
-				<label class="string required text-right col-sm-3 control-label" for="product_name">
-					<abbr title="必填">*</abbr>
-					注册时间
-				</label>
-				<div class="col-sm-9">
-					<%= @agent.created_at.to_date %>
+		</div><!-- container -->
+		<br />
+	</div><!-- content1 -->
+	<div id="content2" class="tab-content">
+		<div class="container nogap">
+			<div class="box-w100"><h3 class="page-title">创客收益</h3></div>
+			<div class="box-w25">
+				<div class="admin-box main-bg-color">
+					<h3>￥（填充数字）</h3>
+					<p class="text-right">今日预期收益</p>
 				</div>
+			</div><!-- box-w25 -->
+			<div class="box-w25">
+				<div class="admin-box red-bg-color">
+					<h3>￥（填充数字）</h3>
+					<p class="text-right">本月收益</p>
+				</div>
+			</div><!-- box-w25 -->
+			<div class="box-w25">
+				<div class="admin-box yellow-bg-color">
+					<h3>￥（填充数字）</h3>
+					<p class="text-right">本年收益</p>
+				</div>
+			</div><!-- box-w25 -->
+			<div class="clear"></div>
+			<br />
+			<div class="box-w100">
+				<table class="list-table">
+					<thead>
+						<th class="text-left">提交申请时间</th>
+						<th>申请金额(元)</th>
+						<th>收款账号</th>
+						<th>收款人</th>
+						<th>打款时间</th>
+						<th>提现状态</th>
+						<th>操作</th>
+					</thead>
+				<% @withdraw_records.each do |obj| %>
+					<tr>
+						<td><%= obj.created_at%></td>
+						<td><%= obj.amount%></td>
+						<td><%= obj.user_name.bank_info%></td>
+						<td><%= obj.user_name%></td>
+						<td><%= obj.done_at%></td>
+						<td><%= obj.state%></td>
+						<td><%= obj.state_i18n %></td>
+					</tr>
+				<% end %>
+				</table>
+				<br />
+				<%= paginate @withdraw_records %>
 			</div>
 		</div>
-	</div>
-  <div class="col-xs-12 well">
-		<h3 class="col-md-offset-1">签订商家</h3>
-    <hr />
-		<div class="col-xs-11 col-md-offset-1">
-			<div class="col-xs-2">
-        <span>今日签约</span>
-        <span style="font-size:2em;"><%= @agent.seller_today_joins.count %></span>
-			</div>
-      <div class="col-xs-2">
-        <span>总共签约</span>
-        <span style="font-size:2em;"><%= @agent.seller_total_joins.count %></span>
-			</div>
-		</div>
-    <%= table_for(@agent.seller) do |t| %>
-      <%= t.cell :seller_name do |obj| %>
-        <%= link_to obj.identify, url_for(controller: 'admin/sellers', action: :show, id: obj) %>
-      <% end %>
-      <%= t.cell :created_at %>
-      <%= t.cell :share_rate do |obj| %>
-        <%= obj.user_info.service_rate %>%
-      <% end %>
-      <%= t.cell :income do |obj| %>
-        <%= obj.user_info.income %>
-      <% end %>
-    <%- end %>
-	</div>
-  <div class="col-xs-12 well">
-		<h3 class="col-md-offset-1">提现记录</h3>
-    <hr />
+	</div><!-- content2 -->
+</div><!-- tab-conatiner -->
+<br />
+	<!--
     <%= table_for(@withdraw_records) do |t| %>
       <%= t.cell :created_at %>
       <%= t.cell :amount %>
@@ -74,5 +130,18 @@
       <% end %>
     <%- end %>
     <%= paginate @withdraw_records %>
-	</div>
-</div>
+	-->
+
+<script>
+$(document).ready(function(){
+	$(".tab-title").click(function(){
+		if(!$(this).hasClass("active")){
+			$(".header-tab .tab-title").removeClass("active");
+			$(this).addClass("active");
+			$(".tab-content").hide();
+			var tabid=$(this).attr("data-title");
+			$(tabid).fadeIn();
+		}
+	})
+})
+</script>
