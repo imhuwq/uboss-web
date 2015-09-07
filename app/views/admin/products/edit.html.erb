@@ -1,17 +1,25 @@
-<ol class="breadcrumb">
-  <li><%= link_to '商品管理', [:admin, :products] %></li>
-  <li class="active">编辑商品信息</li>
-</ol>
+<div class="container admin-container">
+	<ul class="breadcrumb">
+		<li>主页</li>
+		<li class="divider"><i class="fa fa-angle-right"></i></li>
+		<li><%= link_to '商品管理', [:admin, :products] %></li>
+		<li class="divider"><i class="fa fa-caret-right"></i></li>
+		<li class="active">编辑商品信息</li>
+	</ul>
+</div><!-- container -->
+<br />
 
 
-<div class="row">
+<div class="container nogap">
 
     <%= horizon_form_for @product, url: { action: :update } do |f| %>
+   
       <%= render 'fields', f: f %>
-
+	
+	
       <div class="form-actions">
         <%= f.submit "保存", class: "btn btn-large btn-primary" %>
       </div>
     <% end %>
-
+	
 </div>

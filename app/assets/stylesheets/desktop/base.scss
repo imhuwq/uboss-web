@@ -34,6 +34,10 @@ html, body {min-width:1220px;}
 /*btn*/
 .btn{ display: inline-block;*zoom:1;*display: inline;padding:5px 15px; border-radius: 4px; font-size: 15px; background: #43C3AA;color: #fff; border:none;outline: none; line-height: 1;}
 .btn:hover,.btn:active,.btn:focus{ color: #fff; opacity: .8; filter: alpha(opacity=80);outline: none;}
+.btn-mid{ padding:8px 20px; font-size: 16px;}
+.btn-large { padding: 12px 25px; font-size: 18px;}
+.btn-block{ display: block;}
+
 .red-btn{ background: #E74C3C;}
 .blue-btn{ background: #3498DB;}
 .yellow-btn{ background: #F39C12;}

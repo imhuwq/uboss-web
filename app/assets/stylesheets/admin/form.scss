@@ -1,3 +1,61 @@
+.simple_form input[type="text"],
+.simple_form input[type="password"],
+.simple_form input[type="email"],
+.simple_form input[type="url"],
+.simple_form input[type="date"],
+.simple_form input[type="month"],
+.simple_form input[type="time"],
+.simple_form input[type="datetime"],
+.simple_form input[type="datetime-local"],
+.simple_form input[type="week"],
+.simple_form input[type="number"],
+.simple_form input[type="search"],
+.simple_form input[type="tel"],
+.simple_form input[type="color"],
+.simple_form select,
+.simple_form textarea {
+    padding: 8px;
+    display: inline-block;
+    *display: inline;
+    *zoom: 1;
+    box-sizing: border-box;
+    outline:none;
+    border:none;
+    border-radius: 4px;
+    line-height: 20px;
+}
+.simple_form .form-group{ overflow: hidden; margin-bottom: 20px;}
+.simple_form .form-group .control-label { float: left; width: 90px; margin-right: 10px; font-size: 15px;box-sizing: border-box; line-height: 36px;}
+.simple_form .form-group .control-input{ overflow: hidden;}
+.simple_form .form-group input[type="text"],
+.simple_form .form-group input[type="password"],
+.simple_form .form-group input[type="email"],
+.simple_form .form-group input[type="url"],
+.simple_form .form-group input[type="date"],
+.simple_form .form-group input[type="month"],
+.simple_form .form-group input[type="time"],
+.simple_form .form-group input[type="datetime"],
+.simple_form .form-group input[type="datetime-local"],
+.simple_form .form-group input[type="week"],
+.simple_form .form-group input[type="number"],
+.simple_form .form-group input[type="search"],
+.simple_form .form-group input[type="tel"],
+.simple_form .form-group input[type="color"],
+.simple_form .form-group select,
+.simple_form .form-group textarea{ display: block; width: 100%;}
+.fileinput-button  { display: inline-block; position: relative;}
+.fileinput-button input{ 
+opacity: 0;
+filter: alpha(opacity=0);
+position: absolute; 
+top:0;
+left: 0;  
+height: 100%;
+width: 100%;
+direction: ltr;
+cursor: pointer;
+}
+
 /*
 .form-actions {
   @extend .well;

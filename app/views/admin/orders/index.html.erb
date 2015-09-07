@@ -1,4 +1,4 @@
-<div class="container">
+<div class="container  admin-container">
 	<ul class="breadcrumb">
 		<li>主页</li>
 		<li class="divider"><i class="fa fa-caret-right"></i></li>
@@ -35,6 +35,7 @@
 			<tr>
 				<td><%= order.created_at %></td>
 				<td><%= link_to order.number, [:admin, order] %></td>
+				<td><%= order.buyer_identify %></td>
 				<td>(获取方法)<br/>(如：二维码，链接，用户)</td>
 				<td><%= order.state_i18n %></td>
 				<td>
