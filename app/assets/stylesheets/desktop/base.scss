@@ -30,10 +30,21 @@ html, body {min-width:1220px;}
 .main-color { color:#43C3AA}
 .nogap{padding:0}
 .clear { clear: both;}
+
+/*btn*/
 .btn{ display: inline-block;*zoom:1;*display: inline;padding:5px 15px; border-radius: 4px; font-size: 15px; background: #43C3AA;color: #fff; border:none;outline: none; line-height: 1;}
 .btn:hover,.btn:active,.btn:focus{ color: #fff; opacity: .8; filter: alpha(opacity=80);outline: none;}
 .red-btn{ background: #E74C3C;}
 .blue-btn{ background: #3498DB;}
 .yellow-btn{ background: #F39C12;}
 .gray-btn{ background: #E5E5E5;color:#1A1A1A}
+
+/*pagination*/
+.pagination {list-style:none;margin:0;padding:0;display:inline-block;zoom:1;*display:inline}
+.pagination >li{display:inline}
+.pagination li>a,.pagination li>span{float:left;padding:5px 12px;line-height:20px;text-decoration:none;background-color:#fff;border:none; background: #333; margin-right: 5px; border-radius: 4px;}
+.pagination li>a:hover,.pagination li>a:focus,.pagination .active>a,.pagination .active>span{color:#FFF;background: #43C3AA;}
+.pagination .active>a,.pagination .active>span{color:#FFF;cursor:default}
+.pagination .disabled>span,.pagination .disabled>a,.pagination ul>.disabled>a:hover,.pagination .disabled>a:focus{color:#999;cursor:default;background-color:transparent}
+.pagination li:first-child>a,.pagination li:first-child>span{border-left-width:1px}
 

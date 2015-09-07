@@ -1,8 +1,13 @@
-
-<ol class="breadcrumb">
-  <li><%= link_to '订单', [:admin, :orders] %></li>
-  <li class="active">订单详情</li>
-</ol>
+<div class="container">
+	<ul class="breadcrumb">
+		<li>主页</li>
+		<li class="divider"><i class="fa fa-angle-right"></i></li>
+		<li><%= link_to '订单', [:admin, :orders] %></li>
+		<li class="divider"><i class="fa fa-caret-right"></i></li>
+		<li class="active">订单详情</li>
+	</ul>
+</div><!-- container -->
+<br />
 
 <span class='label label-info'><%= @order.state_i18n %></span>
 <% if @order.payed? %>
