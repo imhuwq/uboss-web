@@ -90,7 +90,11 @@ class OrdersController < ApplicationController
   def available_pay?(order, product)
     order.unpay? &&
       browser.wechat? &&
-      (product.is_official_agent? && current_user && !current_user.is_agent?)
+      (product.is_official_agent? ? available_buy_official_agent? : true)
   end
   helper_method :available_pay?
+
+  def available_buy_official_agent?
+    current_user && !current_user.is_agent?
+  end
 end
