@@ -73,3 +73,28 @@ $ ->
       $('#submit_bottom').removeAttr('disabled')
     else
       $('#submit_bottom').attr('disabled','disabled')
+
+  $('#timedown').on 'click', (e) ->
+    e.preventDefault()
+    sendBtn = $(this)
+    mobile = $('#new_mobile').val()
+    console.log mobile
+    checkNum = /^(\+\d+-)?[1-9]{1}[0-9]{10}$/
+    if not checkNum.test(mobile)
+      console.log mobile
+      alert "手机格式错误"
+      return false
+    return false if mobile_submit_time != 0
+    sendBtn.addClass("disabled")
+    $.ajax
+      url: '/account/send_message',
+      type: 'POST',
+      data: {
+        mobile: mobile
+      },
+    .done ->
+      mobile_submit_time = 60
+      timedown sendBtn
+    .fail (xhr, textStatus) ->
+      sendBtn.removeClass("disabled")
+      alert JSON.parse(xhr.responseText).message

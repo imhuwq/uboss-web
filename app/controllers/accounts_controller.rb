@@ -114,7 +114,8 @@ class AccountsController < ApplicationController
   end
 
   def send_message # 保存发送短信给商家的信息
-    mobile = params[:send_message][:mobile]
+    @histroys = AgentInviteSellerHistroy.where(agent_id: current_user.id)
+    mobile = params[:mobile]
     result = PostMan.send_sms(mobile, current_user.find_or_create_agent_code, 923_651)
     if result[:success]
       AgentInviteSellerHistroy.find_or_create_by(mobile: mobile) do |history|
@@ -124,7 +125,10 @@ class AccountsController < ApplicationController
     else
       flash[:error] = result[:message]
     end
-    redirect_to action: :invite_seller
+    respond_to do |format|
+      format.html { render nothing: true }
+      format.js
+    end
   end
 
   def bind_agent # 商家绑定创客
