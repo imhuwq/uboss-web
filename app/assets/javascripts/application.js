@@ -35,6 +35,3 @@ $(function() {
 function close_window() {
   $('#window').html('');
 }
-$('a.close').on('click',function(){
-  $('.flash_css').fladout();
-});
