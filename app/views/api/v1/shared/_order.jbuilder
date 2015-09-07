@@ -4,6 +4,10 @@ json.extract! order,
 
 json.amount order.order_item.amount
 
+json.seller do
+  json.partial! 'api/v1/shared/user', user: order.seller
+end
+
 json.product do
   json.partial! 'api/v1/shared/product', product: order.product
 end
