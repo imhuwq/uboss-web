@@ -69,7 +69,7 @@ Rails.application.routes.draw do
       resources :mobile_captchas, only: [:create]
       resource :account, only: [] do
         patch :update_password
-        get :privilege_cards
+        get :orders, :privilege_cards
       end
     end
   end

@@ -10,7 +10,11 @@ class Api::V1::AccountsController < ApiBaseController
   end
 
   def orders
+    @orders = append_default_filter current_user.orders.includes(order_items: :product)
+  end
 
+  def privilege_cards
+    @privilege_cards = append_default_filter current_user.privilege_cards.includes(:product)
   end
 
   private
