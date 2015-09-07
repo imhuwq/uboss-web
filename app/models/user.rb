@@ -38,7 +38,8 @@ class User < ActiveRecord::Base
   alias_attribute :regist_mobile, :login
 
   delegate :sex, :sex=, :province, :province=, :city, :city=, :country, :country=,
-    :store_name, :store_name=, to: :user_info, allow_nil: true
+    :store_name, :store_name=, :good_evaluation, :normal_evaluation, :bad_evaluation,
+    to: :user_info, allow_nil: true
   delegate :income, :income_level_one, :income_level_two, :service_rate,
     :income_level_thr, :frozen_income,
     to: :user_info, allow_nil: true

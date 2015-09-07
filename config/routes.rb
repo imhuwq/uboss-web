@@ -2,6 +2,7 @@ require 'sidekiq/web'
 require 'okay_responder'
 
 Rails.application.routes.draw do
+
   mount OkayResponder.new, at: "__upyun_uploaded"
 
   devise_for :user, path: '/', controllers: {
@@ -64,9 +65,11 @@ Rails.application.routes.draw do
 
   namespace :api do
     namespace :v1 do
-      resources :users do
-        get :all, on: :collection
-        patch :update_password, on: :collection
+      post 'login', to: 'sessions#create'
+      resources :mobile_captchas, only: [:create]
+      resource :account, only: [] do
+        patch :update_password
+        get :privilege_cards
       end
     end
   end

@@ -10,19 +10,26 @@ class ApiBaseController < ActionController::API
   before_action :authenticate_user_from_token!
   before_action :authenticate_user!
 
-  if !Rails.env.development?
-    rescue_from CanCan::AccessDenied do |exception|
-      render_error :forbidden, exception.message, 403
-    end
-    rescue_from ActionController::ParameterMissing do |exception|
-      render_error :wrong_params, exception.message
-    end
+  rescue_from CanCan::AccessDenied do |exception|
+    render_error :forbidden, exception.message, 403
+  end
+  rescue_from ActionController::ParameterMissing do |exception|
+    render_error :wrong_params, exception.message
   end
 
   protected
 
-  def render_error(errid, error_message = nil, status_code = 422)
-    render json: { errid: errid, errmsg: error_message }, status: status_code
+  def render_error(errid, errmsg = nil, status_code = nil)
+    err = ApiErrorService.lookup errid
+    error_detail = {
+      errid: err.errid,
+      errmsg: errmsg || err.msg
+    }
+    render json: error_detail, status: (status_code || err.status_code)
+  end
+
+  def model_errors(model)
+    model.errors.full_messages.join(",")
   end
 
   def authentication_token

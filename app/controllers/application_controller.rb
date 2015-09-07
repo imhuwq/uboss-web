@@ -1,12 +1,12 @@
 class ApplicationController < ActionController::Base
 
+  protect_from_forgery with: :exception
+
   include SimpleCaptcha::ControllerHelpers
   include DetectDevise
   include FilterLogic
 
   helper_method :desktop_request?
-
-  protect_from_forgery with: :exception
 
   before_action :configure_permitted_parameters, if: :devise_controller?
 
