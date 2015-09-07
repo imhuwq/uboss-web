@@ -67,9 +67,9 @@
         </span>
         </p>
         <p class="sub_p1 sub_p2">
-        <span class="sub_leftl">合计（含运费￥<%= @product.traffic_expense %>）</span>
+        <span class="sub_leftl">合计（含运费￥<%= '%.2f' % @product.traffic_expense %>）</span>
         <span class="sub_left">
-          <strong>￥</strong><b id="total_price"><%= @order_form.real_price + @product.traffic_expense  %></b>
+          <strong>￥</strong><b id="total_price"><%= '%.2f' % (@order_form.real_price + @product.traffic_expense)  %></b>
         </span>
         </p>
       </div>
