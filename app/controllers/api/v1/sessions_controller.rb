@@ -9,12 +9,12 @@ class Api::V1::SessionsController < ApiBaseController
       if MobileAuthCode.auth_code(login, params[:mobile_captcha])
         @user = User.find_or_create_guest(login)
         if @user.persisted?
-          MobileAuthCode.clear_captcha(sign_in_params[:login])
+          MobileAuthCode.clear_captcha(login)
         else
           render_error :wrong_username_or_password, model_errors(@user)
         end
       else
-        render_error :mobile_captcha_fail, '手机验证码错误'
+        render_error :captcha_invalid, '手机验证码错误'
       end
     elsif @user = User.find_for_authentication(login: login)
       if not @user.valid_password?(params[:password])

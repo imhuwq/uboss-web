@@ -1,4 +1,5 @@
 class MobileAuthCode < ActiveRecord::Base
+
   validates :mobile, presence: true, uniqueness: true, mobile: true
   validates :code, :expire_at, presence: true
 

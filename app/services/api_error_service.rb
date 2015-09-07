@@ -9,7 +9,7 @@ class ApiErrorService
     not_found:                  404, # 找不到对应资源
     unprocessable:              422, # 请求参数非法
     too_many_requests:          429, # 请求频率超出限制
-    wrong_username_or_password: 401001, # 用户名密码错误
+    wrong_username_or_password: 401001, # 用户名或密码错误
     wrong_params:               422001, # 参数错误，或缺少参数
     validation_failed:          422002, # 模型验证错误
     captcha_invalid:            422003, # 验证码不匹配或者过期
