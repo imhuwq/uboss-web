@@ -18,9 +18,6 @@ $ ->
       e.preventDefault()
       return false
 
-	$("header .right").on 'click', ->
-    $('header .nav').toggle()
-
   new Swipe document.getElementById('slider'),
     speed: 300
     auto: 5000
@@ -30,3 +27,6 @@ $ ->
     transitionEnd: (index, elem) ->
       $('#slider-points span').removeClass('active')
       $('#slider-points span').eq(index).addClass('active')
+	
+  $("header .menu-btn").on 'click', ->
+    $('header .nav-bar').toggle()

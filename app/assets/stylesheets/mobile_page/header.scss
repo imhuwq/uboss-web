@@ -1,22 +1,25 @@
 header {
-  background-color: $brand-primary;
-  .header_bar {
-    height: 45px;
-    font-size: 14px;
+  
+  .header-bar {    
+    text-align: center;
+    overflow: hidden;   
+        
+    .logo{ width: 76px; margin-left: 41px;padding:10px 0;}
+    .menu-btn{
+        
+      float: right;
+      padding: 10px; 
+      img{ width: 21px;}    
+    }
   }
-  .nav_bar a {
-    color: #fff;
+  .nav-bar{
+    display: none;
+    a{
+        color:$brand-primary;
+        display: block;
+        border-top: 1px solid $brand-primary;
+        padding: 8px 20px;
+      }  
   }
 }
-.nav-btn {
-  position: absolute;
-  right: 0px;
-  top: 50%;
-  padding: 10px;
-  box-sizing: border-box;
-  margin-top: -18px;
-  img {
-    height: 16px;
-    width: 21px;
-  }
-}
+
