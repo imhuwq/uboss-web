@@ -110,4 +110,5 @@ group :test do
   gem "webmock"
   gem "mock_redis" # Used for test
   gem "minitest-rails-capybara"
+  gem 'm', '~> 1.3.1'
 end
