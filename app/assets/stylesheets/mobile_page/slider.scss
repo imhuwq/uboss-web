@@ -1,6 +1,5 @@
 .banner-slider {
   position: relative;
-
 }
 #slider-points {
   text-align: center;
@@ -26,7 +25,8 @@
   overflow: hidden;
   visibility: hidden;
   position: relative;
-  a{display: inline-block;}
+  a{display:block}
+  img{ width: 100%;}
 }
 .swipe-wrap {
   overflow: hidden;
@@ -37,27 +37,6 @@
   width:100%;
   position: relative;
 }
-.img-100-200{ 
-    background-position: center center;
-    background-size:cover ;
-    width: 100%;
-    display: block;
-    height: 180px;
-}
-@media screen and (max-width:414px){
-    .img-100-200{         
-        height: 230px;
-    }
-}
-@media screen and (max-width:375px){
-    .img-100-200{         
-        height: 200px;
-    }
-}
-@media screen and (max-width:320px){
-    .img-100-200{         
-        height: 180px;
-    }
-}
+
 
 
