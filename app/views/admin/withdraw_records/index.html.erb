@@ -1,3 +1,26 @@
+<div class="container admin-container">
+	<ul class="breadcrumb">
+		<li><a href="/admin">主页</a></li>
+		<li class="divider"><i class="fa fa-caret-right"></i></li>
+		<li>提现</li>
+	</ul>
+</div><!-- container -->
+<br />
+<div class="container nogap">
+	<div class="box-w25">
+		<div class="admin-box orange-bg-color">
+			<h4>累积收益</h4>
+			<h1 class="num"><%= number_to_currency current_user.income + current_user.frozen_income %></h1>
+		</div>
+	</div><!-- box-w25 -->
+	<div class="box-w25">
+		<div class="admin-box red-bg-color">
+			<h4>账户余额</h4>
+			<h1 class="num"><%= number_to_currency current_user.income %></h1>
+		</div>
+	</div><!-- box-w25 -->
+</div>
+
 <% if can?(:create, WithdrawRecord) %>
   <%= link_to "申请提现", new_admin_withdraw_record_path, class: 'btn btn-primary' %>
 <% end %>
