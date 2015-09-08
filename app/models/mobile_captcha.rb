@@ -1,4 +1,4 @@
-class MobileAuthCode < ActiveRecord::Base
+class MobileCaptcha < ActiveRecord::Base
   validates :mobile, presence: true, uniqueness: true, mobile: true
   validates :code, :expire_at, presence: true
 
@@ -6,18 +6,18 @@ class MobileAuthCode < ActiveRecord::Base
   before_save :send_code
 
   def self.auth_code(auth_mobile, auth_code) #验证
-    MobileAuthCode.where('expire_at < ?', DateTime.now).delete_all
-    MobileAuthCode.exists?(mobile: auth_mobile, code: auth_code)
+    MobileCaptcha.where('expire_at < ?', DateTime.now).delete_all
+    MobileCaptcha.exists?(mobile: auth_mobile, code: auth_code)
   end
 
   def self.send_captcha_with_mobile(auth_mobile)
-    auth_code = MobileAuthCode.find_or_initialize_by(mobile: auth_mobile)
+    auth_code = MobileCaptcha.find_or_initialize_by(mobile: auth_mobile)
     auth_code.regenerate_code unless auth_code.new_record?
     { success: auth_code.save, mobile_auth_code: auth_code }
   end
 
   def self.clear_captcha(auth_mobile)
-    MobileAuthCode.where(mobile: auth_mobile).delete_all
+    MobileCaptcha.where(mobile: auth_mobile).delete_all
   end
 
 	def generate_code #生成验证码

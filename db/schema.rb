@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150818065929) do
+ActiveRecord::Schema.define(version: 20150908084400) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -103,7 +103,7 @@ ActiveRecord::Schema.define(version: 20150818065929) do
     t.integer  "sharing_node_id"
   end
 
-  create_table "mobile_auth_codes", force: :cascade do |t|
+  create_table "mobile_captchas", force: :cascade do |t|
     t.string   "code"
     t.datetime "expire_at"
     t.string   "mobile"
@@ -368,8 +368,10 @@ ActiveRecord::Schema.define(version: 20150818065929) do
     t.integer  "agent_id"
     t.integer  "authenticated",          default: 0
     t.integer  "agent_code"
+    t.string   "authentication_token"
   end
 
+  add_index "users", ["authentication_token"], name: "index_users_on_authentication_token", using: :btree
   add_index "users", ["login"], name: "index_users_on_login", unique: true, using: :btree
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
 
