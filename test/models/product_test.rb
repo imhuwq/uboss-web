@@ -74,6 +74,6 @@ class ProductTest < ActiveSupport::TestCase
              state: 'signed'
             )
     end
-    assert_equal(20, Product.total_sells(product.id))
+    assert_equal(20, product.total_sells)
   end
 end
