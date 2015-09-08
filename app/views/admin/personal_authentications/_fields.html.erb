@@ -1,7 +1,7 @@
 
 <div class="well">
   <%= f.input :name %>
-  <%= f.input :identity_card_code, as: :integer %>
+  <%= f.input :identity_card_code %>
   <%= f.input :face_with_identity_card_img, hint: image_tag(@personal_authentication.face_with_identity_card_img.url(:w640)) do %>
     <%= f.input_field :face_with_identity_card_img, type: :hidden, as: :file %>
     <span class="btn btn-primary fileinput-button">
