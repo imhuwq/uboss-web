@@ -3,8 +3,9 @@
 #= require zepto/plugins/fx_methods
 #= require zepto/plugins/callbacks
 #= require zepto/plugins/deferred
-#= require fastclick
 #= require rails-behaviors/index
+#= require fastclick
+#= require swipe
 #= reuqire_self
 
 $ ->
@@ -19,3 +20,13 @@ $ ->
 
 	$("header .right").on 'click', ->
     $('header .nav').toggle()
+
+  new Swipe document.getElementById('slider'),
+    speed: 300
+    auto: 5000
+    continuous: true
+    disableScroll: false
+    stopPropagation: true
+    transitionEnd: (index, elem) ->
+      $('#slider-points span').removeClass('active')
+      $('#slider-points span').eq(index).addClass('active')

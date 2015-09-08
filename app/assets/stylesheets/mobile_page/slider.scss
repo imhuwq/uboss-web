@@ -1,0 +1,40 @@
+.banner-slider {
+  position: relative;
+  .swipe-wrap > div {
+    height: 240px;
+  }
+}
+#slider-points {
+  text-align: center;
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  padding: 10px 0;
+  span {
+    height: 8px;
+    width: 8px;
+    background-color: #fff;
+    display: inline-block;
+    border-radius: 5px;
+    text-indent: -999px;
+    overflow: hidden;
+    margin: 0 3px;
+    &.active {
+      background-color: $brand-primary;
+    }
+  }
+}
+.swipe {
+  overflow: hidden;
+  visibility: hidden;
+  position: relative;
+}
+.swipe-wrap {
+  overflow: hidden;
+  position: relative;
+}
+.swipe-wrap > div {
+  float:left;
+  width:100%;
+  position: relative;
+}
