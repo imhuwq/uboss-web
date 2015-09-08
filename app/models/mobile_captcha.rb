@@ -1,17 +1,28 @@
 class MobileCaptcha < ActiveRecord::Base
-  validates :mobile, presence: true, uniqueness: true, mobile: true
+
+  CAPTCHA_TYPES = %w(invite_seller)
+
+  validates :mobile, presence: true, uniqueness: { scope: :captcha_type }, mobile: true
   validates :code, :expire_at, presence: true
+  validates :captcha_type, inclusion: { in: CAPTCHA_TYPES }, allow_nil: true
 
   before_validation :generate_code, :set_expire_time
   before_save :send_code
 
-  def self.auth_code(auth_mobile, auth_code) #验证
+  def self.auth_code(auth_mobile, auth_code, type = nil)
     MobileCaptcha.where('expire_at < ?', DateTime.now).delete_all
-    MobileCaptcha.exists?(mobile: auth_mobile, code: auth_code)
+    MobileCaptcha.exists?(
+      mobile: auth_mobile,
+      code: auth_code,
+      captcha_type: type
+    )
   end
 
-  def self.send_captcha_with_mobile(auth_mobile)
-    auth_code = MobileCaptcha.find_or_initialize_by(mobile: auth_mobile)
+  def self.send_captcha_with_mobile(auth_mobile, type = nil)
+    auth_code = MobileCaptcha.find_or_initialize_by(
+      mobile: auth_mobile,
+      captcha_type: type
+    )
     auth_code.regenerate_code unless auth_code.new_record?
     { success: auth_code.save, mobile_auth_code: auth_code }
   end
