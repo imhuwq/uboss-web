@@ -8,11 +8,19 @@
 	</ul>
 </div>
 <br />
-<div class="container"> 
+<div class="container">
 	<div class="header-tab">
 		<div class="tab-title active" data-title = "#content1">商家信息</div>
 		<div class="tab-title" data-title = "#content2">营收概况</div>
-		<div class="tab-title" data-title = "#content3">我的收益</div>
+    <% if @agent.present? %>
+      <div class="tab-title" data-title = "#content3">
+        <% if @agent.id == current_user.id %>
+          我的收益
+        <% else %>
+          创客收益
+        <% end %>
+      </div>
+    <% end %>
 		<div class="seller-name">商家名：<%= @seller.identify %></div>
 	</div><!-- header-tab -->
 </div><!-- container -->
@@ -21,41 +29,38 @@
 	<div id="content1" class="tab-content" style="display: block;">
 		<div class="container">
 		<h3 class="page-title"><span class="date">注册时间： <%= @seller.created_at.to_date %></span>基本信息</h3>
-		
+
 		<div class="admin-box">
 			<div class="box-w45">
 				<p>注册帐号： <%= @seller.login %></p>
-				<p>商家名： <%= @seller.identify %></p>
+				<p>用户名称： <%= @seller.identify %></p>
 				<p>
-					UBOSS创客：
-		  		<% if @seller.agent_id.present? %>
-		    		<%= link_to User.find_by(id: @seller.agent_id).try(:identify), url_for(controller: :agents, action: :show, id: @seller.agent_id) %>
-		  		<% else %>
-		  			尚未关联创客
-		  		<% end %>
+					UBoss创客：
+          <%= link_to_if @seller.agent_id.blank?, "绑定创客", binding_agent_admin_account_path, class: 'btn' do %>
+		    		<%= link_to @seller.agent.identify, admin_agent_path(@seller.agent) %>
+          <% end %>
 				</p>
-			</div><!-- box-w50 -->
+			</div><!-- box-w45 -->
 			<div class="box-w45">
-				<p>绑定时间： （获取时间）</p>
-				<p>联系人： （获取名称）　　（获取电话号码）</p>
+				<p>入驻时间： <%= @seller.created_at %></p>
+				<p>店铺名称： <%= @seller.store_identify %></p>
 				<p>
-					店铺链接：
-					<%= "http://#{request.env["HTTP_HOST"]}/stores/#{@seller.id}" %>	  		
+					店铺链接：<%= store_url(@seller) %>
 				</p>
-			</div><!-- box-w40 -->	
+			</div><!-- box-w45 -->	
 			<div class="box-w10">
 				<img src="http://qr.liantu.com/api.php?&text=<%= "http://#{request.env["HTTP_HOST"]}/stores/#{@seller.id}" %>"/>	
-			</div>			
+			</div>		
 		</div><!-- admin-box -->
 		<br />
 		<h3 class="page-title">
 			认证状态：
-			<% if @seller.authenticated == 'yes'%>
-			已认证
-			<span class="date">通过审核时间： （获取时间）</span>
-			<% else %>
-			未认证 <a href="#" class="btn">通过审核</a>  <a href="#" class="btn">未通过</a>
-			<% end %>
+      <% if @seller.authenticated == 'yes'%>
+        已认证
+        <span class="date">通过审核时间： （获取时间）</span>
+      <% else %>
+        未认证 <a href="#" class="btn">通过审核</a>  <a href="#" class="btn">未通过</a>
+      <% end %>
 		</h3>
 		<div class="admin-box">
 			<!-- if 是企业开店 -->
@@ -76,10 +81,10 @@
 					<a class="pop-img" data-src="<%= @enterprise_authentication.legal_person_identity_card_end_img %>"style="background-image: url(<%= @enterprise_authentication.legal_person_identity_card_end_img %>);">
 						<%= image_tag(@enterprise_authentication.try(:legal_person_identity_card_end_img),alt: "反面") %>　
 					</a>
-				</p>					
+				</p>
 			</div><!-- box-70 -->
 			<!-- end -->
-			
+
 			<!-- if 是个人开店 -->
 			<!--
 				<div class="box-w100">
@@ -106,19 +111,19 @@
 		<div class="container nogap">
 			<div class="box-w25">
 				<div class="admin-box main-bg-color">
-					<h3>￥（填充数字）</h3>
+          <h3><%= number_to_currency @seller.today_sold_income %></h3>
 					<p class="text-right">今日营业额</p>
 				</div>
 			</div><!-- box-w25 -->
 			<div class="box-w25">
 				<div class="admin-box red-bg-color">
-					<h3>￥（填充数字）</h3>
+					<h3><%= number_to_currency @seller.current_month_sold_income %></h3>
 					<p class="text-right">本月营业额</p>
 				</div>
 			</div><!-- box-w25 -->
 			<div class="box-w25">
 				<div class="admin-box yellow-bg-color">
-					<h3>￥（填充数字）</h3>
+					<h3><%= number_to_currency @seller.total_sold_income %></h3>
 					<p class="text-right">累计营业额</p>
 				</div>
 			</div><!-- box-w25 -->
@@ -127,154 +132,127 @@
 		<div class="container nogap">
 			<div class="box-w50">
 				<h3 class="page-title">日营业额</h3>
-				<div class="admin-box list-box">
-					<div class="box-w25"><p class="list-title">日期</p></div>
-					<div class="box-w25"><p class="list-title">营业额</p></div>
-					<div class="box-w25"><p class="list-title">日期</p></div>
-					<div class="box-w25"><p class="list-title">营业额</p></div>
-					<!-- 数据 -->
-					<div class="box-w25"><p>2015-08-29</p></div>
-					<div class="box-w25"><p>2312.12</p></div>
-					<div class="box-w25"><p>2015-08-29</p></div>
-					<div class="box-w25"><p>2312.12</p></div>
-					<!-- 数据结束 -->
-				</div><!-- list-box -->
+        <div class="admin-box list-box">
+          <div class="box-w25"><p class="list-title">日期</p></div>
+          <div class="box-w25"><p class="list-title">营业额</p></div>
+          <div class="box-w25"><p class="list-title">日期</p></div>
+          <div class="box-w25"><p class="list-title">营业额</p></div>
+          <% @sold_daily_reports.each do |report| %>
+            <!-- 数据 -->
+            <div class="box-w25"><p><%= report.day %></p></div>
+            <div class="box-w25"><p><%= number_to_currency report.amount %></p></div>
+            <!-- 数据结束 -->
+          <% end %>
+        </div><!-- list-box -->
 			</div><!-- box-w50 -->
 			<div class="box-w50">
 				<h3 class="page-title">
-					月营业额 
-					<select class="date-select">
-						<option value="2015">2015年</option>
-						<option value="2014">2014年</option>
-					</select>
-					<select class="date-select">
-						<option value="8">8月</option>
-						<option value="7">7月</option>
-						<option value="6">6月</option>
-					</select>
+					月营业额
+					<!-- <select class="date&#45;select"> -->
+					<!-- 	<option value="2015">2015年</option> -->
+					<!-- 	<option value="2014">2014年</option> -->
+					<!-- </select> -->
+					<!-- <select class="date&#45;select"> -->
+					<!-- 	<option value="8">8月</option> -->
+					<!-- 	<option value="7">7月</option> -->
+					<!-- 	<option value="6">6月</option> -->
+					<!-- </select> -->
 				</h3>
 				<div class="admin-box list-box">
-					<div class="box-w25"><p class="list-title">日期</p></div>
-					<div class="box-w25"><p class="list-title">营业额</p></div>
-					<div class="box-w25"><p class="list-title">日期</p></div>
-					<div class="box-w25"><p class="list-title">营业额</p></div>
-					<!-- 数据 -->
-					<div class="box-w25"><p>2015-08-29</p></div>
-					<div class="box-w25"><p>2312.12</p></div>
-					<div class="box-w25"><p>2015-08-29</p></div>
-					<div class="box-w25"><p>2312.12</p></div>
-					<!-- 数据结束 -->
+					<div class="box-w50"><p class="list-title">日期</p></div>
+					<div class="box-w50"><p class="list-title">营业额</p></div>
+          <% @sold_month_reports.each do |report| %>
+            <!-- 数据 -->
+            <div class="box-w50"><p><%= report.attributes['month'] %></p></div>
+            <div class="box-w50"><p><%= number_to_currency report.attributes['total_amount'] %></p></div>
+            <!-- 数据结束 -->
+          <% end %>
 				</div><!-- list-box -->
 			</div><!-- box-w50 -->
 		</div><!-- container -->
 	</div><!-- content2 -->
-	<div id="content3" class="tab-content">
-		<br />
-		<div class="container nogap">
-			<div class="box-w25">
-				<div class="admin-box main-bg-color">
-					<h3>￥（填充数字）</h3>
-					<p class="text-right">今日营业额</p>
-				</div>
-			</div><!-- box-w25 -->
-			<div class="box-w25">
-				<div class="admin-box red-bg-color">
-					<h3>￥（填充数字）</h3>
-					<p class="text-right">本月营业额</p>
-				</div>
-			</div><!-- box-w25 -->
-			<div class="box-w25">
-				<div class="admin-box yellow-bg-color">
-					<h3>￥（填充数字）</h3>
-					<p class="text-right">累计营业额</p>
-				</div>
-			</div><!-- box-w25 -->
-		</div><!-- container -->
-		<br />
-		<div class="container nogap">
-			<div class="box-w50">
-				<h3 class="page-title">日营业额</h3>
-				<div class="admin-box list-box">
-					<div class="box-w25"><p class="list-title">日期</p></div>
-					<div class="box-w25"><p class="list-title">营业额</p></div>
-					<div class="box-w25"><p class="list-title">日期</p></div>
-					<div class="box-w25"><p class="list-title">营业额</p></div>
-					<!-- 数据 -->
-					<div class="box-w25"><p>2015-08-29</p></div>
-					<div class="box-w25"><p>2312.12</p></div>
-					<div class="box-w25"><p>2015-08-29</p></div>
-					<div class="box-w25"><p>2312.12</p></div>
-					<!-- 数据结束 -->
-				</div><!-- list-box -->
-			</div><!-- box-w50 -->
-			<div class="box-w50">
-				<h3 class="page-title">
-					月营业额 
-					<select class="date-select">
-						<option value="2015">2015年</option>
-						<option value="2014">2014年</option>
-					</select>
-					<select class="date-select">
-						<option value="8">8月</option>
-						<option value="7">7月</option>
-						<option value="6">6月</option>
-					</select>
-				</h3>
-				<div class="admin-box list-box">
-					<div class="box-w25"><p class="list-title">日期</p></div>
-					<div class="box-w25"><p class="list-title">营业额</p></div>
-					<div class="box-w25"><p class="list-title">日期</p></div>
-					<div class="box-w25"><p class="list-title">营业额</p></div>
-					<!-- 数据 -->
-					<div class="box-w25"><p>2015-08-29</p></div>
-					<div class="box-w25"><p>2312.12</p></div>
-					<div class="box-w25"><p>2015-08-29</p></div>
-					<div class="box-w25"><p>2312.12</p></div>
-					<!-- 数据结束 -->
-				</div><!-- list-box -->
-			</div><!-- box-w50 -->
-		</div><!-- container -->
-	</div><!-- content3 -->
+  <% if @agent.present? %>
+
+    <div id="content3" class="tab-content">
+      <br />
+      <div class="container nogap">
+        <div class="box-w25">
+          <div class="admin-box main-bg-color">
+            <h3><%= number_to_currency @agent.today_divide_income_from_seller(@seller) %></h3>
+            <p class="text-right">今日收益</p>
+          </div>
+        </div><!-- box-w25 -->
+        <div class="box-w25">
+          <div class="admin-box red-bg-color">
+            <h3><%= number_to_currency @agent.crrent_month_divide_income_from_seller(@seller) %></h3>
+            <p class="text-right">本月收益</p>
+          </div>
+        </div><!-- box-w25 -->
+        <div class="box-w25">
+          <div class="admin-box yellow-bg-color">
+            <h3><%= number_to_currency @agent.total_divide_income_from_seller(@seller) %></h3>
+            <p class="text-right">累计收益</p>
+          </div>
+        </div><!-- box-w25 -->
+      </div><!-- container -->
+      <br />
+      <div class="container nogap">
+        <div class="box-w50">
+          <h3 class="page-title">每日收益</h3>
+          <div class="admin-box list-box">
+            <div class="box-w25"><p class="list-title">日期</p></div>
+            <div class="box-w25"><p class="list-title">收益</p></div>
+            <div class="box-w25"><p class="list-title">日期</p></div>
+            <div class="box-w25"><p class="list-title">收益</p></div>
+            <!-- 数据 -->
+            <% @agent_daily_reports.each do |report| %>
+              <!-- 数据 -->
+              <div class="box-w25"><p><%= report.day %></p></div>
+              <div class="box-w25"><p><%= number_to_currency report.amount %></p></div>
+              <!-- 数据结束 -->
+            <% end %>
+          </div><!-- list-box -->
+        </div><!-- box-w50 -->
+        <div class="box-w50">
+          <h3 class="page-title">
+            月营业额
+            <!-- <select class="date&#45;select"> -->
+            <!-- 	<option value="2015">2015年</option> -->
+            <!-- 	<option value="2014">2014年</option> -->
+            <!-- </select> -->
+            <!-- <select class="date&#45;select"> -->
+            <!-- 	<option value="8">8月</option> -->
+            <!-- 	<option value="7">7月</option> -->
+            <!-- 	<option value="6">6月</option> -->
+            <!-- </select> -->
+          </h3>
+          <div class="admin-box list-box">
+            <div class="box-w50"><p class="list-title">日期</p></div>
+            <div class="box-w50"><p class="list-title">收益</p></div>
+            <% @agent_month_reports.each do |report| %>
+              <!-- 数据 -->
+              <div class="box-w50"><p><%= report.attributes['month'] %></p></div>
+              <div class="box-w50"><p><%= number_to_currency report.attributes['total_amount'] %></p></div>
+              <!-- 数据结束 -->
+            <% end %>
+          </div><!-- list-box -->
+        </div><!-- box-w50 -->
+      </div><!-- container -->
+    </div><!-- content3 -->
+  <% end %>
 </div><!-- tab-container -->
 <br />
-	
-	
- <!-- 暂时不需要 
-  <div class="col-xs-12 well">
-	    <div class="col-xs-12" style="border-bottom:2px solid grey;padding:10px 0;">
-	      <%= form_for 'seller', url: url_for(controller: :sellers, action: :update_service_rate), method: :post do |f| %>
-	        <%= hidden_field_tag 'seller[id]', @seller.id %>
-	        当前平台费率：
-	        <%= text_field_tag 'seller[service_rate]', @seller.try(:user_info).try(:service_rate), type: :tel %>%
-	        <%= submit_tag '调整', class:"btn btn-info btn-xs" %>
-	      <% end %>
-	    </div>
-	    <table class="table table-hover">
-	      <tr>
-	        <th colspan='1'>调整时间</th>
-	        <th>调整前费率</th>
-	        <th>调整后费率</th>
-	      </tr>
-	      <% (@seller.try(:user_info).try(:service_rate_histroy) || {}).each do |k,v| %>
-	      <tr>
-	        <td><%= k %></td>
-	        <td><%= v['from_service_rate'] %>%</td>
-	        <td><%= v['to_service_rate'] %>%</td>
-	      </tr>
-	      <% end %>
-	    </table>
-	</div>
-	-->
+
 <script>
 $(window).load(function(){
-	$(".pop-img").click(function(){		
+	$(".pop-img").click(function(){
 		$("body").append("<div class='pop-bg'><div class='pop-container' style='margin-top:-"+($(this).children("img").height()+20)/2+"px;margin-left:-"+($(this).children("img").width()+20)/2+"px'><div class='pop-content'><img src='"+$(this).attr("data-src")+"'/><div class='pop-close'><i class='fa fa-times'></i></div></div></div></div>");
-		$("html").addClass("pop-html");		
+		$("html").addClass("pop-html");
 	})
-	$("body").on("click",".pop-bg .pop-close",function(){		
+	$("body").on("click",".pop-bg .pop-close",function(){
 		$(".pop-bg").remove();
 		$("html").removeClass("pop-html");
-	}) 
+	})
 })
 $(document).ready(function(){
 	$(".tab-title").click(function(){
@@ -286,11 +264,6 @@ $(document).ready(function(){
 			$(tabid).fadeIn();
 			$(tabid).find(".date-select").chosen();
 		}
-		
 	})
-})	
-
-	
-
-	
+})
 </script>

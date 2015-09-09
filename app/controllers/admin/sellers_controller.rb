@@ -1,4 +1,5 @@
 class Admin::SellersController < AdminController
+
   def index
     if current_user.super_admin?
       @sellers = User.joins(:user_roles).where(user_roles: { name: 'seller' }).page(params[:page] || 1).per(15)
@@ -9,8 +10,20 @@ class Admin::SellersController < AdminController
 
   def show
     @seller = User.find(params[:id])
+    @agent = @seller.agent
+
     @personal_authentication = PersonalAuthentication.find_by(user_id: @seller.id) || PersonalAuthentication.new
     @enterprise_authentication = EnterpriseAuthentication.find_by(user_id: @seller.id) || EnterpriseAuthentication.new
+
+    @sold_daily_reports = @seller.daily_reports.user_order.where(user: @seller)
+    @sold_month_reports = @sold_daily_reports.aggregate_by_month.page(1)
+    @sold_daily_reports = @sold_daily_reports.order('day DESC').page(1)
+
+    if @agent.present?
+      @agent_daily_reports = DailyReport.seller_divide.where(user: @agent, seller_id: @seller.id)
+      @agent_month_reports = @agent_daily_reports.aggregate_by_month.page(1)
+      @agent_daily_reports = @agent_daily_reports.order('day DESC').page(1)
+    end
   end
 
   def withdraw_records

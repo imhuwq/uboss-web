@@ -17,8 +17,11 @@ class User < ActiveRecord::Base
   has_many :transactions
   has_many :user_role_relations, dependent: :destroy
   has_many :user_roles, through: :user_role_relations
+  has_many :daily_reports
   # for agent
   has_many :divide_incomes
+  has_many :sellers, class_name: 'User', foreign_key: 'agent_id'
+  has_many :seller_orders, through: :sellers, source: :sold_orders
   # for buyer
   has_many :user_addresses
   has_many :orders
@@ -28,6 +31,7 @@ class User < ActiveRecord::Base
   # for seller
   has_many :sold_orders, class_name: 'Order', foreign_key: 'seller_id'
   has_many :products
+  has_many :selling_incomes
   belongs_to :agent, class_name: 'User'
 
   validates :login, uniqueness: true, mobile: true, presence: true, if: -> { !need_set_login? }
@@ -54,6 +58,7 @@ class User < ActiveRecord::Base
 
   scope :admin, -> { where(admin: true) }
   scope :agent, -> { joins(:user_roles).where(user_roles: {name: 'agent'}) }
+  scope :unauthenticated_seller_identify, -> { where(authenticated: 0) }
 
   UserRole::ROLE_NAMES.each do |role|
     User.class_eval do
@@ -178,6 +183,46 @@ class User < ActiveRecord::Base
 
   def total_income
     income + frozen_income
+  end
+
+  def total_divide_income
+    divide_incomes.sum(:amount)
+  end
+
+  def total_divide_income_from_seller(seller)
+    divide_incomes.joins(:order).where(orders: { seller_id: seller.id }).sum(:amount)
+  end
+
+  def crrent_month_divide_income_from_seller(seller)
+    divide_incomes.current_month.joins(:order).where(orders: { seller_id: seller.id }).sum(:amount)
+  end
+
+  def today_divide_income_from_seller(seller)
+    divide_incomes.today.joins(:order).where(orders: { seller_id: seller.id }).sum(:amount)
+  end
+
+  def total_sold_income
+    selling_incomes.sum(:amount)
+  end
+
+  def current_month_sold_income
+    selling_incomes.current_month.sum(:amount)
+  end
+
+  def today_sold_income
+    selling_incomes.today.sum(:amount)
+  end
+
+  def today_expect_divide_income
+    seller_orders.today.shiped.sum(:pay_amount) * 0.05
+  end
+
+  def current_month_divide_income
+    divide_incomes.current_month.sum(:amount)
+  end
+
+  def current_year_divide_income
+    divide_incomes.current_year.sum(:amount)
   end
 
   def user_info

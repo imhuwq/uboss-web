@@ -6,7 +6,7 @@
 	</ul>
 </div><!-- container -->
 <br />
-<div class="container nogap"> 
+<div class="container nogap">
 	<div class="box-w25">
 		<div class="admin-box main-bg-color">
 			<h4>今日签约创客</h4>
@@ -30,17 +30,17 @@
 			<th>累积签约商家</th>
 			<th>收益</th>
 		</thead>
-		<% @agents.each do |obj| %>
+		<% @agents.each do |agent| %>
 			<tr>
 				<td class="text-left">
-					<%= link_to url_for(controller: 'admin/agents', action: :show, id: obj) do %>
-						<%= image_tag(obj.avatar, size: "100x80", alt: "-") %>　<%= obj.identify %>
+					<%= link_to admin_agent_path(agent) do %>
+						<%= image_tag(agent.avatar_url(:w120), size: "100x80", alt: agent.identify ) %>　<%= agent.identify %>
 					<% end %>
 				</td>
-				<td><%= obj.login %></td>
-				<td><%= obj.seller_today_joins.count %></td>
-				<td><%= obj.seller_total_joins.count %></td>
-				<td>(获取收益)</td>
+				<td><%= agent.login %></td>
+				<td><%= agent.seller_today_joins.count %></td>
+				<td><%= agent.seller_total_joins.count %></td>
+				<td><%= number_to_currency agent.total_divide_income %></td>
 			</tr>
 		<% end %>
 	</table>
