@@ -16,9 +16,13 @@ class SellersController < AdminController
       user.admin = true
       if user.save and user.user_roles << @user_role and user.save
         MobileAuthCode.find_by(code: allow_params[:mobile_auth_code]).try(:destroy)
-        flash[:success] = "绑定注册成功"
+        if user.agent.present?
+          flash[:success] = "成功注册并绑定创客#{user.agent.identify}."
+        else
+          flash[:success] = "注册成功"
+        end
         sign_in user
-        redirect_to '/admin'
+        redirect_to root_path
         return
       else
         flash[:error] = user.errors.full_messages.join('<br/>')
@@ -34,7 +38,7 @@ class SellersController < AdminController
         flash[:error] = @errors.join("\n")
       else
         current_user.update(agent_id: allow_params[:agent_id])
-        flash[:success] = "绑定成功！"
+        flash[:success] = "成功绑定创客#{current_user.agent.identify}！"
         redirect_to admin_root_path
         return
       end
