@@ -19,6 +19,8 @@ class User < ActiveRecord::Base
   has_many :user_roles, through: :user_role_relations
   # for agent
   has_many :divide_incomes
+  has_many :sellers, class_name: 'User', foreign_key: 'agent_id'
+  has_many :seller_orders, through: :sellers, source: :sold_orders
   # for buyer
   has_many :user_addresses
   has_many :orders

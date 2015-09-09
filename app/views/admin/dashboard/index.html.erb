@@ -7,17 +7,31 @@
 <div class="container nogap">
 	<div class="box-w60 nogap">
 		<div class="box-w33">
-			<div class="admin-box main-bg-color">
-				<h4>总签约商家</h4>
-				<br />
-				<h1 class="num"><%= current_user.seller_total_joins.count %></h1>
-			</div>
-			<br />
-			<div class="admin-box red-bg-color">
-				<h4>今日签约商家</h4>
-				<br />
-				<h1 class="num"><%= current_user.seller_today_joins.count %></h1>
-			</div>
+      <% if current_user.is_seller? %>
+        <div class="admin-box main-bg-color">
+          <h4>等待发货</h4>
+          <br />
+          <h1 class="num"><%= @unship_amount %></h1>
+        </div>
+        <br />
+        <div class="admin-box red-bg-color">
+          <h4>今日订单</h4>
+          <br />
+          <h1 class="num"><%= @today_selled_amount %></h1>
+        </div>
+      <% else %>
+        <div class="admin-box main-bg-color">
+          <h4>总签约商家</h4>
+          <br />
+          <h1 class="num"><%= current_user.seller_total_joins.count %></h1>
+        </div>
+        <br />
+        <div class="admin-box red-bg-color">
+          <h4>今日签约商家</h4>
+          <br />
+          <h1 class="num"><%= current_user.seller_today_joins.count %></h1>
+        </div>
+      <% end %>
 		</div>
 		<div class="box-w66">
 			<div class="admin-box chart">
@@ -31,40 +45,40 @@
 				<br />
 				<div class="text-right"><%= image_tag("admin/long-arrow.png") %></div>
 			<% end %>
-			<br />			
+			<br />
 		</div>
 		<div class="box-w30">
 			<div class="admin-box blue-bg-color">
 				<h4>账户余额</h4>
 				<br />
-				<h1 class="num">324</h1>
+				<h1 class="num"><%= current_user.income + current_user.frozen_income %></h1>
 			</div>
 			<br />
 		</div>
 		<div class="box-w30">
 			<div class="admin-box yellow-bg-color">
-				<h4>未入账</h4>
+				<h4>可提现</h4>
 				<br />
-				<h1 class="num">324</h1>
+				<h1 class="num"><%= current_user.income %></h1>
 			</div>
 			<br />
 		</div>
 	</div>
-	
+
 	<div class="box-w40 nogap">
 		<div class="box-w50">
 			<div class="admin-box blue-bg-color">
 				<h4>总收益</h4>
 				<br />
-				<h1 class="num">324</h1>
+				<h1 class="num"><%= @total_history_income %></h1>
 			</div>
 			<br />
 		</div>
 		<div class="box-w50">
 			<div class="admin-box red-bg-color">
-				<h4>今日预期收益</h4>
+				<h4>预期收益</h4>
 				<br />
-				<h1 class="num">324</h1>
+        <h1 class="num"><%= @expect_income; %></h1>
 			</div>
 			<br />
 		</div>
@@ -79,12 +93,10 @@
 <script>
 	$(document).ready(function(){
 		$(".admin-box .num").each(function(){
-			var ls=$(this).html().length;			
+			var ls=$(this).html().length;
 			if(ls>9){
 				$(this).css("font-size","30px")
 			}
 		})
-		
-		
 	})
 </script>
