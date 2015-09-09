@@ -27,6 +27,6 @@ $ ->
     transitionEnd: (index, elem) ->
       $('#slider-points span').removeClass('active')
       $('#slider-points span').eq(index).addClass('active')
-	
+
   $("header .menu-btn").on 'click', ->
     $('header .nav-bar').toggle()
