@@ -15,7 +15,9 @@
 $ ->
   $("body").on 'click',"#check_all", ->
     $(".check").attr("checked",this.checked)  
+  
+  $('[data-toggle="tooltip"]').tooltip();
 
-  $('[data-toggle="tooltip"]').tooltip()
+  $('[data-toggle="popover"]').popover();
+  
 
-  $('[data-toggle="popover"]').popover()

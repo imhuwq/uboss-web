@@ -35,11 +35,12 @@ a:hover,a:active,a:focus{color:#43C3AA}
 button.close{padding:0;cursor:pointer;background:transparent;border:0;-webkit-appearance:none}
 
 .logo{float: left; margin-right: 75px;}
-.config{ float: right;margin:10px 0 0 25px;}
-.config img {width: 64px;height:64px; border: 3px solid #994F24; border-radius: 500px; overflow: hidden;}
+#config{ float: right;margin:10px 0 0 25px; position: relative; display: block;}
+#config img {width: 64px;height:64px; border: 3px solid #994F24; border-radius: 500px; overflow: hidden;}
+
 
 header nav > ul { padding: 0;margin: 0; list-style: none;}
-header nav > ul > li{display: inline-block;*display: inline;*zoom:1; padding: 20px 25px; position: relative;}
+header nav > ul > li{display: inline-block;*display: inline;*zoom:1; padding: 20px; position: relative;}
 header nav > ul > li > a { font-size: 18px;}
 header nav > ul > li.active > a,header nav > ul > li > a:hover{color:#43C3AA}
 
@@ -49,11 +50,14 @@ header nav > ul > li.active > a,header nav > ul > li > a:hover{color:#43C3AA}
 .breadcrumb > li.divider {  padding: 0 10px;color:#43C3AA ;}
 .breadcrumb > .active {  opacity: 0.6;  filter: alpha(opacity=60);}
 
-.dropdown-menu{ display: none;position: absolute;top:90%;left:0%;padding:0;width: 100%; background: #333;padding:8px 0;}
+.dropdown-menu{ display: none;position: absolute;top:90%;left:0%;padding:0;width: 130px; background: #333;padding:8px 0; z-index: 99;}
 .dropdown-menu > li { list-style: none;color:#fff;}
 .dropdown-menu > li > a {color:#fff;display: block;padding:8px 20px;}
 .dropdown-menu > li > a:hover{ background: #43c3aa;}
 .open > .dropdown-menu { display: block;}
+#config:hover .dropdown-menu{ display: block;top:-20px; left: 100%; background:none;}
+#config:hover .dropdown-menu:hover {display: block;}
+#config li > a:hover{ background: none;color: #43C3AA;}
 
 .pop-img{ display:inline-block;*zoom:1;*display: inline; cursor: pointer; width: 250px; height: 150px;background-size: cover;background-position: center center;background-repeat: no-repeat;}
 .pop-img img{ display: none; }
@@ -66,7 +70,7 @@ header nav > ul > li.active > a,header nav > ul > li > a:hover{color:#43C3AA}
 
 .admin-box {padding:20px; background: #E5E5E5;color:#1A1A1A;display: block;}
 .admin-box:after{  clear:both;content: ".";   display: block;overflow: hidden; visibility: hidden;    font-size: 0;    line-height: 0;    width: 0;    height: 0;}
-a.admin-box:hover{opacity: 0.9;  filter: alpha(opacity=90);color:#fff;}
+a.admin-box:hover,a.admin-box:focus{opacity: 0.9;  filter: alpha(opacity=90);color:#fff;}
 .admin-box.chart { height: 300px;}
 .admin-box{
    h1,h4{ font-weight: normal; height: 40px;}

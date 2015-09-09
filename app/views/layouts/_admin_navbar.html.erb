@@ -4,9 +4,16 @@
   	<%= link_to admin_root_path,class:'logo' do %>
     	<%=image_tag "admin/logo.png",alt:"Uboss"%>
 		<% end %>
-    <%= link_to edit_admin_account_path,class:'config' do %>
-			<%= image_tag(current_user.avatar.url(:thumb)) %>
-		<% end %>
+		<div id="config">
+	    <%= link_to edit_admin_account_path do %>
+				<%= image_tag(current_user.avatar.url(:thumb)) %>
+			<% end %>
+			<ul class="dropdown-menu">
+				<li><%= link_to "修改密码", password_admin_account_path %></li>
+				<li><%= link_to "个人/企业认证", url_for(controller: :personal_authentications, action: :show, user_id: current_user) %></li>
+				<li><%= link_to '退出', destroy_user_session_path, method: :delete %></li>
+			</ul>
+		</div>
 
     <!--
 	  <ul class="nav navbar-nav navbar-right">
@@ -31,6 +38,7 @@
         <%= can_li_link(:manage, Order, admin_orders_path) %>
         <%= can_li_link(:read, SharingIncome, admin_sharing_incomes_path) %>
         <%= can_li_link(:read, WithdrawRecord, admin_withdraw_records_path) %>
+        <%= can_li_link(:manage, :authentications, admin_personal_authentications_path) %>
         <%= nav_group :uboss do %>
           <%= can_li_link(:manage, User, admin_users_path) %>
           <%= can_li_link(:manage, Transaction, admin_transactions_path) %>
@@ -44,11 +52,6 @@
           <%#= can_li_link(:manage, BankCard, admin_bank_cards_path) %>
         <%# end %>
         <%#= can_li_link(:manage, :authentications, admin_personal_authentications_path) %>
-        <%#= nav_group :uboss do %>
-          <%#= can_li_link(:manage, User, admin_users_path) %>
-          <%#= can_li_link(:manage, Transaction, admin_transactions_path) %>
-          <%#= can_li_link(:manage, :backend_status, admin_backend_status_path, another_active_name: :backend_status) %>
-        <%# end %>
       </ul>
     </nav>
   </div>

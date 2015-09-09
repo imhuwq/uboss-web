@@ -107,6 +107,8 @@
         float: right; 
         margin-left: 2px;
     }
+    
+    
 }
 
 
@@ -193,7 +195,7 @@ cursor: pointer;
 .redactor-box .redactor-toolbar li a { color: #fff; font-size: 15px;}
 .redactor-box .redactor-toolbar li a:hover{ background: #fff;color:#1A1A1A}
 .redactor-box .redactor-editor{ min-height: 150px;color:#333; border: none;}
-
+input.btn-block { display: block; text-align: center; width:100% ;}
 /*
 .form-actions {
   @extend .well;
