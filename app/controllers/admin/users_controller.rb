@@ -25,7 +25,7 @@ class Admin::UsersController < AdminController
   end
 
   def update
-    if @user.update(user_params)
+    if @user.update(resource_params)
       redirect_to admin_user_path(@user)
     else
       render :edit

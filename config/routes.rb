@@ -20,7 +20,9 @@ Rails.application.routes.draw do
   get 'service_centre_agent', to: 'home#service_centre_agent'
   get 'service_centre_tutorial', to: 'home#service_centre_tutorial'
   get 'about', to: 'home#about_us'
-
+  get 'lady', to: 'home#lady'
+  get 'maca', to: 'home#maca'
+  get 'snacks', to: 'home#snacks'
   get 'agreements/seller'
   get 'agreements/maker'
   get 'agreements/register'

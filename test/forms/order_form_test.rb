@@ -23,6 +23,7 @@ class OrderFormTest < ActiveSupport::TestCase
         city: 'SZ',
         country: 'NS',
         street: 'kejiyuan',
+        session: {},
         deliver_mobile: '13800002222'
       )
       assert_equal true, order_form.save
@@ -38,6 +39,7 @@ class OrderFormTest < ActiveSupport::TestCase
     assert_equal true, OrderForm.new(
       product_id: @product.id,
       amount: 12,
+      session: {},
       buyer: @buyer,
       user_address_id: @buyer.default_address.id
     ).save
@@ -59,6 +61,7 @@ class OrderFormTest < ActiveSupport::TestCase
         city: 'SZ',
         country: 'NS',
         street: 'kejiyuan',
+        session: {},
         deliver_mobile: '13800002222'
       ).save
 
