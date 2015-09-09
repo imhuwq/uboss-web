@@ -17,6 +17,7 @@ class User < ActiveRecord::Base
   has_many :transactions
   has_many :user_role_relations, dependent: :destroy
   has_many :user_roles, through: :user_role_relations
+  has_many :daily_reports
   # for agent
   has_many :divide_incomes
   has_many :sellers, class_name: 'User', foreign_key: 'agent_id'
@@ -192,8 +193,24 @@ class User < ActiveRecord::Base
     divide_incomes.joins(:order).where(orders: { seller_id: seller.id }).sum(:amount)
   end
 
+  def crrent_month_divide_income_from_seller(seller)
+    divide_incomes.current_month.joins(:order).where(orders: { seller_id: seller.id }).sum(:amount)
+  end
+
+  def today_divide_income_from_seller(seller)
+    divide_incomes.today.joins(:order).where(orders: { seller_id: seller.id }).sum(:amount)
+  end
+
   def total_sold_income
     selling_incomes.sum(:amount)
+  end
+
+  def current_month_sold_income
+    selling_incomes.current_month.sum(:amount)
+  end
+
+  def today_sold_income
+    selling_incomes.today.sum(:amount)
   end
 
   def today_expect_divide_income
