@@ -19,7 +19,7 @@ html, body {min-width:1220px;}
 .box-w50{ width:50%;}
 .box-w55{ width:55%;}
 .box-w60{ width:60%;}
-.box-w66{ width:66%;}
+.box-w66{ width:67%;}
 .box-w70{ width:70%;}
 .box-w80{ width:80%;}
 .box-w100{ width:100%;}
@@ -36,8 +36,8 @@ html, body {min-width:1220px;}
 .btn{ display: inline-block;*zoom:1;*display: inline;padding:5px 15px; border-radius: 4px; font-size: 15px; background: #43C3AA;color: #fff; border:none;outline: none; line-height: 1;}
 .btn:hover,.btn:active,.btn:focus{ color: #fff; opacity: .8; filter: alpha(opacity=80);outline: none;}
 .btn-mid{ padding:8px 20px; font-size: 16px;}
-.btn-large { padding: 12px 25px; font-size: 18px;}
-.btn-block{ display: block;}
+.btn-large { padding: 10px 25px; font-size: 18px;}
+.btn-block{ display: block; width: 100%;text-align: center;}
 
 .red-btn{ background: #E74C3C;}
 .orange-btn{ background:#FF6000}
@@ -45,6 +45,7 @@ html, body {min-width:1220px;}
 .yellow-btn{ background: #F39C12;}
 .gray-btn{ background: #E5E5E5;color:#1A1A1A}
 .black-btn{background: #383736;}
+.btn-link{ background: none; }
 
 /*pagination*/
 .pagination {list-style:none;margin:0;padding:0;display:inline-block;zoom:1;*display:inline}

@@ -49,21 +49,23 @@
 				</p>
 			</div><!-- box-w45 -->	
 			<div class="box-w10">
-				<img src="http://qr.liantu.com/api.php?&text=<%= "http://#{request.env["HTTP_HOST"]}/stores/#{@seller.id}" %>"/>	
+				<p><img src="http://qr.liantu.com/api.php?&text=<%= "http://#{request.env["HTTP_HOST"]}/stores/#{@seller.id}" %>"/>	</p>
 			</div>		
 		</div><!-- admin-box -->
 		<br />
 		<h3 class="page-title">
 			认证状态：
-      <% if @seller.authenticated == 'yes'%>
-        已认证
+      	<% if @seller.authenticated == 'yes'%>
+        	已认证
         <span class="date">通过审核时间： （获取时间）</span>
-      <% else %>
-        未认证 <a href="#" class="btn">通过审核</a>  <a href="#" class="btn">未通过</a>
-      <% end %>
+      	<% else %>
+        	未认证
+        	<% if current_user.is_super_admin? %>
+         		<a href="#" class="btn">通过审核</a>  <a href="#" class="btn">未通过</a>
+         	<% end %>
+      	<% end %>
 		</h3>
 		<div class="admin-box">
-			<!-- if 是企业开店 -->
 			<div class="box-w30">
 				<p>企业营业执照副本：</p>
 				<p>
@@ -82,27 +84,47 @@
 						<%= image_tag(@enterprise_authentication.try(:legal_person_identity_card_end_img),alt: "反面") %>　
 					</a>
 				</p>
-			</div><!-- box-70 -->
-			<!-- end -->
-
-			<!-- if 是个人开店 -->
-			<!--
-				<div class="box-w100">
-				<p>手持身份证：</p>
-				<p>
-					<a class="pop-img" data-src="<%= @personal_authentication.face_with_identity_card_img %>"style="background-image: url(<%= @personal_authentication.face_with_identity_card_img %>);">
-						<%= image_tag(@personal_authentication.try(:face_with_identity_card_img),alt: "正面") %>　
-					</a>　
-					<a class="pop-img" data-src="<%= @personal_authentication.identity_card_front_img %>"style="background-image: url(<%= @personal_authentication.identity_card_front_img %>);">
-						<%= image_tag(@personal_authentication.try(:identity_card_front_img),alt: "反面") %>　
-					</a>
-				</p>
-				</div>
-			-->
-			<!-- end -->
+			</div><!-- box-70 -->				
 		</div><!-- admin-box -->
 		<br />
-		<h3 class="page-title">当前平台费率：<%= @seller.user_info.service_rate %>%</h3>
+		<div class="admin-box">					
+			<p>手持身份证：</p>
+			<p>
+				<a class="pop-img" data-src="<%= @personal_authentication.face_with_identity_card_img %>"style="background-image: url(<%= @personal_authentication.face_with_identity_card_img %>);">
+					<%= image_tag(@personal_authentication.try(:face_with_identity_card_img),alt: "正面") %>　
+				</a>　
+				<a class="pop-img" data-src="<%= @personal_authentication.identity_card_front_img %>"style="background-image: url(<%= @personal_authentication.identity_card_front_img %>);">
+					<%= image_tag(@personal_authentication.try(:identity_card_front_img),alt: "反面") %>　
+				</a>
+			</p>
+		</div><!-- admin-box -->
+		<br />	
+		<div class="pull-right">
+		<% if current_user.is_super_admin? %>
+			<%= form_for 'seller', url: url_for(controller: :sellers, action: :update_service_rate), method: :post do |f| %>
+				<%= hidden_field_tag 'seller[id]', @seller.id %>
+				<%= text_field_tag 'seller[service_rate]', @seller.try(:user_info).try(:service_rate), type: :tel %> %
+				<%= submit_tag '调整', class:"btn btn-large" %>
+			<% end %>
+		<% end %>
+		</div>	
+		<h3 class="page-title">当前平台费率：<%= @seller.user_info.service_rate %>%
+		</h3>
+		<br />
+		<table class="list-table">
+		  <tr>
+			<th colspan='1'>调整时间</th>
+			<th>调整前费率</th>
+			<th>调整后费率</th>
+		  </tr>
+		  <% (@seller.try(:user_info).try(:service_rate_histroy) || {}).each do |k,v| %>
+		  <tr>
+			<td><%= k %></td>
+			<td><%= v['from_service_rate'] %>%</td>
+			<td><%= v['to_service_rate'] %>%</td>
+		  </tr>
+		  <% end %>
+		</table>
 		</div><!-- container -->
 		<br />
 	</div><!-- content1 -->

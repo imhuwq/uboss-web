@@ -30,8 +30,6 @@
 	</div>
 </div>
 <br />
-
-<br />
 <div class="container">
 	<h3 class="page-title">提现记录</h3>
 	<table class="list-table" id="withdraw_records">
@@ -56,11 +54,11 @@
 				<% if record.unprocess? && can?(:manage, WithdrawRecord) %>
 			      <p>
 			      	<%= link_to withdraw_process_txt(record), processed_admin_withdraw_record_path(record),
-			        method: :PATCH, data: {confirm: '确认打款？'}, class: "btn #{withdraw_process_class(record)}" %>
+			        method: :PATCH, data: {confirm: '确认打款？'}, class: "btn btn-block #{withdraw_process_class(record)}" %>
 			      </p>
 			      <div>
 			      	<%= link_to '拒绝', close_admin_withdraw_record_path(record),
-			        method: :PATCH, data: {confirm: '确认拒绝，并关闭此提现申请？'}, class: 'btn red-btn text-danger' %>
+			        method: :PATCH, data: {confirm: '确认拒绝，并关闭此提现申请？'}, class: 'btn btn-block red-btn text-danger' %>
 			      </div>
 			    <% end %>
 			</td>

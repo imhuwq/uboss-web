@@ -36,7 +36,7 @@
 		<div class="box-w66">
 			<div class="admin-box chart">
         <% if current_user.is_seller? %>
-          <h5>未发货订单  <small><%= link_to "更多...", [:admin, :orders] %></small></h5>
+          <h5>未发货订单  <small class="pull-right"><%= link_to "更多...", [:admin, :orders] %></small></h5>
           <table class="border-table">
             <thead>
               <th>订单编号</th>
@@ -108,7 +108,7 @@
 		<div class="box-w100">
 			<div class="admin-box chart">
         <% if current_user.is_agent? %>
-          <h5>未认证商家  <small><%= link_to "更多...", [:admin, :sellers] %></small></h5>
+          <h5>未认证商家  <small class="pull-right"><%= link_to "更多...", [:admin, :sellers] %></small></h5>
           <table class="border-table">
             <thead>
               <th>商家</th>

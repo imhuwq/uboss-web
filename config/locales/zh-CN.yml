@@ -37,7 +37,7 @@ zh-CN:
     login: 帐号
     email: 邮箱
     nickname: 昵称
-    avatar:  配图
+    avatar:  头像
     role_display_name: 角色
     password_confirmation: 密码确认
     mobile_auth_code:              验证码
