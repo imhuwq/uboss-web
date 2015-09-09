@@ -3,12 +3,12 @@ class OrdersController < ApplicationController
   before_action :find_order, only: [:cancel, :show, :pay, :pay_complete, :received]
 
   def cancel
-    if @order.may_closed? && @order.closed!
+    if @order.may_close? && @order.close!
       flash[:success] = '订单取消成功'
     else
       flash[:errors] = '订单取消失败'
     end
-    redirect_to orders_path
+    redirect_to order_path(@order)
   end
 
   def show

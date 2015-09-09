@@ -3,7 +3,7 @@ class CloseOrderJob < ActiveJob::Base
 
   def perform
     Order.where('created_at < ?', (Time.now - 5.days)).each do |order|
-      order.may_closed? && order.closed!
+      order.may_close? && order.close!
     end
   end
 

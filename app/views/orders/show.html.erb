@@ -122,12 +122,15 @@
 
 <br />
 
+<% if @order.may_close? %>
+  <div class="close_order">
+    <%= link_to "取消订单", cancel_order_path(@order), id: 'close-order-btn', class: 'close_order_btn' %>
+  </div>
+<% end %>
+
 <% if available_pay?(@order, @product) %>
   <div class="accunt_adil_box3">
     <%= link_to "支付", '#', id: 'wx-pay-btn', class: 'accunt_adilbtn' %>
-  </div>
-  <div class="close_order">
-    <%= link_to "取消订单", order_cancel_path(@order), id: 'close-order-btn', class: 'close_order_btn' %>
   </div>
 <% elsif @order.unpay? && @product.is_official_agent? && current_user.is_agent? %>
   <div class="pay-comment order-store-info">
