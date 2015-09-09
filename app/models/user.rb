@@ -134,7 +134,7 @@ class User < ActiveRecord::Base
     if agent_user.present?
       self.agent = agent_user
       self.admin = true
-      if agent_user.is_super_admin?
+      if agent_user.id == User.official_account.id
         self.user_info.service_rate = 6
       else
         self.user_info.service_rate = 5
