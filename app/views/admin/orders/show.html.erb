@@ -9,21 +9,29 @@
 </div><!-- container -->
 <br />
 <div class="container">
-	<h3 class="page-title">订购信息 <small class="pull-right"><%= @order.state_i18n %></small></h3>
+	<h3 class="page-title">订单信息 <small class="pull-right"><%= @order.state_i18n %></small></h3>
 	<div class="admin-box">
 		<div class="box-w50">
 			<p>订单编号：<%= @order.number %></p>
-	    <p>成交单价：<%= @order_item.product_present_price %></p>
 	    <p>运费：<%= @order_item.product_traffic_expense %></p>
-	    <p>总价：<%= @order.pay_amount %></p>
+	    <p>合计：<%= @order.pay_amount %></p>
 		</div>
 		<div class="box-w50">
 			<p>买家：<%= @order.buyer_identify %></p>
 	    <p>下单时间：<%= @order.created_at %></p>
-	    <p>商品名称：<%= @order_item.product_name %></p>
-	    <p>数量：<%= @order_item.amount %></p>
 		</div>
 	</div><!-- admin-box -->
+  <br />
+  <h3 class="page-title">商品信息</h3>
+  <div class="admin-box">
+    <div class="box-w50">
+	    <p>商品名称：<%= @order_item.product_name %></p>
+	    <p>购买数量：<%= @order_item.amount %></p>
+    </div>
+    <div class="box-w50">
+	    <p>成交单价：<%= @order_item.deal_price %></p>
+    </div>
+  </div>
 	<br />
 	<h3 class="page-title">付款信息 </h3>
 	<div class="admin-box">
@@ -36,18 +44,16 @@
 	<br />
 	<h3 class="page-title">
 		发货信息
-		<% if @order.payed? %>
+		<% if @order.payed? && can?(:manage, @order) %>
 		  <%= link_to '发货', [:ship, :admin, @order],
 		    class: 'btn', method: :PATCH, data: { confirm: 'Are your sure?' } %>
 		<%- end %>
 	</h3>
 	<div class="admin-box">
-		<div class="box-w100">
-			<p>收货人：<%= @order.username %></p>
-		    <p>联系电话：<%= @order.mobile %></p>
-		    <p>收货地址：<%= @order.address %></p>
-		</div>
+    <div class="box-w100">
+      <p>收货人：<%= @order.username %></p>
+      <p>联系电话：<%= @order.mobile %></p>
+      <p>收货地址：<%= @order.address %></p>
+    </div>
 	</div><!-- admin-box -->
-	
 </div>
-

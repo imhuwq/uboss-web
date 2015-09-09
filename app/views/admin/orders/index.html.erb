@@ -15,7 +15,7 @@
 	</div>
 	<div class="box-w25">
 		<div class="admin-box main-bg-color">
-			<h4>今日销量</h4>
+			<h4>今日订单数</h4>
 			<h1 class="num"><%= @today_selled_amount %></h1>
 		</div>
 	</div>
@@ -27,7 +27,6 @@
 				<th class="text-left">订单时间</th>
 				<th>订单编号</th>
 				<th>买家</th>
-				<th>入口</th>
 				<th>状态</th>
 				<th>操作</th>
 			</thead>
@@ -36,10 +35,9 @@
 				<td><%= order.created_at %></td>
 				<td><%= link_to order.number, [:admin, order] %></td>
 				<td><%= order.buyer_identify %></td>
-				<td>(获取方法)<br/>(如：二维码，链接，用户)</td>
 				<td><%= order.state_i18n %></td>
 				<td>
-					<% if order.payed? %>
+					<% if order.payed? && can?(:manage, @order) %>
 			      <%= link_to '发货', [:ship, :admin, order],
 			        class: 'btn', method: :PATCH, data: { confirm: '确认发货?' } %>
 			    <%- end%>
@@ -52,21 +50,3 @@
 	</div>
 </div><!-- container-->
 <br />
-<!--
-<%= table_for(@orders) do |t| %>
-  <%= t.cell :created_at %>
-  <%= t.cell :number do |order| %>
-    <%= link_to order.number, [:admin, order] %>
-  <% end %>
-  <%= t.cell :buyer_identify %>
-  <%= t.cell(:state) do |order| %>
-    <span class='label state-<%= order.state %>'><%= order.state_i18n %></span>
-  <% end %>
-  <%= t.cell :action do |order| %>
-    <% if order.payed? %>
-      <%= link_to '发货', [:ship, :admin, order],
-        class: 'btn btn-primary btn-xs', method: :PATCH, data: { confirm: '确认发货?' } %>
-    <%- end%>
-  <%- end%>
-<%- end %>
--->
