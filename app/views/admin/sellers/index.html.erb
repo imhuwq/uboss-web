@@ -18,31 +18,31 @@
 	  <div class="box-w25">
 	  	<div class="admin-box yellow-bg-color">
 				<h4>待审核商家</h4>
-				<h1 class="num"><%= current_user.seller_total_joins.group(:authenticated).count[0] || 0 %></h1>
+				<h1 class="num"><%= current_user.seller_total_joins.unauthenticated_seller_identify.count %></h1>
 			</div>
-			<br />    
+			<br />
 	  </div><!-- box-w25 -->
 	  <div class="box-w25">
 	  	<div class="admin-box red-bg-color">
 				<h4>总签约商家</h4>
 				<h1 class="num"><%= current_user.seller_total_joins.count %></h1>
 			</div>
-			<br />    
+			<br />
 	  </div><!-- box-w25 -->
 	  <div class="box-w25">
 			<div class="admin-box blue-bg-color">
 				<h4>我的创客邀请码</h4>
-				<h1 class="num"><%= current_user.find_or_create_agent_code %></h1> 
-			</div> 
+				<h1 class="num"><%= current_user.find_or_create_agent_code %></h1>
+			</div>
 			<br />
 		</div><!-- box-w25 -->
 		<div class="box-w100">
 			<div class="admin-box">
 				<h4>我的商家绑定链接:</h4>
 			  <div class="text"><%= new_seller_url(agent_code: current_user.agent_code) %></div>
-			</div> 
+			</div>
 			<br />
-		</div><!-- box-w100 --> 
+		</div><!-- box-w100 -->
 	</div> <!-- box-w80 -->
 	<div class="box-w20">
 		<div class="qrcode-box text-center">
@@ -65,14 +65,14 @@
 			<% end %>
 			<th>状态</th>
 		</thead>
-		<% @sellers.each do |sellers| %>	
+		<% @sellers.each do |sellers| %>
 		<tr class="
 			<% if sellers.authenticated == 'no' %>
-				red-bg					
+				red-bg
 			<% end %>
-		">			
+		">
 			<td class="text-left">
-				<%= link_to url_for(controller: 'admin/sellers', action: :show, id: sellers) do %>	
+				<%= link_to url_for(controller: 'admin/sellers', action: :show, id: sellers) do %>
 					<%= image_tag(sellers.avatar, size: "60x60", alt: "-") %>　
 					<%= sellers.identify %>
 				<% end %>
@@ -80,9 +80,9 @@
 			<td>
 				<%= Evaluation.sharer_good_reputation_rate(sellers) %>
 			</td>
-			<td><%= sellers.user_info.try(:service_rate) %></td>					
+			<td><%= sellers.user_info.try(:service_rate) %></td>
 			<td><%= sellers.created_at %></td>
-			<td><%= sellers.login %></td> 
+			<td><%= sellers.login %></td>
 			<% if current_user.super_admin? %>
 				<td>
 					&nbsp;
@@ -93,9 +93,9 @@
 				</td>
 		    <% end %>
 			<td><%=  User::DATA_AUTHENTICATED[sellers.authenticated] %></td>
-		</tr>	    
+		</tr>
 		<% end %>
-			
+
 	</table>
     <%= paginate @sellers %>
 </div>
