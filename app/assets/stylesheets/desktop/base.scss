@@ -5,7 +5,7 @@ a,body{ color: #444;}
 html, body {min-width:1220px;}
 .container{ margin: 0 auto; padding:0 10px;width:1200px;overflow: hidden;box-sizing:border-box; }
 .container:after { clear:both;content: ".";   display: block;overflow: hidden; visibility: hidden;    font-size: 0;    line-height: 0;    width: 0;    height: 0;}
-.box-w5,.box-w10,.box-w15,.box-w20,.box-w25,.box-w30,.box-w33,.box-w35,.box-w40,.box-w50,.box-w55,.box-w60,.box-w66,.box-w70,.box-w80,.box-w100{ box-sizing:border-box;padding:0 10px;float:left; }
+.box-w5,.box-w10,.box-w15,.box-w20,.box-w25,.box-w30,.box-w33,.box-w35,.box-w40,.box-w45,.box-w50,.box-w55,.box-w60,.box-w66,.box-w70,.box-w80,.box-w100{ box-sizing:border-box;padding:0 10px;float:left; }
 .box-w5{ width:5%;}
 .box-w10{ width:10%;}
 .box-w15{ width:15%;}
@@ -15,6 +15,7 @@ html, body {min-width:1220px;}
 .box-w33{ width:33%;}
 .box-w35{ width:35%;}
 .box-w40{ width:40%;}
+.box-w45{ width:45%;}
 .box-w50{ width:50%;}
 .box-w55{ width:55%;}
 .box-w60{ width:60%;}
@@ -39,9 +40,11 @@ html, body {min-width:1220px;}
 .btn-block{ display: block;}
 
 .red-btn{ background: #E74C3C;}
+.orange-btn{ background:#FF6000}
 .blue-btn{ background: #3498DB;}
 .yellow-btn{ background: #F39C12;}
 .gray-btn{ background: #E5E5E5;color:#1A1A1A}
+.black-btn{background: #383736;}
 
 /*pagination*/
 .pagination {list-style:none;margin:0;padding:0;display:inline-block;zoom:1;*display:inline}
@@ -51,4 +54,19 @@ html, body {min-width:1220px;}
 .pagination .active>a,.pagination .active>span{color:#FFF;cursor:default}
 .pagination .disabled>span,.pagination .disabled>a,.pagination ul>.disabled>a:hover,.pagination .disabled>a:focus{color:#999;cursor:default;background-color:transparent}
 .pagination li:first-child>a,.pagination li:first-child>span{border-left-width:1px}
+
+/*label*/
+.label {
+    display: inline;
+    padding: 4px;
+    font-size: 10px;
+    font-family:sans-serif;
+    line-height: 1;
+    color: #fff;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: baseline;
+    border-radius: 2px;
+    background: #3498DB;
+}
 

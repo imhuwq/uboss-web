@@ -1,6 +1,14 @@
-<h4>设置</h4>
-<hr />
-
+<div class="container admin-container">
+	<ul class="breadcrumb">
+		<li><a href="/admin">主页</a></li>
+		<li class="divider"><i class="fa fa-caret-right"></i></li>
+		<li class="active">设置</li>
+	</ul>
+</div><!-- container -->
+<br />
+<div class="container">
+	
+</div>
 <%= horizon_form_for current_user, url: admin_account_path, method: :patch do |f| %>
 
   <div class="well">
@@ -41,7 +49,7 @@
     <% end %>
 
     <%= f.input :service_rate, label: '当前平台费率' do %>
-      <h5><%= number_to_percentage(f.object.service_rate, precision: 0) %></h5>
+      <span><%= number_to_percentage(f.object.service_rate, precision: 0) %></span>
     <% end %>
   </div>
 

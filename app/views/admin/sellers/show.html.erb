@@ -21,11 +21,9 @@
 	<div id="content1" class="tab-content" style="display: block;">
 		<div class="container">
 		<h3 class="page-title"><span class="date">注册时间： <%= @seller.created_at.to_date %></span>基本信息</h3>
-		<div class="seller-qrcode">
-			<img src="http://qr.liantu.com/api.php?&text=<%= "http://#{request.env["HTTP_HOST"]}/stores/#{@seller.id}" %>"/>				
-		</div>
+		
 		<div class="admin-box">
-			<div class="box-w50">
+			<div class="box-w45">
 				<p>注册帐号： <%= @seller.login %></p>
 				<p>商家名： <%= @seller.identify %></p>
 				<p>
@@ -37,14 +35,17 @@
 		  		<% end %>
 				</p>
 			</div><!-- box-w50 -->
-			<div class="box-w50">
+			<div class="box-w45">
 				<p>绑定时间： （获取时间）</p>
 				<p>联系人： （获取名称）　　（获取电话号码）</p>
 				<p>
 					店铺链接：
 					<%= "http://#{request.env["HTTP_HOST"]}/stores/#{@seller.id}" %>	  		
 				</p>
-			</div><!-- box-w50 -->				
+			</div><!-- box-w40 -->	
+			<div class="box-w10">
+				<img src="http://qr.liantu.com/api.php?&text=<%= "http://#{request.env["HTTP_HOST"]}/stores/#{@seller.id}" %>"/>	
+			</div>			
 		</div><!-- admin-box -->
 		<br />
 		<h3 class="page-title">

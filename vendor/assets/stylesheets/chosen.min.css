@@ -23,7 +23,6 @@
 	border: none;
 	border-top: 0;
 	background: #333;
-	box-shadow: 0 4px 5px rgba(0, 0, 0, .15)
 }
 .chosen-container.chosen-with-drop .chosen-drop {
 	left: 0
@@ -193,7 +192,6 @@
 .chosen-container-multi .chosen-choices li.search-field input[type=text] {
 	margin: 1px 0;
 	padding: 5px;
-	height: 15px;
 	outline: 0;
 	border: 0!important;
 	background: transparent!important;
@@ -261,12 +259,11 @@
 }
 .chosen-container-multi .chosen-drop .result-selected {
 	display: list-item;
-	color: #ccc;
+	color: #999;
 	cursor: default
 }
 .chosen-container-active .chosen-single {
 	border: none;
-	box-shadow: 0 0 5px rgba(0, 0, 0, .3)
 }
 .chosen-container-active.chosen-with-drop .chosen-single {
 	border:none;

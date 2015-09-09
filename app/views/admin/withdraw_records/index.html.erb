@@ -19,31 +19,58 @@
 			<h1 class="num"><%= number_to_currency current_user.income %></h1>
 		</div>
 	</div><!-- box-w25 -->
+	<div class="box-w25">
+		<% if can?(:create, WithdrawRecord) %>
+		  <%= link_to new_admin_withdraw_record_path, class: 'admin-box main-bg-color' do %>
+		  	<h4>提现申请</h4>
+		  	<br />
+		  	<div class="text-right"><%= image_tag("admin/long-arrow.png") %></div>
+		  <% end %>
+		<% end %>
+	</div>
+</div>
+<br />
+
+<br />
+<div class="container">
+	<h3 class="page-title">提现记录</h3>
+	<table class="list-table" id="withdraw_records">
+		<thead>
+			<th>编号</th>
+			<th>申请人</th>
+			<th>收款人</th>
+			<th>申请时间</th>
+			<th>金额</th>
+			<th>状态</th>
+			<th>操作</th>
+		</thead>
+		<% @withdraw_records.each do |record| %>
+		<tr>
+			<td><%= link_to record.number, [:admin, record] %></td>
+			<td><%= record.user_identify %></td>
+			<td><%= record.card_username %></td>
+			<td><%= record.created_at %></td>
+			<td><%= record.amount %></td>
+			<td><%= record.state_i18n %></td>
+			<td>
+				<% if record.unprocess? && can?(:manage, WithdrawRecord) %>
+			      <p>
+			      	<%= link_to withdraw_process_txt(record), processed_admin_withdraw_record_path(record),
+			        method: :PATCH, data: {confirm: '确认打款？'}, class: "btn #{withdraw_process_class(record)}" %>
+			      </p>
+			      <div>
+			      	<%= link_to '拒绝', close_admin_withdraw_record_path(record),
+			        method: :PATCH, data: {confirm: '确认拒绝，并关闭此提现申请？'}, class: 'btn red-btn text-danger' %>
+			      </div>
+			    <% end %>
+			</td>
+		</tr>
+		<% end %>
+	</table>		
+	<br />
+	<%= paginate @withdraw_records %>
 </div>
 
-<% if can?(:create, WithdrawRecord) %>
-  <%= link_to "申请提现", new_admin_withdraw_record_path, class: 'btn btn-primary' %>
-<% end %>
-<hr />
-<%= table_for(@withdraw_records) do |table| %>
-  <%= table.cell :number do |record| %>
-    <%= link_to record.number, [:admin, record] %>
-  <% end %>
-  <%= table.cell :user_identify %>
-  <%= table.cell :card_username %>
-  <%= table.cell :created_at %>
-  <%= table.cell :amount %>
-  <%= table.cell :state do |record| %>
-    <span class='label state-<%= record.state %>'><%= record.state_i18n %></span>
-  <% end %>
-  <%= table.cell :action do |record| %>
-    <% if record.unprocess? && can?(:manage, WithdrawRecord) %>
-      <%= link_to withdraw_process_txt(record), processed_admin_withdraw_record_path(record),
-        method: :PATCH, data: {confirm: '确认打款？'}, class: "btn btn-sm #{withdraw_process_class(record)}" %>
-      <%= link_to '拒绝', close_admin_withdraw_record_path(record),
-        method: :PATCH, data: {confirm: '确认拒绝，并关闭此提现申请？'}, class: 'text-danger' %>
-    <% end %>
-  <% end %>
-<%- end %>
 
-<%= paginate @withdraw_records %>
+
+
