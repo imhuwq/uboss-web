@@ -1,0 +1,25 @@
+header {
+  
+  .header-bar {    
+    text-align: center;
+    overflow: hidden; 
+    line-height: 20px;          
+    .logo{height: 20px; margin-left: 41px;padding:10px 0;}
+    .title{margin-left: 41px;padding:10px 0; display: inline-block;font-size: 20px;color:$brand-primary;}
+    .menu-btn{        
+      float: right;
+      padding: 10px; 
+      img{ width: 21px;}    
+    }
+  }
+  .nav-bar{
+    display: none;
+    a{
+        color:$brand-primary;
+        display: block;
+        border-top: 1px solid $brand-primary;
+        padding: 8px 20px;
+      }  
+  }
+}
+

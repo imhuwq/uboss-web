@@ -1,13 +1,13 @@
-<header class="head">
-  <div class="bottom right"></div>
-  <% if content_for?(:page_title) %>
-    <div class="log_font"><%= yield(:page_title) %></div>
-  <% else %>
-    <div class="logo"></div>
-  <% end %>
-</header>
+<div class="header-bar">
+  	<div class="menu-btn"><%= image_tag 'mobile/navbar.png' %></div>
+	  <% if content_for?(:page_title) %>
+	    <span class="title"><%= yield(:page_title) %></span>
+	  <% else %>
+	    <%= image_tag 'mobile/logo.png',class:'logo' %>
+	  <% end %>
+</div>
 
-<div class="nav_bar">
+<div class="nav-bar">
   <ul>
     <li><%= link_to '首页', root_path %></li>
     <li><%= link_to '我的UBOSS', account_path %></li>
