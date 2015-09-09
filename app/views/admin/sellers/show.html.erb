@@ -98,8 +98,8 @@
 				</a>
 			</p>
 		</div><!-- admin-box -->
-      <% end %>
 		<br />	
+      <% end %>
 		<div class="pull-right">
 		<% if current_user.is_super_admin? %>
 			<%= form_for 'seller', url: url_for(controller: :sellers, action: :update_service_rate), method: :post do |f| %>
@@ -109,8 +109,7 @@
 			<% end %>
 		<% end %>
 		</div>	
-		<h3 class="page-title">当前平台费率：<%= @seller.user_info.service_rate %>%
-		</h3>
+		<h3 class="page-title">当前平台费率：<%= @seller.user_info.service_rate %>%</h3>
 		<br />
 		<table class="list-table">
 		  <tr>

@@ -63,10 +63,13 @@
     }
     .control-input{ 
         overflow: hidden;
-    }
-    .control-input span{
-        margin:8px 0px; 
-        display: inline-block;
+        span{
+            margin:8px 0px; 
+            display: inline-block;
+        }
+        .btn{
+          margin: 5px 0;
+        }
     }
     .control-input span input{ 
         margin:0 10px; 
