@@ -1496,10 +1496,10 @@ a{
 	border-bottom: 1px solid rgba(204,204,204,1);
 	color: rgba(0,0,0,1);
 	background-image: image-url("img/adicon.png");
-	background-position: 15px 8px;
+	background-position: 15px 30px;
 	background-repeat: no-repeat;
 	background-size: 8px 13.5px;
-	padding: 0px 0px 4px 0px;
+	padding: 10px 12px 10px 0px;
 
 }
 .add_line1 dd{
@@ -1510,7 +1510,8 @@ a{
 .add_line1 dd strong{
 	float: right;
 	font-weight: normal;
-	padding-right: 10px;
+	padding-right: 40px;
+	padding-top: 3px;
 }
 .add_more{
 	background-image: image-url("img/up.png");

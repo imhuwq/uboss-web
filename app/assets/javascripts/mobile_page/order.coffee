@@ -98,6 +98,7 @@ $ ->
         fillNewOrderAddressInfo(user, mobile, detail)
         $('#order_form_user_address_id').val('')
         hideOrderAddressDlg()
+        $(".accunt_adilbtn").removeAttr('disabled')
       else
         alert('手机号无效')
     else
