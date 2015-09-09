@@ -23,9 +23,9 @@
 				<td><%= I18n.t("l#{income.level}", scope: 'enums.sharing_income.level')%></td>
 				<td> <%= link_to income.product_name, [:admin, income.product] %></td>
 				<td><%= income.user_identify %></td>
-				<td><<%= income.amount %></td>
+				<td><%= number_to_currency income.amount %></td>
 				<td><%= income.created_at %></td>
-			</tr>		
+			</tr>
 		<% end %>
 	</table>
 	<br />
