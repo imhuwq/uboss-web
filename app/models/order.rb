@@ -31,7 +31,7 @@ class Order < ActiveRecord::Base
 
   aasm column: :state, enum: true, skip_validation_on_save: true, whiny_transitions: false do
     state :unpay
-    state :payed, after_enter: :create_privilege_card_if_none, :send_payed_sms_to_seller
+    state :payed, after_enter: [:create_privilege_card_if_none, :send_payed_sms_to_seller]
     state :shiped, after_enter: :fill_shiped_at
     state :signed, after_enter: [:fill_signed_at, :active_privilege_card]
     state :completed, after_enter: :fill_completed_at
