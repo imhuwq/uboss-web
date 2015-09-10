@@ -14,7 +14,7 @@ class Admin::PersonalAuthenticationsController < AdminController
   end
 
   def show
-    if is_super_admin?
+    if current_user.is_super_admin?
       @personal_authentication = PersonalAuthentication.find_by(user_id:( params[:user_id] || current_user))
       unless @personal_authentication.present?
         flash[:notice] = '您还没有认证/您查找的用户不存在'
@@ -114,8 +114,8 @@ class Admin::PersonalAuthenticationsController < AdminController
                   :identity_card_front_img
                   )
   end
-  alias :create_params :allow_params
-  alias :update_params :allow_params
+  alias :create_params :personal_authentication_params
+  alias :update_params :personal_authentication_params
 
   def valid_create_params
     @errors = []
@@ -123,7 +123,7 @@ class Admin::PersonalAuthenticationsController < AdminController
     code18 = /^[1-9]\d{5}[1-9]\d{3}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}([0-9]|X)$/ # 18位身份证号
     identity_card_match = (personal_authentication_params[:identity_card_code] =~ code15 || personal_authentication_params[:identity_card_code] =~ code18)
     hash = {
-      '验证码错误或已过期。': MobileAuthCode.auth_code(allow_params[:mobile], allow_params[:mobile_auth_code]),
+      '验证码错误或已过期。': MobileAuthCode.auth_code(personal_authentication_params[:mobile],  personal_authentication_params[:mobile_auth_code]),
       '手持身份证照片不能为空。': params[:personal_authentication][:face_with_identity_card_img],
       '身份证照片不能为空。': params[:personal_authentication][:identity_card_front_img],
       '姓名不能为空。': personal_authentication_params[:name],
@@ -142,7 +142,7 @@ class Admin::PersonalAuthenticationsController < AdminController
     code18 = /^[1-9]\d{5}[1-9]\d{3}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}([0-9]|X)$/ # 18位身份证号
     identity_card_match = (personal_authentication_params[:identity_card_code] =~ code15 || personal_authentication_params[:identity_card_code] =~ code18)
     hash = {
-      '验证码错误或已过期。': MobileAuthCode.auth_code(allow_params[:mobile], allow_params[:mobile_auth_code]),
+      '验证码错误或已过期。': MobileAuthCode.auth_code( personal_authentication_params[:mobile],  personal_authentication_params[:mobile_auth_code]),
       '姓名不能为空。': personal_authentication_params[:name],
       '身份证号码错误。': identity_card_match,
       '地址不能为空。': personal_authentication_params[:address],
