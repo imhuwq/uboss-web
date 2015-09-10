@@ -10,21 +10,21 @@
 <br />
 <div class="container">
 	<h3 class="page-title">提现信息 <small class="pull-right"><span class='label state-<%= @withdraw_record.state %>'><%= @withdraw_record.state_i18n %></span></small></h3>
-	<div class="admin-box">		
+	<div class="admin-box">
 			<p><%= WithdrawRecord.human_attribute_name(:number) %> : <%= @withdraw_record.number %></p>
 			<p><%= WithdrawRecord.human_attribute_name(:user_identify) %> : <%= @withdraw_record.user_identify %></p>
-			<p><%= WithdrawRecord.human_attribute_name(:user_total_income) %> : <%= @withdraw_record.user_total_income %></p>		
+			<p><%= WithdrawRecord.human_attribute_name(:user_total_income) %> : <%= @withdraw_record.user_total_income %></p>
 			<p><%= WithdrawRecord.human_attribute_name(:created_at ) %> : <%= @withdraw_record.created_at %></p>
-			<p><%= WithdrawRecord.human_attribute_name(:amount) %> : <%= @withdraw_record.amount %></p>		
+			<p><%= WithdrawRecord.human_attribute_name(:amount) %> : <%= @withdraw_record.amount %></p>
 	</div>
-	<br />	
+	<br />
 	<% if @withdraw_record.bank_info.present? %>
 	<h3 class="page-title">银行卡信息 </h3>
-	<div class="admin-box">		
+	<div class="admin-box">
 			<p><%= BankCard.human_attribute_name(:bankname) %> : <%= @withdraw_record.card_bankname %></p>
 			<p><%= BankCard.human_attribute_name(:username) %> : <%= @withdraw_record.card_username %></p>
-			<p><%= BankCard.human_attribute_name(:number) %> : <%= @withdraw_record.card_number %></p>	
-	</div>		
+			<p><%= BankCard.human_attribute_name(:number) %> : <%= @withdraw_record.card_number %></p>
+	</div>
 	<% elsif @withdraw_record.user.weixin_openid.present? %>
 	  <p class="alert alert-info">未添加银行卡信息，已绑定微信，通过微信打款。</p>
 	<% end %>
@@ -36,10 +36,10 @@
 				<p><%= User.human_attribute_name(:weixin_openid) %> : <%= @withdraw_record.user.weixin_openid %></p>
       <% end %>
 			<p><%= WithdrawRecord.human_attribute_name(:wx_payment_no) %> : <%= @withdraw_record.wx_payment_no %></p>
-			<p><%= WithdrawRecord.human_attribute_name(:wx_payment_time) %> : <%= @withdraw_record.wx_payment_time %></p>	
-			<p><%= WithdrawRecord.human_attribute_name(:done_at) %> : <%= @withdraw_record.done_at %></p>	
+			<p><%= WithdrawRecord.human_attribute_name(:wx_payment_time) %> : <%= @withdraw_record.wx_payment_time %></p>
+			<p><%= WithdrawRecord.human_attribute_name(:done_at) %> : <%= @withdraw_record.done_at %></p>
 			<% if @withdraw_record.error_info && can?(:manage, WithdrawRecord) %>
-				<p><%= WithdrawRecord.human_attribute_name(:error_info) %> : <%= @withdraw_record.error_info %></p>	
+				<p><%= WithdrawRecord.human_attribute_name(:error_info) %> : <%= @withdraw_record.error_info %></p>
 			<% end %>
 	</div>
 	<br />
@@ -56,25 +56,3 @@
 		</p>
 	<% end %>
 </div>
-
-
-
-
-
-
-<div class="form-actions">
-  <% if @withdraw_record.unprocess? && can?(:manage, WithdrawRecord) %>
-
-    <%= link_to withdraw_process_txt(@withdraw_record),
-      processed_admin_withdraw_record_path(@withdraw_record),
-      method: :PATCH, data: {confirm: '确认打款？'},
-      class: "btn #{withdraw_process_class(@withdraw_record)}" %>
-
-    <%= link_to '拒绝', close_admin_withdraw_record_path(@withdraw_record),
-      method: :PATCH, data: {confirm: '确认拒绝，并关闭此提现申请？'},
-      class: 'btn btn-danger' %>
-
-  <% end %>
-</div>
-
-<br />
