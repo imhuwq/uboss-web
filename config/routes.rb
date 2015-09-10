@@ -30,7 +30,7 @@ Rails.application.routes.draw do
   post 'mobile_auth_code/create', to: 'mobile_auth_code#create'
   get  'mobile_captcha/send_with_captcha', to: 'mobile_auth_code#send_with_captcha'
 
-  resources :users, param: :name, only: [] do
+  resources :users, param: :login, only: [] do
     member do
       get :follow
       get :unfollow

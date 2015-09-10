@@ -16,11 +16,11 @@ class UsersController < ApplicationController
   end
 
   def follow
-    @user = Attention.new(follower_id: params[:user_id], following_id: current_user.id)
+    @user = Attention.new(following_id: current_user.id, follower_id: params[:user_id])
   end
 
   private
   def find_user
-    @user = User.find_by_name(params[:name])
+    @user = User.find_by_login(params[:login])
   end
 end
