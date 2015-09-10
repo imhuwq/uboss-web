@@ -25,6 +25,7 @@ class Admin::SellersController < AdminController
       from_service_rate = user_info.service_rate
       if to_service_rate.to_f >= 5 && to_service_rate.to_f <= 10
         user_info.update(service_rate: to_service_rate)
+        user_info.service_rate_histroy = {}
         user_info.service_rate_histroy[Time.now.to_datetime] = { from_service_rate: from_service_rate, to_service_rate: to_service_rate }
         if user_info.save
           flash[:success] = '保存成功'

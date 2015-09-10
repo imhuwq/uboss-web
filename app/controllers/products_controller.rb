@@ -1,5 +1,6 @@
 # 商品展示
 class ProductsController < ApplicationController
+
   def index
     @products = append_default_filter Product.published.includes(:asset_img), order_column: :updated_at
     render partial: 'products/product', collection: @products if request.xhr?
@@ -31,4 +32,5 @@ class ProductsController < ApplicationController
       format.js
     end
   end
+
 end

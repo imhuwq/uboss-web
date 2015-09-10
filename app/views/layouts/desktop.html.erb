@@ -26,17 +26,15 @@
 							<ul>
 								<li class="header_tag"><a href="<%= root_path  %>" >关于UBOSS</a></li>
 								<li class="header_tag"><a href="service_centre_consumer">服务中心</a></li>
-								<% if not Rails.env.production? %>
-								  <% if current_user and current_user.admin? %>
-									<li >
-									  <a href="<%= admin_root_path %>">后台</a>
-									</li>
-								  <% else %>
-									<li>
-									  <a href="<%= new_user_session_path %>" >登录/注册</a>
-									</li>
-								  <% end %>
-								<% end %>
+                <% if current_user and current_user.admin? %>
+                  <li >
+                    <a href="<%= admin_root_path %>">后台</a>
+                  </li>
+                <% else %>
+                  <li>
+                    <a href="<%= new_user_session_path %>" >登录/注册</a>
+                  </li>
+                <% end %>
 						</ul>
 					</nav>
 				</div><!-- .header -->

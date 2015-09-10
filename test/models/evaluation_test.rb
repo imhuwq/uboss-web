@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class EvaluationTest < ActiveJob::TestCase
+class EvaluationTest < ActiveSupport::TestCase
   describe 'Create Evaluation' do
     it 'should have match attrs' do
       buyer = create(:user)

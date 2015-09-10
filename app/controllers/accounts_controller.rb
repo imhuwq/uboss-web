@@ -1,4 +1,5 @@
 class AccountsController < ApplicationController
+
   layout :login_layout, only: [:set_password, :new_password, :merchant_confirm]
 
   before_action :authenticate_user!

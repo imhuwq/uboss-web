@@ -12,7 +12,8 @@ FactoryGirl.define do
 
     factory :user_with_onek_income do
       after(:create) do |user|
-        create(:user_info, user: user, income: 1000)
+        user.user_info.income = 1000
+        user.user_info.save
       end
     end
   end

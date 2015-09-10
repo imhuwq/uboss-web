@@ -57,8 +57,8 @@ class Evaluation < ActiveRecord::Base
 
   def self.product_good_reputation_rate(product_id) # 商品好评率
     product = Product.find_by_id(product_id)
-    rate = product.good_evaluation/(product.good_evaluation + product.normal_evaluation + product.bad_evaluation) rescue 1
-    "#{'%.2f' % (rate.try(:to_f)*100)}%"
+    rate = product.good_evaluation/(product.good_evaluation + product.normal_evaluation + product.bad_evaluation).to_f rescue 1
+    "#{'%.2f' % (rate*100)}%"
   end
 
   private
