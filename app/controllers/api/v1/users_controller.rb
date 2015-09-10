@@ -1,5 +1,5 @@
 class Api::V1::UsersController < ApiBaseController
-  before_action :find_user, only: [:followers, :following]
+  before_action :find_user
 
   def followers
     @users = Attention.where(follower_id: @user.id)
@@ -10,7 +10,7 @@ class Api::V1::UsersController < ApiBaseController
   end
 
   def unfollow
-    @user = Attention.where(following_id: current_user.id, follower_id: params[:user_id])
+    @user = Attention.where(following_id: @user.id, follower_id: params[:user_id]).first
     if @user.destroy
       render_success("取消关注成功")
     else
@@ -19,7 +19,7 @@ class Api::V1::UsersController < ApiBaseController
   end
 
   def follow
-    @user = Attention.new(following_id: current_user.id, follower_id: params[:user_id])
+    @user = Attention.new(following_id: @user.id, follower_id: params[:user_id])
     if @user.save
       render_success("关注成功")
     else
