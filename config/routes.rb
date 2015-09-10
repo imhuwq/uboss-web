@@ -30,12 +30,22 @@ Rails.application.routes.draw do
   post 'mobile_auth_code/create', to: 'mobile_auth_code#create'
   get  'mobile_captcha/send_with_captcha', to: 'mobile_auth_code#send_with_captcha'
 
+  resources :users, param: :name, only: [] do
+    member do
+      get :follow
+      get :unfollow
+      get :following
+      get :followers
+    end
+  end
+
   resources :stores, only: [:show]
   resources :orders, only: [:new, :create, :show] do
     get 'received', on: :member
     get 'pay_complete', on: :member
     resource :charge, only: [:create]
   end
+
   resources :products do
     post :save_mobile, :democontent,  on: :collection
   end
@@ -82,6 +92,7 @@ Rails.application.routes.draw do
       end
       resources :personal_authentications, only: [:index]
       resources :enterprise_authentications, only: [:index]
+
       resources :users, except: [:destroy] do
         resource :personal_authentication do
           get :change_status, on: :member

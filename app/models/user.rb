@@ -124,6 +124,14 @@ class User < ActiveRecord::Base
 
   end
 
+  def followers_size
+    Attention.where(follower_id: self.id).size
+  end
+
+  def following_size
+    Attention.where(following_id: self.id).size
+  end
+
   def bind_agent(binding_code)
     agent_user = if binding_code.present?
                    User.agent.find_by(agent_code: binding_code)
