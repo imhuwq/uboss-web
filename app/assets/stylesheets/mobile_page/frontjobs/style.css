@@ -744,10 +744,13 @@ a{
 	display: block;
 }
 
-.close_order_btn{
-  padding-top: 20px;
-  padding-bottom: 20px;
+.close_order {
   text-align: center;
+
+  .close_order_btn{
+    padding-top: 20px;
+    padding-bottom: 20px;
+  }
 }
 
 .accunt_adilbtnt{
