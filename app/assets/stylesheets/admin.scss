@@ -127,7 +127,7 @@ a.admin-box:hover{opacity: 0.9;  filter: alpha(opacity=90);color:#fff;}
     /* Safari 和 Chrome: */
     -webkit-animation: loading 3s linear infinite ;
     /* Opera: */
-    -o-animation: loading 3s linear  infinite ;  
+    -o-animation: loading 3s linear  infinite ;
 }
 @keyframes loading
 {
@@ -269,3 +269,10 @@ a.admin-box:hover{opacity: 0.9;  filter: alpha(opacity=90);color:#fff;}
   color: #000;
 }
 
+.v-center {
+  display: block;
+  position: relative;
+	top: 50%;
+	transform: translateY(-50%);
+	-webkit-transform: translateY(-50%);
+}

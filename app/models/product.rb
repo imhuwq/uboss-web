@@ -3,6 +3,9 @@ class Product < ActiveRecord::Base
   include Orderable
   include Descriptiontable
 
+  OFFICIAL_AGENT_NAME = 'UBOSS创客权'.freeze
+
+  # FIXME 请使用helper or i18n 做view的数值显示
   DataCalculateWay = { 0 => '按金额', 1 => '按售价比例' }
   DataBuyerPay = { true => '买家付款', false => '包邮' }
 
@@ -20,6 +23,8 @@ class Product < ActiveRecord::Base
 
   before_create :generate_code
   before_save :calculates_before_save
+
+  scope :official_agent, -> { find_by(user_id: User.official_account.id, name: OFFICIAL_AGENT_NAME) }
 
   def asset_img
     super || build_asset_img
@@ -67,7 +72,7 @@ class Product < ActiveRecord::Base
   end
 
   def is_official_agent?
-    user_id == User.official_account.id && name == 'UBOSS创客权'
+    user_id == User.official_account.id && name == OFFICIAL_AGENT_NAME
   end
 
   def total_sells
