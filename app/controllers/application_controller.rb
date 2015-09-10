@@ -9,6 +9,30 @@ class ApplicationController < ActionController::Base
 
   before_action :configure_permitted_parameters, if: :devise_controller?
 
+  def render_success(msg = nil, data = {})
+    render :json => {
+      success: true,
+      message: msg.to_s
+    }.merge(data)
+  end
+
+  def render_fail(msg = nil, model = nil)
+    res = {
+      success: false,
+      message: msg.to_s,
+    }
+
+    if model
+      if model.kind_of?(Hash)
+        res.merge!(model)
+      else
+        res.merge!( errors: flatten_errors(model.errors.messages) )
+      end
+    end
+
+    render :json => res
+  end
+
   protected
   # default: order by created_at, limit 20, page 1
   # order_column to change order column and page columns

@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
-  before_action :authenticate_user!
-  before_action :find_user, only: [:followers, :following]
+  #before_action :authenticate_user!
+  before_action :find_user
 
   def followers
     @users = Attention.where(follower_id: @user.id)
@@ -11,12 +11,21 @@ class UsersController < ApplicationController
   end
 
   def unfollow
-    @user = Attention.where(following_id: current_user.id, follower_id: params[:user_id])
-    @user.destroy
+    @user = Attention.where(following_id: @user.id, follower_id: params[:user_id]).first
+    if @user.destroy
+      render_success('取消关注成功')
+    else
+      render_fail('取消关注失败')
+    end
   end
 
   def follow
-    @user = Attention.new(following_id: current_user.id, follower_id: params[:user_id])
+    @user = Attention.new(following_id: @user.id, follower_id: params[:user_id])
+    if @user.save
+      render_success('关注成功')
+    else
+      render_fail('关注失败')
+    end
   end
 
   private
