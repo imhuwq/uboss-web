@@ -122,12 +122,6 @@
 
 <br />
 
-<% if @order.may_close? %>
-  <div class="close_order">
-    <%= link_to "取消订单", cancel_order_path(@order), data: { confirm: '确认取消订单？' }, id: 'close-order-btn', class: 'close_order_btn' %>
-  </div>
-<% end %>
-
 <% if available_pay?(@order, @product) %>
   <div class="accunt_adil_box3">
     <%= link_to "支付", '#', id: 'wx-pay-btn', class: 'accunt_adilbtn' %>
@@ -148,6 +142,12 @@
 <% elsif @order.shiped? %>
   <div class="accunt_adil_box3">
     <%= link_to "确认收货", received_order_path(@order), class:"accunt_adilbtn", data: { confirm: '确认收货？' } %>
+  </div>
+<% end %>
+
+<% if @order.may_close? %>
+  <div class="close_order">
+    <%= link_to "取消订单", cancel_order_path(@order), data: { confirm: '确认取消订单？' }, id: 'close-order-btn', class: 'close_order_btn' %>
   </div>
 <% end %>
 
