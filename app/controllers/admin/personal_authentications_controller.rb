@@ -16,6 +16,10 @@ class Admin::PersonalAuthenticationsController < AdminController
   def show
     if is_super_admin?
       @personal_authentication = PersonalAuthentication.find_by(user_id:( params[:user_id] || current_user))
+      unless @personal_authentication.present?
+        flash[:notice] = '您还没有认证/您查找的用户不存在'
+        redirect_to action: :new
+      end
     else
       @personal_authentication = PersonalAuthentication.find_by(user_id: current_user)
       unless @personal_authentication.present?
