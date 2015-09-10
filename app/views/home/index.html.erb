@@ -1,3 +1,9 @@
+<%= content_for :extra_meta_tags do %>
+  <% if Rails.env.production? %>
+    <%= seo_meta_tag %>
+  <% end %>
+<% end %>
+
 <div class="banner-slider">
   <div id='slider' class='swipe'>
     <div class='swipe-wrap'>
@@ -163,6 +169,5 @@
 			<div class="title"><a href="/products/25">【正品】韩国 RYOE吕洗发水400g</a></div>
 			<div class="price">￥79.0 <span>￥127.0</span></div>
 		</div>
-	</div>	
+	</div>
 </div><!-- box -->
-
