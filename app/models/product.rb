@@ -24,7 +24,7 @@ class Product < ActiveRecord::Base
   before_create :generate_code
   before_save :calculates_before_save
 
-  def official_agent
+  def self.official_agent
     find_by(user_id: User.official_account.try(:id), name: OFFICIAL_AGENT_NAME)
   end
 

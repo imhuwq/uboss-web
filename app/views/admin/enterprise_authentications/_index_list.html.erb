@@ -1,67 +1,71 @@
-<div class="row text-center">
-  <div class="col-xs-2"></div>
-  <div class="col-xs-2">
-    <div>已提交</div>
-    <b style="font-size:3em;"><%= EnterpriseAuthentication.posted.count %></b>
-  </div>
-  <div class="col-xs-2">
-    <div>审核中</div>
-    <b style="font-size:3em;"><%= EnterpriseAuthentication.review.count %></b>
-  </div>
-  <div class="col-xs-2">
-    <div>已通过</div>
-    <b style="font-size:3em;"><%= EnterpriseAuthentication.pass.count %></b>
-  </div>
-  <div class="col-xs-2">
-    <div>未通过</div>
-    <b style="font-size:3em;"><%= EnterpriseAuthentication.no_pass.count %></b>
+<div class="container nogap">
+	<div class="box-w25">
+		<div class="admin-box main-bg-color">
+	    <h4>已提交</h4>
+	    <h1 class="num"><%= EnterpriseAuthentication.posted.count %></h1>
+	  </div>
+	</div>
+	<div class="box-w25">
+		<div class="admin-box yellow-bg-color">
+	    <h4>审核中</h4>
+	    <h1 class="num"><%= EnterpriseAuthentication.review.count %></h1>
+		</div>
+	</div>
+	<div class="box-w25">
+		<div class="admin-box blue-bg-color">
+	    <h4>已通过</h4>
+	    <h1 class="num"><%= EnterpriseAuthentication.pass.count %></h1>
+		</div>
+	</div>
+  <div class="box-w25">
+  	<div class="admin-box red-bg-color">
+	    <h4>未通过</h4>
+	    <h1 class="num"><%= EnterpriseAuthentication.no_pass.count %></h1>
+	  </div>
   </div>
 </div>
-<%= table_for(@enterprise_authentications) do |t| %>
-  <%= t.cell :user_store_identify do |obj| %>
-    <%= link_to url_for(controller: 'admin/enterprise_authentications', action: :show, user_id: obj.user_id) do %>
-    <div class="col-sm-3">
-      <%= image_tag(obj.user.avatar.url(:thumb), size: "100x80", alt: "-") %>
-    </div>
-    <div class="col-sm-9">
-      <div class="col-sm-12">创客名称：<%= obj.user.identify %></div>
-      <div class="col-sm-12">绑定手机：<%= obj.user.login %></div>
-    </div>
-    <% end %>
-  <% end %>
-  <%= t.cell :created_at %>
-  <%= t.cell :status do |obj| %>
-    <% case obj.status %>
-    <% when 'posted' %>
-    <span class='label label-info'>
-    <% when 'review' %>
-    <span class='label label-warning'>
-    <% when 'pass' %>
-    <span class='label label-success'>
-    <% when 'no_pass' %>
-    <span class='label label-danger'>
-    <% else %>
-    <span class='label label-default'>
-    <% end %>
-    <%= obj.status_i18n %></span>
-  <% end %>
-  <%= t.cell :action do |obj| %>
-    <% case obj.status %>
-    <% when 'posted' %>
-      <%= link_to '锁定资料', '###', onclick:"change_status(#{obj.user_id},'review')", class:"label label-warning" %>
-      <%= link_to '通过', '###', onclick:"change_status(#{obj.user_id},'pass')", class:'label label-success'  %>
-      <%= link_to '不通过', '###', onclick:"change_status(#{obj.user_id},'no_pass')", class:'label label-danger' %>
-    <% when 'review' %>
-      <%= link_to '通过', '###', onclick:"change_status(#{obj.user_id},'pass')", class:'label label-success'  %>
-      <%= link_to '不通过', '###', onclick:"change_status(#{obj.user_id},'no_pass')", class:'label label-danger' %>
-    <% when 'pass' %>
-      <%= link_to '不通过', '###', onclick:"change_status(#{obj.user_id},'no_pass')", class:'label label-danger' %>
-    <% when 'no_pass' %>
-      <%= link_to '通过', '###', onclick:"change_status(#{obj.user_id},'pass')", class:'label label-success'  %>
-    <% end %>
-  <% end %>
-<%- end %>
-<%= paginate @enterprise_authentications %>
+<br />
+<div class="container">
+	<table class="list-table" id="enterprise_authentications">
+		<thead>
+			<th>创客名称</th>
+			<th>绑定手机</th>
+			<th>创建时间</th>
+			<th>状态</th>
+			<th>操作</th>
+		</thead>
+		<% @enterprise_authentications.each do |obj| %>
+		<tr id="enterprise_authentication_<%= obj.user_id %>">
+			<td class="text-left">
+				 <%= link_to url_for(controller: 'admin/personal_authentications', action: :show, user_id: obj.user_id) do %>			    
+			      <%= image_tag(obj.user.avatar.url(:thumb), size: "80x80", alt: "-") %>　		    
+			      <%= obj.user.identify %>
+			    </div>
+			    <% end %>
+			</td>
+			<td><%= obj.created_at %></td>
+			<td>
+				<% case obj.status %>
+			    <% when 'posted' %>
+			    	<span class='label label-info'>
+			    <% when 'review' %>
+			    	<span class='label label-warning'>
+			    <% when 'pass' %>
+			    	<span class='label label-success'>
+			    <% when 'no_pass' %>
+			    	<span class='label label-danger'>
+			    <% else %>
+			    	<span class='label label-default'>
+			  <% end %>
+			    <%= obj.status_i18n %>
+			  </span>
+			</td>
+		</tr>
+		<% end %>
+	</table>
+	<br />
+	<%= paginate @enterprise_authentications %>
+</div>
 <script type="text/javascript">
 function change_status(user_id,status) {
   var id = id
