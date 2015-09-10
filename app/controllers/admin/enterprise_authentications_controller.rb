@@ -1,19 +1,15 @@
 class Admin::EnterpriseAuthenticationsController < AdminController
+
+  load_and_authorize_resource
+
   def index
-    if super_admin?
-      @enterprise_authentications = EnterpriseAuthentication.order("updated_at DESC").page(params[:page] || 1)
-    else
-      flash[:notice] = "需要管理员权限"
-      redirect_to action: :show
-    end
+    @enterprise_authentications = @enterprise_authentications.accessible_by(current_ability).order("updated_at DESC").page(params[:page] || 1)
   end
 
   def new
     if EnterpriseAuthentication.find_by(user_id: current_user).present?
       flash[:alert] = '您的验证信息已经提交，请检查。'
       redirect_to action: :show
-    else
-      @enterprise_authentication = EnterpriseAuthentication.new
     end
   end
 
@@ -30,8 +26,10 @@ class Admin::EnterpriseAuthenticationsController < AdminController
   end
 
   def edit
-    enterprise_authentication = EnterpriseAuthentication.find_by!(user_id: current_user)
-    if [:review, :pass].include?(enterprise_authentication.status)
+    enterprise_authentication = EnterpriseAuthentication.find_by(user_id: current_user)
+    if !enterprise_authentication.present?
+      redirect_to action: :new
+    elsif [:review, :pass].include?(enterprise_authentication.status)
       flash[:alert] = '当前状态不允许修改。'
       redirect_to action: :show
     else
@@ -67,8 +65,8 @@ class Admin::EnterpriseAuthenticationsController < AdminController
       return
     else
       @enterprise_authentication = EnterpriseAuthentication.find_by!(user_id: current_user)
-      @enterprise_authentication.update(enterprise_authentication_params)
-      if @enterprise_authentication.save
+      hash = enterprise_authentication_params.merge({status: 'posted'})
+      if @enterprise_authentication.update(hash)
         MobileAuthCode.find_by(code: enterprise_authentication_params[:mobile_auth_code]).try(:destroy)
         flash[:success] = '保存成功'
         redirect_to action: :show
@@ -133,7 +131,7 @@ class Admin::EnterpriseAuthenticationsController < AdminController
   def valid_update_params
     @errors = []
     hash = {
-      '验证码错误或已过期。': MobileAuthCode.auth_code(enterprise_authentication_params[:mobile], enterprise_authentication_params[:mobile_auth_code]),
+      # '验证码错误或已过期。': MobileAuthCode.auth_code(enterprise_authentication_params[:mobile], enterprise_authentication_params[:mobile_auth_code]),
       '公司名不能为空。': enterprise_authentication_params[:enterprise_name],
       '地址不能为空。': enterprise_authentication_params[:address],
       '您不能操作这个用户。': current_user.id == (params[:user_id].to_i || nil)

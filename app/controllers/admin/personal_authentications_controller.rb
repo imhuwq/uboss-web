@@ -27,7 +27,9 @@ class Admin::PersonalAuthenticationsController < AdminController
 
   def edit
     personal_authentication = PersonalAuthentication.find_by(user_id: current_user)
-    if [:review, :pass].include?(personal_authentication.status)
+    if !personal_authentication.present?
+      redirect_to action: :new
+    elsif [:review, :pass].include?(personal_authentication.status)
       flash[:alert] = '当前状态不允许修改。'
       redirect_to action: :show
     else
@@ -63,10 +65,8 @@ class Admin::PersonalAuthenticationsController < AdminController
       redirect_to action: :edit
       return
     else
-      @personal_authentication.update(personal_authentication_params)
-      @personal_authentication.status = 'posted'
-
-      if @personal_authentication.save
+      hash = personal_authentication_params.merge({status: 'posted'})
+      if @personal_authentication.update(hash)
         MobileAuthCode.find_by(code: personal_authentication_params[:mobile_auth_code]).try(:destroy)
         flash[:success] = '保存成功'
         redirect_to action: :show

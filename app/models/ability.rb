@@ -57,7 +57,7 @@ class Ability
     can :read, DivideIncome, user_id: user.id
     can :read,   WithdrawRecord, user_id: user.id
     can :create, WithdrawRecord, user_id: user.id
-    can :manage, :sellers
+    can :read, :sellers
     can :manage, BankCard, user_id: user.id
   end
 
