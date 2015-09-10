@@ -135,9 +135,8 @@
         <% else %>
           <div class='v-center'>
             <h2>购买UBoss创客成权为创客</h2>
-            <% if @official_agent_product %>
-              <%#= image_tag @official_agent_product.image_url(:w640) %>
-              <%# 这句登录会报错 %>
+            <% if @official_agent_product.present? %>
+              <%= image_tag @official_agent_product.image_url(:w640) %>
             <% end %>
           </div>
         <% end %>
