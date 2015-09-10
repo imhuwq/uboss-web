@@ -24,7 +24,9 @@ class Product < ActiveRecord::Base
   before_create :generate_code
   before_save :calculates_before_save
 
-  scope :official_agent, -> { find_by(user_id: User.official_account.try(:id), name: OFFICIAL_AGENT_NAME) }
+  def official_agent
+    find_by(user_id: User.official_account.try(:id), name: OFFICIAL_AGENT_NAME)
+  end
 
   def asset_img
     super || build_asset_img
