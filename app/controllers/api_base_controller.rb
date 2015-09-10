@@ -17,6 +17,30 @@ class ApiBaseController < ActionController::API
     render_error :wrong_params, exception.message
   end
 
+  def render_success(msg = nil, data = {})
+    render :json => {
+      success: true,
+      message: msg.to_s
+    }.merge(data)
+  end
+
+  def render_fail(msg = nil, model = nil)
+    res = {
+      success: false,
+      message: msg.to_s,
+    }
+
+    if model
+      if model.kind_of?(Hash)
+        res.merge!(model)
+      else
+        res.merge!( errors: flatten_errors(model.errors.messages) )
+      end
+    end
+
+    render :json => res
+  end
+
   protected
 
   def render_error(errid, errmsg = nil, status_code = nil)

@@ -71,6 +71,14 @@ Rails.application.routes.draw do
         patch :update_password
         get :orders, :privilege_cards
       end
+      resource :users, only: [] do
+        member do
+          get :followers
+          get :following
+          get :unfollow
+          get :follow
+        end
+      end
     end
   end
 
