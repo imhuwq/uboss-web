@@ -132,12 +132,14 @@
 			<div class="box-w50">
 				<h3 class="page-title">日营业额</h3>
         <div class="admin-box list-box">
-          <div class="box-w50"><p class="list-title">日期</p></div>
-          <div class="box-w50"><p class="list-title">营业额</p></div>
+          <div class="box-w25"><p class="list-title">日期</p></div>
+          <div class="box-w25"><p class="list-title">营业额</p></div>
+          <div class="box-w25"><p class="list-title">日期</p></div>
+          <div class="box-w25"><p class="list-title">营业额</p></div>
           <% @sold_daily_reports.each do |report| %>
             <!-- 数据 -->
-            <div class="box-w50"><p><%= report.day %></p></div>
-            <div class="box-w50"><p><%= number_to_currency report.amount %></p></div>
+            <div class="box-w25"><p><%= report.day %></p></div>
+            <div class="box-w25"><p><%= number_to_currency report.amount %></p></div>
             <!-- 数据结束 -->
           <% end %>
         </div><!-- list-box -->
@@ -197,16 +199,17 @@
         <div class="box-w50">
           <h3 class="page-title">每日收益</h3>
           <div class="admin-box list-box">
-            <div class="box-w50"><p class="list-title">日期</p></div>
-            <div class="box-w50"><p class="list-title">收益</p></div>
+            <div class="box-w25"><p class="list-title">日期</p></div>
+            <div class="box-w25"><p class="list-title">收益</p></div>
+            <div class="box-w25"><p class="list-title">日期</p></div>
+            <div class="box-w25"><p class="list-title">收益</p></div>
             <!-- 数据 -->
             <% @agent_daily_reports.each do |report| %>
               <!-- 数据 -->
-              <div class="box-w50"><p><%= report.day %></p></div>
-              <div class="box-w50"><p><%= number_to_currency report.amount %></p></div>
+              <div class="box-w25"><p><%= report.day %></p></div>
+              <div class="box-w25"><p><%= number_to_currency report.amount %></p></div>
               <!-- 数据结束 -->
             <% end %>
-            <!-- 数据结束 -->
           </div><!-- list-box -->
         </div><!-- box-w50 -->
         <div class="box-w50">
