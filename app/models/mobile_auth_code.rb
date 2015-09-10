@@ -36,7 +36,7 @@ class MobileAuthCode < ActiveRecord::Base
   end
 
   def send_sms(tpl_id = 1) # 发送短信
-    PostMan.send_sms(mobile, code, tpl_id)
+    PostMan.send_sms(mobile, {code: code}, tpl_id)
   end
 
   def send_code # 发送验证码

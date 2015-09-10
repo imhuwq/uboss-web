@@ -116,7 +116,7 @@ class AccountsController < ApplicationController
 
   def send_message # 保存发送短信给商家的信息
     mobile = params[:send_message][:mobile]
-    result = PostMan.send_sms(mobile, current_user.find_or_create_agent_code, 923_651)
+    result = PostMan.send_sms(mobile, {code: current_user.find_or_create_agent_code}, 923_651)
     if result[:success]
       AgentInviteSellerHistroy.find_or_create_by(mobile: mobile) do |history|
         history.agent_id = current_user.id
