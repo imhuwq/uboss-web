@@ -14,7 +14,7 @@ class Admin::EnterpriseAuthenticationsController < AdminController
   end
 
   def show
-    if super_admin?
+    if current_user.is_super_admin?
       @enterprise_authentication = EnterpriseAuthentication.find_by!(user_id:( params[:user_id] || current_user))
     else
       @enterprise_authentication = EnterpriseAuthentication.find_by(user_id: current_user)
