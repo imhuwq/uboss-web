@@ -1,11 +1,14 @@
 @import 'shared/variables';
+@import "font-awesome-sprockets";
+@import "font-awesome";
 @import 'redactor-rails';
 @import "chosen.min";
+
 @import "admin/form";
 @import "admin/table";
 @import "admin/orders";
 @import "admin/user";
-@import "desktop/base";
+@import "shared/base";
 
 body{background: #1A1A1A;color:#A6A6A6;}
 a{color:#A6A6A6;}
