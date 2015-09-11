@@ -16,7 +16,8 @@
       <h5>
         <% if current_user.agent.present? %>
           <%= current_user.agent.identify %>
-        <% else %>
+        <% end %>
+        <% if current_user.check_bind_condition %>
           <%= link_to "绑定创客", binding_agent_admin_account_path, class: 'btn btn-primary btn-xs' %>
         <% end %>
       </h5>

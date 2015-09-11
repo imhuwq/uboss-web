@@ -1,6 +1,6 @@
 <div class="row">
 
-  <% if current_user.present? and current_user.seller? and !current_user.authenticated? and @agent.present? %>
+  <% if current_user.present? and current_user.check_bind_condition and @agent.present? %>
     <%= horizon_form_for(:seller, url: seller_path(current_user), method: 'PUT') do |f| %>
     <div class="well">
       <h4>注册绑定UBOSS</h4>
@@ -25,13 +25,13 @@
       <%= link_to "返回主页", root_path, class: "btn btn-large btn-default col-xs-12"%>
     </div>
     <% end %>
-  <% elsif current_user.present? and current_user.authenticated? and current_user.seller? %>
+  <% elsif current_user.present? %>
     <div class="well">
       <h4>注册绑定UBOSS</h4>
       <% if @agent.present? %>
         <h6>您将与<%= @agent.try(:identify) %>创客进行绑定</h6>
       <% end %>
-      <div class="text-center" style="margin-top:30px;margin-bottom:10px;">您已经是认证商家，不能更换绑定</div>
+      <div class="text-center" style="margin-top:30px;margin-bottom:10px;">您现在的状况不允许更换绑定</div>
 
     </div>
     <div class="button_div  col-xs-12"  style="margin-top:10px;padding-bottom:30px;">

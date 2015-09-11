@@ -16,11 +16,8 @@ class SellersController < AdminController
       user.admin = true
       if user.save and user.user_roles << @user_role and user.save
         MobileAuthCode.find_by(code: allow_params[:mobile_auth_code]).try(:destroy)
-        if user.agent.present?
-          flash[:success] = "成功注册并绑定创客#{user.agent.identify}."
-        else
-          flash[:success] = "注册成功"
-        end
+        user.bind_agent(user.agent.try(:agent_code))
+        flash[:success] = "成功注册并绑定创客#{user.agent.identify}."
         sign_in user
         redirect_to root_path
         return
@@ -33,17 +30,18 @@ class SellersController < AdminController
 
   def update
     valid_create_params
-    if current_user.seller? and !current_user.authenticated?
+    if current_user.check_bind_condition
       if @errors.present?
         flash[:error] = @errors.join("\n")
       else
         current_user.update(agent_id: allow_params[:agent_id])
+        current_user.bind_agent(user.agent.try(:agent_code))
         flash[:success] = "成功绑定创客#{current_user.agent.identify}！"
         redirect_to admin_root_path
         return
       end
     else
-      flash[:error] = "您已经是认证商家，不能更换绑定."
+      flash[:error] = model_errors(current_user).join('<br/>')
     end
     redirect_to action: :new, agent_code: User.find_by(id: allow_params[:agent_id]).try(:agent_code)
   end

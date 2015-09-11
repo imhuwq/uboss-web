@@ -131,14 +131,31 @@ class User < ActiveRecord::Base
                    User.official_account
                  end
 
-    if agent_user.present?
+    if self.check_bind_condition
+      if agent_user.is_super_admin?
+        self.user_info.service_rate = 6
+      else
+        self.user_info.service_rate = 5
+      end
       self.agent = agent_user
       self.admin = true
       self.user_roles << UserRole.seller if not self.seller?
       self.save
     else
-      errors.add(:agent_code, :invalid)
       false
+    end
+  end
+
+  def check_bind_condition # 检查绑定条件
+    if !self.agent.present? # 如果没有绑定,许可
+      return true
+    else
+      if self.agent.is_super_admin? && !self.authenticated? # 如果绑定对象是超级管理员,且还没有通过认证,许可
+        return true
+      else # 其他情况不能更换绑定
+        self.errors[:base] << "您现在的状况不允许更换绑定"
+        return false
+      end
     end
   end
 
