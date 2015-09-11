@@ -12,7 +12,7 @@ $ ->
       console.log mobile_submit_time
       return false if mobile_submit_time != 0
       $.ajax
-        url: '/mobile_auth_code/create',
+        url: '/mobile_captchas/create',
         type: 'POST',
         data: {mobile: mobile},
       .always ->
@@ -62,7 +62,7 @@ $ ->
     return false if mobile_submit_time != 0
     captcha_key = $('input[name=captcha_key]').val()
     $.ajax
-      url: '/mobile_captcha/send_with_captcha',
+      url: '/mobile_captchas/send_with_captcha',
       type: 'GET',
       data: {
         mobile: mobile

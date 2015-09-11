@@ -1,4 +1,4 @@
-class MobileCaptchaController < ApplicationController
+class MobileCaptchasController < ApplicationController
 
   def create
     invoke_captcha_sending

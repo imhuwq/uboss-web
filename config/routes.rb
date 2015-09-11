@@ -27,8 +27,8 @@ Rails.application.routes.draw do
   get 'agreements/maker'
   get 'agreements/register'
 
-  post 'mobile_auth_code/create', to: 'mobile_auth_code#create'
-  get  'mobile_captcha/send_with_captcha', to: 'mobile_auth_code#send_with_captcha'
+  post 'mobile_captchas/create', to: 'mobile_captchas#create'
+  get  'mobile_captchas/send_with_captcha', to: 'mobile_captchas#send_with_captcha'
 
   resources :stores, only: [:show]
   resources :orders, only: [:new, :create, :show] do

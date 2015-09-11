@@ -10,7 +10,7 @@ $ ->
       return false if mobile_submit_time != 0
       sendBtn.addClass("disabled")
       $.ajax
-        url: '/mobile_auth_code/create',
+        url: '/mobile_captchas/create',
         type: 'POST',
         data: {mobile: mobile},
       .done ->
