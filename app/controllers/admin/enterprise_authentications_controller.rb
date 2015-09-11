@@ -131,7 +131,7 @@ class Admin::EnterpriseAuthenticationsController < AdminController
   def valid_update_params
     @errors = []
     hash = {
-      # '验证码错误或已过期。': MobileAuthCode.auth_code(enterprise_authentication_params[:mobile], enterprise_authentication_params[:mobile_auth_code]),
+      '验证码错误或已过期。': MobileAuthCode.auth_code(enterprise_authentication_params[:mobile], enterprise_authentication_params[:mobile_auth_code]),
       '公司名不能为空。': enterprise_authentication_params[:enterprise_name],
       '地址不能为空。': enterprise_authentication_params[:address],
       '您不能操作这个用户。': current_user.id == (params[:user_id].to_i || nil)
