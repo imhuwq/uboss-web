@@ -45,7 +45,7 @@
         <span style="font-size:2em;"><%= @agent.seller_total_joins.count %></span>
 			</div>
 		</div>
-    <%= table_for(@agent.seller) do |t| %>
+    <%= table_for(@agent.sellers) do |t| %>
       <%= t.cell :seller_name do |obj| %>
         <%= link_to obj.identify, url_for(controller: 'admin/sellers', action: :show, id: obj) %>
       <% end %>
