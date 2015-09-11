@@ -15,7 +15,7 @@ class Admin::PersonalAuthenticationsController < AdminController
 
   def show
     if super_admin?
-      @personal_authentication = PersonalAuthentication.find_by(user_id:( params[:user_id] || current_user))
+      @personal_authentication = PersonalAuthentication.find_by!(user_id:( params[:user_id] || current_user))
     else
       @personal_authentication = PersonalAuthentication.find_by(user_id: current_user)
       unless @personal_authentication.present?
