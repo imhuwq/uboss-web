@@ -34,6 +34,7 @@ Rails.application.routes.draw do
   resources :orders, only: [:new, :create, :show] do
     get 'received', on: :member
     get 'pay_complete', on: :member
+    get 'cancel', on: :member
     resource :charge, only: [:create]
   end
   resources :products do
