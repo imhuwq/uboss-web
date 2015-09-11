@@ -51,6 +51,7 @@ class User < ActiveRecord::Base
   end
   before_create :set_mobile
   before_create :build_user_info, if: -> { user_info.blank? }
+  before_save   :set_service_rate
 
   scope :admin, -> { where(admin: true) }
   scope :agent, -> { joins(:user_roles).where(user_roles: {name: 'agent'}) }
@@ -132,11 +133,6 @@ class User < ActiveRecord::Base
                  end
 
     if self.check_bind_condition
-      if agent_user.is_super_admin?
-        self.user_info.service_rate = 6
-      else
-        self.user_info.service_rate = 5
-      end
       self.agent = agent_user
       self.admin = true
       self.user_roles << UserRole.seller if not self.seller?
@@ -293,6 +289,14 @@ class User < ActiveRecord::Base
   def set_mobile
     if !need_set_login?
       self.mobile ||= login
+    end
+  end
+
+  def set_service_rate
+    if self.agent.is_super_admin?
+      self.user_info.service_rate = 6
+    else
+      self.user_info.service_rate = 5
     end
   end
 end
