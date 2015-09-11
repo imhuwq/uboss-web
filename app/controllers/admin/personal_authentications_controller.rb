@@ -138,9 +138,12 @@ class Admin::PersonalAuthenticationsController < AdminController
 
   def valid_update_params
     @errors = []
-    code15 = /^[1-9]\d{7}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}$/ # 15位身份证号
-    code18 = /^[1-9]\d{5}[1-9]\d{3}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}([0-9]|X)$/ # 18位身份证号
-    identity_card_match = (personal_authentication_params[:identity_card_code] =~ code15 || personal_authentication_params[:identity_card_code] =~ code18)
+    # code15 = /^[1-9]\d{7}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}$/ # 15位身份证号
+    # code18 = /^[1-9]\d{5}[1-9]\d{3}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}([0-9]|X)$/ # 18位身份证号
+    # identity_card_match = (personal_authentication_params[:identity_card_code] =~ code15 || personal_authentication_params[:identity_card_code] =~ code18)
+    response = RestClient.get("http://apis.baidu.com/apistore/idservice/id?id=#{personal_authentication_params[:identity_card_code] }",{apikey:'e588fd9ec9f4af1684b69a9fc60e2bc5'})
+    json_response = ActiveSupport::JSON.decode response
+    identity_card_match = (json_response["retMsg"] =~ /success/)
     hash = {
       '验证码错误或已过期。': MobileCaptcha.auth_code(personal_authentication_params[:mobile], personal_authentication_params[:mobile_auth_code]),
       '姓名不能为空。': personal_authentication_params[:name],

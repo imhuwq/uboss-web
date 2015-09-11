@@ -7,31 +7,29 @@
 </div><!-- container -->
 <br />
 <div class="container nogap">
-
 <%= horizon_form_for current_user, url: admin_account_path, method: :patch do |f| %>
-
 	<div class="admin-box black-bg-color">
     <%= f.input :user_role, label: '当前角色' do %>
-        <% current_user.user_roles.each do |role| %>
-          <span class='label label-info'><%= role.display_name %></span>
-        <% end %>
+      <% current_user.user_roles.each do |role| %>
+        <span class='label label-info'><%= role.display_name %></span>
+      <% end %>
     <% end %>
 
     <%= f.input :agent, label: '绑定创客' do %>
-        <% if current_user.agent.present? %>
-          <%= current_user.agent.identify %>
-        <% else %>
-          <%= link_to "绑定创客", binding_agent_admin_account_path, class: 'btn' %>
-        <% end %>
+      <% if current_user.agent.present? %>
+        <%= current_user.agent.identify %>
+      <% else %>
+        <%= link_to "绑定创客", binding_agent_admin_account_path, class: 'btn' %>
+      <% end %>
     <% end %>
 
     <%= f.input :seller_role, label: '商家权限' do %>
-		<% if f.object.authenticated? %>
-			<span class="label label-success">已开通</span>
-		<% elsif f.object.is_seller? %>
-          	<%= link_to "我要认证", admin_user_personal_authentication_path(current_user),class: 'btn red-btn'%>
-      	<% else %>
-      		<%= link_to "我要开通", binding_agent_admin_account_path, class: 'btn red-btn' %>          	
+  		<% if f.object.authenticated? %>
+  			<span class="label label-success">已开通</span>
+  		<% elsif f.object.is_seller? %>
+      	<%= link_to "我要认证", admin_user_personal_authentication_path(current_user),class: 'btn red-btn'%>
+    	<% else %>
+    		<%= link_to "我要开通", binding_agent_admin_account_path, class: 'btn red-btn' %>
       <% end %>
     <% end %>
 
@@ -41,27 +39,25 @@
     </div>
 	<br />
 	<div class="admin-box black-bg-color">
-	    <%= f.input :avatar, hint: image_tag(current_user.avatar.url(:thumb))  %>
+    <%= f.input :avatar, hint: image_tag(current_user.avatar.url(:thumb))  %>
+    <div class="form-group">
+      	<label class="control-label">登录手机</label>
+      	<div class="control-input">
+      		<span><%= current_user.login %></span>
+      	</div>
+    </div>
+    <%= f.input :store_name %>
+    <%= f.input :nickname %>
+    <% if current_user.is_agent? %>
 	    <div class="form-group">
-	      	<label class="control-label">登录手机</label>
+	      	<label class="control-label">创客邀请码</label>
 	      	<div class="control-input">
-	      		<span><%= current_user.login %></span>
+	      		<span><%= current_user.agent_code %></span>
 	      	</div>
 	    </div>
-	    <%= f.input :store_name %>
-	    <%= f.input :nickname %>
-	    <% if current_user.is_agent? %>
-		    <div class="form-group">
-		      	<label class="control-label">创客邀请码</label>
-		      	<div class="control-input">
-		      		<span><%= current_user.agent_code %></span>
-		      	</div>
-		    </div>
-	    <% end %>
-    </div>
-<br />
-<p class="text-center"><%= f.submit '提交', class: 'btn btn-large' %></p>
-
+    <% end %>
+  </div>
+  <br />
+  <p class="text-center"><%= f.submit '提交', class: 'btn btn-large' %></p>
 <% end %>
 </div>
-

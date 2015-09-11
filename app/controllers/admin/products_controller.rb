@@ -57,8 +57,8 @@ class Admin::ProductsController < AdminController
       product_collection = @product.closed? ? [] : [@product]
       render(partial: 'products', locals: { products: product_collection })
     else
-      flash[:success] = @notice
-      flash[:error] = @error
+      flash.now[:success] = @notice
+      flash.now[:error] = @error
       redirect_to action: :show, id: @product.id
     end
   end
