@@ -1,0 +1,63 @@
+<%= content_for :page_title do %>
+  <%= @seller.store_identify %>
+<% end %>
+<div class="banner-slider">
+  <div id='slider' class='swipe'>
+    <div class='swipe-wrap'>
+      <div>
+      	<a href="/lady" class="text-center"> <%= image_tag 'mobile/slideshow/1.jpg' %></a>
+        <!--<a href="/" class="img-100-200" style="background-image:url('<%= asset_path("mobile/slideshow/1.jpg") %>') ;"></a> -->
+      </div>
+      <div>
+        <a href="/maca" class="text-center"> <%= image_tag 'mobile/slideshow/2.jpg' %></a>
+      </div>
+      <div>
+        <a href="/snacks" class="text-center"> <%= image_tag 'mobile/slideshow/3.jpg' %></a>
+      </div>
+    </div>
+  </div>
+  <div id='slider-points'>
+    <span class='active'>*</span>
+    <span>*</span>
+    <span>*</span>
+  </div>
+</div>
+<div class="store-like">
+	<div class="box border-box">
+		<div class="box-w100">
+			<div class="page-title like-color">热销商品</div>
+		</div>
+	<% @products.limit(3).each do |product|%>
+		<div class="box-w30">
+			<div class="product-box">
+				<div class="cover">
+					<%= link_to '', product, style: "background-image:url(#{product.image_url(:thumb)})",class:'img'  %>	
+					<%= image_tag("mobile/img.jpg") %>							
+				</div>
+				<div class="price">￥<%= product.present_price %></div>
+			</div><!-- product-box -->
+		</div><!-- box-w30 -->
+	<% end%>
+		<div class="box-w10">
+			<%= image_tag 'mobile/arrow-right.png',class:'like-more' %>
+			<!-- 设置链接 -->
+		</div>
+	</div>
+</div>
+<div class="box store-list">
+	<div class="box-w100">
+		<div class="page-title">全部商品</div>
+	</div>
+	<% @products.each do |product|%>
+	<div class="box-w50">
+		<div class="product-box">
+			<div class="cover">
+				<%= link_to '', product, style: "background-image:url(#{product.image_url(:thumb)})",class:'img'  %>			
+				<%= image_tag("mobile/img.jpg") %>				
+			</div>
+			<div class="title"><%= link_to product.name ,product %></div>
+			<div class="price">￥<%= product.present_price %> <span>￥<%= product.original_price %></span></div>
+		</div><!-- product-box -->
+	</div><!-- box-w50 -->
+	<% end%>
+</div>

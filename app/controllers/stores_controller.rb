@@ -1,7 +1,9 @@
 class StoresController < ApplicationController
+
+  layout 'mobile'
+
   def show
     @seller = User.find(params[:id])
     @products = @seller.products.published
-    render 'products/index'
   end
 end
