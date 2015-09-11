@@ -21,8 +21,8 @@
 						<%= product.name %>
 					<% end %>
 				</td>
-				<td>			
-					￥<%= product.present_price %>
+				<td>
+					<%= number_to_currency product.present_price %>
 				</td>
 				<% if current_user.super_admin? %>
 				<td><%= link_to product.user.identify, url_for(controller: 'admin/sellers', action: :show, id: product.user) %></td>
@@ -32,13 +32,13 @@
 				<td><%= product.total_sells %></td>
 				<td><%= product.created_at %></td>
 				<td>
-					
-					<% if can? :update, product %>						
+
+					<% if can? :update, product %>
 						<% if product.status == 'unpublish' %>
 				      <p>
 				      <%= link_to("上架", change_status_admin_product_path(product, status: 'published'),
 				      remote: true, method: :patch, data: { disable_with: '<i class="fa fa-spinner"></i>' },
-				      class: "btn btn-mid btn-block red-btn change-status-btn") %>	      
+				      class: "btn btn-mid btn-block red-btn change-status-btn") %>
 							</p>
 				    <% else %>
 				    	<p>
@@ -48,7 +48,7 @@
 				      </p>
 				    <% end %>
 					<%= link_to url_for(action: :edit, id: product.id),class:'edit-icon' do%>
-						<i class="fa fa-pencil-square-o"></i>				
+						<i class="fa fa-pencil-square-o"></i>
 					<% end %>
 						　
 				    <%= link_to change_status_admin_product_path(product, status: 'closed'),
