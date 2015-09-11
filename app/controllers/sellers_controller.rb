@@ -15,7 +15,7 @@ class SellersController < AdminController
       user.login = allow_params[:mobile]
       user.admin = true
       if user.save and user.user_roles << @user_role and user.save
-        MobileAuthCode.find_by(code: allow_params[:mobile_auth_code]).try(:destroy)
+        MobileCaptcha.find_by(code: allow_params[:mobile_auth_code]).try(:destroy)
         flash[:success] = "绑定注册成功"
         sign_in user
         redirect_to '/admin'
@@ -50,7 +50,7 @@ class SellersController < AdminController
   def valid_create_params
     @errors = []
     hash = {
-      '验证码错误或已过期。': MobileAuthCode.auth_code(allow_params[:mobile], allow_params[:mobile_auth_code]),
+      '验证码错误或已过期。': MobileCaptcha.auth_code(allow_params[:mobile], allow_params[:mobile_auth_code]),
       # '创客域名错误。': User.find_by(id: allow_params[:agent_id]),
       '还不允许商家注册,请联系管理员.': @user_role = UserRole.find_by(name: 'seller')
     }

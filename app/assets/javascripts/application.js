@@ -6,11 +6,11 @@
 //= require fastclick
 //= require rails-behaviors/index
 //= require zepto.waypoints.min.js
-//= require mobile_page/utilities
 //= require mobile_page/going_merry
 //= require mobile_page/order
 //= require mobile_page/account
 //= require mobile_page/sms
+//= require mobile_page/utilities
 //= require shared/login
 //= require_self
 

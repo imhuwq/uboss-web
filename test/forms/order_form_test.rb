@@ -12,7 +12,7 @@ class OrderFormTest < ActiveSupport::TestCase
 
   describe 'when new user' do
     it 'should create buyer and user_address' do
-      MobileAuthCode.expects(:auth_code).with('13800002222', '123').returns(true)
+      MobileCaptcha.expects(:auth_code).with('13800002222', '123').returns(true)
       order_form = OrderForm.new(
         product_id: @product.id,
         amount: 1,
@@ -50,7 +50,7 @@ class OrderFormTest < ActiveSupport::TestCase
 
   describe 'when old user without login' do
     it 'should auto find and attach' do
-      MobileAuthCode.expects(:auth_code).returns(true)
+      MobileCaptcha.expects(:auth_code).returns(true)
       assert_equal true, OrderForm.new(
         product_id: @product.id,
         amount: 12,
@@ -70,7 +70,7 @@ class OrderFormTest < ActiveSupport::TestCase
   end
 
   it 'should verify mobile while no buyer' do
-    MobileAuthCode.expects(:auth_code).with('13800002222', 'MustBeWrong').returns(false)
+    MobileCaptcha.expects(:auth_code).with('13800002222', 'MustBeWrong').returns(false)
     order_form = OrderForm.new(product_id: @product.id, mobile: '13800002222', captcha: 'MustBeWrong')
 
     assert_equal false, order_form.valid?

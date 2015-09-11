@@ -70,9 +70,9 @@ class AccountsController < ApplicationController
     if current_user.need_reset_password
       user_params.delete(:current_password)
       auth_code = user_params.delete(:code)
-      if MobileAuthCode.auth_code(current_user.login, auth_code)
+      if MobileCaptcha.auth_code(current_user.login, auth_code)
         current_user.update(user_params.merge(need_reset_password: false))
-        MobileAuthCode.where(mobile: current_user.login).delete_all
+        MobileCaptcha.where(mobile: current_user.login).delete_all
         sign_in current_user, bypass: true
         redirect_to settings_account_path, notice: '修改密码成功'
       else
@@ -115,28 +115,32 @@ class AccountsController < ApplicationController
   end
 
   def send_message # 保存发送短信给商家的信息
-    mobile = params[:send_message][:mobile]
+    @histroys = AgentInviteSellerHistroy.where(agent_id: current_user.id)
+    mobile = params[:mobile]
     result = PostMan.send_sms(mobile, {code: current_user.find_or_create_agent_code}, 923_651)
     if result[:success]
       AgentInviteSellerHistroy.find_or_create_by(mobile: mobile) do |history|
         history.agent_id = current_user.id
       end
-      flash[:success] = "您的创客码已经发送到：#{mobile}."
+      flash.now[:success] = "您的创客码已经发送到：#{mobile}."
     else
-      flash[:error] = result[:message]
+      flash.now[:error] = result[:message]
     end
-    redirect_to action: :invite_seller
+    respond_to do |format|
+      format.html { render nothing: true }
+      format.js
+    end
   end
 
   def bind_agent # 商家绑定创客
     if current_user.agent.present?
       redirect_to action: :binding_successed
-    elsif not MobileAuthCode.auth_code(current_user.login, params[:user][:mobile_auth_code])
+    elsif not MobileCaptcha.auth_code(current_user.login, params[:user][:mobile_auth_code])
       flash[:error] = '验证码错误或已过期。'
       redirect_to action: :binding_agent, agent_code: params[:agent_code]
     elsif current_user.bind_agent(params[:agent_code])
       AgentInviteSellerHistroy.find_by(mobile: current_user.login).try(:update, status: 1)
-      MobileAuthCode.find_by(code: params[:user][:mobile_auth_code]).try(:destroy)
+      MobileCaptcha.find_by(code: params[:user][:mobile_auth_code]).try(:destroy)
       flash[:success] = "绑定成功,#{current_user.agent.identify}成为您的创客。"
       redirect_to action: :binding_successed
     else
