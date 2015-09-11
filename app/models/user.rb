@@ -63,8 +63,8 @@ class User < ActiveRecord::Base
     end
   end
 
-  def image_url
-    avatar.url
+  def image_url(version = nil)
+    avatar.url(version)
   end
 
   class << self
