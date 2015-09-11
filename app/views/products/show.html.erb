@@ -5,7 +5,6 @@
 <%= content_for :extra_meta_tags do %>
   <%= sharing_meta_tags(@product, @sharing_link_node) %>
 <% end %>
-
 <div class="container">
   <div class="prdv_img">
     <%= image_tag(@product.image_url(:w640),  alt: "#{@product.name}") %>

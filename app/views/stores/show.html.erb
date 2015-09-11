@@ -31,7 +31,7 @@
 		<div class="box-w30">
 			<div class="product-box">
 				<div class="cover">
-					<%= link_to '', product, style: "background-image:url(#{product.image_url(:thumb)})",class:'img'  %>	
+					<%= link_to '', product, style: "background-image:url(#{product.image_url(:thumb)})",class:'img' ,title:"#{product.name}" %>	
 					<%= image_tag("mobile/img.jpg") %>							
 				</div>
 				<div class="price">￥<%= product.present_price %></div>
@@ -52,7 +52,7 @@
 	<div class="box-w50">
 		<div class="product-box">
 			<div class="cover">
-				<%= link_to '', product, style: "background-image:url(#{product.image_url(:thumb)})",class:'img'  %>			
+				<%= link_to '', product, style: "background-image:url(#{product.image_url(:thumb)})",class:'img',title:"#{product.name}"  %>			
 				<%= image_tag("mobile/img.jpg") %>				
 			</div>
 			<div class="title"><%= link_to product.name ,product %></div>
