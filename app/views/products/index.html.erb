@@ -7,7 +7,9 @@
 <% end %>
 
 <%= content_for :extra_meta_tags do %>
-  <%= store_sharing_meta_tags(@seller) %>
+  <% if @seller %>
+    <%= store_sharing_meta_tags(@seller) %>
+  <% end %>
 <% end %>
 
 <div class="container">
@@ -21,3 +23,11 @@
 </div>
 
 <div id="load-more" data-container='.list_ul' data-ele='.p-item' data-ref='/products'>加载更多</div>
+
+<% if browser.wechat? %>
+  <%= content_for :extra_javascript do %>
+    <script type="text/javascript" charset="utf-8">
+      wx.ready(function(){ UBoss.luffy.invokeSharing(); });
+    </script>
+  <% end %>
+<% end %>

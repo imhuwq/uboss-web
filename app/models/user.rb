@@ -63,6 +63,10 @@ class User < ActiveRecord::Base
     end
   end
 
+  def image_url
+    avatar.url
+  end
+
   class << self
     def official_account
       @@official_account ||= find_by(login: OFFICIAL_ACCOUNT_LOGIN)

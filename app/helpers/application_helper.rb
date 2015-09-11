@@ -78,8 +78,8 @@ module ApplicationHelper
     meta_tags = {
       sharing_title:  "【#{store.store_identify}】",
       sharing_desc:   "分享还能拿返利，快来UBOSS看看吧",
-      sharing_imgurl: '',
-      sharing_link:  user_url(store)
+      sharing_imgurl: store.image_url,
+      sharing_link:  store_url(store)
     }
     meta_tags.collect do |key, value|
       content_tag :meta, '', name: key, content: value
