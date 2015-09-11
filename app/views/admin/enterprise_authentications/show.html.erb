@@ -1,120 +1,129 @@
 <% if !super_admin? %>
-<div class="row">
-  <div class="col-xs-4"></div>
-  <div class="col-xs-2">
-    <%= link_to "个人认证", url_for(controller: :personal_authentications, action: :show, user_id: current_user), class:"btn btn-default col-xs-12" %>
-  </div>
-  <div class="col-xs-2"><a href='###' class="btn btn-primary col-xs-12">企业认证</a></div>
+<div class="container  admin-container">
+	<ul class="breadcrumb">
+		<li><a href="/admin">主页</a></li>
+		<li class="divider"><i class="fa fa-caret-right"></i></li>
+		<li>企业信息认证</li>
+	</ul>
 </div>
+<br />
+<div class="container">
+	<div class="header-tab">
+		<%= link_to "个人认证", url_for(controller: :personal_authentications, action: :show, user_id: current_user), class:"tab-title" %>
+		<div class="tab-title active">企业认证</div>
+	</div>
+</div>
+<br />
 <% end %>
-<div class="row">
-	<div class="col-xs-12 well">
-		<h3 class="col-md-offset-1">企业信息认证</h3>
-		<div class="col-xs-11 col-md-offset-1">
+<div class="container">
+		<h3 class="page-title">企业信息认证</h3>
+		<div class="admin-box black-bg-color">
       <div class="form-group clear">
-				<label class="string required text-right col-sm-3 control-label" for="product_name">
+				<label class="string required control-label" for="product_name">
 					<abbr title="必填">*</abbr>
 					状态
 				</label>
-				<div class="col-sm-9">
-          <%= @enterprise_authentication.status_i18n %>
+				<div class="control-input"><span>
+          <%= @enterprise_authentication.status_i18n %></span>
 				</div>
 			</div>
 			<div class="form-group clear">
-				<label class="string required text-right col-sm-3 control-label" for="product_name">
+				<label class="string required control-label" for="product_name">
 					<abbr title="必填">*</abbr>
 					公司名
 				</label>
-				<div class="col-sm-9">
-					<%= @enterprise_authentication.enterprise_name %>
+				<div class="control-input"><span>
+					<%= @enterprise_authentication.enterprise_name %></span>
 				</div>
 			</div>
       <div class="form-group clear">
-				<label class="string required text-right col-sm-3 control-label" for="product_name">
+				<label class="string required control-label" for="product_name">
 					<abbr title="必填">*</abbr>
 				  营业执照
 				</label>
-				<div class="col-sm-9">
+				<div class="control-input"><span>
           <%= link_to(@enterprise_authentication.business_license_img.to_s, target:'_blank') do %>
 					<%= image_tag(@enterprise_authentication.business_license_img.url(:w320), width: "60%", alt: "-", title:"点击查看原图") %>
-          <% end %>
+          <% end %></span>
 				</div>
 			</div>
 			<div class="form-group clear">
-				<label class="string required text-right col-sm-3 control-label" for="product_name">
+				<label class="string required control-label" for="product_name">
 					<abbr title="必填">*</abbr>
 				  法人身份证正面
 				</label>
-				<div class="col-sm-9">
+				<div class="control-input"><span>
           <%= link_to(@enterprise_authentication.legal_person_identity_card_front_img.to_s, target:'_blank') do %>
 					<%= image_tag(@enterprise_authentication.legal_person_identity_card_front_img.url(:w320), width: "60%", alt: "-", title:"点击查看原图") %>
-          <% end %>
+          <% end %></span>
 				</div>
 			</div>
       <div class="form-group clear">
-				<label class="string required text-right col-sm-3 control-label" for="product_name">
+				<label class="string required control-label" for="product_name">
 					<abbr title="必填">*</abbr>
 				  法人身份证反面
 				</label>
-				<div class="col-sm-9">
+				<div class="control-input"><span>
           <%= link_to(@enterprise_authentication.legal_person_identity_card_end_img.to_s, target:'_blank') do %>
 					<%= image_tag(@enterprise_authentication.legal_person_identity_card_end_img.url(:w320), width: "60%", alt: "-", title:"点击查看原图") %>
-          <% end %>
+          <% end %></span>
 				</div>
 			</div>
       <div class="form-group clear">
-        <label class="string required text-right col-sm-3 control-label" for="product_name">
+        <label class="string required control-label" for="product_name">
           <abbr title="必填">*</abbr>
           地址
         </label>
-        <div class="col-sm-9">
-          <%= @enterprise_authentication.address %>
+        <div class="control-input"><span>
+          <%= @enterprise_authentication.address %></span>
         </div>
       </div>
       <div class="form-group clear">
-        <label class="string required text-right col-sm-3 control-label" for="product_name">
+        <label class="string required control-label" for="product_name">
           <abbr title="必填">*</abbr>
           手机号码
         </label>
-        <div class="col-sm-9">
-          <%= @enterprise_authentication.mobile %>
-        </div>
+        <div class="control-input"><span><%= @enterprise_authentication.mobile %></span></div>
       </div>
-		</div>
-	</div>
-  <% if super_admin? %>
+  <% if is_super_admin? %>
+  	<p class="text-center">
     <% case @enterprise_authentication.status %>
     <% when 'posted' %>
-      <div class="button_div  col-xs-3"  style="margin-top:30px;padding-bottom:30px;">
-        <%= link_to '锁定资料', url_for(action: :change_status, id:  @enterprise_authentication.id, status: 'review'), :class=>"btn btn-primary active  col-xs-12",:role=>"button" %>
-      </div>
-      <div class="button_div  col-xs-3"  style="margin-top:30px;padding-bottom:30px;">
-        <%= link_to '通过', url_for(action: :change_status, id:  @enterprise_authentication.id, status: 'pass'), :class=>"btn btn-primary active  col-xs-12",:role=>"button" %>
-      </div>
-      <div class="button_div  col-xs-3"  style="margin-top:30px;padding-bottom:30px;">
-        <%= link_to '不通过', url_for(action: :change_status, id:  @enterprise_authentication.id, status: 'no_pass'), :class=>"btn btn-primary active  col-xs-12",:role=>"button" %>
-      </div>
+      
+        <%= link_to '锁定资料', url_for(action: :change_status, id:  @enterprise_authentication.id, status: 'review'), :class=>"btn btn-large",:role=>"button" %>
+      
+      
+        <%= link_to '通过', url_for(action: :change_status, id:  @enterprise_authentication.id, status: 'pass'), :class=>"btn btn-large",:role=>"button" %>
+     
+      
+        <%= link_to '不通过', url_for(action: :change_status, id:  @enterprise_authentication.id, status: 'no_pass'), :class=>"btn btn-large",:role=>"button" %>
+      
     <% when 'review' %>
-      <div class="button_div  col-xs-3 col-md-offset-2"  style="margin-top:30px;padding-bottom:30px;">
-        <%= link_to '通过', url_for(action: :change_status, id:  @enterprise_authentication.id, status: 'pass'), :class=>"btn btn-primary active  col-xs-12",:role=>"button" %>
-      </div>
-      <div class="button_div  col-xs-3"  style="margin-top:30px;padding-bottom:30px;">
-        <%= link_to '不通过', url_for(action: :change_status, id:  @enterprise_authentication.id, status: 'no_pass'), :class=>"btn btn-primary active  col-xs-12",:role=>"button" %>
-      </div>
+      
+        <%= link_to '通过', url_for(action: :change_status, id:  @enterprise_authentication.id, status: 'pass'), :class=>"btn btn-large",:role=>"button" %>
+      
+      
+        <%= link_to '不通过', url_for(action: :change_status, id:  @enterprise_authentication.id, status: 'no_pass'), :class=>"btn btn-large",:role=>"button" %>
+      
     <% when 'pass' %>
-      <div class="button_div  col-xs-3 col-md-offset-4"  style="margin-top:30px;padding-bottom:30px;">
-        <%= link_to '不通过', url_for(action: :change_status, id:  @enterprise_authentication.id, status: 'no_pass'), :class=>"btn btn-primary active  col-xs-12",:role=>"button" %>
-      </div>
+      
+        <%= link_to '不通过', url_for(action: :change_status, id:  @enterprise_authentication.id, status: 'no_pass'), :class=>"btn btn-large",:role=>"button" %>
+      
     <% when 'no_pass' %>
-      <div class="button_div  col-xs-3 col-md-offset-4"  style="margin-top:30px;padding-bottom:30px;">
-        <%= link_to '通过', url_for(action: :change_status, id:  @enterprise_authentication.id, status: 'pass'), :class=>"btn btn-primary active  col-xs-12",:role=>"button" %>
-      </div>
+      
+        <%= link_to '通过', url_for(action: :change_status, id:  @enterprise_authentication.id, status: 'pass'), :class=>"btn btn-large",:role=>"button" %>
+      
     <% end %>
-    <div class="button_div  col-xs-3 pull-right"  style="margin-top:30px;padding-bottom:30px;">
-      <%= link_to "返回",  url_for(controller: :enterprise_authentications, action: :index), class:"btn btn-default col-xs-12",:role=>"button" %>
-    </div>
-    <div class="col-xs-2"></div>
+   	</p>
+  </div>
+	<br />
+  <p><%= link_to "返回",  url_for(controller: :enterprise_authentications, action: :index), class:"btn blue-btn btn-large",:role=>"button" %></p>
+    
+    
   <% elsif ['posted','no_pass'].include?(@enterprise_authentication.status) %>
-  <div class="button_div  col-xs-4 col-md-offset-4"  style="margin-top:30px;padding-bottom:30px;"><%= link_to("编辑", url_for(:action=>:edit), :class=>"btn btn-primary active  col-xs-12",:role=>"button") %></div>
+	<p class="text-center"><%= link_to("编辑", url_for(:action=>:edit), :class=>"btn btn-large",:role=>"button") %></p>
+	</div>
   <% end %>
+
 </div>
+

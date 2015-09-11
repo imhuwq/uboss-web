@@ -43,6 +43,7 @@
 			    </div>
 			    <% end %>
 			</td>
+			<td><%= obj.user.login %></td>
 			<td><%= obj.created_at %></td>
 			<td>
 				<% case obj.status %>
@@ -59,6 +60,21 @@
 			  <% end %>
 			    <%= obj.status_i18n %>
 			  </span>
+			</td>
+			<td>
+				<% case obj.status %>
+			    <% when 'posted' %>
+			      <%= link_to '锁定资料', '###', onclick:"change_status(#{obj.user_id},'review')", class:"btn yellow-btn" %>
+			      <%= link_to '通过', '###', onclick:"change_status(#{obj.user_id},'pass')", class:'btn'  %>
+			      <%= link_to '不通过', '###', onclick:"change_status(#{obj.user_id},'no_pass')", class:'btn red-btn' %>
+			    <% when 'review' %>
+			      <%= link_to '通过', '###', onclick:"change_status(#{obj.user_id},'pass')", class:'btn'  %>
+			      <%= link_to '不通过', '###', onclick:"change_status(#{obj.user_id},'no_pass')", class:'btn red-btn' %>
+			    <% when 'pass' %>
+			      <%= link_to '不通过', '###', onclick:"change_status(#{obj.user_id},'no_pass')", class:'btn red-btn' %>
+			    <% when 'no_pass' %>
+			      <%= link_to '通过', '###', onclick:"change_status(#{obj.user_id},'pass')", class:'btn'  %>
+			    <% end %>
 			</td>
 		</tr>
 		<% end %>

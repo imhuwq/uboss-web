@@ -38,7 +38,7 @@ html, body {min-width:1220px;}
 .btn{ display: inline-block;*zoom:1;*display: inline;padding:5px 15px; border-radius: 4px; font-size: 15px; background: #43C3AA;color: #fff; border:none;outline: none; line-height: 1;}
 .btn:hover,.btn:active,.btn:focus{ color: #fff; opacity: .8; filter: alpha(opacity=80);outline: none;}
 .btn-mid{ padding:8px 20px; font-size: 16px;}
-.btn-large { padding: 10px 25px; font-size: 18px;}
+.btn-large { padding: 9px 25px; font-size: 18px;}
 .btn-block{ display: block; text-align: center;}
 
 .red-btn{ background: #E74C3C;}
@@ -62,7 +62,7 @@ html, body {min-width:1220px;}
 .label {
     display: inline;
     padding: 4px;
-    font-size: 10px;
+    font-size: 12px;
     font-family:sans-serif;
     line-height: 1;
     color: #fff;
@@ -72,4 +72,12 @@ html, body {min-width:1220px;}
     border-radius: 2px;
     background: #3498DB;
 }
-
+.label-warning, .label.state-completed, .label.state-closed {
+    background-color: #F0AD4E;
+}
+.label-success, .label.state-signed, .label.state-done {
+    background-color: #5CB85C;
+}
+.label-danger {
+    background-color: #D9534F;
+}

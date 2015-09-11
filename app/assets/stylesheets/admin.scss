@@ -121,6 +121,20 @@ a.admin-box:hover,a.admin-box:focus{opacity: 0.9;  filter: alpha(opacity=90);col
     /* Opera: */
     -o-animation: loading 3s linear  infinite ;
 }
+
+/*label*/
+.label-info, .label.state-shiped {
+    background-color: #5BC0DE;
+}
+.label-warning, .label.state-completed, .label.state-closed {
+    background-color: #F0AD4E;
+}
+.label-success, .label.state-signed, .label.state-done {
+    background-color: #5CB85C;
+}
+.label-danger {
+    background-color: #D9534F;
+}
 @keyframes loading
 {
 0%{
