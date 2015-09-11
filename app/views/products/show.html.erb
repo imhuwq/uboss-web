@@ -27,18 +27,20 @@
       </p>
     </div>
   </div>
-  <div class="comming">
-    <p class="comming_cont">
-    <span class="comming_v1">
-      <% if @product.user.avatar.present? %>
-        <%= image_tag @seller.avatar_url(:h50) %>
-      <% else %>
-        <%= @seller.store_name %>
-      <% end %>
-    </span>
-    <span class="comming_v2"><%= link_to "进入商铺", store_path(@seller) %></span>
-    </p>
-  </div>
+  <%= link_to store_path(@seller) do %>
+    <div class="comming">
+      <p class="comming_cont">
+      <span class="comming_v1">
+        <% if @product.user.avatar.present? %>
+          <%= image_tag @seller.avatar_url(:h50) %>
+        <% else %>
+          <%= @seller.store_name %>
+        <% end %>
+      </span>
+      <span class="comming_v2">进入商铺</span>
+      </p>
+    </div>
+  <% end %>
 </div>
 
 <% if @privilege_card %>
