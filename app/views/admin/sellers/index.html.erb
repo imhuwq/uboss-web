@@ -57,7 +57,7 @@
     <%= t.cell :service_rate do |obj| %>
       <%= obj.user_info.try(:service_rate) %>%
     <% end %>
-    <% if current_user.super_admin? %>
+    <% if current_user.is_super_admin? %>
       <%= t.cell :agent do |obj| %>
         <% if obj.agent.present? %>
           <%= link_to obj.agent.identify, url_for(controller: :agents, action: :show, id: obj.agent_id) %>

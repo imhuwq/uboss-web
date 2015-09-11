@@ -134,7 +134,12 @@ class User < ActiveRecord::Base
     if agent_user.present?
       self.agent = agent_user
       self.admin = true
-      self.user_roles << UserRole.seller if not self.seller?
+      if agent_user.id == User.official_account.id
+        self.user_info.service_rate = 6
+      else
+        self.user_info.service_rate = 5
+      end
+      self.user_roles << UserRole.seller if not self.is_seller?
       self.save
     else
       errors.add(:agent_code, :invalid)
@@ -219,20 +224,8 @@ class User < ActiveRecord::Base
     UserRole.find_by(name: "agent").users
   end
 
-  def seller
+  def sellers
     User.where(agent_id: self.id)
-  end
-
-  def seller?
-    user_roles.pluck(:name).include?('seller')
-  end
-
-  def agent?
-    user_roles.pluck(:name).include?('agent')
-  end
-
-  def super_admin?
-    user_roles.pluck(:name).include?('super_admin')
   end
 
   def authenticated?

@@ -29,7 +29,7 @@ class SellersController < AdminController
 
   def update
     valid_create_params
-    if current_user.seller? and !current_user.authenticated?
+    if current_user.is_seller? and !current_user.authenticated?
       if @errors.present?
         flash[:error] = @errors.join("\n")
       else
