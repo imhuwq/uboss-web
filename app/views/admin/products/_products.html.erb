@@ -4,7 +4,9 @@
 		<thead>
 			<th>商品</th>
 			<th>价格</th>
-			<th>商家</th>
+			<% if current_user.super_admin? %>
+				<th>商家</th>
+			<% end %>
 			<th>好评率</th>
 			<th>库存</th>
 			<th>总销量</th>
