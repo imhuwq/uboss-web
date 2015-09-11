@@ -13,6 +13,11 @@ class User < ActiveRecord::Base
 
   mount_uploader :avatar, ImageUploader
 
+  has_many :attention_associations, :foreign_key => "user_id",
+    :class_name => "AttentionAssociation"
+
+  has_many :followings, :through => :attention_associations
+
   has_one :user_info, autosave: true
   has_many :transactions
   has_many :user_role_relations, dependent: :destroy
