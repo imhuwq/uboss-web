@@ -15,13 +15,13 @@ class Admin::EnterpriseAuthenticationsController < AdminController
 
   def show
     if current_user.is_super_admin?
-      @enterprise_authentication = EnterpriseAuthentication.find_by!(user_id:( params[:user_id] || current_user))
+      @enterprise_authentication = EnterpriseAuthentication.find_by(user_id:( params[:user_id] || current_user))
     else
       @enterprise_authentication = EnterpriseAuthentication.find_by(user_id: current_user)
-      unless @enterprise_authentication.present?
-        flash[:notice] = '您还没有认证'
-        redirect_to action: :new
-      end
+    end
+    unless @enterprise_authentication.present?
+      flash[:notice] = '您还没有认证'
+      redirect_to action: :new
     end
   end
 
