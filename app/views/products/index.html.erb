@@ -6,6 +6,10 @@
   <% end %>
 <% end %>
 
+<%= content_for :extra_meta_tags do %>
+  <%= store_sharing_meta_tags(@seller) %>
+<% end %>
+
 <div class="container">
   <div class="list">
     <ul class="list_ul clearfix">
