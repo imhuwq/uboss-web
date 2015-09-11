@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150910034035) do
+ActiveRecord::Schema.define(version: 20150911030113) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -42,11 +42,9 @@ ActiveRecord::Schema.define(version: 20150910034035) do
     t.string   "url"
   end
 
-  create_table "attentions", force: :cascade do |t|
-    t.integer  "follower_id"
-    t.integer  "following_id"
-    t.datetime "created_at",   null: false
-    t.datetime "updated_at",   null: false
+  create_table "attention_associations", force: :cascade do |t|
+    t.integer "user_id"
+    t.integer "following_id"
   end
 
   create_table "bank_cards", force: :cascade do |t|
@@ -375,8 +373,10 @@ ActiveRecord::Schema.define(version: 20150910034035) do
     t.integer  "agent_id"
     t.integer  "authenticated",          default: 0
     t.integer  "agent_code"
+    t.string   "authentication_token"
   end
 
+  add_index "users", ["authentication_token"], name: "index_users_on_authentication_token", using: :btree
   add_index "users", ["login"], name: "index_users_on_login", unique: true, using: :btree
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
 

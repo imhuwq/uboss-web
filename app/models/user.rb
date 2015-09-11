@@ -13,6 +13,11 @@ class User < ActiveRecord::Base
 
   mount_uploader :avatar, ImageUploader
 
+  has_many :attention_associations, :foreign_key => "user_id",
+    :class_name => "AttentionAssociation"
+
+  has_many :followings, :through => :attention_associations
+
   has_one :user_info, autosave: true
   has_many :transactions
   has_many :user_role_relations, dependent: :destroy
@@ -122,14 +127,6 @@ class User < ActiveRecord::Base
       end
     end
 
-  end
-
-  def followers_size
-    Attention.where(follower_id: self.id).size
-  end
-
-  def following_size
-    Attention.where(following_id: self.id).size
   end
 
   def bind_agent(binding_code)
