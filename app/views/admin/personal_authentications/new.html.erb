@@ -1,27 +1,24 @@
 <div class="container  admin-container">
-	<ul class="breadcrumb">
-		<li><a href="/admin">主页</a></li>
-		<li class="divider"><i class="fa fa-caret-right"></i></li>
-		<li>个人信息认证</li>
-	</ul>
+  <ul class="breadcrumb">
+    <li><a href="/admin">主页</a></li>
+    <li class="divider"><i class="fa fa-caret-right"></i></li>
+    <li>个人信息认证</li>
+  </ul>
 </div>
 <br />
 <div class="container">
-	<div class="header-tab">
-			<div class="tab-title active">个人认证</div>
-			<%= link_to "企业认证", url_for(controller: :enterprise_authentications, action: :new), class:"tab-title" %>
-	</div>
-	<br />
-	<h3 class="page-title">创建个人信息认证</h3>
-	<%= horizon_form_for :personal_authentication,url: {:action=>:create} do |f| %>
-  <%= render 'fields', f: f %>
+  <div class="header-tab">
+    <div class="tab-title active">个人认证</div>
+    <%= link_to "企业认证", url_for(controller: :enterprise_authentications, action: :new), class:"tab-title" %>
+  </div>
   <br />
-  <p class="text-center">
+  <h3 class="page-title">创建个人信息认证</h3>
+  <%= horizon_form_for @personal_authentication,url: {:action=>:create} do |f| %>
+    <%= render 'fields', f: f %>
+    <br />
+    <p class="text-center">
     <%= f.submit '提交', class: 'btn btn-large red-btn' %>
     <%= link_to('返回', url_for(action: :show), :class=>"btn btn-large",:role=>"button") %>
-  </p>
-<% end %>
+    </p>
+  <% end %>
 </div>
-
-
-
