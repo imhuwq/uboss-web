@@ -5,7 +5,11 @@
   <%= f.input :face_with_identity_card_img do %>
     <%= f.input_field :face_with_identity_card_img, type: :hidden, as: :file %>
     <span class="fileinput-button">
-      <%= image_tag("admin/no-img.png") %>
+      <% if f.object.new_record? || f.object.attributes['face_with_identity_card_img'].blank? %>
+        <%= image_tag("admin/no-img.png") %>
+      <% else %>
+        <%= image_tag(f.object.face_with_identity_card_img_url(:w320)) %>
+      <% end %>
       <%= upyun_meta_tags prefix: 'personal_authentication/face_with_identity_card_img' %>
       <%= file_field_tag "face_with_identity_card_img", class: "upyun_file_closest" %>
     </span>
@@ -13,7 +17,11 @@
   <%= f.input :identity_card_front_img do %>
     <%= f.input_field :identity_card_front_img, type: :hidden, as: :file %>
     <span class="fileinput-button">
-      <%= image_tag("admin/no-img.png") %>
+      <% if f.object.new_record? || f.object.attributes['identity_card_front_img'].blank? %>
+        <%= image_tag("admin/no-img.png") %>
+      <% else %>
+        <%= image_tag(f.object.identity_card_front_img_url(:w320)) %>
+      <% end %>
       <%= upyun_meta_tags prefix: 'personal_authentication/identity_card_front_img' %>
       <%= file_field_tag "identity_card_front_img", class: "upyun_file_closest" %>
     </span>
@@ -25,7 +33,7 @@
     <div class="control-input">
     	<%= f.input_field :mobile , as: :tel, id:"new_mobile", style:"border-radius:4px 0 0 4px;" %>
     </div>
-    
+
   </div>
   <%= f.input :mobile_auth_code %>
 </div>

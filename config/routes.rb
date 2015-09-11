@@ -20,7 +20,9 @@ Rails.application.routes.draw do
   get 'service_centre_agent', to: 'home#service_centre_agent'
   get 'service_centre_tutorial', to: 'home#service_centre_tutorial'
   get 'about', to: 'home#about_us'
-
+  get 'lady', to: 'home#lady'
+  get 'maca', to: 'home#maca'
+  get 'snacks', to: 'home#snacks'
   get 'agreements/seller'
   get 'agreements/maker'
   get 'agreements/register'
@@ -32,6 +34,7 @@ Rails.application.routes.draw do
   resources :orders, only: [:new, :create, :show] do
     get 'received', on: :member
     get 'pay_complete', on: :member
+    get 'cancel', on: :member
     resource :charge, only: [:create]
   end
   resources :products do
@@ -47,8 +50,8 @@ Rails.application.routes.draw do
         :orders,           :binding_agent, :invite_seller,
         :edit_seller_histroy, :edit_seller_note, :seller_agreement,
         :merchant_confirm,    :binding_successed
-
-    put :bind_agent, :send_message, :update_histroy_note
+    post :send_message
+    put :bind_agent,  :update_histroy_note
     patch :merchant_confirm, to: 'accounts#merchant_confirmed'
     patch :password, to: 'accounts#update_password'
     resources :user_addresses, except: [:show]

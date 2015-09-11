@@ -47,10 +47,10 @@
 				<p>
 					店铺链接：<%= store_url(@seller) %>
 				</p>
-			</div><!-- box-w45 -->	
+			</div><!-- box-w45 -->
 			<div class="box-w10">
 				<p><img src="http://qr.liantu.com/api.php?&text=<%= "http://#{request.env["HTTP_HOST"]}/stores/#{@seller.id}" %>"/>	</p>
-			</div>		
+			</div>
 		</div><!-- admin-box -->
 		<br />
 		<h3 class="page-title">
@@ -84,10 +84,10 @@
 						<%= image_tag(@enterprise_authentication.try(:legal_person_identity_card_end_img),alt: "反面") %>　
 					</a>
 				</p>
-			</div><!-- box-70 -->				
+			</div><!-- box-70 -->
 		</div><!-- admin-box -->
 		<br />
-		<div class="admin-box">					
+		<div class="admin-box">
 			<p>手持身份证：</p>
 			<p>
 				<a class="pop-img" data-src="<%= @personal_authentication.face_with_identity_card_img %>"style="background-image: url(<%= @personal_authentication.face_with_identity_card_img %>);">
@@ -98,7 +98,7 @@
 				</a>
 			</p>
 		</div><!-- admin-box -->
-		<br />	
+		<br />
       <% end %>
 		<div class="pull-right">
 		<% if current_user.is_super_admin? %>
@@ -108,7 +108,7 @@
 				<%= submit_tag '调整', class:"btn btn-large" %>
 			<% end %>
 		<% end %>
-		</div>	
+		</div>
 		<h3 class="page-title">当前平台费率：<%= @seller.user_info.service_rate %>%</h3>
 		<br />
 		<table class="list-table">

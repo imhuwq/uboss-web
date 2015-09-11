@@ -10,12 +10,10 @@ module PostMan extend self
     end
   end
 
-  def send_sms(mobile, message, tpl_id = 923_651)
+  def send_sms(mobile, message_params, tpl_id = 923_651)
     return result_message('手机格式错误',     false) if not validate_mobile(mobile)
     return result_message('电话号码不能为空', false) if mobile.blank?
-    return result_message('内容不能为空',     false) if message.blank?
-
-    message_params = { code: message }
+    return result_message('内容不能为空',     false) if message_params.blank?
     message_params.merge!(company: '优巭UBOSS') if TPL_WITH_COMPLAY.include?(tpl_id.to_s)
 
     result = ChinaSMS.to(mobile, message_params, tpl_id: tpl_id)

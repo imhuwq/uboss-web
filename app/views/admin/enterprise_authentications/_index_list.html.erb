@@ -38,8 +38,8 @@
 		<% @enterprise_authentications.each do |obj| %>
 		<tr id="enterprise_authentication_<%= obj.user_id %>">
 			<td class="text-left">
-				 <%= link_to url_for(controller: 'admin/personal_authentications', action: :show, user_id: obj.user_id) do %>			    
-			      <%= image_tag(obj.user.avatar.url(:thumb), size: "80x80", alt: "-") %>　		    
+				 <%= link_to url_for(controller: 'admin/enterprise_authentications', action: :show, user_id: obj.user_id) do %>
+			      <%= image_tag(obj.user.avatar.url(:thumb), size: "80x80", alt: "-") %>　
 			      <%= obj.user.identify %>
 			    </div>
 			    <% end %>

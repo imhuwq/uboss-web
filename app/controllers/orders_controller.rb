@@ -1,7 +1,15 @@
 class OrdersController < ApplicationController
-
   before_action :authenticate_user!, except: [:new, :create]
-  before_action :find_order, only: [:show, :pay, :pay_complete, :received]
+  before_action :find_order, only: [:cancel, :show, :pay, :pay_complete, :received]
+
+  def cancel
+    if @order.may_close? && @order.close!
+      flash[:success] = '订单取消成功'
+    else
+      flash[:errors] = '订单取消失败'
+    end
+    redirect_to order_path(@order)
+  end
 
   def show
     @order_item = @order.order_items.first

@@ -1,7 +1,7 @@
 class Admin::SellersController < AdminController
 
   def index
-    if current_user.super_admin?
+    if current_user.is_super_admin?
       @sellers = User.joins(:user_roles).where(user_roles: { name: 'seller' }).page(params[:page] || 1).per(15)
     else
       @sellers = User.joins(:user_roles).where(user_roles: { name: 'seller' }, agent_id: current_user.id).page(params[:page] || 1).per(15)

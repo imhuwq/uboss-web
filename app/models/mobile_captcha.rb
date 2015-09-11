@@ -1,23 +1,34 @@
-class MobileAuthCode < ActiveRecord::Base
-  validates :mobile, presence: true, uniqueness: true, mobile: true
+class MobileCaptcha < ActiveRecord::Base
+
+  CAPTCHA_TYPES = %w(invite_seller)
+
+  validates :mobile, presence: true, uniqueness: { scope: :captcha_type }, mobile: true
   validates :code, :expire_at, presence: true
+  validates :captcha_type, inclusion: { in: CAPTCHA_TYPES }, allow_nil: true
 
   before_validation :generate_code, :set_expire_time
   before_save :send_code
 
-  def self.auth_code(auth_mobile, auth_code) #验证
-    MobileAuthCode.where('expire_at < ?', DateTime.now).delete_all
-    MobileAuthCode.exists?(mobile: auth_mobile, code: auth_code)
+  def self.auth_code(auth_mobile, auth_code, type = nil)
+    MobileCaptcha.where('expire_at < ?', DateTime.now).delete_all
+    MobileCaptcha.exists?(
+      mobile: auth_mobile,
+      code: auth_code,
+      captcha_type: type
+    )
   end
 
-  def self.send_captcha_with_mobile(auth_mobile)
-    auth_code = MobileAuthCode.find_or_initialize_by(mobile: auth_mobile)
+  def self.send_captcha_with_mobile(auth_mobile, type = nil)
+    auth_code = MobileCaptcha.find_or_initialize_by(
+      mobile: auth_mobile,
+      captcha_type: type
+    )
     auth_code.regenerate_code unless auth_code.new_record?
     { success: auth_code.save, mobile_auth_code: auth_code }
   end
 
   def self.clear_captcha(auth_mobile)
-    MobileAuthCode.where(mobile: auth_mobile).delete_all
+    MobileCaptcha.where(mobile: auth_mobile).delete_all
   end
 
 	def generate_code #生成验证码
@@ -36,7 +47,7 @@ class MobileAuthCode < ActiveRecord::Base
   end
 
   def send_sms(tpl_id = 1) # 发送短信
-    PostMan.send_sms(mobile, code, tpl_id)
+    PostMan.send_sms(mobile, {code: code}, tpl_id)
   end
 
   def send_code # 发送验证码

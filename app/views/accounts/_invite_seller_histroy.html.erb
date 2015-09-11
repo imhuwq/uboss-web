@@ -1,0 +1,16 @@
+<% @histroys.each do |obj| %>
+  <p class="clearfix" style="border-bottom:0;overflow:hidden;">
+    <span class=col-xs-6><%=  truncate (obj.note || obj.mobile),:length=>15,:omission=>'...'  %></span>
+    <span class="col-xs-2 text-right">
+      <%= obj.created_at.strftime('%m/%d') %>
+    </span>
+    <span class="col-xs-2 text-right">
+      <%= obj.status_i18n %>
+    </span>
+    <span class="col-xs-2 text-right">
+      <%= link_to edit_seller_note_account_path(id: obj.id) do %>
+        <%= image_tag("uboss_29/edit.png" ) %>
+      <% end %>
+    </span>
+  </p>
+<% end %>

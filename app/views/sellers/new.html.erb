@@ -1,5 +1,5 @@
 <div class="row">
-  <% if current_user.present? and current_user.seller? and !current_user.authenticated? and @agent.present? %>
+  <% if current_user.present? and current_user.is_seller? and !current_user.authenticated? and @agent.present? %>
     <div class='login-container col-xs-12'>
       <%= simple_form_for(:seller, url: seller_path(current_user), method: 'PUT',wrapper: :horizontal_file_input) do |f| %>
         <%= hidden_field_tag "seller[agent_id]", @agent.try(:id) %>
@@ -24,7 +24,7 @@
         </div>
       <% end %>
     </div>
-  <% elsif current_user.present? and current_user.authenticated? and current_user.seller? %>
+  <% elsif current_user.present? and current_user.authenticated? and current_user.is_seller? %>
     <div class="col-xs-12 border_block" style="border: 0">
       <div class="col-xs-11  col-md-offset-1">
         <h3 class="col-md-offset-1">注册绑定UBOSS</h3>

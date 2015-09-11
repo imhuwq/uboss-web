@@ -31,7 +31,7 @@ class Order < ActiveRecord::Base
 
   aasm column: :state, enum: true, skip_validation_on_save: true, whiny_transitions: false do
     state :unpay
-    state :payed, after_enter: :create_privilege_card_if_none
+    state :payed, after_enter: [:create_privilege_card_if_none, :send_payed_sms_to_seller]
     state :shiped, after_enter: :fill_shiped_at
     state :signed, after_enter: [:fill_signed_at, :active_privilege_card]
     state :completed, after_enter: :fill_completed_at
@@ -118,6 +118,12 @@ class Order < ActiveRecord::Base
 
   def create_privilege_card_if_none
     order_items.each(&:create_privilege_card_if_none)
+  end
+
+  def send_payed_sms_to_seller
+    if seller
+      PostMan.send_sms(seller.login, {name: seller.identify}, 968369)
+    end
   end
 
   def active_privilege_card

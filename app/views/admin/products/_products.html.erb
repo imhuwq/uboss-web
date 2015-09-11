@@ -4,7 +4,7 @@
 		<thead>
 			<th>商品</th>
 			<th>价格</th>
-			<% if current_user.super_admin? %>
+			<% if current_user.is_super_admin? %>
 				<th>商家</th>
 			<% end %>
 			<th>好评率</th>
@@ -24,7 +24,7 @@
 				<td>
 					<%= number_to_currency product.present_price %>
 				</td>
-				<% if current_user.super_admin? %>
+				<% if current_user.is_super_admin? %>
 				<td><%= link_to product.user.identify, url_for(controller: 'admin/sellers', action: :show, id: product.user) %></td>
 				<% end %>
 				<td><%= Evaluation.product_good_reputation_rate(product.id) %></td>
@@ -61,4 +61,3 @@
 		<% end %>
 </table>
 </div>
-

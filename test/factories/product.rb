@@ -9,6 +9,7 @@ FactoryGirl.define do
     present_price 100
     count 100
     content "product desc"
+    short_description "product short desc"
 
     trait :sharing_thr do
       calculate_way 0

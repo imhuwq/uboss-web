@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150818065929) do
+ActiveRecord::Schema.define(version: 20150908092957) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -94,7 +94,7 @@ ActiveRecord::Schema.define(version: 20150818065929) do
   create_table "evaluations", force: :cascade do |t|
     t.integer  "buyer_id"
     t.integer  "sharer_id"
-    t.integer  "status",          default: 0
+    t.integer  "status",          default: 3
     t.integer  "order_item_id"
     t.integer  "product_id"
     t.text     "content"
@@ -103,13 +103,16 @@ ActiveRecord::Schema.define(version: 20150818065929) do
     t.integer  "sharing_node_id"
   end
 
-  create_table "mobile_auth_codes", force: :cascade do |t|
+  create_table "mobile_captchas", force: :cascade do |t|
     t.string   "code"
     t.datetime "expire_at"
     t.string   "mobile"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "captcha_type"
   end
+
+  add_index "mobile_captchas", ["mobile"], name: "index_mobile_captchas_on_mobile", using: :btree
 
   create_table "order_charges", force: :cascade do |t|
     t.integer  "order_id"
@@ -181,6 +184,16 @@ ActiveRecord::Schema.define(version: 20150818065929) do
     t.datetime "created_at",                 null: false
     t.datetime "updated_at",                 null: false
     t.boolean  "actived",    default: false
+  end
+
+  create_table "product_share_issues", force: :cascade do |t|
+    t.integer  "product_id"
+    t.integer  "buyer_lv_1_id"
+    t.integer  "buyer_lv_2_id"
+    t.integer  "buyer_lv_3_id"
+    t.integer  "sharer_lv_1_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "products", force: :cascade do |t|
@@ -368,8 +381,10 @@ ActiveRecord::Schema.define(version: 20150818065929) do
     t.integer  "agent_id"
     t.integer  "authenticated",          default: 0
     t.integer  "agent_code"
+    t.string   "authentication_token"
   end
 
+  add_index "users", ["authentication_token"], name: "index_users_on_authentication_token", using: :btree
   add_index "users", ["login"], name: "index_users_on_login", unique: true, using: :btree
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
 

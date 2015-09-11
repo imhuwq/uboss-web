@@ -12,13 +12,13 @@
 	<div class="box-w50">
 		<div class="admin-box beige-bg-color">
 			<h4 class="edit-title">商品信息</h4>
-			<% if current_user.super_admin? %>
+			<% if current_user.is_super_admin? %>
 	    	<div class="form-group">
 	    		<label class="control-label">所属商家</label>
 	    		<div class="control-input">
 	    			<span><%= link_to @product.user.identify, url_for(controller: 'admin/sellers', action: :show, id: @product.user) %></span>
 	    		</div>
-	    	</div>	
+	    	</div>
 	    	<% end %>
 	    	<div class="form-group">
 	    		<label class="control-label">产品名</label>
@@ -29,13 +29,13 @@
 	    	<div class="form-group">
 	    		<label class="control-label">原价</label>
 	    		<div class="control-input">
-	    			<span class="control-txt">￥<%= '%.2f' % @product.original_price %></span>
+	    			<span class="control-txt"><%= number_to_currency @product.original_price %></span>
 	    		</div>
 	    	</div>
 	    	<div class="form-group">
 	    		<label class="control-label">现价</label>
 	    		<div class="control-input">
-	    			<span class="control-txt">￥<%= '%.2f' % @product.present_price %></span>
+	    			<span class="control-txt"><%= number_to_currency @product.present_price %></span>
 	    		</div>
 	    	</div>
 	    	<div class="form-group">
@@ -43,9 +43,9 @@
 	    		<div class="control-input">
 	    			<span class="control-txt"><%= @product.count %></span>
 	    		</div>
-	    	</div>      
+	    	</div>
 	      <div class="form-group">
-	        <label class="control-label">          
+	        <label class="control-label">
 						描述
 	        </label>
 	        <div class="control-input">
@@ -53,7 +53,7 @@
 	        </div>
 	      </div>
 	      <div class="form-group">
-	        <label class="control-label">          
+	        <label class="control-label">
 						商品主图
 	        </label>
 	        <div class="control-input">
@@ -61,7 +61,7 @@
 	        </div>
 	      </div>
 	      <div class="form-group">
-	        <label class="control-label">          
+	        <label class="control-label">
 						图文详情
 	        </label>
 	        <div class="control-input">
@@ -88,7 +88,7 @@
 		                    class: "btn btn-large ",:role=>"button") %>
 		      <% end %>
 		    <% end %>
-	    
+
 	    </div>
 
 	</div><!-- box-w50 -->
@@ -96,24 +96,24 @@
 		<div class="admin-box beige-bg-color">
 			<h4 class="edit-title">分成设置</h4>
 			<% if @product.calculate_way == 1 %>
-				<div class="form-group">    
+				<div class="form-group">
 			  	<label class="control-label">
-			  		分成比例   		
-			  	</label>  
+			  		分成比例
+			  	</label>
 			   	<label class="control-label pull-right">
-			   		%　  			        
+			   		%　
 			   	</label>
 			    <div class="control-input">
 			      <div class="control-txt"><%= @product.share_rate_total %></div>
 			    </div>
 			  </div>
 			<% elsif @product.calculate_way == 0 %>
-					 <div class="form-group">    
+					 <div class="form-group">
 				  	<label class="control-label">
-				  		现金分成   		
-				  	</label>  
+				  		现金分成
+				  	</label>
 				   	<label class="control-label pull-right">
-				   		元　  			        
+				   		元　
 				   	</label>
 				    <div class="control-input">
 				      <div class="control-txt"><%= @product.share_amount_total %></div>
@@ -133,7 +133,7 @@
 		  	<div class="control-input">
 		  		<span><%= @product.share_rate_lv_2*100 %>%　-　<%= @product.share_amount_lv_2 %>元</span>
 		  	</div>
-		  </div>		  
+		  </div>
 		  <div class="form-group">
 		  	<label class="control-label">三级分成</label>
 		  	<div class="control-input">
@@ -177,7 +177,7 @@
 	 				<img src="http://qr.liantu.com/api.php?&text=<%= "http://#{request.env["HTTP_HOST"]}/products/#{@product.id}?shared=true" %>"/>
 	 			</div>
 	 		</div>
-	 		
+
 	 	</div><!-- admin-box -->
 	</div><!-- box-w50 -->
 </div><!-- container -->

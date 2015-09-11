@@ -1,13 +1,19 @@
 require 'test_helper'
 
 class OrderPayedHandlerJobTest < ActiveJob::TestCase
+  before :each do
+    official_account = create(:user)
+    User.stubs(:official_account).returns(official_account)
+  end
 
   describe 'Order pay' do
-    let(:order) { create(:order) }
+    let(:order) { create(:order_with_item) }
     it 'should enqueued this job' do
       assert_enqueued_jobs 0
+      User.stubs(:official_account).returns(User.new)
+      order.update(state: 'shiped')
       assert_enqueued_with(job: OrderPayedHandlerJob, args: [order]) do
-        order.pay!
+        assert_equal true, order.sign!
       end
       assert_enqueued_jobs 1
     end
@@ -18,20 +24,20 @@ class OrderPayedHandlerJobTest < ActiveJob::TestCase
 
     assert_equal false, @order.payed?
 
-    assert_raises OrderPayedHandlerJob::OrderNotPayed do
-      OrderPayedHandlerJob.perform_now(@order)
-    end
-
+    assert_equal false, OrderPayedHandlerJob.perform_now(@order)
+    #assert_raises OrderPayedHandlerJob::OrderNotPayed do
+      #OrderPayedHandlerJob.perform_now(@order)
+    #end
   end
 
   it 'should setup seller income' do
-    @order = create(:order_with_item, state: 'payed')
+    @order = create(:order_with_item, state: 'signed')
 
     assert_equal 0, @order.income
 
     OrderPayedHandlerJob.perform_now(@order)
 
-    assert @order.reload.income > 0
+    assert_equal true, @order.reload.income > 0
   end
 
   describe 'With sharing code' do
@@ -54,7 +60,7 @@ class OrderPayedHandlerJobTest < ActiveJob::TestCase
                         amount: buy_amount,
                         sharing_node: level2_node
                       }],
-                      state: 'payed'
+                      state: 'signed'
                      )
 
       OrderPayedHandlerJob.perform_now(@order.reload)
@@ -85,7 +91,7 @@ class OrderPayedHandlerJobTest < ActiveJob::TestCase
                         amount: buy_amount,
                         sharing_node: level4_node
                       }],
-                      state: 'payed'
+                      state: 'signed'
                      )
 
       OrderPayedHandlerJob.perform_now(@order.reload)

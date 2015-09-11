@@ -42,7 +42,7 @@ $ ->
       $this.hide()
       button.addClass('uploading')
       data.submit().done (doc) ->
-        returnUrl = doc[0].baseURI
+        returnUrl = doc[0].location.href
         queryString = returnUrl.split("?")[1]
         qs = $.parseQueryString(queryString)
         if qs.code isnt "200"

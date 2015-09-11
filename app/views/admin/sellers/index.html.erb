@@ -60,7 +60,7 @@
 			<th>提成比例</th>
 			<th>入驻时间</th>
 			<th>账号</th>
-			<% if current_user.super_admin? %>
+			<% if current_user.is_super_admin? %>
 			<th>创客</th>
 			<% end %>
 			<th>状态</th>
@@ -83,14 +83,14 @@
 			<td><%= sellers.user_info.try(:service_rate) %></td>
 			<td><%= sellers.created_at %></td>
 			<td><%= sellers.login %></td>
-			<% if current_user.super_admin? %>
-				<td>
-					&nbsp;
-					<% if sellers.agent.present? %>
-			          <%= link_to sellers.agent.identify, url_for(controller: :agents, action: :show, id: sellers.agent_id) %>
-			        <% end %>
-			        &nbsp;
-				</td>
+			<% if current_user.is_super_admin? %>
+        <td>
+          &nbsp;
+          <% if sellers.agent.present? %>
+            <%= link_to sellers.agent.identify, url_for(controller: :agents, action: :show, id: sellers.agent_id) %>
+          <% end %>
+          &nbsp;
+        </td>
 		    <% end %>
 			<td><%=  User::DATA_AUTHENTICATED[sellers.authenticated] %></td>
 		</tr>
@@ -99,4 +99,3 @@
 	</table>
     <%= paginate @sellers %>
 </div>
-

@@ -51,7 +51,7 @@
 						<th>分成比例</th>
 						<th>收益</th>
 					</thead>
-					<% @agent.seller.each do |seller| %>
+					<% @agent.sellers.each do |seller| %>
 					<tr>
 						<td><%= link_to seller.identify, admin_seller_path(seller) %></td>
 						<td><%= seller.created_at %></td>
@@ -127,17 +127,3 @@
 	</div><!-- content2 -->
 </div><!-- tab-conatiner -->
 <br />
-
-<script>
-$(document).ready(function(){
-	$(".tab-title").click(function(){
-		if(!$(this).hasClass("active")){
-			$(".header-tab .tab-title").removeClass("active");
-			$(this).addClass("active");
-			$(".tab-content").hide();
-			var tabid=$(this).attr("data-title");
-			$(tabid).fadeIn();
-		}
-	})
-})
-</script>

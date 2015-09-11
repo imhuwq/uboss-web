@@ -15,11 +15,11 @@ class Users::SessionsController < Devise::SessionsController
   # POST /resource/sign_in
    def create
      if sign_in_params[:mobile_auth_code].present?
-       if MobileAuthCode.auth_code(sign_in_params[:login], sign_in_params[:mobile_auth_code])
+       if MobileCaptcha.auth_code(sign_in_params[:login], sign_in_params[:mobile_auth_code])
          self.resource = User.find_or_create_guest_with_session(sign_in_params[:login], session)
          if resource.persisted?
            sign_in(resource)
-           MobileAuthCode.clear_captcha(sign_in_params[:login])
+           MobileCaptcha.clear_captcha(sign_in_params[:login])
            respond_with resource, location: after_sign_in_path_for(resource)
          else
            flash.now[:error] = resource.errors.full_messages.join('<br/>')
