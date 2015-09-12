@@ -31,7 +31,9 @@ Rails.application.routes.draw do
   post 'mobile_captchas/create', to: 'mobile_captchas#create'
   get  'mobile_captchas/send_with_captcha', to: 'mobile_captchas#send_with_captcha'
 
-  resources :stores, only: [:show]
+  resources :stores, only: [:show] do
+    get :hots, on: :member
+  end
   resources :orders, only: [:new, :create, :show] do
     get 'received', on: :member
     get 'pay_complete', on: :member
@@ -39,7 +41,9 @@ Rails.application.routes.draw do
     resource :charge, only: [:create]
   end
   resources :products do
-    get :refact, on: :member
+    member do
+      get :refact
+    end
     post :save_mobile, :democontent,  on: :collection
   end
   resources :evaluations do

@@ -22,42 +22,37 @@
     <span>*</span>
   </div>
 </div>
-<div class="store-like">
-	<div class="box border-box">
-		<div class="box-w100">
-			<div class="page-title like-color">热销商品</div>
-		</div>
-	<% @hots.each do |product|%>
-		<div class="box-w30">
-			<div class="product-box">
-				<div class="cover">
-					<%= link_to '', product, style: "background-image:url(#{product.image_url(:w120)})",class:'img' ,title:"#{product.name}" %>
-					<%= image_tag("mobile/img.jpg") %>
-				</div>
-				<div class="price">￥<%= product.present_price %></div>
-			</div><!-- product-box -->
-		</div><!-- box-w30 -->
-	<% end%>
-		<div class="box-w10">
-			<%= image_tag 'mobile/arrow-right.png',class:'like-more' %>
-			<!-- 设置链接 -->
-		</div>
-	</div>
-</div>
+
+<% if not @hide_hot_box %>
+  <div class="store-like">
+    <div class="box border-box">
+      <div class="box-w100">
+        <div class="page-title like-color">热销商品</div>
+      </div>
+
+      <%= render partial: 'hot_product', collection: @hots, as: :product %>
+
+      <div class="box-w10">
+        <%= link_to hots_store_path(@seller) do %>
+          <%= image_tag 'mobile/arrow-right.png',class:'like-more' %>
+        <% end %>
+        <!-- 设置链接 -->
+      </div>
+    </div>
+  </div>
+<% end %>
+
 <div class="box store-list">
 	<div class="box-w100">
-		<div class="page-title">全部商品</div>
+    <% if @hide_hot_box %>
+      <div class="page-title like-color">热销商品</div>
+    <% else %>
+      <div class="page-title">全部商品</div>
+    <% end %>
 	</div>
-	<% @products.each do |product|%>
-	<div class="box-w50">
-		<div class="product-box">
-			<div class="cover">
-				<%= link_to '', product, style: "background-image:url(#{product.image_url(:w320)})",class:'img',title:"#{product.name}"  %>
-				<%= image_tag("mobile/img.jpg") %>
-			</div>
-			<div class="title"><%= link_to product.name ,product %></div>
-			<div class="price">￥<%= product.present_price %> <span>￥<%= product.original_price %></span></div>
-		</div><!-- product-box -->
-	</div><!-- box-w50 -->
-	<% end%>
+
+  <%= render partial: 'product', collection: @products %>
+
 </div>
+
+<div id="load-more" data-container='.store-list' data-ele='.p-item' data-ref='<%= request.path %>'>加载更多</div>
