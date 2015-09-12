@@ -23,6 +23,7 @@ $ ->
     e.removeClass('loading')
     e.addClass('done')
     e.text('已无更多')
+    e.remove()
 
   waypointHandler = (direction) ->
     element = $(this.element)
