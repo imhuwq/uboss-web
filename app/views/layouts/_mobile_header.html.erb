@@ -1,4 +1,19 @@
 <% if controller_name == "products" && action_name == "show" %>
+<div class="only-products-nav">	
+	<div class="menu-btn"><%= image_tag 'mobile/navbar.png' %></div>
+	<div class="nav-bar">
+	  <ul>
+	    <li><%= link_to '首页', root_path %></li>
+	    <li><%= link_to '我的UBOSS', account_path %></li>
+	    <% if current_user.try(:agent?) %>
+	    <li><%= link_to '邀请商家', invite_seller_account_path %></li>
+	    <% end %>
+	    <li>
+	      <%= link_to '关于', about_path %>
+	    </li>
+	  </ul>
+	</div>
+</div>
 <% else %>
 <div class="header-bar">
   	<div class="menu-btn"><%= image_tag 'mobile/navbar.png' %></div>
@@ -8,7 +23,6 @@
 	    <%= image_tag 'mobile/logo.png',class:'logo' %>
 	  <% end %>
 </div>
-
 <div class="nav-bar">
   <ul>
     <li><%= link_to '首页', root_path %></li>
