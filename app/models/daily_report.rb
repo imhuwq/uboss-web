@@ -4,7 +4,6 @@ class DailyReport < ActiveRecord::Base
 
   belongs_to :user
 
-
   #
   # selling       商家销售收入流水
   # divide        创客分成收入流水
@@ -21,6 +20,10 @@ class DailyReport < ActiveRecord::Base
   }
 
   delegate :service_rate, :store_identify, to: :user, prefix: true, allow_nil: true
+
+  scope :aggregate_by_month, -> {
+    select("to_char(day, 'YYYY-MM') AS month, SUM(amount) AS total_amount").group('month')
+  }
 
   def pre_divide_income
     amount * user_service_rate / 100

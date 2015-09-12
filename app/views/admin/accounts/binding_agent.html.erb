@@ -1,15 +1,23 @@
-<div class='container-sm'>
-
-  <%= simple_form_for(current_user, url: binding_agent_admin_account_path, method: :patch) do |f| %>
-
-    <h2>绑定UBOSS创客</h2>
-    <hr />
-    <%= f.input :code, label: false, placeholder: '我的邀请码' %>
-    <p><small>填写创客发与您的邀请码即可与创客绑定入驻UBOSS平台，您也可以不填写邀请码直接入驻UBOSS平台。</small></p>
-
-    <%= f.submit '确认绑定', name: 'binding_submit', class: 'btn btn-primary col-md-12' %>
-    <%= f.submit '没有邀请码，暂不绑定', class: 'btn btn-link col-md-12' %>
-
-  <% end %>
-
+<div class="container admin-container">
+	<ul class="breadcrumb">
+		<li><a href="/admin">主页</a></li>
+		<li class="divider"><i class="fa fa-caret-right"></i></li>
+		<li class="active">绑定UBoss创客</li>
+	</ul>
+</div><!-- container -->
+<br />
+<div class='container nogap'>
+  <div class="admin-box black-bg-color">  
+  	<div class="box-w25">&nbsp;</div>
+  	<div class="box-w50">
+  	<h3 class="page-title">绑定UBoss创客</h3>
+	  <%= simple_form_for(current_user, url: binding_agent_admin_account_path, method: :patch) do |f| %>
+	    <%= f.input :code, label: false, placeholder: '我的邀请码' %>
+	    <p>填写创客发与您的邀请码即可与创客绑定入驻UBOSS平台，您也可以不填写邀请码直接入驻UBOSS平台。</p>
+	    <p><%= f.submit '确认绑定', name: 'binding_submit', class: 'btn red-btn btn-large btn-block' %></p>		
+	    <p class="text-right"><%= f.submit '没有邀请码，暂不绑定', class: 'btn btn-link' %></p>  
+	  <% end %>	
+		</div>
+		<div class="box-w25">&nbsp;</div>
+	</div>
 </div>

@@ -1,20 +1,40 @@
-<ol class="breadcrumb">
-  <li><%= link_to '提现列表', [:admin, :withdraw_records] %></li>
-  <li class="active">申请提现</li>
-</ol>
-
-<h3>申请提现</h3>
-<hr />
-
-<p>总收益：<span class="label label-primary"><%= number_to_currency current_user.income + current_user.frozen_income %></span></p>
-<p>可提现：<span class="label label-success"><%= number_to_currency current_user.income %></span></p>
-
+<div class="container admin-container">
+	<ul class="breadcrumb">
+		<li><a href="/admin">主页</a></li>
+		<li class="divider"><i class="fa fa-angle-right"></i></li>
+		<li><%= link_to '提现列表', [:admin, :withdraw_records] %></li>
+		<li class="divider"><i class="fa fa-caret-right"></i></li>
+		<li class="active">申请提现</li>
+	</ul>
+</div><!-- container -->
 <br />
+<div class="container nogap">
+	<div class="box-w25">
+		<div class="admin-box main-bg-color">
+			<h4>可提现金额</h4>
+			<h1 class="num"><%= number_to_currency current_user.income %></h1>
+		</div>
+	</div><!-- box-w25 -->
+</div>
+<br />
+<div class="container">
+	<div class="admin-box black-bg-color">
+		<br />
+		<div class="inline-form text-center">
+		<%= simple_form_for [:admin, @withdraw_record] do |f| %>
+		  <%= f.input :amount, hint: "最低提现金额为￥100" %>
+		  <%= f.association :bank_card, label_method: :identify, value_method: :id,
+		    collection: current_user.bank_cards,
+		    prompt: "#{@withdraw_record.wechat_available? ? '微信打款' : '请选择银行卡'}" %>
+		  <p class="text-center"><%= f.submit class: 'btn btn-large' %></p>
+		<% end %>
+		</div>
+	</div>
+</div>
 
-<%= simple_form_for [:admin, @withdraw_record] do |f| %>
-  <%= f.input :amount, hint: "最低提现金额为￥100" %>
-  <%= f.association :bank_card, label_method: :identify, value_method: :id,
-    collection: current_user.bank_cards,
-    prompt: "#{@withdraw_record.wechat_available? ? '微信打款' : '请选择银行卡'}" %>
-  <%= f.submit class: 'btn btn-primary' %>
-<% end %>
+<script>
+$(document).ready(function(){
+	$("select").chosen();	
+})
+	
+</script>

@@ -1,36 +1,50 @@
-<div class="row text-center">
-  <div class="col-xs-4"></div>
-  <div class="col-xs-2">
-    <div>今日签约创客</div>
-    <b style="font-size:3em;"><%= User.agent_today_joins.count %></b>
-  </div>
-  <div class="col-xs-2">
-    <div>总签约创客</div>
-    <b style="font-size:3em;"><%= User.agent_total_joins.count %></b>
-  </div>
+<div class="container admin-container">
+	<ul class="breadcrumb">
+		<li><a href="/admin">主页</a></li>
+		<li class="divider"><i class="fa fa-caret-right"></i></li>
+		<li>创客</li>
+	</ul>
+</div><!-- container -->
+<br />
+<div class="container nogap">
+	<div class="box-w25">
+		<div class="admin-box main-bg-color">
+			<h4>今日签约创客</h4>
+			<h1 class="num"><%= User.agent_today_joins.count %></h1>
+		</div><!-- admin-->
+	</div><!-- box-w25 -->
+	<div class="box-w25">
+		<div class="admin-box red-bg-color">
+			<h4>总签约创客</h4>
+			<h1 class="num"><%= User.agent_total_joins.count %></h1>
+		</div><!-- admin-->
+	</div><!-- box-w25 -->
 </div>
-<div id="index_list">
-  <%= table_for(@agents) do |t| %>
-    <%= t.cell :agent_name do |obj| %>
-      <%= link_to url_for(controller: 'admin/agents', action: :show, id: obj) do %>
-      <div style="width:370px;float:left;">
-        <div class="col-sm-3">
-          <%= image_tag(obj.avatar, size: "100x80", alt: "-") %>
-        </div>
-        <div class="col-sm-9"  style="padding-top:15px;">
-          <div class="col-sm-12">创客名称：<%= obj.identify %></div>
-          <div class="col-sm-12">绑定手机：<%= obj.login %></div>
-        </div>
-      </div>
-      <% end %>
-    <% end %>
-    <%= t.cell :seller_today_joins do |obj| %>
-      <%= obj.seller_today_joins.count %>
-    <% end %>
-    <%= t.cell :seller_total_joins do |obj| %>
-    <%= obj.seller_total_joins.count %>
-    <% end %>
-    <%= t.cell :created_at %>
-  <%- end %>
-  <%= paginate @agents %>
+<br />
+<div class="container">
+	<table class="list-table">
+		<thead>
+			<th>创客</th>
+			<th>账号</th>
+			<th>今日签约商家</th>
+			<th>累积签约商家</th>
+			<th>收益</th>
+		</thead>
+		<% @agents.each do |agent| %>
+			<tr>
+				<td class="text-left">
+					<%= link_to admin_agent_path(agent) do %>
+						<%= image_tag(agent.avatar_url(:w120), size: "100x80", alt: agent.identify ) %>　<%= agent.identify %>
+					<% end %>
+				</td>
+				<td><%= agent.login %></td>
+				<td><%= agent.seller_today_joins.count %></td>
+				<td><%= agent.seller_total_joins.count %></td>
+				<td><%= number_to_currency agent.total_divide_income %></td>
+			</tr>
+		<% end %>
+	</table>
+	<br />
+	<%= paginate @agents %>
 </div>
+

@@ -1,4 +1,6 @@
-@import 'desktop/base';
+@import 'shared/base';
+@import "font-awesome-sprockets";
+@import "font-awesome";
 @import 'desktop/index';
 @import 'desktop/serviceCentre';
 @import 'desktop/animate.min';
