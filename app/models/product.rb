@@ -21,6 +21,8 @@ class Product < ActiveRecord::Base
 
   enum status: { unpublish: 0, published: 1, closed: 2 }
 
+  scope :hots, -> { where(hot: true) }
+
   before_create :generate_code
   before_save :calculates_before_save
 

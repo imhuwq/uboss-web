@@ -27,12 +27,12 @@
 		<div class="box-w100">
 			<div class="page-title like-color">热销商品</div>
 		</div>
-	<% @products.limit(3).each do |product|%>
+	<% @hots.each do |product|%>
 		<div class="box-w30">
 			<div class="product-box">
 				<div class="cover">
-					<%= link_to '', product, style: "background-image:url(#{product.image_url(:thumb)})",class:'img'  %>	
-					<%= image_tag("mobile/img.jpg") %>							
+					<%= link_to '', product, style: "background-image:url(#{product.image_url(:w120)})",class:'img'  %>
+					<%= image_tag("mobile/img.jpg") %>
 				</div>
 				<div class="price">￥<%= product.present_price %></div>
 			</div><!-- product-box -->
@@ -52,8 +52,8 @@
 	<div class="box-w50">
 		<div class="product-box">
 			<div class="cover">
-				<%= link_to '', product, style: "background-image:url(#{product.image_url(:thumb)})",class:'img'  %>			
-				<%= image_tag("mobile/img.jpg") %>				
+				<%= link_to '', product, style: "background-image:url(#{product.image_url(:w320)})",class:'img'  %>
+				<%= image_tag("mobile/img.jpg") %>
 			</div>
 			<div class="title"><%= link_to product.name ,product %></div>
 			<div class="price">￥<%= product.present_price %> <span>￥<%= product.original_price %></span></div>

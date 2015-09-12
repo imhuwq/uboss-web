@@ -32,24 +32,7 @@
 		<%= link_to("+ 发布商品", url_for(:action=>:new), :class=>"btn btn-large",:role=>"button") %>
 	</div>
 	<br />
-	
 		<%= render partial: 'products', locals: { products: @products } %>
 </div>
 
-
 <%= paginate @products %>
-
-<script type="text/javascript">
-function delete_this(id) {
-  var id = id
-  console.log(id)
-  var r=confirm("确定要删除么？")
-  if (r==true) {
-    $.ajax({
-      url: '/admin/products/'+id+'/change_status',
-      dataType: 'script',
-      data: {id: id, status: 'closed'},
-    });
-  };
-}
-</script>

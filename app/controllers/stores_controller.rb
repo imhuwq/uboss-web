@@ -4,6 +4,9 @@ class StoresController < ApplicationController
 
   def show
     @seller = User.find(params[:id])
-    @products = @seller.products.published
+    @products = append_default_filter @seller.products.published
+    @hots = @seller.products.hots.recent.limit(3)
+    #render partial: 'products/product', collection: @products if request.xhr?
   end
+
 end
