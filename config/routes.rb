@@ -102,12 +102,8 @@ Rails.application.routes.draw do
       end
       resources :agents, except: [:new, :edit, :update, :destroy] do
       end
-      resources :sellers, except: [:new, :edit, :update, :destroy] do
+      resources :sellers, only: [:index, :show, :edit, :update] do
         post :update_service_rate, on: :collection
-        get  :withdraw_records, on: :member
-        resources :income_reports, only: [:index, :show] do
-          get :details, on: :collection
-        end
       end
       resource :account, only: [:edit, :show, :update] do
         get :password, on: :member
@@ -116,7 +112,6 @@ Rails.application.routes.draw do
         patch :password, to: 'accounts#update_password'
       end
       resources :transactions, only: [:index]
-      resources :income_reports, only: [:index, :show]
       resources :bank_cards, only: [:index, :show, :new, :create, :destroy]
 
       get '/data', to: 'data#index'
