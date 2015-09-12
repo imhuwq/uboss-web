@@ -5,6 +5,96 @@
 <%= content_for :extra_meta_tags do %>
   <%= sharing_meta_tags(@product, @sharing_link_node) %>
 <% end %>
+<div class="fixed-container">
+<div class="product-box product-page">	
+		<div class="cover">
+			<div class="img" style="background-image:url('<%=@product.image_url()%>')"></div>
+			<%= image_tag("mobile/img.jpg") %>								
+		</div>
+</div><!-- product-box -->
+<div class="product-info-box">
+	<p class="title"><%=@product.name%></p>
+	<p class="price"><small>￥</small><%=@product.present_price%></p>
+	<p class="gray-color">
+		<% if product_traffic(@product)!= '￥0.0' %>
+		 	快递：<%=product_traffic(@product)%>
+		<%else%>
+			包邮
+		<% end %>
+	</p>
+	<p class="product-rate"><%= Evaluation.product_good_reputation_rate(@product.id) %>好评(<%= Evaluation.product_good_reputation(@product.id) %>人)</p>
+</div><!-- product-info-box -->
+
+<% if @privilege_card %>
+<div class="product-info-box">
+	<br />
+	<div class="friend-card">
+		<p class="cover"><%= image_tag("mobile/img.jpg") %></p>
+		<p class="name">（分享者名称） 分享</p>
+		<div class="gray-color">并为你支付<span class="like-color">(填充价格)</span></div>
+		<br />
+		<div class="border-box">
+			<p class="name">友情价格</p>
+			<div class="price">(填充价格)</div>
+		</div>
+		<br />
+		<p class="name">关于分享者</p>
+		<div class="gray-color">共（填充数字）分享 <span class="like-color">(填充数字)%靠谱</span></div>
+	</div>  <!-- friend-card -->	
+	<br />
+</div><!-- product-info-box -->	
+<% end %>
+
+<div class="product-info-box">
+	<br />
+	<div class="cover">
+	<% if @product.user.avatar.present? %>
+    <%= image_tag @seller.avatar_url(:h50) %> 
+  <% end %> 
+  </div>
+  <p class="name"><%= @seller.store_name %></p>
+  <p class="gray-color">（获取商家签名）</p>
+  <p class="gray-color border-top">(填充数字)%好评（括号人数）</p>
+  <div class="into">
+  	<%= link_to  store_path(@seller) do%>
+  		<%= image_tag("mobile/into.png") %> 进店逛逛
+  	<%end%>
+  </div>
+  <br />
+</div><!-- product-info-box -->	
+
+<div class="product-info-box">
+	<%= raw @product.content %>
+</div>
+
+
+
+
+
+<% if @sharing_node.blank? %>
+<div class="sharer-info">
+  <%= link_to '立即购买', new_order_path(product_id: @product.id), class: 'btn btn-block' %>
+</div>
+<% else %>
+  <div class="sharer-info">
+      <div class="cover">
+      	<%= image_tag @sharing_node.user.avatar_url(:thumb), class: 'prvd_header' %>
+      </div>    
+      <%= link_to '立即购买', new_order_path(product_id: @product.id), class: 'btn pull-right'%> 
+      <div class="content">
+        <p>分享者：<%= truncate (@sharing_node.user.identify),:length=>10,:omission=>'...' %></p>
+        <p>好评率：<%= Evaluation.sharer_good_reputation_rate(@sharing_node.user) %></p>
+      </div>
+  </div>
+<% end %>
+<% if params['shared'] == 'true' %>
+  <%= render partial: 'share_page' %>
+<% end %>
+
+
+
+</div>
+
 
 <% if browser.wechat? %>
   <%= content_for :extra_javascript do %>
@@ -13,10 +103,3 @@
     </script>
   <% end %>
 <% end %>
-
-<p>页面在 products/refact.html.erb</p>
-
-@privilege_card 友情卡
-@product 商品
-
-

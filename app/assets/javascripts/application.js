@@ -34,5 +34,5 @@ $(function() {
 });
 
 function close_window() {
-  $('#window').html('');
+  $('.menb').remove();
 }
