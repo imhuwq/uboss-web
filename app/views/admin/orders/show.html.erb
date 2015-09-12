@@ -45,17 +45,21 @@
 	</div><!-- admin-box -->
 	<br />
 	<h3 class="page-title">
-		发货信息
+		物流信息
 		<% if @order.payed? && can?(:manage, @order) %>
 		  <%= link_to '发货', [:ship, :admin, @order],
 		    class: 'btn', method: :PATCH, data: { confirm: 'Are your sure?' } %>
-		<%- end %>
+		<% end %>
 	</h3>
 	<div class="admin-box">
-    <div class="box-w100">
+    <div class="box-w50">
       <p>收货人：<%= @order.username %></p>
       <p>联系电话：<%= @order.mobile %></p>
       <p>收货地址：<%= @order.address %></p>
+    </div>
+    <div class="box-w50">
+      <p>发货时间：<%= @order.shiped_at || '未发货' %></p>
+      <p>签收时间：<%= @order.signed_at || '未签收' %></p>
     </div>
 	</div><!-- admin-box -->
   <br />

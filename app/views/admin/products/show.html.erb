@@ -69,28 +69,6 @@
 	        </div>
 	      </div>
 	  	</div><!-- admin-box -->
-	  	<br />
-	  	<div class="text-center">
-		    <% if can? :edit, @product %>
-		      <%= link_to("编辑", url_for(:action=>:edit,:id=>@product.id), :class=>"btn btn-large blue-btn",:role=>"button") %>
-		    <% end %>　
-		    <%= link_to("预览", url_for(:action=>:pre_view,:id=>@product.id), :class=>"btn btn-large yellow-btn",:role=>"button",:target=>"_blank") %>　
-		    <% if can? :update, @product %>
-		      <% if @product.status == 'unpublish' %>
-		        <%= link_to("上架",
-		                    url_for(action: :change_status, id: @product.id, status: :published),
-		                    method: :patch,
-		                    class: "btn btn-large red-btn",:role=>"button") %>
-		      <% else %>
-		        <%= link_to("取消上架",
-		                    url_for(action: :change_status,id: @product.id, status: :unpublish),
-		                    method: :patch,
-		                    class: "btn btn-large ",:role=>"button") %>
-		      <% end %>
-		    <% end %>
-
-	    </div>
-
 	</div><!-- box-w50 -->
 	<div class="box-w50">
 		<div class="admin-box beige-bg-color">
@@ -177,8 +155,23 @@
 	 				<img src="http://qr.liantu.com/api.php?&text=<%= "http://#{request.env["HTTP_HOST"]}/products/#{@product.id}?shared=true" %>"/>
 	 			</div>
 	 		</div>
-
 	 	</div><!-- admin-box -->
+    <br />
+    <div class="text-center">
+      <% if can? :edit, @product %>
+        <%= link_to("编辑", url_for(:action=>:edit,:id=>@product.id), :class=>"btn btn-large blue-btn",:role=>"button") %>
+      <% end %>　
+      <%= link_to("预览", url_for(:action=>:pre_view,:id=>@product.id), :class=>"btn btn-large yellow-btn",:role=>"button",:target=>"_blank") %>　
+      <% if can? :update, @product %>
+        <% if @product.status == 'unpublish' %>
+          <%= link_to("上架", url_for(action: :change_status, id: @product.id, status: :published),
+                      method: :patch, class: "btn btn-large red-btn",:role=>"button") %>
+       <% else %>
+         <%= link_to("取消上架", url_for(action: :change_status,id: @product.id, status: :unpublish),
+                     method: :patch, class: "btn btn-large ",:role=>"button") %>
+        <% end %>
+      <% end %>
+    </div>
 	</div><!-- box-w50 -->
 </div><!-- container -->
 

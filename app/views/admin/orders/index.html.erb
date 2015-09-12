@@ -37,7 +37,7 @@
 				<td><%= order.buyer_identify %></td>
 				<td><%= order.state_i18n %></td>
 				<td>
-					<% if order.payed? && can?(:manage, @order) %>
+					<% if order.payed? && can?(:manage, order) %>
 			      <%= link_to '发货', [:ship, :admin, order],
 			        class: 'btn', method: :PATCH, data: { confirm: '确认发货?' } %>
 			    <%- end%>

@@ -13,14 +13,14 @@
 <div class="container nogap">
 
     <%= horizon_form_for @product, url: { action: :update } do |f| %>
-   
+
       <%= render 'fields', f: f %>
-	
-	  <br />
+
+      <br />
+
       <div class="form-actions text-right">
         <%= f.submit "保存", class: "btn btn-large" %>
       </div>
-      </div><!-- box-w50 -->
     <% end %>
-	
+
 </div>

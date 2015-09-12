@@ -10,6 +10,7 @@
       <% end %>
       <%= upyun_meta_tags prefix: 'enterprise_authentication/business_license_img' %>
       <%= file_field_tag "business_license_img", class: "upyun_file_closest" %>
+      <b class="loading"><i class="fa fa-spinner"></i></b>
     </span>
   <% end %>
   <%= f.input :legal_person_identity_card_front_img do %>
@@ -22,6 +23,7 @@
       <% end %>
       <%= upyun_meta_tags prefix: 'enterprise_authentication/legal_person_identity_card_front_img' %>
       <%= file_field_tag "legal_person_identity_card_front_img", class: "upyun_file_closest" %>
+      <b class="loading"><i class="fa fa-spinner"></i></b>
     </span>
   <% end %>
   <%= f.input :legal_person_identity_card_end_img do %>
@@ -34,6 +36,7 @@
       <% end %>
       <%= upyun_meta_tags prefix: 'enterprise_authentication/legal_person_identity_card_end_img' %>
       <%= file_field_tag "legal_person_identity_card_end_img", class: "upyun_file_closest" %>
+      <b class="loading"><i class="fa fa-spinner"></i></b>
     </span>
   <% end %>
   <%= f.input :address %>

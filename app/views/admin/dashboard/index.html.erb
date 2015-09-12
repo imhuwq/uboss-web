@@ -109,8 +109,8 @@
 		</div>
 		<div class="box-w100">
 			<div class="admin-box chart">
-        <% if false#current_user.is_agent? %>
-          <h5>未认证商家  <small class="pull-right"><%= link_to "更多...", [:admin, :sellers] %></small></h5>
+        <% if current_user.is_agent? %>
+          <h5>未认证商家（邀请码：<%= current_user.agent_code %>）  <small class="pull-right"><%= link_to "更多...", [:admin, :sellers] %></small></h5>
           <div style='height: 280px;overflow: auto;'>
             <table class="border-table">
               <thead>
