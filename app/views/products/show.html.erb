@@ -5,86 +5,6 @@
 <%= content_for :extra_meta_tags do %>
   <%= sharing_meta_tags(@product, @sharing_link_node) %>
 <% end %>
-<div class="container">
-  <div class="prdv_img">
-    <%= image_tag(@product.image_url(:w640),  alt: "#{@product.name}") %>
-  </div>
-  <div class="dail_box">
-    <div class="dail_contitl">
-      <p class="dail_title"><%= @product.name %></p>
-      <p class="dail_prics">
-      <span class="pricc">价格：</span>
-      <span class="pric1v">￥<%= @product.present_price %></span>
-      <span class="pric3 prvd_colors"><%= @product.original_price %></span>
-      </p>
-      <p class="dail_pric3">
-      <span class="pricc_v1">快递：<%= product_traffic(@product) %></span>
-      <span class="pricc_v2">
-        好评率：
-        <span class="pricc"><%= Evaluation.product_good_reputation_rate(@product.id) %> </span>
-        （<%= Evaluation.product_good_reputation(@product.id) %>人）</span>
-      </p>
-    </div>
-  </div>
-  <div class="comming">
-    <p class="comming_cont">
-    <span class="comming_v1">
-      <% if @product.user.avatar.present? %>
-        <%= image_tag @seller.avatar_url(:h50) %>
-      <% else %>
-        <%= @seller.store_name %>
-      <% end %>
-    </span>
-    <span class="comming_v2"><%= link_to "进入商铺", store_path(@seller) %></span>
-    </p>
-  </div>
-</div>
-
-<% if @privilege_card %>
-  <div class="appr_box2">
-    <div class="appr_box2_cont">
-      <div class="appr_header">
-        <span class="appr_header_img">
-          <%= image_tag @privilege_card.user.avatar_url(:h50) %>
-        </span>
-        <span class="normal_appr_header_tit"><%= @privilege_card.user.identify %>的友情卡</span>
-      </div>
-      <div class="appr_header_content">
-        <p class="appr_line1">
-        <strong><%= number_with_precision(@privilege_card.discount, precision: 2) %></strong><span>折</span>
-        </p>
-        <p class="appr_line2">购买本商品每件省</p>
-        <p class="appr_line3">省<strong><%= @privilege_card.privilege_amount %></strong>元/件</p>
-      </div>
-    </div>
-  </div>
-<% end %>
-
-<div class="prvid_content">
-  <p class="prvid_content_tit">图文详情</p>
-  <%= raw @product.content %>
-</div>
-
-<% if @sharing_node.blank? %>
-<div class="buy">
-  <%= link_to '立即购买', new_order_path(product_id: @product.id), class: 'buy_btn' %>
-</div>
-<% else %>
-  <div class="buy_short">
-    <div class="buy_shortcont">
-      <%= image_tag @sharing_node.user.avatar_url(:thumb), class: 'prvd_header' %>
-      <div class="prvd_buycont">
-        <p>分享者：<%= truncate (@sharing_node.user.identify),:length=>10,:omission=>'...' %></p>
-        <p>好评率：<%= Evaluation.sharer_good_reputation_rate(@sharing_node.user) %></p>
-      </div>
-      <%= link_to '立即购买', new_order_path(product_id: @product.id), class: 'prvd_buyrigt buy_btnshort'%>
-      </div>
-    </div>
-  </div>
-<% end %>
-<% if params['shared'] == 'true' %>
-  <%= render partial: 'share_page' %>
-<% end %>
 
 <% if browser.wechat? %>
   <%= content_for :extra_javascript do %>
@@ -93,3 +13,89 @@
     </script>
   <% end %>
 <% end %>
+
+<div class="fixed-container">
+  <div class="product-box product-page">
+    <div class="cover">
+      <div class="img" style="background-image:url('<%=@product.image_url()%>')"></div>
+      <%= image_tag("mobile/img.jpg") %>
+    </div>
+  </div><!-- product-box -->
+
+  <div class="product-info-box">
+    <p class="title"><%=@product.name%></p>
+    <p class="price"><small>￥</small><%=@product.present_price%></p>
+    <p class="gray-color">
+    <% if @product.buyer_pay? %>
+      快递：<%= product_traffic(@product) %>
+    <%else%>
+      包邮
+    <% end %>
+    </p>
+    <p class="product-rate"><%= Evaluation.product_good_reputation_rate(@product.id) %> 好评 (<%= Evaluation.product_good_reputation(@product.id) %>人)</p>
+  </div><!-- product-info-box -->
+
+  <% if @privilege_card %>
+    <div class="product-info-box">
+      <br />
+      <div class="friend-card">
+        <p class="cover"><%= image_tag @privilege_card.user.avatar_url(:h50) %></p>
+        <p class="name"><%= @privilege_card.user.identify %> 分享</p>
+        <div class="gray-color">每件为你多省<span class="like-color"><%= @privilege_card.privilege_amount %></span></div>
+        <br />
+        <div class="border-box">
+          <p class="name">友情价格</p>
+          <div class="price"><%= @product.present_price - @privilege_card.privilege_amount %></div>
+        </div>
+        <br />
+        <p class="name">关于分享者</p>
+        <div class="gray-color">共 <%= @sharing_node.user.total_reputations %> 分享 <span class="like-color"><%= @sharing_node.user.good_reputation_rate %>度靠谱</span></div>
+      </div>  <!-- friend-card -->
+      <br />
+    </div><!-- product-info-box -->
+  <% end %>
+
+  <div class="product-info-box">
+    <br />
+    <div class="cover">
+      <% if @product.user.avatar.present? %>
+        <%= image_tag @seller.avatar_url(:h50) %>
+      <% end %>
+    </div>
+    <p class="name"><%= @seller.store_name %></p>
+    <p class="gray-color"><%= @seller.store_short_description %></p>
+    <p class="gray-color border-top"><%= store_good_rate @seller %> 好评（<%= store_total_rate(@seller) %>）</p>
+    <div class="into">
+      <%= link_to  store_path(@seller) do%>
+        <%= image_tag("mobile/into.png") %> 进店逛逛
+      <%end%>
+    </div>
+    <br />
+  </div><!-- product-info-box -->
+
+  <div class="product-info-box">
+    <%= raw @product.content %>
+  </div>
+
+  <% if @sharing_node.blank? %>
+    <div class="sharer-info">
+      <%= link_to '立即购买', new_order_path(product_id: @product.id), class: 'btn btn-block' %>
+    </div>
+  <% else %>
+    <div class="sharer-info">
+      <div class="cover">
+        <%= image_tag @sharing_node.user.avatar_url(:thumb), class: 'prvd_header' %>
+      </div>
+      <%= link_to '立即购买', new_order_path(product_id: @product.id), class: 'btn pull-right'%>
+      <div class="content">
+        <p>分享者：<%= truncate (@sharing_node.user.identify),:length=>10,:omission=>'...' %></p>
+        <p>好评率：<%= Evaluation.sharer_good_reputation_rate(@sharing_node.user) %></p>
+      </div>
+    </div>
+  <% end %>
+
+  <% if params['shared'] == 'true' %>
+    <%= render partial: 'share_page' %>
+  <% end %>
+
+</div>

@@ -8,11 +8,12 @@ class ProductsController < ApplicationController
 
   def show
     invoke_product_showing_info
+    render layout: 'mobile'
   end
 
   def refact
     invoke_product_showing_info
-    render layout: 'mobile'
+    #render layout: 'mobile'
   end
 
   def save_mobile
