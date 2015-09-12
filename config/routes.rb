@@ -55,9 +55,7 @@ Rails.application.routes.draw do
     put :bind_agent,  :update_histroy_note
     patch :merchant_confirm, to: 'accounts#merchant_confirmed'
     patch :password, to: 'accounts#update_password'
-    resources :user_addresses, except: [:show] do
-      get :update_select, on: :collection
-    end
+    resources :user_addresses, except: [:show]
   end
   resource :pay_notify, only: [] do
     collection do

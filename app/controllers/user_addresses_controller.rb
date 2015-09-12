@@ -1,6 +1,5 @@
 class UserAddressesController < ApplicationController
 
-  before_action :authenticate_user!, except: [:update_select]
   before_action :find_user_address, only: [:edit, :update, :destroy]
 
   def index
@@ -44,17 +43,6 @@ class UserAddressesController < ApplicationController
       flash[:error] = '删除收货地址失败'
       redirect_to account_user_addresses_path
     end
-  end
-
-  def update_select
-    @citys,@areas = []
-    if params[:province].present?
-      @citys = ChinaCity.list(params[:province])
-    end
-    if params[:city].present? || @citys.present?
-      @areas = ChinaCity.list(params[:city].present? ? params[:city] : @citys.try(:first).try(:last))
-    end
-    render 'user_addresses/update_select'
   end
 
   private
