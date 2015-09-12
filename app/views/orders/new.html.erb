@@ -139,10 +139,7 @@
                 <span>联系电话</span>
                 <%= f.input_field :deliver_mobile, placeholder: '手机或固话', type: :tel, class: 'add_text' %>
               </p>
-              <p>
-                <span>所在地区</span>
-                <%= f.input_field :street, class: 'add_text' %>
-              </p>
+              <%= render 'user_addresses/user_address', f: f  %>
               <p>
                 <span>详细地址</span>
                 <%= f.input_field :building, placeholder: '街道门牌信息', class: 'add_text' %>

@@ -1,6 +1,6 @@
 class UserAddressesController < ApplicationController
 
-  before_action :authenticate_user!
+  before_action :authenticate_user!, except: [:update_select]
   before_action :find_user_address, only: [:edit, :update, :destroy]
 
   def index
@@ -46,9 +46,20 @@ class UserAddressesController < ApplicationController
     end
   end
 
+  def update_select
+    @citys,@areas = []
+    if params[:province].present?
+      @citys = ChinaCity.list(params[:province])
+    end
+    if params[:city].present? || @citys.present?
+      @areas = ChinaCity.list(params[:city].present? ? params[:city] : @citys.try(:first).try(:last))
+    end
+    render 'user_addresses/update_select'
+  end
+
   private
   def address_params
-    params.require(:user_address).permit(:username, :mobile, :province, :city, :country, :street, :building, :default)
+    params.require(:user_address).permit(:username, :mobile, :province, :city, :area, :country, :street, :building, :default)
   end
 
   def find_user_address
