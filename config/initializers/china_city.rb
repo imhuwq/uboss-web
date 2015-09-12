@@ -13,6 +13,10 @@ module ChinaCity extend self
     end
   end
 
+  def provinces
+    old_list
+  end
+
   private
 
   def self.provide_provinces_or_none_by_condition(province = false)
