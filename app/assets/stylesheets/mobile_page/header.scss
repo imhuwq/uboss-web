@@ -1,4 +1,5 @@
 header {
+  position: relative;
   .header-bar {
     text-align: center;
     overflow: hidden;
@@ -23,12 +24,37 @@ header {
   }
   .nav-bar{
     display: none;
+    position: absolute;
+    z-index: 50;
+    top:45px;
+    right:5px;
+    background: #fff;
+    border-radius:4px ;
     a{
       color:$brand-primary;
       display: block;
-      border-top: 1px solid $brand-primary;
-      padding: 10px 20px;
+      border-top: 1px solid #eee;
+      padding: 10px;
+      font-size: 14px;
+      line-height: 20px;
+      
     }
+    li:first-child{
+        a{ border-top:none ;}
+    }
+  }
+  .nav-bar:before{
+    content: ' ';
+    display: block;
+    position: absolute;
+    top: -5px;
+    right: 10px;
+    width: 0;
+    height: 0;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-bottom: 5px solid #fff;
+    
   }
 }
 
