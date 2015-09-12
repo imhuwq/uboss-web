@@ -56,6 +56,10 @@ zh-CN:
     deliver_mobile: 收货手机
     deliver_username: 收件人
     street: 详细地址
+    province:  省
+    country: 国家
+    city: 城市
+    area: 区/县
   simple_form:
     labels:
       product: &product
