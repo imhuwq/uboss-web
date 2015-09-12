@@ -1,6 +1,7 @@
 class Admin::SellersController < AdminController
 
   def index
+    authorize! :read, :sellers
     if current_user.is_super_admin?
       @sellers = User.joins(:user_roles).where(user_roles: { name: 'seller' }).page(params[:page] || 1).per(15)
     else
@@ -10,6 +11,7 @@ class Admin::SellersController < AdminController
 
   def show
     @seller = User.find(params[:id])
+    authorize! :read, @seller
     @agent = @seller.agent
 
     @personal_authentication = PersonalAuthentication.find_by(user_id: @seller.id) || PersonalAuthentication.new
@@ -28,6 +30,7 @@ class Admin::SellersController < AdminController
 
   def withdraw_records
     @seller = User.find(params[:id])
+    authorize! :read, @seller
     @withdraw_records = WithdrawRecord.where(user_id: @seller).page(params[:page] || 1)
   end
 
