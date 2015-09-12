@@ -34,5 +34,5 @@ $(function() {
 });
 
 function close_window() {
-  $('.menb').remove();
+  $('.share-container').remove();
 }

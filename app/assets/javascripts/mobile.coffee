@@ -34,5 +34,5 @@ $ ->
   $("header .menu-btn").on 'click', ->
     $('header .nav-bar').toggle()
 
-  close_window = ->
-    $('.menb').remove()
+  $("#close-area").on 'click' , ->
+    $('.share-container').remove()
