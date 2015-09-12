@@ -1,17 +1,19 @@
 <% if @user_address%>
 <p class="city-group"><span>所在地区</span>
-  <%= f.select :province, options_for_select([['--省份--', '']] + ChinaCity.list, @user_address.province ),
-                    {}, class: 'city-select ', id: "province", style:"width:70px;" %>
+  <%= f.select :province, options_for_select([['--省份--', '']] + ChinaCity.list(nil, province: true), @user_address.province),
+    {}, class: 'city-select ', id: "province", style:"width:70px;" %>
   <%= f.select :city, options_for_select([['--城市--', '']] + ChinaCity.list(@user_address.province), @user_address.city),
-                    {}, :class => 'city-select', id: "city", style:"width:70px;" %>
+    {}, :class => 'city-select', id: "city", style:"width:70px;" %>
   <%= f.select :area, options_for_select([['--地区--', '']] + ChinaCity.list( @user_address.city), @user_address.area),
-                    {}, :class => 'city-select', id: "area", style:"width:70px;" %>
+    {}, :class => 'city-select', id: "area", style:"width:70px;" %>
 </p>
 <% else %>
 <p class="city-group"><span>所在地区</span>
-  <%= f.select :province, options_for_select([['--省份--', '']] + ChinaCity.list ),
-                   {}, class: 'city-select ', id: "province", style:"width:70px;"  %>
-  <%= f.select :city, options_for_select([['--城市--', '']] ), {}, :class => 'city-select', id: "city", style:"width:70px;" %>
-  <%= f.select :area, options_for_select([['--地区--', '']]), {}, :class => 'city-select', id: "area", style:"width:70px;" %>
+  <%= f.select(:province, options_for_select([['--省份--', '']] + ChinaCity.list ), {},
+               class: 'city-select ', id: "province", style:"width:70px;" ) %>
+  <%= f.select :city, options_for_select([['--城市--', '']] ), {},
+   :class => 'city-select', id: "city", style:"width:70px;" %>
+  <%= f.select :area, options_for_select([['--地区--', '']]), {},
+   :class => 'city-select', id: "area", style:"width:70px;" %>
 </p>
 <% end %>

@@ -1,11 +1,4 @@
 GIT
-  remote: git://github.com/dalezhang/china_city.git
-  revision: 542e57d19ac47d85c1cc545950749016fd9b143f
-  specs:
-    china_city (0.0.4)
-      rails (>= 3.1.0)
-
-GIT
   remote: git://github.com/lanrion/weixin_authorize.git
   revision: d41ed9169b7cba2b7dff96c59900cba1801c429c
   specs:
@@ -148,6 +141,9 @@ GEM
       faraday (>= 0.8.0)
     celluloid (0.16.0)
       timers (~> 4.0.0)
+    china_city (0.0.4)
+      jquery-rails
+      rails (>= 3.1.0)
     china_sms (0.0.7)
     chronic (0.10.2)
     coderay (1.1.0)
@@ -464,7 +460,7 @@ DEPENDENCIES
   capistrano3-unicorn
   carrierwave
   carrierwave-upyun
-  china_city!
+  china_city
   china_sms
   coffee-rails (~> 4.1.0)
   dalli

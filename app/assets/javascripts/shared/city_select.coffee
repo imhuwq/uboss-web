@@ -1,13 +1,22 @@
-$ ->
-  $('.city-select#province').on 'change', ->
-    province = $('.city-select#province').val()
-    $.ajax
-      url: '/account/user_addresses/update_select',
-      type: 'GET',
-      data: {province: province}
-  $('.city-select#city').on 'change', ->
-    city = $('.city-select#city').val()
-    $.ajax
-      url: '/account/user_addresses/update_select',
-      type: 'GET',
-      data: {city: city}
+(($) ->
+  $.fn.china_city = () ->
+    @each ->
+      selects = $(@).find('.city-select')
+      selects.change ->
+        $this = $(@)
+        next_selects = selects.slice(selects.index(@) + 1) # empty all children city
+        console.log next_selects
+        $.each $("option", next_selects), (index, item) ->
+          unless $(item).attr('value') == ""
+            $(item).remove()
+        if next_selects.first()[0] and $this.val() and !$this.val().match(/--.*--/) # init next child
+          $.get "/china_city/#{$(@).val()}", (data) ->
+            data = data.data if data.data?
+            next_selects.first()[0].options.add(new Option(option[0], option[1])) for option in data
+            # init value after data completed.
+            next_selects.trigger('china_city:load_data_completed')
+
+  $(document).on 'ready page:load', ->
+    $('.city-group').china_city()
+
+)(Zepto)
