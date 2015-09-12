@@ -1,4 +1,3 @@
-
 <div class="admin-box black-bg-color">
   <%= f.input :name %>
   <%= f.input :identity_card_code %>
@@ -12,6 +11,7 @@
       <% end %>
       <%= upyun_meta_tags prefix: 'personal_authentication/face_with_identity_card_img' %>
       <%= file_field_tag "face_with_identity_card_img", class: "upyun_file_closest" %>
+      <b class="loading"><i class="fa fa-spinner"></i></b>
     </span>
   <% end %>
   <%= f.input :identity_card_front_img do %>
@@ -24,6 +24,7 @@
       <% end %>
       <%= upyun_meta_tags prefix: 'personal_authentication/identity_card_front_img' %>
       <%= file_field_tag "identity_card_front_img", class: "upyun_file_closest" %>
+      <b class="loading"><i class="fa fa-spinner"></i></b>
     </span>
   <% end %>
   <%= f.input :address %>
