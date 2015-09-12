@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150912085447) do
+ActiveRecord::Schema.define(version: 20150912111704) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -317,20 +317,26 @@ ActiveRecord::Schema.define(version: 20150912085447) do
 
   create_table "user_infos", force: :cascade do |t|
     t.integer  "user_id"
-    t.decimal  "income",               default: 0.0
-    t.datetime "created_at",                         null: false
-    t.datetime "updated_at",                         null: false
-    t.decimal  "frozen_income",        default: 0.0
+    t.decimal  "income",                    default: 0.0
+    t.datetime "created_at",                              null: false
+    t.datetime "updated_at",                              null: false
+    t.decimal  "frozen_income",             default: 0.0
     t.integer  "sex"
     t.string   "city"
     t.string   "province"
     t.string   "country"
-    t.integer  "good_evaluation",      default: 0
-    t.integer  "normal_evaluation",    default: 0
-    t.integer  "bad_evaluation",       default: 0
+    t.integer  "good_evaluation",           default: 0
+    t.integer  "normal_evaluation",         default: 0
+    t.integer  "bad_evaluation",            default: 0
     t.string   "store_name"
-    t.integer  "service_rate",         default: 5
+    t.integer  "service_rate",              default: 5
     t.json     "service_rate_histroy"
+    t.string   "store_banner_one"
+    t.string   "store_banner_two"
+    t.string   "store_banner_thr"
+    t.string   "recommend_resource_one_id"
+    t.string   "recommend_resource_two_id"
+    t.string   "recommend_resource_thr_id"
   end
 
   add_index "user_infos", ["user_id"], name: "index_user_infos_on_user_id", unique: true, using: :btree

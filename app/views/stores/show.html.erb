@@ -1,25 +1,27 @@
 <%= content_for :page_title do %>
   <%= @seller.store_identify %>
 <% end %>
+
 <div class="banner-slider">
   <div id='slider' class='swipe'>
     <div class='swipe-wrap'>
-      <div>
-      	<a href="/lady" class="text-center"> <%= image_tag 'mobile/slideshow/1.jpg' %></a>
-        <!--<a href="/" class="img-100-200" style="background-image:url('<%= asset_path("mobile/slideshow/1.jpg") %>') ;"></a> -->
-      </div>
-      <div>
-        <a href="/maca" class="text-center"> <%= image_tag 'mobile/slideshow/2.jpg' %></a>
-      </div>
-      <div>
-        <a href="/snacks" class="text-center"> <%= image_tag 'mobile/slideshow/3.jpg' %></a>
-      </div>
+      <% store_banner_data(@seller).each do |image, product| %>
+        <div>
+          <% if product.present? %>
+            <%= link_to product do %>
+              <%= image_tag image.url(:'640x320') %>
+            <% end %>
+          <% else %>
+            <%= image_tag image.url(:'640x320') %>
+          <% end %>
+        </div>
+      <% end %>
     </div>
   </div>
   <div id='slider-points'>
-    <span class='active'>*</span>
-    <span>*</span>
-    <span>*</span>
+    <% store_banner_data(@seller).size.times do |index| %>
+      <span class="<%= 'active' if index == 0 %>">*</span>
+    <% end %>
   </div>
 </div>
 

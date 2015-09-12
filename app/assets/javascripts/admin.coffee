@@ -13,6 +13,7 @@
 #= require_self
 
 $ ->
+
   $("body").on 'click',"#check_all", ->
     $(".check").attr("checked",this.checked)
 
@@ -28,3 +29,5 @@ $ ->
       tabid = $(this).attr('data-title')
       $(tabid).fadeIn()
     return
+
+	$("select").chosen()

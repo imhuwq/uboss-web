@@ -7,6 +7,7 @@ class Ability
     roles = user.user_roles
     if user.admin? && roles.present?
       begin
+        grant_general_permission user
         roles.each do |role|
           grant_method = "grant_permissions_to_#{role.name}"
           __send__ grant_method, user
@@ -22,6 +23,11 @@ class Ability
   private
   def no_permissions
     cannot :manage, :all
+  end
+
+  def grant_general_permission(user)
+    can :read, User, id: user.id
+    can :update, User, id: user.id
   end
 
   def grant_permissions_to_super_admin user

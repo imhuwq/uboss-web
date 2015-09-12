@@ -41,9 +41,14 @@ class User < ActiveRecord::Base
   alias_attribute :regist_mobile, :login
 
   delegate :sex, :sex=, :province, :province=, :city, :city=, :country, :country=,
-    :store_name, :store_name=, to: :user_info, allow_nil: true
-  delegate :income, :income_level_one, :income_level_two, :service_rate,
-    :income_level_thr, :frozen_income,
+    :store_name, :store_name=,      :income_level_thr, :frozen_income,
+    :income,     :income_level_one, :income_level_two, :service_rate,
+    :store_banner_one_identifier,  :store_banner_two_identifier,  :store_banner_thr_identifier,
+    :store_banner_one,  :store_banner_two,  :store_banner_thr,
+    :store_banner_one_url,  :store_banner_two_url,  :store_banner_thr_url,
+    :store_banner_one=, :store_banner_two=, :store_banner_thr=,
+    :recommend_resource_one_id, :recommend_resource_two_id, :recommend_resource_thr_id,
+    :recommend_resource_one_id=, :recommend_resource_two_id=, :recommend_resource_thr_id=,
     to: :user_info, allow_nil: true
 
   enum authenticated: {no: 0, yes: 1}

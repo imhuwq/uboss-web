@@ -1,6 +1,6 @@
 class Admin::SellersController < AdminController
 
-  before_action :set_seller, only: [:show, :setting, :update]
+  before_action :set_seller, only: [:show, :update, :edit]
 
   def index
     authorize! :read, :sellers
@@ -35,6 +35,13 @@ class Admin::SellersController < AdminController
 
   def update
     authorize! :update, @seller
+    if @seller.update(seller_params)
+      flash[:notice] = '更新成功'
+      redirect_to action: :edit
+    else
+      flash.now[:error] = model_errors(@seller).join('<br/>')
+      render :edit
+    end
   end
 
   def update_service_rate
@@ -64,5 +71,13 @@ class Admin::SellersController < AdminController
 
   def set_seller
     @seller = User.find(params[:id])
+  end
+
+  def seller_params
+    params.require(:user).permit(
+      :store_banner_one,          :store_banner_two,          :store_banner_thr,
+      :recommend_resource_one_id, :recommend_resource_two_id, :recommend_resource_thr_id,
+      :store_name
+    )
   end
 end

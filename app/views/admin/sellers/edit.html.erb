@@ -1,0 +1,47 @@
+<div class="container admin-container">
+  <ul class="breadcrumb">
+    <li><a href="/admin">主页</a></li>
+    <li class="divider"><i class="fa fa-caret-right"></i></li>
+    <li>店铺设置</li>
+  </ul>
+</div>
+<br />
+<div class="container">
+  <h3 cclass="page-title">店铺设置</h3>
+
+  <%= horizon_form_for @seller, url: {:action=>:update}, method: 'PATCH' do |f| %>
+    <div class="admin-box black-bg-color">
+      <%= f.input :store_name %>
+    </div>
+    <br />
+    <div class="admin-box black-bg-color">
+      <h4>店铺轮播图片</h4>
+      <p>请上传规格为640x320px规格像素的图片，以保证显示效果</p>
+      <p>不设置热销商品的图片，能正常显示，无点击效果</p>
+      <% store_banner_sets.each do |image, source| %>
+        <div class="box-w30">
+
+          <%= f.input image, label: false do %>
+            <%= f.input_field image, type: :hidden, as: :file %>
+            <span class="fileinput-button">
+              <% if f.object.__send__("#{image}_identifier").blank? %>
+                <%= image_tag("admin/no-img.png") %>
+              <% else %>
+                <%= image_tag(f.object.__send__("#{image}_url", :w320)) %>
+              <% end %>
+              <%= upyun_meta_tags prefix: "user_info/#{image}" %>
+              <%= file_field_tag "business_license_img", class: "upyun_file_closest" %>
+              <b class="loading"><i class="fa fa-spinner"></i></b>
+            </span>
+          <% end %>
+
+          <%= f.input_field source, as: :select, collection: @seller.products.published.hots, prompt: '请选择一个热销商品' %>
+        </div>
+      <% end %>
+    </div>
+    <br />
+    <div class="text-center">
+      <%= f.submit '提交', class: 'btn btn-large red-btn' %>
+    </div>
+  <% end %>
+</div>
