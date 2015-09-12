@@ -71,7 +71,7 @@ class Admin::PersonalAuthenticationsController < AdminController
     else
       hash = personal_authentication_params.merge({status: 'posted'})
       if @personal_authentication.update(hash)
-        MobileAuthCode.find_by(code: personal_authentication_params[:mobile_auth_code]).try(:destroy)
+        MobileCaptcha.find_by(code: personal_authentication_params[:mobile_auth_code]).try(:destroy)
         flash[:success] = '保存成功'
         redirect_to action: :show
       else
