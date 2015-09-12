@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150912111704) do
+ActiveRecord::Schema.define(version: 20150912153721) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -337,6 +337,7 @@ ActiveRecord::Schema.define(version: 20150912111704) do
     t.string   "recommend_resource_one_id"
     t.string   "recommend_resource_two_id"
     t.string   "recommend_resource_thr_id"
+    t.string   "store_short_description"
   end
 
   add_index "user_infos", ["user_id"], name: "index_user_infos_on_user_id", unique: true, using: :btree
@@ -378,8 +379,10 @@ ActiveRecord::Schema.define(version: 20150912111704) do
     t.integer  "agent_id"
     t.integer  "authenticated",          default: 0
     t.integer  "agent_code"
+    t.string   "authentication_token"
   end
 
+  add_index "users", ["authentication_token"], name: "index_users_on_authentication_token", using: :btree
   add_index "users", ["login"], name: "index_users_on_login", unique: true, using: :btree
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
 

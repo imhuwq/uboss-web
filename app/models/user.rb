@@ -49,6 +49,7 @@ class User < ActiveRecord::Base
     :store_banner_one=, :store_banner_two=, :store_banner_thr=,
     :recommend_resource_one_id, :recommend_resource_two_id, :recommend_resource_thr_id,
     :recommend_resource_one_id=, :recommend_resource_two_id=, :recommend_resource_thr_id=,
+    :store_short_description, :store_short_description=,
     to: :user_info, allow_nil: true
 
   enum authenticated: {no: 0, yes: 1}
@@ -132,6 +133,17 @@ class User < ActiveRecord::Base
       end
     end
 
+  end
+
+  def store_rates
+    @store_rates ||= Rails.cache.fetch 'seller-store-rate', expires_in: 1.day do
+      result = ActiveRecord::Base.connection.execute <<-SQL.squish!
+        SELECT SUM(good_evaluation) AS good, SUM(bad_evaluation) AS bad, SUM(normal_evaluation) AS normal
+        FROM products
+        WHERE products.user_id = #{id}
+      SQL
+      result = result.first
+    end
   end
 
   def bind_agent(binding_code)
@@ -308,6 +320,20 @@ class User < ActiveRecord::Base
     self.weixin_unionid   = data['unionid']
     self.weixin_openid    = data['openid']
     self.remote_avatar_url = data['headimgurl']
+  end
+
+  def good_reputation_rate
+    return @sharer_good_reputation_rate if @sharer_good_reputation_rate
+    @sharer_good_reputation_rate = if total_reputations > 0
+                                     user_info.good_evaluation.to_i * 100 / total_reputations
+                                   else
+                                     100
+                                   end
+  end
+
+  def total_reputations
+    @total_reputations ||= UserInfo.where(user_id: id).
+      sum("good_evaluation + normal_evaluation + bad_evaluation")
   end
 
   private
