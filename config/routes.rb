@@ -38,6 +38,7 @@ Rails.application.routes.draw do
     resource :charge, only: [:create]
   end
   resources :products do
+    get :refact, on: :member
     post :save_mobile, :democontent,  on: :collection
   end
   resources :evaluations do

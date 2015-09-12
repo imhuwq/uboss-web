@@ -7,15 +7,12 @@ class ProductsController < ApplicationController
   end
 
   def show
-    @product = Product.published.find(params[:id])
-    @seller = @product.user
-    if current_user
-      @sharing_link_node ||= SharingNode.find_or_create_user_last_sharing_by_product(current_user, @product)
-    end
-    if @scode = get_product_sharing_code(@product.id)
-      @sharing_node = SharingNode.find_by(code: @scode)
-      @privilege_card = @sharing_node.try(:privilege_card)
-    end
+    invoke_product_showing_info
+  end
+
+  def refact
+    invoke_product_showing_info
+    render layout: 'mobile'
   end
 
   def save_mobile
@@ -30,6 +27,20 @@ class ProductsController < ApplicationController
     respond_to do |format|
       format.html { render nothing: true }
       format.js
+    end
+  end
+
+  private
+
+  def invoke_product_showing_info
+    @product = Product.published.find(params[:id])
+    @seller = @product.user
+    if current_user
+      @sharing_link_node ||= SharingNode.find_or_create_user_last_sharing_by_product(current_user, @product)
+    end
+    if @scode = get_product_sharing_code(@product.id)
+      @sharing_node = SharingNode.find_by(code: @scode)
+      @privilege_card = @sharing_node.try(:privilege_card)
     end
   end
 

@@ -1,0 +1,22 @@
+<%= content_for :page_title do %>
+  商品详情
+<% end %>
+
+<%= content_for :extra_meta_tags do %>
+  <%= sharing_meta_tags(@product, @sharing_link_node) %>
+<% end %>
+
+<% if browser.wechat? %>
+  <%= content_for :extra_javascript do %>
+    <script type="text/javascript" charset="utf-8">
+      wx.ready(function(){ UBoss.luffy.invokeSharing(); });
+    </script>
+  <% end %>
+<% end %>
+
+<p>页面在 products/refact.html.erb</p>
+
+@privilege_card 友情卡
+@product 商品
+
+
