@@ -26,6 +26,7 @@ class Admin::UsersController < AdminController
 
   def update
     if @user.update(resource_params)
+      flash[:notice] = '更新成功'
       redirect_to admin_user_path(@user)
     else
       render :edit

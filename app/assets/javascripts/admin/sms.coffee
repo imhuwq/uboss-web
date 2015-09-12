@@ -11,15 +11,16 @@ $ ->
     if checkNum.test(mobile)
       console.log mobile_submit_time
       return false if mobile_submit_time != 0
+      mobile_submit_time = 60
       $.ajax
-        url: '/mobile_auth_code/create',
+        url: '/mobile_captchas/create',
         type: 'POST',
         data: {mobile: mobile},
-      .always ->
-        console.log("complete")
-        console.log(mobile_submit_time)
-        mobile_submit_time = 60
+      .done ->
         timedown $('#send_mobile')
+      .fail ->
+        mobile_submit_time = 0
+        alert('发送失败')
     else
       console.log mobile
       alert "手机格式错误"
@@ -62,7 +63,7 @@ $ ->
     return false if mobile_submit_time != 0
     captcha_key = $('input[name=captcha_key]').val()
     $.ajax
-      url: '/mobile_captcha/send_with_captcha',
+      url: '/mobile_captchas/send_with_captcha',
       type: 'GET',
       data: {
         mobile: mobile

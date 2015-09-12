@@ -1,65 +1,63 @@
 <%= render 'layouts/flash_alert' if request.xhr? %>
+<div class="index_list">
+<table class="list-table" id="products">
+		<thead>
+			<th>商品</th>
+			<th>价格</th>
+			<% if current_user.is_super_admin? %>
+				<th>商家</th>
+			<% end %>
+			<th>好评率</th>
+			<th>库存</th>
+			<th>总销量</th>
+			<th>发布时间</th>
+			<th>操作</th>
+		</thead>
+		<% products.each do |product| %>
+			<tr class="product" id='product_<%= product.id %>'>
+				<td class="text-left">
+					<%= link_to [:admin, product] do %>
+						<%= image_tag(product.image_url(:thumb), size: "80x80", alt: "-") %>　
+						<%= product.name %>
+					<% end %>
+				</td>
+				<td>
+					<%= number_to_currency product.present_price %>
+				</td>
+				<% if current_user.is_super_admin? %>
+				<td><%= link_to product.user.identify, url_for(controller: 'admin/sellers', action: :show, id: product.user) %></td>
+				<% end %>
+				<td><%= Evaluation.product_good_reputation_rate(product.id) %></td>
+				<td><%= product.count %></td>
+				<td><%= product.total_sells %></td>
+				<td><%= product.created_at %></td>
+				<td>
 
-<%= table_for(products) do |t| %>
-  <%= t.cell :name do |product| %>
-    <%= link_to [:admin, product] do %>
-      <div class="" style="width:370px;float:left;">
-        <div class="col-sm-3">
-          <%= image_tag(product.image_url(:thumb), size: "100x80", alt: "-") %>
-        </div>
-        <div class="col-sm-9"  style="padding-top:15px;">
-          <div class="col-sm-12">商品名称：<%= product.name %></div>
-          <div class="col-sm-12">价格：<%= product.present_price %></div>
-        </div>
-      </div>
-    <% end %>
-  <% end %>
-
-  <% if current_user.is_super_admin? %>
-    <%= t.cell :seller do |product| %>
-      <%= link_to product.user.identify, url_for(controller: 'admin/sellers', action: :show, id: product.user) %>
-    <% end %>
-  <% end %>
-
-  <%= t.cell :good_reputation do |product| %>
-    <%= Evaluation.product_good_reputation_rate(product.id) %>
-  <% end %>
-
-  <%= t.cell :count %>
-
-  <%= t.cell :total_sells do |product| %>
-    <%= product.total_sells %>
-  <% end %>
-
-  <%= t.cell :created_at %>
-
-  <%= t.cell :methods do |product| %>
-  <% if can? :update, product %>
-    <div style="padding-top:15px;width:240;float:left;">
-      <div class="col-xs-4">
-        <%= link_to("编辑", url_for(action: :edit, id: product.id),
-                    class:"btn btn-xs btn-warning",style:"margin-bottom:5px;")%>
-        <br />
-        <%= link_to("删除", change_status_admin_product_path(product, status: 'closed'),
-                    remote: true, method: :patch, data: { disable_with: '删除中...' },
-                    class:"btn btn-xs btn-danger change-status-btn") %>
-      </div>
-
-      <div class="col-xs-5">
-        <% if product.status == 'unpublish' %>
-          <%= link_to("上架", change_status_admin_product_path(product, status: 'published'),
-                      remote: true, method: :patch, data: { disable_with: '上架中...' },
-                      class: "btn btn-large btn-success change-status-btn",
-                      style: "height:50px;padding:14px 22px 0 22px;") %>
-        <% else %>
-          <%= link_to("取消上架", change_status_admin_product_path(product, status: 'unpublish'),
-                      remote: true, method: :patch, data: { disable_with: '下架中...' },
-                      class: "btn btn-large btn-default change-status-btn",
-                      style: "height:50px;padding:14px 8px 0 8px;") %>
-        <% end %>
-      </div>
-    </div>
-  <% end %>
-
-  <% end %>
-<% end %>
+					<% if can? :update, product %>
+						<% if product.status == 'unpublish' %>
+				      <p>
+				      <%= link_to("上架", change_status_admin_product_path(product, status: 'published'),
+				      remote: true, method: :patch, data: { disable_with: '<i class="fa fa-spinner"></i>' },
+				      class: "btn btn-mid btn-block red-btn change-status-btn") %>
+							</p>
+				    <% else %>
+				    	<p>
+				      <%= link_to("下架", change_status_admin_product_path(product, status: 'unpublish'),
+				      remote: true, method: :patch, data: { disable_with: '<i class="fa fa-spinner"></i>' },
+				      class: "btn btn-mid btn-block change-status-btn") %>
+				      </p>
+				    <% end %>
+					<%= link_to url_for(action: :edit, id: product.id),class:'edit-icon' do%>
+						<i class="fa fa-pencil-square-o"></i>
+					<% end %>
+						　
+				    <%= link_to change_status_admin_product_path(product, status: 'closed'),
+				    remote: true, method: :patch,class:'change-status-btn edit-icon', data: { disable_with: '<i class="fa fa-trash-o"></i>' } do %>
+				    	<i class="fa fa-trash-o"></i>
+				    <% end %>
+			    <% end %>
+				</td>
+			</tr>
+		<% end %>
+</table>
+</div>

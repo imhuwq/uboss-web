@@ -1,4 +1,4 @@
-class MobileAuthCodeController < ApplicationController
+class MobileCaptchasController < ApplicationController
 
   def create
     invoke_captcha_sending
@@ -15,7 +15,7 @@ class MobileAuthCodeController < ApplicationController
   private
 
   def invoke_captcha_sending
-    result = MobileAuthCode.send_captcha_with_mobile(params[:mobile])
+    result = MobileCaptcha.send_captcha_with_mobile(params[:mobile])
     status = result[:success] ? :ok : :bad_request
 
     render json: {

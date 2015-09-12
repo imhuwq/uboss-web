@@ -4,7 +4,11 @@ module Orderable
   extend ActiveSupport::Concern
 
   included do
-    scope :today, -> { where("#{table_name}.created_at >= ?", Time.now.beginning_of_day) }
+    scope :after_the_date_of, -> (date) { where("#{table_name}.created_at >= ?", date) }
+    scope :today,             -> { after_the_date_of Time.now.beginning_of_day }
+    scope :current_week,      -> { after_the_date_of Time.now.beginning_of_week }
+    scope :current_month,     -> { after_the_date_of Time.now.beginning_of_month }
+    scope :current_year,      -> { after_the_date_of Time.now.beginning_of_year }
   end
 
   module ClassMethods
