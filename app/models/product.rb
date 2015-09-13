@@ -9,7 +9,7 @@ class Product < ActiveRecord::Base
   DataCalculateWay = { 0 => '按金额', 1 => '按售价比例' }
   DataBuyerPay = { true => '买家付款', false => '包邮' }
 
-  validates_presence_of :user_id, :name, :short_description
+  validates_presence_of :user_id, :name
 
   belongs_to :user
   has_one :asset_img, class_name: 'AssetImg', autosave: true, as: :resource
