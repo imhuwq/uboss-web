@@ -1,63 +1,115 @@
-@import 'pagepiling';
 @import 'superslides';
 .container{
     width: 100%;
-    max-width: 1200px;    
+    max-width: 1220px;    
 }
-header{ background: rgba(0,0,0,0.7); background: #4C4C4C\9; overflow: hidden;color:#fff;width:100%;min-width:1220px;}
+header{ overflow: hidden;color:#fff;width:100%;}
 header .header{ padding: 15px 0;}
-header .logo { float: left;}
+header .logo { float: left; width: 67px;height: 50px; background: image-url('new_desktop/logo.png') center center no-repeat;}
 header nav > ul{ margin: 0;}
 header nav > ul > li { display: inline-block;*zoom:1;*display:inline; margin-left: 60px; padding: 15px 0;}
 header nav > ul > li > a {font-size: 16px; font-weight: bold; color: #fff;}
-header nav > ul > li > a:hover,header nav > ul > li > a:focus{ color: #43C3AA; }
+header nav > ul > li > a:hover,header nav > ul > li > a:focus{ color: #DDD; }
+header.ww .logo{ background: image-url('new_desktop/logo-w.png') center center no-repeat;}
+header.rb nav > ul > li > a{color: #333;}
+header.rb nav > ul > li > a:hover{color: #666;}
 
+html,body{height: 100%;width:100%;min-width:inherit;}
 .section-title{
-    font-size: 50px;
+    font-size: 36px;
     font-weight: bolder;
-    margin: 0 0 50px;
+    margin: 40px 0;
     color: #fff;
 }
-#section1{
-    height: 100%;
-    width: 100%;
+.img-box{
+    display:inline-block;
+    margin:0 60px 40px;
+    min-width:350px;
+ }
+#section1 {    
+    .slideshow1{
+        background: image-url('new_desktop/1-bg.png') left bottom no-repeat #43C3AA;
+    }
+    .slideshow2 .btn{
+        padding:15px 30px;
+        background: #E54D4D;
+        color: #fff;
+        font-size: 18px;
+        box-shadow: 2px 2px 5px #666;
+        margin:40px 0 0 180px;
+    }
+    .slideshow2 .btn:hover{
+       box-shadow: inset 2px 2px 10px #A50D0D; 
+       transition: all .8s linear;
+       opacity: 1;
+       
+    }
+    .slideshow3 .btn{
+        padding:15px 30px;
+        background: none;
+        border: 2px solid #fff;
+        color: #fff;
+        font-size: 18px;
+        margin-top:80px
+    }
+    .slideshow3 .btn:hover{
+        background: #fff;
+        color: #A42119;
+        transition: all .5s linear;
+    }
+    .preserve{
+        max-height: 500px;
+    }
+    &.to-top{
+        margin-top: 85px;
+    }
 }
 #section2{
-    height: 100%;
-    width: 100%;
-    background: image-url('new_desktop/1-bg.png') #fff center center no-repeat;
-    background-size:cover; 
     .section-title{
-        color: #39C2A9;
-    } 
-    #black-bg{
-        width: 100%;
-        overflow: hidden;
-        background: rgba(0,0,0,0.5);
-        text-align: center;
+        color:#43C3AA
     }
+    padding-bottom:20px;
+    text-align: center;
 }
 #section3{
     background:#39C2A9 ;
 }
 #section4{
     background:#59A093 ;
+    color:#fff;
+    .text{height: 40px; overflow: hidden;}
+    .btn{
+        background: #fff;
+        color: #39C2A9;
+        box-shadow: 2px 2px 3px #666;
+        padding: 8px 20px;
+        font-weight: bold;
+    }
+    .btn:hover{
+        box-shadow: inset 1px 1px 3px #666; 
+        transition: all .8s linear;
+        opacity: 1;
+    }
 }
 #section5{
-    background:#E0FFFA ;
+    background:#f7f6f3 ;
+    .section-title{
+        color:#ef5a35;
+    }
 }
 #section6{
     background:#35504B ;
+    color:#fff;
+    .text{
+        line-height: 30px;
+        height: 60px;
+        font-weight: normal;
+        overflow: hidden;
+        letter-spacing: 3px;
+    }
+    b{ font-size: 120%;}
 }
 
-#slider2{
-    background: image-url('new_desktop/2-bg.jpg') center center no-repeat;
-    background-size:cover; 
-}
-#slider3{
-    background: image-url('new_desktop/3-bg.jpg') center center no-repeat;
-    background-size:cover; 
-}
 
 .video-banner{ 
     border-radius:10px;
@@ -65,15 +117,16 @@ header nav > ul > li > a:hover,header nav > ul > li > a:focus{ color: #43C3AA; }
     padding:25px 15px;
     color:#fff;
     display: inline-block;
-    width: 400px;
+    width: 430px;
+    box-sizing: border-box;
     text-align: left;
-    margin: 50px;
+    margin: 0 40px 20px;
     overflow:hidden;
     position:relative;
     background-size: cover;
     background-position: center center;
     background-repeat: no-repeat;
-    height:180px;
+    height:220px;
  }
 .banner-1{ background-image:image-url('new_desktop/video1.jpg');}
 .banner-2{ background-image:image-url('new_desktop/video.jpg');}

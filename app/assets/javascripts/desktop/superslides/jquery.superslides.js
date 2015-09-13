@@ -64,7 +64,7 @@ Superslides = function(el, options) {
         var $children = that.$container.children();
 
         that.width  = that._findWidth();
-        that.height = that._findHeight();
+        that.height = that._findHeight()-150;
 
         $children.css({
           width: that.width,
@@ -223,7 +223,24 @@ var fx = {
       left: orientation.upcoming_position,
       display: 'block'
     });
-
+		
+    $children.eq(orientation.outgoing_slide).removeClass("active")
+  	$children.eq(orientation.upcoming_slide).addClass("active");
+    
+		if($(".active .slider-container").attr("data-color")=="ww"){
+			$("header").removeClass();
+			$("header").addClass("ww");
+			
+		}
+		if($(".active .slider-container").attr("data-color")=="rw"){
+			$("header").removeClass();
+			$("header").addClass("rw");
+		}
+		if($(".active .slider-container").attr("data-color")=="rb"){
+			$("header").removeClass();
+			$("header").addClass("rb");
+		}
+		
     that.$control.animate({
       left: orientation.offset
     },
@@ -419,7 +436,7 @@ var pagination = {
 
   that._findPositions();
   that.width  = that._findWidth();
-  that.height = that._findHeight();
+  that.height = that._findHeight()-150;
 
   this.css.children();
   this.css.containers();

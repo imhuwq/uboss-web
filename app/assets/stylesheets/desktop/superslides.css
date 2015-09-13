@@ -45,7 +45,7 @@
 .slides-pagination {
   position: absolute;
   z-index: 3;
-  bottom: 0;
+  bottom: 40px;
   text-align: center;
   width: 100%;
 }
@@ -61,7 +61,7 @@
   zoom: 1;
   *display: inline;
   background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR4nGP6zwAAAgcBApocMXEAAAAASUVORK5CYII=");
-  margin: 2px;
+  margin: 2px 5px;
   overflow: hidden;
   text-indent: -100%;
 }
