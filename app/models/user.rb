@@ -152,6 +152,13 @@ class User < ActiveRecord::Base
     end
   end
 
+  def bind_seller(seller)
+    seller.agent = self
+    seller.admin = true
+    seller.user_roles << UserRole.seller if !seller.is_seller?
+    seller.save
+  end
+
   def update_with_oauth_session(session)
     self.class.get_valuable_session(session) do |data|
       set_wechat_data(data)

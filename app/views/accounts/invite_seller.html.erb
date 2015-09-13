@@ -12,6 +12,19 @@
     <p style="padding-top:10px;padding-right:10px;">
       <%= link_to '发送', '###',class:"accunt_adilbtn", id: "timedown" %>
     </p>
+
+    <%= simple_form_for 'bind_seller', url: bind_seller_account_path, method: :put do |f| %>
+      <div style="min-height:30px;padding-top:10px;">
+        <div style="position:absolute;width:90px;margin-left:0;float:left;padding:8px 0 0 10px;">绑定验证</div>
+        <div style="margin-left:90px;">
+          <%= f.input_field :invite_code, type: :tel, placeholder: '绑定验证码', class:"add_text", style:"width:90%;float:left;"  %>
+        </div>
+      </div>
+      <p style="padding-top:10px;padding-right:10px;">
+      <%= f.submit '绑定商家', class:"accunt_adilbtn" %>
+      </p>
+    <% end %>
+
     <div class="font_h4 text-center">
       绑定数量
     </div>

@@ -117,11 +117,11 @@ class AccountsController < ApplicationController
   def send_message # 保存发送短信给商家的信息
     @histroys = AgentInviteSellerHistroy.where(agent_id: current_user.id)
     mobile = params[:mobile]
-    result = PostMan.send_sms(mobile, {code: current_user.find_or_create_agent_code}, 923_651)
+    histroy = AgentInviteSellerHistroy.find_or_new_by_mobile(mobile)
+    result = PostMan.send_sms(mobile, {code: histroy.invite_code}, 923_651)
     if result[:success]
-      AgentInviteSellerHistroy.find_or_create_by(mobile: mobile) do |history|
-        history.agent_id = current_user.id
-      end
+      histroy.agent_id = current_user.id
+      histroy.save
       flash.now[:success] = "您的创客码已经发送到：#{mobile}."
     else
       flash.now[:error] = result[:message]
@@ -130,6 +130,28 @@ class AccountsController < ApplicationController
       format.html { render nothing: true }
       format.js
     end
+  end
+
+  #NOTE Change action 'bind_agent' to 'bind_seller'
+  def bind_seller # 创客绑定商家
+    invite_code = params[:bind_seller][:invite_code]
+    histroy = AgentInviteSellerHistroy.find_by(invite_code: invite_code)
+    seller = User.find_by(mobile: histroy.mobile) if histroy
+
+    if !histroy || histroy.expired?
+      flash[:error] = '验证码错误或已过期。'
+    elsif !seller
+      flash[:error] = '找不到商家'
+    elsif seller.agent.present?
+      flash[:error] = '商家已与创客绑定'
+    elsif current_user.bind_seller(seller)
+      histroy.try(:update, status: 1)
+      flash[:success] = "绑定成功,#{seller.identify}成为您的商家。"
+    else
+      flash[:error] = model_errors(current_user).join('<br/>')
+    end
+
+    redirect_to action: :invite_seller
   end
 
   def bind_agent # 商家绑定创客
