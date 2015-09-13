@@ -12,7 +12,7 @@
 #= require_tree ./admin
 #= require_self
 
-$ ->
+jQuery ($) ->
 
   $("body").on 'click',"#check_all", ->
     $(".check").attr("checked",this.checked)
@@ -30,4 +30,4 @@ $ ->
       $(tabid).fadeIn()
     return
 
-	$("select").chosen()
+  $("select").filter(":not([data-manual-chosen])").chosen()
