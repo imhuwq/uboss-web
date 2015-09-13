@@ -24,9 +24,16 @@ Superslides = function(el, options) {
     }
   }, options);
 
+	this.isFirst = true;
+	this.tmpSpeed = 0;
+
   var that       = this,
       $control   = $('<div>', { "class": 'slides-control' }),
       multiplier = 1;
+  
+  //$("#section1").css('opacity', '0');
+  //this.slidesControl = $control;
+  //this.slidesControl.css('opacity','0');
 
   this.$el        = $(el);
   this.$container = this.$el.find(this.options.elements.container);
@@ -586,6 +593,22 @@ Superslides.prototype = {
 
     if (this.animating) {
       return;
+    }
+    
+    if (this.isFirst) {
+    	//this.slidesControl.css('opacity','1');
+    	//$(".slides-control").css('opacity', '1');
+//  	$("#section1").css({
+//  		'opacity': '1'
+//  	});
+    	this.tmpSpeed = this.options.animation_speed;
+    	this.options.animation_speed = 0;
+    	this.isFirst = false;
+    }
+    else
+    {
+    	//this.slidesControl.css('opacity','1');
+    	this.options.animation_speed = this.tmpSpeed;
     }
 
     this.animating = true;
