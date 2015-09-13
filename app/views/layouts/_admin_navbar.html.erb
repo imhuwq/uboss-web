@@ -26,12 +26,17 @@
         <%= can_li_link(:read, Product, admin_products_path) %>
         <%= can_li_link(:manage, Order, admin_orders_path) %>
         <%= can_li_link(:manage, SharingIncome, admin_sharing_incomes_path) %>
-        <%= can_li_link(:read, WithdrawRecord, admin_withdraw_records_path) %>
-        <%= can_li_link(:manage, :authentications, admin_personal_authentications_path) %>
+        <%= nav_group :withdraw_records do %>
+          <%= can_li_link(:read, WithdrawRecord, admin_withdraw_records_path) %>
+          <%= can_li_link(:manage, BankCard, admin_bank_cards_path ) %>
+        <% end %>
+        <%= can_li_link(:manage, :authentications, admin_personal_authentications_path,
+                        another_active_name: 'personal_authentications') %>
         <%= nav_group :uboss do %>
           <%= can_li_link(:manage, User, admin_users_path) %>
           <%= can_li_link(:manage, Transaction, admin_transactions_path) %>
-          <%= can_li_link(:manage, :backend_status, admin_backend_status_path, another_active_name: :backend_status) %>
+          <%= can_li_link(:manage, :backend_status, admin_backend_status_path,
+                          another_active_name: 'backend_status') %>
         <% end %>
       </ul>
     </nav>
