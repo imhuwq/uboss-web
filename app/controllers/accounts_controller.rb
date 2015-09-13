@@ -117,33 +117,45 @@ class AccountsController < ApplicationController
   def send_message # 保存发送短信给商家的信息
     @histroys = AgentInviteSellerHistroy.where(agent_id: current_user.id)
     mobile = params[:mobile]
-    histroy = AgentInviteSellerHistroy.find_or_new_by_mobile(mobile)
-    result = PostMan.send_sms(mobile, {code: histroy.invite_code}, 923_651)
-    if result[:success]
-      histroy.agent_id = current_user.id
-      histroy.save
-      flash.now[:success] = "您的创客码已经发送到：#{mobile}."
+    seller = User.find_by(login: mobile)
+
+    if seller && seller.agent.present?  #商家已绑定过创客？
+      flash.now[:error] =
+        seller.agent_id == current_user.id ? "#{seller.identify}已经是您的商家" : '邀请失败，商家已经绑定过创客'
     else
-      flash.now[:error] = result[:message]
+      histroy = AgentInviteSellerHistroy.find_or_new_by_mobile(mobile)
+      binding.pry
+      result = PostMan.send_sms(mobile, {code: histroy.invite_code}, 923_651)
+      if result[:success]
+        histroy.agent_id = current_user.id
+        histroy.save
+        flash.now[:success] = "您的创客码已经发送到：#{mobile}."
+      else
+        flash.now[:error] = result[:message]
+      end
     end
+
     respond_to do |format|
       format.html { render nothing: true }
       format.js
     end
   end
 
-  #NOTE Change action 'bind_agent' to 'bind_seller'
+  # Change action 'bind_agent' to 'bind_seller'
   def bind_seller # 创客绑定商家
     invite_code = params[:bind_seller][:invite_code]
     histroy = AgentInviteSellerHistroy.find_by(invite_code: invite_code)
-    seller = User.find_by(mobile: histroy.mobile) if histroy
+    #NOTE 混淆users中的login和mobile: User.find_by(mobile: histroy.mobile)
+    seller = User.find_by(login: histroy.mobile) if histroy
 
     if !histroy || histroy.expired?
       flash[:error] = '验证码错误或已过期。'
     elsif !seller
-      flash[:error] = '找不到商家'
+      flash[:error] = "找不到手机号为 #{histroy.mobile} 的帐户"
     elsif seller.agent.present?
       flash[:error] = '商家已与创客绑定'
+    elsif histroy.agent_id != current_user.id
+      flash[:error] = '请先邀请商家后绑定'
     elsif current_user.bind_seller(seller)
       histroy.try(:update, status: 1)
       flash[:success] = "绑定成功,#{seller.identify}成为您的商家。"
