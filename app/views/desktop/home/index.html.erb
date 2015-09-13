@@ -5,11 +5,35 @@
 <% end %>
 <div id="pagepiling">
 	<div class="section" id="section1">
-		<div id="slider">
-			<div class="item">1</div>
-			<div class="item">2</div>
-			<div class="item">3</div>
-		</div>
+			<div class="slider">
+				<div class="slides-container">
+					<div>
+				    <div class="slider-container">
+				    	<div class="slides-middle"><%= image_tag("new_desktop/1-wz.png" ,class: "preserve") %></div>
+				    </div>
+					</div>
+					<div>
+						<%= image_tag("new_desktop/2-bg.jpg") %>
+				    <div class="slider-container">
+				    	<div class="slides-middle">
+				    		<%= image_tag("new_desktop/2-wz.png" ,class: "preserve") %>
+				    	</div>
+				    </div>
+					</div>					
+					<div>
+						<%= image_tag("new_desktop/3-bg.jpg") %>
+				    <div class="slider-container">
+				    	<div class="slides-middle">
+				    		<%= image_tag("new_desktop/3-wz.png" ,class: "preserve") %>
+				    	</div>
+				   	</div>
+					</div>
+				</div><!-- slides-container -->
+				<nav class="slides-navigation">
+			    <a href="#" class="next"><i class="fa fa-angle-right"></i></a>
+			    <a href="#" class="prev"><i class="fa fa-angle-left"></i></a>
+			  </nav>
+			</div><!--slider -->
 	</div><!-- section -->
 	<div class="section" id="section2">
 		<div id="video" style="display: none;">
@@ -102,13 +126,12 @@ $(document).ready(function() {
 	    	}
 		  }
 	});
-	$('#slider').slick({
-    dots: true,
-	  infinite: true,
-	  speed: 500,
-	  fade: true,
-	  cssEase: 'linear'
-  });
-
+	$('.slider').superslides({
+		pagination:false
+			
+	});
 });
+
+	
+
 </script>
