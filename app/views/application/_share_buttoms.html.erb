@@ -12,7 +12,19 @@
 </div>
 
 <!-- // jiathis的js包 -->
-<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js"></script>
+<% if request.xhr? %>
+  <script type="text/javascript" charset="utf-8">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "http://v3.jiathis.com/code/jia.js";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+<% else %>
+  <script type="text/javascript" src="http://v3.jiathis.com/code/jia.js"></script>
+<% end %>
 <script type="text/javascript">
 $('#copycardid').on('click', this,function(event) {
   $('#share_link').toggle();
