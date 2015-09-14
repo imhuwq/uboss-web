@@ -17,7 +17,7 @@ class AgentInviteSellerHistroy < ActiveRecord::Base
 
   def generate_code #生成邀请码
     loop do
-      self.invite_code = rand(100000..999999).to_s
+      self.invite_code = rand(1000000..9999999).to_s  # 七位数字符 区别user.agent_code的六位数
       break if !AgentInviteSellerHistroy.find_by(agent_id: agent_id, invite_code: invite_code)
     end
   end
@@ -28,5 +28,9 @@ class AgentInviteSellerHistroy < ActiveRecord::Base
 
   def expired?
     expire_at.present? ? self.expire_at < DateTime.now : false
+  end
+
+  def agent
+    User.find_by(id: agent_id)
   end
 end

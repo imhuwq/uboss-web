@@ -131,7 +131,7 @@ class User < ActiveRecord::Base
 
   def bind_agent(binding_code)
     agent_user = if binding_code.present?
-                   User.agent.find_by(agent_code: binding_code)
+                   User.agent.find_by(agent_code: binding_code) || AgentInviteSellerHistroy.find_by(invite_code: binding_code).try(:agent)
                  else
                    User.official_account
                  end
