@@ -14,9 +14,9 @@
           <%= text_field_tag 'mobile[]','', type:"tel",placeholder:"手机号",class:"fenxinag_text",id:"save_mobile_mobile", style:"width:90%;float:left;" %>
         </div>
       </div>
-      <%= link_to("提交", '###',class:"accunt_adilbtn", id:"sharing_code") %>
-      <script type="text/javascript">
-      $("#sharing_code").on('click',function(){
+      <%= link_to("提交1", '###',class:"accunt_adilbtn", id:"sharing_code") %>
+      <script>
+      $("body").on('click', '#sharing_code',function(e){
         var mobile = $("#save_mobile_mobile").val()
         var checkNum = /^(\+\d+-)?[1-9]{1}[0-9]{10}$/;
         if (checkNum.test(mobile)) {
