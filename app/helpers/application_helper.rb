@@ -16,13 +16,15 @@ module ApplicationHelper
 
   def alert_box(message, opts = {})
     alert_type = opts.delete(:type) || 'alert-info'
-    content_tag :div, message, class: "alert #{alert_type}", role: 'alert', data: {dismiss: 'alert'} do
-      [
-        content_tag(:button, class: 'close') do
-          content_tag(:span, '×')
-        end,
-        message
-      ].join.html_safe
+    content_tag :div, class:"container" do        
+        content_tag :div, message, class: "alert #{alert_type}", role: 'alert', data: {dismiss: 'alert'} do
+          [
+            content_tag(:button, class: 'close') do
+              content_tag(:span, '×')
+            end,
+            message
+          ].join.html_safe
+        end    
     end
   end
 

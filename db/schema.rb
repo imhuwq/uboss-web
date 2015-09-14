@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150906034058) do
+ActiveRecord::Schema.define(version: 20150902032500) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -103,13 +103,16 @@ ActiveRecord::Schema.define(version: 20150906034058) do
     t.integer  "sharing_node_id"
   end
 
-  create_table "mobile_auth_codes", force: :cascade do |t|
+  create_table "mobile_captchas", force: :cascade do |t|
     t.string   "code"
     t.datetime "expire_at"
     t.string   "mobile"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "captcha_type"
   end
+
+  add_index "mobile_captchas", ["mobile"], name: "index_mobile_captchas_on_mobile", using: :btree
 
   create_table "order_charges", force: :cascade do |t|
     t.integer  "order_id"

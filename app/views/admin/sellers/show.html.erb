@@ -1,121 +1,288 @@
-<div class="col-xs-12 bg-warning"  style="font-size:larger;">
-  <div class="col-xs-2">
-    <%= link_to '商家信息', '###', class:"text-muted" %>
-  </div>
-  <div class="col-xs-2">
-    <%= link_to '提现', url_for(action: :withdraw_records, id: params[:id]) %>
-  </div>
-  <div class="col-xs-3 pull-right">
-    <%= link_to "商家名：#{@seller.identify}", '###' %>
-  </div>
+<div class="container admin-container">
+	<ul class="breadcrumb">
+		<li><a href="/admin">主页</a></li>
+		<li class="divider"><i class="fa fa-angle-right"></i></li>
+		<li><%= link_to '商家',admin_sellers_path %></li>
+		<li class="divider"><i class="fa fa-caret-right"></i></li>
+		<li><%= @seller.identify %></li>
+	</ul>
 </div>
-<div class="row">
-	<div class="col-xs-12 well">
-		<h3 class="col-md-offset-1">基本信息</h3>
-    <hr />
-		<div class="col-xs-11 col-md-offset-1">
-			<div class="form-group clearfix">
-				<label class="string required text-right col-sm-3 control-label" for="product_name">
-					<abbr title="必填">*</abbr>
-					注册帐号
-				</label>
-				<div class="col-sm-9">
-					<%= @seller.login %>
-				</div>
-			</div>
-      <div class="form-group clearfix">
-				<label class="string required text-right col-sm-3 control-label" for="product_name">
-					<abbr title="必填">*</abbr>
-					注册时间
-				</label>
-				<div class="col-sm-9">
-					<%= @seller.created_at.to_date %>
-				</div>
-			</div>
-      <div class="form-group clearfix">
-				<label class="string required text-right col-sm-3 control-label" for="product_name">
-					<abbr title="必填">*</abbr>
-					关联创客
-				</label>
-				<div class="col-sm-9">
-          <% if @seller.agent_id.present? %>
-            <%= link_to User.find_by(id: @seller.agent_id).try(:identify), url_for(controller: :agents, action: :show, id: @seller.agent_id) %>
-          <% else %>
-          尚未关联创客
-          <% end %>
-
-				</div>
-			</div>
-      <div class="form-group clearfix">
-				<label class="string required text-right col-sm-3 control-label" for="product_name">
-					<abbr title="必填">*</abbr>
-					店铺链接
-				</label>
-				<div class="col-sm-9">
-					<%= "http://#{request.env["HTTP_HOST"]}/stores/#{@seller.id}" %>
-          <div class="clearfix"></div>
-          <img src="http://qr.liantu.com/api.php?&text=<%= "http://#{request.env["HTTP_HOST"]}/stores/#{@seller.id}" %>" style="width:30%"/>
-				</div>
-			</div>
-		</div>
-	</div>
-  <div class="col-xs-12 well">
-    <div class="col-xs-12" style="border-bottom:2px solid grey;margin-top:10px;">
-       认证状态：<%= {'yes'=>'已认证','no'=>'未认证'}[@seller.authenticated] %>
-    </div>
-    <div class="row">
-      <div class="col-xs-3">
-        <div class="clearfix">企业营业执照副本：</div>
-        <%= image_tag(@enterprise_authentication.try(:business_license_img), class:"col-xs-12", alt: "-") %>
-      </div>
-      <div class="col-xs-3 ">
-        <div class="clearfix">法人身份证正面：</div>
-        <%= image_tag(@enterprise_authentication.try(:legal_person_identity_card_front_img), class:"col-xs-12", alt: "-") %>
-      </div>
-      <div class="col-xs-3">
-        <div class="clearfix">法人身份证反面：</div>
-        <%= image_tag(@enterprise_authentication.try(:legal_person_identity_card_end_img), class:"col-xs-12", alt: "-") %>
-      </div>
-    </div>
-    <hr/>
-    <div class="row">
-      <div class="col-xs-3 col-md-offset-3">
-        <div class="clearfix">手持身份证图片：</div>
-        <%= image_tag(@personal_authentication.try(:face_with_identity_card_img), class:"col-xs-12", alt: "-") %>
-      </div>
-      <div class="col-xs-3">
-        <div class="clearfix">身份证正面：</div>
-        <%= image_tag(@personal_authentication.try(:identity_card_front_img), class:"col-xs-12", alt: "-") %>
-      </div>
-    </div>
-
-	</div>
-  <div class="col-xs-12 well">
-    <div class="col-xs-12" style="border-bottom:2px solid grey;padding:10px 0;">
-      <%= form_for 'seller', url: url_for(controller: :sellers, action: :update_service_rate), method: :post do |f| %>
-        <%= hidden_field_tag 'seller[id]', @seller.id %>
-        当前平台费率：
-        <% if current_user.is_super_admin? %>
-        <%= text_field_tag 'seller[service_rate]', @seller.try(:user_info).try(:service_rate), type: :tel %>%
-        <%= submit_tag '调整', class:"btn btn-info btn-xs" %>
+<br />
+<div class="container">
+	<div class="header-tab">
+		<div class="tab-title active" data-title = "#content1">商家信息</div>
+		<div class="tab-title" data-title = "#content2">营收概况</div>
+    <% if @agent.present? %>
+      <div class="tab-title" data-title = "#content3">
+        <% if @agent.id == current_user.id %>
+          我的收益
         <% else %>
-        <%= @seller.try(:user_info).try(:service_rate) %>%
+          创客收益
         <% end %>
+      </div>
+    <% end %>
+		<div class="seller-name">商家名：<%= @seller.identify %></div>
+	</div><!-- header-tab -->
+</div><!-- container -->
+<br />
+<div class="tab-container">
+	<div id="content1" class="tab-content" style="display: block;">
+		<div class="container">
+		<h3 class="page-title"><span class="date">注册时间： <%= @seller.created_at.to_date %></span>基本信息</h3>
+
+		<div class="admin-box">
+			<div class="box-w45">
+				<p>注册帐号： <%= @seller.login %></p>
+				<p>用户名称： <%= @seller.identify %></p>
+				<p>
+					UBoss创客：
+          <%= link_to_if @seller.agent_id.blank?, "绑定创客", binding_agent_admin_account_path, class: 'btn' do %>
+		    		<%= link_to @seller.agent.identify, admin_agent_path(@seller.agent) %>
+          <% end %>
+				</p>
+			</div><!-- box-w45 -->
+			<div class="box-w45">
+				<p>入驻时间： <%= @seller.created_at %></p>
+				<p>店铺名称： <%= @seller.store_identify %></p>
+				<p>
+					店铺链接：<%= store_url(@seller) %>
+				</p>
+			</div><!-- box-w45 -->
+			<div class="box-w10">
+				<p><img src="http://qr.liantu.com/api.php?&text=<%= "http://#{request.env["HTTP_HOST"]}/stores/#{@seller.id}" %>"/>	</p>
+			</div>
+		</div><!-- admin-box -->
+		<br />
+		<h3 class="page-title">
+			认证状态：
+      	<% if @seller.authenticated == 'yes'%>
+        	已认证
+      	<% else %>
+        	未认证
+        	<% if current_user.is_super_admin? %>
+         		<a href="#" class="btn">通过审核</a>  <a href="#" class="btn">未通过</a>
+         	<% end %>
+      	<% end %>
+		</h3>
+      <% if current_user.is_super_admin? %>
+		<div class="admin-box">
+			<div class="box-w30">
+				<p>企业营业执照副本：</p>
+				<p>
+					<a class="pop-img" data-src="<%= @enterprise_authentication.business_license_img %>" style="background-image: url(<%= @enterprise_authentication.business_license_img %>);">
+						<%= image_tag(@enterprise_authentication.try(:business_license_img), alt: "企业营业执照副本") %>
+					</a>
+				</p>
+			</div><!-- box-w30 -->
+			<div class="box-w70">
+				<p>法人身份证：</p>
+				<p>
+					<a class="pop-img" data-src="<%= @enterprise_authentication.legal_person_identity_card_front_img %>"style="background-image: url(<%= @enterprise_authentication.legal_person_identity_card_front_img %>);">
+						<%= image_tag(@enterprise_authentication.try(:legal_person_identity_card_front_img),alt: "正面") %>　
+					</a>　
+					<a class="pop-img" data-src="<%= @enterprise_authentication.legal_person_identity_card_end_img %>"style="background-image: url(<%= @enterprise_authentication.legal_person_identity_card_end_img %>);">
+						<%= image_tag(@enterprise_authentication.try(:legal_person_identity_card_end_img),alt: "反面") %>　
+					</a>
+				</p>
+			</div><!-- box-70 -->
+		</div><!-- admin-box -->
+		<br />
+		<div class="admin-box">
+			<p>手持身份证：</p>
+			<p>
+				<a class="pop-img" data-src="<%= @personal_authentication.face_with_identity_card_img %>"style="background-image: url(<%= @personal_authentication.face_with_identity_card_img %>);">
+					<%= image_tag(@personal_authentication.try(:face_with_identity_card_img),alt: "正面") %>　
+				</a>　
+				<a class="pop-img" data-src="<%= @personal_authentication.identity_card_front_img %>"style="background-image: url(<%= @personal_authentication.identity_card_front_img %>);">
+					<%= image_tag(@personal_authentication.try(:identity_card_front_img),alt: "反面") %>　
+				</a>
+			</p>
+		</div><!-- admin-box -->
+		<br />
       <% end %>
-    </div>
-    <table class="table table-hover">
-      <tr>
-        <th colspan='1'>调整时间</th>
-        <th>调整前费率</th>
-        <th>调整后费率</th>
-      </tr>
-      <% (@seller.try(:user_info).try(:service_rate_histroy) || {}).each do |k,v| %>
-      <tr>
-        <td><%= k %></td>
-        <td><%= v['from_service_rate'] %>%</td>
-        <td><%= v['to_service_rate'] %>%</td>
-      </tr>
-      <% end %>
-    </table>
-	</div>
-</div>
+		<div class="pull-right">
+		<% if current_user.is_super_admin? %>
+			<%= form_for 'seller', url: url_for(controller: :sellers, action: :update_service_rate), method: :post do |f| %>
+				<%= hidden_field_tag 'seller[id]', @seller.id %>
+				<%= text_field_tag 'seller[service_rate]', @seller.try(:user_info).try(:service_rate), type: :tel %> %
+				<%= submit_tag '调整', class:"btn btn-large" %>
+			<% end %>
+		<% end %>
+		</div>
+		<h3 class="page-title">当前平台费率：<%= @seller.user_info.service_rate %>%</h3>
+		<br />
+		<table class="list-table">
+		  <tr>
+			<th colspan='1'>调整时间</th>
+			<th>调整前费率</th>
+			<th>调整后费率</th>
+		  </tr>
+		  <% (@seller.try(:user_info).try(:service_rate_histroy) || {}).each do |k,v| %>
+		  <tr>
+			<td><%= k %></td>
+			<td><%= v['from_service_rate'] %>%</td>
+			<td><%= v['to_service_rate'] %>%</td>
+		  </tr>
+		  <% end %>
+		</table>
+		</div><!-- container -->
+		<br />
+	</div><!-- content1 -->
+	<div id="content2" class="tab-content">
+		<br />
+		<div class="container nogap">
+			<div class="box-w25">
+				<div class="admin-box main-bg-color">
+          <h3><%= number_to_currency @seller.today_sold_income %></h3>
+					<p class="text-right">今日营业额</p>
+				</div>
+			</div><!-- box-w25 -->
+			<div class="box-w25">
+				<div class="admin-box red-bg-color">
+					<h3><%= number_to_currency @seller.current_month_sold_income %></h3>
+					<p class="text-right">本月营业额</p>
+				</div>
+			</div><!-- box-w25 -->
+			<div class="box-w25">
+				<div class="admin-box yellow-bg-color">
+					<h3><%= number_to_currency @seller.total_sold_income %></h3>
+					<p class="text-right">累计营业额</p>
+				</div>
+			</div><!-- box-w25 -->
+		</div><!-- container -->
+		<br />
+		<div class="container nogap">
+			<div class="box-w50">
+				<h3 class="page-title">日营业额</h3>
+        <div class="admin-box list-box">
+          <div class="box-w50"><p class="list-title">日期</p></div>
+          <div class="box-w50"><p class="list-title">营业额</p></div>
+          <% @sold_daily_reports.each do |report| %>
+            <!-- 数据 -->
+            <div class="box-w50"><p><%= report.day %></p></div>
+            <div class="box-w50"><p><%= number_to_currency report.amount %></p></div>
+            <!-- 数据结束 -->
+          <% end %>
+        </div><!-- list-box -->
+			</div><!-- box-w50 -->
+			<div class="box-w50">
+				<h3 class="page-title">
+					月营业额
+					<!-- <select class="date&#45;select"> -->
+					<!-- 	<option value="2015">2015年</option> -->
+					<!-- 	<option value="2014">2014年</option> -->
+					<!-- </select> -->
+					<!-- <select class="date&#45;select"> -->
+					<!-- 	<option value="8">8月</option> -->
+					<!-- 	<option value="7">7月</option> -->
+					<!-- 	<option value="6">6月</option> -->
+					<!-- </select> -->
+				</h3>
+				<div class="admin-box list-box">
+					<div class="box-w50"><p class="list-title">日期</p></div>
+					<div class="box-w50"><p class="list-title">营业额</p></div>
+          <% @sold_month_reports.each do |report| %>
+            <!-- 数据 -->
+            <div class="box-w50"><p><%= report.attributes['month'] %></p></div>
+            <div class="box-w50"><p><%= number_to_currency report.attributes['total_amount'] %></p></div>
+            <!-- 数据结束 -->
+          <% end %>
+				</div><!-- list-box -->
+			</div><!-- box-w50 -->
+		</div><!-- container -->
+	</div><!-- content2 -->
+  <% if @agent.present? %>
+
+    <div id="content3" class="tab-content">
+      <br />
+      <div class="container nogap">
+        <div class="box-w25">
+          <div class="admin-box main-bg-color">
+            <h3><%= number_to_currency @agent.today_divide_income_from_seller(@seller) %></h3>
+            <p class="text-right">今日收益</p>
+          </div>
+        </div><!-- box-w25 -->
+        <div class="box-w25">
+          <div class="admin-box red-bg-color">
+            <h3><%= number_to_currency @agent.crrent_month_divide_income_from_seller(@seller) %></h3>
+            <p class="text-right">本月收益</p>
+          </div>
+        </div><!-- box-w25 -->
+        <div class="box-w25">
+          <div class="admin-box yellow-bg-color">
+            <h3><%= number_to_currency @agent.total_divide_income_from_seller(@seller) %></h3>
+            <p class="text-right">累计收益</p>
+          </div>
+        </div><!-- box-w25 -->
+      </div><!-- container -->
+      <br />
+      <div class="container nogap">
+        <div class="box-w50">
+          <h3 class="page-title">每日收益</h3>
+          <div class="admin-box list-box">
+            <div class="box-w50"><p class="list-title">日期</p></div>
+            <div class="box-w50"><p class="list-title">收益</p></div>
+            <!-- 数据 -->
+            <% @agent_daily_reports.each do |report| %>
+              <!-- 数据 -->
+              <div class="box-w50"><p><%= report.day %></p></div>
+              <div class="box-w50"><p><%= number_to_currency report.amount %></p></div>
+              <!-- 数据结束 -->
+            <% end %>
+            <!-- 数据结束 -->
+          </div><!-- list-box -->
+        </div><!-- box-w50 -->
+        <div class="box-w50">
+          <h3 class="page-title">
+            月营业额
+            <!-- <select class="date&#45;select"> -->
+            <!-- 	<option value="2015">2015年</option> -->
+            <!-- 	<option value="2014">2014年</option> -->
+            <!-- </select> -->
+            <!-- <select class="date&#45;select"> -->
+            <!-- 	<option value="8">8月</option> -->
+            <!-- 	<option value="7">7月</option> -->
+            <!-- 	<option value="6">6月</option> -->
+            <!-- </select> -->
+          </h3>
+          <div class="admin-box list-box">
+            <div class="box-w50"><p class="list-title">日期</p></div>
+            <div class="box-w50"><p class="list-title">收益</p></div>
+            <% @agent_month_reports.each do |report| %>
+              <!-- 数据 -->
+              <div class="box-w50"><p><%= report.attributes['month'] %></p></div>
+              <div class="box-w50"><p><%= number_to_currency report.attributes['total_amount'] %></p></div>
+              <!-- 数据结束 -->
+            <% end %>
+          </div><!-- list-box -->
+        </div><!-- box-w50 -->
+      </div><!-- container -->
+    </div><!-- content3 -->
+  <% end %>
+</div><!-- tab-container -->
+<br />
+
+<script>
+$(window).load(function(){
+	$(".pop-img").click(function(){
+		$("body").append("<div class='pop-bg'><div class='pop-container' style='margin-top:-"+($(this).children("img").height()+20)/2+"px;margin-left:-"+($(this).children("img").width()+20)/2+"px'><div class='pop-content'><img src='"+$(this).attr("data-src")+"'/><div class='pop-close'><i class='fa fa-times'></i></div></div></div></div>");
+		$("html").addClass("pop-html");
+	})
+	$("body").on("click",".pop-bg .pop-close",function(){
+		$(".pop-bg").remove();
+		$("html").removeClass("pop-html");
+	})
+})
+$(document).ready(function(){
+	$(".tab-title").click(function(){
+		if(!$(this).hasClass("active")){
+			$(".header-tab .tab-title").removeClass("active");
+			$(this).addClass("active");
+			$(".tab-content").hide();
+			var tabid=$(this).attr("data-title");
+			$(tabid).fadeIn();
+			$(tabid).find(".date-select").chosen();
+		}
+	})
+})
+</script>

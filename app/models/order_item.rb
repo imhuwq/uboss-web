@@ -46,6 +46,10 @@ class OrderItem < ActiveRecord::Base
     adjust_product_stock(-1)
   end
 
+  def deal_price
+    present_price - privilege_amount
+  end
+
   private
 
   def adjust_product_stock(type)
@@ -65,7 +69,7 @@ class OrderItem < ActiveRecord::Base
   end
 
   def set_pay_amount
-    self.pay_amount = (present_price - privilege_amount) * amount + product.traffic_expense
+    self.pay_amount = deal_price * amount + product.traffic_expense
   end
 
 

@@ -1,28 +1,40 @@
-
-<div class="well">
+<div class="admin-box black-bg-color">
   <%= f.input :name %>
   <%= f.input :identity_card_code %>
-  <%= f.input :face_with_identity_card_img, hint: image_tag(@personal_authentication.face_with_identity_card_img.url(:w640)) do %>
+  <%= f.input :face_with_identity_card_img do %>
     <%= f.input_field :face_with_identity_card_img, type: :hidden, as: :file %>
-    <span class="btn btn-primary fileinput-button">
-      <span>选择图片</span>
+    <span class="fileinput-button">
+      <% if f.object.new_record? || f.object.attributes['face_with_identity_card_img'].blank? %>
+        <%= image_tag("admin/no-img.png") %>
+      <% else %>
+        <%= image_tag(f.object.face_with_identity_card_img_url(:w320)) %>
+      <% end %>
       <%= upyun_meta_tags prefix: 'personal_authentication/face_with_identity_card_img' %>
       <%= file_field_tag "face_with_identity_card_img", class: "upyun_file_closest" %>
+      <b class="loading"><i class="fa fa-spinner"></i></b>
     </span>
   <% end %>
-  <%= f.input :identity_card_front_img, hint: image_tag(@personal_authentication.identity_card_front_img.url(:w640)) do %>
+  <%= f.input :identity_card_front_img do %>
     <%= f.input_field :identity_card_front_img, type: :hidden, as: :file %>
-    <span class="btn btn-primary fileinput-button">
-      <span>选择图片</span>
+    <span class="fileinput-button">
+      <% if f.object.new_record? || f.object.attributes['identity_card_front_img'].blank? %>
+        <%= image_tag("admin/no-img.png") %>
+      <% else %>
+        <%= image_tag(f.object.identity_card_front_img_url(:w320)) %>
+      <% end %>
       <%= upyun_meta_tags prefix: 'personal_authentication/identity_card_front_img' %>
       <%= file_field_tag "identity_card_front_img", class: "upyun_file_closest" %>
+      <b class="loading"><i class="fa fa-spinner"></i></b>
     </span>
   <% end %>
   <%= f.input :address %>
   <div class="form-group string required enterprise_authentication_mobile">
-    <%= f.label :mobile, class:"string required col-sm-2 control-label" %>
-    <div class="col-xs-3"><%= f.input_field :mobile , as: :tel, id:"new_mobile", style:"width:100%;" %></div>
-    <div class="col-xs-3"><%= link_to '发送', '###',class: "btn btn-danger btn-xs",id:"send_mobile" %></div>
+    <%= f.label :mobile, class:"string required control-label" %>
+    <%= link_to '发送', '###',class: "btn btn-large pull-right",id:"send_mobile",style:"border-radius:0 4px 4px 0;" %>
+    <div class="control-input">
+    	<%= f.input_field :mobile , as: :tel, id:"new_mobile", style:"border-radius:4px 0 0 4px;" %>
+    </div>
+
   </div>
   <%= f.input :mobile_auth_code %>
 </div>

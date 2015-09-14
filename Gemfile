@@ -76,6 +76,8 @@ gem 'whenever', :require => false
 gem 'airbrake'
 gem 'sucker_punch' # airbrake async use this
 
+gem 'china_city'
+
 group :development do
   gem "thin"
   gem "capistrano"

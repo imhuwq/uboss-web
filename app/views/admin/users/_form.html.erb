@@ -1,3 +1,5 @@
+<br />
+<div class="inline-form text-center">
 <%= simple_form_for [:admin, @user] do |f| %>
   <%= f.input :login, disabled: !@user.new_record? %>
   <%= f.input :password %>
@@ -5,5 +7,12 @@
   <%= f.input :nickname %>
   <%= f.association :user_roles, label_method: :display_name, value_method: :id, include_blank: false %>
 
-  <%= f.submit class: 'btn btn-default' %>
+  <p class="text-center"><%= f.submit class: 'btn btn-large' %></p>
 <% end %>
+</div>
+<script>
+$(document).ready(function(){
+	$("select").chosen();	
+})
+	
+</script>

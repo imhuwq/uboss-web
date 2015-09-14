@@ -1,14 +1,38 @@
-<%= table_for(@transactions) do |t| %>
-  <%= t.cell :created_at %>
-  <%= t.cell :user_identify %>
-  <%= t.cell :current_amount %>
-  <%= t.cell :adjust_amount %>
-  <%= t.cell :source_type do |transaction| %>
-    <% if transaction.source_type.present? %>
-      <%= transaction.source_type.constantize.model_name.human %>
-    <% end %>
-  <% end %>
-  <%= t.cell :source_id  %>
-<% end %>
-
-<%= paginate @transactions %>
+<div class="container admin-container">
+	<ul class="breadcrumb">
+		<li><a href="/admin">主页</a></li>
+		<li class="divider"><i class="fa fa-caret-right"></i></li>
+		<li>交易数据</li>
+	</ul>
+</div><!-- container -->
+<br />
+<div class="container">
+	<table class="list-table">
+		<thead>
+			<th>创建时间</th>
+			<th>用户</th>
+			<th>余额	</th>
+			<th>调整额度</th>
+			<th>来源</th>
+			<th>来源ID</th>
+		</thead>
+		<% @transactions.each do |transaction| %>
+			<tr>
+				<td><%= transaction.created_at %></td>
+				<td><%= transaction.user_identify %></td>
+				<td><%= transaction.current_amount %></td>
+				<td><%= transaction.adjust_amount %></td>
+				<td>
+					&nbsp;
+					<% if transaction.source_type.present? %>
+			      <%= transaction.source_type.constantize.model_name.human %>
+			    <% end %>
+			    &nbsp;
+				</td>
+				<td><%= transaction.source_id %></td>
+			</tr>
+		<% end %>		
+	</table>
+	<br />
+	<%= paginate @transactions %>
+</div>
