@@ -13,19 +13,16 @@
 
 <!-- // jiathis的js包 -->
 <% if request.xhr? %>
+
   <script type="text/javascript" charset="utf-8">
-    var _hmt = _hmt || [];
-    (function() {
-      var hm = document.createElement("script");
-      hm.src = "http://v3.jiathis.com/code/jia.js";
-      var s = document.getElementsByTagName("script")[0];
-      s.parentNode.insertBefore(hm, s);
-    })();
-  </script>
-<% else %>
-  <script type="text/javascript" src="http://v3.jiathis.com/code/jia.js"></script>
-<% end %>
-<script type="text/javascript">
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "http://v3.jiathis.com/code/jia.js";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+
 $('meta[name=sharing_link]').attr('content', "<%= product_sharing_link(product, node) %>")
 
 $('#copycardid').on('click', this,function(event) {
@@ -41,4 +38,29 @@ var jiathis_config = {
 }
 
 UBoss.luffy.resetInvokeSharing()
-</script>
+  </script>
+
+<% else %>
+
+  <script type="text/javascript" src="http://v3.jiathis.com/code/jia.js"></script>
+  <script type="text/javascript" charset="utf-8">
+$(document).ready(function(){
+  $('meta[name=sharing_link]').attr('content', "<%= product_sharing_link(product, node) %>")
+
+    $('#copycardid').on('click', this,function(event) {
+      $('#share_link').toggle();
+    });
+
+  var jiathis_config = {
+    url:      UBoss.luffy.sharing_url,
+    title:    UBoss.luffy.sharing_title,
+    summary:  UBoss.luffy.sharing_desc,
+    pic:      UBoss.luffy.sharing_imgurl,
+    imageUrl: UBoss.luffy.sharing_imgurl
+  }
+
+  UBoss.luffy.resetInvokeSharing()
+})
+  </script>
+
+<% end %>
