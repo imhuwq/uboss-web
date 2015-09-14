@@ -1,11 +1,11 @@
 $ ->
 
-  $('.share-wx-btn').on 'click', (e)->
+  $(document).on 'click', '.share-wx-btn', (e) ->
     e.preventDefault()
     if window.wx != undefined
       $(".wx-mod-pop").show()
     else
-      window.location.replace('#share_buttoms')
+      alert('朋友圈分享只在微信浏览器可用')
 
   $(".wx-mod-pop").on 'click', ->
     $(this).hide()
