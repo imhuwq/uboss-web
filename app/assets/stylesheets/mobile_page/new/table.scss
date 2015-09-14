@@ -1,0 +1,17 @@
+table{
+    width: 100%;
+    td{
+        padding: 4px ;
+    }
+}
+.border-table{
+    td{border-bottom: 1px dotted #eee;}
+}
+.v-top{
+    td{vertical-align: top;}
+    img{ vertical-align: baseline;}
+}
+.v-center{
+    td{vertical-align: bottom;}
+}
+

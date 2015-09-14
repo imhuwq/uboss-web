@@ -1,0 +1,45 @@
+.btn,input.btn:focus{ 
+    display:inline-block;
+    font-size: 14px;
+    padding:5px;
+    background: $brand-primary;
+    color: #fff;
+    border-radius: 4px;
+    line-height: 15px;
+    outline: none;
+    border: none;
+}
+.btn-large,input.btn:focus{padding:10px }
+.btn-block{ 
+    display:block;
+    text-align: center;
+    width: 100%;
+    box-sizing: border-box;
+}
+.btn:hover{
+    animation: btn-hover .5s linear ;
+}
+@keyframes btn-hover
+{
+0%{
+    opacity: 1;
+}
+50%{
+    opacity: 0.5;
+}
+100% {
+    opacity: 1;
+}
+}
+@keyframes fadeIn
+{
+0%{
+    opacity: 0;
+}
+50%{
+    opacity: 0.5;
+}
+100% {
+    opacity: 1;
+}
+}
