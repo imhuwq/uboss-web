@@ -18,6 +18,11 @@ class User < ActiveRecord::Base
 
   has_many :followings, :through => :attention_associations
 
+  has_many :follower_associations, :foreign_key => "user_id",
+    :class_name => "FollowerAssociation"
+
+  has_many :followers, :through => :follower_associations
+
   has_one :user_info, autosave: true
   has_many :transactions
   has_many :user_role_relations, dependent: :destroy
