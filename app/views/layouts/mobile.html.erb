@@ -28,6 +28,9 @@
     <%= render partial: 'baidu_tongji' %>
     <% if browser.wechat? %>
       <%= render "weixin_js" %>
+      <div class="wx-mod-pop" id="pop-share">
+        <span class="text-share"></span>
+      </div>
     <% end %>
     <%= yield(:extra_javascript) %>
   </body>
