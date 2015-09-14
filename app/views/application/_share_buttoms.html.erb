@@ -22,4 +22,7 @@ var jiathis_config = {
   title: "<%= product.name %>",
   summary:"原价：￥<%= product.original_price %>,现价：￥<%= product.present_price %>,快来抢购吧~"
 }
+
+$('meta[name=sharing_link]').attr('content', "<%= product_sharing_link(product, node) %>")
+UBoss.luffy.resetInvokeSharing()
 </script>
