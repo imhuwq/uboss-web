@@ -26,15 +26,19 @@
   <script type="text/javascript" src="http://v3.jiathis.com/code/jia.js"></script>
 <% end %>
 <script type="text/javascript">
+$('meta[name=sharing_link]').attr('content', "<%= product_sharing_link(product, node) %>")
+
 $('#copycardid').on('click', this,function(event) {
   $('#share_link').toggle();
 });
+
 var jiathis_config = {
-  url: "<%= product_sharing_link(product, node) %>",
-  title: "<%= product.name %>",
-  summary:"原价：￥<%= product.original_price %>,现价：￥<%= product.present_price %>,快来抢购吧~"
+  url:      UBoss.luffy.sharing_url,
+  title:    UBoss.luffy.sharing_title,
+  summary:  UBoss.luffy.sharing_desc,
+  pic:      UBoss.luffy.sharing_imgurl,
+  imageUrl: UBoss.luffy.sharing_imgurl
 }
 
-$('meta[name=sharing_link]').attr('content', "<%= product_sharing_link(product, node) %>")
 UBoss.luffy.resetInvokeSharing()
 </script>

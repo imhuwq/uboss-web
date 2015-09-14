@@ -3,7 +3,7 @@ class GoingMerry.Luffy
     @resetInvokeSharing()
 
   invokeSharing: ->
-    if window.wx
+    if window.wx?
       @showOptionMenu()
       wx.onMenuShareTimeline(
         title: @sharing_title
@@ -16,6 +16,8 @@ class GoingMerry.Luffy
         desc: @sharing_desc
         imgUrl: @sharing_imgurl
       )
+    else
+      $('.share-wx-btn').remove()
 
   invokeDefaultSharing: ->
     if window.wx
