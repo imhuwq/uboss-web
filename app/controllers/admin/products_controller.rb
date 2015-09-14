@@ -63,6 +63,14 @@ class Admin::ProductsController < AdminController
     end
   end
 
+  def switch_hot_flag
+    if @product.update(hot: !@product.hot)
+      render json: { hot: @product.hot }
+    else
+      render json: { message: model_errors(@product) }, status: 422
+    end
+  end
+
   def pre_view
     @seller = @product.user
     render layout: 'application'

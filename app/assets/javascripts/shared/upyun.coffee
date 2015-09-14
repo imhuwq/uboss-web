@@ -38,7 +38,7 @@ $ ->
     fileName = data.originalFiles[0].name
     fieldName = $this.prop("name")
     unless button.hasClass('uploading')
-      
+
       $this.hide()
       button.addClass('uploading')
       data.submit().done (doc) ->
@@ -56,6 +56,6 @@ $ ->
           hiddenFile.val(fileName)
           formGroup.find('.fileinput-button').html "<img src='#{ upyunBucketDomain }/#{ qs.url }-w320'></img>"
           form.data("waiting-upload", false)
-         
+
           button.removeClass('uploading')
           $this.show()

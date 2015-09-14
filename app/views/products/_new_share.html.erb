@@ -1,20 +1,14 @@
-<div class="menb">
-  <a onclick="close_window()">
-    <div style="width:100%;height:100%;float:left"></div>
-  </a>
-  <div class="fenxinag fenxinagtow" id="share_buttons">
+<div class="share-container">
+  <div id="close-area"></div>
+  <div class="share-content" id="share_buttons">
     <% if @sharing_link_node.present? %>
     <%= render partial: 'application/share_buttoms',
       locals: { product: @product, node: @sharing_link_node } %>
     <% else %>
-      <div class="fenxinag_line1">留下手机号，现金礼品拿不停！</div>
-      <div style="min-height:40px;padding-top:20px;">
-        <div style="position:absolute;width:70px;margin-left:0;float:left;padding:3px 0 0 10px;">手机号码</div>
-        <div style="margin-left:90px;">
-          <%= text_field_tag 'mobile[]','', type:"tel",placeholder:"手机号",class:"fenxinag_text",id:"save_mobile_mobile", style:"width:90%;float:left;" %>
-        </div>
-      </div>
-      <%= link_to("我要分享", '###',class:"accunt_adilbtn", id:"sharing_code") %>
+      <div class="page-title">留下手机号，现金礼品拿不停！</div>
+      <p><%= text_field_tag 'mobile[]','', type:"tel",placeholder:"手机号",id:"save_mobile_mobile",class:'input-block'%></p>
+
+      <p><%= link_to("我要分享", '###',class:"btn btn-large btn-block", id:"sharing_code") %></p>
       <script>
       $("body").on('click', '#sharing_code',function(e){
         var mobile = $("#save_mobile_mobile").val()

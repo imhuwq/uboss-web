@@ -3,10 +3,14 @@
   <head>
     <meta charset="utf-8" />
     <meta id='MobileViewport' name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+    <meta name="apple-mobile-web-app-capable" content="yes" /> <!-- 启用 WebApp 全屏模式 -->
+    <meta content="telephone=no" name="format-detection" />
+    <meta content="email=no" name="format-detection" />
     <link href="<%= image_url("desktop_image/favicon.ico") %>" type="image/x-icon" rel="shortcut icon">
     <%= yield(:extra_meta_tags) %>
     <%= render partial: "page_title" %>
     <%= stylesheet_link_tag "mobile" %>
+    <%= javascript_include_tag "mobile" %>
     <%= csrf_meta_tags %>
   </head>
 
@@ -20,7 +24,7 @@
       <%= yield %>
     </div>
 
-    <%= javascript_include_tag "mobile" %>
+
     <%= render partial: 'baidu_tongji' %>
     <% if browser.wechat? %>
       <%= render "weixin_js" %>

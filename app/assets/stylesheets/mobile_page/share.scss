@@ -1,0 +1,31 @@
+.share-container{
+    position: fixed;
+    z-index: 88;
+    height: 100%;
+    width: 100%;
+    top: 0;
+    left: 0;  
+    background: rgba(0,0,0,.4);  
+    #close-area{
+        position: fixed;
+        display: block;
+        height: 100%;
+        width: 100%;
+        top: 0;
+        left: 0;
+        z-index: 88;
+    }
+    .share-content{
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        z-index: 89;
+        background: #fff;
+        box-sizing: border-box;
+        padding: 10px;
+    }
+    p{margin-bottom: 8px;}
+}
+
+
