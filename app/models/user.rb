@@ -148,7 +148,7 @@ class User < ActiveRecord::Base
 
   def bind_agent(binding_code)
     agent_user = if binding_code.present?
-                   User.agent.find_by(agent_code: binding_code)
+                   User.agent.find_by(agent_code: binding_code) || AgentInviteSellerHistroy.find_by(invite_code: binding_code).try(:agent)
                  else
                    User.official_account
                  end
@@ -167,6 +167,13 @@ class User < ActiveRecord::Base
       errors.add(:agent_code, :invalid)
       false
     end
+  end
+
+  def bind_seller(seller)
+    seller.agent = self
+    seller.admin = true
+    seller.user_roles << UserRole.seller if !seller.is_seller?
+    seller.save
   end
 
   def update_with_oauth_session(session)
