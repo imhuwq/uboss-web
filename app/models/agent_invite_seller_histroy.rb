@@ -1,21 +1,24 @@
 class AgentInviteSellerHistroy < ActiveRecord::Base
 
-  validates_presence_of :agent_id
-  validates_uniqueness_of :mobile
+  validates_presence_of   :agent_id, :mobile, :invite_code
+  validates_uniqueness_of :mobile,      scope: :agent_id
+  validates_uniqueness_of :invite_code, scope: :agent_id
 
   enum status: { invited: 0, bind: 1, authenticated: 2 }
 
-  def self.find_or_new_by_mobile(mobile)
-    histroy = self.find_or_create_by(mobile: mobile)
-    histroy.set_expire_time
+  def self.find_or_new_by_mobile_and_agent_id(mobile, agent_id)
+    histroy =
+      self.find_by(mobile: mobile, agent_id: agent_id) ||
+      new(mobile: mobile, agent_id: agent_id)
     histroy.generate_code
+    histroy.set_expire_time
     histroy
   end
 
   def generate_code #生成邀请码
     loop do
-      self.invite_code = SecureRandom.hex 4
-      break if !AgentInviteSellerHistroy.find_by(invite_code: invite_code)
+      self.invite_code = rand(100000..999999).to_s
+      break if !AgentInviteSellerHistroy.find_by(agent_id: agent_id, invite_code: invite_code)
     end
   end
 

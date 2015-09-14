@@ -123,13 +123,11 @@ class AccountsController < ApplicationController
       flash.now[:error] =
         seller.agent_id == current_user.id ? "#{seller.identify}已经是您的商家" : '邀请失败，商家已经绑定过创客'
     else
-      histroy = AgentInviteSellerHistroy.find_or_new_by_mobile(mobile)
-      binding.pry
+      histroy = AgentInviteSellerHistroy.find_or_new_by_mobile_and_agent_id(mobile, current_user.id)
       result = PostMan.send_sms(mobile, {code: histroy.invite_code}, 923_651)
       if result[:success]
-        histroy.agent_id = current_user.id
         histroy.save
-        flash.now[:success] = "您的创客码已经发送到：#{mobile}."
+        flash.now[:success] = "您的邀请码已经发送到：#{mobile}."
       else
         flash.now[:error] = result[:message]
       end
@@ -144,12 +142,11 @@ class AccountsController < ApplicationController
   # Change action 'bind_agent' to 'bind_seller'
   def bind_seller # 创客绑定商家
     invite_code = params[:bind_seller][:invite_code]
-    histroy = AgentInviteSellerHistroy.find_by(invite_code: invite_code)
-    #NOTE 混淆users中的login和mobile: User.find_by(mobile: histroy.mobile)
+    histroy = AgentInviteSellerHistroy.find_by(invite_code: invite_code, agent_id: current_user.id)
     seller = User.find_by(login: histroy.mobile) if histroy
 
     if !histroy || histroy.expired?
-      flash[:error] = '验证码错误或已过期。'
+      flash[:error] = '邀请码错误或已过期。'
     elsif !seller
       flash[:error] = "找不到手机号为 #{histroy.mobile} 的帐户"
     elsif seller.agent.present?
