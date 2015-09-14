@@ -77,6 +77,7 @@ gem 'airbrake'
 gem 'sucker_punch' # airbrake async use this
 
 gem 'china_city'
+gem 'nested_form'
 
 group :development do
   gem "thin"

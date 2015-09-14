@@ -1,5 +1,7 @@
 #= require jquery
 #= require modernizr-2.6.2.min
+#= require china_city/jquery.china_city
+#= require jquery_nested_form
 #= require jquery_ujs
 #= require bootstrap-sprockets
 #= require redactor-rails

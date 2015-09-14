@@ -144,6 +144,13 @@ zh-CN:
       divide_income: 分成收入
       bank_card: 银行卡
     attributes:
+      carriage_template:
+        name: 名称
+      different_area:
+        first_item: 首件
+        carriage: 运费
+        extend_item: 续件
+        extend_carriage: 续费
       mobile_auth_code:
         code: 手机验证码
       user_address:

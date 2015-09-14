@@ -20,7 +20,16 @@
         <%= li_link(:dashboard, admin_root_path, action_check: false) %>
         <%= can_li_link(:manage, :sellers, admin_sellers_path) %>
         <%= can_li_link(:manage, :agents, admin_agents_path) %>
-        <%= can_li_link(:read, Product, admin_products_path) %>
+        <li class="dropdown">
+          <a id="dLabel" href="#" data-toggle="dropdown" aria-haspopup="true" role="button" aria-expanded="false"/>
+            <span>商品管理</span>
+            <span class="caret"></span>
+          </a>
+          <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+            <li><%= can_li_link(:read, Product, admin_products_path) %></li>
+            <li><%= link_to '运费模板', admin_carriage_templates_path %></li>
+          </ul>
+        </li>
         <%= can_li_link(:manage, Order, admin_orders_path) %>
         <%= can_li_link(:manage, SharingIncome, admin_sharing_incomes_path) %>
         <%= can_li_link(:read, WithdrawRecord, admin_withdraw_records_path) %>
