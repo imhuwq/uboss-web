@@ -75,4 +75,7 @@ $ ->
       mobile_submit_time = 60
       timedown sendBtn
     .fail (xhr, textStatus) ->
-      alert(xhr.responseJSON.message)
+      if xhr.responseJSON?
+        alert(xhr.responseJSON.message)
+      else
+        alert('发送失败')
