@@ -269,6 +269,10 @@ class User < ActiveRecord::Base
     end
   end
 
+  def is_following?(funs)
+    self.followings.exists?(funs)
+  end
+
   def set_wechat_data(data)
     self.nickname       ||= data["nickname"]
     self.sex            ||= data["sex"]
