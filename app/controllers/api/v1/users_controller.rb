@@ -2,8 +2,7 @@ class Api::V1::UsersController < ApiBaseController
   before_action :find_user
 
   def followers
-    user_ids = AttentionAssociation.where(following_id: @user.id).collect(&:user_id)
-    @users = User.where(id: user_ids)
+    @users = @user.followers
   end
 
   def following
@@ -15,7 +14,7 @@ class Api::V1::UsersController < ApiBaseController
     if @user.followings.destroy(following)
       render_success('取消关注成功')
     else
-      render_fail('取消关注失败')
+      render_error :validation_failed, '取消关注失败'
     end
   end
 
@@ -24,7 +23,7 @@ class Api::V1::UsersController < ApiBaseController
     if @user.save
       render_success('关注成功')
     else
-      render_fail('关注失败')
+      render_error :validation_failed, '关注失败'
     end
   end
 
