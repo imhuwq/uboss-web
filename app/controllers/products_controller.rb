@@ -31,6 +31,17 @@ class ProductsController < ApplicationController
     end
   end
 
+  def add_to_cart
+    @product = Product.find(params[:id])
+    #消费者不能购买 库存数量为0的商品
+    if @product.count > 0
+      current_cart.add_product_to_cart(@product)
+      flash[:notice] = "你已成功将 #{@product.title} 加入购物车"
+    else
+      flash[:notice] = "你的购物车内已有此物品"
+    end
+  end
+
   private
 
   def invoke_product_showing_info

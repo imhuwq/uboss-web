@@ -43,6 +43,7 @@ Rails.application.routes.draw do
   resources :products do
     member do
       get :refact
+      post :add_to_cart
     end
     post :save_mobile, :democontent,  on: :collection
   end
@@ -70,6 +71,14 @@ Rails.application.routes.draw do
   end
   resources :privilege_cards, only: [:show, :index, :update]
   resources :sellers, only: [:new, :create, :update]
+  resources :carts, only: [:index] do
+    collection do
+      post :checkout
+      post :delete_all
+      post :delete_item
+      post :change_item_quantity
+    end
+  end
 
   authenticate :user, lambda { |user| user.admin? } do
     namespace :admin do

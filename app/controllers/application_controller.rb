@@ -110,4 +110,15 @@ class ApplicationController < ActionController::Base
     end
   end
   helper_method :after_sign_in_path_for
+
+  helper_method :current_cart
+  def current_cart
+    @current_cart ||= find_cart
+  end
+
+  def find_cart
+    cart = Cart.find_by(id: session[:cart_id]) || Cart.create
+    session[:cart_id] = cart.id
+    cart
+  end
 end
