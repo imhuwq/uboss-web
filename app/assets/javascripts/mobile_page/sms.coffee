@@ -56,16 +56,21 @@ $ ->
       sendBtn.removeClass("disabled")
       alert JSON.parse(xhr.responseText).message
 
+  bindAlertFlash = ->
+    $(".alert").on "click", ->
+      $(this).closest('.flash_css').remove()
+
   timedown = (t) ->
     if mobile_submit_time == 0
       t.removeClass("disabled")
-      t.text("发送验证码")
+      t.text("发送绑定验证码给商家")
     else
       t.text("#{mobile_submit_time}s后重新获取")
       mobile_submit_time--
       setTimeout () ->
         timedown(t)
       , 1000
+    bindAlertFlash()
 
   $('#mobile_auth_code').on 'keyup', (m)->
     code = $(this).val()
