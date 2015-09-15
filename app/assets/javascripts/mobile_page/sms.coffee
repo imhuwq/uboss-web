@@ -5,9 +5,9 @@ $ ->
     sendBtn = $(this)
     mobile = $('#new_mobile').val()
     checkNum = /^(\+\d+-)?[1-9]{1}[0-9]{10}$/
+    sendBtn.addClass("disabled")
     if checkNum.test(mobile)
       mobile_submit_time = 60
-      timedown $('#send_mobile')
       return false if mobile_submit_time != 0
       sendBtn.addClass("disabled")
       $.ajax
@@ -15,8 +15,9 @@ $ ->
         type: 'POST',
         data: {mobile: mobile},
       .done ->
-        console.log mobile_submit_time
+        timedown $('#send_mobile')
       .fail ->
+        mobile_submit_time = 0
         alert('验证码发送失败')
         sendBtn.removeClass("disabled")
     else
@@ -80,7 +81,6 @@ $ ->
     mobile = $('#new_mobile').val()
     checkNum = /^(\+\d+-)?[1-9]{1}[0-9]{10}$/
     mobile_submit_time = 60
-    timedown sendBtn
     if not checkNum.test(mobile)
       console.log mobile
       alert "手机格式错误"
@@ -94,7 +94,8 @@ $ ->
         mobile: mobile
       },
     .done ->
-      console.log mobile
+      timedown sendBtn
     .fail (xhr, textStatus) ->
+      mobile_submit_time = 0
       sendBtn.removeClass("disabled")
       alert JSON.parse(xhr.responseText).message
