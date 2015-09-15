@@ -60,6 +60,10 @@ $ ->
     $(".alert").on "click", ->
       $(this).closest('.flash_css').remove()
 
+  bindAlertFlash = ->
+    $(".alert").on "click", ->
+      $(this).closest('.flash_css').remove()
+
   timedown = (t) ->
     if mobile_submit_time == 0
       t.removeClass("disabled")
