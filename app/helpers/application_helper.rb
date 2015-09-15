@@ -76,6 +76,18 @@ module ApplicationHelper
     end.join.html_safe
   end
 
+  def store_sharing_meta_tags(store)
+    meta_tags = {
+      sharing_title:  "【#{store.store_identify}】",
+      sharing_desc:   "分享还能拿返利，快来UBOSS看看吧",
+      sharing_imgurl: store.image_url(:thumb),
+      sharing_link:  store_url(store)
+    }
+    meta_tags.collect do |key, value|
+      content_tag :meta, '', name: key, content: value
+    end.join.html_safe
+  end
+
   def displayable_class(boolean_value)
     boolean_value ? '' : 'hidden'
   end
