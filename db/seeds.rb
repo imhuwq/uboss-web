@@ -16,3 +16,10 @@ u1 = User.create(
 )
 u1.user_roles = [super_role,agent_role,seller_role]
 u1.save
+
+ChinaCity.provinces.each do |name, code|
+  State.find_or_create_by(name: name, numcode: code)
+end
+
+State.find_or_create_by(name: '其他')
+
