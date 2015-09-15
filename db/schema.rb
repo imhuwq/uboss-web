@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150913204915) do
+ActiveRecord::Schema.define(version: 20150915033344) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -52,6 +52,14 @@ ActiveRecord::Schema.define(version: 20150913204915) do
     t.datetime "updated_at", null: false
     t.string   "bankname"
   end
+
+  create_table "carts", force: :cascade do |t|
+    t.integer  "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_index "carts", ["user_id"], name: "index_carts_on_user_id", using: :btree
 
   create_table "daily_reports", force: :cascade do |t|
     t.date     "day"
@@ -103,6 +111,16 @@ ActiveRecord::Schema.define(version: 20150913204915) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "sharing_node_id"
+  end
+
+  create_table "line_items", force: :cascade do |t|
+    t.integer  "order_id"
+    t.integer  "cart_id"
+    t.integer  "product_id"
+    t.integer  "seller_id"
+    t.integer  "quantity"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "mobile_captchas", force: :cascade do |t|
@@ -381,10 +399,8 @@ ActiveRecord::Schema.define(version: 20150913204915) do
     t.integer  "agent_id"
     t.integer  "authenticated",          default: 0
     t.integer  "agent_code"
-    t.string   "authentication_token"
   end
 
-  add_index "users", ["authentication_token"], name: "index_users_on_authentication_token", using: :btree
   add_index "users", ["login"], name: "index_users_on_login", unique: true, using: :btree
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
 
@@ -407,6 +423,11 @@ ActiveRecord::Schema.define(version: 20150913204915) do
   add_index "withdraw_records", ["number"], name: "index_withdraw_records_on_number", unique: true, using: :btree
 
   add_foreign_key "bank_cards", "users"
+  add_foreign_key "carts", "users"
+  add_foreign_key "line_items", "carts"
+  add_foreign_key "line_items", "orders"
+  add_foreign_key "line_items", "products"
+  add_foreign_key "line_items", "users", column: "seller_id"
   add_foreign_key "order_charges", "orders"
   add_foreign_key "order_items", "orders"
   add_foreign_key "order_items", "products"
