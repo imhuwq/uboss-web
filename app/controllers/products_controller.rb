@@ -11,6 +11,7 @@ class ProductsController < ApplicationController
     render layout: 'mobile'
   end
 
+  # TODO remove old show page
   def refact
     invoke_product_showing_info
     #render layout: 'mobile'
