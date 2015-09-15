@@ -1,5 +1,6 @@
 zh-CN:
   attributes: &attributes
+    store_short_description: 店铺简介
     captcha: 验证码
     image_captcha: 图片验证码
     mobile_captcha: 手机验证码

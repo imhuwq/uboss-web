@@ -11,6 +11,7 @@ class Ability
           grant_method = "grant_permissions_to_#{role.name}"
           __send__ grant_method, user
         end
+        grant_general_permission user
       rescue NoMethodError
         no_permissions
       end
@@ -24,12 +25,19 @@ class Ability
     cannot :manage, :all
   end
 
+  def grant_general_permission(user)
+    can :read, User, id: user.id
+    can :update, User, id: user.id
+    can :manage, BankCard, user_id: user.id
+  end
+
   def grant_permissions_to_super_admin user
     can :manage, :all
     cannot :edit, Product
     cannot :create, Product
     cannot :update, Product
     cannot :change_status, Product
+    cannot :manage, BankCard
   end
 
   def grant_permissions_to_seller user
@@ -45,7 +53,6 @@ class Ability
     can :read, DivideIncome, user_id: user.id
     can :read, DivideIncome, order: { seller_id: user.id }
     can :read, SellingIncome, user_id: user.id
-    can :manage, BankCard, user_id: user.id
   end
 
   def grant_permissions_to_agent user
@@ -58,7 +65,6 @@ class Ability
     can :read,   WithdrawRecord, user_id: user.id
     can :create, WithdrawRecord, user_id: user.id
     can :read, :sellers
-    can :manage, BankCard, user_id: user.id
   end
 
 end

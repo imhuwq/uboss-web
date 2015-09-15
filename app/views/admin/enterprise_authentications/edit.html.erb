@@ -15,6 +15,7 @@
 	<br />
 	<h3 cclass="page-title">编辑企业认证</h3>
 	<%= horizon_form_for @enterprise_authentication, url: {:action=>:update}, method: 'PATCH' do |f| %>
+
 	  <%= render 'fields', f: f %>
 
     <br />
@@ -23,5 +24,4 @@
 	    <%= f.submit '提交', class: 'btn btn-large red-btn' %>
 	  </div>
 	<% end %>
-</div>>
-
+</div>

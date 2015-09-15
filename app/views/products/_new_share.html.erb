@@ -1,0 +1,33 @@
+<div class="share-container">
+  <div id="close-area"></div>
+  <div class="share-content" id="share_buttons">
+    <% if @sharing_link_node.present? %>
+    <%= render partial: 'application/share_buttoms',
+      locals: { product: @product, node: @sharing_link_node } %>
+    <% else %>
+      <div class="page-title">留下手机号，现金礼品拿不停！</div>
+      <p><%= text_field_tag 'mobile[]','', type:"tel",placeholder:"手机号",id:"save_mobile_mobile",class:'input-block'%></p>
+
+      <p><%= link_to("我要分享", '###',class:"btn btn-large btn-block", id:"sharing_code") %></p>
+      <script>
+      $("body").on('click', '#sharing_code',function(e){
+        var mobile = $("#save_mobile_mobile").val()
+        var checkNum = /^(\+\d+-)?[1-9]{1}[0-9]{10}$/;
+        if (checkNum.test(mobile)) {
+          $.ajax({
+            url: '/products/save_mobile?id=<%= @product.id %>',
+            type: 'POST',
+            dataType: 'script',
+            data: {
+              mobile: mobile
+            },
+          })
+        };
+        if (!checkNum.test(mobile)) {
+          alert("手机格式不正确")
+        };
+      });
+      </script>
+    <% end %>
+  </div>
+</div>

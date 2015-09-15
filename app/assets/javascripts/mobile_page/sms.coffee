@@ -41,7 +41,7 @@ $ ->
     captcha_key = $('input[name=captcha_key]').val()
     sendBtn.addClass("disabled")
     $.ajax
-      url: '/mobile_captcha/send_with_captcha',
+      url: '/mobile_captchas/send_with_captcha',
       type: 'GET',
       data: {
         mobile: mobile
@@ -53,8 +53,14 @@ $ ->
       mobile_submit_time = 60
       timedown sendBtn
     .fail (xhr, textStatus) ->
+      console.log arguments
       sendBtn.removeClass("disabled")
-      alert JSON.parse(xhr.responseText).message
+      alert(
+        try
+          JSON.parse(xhr.responseText).message
+        catch error
+          '发送失败'
+      )
 
   timedown = (t) ->
     if mobile_submit_time == 0
@@ -97,4 +103,9 @@ $ ->
       timedown sendBtn
     .fail (xhr, textStatus) ->
       sendBtn.removeClass("disabled")
-      alert JSON.parse(xhr.responseText).message
+      alert(
+        try
+          JSON.parse(xhr.responseText).message
+        catch error
+          '发送失败'
+      )

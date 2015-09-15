@@ -16,7 +16,8 @@ class PrivilegeCard < ActiveRecord::Base
   end
 
   def returning_amount
-    product.share_amount_lv_1 - amount
+    result = product.share_amount_lv_1 - amount
+    result > 0 ? result : 0
   end
 
   def privilege_amount= total_amount
@@ -24,7 +25,8 @@ class PrivilegeCard < ActiveRecord::Base
   end
 
   def privilege_amount
-    amount + product.privilege_amount
+    result = amount + product.privilege_amount
+    result > product.share_amount_lv_1 ? product.share_amount_lv_1 : result
   end
 
   private
