@@ -151,6 +151,11 @@ zh-CN:
         carriage: 运费
         extend_item: 续件
         extend_carriage: 续费
+      carriage_template/different_areas:
+        first_item: 首件
+        carriage: 运费
+        extend_item: 续件
+        extend_carriage: 续费
       mobile_auth_code:
         code: 手机验证码
       user_address:

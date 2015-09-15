@@ -4,19 +4,16 @@
     <%= f.label :name %>
     <%= f.text_field :name, class: 'form-control no-border'%>
     <%= f.fields_for :different_areas do |p| %>
-      <%= p.select :state_id, State.all.collect { |p| [ p.name, p.id ] }, include_blank: true %>
+      <%= p.select :state_id, State.all.collect { |p| [ p.name, p.id ] }, {}, class: 'form-control input-lg' %>
+      <br>
       <%= p.label :first_item %>
-      <div class='list-group'>
-        <div class='list-group-item'>
-          <%= p.text_field :first_item %>
-        </div>
-      </div>
+      <%= p.number_field :first_item %>
       <%= p.label :carriage %>
-      <%= p.text_field :carriage %>
+      <%= p.number_field :carriage %>
       <%= p.label :extend_item %>
-      <%= p.text_field :extend_item %>
+      <%= p.number_field :extend_item %>
       <%= p.label :extend_carriage %>
-      <%= p.text_field :extend_carriage %>
+      <%= p.number_field :extend_carriage %>
       <%= p.link_to_remove '', class: 'remove pull-right fa fa-times-circle', tabIndex: '-1' %>
     <% end %>
     <br>
