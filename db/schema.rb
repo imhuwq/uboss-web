@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150914080555) do
+ActiveRecord::Schema.define(version: 20150915040123) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -231,29 +231,30 @@ ActiveRecord::Schema.define(version: 20150914080555) do
     t.integer  "user_id"
     t.string   "name"
     t.string   "code"
-    t.decimal  "original_price",     default: 0.0
-    t.decimal  "present_price",      default: 0.0
-    t.integer  "count",              default: 0
-    t.boolean  "buyer_pay",          default: true
-    t.decimal  "traffic_expense",    default: 0.0
+    t.decimal  "original_price",       default: 0.0
+    t.decimal  "present_price",        default: 0.0
+    t.integer  "count",                default: 0
+    t.boolean  "buyer_pay",            default: true
+    t.decimal  "traffic_expense",      default: 0.0
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "has_share_lv",       default: 3
-    t.decimal  "share_amount_total", default: 0.0
-    t.decimal  "share_amount_lv_1",  default: 0.0
-    t.decimal  "share_amount_lv_2",  default: 0.0
-    t.decimal  "share_amount_lv_3",  default: 0.0
-    t.decimal  "share_rate_lv_1",    default: 0.0
-    t.decimal  "share_rate_lv_2",    default: 0.0
-    t.decimal  "share_rate_lv_3",    default: 0.0
-    t.decimal  "share_rate_total",   default: 0.0
-    t.integer  "calculate_way",      default: 0
-    t.integer  "status",             default: 0
-    t.integer  "good_evaluation",    default: 0
-    t.integer  "normal_evaluation",  default: 0
-    t.integer  "bad_evaluation",     default: 0
-    t.decimal  "privilege_amount",   default: 0.0
+    t.integer  "has_share_lv",         default: 3
+    t.decimal  "share_amount_total",   default: 0.0
+    t.decimal  "share_amount_lv_1",    default: 0.0
+    t.decimal  "share_amount_lv_2",    default: 0.0
+    t.decimal  "share_amount_lv_3",    default: 0.0
+    t.decimal  "share_rate_lv_1",      default: 0.0
+    t.decimal  "share_rate_lv_2",      default: 0.0
+    t.decimal  "share_rate_lv_3",      default: 0.0
+    t.decimal  "share_rate_total",     default: 0.0
+    t.integer  "calculate_way",        default: 0
+    t.integer  "status",               default: 0
+    t.integer  "good_evaluation",      default: 0
+    t.integer  "normal_evaluation",    default: 0
+    t.integer  "bad_evaluation",       default: 0
+    t.decimal  "privilege_amount",     default: 0.0
     t.string   "short_description"
+    t.integer  "carriage_template_id"
   end
 
   create_table "redactor_assets", force: :cascade do |t|

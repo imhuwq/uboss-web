@@ -1,6 +1,8 @@
 class CarriageTemplate < ActiveRecord::Base
   MIN_SECTION_SIZE = 1
   has_many :different_areas
+  has_many :product
+
   accepts_nested_attributes_for :different_areas, :allow_destroy => true
 
   validates :name, presence: true
