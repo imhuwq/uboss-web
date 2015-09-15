@@ -139,16 +139,12 @@ class AccountsController < ApplicationController
     end
   end
 
-  # Change action 'bind_agent' to 'bind_seller'
   def bind_seller # 创客绑定商家
-    invite_code = params[:bind_seller][:invite_code]
-    histroy = AgentInviteSellerHistroy.find_by(invite_code: invite_code, agent_id: current_user.id)
-    seller = User.find_by(login: histroy.mobile) if histroy
+    histroy = AgentInviteSellerHistroy.find_by(invite_code: params[:bind_seller][:invite_code], agent_id: current_user.id)
+    seller = (User.find_by(login: histroy.mobile) || User.create_guest(histroy.mobile)) if histroy
 
     if !histroy || histroy.expired?
-      flash[:error] = '邀请码错误或已过期。'
-    elsif !seller
-      flash[:error] = "找不到手机号为 #{histroy.mobile} 的帐户"
+      flash[:error] = '验证码错误或已过期。'
     elsif seller.agent.present?
       flash[:error] = '商家已与创客绑定'
     elsif histroy.agent_id != current_user.id
