@@ -4,12 +4,17 @@ class SharingNode < ActiveRecord::Base
 
   belongs_to :user
   belongs_to :product
+  belongs_to :seller
 
   validates :user_id, :product_id, presence: true
+  validates_presence_of :product_id, if: -> { self.seller_id.blank? }
+  validates_presence_of :seller_id,  if: -> { self.product_id.blank? }
 
-  # NOTE now using databse uniq index
+  # NOTE now using databse uniq index, do not remove this code
   # validates_uniqueness_of :user_id, scope: [:product_id, :parent_id]
   # validates_uniqueness_of :user_id, scope: [:product_id], if: -> { self.parent_id.blank? }
+  # validates_uniqueness_of :user_id, scope: [:seller_id], if: -> { self.seller_id.present? }
+
   # NOTE not now!
   # validate :limit_sharing_rate
 
@@ -45,7 +50,7 @@ class SharingNode < ActiveRecord::Base
   end
 
   def set_product
-    if parent_id.present?
+    if parent_id.present? && parent.product_id.present?
       self.product_id = parent.product_id
     end
   end
