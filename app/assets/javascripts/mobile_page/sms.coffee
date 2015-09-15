@@ -7,8 +7,8 @@ $ ->
     checkNum = /^(\+\d+-)?[1-9]{1}[0-9]{10}$/
     sendBtn.addClass("disabled")
     if checkNum.test(mobile)
-      mobile_submit_time = 60
       return false if mobile_submit_time != 0
+      mobile_submit_time = 60
       sendBtn.addClass("disabled")
       $.ajax
         url: '/mobile_captchas/create',
@@ -80,12 +80,12 @@ $ ->
     sendBtn = $(this)
     mobile = $('#new_mobile').val()
     checkNum = /^(\+\d+-)?[1-9]{1}[0-9]{10}$/
-    mobile_submit_time = 60
     if not checkNum.test(mobile)
       console.log mobile
       alert "手机格式错误"
       return false
     return false if mobile_submit_time != 0
+    mobile_submit_time = 60
     sendBtn.addClass("disabled")
     $.ajax
       url: '/account/send_message',
