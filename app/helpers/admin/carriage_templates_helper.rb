@@ -15,10 +15,10 @@ module Admin::CarriageTemplatesHelper
 
   def find_template_by_address(carriage_template, address)
     different_areas = carriage_template.different_areas
-    state = State.find_by_name(address)
-    other_state = State.find_by_name('其他')
+    province = Region.provinces.find_by_name(address)
+    other_province = Region.provinceh.find_by_name('其他')
 
-    area = different_areas.where(state_id: state.id).first
-    area = different_areas.where(state_id: other_state.id).first if area.blank?
+    area = different_areas.where(region_id: province.id).first
+    area = different_areas.where(region_id: other_province.id).first if area.blank?
   end
 end

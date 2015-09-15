@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150915040123) do
+ActiveRecord::Schema.define(version: 20150915075845) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -42,11 +42,6 @@ ActiveRecord::Schema.define(version: 20150915040123) do
     t.string   "url"
   end
 
-  create_table "attention_associations", force: :cascade do |t|
-    t.integer "user_id"
-    t.integer "following_id"
-  end
-
   create_table "bank_cards", force: :cascade do |t|
     t.integer  "user_id"
     t.string   "number"
@@ -58,13 +53,6 @@ ActiveRecord::Schema.define(version: 20150915040123) do
 
   create_table "carriage_templates", force: :cascade do |t|
     t.string   "name"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
-  create_table "cities", force: :cascade do |t|
-    t.string   "name"
-    t.integer  "numcode"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -90,20 +78,13 @@ ActiveRecord::Schema.define(version: 20150915040123) do
 
   create_table "different_areas", force: :cascade do |t|
     t.integer  "carriage_template_id"
-    t.integer  "state_id"
+    t.integer  "region_id"
     t.integer  "first_item"
     t.decimal  "carriage"
     t.integer  "extend_item"
     t.decimal  "extend_carriage"
     t.datetime "created_at",           null: false
     t.datetime "updated_at",           null: false
-  end
-
-  create_table "districts", force: :cascade do |t|
-    t.string   "name"
-    t.integer  "numcode"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
   end
 
   create_table "divide_incomes", force: :cascade do |t|
@@ -137,11 +118,6 @@ ActiveRecord::Schema.define(version: 20150915040123) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "sharing_node_id"
-  end
-
-  create_table "follower_associations", force: :cascade do |t|
-    t.integer "user_id"
-    t.integer "follower_id"
   end
 
   create_table "mobile_captchas", force: :cascade do |t|
@@ -274,6 +250,12 @@ ActiveRecord::Schema.define(version: 20150915040123) do
   add_index "redactor_assets", ["assetable_type", "assetable_id"], name: "idx_redactor_assetable", using: :btree
   add_index "redactor_assets", ["assetable_type", "type", "assetable_id"], name: "idx_redactor_assetable_type", using: :btree
 
+  create_table "regions", force: :cascade do |t|
+    t.string  "name"
+    t.string  "numcode"
+    t.integer "parent_id"
+  end
+
   create_table "selling_incomes", force: :cascade do |t|
     t.datetime "created_at",               null: false
     t.datetime "updated_at",               null: false
@@ -329,13 +311,6 @@ ActiveRecord::Schema.define(version: 20150915040123) do
   end
 
   add_index "simple_captcha_data", ["key"], name: "idx_key", using: :btree
-
-  create_table "states", force: :cascade do |t|
-    t.string   "name"
-    t.integer  "numcode"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
 
   create_table "transactions", force: :cascade do |t|
     t.integer  "user_id"
@@ -420,10 +395,8 @@ ActiveRecord::Schema.define(version: 20150915040123) do
     t.integer  "agent_id"
     t.integer  "authenticated",          default: 0
     t.integer  "agent_code"
-    t.string   "authentication_token"
   end
 
-  add_index "users", ["authentication_token"], name: "index_users_on_authentication_token", using: :btree
   add_index "users", ["login"], name: "index_users_on_login", unique: true, using: :btree
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
 

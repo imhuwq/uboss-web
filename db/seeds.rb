@@ -18,8 +18,16 @@ u1.user_roles = [super_role,agent_role,seller_role]
 u1.save
 
 ChinaCity.provinces.each do |name, code|
-  State.find_or_create_by(name: name, numcode: code)
+  province = Region.find_or_create_by(name: name, numcode: code)
+
+  ChinaCity.list(code).each do |city_name, city_code|
+    city = Region.find_or_create_by(name: city_name, numcode: city_code, parent_id: province.id )
+
+    ChinaCity.list(city_code).each do |area_name, area_code|
+      Region.find_or_create_by(name: city_name, numcode: city_code, parent_id: city.id )
+    end
+  end
 end
 
-State.find_or_create_by(name: '其他')
+Region.find_or_create_by(name: '其他')
 

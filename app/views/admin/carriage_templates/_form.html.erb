@@ -4,7 +4,7 @@
     <%= f.label :name %>
     <%= f.text_field :name, class: 'form-control no-border'%>
     <%= f.fields_for :different_areas do |p| %>
-      <%= p.select :state_id, State.all.collect { |p| [ p.name, p.id ] }, {}, class: 'form-control input-lg' %>
+      <%= p.select :region_id, Region.provinces.collect { |p| [ p.name, p.id ] }, {}, class: 'form-control input-lg' %>
       <br>
       <%= p.label :first_item %>
       <%= p.number_field :first_item %>
