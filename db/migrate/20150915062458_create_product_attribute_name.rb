@@ -1,6 +1,6 @@
-class CreateProductClassName < ActiveRecord::Migration
+class CreateProductAttributeName < ActiveRecord::Migration
   def change
-    create_table :product_class_names do |t|
+    create_table :product_attribute_names do |t|
       t.string  :attribute_name
       t.integer :parent_id
       t.timestamps null: false
