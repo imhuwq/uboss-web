@@ -19,6 +19,7 @@ class Admin::CarriageTemplatesController < AdminController
 
   def update
     if @carriage.update(carriage_template_params)
+      flash[:success] = '更新配送模板成功'
       redirect_to admin_carriage_templates_path
     else
       render :edit
@@ -28,6 +29,7 @@ class Admin::CarriageTemplatesController < AdminController
   def create
     @carriage = CarriageTemplate.new(carriage_template_params)
     if @carriage.save
+      flash[:success] = '创建配送模板成功'
       redirect_to admin_carriage_templates_path
     else
       render :new
