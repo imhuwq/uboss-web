@@ -47,9 +47,9 @@
         <hr />
         <%= hidden_field_tag "seller[agent_id]", @agent.try(:id) %>
         <div class="form-group string required enterprise_authentication_mobile" style="position:relative;">
-          <%= f.label :mobile, class:"string required col-sm-2 control-label" %>
-          <div class="clearfix col-sm-10">
-            <div style="float:left;width:100%;padding-right:120px;"><%= f.input_field :mobile , as: :tel, id:"new_mobile",class:"form-control", style:"width:100%;" %></div>
+          <%= f.label :mobile, class:"string required control-label" %>
+          <div class="clearfix">
+            <div style="float:left;width:100%;padding-right:140px;"><%= f.input_field :mobile , as: :tel, id:"new_mobile",class:"form-control", style:"width:100%;" %></div>
             <%= link_to '发送手机验证码', '###',class: "btn btn-danger",id:"send_mobile", style:"position:absolute;right:0;width:115px;margin-right:15px;font-size:smaller;" %>
           </div>
 
