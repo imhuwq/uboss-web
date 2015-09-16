@@ -2,6 +2,20 @@
   <%= @seller.store_identify %>
 <% end %>
 
+<%= content_for :extra_meta_tags do %>
+  <% if @seller %>
+    <%= store_sharing_meta_tags(@seller) %>
+  <% end %>
+<% end %>
+
+<% if browser.wechat? %>
+  <%= content_for :extra_javascript do %>
+    <script type="text/javascript" charset="utf-8">
+      wx.ready(function(){ UBoss.luffy.invokeSharing(); });
+    </script>
+  <% end %>
+<% end %>
+
 <div class="banner-slider">
   <div id='slider' class='swipe'>
     <div class='swipe-wrap'>
