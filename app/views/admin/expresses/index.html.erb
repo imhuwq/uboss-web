@@ -12,6 +12,11 @@
         <tr>
         <td><%= express.name %></td>
         <td><%= link_to '编辑', edit_admin_express_path(express), class: 'btn btn-primary' %></td>
+        <% if current_user.is_comman_express?(express) %>
+          <td><%= link_to '取消常用', cancel_common_admin_express_path(express) %></td>
+        <% else %>
+          <td><%= link_to '设为常用', set_common_admin_express_path(express), class: 'btn btn-primary' %></td>
+        <% end %>
       </tr>
     </tbody>
   </table>

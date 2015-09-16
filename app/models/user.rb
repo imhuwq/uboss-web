@@ -13,6 +13,7 @@ class User < ActiveRecord::Base
 
   mount_uploader :avatar, ImageUploader
 
+  has_and_belongs_to_many :expresses, uniq: true
   has_one :user_info, autosave: true
   has_many :transactions
   has_many :user_role_relations, dependent: :destroy
@@ -342,6 +343,10 @@ class User < ActiveRecord::Base
   def total_reputations
     @total_reputations ||= UserInfo.where(user_id: id).
       sum("good_evaluation + normal_evaluation + bad_evaluation")
+  end
+
+  def is_comman_express?(express)
+    self.expresses.exists?(express)
   end
 
   private
