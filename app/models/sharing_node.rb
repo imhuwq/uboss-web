@@ -45,6 +45,14 @@ class SharingNode < ActiveRecord::Base
     end
   end
 
+  def lastest_product_sharing_node selling_product
+    if product_id.present?
+      self
+    else
+      self.class.find_or_create_user_sharing_by_resource(user, selling_product)
+    end
+  end
+
   def privilege_amount
     privilege_card.present? ? privilege_card.privilege_amount : 0
   end

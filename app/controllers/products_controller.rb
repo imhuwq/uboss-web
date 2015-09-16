@@ -44,6 +44,11 @@ class ProductsController < ApplicationController
     if @scode = get_product_sharing_code(@product.id)
       @sharing_node = SharingNode.find_by(code: @scode)
       @privilege_card = @sharing_node.try(:privilege_card)
+    elsif @store_scode = get_seller_sharing_code(@seller.id)
+      sharing_node = SharingNode.find_by(code: @store_scode)
+      product_sharing_node = sharing_node.lastest_product_sharing_node(@product)
+      @sharing_node = (product_sharing_node || sharing_node)
+      @privilege_card = @sharing_node.try(:privilege_card)
     end
   end
 

@@ -4,7 +4,7 @@
 
 <%= content_for :extra_meta_tags do %>
   <% if @seller %>
-    <%= store_sharing_meta_tags(@seller) %>
+    <%= store_sharing_meta_tags(@seller, @sharing_link_node) %>
   <% end %>
 <% end %>
 
