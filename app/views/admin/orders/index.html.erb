@@ -39,7 +39,7 @@
 				<td>
 					<% if order.payed? && can?(:manage, order) %>
 			      <%= link_to '发货', [:ship, :admin, order],
-			        class: 'btn', method: :PATCH, data: { confirm: '确认发货?' } %>
+			        class: 'btn', remote: true %>
 			    <%- end%>
     		</td>
 			</tr>

@@ -87,7 +87,8 @@ Rails.application.routes.draw do
         end
       end
       resources :orders, except: [:destroy] do
-        patch :ship, on: :member
+        patch :set_express, on: :member
+        get :ship, on: :member
       end
       resources :sharing_incomes, only: [:index, :show, :update]
       resources :withdraw_records, only: [:index, :show, :new, :create] do

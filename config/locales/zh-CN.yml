@@ -112,6 +112,8 @@ zh-CN:
         address:                                 地址
         mobile:                                  手机号码
         mobile_auth_code:                        验证码
+      order:
+        ship_number: 运单号
       seller:
         <<: *attributes
   simple_captcha:

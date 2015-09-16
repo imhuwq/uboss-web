@@ -1,0 +1,32 @@
+<div class="modal fade" id="ship-express-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span class='close' aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">快递信息</h4>
+      </div>
+
+      <%= simple_form_for [:set_express, :admin, @order] do |f| %>
+        <div class="modal-body">
+          <div class='form-group'>
+            <%= select_tag 'express_name', options_from_collection_for_select(current_user.expresses, 'name', 'name'), class: 'form-control input-lg js-select2-express-tags', multiple: "multiple" %>
+          </div>
+          <%= f.input :ship_number %>
+        </div>
+
+        <div class="modal-footer">
+          <%= f.submit '确定', class: 'btn btn-info' %>
+          <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>
+
+<script>
+  $(".js-select2-express-tags").select2({
+    tags: true,
+    maximumSelectionLength: 1,
+    placeholder: "可输入其他快递公司名称, 按回车结束"
+  })
+</script>

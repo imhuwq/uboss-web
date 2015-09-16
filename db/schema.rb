@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150916041052) do
+ActiveRecord::Schema.define(version: 20150916071444) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -26,6 +26,13 @@ ActiveRecord::Schema.define(version: 20150916041052) do
     t.datetime "updated_at",              null: false
     t.string   "invite_code"
     t.datetime "expire_at"
+  end
+
+  create_table "areas", force: :cascade do |t|
+    t.string   "name"
+    t.integer  "numcode"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "asset_imgs", force: :cascade do |t|
@@ -59,6 +66,13 @@ ActiveRecord::Schema.define(version: 20150916041052) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "cities", force: :cascade do |t|
+    t.string   "name"
+    t.integer  "numcode"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "daily_reports", force: :cascade do |t|
     t.date     "day"
     t.decimal  "amount"
@@ -80,17 +94,13 @@ ActiveRecord::Schema.define(version: 20150916041052) do
 
   create_table "different_areas", force: :cascade do |t|
     t.integer  "carriage_template_id"
+    t.integer  "province_id"
     t.integer  "first_item"
     t.decimal  "carriage"
     t.integer  "extend_item"
     t.decimal  "extend_carriage"
     t.datetime "created_at",           null: false
     t.datetime "updated_at",           null: false
-  end
-
-  create_table "different_areas_regions", id: false, force: :cascade do |t|
-    t.integer "different_area_id"
-    t.integer "region_id"
   end
 
   create_table "divide_incomes", force: :cascade do |t|
@@ -194,6 +204,8 @@ ActiveRecord::Schema.define(version: 20150916041052) do
     t.datetime "signed_at"
     t.datetime "shiped_at"
     t.datetime "completed_at"
+    t.string   "ship_number"
+    t.integer  "express_id"
   end
 
   add_index "orders", ["number"], name: "index_orders_on_number", unique: true, using: :btree
@@ -247,8 +259,15 @@ ActiveRecord::Schema.define(version: 20150916041052) do
     t.integer  "bad_evaluation",       default: 0
     t.decimal  "privilege_amount",     default: 0.0
     t.string   "short_description"
-    t.integer  "carriage_template_id"
     t.boolean  "hot",                  default: false
+    t.integer  "carriage_template_id"
+  end
+
+  create_table "provinces", force: :cascade do |t|
+    t.string   "name"
+    t.integer  "numcode"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "redactor_assets", force: :cascade do |t|
@@ -267,12 +286,6 @@ ActiveRecord::Schema.define(version: 20150916041052) do
 
   add_index "redactor_assets", ["assetable_type", "assetable_id"], name: "idx_redactor_assetable", using: :btree
   add_index "redactor_assets", ["assetable_type", "type", "assetable_id"], name: "idx_redactor_assetable_type", using: :btree
-
-  create_table "regions", force: :cascade do |t|
-    t.string  "name"
-    t.string  "numcode"
-    t.integer "parent_id"
-  end
 
   create_table "selling_incomes", force: :cascade do |t|
     t.datetime "created_at",               null: false
@@ -420,8 +433,10 @@ ActiveRecord::Schema.define(version: 20150916041052) do
     t.integer  "agent_id"
     t.integer  "authenticated",          default: 0
     t.integer  "agent_code"
+    t.string   "authentication_token"
   end
 
+  add_index "users", ["authentication_token"], name: "index_users_on_authentication_token", using: :btree
   add_index "users", ["login"], name: "index_users_on_login", unique: true, using: :btree
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
 

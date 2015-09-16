@@ -8,7 +8,7 @@ class Admin::ExpressesController < AdminController
     if user.save
       flash[:success] = '设置成功'
     else
-      flash[:errors] = '设置失败'
+      flash[:error] = '设置失败'
     end
     redirect_to admin_expresses_path
   end
@@ -20,7 +20,7 @@ class Admin::ExpressesController < AdminController
     if user.save
       flash[:success] = '取消成功'
     else
-      flash[:errors] = '取消失败'
+      flash[:error] = '取消失败'
     end
     redirect_to admin_expresses_path
   end
