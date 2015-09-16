@@ -38,7 +38,8 @@ class ProductsController < ApplicationController
     @product = Product.published.find(params[:id])
     @seller = @product.user
     if current_user
-      @sharing_link_node ||= SharingNode.find_or_create_user_last_sharing_by_product(current_user, @product)
+      @sharing_link_node ||=
+        SharingNode.find_or_create_user_sharing_by_resource(current_user, @product)
     end
     if @scode = get_product_sharing_code(@product.id)
       @sharing_node = SharingNode.find_by(code: @scode)
