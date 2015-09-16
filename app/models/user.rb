@@ -13,6 +13,7 @@ class User < ActiveRecord::Base
 
   mount_uploader :avatar, ImageUploader
 
+  has_and_belongs_to_many :expresses, uniq: true
   has_one :user_info, autosave: true
   has_one :cart
   has_many :carriage_templates
@@ -365,6 +366,10 @@ class User < ActiveRecord::Base
 
   def unfavour_product(product)
     favour_products.where(product_id: product.id).delete_all
+  end
+
+  def is_comman_express?(express)
+    self.expresses.exists?(express)
   end
 
   private

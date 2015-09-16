@@ -121,7 +121,6 @@ ActiveRecord::Schema.define(version: 20150930064500) do
 
   create_table "different_areas", force: :cascade do |t|
     t.integer  "carriage_template_id"
-    t.integer  "region_id"
     t.integer  "first_item"
     t.decimal  "carriage"
     t.integer  "extend_item"
@@ -191,6 +190,11 @@ ActiveRecord::Schema.define(version: 20150930064500) do
   create_table "follower_associations", force: :cascade do |t|
     t.integer "user_id"
     t.integer "follower_id"
+  end
+
+  create_table "expresses_users", id: false, force: :cascade do |t|
+    t.integer "express_id"
+    t.integer "user_id"
   end
 
   create_table "mobile_captchas", force: :cascade do |t|
