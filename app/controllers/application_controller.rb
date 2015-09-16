@@ -118,6 +118,7 @@ class ApplicationController < ActionController::Base
 
   def find_cart
     cart = Cart.find_by(id: session[:cart_id]) || Cart.create
+    #cookies[:cart_id] = { value: cart.id, expires: 24.hour.from_now }
     session[:cart_id] = cart.id
     cart
   end
