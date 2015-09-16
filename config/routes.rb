@@ -73,6 +73,7 @@ Rails.application.routes.draw do
 
   authenticate :user, lambda { |user| user.admin? } do
     namespace :admin do
+      resources :expresses
       resources :products, except: [:destroy] do
         member do
           patch :change_status

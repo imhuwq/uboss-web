@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150913204915) do
+ActiveRecord::Schema.define(version: 20150915091244) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -53,6 +53,12 @@ ActiveRecord::Schema.define(version: 20150913204915) do
     t.string   "bankname"
   end
 
+  create_table "carriage_templates", force: :cascade do |t|
+    t.string   "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "daily_reports", force: :cascade do |t|
     t.date     "day"
     t.decimal  "amount"
@@ -70,6 +76,17 @@ ActiveRecord::Schema.define(version: 20150913204915) do
     t.integer "resource_id"
     t.string  "resource_type"
     t.text    "content"
+  end
+
+  create_table "different_areas", force: :cascade do |t|
+    t.integer  "carriage_template_id"
+    t.integer  "region_id"
+    t.integer  "first_item"
+    t.decimal  "carriage"
+    t.integer  "extend_item"
+    t.decimal  "extend_carriage"
+    t.datetime "created_at",           null: false
+    t.datetime "updated_at",           null: false
   end
 
   create_table "divide_incomes", force: :cascade do |t|
@@ -103,6 +120,12 @@ ActiveRecord::Schema.define(version: 20150913204915) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "sharing_node_id"
+  end
+
+  create_table "expresses", force: :cascade do |t|
+    t.string   "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "mobile_captchas", force: :cascade do |t|
@@ -192,30 +215,31 @@ ActiveRecord::Schema.define(version: 20150913204915) do
     t.integer  "user_id"
     t.string   "name"
     t.string   "code"
-    t.decimal  "original_price",     default: 0.0
-    t.decimal  "present_price",      default: 0.0
-    t.integer  "count",              default: 0
-    t.boolean  "buyer_pay",          default: true
-    t.decimal  "traffic_expense",    default: 0.0
+    t.decimal  "original_price",       default: 0.0
+    t.decimal  "present_price",        default: 0.0
+    t.integer  "count",                default: 0
+    t.boolean  "buyer_pay",            default: true
+    t.decimal  "traffic_expense",      default: 0.0
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "has_share_lv",       default: 3
-    t.decimal  "share_amount_total", default: 0.0
-    t.decimal  "share_amount_lv_1",  default: 0.0
-    t.decimal  "share_amount_lv_2",  default: 0.0
-    t.decimal  "share_amount_lv_3",  default: 0.0
-    t.decimal  "share_rate_lv_1",    default: 0.0
-    t.decimal  "share_rate_lv_2",    default: 0.0
-    t.decimal  "share_rate_lv_3",    default: 0.0
-    t.decimal  "share_rate_total",   default: 0.0
-    t.integer  "calculate_way",      default: 0
-    t.integer  "status",             default: 0
-    t.integer  "good_evaluation",    default: 0
-    t.integer  "normal_evaluation",  default: 0
-    t.integer  "bad_evaluation",     default: 0
-    t.decimal  "privilege_amount",   default: 0.0
+    t.integer  "has_share_lv",         default: 3
+    t.decimal  "share_amount_total",   default: 0.0
+    t.decimal  "share_amount_lv_1",    default: 0.0
+    t.decimal  "share_amount_lv_2",    default: 0.0
+    t.decimal  "share_amount_lv_3",    default: 0.0
+    t.decimal  "share_rate_lv_1",      default: 0.0
+    t.decimal  "share_rate_lv_2",      default: 0.0
+    t.decimal  "share_rate_lv_3",      default: 0.0
+    t.decimal  "share_rate_total",     default: 0.0
+    t.integer  "calculate_way",        default: 0
+    t.integer  "status",               default: 0
+    t.integer  "good_evaluation",      default: 0
+    t.integer  "normal_evaluation",    default: 0
+    t.integer  "bad_evaluation",       default: 0
+    t.decimal  "privilege_amount",     default: 0.0
     t.string   "short_description"
-    t.boolean  "hot",                default: false
+    t.integer  "carriage_template_id"
+    t.boolean  "hot",                  default: false
   end
 
   create_table "redactor_assets", force: :cascade do |t|
@@ -234,6 +258,12 @@ ActiveRecord::Schema.define(version: 20150913204915) do
 
   add_index "redactor_assets", ["assetable_type", "assetable_id"], name: "idx_redactor_assetable", using: :btree
   add_index "redactor_assets", ["assetable_type", "type", "assetable_id"], name: "idx_redactor_assetable_type", using: :btree
+
+  create_table "regions", force: :cascade do |t|
+    t.string  "name"
+    t.string  "numcode"
+    t.integer "parent_id"
+  end
 
   create_table "selling_incomes", force: :cascade do |t|
     t.datetime "created_at",               null: false
@@ -381,10 +411,8 @@ ActiveRecord::Schema.define(version: 20150913204915) do
     t.integer  "agent_id"
     t.integer  "authenticated",          default: 0
     t.integer  "agent_code"
-    t.string   "authentication_token"
   end
 
-  add_index "users", ["authentication_token"], name: "index_users_on_authentication_token", using: :btree
   add_index "users", ["login"], name: "index_users_on_login", unique: true, using: :btree
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
 
