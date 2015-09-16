@@ -13,12 +13,11 @@ module Admin::CarriageTemplatesHelper
     first_count * template.carriage + extend_count * template.extend_carriage
   end
 
+  #address is provinces name
   def find_template_by_address(carriage_template, address)
     different_areas = carriage_template.different_areas
-    province = Region.provinces.find_by_name(address)
-    other_province = Region.provinceh.find_by_name('其他')
 
-    area = different_areas.where(region_id: province.id).first
-    area = different_areas.where(region_id: other_province.id).first if area.blank?
+    area = different_areas.joins(:regions).where(regions: {name: address}).first
+    area = different_areas.joins(:regions).where(regions: {name: '其他'}).first if area.blank?
   end
 end

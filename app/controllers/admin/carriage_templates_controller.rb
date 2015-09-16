@@ -46,6 +46,6 @@ class Admin::CarriageTemplatesController < AdminController
   end
 
   def carriage_template_params
-    params.require(:carriage_template).permit(:name, different_areas_attributes: [:id, :region_id, :first_item, :carriage, :extend_item, :extend_carriage, :_destroy])
+    params.require(:carriage_template).permit(:name, different_areas_attributes: [:id, :first_item, :carriage, :extend_item, :extend_carriage, :_destroy, region_ids: [] ])
   end
 end

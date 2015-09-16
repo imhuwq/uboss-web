@@ -17,7 +17,7 @@
     <tbody>
       <% carriage.different_areas.each do |area| %>
         <tr>
-          <td><%= area.try(:name) %></td>
+          <td><%= area.regions.collect(&:name).join(',') %></td>
           <td><%= area.first_item %></td>
           <td><%= area.carriage %></td>
           <td><%= area.extend_item %></td>

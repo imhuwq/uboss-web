@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150915075845) do
+ActiveRecord::Schema.define(version: 20150916025129) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -20,10 +20,12 @@ ActiveRecord::Schema.define(version: 20150915075845) do
     t.string   "mobile"
     t.integer  "agent_id"
     t.integer  "seller_id"
-    t.integer  "status",     default: 0
+    t.integer  "status",      default: 0
     t.string   "note"
-    t.datetime "created_at",             null: false
-    t.datetime "updated_at",             null: false
+    t.datetime "created_at",              null: false
+    t.datetime "updated_at",              null: false
+    t.string   "invite_code"
+    t.datetime "expire_at"
   end
 
   create_table "asset_imgs", force: :cascade do |t|
@@ -78,13 +80,17 @@ ActiveRecord::Schema.define(version: 20150915075845) do
 
   create_table "different_areas", force: :cascade do |t|
     t.integer  "carriage_template_id"
-    t.integer  "region_id"
     t.integer  "first_item"
     t.decimal  "carriage"
     t.integer  "extend_item"
     t.decimal  "extend_carriage"
     t.datetime "created_at",           null: false
     t.datetime "updated_at",           null: false
+  end
+
+  create_table "different_areas_regions", id: false, force: :cascade do |t|
+    t.integer "different_area_id"
+    t.integer "region_id"
   end
 
   create_table "divide_incomes", force: :cascade do |t|
@@ -118,6 +124,12 @@ ActiveRecord::Schema.define(version: 20150915075845) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "sharing_node_id"
+  end
+
+  create_table "expresses", force: :cascade do |t|
+    t.string   "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "mobile_captchas", force: :cascade do |t|
@@ -231,6 +243,7 @@ ActiveRecord::Schema.define(version: 20150915075845) do
     t.decimal  "privilege_amount",     default: 0.0
     t.string   "short_description"
     t.integer  "carriage_template_id"
+    t.boolean  "hot",                  default: false
   end
 
   create_table "redactor_assets", force: :cascade do |t|
@@ -340,20 +353,27 @@ ActiveRecord::Schema.define(version: 20150915075845) do
 
   create_table "user_infos", force: :cascade do |t|
     t.integer  "user_id"
-    t.decimal  "income",               default: 0.0
-    t.datetime "created_at",                         null: false
-    t.datetime "updated_at",                         null: false
-    t.decimal  "frozen_income",        default: 0.0
+    t.decimal  "income",                    default: 0.0
+    t.datetime "created_at",                              null: false
+    t.datetime "updated_at",                              null: false
+    t.decimal  "frozen_income",             default: 0.0
     t.integer  "sex"
     t.string   "city"
     t.string   "province"
     t.string   "country"
-    t.integer  "good_evaluation",      default: 0
-    t.integer  "normal_evaluation",    default: 0
-    t.integer  "bad_evaluation",       default: 0
+    t.integer  "good_evaluation",           default: 0
+    t.integer  "normal_evaluation",         default: 0
+    t.integer  "bad_evaluation",            default: 0
     t.string   "store_name"
-    t.integer  "service_rate",         default: 5
+    t.integer  "service_rate",              default: 5
     t.json     "service_rate_histroy"
+    t.string   "store_banner_one"
+    t.string   "store_banner_two"
+    t.string   "store_banner_thr"
+    t.string   "recommend_resource_one_id"
+    t.string   "recommend_resource_two_id"
+    t.string   "recommend_resource_thr_id"
+    t.string   "store_short_description"
   end
 
   add_index "user_infos", ["user_id"], name: "index_user_infos_on_user_id", unique: true, using: :btree

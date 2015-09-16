@@ -1,5 +1,6 @@
 class Region < ActiveRecord::Base
-  has_many :different_areas
+  has_and_belongs_to_many :different_areas
+
   scope :provinces, -> { where(parent_id: nil)}
 
   def parent

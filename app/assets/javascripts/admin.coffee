@@ -8,6 +8,7 @@
 #= require redactor-rails/plugins/imagemanager
 #= require redactor-rails/langs/zh_cn
 #= require chosen.jquery.min
+#= require select2.min
 #= require jquery-fileupload/basic
 #= require querystring
 #= require shared/upyun
