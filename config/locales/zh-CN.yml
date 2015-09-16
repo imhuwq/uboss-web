@@ -66,6 +66,8 @@ zh-CN:
     building: 详细地址
   simple_form:
     labels:
+      express:
+        name: 名称
       product: &product
         name: 产品名
         original_price: 原价

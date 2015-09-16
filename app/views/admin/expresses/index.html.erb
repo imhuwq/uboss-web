@@ -1,0 +1,18 @@
+<h3>快递公司管理</h3>
+<p><%= link_to '新增快递信息', new_admin_express_path, class: 'btn btn-primary' %></p>
+<% @expresses.each do |express| %>
+  <table>
+    <thead>
+      <tr>
+        <th>公司名称</th>
+        <th>操作</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+        <td><%= express.name %></td>
+        <td><%= link_to '编辑', edit_admin_express_path(express), class: 'btn btn-primary' %></td>
+      </tr>
+    </tbody>
+  </table>
+<% end %>

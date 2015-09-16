@@ -112,6 +112,13 @@ Rails.application.routes.draw do
 
       get '/select_carriage_template', to: 'products#select_carriage_template'
 
+      resources :expresses do
+        member do
+          get :set_common
+          get :cancel_common
+        end
+      end
+
       resources :products, except: [:destroy] do
         member do
           patch :change_status

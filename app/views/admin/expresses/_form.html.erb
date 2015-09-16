@@ -1,0 +1,7 @@
+<div class="inline-form text-center">
+  <%= simple_form_for [:admin, @express] do |f| %>
+    <%= f.input :name %>
+    <%= f.submit '提交', class: 'btn btn-large' %>
+    <%= link_to '取消', admin_expresses_path %>
+  <% end %>
+</div>

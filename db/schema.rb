@@ -121,6 +121,7 @@ ActiveRecord::Schema.define(version: 20150930064500) do
 
   create_table "different_areas", force: :cascade do |t|
     t.integer  "carriage_template_id"
+    t.integer  "region_id"
     t.integer  "first_item"
     t.decimal  "carriage"
     t.integer  "extend_item"
@@ -483,7 +484,6 @@ ActiveRecord::Schema.define(version: 20150930064500) do
     t.decimal  "privilege_rate",         default: 0.0
   end
 
-  add_index "users", ["authentication_token"], name: "index_users_on_authentication_token", using: :btree
   add_index "users", ["login"], name: "index_users_on_login", unique: true, using: :btree
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
 
