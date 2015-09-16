@@ -12,7 +12,10 @@
 	<body>
 	  <%= render 'layouts/admin_navbar' %>
 		<%= render 'layouts/flash_alert' %>
-		<%= yield %>
+    <div class='modal'></div>
+    <div class='content'>
+      <%= yield %>
+    </div>
 		<br />
 		<p class="text-center">copyright &copy; ULAIBER</p>
 

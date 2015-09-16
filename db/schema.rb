@@ -28,6 +28,13 @@ ActiveRecord::Schema.define(version: 20150930064500) do
     t.datetime "expire_at"
   end
 
+  create_table "areas", force: :cascade do |t|
+    t.string   "name"
+    t.integer  "numcode"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "asset_imgs", force: :cascade do |t|
     t.string   "filename"
     t.string   "avatar"
@@ -121,17 +128,13 @@ ActiveRecord::Schema.define(version: 20150930064500) do
 
   create_table "different_areas", force: :cascade do |t|
     t.integer  "carriage_template_id"
+    t.integer  "province_id"
     t.integer  "first_item"
     t.decimal  "carriage"
     t.integer  "extend_item"
     t.decimal  "extend_carriage"
     t.datetime "created_at",           null: false
     t.datetime "updated_at",           null: false
-  end
-
-  create_table "different_areas_regions", id: false, force: :cascade do |t|
-    t.integer "different_area_id"
-    t.integer "region_id"
   end
 
   create_table "divide_incomes", force: :cascade do |t|
@@ -256,6 +259,8 @@ ActiveRecord::Schema.define(version: 20150930064500) do
     t.datetime "completed_at"
     t.string   "to_seller"
     t.decimal  "ship_price",      default: 0.0
+    t.string   "ship_number"
+    t.integer  "express_id"
   end
 
   add_index "orders", ["number"], name: "index_orders_on_number", unique: true, using: :btree
@@ -313,6 +318,13 @@ ActiveRecord::Schema.define(version: 20150930064500) do
     t.integer  "transportation_way",   default: 0
   end
 
+  create_table "provinces", force: :cascade do |t|
+    t.string   "name"
+    t.integer  "numcode"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "redactor_assets", force: :cascade do |t|
     t.string   "data_file_name",               null: false
     t.string   "data_content_type"
@@ -329,12 +341,6 @@ ActiveRecord::Schema.define(version: 20150930064500) do
 
   add_index "redactor_assets", ["assetable_type", "assetable_id"], name: "idx_redactor_assetable", using: :btree
   add_index "redactor_assets", ["assetable_type", "type", "assetable_id"], name: "idx_redactor_assetable_type", using: :btree
-
-  create_table "regions", force: :cascade do |t|
-    t.string  "name"
-    t.string  "numcode"
-    t.integer "parent_id"
-  end
 
   create_table "selling_incomes", force: :cascade do |t|
     t.datetime "created_at",               null: false
@@ -488,6 +494,7 @@ ActiveRecord::Schema.define(version: 20150930064500) do
     t.decimal  "privilege_rate",         default: 0.0
   end
 
+  add_index "users", ["authentication_token"], name: "index_users_on_authentication_token", using: :btree
   add_index "users", ["login"], name: "index_users_on_login", unique: true, using: :btree
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
 

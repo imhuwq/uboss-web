@@ -2,7 +2,7 @@ class Admin::OrdersController < AdminController
   load_and_authorize_resource
 
   # TODO record use operations
-  after_action :record_operation, only: [:update, :ship]
+  after_action :record_operation, only: [:update]
 
   def index
     @orders = append_default_filter @orders.recent
@@ -19,19 +19,23 @@ class Admin::OrdersController < AdminController
     @order.update(order_params)
   end
 
-  def ship
-    if @order.ship!
-      flash[:notice] = '发货成功'
-      redirect_to :back
+  def set_express
+    express = Express.find_or_create_by(name: express_params)
+    if @order.update(order_params.merge(express_id: express.id)) && @order.ship!
+      flash[:success] = '发货成功'
     else
-      flash[:notice] = '发货失败'
-      redirect_to :back
+      flash[:error] = '发货失败'
     end
+    redirect_to admin_orders_path
   end
 
   private
   def order_params
-    params.require(:order).permit(:mobile, :address)
+    params.require(:order).permit(:mobile, :address, :ship_number)
+  end
+
+  def express_params
+    params[:express_name]
   end
 
   def record_operation
