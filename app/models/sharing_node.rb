@@ -4,9 +4,9 @@ class SharingNode < ActiveRecord::Base
 
   belongs_to :user
   belongs_to :product
-  belongs_to :seller
+  belongs_to :seller, class_name: "User"
 
-  validates :user_id, :product_id, presence: true
+  validates :user_id, presence: true
   validates_presence_of :product_id, if: -> { self.seller_id.blank? }
   validates_presence_of :seller_id,  if: -> { self.product_id.blank? }
 
@@ -22,12 +22,30 @@ class SharingNode < ActiveRecord::Base
 
   delegate :amount, to: :privilege_card, prefix: :privilege, allow_nil: true
 
+  def self.find_or_create_user_last_sharing_by_seller(user, seller)
+    node = find_by(user: user, seller: seller)
+    if node.blank?
+      begin
+        node = create!(user_id: user.id, seller_id: seller_id)
+      rescue => e
+        send_exception_message(e, { user_id: user.id, seller_id: seller.id })
+        node = nil
+      end
+    end
+    node.present? ? node : nil
+  end
+
   def self.find_or_create_user_last_sharing_by_product(user, product)
     node = where(user: user, product: product).order('id DESC').last
     if node.blank?
-      node = create(user: user, product: product)
+      begin
+        node = create!(user: user, product_id: product_id)
+      rescue => e
+        send_exception_message(e, { user_id: user.id, seller_id: seller.id })
+        node = nil
+      end
     end
-    node.persisted? ? node : nil
+    node.present? ? node : nil
   end
 
   def privilege_amount

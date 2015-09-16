@@ -81,8 +81,24 @@ class ApplicationController < ActionController::Base
     cookies["sc_#{product_id}"]
   end
 
+  def get_seller_sharing_code(seller_id)
+    cookies["ssc_#{seller_id}"]
+  end
+
   def set_product_sharing_code(product_id, code)
     cookies["sc_#{product_id}"] = { value: code, expires: 24.hour.from_now }
+  end
+
+  def set_seller_sharing_code(seller_id, code)
+    cookies["ssc_#{seller_id}"] = { value: code, expires: 24.hour.from_now }
+  end
+
+  def set_sharing_code(sharing_node)
+    if sharing_node.product_id.present?
+      set_product_sharing_code(product_id, sharing_node.code)
+    else
+      set_seller_sharing_code(sharing_node.seller_id, sharing_node.code)
+    end
   end
 
   def login_layout

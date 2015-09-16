@@ -7,7 +7,9 @@ class StoresController < ApplicationController
   def show
     @products = append_default_filter @seller.products.published, order_column: :updated_at
     @hots = @seller.products.hots.recent.limit(3)
-
+    if current_user
+      @sharing_link_node ||= SharingNode.find_or_create_user_last_sharing_by_seller(current_user, @seller)
+    end
     render partial: 'product', collection: @products if request.xhr?
   end
 
