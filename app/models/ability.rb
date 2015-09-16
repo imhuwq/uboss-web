@@ -33,6 +33,7 @@ class Ability
 
   def grant_permissions_to_super_admin user
     can :manage, :all
+    cannot :set_common, Express
     cannot :edit, Product
     cannot :create, Product
     cannot :update, Product
@@ -53,6 +54,8 @@ class Ability
     can :read, DivideIncome, user_id: user.id
     can :read, DivideIncome, order: { seller_id: user.id }
     can :read, SellingIncome, user_id: user.id
+    can :read, Express
+    can :set_common, Express
   end
 
   def grant_permissions_to_agent user
@@ -65,6 +68,7 @@ class Ability
     can :read,   WithdrawRecord, user_id: user.id
     can :create, WithdrawRecord, user_id: user.id
     can :read, :sellers
+    can :read, Express
   end
 
 end
