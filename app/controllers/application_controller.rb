@@ -78,7 +78,7 @@ class ApplicationController < ActionController::Base
   end
 
   def get_product_or_store_sharing_code(product)
-    get_product_sharing_code(product.id) || get_seller_sharing_code(product.user_id)
+    get_seller_sharing_code(product.user_id) || get_product_sharing_code(product.id)
   end
 
   def get_product_sharing_code(product_id)
@@ -100,6 +100,8 @@ class ApplicationController < ActionController::Base
   def set_sharing_code(sharing_node)
     if sharing_node.product_id.present?
       set_product_sharing_code(sharing_node.product_id, sharing_node.code)
+      seller_sharing_node = sharing_node.lastest_seller_sharing_node(sharing_node.product.user)
+      set_seller_sharing_code(sharing_node.product.user_id, seller_sharing_node.code)
     else
       set_seller_sharing_code(sharing_node.seller_id, sharing_node.code)
     end
