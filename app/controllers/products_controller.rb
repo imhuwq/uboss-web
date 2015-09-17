@@ -18,11 +18,6 @@ class ProductsController < ApplicationController
   def no_found
   end
 
-  def refact
-    invoke_product_showing_info
-    #render layout: 'mobile'
-  end
-
   def save_mobile
     mobile = params[:mobile] rescue nil
     if mobile.present?
