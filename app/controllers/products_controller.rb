@@ -7,15 +7,20 @@ class ProductsController < ApplicationController
   end
 
   def show
-    invoke_product_showing_info
-    unless @product.present?
-      redirect_to action: :no_found
-      return
+    @product = Product.published.find_by_id(params[:id])
+    if @product.present?
+      @seller = @product.user
+      if current_user
+        @sharing_link_node ||= SharingNode.find_or_create_user_last_sharing_by_product(current_user, @product)
+      end
+      if @scode = get_product_sharing_code(@product.id)
+        @sharing_node = SharingNode.find_by(code: @scode)
+        @privilege_card = @sharing_node.try(:privilege_card)
+      end
+      render layout: 'mobile'
+    else
+      render action: :no_found, layout: 'mobile'
     end
-    render layout: 'mobile'
-  end
-
-  def no_found
   end
 
   def save_mobile
@@ -30,22 +35,6 @@ class ProductsController < ApplicationController
     respond_to do |format|
       format.html { render nothing: true }
       format.js
-    end
-  end
-
-  private
-
-  def invoke_product_showing_info
-    @product = Product.published.find_by_id(params[:id])
-    if @product.present?
-      @seller = @product.user
-      if current_user
-        @sharing_link_node ||= SharingNode.find_or_create_user_last_sharing_by_product(current_user, @product)
-      end
-      if @scode = get_product_sharing_code(@product.id)
-        @sharing_node = SharingNode.find_by(code: @scode)
-        @privilege_card = @sharing_node.try(:privilege_card)
-      end
     end
   end
 
