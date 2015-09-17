@@ -152,6 +152,7 @@ zh-CN:
         extend_item: 续件
         extend_carriage: 续费
       carriage_template/different_areas:
+        base: 地区
         first_item: 首件
         carriage: 运费
         extend_item: 续件

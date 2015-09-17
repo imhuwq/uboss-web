@@ -5,7 +5,7 @@ class CarriageTemplate < ActiveRecord::Base
 
   accepts_nested_attributes_for :different_areas, :allow_destroy => true
 
-  validates :name, presence: true
+  validates :name, presence: true, uniqueness: true
 
   validate do
     if self.different_areas.size < MIN_SECTION_SIZE
