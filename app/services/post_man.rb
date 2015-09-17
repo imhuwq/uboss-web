@@ -16,7 +16,7 @@ module PostMan extend self
     return result_message('内容不能为空',     false) if message_params.blank?
     message_params.merge!(company: '优巭UBOSS') if TPL_WITH_COMPLAY.include?(tpl_id.to_s)
 
-    result = if ENV['SMS_ENV'] == 'test'
+    result = if ENV['SMS_ENV'] == 'test' || Rails.env.test?
                { 'code' => 0 }
              else
                ChinaSMS.to(mobile, message_params, tpl_id: tpl_id)

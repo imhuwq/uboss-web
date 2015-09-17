@@ -381,8 +381,10 @@ ActiveRecord::Schema.define(version: 20150913204915) do
     t.integer  "agent_id"
     t.integer  "authenticated",          default: 0
     t.integer  "agent_code"
+    t.string   "authentication_token"
   end
 
+  add_index "users", ["authentication_token"], name: "index_users_on_authentication_token", using: :btree
   add_index "users", ["login"], name: "index_users_on_login", unique: true, using: :btree
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
 

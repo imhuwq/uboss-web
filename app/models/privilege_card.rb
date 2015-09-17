@@ -1,5 +1,7 @@
 class PrivilegeCard < ActiveRecord::Base
 
+  include Orderable
+
   belongs_to :user
   belongs_to :product
 
