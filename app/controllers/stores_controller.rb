@@ -24,7 +24,7 @@ class StoresController < ApplicationController
   def set_sharing_link_node
     if current_user.present?
       @sharing_link_node ||=
-        SharingNode.find_or_create_user_sharing_by_resource(current_user, @seller)
+        SharingNode.find_or_create_by_resource_and_parent(current_user, @seller)
     end
   end
 

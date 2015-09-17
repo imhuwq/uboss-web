@@ -6,6 +6,13 @@
   <%= sharing_meta_tags(@product, @sharing_link_node) %>
 <% end %>
 
+<p>
+<%= @sharing_node && @sharing_node.code %>
+</p>
+<p>
+<%= @sharing_link_node.code %>
+</p>
+
 <% if browser.wechat? %>
   <%= content_for :extra_javascript do %>
     <script type="text/javascript" charset="utf-8">

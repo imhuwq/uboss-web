@@ -23,15 +23,18 @@ class SharingNode < ActiveRecord::Base
   delegate :amount, to: :privilege_card, prefix: :privilege, allow_nil: true
 
   class << self
-    def find_or_create_user_sharing_by_resource(user, resource)
+    def find_or_create_by_resource_and_parent(user, resource, parent = nil)
       params = { user_id: user.id }
+      params.merge!(parent_id: parent.id) if parent.present? && resource.is_a?(Product)
+
       case resource.class.name
       when 'User'
         params.merge!(seller_id: resource.id)
       when 'Product'
         params.merge!(product_id: resource.id)
       end
-      node = where(params).order('id DESC').last
+
+      node = where(params).order('updated_at DESC').first
       if node.blank?
         begin
           node = create!(params)
@@ -39,27 +42,37 @@ class SharingNode < ActiveRecord::Base
           send_exception_message(e, params)
           node = nil
         end
+      else
+        node.touch
       end
+
       return nil if node.blank?
       node.persisted? ? node : nil
     end
   end
 
+  #
+  # 提供给从店铺节点打开的商品页面
+  # 页面根据此节点，寻找分享者的最新商品分享节点
+  #
   def lastest_product_sharing_node selling_product
     @lastest_product_sharing_node ||=
       if product_id.present?
         self
       else
-        self.class.find_or_create_user_sharing_by_resource(user, selling_product)
+        self.class.find_or_create_by_resource_and_parent(user, selling_product)
       end
   end
 
+  #
+  # 为店铺首页生成店铺分享节点
+  #
   def lastest_seller_sharing_node shared_seller
     @lastest_seller_sharing_node ||=
       if seller_id.present?
         self
       else
-        self.class.find_or_create_user_sharing_by_resource(user, shared_seller)
+        self.class.find_or_create_by_resource_and_parent(user, shared_seller)
       end
   end
 
