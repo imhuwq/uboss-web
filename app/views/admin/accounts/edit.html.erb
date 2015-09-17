@@ -1,62 +1,67 @@
-<h4>设置</h4>
-<hr />
+<div class="container admin-container">
+	<ul class="breadcrumb">
+		<li><a href="/admin">主页</a></li>
+		<li class="divider"><i class="fa fa-caret-right"></i></li>
+		<li class="active">设置</li>
+	</ul>
+</div><!-- container -->
+<br />
+<div class="container nogap">
 
 <%= horizon_form_for current_user, url: admin_account_path, method: :patch do |f| %>
 
-  <div class="well">
+	<div class="admin-box black-bg-color">
     <%= f.input :user_role, label: '当前角色' do %>
-      <h5>
         <% current_user.user_roles.each do |role| %>
           <span class='label label-info'><%= role.display_name %></span>
         <% end %>
-      </h5>
     <% end %>
 
     <%= f.input :agent, label: '绑定创客' do %>
-      <h5>
-        <% if current_user.agent.present? %>
-          <%= current_user.agent.identify %>
-        <% end %>
-        <% if current_user.check_bind_condition %>
-          <%= link_to "绑定创客", binding_agent_admin_account_path, class: 'btn btn-primary btn-xs' %>
-        <% end %>
-      </h5>
+      <% if current_user.agent.present? %>
+        <%= current_user.agent.identify %>
+      <% end %>
+      <% if current_user.check_bind_condition %>
+        <%= link_to "绑定创客", binding_agent_admin_account_path, class: 'btn' %>
+      <% end %>
     <% end %>
 
     <%= f.input :seller_role, label: '商家权限' do %>
       <% if f.object.authenticated? %>
-        <h5><span class="label label-success">已开通</span></h5>
+        <span class="label label-success">已开通</span>
       <% elsif f.object.is_seller? %>
-        <h5>
-          <span class="label label-warning">未认证</span>
-          <%= link_to "我要认证", admin_user_personal_authentication_path(current_user),
-            class: 'btn btn-primary btn-xs'
-          %>
-        </h5>
+        <%= link_to "我要认证", admin_user_personal_authentication_path(current_user),class: 'btn red-btn'%>
       <% else %>
-        <h5>
-          <span class="label label-info">未开通</span>
-          <%= link_to "我要开通", binding_agent_admin_account_path, class: 'btn btn-primary btn-xs' %>
-        </h5>
+        <%= link_to "我要开通", binding_agent_admin_account_path, class: 'btn red-btn' %>
       <% end %>
     <% end %>
 
     <%= f.input :service_rate, label: '当前平台费率' do %>
-      <h5><%= number_to_percentage(f.object.service_rate, precision: 0) %></h5>
+      <span><%= number_to_percentage(f.object.service_rate, precision: 0) %></span>
     <% end %>
-  </div>
+    </div>
+	<br />
+	<div class="admin-box black-bg-color">
+	    <%= f.input :avatar, hint: image_tag(current_user.avatar.url(:thumb))  %>
+	    <div class="form-group">
+	      	<label class="control-label">登录手机</label>
+	      	<div class="control-input">
+	      		<span><%= current_user.login %></span>
+	      	</div>
+	    </div>
+	    <%= f.input :nickname %>
+	    <% if current_user.is_agent? %>
+		    <div class="form-group">
+		      	<label class="control-label">创客邀请码</label>
+		      	<div class="control-input">
+		      		<span><%= current_user.agent_code %></span>
+		      	</div>
+		    </div>
+	    <% end %>
+    </div>
+<br />
+<p class="text-center"><%= f.submit '提交', class: 'btn btn-large' %></p>
 
-  <div class="well">
-    <%= f.input :avatar, hint: image_tag(current_user.avatar.url(:thumb))  %>
-    <%= f.input :login, disabled: true %>
-    <%= f.input :store_name %>
-    <%= f.input :nickname %>
-    <% if current_user.is_agent? %>
-      <%= f.input :agent_code, disabled: true %>
-    <% end %>
-  </div>
-
-  <div class="form-actions">
-    <%= f.submit '提交', class: 'btn btn-primary' %>
-  </div>
 <% end %>
+</div>
+

@@ -5,7 +5,7 @@ class Admin::OrdersController < AdminController
   after_action :record_operation, only: [:update, :ship]
 
   def index
-    @orders = @orders.recent.page(param_page)
+    @orders = append_default_filter @orders.recent
     @unship_amount = @orders.payed.total_count
     @today_selled_amount = @orders.today.selled.total_count
     @shiped_amount = @orders.shiped.total_count

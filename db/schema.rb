@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150818065929) do
+ActiveRecord::Schema.define(version: 20150915080208) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -20,10 +20,12 @@ ActiveRecord::Schema.define(version: 20150818065929) do
     t.string   "mobile"
     t.integer  "agent_id"
     t.integer  "seller_id"
-    t.integer  "status",     default: 0
+    t.integer  "status",      default: 0
     t.string   "note"
-    t.datetime "created_at",             null: false
-    t.datetime "updated_at",             null: false
+    t.datetime "created_at",              null: false
+    t.datetime "updated_at",              null: false
+    t.string   "invite_code"
+    t.datetime "expire_at"
   end
 
   create_table "asset_imgs", force: :cascade do |t|
@@ -103,13 +105,16 @@ ActiveRecord::Schema.define(version: 20150818065929) do
     t.integer  "sharing_node_id"
   end
 
-  create_table "mobile_auth_codes", force: :cascade do |t|
+  create_table "mobile_captchas", force: :cascade do |t|
     t.string   "code"
     t.datetime "expire_at"
     t.string   "mobile"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "captcha_type"
   end
+
+  add_index "mobile_captchas", ["mobile"], name: "index_mobile_captchas_on_mobile", using: :btree
 
   create_table "order_charges", force: :cascade do |t|
     t.integer  "order_id"
@@ -210,6 +215,7 @@ ActiveRecord::Schema.define(version: 20150818065929) do
     t.integer  "bad_evaluation",     default: 0
     t.decimal  "privilege_amount",   default: 0.0
     t.string   "short_description"
+    t.boolean  "hot",                default: false
   end
 
   create_table "redactor_assets", force: :cascade do |t|
@@ -267,6 +273,7 @@ ActiveRecord::Schema.define(version: 20150818065929) do
     t.integer  "rgt",        null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer  "seller_id"
   end
 
   add_index "sharing_nodes", ["code"], name: "index_sharing_nodes_on_code", unique: true, using: :btree
@@ -275,6 +282,7 @@ ActiveRecord::Schema.define(version: 20150818065929) do
   add_index "sharing_nodes", ["rgt"], name: "index_sharing_nodes_on_rgt", using: :btree
   add_index "sharing_nodes", ["user_id", "product_id", "parent_id"], name: "index_sharing_nodes_on_user_id_and_product_id_and_parent_id", unique: true, using: :btree
   add_index "sharing_nodes", ["user_id", "product_id"], name: "index_sharing_nodes_on_user_id_and_product_id", unique: true, where: "(parent_id IS NULL)", using: :btree
+  add_index "sharing_nodes", ["user_id", "seller_id"], name: "index_sharing_nodes_on_user_id_and_seller_id", unique: true, where: "(seller_id IS NOT NULL)", using: :btree
 
   create_table "simple_captcha_data", force: :cascade do |t|
     t.string   "key",        limit: 40
@@ -313,20 +321,27 @@ ActiveRecord::Schema.define(version: 20150818065929) do
 
   create_table "user_infos", force: :cascade do |t|
     t.integer  "user_id"
-    t.decimal  "income",               default: 0.0
-    t.datetime "created_at",                         null: false
-    t.datetime "updated_at",                         null: false
-    t.decimal  "frozen_income",        default: 0.0
+    t.decimal  "income",                    default: 0.0
+    t.datetime "created_at",                              null: false
+    t.datetime "updated_at",                              null: false
+    t.decimal  "frozen_income",             default: 0.0
     t.integer  "sex"
     t.string   "city"
     t.string   "province"
     t.string   "country"
-    t.integer  "good_evaluation",      default: 0
-    t.integer  "normal_evaluation",    default: 0
-    t.integer  "bad_evaluation",       default: 0
+    t.integer  "good_evaluation",           default: 0
+    t.integer  "normal_evaluation",         default: 0
+    t.integer  "bad_evaluation",            default: 0
     t.string   "store_name"
-    t.integer  "service_rate",         default: 5
+    t.integer  "service_rate",              default: 5
     t.json     "service_rate_histroy"
+    t.string   "store_banner_one"
+    t.string   "store_banner_two"
+    t.string   "store_banner_thr"
+    t.string   "recommend_resource_one_id"
+    t.string   "recommend_resource_two_id"
+    t.string   "recommend_resource_thr_id"
+    t.string   "store_short_description"
   end
 
   add_index "user_infos", ["user_id"], name: "index_user_infos_on_user_id", unique: true, using: :btree
@@ -368,8 +383,10 @@ ActiveRecord::Schema.define(version: 20150818065929) do
     t.integer  "agent_id"
     t.integer  "authenticated",          default: 0
     t.integer  "agent_code"
+    t.string   "authentication_token"
   end
 
+  add_index "users", ["authentication_token"], name: "index_users_on_authentication_token", using: :btree
   add_index "users", ["login"], name: "index_users_on_login", unique: true, using: :btree
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
 
@@ -408,6 +425,7 @@ ActiveRecord::Schema.define(version: 20150818065929) do
   add_foreign_key "sharing_incomes", "users"
   add_foreign_key "sharing_incomes", "users", column: "seller_id"
   add_foreign_key "sharing_nodes", "products", on_delete: :cascade
+  add_foreign_key "sharing_nodes", "users", column: "seller_id"
   add_foreign_key "sharing_nodes", "users", on_delete: :cascade
   add_foreign_key "transactions", "users"
   add_foreign_key "user_addresses", "users"

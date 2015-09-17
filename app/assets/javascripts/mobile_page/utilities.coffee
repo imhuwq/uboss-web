@@ -1,11 +1,11 @@
 $ ->
 
-  $('.share-wx-btn').on 'click', (e)->
+  $(document).on 'click', '.share-wx-btn', (e) ->
     e.preventDefault()
     if window.wx != undefined
       $(".wx-mod-pop").show()
     else
-      window.location.replace('#share_buttoms')
+      alert('朋友圈分享只在微信浏览器可用')
 
   $(".wx-mod-pop").on 'click', ->
     $(this).hide()
@@ -16,13 +16,14 @@ $ ->
       $(this).remove()
   , 5000
 
-  $(".alert").on "click", ->
+  $(document).on 'click', '.alert', ->
     $(this).closest('.flash_css').remove()
 
   disabledLoadMore = (e)->
     e.removeClass('loading')
     e.addClass('done')
     e.text('已无更多')
+    e.remove()
 
   waypointHandler = (direction) ->
     element = $(this.element)

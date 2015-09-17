@@ -1,0 +1,28 @@
+@import 'shared/application_variables';
+@import "mobile_page/reset";
+@import 'mobile_page/header';
+@import 'mobile_page/slider';
+@import 'mobile_page/index';
+@import 'mobile_page/layout';
+@import 'mobile_page/form';
+@import 'mobile_page/store';
+@import 'mobile_page/share';
+@import 'mobile_page/product-page';
+
+#load-more {
+  color: #fff;
+  padding: 8px;
+  text-align: center;
+  width: 200px;
+  margin: 5px auto;
+  border-radius: 0.2rem;
+  background-color: lighten(#43c3aa, 10%);
+  &.done {
+    background-color: lighten(#43c3aa, 20%);
+  }
+  &.loading {
+    background: image-url("ajax-loader.gif") no-repeat 50px;
+    background-size: 16px;
+    background-color: lighten(#43c3aa, 10%);
+  }
+}

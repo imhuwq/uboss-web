@@ -1,6 +1,14 @@
 module ProductsHelper
 
-  def product_sharing_link(product, sharing_node=nil)
+  def store_sharing_link(seller, sharing_node = nil)
+    if sharing_node.blank?
+      store_url(seller)
+    else
+      sharing_url(sharing_node)
+    end
+  end
+
+  def product_sharing_link(product, sharing_node = nil)
     if sharing_node.blank?
       product_url(product)
     else
@@ -22,5 +30,21 @@ module ProductsHelper
 
   def product_sharing_desc(product)
     "#{product.short_description}"
+  end
+
+  def store_good_rate(seller)
+    rate_data = seller.store_rates
+    total = store_total_rate(seller)
+    rate = if total > 0
+             rate_data['good'].to_i * 100 / total
+           else
+             100
+           end
+    number_to_percentage(rate, precision: 0)
+  end
+
+  def store_total_rate(seller)
+    rate_data = seller.store_rates
+    rate_data.inject(0) { |r, v| r += v[1].to_i }
   end
 end

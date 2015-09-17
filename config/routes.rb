@@ -2,7 +2,9 @@ require 'sidekiq/web'
 require 'okay_responder'
 
 Rails.application.routes.draw do
+
   mount OkayResponder.new, at: "__upyun_uploaded"
+  mount ChinaCity::Engine => '/china_city'
 
   devise_for :user, path: '/', controllers: {
     registrations: "users/registrations",
@@ -20,21 +22,26 @@ Rails.application.routes.draw do
   get 'service_centre_agent', to: 'home#service_centre_agent'
   get 'service_centre_tutorial', to: 'home#service_centre_tutorial'
   get 'about', to: 'home#about_us'
-
+  get 'lady', to: 'home#lady'
+  get 'maca', to: 'home#maca'
+  get 'snacks', to: 'home#snacks'
   get 'agreements/seller'
   get 'agreements/maker'
   get 'agreements/register'
 
-  post 'mobile_auth_code/create', to: 'mobile_auth_code#create'
-  get  'mobile_captcha/send_with_captcha', to: 'mobile_auth_code#send_with_captcha'
+  post 'mobile_captchas/create', to: 'mobile_captchas#create'
+  get  'mobile_captchas/send_with_captcha', to: 'mobile_captchas#send_with_captcha'
 
-  resources :stores, only: [:show]
+  resources :stores, only: [:show] do
+    get :hots, on: :member
+  end
   resources :orders, only: [:new, :create, :show] do
     get 'received', on: :member
     get 'pay_complete', on: :member
+    get 'cancel', on: :member
     resource :charge, only: [:create]
   end
-  resources :products do
+  resources :products, only: [:index, :show] do
     post :save_mobile, :democontent,  on: :collection
   end
   resources :evaluations do
@@ -47,8 +54,8 @@ Rails.application.routes.draw do
         :orders,           :binding_agent, :invite_seller,
         :edit_seller_histroy, :edit_seller_note, :seller_agreement,
         :merchant_confirm,    :binding_successed
-
-    put :bind_agent, :send_message, :update_histroy_note
+    post :send_message
+    put :bind_agent, :bind_seller, :update_histroy_note
     patch :merchant_confirm, to: 'accounts#merchant_confirmed'
     patch :password, to: 'accounts#update_password'
     resources :user_addresses, except: [:show]
@@ -62,11 +69,25 @@ Rails.application.routes.draw do
   resources :privilege_cards, only: [:show, :index, :update]
   resources :sellers, only: [:new, :create, :update]
 
+  namespace :api do
+    namespace :v1 do
+      post 'login', to: 'sessions#create'
+      resources :mobile_captchas, only: [:create]
+      resource :account, only: [] do
+        patch :update_password
+        get :orders, :privilege_cards
+      end
+    end
+  end
+
   authenticate :user, lambda { |user| user.admin? } do
     namespace :admin do
       resources :products, except: [:destroy] do
-        patch :change_status, on: :member
-        get :pre_view, on: :member
+        member do
+          patch :change_status
+          get :pre_view
+          patch :switch_hot_flag
+        end
       end
       resources :orders, except: [:destroy] do
         patch :ship, on: :member
@@ -90,12 +111,8 @@ Rails.application.routes.draw do
       end
       resources :agents, except: [:new, :edit, :update, :destroy] do
       end
-      resources :sellers, except: [:new, :edit, :update, :destroy] do
+      resources :sellers, only: [:index, :show, :edit, :update] do
         post :update_service_rate, on: :collection
-        get  :withdraw_records, on: :member
-        resources :income_reports, only: [:index, :show] do
-          get :details, on: :collection
-        end
       end
       resource :account, only: [:edit, :show, :update] do
         get :password, on: :member
@@ -104,8 +121,7 @@ Rails.application.routes.draw do
         patch :password, to: 'accounts#update_password'
       end
       resources :transactions, only: [:index]
-      resources :income_reports, only: [:index, :show]
-      resources :bank_cards, only: [:index, :show, :new, :create, :destroy]
+      resources :bank_cards, only: [:index, :new, :edit, :create, :update, :destroy]
 
       get '/data', to: 'data#index'
       get '/backend_status', to: 'dashboard#backend_status'

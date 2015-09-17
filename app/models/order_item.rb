@@ -5,7 +5,7 @@ class OrderItem < ActiveRecord::Base
   belongs_to :product
   belongs_to :sharing_node
   has_one    :evaluation
-  has_many :sharing_incomes
+  has_many   :sharing_incomes
 
   validates :product_id, presence: true
 
@@ -27,6 +27,7 @@ class OrderItem < ActiveRecord::Base
       parent_id: sharing_node_id
     )
   end
+  alias_method :generate_sharing_link_node, :sharing_link_node
 
   def create_privilege_card_if_none
     PrivilegeCard.find_or_create_by(user_id: user_id, product_id: product_id)
@@ -44,6 +45,10 @@ class OrderItem < ActiveRecord::Base
 
   def decrease_product_stock
     adjust_product_stock(-1)
+  end
+
+  def deal_price
+    present_price - privilege_amount
   end
 
   private
@@ -65,7 +70,7 @@ class OrderItem < ActiveRecord::Base
   end
 
   def set_pay_amount
-    self.pay_amount = (present_price - privilege_amount) * amount + product.traffic_expense
+    self.pay_amount = deal_price * amount + product.traffic_expense
   end
 
 

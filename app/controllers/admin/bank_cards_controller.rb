@@ -8,11 +8,23 @@ class Admin::BankCardsController < AdminController
   def new
   end
 
+  def edit
+  end
+
   def create
     if @bank_card.save
       redirect_to [:admin, :bank_cards], notice: '创建成功'
     else
       render :new
+    end
+  end
+
+  def update
+    if @bank_card.update(update_params)
+      redirect_to [:admin, :bank_cards], notice: '更新成功'
+      redirect_to [:admin, :bank_cards]
+    else
+      render :edit
     end
   end
 
@@ -27,5 +39,9 @@ class Admin::BankCardsController < AdminController
   private
   def create_params
     params.require(:bank_card).permit(:username, :bankname, :number)
+  end
+
+  def update_params
+    create_params
   end
 end

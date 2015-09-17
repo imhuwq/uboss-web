@@ -26,6 +26,21 @@
   <%= f.hidden_field :product_id %>
   <%= f.hidden_field :real_price %>
   <%= f.hidden_field :product_traffic_expense %>
+  <div id="addr">
+    <div class='addr_boxs new-order-addr-info  <%= displayable_class(@order_form.user_address.username.present?) %>'>
+        <%= f.hidden_field :user_address_id %>
+        <dl class="add_line1">
+          <dd>
+          <span>收货人：<b class='adr-user'><%= @order_form.user_address.username %></b></span>
+          <strong class='adr-mobile'><%= @order_form.user_address.mobile %></strong></dd>
+          <dd>
+          <span>收货地址：<b class='adr-detail'><%= @order_form.user_address %></b></span></dd>
+        </dl>
+    </div>
+    <% if !@order_form.user_address.username.present? %>
+    <a href="#" class="addr addr_boxs">收货地址</a>
+    <% end %>
+  </div>
 
 
   <div class="container">
@@ -54,7 +69,7 @@
         <p class="sub_p1 sub_p2">
         <span class="sub_leftl">合计（含运费￥<%= @product.traffic_expense %>）</span>
         <span class="sub_left">
-          <strong>￥</strong><b id="total_price"><%= @order_form.real_price + @product.traffic_expense  %></b>
+          <strong>￥</strong><b id="total_price"><%= @order_form.real_price + @product.traffic_expense %></b>
         </span>
         </p>
       </div>
@@ -84,23 +99,12 @@
 
   </div>
 
-  <div class='new-order-addr-info <%= displayable_class(@order_form.user_address.username.present?) %>'>
-    <%= f.hidden_field :user_address_id %>
-    <dl class="add_line1">
-      <dd>
-      <span>收货人：<b class='adr-user'><%= @order_form.user_address.username %></b></span>
-      <strong class='adr-mobile'><%= @order_form.user_address.mobile %></strong></dd>
-      <dd>
-      <span>收货地址：<b class='adr-detail'><%= @order_form.user_address %></b></span></dd>
-    </dl>
-  </div>
-
-  <div class="addr_boxs">
-    <a href="#" class="addr" id="addr">收货地址</a>
-  </div>
-
   <div class="accunt_adil_box3">
+    <% if @order_form.user_address.username.present?  %>
     <%= submit_tag '提交订单',class:"accunt_adilbtn", data: { disable_with: '提交订单中...' } %>
+    <% else %>
+    <%= submit_tag '提交订单',class:"accunt_adilbtn", data: { disable_with: '提交订单中...' } %>
+    <% end %>
   </div>
   <!--弹出层开始-->
   <div class="stable-dlg order-address-dlg" id="dlg" status="0">
@@ -135,10 +139,7 @@
                 <span>联系电话</span>
                 <%= f.input_field :deliver_mobile, placeholder: '手机或固话', type: :tel, class: 'add_text' %>
               </p>
-              <p>
-                <span>所在地区</span>
-                <%= f.input_field :street, class: 'add_text' %>
-              </p>
+              <%= render 'user_addresses/user_address', f: f  %>
               <p>
                 <span>详细地址</span>
                 <%= f.input_field :building, placeholder: '街道门牌信息', class: 'add_text' %>

@@ -1,7 +1,15 @@
 class OrdersController < ApplicationController
-
   before_action :authenticate_user!, except: [:new, :create]
-  before_action :find_order, only: [:show, :pay, :pay_complete, :received]
+  before_action :find_order, only: [:cancel, :show, :pay, :pay_complete, :received]
+
+  def cancel
+    if @order.may_close? && @order.close!
+      flash[:success] = '订单取消成功'
+    else
+      flash[:errors] = '订单取消失败'
+    end
+    redirect_to order_path(@order)
+  end
 
   def show
     @order_item = @order.order_items.first
@@ -29,9 +37,9 @@ class OrdersController < ApplicationController
     @order_form = OrderForm.new(
       buyer: current_user,
       product_id: params[:product_id],
-      sharing_code: get_product_sharing_code(params[:product_id])
     )
     @product = @order_form.product
+    @order_form.sharing_code = get_product_or_store_sharing_code(@product)
     if @product.is_official_agent? && current_user && current_user.is_agent?
       flash[:error] = "您已经是UBOSS创客，请勿重复购买"
       redirect_to root_path
@@ -49,7 +57,7 @@ class OrdersController < ApplicationController
         session: session
       )
     )
-    @order_form.sharing_code = get_product_sharing_code(@order_form.product_id)
+    @order_form.sharing_code = get_product_or_store_sharing_code(@order_form.product)
 
     if @order_form.save
       sign_in(@order_form.buyer) if current_user.blank?
@@ -58,6 +66,7 @@ class OrdersController < ApplicationController
     else
       @order_form.captcha = nil
       @product = @order_form.product
+      @user_address = @order_form.user_address
       flash.now[:error] = @order_form.errors.full_messages.join('<br/>')
       render :new
     end

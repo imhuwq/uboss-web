@@ -1,77 +1,101 @@
-<div class="row text-center">
-  <div class="col-xs-3"></div>
-  <div class="col-xs-2">
-    <div>今日入住商家</div>
-    <b style="font-size:3em;"><%= current_user.seller_today_joins.count %></b>
-  </div>
-  <div class="col-xs-2">
-    <div>待审核商家</div>
-    <b style="font-size:3em;"><%= current_user.seller_total_joins.group(:authenticated).count[0] %></b>
-  </div>
-  <div class="col-xs-2">
-    <div>总签约商家</div>
-    <b style="font-size:3em;"><%= current_user.seller_total_joins.count %></b>
-  </div>
+<div class="container  admin-container">
+	<ul class="breadcrumb">
+		<li><a href="/admin">主页</a></li>
+		<li class="divider"><i class="fa fa-caret-right"></i></li>
+		<li>商家</li>
+	</ul>
 </div>
-<hr/>
-<div class="row text-center bg-warning ">
-    <div class="col-xs-11 col-md-offset-1">
-      <div class="col-xs-12">
-        <div class="col-xs-3">
-          我的商家绑定链接:
-        </div>
-        <div class="col-xs-9">
-          <%= new_seller_url(agent_code: current_user.agent_code) %>
-        </div>
-      </div>
-      <div class="col-xs-12">
-        <div class="col-xs-3">
-          我的创客邀请码:
-        </div>
-        <div class="col-xs-9">
-          <%= current_user.find_or_create_agent_code %>
-        </div>
-      </div>
-    </div>
+<br />
+<div class="container nogap">
+	<div class="box-w80 nogap">
+	  <div class="box-w25">
+	  	<div class="admin-box main-bg-color">
+				<h4>今日入住商家</h4>
+				<h1 class="num"><%= current_user.seller_today_joins.count %></h1>
+			</div>
+			<br />
+	  </div><!-- box-w25 -->
+	  <div class="box-w25">
+	  	<div class="admin-box yellow-bg-color">
+				<h4>待审核商家</h4>
+				<h1 class="num"><%= current_user.seller_total_joins.unauthenticated_seller_identify.count %></h1>
+			</div>
+			<br />
+	  </div><!-- box-w25 -->
+	  <div class="box-w25">
+	  	<div class="admin-box red-bg-color">
+				<h4>总签约商家</h4>
+				<h1 class="num"><%= current_user.seller_total_joins.count %></h1>
+			</div>
+			<br />
+	  </div><!-- box-w25 -->
+	  <div class="box-w25">
+			<div class="admin-box blue-bg-color">
+				<h4>我的创客邀请码</h4>
+				<h1 class="num"><%= current_user.find_or_create_agent_code %></h1>
+			</div>
+			<br />
+		</div><!-- box-w25 -->
+		<div class="box-w100">
+			<div class="admin-box">
+				<h4>我的商家绑定链接:</h4>
+			  <div class="text"><%= new_seller_url(agent_code: current_user.agent_code) %></div>
+			</div>
+			<br />
+		</div><!-- box-w100 -->
+	</div> <!-- box-w80 -->
+	<div class="box-w20">
+		<div class="qrcode-box text-center">
+			<h4>商家绑定二维码</h4>
+			<img src="http://qr.liantu.com/api.php?&amp;text=<%= new_seller_url(agent_code: current_user.agent_code) %>"/>
+		</div>
+	</div>
 </div>
-<hr/>
-<div id="index_list">
-  <%= table_for(@sellers) do |t| %>
-    <%= t.cell :seller_name do |obj| %>
-      <%= link_to url_for(controller: 'admin/sellers', action: :show, id: obj) do %>
-      <div class="" style="width:370px;float:left;">
-        <div class="col-sm-3">
-          <%= image_tag(obj.avatar, size: "100x80", alt: "-") %>
-        </div>
-        <div class="col-sm-9"  style="padding-top:15px;">
-          <div class="col-sm-12">商家名称：<%= obj.identify %></div>
-          <div class="col-sm-12">绑定手机：<%= obj.login %></div>
-        </div>
-      </div>
-      <% end %>
-    <% end %>
-    <%= t.cell :sharer_good_reputation_rate do |obj| %>
-      <%= Evaluation.sharer_good_reputation_rate(obj) %>
-    <% end %>
-    <%= t.cell :created_at %>
-    <%= t.cell :service_rate do |obj| %>
-      <%= obj.user_info.try(:service_rate) %>%
-    <% end %>
-    <% if current_user.super_admin? %>
-      <%= t.cell :agent do |obj| %>
-        <% if obj.agent.present? %>
-          <%= link_to obj.agent.identify, url_for(controller: :agents, action: :show, id: obj.agent_id) %>
-        <% end %>
-      <% end %>
-    <% end %>
-    <%= t.cell :authenticated do |obj| %>
-      <% if obj.authenticated == 'no' %>
-        <span class='label label-danger'><%=  User::DATA_AUTHENTICATED[obj.authenticated] %></span>
-      <% else %>
-        <span class='label label-success'><%=  User::DATA_AUTHENTICATED[obj.authenticated] %></span>
-      <% end %>
 
-    <% end %>
-  <%- end %>
-  <%= paginate @sellers %>
-</div
+<div class="container">
+	<table class="list-table">
+		<thead>
+			<th>商家</th>
+			<th>好评率</th>
+			<th>提成比例</th>
+			<th>入驻时间</th>
+			<th>账号</th>
+			<% if current_user.is_super_admin? %>
+			<th>创客</th>
+			<% end %>
+			<th>状态</th>
+		</thead>
+		<% @sellers.each do |sellers| %>
+		<tr class="
+			<% if sellers.authenticated == 'no' %>
+				red-bg
+			<% end %>
+		">
+			<td class="text-left">
+				<%= link_to url_for(controller: 'admin/sellers', action: :show, id: sellers) do %>
+					<%= image_tag(sellers.avatar, size: "60x60", alt: "-") %>　
+					<%= sellers.identify %>
+				<% end %>
+			</td>
+			<td>
+				<%= Evaluation.sharer_good_reputation_rate(sellers) %>
+			</td>
+			<td><%= sellers.user_info.try(:service_rate) %></td>
+			<td><%= sellers.created_at %></td>
+			<td><%= sellers.login %></td>
+			<% if current_user.is_super_admin? %>
+        <td>
+          &nbsp;
+          <% if sellers.agent.present? %>
+            <%= link_to sellers.agent.identify, url_for(controller: :agents, action: :show, id: sellers.agent_id) %>
+          <% end %>
+          &nbsp;
+        </td>
+		    <% end %>
+			<td><%=  User::DATA_AUTHENTICATED[sellers.authenticated] %></td>
+		</tr>
+		<% end %>
+
+	</table>
+    <%= paginate @sellers %>
+</div>

@@ -17,7 +17,7 @@ class OrderForm
 
   validates :product_id, :amount, presence: true
   validates :mobile, presence: true, mobile: true, if: -> { self.buyer.blank? }
-  validates :deliver_mobile, :deliver_username, :street, presence: true, if: -> { self.user_address_id.blank? }
+  validates :deliver_mobile, :deliver_username, :province, :city, :area, presence: true, if: -> { self.user_address_id.blank? }
   validates :deliver_mobile, mobile: true, allow_blank: true
   validate  :captcha_must_be_valid, :mobile_blank_with_oauth, if: -> { self.buyer.blank? }
   validate  :check_amount
@@ -48,7 +48,12 @@ class OrderForm
   end
 
   def sharing_node
-    @sharing_node ||= SharingNode.find_by(code: self.sharing_code)
+    return @sharing_node if @sharing_node.present?
+    @sharing_node = SharingNode.find_by(code: self.sharing_code)
+    if @sharing_node.seller_id.present?
+      @sharing_node = @sharing_node.lastest_product_sharing_node(self.product)
+    end
+    @sharing_node
   end
 
   def real_price
@@ -128,7 +133,7 @@ class OrderForm
   end
 
   def captcha_must_be_valid
-    if !MobileAuthCode.auth_code(mobile, captcha)
+    if !MobileCaptcha.auth_code(mobile, captcha)
       errors.add(:captcha, :invalid)
     end
   end

@@ -31,6 +31,7 @@ class EnterpriseAuthentication < ActiveRecord::Base
     if user.authenticated == 'no'
       user.authenticated = 'yes'
       user.save
+      PostMan.send_sms(user.login, {name: user.identify}, 968403)
       aish = AgentInviteSellerHistroy.find_by(mobile: user.login)
       aish.update(status: 2) if aish.present? && user.agent_id == aish.agent_id
     end
@@ -42,8 +43,8 @@ class EnterpriseAuthentication < ActiveRecord::Base
       #DO_NOTHING
     else
       user.authenticated = 'no'
-      aish = AgentInviteSellerHistroy.find_by(mobile: user.login)
       user.save
+      PostMan.send_sms(user.login, {name: user.identify}, 968413)
       aish = AgentInviteSellerHistroy.find_by(mobile: user.login)
       if aish.present? && user.agent_id == aish.agent_id
         aish.update(status: 1)
