@@ -56,8 +56,14 @@ $ ->
       @btn_text = sendBtn.text()
       timedown sendBtn
     .fail (xhr, textStatus) ->
+      console.log arguments
       sendBtn.removeClass("disabled")
-      alert JSON.parse(xhr.responseText).message
+      alert(
+        try
+          JSON.parse(xhr.responseText).message
+        catch error
+          '发送失败'
+      )
 
   timedown = (t) ->
     if mobile_submit_time == 0
@@ -101,4 +107,9 @@ $ ->
       timedown sendBtn
     .fail (xhr, textStatus) ->
       sendBtn.removeClass("disabled")
-      alert JSON.parse(xhr.responseText).message
+      alert(
+        try
+          JSON.parse(xhr.responseText).message
+        catch error
+          '发送失败'
+      )
