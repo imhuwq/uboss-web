@@ -141,7 +141,7 @@ class AccountsController < ApplicationController
 
   def bind_seller # 创客绑定商家
     histroy = AgentInviteSellerHistroy.find_by(invite_code: params[:bind_seller][:invite_code], agent_id: current_user.id)
-    seller = (User.find_by(login: histroy.mobile) || User.create_guest(histroy.mobile)) if histroy
+    seller = User.find_by(login: histroy.mobile) if histroy
 
     if !histroy || histroy.expired?
       flash[:error] = '验证码错误或已过期。'
@@ -149,11 +149,14 @@ class AccountsController < ApplicationController
       flash[:error] = '商家已与创客绑定'
     elsif histroy.agent_id != current_user.id
       flash[:error] = '请先邀请商家后绑定'
-    elsif current_user.bind_seller(seller)
-      histroy.try(:update, status: 1)
-      flash[:success] = "绑定成功,#{seller.identify}成为您的商家。"
     else
-      flash[:error] = model_errors(current_user).join('<br/>')
+      seller ||= User.create_guest(histroy.mobile)
+      if current_user.bind_seller(seller)
+        histroy.try(:update, status: 1)
+        flash[:success] = "绑定成功,#{seller.identify}成为您的商家。"
+      else
+        flash[:error] = model_errors(current_user).join('<br/>')
+      end
     end
 
     redirect_to action: :invite_seller
