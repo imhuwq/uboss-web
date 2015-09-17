@@ -11,7 +11,7 @@
           <div class='form-group'>
             <%= select_tag 'express_name', options_from_collection_for_select(current_user.expresses, 'name', 'name'), class: 'form-control input-lg js-select2-express-tags', multiple: "multiple" %>
           </div>
-          <%= f.input :ship_number %>
+          <%= f.input :ship_number, required: true %>
         </div>
 
         <div class="modal-footer">
