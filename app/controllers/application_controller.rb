@@ -114,10 +114,14 @@ class ApplicationController < ActionController::Base
   helper_method :current_cart
   def current_cart
     @current_cart ||= find_cart
+    @current_cart = @current_cart.merge_user_cart(current_user) if current_user
+    @current_cart
   end
 
   def find_cart
-    cart = Cart.find_by(id: session[:cart_id]) || Cart.create
+    Cart.find(session[:cart_id])
+  rescue ActiveRecord::RecordNotFound
+    cart = Cart.create
     #cookies[:cart_id] = { value: cart.id, expires: 24.hour.from_now }
     session[:cart_id] = cart.id
     cart
