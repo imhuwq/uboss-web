@@ -1,29 +1,31 @@
-<h3>运费模板</h3>
-<%= link_to '新增模板', new_admin_carriage_template_path, class: 'btn btn-primary' %>
-<% @carriages.each do |carriage| %>
-  <h4><%= carriage.name %></h4>
-  <%= link_to '编辑模板', edit_admin_carriage_template_path(carriage), class: 'btn btn-primary' %>
-  <%= link_to '删除模板', admin_carriage_template_path(carriage), method: 'DELETE', data: {confirm: "确定删除模板 #{carriage.name} ?"}, class: 'btn btn-primary' %>
-  <table>
-    <thead>
-      <tr>
-        <th>可配送区域</th>
-        <th>首件(个)</th>
-        <th>运费(元)</th>
-        <th>续件(个)</th>
-        <th>续费(元)</th>
-      </tr>
-    </thead>
-    <tbody>
-      <% carriage.different_areas.each do |area| %>
+<div class='container'>
+  <h3>运费模板</h3>
+  <%= link_to '新增模板', new_admin_carriage_template_path, class: 'btn btn-primary' %>
+  <% @carriages.each do |carriage| %>
+    <h4><%= carriage.name %></h4>
+    <%= link_to '编辑模板', edit_admin_carriage_template_path(carriage), class: 'btn btn-primary' %>
+    <%= link_to '删除模板', admin_carriage_template_path(carriage), method: 'DELETE', data: {confirm: "确定删除模板 #{carriage.name} ?"}, class: 'btn btn-primary' %>
+    <table>
+      <thead>
         <tr>
-          <td><%= area.regions.collect(&:name).join(',') %></td>
-          <td><%= area.first_item %></td>
-          <td><%= area.carriage %></td>
-          <td><%= area.extend_item %></td>
-          <td><%= area.extend_carriage %></td>
+          <th>可配送区域</th>
+          <th>首件(个)</th>
+          <th>运费(元)</th>
+          <th>续件(个)</th>
+          <th>续费(元)</th>
         </tr>
-      <% end %>
-    </tbody>
-  </table>
-<% end %>
+      </thead>
+      <tbody>
+        <% carriage.different_areas.each do |area| %>
+          <tr>
+            <td><%= area.regions.collect(&:name).join(',') %></td>
+            <td><%= area.first_item %></td>
+            <td><%= area.carriage %></td>
+            <td><%= area.extend_item %></td>
+            <td><%= area.extend_carriage %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  <% end %>
+</div>

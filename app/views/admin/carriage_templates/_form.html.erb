@@ -1,4 +1,4 @@
-<div class="inline-form text-center">
+<div class="inline-form">
   <%= render partial: 'shared/form_error_message', locals: { obj: @carriage } %>
   <%= nested_form_for [:admin, @carriage] do |f| %>
     <%= f.label :name %>
