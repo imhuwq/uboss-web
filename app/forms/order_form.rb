@@ -17,7 +17,7 @@ class OrderForm
 
   validates :product_id, :amount, presence: true
   validates :mobile, presence: true, mobile: true, if: -> { self.buyer.blank? }
-  validates :deliver_mobile, :deliver_username, :street, presence: true, if: -> { self.user_address_id.blank? }
+  validates :deliver_mobile, :deliver_username, :province, :city, :area, presence: true, if: -> { self.user_address_id.blank? }
   validates :deliver_mobile, mobile: true, allow_blank: true
   validate  :captcha_must_be_valid, :mobile_blank_with_oauth, if: -> { self.buyer.blank? }
   validate  :check_amount

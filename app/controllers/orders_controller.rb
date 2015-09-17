@@ -66,6 +66,7 @@ class OrdersController < ApplicationController
     else
       @order_form.captcha = nil
       @product = @order_form.product
+      @user_address = @order_form.user_address
       flash.now[:error] = @order_form.errors.full_messages.join('<br/>')
       render :new
     end

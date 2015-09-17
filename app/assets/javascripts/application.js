@@ -12,6 +12,7 @@
 //= require mobile_page/sms
 //= require mobile_page/utilities
 //= require shared/login
+//= require shared/city_select
 //= require_self
 
 $(function() {
@@ -33,5 +34,5 @@ $(function() {
 });
 
 function close_window() {
-  $('#window').html('');
+  $('.share-container').remove();
 }

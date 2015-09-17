@@ -1,5 +1,6 @@
 <% if flash.any? %>
-  <div class="flash_css auto_close_flash_css">
+  <div class="flash_css <%= "auto_close_flash_css" unless flash[:error] || flash[:alert] %>">
+
     <div id="flash-messages">
       <% if flash[:success] %>
         <div class="alert alert-success">
@@ -10,18 +11,16 @@
       <% if flash[:info] || flash[:notice] %>
         <div class="alert alert-info">
           <a class="close" data-dismiss="alert">x</a>
-          <%== flash[:info] || flash[:notice] %>
+          <%= sanitize flash[:info] || flash[:notice] %>
         </div>
       <% end %>
 
+      <% if flash[:error] || flash[:alert] %>
+        <div class="alert alert-error">
+          <a class="close" data-dismiss="alert">x</a>
+          <%= sanitize flash[:error] || flash[:alert] %>
+        </div>
+      <% end %>
     </div>
-  </div>
-  <div class="flash_css">
-    <% if flash[:error] || flash[:alert] %>
-      <div class="alert alert-error">
-        <a class="close" data-dismiss="alert">x</a>
-        <%== flash[:error] || flash[:alert] %>
-      </div>
-    <% end %>
   </div>
 <% end %>

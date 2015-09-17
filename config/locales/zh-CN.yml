@@ -1,5 +1,6 @@
 zh-CN:
   attributes: &attributes
+    store_short_description: 店铺简介
     captcha: 验证码
     image_captcha: 图片验证码
     mobile_captcha: 手机验证码
@@ -37,7 +38,7 @@ zh-CN:
     login: 帐号
     email: 邮箱
     nickname: 昵称
-    avatar:  配图
+    avatar:  头像
     role_display_name: 角色
     password_confirmation: 密码确认
     mobile_auth_code:              验证码
@@ -56,6 +57,10 @@ zh-CN:
     deliver_mobile: 收货手机
     deliver_username: 收件人
     street: 详细地址
+    province:  省
+    country: 国家
+    city: 城市
+    area: 区/县
   simple_form:
     labels:
       product: &product
@@ -117,10 +122,10 @@ zh-CN:
     orders: 订单
     withdraw_records: 提现
   li_link:
-    dashboard: 首页
+    dashboard: 主页
     data: 数据
-    orders: 订单列表
-    sharing_incomes: 分享分成
+    orders: 订单
+    sharing_incomes: 分成
     withdraw_records: 提现
     bank_cards: 银行卡
     products: 商品

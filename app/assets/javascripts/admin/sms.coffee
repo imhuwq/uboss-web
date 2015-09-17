@@ -23,6 +23,7 @@ $ ->
       .fail ->
         mobile_submit_time = 0
         sendBtn.removeClass("disabled")
+        alert('发送失败')
     else
       console.log mobile
       alert "手机格式错误"
@@ -78,4 +79,7 @@ $ ->
     .fail (xhr, textStatus) ->
       mobile_submit_time = 0
       sendBtn.removeClass("disabled")
-      alert(xhr.responseJSON.message)
+      if xhr.responseJSON?
+        alert(xhr.responseJSON.message)
+      else
+        alert('发送失败')

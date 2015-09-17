@@ -1,5 +1,6 @@
 $ ->
   mobile_submit_time = 0
+  @btn_text = ''
   $('#send_mobile').on 'click', (e) ->
     e.preventDefault()
     sendBtn = $(this)
@@ -15,6 +16,7 @@ $ ->
         type: 'POST',
         data: {mobile: mobile},
       .done ->
+        @btn_text = $('#send_mobile').text()
         timedown $('#send_mobile')
       .fail ->
         mobile_submit_time = 0
@@ -42,7 +44,7 @@ $ ->
     captcha_key = $('input[name=captcha_key]').val()
     sendBtn.addClass("disabled")
     $.ajax
-      url: '/mobile_captcha/send_with_captcha',
+      url: '/mobile_captchas/send_with_captcha',
       type: 'GET',
       data: {
         mobile: mobile
@@ -52,15 +54,22 @@ $ ->
     .done ->
       $('#refresh_img_captcha_btn').click()
       mobile_submit_time = 60
+      @btn_text = sendBtn.text()
       timedown sendBtn
     .fail (xhr, textStatus) ->
+      console.log arguments
       sendBtn.removeClass("disabled")
-      alert JSON.parse(xhr.responseText).message
+      alert(
+        try
+          JSON.parse(xhr.responseText).message
+        catch error
+          '发送失败'
+      )
 
   timedown = (t) ->
     if mobile_submit_time == 0
       t.removeClass("disabled")
-      t.text("发送验证码")
+      t.text(@btn_text)
     else
       t.text("#{mobile_submit_time}s后重新获取")
       mobile_submit_time--
@@ -94,8 +103,14 @@ $ ->
         mobile: mobile
       },
     .done ->
+      @btn_text = sendBtn.text()
       timedown sendBtn
     .fail (xhr, textStatus) ->
       mobile_submit_time = 0
       sendBtn.removeClass("disabled")
-      alert JSON.parse(xhr.responseText).message
+      alert(
+        try
+          JSON.parse(xhr.responseText).message
+        catch error
+          '发送失败'
+      )

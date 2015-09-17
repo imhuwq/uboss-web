@@ -1,35 +1,27 @@
-<ol class="breadcrumb">
-  <li><%= link_to '账户', [:admin, :users] %></li>
-  <li class="active">账户详情</li>
-</ol>
-
-<h3>账户信息<small><%= @user.identify %></small></h3>
-<hr>
-<table class="table table-bordered table-hover table-striped">
-  <tbody>
-    <tr>
-      <th><%= User.human_attribute_name(:login) %></th>
-      <td><%= @user.login %></td>
-    </tr>
-    <tr>
-      <th><%= User.human_attribute_name(:mobile) %></th>
-      <td><%= @user.mobile %></td>
-    </tr>
-    <tr>
-      <th><%= User.human_attribute_name(:nickname) %></th>
-      <td><%= @user.nickname %></td>
-    </tr>
-    <tr>
-      <th><%= User.human_attribute_name(:role_display_name) %></th>
-      <td>
-        <% @user.user_roles.each do |role| %>
-          <span class='label label-info'><%= role.display_name %></span>
-        <% end %>
-      </td>
-    </tr>
-  </tbody>
-</table>
-
-<div class="block-actions">
-  <%= link_to '编辑', edit_admin_user_path(@user), class: 'btn btn-default' %>
+<div class="container admin-container">
+	<ul class="breadcrumb">
+		<li><a href="/admin">主页</a></li>
+		<li class="divider"><i class="fa fa-angle-right"></i></li>
+		<li><a href="/admin/users">后台账户</a></li>
+		<li class="divider"><i class="fa fa-caret-right"></i></li>
+		<li class="active">账户详情</li>
+	</ul>
+</div><!-- container -->
+<br />
+<div class="container">
+	<h3 class="page-title">账户详情<small class="pull-right">用户名：<%= @user.identify %></small></h3>
+	<div class="admin-box black-bg-color">
+		<p><%= User.human_attribute_name(:login) %>：<%= @user.login %></p>
+		<p><%= User.human_attribute_name(:mobile) %>：<%= @user.mobile %></p>
+		<p><%= User.human_attribute_name(:nickname) %>：<%= @user.nickname %></p>
+		<p>
+			<%= User.human_attribute_name(:role_display_name) %>：
+			<% @user.user_roles.each do |role| %>
+	      <span class='label label-info'><%= role.display_name %></span>
+	    <% end %>
+	  </p>
+	</div>	
+	<br />
+	<p class="text-center"><%= link_to '编辑', edit_admin_user_path(@user), class: 'btn btn-large' %></p>
 </div>
+

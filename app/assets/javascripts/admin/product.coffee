@@ -1,4 +1,10 @@
 $ ->
+  $(document).on 'ajax:success', '#products .switch-p-hot-btn', (e, data) ->
+    if data.hot
+      $(this).children('.fachange').removeClass('fa-heart-o').addClass('fa-heart red-color')
+    else
+      $(this).children('.fachange').removeClass('fa-heart red-color').addClass('fa-heart-o')
+
   $(document).on 'ajax:beforeSend', '#products .change-status-btn', (xhr, settings) ->
     return confirm("确定#{$(this).text()}?")
 
@@ -11,5 +17,5 @@ $ ->
     else
       $(this).closest('.product').remove()
 
-  $(document).on 'ajax:error', "#products .change-status-btn", ->
+  $(document).on 'ajax:error', "#products .change-status-btn, #products .switch-p-hot-btn", ->
     alert('操作失败')

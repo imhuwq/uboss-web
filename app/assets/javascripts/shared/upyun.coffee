@@ -38,7 +38,7 @@ $ ->
     fileName = data.originalFiles[0].name
     fieldName = $this.prop("name")
     unless button.hasClass('uploading')
-      buttonTxt.text('上传中...')
+
       $this.hide()
       button.addClass('uploading')
       data.submit().done (doc) ->
@@ -54,8 +54,8 @@ $ ->
           hiddenFile = formGroup.find('input.file[type=hidden]')
           [_, ..., fileName] = qs.url.split '/'
           hiddenFile.val(fileName)
-          formGroup.find('.help-block').html "<img src='#{ upyunBucketDomain }/#{ qs.url }-w320'></img>"
+          formGroup.find('.fileinput-button').html "<img src='#{ upyunBucketDomain }/#{ qs.url }-w320'></img>"
           form.data("waiting-upload", false)
-          buttonTxt.text('添加图片')
+
           button.removeClass('uploading')
           $this.show()

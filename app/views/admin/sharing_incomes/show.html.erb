@@ -1,20 +1,26 @@
-<ol class="breadcrumb">
-  <li><%= link_to '分成列表', [:admin, :sharing_incomes] %></li>
-  <li class="active">分成详情</li>
-</ol>
+<div class="container">
+	<ul class="breadcrumb">
+		<li>主页</li>
+		<li class="divider"><i class="fa fa-angle-right"></i></li>
+		<li><%= link_to '分成', [:admin, :sharing_incomes] %></li>
+		<li class="divider"><i class="fa fa-caret-right"></i></li>
+		<li class="active">分成详情</li>
+	</ul>
+</div><!-- container -->
+<br />
+<div class="container">
+	<h3 class="page-title">分成编号：<small><%= @sharing_income.number %></small></h3>
+	<div class="admin-box">
+		<div class="box-w50">
+			<p>交易时间：<%= @sharing_income.created_at %></p>
+			<p>来源订单总价：<%= @sharing_income.order.pay_amount %></p>
+			<p>分成类型：<%= t("l#{@sharing_income.level}", scope: 'enums.sharing_income.level') %></p>
+		</div>
+		<div class="box-w50">
+			<p>来源订单编号：<%= link_to @sharing_income.order.number, [:admin, @sharing_income.order] %></p>
+    	<p>分成收益：<%= @sharing_income.amount %></p>
+		</div>
+	</div>
+</div>
 
-<h4>分成编号：<small><%= @sharing_income.number %></small></h4>
 
-<hr />
-
-<div class='row'>
-  <div class='col-md-6'>
-    <div><b>交易时间：</b><%= @sharing_income.created_at %></div>
-    <div><b>来源订单总价：</b><%= @sharing_income.order.pay_amount %></div>
-    <div><b>分成类型：</b><%= t("l#{@sharing_income.level}", scope: 'enums.sharing_income.level') %></div>
-  </div>
-  <div class='col-md-6'>
-    <div><b>来源订单编号：</b><%= link_to @sharing_income.order.number, [:admin, @sharing_income.order] %></div>
-    <div><b>分成收益：</b><%= @sharing_income.amount %></div>
-  </div>
-</>
