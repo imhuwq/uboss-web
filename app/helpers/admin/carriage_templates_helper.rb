@@ -1,16 +1,15 @@
 module Admin::CarriageTemplatesHelper
 
-  def total_carriage(product, count, address)
-    template = find_template_by_address(product.carriage_template, address)
+  def total_carriage(product, count, province)
+    template = find_template_by_address(product.carriage_template, province)
     total = calculate_price(count, template)
   end
 
   def calculate_price(count, template)
     balance = count - template.first_item
-    first_count = balance > 0 ? template.first_item : count
     extend_count = balance > 0 ? balance : 0
 
-    first_count * template.carriage + extend_count * template.extend_carriage
+    template.carriage + extend_count * template.extend_carriage
   end
 
   #address is provinces name

@@ -55,6 +55,23 @@ class Order < ActiveRecord::Base
     end
   end
 
+  def calculate_ship_price
+    province = ChinaCity.get(self.user_address.province)
+    template = {}
+
+    self.order_items.each do |item|
+      t_id = item.product.carriage_template_id
+      template[t_id] ||= {}
+      template[t_id]['product'] = item.product
+      template[t_id]['count'] = template[t_id]['count'].to_i + item.amount
+    end
+
+    template.each do |tpl, values|
+      self.ship_price += total_carriage(values['product'], values['count'], province)
+    end
+    self.save!
+  end
+
   def order_charge
     super || build_order_charge
   end

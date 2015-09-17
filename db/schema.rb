@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150916025129) do
+ActiveRecord::Schema.define(version: 20150917070826) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -132,6 +132,11 @@ ActiveRecord::Schema.define(version: 20150916025129) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "expresses_users", id: false, force: :cascade do |t|
+    t.integer "express_id"
+    t.integer "user_id"
+  end
+
   create_table "mobile_captchas", force: :cascade do |t|
     t.string   "code"
     t.datetime "expire_at"
@@ -189,6 +194,9 @@ ActiveRecord::Schema.define(version: 20150916025129) do
     t.datetime "signed_at"
     t.datetime "shiped_at"
     t.datetime "completed_at"
+    t.string   "ship_number"
+    t.integer  "express_id"
+    t.string   "ship_price"
   end
 
   add_index "orders", ["number"], name: "index_orders_on_number", unique: true, using: :btree
@@ -242,8 +250,15 @@ ActiveRecord::Schema.define(version: 20150916025129) do
     t.integer  "bad_evaluation",       default: 0
     t.decimal  "privilege_amount",     default: 0.0
     t.string   "short_description"
-    t.integer  "carriage_template_id"
     t.boolean  "hot",                  default: false
+    t.integer  "carriage_template_id"
+  end
+
+  create_table "provinces", force: :cascade do |t|
+    t.string   "name"
+    t.integer  "numcode"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "redactor_assets", force: :cascade do |t|
@@ -415,8 +430,10 @@ ActiveRecord::Schema.define(version: 20150916025129) do
     t.integer  "agent_id"
     t.integer  "authenticated",          default: 0
     t.integer  "agent_code"
+    t.string   "authentication_token"
   end
 
+  add_index "users", ["authentication_token"], name: "index_users_on_authentication_token", using: :btree
   add_index "users", ["login"], name: "index_users_on_login", unique: true, using: :btree
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
 
