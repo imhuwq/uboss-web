@@ -125,13 +125,18 @@ class User < ActiveRecord::Base
 
   end
 
-  def bind_agent(binding_code)
+  # 默认绑定official agent
+  def bind_agent(binding_code = nil)
     agent_user = if binding_code.present?
                    User.agent.find_by(agent_code: binding_code)
                  else
                    User.official_account
                  end
 
+    if agent_user.blank?
+      errors.add(:agent_code, :invalid)
+      return false
+    end
     if self.check_bind_condition
       self.agent = agent_user
       self.admin = true
