@@ -41,7 +41,7 @@ Rails.application.routes.draw do
     get 'cancel', on: :member
     resource :charge, only: [:create]
   end
-  resources :products do
+  resources :products, only: [:index, :show] do
     member do
       get :refact
     end

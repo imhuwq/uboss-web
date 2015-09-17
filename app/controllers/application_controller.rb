@@ -40,12 +40,34 @@ class ApplicationController < ActionController::Base
     sign_in(User.first)
   end
 
+  def get_product_or_store_sharing_code(product)
+    get_seller_sharing_code(product.user_id) || get_product_sharing_code(product.id)
+  end
+
   def get_product_sharing_code(product_id)
     cookies["sc_#{product_id}"]
   end
 
+  def get_seller_sharing_code(seller_id)
+    cookies["ssc_#{seller_id}"]
+  end
+
   def set_product_sharing_code(product_id, code)
     cookies["sc_#{product_id}"] = { value: code, expires: 24.hour.from_now }
+  end
+
+  def set_seller_sharing_code(seller_id, code)
+    cookies["ssc_#{seller_id}"] = { value: code, expires: 24.hour.from_now }
+  end
+
+  def set_sharing_code(sharing_node)
+    if sharing_node.product_id.present?
+      set_product_sharing_code(sharing_node.product_id, sharing_node.code)
+      seller_sharing_node = sharing_node.lastest_seller_sharing_node(sharing_node.product.user)
+      set_seller_sharing_code(sharing_node.product.user_id, seller_sharing_node.code)
+    else
+      set_seller_sharing_code(sharing_node.seller_id, sharing_node.code)
+    end
   end
 
   def login_layout
