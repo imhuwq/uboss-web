@@ -1,7 +1,7 @@
 class ImageUploader < CarrierWave::Uploader::Base
 
   def default_url
-    '/t/noimage.gif'
+    Rails.application.secrets.blank_image_url
   end
 
   def store_dir

@@ -42,9 +42,6 @@ input[type=submit] {
   padding: 0;
   border-radius: 0;
 }
-.add_line1 {
-  padding: 10px 0;
-}
 .sub_btphon, .sub_yanzhcont {
   color: #000;
   -webkit-appearance: none;
@@ -63,7 +60,7 @@ input[type=submit] {
   text-align: left;
   font-weight: 500;
   position: initial;
-  height: 0px;
+  display: none;
   transition: height 0.5s ease-in-out;
   -webkit-transition: height 0.5s ease-in-out;
 }

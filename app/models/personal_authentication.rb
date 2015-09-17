@@ -1,9 +1,14 @@
 class PersonalAuthentication < ActiveRecord::Base
-  include AASM
 
+  include AASM
+  include Imagable
+
+  # FIXME 貌似没有地方用到
   attr_accessor :mobile_auth_code
   mount_uploader :face_with_identity_card_img, ImageUploader
   mount_uploader :identity_card_front_img, ImageUploader
+
+  compatible_with_form_api_images :face_with_identity_card_img, :identity_card_front_img
 
   validates :mobile, mobile: true
   validates_presence_of :name, :address, :mobile, :identity_card_code, :user_id
@@ -25,6 +30,7 @@ class PersonalAuthentication < ActiveRecord::Base
     if user.authenticated == 'no'
       user.authenticated = 'yes'
       user.save
+      PostMan.send_sms(user.login, {name: user.identify}, 968403)
       aish = AgentInviteSellerHistroy.find_by(mobile: user.login)
       aish.update(status: 2) if aish.present? && user.agent_id == aish.agent_id
     end
@@ -37,6 +43,7 @@ class PersonalAuthentication < ActiveRecord::Base
     else
       user.authenticated = 'no'
       user.save
+      PostMan.send_sms(user.login, {name: user.identify}, 968413)
       aish = AgentInviteSellerHistroy.find_by(mobile: user.login)
       if aish.present? && user.agent_id == aish.agent_id
         aish.update(status: 1)
@@ -46,16 +53,4 @@ class PersonalAuthentication < ActiveRecord::Base
     end
   end
 
-  def self.posted
-    PersonalAuthentication.where(status: 0)
-  end
-  def self.review
-    PersonalAuthentication.where(status: 1)
-  end
-  def self.pass
-    PersonalAuthentication.where(status: 2)
-  end
-  def self.no_pass
-    PersonalAuthentication.where(status: 3)
-  end
 end

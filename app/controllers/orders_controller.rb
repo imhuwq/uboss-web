@@ -1,7 +1,15 @@
 class OrdersController < ApplicationController
-
   before_action :authenticate_user!, except: [:new, :create]
-  before_action :find_order, only: [:show, :pay, :pay_complete, :received]
+  before_action :find_order, only: [:cancel, :show, :pay, :pay_complete, :received]
+
+  def cancel
+    if @order.may_close? && @order.close!
+      flash[:success] = '订单取消成功'
+    else
+      flash[:errors] = '订单取消失败'
+    end
+    redirect_to order_path(@order)
+  end
 
   def show
     @order_item = @order.order_items.first
@@ -58,6 +66,7 @@ class OrdersController < ApplicationController
     else
       @order_form.captcha = nil
       @product = @order_form.product
+      @user_address = @order_form.user_address
       flash.now[:error] = @order_form.errors.full_messages.join('<br/>')
       render :new
     end
@@ -90,7 +99,11 @@ class OrdersController < ApplicationController
   def available_pay?(order, product)
     order.unpay? &&
       browser.wechat? &&
-      (product.is_official_agent? && current_user && !current_user.is_agent?)
+      (product.is_official_agent? ? available_buy_official_agent? : true)
   end
   helper_method :available_pay?
+
+  def available_buy_official_agent?
+    current_user && !current_user.is_agent?
+  end
 end

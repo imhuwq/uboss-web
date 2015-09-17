@@ -1,40 +1,39 @@
 <%= content_for :page_title do %>
-  创客
+  我是创客
 <% end %>
 <div class="container add_listall" >
   <div class="add_inout">
-    <%= simple_form_for 'send_message', url: send_message_account_path, method: :put do |f| %>
     <div style="min-height:30px;padding-top:10px;">
-      <div style="position:absolute;width:90px;margin-left:0;float:left;padding:8px 0 0 10px;">商家手机号</div>
+      <div style="position:absolute;width:90px;margin-left:0;float:left;padding:8px 0 0 10px;">邀请商家</div>
       <div style="margin-left:90px;">
-        <%= f.input_field :mobile, type: :tel, placeholder: '商家手机号', class:"add_text", style:"width:90%;float:left;"  %>
+        <%= text_field_tag 'send_message[mobile]', '',type: :tel, placeholder: '商家手机号', class:"add_text", id:"new_mobile", style:"width:90%;float:left;"  %>
       </div>
     </div>
     <p style="padding-top:10px;padding-right:10px;">
-      <%= f.submit '发送', class:"accunt_adilbtn" %>
+      <%= link_to '发送绑定验证码给商家', '###',class:"accunt_adilbtn", id: "timedown" %>
     </p>
-    <% end %>
-      <div class="font_h4 text-center">
-        绑定数量
+
+    <%= simple_form_for 'bind_seller', url: bind_seller_account_path, method: :put do |f| %>
+      <div style="min-height:30px;padding-top:10px;">
+        <div style="position:absolute;width:90px;margin-left:0;float:left;padding:8px 0 0 10px;">绑定验证</div>
+        <div style="margin-left:90px;">
+          <%= f.input_field :invite_code, type: :tel, placeholder: '绑定商家', class:"add_text", style:"width:90%;float:left;"  %>
+        </div>
       </div>
-      <div class="font_h2 text-center">
-        <%= @bind %>
-      </div>
-    <% (@histroys || []).each do |obj| %>
-    <p class="clearfix" style="border-bottom:0;overflow:hidden;">
-      <span class=col-xs-6><%=  truncate (obj.note || obj.mobile),:length=>15,:omission=>'...'  %></span>
-      <span class="col-xs-2 text-right">
-        <%= obj.created_at.strftime('%m/%d') %>
-      </span>
-      <span class="col-xs-2 text-right">
-        <%= obj.status_i18n %>
-      </span>
-      <span class="col-xs-2 text-right">
-        <%= link_to edit_seller_note_account_path(id: obj.id) do %>
-        <%= image_tag("uboss_29/edit.png" ) %>
-        <% end %>
-      </span>
-    </p>
+      <p style="padding-top:10px;padding-right:10px;">
+      <%= f.submit '绑定商家', class:"accunt_adilbtn" %>
+      </p>
     <% end %>
+
+    <div class="font_h4 text-center">
+      绑定数量
+    </div>
+    <div class="font_h2 text-center">
+      <%= @bind %>
+    </div>
+    <div id="invite_seller_histroy">
+      <%= render partial: "invite_seller_histroy" %>
+    </div>
+
   </div>
 </div>

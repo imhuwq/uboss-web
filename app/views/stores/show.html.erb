@@ -1,0 +1,66 @@
+<%= content_for :page_title do %>
+  <%= @seller.store_identify %>
+<% end %>
+
+<div class="banner-slider">
+  <div id='slider' class='swipe'>
+    <div class='swipe-wrap'>
+      <% store_banner_data(@seller).each do |image, product| %>
+        <div>
+          <% if product.present? %>
+            <%= link_to product do %>
+              <%= image_tag image.url(:'640x320') %>
+            <% end %>
+          <% else %>
+            <%= image_tag image.url(:'640x320') %>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+  <div id='slider-points'>
+    <% store_banner_data(@seller).size.times do |index| %>
+      <span class="<%= 'active' if index == 0 %>">*</span>
+    <% end %>
+  </div>
+</div>
+
+<% if !@hide_hot_box && @hots.present? %>
+  <div class="store-like">
+    <div class="box border-box">
+      <div class="box-w100">
+        <div class="page-title like-color">热销商品</div>
+      </div>
+
+      <%= render partial: 'hot_product', collection: @hots, as: :product %>
+
+      <div class="box-w10">
+        <%= link_to hots_store_path(@seller) do %>
+          <%= image_tag 'mobile/arrow-right.png',class:'like-more' %>
+        <% end %>
+        <!-- 设置链接 -->
+      </div>
+    </div>
+  </div>
+<% end %>
+
+<div class="box store-list">
+	<div class="box-w100">
+    <% if @hide_hot_box %>
+      <div class="page-title like-color">热销商品</div>
+    <% else %>
+      <div class="page-title">全部商品</div>
+    <% end %>
+	</div>
+
+  <% if @products.present? %>
+    <%= render partial: 'product', collection: @products %>
+  <% else %>
+    <h3 class="page-title text-center">店家正在准备好货，敬请期待</h3>
+  <% end %>
+
+</div>
+
+<% if @products.size > 6 %>
+  <div id="load-more" data-container='.store-list' data-ele='.p-item' data-ref='<%= request.path %>'>加载更多</div>
+<% end %>

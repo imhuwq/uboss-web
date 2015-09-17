@@ -5,7 +5,13 @@
     border: none;
   }
 }
-
+.new-order-addr-info.addr_boxs {
+	background-color: rgba(255,255,255,1);
+	background-image: image-url("img/btn_r.png");
+	background-position:98%;
+	background-repeat: no-repeat;
+  background-size: 8px;
+}
 .pay-result {
   padding: 15px 0;
   text-align: center;

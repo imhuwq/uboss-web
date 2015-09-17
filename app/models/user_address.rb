@@ -3,11 +3,14 @@ class UserAddress < ActiveRecord::Base
 
   belongs_to :user
 
-  validates :username, :mobile, :street, presence: true
+  validates :username, :mobile, :building, :province, :city, presence: true
   validates :mobile, mobile: true
 
   def to_s
-    "#{province}#{city}#{area}#{street}#{building}"
+    @province = ChinaCity.get(province) rescue province
+    @city = ChinaCity.get(city) rescue city
+    @area = ChinaCity.get(area) rescue area
+    "#{@province}#{@city}#{@area}#{building}"
   end
 
 end

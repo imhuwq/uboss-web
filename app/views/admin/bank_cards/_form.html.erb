@@ -1,0 +1,9 @@
+<%= horizon_form_for [:admin, @bank_card] do |f| %>
+  <%= f.input :bankname %>
+  <%= f.input :username, hint: '持卡人姓名' %>
+  <%= f.input :number %>
+  <br />
+  <div class="text-center">
+    <%= f.submit class: 'btn btn-large' %>
+  </div>
+<% end %>

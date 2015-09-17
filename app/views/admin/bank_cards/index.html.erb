@@ -1,10 +1,34 @@
-<%= link_to "添加银行卡", new_admin_bank_card_path, class: 'btn btn-primary' %>
-<hr />
-<%= table_for @bank_cards do |t| %>
-  <%= t.cell :username %>
-  <%= t.cell :bankname %>
-  <%= t.cell :number %>
-  <%= t.cell :action do |bank_card| %>
-    <%= link_to "删除", [:admin, bank_card], method: :delete, data: {confirm: '确定删除?'}, class: 'text-danger' %>
+<div class="container">
+  <ul class="breadcrumb">
+    <li><a href="/admin">主页</a></li>
+    <li class="divider"><i class="fa fa-caret-right"></i></li>
+    <li>银行卡</li>
+  </ul>
+</div>
+
+<br />
+
+<div class="container">
+
+
+  <p>
+  <%= link_to "添加银行卡", new_admin_bank_card_path, class: 'btn btn-large' %>
+  </p>
+
+  <br />
+
+  <%= table_for @bank_cards do |t| %>
+    <%= t.cell :username %>
+    <%= t.cell :bankname %>
+    <%= t.cell :number %>
+    <%= t.cell :action do |bank_card| %>
+      <%= link_to [:edit, :admin, bank_card], title: "编辑", class: 'edit-icon' do %>
+        <i class="fa fa-pencil-square-o"></i>
+      <% end %>
+      <%= link_to [:admin, bank_card], method: :delete, title: "删除",
+        data: {confirm: '确定删除?'}, class: 'edit-icon' do %>
+        <i class="fa fa-trash-o"></i>
+      <% end %>
+    <% end %>
   <% end %>
-<% end %>
+</div>

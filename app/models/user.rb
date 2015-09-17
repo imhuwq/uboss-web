@@ -17,8 +17,11 @@ class User < ActiveRecord::Base
   has_many :transactions
   has_many :user_role_relations, dependent: :destroy
   has_many :user_roles, through: :user_role_relations
+  has_many :daily_reports
   # for agent
   has_many :divide_incomes
+  has_many :sellers, class_name: 'User', foreign_key: 'agent_id'
+  has_many :seller_orders, through: :sellers, source: :sold_orders
   # for buyer
   has_many :user_addresses
   has_many :orders
@@ -28,6 +31,7 @@ class User < ActiveRecord::Base
   # for seller
   has_many :sold_orders, class_name: 'Order', foreign_key: 'seller_id'
   has_many :products
+  has_many :selling_incomes
   belongs_to :agent, class_name: 'User'
 
   validates :login, uniqueness: true, mobile: true, presence: true, if: -> { !need_set_login? }
@@ -38,10 +42,16 @@ class User < ActiveRecord::Base
   alias_attribute :regist_mobile, :login
 
   delegate :sex, :sex=, :province, :province=, :city, :city=, :country, :country=,
-    :store_name, :store_name=, :good_evaluation, :normal_evaluation, :bad_evaluation,
-    to: :user_info, allow_nil: true
-  delegate :income, :income_level_one, :income_level_two, :service_rate,
-    :income_level_thr, :frozen_income,
+    :good_evaluation, :normal_evaluation, :bad_evaluation,
+    :store_name, :store_name=,      :income_level_thr, :frozen_income,
+    :income,     :income_level_one, :income_level_two, :service_rate,
+    :store_banner_one_identifier,  :store_banner_two_identifier,  :store_banner_thr_identifier,
+    :store_banner_one,  :store_banner_two,  :store_banner_thr,
+    :store_banner_one_url,  :store_banner_two_url,  :store_banner_thr_url,
+    :store_banner_one=, :store_banner_two=, :store_banner_thr=,
+    :recommend_resource_one_id, :recommend_resource_two_id, :recommend_resource_thr_id,
+    :recommend_resource_one_id=, :recommend_resource_two_id=, :recommend_resource_thr_id=,
+    :store_short_description, :store_short_description=,
     to: :user_info, allow_nil: true
 
   enum authenticated: {no: 0, yes: 1}
@@ -57,6 +67,7 @@ class User < ActiveRecord::Base
 
   scope :admin, -> { where(admin: true) }
   scope :agent, -> { joins(:user_roles).where(user_roles: {name: 'agent'}) }
+  scope :unauthenticated_seller_identify, -> { where(authenticated: 0) }
 
   UserRole::ROLE_NAMES.each do |role|
     User.class_eval do
@@ -127,9 +138,21 @@ class User < ActiveRecord::Base
 
   end
 
+  # TODO 在评价时实时更新
+  def store_rates
+    @store_rates ||= Rails.cache.fetch ['seller-store-rate', id], expires_in: 1.day do
+      result = ActiveRecord::Base.connection.execute <<-SQL.squish!
+        SELECT SUM(good_evaluation) AS good, SUM(bad_evaluation) AS bad, SUM(normal_evaluation) AS normal
+        FROM products
+        WHERE products.user_id = #{id}
+      SQL
+      result = result.first || {}
+    end
+  end
+
   def bind_agent(binding_code)
     agent_user = if binding_code.present?
-                   User.agent.find_by(agent_code: binding_code)
+                   User.agent.find_by(agent_code: binding_code) || AgentInviteSellerHistroy.find_by(invite_code: binding_code).try(:agent)
                  else
                    User.official_account
                  end
@@ -137,12 +160,24 @@ class User < ActiveRecord::Base
     if agent_user.present?
       self.agent = agent_user
       self.admin = true
-      self.user_roles << UserRole.seller if not self.seller?
+      if agent_user.id == User.official_account.id
+        self.user_info.service_rate = 6
+      else
+        self.user_info.service_rate = 5
+      end
+      self.user_roles << UserRole.seller if not self.is_seller?
       self.save
     else
       errors.add(:agent_code, :invalid)
       false
     end
+  end
+
+  def bind_seller(seller)
+    seller.agent = self
+    seller.admin = true
+    seller.user_roles << UserRole.seller if !seller.is_seller?
+    seller.save
   end
 
   def update_with_oauth_session(session)
@@ -181,6 +216,46 @@ class User < ActiveRecord::Base
 
   def total_income
     income + frozen_income
+  end
+
+  def total_divide_income
+    divide_incomes.sum(:amount)
+  end
+
+  def total_divide_income_from_seller(seller)
+    divide_incomes.joins(:order).where(orders: { seller_id: seller.id }).sum(:amount)
+  end
+
+  def crrent_month_divide_income_from_seller(seller)
+    divide_incomes.current_month.joins(:order).where(orders: { seller_id: seller.id }).sum(:amount)
+  end
+
+  def today_divide_income_from_seller(seller)
+    divide_incomes.today.joins(:order).where(orders: { seller_id: seller.id }).sum(:amount)
+  end
+
+  def total_sold_income
+    selling_incomes.sum(:amount)
+  end
+
+  def current_month_sold_income
+    selling_incomes.current_month.sum(:amount)
+  end
+
+  def today_sold_income
+    selling_incomes.today.sum(:amount)
+  end
+
+  def today_expect_divide_income
+    seller_orders.today.shiped.sum(:pay_amount) * 0.05
+  end
+
+  def current_month_divide_income
+    divide_incomes.current_month.sum(:amount)
+  end
+
+  def current_year_divide_income
+    divide_incomes.current_year.sum(:amount)
   end
 
   def user_info
@@ -222,20 +297,8 @@ class User < ActiveRecord::Base
     UserRole.find_by(name: "agent").users
   end
 
-  def seller
+  def sellers
     User.where(agent_id: self.id)
-  end
-
-  def seller?
-    user_roles.pluck(:name).include?('seller')
-  end
-
-  def agent?
-    user_roles.pluck(:name).include?('agent')
-  end
-
-  def super_admin?
-    user_roles.pluck(:name).include?('super_admin')
   end
 
   def authenticated?
@@ -268,6 +331,20 @@ class User < ActiveRecord::Base
     self.weixin_unionid   = data['unionid']
     self.weixin_openid    = data['openid']
     self.remote_avatar_url = data['headimgurl']
+  end
+
+  def good_reputation_rate
+    return @sharer_good_reputation_rate if @sharer_good_reputation_rate
+    @sharer_good_reputation_rate = if total_reputations > 0
+                                     user_info.good_evaluation.to_i * 100 / total_reputations
+                                   else
+                                     100
+                                   end
+  end
+
+  def total_reputations
+    @total_reputations ||= UserInfo.where(user_id: id).
+      sum("good_evaluation + normal_evaluation + bad_evaluation")
   end
 
   private

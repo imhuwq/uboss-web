@@ -34,6 +34,7 @@ gem "simple_form"
 gem "tabletastic", path: "vendor/gems"
 gem 'redactor-rails', github: 'xEasy/redactor-rails'
 gem "jquery-fileupload-rails"
+gem 'font-awesome-sass', '~> 4.4.0'
 gem 'sanitize'
 
 # See https://github.com/rails/execjs#readme for more supported runtimes
@@ -76,6 +77,8 @@ gem 'whenever', :require => false
 gem 'airbrake'
 gem 'sucker_punch' # airbrake async use this
 
+gem 'china_city'
+
 group :development do
   gem "thin"
   gem "capistrano"
@@ -110,4 +113,5 @@ group :test do
   gem "webmock"
   gem "mock_redis" # Used for test
   gem "minitest-rails-capybara"
+  gem 'm', '~> 1.3.1'
 end

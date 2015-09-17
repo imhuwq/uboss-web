@@ -27,4 +27,27 @@ module AdminHelper
     record.wechat_available? ? "btn-success" : "btn-primary"
   end
 
+  def store_banner_sets
+    [
+      [:store_banner_one, :recommend_resource_one_id],
+      [:store_banner_two, :recommend_resource_two_id],
+      [:store_banner_thr, :recommend_resource_thr_id]
+    ]
+  end
+
+  def store_banner_data(seller)
+    return @store_banner_data if @store_banner_data.present?
+
+    @store_banner_data = []
+    store_banner_sets.each do |image_method, resource_method|
+      if seller.__send__("#{image_method}_identifier").present?
+        product_id = seller.__send__(resource_method)
+        @store_banner_data << [
+          seller.__send__("#{image_method}"),
+          product_id && Product.find_by(id: product_id)
+        ]
+      end
+    end
+    @store_banner_data
+  end
 end

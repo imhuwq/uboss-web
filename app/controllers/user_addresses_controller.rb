@@ -1,6 +1,5 @@
 class UserAddressesController < ApplicationController
 
-  before_action :authenticate_user!
   before_action :find_user_address, only: [:edit, :update, :destroy]
 
   def index
@@ -48,7 +47,7 @@ class UserAddressesController < ApplicationController
 
   private
   def address_params
-    params.require(:user_address).permit(:username, :mobile, :province, :city, :country, :street, :building, :default)
+    params.require(:user_address).permit(:username, :mobile, :province, :city, :area, :country, :street, :building, :default)
   end
 
   def find_user_address

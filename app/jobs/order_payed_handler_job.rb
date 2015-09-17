@@ -24,8 +24,14 @@ class OrderPayedHandlerJob < ActiveJob::Base
 
   private
 
+  #
+  # 订单完成开始分账
+  # 1. 商家营收收入
+  # 2. 用户分享收入
+  # 3. 平台|创客收入
+  #
   def start_divide_order_paid_amount
-    seller_income = Rails.env.production? ? @order.paid_amount : @order.pay_amount
+    order_income = Rails.env.production? ? @order.paid_amount : @order.pay_amount
 
     # NOTE
     # ----------------------
@@ -37,16 +43,16 @@ class OrderPayedHandlerJob < ActiveJob::Base
       begin
         @order.order_items.each do |order_item|
           reward_sharing_users order_item do |reward_amount|
-            seller_income -= reward_amount
+            order_income -= reward_amount
           end
         end
 
-        divide_income_for_official_or_agent seller_income do |divide_amount|
-          seller_income -= divide_amount
+        divide_income_for_official_or_agent order_income do |divide_amount|
+          order_income -= divide_amount
         end
 
-        SellingIncome.create!(user: @order.seller, amount: seller_income, order: @order)
-        @order.update_columns(income: seller_income, sharing_rewared: true)
+        SellingIncome.create!(user: @order.seller, amount: order_income, order: @order)
+        @order.update_columns(income: order_income, sharing_rewared: true)
         @order.complete!
       rescue => e
         logger.error "!!!Exception raise up! Dividing order: #{@order.number} ! Message: #{e.message} !!!"
@@ -115,7 +121,7 @@ class OrderPayedHandlerJob < ActiveJob::Base
 
   def get_reward_amount_by_product_level_and_order_item(product, level, order_item)
     reward_amount = product.read_attribute(level)
-    if level == :share_amount_lv_1
+    if level == :share_amount_lv_1 && (order_item.privilege_amount > product.privilege_amount)
       reward_amount -= (order_item.privilege_amount - product.privilege_amount)
     end
     reward_amount

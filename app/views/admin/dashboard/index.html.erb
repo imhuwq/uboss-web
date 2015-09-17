@@ -1,1 +1,161 @@
-welcome
+<div class="container admin-container">
+	<ul class="breadcrumb">
+		<li>主页</li>
+	</ul>
+</div>
+<br />
+<div class="container nogap">
+	<div class="box-w60 nogap">
+		<div class="box-w33">
+      <% if current_user.is_seller? %>
+        <div class="admin-box main-bg-color">
+          <h4>等待发货</h4>
+          <br />
+          <h1 class="num"><%= @unship_amount %></h1>
+        </div>
+        <br />
+        <div class="admin-box red-bg-color">
+          <h4>今日订单</h4>
+          <br />
+          <h1 class="num"><%= @today_selled_amount %></h1>
+        </div>
+      <% else %>
+        <div class="admin-box main-bg-color">
+          <h4>总签约商家</h4>
+          <br />
+          <h1 class="num"><%= current_user.seller_total_joins.count %></h1>
+        </div>
+        <br />
+        <div class="admin-box red-bg-color">
+          <h4>今日签约商家</h4>
+          <br />
+          <h1 class="num"><%= current_user.seller_today_joins.count %></h1>
+        </div>
+      <% end %>
+		</div>
+		<div class="box-w66">
+			<div class="admin-box chart">
+        <% if current_user.is_seller? %>
+          <h5>未发货订单  <small class="pull-right"><%= link_to "更多...", [:admin, :orders] %></small></h5>
+          <div style='height: 280px;overflow: auto;'>
+            <table class="border-table">
+              <thead>
+                <th>订单编号</th>
+                <th>买家</th>
+                <th>状态</th>
+              </thead>
+              <tbody>
+                <% @unship_orders.each do |order| %>
+                  <tr>
+                    <td><%= link_to order.number, [:admin, order] %></td>
+                    <td><%= order.buyer_identify %></td>
+                    <td><%= order.state_i18n %></td>
+                  </tr>
+                <% end %>
+              </tbody>
+            </table>
+          </div>
+        <% else %>
+          <%= link_to binding_agent_admin_account_path, class: 'v-center' do %>
+            <h2>绑定创客</h2>
+            <h2>成为UBoss商家</h2>
+          <% end %>
+        <% end %>
+			</div>
+			<br />
+		</div>
+		<div class="box-w40">
+			<%= link_to admin_withdraw_records_path,class:'admin-box main-bg-color' do %>
+				<div class="withdraw">提现<br/>申请</div>
+				<br />
+				<div class="text-right"><%= image_tag("admin/long-arrow.png") %></div>
+			<% end %>
+			<br />
+		</div>
+		<div class="box-w30">
+			<div class="admin-box blue-bg-color">
+				<h4>账户余额</h4>
+				<br />
+				<h1 class="num"><%= current_user.total_income %></h1>
+			</div>
+			<br />
+		</div>
+		<div class="box-w30">
+			<div class="admin-box yellow-bg-color">
+				<h4>可提现</h4>
+				<br />
+				<h1 class="num"><%= current_user.income %></h1>
+			</div>
+			<br />
+		</div>
+	</div>
+
+	<div class="box-w40 nogap">
+		<div class="box-w50">
+			<div class="admin-box blue-bg-color">
+				<h4>总收益</h4>
+				<br />
+				<h1 class="num"><%= @total_history_income %></h1>
+			</div>
+			<br />
+		</div>
+		<div class="box-w50">
+			<div class="admin-box red-bg-color">
+				<h4>预期收益</h4>
+				<br />
+        <h1 class="num"><%= @expect_income; %></h1>
+			</div>
+			<br />
+		</div>
+		<div class="box-w100">
+			<div class="admin-box chart">
+        <% if current_user.is_agent? %>
+          <h5>未认证商家（邀请码：<%= current_user.agent_code %>）  <small class="pull-right"><%= link_to "更多...", [:admin, :sellers] %></small></h5>
+          <div style='height: 280px;overflow: auto;'>
+            <table class="border-table">
+              <thead>
+                <th>商家</th>
+                <th>入驻时间</th>
+                <th>账号</th>
+                <th>状态</th>
+              </thead>
+              <tbody>
+                <% @sellers.each do |seller| %>
+                  <tr>
+                    <td class="text-left">
+                      <%= link_to admin_seller_path(seller) do %>
+                        <%= image_tag(seller.avatar, size: "60x60", alt: "-") %>　
+                        <%= seller.identify %>
+                      <% end %>
+                    </td>
+                    <td><%= seller.created_at.to_date %></td>
+                    <td><%= seller.login %></td>
+                    <td><%= User::DATA_AUTHENTICATED[seller.authenticated] %></td>
+                  </tr>
+                <% end %>
+              </tbody>
+            </table>
+          </div>
+        <% else %>
+          <div class='v-center'>
+            <h2>购买UBoss创客权为创客</h2>
+            <% if @official_agent_product.present? %>
+              <%= image_tag @official_agent_product.image_url(:w640) %>
+            <% end %>
+          </div>
+        <% end %>
+			</div>
+			<br />
+		</div>
+	</div>
+</div>
+<script>
+	$(document).ready(function(){
+		$(".admin-box .num").each(function(){
+			var ls=$(this).html().length;
+			if(ls>9){
+				$(this).css("font-size","30px")
+			}
+		})
+	})
+</script>
