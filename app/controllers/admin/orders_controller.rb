@@ -20,16 +20,31 @@ class Admin::OrdersController < AdminController
   end
 
   def set_express
-    express = Express.find_or_create_by(name: express_params)
-    if @order.update(order_params.merge(express_id: express.id)) && @order.ship!
-      flash[:success] = '发货成功'
-    else
-      flash[:error] = '发货失败'
+    if validate_express_params
+      express = Express.find_or_create_by(name: express_params)
+      if @order.update(order_params.merge(express_id: express.id)) && @order.ship!
+        flash[:success] = '发货成功'
+      else
+        flash[:error] = '发货失败'
+      end
     end
     redirect_to admin_orders_path
   end
 
   private
+
+  def validate_express_params
+    errors = []
+    errors << '快递公司名称不能为空' if express_params.blank?
+    errors << '运单号不能为空' if order_params['ship_number'].blank?
+    if errors.present?
+      flash[:error] = errors.join('; ')
+      false
+    else
+      true
+    end
+  end
+
   def order_params
     params.require(:order).permit(:mobile, :address, :ship_number)
   end
