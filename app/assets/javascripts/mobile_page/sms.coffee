@@ -6,19 +6,20 @@ $ ->
     sendBtn = $(this)
     mobile = $('#new_mobile').val()
     checkNum = /^(\+\d+-)?[1-9]{1}[0-9]{10}$/
+    sendBtn.addClass("disabled")
     if checkNum.test(mobile)
-      console.log mobile_submit_time
       return false if mobile_submit_time != 0
+      mobile_submit_time = 60
       sendBtn.addClass("disabled")
       $.ajax
         url: '/mobile_captchas/create',
         type: 'POST',
         data: {mobile: mobile},
       .done ->
-        mobile_submit_time = 60
         @btn_text = $('#send_mobile').text()
         timedown $('#send_mobile')
       .fail ->
+        mobile_submit_time = 0
         alert('验证码发送失败')
         sendBtn.removeClass("disabled")
     else
@@ -87,13 +88,13 @@ $ ->
     e.preventDefault()
     sendBtn = $(this)
     mobile = $('#new_mobile').val()
-    console.log mobile
     checkNum = /^(\+\d+-)?[1-9]{1}[0-9]{10}$/
     if not checkNum.test(mobile)
       console.log mobile
       alert "手机格式错误"
       return false
     return false if mobile_submit_time != 0
+    mobile_submit_time = 60
     sendBtn.addClass("disabled")
     $.ajax
       url: '/account/send_message',
@@ -102,10 +103,10 @@ $ ->
         mobile: mobile
       },
     .done ->
-      mobile_submit_time = 60
       @btn_text = sendBtn.text()
       timedown sendBtn
     .fail (xhr, textStatus) ->
+      mobile_submit_time = 0
       sendBtn.removeClass("disabled")
       alert(
         try
