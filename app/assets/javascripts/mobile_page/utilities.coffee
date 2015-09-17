@@ -16,7 +16,7 @@ $ ->
       $(this).remove()
   , 5000
 
-  $(".alert").on "click", ->
+  $(document).on 'click', '.alert', ->
     $(this).closest('.flash_css').remove()
 
   disabledLoadMore = (e)->

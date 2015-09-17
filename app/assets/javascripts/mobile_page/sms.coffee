@@ -1,5 +1,6 @@
 $ ->
   mobile_submit_time = 0
+  @btn_text = ''
   $('#send_mobile').on 'click', (e) ->
     e.preventDefault()
     sendBtn = $(this)
@@ -15,6 +16,7 @@ $ ->
         data: {mobile: mobile},
       .done ->
         mobile_submit_time = 60
+        @btn_text = $('#send_mobile').text()
         timedown $('#send_mobile')
       .fail ->
         alert('验证码发送失败')
@@ -41,7 +43,7 @@ $ ->
     captcha_key = $('input[name=captcha_key]').val()
     sendBtn.addClass("disabled")
     $.ajax
-      url: '/mobile_captcha/send_with_captcha',
+      url: '/mobile_captchas/send_with_captcha',
       type: 'GET',
       data: {
         mobile: mobile
@@ -51,30 +53,22 @@ $ ->
     .done ->
       $('#refresh_img_captcha_btn').click()
       mobile_submit_time = 60
+      @btn_text = sendBtn.text()
       timedown sendBtn
     .fail (xhr, textStatus) ->
       sendBtn.removeClass("disabled")
       alert JSON.parse(xhr.responseText).message
 
-  bindAlertFlash = ->
-    $(".alert").on "click", ->
-      $(this).closest('.flash_css').remove()
-
-  bindAlertFlash = ->
-    $(".alert").on "click", ->
-      $(this).closest('.flash_css').remove()
-
   timedown = (t) ->
     if mobile_submit_time == 0
       t.removeClass("disabled")
-      t.text("发送绑定验证码给商家")
+      t.text(@btn_text)
     else
       t.text("#{mobile_submit_time}s后重新获取")
       mobile_submit_time--
       setTimeout () ->
         timedown(t)
       , 1000
-    bindAlertFlash()
 
   $('#mobile_auth_code').on 'keyup', (m)->
     code = $(this).val()
@@ -103,6 +97,7 @@ $ ->
       },
     .done ->
       mobile_submit_time = 60
+      @btn_text = sendBtn.text()
       timedown sendBtn
     .fail (xhr, textStatus) ->
       sendBtn.removeClass("disabled")
