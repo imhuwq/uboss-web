@@ -44,6 +44,7 @@ Rails.application.routes.draw do
     member do
       get :refact
     end
+    get :no_found, on: :collection
     post :save_mobile, :democontent,  on: :collection
   end
   resources :evaluations do
