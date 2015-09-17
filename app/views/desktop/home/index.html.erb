@@ -3,159 +3,150 @@
     <%= seo_meta_tag %>
   <% end %>
 <% end %>
-<div class="section" id="section1">
-	<div class="slider">
-		<div class="slides-container">
-			<div>
-		    <div class="slider-container slideshow1" data-color="rw">
-		    	<div class="slides-middle"><%= image_tag("new_desktop/1-wz.png" ,class: "preserve to-top") %></div>
-		    </div>
-			</div>
-			<div>
-				<%= image_tag("new_desktop/2-bg.jpg") %>
-		    <div class="slider-container slideshow2" data-color="rb">
-		    	<div class="slides-middle">
-		    		<p><%= image_tag("new_desktop/2-wz.png" ,class: "preserve") %></p>
-		    		<p><a href="#section3" class="btn">免费驻入</a></p>
-		    	</div>
-		    </div>
-			</div>					
-			<div>
-				<%= image_tag("new_desktop/3-bg.jpg") %>
-		    <div class="slider-container slideshow3" data-color="ww">
-		    	<div class="slides-middle">
-		    		<p><%= image_tag("new_desktop/3-wz.png" ,class: "preserve") %></p>
-		    		<p><a href="#section5" class="btn">10元创业</a></p>
-		    	</div>
-		   	</div>
-			</div>
-		</div><!-- slides-container -->
-	</div><!--slider -->
-</div><!-- section -->
-<div class="section" id="section2">
-	<div id="video">
-			<h1 class="section-title text-center">
-				视频<br/>
-				VIDEO
-			</h1>
-			<div class="video-banner banner-1">
-				<h4>关于UBOSS宣传片</h4>
-				<p>【创客】 【商家】 【分享客】</p>
-				<p>　让你的商品，引爆社交圈</p>
-				<div class="play-icon" data-src="http://player.youku.com/player.php/sid/XMTI5ODg1NTM2MA==/v.swf"><i class="fa fa-play"></i> 点击播放</div><!-- play-icon -->
-			</div><!-- video-banner -->
-			<div class="video-banner banner-2">
-				<h4>什么是UBOSS产品？</h4>
-				<p>　　　　【全国首创】</p>
-				<p>　　以人为本的社群微电商</p>
-				<div class="play-icon" data-src="http://player.youku.com/player.php/sid/XMTMxNTI0NTE0NA==/v.swf"><i class="fa fa-play"></i> 点击播放</div><!-- play-icon -->
-			</div><!-- vido-banner -->	
-			<div class="video-bg" style="display: none;">
-				<div class="video-content">
-					<div class="video-box">
-					</div><!--video-box -->
-				</div><!-- video-content -->
-			</div><!-- video-bg -->
-	</div><!-- video -->
-</div><!-- section -->
-<div class="section" id="section3">
-	<div class="container">
-		<h1 class="section-title">
-			成为UBOSS商户
-		</h1>
-		<br />
-		<div class="text-center">
-			<div class="img-box">
-				<%= image_tag("new_desktop/2.png") %>
-			</div>
-			<div class="img-box">
-				<%= image_tag("new_desktop/2-1.png") %>
+<div class='header-img'>
+	<div class="container nogap">
+		<div class="box-w40"><%=image_tag "desktop_image/phone.png",alt:"Uboss"%></div>
+		<div class="box-w60">
+			<div class="wenzi">
+				<p><%=image_tag "desktop_image/wenzi.png",alt:"Uboss"%></p>
+				<h1>新概念移动社会化电商平台</h1>
+				<br />
+				<h4>帮助商家零成本轻松建立线上分销商场</h4>
+				<h4>用户分享商品获取返利</h4>
+				<h4>为商家增加线上商品销量</h4>
 			</div>
 		</div>
-		<br />
-	</div><!-- container -->
-</div><!-- section -->
-<div class="section" id="section4">
-	<div class="container">
-		<h1 class="section-title text-right">
-			简单两步拥有UBOSS商城
-		</h1>
-		<br />
-		<div class="text-center">
-			<div class="img-box">
-				<div><%= image_tag("new_desktop/3.png") %></div>
-				<br />
-				<h3>注册开店</h3>
-				<p class="text">开店完全免费，注册即可开店</p>
-				<br />
-				<div><a href="<%= admin_root_path %>" class="btn">立即注册</a></div>
+	</div>
+</div><!-- header-img -->
+<br/>
+<div class="container nogap" >
+	<div class="box-w33">
+		<div class="video-banner banner-1">
+			<h4>关于UBOSS宣传片</h4>
+			<p>【创客】 【商家】 【分享客】</p>
+			<p>　让你的商品，引爆社交圈</p>
+			<div class="play-icon" data-src="http://player.youku.com/player.php/sid/XMTI5ODg1NTM2MA==/v.swf"><i class="fa fa-play"></i> 点击播放</div><!-- play-icon -->
+		</div><!-- video-banner -->
+	</div><!-- box-w33 -->
+	<div class="box-w33">
+		<div class="video-banner banner-2">
+			<h4>什么是UBOSS产品？</h4>
+			<p>　　　　【全国首创】</p>
+			<p>　　以人为本的社群微电商</p>
+			<div class="play-icon" data-src="http://player.youku.com/player.php/sid/XMTMxNTI0NTE0NA==/v.swf"><i class="fa fa-play"></i> 点击播放</div><!-- play-icon -->
+		</div><!-- vido-banner -->
+	</div><!-- box-w33 -->
+</div><!-- container -->
+
+<div class="video-bg" style="display: none;">
+	<div class="video-content">
+		<div class="video-box">
+		</div><!--video-box -->
+	</div><!-- video-content -->
+</div><!-- video-bg -->
+<br/>
+<div class="gray-bg ">
+	<br/>
+	<div class="page1">
+		<div class="container" ><h3 class="page-title"><span>平台价值</span></h3></div><!-- container -->
+		<br/>
+		<div class="container nogap  text-center" >
+			<div class="box-w33 wow lightSpeedIn">
+				<div><%= image_tag "desktop_image/page_img_1.png" %></div>
+				<br/>
+				<h4 class="main-color">海量忠诚粉丝</h4>
+				<div>为品牌迅速聚拢大量忠诚粉丝</div>
 			</div>
-			<div class="img-box">
-				<div><%= image_tag("new_desktop/3-1.png") %></div>
-				<br />
-				<h3>认证店铺</h3>
-				<p class="text">为保证结算打款顺利，商家需要<br/>对店铺进行认证，否则无法提现</p>
-				<br />
-				<div><a href="/admin/users/58/personal_authentication/new" class="btn">立即认证</a></div>
+			<div class="box-w33 wow shake">
+				<div><%= image_tag "desktop_image/page_img_2.png"%></div>
+				<br/>
+				<h4 class="main-color">快速引流</h4>
+				<div>一键分享社交网络，社交平台<br/>强关系快速引流</div>
 			</div>
-		</div>
-		<br />
-	</div><!-- container -->
-</div><!-- section -->
-<div class="section" id="section5">
-	<div class="container">
-		<h1 class="section-title">
-			成为UBOSS创客
-		</h1>
-		<br />
-		<div class="text-center">
-			<div class="img-box">
-				<%= image_tag("new_desktop/4.png") %>
+			<div class="box-w33 wow lightSpeedIn">
+				<div><%= image_tag "desktop_image/page_img_3.png" %></div>
+				<br/>
+				<h4 class="main-color">二次销售</h4>
+				<div>增加商品曝光度，扩大品牌<br/>影响力，让你的销售额速猛飙升</div>
 			</div>
-			<div class="img-box">
-				<%= image_tag("new_desktop/4-1.png") %>
-			</div>
-		</div>
-		<br />
-	</div><!-- container -->
-</div><!-- section -->
-<div class="section" id="section6">
-<div class="container">
-	<br />
-		<h1 class="section-title text-right">
-			成为UBOSS创客零风险创业
-		</h1>
-		<br />
-		<div class="text-center">
-			<div class="img-box">
-				<p><%= image_tag("new_desktop/5.png") %></p>
-				<h3 class="text">现仅需<b class="main-color">10</b>元<br/>即可购买创客权</h3>
-			</div>
-			<div class="img-box">
-				<p><%= image_tag("new_desktop/5-1.jpg") %></p>
-				<h3 class="text">签约商家录入后台</h3>
-			</div>
-		</div>
-		<br />
-	</div><!-- container -->
-</div>
-<br />
-<footer class="text-center">
-	<h3 class="footer-name">UBOSS</h3>
-	<p class="footer_tel">联系我们：0755-66691053</p>
-	<p class="copyright">Copyright    2015 www.uboss.me. All Rights Reserved 粤ICP备15032292号-1 </p>
-	<br />
-</footer>
+		</div><!-- container -->
+	</div><!-- page1 -->
+	<br/>
+	<div class="page2">
+			<div class="container" ><h3 class="page-title"><span>平台优势</span></h3></div>
+			<br/>
+			<div class="container  text-center wow zoomIn" >
+				<%= image_tag "desktop_image/page2_img.png", alt:"平台优势" %>
+			</div><!-- container -->
+	</div><!-- page2 -->
+	<br/>
+	<div class="page3">
+			<div class="container" ><h3 class="page-title"><span >产品流程</span></h3></div><!-- container-->
+			<br/>
+			<div class="container  text-center wow flipInX">
+				<%= image_tag "desktop_image/page3_img.png", alt:"产品流程" %>
+			</div><!-- container -->
+			<br/>
+	</div><!-- page3 -->
+	<br/>
+</div><!-- gray-bg -->
+<br/>
+<div class="page4">
+		<div class="container"><h2 class="orange-page-title text-center"><span>简单两步拥有UBOSS商铺</span></h2></div><!-- container -->
+		<br/>
+		<div class="container nogap  text-center">
+			<br/>
+			<div class="box-w50">
+				<div class="step-box wow slideInLeft" data-wow-duration=".5s">
+					<span>01</span>
+					<p><%= image_tag "desktop_image/openShop.png", alt:"openShop" %></p>
+					<br/>
+					<h3 class="main-color">注册开店</h3>
+					<br/>
+				  <p class="text-info">开店完全免费，注册即开店</p>
+						<p>
+						<%= link_to new_user_session_path, class:'btn btn-shadow'  do %>
+							注册开店
+						<% end %>
+					</p>
+				</div><!-- step-box -->
+			</div><!-- box-w50 -->
+			<div class="box-w50">
+				<div class="step-box wow slideInRight" data-wow-duration=".5s">
+					<span>02</span>
+					<p><%= image_tag "desktop_image/toApprove.png", alt:"shop" %></p>
+					<br/>
+					<h3 class="main-color">认证店铺</h3>
+					<br/>
+				    <p class="text-info">为保证结算打款顺利，商家需要对店铺<br/>进行认证，否则无法提现</p>
+					<p>
+						<%= link_to "/admin/users/#{current_user.try(:id) || 1}/personal_authentication/new", class:'btn btn-shadow' do %>
+							我要认证
+						<% end %>
+					</p>
+				</div><!-- step-box -->
+			</div><!-- box-w50 -->
+		</div><!-- container -->
+</div><!-- page4 -->
+<br/>
 <script type="text/javascript">
-  
+  $(window).load(function() {
+  	if(navigator.appName == "Microsoft Internet Explorer" && navigator.appVersion .split(";")[1].replace(/[ ]/g,"")=="MSIE8.0"){
+
+  	}else{
+    new WOW().init();
+    }
+  })
   $(document).ready(function (){
   	$("header").css({
 				"position":"absolute",
+				"background":"rgba(0,0,0,0.3)",
 				"top":"0",
 				"left":"0",
-				"z-index":"100"
+				"z-index":"2"
     });
-   
+    if(navigator.appName == "Microsoft Internet Explorer" && navigator.appVersion .split(";")[1].replace(/[ ]/g,"")=="MSIE8.0")
+    	$("header").css("background","#4c4c4c");
     $(".play-icon").click(function (){
     	var isrc=$(this).attr('data-src');
     	$(".video-bg").fadeIn();
@@ -166,12 +157,4 @@
     	$(".video-box").empty();
     });
   })
-</script>
-<script type="text/javascript">
-$(window).load(function() {
-	$('.slider').superslides({
-		play:6000
-	});
-});
-
 </script>
