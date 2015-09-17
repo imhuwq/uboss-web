@@ -201,15 +201,6 @@ class User < ActiveRecord::Base
     end
   end
 
-  def become_uboss_seller
-    if not self.is_seller?
-      transaction do
-        update_columns(admin: true)
-        user_roles << UserRole.seller
-      end
-    end
-  end
-
   def identify
     nickname || regist_mobile
   end
