@@ -61,6 +61,7 @@ zh-CN:
     country: 国家
     city: 城市
     area: 区/县
+    building: 详细地址
   simple_form:
     labels:
       product: &product
