@@ -29,17 +29,24 @@ class Admin::AccountsController < AdminController
 
   def bind_agent
     agent_code = params[:user][:code]
-    if params['binding_submit'].present?
-      if current_user.bind_agent(agent_code)
-        AgentInviteSellerHistroy.find_by(mobile: current_user.login).try(:update, status: 1)
-        flash[:notice] = '绑定成功<br/>'
-        redirect_to after_binding_agent_path
+    if current_user.check_bind_condition
+      if params['binding_submit'].present?
+        if current_user.bind_agent(agent_code)
+          AgentInviteSellerHistroy.find_by(mobile: current_user.login).try(:update, status: 1)
+          flash[:notice] = '绑定成功<br/>'
+          redirect_to after_binding_agent_path
+        else
+          render :binding_agent
+          return
+        end
       else
-        render :binding_agent
+        redirect_to after_binding_agent_path
       end
     else
-      redirect_to after_binding_agent_path
+      flash[:error] = model_errors(current_user).join('<br/>')
+      redirect_to action: :edit
     end
+
   end
 
   private

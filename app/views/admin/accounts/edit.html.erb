@@ -18,20 +18,21 @@
     <% end %>
 
     <%= f.input :agent, label: '绑定创客' do %>
-        <% if current_user.agent.present? %>
-          <%= current_user.agent.identify %>
-        <% else %>
-          <%= link_to "绑定创客", binding_agent_admin_account_path, class: 'btn' %>
-        <% end %>
+      <% if current_user.agent.present? %>
+        <%= current_user.agent.identify %>
+      <% end %>
+      <% if current_user.check_bind_condition %>
+        <%= link_to "绑定创客", binding_agent_admin_account_path, class: 'btn' %>
+      <% end %>
     <% end %>
 
     <%= f.input :seller_role, label: '商家权限' do %>
-		<% if f.object.authenticated? %>
-			<span class="label label-success">已开通</span>
-		<% elsif f.object.is_seller? %>
-          	<%= link_to "我要认证", admin_user_personal_authentication_path(current_user),class: 'btn red-btn'%>
-      	<% else %>
-      		<%= link_to "我要开通", binding_agent_admin_account_path, class: 'btn red-btn' %>
+      <% if f.object.authenticated? %>
+        <span class="label label-success">已开通</span>
+      <% elsif f.object.is_seller? %>
+        <%= link_to "我要认证", admin_user_personal_authentication_path(current_user),class: 'btn red-btn'%>
+      <% else %>
+        <%= link_to "我要开通", binding_agent_admin_account_path, class: 'btn red-btn' %>
       <% end %>
     <% end %>
 

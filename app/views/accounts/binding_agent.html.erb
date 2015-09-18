@@ -4,7 +4,7 @@
 
 <div class="container add_listall" >
   <div class="add_inout">
-    <% if !current_user.authenticated? %>
+    <% if current_user.check_bind_condition %>
       <%= simple_form_for current_user, url: bind_agent_account_path, method: :put do |f| %>
         <div style="min-height:30px;padding:15px 0;width:100%" class="clearfix">
 
@@ -31,7 +31,7 @@
       <% end %>
     <% else %>
       <p class="text-center">
-        <span>您已经是认证商家,不能更换绑定.</span>
+        <span>您现在的状况不允许更换绑定.</span>
       </p>
     <% end %>
   </div>

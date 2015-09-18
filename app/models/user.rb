@@ -64,6 +64,7 @@ class User < ActiveRecord::Base
   before_validation :ensure_authentication_token
   before_create :set_mobile
   before_create :build_user_info, if: -> { user_info.blank? }
+  before_save   :set_service_rate
 
   scope :admin, -> { where(admin: true) }
   scope :agent, -> { joins(:user_roles).where(user_roles: {name: 'agent'}) }
@@ -154,14 +155,19 @@ class User < ActiveRecord::Base
     end
   end
 
-  def bind_agent(binding_code)
+  # 默认绑定official agent
+  def bind_agent(binding_code = nil)
     agent_user = if binding_code.present?
                    User.agent.find_by(agent_code: binding_code) || AgentInviteSellerHistroy.find_by(invite_code: binding_code).try(:agent)
                  else
                    User.official_account
                  end
 
-    if agent_user.present?
+    if agent_user.blank?
+      errors.add(:agent_code, :invalid)
+      return false
+    end
+    if self.check_bind_condition
       self.agent = agent_user
       self.admin = true
       if agent_user.id == User.official_account.id
@@ -172,8 +178,20 @@ class User < ActiveRecord::Base
       self.user_roles << UserRole.seller if not self.is_seller?
       self.save
     else
-      errors.add(:agent_code, :invalid)
       false
+    end
+  end
+
+  def check_bind_condition # 检查绑定条件
+    if !self.agent.present? # 如果没有绑定,许可
+      return true
+    else
+      if self.agent.is_super_admin? && !self.authenticated? # 如果绑定对象是超级管理员,且还没有通过认证,许可
+        return true
+      else # 其他情况不能更换绑定
+        self.errors[:base] << "您已绑定非官方创客，或已认证，不允许更换绑定"
+        return false
+      end
     end
   end
 
@@ -364,6 +382,16 @@ class User < ActiveRecord::Base
   def set_mobile
     if !need_set_login?
       self.mobile ||= login
+    end
+  end
+
+  def set_service_rate
+    if self.agent_id_changed?
+      if self.agent.is_super_admin?
+        self.user_info.service_rate = 6
+      else
+        self.user_info.service_rate = 5
+      end
     end
   end
 end
