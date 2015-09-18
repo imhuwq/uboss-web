@@ -24,6 +24,16 @@ class SharingNode < ActiveRecord::Base
 
   class << self
     def find_or_create_by_resource_and_parent(user, resource, parent = nil)
+      if parent.present? && parent.user_id == user.id
+        is_circle_parent = case resource.class.name
+                          when 'User'
+                            parent.seller_id == resource.id
+                          when "Product"
+                            parent.product_id == resource.id
+                          end
+        return parent if is_circle_parent
+      end
+
       params = { user_id: user.id }
       params.merge!(parent_id: parent.id) if parent.present? && resource.is_a?(Product)
 
@@ -43,7 +53,7 @@ class SharingNode < ActiveRecord::Base
           node = nil
         end
       else
-        node.touch
+        node.touch if user.id != node.user_id
       end
 
       return nil if node.blank?
