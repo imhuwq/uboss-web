@@ -6,12 +6,14 @@ $ ->
   mobile_submit_time = 0
   $('#send_mobile').on 'click', (e) ->
     e.preventDefault()
+    sendBtn = $(this)
     mobile = $('#new_mobile').val()
     checkNum = /^(\+\d+-)?[1-9]{1}[0-9]{10}$/
     if checkNum.test(mobile)
       console.log mobile_submit_time
       return false if mobile_submit_time != 0
       mobile_submit_time = 60
+      sendBtn.addClass("disabled")
       $.ajax
         url: '/mobile_captchas/create',
         type: 'POST',
@@ -20,6 +22,7 @@ $ ->
         timedown $('#send_mobile')
       .fail ->
         mobile_submit_time = 0
+        sendBtn.removeClass("disabled")
         alert('发送失败')
     else
       console.log mobile
@@ -58,10 +61,10 @@ $ ->
     if captcha.length < 1
       alert "请输入图片验证码"
       return false
-
-    console.log mobile_submit_time
     return false if mobile_submit_time != 0
     captcha_key = $('input[name=captcha_key]').val()
+    mobile_submit_time = 60
+    sendBtn.addClass("disabled")
     $.ajax
       url: '/mobile_captchas/send_with_captcha',
       type: 'GET',
@@ -72,9 +75,10 @@ $ ->
       },
     .done ->
       $('#refresh_img_captcha_btn').click()
-      mobile_submit_time = 60
       timedown sendBtn
     .fail (xhr, textStatus) ->
+      mobile_submit_time = 0
+      sendBtn.removeClass("disabled")
       if xhr.responseJSON?
         alert(xhr.responseJSON.message)
       else

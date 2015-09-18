@@ -83,6 +83,14 @@ class Order < ActiveRecord::Base
     order_items.first.product.is_official_agent?
   end
 
+  def order_item
+    @order_item ||= order_items.first || OrderItem.new
+  end
+
+  def product
+    @product ||= order_item.try(:product) || Product.new
+  end
+
   private
 
   def generate_number
