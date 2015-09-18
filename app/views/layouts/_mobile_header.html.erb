@@ -11,8 +11,8 @@
   <ul>
     <li><%= link_to '首页', root_path %></li>
     <li><%= link_to '我的UBOSS', account_path %></li>
-    <% if current_user.try(:agent?) %>
-    <li><%= link_to '邀请商家', invite_seller_account_path %></li>
+    <% if current_user && current_user.is_agent? %>
+      <li><%= link_to '邀请商家', invite_seller_account_path %></li>
     <% end %>
     <li>
       <%= link_to '关于', about_path %>
