@@ -21,7 +21,7 @@
       <% if current_user.agent.present? %>
         <%= current_user.agent.identify %>
       <% end %>
-      <% if current_user.check_bind_condition %>
+      <% if current_user.can_rebind_agent? %>
         <%= link_to "绑定创客", binding_agent_admin_account_path, class: 'btn' %>
       <% end %>
     <% end %>

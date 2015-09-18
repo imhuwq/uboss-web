@@ -4,7 +4,7 @@
 
 <div class="container add_listall" >
   <div class="add_inout">
-    <% if current_user.check_bind_condition %>
+    <% if current_user.can_rebind_agent? %>
       <%= simple_form_for current_user, url: bind_agent_account_path, method: :put do |f| %>
         <div style="min-height:30px;padding:15px 0;width:100%" class="clearfix">
 

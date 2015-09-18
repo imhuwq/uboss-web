@@ -167,7 +167,7 @@ class User < ActiveRecord::Base
       errors.add(:agent_code, :invalid)
       return false
     end
-    if self.check_bind_condition
+    if self.can_rebind_agent?
       self.agent = agent_user
       self.admin = true
       if agent_user.id == User.official_account.id
@@ -182,7 +182,7 @@ class User < ActiveRecord::Base
     end
   end
 
-  def check_bind_condition # 检查绑定条件
+  def can_rebind_agent? # 检查绑定条件
     if !self.agent.present? # 如果没有绑定,许可
       return true
     else
