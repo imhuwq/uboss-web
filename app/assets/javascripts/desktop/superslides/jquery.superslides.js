@@ -30,7 +30,7 @@ Superslides = function(el, options) {
   var that       = this,
       $control   = $('<div>', { "class": 'slides-control' }),
       multiplier = 1;
-  
+
   //$("#section1").css('opacity', '0');
   //this.slidesControl = $control;
   //this.slidesControl.css('opacity','0');
@@ -230,14 +230,14 @@ var fx = {
       left: orientation.upcoming_position,
       display: 'block'
     });
-		
+
     $children.eq(orientation.outgoing_slide).removeClass("active")
   	$children.eq(orientation.upcoming_slide).addClass("active");
-    
+
 		if($(".active .slider-container").attr("data-color")=="ww"){
 			$("header").removeClass();
 			$("header").addClass("ww");
-			
+
 		}
 		if($(".active .slider-container").attr("data-color")=="rw"){
 			$("header").removeClass();
@@ -247,7 +247,7 @@ var fx = {
 			$("header").removeClass();
 			$("header").addClass("rb");
 		}
-		
+
     that.$control.animate({
       left: orientation.offset
     },
@@ -594,7 +594,7 @@ Superslides.prototype = {
     if (this.animating) {
       return;
     }
-    
+
     if (this.isFirst) {
     	//this.slidesControl.css('opacity','1');
     	//$(".slides-control").css('opacity', '1');
