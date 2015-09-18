@@ -54,7 +54,7 @@ $ ->
           hiddenFile = formGroup.find('input.file[type=hidden]')
           [_, ..., fileName] = qs.url.split '/'
           hiddenFile.val(fileName)
-          formGroup.find('.fileinput-button').html "<img src='#{ upyunBucketDomain }/#{ qs.url }-w320'></img>"
+          formGroup.find('.fileinput-button img').attr('src', "#{ upyunBucketDomain }/#{ qs.url }-w320")
           form.data("waiting-upload", false)
 
           button.removeClass('uploading')
