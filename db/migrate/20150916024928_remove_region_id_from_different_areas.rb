@@ -1,5 +1,7 @@
 class RemoveRegionIdFromDifferentAreas < ActiveRecord::Migration
   def change
-    remove_column :different_areas, :region_id, :integer
+    if DifferentArea.column_names.include?('region_id')
+      remove_column :different_areas, :region_id, :integer
+    end
   end
 end
