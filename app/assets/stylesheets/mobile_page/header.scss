@@ -56,6 +56,19 @@ header {
     border-bottom: 5px solid #fff;
     
   }
+  .nav-bar:before{
+    content: ' ';
+    display: block;
+    position: absolute;
+    top: -5px;
+    right: 10px;
+    width: 0;
+    height: 0;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-bottom: 5px solid #fff;
+    
+  }
   .only-products-nav{
       position: fixed;
       top: 0;
