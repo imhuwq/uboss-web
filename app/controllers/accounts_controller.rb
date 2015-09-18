@@ -116,9 +116,10 @@ class AccountsController < ApplicationController
     mobile = params[:mobile]
     seller = User.find_by(login: mobile)
 
-    if seller && seller.agent.present?  #商家已绑定过创客？
-      flash.now[:error] =
-        seller.agent_id == current_user.id ? "#{seller.identify}已经是您的商家" : '邀请失败，商家已经绑定过创客'
+    if seller && seller.agent_id == current_user.id
+      flash.now[:error] = "#{seller.identify}已经是您的商家"
+    elsif seller && !seller.can_rebind_agent?
+      flash.now[:error] = model_errors(seller).join("<br/>")
     else
       histroy = AgentInviteSellerHistroy.find_or_new_by_mobile_and_agent_id(mobile, current_user.id)
       result = PostMan.send_sms(mobile, {code: histroy.invite_code}, 923_651)
