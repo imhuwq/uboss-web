@@ -399,6 +399,13 @@
 		targetElement = this.getTargetElementFromEventTarget(event.target);
 		touch = event.targetTouches[0];
 
+    var nodeName = targetElement.nodeName.toLowerCase();
+    var typeAttribute = targetElement.getAttribute('type');
+
+    if (nodeName === "select" || (typeAttribute === 'date' && nodeName === "input") || (typeAttribute === 'datetime' && nodeName === "input")) {
+      return false;
+    }
+
 		if (deviceIsIOS) {
 
 			// Only trusted events will deselect text on iOS (issue #49)
