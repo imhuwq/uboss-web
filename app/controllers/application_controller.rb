@@ -15,6 +15,7 @@ class ApplicationController < ActionController::Base
   def model_errors(model)
     model.errors.full_messages
   end
+  helper_method :model_errors
 
   def authenticate_user!
     if Rails.env.development? && params[:mode] == 'admin'
