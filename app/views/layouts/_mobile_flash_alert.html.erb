@@ -11,14 +11,14 @@
       <% if flash[:info] || flash[:notice] %>
         <div class="alert alert-info">
           <a class="close" data-dismiss="alert">x</a>
-          <%= sanitize flash[:info] || flash[:notice] %>
+          <%== flash[:info] || flash[:notice] %>
         </div>
       <% end %>
 
       <% if flash[:error] || flash[:alert] %>
         <div class="alert alert-error">
           <a class="close" data-dismiss="alert">x</a>
-          <%= sanitize flash[:error] || flash[:alert] %>
+          <%== flash[:error] || flash[:alert] %>
         </div>
       <% end %>
     </div>
