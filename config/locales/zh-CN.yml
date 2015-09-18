@@ -119,9 +119,11 @@ zh-CN:
       default: 验证码错误
   nav_groups:
     orders: 订单
+    product_manage: 商品管理
     withdraw_records: 提现
   li_link:
     dashboard: 主页
+    carriage_template: 运费模板
     data: 数据
     orders: 订单
     sharing_incomes: 分成
