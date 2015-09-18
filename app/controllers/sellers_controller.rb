@@ -30,7 +30,7 @@ class SellersController < AdminController
 
   def update
     valid_create_params
-    if current_user.check_bind_condition
+    if current_user.can_rebind_agent?
       if @errors.present?
         flash[:error] = @errors.join("\n")
       else

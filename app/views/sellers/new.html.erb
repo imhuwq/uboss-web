@@ -1,6 +1,6 @@
 <div class="row">
 
-  <% if current_user.present? and current_user.check_bind_condition and @agent.present? %>
+  <% if current_user.present? and current_user.can_rebind_agent? and @agent.present? %>
     <%= horizon_form_for(:seller, url: seller_path(current_user), method: 'PUT') do |f| %>
     <div class="well">
       <h4>注册绑定UBOSS</h4>
