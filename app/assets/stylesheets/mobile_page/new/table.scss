@@ -1,15 +1,18 @@
 table{
     width: 100%;
     td{
-        padding: 4px ;
+        padding:8px 4px;
     }
 }
 .border-table{
     td{border-bottom: 1px dotted #eee;}
 }
 .v-top{
-    td{vertical-align: top;}
-    img{ vertical-align: baseline;}
+    td{
+      vertical-align: top;
+      
+    }
+    img{ vertical-align:bottom;}
 }
 .v-center{
     td{vertical-align: bottom;}
