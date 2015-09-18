@@ -12,7 +12,8 @@
 #= require_tree ./admin
 #= require_self
 
-$ ->
+jQuery ($) ->
+
   $("body").on 'click',"#check_all", ->
     $(".check").attr("checked",this.checked)
 
@@ -28,3 +29,5 @@ $ ->
       tabid = $(this).attr('data-title')
       $(tabid).fadeIn()
     return
+
+  $("select").filter(":not([data-manual-chosen])").chosen()

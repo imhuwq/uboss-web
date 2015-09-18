@@ -7,18 +7,19 @@ class Order < ActiveRecord::Base
   belongs_to :user
   belongs_to :seller, class_name: "User"
   belongs_to :user_address
-  has_many :order_items
-  has_one :order_charge, autosave: true
-  has_many :divide_incomes
-  has_many :selling_incomes
-  has_many :sharing_incomes, through: :order_items
+  has_many   :order_items
+  has_one    :order_charge, autosave: true
+  has_many   :divide_incomes
+  has_many   :selling_incomes
+  has_many   :sharing_incomes, through: :order_items
 
   accepts_nested_attributes_for :order_items
 
   validates :user_id, :user_address_id, :seller_id, presence: true
   validates_uniqueness_of :number, allow_blank: true
 
-  delegate :mobile, :regist_mobile, :identify, to: :user, prefix: :buyer
+  delegate :mobile, :regist_mobile, :identify,
+    to: :user, prefix: :buyer
   delegate :prepay_id, :prepay_id=, :prepay_id_expired_at, :prepay_id_expired_at=,
     :pay_serial_number, :pay_serial_number=, :payment, :payment_i18n, :paid_at, :paid_amount,
     to: :order_charge, allow_nil: true
@@ -80,6 +81,14 @@ class Order < ActiveRecord::Base
 
   def is_official_agent?
     order_items.first.product.is_official_agent?
+  end
+
+  def order_item
+    @order_item ||= order_items.first || OrderItem.new
+  end
+
+  def product
+    @product ||= order_item.try(:product) || Product.new
   end
 
   private

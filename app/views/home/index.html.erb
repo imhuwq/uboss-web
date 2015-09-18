@@ -29,7 +29,9 @@
 <div class="box border-box">
 	<div class="box-w100">
 		<div class="page-title like-color">
-			<a href="/products/" class="more-bar">more <%= image_tag 'mobile/arrow-right.png' %></a>
+      <%= link_to store_path(User.official_account), class: 'more-bar' do %>
+        more <%= image_tag 'mobile/arrow-right.png' %>
+      <% end %>
 			猜你喜欢
 		</div>
 	</div>

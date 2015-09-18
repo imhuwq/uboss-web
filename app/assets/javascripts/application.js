@@ -34,5 +34,5 @@ $(function() {
 });
 
 function close_window() {
-  $('#window').html('');
+  $('.share-container').remove();
 }

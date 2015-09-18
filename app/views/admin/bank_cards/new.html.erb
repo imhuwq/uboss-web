@@ -1,14 +1,17 @@
-<ol class="breadcrumb">
-  <li><%= link_to '银行卡列表', [:admin, :bank_cards] %></li>
-  <li class="active">添加银行卡</li>
-</ol>
-
-<h3>添加银行卡</h3>
-<hr />
-
-<%= simple_form_for [:admin, @bank_card] do |f| %>
-  <%= f.input :bankname %>
-  <%= f.input :username, hint: '' %>
-  <%= f.input :number %>
-  <%= f.submit class: 'btn btn-primary' %>
-<% end %>
+<div class="container">
+  <ul class="breadcrumb">
+    <li><a href="/admin">主页</a></li>
+    <li class="divider"><i class="fa fa-caret-right"></i></li>
+    <li><%= link_to '银行卡列表', [:admin, :bank_cards] %></li>
+    <li class="divider"><i class="fa fa-caret-right"></i></li>
+    <li>添加银行卡</li>
+  </ul>
+</div>
+<br />
+<div class="container">
+  <div class="admin-box black-bg-color">
+    <h3 class="text-center">添加银行卡</h3>
+    <br />
+    <%= render 'form' %>
+  </div>
+</div>
