@@ -123,10 +123,12 @@ zh-CN:
     message:
       default: 验证码错误
   nav_groups:
+    order_manage: 订单管理
     orders: 订单
     withdraw_records: 提现
   li_link:
     dashboard: 主页
+    expresses: 快递管理
     data: 数据
     orders: 订单
     sharing_incomes: 分成
