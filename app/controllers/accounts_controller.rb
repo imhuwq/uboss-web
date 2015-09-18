@@ -142,7 +142,7 @@ class AccountsController < ApplicationController
 
     if !histroy || histroy.expired?
       flash[:error] = '验证码错误或已过期。'
-    elsif @seller && !@seller.check_bind_condition
+    elsif @seller && !@seller.can_rebind_agent?
       flash[:error] = model_errors(@seller).join("<br/>")
     elsif histroy.agent_id != current_user.id
       flash[:error] = '请先邀请商家后绑定'
@@ -160,7 +160,7 @@ class AccountsController < ApplicationController
   end
 
   def bind_agent # 商家绑定创客
-    if !current_user.check_bind_condition
+    if !current_user.can_rebind_agent?
       redirect_to action: :binding_agent
     elsif not MobileCaptcha.auth_code(current_user.login, params[:user][:mobile_auth_code])
       flash[:error] = '验证码错误或已过期。'

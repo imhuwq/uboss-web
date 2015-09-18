@@ -1,5 +1,5 @@
 <div class='container-sm'>
-  <% if current_user.check_bind_condition %>
+  <% if current_user.can_rebind_agent? %>
     <div class="container admin-container">
       <ul class="breadcrumb">
         <li><a href="/admin">主页</a></li>

@@ -29,7 +29,7 @@ class Admin::AccountsController < AdminController
 
   def bind_agent
     agent_code = params[:user][:code]
-    if current_user.check_bind_condition
+    if current_user.can_rebind_agent?
       if params['binding_submit'].present?
         if current_user.bind_agent(agent_code)
           AgentInviteSellerHistroy.find_by(mobile: current_user.login).try(:update, status: 1)
