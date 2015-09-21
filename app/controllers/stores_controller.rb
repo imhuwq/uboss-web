@@ -2,15 +2,11 @@ class StoresController < ApplicationController
 
   layout 'mobile'
 
-  before_action :set_seller, :set_sharing_link_node, only: [:show, :hots]
+  before_action :set_seller, :get_sharing_node, :set_sharing_link_node, only: [:show, :hots]
 
   def show
     @products = append_default_filter @seller.products.published, order_column: :updated_at
     @hots = @seller.products.hots.recent.limit(3)
-
-    if @store_scode = get_seller_sharing_code(@seller.id)
-      @sharing_node = SharingNode.find_by(code: @store_scode)
-    end
     render partial: 'product', collection: @products if request.xhr?
   end
 
@@ -25,6 +21,13 @@ class StoresController < ApplicationController
   end
 
   private
+
+  def get_sharing_node
+    if @store_scode = get_seller_sharing_code(@seller.id)
+      @sharing_node = SharingNode.find_by(code: @store_scode)
+    end
+  end
+
   def set_sharing_link_node
     if current_user.present?
       @sharing_link_node ||=
