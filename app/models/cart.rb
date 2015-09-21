@@ -3,8 +3,9 @@ class Cart < ActiveRecord::Base
   belongs_to :user
   #has_many   :items, through: :cart_items, source: :product
 
-  def add_product(product, count=1)
+  def add_product(product, sharing_code, count=1)
     cart_item = cart_items.find_or_initialize_by(product_id: product.id, seller_id: product.user_id)
+    cart_item.sharing_node = SharingNode.find_by(code: self.sharing_code) if sharing_code
     cart_item.count += count
     cart_item.save
   end
@@ -28,7 +29,8 @@ class Cart < ActiveRecord::Base
     cart_items.inject(0){ |sum, item| sum + item.send(price_attribute)*CartItem.where("product_id = ? AND cart_id = ?", item.product_id, id).take!.count }
   end
 
-  def items_split_by_seller
+  # 购物车商品按店铺分组
+  def items_group_by_seller
     seller_ids = cart_items.map(&:seller_id).uniq
     items = []
     seller_ids.each { |seller_id| items << {User.find(seller_id).identify => cart_items.where(seller_id: seller_id)} }
@@ -37,13 +39,11 @@ class Cart < ActiveRecord::Base
 
   #登录，合并购物车
   def merge_user_cart(user)
-    if self.id != user.cart.try(:id)
-      user_cart = user.cart
-      self.merge_cart(user_cart)
-      self.user = user
-      user_cart.destroy
-      self.save
-    end
+    user_cart = user.cart
+    self.merge_cart(user_cart)
+    self.user = user
+    user_cart.destroy
+    self.save
     self
   end
 

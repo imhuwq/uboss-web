@@ -32,13 +32,15 @@ class ProductsController < ApplicationController
   end
 
   def add_to_cart
-    @product = Product.find(params[:id])
-    #消费者不能购买 库存数量为0的商品
-    if @product.count > 0
-      current_cart.add_product_to_cart(@product)
+    product = Product.find(params[:id])
+    sharing_node = get_product_sharing_code(product.id)
+
+    # 库存数
+    if product.count > 0
+      current_cart.add_product(product, sharing_node, params[:count])
       flash[:notice] = "你已成功将 #{@product.title} 加入购物车"
     else
-      flash[:notice] = "你的购物车内已有此物品"
+      flash[:notice] = "此商品已售罄"
     end
   end
 
