@@ -2,7 +2,7 @@ class Admin::CarriageTemplatesController < AdminController
   before_action :find_carriage, only: [:show, :edit, :update, :destroy]
 
   def index
-    @carriages = CarriageTemplate.all
+    @carriages = CarriageTemplate.all.page(params[:page])
   end
 
   def edit
@@ -12,7 +12,7 @@ class Admin::CarriageTemplatesController < AdminController
    if @carriage.destroy
      flash[:success] = '删除配送模板成功'
    else
-     flash[:error] = '删除配送模板失败'
+     flash[:error] = "删除配送模板失败, 原因: #{@carriage.errors.full_messages.join(';')}"
    end
     redirect_to admin_carriage_templates_path
   end
