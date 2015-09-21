@@ -3,6 +3,8 @@ class Cart < ActiveRecord::Base
   belongs_to :user
   #has_many   :items, through: :cart_items, source: :product
 
+  validates_presence_of :user_id
+
   def add_product(product, sharing_code, count=1)
     cart_item = cart_items.find_or_initialize_by(product_id: product.id, seller_id: product.user_id)
     cart_item.sharing_node = SharingNode.find_by(code: self.sharing_code) if sharing_code
@@ -37,18 +39,9 @@ class Cart < ActiveRecord::Base
     items
   end
 
-  #登录，合并购物车
-  def merge_user_cart(user)
-    user_cart = user.cart
-    self.merge_cart(user_cart)
-    self.user = user
-    user_cart.destroy
-    self.save
-    self
-  end
-
-  def merge_cart(cart)
-    cart.cart_items.each { |cart_item| self.add_product(cart_item.product, cart_item.count) }
-    self
-  end
+  # 合并购物车
+  #def merge_cart(cart)
+  #  cart.cart_items.each { |cart_item| self.add_product(cart_item.product, cart_item.count) }
+  #  self
+  #end
 end
