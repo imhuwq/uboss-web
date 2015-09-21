@@ -51,7 +51,7 @@ class AccountsController < ApplicationController
       flash[:notice] = '您已经是UBOSS商家'
       redirect_to after_sign_in_path_for(current_user)
     else
-      current_user.become_uboss_seller
+      current_user.bind_agent(nil)
       redirect_to binding_agent_admin_account_path
     end
   end
@@ -60,9 +60,6 @@ class AccountsController < ApplicationController
   end
 
   def binding_agent # 商家绑定创客
-    if current_user.agent.present?
-      redirect_to action: :binding_successed
-    end
   end
 
   def update_password
@@ -119,9 +116,10 @@ class AccountsController < ApplicationController
     mobile = params[:mobile]
     seller = User.find_by(login: mobile)
 
-    if seller && seller.agent.present?  #商家已绑定过创客？
-      flash.now[:error] =
-        seller.agent_id == current_user.id ? "#{seller.identify}已经是您的商家" : '邀请失败，商家已经绑定过创客'
+    if seller && seller.agent_id == current_user.id
+      flash.now[:error] = "#{seller.identify}已经是您的商家"
+    elsif seller && !seller.can_rebind_agent?
+      flash.now[:error] = model_errors(seller).join("<br/>")
     else
       histroy = AgentInviteSellerHistroy.find_or_new_by_mobile_and_agent_id(mobile, current_user.id)
       result = PostMan.send_sms(mobile, {code: histroy.invite_code}, 923_651)
@@ -139,44 +137,46 @@ class AccountsController < ApplicationController
     end
   end
 
-  # Change action 'bind_agent' to 'bind_seller'
   def bind_seller # 创客绑定商家
-    invite_code = params[:bind_seller][:invite_code]
-    histroy = AgentInviteSellerHistroy.find_by(invite_code: invite_code, agent_id: current_user.id)
-    seller = User.find_by(login: histroy.mobile) if histroy
+    histroy = AgentInviteSellerHistroy.find_by(invite_code: params[:bind_seller][:invite_code], agent_id: current_user.id)
+    @seller = User.find_by(login: histroy.mobile) if histroy
 
     if !histroy || histroy.expired?
-      flash[:error] = '邀请码错误或已过期。'
-    elsif !seller
-      flash[:error] = "找不到手机号为 #{histroy.mobile} 的帐户"
-    elsif seller.agent.present?
-      flash[:error] = '商家已与创客绑定'
+      flash[:error] = '验证码错误或已过期。'
+    elsif @seller && !@seller.can_rebind_agent?
+      flash[:error] = model_errors(@seller).join("<br/>")
     elsif histroy.agent_id != current_user.id
       flash[:error] = '请先邀请商家后绑定'
-    elsif current_user.bind_seller(seller)
-      histroy.try(:update, status: 1)
-      flash[:success] = "绑定成功,#{seller.identify}成为您的商家。"
     else
-      flash[:error] = model_errors(current_user).join('<br/>')
+      @seller ||= User.create_guest(histroy.mobile)
+      if current_user.bind_seller(@seller)
+        histroy.try(:update, status: 1)
+        flash[:success] = "绑定成功,#{@seller.identify}成为您的商家。"
+      else
+        flash[:error] = model_errors(current_user).join('<br/>')
+      end
     end
 
     redirect_to action: :invite_seller
   end
 
   def bind_agent # 商家绑定创客
-    if current_user.agent.present?
-      redirect_to action: :binding_successed
+    if !current_user.can_rebind_agent?
+      redirect_to action: :binding_agent
     elsif not MobileCaptcha.auth_code(current_user.login, params[:user][:mobile_auth_code])
       flash[:error] = '验证码错误或已过期。'
       redirect_to action: :binding_agent, agent_code: params[:agent_code]
-    elsif current_user.bind_agent(params[:agent_code])
-      AgentInviteSellerHistroy.find_by(mobile: current_user.login, agent_id: current_user.agent_id).try(:update, status: 1)
-      MobileCaptcha.find_by(code: params[:user][:mobile_auth_code]).try(:destroy)
-      flash[:success] = "绑定成功,#{current_user.agent.identify}成为您的创客。"
-      redirect_to action: :binding_successed
     else
-      flash[:error] = model_errors(current_user).join('<br/>')
-      redirect_to action: :binding_agent, agent_code: params[:agent_code]
+      if current_user.bind_agent(params[:agent_code])
+        AgentInviteSellerHistroy.find_by(mobile: current_user.login, agent_id: current_user.agent_id).
+          try(:update, status: 1)
+        MobileCaptcha.find_by(code: params[:user][:mobile_auth_code]).try(:destroy)
+        flash[:success] = "绑定成功,#{current_user.agent.identify}成为您的创客。"
+        redirect_to action: :binding_successed
+      else
+        flash[:error] = model_errors(current_user).join('<br/>')
+        redirect_to action: :binding_agent, agent_code: params[:agent_code]
+      end
     end
   end
 

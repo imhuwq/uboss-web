@@ -2,28 +2,44 @@
   <%= @seller.store_identify %>
 <% end %>
 
-<div class="banner-slider">
-  <div id='slider' class='swipe'>
-    <div class='swipe-wrap'>
-      <% store_banner_data(@seller).each do |image, product| %>
-        <div>
-          <% if product.present? %>
-            <%= link_to product do %>
+<%= content_for :extra_meta_tags do %>
+  <% if @seller %>
+    <%= store_sharing_meta_tags(@seller, @sharing_link_node) %>
+  <% end %>
+<% end %>
+
+<% if browser.wechat? %>
+  <%= content_for :extra_javascript do %>
+    <script type="text/javascript" charset="utf-8">
+      wx.ready(function(){ UBoss.luffy.invokeSharing(); });
+    </script>
+  <% end %>
+<% end %>
+
+<% if store_banner_data(@seller).size > 0 %>
+  <div class="banner-slider">
+    <div id='slider' class='swipe'>
+      <div class='swipe-wrap'>
+        <% store_banner_data(@seller).each do |image, product| %>
+          <div>
+            <% if product.present? %>
+              <%= link_to product do %>
+                <%= image_tag image.url(:'640x320') %>
+              <% end %>
+            <% else %>
               <%= image_tag image.url(:'640x320') %>
             <% end %>
-          <% else %>
-            <%= image_tag image.url(:'640x320') %>
-          <% end %>
-        </div>
+          </div>
+        <% end %>
+      </div>
+    </div>
+    <div id='slider-points'>
+      <% store_banner_data(@seller).size.times do |index| %>
+        <span class="<%= 'active' if index == 0 %>">*</span>
       <% end %>
     </div>
   </div>
-  <div id='slider-points'>
-    <% store_banner_data(@seller).size.times do |index| %>
-      <span class="<%= 'active' if index == 0 %>">*</span>
-    <% end %>
-  </div>
-</div>
+<% end %>
 
 <% if !@hide_hot_box && @hots.present? %>
   <div class="store-like">

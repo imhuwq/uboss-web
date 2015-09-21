@@ -2,6 +2,7 @@ require 'sidekiq/web'
 require 'okay_responder'
 
 Rails.application.routes.draw do
+
   mount OkayResponder.new, at: "__upyun_uploaded"
   mount ChinaCity::Engine => '/china_city'
 
@@ -40,10 +41,7 @@ Rails.application.routes.draw do
     get 'cancel', on: :member
     resource :charge, only: [:create]
   end
-  resources :products do
-    member do
-      get :refact
-    end
+  resources :products, only: [:index, :show] do
     post :save_mobile, :democontent,  on: :collection
   end
   resources :evaluations do
@@ -70,6 +68,17 @@ Rails.application.routes.draw do
   end
   resources :privilege_cards, only: [:show, :index, :update]
   resources :sellers, only: [:new, :create, :update]
+
+  namespace :api do
+    namespace :v1 do
+      post 'login', to: 'sessions#create'
+      resources :mobile_captchas, only: [:create]
+      resource :account, only: [] do
+        patch :update_password
+        get :orders, :privilege_cards
+      end
+    end
+  end
 
   authenticate :user, lambda { |user| user.admin? } do
     namespace :admin do

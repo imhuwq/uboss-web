@@ -116,13 +116,18 @@ textarea {
 
 
  }
+ p.help-block {
+   font-size: smaller;
+ }
  .inline-form {
    form{
      display: inline-block;
      text-align: left;
    }
    .inline-label{display: inline-block;padding:8px;}
-   p.help-block{ padding:8px 0 8px 140px;}
+   p.help-block{
+     padding:8px 0 8px 140px;
+    }
    span.help-block{ margin-left:10px ;font-size: 12px;}
    .form-group{
      overflow: visible;

@@ -1,6 +1,14 @@
 module ProductsHelper
 
-  def product_sharing_link(product, sharing_node=nil)
+  def store_sharing_link(seller, sharing_node = nil)
+    if sharing_node.blank?
+      store_url(seller)
+    else
+      sharing_url(sharing_node)
+    end
+  end
+
+  def product_sharing_link(product, sharing_node = nil)
     if sharing_node.blank?
       product_url(product)
     else

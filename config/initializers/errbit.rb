@@ -11,3 +11,21 @@ Airbrake.configure do |config|
   config.logger  = Logger.new("log/airbrake.log")
   config.rescue_rake_exceptions = true
 end
+
+class Object
+
+  def self.send_exception_message(exception, parameters)
+    if Rails.env.staging? || Rails.env.production?
+      Airbrake.notify_or_ignore(e,
+                                parameters: parameters,
+                                cgi_data: ENV.to_hash)
+    else
+      raise exception
+    end
+  end
+
+  def send_exception_message(execution, parameters)
+    self.class.send_exception_message(execution, parameters)
+  end
+
+end

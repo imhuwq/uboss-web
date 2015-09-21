@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150915080135) do
+ActiveRecord::Schema.define(version: 20150915091244) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -134,6 +134,12 @@ ActiveRecord::Schema.define(version: 20150915080135) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "sharing_node_id"
+  end
+
+  create_table "expresses", force: :cascade do |t|
+    t.string   "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "mobile_captchas", force: :cascade do |t|
@@ -309,6 +315,12 @@ ActiveRecord::Schema.define(version: 20150915080135) do
   add_index "redactor_assets", ["assetable_type", "assetable_id"], name: "idx_redactor_assetable", using: :btree
   add_index "redactor_assets", ["assetable_type", "type", "assetable_id"], name: "idx_redactor_assetable_type", using: :btree
 
+  create_table "regions", force: :cascade do |t|
+    t.string  "name"
+    t.string  "numcode"
+    t.integer "parent_id"
+  end
+
   create_table "selling_incomes", force: :cascade do |t|
     t.datetime "created_at",               null: false
     t.datetime "updated_at",               null: false
@@ -347,6 +359,7 @@ ActiveRecord::Schema.define(version: 20150915080135) do
     t.integer  "rgt",        null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer  "seller_id"
   end
 
   add_index "sharing_nodes", ["code"], name: "index_sharing_nodes_on_code", unique: true, using: :btree
@@ -355,6 +368,7 @@ ActiveRecord::Schema.define(version: 20150915080135) do
   add_index "sharing_nodes", ["rgt"], name: "index_sharing_nodes_on_rgt", using: :btree
   add_index "sharing_nodes", ["user_id", "product_id", "parent_id"], name: "index_sharing_nodes_on_user_id_and_product_id_and_parent_id", unique: true, using: :btree
   add_index "sharing_nodes", ["user_id", "product_id"], name: "index_sharing_nodes_on_user_id_and_product_id", unique: true, where: "(parent_id IS NULL)", using: :btree
+  add_index "sharing_nodes", ["user_id", "seller_id"], name: "index_sharing_nodes_on_user_id_and_seller_id", unique: true, where: "(seller_id IS NOT NULL)", using: :btree
 
   create_table "simple_captcha_data", force: :cascade do |t|
     t.string   "key",        limit: 40
@@ -504,6 +518,7 @@ ActiveRecord::Schema.define(version: 20150915080135) do
   add_foreign_key "sharing_incomes", "users"
   add_foreign_key "sharing_incomes", "users", column: "seller_id"
   add_foreign_key "sharing_nodes", "products", on_delete: :cascade
+  add_foreign_key "sharing_nodes", "users", column: "seller_id"
   add_foreign_key "sharing_nodes", "users", on_delete: :cascade
   add_foreign_key "transactions", "users"
   add_foreign_key "user_addresses", "users"
