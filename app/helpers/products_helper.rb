@@ -32,19 +32,4 @@ module ProductsHelper
     "#{product.short_description}"
   end
 
-  def store_good_rate(seller)
-    rate_data = seller.store_rates
-    total = store_total_rate(seller)
-    rate = if total > 0
-             rate_data['good'].to_i * 100 / total
-           else
-             100
-           end
-    number_to_percentage(rate, precision: 0)
-  end
-
-  def store_total_rate(seller)
-    rate_data = seller.store_rates
-    rate_data.inject(0) { |r, v| r += v[1].to_i }
-  end
 end

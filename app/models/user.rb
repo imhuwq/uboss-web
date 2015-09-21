@@ -143,18 +143,6 @@ class User < ActiveRecord::Base
 
   end
 
-  # TODO 在评价时实时更新
-  def store_rates
-    @store_rates ||= Rails.cache.fetch ['seller-store-rate', id], expires_in: 1.day do
-      result = ActiveRecord::Base.connection.execute <<-SQL.squish!
-        SELECT SUM(good_evaluation) AS good, SUM(bad_evaluation) AS bad, SUM(normal_evaluation) AS normal
-        FROM products
-        WHERE products.user_id = #{id}
-      SQL
-      result = result.first || {}
-    end
-  end
-
   # 默认绑定official agent
   def bind_agent(binding_code = nil)
     agent_user = if binding_code.present?
