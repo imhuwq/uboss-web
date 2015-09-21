@@ -7,6 +7,10 @@ class StoresController < ApplicationController
   def show
     @products = append_default_filter @seller.products.published, order_column: :updated_at
     @hots = @seller.products.hots.recent.limit(3)
+
+    if @store_scode = get_seller_sharing_code(@seller.id)
+      @sharing_node = SharingNode.find_by(code: @store_scode)
+    end
     render partial: 'product', collection: @products if request.xhr?
   end
 

@@ -39,7 +39,7 @@
     <div class="product-info-box">
       <br />
       <div class="friend-card">
-        <p class="cover"><%= image_tag @privilege_card.user.avatar_url(:h50) %></p>
+        <p class="cover"><%= image_tag @privilege_card.user.avatar_url(:w120) %></p>
         <p class="name"><%= @privilege_card.user.identify %> 分享</p>
         <div class="gray-color">每件为你多省<span class="like-color"><%= @privilege_card.privilege_amount %></span></div>
         <br />
@@ -58,10 +58,9 @@
   <div class="product-info-box">
     <br />
     <div class="cover">
-      <% if @product.user.avatar.present? %>
-        <%= image_tag @seller.avatar_url(:h50) %>
-      <% end %>
+      <%= image_tag @seller.avatar_url(:w120) %>
     </div>
+    <br />
     <p class="name"><%= @seller.store_name %></p>
     <p class="gray-color"><%= @seller.store_short_description %></p>
     <p class="gray-color border-top"><%= store_good_rate @seller %> 好评（<%= store_total_rate(@seller) %>）</p>
