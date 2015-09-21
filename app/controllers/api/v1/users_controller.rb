@@ -12,18 +12,18 @@ class Api::V1::UsersController < ApiBaseController
   def unfollow
     following = User.find(params[:user_id])
     if @user.followings.destroy(following)
-      render_success('取消关注成功')
+      head(200)
     else
-      render_error :validation_failed, '取消关注失败'
+      render_error :validation_failed, model_errors(@user)
     end
   end
 
   def follow
     @user.followings << User.find(params[:user_id])
     if @user.save
-      render_success('关注成功')
+      head(200)
     else
-      render_error :validation_failed, '关注失败'
+      render_error :validation_failed, model_errors(@user)
     end
   end
 
