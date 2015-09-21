@@ -27,7 +27,7 @@ class Admin::ExpressesController < AdminController
 
   def index
     authorize! :read, Express
-    @expresses = Express.all
+    @expresses = Express.all.page(params[:page])
   end
 
   def new

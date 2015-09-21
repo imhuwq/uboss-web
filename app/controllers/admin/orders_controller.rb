@@ -1,6 +1,7 @@
 class Admin::OrdersController < AdminController
   load_and_authorize_resource
 
+  before_filter :validate_express_params, only: :set_express
   # TODO record use operations
   after_action :record_operation, only: [:update]
 
@@ -20,13 +21,11 @@ class Admin::OrdersController < AdminController
   end
 
   def set_express
-    if validate_express_params
-      express = Express.find_or_create_by(name: express_params)
-      if @order.update(order_params.merge(express_id: express.id)) && @order.ship!
-        flash[:success] = '发货成功'
-      else
-        flash[:error] = '发货失败'
-      end
+    express = Express.find_or_create_by(name: express_params)
+    if @order.update(order_params.merge(express_id: express.id)) && @order.ship!
+      flash[:success] = '发货成功'
+    else
+      flash[:error] = '发货失败'
     end
     redirect_to admin_orders_path
   end
@@ -39,9 +38,7 @@ class Admin::OrdersController < AdminController
     errors << '运单号不能为空' if order_params['ship_number'].blank?
     if errors.present?
       flash[:error] = errors.join('; ')
-      false
-    else
-      true
+      redirect_to admin_orders_path and return
     end
   end
 
