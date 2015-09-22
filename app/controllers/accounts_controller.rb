@@ -97,6 +97,7 @@ class AccountsController < ApplicationController
 
   def edit_seller_note # 编辑发送信息备注
     @histroy = AgentInviteSellerHistroy.find(params[:id])
+    render layout: 'mobile'
   end
 
   def update_histroy_note # 修改发送信息备注
