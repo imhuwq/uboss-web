@@ -28,13 +28,6 @@ ActiveRecord::Schema.define(version: 20150916071444) do
     t.datetime "expire_at"
   end
 
-  create_table "areas", force: :cascade do |t|
-    t.string   "name"
-    t.integer  "numcode"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
   create_table "asset_imgs", force: :cascade do |t|
     t.string   "filename"
     t.string   "avatar"
@@ -60,19 +53,6 @@ ActiveRecord::Schema.define(version: 20150916071444) do
     t.string   "bankname"
   end
 
-  create_table "carriage_templates", force: :cascade do |t|
-    t.string   "name"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
-  create_table "cities", force: :cascade do |t|
-    t.string   "name"
-    t.integer  "numcode"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
   create_table "daily_reports", force: :cascade do |t|
     t.date     "day"
     t.decimal  "amount"
@@ -90,17 +70,6 @@ ActiveRecord::Schema.define(version: 20150916071444) do
     t.integer "resource_id"
     t.string  "resource_type"
     t.text    "content"
-  end
-
-  create_table "different_areas", force: :cascade do |t|
-    t.integer  "carriage_template_id"
-    t.integer  "province_id"
-    t.integer  "first_item"
-    t.decimal  "carriage"
-    t.integer  "extend_item"
-    t.decimal  "extend_carriage"
-    t.datetime "created_at",           null: false
-    t.datetime "updated_at",           null: false
   end
 
   create_table "divide_incomes", force: :cascade do |t|
@@ -236,38 +205,30 @@ ActiveRecord::Schema.define(version: 20150916071444) do
     t.integer  "user_id"
     t.string   "name"
     t.string   "code"
-    t.decimal  "original_price",       default: 0.0
-    t.decimal  "present_price",        default: 0.0
-    t.integer  "count",                default: 0
-    t.boolean  "buyer_pay",            default: true
-    t.decimal  "traffic_expense",      default: 0.0
+    t.decimal  "original_price",     default: 0.0
+    t.decimal  "present_price",      default: 0.0
+    t.integer  "count",              default: 0
+    t.boolean  "buyer_pay",          default: true
+    t.decimal  "traffic_expense",    default: 0.0
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "has_share_lv",         default: 3
-    t.decimal  "share_amount_total",   default: 0.0
-    t.decimal  "share_amount_lv_1",    default: 0.0
-    t.decimal  "share_amount_lv_2",    default: 0.0
-    t.decimal  "share_amount_lv_3",    default: 0.0
-    t.decimal  "share_rate_lv_1",      default: 0.0
-    t.decimal  "share_rate_lv_2",      default: 0.0
-    t.decimal  "share_rate_lv_3",      default: 0.0
-    t.decimal  "share_rate_total",     default: 0.0
-    t.integer  "calculate_way",        default: 0
-    t.integer  "status",               default: 0
-    t.integer  "good_evaluation",      default: 0
-    t.integer  "normal_evaluation",    default: 0
-    t.integer  "bad_evaluation",       default: 0
-    t.decimal  "privilege_amount",     default: 0.0
+    t.integer  "has_share_lv",       default: 3
+    t.decimal  "share_amount_total", default: 0.0
+    t.decimal  "share_amount_lv_1",  default: 0.0
+    t.decimal  "share_amount_lv_2",  default: 0.0
+    t.decimal  "share_amount_lv_3",  default: 0.0
+    t.decimal  "share_rate_lv_1",    default: 0.0
+    t.decimal  "share_rate_lv_2",    default: 0.0
+    t.decimal  "share_rate_lv_3",    default: 0.0
+    t.decimal  "share_rate_total",   default: 0.0
+    t.integer  "calculate_way",      default: 0
+    t.integer  "status",             default: 0
+    t.integer  "good_evaluation",    default: 0
+    t.integer  "normal_evaluation",  default: 0
+    t.integer  "bad_evaluation",     default: 0
+    t.decimal  "privilege_amount",   default: 0.0
     t.string   "short_description"
-    t.boolean  "hot",                  default: false
-    t.integer  "carriage_template_id"
-  end
-
-  create_table "provinces", force: :cascade do |t|
-    t.string   "name"
-    t.integer  "numcode"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.boolean  "hot",                default: false
   end
 
   create_table "redactor_assets", force: :cascade do |t|
@@ -433,10 +394,8 @@ ActiveRecord::Schema.define(version: 20150916071444) do
     t.integer  "agent_id"
     t.integer  "authenticated",          default: 0
     t.integer  "agent_code"
-    t.string   "authentication_token"
   end
 
-  add_index "users", ["authentication_token"], name: "index_users_on_authentication_token", using: :btree
   add_index "users", ["login"], name: "index_users_on_login", unique: true, using: :btree
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
 

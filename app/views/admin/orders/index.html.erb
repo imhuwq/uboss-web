@@ -22,29 +22,41 @@
 	<div class="clear"></div>
 	<br />
 	<div class="box-w100">
-		<table class="list-table">
-			<thead>
-				<th>订单时间</th>
-				<th>订单编号</th>
-				<th>买家</th>
-				<th>状态</th>
-				<th>操作</th>
-			</thead>
-			<% @orders.each do |order| %>
-			<tr>
-				<td><%= order.created_at %></td>
-				<td><%= link_to order.number, [:admin, order] %></td>
-				<td><%= order.buyer_identify %></td>
-				<td><%= order.state_i18n %></td>
-				<td>
-					<% if order.payed? && can?(:manage, order) %>
-			      <%= link_to '发货', [:ship, :admin, order],
-			        class: 'btn', remote: true %>
-			    <%- end%>
-    		</td>
-			</tr>
-			<% end %>
-		</table>
+    <%= simple_form_for Order.new, url: select_orders_admin_orders_path, remote: true do |f| %>
+      <table class="list-table">
+        <thead>
+          <th>
+            <label class='select_all_orders'>
+              <%= check_box_tag 'select_all', 'select_all'%>
+              <span>全选/取消全选</span>
+            </label>
+            <%= f.submit '批量发货', class: 'btn' %>
+          </th>
+          <th>订单时间</th>
+          <th>订单编号</th>
+          <th>买家</th>
+          <th>状态</th>
+          <th>操作</th>
+        </thead>
+        <% @orders.each do |order| %>
+          <tr>
+            <td class='order_check_box'>
+              <label><%= check_box_tag 'ids[]', order.id, false, disabled: !order.may_ship?, class: "check_box_tag" %></label>
+          </td>
+            <td><%= order.created_at %></td>
+            <td><%= link_to order.number, [:admin, order] %></td>
+            <td><%= order.buyer_identify %></td>
+            <td><%= order.state_i18n %></td>
+            <td>
+              <% if order.payed? && can?(:manage, order) %>
+                <%= link_to '发货', [:ship, :admin, order],
+                 class: 'btn', remote: true %>
+              <% end %>
+            </td>
+          </tr>
+        <% end %>
+      </table>
+    <% end %>
 		<br />
 		<%= paginate @orders %>
 	</div>

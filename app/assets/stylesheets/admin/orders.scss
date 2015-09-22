@@ -3,11 +3,11 @@
 // You can use Sass (SCSS) here: http://sass-lang.com/
 /*
 .orders-heading-info {
-  width: 300px;
-  margin: 0 auto;
-  b {
-    font-size: 3em;
-  }
+width: 300px;
+margin: 0 auto;
+b {
+font-size: 3em;
+}
 }
 
 .label {
@@ -19,6 +19,43 @@
   &.state-closed { @extend .label-warning }
 }
 */
+
+.order_check_box{
+  padding: 0px !important;
+
+  label {
+    padding: 10px;
+    display: block;
+    height: 27px;
+  }
+}
+
+#orders-modal {
+  padding-top: 10%;
+  width: 80%;
+  margin: auto;
+  .close{
+    color: #080808;
+  }
+  input {
+    min-width: 260px;
+  }
+
+  .modal-footer .btn {
+    min-width: 0px;
+  }
+
+  .select2-selection.select2-selection--multiple{
+    width: 260px;
+  }
+
+  .form_ship_number {
+    padding-left: 45px;
+    input {
+      border: 1px solid #ddd;
+    }
+  }
+}
 
 #ship-express-modal {
   padding-top: 7%;
