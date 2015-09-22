@@ -22,14 +22,25 @@
     <div class="my_menu">
       <ul>
         <li><a id="showlist" class="active">我的订单</a></li>
+        <li><a id="showpcards">我的友情卡</a></li>
         <li><a id="showincome">我的收益</a></li>
       </ul>
     </div>
+
     <div class="my_con1">
       <div id="u-order-list">
         <%= render partial: 'order', collection: @orders %>
       </div>
       <div id="load-more" data-container='#u-order-list' data-ele='.acc-order' data-ref='/account/orders'>加载更多</div>
+    </div>
+
+    <div class="account-privilege-cards undis">
+      <%= link_to edit_rate_privilege_cards_path do %>
+        <p>友情卡贡献值比率：<%= current_user.privilege_rate.to_i %>%</p>
+      <% end %>
+      <div id="pcards-list">
+        <%= render partial: 'privilege_cards/privilege_card', collection: @privilege_cards %>
+      </div>
     </div>
 
     <div class="accunt_adil undis">

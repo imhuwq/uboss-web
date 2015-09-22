@@ -1,0 +1,10 @@
+<div class="acc-pcard">
+  <div class="info">
+    <p><%= privilege_card.seller.store_identify %></p>
+    <p><%= privilege_card.seller.products.published.count %></p>
+    <p><a href="#">分享</a></p>
+  </div>
+  <div class="avatar">
+    <%= image_tag privilege_card.seller.avatar_url(:w120) %>
+  </div>
+</div>

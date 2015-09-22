@@ -1,0 +1,16 @@
+<%= simple_form_for current_user, url: set_privilege_rate_privilege_cards_path do |f| %>
+  <%= f.input :privilege_rate, label: '贡献值比率' do %>
+    <%= f.input_field :privilege_rate %>
+    <span>%</span>
+  <% end %>
+  <%= f.submit '确认修改' %>
+<% end %>
+
+<div class="text-center">
+  <p> 朋友为我直接带来的每笔收益中 </p>
+  <p> 我获得40%</p>
+  <p> 用 60% 帮TA打折</p>
+  <br />
+  <p> <a href="/about">神马意思？</a></p>
+</div>
+

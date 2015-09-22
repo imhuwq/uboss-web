@@ -66,7 +66,12 @@ Rails.application.routes.draw do
       post :wechat_alarm
     end
   end
-  resources :privilege_cards, only: [:show, :index, :update]
+  resources :privilege_cards, only: [:show, :index] do
+    collection do
+      patch :set_privilege_rate
+      get :edit_rate
+    end
+  end
   resources :sellers, only: [:new, :create, :update]
 
   namespace :api do
