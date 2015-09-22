@@ -2,8 +2,35 @@ class Admin::OrdersController < AdminController
   load_and_authorize_resource
 
   before_filter :validate_express_params, only: :set_express
+
   # TODO record use operations
   after_action :record_operation, only: [:update]
+
+  def select_orders
+    @orders = Order.where(id: params[:ids])
+  end
+
+  def batch_shipments
+    success, errors = 0, 0
+    params[:order].each do |order_id, param|
+      order = Order.find(order_id)
+      express = Express.find_or_create_by(name: param[:express_name])
+      if validate_batch_shipment_params(param) \
+        && order.update({ship_number: param[:ship_number], express: express}) \
+        && order.ship!
+        success += 1
+      else
+        errors += 1
+      end
+    end
+
+    if errors != 0
+      flash[:error] = "批量发货 #{errors} 个订单发货失败"
+    else
+      flash[:success] = "所有订单发货成功"
+    end
+    redirect_to admin_orders_path
+  end
 
   def index
     @orders = append_default_filter @orders.recent
@@ -31,6 +58,10 @@ class Admin::OrdersController < AdminController
   end
 
   private
+
+  def validate_batch_shipment_params(param)
+    param[:express_name].present? && param[:ship_number].present?
+  end
 
   def validate_express_params
     errors = []

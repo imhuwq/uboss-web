@@ -196,6 +196,8 @@ zh-CN:
         login: 登录手机
         password: 密码
       order:
+        express_name: 快递公司
+        ship_number: 运单号
         number: 订单编号
         buyer_regist_mobile: 买家
         created_at: 创建时间
