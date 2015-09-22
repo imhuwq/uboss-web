@@ -6,6 +6,7 @@ input,input:focus{
     padding: 2px 4px;
     line-height: 20px;
     color: #999;
+    border-radius: 0;
     
    
 }
@@ -13,7 +14,32 @@ input:focus{
     border-color: $brand-primary;
     color: #333;
 }
-.input-radius{
+.input-group{
+    margin-bottom: 10px;
+    line-height: 20px;
+    font-size: 14px;
+    label{
+        width:40px ;
+        display: block;
+        float: left;
+        margin-right: 10px;
+        padding: 5px 0 0;
+    }
+    .input-box {
+       overflow: hidden;
+       .text{
+           padding: 5px 0 0;
+       }
+    }
+    &.large{
+       label{
+           padding: 9px 0 0;
+       }
+       .text{padding: 8px 0 0;}
+    }
+    
+}
+.input-radius,.input-radius:focus{
     border-radius: 4px;
 }
 .input-large{
@@ -26,4 +52,14 @@ input:focus{
     box-sizing: border-box;
     width: 100%;
 }
+.input-border,.input-border:focus{
+    border: none;
+    border-bottom: 1px solid #ddd;
+    padding-left:0 ;
+    padding-right:0 ;
+}
+.input-border:focus{
+    color: $brand-primary;
+}
+
 
