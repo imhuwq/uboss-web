@@ -20,8 +20,6 @@ class SharingNode < ActiveRecord::Base
 
   before_create :set_code, :set_product
 
-  delegate :amount, to: :privilege_card, prefix: :privilege, allow_nil: true
-
   class << self
     def find_or_create_by_resource_and_parent(user, resource, parent = nil)
       if parent.present? && parent.user_id == user.id
@@ -86,16 +84,16 @@ class SharingNode < ActiveRecord::Base
       end
   end
 
-  def privilege_amount
-    privilege_card.present? ? privilege_card.privilege_amount : 0
-  end
-
   def to_param
     code
   end
 
+  def privilege_amount
+    @privilege_amount ||= privilege_card.present? ? privilege_card.privilege_amount(product) : 0
+  end
+
   def privilege_card
-    @privilege_card ||= PrivilegeCard.find_by(user_id: user_id, product_id: product_id, actived: true)
+    @privilege_card ||= PrivilegeCard.find_by(user_id: user_id, seller_id: product.user_id)
   end
 
   private

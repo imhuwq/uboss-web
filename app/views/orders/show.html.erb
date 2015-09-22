@@ -71,7 +71,7 @@
 
 <% if @privilege_card.present? %>
   <br />
-  <%= render partial: 'privilege_card', locals: { privilege_card: @privilege_card } %>
+  <%= render partial: 'privilege_card', locals: { privilege_card: @privilege_card, product: @product } %>
 <% end %>
 
 <br/>

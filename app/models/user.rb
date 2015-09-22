@@ -38,6 +38,8 @@ class User < ActiveRecord::Base
   validates :mobile, allow_nil: true, mobile: true
   validates :agent_code, uniqueness: true, allow_nil: true
   validates :authentication_token, uniqueness: true, presence: true
+  validates_numericality_of :privilege_rate,
+    greater_than_or_equal_to: 0, less_than_or_equal_to: 100, only_integer: true
 
   alias_attribute :regist_mobile, :login
 
@@ -61,7 +63,7 @@ class User < ActiveRecord::Base
       false
     end
   end
-  before_validation :ensure_authentication_token
+  before_validation :ensure_authentication_token, :ensure_privilege_rate
   before_create :set_mobile
   before_create :build_user_info, if: -> { user_info.blank? }
   before_save   :set_service_rate
@@ -349,6 +351,10 @@ class User < ActiveRecord::Base
   end
 
   private
+
+  def ensure_privilege_rate
+    self.privilege_rate = self.privilege_rate.to_i
+  end
 
   def ensure_authentication_token
     if authentication_token.blank?

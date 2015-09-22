@@ -41,11 +41,11 @@
       <div class="friend-card">
         <p class="cover"><%= image_tag @privilege_card.user.avatar_url(:w120) %></p>
         <p class="name"><%= @privilege_card.user.identify %> 分享</p>
-        <div class="gray-color">每件为你多省<span class="like-color"><%= @privilege_card.privilege_amount %></span></div>
+        <div class="gray-color">每件为你多省<span class="like-color"><%= @privilege_card.privilege_amount(@product) %></span></div>
         <br />
         <div class="border-box">
           <p class="name">友情价</p>
-          <div class="price"><%= @product.present_price - @privilege_card.privilege_amount %></div>
+          <div class="price"><%= @product.present_price - @privilege_card.privilege_amount(@product) %></div>
         </div>
         <br />
         <p class="name">关于分享者</p>

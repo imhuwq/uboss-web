@@ -4,13 +4,13 @@
       <span class="appr_header_img">
         <%= image_tag current_user.avatar_url(:h50) %>
       </span>
-      <span class="appr_header_tit">您将获得<strong><%= @privilege_card.returning_amount %></strong>积分</span>
+      <span class="appr_header_tit">您将获得<strong><%= @privilege_card.returning_amount(product) %></strong>积分</span>
     </div>
     <div class="appr_header_content">
-      <p class="appr_line1"><strong><%= number_with_precision(@privilege_card.discount, precision: 2) %></strong><span>折</span></p>
+      <p class="appr_line1"><strong><%= number_with_precision(@privilege_card.discount(product), precision: 2) %></strong><span>折</span></p>
       <p class="appr_line2">购买本商品每件省</p>
-      <p class="appr_line3">省<strong><%= @privilege_card.privilege_amount %></strong>元/件</p>
-      <p class="appr_line4">返<strong><%= @privilege_card.returning_amount %></strong>积分/件</p>
+      <p class="appr_line3">省<strong><%= @privilege_card.privilege_amount(product) %></strong>元/件</p>
+      <p class="appr_line4">返<strong><%= @privilege_card.returning_amount(product) %></strong>积分/件</p>
     </div>
     <div class="appr_shar"><a href="#" class="share-wx-btn">分享给朋友</a></div>
   </div>
