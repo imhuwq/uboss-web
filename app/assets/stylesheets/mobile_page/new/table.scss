@@ -5,13 +5,10 @@ table{
     }
 }
 .border-table{
-    td{border-bottom: 1px dotted #eee;}
+    td{border-bottom: 1px solid #eee;}
 }
 .v-top{
-    td{
-      vertical-align: top;
-      
-    }
+    vertical-align: top;    
     img{ vertical-align:bottom;}
 }
 .v-center{

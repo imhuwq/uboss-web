@@ -28,11 +28,11 @@
     </div>
 	  <br  />
 	  <div class="bg-white">
-	    <div class="invite-title text-center like-color">
-	    		总绑定：<%= @bind %>
-	    </div>
-	    <div id="invite_seller_histroy">
-	    	<table class="list-table border-table v-top">
+	    <div id="invite_seller_histroy">	    	
+		    <div class="invite-title text-center like-color">
+		    		总绑定 <%= @bind %>
+		    </div>
+	    	<table class="list-table border-table">
 	      <%= render partial: "invite_seller_new_histroy" %>
 	      </table>
 	    </div>

@@ -34,6 +34,11 @@ h3{font-size: 18px;margin:20px 0;}
     padding:20px 4px;
     border-bottom: 1px solid #eee; 
 }
-#invite_seller_histroy{font-size: 13px;color: #777;}
-#invite_seller_histroy a{display: inline-block;width:15px;padding:9px 4px 9px 20px;}
+#invite_seller_histroy{font-size: 14px;color: #777;padding: 0 10px;}
+#invite_seller_histroy .edit-icon a{display: inline-block;width:19px;padding:9px;}
+.note-info{ font-size: 12px;color: #999; padding-top: 0;}
+#invite_seller_histroy .note-box{
+    td{ border: none; padding-bottom: 0;}
+    .edit-icon{ border-bottom: 1px solid #eee;}
+}
 
