@@ -92,8 +92,18 @@ class ApplicationController < ActionController::Base
       flash[:new_password_enabled] = true
       set_password_path
     else
-      request.env['omniauth.origin'] || stored_location_for(resource) || (current_user.admin? ? admin_root_path : root_path)
+      request.env['omniauth.origin'] ||
+        stored_location_for(resource) ||
+        logined_redirect_path
     end
   end
   helper_method :after_sign_in_path_for
+
+  def logined_redirect_path
+    if desktop_request?
+      current_user.admin? ? admin_root_path : root_path
+    else
+      root_path
+    end
+  end
 end
