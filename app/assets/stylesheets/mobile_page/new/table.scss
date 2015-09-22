@@ -1,0 +1,17 @@
+table{
+    width: 100%;
+    td{
+        padding:8px 4px;
+    }
+}
+.border-table{
+    td{border-bottom: 1px solid #eee;}
+}
+.v-top{
+    vertical-align: top;    
+    img{ vertical-align:bottom;}
+}
+.v-center{
+    td{vertical-align: bottom;}
+}
+
