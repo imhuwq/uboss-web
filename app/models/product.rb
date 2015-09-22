@@ -3,6 +3,8 @@ class Product < ActiveRecord::Base
   include Orderable
   include Descriptiontable
 
+  attr_accessor :attribute_name, :attribute_value
+
   OFFICIAL_AGENT_NAME = 'UBOSS创客权'.freeze
 
   # FIXME 请使用helper or i18n 做view的数值显示
@@ -24,7 +26,7 @@ class Product < ActiveRecord::Base
   scope :hots, -> { where(hot: true) }
 
   before_create :generate_code
-  before_save :calculates_before_save
+  before_save :calculates_before_save, :save_product_attributes
 
   def self.official_agent
     find_by(user_id: User.official_account.try(:id), name: OFFICIAL_AGENT_NAME)
@@ -83,9 +85,19 @@ class Product < ActiveRecord::Base
     order_items.joins(:order).where('orders.state > 2 AND orders.state <> 5').sum(:amount)
   end
 
+  def save_product_attributes(hash={})
+    new_hash = {}
+    hash.each do |k,v|
+      @attribute_name = ProductAttributeName.find_or_create_by_name(k)
+      @attribute_value = ProductAttributeValue.find_or_create_by(product_attribute_name_id: @attribute_name.id, value: v)
+      new_hash[k] = [v,@attribute_value.id]
+    end
+    @inventory = ProductInventory.find_or_create_by(product_id: self.id,attributes: new_hash)
+    @inventory.update(count: self.count)
+  end
+
   private
   def get_shraing_rate(sharing_level, rate_level)
     Rails.application.secrets.product_sharing["level#{sharing_level}"].try(:[], "rate#{rate_level}").to_f
   end
-
 end
