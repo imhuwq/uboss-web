@@ -12,15 +12,17 @@ class Admin::OrdersController < AdminController
 
   def batch_shipments
     success, errors = 0, 0
-    params[:order].each do |order_id, param|
-      order = Order.find(order_id)
-      express = Express.find_or_create_by(name: param[:express_name])
-      if validate_batch_shipment_params(param) \
-        && order.update({ship_number: param[:ship_number], express: express}) \
-        && order.ship!
-        success += 1
-      else
-        errors += 1
+    if params[:order].present?
+      params[:order].each do |order_id, param|
+        order = Order.find(order_id)
+        express = Express.find_or_create_by(name: param[:express_name])
+        if validate_batch_shipment_params(param) \
+          && order.update({ship_number: param[:ship_number], express: express}) \
+          && order.ship!
+          success += 1
+        else
+          errors += 1
+        end
       end
     end
 
