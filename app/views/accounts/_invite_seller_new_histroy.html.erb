@@ -3,7 +3,7 @@
     <td>
     	<p><%=  truncate (obj.mobile),:length=>15,:omission=>'...'  %></p>
     	<% if(obj.note?) %>
-    	<p><%=truncate (obj.note),:length=>15,:omission=>'...'  %></p>
+    	<p>备注：<%=truncate (obj.note),:length=>15,:omission=>'...'  %></p>
     	<% end %>
     </td>
     <td>
@@ -12,9 +12,9 @@
     <td class="text-right">
       <span class="label label-<%= obj.status%>"><%= obj.status_i18n %></span>
     </td>
-    <td class="text-right">
+    <td class="text-right nogap">
       <%= link_to edit_seller_note_account_path(id: obj.id) do %>
-        <%= image_tag("uboss_29/edit.png" ) %>
+        <%= image_tag("mobile/edit.png" ) %>
       <% end %>
     </td>
   </tr>  
