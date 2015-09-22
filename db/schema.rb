@@ -168,6 +168,13 @@ ActiveRecord::Schema.define(version: 20151104032830) do
     t.integer "region_id"
   end
 
+  create_table "districts", force: :cascade do |t|
+    t.string   "name"
+    t.integer  "numcode"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+  
   create_table "divide_incomes", force: :cascade do |t|
     t.integer  "user_id"
     t.integer  "order_id"
