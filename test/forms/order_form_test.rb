@@ -21,8 +21,8 @@ class OrderFormTest < ActiveSupport::TestCase
         deliver_username: 'newBuyer',
         province: 'GD',
         city: 'SZ',
-        country: 'NS',
-        street: 'kejiyuan',
+        area: 'nothing',
+        building: 'building',
         session: {},
         deliver_mobile: '13800002222'
       )
@@ -59,8 +59,8 @@ class OrderFormTest < ActiveSupport::TestCase
         deliver_username: 'newBuyer',
         province: 'GD',
         city: 'SZ',
-        country: 'NS',
-        street: 'kejiyuan',
+        area: 'area',
+        building: 'building',
         session: {},
         deliver_mobile: '13800002222'
       ).save
