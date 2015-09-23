@@ -18,6 +18,7 @@ class GoingMerry.Luffy
       )
     else
       $('.share-wx-btn').remove()
+      $('.sharing-button-wx').remove()
 
   invokeDefaultSharing: ->
     if window.wx
@@ -50,9 +51,35 @@ class GoingMerry.Luffy
     @invokeSharing()
 
   setSharingInfo: (with_detail_info)->
-      wx.onMenuShareAppMessage(with_detail_info)
-      wx.onMenuShareQQ(with_detail_info)
-      wx.onMenuShareWeibo(with_detail_info)
-      wx.onMenuShareQZone(with_detail_info)
+    wx.onMenuShareAppMessage(with_detail_info)
+    wx.onMenuShareQQ(with_detail_info)
+    wx.onMenuShareWeibo(with_detail_info)
+    wx.onMenuShareQZone(with_detail_info)
 
-UBoss.luffy = new GoingMerry.Luffy
+  openUrl : (url, popup) ->
+    if popup == "true"
+      window.open(url,'popup','height=500,width=500')
+    else
+      window.open(url)
+      false
+
+  shareToWeibo: ->
+    @openUrl(
+      "http://service.weibo.com/share/share.php?url=#{@sharing_link}&type=3&pic=#{@sharing_imgurl}&title=#{@sharing_title}",
+      'false'
+    )
+
+  shareToQQ: ->
+   @openUrl(
+     "http://share.v.t.qq.com/index.php?c=share&a=index&url=#{@sharing_link}&title=#{@sharing_title}&pic=#{@sharing_imgurl}",
+     'fasle'
+   )
+
+  shareToQzone: ->
+   @openUrl(
+     "http://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=#{@sharing_link}&title=#{@sharing_imgurl}&pics=#{@sharing_imgurl}&summary=#{@sharing_desc}",
+     'false'
+   )
+
+$ ->
+  UBoss.luffy = new GoingMerry.Luffy

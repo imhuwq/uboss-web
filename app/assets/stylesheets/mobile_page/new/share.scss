@@ -27,6 +27,14 @@
   }
   p{margin-bottom: 8px;}
 }
+.share-content {
+  .req-snode-group { display: none; }
+  .share-btns-group { display: block; }
+  &.need-snode {
+    .req-snode-group { display: block; }
+    .share-btns-group { display: none; }
+  }
+}
 .wx-mod-pop {
   position: fixed;
   width: 100%;

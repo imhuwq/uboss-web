@@ -9,6 +9,7 @@
 #= require mobile_page/sms
 #= require mobile_page/going_merry
 #= require mobile_page/utilities
+#= require mobile_page/sharing
 #= reuqire_self
 
 $ ->

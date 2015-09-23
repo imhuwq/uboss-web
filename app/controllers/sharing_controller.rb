@@ -1,4 +1,3 @@
-# 分享链接
 class SharingController < ApplicationController
 
 	def show
@@ -11,5 +10,17 @@ class SharingController < ApplicationController
            end
     redirect_to path
 	end
+
+  def product_node
+    mobile = params.fetch(:mobile)
+    @user = User.find_or_create_guest(mobile)
+    @product = Product.find(params.fetch(:product_id))
+    @sharing_link_node = @user.sharing_nodes.order('id DESC').find_or_create_by(product_id: @product.id)
+    if @sharing_link_node.persisted?
+      render json: { sharing_link: sharing_url(@sharing_link_node) }
+    else
+      render json: { message: @sharing_link_node.errors.full_messages.join(',') }, status: 422
+    end
+  end
 
 end

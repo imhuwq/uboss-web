@@ -1,0 +1,27 @@
+<div class="share-container <%= 'hidden' if params[:shared] != 'true' %>">
+  <div id="close-area"></div>
+  <div class="share-content <%= 'need-snode' if @sharing_link_node.blank? && params[:shared] == 'true' %>" id="share_buttons">
+    <div class='share-btns-group'>
+      <p>分享到</p>
+      <div id="share_buttoms">
+        <a class='sharing-button-wx'><%= image_tag("img/01.png") %></a>
+        <a class="sharing-button-tsina"><%= image_tag("img/02.png") %></a>
+        <a class="sharing-button-tqq"><%= image_tag("img/03.png") %></a>
+        <a class="sharing-copycardid"><%= image_tag("img/04.png") %></a>
+      </div>
+
+      <div class="font-h4 hidden bg_white text-center sharing-link"style="padding:20px 10px;word-wrap: break-word;">
+        <%= product_sharing_link(@product, @sharing_link_node) %>
+      </div>
+    </div>
+
+    <div class='req-snode-group'>
+      <div class="page-title">留下手机号，现金礼品拿不停！</div>
+      <p><input type="tel" name="mobile" placeholder='输入手机号，获得分享收益' class='input-block' /></p>
+      <p>
+      <%= link_to "我要分享", get_product_sharing_path, data: { pid: @product.id }, class: "btn btn-large btn-block req-pro-snode-btn" %>
+      </p>
+    </div>
+
+  </div>
+</div>

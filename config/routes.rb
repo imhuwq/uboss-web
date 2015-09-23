@@ -16,6 +16,7 @@ Rails.application.routes.draw do
   patch 'set_password', to: 'accounts#set_password'
   get 'set_password', to: 'accounts#new_password'
 
+  get 'sharing/product_node', to: 'sharing#product_node', as: :get_product_sharing
   get 'sharing/:code', to: 'sharing#show', as: :sharing
 
   get 'service_centre_consumer', to: 'home#service_centre_consumer'
@@ -42,7 +43,7 @@ Rails.application.routes.draw do
     resource :charge, only: [:create]
   end
   resources :products, only: [:index, :show] do
-    post :save_mobile, :democontent,  on: :collection
+    post :democontent,  on: :collection
   end
   resources :evaluations do
   end

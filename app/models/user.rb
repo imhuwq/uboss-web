@@ -18,6 +18,7 @@ class User < ActiveRecord::Base
   has_many :user_role_relations, dependent: :destroy
   has_many :user_roles, through: :user_role_relations
   has_many :daily_reports
+  has_many :sharing_nodes
   # for agent
   has_many :divide_incomes
   has_many :sellers, class_name: 'User', foreign_key: 'agent_id'

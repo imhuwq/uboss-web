@@ -29,19 +29,4 @@ class ProductsController < ApplicationController
     end
   end
 
-  def save_mobile
-    mobile = params[:mobile] rescue nil
-    if mobile.present?
-      user = User.find_or_create_guest(mobile)
-    end
-    @product = Product.find(params[:id])
-    if @product.present? && user.present?
-      @sharing_link_node = SharingNode.find_or_create_by(user_id: user.id, product_id: @product.id)
-    end
-    respond_to do |format|
-      format.html { render nothing: true }
-      format.js
-    end
-  end
-
 end
