@@ -4,8 +4,11 @@
 #= require zepto/plugins/callbacks
 #= require zepto/plugins/deferred
 #= require rails-behaviors/index
+#= require zepto.waypoints.min
 #= require fastclick
 #= require swipe
+#= require mobile_page/going_merry
+#= require mobile_page/utilities
 #= reuqire_self
 
 $ ->
@@ -30,3 +33,6 @@ $ ->
 
   $("header .menu-btn").on 'click', ->
     $('header .nav-bar').toggle()
+
+  $("#close-area").on 'click' , ->
+    $('.share-container').remove()

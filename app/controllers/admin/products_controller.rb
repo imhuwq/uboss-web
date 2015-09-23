@@ -35,12 +35,12 @@ class Admin::ProductsController < AdminController
 
   def change_status
     if params[:status] == 'published'
-      if @product.user.authenticated?
+      #if @product.user.authenticated?
         @product.status = 'published'
         @notice = '上架成功'
-      else
-        @error = '该帐号还未通过身份样子，请先验证:点击右上角用户名，进入“个人/企业认证”'
-      end
+      #else
+        #@error = '该帐号还未通过身份验证，请先验证:点击右上角用户名，进入“个人/企业认证”'
+      #end
     elsif params[:status] == 'unpublish'
       @product.status = 'unpublish'
       @notice = '取消上架成功'
@@ -60,6 +60,14 @@ class Admin::ProductsController < AdminController
       flash[:success] = @notice
       flash[:error] = @error
       redirect_to action: :show, id: @product.id
+    end
+  end
+
+  def switch_hot_flag
+    if @product.update(hot: !@product.hot)
+      render json: { hot: @product.hot }
+    else
+      render json: { message: model_errors(@product) }, status: 422
     end
   end
 

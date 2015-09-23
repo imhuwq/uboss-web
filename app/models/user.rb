@@ -37,13 +37,21 @@ class User < ActiveRecord::Base
   validates :login, uniqueness: true, mobile: true, presence: true, if: -> { !need_set_login? }
   validates :mobile, allow_nil: true, mobile: true
   validates :agent_code, uniqueness: true, allow_nil: true
+  validates :authentication_token, uniqueness: true, presence: true
 
   alias_attribute :regist_mobile, :login
 
   delegate :sex, :sex=, :province, :province=, :city, :city=, :country, :country=,
-    :store_name, :store_name=, to: :user_info, allow_nil: true
-  delegate :income, :income_level_one, :income_level_two, :service_rate,
-    :income_level_thr, :frozen_income,
+    :good_evaluation, :normal_evaluation, :bad_evaluation,
+    :store_name, :store_name=,      :income_level_thr, :frozen_income,
+    :income,     :income_level_one, :income_level_two, :service_rate,
+    :store_banner_one_identifier,  :store_banner_two_identifier,  :store_banner_thr_identifier,
+    :store_banner_one,  :store_banner_two,  :store_banner_thr,
+    :store_banner_one_url,  :store_banner_two_url,  :store_banner_thr_url,
+    :store_banner_one=, :store_banner_two=, :store_banner_thr=,
+    :recommend_resource_one_id, :recommend_resource_two_id, :recommend_resource_thr_id,
+    :recommend_resource_one_id=, :recommend_resource_two_id=, :recommend_resource_thr_id=,
+    :store_short_description, :store_short_description=,
     to: :user_info, allow_nil: true
 
   enum authenticated: {no: 0, yes: 1}
@@ -53,8 +61,10 @@ class User < ActiveRecord::Base
       false
     end
   end
+  before_validation :ensure_authentication_token
   before_create :set_mobile
   before_create :build_user_info, if: -> { user_info.blank? }
+  before_save   :set_service_rate
 
   scope :admin, -> { where(admin: true) }
   scope :agent, -> { joins(:user_roles).where(user_roles: {name: 'agent'}) }
@@ -66,6 +76,10 @@ class User < ActiveRecord::Base
         user_roles.exists?(name: role)
       end
     end
+  end
+
+  def image_url(version = nil)
+    avatar.url(version)
   end
 
   class << self
@@ -129,14 +143,31 @@ class User < ActiveRecord::Base
 
   end
 
-  def bind_agent(binding_code)
+  # TODO 在评价时实时更新
+  def store_rates
+    @store_rates ||= Rails.cache.fetch ['seller-store-rate', id], expires_in: 1.day do
+      result = ActiveRecord::Base.connection.execute <<-SQL.squish!
+        SELECT SUM(good_evaluation) AS good, SUM(bad_evaluation) AS bad, SUM(normal_evaluation) AS normal
+        FROM products
+        WHERE products.user_id = #{id}
+      SQL
+      result = result.first || {}
+    end
+  end
+
+  # 默认绑定official agent
+  def bind_agent(binding_code = nil)
     agent_user = if binding_code.present?
-                   User.agent.find_by(agent_code: binding_code)
+                   User.agent.find_by(agent_code: binding_code) || AgentInviteSellerHistroy.find_by(invite_code: binding_code).try(:agent)
                  else
                    User.official_account
                  end
 
-    if agent_user.present?
+    if agent_user.blank?
+      errors.add(:agent_code, :invalid)
+      return false
+    end
+    if self.can_rebind_agent?
       self.agent = agent_user
       self.admin = true
       if agent_user.id == User.official_account.id
@@ -147,9 +178,28 @@ class User < ActiveRecord::Base
       self.user_roles << UserRole.seller if not self.is_seller?
       self.save
     else
-      errors.add(:agent_code, :invalid)
       false
     end
+  end
+
+  def can_rebind_agent? # 检查绑定条件
+    if !self.agent.present? # 如果没有绑定,许可
+      return true
+    else
+      if self.agent.is_super_admin? && !self.authenticated? # 如果绑定对象是超级管理员,且还没有通过认证,许可
+        return true
+      else # 其他情况不能更换绑定
+        self.errors[:base] << "操作失败，已绑定非官方创客，或已认证"
+        return false
+      end
+    end
+  end
+
+  def bind_seller(seller)
+    seller.agent = self
+    seller.admin = true
+    seller.user_roles << UserRole.seller if !seller.is_seller?
+    seller.save
   end
 
   def update_with_oauth_session(session)
@@ -166,15 +216,6 @@ class User < ActiveRecord::Base
         self.remote_avatar_url = nil
       end
       save
-    end
-  end
-
-  def become_uboss_seller
-    if not self.is_seller?
-      transaction do
-        update_columns(admin: true)
-        user_roles << UserRole.seller
-      end
     end
   end
 
@@ -305,7 +346,34 @@ class User < ActiveRecord::Base
     self.remote_avatar_url = data['headimgurl']
   end
 
+  def good_reputation_rate
+    return @sharer_good_reputation_rate if @sharer_good_reputation_rate
+    @sharer_good_reputation_rate = if total_reputations > 0
+                                     user_info.good_evaluation.to_i * 100 / total_reputations
+                                   else
+                                     100
+                                   end
+  end
+
+  def total_reputations
+    @total_reputations ||= UserInfo.where(user_id: id).
+      sum("good_evaluation + normal_evaluation + bad_evaluation")
+  end
+
   private
+
+  def ensure_authentication_token
+    if authentication_token.blank?
+      self.authentication_token = generate_authentication_token
+    end
+  end
+
+  def generate_authentication_token
+    loop do
+      token = Devise.friendly_token
+      break token unless User.where(authentication_token: token).first
+    end
+  end
 
   def email_required?
     false
@@ -314,6 +382,16 @@ class User < ActiveRecord::Base
   def set_mobile
     if !need_set_login?
       self.mobile ||= login
+    end
+  end
+
+  def set_service_rate
+    if self.agent_id_changed?
+      if self.agent.is_super_admin?
+        self.user_info.service_rate = 6
+      else
+        self.user_info.service_rate = 5
+      end
     end
   end
 end

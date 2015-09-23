@@ -10,7 +10,10 @@
 			<% end %>
 			<ul class="dropdown-menu">
 				<li><%= link_to "修改密码", password_admin_account_path %></li>
-				<li><%= link_to "个人/企业认证", url_for(controller: :personal_authentications, action: :show, user_id: current_user) %></li>
+				<li><%= link_to "商家认证", admin_user_personal_authentication_path(user_id: current_user.id) %></li>
+        <% if current_user.is_seller? %>
+          <li><%= link_to "店铺设置", edit_admin_seller_path(current_user) %></li>
+        <% end %>
 				<li><%= link_to '退出', destroy_user_session_path, method: :delete %></li>
 			</ul>
 		</div>
@@ -18,7 +21,7 @@
     <nav>
       <ul>
         <%= li_link(:dashboard, admin_root_path, action_check: false) %>
-        <%= can_li_link(:manage, :sellers, admin_sellers_path) %>
+        <%= can_li_link(:read, :sellers, admin_sellers_path) %>
         <%= can_li_link(:manage, :agents, admin_agents_path) %>
         <%= nav_group :product_manage do %>
           <%= can_li_link(:read, Product, admin_products_path) %>
@@ -26,12 +29,17 @@
       <% end %>
         <%= can_li_link(:manage, Order, admin_orders_path) %>
         <%= can_li_link(:manage, SharingIncome, admin_sharing_incomes_path) %>
-        <%= can_li_link(:read, WithdrawRecord, admin_withdraw_records_path) %>
-        <%= can_li_link(:manage, :authentications, admin_personal_authentications_path) %>
+        <%= nav_group :withdraw_records do %>
+          <%= can_li_link(:read, WithdrawRecord, admin_withdraw_records_path) %>
+          <%= can_li_link(:manage, BankCard, admin_bank_cards_path ) %>
+        <% end %>
+        <%= can_li_link(:manage, :authentications, admin_personal_authentications_path,
+                        another_active_name: 'personal_authentications') %>
         <%= nav_group :uboss do %>
           <%= can_li_link(:manage, User, admin_users_path) %>
           <%= can_li_link(:manage, Transaction, admin_transactions_path) %>
-          <%= can_li_link(:manage, :backend_status, admin_backend_status_path, another_active_name: :backend_status) %>
+          <%= can_li_link(:manage, :backend_status, admin_backend_status_path,
+                          another_active_name: 'backend_status') %>
         <% end %>
       </ul>
     </nav>

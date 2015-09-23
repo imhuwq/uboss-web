@@ -7,8 +7,11 @@
 	  <%= f.input :present_price %>
 	  <%= f.input :count %>
 	  <%= f.input :short_description %>
-	  <%= f.input :asset_img  do %>
+	  <%= f.input :asset_img, hint:"(点击图片进行替换)"  do %>
 	    <%= f.input_field :avatar, type: :hidden, as: :file %>
+
+
+		<p><span>建议上传比例为1:1的图片，最佳尺寸为<b style="color: red;">600x600</b>像素</span></p>
 	    <p class="fileinput-button">
 	      	<% if @product.new_record? %>
 	      		<%= image_tag("admin/no-img.png") %>
@@ -72,5 +75,3 @@
 		  <%= f.input :buyer_pay,as: :radio_buttons ,:collection=>Product::DataBuyerPay.invert,:item_wrapper_class => "radio-inline",:label_html=>{:class=>"text-right"} %>
 		  <%= f.input :traffic_expense, :as=>:float,:include_blank => false ,:label_html=>{:class=>"text-right"} %>
 		</div><!-- admin-box -->
-
-

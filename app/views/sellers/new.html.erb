@@ -1,69 +1,67 @@
 <div class="row">
-  <% if current_user.present? and current_user.is_seller? and !current_user.authenticated? and @agent.present? %>
-    <div class='login-container col-xs-12'>
-      <%= simple_form_for(:seller, url: seller_path(current_user), method: 'PUT',wrapper: :horizontal_file_input) do |f| %>
-        <%= hidden_field_tag "seller[agent_id]", @agent.try(:id) %>
-        <div class="col-xs-12 border_block" style="border: 0">
-          <div class="col-xs-11  col-md-offset-1">
-            <h3 class="col-md-offset-1">注册绑定UBOSS</h3>
-            <hr/>
-            <h5 class="col-md-offset-4">您将与<%= @agent.try(:identify) %>创客进行绑定</h5>
-            <div class="form-group clearfix">
-              <%= f.label :mobile,:class=>"text-right col-sm-3 control-label" %>
-              <div class="col-xs-3"><%= text_field_tag :mobile ,  current_user.login, id:"new_mobile", style:"width:100%;", readonly: 'readonly' %></div>
-              <div class="col-xs-3"><%= link_to '发送', '###',class: "btn btn-default btn-sm",id:"send_mobile" %></div>
-            </div>
-            <%= f.input :mobile_auth_code, as: :tel, required: true, :label_html=>{:class=>"text-right"},:input_html=>{:id=>"mobile_auth_code"} %>
-          </div>
+
+  <% if current_user.present? and current_user.can_rebind_agent? and @agent.present? %>
+    <%= horizon_form_for(:seller, url: seller_path(current_user), method: 'PUT') do |f| %>
+    <div class="well">
+      <h4>注册绑定UBOSS</h4>
+      <h6>您将与<%= @agent.try(:identify) %>创客进行绑定</h6>
+      <hr />
+      <%= hidden_field_tag "seller[agent_id]", @agent.try(:id) %>
+      <div class="form-group string required enterprise_authentication_mobile" style="position:relative;">
+        <%= f.label :mobile, class:"string required control-label" %>
+        <div class="clearfix">
+          <div style="float:left;width:100%;padding-right:110px;"><%= f.input_field :mobile , value: current_user.login, disabled: :disabled, as: :tel, id:"new_mobile",class:"form-control", style:"width:100%;" %></div>
+          <%= link_to '发送手机验证码', '###',class: "btn btn-danger ",id:"send_mobile", style:"position:absolute;right:0;width:90px;margin-right:15px;" %>
         </div>
-        <div class="button_div  col-xs-4  col-md-offset-4"  style="margin-top:30px;">
-          <%= f.submit "绑定",class: "btn btn-large btn-primary col-xs-12", id:"submit_bottom", disabled: 'disabled' %>
-        </div>
-        <div class="button_div  col-xs-4  col-md-offset-4"  style="margin-top:10px;padding-bottom:30px;">
-          <%= link_to "返回主页", root_path, class: "btn btn-large btn-default col-xs-12"%>
-        </div>
-      <% end %>
-    </div>
-  <% elsif current_user.present? and current_user.authenticated? and current_user.is_seller? %>
-    <div class="col-xs-12 border_block" style="border: 0">
-      <div class="col-xs-11  col-md-offset-1">
-        <h3 class="col-md-offset-1">注册绑定UBOSS</h3>
-        <hr/>
-        <% if @agent.present? %>
-          <h5 class="col-md-offset-4">您将与<%= @agent.try(:identify) %>创客进行绑定</h5>
-        <% end %>
-        <hr />
-        <div class="col-xs-10 text-center">您已经是认证商家，不能更换绑定</div>
       </div>
+      <%= f.input :mobile_auth_code, as: :tel, :input_html=>{:id=>"mobile_auth_code"} %>
     </div>
-    <div class="button_div  col-xs-4  col-md-offset-4"  style="margin-top:10px;padding-bottom:30px;">
+
+    <div class="button_div col-xs-12"  style="margin-top:30px;">
+      <%= f.submit "绑定",class: "btn btn-large btn-primary col-xs-12", id:"submit_bottom", disabled: 'disabled' %>
+    </div>
+    <div class="button_div col-xs-12"  style="margin-top:10px;padding-bottom:30px;">
+      <%= link_to "返回主页", root_path, class: "btn btn-large btn-default col-xs-12"%>
+    </div>
+    <% end %>
+  <% elsif current_user.present? %>
+    <div class="well">
+      <h4>注册绑定UBOSS</h4>
+      <% if @agent.present? %>
+        <h6>您将与<%= @agent.try(:identify) %>创客进行绑定</h6>
+      <% end %>
+      <div class="text-center" style="margin-top:30px;margin-bottom:10px;">您现在的状况不允许更换绑定</div>
+
+    </div>
+    <div class="button_div  col-xs-12"  style="margin-top:10px;padding-bottom:30px;">
       <%= link_to "返回主页", root_path, class: "btn btn-large btn-default col-xs-12"%>
     </div>
   <% else %>
-    <%= simple_form_for(:seller, url: url_for(controller: :sellers, action: :create), method: 'POST',wrapper: :horizontal_file_input) do |f| %>
-      <%= hidden_field_tag "seller[agent_id]", @agent.try(:id) %>
-      <div class="col-xs-12 border_block" style="border: 0">
-        <div class="col-xs-11  col-md-offset-1">
-          <h3 class="col-md-offset-1">注册绑定UBOSS</h3>
-          <hr/>
-          <% if @agent.present? %>
-            <h5 class="col-md-offset-4">您将与<%= @agent.try(:identify) %>创客进行绑定</h5>
-          <% end %>
-          <div class="form-group clearfix">
-            <%= f.label :mobile,:class=>"text-right col-sm-3 control-label" %>
-            <div class="col-xs-3"><%= f.input_field :mobile, value: current_user.try(:login), as: :tel, id:"new_mobile", style:"width:100%;" %></div>
-            <div class="col-xs-3"><%= link_to '发送', '###',class: "btn btn-default btn-sm",id:"send_mobile" %></div>
+    <%= horizon_form_for(:seller, url: url_for(controller: :sellers, action: :create), method: 'POST') do |f| %>
+      <div class="well">
+        <h4>注册绑定UBOSS</h4>
+        <% if @agent.present? %>
+          <h6>您将与<%= @agent.try(:identify) %>创客进行绑定</h6>
+        <% end %>
+        <hr />
+        <%= hidden_field_tag "seller[agent_id]", @agent.try(:id) %>
+        <div class="form-group string required enterprise_authentication_mobile" style="position:relative;">
+          <%= f.label :mobile, class:"string required control-label" %>
+          <div class="clearfix">
+            <div style="float:left;width:100%;padding-right:140px;"><%= f.input_field :mobile , as: :tel, id:"new_mobile",class:"form-control", style:"width:100%;" %></div>
+            <%= link_to '发送手机验证码', '###',class: "btn btn-danger",id:"send_mobile", style:"position:absolute;right:0;width:115px;margin-right:15px;font-size:smaller;" %>
           </div>
-          <%= f.input :mobile_auth_code, as: :tel, required: true, :label_html=>{:class=>"text-right"},:input_html=>{:id=>"mobile_auth_code"} %>
-          <%= f.input :password, required: true, hint: "至少六位以上的字母数字组合",:label_html=>{:class=>"text-right"}  %>
-          <%= f.input :password_confirmation, required: true,:label_html=>{:class=>"text-right"}  %>
+
         </div>
+        <%= f.input :mobile_auth_code, as: :tel, :input_html=>{:id=>"mobile_auth_code"} %>
+        <%= f.input :password, required: true, hint: "至少六位以上的字母数字组合",:label_html=>{:class=>"text-right"}  %>
+        <%= f.input :password_confirmation, required: true,:label_html=>{:class=>"text-right"}  %>
       </div>
 
-      <div class="button_div  col-xs-4  col-md-offset-4"  style="margin-top:30px;">
+      <div class="button_div col-xs-12"  style="margin-top:30px;">
         <%= f.submit "创建",class: "btn btn-large btn-primary col-xs-12", id:"submit_bottom", disabled: 'disabled' %>
       </div>
-      <div class="button_div  col-xs-4  col-md-offset-4"  style="margin-top:10px;">
+      <div class="button_div col-xs-12"  style="margin-top:10px;padding-bottom:30px;">
         <%= link_to "返回主页", root_path, class: "btn btn-large btn-default col-xs-12"%>
       </div>
     <% end %>

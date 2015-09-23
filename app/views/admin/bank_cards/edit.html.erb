@@ -1,0 +1,17 @@
+<div class="container">
+  <ul class="breadcrumb">
+    <li><a href="/admin">主页</a></li>
+    <li class="divider"><i class="fa fa-caret-right"></i></li>
+    <li><%= link_to '银行卡列表', [:admin, :bank_cards] %></li>
+    <li class="divider"><i class="fa fa-caret-right"></i></li>
+    <li>编辑银行卡</li>
+  </ul>
+</div>
+<br />
+<div class="container">
+  <div class="admin-box black-bg-color">
+    <h3 class="text-center">编辑银行卡</h3>
+    <br />
+    <%= render 'form' %>
+  </div>
+</div>

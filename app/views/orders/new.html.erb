@@ -103,7 +103,7 @@
     <% if @order_form.user_address.username.present?  %>
     <%= submit_tag '提交订单',class:"accunt_adilbtn", data: { disable_with: '提交订单中...' } %>
     <% else %>
-    <%= submit_tag '提交订单',class:"accunt_adilbtn", data: { disable_with: '提交订单中...' }, disabled: :disabled %>
+    <%= submit_tag '提交订单',class:"accunt_adilbtn", data: { disable_with: '提交订单中...' } %>
     <% end %>
   </div>
   <!--弹出层开始-->

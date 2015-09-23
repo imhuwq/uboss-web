@@ -22,6 +22,8 @@ class Product < ActiveRecord::Base
 
   enum status: { unpublish: 0, published: 1, closed: 2 }
 
+  scope :hots, -> { where(hot: true) }
+
   before_create :generate_code
   before_save :calculates_before_save
 
@@ -65,7 +67,7 @@ class Product < ActiveRecord::Base
 
       3.times do |index|
         level = index + 1
-        amount = ('%.2f' % (share_amount_total * self["share_rate_lv_#{level}"])).to_f
+        amount = (share_amount_total * self["share_rate_lv_#{level}"]).round(2)
         self.__send__("share_amount_lv_#{level}=", amount)
         assigned_total += amount
       end

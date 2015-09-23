@@ -25,6 +25,7 @@ class Admin::UsersController < AdminController
   end
 
   def update
+    authorize! :manage, @user
     if @user.update(resource_params)
       flash[:notice] = '更新成功'
       redirect_to admin_user_path(@user)
@@ -36,9 +37,13 @@ class Admin::UsersController < AdminController
   private
 
   def resource_params
-    permit_keys = [:password, :password_confirmation, :email, :mobile, :nickname, :user_role_id]
+    permit_keys = [:password, :password_confirmation, :email, :mobile, :nickname, user_role_ids: []]
     if params[:action] == "create"
       permit_keys += [:login]
+    end
+    if params[:action] == "update" && params[:user][:password].blank?
+      permit_keys.delete(:password)
+      permit_keys.delete(:password_confirmation)
     end
     params.require(:user).permit(permit_keys)
   end
