@@ -5,12 +5,12 @@ class AccountsController < ApplicationController
   before_action :authenticate_agent, only: [:send_message, :invite_seller, :edit_seller_note, :update_histroy_note]
 
   def show
-    @orders = append_default_filter account_orders, page_size: 20
-    @privilege_cards = append_default_filter current_user.privilege_cards, order_column: :updated_at
+    @orders = append_default_filter account_orders, page_size: 10
+    @privilege_cards = append_default_filter current_user.privilege_cards, order_column: :updated_at, page_size: 10
   end
 
   def orders
-    @orders = append_default_filter account_orders, page_size: 20
+    @orders = append_default_filter account_orders, page_size: 10
     render partial: 'accounts/order', collection: @orders
   end
 

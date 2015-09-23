@@ -21,12 +21,11 @@ $ ->
 
   disabledLoadMore = (e)->
     e.remove()
-    $('.load-more').waypoint(waypointHandler, offset: '100%')
 
-  waypointHandler = (direction) ->
-    element = $(this.element)
-    if not element.hasClass('loading') and direction == 'down'
-      Waypoint.destroyAll()
+  $(document).on 'click', '.load-more', (e) ->
+    e.preventDefault()
+    element = $(this)
+    if not element.hasClass('loading')
       if $(element.data('ele')).length > 6 # nothing but set it anyway
         element.addClass('loading')
         element.text('加载中...')
@@ -36,10 +35,7 @@ $ ->
             $(element.data('container')).append(data)
             element.removeClass('loading')
             element.text('加载更多')
-            $('.load-more').waypoint(waypointHandler, offset: '100%')
           else
             disabledLoadMore(element)
       else
         disabledLoadMore(element)
-
-  $('.load-more').waypoint(waypointHandler, offset: '100%')
