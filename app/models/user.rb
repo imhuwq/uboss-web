@@ -291,7 +291,7 @@ class User < ActiveRecord::Base
   end
 
   def is_role?(role_name)
-    role_names.include?(role_name)
+    role_names.include?(role_name.to_s)
   end
 
   def seller_today_joins
