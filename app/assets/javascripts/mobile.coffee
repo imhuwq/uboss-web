@@ -4,7 +4,6 @@
 #= require zepto/plugins/callbacks
 #= require zepto/plugins/deferred
 #= require rails-behaviors/index
-#= require zepto.waypoints.min
 #= require fastclick
 #= require swipe
 #= require mobile_page/sms
