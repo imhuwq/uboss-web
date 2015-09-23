@@ -16,7 +16,7 @@ class Admin::ProductsController < AdminController
   def create
     @product.user_id = current_user.id
     if @product.save
-      save_product_attributes({product_params[:attribute_name] => product_params[:attribute_value]})
+      @product.save_product_properties({product_params[:property] => product_params[:property_value]})
       flash[:success] = '产品创建成功'
       redirect_to action: :show, id: @product.id
     else
@@ -27,7 +27,7 @@ class Admin::ProductsController < AdminController
 
   def update
     if @product.present? && @product.user_id == current_user.id && @product.update(product_params)
-      save_product_attributes({product_params[:attribute_name] => product_params[:attribute_value]})
+      @product.save_product_properties({product_params[:property] => product_params[:property_value]})
       flash[:success] = '保存成功'
     else
       flash[:error] = "保存失败。#{@product.errors.full_messages.join('<br/>')}"

@@ -38,6 +38,16 @@
 	    			<span class="control-txt"><%= number_to_currency @product.present_price %></span>
 	    		</div>
 	    	</div>
+				<% (@product.product_inventories || {}).each do |obj| %>
+				<div class="">
+					<span>
+						<% (obj.sku_attributes || {}).each do |k,v| %>
+						<%= "#{k}:#{v[0]}" %>
+						<% end %>
+					</span>
+					<span>数量：<%= obj.count %></span>
+				</div>
+				<% end %>
 	    	<div class="form-group">
 	    		<label class="control-label">库存</label>
 	    		<div class="control-input">
@@ -174,4 +184,3 @@
     </div>
 	</div><!-- box-w50 -->
 </div><!-- container -->
-

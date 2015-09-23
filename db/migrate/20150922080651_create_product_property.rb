@@ -1,6 +1,6 @@
-class CreateProductAttributeName < ActiveRecord::Migration
+class CreateProductProperty < ActiveRecord::Migration
   def change
-    create_table :product_attribute_names do |t|
+    create_table :product_properties do |t|
       t.string  :name
       t.boolean :is_key_attr, default: true
       t.integer :product_class_id

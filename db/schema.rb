@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150916071444) do
+ActiveRecord::Schema.define(version: 20150922080651) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -53,19 +53,6 @@ ActiveRecord::Schema.define(version: 20150916071444) do
     t.string   "bankname"
   end
 
-  create_table "carriage_templates", force: :cascade do |t|
-    t.string   "name"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
-  create_table "cities", force: :cascade do |t|
-    t.string   "name"
-    t.integer  "numcode"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
   create_table "daily_reports", force: :cascade do |t|
     t.date     "day"
     t.decimal  "amount"
@@ -83,29 +70,6 @@ ActiveRecord::Schema.define(version: 20150916071444) do
     t.integer "resource_id"
     t.string  "resource_type"
     t.text    "content"
-  end
-
-  create_table "different_areas", force: :cascade do |t|
-    t.integer  "carriage_template_id"
-    t.integer  "state_id"
-    t.integer  "first_item"
-    t.decimal  "carriage"
-    t.integer  "extend_item"
-    t.decimal  "extend_carriage"
-    t.datetime "created_at",           null: false
-    t.datetime "updated_at",           null: false
-  end
-
-  create_table "different_areas_regions", id: false, force: :cascade do |t|
-    t.integer "different_area_id"
-    t.integer "region_id"
-  end
-
-  create_table "districts", force: :cascade do |t|
-    t.string   "name"
-    t.integer  "numcode"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
   end
 
   create_table "divide_incomes", force: :cascade do |t|
@@ -132,7 +96,7 @@ ActiveRecord::Schema.define(version: 20150916071444) do
   create_table "evaluations", force: :cascade do |t|
     t.integer  "buyer_id"
     t.integer  "sharer_id"
-    t.integer  "status",          default: 3
+    t.integer  "status",          default: 0
     t.integer  "order_item_id"
     t.integer  "product_id"
     t.text     "content"
@@ -141,15 +105,8 @@ ActiveRecord::Schema.define(version: 20150916071444) do
     t.integer  "sharing_node_id"
   end
 
-  create_table "expresses", force: :cascade do |t|
-    t.string   "name"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
-  create_table "expresses_users", id: false, force: :cascade do |t|
-    t.integer "express_id"
-    t.integer "user_id"
+  create_table "json_test", force: :cascade do |t|
+    t.jsonb "data"
   end
 
   create_table "mobile_captchas", force: :cascade do |t|
@@ -209,8 +166,6 @@ ActiveRecord::Schema.define(version: 20150916071444) do
     t.datetime "signed_at"
     t.datetime "shiped_at"
     t.datetime "completed_at"
-    t.string   "ship_number"
-    t.integer  "express_id"
   end
 
   add_index "orders", ["number"], name: "index_orders_on_number", unique: true, using: :btree
@@ -237,22 +192,6 @@ ActiveRecord::Schema.define(version: 20150916071444) do
     t.boolean  "actived",    default: false
   end
 
-  create_table "product_attribute_names", force: :cascade do |t|
-    t.string   "name"
-    t.boolean  "is_key_attr",      default: true
-    t.integer  "product_class_id"
-    t.datetime "created_at",                      null: false
-    t.datetime "updated_at",                      null: false
-  end
-
-  create_table "product_attribute_values", force: :cascade do |t|
-    t.string   "value"
-    t.integer  "product_attribute_name_id"
-    t.integer  "product_class_id"
-    t.datetime "created_at",                null: false
-    t.datetime "updated_at",                null: false
-  end
-
   create_table "product_classes", force: :cascade do |t|
     t.integer  "parent_id"
     t.string   "name"
@@ -262,52 +201,59 @@ ActiveRecord::Schema.define(version: 20150916071444) do
 
   create_table "product_inventories", force: :cascade do |t|
     t.integer  "product_id"
-    t.integer  "product_attribute_value_id"
     t.integer  "product_class_id"
-    t.json     "attributes"
-    t.datetime "created_at",                 null: false
-    t.datetime "updated_at",                 null: false
+    t.integer  "count"
+    t.jsonb    "sku_attributes",   null: false
+    t.datetime "created_at",       null: false
+    t.datetime "updated_at",       null: false
   end
 
-  create_table "product_share_issues", force: :cascade do |t|
-    t.integer  "product_id"
-    t.integer  "buyer_lv_1_id"
-    t.integer  "buyer_lv_2_id"
-    t.integer  "buyer_lv_3_id"
-    t.integer  "sharer_lv_1_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+  add_index "product_inventories", ["sku_attributes"], name: "index_product_inventories_on_sku_attributes", using: :gin
+
+  create_table "product_properties", force: :cascade do |t|
+    t.string   "name"
+    t.boolean  "is_key_attr",      default: true
+    t.integer  "product_class_id"
+    t.datetime "created_at",                      null: false
+    t.datetime "updated_at",                      null: false
+  end
+
+  create_table "product_property_values", force: :cascade do |t|
+    t.string   "value"
+    t.integer  "product_property_id"
+    t.integer  "product_class_id"
+    t.datetime "created_at",          null: false
+    t.datetime "updated_at",          null: false
   end
 
   create_table "products", force: :cascade do |t|
     t.integer  "user_id"
     t.string   "name"
     t.string   "code"
-    t.decimal  "original_price",       default: 0.0
-    t.decimal  "present_price",        default: 0.0
-    t.integer  "count",                default: 0
-    t.boolean  "buyer_pay",            default: true
-    t.decimal  "traffic_expense",      default: 0.0
+    t.decimal  "original_price",     default: 0.0
+    t.decimal  "present_price",      default: 0.0
+    t.integer  "count",              default: 0
+    t.boolean  "buyer_pay",          default: true
+    t.decimal  "traffic_expense",    default: 0.0
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "has_share_lv",         default: 3
-    t.decimal  "share_amount_total",   default: 0.0
-    t.decimal  "share_amount_lv_1",    default: 0.0
-    t.decimal  "share_amount_lv_2",    default: 0.0
-    t.decimal  "share_amount_lv_3",    default: 0.0
-    t.decimal  "share_rate_lv_1",      default: 0.0
-    t.decimal  "share_rate_lv_2",      default: 0.0
-    t.decimal  "share_rate_lv_3",      default: 0.0
-    t.decimal  "share_rate_total",     default: 0.0
-    t.integer  "calculate_way",        default: 0
-    t.integer  "status",               default: 0
-    t.integer  "good_evaluation",      default: 0
-    t.integer  "normal_evaluation",    default: 0
-    t.integer  "bad_evaluation",       default: 0
-    t.decimal  "privilege_amount",     default: 0.0
+    t.integer  "has_share_lv",       default: 3
+    t.decimal  "share_amount_total", default: 0.0
+    t.decimal  "share_amount_lv_1",  default: 0.0
+    t.decimal  "share_amount_lv_2",  default: 0.0
+    t.decimal  "share_amount_lv_3",  default: 0.0
+    t.decimal  "share_rate_lv_1",    default: 0.0
+    t.decimal  "share_rate_lv_2",    default: 0.0
+    t.decimal  "share_rate_lv_3",    default: 0.0
+    t.decimal  "share_rate_total",   default: 0.0
+    t.integer  "calculate_way",      default: 0
+    t.integer  "status",             default: 0
+    t.integer  "good_evaluation",    default: 0
+    t.integer  "normal_evaluation",  default: 0
+    t.integer  "bad_evaluation",     default: 0
+    t.decimal  "privilege_amount",   default: 0.0
     t.string   "short_description"
-    t.boolean  "hot",                  default: false
-    t.integer  "carriage_template_id"
+    t.boolean  "hot",                default: false
   end
 
   create_table "redactor_assets", force: :cascade do |t|
@@ -326,12 +272,6 @@ ActiveRecord::Schema.define(version: 20150916071444) do
 
   add_index "redactor_assets", ["assetable_type", "assetable_id"], name: "idx_redactor_assetable", using: :btree
   add_index "redactor_assets", ["assetable_type", "type", "assetable_id"], name: "idx_redactor_assetable_type", using: :btree
-
-  create_table "regions", force: :cascade do |t|
-    t.string  "name"
-    t.string  "numcode"
-    t.integer "parent_id"
-  end
 
   create_table "selling_incomes", force: :cascade do |t|
     t.datetime "created_at",               null: false
@@ -390,13 +330,6 @@ ActiveRecord::Schema.define(version: 20150916071444) do
   end
 
   add_index "simple_captcha_data", ["key"], name: "idx_key", using: :btree
-
-  create_table "states", force: :cascade do |t|
-    t.string   "name"
-    t.integer  "numcode"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
 
   create_table "transactions", force: :cascade do |t|
     t.integer  "user_id"

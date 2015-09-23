@@ -3,7 +3,7 @@ class Product < ActiveRecord::Base
   include Orderable
   include Descriptiontable
 
-  attr_accessor :attribute_name, :attribute_value
+  attr_accessor :property, :property_value
 
   OFFICIAL_AGENT_NAME = 'UBOSS创客权'.freeze
 
@@ -17,6 +17,7 @@ class Product < ActiveRecord::Base
   has_one :asset_img, class_name: 'AssetImg', autosave: true, as: :resource
   has_many :product_share_issue, dependent: :destroy
   has_many :order_items
+  has_many :product_inventories, dependent: :destroy
 
   delegate :image_url, to: :asset_img, allow_nil: true
   delegate :avatar=, :avatar, to: :asset_img
@@ -26,7 +27,7 @@ class Product < ActiveRecord::Base
   scope :hots, -> { where(hot: true) }
 
   before_create :generate_code
-  before_save :calculates_before_save, :save_product_attributes
+  before_save :calculates_before_save
 
   def self.official_agent
     find_by(user_id: User.official_account.try(:id), name: OFFICIAL_AGENT_NAME)
@@ -85,14 +86,17 @@ class Product < ActiveRecord::Base
     order_items.joins(:order).where('orders.state > 2 AND orders.state <> 5').sum(:amount)
   end
 
-  def save_product_attributes(hash={})
+  def save_product_properties(hash={})
     new_hash = {}
     hash.each do |k,v|
-      @attribute_name = ProductAttributeName.find_or_create_by_name(k)
-      @attribute_value = ProductAttributeValue.find_or_create_by(product_attribute_name_id: @attribute_name.id, value: v)
-      new_hash[k] = [v,@attribute_value.id]
+      @property = ProductProperty.find_or_create_by(name: k)
+      @property_value = ProductPropertyValue.find_or_create_by(product_property_id: @property.id, value: v)
+      new_hash[k] = [v,@property_value.id]
     end
-    @inventory = ProductInventory.find_or_create_by(product_id: self.id,attributes: new_hash)
+    @inventory = ProductInventory.where("product_id = ? and sku_attributes = ?", self.id, new_hash.to_json).first
+    unless @inventory.present?
+      @inventory = ProductInventory.create(product_id: self.id, sku_attributes: new_hash)
+    end
     @inventory.update(count: self.count)
   end
 
