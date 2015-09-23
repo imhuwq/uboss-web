@@ -2,7 +2,7 @@ class PrivilegeCardsController < ApplicationController
   layout 'mobile'
 
   def index
-    @privilege_cards = append_default_filter current_user.privilege_cards
+    @privilege_cards = append_default_filter current_user.privilege_cards, order_column: :updated_at
     render partial: 'privilege_cards/privilege_card', collection: @privilege_cards if request.xhr?
   end
 

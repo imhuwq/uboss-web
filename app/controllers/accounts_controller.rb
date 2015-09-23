@@ -6,7 +6,7 @@ class AccountsController < ApplicationController
 
   def show
     @orders = append_default_filter account_orders, page_size: 20
-    @privilege_cards = current_user.privilege_cards.limit(20)
+    @privilege_cards = append_default_filter current_user.privilege_cards, order_column: :updated_at
   end
 
   def orders

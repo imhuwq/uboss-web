@@ -31,7 +31,7 @@
       <div id="u-order-list">
         <%= render partial: 'order', collection: @orders %>
       </div>
-      <div id="load-more" data-container='#u-order-list' data-ele='.acc-order' data-ref='/account/orders'>加载更多</div>
+      <div class="load-more" data-container='#u-order-list' data-ele='.acc-order' data-ref='/account/orders'>加载更多</div>
     </div>
 
     <div class="account-privilege-cards undis">
@@ -41,6 +41,7 @@
       <div id="pcards-list">
         <%= render partial: 'privilege_cards/privilege_card', collection: @privilege_cards %>
       </div>
+      <div class="load-more" data-container='#pcards-list' data-ele='.acc-pcard' data-ref='/privilege_cards'>加载更多</div>
     </div>
 
     <div class="accunt_adil undis">
