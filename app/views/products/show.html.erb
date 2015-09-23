@@ -25,14 +25,23 @@
   <div class="product-info-box">
     <p class="title"><%=@product.name%></p>
     <p class="price"><small>￥</small><%=@product.present_price%></p>
-    <p class="gray-color">
-    <% if @product.buyer_pay? %>
-      快递：<%= product_traffic(@product) %>
-    <%else%>
-      包邮
-    <% end %>
-    </p>
-    <p class="product-rate"><%= Evaluation.product_good_reputation_rate(@product.id) %> 好评 (<%= Evaluation.product_good_reputation(@product.id) %>人)</p>
+    <p class="original-price">￥<%= @product.original_price %></p>
+    <div class="border-box">
+    	<br />
+    	<p class="gray-color">
+	    <% if @product.buyer_pay? %>
+	     	 快递：<%= product_traffic(@product) %>
+	    <%else%>
+	     	 包邮
+	    <% end %>
+	    </p>
+	    <p class="gray-color""><%= Evaluation.product_good_reputation_rate(@product.id) %> 好评 (<%= Evaluation.product_good_reputation(@product.id) %>人)</p>
+  	</div><!-- border-box -->
+  	<br />
+  	<div class="detail text-left">
+  		<%= @product.short_description %>
+  	</div><!-- detail -->
+  	<br />
   </div><!-- product-info-box -->
 
   <% if @privilege_card %>
@@ -97,7 +106,7 @@
         </div><!-- border-box -->
         <br />
         <p class="gray-color">一级 20　　二级 10　　三级 5</p>
-        <div><a href="/about" class="gray-color"><small>查看说明</small></a></div>
+        <div class="read"><a href="/about"><small>查看说明</small></a></div>
       </div>  <!-- friend-card -->
     </div><!-- product-info-box -->
   <!-- end 自己的友情卡 -->

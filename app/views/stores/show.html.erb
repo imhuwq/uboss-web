@@ -34,8 +34,8 @@
     <div class="friend-card">
       <p class="cover"><%= image_tag @sharing_node.user.avatar_url(:w120) %></p>
       <p class="name"><%= @sharing_node.user.identify %> 分享</p>
-      <p class="name border-top">关于分享者</p>
-      <div class="gray-color">共 <%= @sharing_node.user.total_reputations %> 分享</div>
+      <p class="border-top title">关于分享者</p>
+      <p class="gray-color">共 <%= @sharing_node.user.total_reputations %> 分享</p>
       <div class="gray-color"><span class="like-color"><%= @sharing_node.user.good_reputation_rate %>%</span> 靠谱</div>
     </div>  <!-- friend-card -->
     <br />
