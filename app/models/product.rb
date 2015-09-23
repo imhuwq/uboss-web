@@ -1,5 +1,4 @@
 class Product < ActiveRecord::Base
-
   include Orderable
   include Descriptiontable
 
@@ -7,7 +6,7 @@ class Product < ActiveRecord::Base
 
   OFFICIAL_AGENT_NAME = 'UBOSS创客权'.freeze
 
-  # FIXME 请使用helper or i18n 做view的数值显示
+  # FIXME: 请使用helper or i18n 做view的数值显示
   DataCalculateWay = { 0 => '按金额', 1 => '按售价比例' }
   DataBuyerPay = { true => '买家付款', false => '包邮' }
 
@@ -40,7 +39,7 @@ class Product < ActiveRecord::Base
   def generate_code
     loop do
       self.code = SecureRandom.hex(10)
-      break if !Product.find_by(code: code)
+      break unless Product.find_by(code: code)
     end
   end
 
@@ -58,8 +57,8 @@ class Product < ActiveRecord::Base
 
   def set_share_rate(*args) # 设置分成比例
     3.times do |index|
-      rate = args[index] || get_shraing_rate(has_share_lv, index+1)
-      self.__send__("share_rate_lv_#{index + 1}=", rate)
+      rate = args[index] || get_shraing_rate(has_share_lv, index + 1)
+      __send__("share_rate_lv_#{index + 1}=", rate)
     end
   end
 
@@ -70,7 +69,7 @@ class Product < ActiveRecord::Base
       3.times do |index|
         level = index + 1
         amount = (share_amount_total * self["share_rate_lv_#{level}"]).round(2)
-        self.__send__("share_amount_lv_#{level}=", amount)
+        __send__("share_amount_lv_#{level}=", amount)
         assigned_total += amount
       end
 
@@ -86,19 +85,35 @@ class Product < ActiveRecord::Base
     order_items.joins(:order).where('orders.state > 2 AND orders.state <> 5').sum(:amount)
   end
 
-  def save_product_properties(hash={})
-    hash.each do |k,v|
+  def save_product_properties(hash = {})
+    hash.each do |k, v|
       @property = ProductProperty.find_or_create_by(name: k)
       @property_value = ProductPropertyValue.find_or_create_by(product_property_id: @property.id, value: v)
     end
-    @inventory = ProductInventory.where("product_id = ? and sku_attributes = ?", self.id, hash.to_json).first
+    @inventory = ProductInventory.where('product_id = ? and sku_attributes = ?', id, hash.to_json).first
     unless @inventory.present?
-      @inventory = ProductInventory.create(product_id: self.id, sku_attributes: hash)
+      @inventory = ProductInventory.create(product_id: id, sku_attributes: hash)
     end
-    @inventory.update(count: self.count)
+    @inventory.update(
+      count:                count,
+      user_id:              user_id,
+      name:                 name,
+      price:                present_price,
+      share_amount_total:   share_amount_total,
+      share_amount_lv_1:    share_amount_lv_1,
+      share_amount_lv_2:    share_amount_lv_2,
+      share_amount_lv_3:    share_amount_lv_3,
+      share_rate_lv_1:      share_rate_lv_1,
+      share_rate_lv_2:      share_rate_lv_2,
+      share_rate_lv_3:      share_rate_lv_3,
+      share_rate_total:     share_rate_total,
+      calculate_way:        calculate_way,
+      privilege_amount:     privilege_amount
+    )
   end
 
   private
+
   def get_shraing_rate(sharing_level, rate_level)
     Rails.application.secrets.product_sharing["level#{sharing_level}"].try(:[], "rate#{rate_level}").to_f
   end

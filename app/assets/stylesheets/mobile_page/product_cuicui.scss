@@ -1,0 +1,263 @@
+/*.sharer-info{ 
+    position: fixed;
+    bottom: 0; 
+    width: 100%;
+    background: #f6f6f6;
+    z-index: 10;
+    padding:10px;
+    box-sizing: border-box;
+    overflow: hidden;
+   
+}*/
+
+.share_buy {
+	position: fixed;
+	height: 80px;
+	bottom: 0px;
+	width: 100%;
+	background: #f6f6f6;
+	z-index: 10;
+	padding: 10px;
+	text-align: center;
+	box-sizing: border-box;
+}
+.share_buy .half_left {
+	height: 60px;
+	width: 50%;
+	background: #fafafa;
+	float: left;
+	/*margin-right: -3px;*/
+}
+.share_buy .half_right {
+	height: 60px;
+	/*margin-left: 50%;*/
+	
+	background: #43c3aa;
+}
+.share_portrait {
+	width: 40px;
+	height: 40px;
+	border-radius: 20px;
+	/*background: orangered;*/
+	
+	vertical-align: middle;
+	margin: 10px;
+	left: 10px;
+	float: left;
+}
+.share_content {
+	left: 30px;
+	margin-top: 15px;
+	margin-bottom: 15px;
+	/*width: 200px;*/
+}
+.btn_add_to_cart {
+	width: 25%;
+	height: 100%;
+	float: left;
+	background: #f9ba10;
+	border: none;
+}
+.btn_buy_now {
+	width: 25%;
+	height: 100%;
+	background: #43c3aa;
+	border: none;
+}
+img.blur {
+	width: 400px;
+	height: 490px;
+	/*-webkit-filter: blur(3px);*/
+	/*filter: blur(3px);*/
+}
+/**
+ * 立即购买弹框
+ */
+
+.tab_buy_now {
+	width: 100%;
+	/*height: 75%;*/
+	
+	position: fixed;
+	bottom: 0;
+	z-index: 2000;
+	/*display: none;*/
+	
+	display: block;
+	background: #ffffff;
+	box-sizing: border-box;
+	animation: buynow 0.1s;
+	animation-fill-mode: forwards;
+	/*-webkit-transition: height 5s;*/
+}
+@-webkit-keyframes buynow
+/* Safari and Chrome */
+
+{
+	from {
+		bottom: -100%;
+	}
+	to {
+		bottom: 0%;
+	}
+}
+.options {
+	height: 260px;
+	overflow-y: scroll;
+}
+.buy_now_goods {
+	margin-bottom: 20px;
+}
+.buy_now_goods_img {
+	width: 80px;
+	height: 80px;
+	padding: 10px;
+	float: left;
+}
+.buy_now_goods_dl {
+	padding: 20px;
+}
+.buy_now_goods_dl dt p {
+	font-size: 14px;
+}
+.buy_now_goods_dl dd p {
+	font-size: 12px;
+	margin-top: 10px;
+	color: #43C3AA;
+}
+.btn_cancle_buy_now {
+	height: 20px;
+	width: 20px;
+	float: right;
+	padding: 10px;
+}
+button {
+	border: none;
+}
+hr {
+	color: #dddddd;
+	margin-top: 35px;
+}
+.buy_now_option {
+	width: 100%;
+	background: #FAFAFA;
+}
+.buy_now_option_title {
+	margin: 0px 0 20px 10px;
+	padding-top: 20px;
+	/*margin-bottom: 20px;*/
+}
+.buy_now_option ul {
+	height: auto;
+	margin-left: 10px;
+}
+.item {
+	display: inline-block;
+	margin-right: 10px;
+	/*background: #F6F6F6;*/
+	background: skyblue;
+	position: relative;
+}
+/*
+ * 点击后出现一角
+ */
+.item_click{
+	width: 47px;
+    height: 25px;
+	display: inline-block;
+	margin-right: 10px;
+	/*background: #F6F6F6;*/
+	background: skyblue;
+	position: relative;
+}
+.item_click:after{
+	content: "";
+	width:0px;
+	height:0px;
+	border-top:15px solid #43C3AA;
+	border-right:20px solid transparent;
+	top: 0;
+    left: 0;
+	position: absolute;
+}
+
+.buy_now_option ul li p {
+	display: inline-block;
+	margin: 5px 20px;
+	/*background: greenyellow;*/
+}
+.btn_done {
+	height: 30px;
+	width: 90px;
+	background: #43c3aa;
+	display: inline-block;
+	vertical-align: middle;
+	margin-top: 15px;
+}
+.btn_done p {
+	font-size: 18px;
+	color: #F6F6F6;
+	margin-top: 8px;
+}
+.done {
+	bottom: 0px;
+	width: 100%;
+	background: #f6f6f6;
+	text-align: center;
+	padding: 20px 0;
+}
+.btn {
+	font-size: 18px;
+	color: #F6F6F6;
+	display: inline-block;
+	background: #43C3AA;
+	padding: 10px 30px;
+}
+.counts {
+	border-color: #43C3AA;
+	/*padding-top: 0px;*/
+}
+.reduction {
+	display: inline-block;
+	background-color: #43C3AA;
+	font-size: 10px;
+	padding: 10px;
+	height: 12px;
+	width: 12px;
+	border-radius: 100%;
+}
+.reduction:after {
+	content: "——";
+	/*height: 2px;
+	width:8px;*/
+	font-size: 12px;
+	color: #f6f6f6;
+	font-weight: bolder;
+	 /*background-color: #f6f6f6;*/ 
+	margin-left: -5px;
+}
+.number{
+	border: solid thin;
+	border-color:#43C3AA;
+	height: 30px;
+	width: 50px;
+	display: inline-block;
+}
+.count{
+    padding: 6px;
+    font-size: 30px;
+    color: #F6F6F6;
+    font-weight: bolder;
+    background-color: #43C3AA;
+    display: inline-block;
+    border-radius: 100%;
+}
+.add{
+	padding: 8px;
+    font-size: 25px;
+    color: #F6F6F6;
+    font-weight: bolder;
+    background-color: #43C3AA;
+    display: inline-block;
+    border-radius: 100%;
+}
