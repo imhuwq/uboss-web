@@ -10,11 +10,24 @@
     border: none;
 }
 .btn-large,input.btn:focus{padding:10px }
+
+.btn-longer{ padding:10px 40px}
 .btn-block{ 
     display:block;
     text-align: center;
     width: 100%;
     box-sizing: border-box;
+}
+
+.btn-like{
+    background: image-url('mobile/like.png') no-repeat;
+    background-position: 0 -20.5px;
+    background-size: 37%;
+    padding-left: 25px;
+    color: #aaa;
+}
+.btn-like.active{
+    background-position: 0 3px;
 }
 .btn:hover{
     animation: btn-hover .5s linear ;

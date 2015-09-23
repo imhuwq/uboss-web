@@ -54,7 +54,53 @@
       <br />
     </div><!-- product-info-box -->
   <% end %>
-
+  <!-- 自己的友情卡  -->
+  	<div class="product-info-box">
+      <br />
+      <div class="friend-card">
+	      <div class="name">友情价</div>
+	      <br />
+	      <div class="price">9.00</div>
+	      <br/>
+	    	<p class="gray-color">帮朋友优惠1.00</p>
+        <div class="border-box">
+        	<br />
+        	<!-- 已经有该商品友情卡   -->
+        	<div class="text-center"><a href="?shared=true" class="btn btn-large btn-longer">分享给朋友</a></div>
+        	<br/>
+        	<div class="text-center"><button class="btn btn-like">喜欢</button></div>
+        	<script>  
+        		$('.btn-like').click(function(){
+        			$(this).toggleClass('active');
+        			$('html').append('<div class="pop-alert"><div class="pop-content"></div>');
+        			if($(this).hasClass('active')){
+        				$('.pop-content').append('<div class="pop-text">您喜欢了该商品，可以在店铺主页<br/>我的喜欢模块找到本商品</div>')        				
+        			}else{
+        				$('.pop-content').append('<div class="pop-text line-2 gray">您取消了该喜欢商品</div>') 
+        			}
+		    			setTimeout(function(){
+		    				$('.pop-alert').remove();        				
+		    			},3000);
+        		})
+	    			$('html').on('click','.pop-alert',function(){
+	    				$(this).remove();
+	    			})
+	    			
+        	</script>
+        	<!-- end 已经有该商品友情卡 -->
+        	
+        	<!-- if  没有该商品友情卡    并且     扫描商品进入页面 
+        		<div class="text-center"><a href="" class="btn btn-large btn-longer">领取友情卡</a></div>
+        		<br/>
+        	end 没有该商品友情卡    并且     扫描商品进入页面  -->
+        	
+        </div><!-- border-box -->
+        <br />
+        <p class="gray-color">一级 20　　二级 10　　三级 5</p>
+        <div><a href="/about" class="gray-color"><small>查看说明</small></a></div>
+      </div>  <!-- friend-card -->
+    </div><!-- product-info-box -->
+  <!-- end 自己的友情卡 -->
   <div class="product-info-box">
     <br />
     <div class="cover">
