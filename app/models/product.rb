@@ -15,7 +15,7 @@ class Product < ActiveRecord::Base
   has_one :asset_img, class_name: 'AssetImg', autosave: true, as: :resource
   has_many :product_share_issue, dependent: :destroy
   has_many :order_items
-  has_and_belongs_to_many :categories
+  has_and_belongs_to_many :categories, -> { uniq }
 
   delegate :image_url, to: :asset_img, allow_nil: true
   delegate :avatar=, :avatar, to: :asset_img
