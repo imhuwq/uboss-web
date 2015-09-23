@@ -127,6 +127,8 @@ Rails.application.routes.draw do
       get '/backend_status', to: 'dashboard#backend_status'
 
       root 'dashboard#index'
+
+      resources :categories
     end
     mount RedactorRails::Engine => '/redactor_rails'
   end
