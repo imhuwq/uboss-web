@@ -91,6 +91,7 @@ group :development do
   gem "better_errors"
   gem "quiet_assets"
   gem 'rack-mini-profiler', require: false
+  gem 'awesome_print'
 end
 
 group :development, :test do

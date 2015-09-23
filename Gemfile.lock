@@ -96,6 +96,7 @@ GEM
       json
     awesome_nested_set (3.0.2)
       activerecord (>= 4.0.0, < 5)
+    awesome_print (1.6.1)
     bcrypt (3.1.10)
     better_errors (2.1.1)
       coderay (>= 1.0.0)
@@ -455,6 +456,7 @@ DEPENDENCIES
   aasm
   airbrake
   awesome_nested_set
+  awesome_print
   better_errors
   bootstrap-sass
   browser!
@@ -527,4 +529,4 @@ DEPENDENCIES
   wx_pay!
 
 BUNDLED WITH
-   1.10.5
+   1.10.6
