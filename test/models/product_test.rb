@@ -76,4 +76,13 @@ class ProductTest < ActiveSupport::TestCase
     end
     assert_equal(20, product.total_sells)
   end
+  test "save_product_properties" do
+    p = Product.create(share_amount_total: 10, has_share_lv: 0, user_id: 1, name: '1', share_rate_lv_2: 0.3, share_rate_lv_3: 0.2,short_description:"123")
+    p.save_product_properties({color: 'red', size: 'L'})
+    pp = ProductProperty.find_by(name: 'color')
+    ppv = pp.product_property_values.first
+    assert_equal(ppv.value, "red")
+    pi = ProductInventory.where("product_id = :product_id and sku_attributes = :sku_attributes",product_id: p.id, sku_attributes: {color: 'red', size: 'L'}.to_json).first
+    assert_equal(pi.sku_attributes['color'],"red" )
+  end
 end

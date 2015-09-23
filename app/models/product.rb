@@ -87,15 +87,13 @@ class Product < ActiveRecord::Base
   end
 
   def save_product_properties(hash={})
-    new_hash = {}
     hash.each do |k,v|
       @property = ProductProperty.find_or_create_by(name: k)
       @property_value = ProductPropertyValue.find_or_create_by(product_property_id: @property.id, value: v)
-      new_hash[k] = [v,@property_value.id]
     end
-    @inventory = ProductInventory.where("product_id = ? and sku_attributes = ?", self.id, new_hash.to_json).first
+    @inventory = ProductInventory.where("product_id = ? and sku_attributes = ?", self.id, hash.to_json).first
     unless @inventory.present?
-      @inventory = ProductInventory.create(product_id: self.id, sku_attributes: new_hash)
+      @inventory = ProductInventory.create(product_id: self.id, sku_attributes: hash)
     end
     @inventory.update(count: self.count)
   end
