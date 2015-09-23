@@ -22,7 +22,8 @@ class OrderFormTest < ActiveSupport::TestCase
         province: 'GD',
         city: 'SZ',
         country: 'NS',
-        street: 'kejiyuan',
+        area: 'area',
+        building: 'kejiyuan',
         session: {},
         deliver_mobile: '13800002222'
       )
@@ -60,7 +61,8 @@ class OrderFormTest < ActiveSupport::TestCase
         province: 'GD',
         city: 'SZ',
         country: 'NS',
-        street: 'kejiyuan',
+        area: 'area',
+        building: 'kejiyuan',
         session: {},
         deliver_mobile: '13800002222'
       ).save
