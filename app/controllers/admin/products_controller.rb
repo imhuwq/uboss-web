@@ -26,6 +26,7 @@ class Admin::ProductsController < AdminController
   end
 
   def update
+    binding.pry
     if @product.present? && @product.user_id == current_user.id && @product.update(product_params)
       @product.save_product_properties({product_params[:property] => product_params[:property_value]})
       flash[:success] = '保存成功'
@@ -87,8 +88,8 @@ class Admin::ProductsController < AdminController
       :share_amount_total, :share_amount_lv_1, :share_amount_lv_2,
       :share_amount_lv_3,  :share_rate_total,  :share_rate_lv_1,
       :share_rate_lv_2,    :share_rate_lv_3,   :buyer_pay,
-      :traffic_expense,    :short_description, :attribute_name,
-      :attribute_value
+      :traffic_expense,    :short_description, :property,
+      :property_value
     )
   end
 end

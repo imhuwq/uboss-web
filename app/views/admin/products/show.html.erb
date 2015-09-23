@@ -42,7 +42,7 @@
 				<div class="">
 					<span>
 						<% (obj.sku_attributes || {}).each do |k,v| %>
-						<%= "#{k}:#{v[0]}" %>
+						<%= "#{k}:#{v}" %>
 						<% end %>
 					</span>
 					<span>数量：<%= obj.count %></span>
