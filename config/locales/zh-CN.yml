@@ -123,7 +123,7 @@ zh-CN:
     withdraw_records: 提现
   li_link:
     dashboard: 主页
-    carriage_template: 运费模板
+    carriage_templates: 运费模板
     data: 数据
     orders: 订单
     sharing_incomes: 分成

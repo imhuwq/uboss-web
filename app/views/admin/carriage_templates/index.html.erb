@@ -1,10 +1,16 @@
 <div class='container'>
   <h3>运费模板</h3>
-  <%= link_to '新增模板', new_admin_carriage_template_path, class: 'btn btn-primary' %>
+  <% if can? :create, CarriageTemplate %>
+    <%= link_to '新增模板', new_admin_carriage_template_path, class: 'btn btn-primary' %>
+  <% end %>
   <% @carriages.each do |carriage| %>
     <h4><%= carriage.name %></h4>
-    <%= link_to '编辑模板', edit_admin_carriage_template_path(carriage), class: 'btn btn-primary' %>
-    <%= link_to '删除模板', admin_carriage_template_path(carriage), method: 'DELETE', data: {confirm: "确定删除模板 #{carriage.name} ?"}, class: 'btn btn-primary' %>
+    <% if can? :update, carriage %>
+      <%= link_to '编辑模板', edit_admin_carriage_template_path(carriage), class: 'btn btn-primary' %>
+    <% end %>
+    <% if can? :destroy, carriage %>
+      <%= link_to '删除模板', admin_carriage_template_path(carriage), method: 'DELETE', data: {confirm: "确定删除模板 #{carriage.name} ?"}, class: 'btn btn-primary' %>
+    <% end %>
     <table>
       <thead>
         <tr>

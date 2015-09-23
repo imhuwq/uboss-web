@@ -1,4 +1,6 @@
 class Admin::CarriageTemplatesController < AdminController
+  load_and_authorize_resource
+
   before_action :find_carriage, only: [:show, :edit, :update, :destroy]
 
   def index

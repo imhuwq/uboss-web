@@ -22,7 +22,7 @@
         <%= can_li_link(:manage, :agents, admin_agents_path) %>
         <%= nav_group :product_manage do %>
           <%= can_li_link(:read, Product, admin_products_path) %>
-          <%= li_link(:carriage_template, admin_carriage_templates_path, action_check: false) %>
+          <%= can_li_link(:read, CarriageTemplate, admin_carriage_templates_path ) %>
       <% end %>
         <%= can_li_link(:manage, Order, admin_orders_path) %>
         <%= can_li_link(:manage, SharingIncome, admin_sharing_incomes_path) %>

@@ -46,6 +46,7 @@ class Ability
     can :read, DivideIncome, order: { seller_id: user.id }
     can :read, SellingIncome, user_id: user.id
     can :manage, BankCard, user_id: user.id
+    can :manage, CarriageTemplate
   end
 
   def grant_permissions_to_agent user
@@ -58,6 +59,7 @@ class Ability
     can :read,   WithdrawRecord, user_id: user.id
     can :create, WithdrawRecord, user_id: user.id
     can :read, :sellers
+    can :read, CarriageTemplate
     can :manage, BankCard, user_id: user.id
   end
 
