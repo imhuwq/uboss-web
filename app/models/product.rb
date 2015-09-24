@@ -7,7 +7,7 @@ class Product < ActiveRecord::Base
 
   # FIXME 请使用helper or i18n 做view的数值显示
   DataCalculateWay = { 0 => '按金额', 1 => '按售价比例' }
-  DataBuyerPay = { true => '买家付款', false => '包邮' }
+  DataBuyerPay = { 0 => '包邮', 1 => '统一邮费', 2 => '运费模板' }
 
   validates_presence_of :user_id, :name, :short_description
 

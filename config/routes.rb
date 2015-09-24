@@ -84,6 +84,8 @@ Rails.application.routes.draw do
     namespace :admin do
       resources :carriage_templates
 
+      get '/select_carriage_template', to: 'products#select_carriage_template'
+
       resources :products, except: [:destroy] do
         member do
           patch :change_status

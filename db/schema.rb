@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150917070826) do
+ActiveRecord::Schema.define(version: 20150923093114) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -239,6 +239,7 @@ ActiveRecord::Schema.define(version: 20150917070826) do
     t.string   "short_description"
     t.boolean  "hot",                  default: false
     t.integer  "carriage_template_id"
+    t.integer  "transportation_way",   default: 0
   end
 
   create_table "redactor_assets", force: :cascade do |t|
