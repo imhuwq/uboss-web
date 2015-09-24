@@ -30,8 +30,7 @@ class OrderItem < ActiveRecord::Base
   alias_method :generate_sharing_link_node, :sharing_link_node
 
   def create_privilege_card_if_none
-    card = PrivilegeCard.find_or_create_by(user_id: user_id, seller_id: product.user_id)
-    card.update_column(:actived, true) if not card.actived?
+    PrivilegeCard.find_or_active_card(user_id, product.user_id)
   end
 
   def active_privilege_card

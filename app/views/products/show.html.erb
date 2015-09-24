@@ -35,7 +35,7 @@
 	     	 包邮
 	    <% end %>
 	    </p>
-	    <p class="gray-color""><%= Evaluation.product_good_reputation_rate(@product.id) %> 好评 (<%= Evaluation.product_good_reputation(@product.id) %>人)</p>
+	    <p class="gray-color"><%= Evaluation.product_good_reputation_rate(@product.id) %> 好评 (<%= Evaluation.product_good_reputation(@product.id) %>人)</p>
   	</div><!-- border-box -->
   	<br />
   	<div class="detail text-left">
@@ -44,72 +44,66 @@
   	<br />
   </div><!-- product-info-box -->
 
-  <% if @privilege_card %>
-    <div class="product-info-box">
-      <br />
-      <div class="friend-card">
-        <p class="cover"><%= image_tag @privilege_card.user.avatar_url(:w120) %></p>
-        <p class="name"><%= @privilege_card.user.identify %> 分享</p>
-        <div class="gray-color">每件为你多省<span class="like-color"><%= @privilege_card.privilege_amount(@product) %></span></div>
-        <br />
-        <div class="border-box">
-          <p class="name">友情价</p>
-          <div class="price"><%= @product.present_price - @privilege_card.privilege_amount(@product) %></div>
-        </div>
-        <br />
-        <p class="name">关于分享者</p>
-        <div class="gray-color">共 <%= @sharing_node.user.total_reputations %> 分享 <span class="like-color"><%= @sharing_node.user.good_reputation_rate %>% 靠谱</span></div>
-      </div>  <!-- friend-card -->
-      <br />
-    </div><!-- product-info-box -->
-  <% end %>
   <!-- 自己的友情卡  -->
+  <% if self_privilege_card?(@privilege_card) || qr_sharing? %>
   	<div class="product-info-box">
       <br />
       <div class="friend-card">
 	      <div class="name">友情价</div>
 	      <br />
-	      <div class="price">9.00</div>
+        <div class="price">
+          <%= product_privilege_price(@product, @privilege_card) %>
+        </div>
 	      <br/>
-	    	<p class="gray-color">帮朋友优惠1.00</p>
+	    	<p class="gray-color">帮朋友优惠<%= product_privilege_amount(@product, @privilege_card) %></p>
         <div class="border-box">
-        	<br />
-        	<!-- 已经有该商品友情卡   -->
-        	<div class="text-center"><a href="?shared=true" class="btn btn-large btn-longer">分享给朋友</a></div>
-        	<br/>
-        	<div class="text-center"><button class="btn btn-like">喜欢</button></div>
-        	<script>  
-        		$('.btn-like').click(function(){
-        			$(this).toggleClass('active');
-        			$('html').append('<div class="pop-alert"><div class="pop-content"></div>');
-        			if($(this).hasClass('active')){
-        				$('.pop-content').append('<div class="pop-text">您喜欢了该商品，可以在店铺主页<br/>我的喜欢模块找到本商品</div>')        				
-        			}else{
-        				$('.pop-content').append('<div class="pop-text line-2 gray">您取消了该喜欢商品</div>') 
-        			}
-		    			setTimeout(function(){
-		    				$('.pop-alert').remove();        				
-		    			},3000);
-        		})
-	    			$('html').on('click','.pop-alert',function(){
-	    				$(this).remove();
-	    			})
-	    			
-        	</script>
-        	<!-- end 已经有该商品友情卡 -->
-        	
-        	<!-- if  没有该商品友情卡    并且     扫描商品进入页面 
-        		<div class="text-center"><a href="" class="btn btn-large btn-longer">领取友情卡</a></div>
-        		<br/>
-        	end 没有该商品友情卡    并且     扫描商品进入页面  -->
-        	
+          <% if @privilege_card.present? %>
+            <br />
+            <div class="text-center"><a class="btn btn-large btn-longer p-sharing-btn">分享给朋友</a></div>
+            <br/>
+            <div class="text-center"><button class="btn btn-like">喜欢</button></div>
+          <% else %>
+            <div class="text-center">
+              <%= link_to "领取友情卡", get_product_sharing_path, data: { pid: @product.id, uid: current_user.present? },
+                class: "btn btn-large btn-longer show-req-snode-modal"
+              %>
+              <a class="btn btn-large btn-longer hidden p-sharing-btn">分享给朋友</a>
+            </div>
+          <% end %>
         </div><!-- border-box -->
         <br />
-        <p class="gray-color">一级 20　　二级 10　　三级 5</p>
+        <p class="gray-color">一级 <%= @product.share_amount_lv_1 %>　　二级 <%= @product.share_amount_lv_2 %>　　三级 <%= @product.share_amount_lv_3 %></p>
         <div class="read"><a href="/about"><small>查看说明</small></a></div>
       </div>  <!-- friend-card -->
     </div><!-- product-info-box -->
+  <% elsif other_users_privilege_card?(@privilege_card) %>
+    <div class="product-info-box">
+      <br />
+      <div class="friend-card">
+        <p class="cover"><%= image_tag @privilege_card.user.avatar_url(:w120) %></p>
+        <p class="name"><%= @privilege_card.user.identify %> 分享</p>
+        <div class="gray-color">
+          每件为你多省<span class="like-color"><%= @privilege_card.privilege_amount(@product) %></span>
+        </div>
+        <br />
+        <div class="border-box">
+          <p class="name">友情价</p>
+          <div class="price">
+            <%= @product.present_price - @privilege_card.privilege_amount(@product) %>
+          </div>
+        </div>
+        <br />
+        <p class="name">关于分享者</p>
+        <div class="gray-color">
+          共 <%= @sharing_node.user.total_reputations %> 分享
+          <span class="like-color"><%= @sharing_node.user.good_reputation_rate %>% 靠谱</span>
+        </div>
+      </div>  <!-- friend-card -->
+      <br />
+    </div><!-- product-info-box -->
+  <% end %>
   <!-- end 自己的友情卡 -->
+
   <div class="product-info-box">
     <br />
     <div class="cover">
@@ -151,3 +145,41 @@
   <%= render partial: 'new_share' %>
 
 </div>
+
+<div class="req-snode-modal pop-alert pop-bg hidden">
+  <div class="pop-content">
+    <div class="pop-text">
+      <div class="req-snode-group">
+        <div class="page-title">留下手机号，现金礼品拿不停！</div>
+        <p><input type="tel" name="mobile" placeholder='输入手机号，获得分享收益' class='input-block' /></p>
+        <br />
+        <p>
+        <%= link_to "领取友情卡", get_product_sharing_path, data: { pid: @product.id }, class: "btn btn-large btn-block req-pro-snode-btn" %>
+        </p>
+      </div>
+      <div class="hidden">
+        <p>您已成功领取，赶紧分享给朋友吧</p>
+        <br />
+        <a class="btn btn-large btn-block pro-snode-success-btn">确定</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  $('.btn-like').click(function(){
+    $(this).toggleClass('active');
+    $('html').append('<div class="pop-alert"><div class="pop-content"></div>');
+    if($(this).hasClass('active')){
+      $('.pop-content').append('<div class="pop-text">您喜欢了该商品，可以在店铺主页<br/>我的喜欢模块找到本商品</div>')
+    }else{
+      $('.pop-content').append('<div class="pop-text line-2 gray">您取消了该喜欢商品</div>')
+    }
+    setTimeout(function(){
+      $('.pop-alert').remove();
+    },3000);
+  })
+  // $('html').on('click','.pop-alert',function(){
+  //   $(this).remove();
+  // })
+</script>

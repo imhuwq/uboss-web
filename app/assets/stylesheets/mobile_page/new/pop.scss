@@ -1,18 +1,17 @@
 .pop-bg{
     background: rgba(0,0,0,0.3);
-    display: table;
     position: fixed;
     z-index: 88;
     left: 0;
     top: 0;
     width: 100%;
-    height: 100%;  
-    animation: fadeIn .4s linear ;  
+    height: 100%;
+    animation: fadeIn .4s linear ;
     .alert{
         background:#fff;
-        margin: 0 20px;   
+        margin: 0 20px;
         padding:15px;
-        position: relative; 
+        position: relative;
         border-radius:4px ;
         text-align:center;
     }
@@ -25,7 +24,7 @@
         width: 30px;
         height: 30px;
         color: #fff;
-        line-height: 26px;    
+        line-height: 26px;
         text-align: center;
         font-size: 16px;
         border-radius:50px ;
@@ -38,13 +37,13 @@
     }
 }
 .pop-content{
-    display: table-cell;
-    vertical-align: middle;        
-    width: 100%;
-    height: 100%;
+  width: 100%;
+  top: 50%;
+  left: 50%;
+  position: absolute;
+  transform: translate3d(-50%, -50%, 0px);
 }
 .pop-alert{
-    display: table;
     position: fixed;
     z-index: 99;
     left: 0;
@@ -61,7 +60,7 @@
         font-size: 15px;
         line-height: 20px;
         border-radius:6px ;
-        
+
     }
     .pop-text.gray{
         background: #a9a9a9;

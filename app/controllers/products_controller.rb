@@ -10,7 +10,9 @@ class ProductsController < ApplicationController
     @product = Product.published.find_by_id(params[:id])
     if @product.present?
       @seller = @product.user
-      if @store_scode = get_seller_sharing_code(@seller.id)
+      if qr_sharing?
+        current_user && @privilege_card = current_user.privilege_cards.find_by(seller_id: @product.user_id)
+      elsif @store_scode = get_seller_sharing_code(@seller.id)
         sharing_node = SharingNode.find_by(code: @store_scode)
         product_sharing_node = sharing_node.lastest_product_sharing_node(@product)
         @sharing_node = (product_sharing_node || sharing_node)

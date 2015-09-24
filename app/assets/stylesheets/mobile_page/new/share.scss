@@ -23,17 +23,9 @@
     z-index: 89;
     background: #fff;
     box-sizing: border-box;
-    padding: 10px;
+    padding: 10px 10px 20px;
   }
   p{margin-bottom: 8px;}
-}
-.share-content {
-  .req-snode-group { display: none; }
-  .share-btns-group { display: block; }
-  &.need-snode {
-    .req-snode-group { display: block; }
-    .share-btns-group { display: none; }
-  }
 }
 .wx-mod-pop {
   position: fixed;

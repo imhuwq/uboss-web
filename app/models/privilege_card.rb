@@ -8,6 +8,12 @@ class PrivilegeCard < ActiveRecord::Base
   validates :user_id, :seller_id, presence: true
   validates_uniqueness_of :user_id, scope: :seller_id
 
+  def self.find_or_active_card(user_id, seller_id)
+    card = PrivilegeCard.find_or_create_by(user_id: user_id, seller_id: seller_id)
+    card.update_column(:actived, true) if not card.actived?
+    card
+  end
+
   def discount(product)
     (product.present_price - privilege_amount(product)) * 10 / product.present_price
   end

@@ -32,4 +32,23 @@ module ProductsHelper
     "#{product.short_description}"
   end
 
+  def self_privilege_card?(privilege_card)
+    privilege_card && current_user && privilege_card.user_id == current_user.id
+  end
+
+  def other_users_privilege_card?(privilege_card)
+    privilege_card && (current_user.blank? || (current_user && privilege_card.user_id != current_user.id))
+  end
+
+  def product_privilege_price(product, privilege_card)
+    product.present_price - product_privilege_amount(product, privilege_card)
+  end
+
+  def product_privilege_amount(product, privilege_card)
+    if privilege_card.present?
+      privilege_card.privilege_amount(product)
+    else
+      product.privilege_amount
+    end
+  end
 end

@@ -48,6 +48,7 @@ class GoingMerry.Luffy
     @sharing_link = info.link || $('meta[name=sharing_link]').attr('content')
     @sharing_imgurl = info.imgurl || $('meta[name=sharing_imgurl]').attr('content')
     @sharing_desc = info.desc || $('meta[name=sharing_desc]').attr('content')
+    $('.share-content').find('.sharing-link').text(@sharing_link)
     @invokeSharing()
 
   setSharingInfo: (with_detail_info)->
@@ -55,6 +56,15 @@ class GoingMerry.Luffy
     wx.onMenuShareQQ(with_detail_info)
     wx.onMenuShareWeibo(with_detail_info)
     wx.onMenuShareQZone(with_detail_info)
+
+  showWxPopTip: ->
+    if window.wx?
+      $(".wx-mod-pop").show()
+    else
+      alert('朋友圈分享只在微信浏览器可用')
+
+  toggleSharingContent: ->
+    $('.share-container').toggleClass('hidden')
 
   openUrl : (url, popup) ->
     if popup == "true"

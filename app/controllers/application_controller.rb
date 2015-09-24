@@ -96,4 +96,9 @@ class ApplicationController < ActionController::Base
     end
   end
   helper_method :after_sign_in_path_for
+
+  def qr_sharing?
+    params['shared'] == 'true'
+  end
+  helper_method :qr_sharing?
 end

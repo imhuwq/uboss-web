@@ -35,5 +35,6 @@ $ ->
   $("header .menu-btn").on 'click', ->
     $('header .nav-bar').toggle()
 
-  $("#close-area").on 'click' , ->
-    $('.share-container').remove()
+  $(document).on 'click', '.pop-alert', (e) ->
+    unless $(e.target).closest('.pop-content').length > 0
+      $(this).hide()
