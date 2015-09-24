@@ -351,6 +351,10 @@ class User < ActiveRecord::Base
       sum("good_evaluation + normal_evaluation + bad_evaluation")
   end
 
+  def has_seller_privilege_card?(seller)
+    privilege_cards.where(seller_id: seller.id).exists?
+  end
+
   private
 
   def ensure_privilege_rate

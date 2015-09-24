@@ -25,14 +25,20 @@
   <p class="name"><%= @seller.store_name %></p>
   <p class="gray-color"><%= @seller.store_short_description %></p>
   <p class="gray-color"><%= number_to_percentage(@seller.good_reputation_rate, precision: 0) %> 好评（<%= @seller.total_reputations %>）</p>
-  <div class="text-center border-top">
-    <%= link_to "领取友情卡", get_seller_sharing_path, data: { sid: @seller.id, uid: current_user.present? },
-      class: "btn btn-large btn-longer show-req-snode-modal"
-    %>
-    <a class="btn btn-large btn-longer hidden p-sharing-btn">分享给朋友</a>
-  </div>
-  <br />
-  <div class="read"><a href="/about"><small>查看说明</small></a></div>
+  <% if qr_sharing? %>
+    <div class="text-center border-top">
+      <% if current_user && current_user.has_seller_privilege_card?(@seller) %>
+        <a class="btn btn-large btn-longer p-sharing-btn">分享给朋友</a>
+      <% else %>
+        <%= link_to "领取友情卡", get_seller_sharing_path, data: { sid: @seller.id, uid: current_user.present? },
+          class: "btn btn-large btn-longer show-req-snode-modal"
+        %>
+        <a class="btn btn-large btn-longer hidden p-sharing-btn">分享给朋友</a>
+      <% end %>
+    </div>
+    <br />
+    <div class="read"><a href="/about"><small>查看说明</small></a></div>
+  <% end %>
 </div><!-- product-info-box -->
 
 <% if @sharing_node %>
