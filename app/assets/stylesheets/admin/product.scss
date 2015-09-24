@@ -128,6 +128,19 @@
     vertical-align: baseline;
     border-radius: 2px;
   }
+  .chosen-container-single .chosen-single div b {
+    background: none;
+    color: #43C3AA;
+    display: inline-block;
+    font: normal normal normal 14px/1 FontAwesome;
+    font-size: inherit;
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    &:before {
+      content: "";
+    }
+  }
   .select_carriage_template {
     font-size: 13px;
     margin-left: 70px;
