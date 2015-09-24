@@ -26,7 +26,7 @@
 			<p><%= BankCard.human_attribute_name(:number) %> : <%= @withdraw_record.card_number %></p>
 	</div>
 	<% elsif @withdraw_record.user.weixin_openid.present? %>
-	  <p class="alert alert-info">未添加银行卡信息，已绑定微信，通过微信打款。</p>
+	  <p class="alert alert-info">已绑定微信，通过微信打款。</p>
 	<% end %>
 	<br />
 	<h3 class="page-title">处理信息 </h3>
