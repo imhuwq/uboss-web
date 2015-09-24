@@ -6,7 +6,8 @@ class OrderForm
 
   ATTRIBUTES = [
     :product_id, :amount, :mobile, :captcha, :user_address_id, :deliver_username,
-    :province, :city, :country, :area, :building, :street, :deliver_mobile, :sharing_code
+    :province, :city, :country, :area, :building, :street, :deliver_mobile, :sharing_code,
+    :product_inventory_id
   ]
 
   ATTRIBUTES.each do |order_attr|

@@ -3,6 +3,7 @@ class OrderItem < ActiveRecord::Base
   belongs_to :user
   belongs_to :order
   belongs_to :product
+  belongs_to :product_inventory
   belongs_to :sharing_node
   has_one    :evaluation
   has_many   :sharing_incomes
@@ -55,7 +56,8 @@ class OrderItem < ActiveRecord::Base
 
   def adjust_product_stock(type)
     if [1, -1].include?(type)
-      Product.update_counters(product_id, count: amount * type)
+      Product.update_counters(product_id, count: amount * type) # TODO 全部采用sku后注释掉这里
+      ProductInventory.update_counters(product_inventroy_id, count: amount * type)
     else
       raise 'Accept value is -1 or 1'
     end
@@ -66,7 +68,7 @@ class OrderItem < ActiveRecord::Base
   end
 
   def set_present_price
-    self.present_price = product.present_price
+    self.present_price = (product_inventory.price || product.present_price)
   end
 
   def set_pay_amount

@@ -26,7 +26,6 @@ class Admin::ProductsController < AdminController
   end
 
   def update
-    binding.pry
     if @product.present? && @product.user_id == current_user.id && @product.update(product_params)
       @product.save_product_properties({product_params[:property] => product_params[:property_value]})
       flash[:success] = '保存成功'

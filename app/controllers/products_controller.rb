@@ -8,7 +8,8 @@ class ProductsController < ApplicationController
 
   def show
     @product = Product.published.find_by_id(params[:id])
-    if @product.present?
+    @product_inventories = @product.product_inventories.where("count > ?",0)
+    if @product.present? && (@product.product_inventories.collect(&:count).inject(:+) || @product.count) > 0
       @seller = @product.user
       if @store_scode = get_seller_sharing_code(@seller.id)
         sharing_node = SharingNode.find_by(code: @store_scode)

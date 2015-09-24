@@ -90,11 +90,13 @@ class Product < ActiveRecord::Base
       @property = ProductProperty.find_or_create_by(name: k)
       @property_value = ProductPropertyValue.find_or_create_by(product_property_id: @property.id, value: v)
     end
-    @inventory = ProductInventory.where('product_id = ? and sku_attributes = ?', id, hash.to_json).first
-    unless @inventory.present?
-      @inventory = ProductInventory.create(product_id: id, sku_attributes: hash)
-    end
+    # @inventory = ProductInventory.where('product_id = ? and sku_attributes = ?', id, hash.to_json).first
+    # unless @inventory.present?
+    #   @inventory = ProductInventory.create(product_id: id, sku_attributes: hash)
+    # end
+    @inventory = ProductInventory.find_or_create_by(product_id: id)
     @inventory.update(
+      sku_attributes:       hash,
       count:                count,
       user_id:              user_id,
       name:                 name,

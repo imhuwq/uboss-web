@@ -37,6 +37,7 @@ class OrdersController < ApplicationController
     @order_form = OrderForm.new(
       buyer: current_user,
       product_id: params[:product_id],
+      product_inventory_id: (params[:product_inventory_id] || 1),
     )
     @product = @order_form.product
     @order_form.sharing_code = get_product_or_store_sharing_code(@product)

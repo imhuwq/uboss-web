@@ -24,6 +24,7 @@
 
 <%= simple_form_for @order_form, url: orders_path, method: 'POST',wrapper: :default do |f| %>
   <%= f.hidden_field :product_id %>
+  <%= f.hidden_field :product_inventory_id %>
   <%= f.hidden_field :real_price %>
   <%= f.hidden_field :product_traffic_expense %>
   <div id="addr">
