@@ -4,6 +4,7 @@ class AccountsController < ApplicationController
 
   before_action :authenticate_user!
   before_action :authenticate_agent, only: [:send_message, :invite_seller, :edit_seller_note, :update_histroy_note]
+  skip_before_action :authenticate_user!, only: [:maker_qrcode]
 
   def show
     @orders = append_default_filter account_orders, page_size: 20
@@ -178,6 +179,10 @@ class AccountsController < ApplicationController
         redirect_to action: :binding_agent, agent_code: params[:agent_code]
       end
     end
+  end
+
+  def maker_qrcode
+    render layout: 'mobile'
   end
 
   private
