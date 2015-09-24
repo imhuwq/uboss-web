@@ -42,11 +42,6 @@ $ ->
       $this.parent().find('.min').removeAttr("disabled")
     setTotalPrice($num)
 
-  $("input[name='num']").on 'change', (e) ->
-    e.preventDefault()
-    alert('change')
-    setTotalPrice($(this))
-
   $('a.c_delete').on 'click', () ->
     id = $(this).closest('table').attr('data-id')
     if confirm("确定要删除该商品吗？")
@@ -83,16 +78,23 @@ $ ->
         return false
     .focus () ->
       this.style.imeMode = 'disabled' # 禁用输入法
-    .bind "paste", () ->
-      clipboard = window.clipboardData.getData("Text") # 获取剪切板的内容
-      if /^\d+$/.test(clipboard)
-        return true
-      else
-        return false
-    .keyup () ->
-      this.value = this.value.replace(/[^\d]/g, '')
+    .bind "paste", () ->              # 禁用粘贴
+      return false
+    #  clipboard = window.clipboardData.getData("Text")
+    #  if /^\d+$/.test(clipboard)
+    #    return true
+    #  else
+    #    return false
 
   $("input[name='num']").onlyNum()
+
+  # 监听input值变化
+  $("input[name='num']").on 'change', (e) ->
+    e.preventDefault()
+    this.value = this.value.replace(/[^\d]/g, '')
+    if this.value == '' || this.value == "0"
+      this.value = 1
+    setTotalPrice($(this))
 
   setTotalPrice = (e) ->
     num = e.val()
