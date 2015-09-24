@@ -1,10 +1,11 @@
-<div class="acc-pcard" timestamp='<%= privilege_card.updated_at %>'>
-  <div class="info">
-    <p><%= privilege_card.seller.store_identify %></p>
-    <p><%= privilege_card.seller.products.published.count %></p>
-    <p><a href="#">分享</a></p>
-  </div>
-  <div class="avatar">
+<div class="share-card gap" timestamp='<%= privilege_card.updated_at %>'>
+	
+  <div class="cover">
     <%= image_tag privilege_card.seller.avatar_url(:w120) %>
   </div>
-</div>
+  <div class="info">
+    <p class="title"><%= privilege_card.seller.store_identify %></p>
+    <p class="gray-color"><%= privilege_card.seller.products.published.count %></p>
+    <div><a href="#" class="btn share-btn">分享</a></div>
+  </div>
+</div><!-- share-card -->

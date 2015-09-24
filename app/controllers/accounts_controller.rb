@@ -7,6 +7,7 @@ class AccountsController < ApplicationController
   def show
     @orders = append_default_filter account_orders, page_size: 10
     @privilege_cards = append_default_filter current_user.privilege_cards, order_column: :updated_at, page_size: 10
+    render layout: 'mobile'
   end
 
   def orders
@@ -180,6 +181,10 @@ class AccountsController < ApplicationController
         redirect_to action: :binding_agent, agent_code: params[:agent_code]
       end
     end
+  end
+
+  def settings
+    #render layout: 'mobile'
   end
 
   private
