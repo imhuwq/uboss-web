@@ -13,6 +13,7 @@
 //= require mobile_page/utilities
 //= require shared/login
 //= require shared/city_select
+//= require mobile_page/cart
 //= require_self
 
 $(function() {

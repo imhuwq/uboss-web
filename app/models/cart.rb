@@ -27,15 +27,19 @@ class Cart < ActiveRecord::Base
     cart_item.save
   end
 
-  def total_price(price_attribute)  # "original_price", "present_price"
-    cart_items.inject(0){ |sum, item| sum + item.send(price_attribute)*CartItem.where("product_id = ? AND cart_id = ?", item.product_id, id).take!.count }
+  def total_price # present_price
+    cart_items.inject(0){ |sum, item| sum + item.present_price*CartItem.where("product_id = ? AND cart_id = ?", item.product_id, id).take!.count }
   end
+
+  #def total_price(price_attribute)  # "original_price", "present_price"
+  #  cart_items.inject(0){ |sum, item| sum + item.send(price_attribute)*CartItem.where("product_id = ? AND cart_id = ?", item.product_id, id).take!.count }
+  #end
 
   # 购物车商品按店铺分组
   def items_group_by_seller
     seller_ids = cart_items.map(&:seller_id).uniq
-    items = []
-    seller_ids.each { |seller_id| items << {User.find(seller_id).identify => cart_items.where(seller_id: seller_id)} }
+    items = {}
+    seller_ids.each { |seller_id| items.merge!({User.find(seller_id).identify => cart_items.where(seller_id: seller_id)}) }
     items
   end
 

@@ -76,9 +76,11 @@ Rails.application.routes.draw do
       post :checkout
       post :delete_all
       post :delete_item
-      post :change_item_quantity
+      post :change_item_count
+      post :items_select
     end
   end
+  resources :cart_items, only: [:create, :destroy]
 
   authenticate :user, lambda { |user| user.admin? } do
     namespace :admin do

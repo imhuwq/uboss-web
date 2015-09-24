@@ -9,6 +9,7 @@
 #= require swipe
 #= require mobile_page/going_merry
 #= require mobile_page/utilities
+#= require mobile_page/product
 #= reuqire_self
 
 $ ->
