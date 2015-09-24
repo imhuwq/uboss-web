@@ -1,0 +1,44 @@
+.order-list{
+    background: #fff;
+    padding: 10px;
+    margin-bottom: 8px;
+    .order-code{
+        padding-bottom: 5px;
+        border-bottom: 1px dashed #ddd;
+        margin-bottom: 10px;
+    }
+    .order-box{
+        margin-bottom: 10px;
+        .cover{float: left;margin-right: 10px; width: 70px;}
+        .content{
+            .name{
+                font-size: 15px;
+                line-height: 20px;
+                color: #333;
+            }
+        }
+    }
+    .order-info{
+        padding: 10px 0 0;
+        border-top :1px solid #eee;
+        overflow: hidden;
+        .text{
+            padding: 4px 0;
+            display: inline-block;
+            line-height: 14px;
+        }
+        .btn{
+            font-size: 10px;
+            line-height: 12px;
+            padding: 5px 10px;
+        }
+    }
+}
+.order-list:after,.order-box:after{
+    clear: both;
+    content: ' ';
+    width: 0;
+    height: 0;
+    display: block;
+}
+

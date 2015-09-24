@@ -1,3 +1,4 @@
+small{font-size: 70%;}
 .gap{padding:10px}
 .nogap{ padding:0;}
 .text-center{ text-align: center;}
@@ -9,8 +10,9 @@
 
 .border-box { border-bottom: 1px solid #dcdcdc; padding-bottom: 5px;}
 .fixed-container{ padding-bottom: 60px;}
-
-h3{font-size: 18px;margin:20px 0;}
+h2{font-size: 21px; line-height: 30px;}
+h3{font-size: 18px;margin:20px 0; line-height: 25px;}
+h4{font-size: 15px; line-height: 25px; font-weight: normal;}
 
 .main-color{ color: $brand-primary; }
 .like-color{ color: #f9ba10;}
@@ -30,89 +32,27 @@ h3{font-size: 18px;margin:20px 0;}
   float: right;
   img{ height: 15px; margin-left: 5px;}
  }
-.invite-title{
-    font-size: 18px;
-    padding:20px 4px;
-    border-bottom: 1px solid #eee; 
+ 
+.load-more {
+  color: #fff;
+  padding: 10px;
+  font-size: 15px;
+  text-align: center;
+  width: 200px;
+  margin: 0 auto;
+  border-radius: 0.2rem;
+  background-color: lighten(#43c3aa, 10%);
+  &.done {
+    background-color: lighten(#43c3aa, 20%);
+  }
+  &.loading {
+    background: image-url("ajax-loader.gif") no-repeat 50px;
+    background-size: 16px;
+    background-color: lighten(#43c3aa, 10%);
+  }
 }
-#invite_seller_histroy{font-size: 14px;color: #777;padding: 0 10px;}
-#invite_seller_histroy .edit-icon a{display: inline-block;width:19px;padding:9px;}
-.note-info{ font-size: 12px;color: #999; padding-top: 0;}
-#invite_seller_histroy .note-box{
-    td{ border: none; padding-bottom: 0;}
-    .edit-icon{ border-bottom: 1px solid #eee;}
-}
-.avatar{
-    display: table;
-    width: 100%;
-    > div{
-        display: table-cell;
-        vertical-align:middle;
-    }
-    .cover{
-         padding-right: 10px;
-         width: 80px;
-    }
-    .cover img{
-        width: 80px;
-        height: 80px;
-        border-radius:100px ;
-        overflow: hidden;
-        
-    }
-    .name{
-        text-align: left;
-        font-size: 15px;
-    }
-    .setting-icon{
-        width:30px;
-        a{
-            padding: 10px 0 10px 10px;
-            display: block;
-            width: 20px;
-        }
-        
-    }
-}
-.privilege-rate{
-    padding:0 10px;
-    margin-bottom: 8px;
-    background: #fff;
-    a{
-        display: block;
-        padding:10px 0;
-        background: image-url('mobile/gray-arrow-right.png') no-repeat right center;
-        background-size:10px;
-        font-size: 15px;
-        color: #333;
-        line-height: 20px;
-    }
-    
-}
-.share-card {
-    background: #fff;
-    overflow: hidden;
-    margin-bottom: 8px;    
-    line-height: 20px;
-    .cover{
-        float: right;
-        margin-left: 10px;
-        img{
-            width: 100px;
-            height: 100px;
-        }
-    }
-    .info{
-        overflow: hidden;
-        .title{
-            font-size: 18px;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-            overflow: hidden;
-        }
-        p{
-            margin-bottom: 10px;
-        }
-    }
+
+.hidden {
+  display: none;
 }
 

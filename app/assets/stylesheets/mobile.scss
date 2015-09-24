@@ -9,29 +9,9 @@
 @import 'mobile_page/new/tab';
 @import 'mobile_page/new/pop';
 @import 'mobile_page/new/share';
-@import 'mobile_page/new/store';
 @import 'mobile_page/new/product';
-@import 'mobile_page/new/product-page';
+@import 'mobile_page/new/account';
+@import 'mobile_page/new/order';
 @import 'mobile_page/new/main';
 
-.load-more {
-  color: #fff;
-  padding: 8px;
-  text-align: center;
-  width: 200px;
-  margin: 5px auto;
-  border-radius: 0.2rem;
-  background-color: lighten(#43c3aa, 10%);
-  &.done {
-    background-color: lighten(#43c3aa, 20%);
-  }
-  &.loading {
-    background: image-url("ajax-loader.gif") no-repeat 50px;
-    background-size: 16px;
-    background-color: lighten(#43c3aa, 10%);
-  }
-}
 
-.hidden {
-  display: none;
-}
