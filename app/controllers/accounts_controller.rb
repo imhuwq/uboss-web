@@ -182,8 +182,8 @@ class AccountsController < ApplicationController
   end
 
   def maker_qrcode
-    render layout: 'mobile'
-  end
+    render layout: nil
+ end
 
   private
 

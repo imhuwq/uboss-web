@@ -11,5 +11,5 @@ Rails.application.config.assets.version = '1.0'
 
 Rails.application.config.assets.precompile += %w(
 desktop.css desktop.js admin.js admin.css login.js login.css mobile.css mobile.js
-jcrop/jquery.Jcrop.js jcrop/ajaxfileupload.js jcrop/jquery.Jcrop.css redactor-rails/*
+jcrop/jquery.Jcrop.js jcrop/ajaxfileupload.js jcrop/jquery.Jcrop.css mobile_page/marketing.css redactor-rails/* swiper.3.1.2.jquery.min.js
 )
