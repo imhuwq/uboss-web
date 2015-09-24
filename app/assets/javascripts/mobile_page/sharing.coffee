@@ -9,6 +9,7 @@ $ ->
         type: 'GET'
         data:
           product_id: _ele.data('pid')
+          seller_id: _ele.data('sid')
       .done (data)->
         $('.req-snode-modal .req-snode-group').hide().next().show()
         $('.req-snode-modal').show()
@@ -59,14 +60,14 @@ $ ->
     _ele = $(this)
     mobile = _ele.closest('.req-snode-group').find('input[name=mobile]').val()
     checkNum = /^(\+\d+-)?[1-9]{1}[0-9]{10}$/
-    pid = _ele.data('pid')
     if checkNum.test(mobile)
       $.ajax
         url: _ele.attr('href')
         type: 'GET'
         data:
           mobile: mobile
-          product_id: pid
+          product_id: _ele.data('pid')
+          seller_id: _ele.data('sid')
       .done (data)->
         $('meta[name=sharing_link]').attr('content', data.sharing_link)
         UBoss.luffy.resetInvokeSharing()

@@ -17,6 +17,7 @@ Rails.application.routes.draw do
   get 'set_password', to: 'accounts#new_password'
 
   get 'sharing/product_node', to: 'sharing#product_node', as: :get_product_sharing
+  get 'sharing/seller_node', to: 'sharing#seller_node', as: :get_seller_sharing
   get 'sharing/:code', to: 'sharing#show', as: :sharing
 
   get 'service_centre_consumer', to: 'home#service_centre_consumer'

@@ -35,6 +35,6 @@ $ ->
   $("header .menu-btn").on 'click', ->
     $('header .nav-bar').toggle()
 
-  $(document).on 'click', '.pop-alert', (e) ->
+  $(document).on 'click', '.pop-bg', (e) ->
     unless $(e.target).closest('.pop-content').length > 0
       $(this).hide()

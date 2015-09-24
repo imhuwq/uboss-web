@@ -24,8 +24,15 @@
   <br />
   <p class="name"><%= @seller.store_name %></p>
   <p class="gray-color"><%= @seller.store_short_description %></p>
-  <p class="gray-color border-top"><%= number_to_percentage(@seller.good_reputation_rate, precision: 0) %> 好评（<%= @seller.total_reputations %>）</p>
+  <p class="gray-color"><%= number_to_percentage(@seller.good_reputation_rate, precision: 0) %> 好评（<%= @seller.total_reputations %>）</p>
+  <div class="text-center border-top">
+    <%= link_to "领取友情卡", get_seller_sharing_path, data: { sid: @seller.id, uid: current_user.present? },
+      class: "btn btn-large btn-longer show-req-snode-modal"
+    %>
+    <a class="btn btn-large btn-longer hidden p-sharing-btn">分享给朋友</a>
+  </div>
   <br />
+  <div class="read"><a href="/about"><small>查看说明</small></a></div>
 </div><!-- product-info-box -->
 
 <% if @sharing_node %>
@@ -106,3 +113,26 @@
 <% if @products.size > 6 %>
   <div class="load-more" data-container='.store-list' data-ele='.p-item' data-ref='<%= request.path %>'>加载更多</div>
 <% end %>
+
+<%= render partial: 'new_share' %>
+
+<div class="req-snode-modal pop-bg hidden">
+  <div class="pop-content">
+    <div class="alert">
+      <div class="req-snode-group">
+        <div class="page-title">留下手机号，现金礼品拿不停！</div>
+        <p><input type="tel" name="mobile" placeholder='输入手机号，获得分享收益' class='input-block' /></p>
+        <br />
+        <p>
+        <%= link_to "领取友情卡", get_seller_sharing_path, data: { sid: @seller.id },
+          class: "btn btn-large btn-block req-pro-snode-btn" %>
+        </p>
+      </div>
+      <div class="hidden">
+        <p>您已成功领取，赶紧分享给朋友吧</p>
+        <br />
+        <a class="btn btn-large btn-block pro-snode-success-btn">确定</a>
+      </div>
+    </div>
+  </div>
+</div>

@@ -11,7 +11,11 @@
       </div>
 
       <div class="font-h4 hidden bg_white text-center sharing-link" style="padding:20px 10px 0;word-wrap: break-word;">
-        <%= product_sharing_link(@product, @sharing_link_node) %>
+        <% if @product.present? %>
+          <%= product_sharing_link(@product, @sharing_link_node) %>
+        <% elsif @seller.present? %>
+          <%= store_sharing_link(@seller, @sharing_link_node) %>
+        <% end %>
       </div>
     </div>
   </div>

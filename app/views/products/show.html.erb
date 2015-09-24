@@ -60,8 +60,8 @@
           <% if @privilege_card.present? %>
             <br />
             <div class="text-center"><a class="btn btn-large btn-longer p-sharing-btn">分享给朋友</a></div>
-            <br/>
-            <div class="text-center"><button class="btn btn-like">喜欢</button></div>
+            <!-- <br/> -->
+            <!-- <div class="text&#45;center"><button class="btn btn&#45;like">喜欢</button></div> -->
           <% else %>
             <div class="text-center">
               <%= link_to "领取友情卡", get_product_sharing_path, data: { pid: @product.id, uid: current_user.present? },
@@ -146,7 +146,7 @@
 
 </div>
 
-<div class="req-snode-modal pop-alert pop-bg hidden">
+<div class="req-snode-modal pop-bg hidden">
   <div class="pop-content">
     <div class="alert">
       <div class="req-snode-group">
@@ -167,18 +167,18 @@
 </div>
 
 <script>
-  $('.btn-like').click(function(){
-    $(this).toggleClass('active');
-    $('html').append('<div class="pop-alert"><div class="pop-content"></div>');
-    if($(this).hasClass('active')){
-      $('.pop-content').append('<div class="pop-text">您喜欢了该商品，可以在店铺主页<br/>我的喜欢模块找到本商品</div>')
-    }else{
-      $('.pop-content').append('<div class="pop-text line-2 gray">您取消了该喜欢商品</div>')
-    }
-    setTimeout(function(){
-      $('.pop-alert').remove();
-    },3000);
-  })
+  // $('.btn-like').click(function(){
+  //   $(this).toggleClass('active');
+  //   $('html').append('<div class="pop-alert"><div class="pop-content"></div>');
+  //   if($(this).hasClass('active')){
+  //     $('.pop-content').append('<div class="pop-text">您喜欢了该商品，可以在店铺主页<br/>我的喜欢模块找到本商品</div>')
+  //   }else{
+  //     $('.pop-content').append('<div class="pop-text line-2 gray">您取消了该喜欢商品</div>')
+  //   }
+  //   setTimeout(function(){
+  //     $('.pop-alert').remove();
+  //   },3000);
+  // })
   // $('html').on('click','.pop-alert',function(){
   //   $(this).remove();
   // })
