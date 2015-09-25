@@ -53,6 +53,7 @@ class Ability
     can :read, DivideIncome, user_id: user.id
     can :read, DivideIncome, order: { seller_id: user.id }
     can :read, SellingIncome, user_id: user.id
+    can :manage, Category, user_id: user.id
   end
 
   def grant_permissions_to_agent user

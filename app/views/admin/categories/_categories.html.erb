@@ -1,0 +1,27 @@
+<div class="index_list">
+<table class="list-table">
+    <thead>
+      <th>分组名</th>
+      <th>创建时间</th>
+      <th>操作</th>
+    </thead>
+    <% categories.each do |category| %>
+      <tr>
+        <td><%= category.name  %></td>
+        <td><%= category.created_at %></td>
+        <td>
+          <% if can? :update, category %>
+            <%= link_to url_for(action: :edit, id: category.id), class:'edit-icon', title: '编辑' do %>
+              <i class="fa fa-pencil-square-o"></i>
+            <% end %>
+
+            <%= link_to admin_category_path(category),
+              method: :delete, class:'change-status-btn edit-icon', data: { confirm: '确认删除？' } do %>
+              <i class="fa fa-trash-o"></i>
+            <% end %>
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+</table>
+</div>
