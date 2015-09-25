@@ -18,14 +18,14 @@
 			<div class="swiper-wrapper">
 				<div class="swiper-slide">
 					<div class="page1">
-            <%= qrcode_image_tag new_seller_url(agent_code: current_user.agent_code) %>
+            <%= qrcode_image_tag new_seller_url(agent_code: current_user.agent_code), logo: current_user.avatar_url(:w120) %>
 					</div>
 				</div>
 				<!--page2-->
 				<div class="swiper-slide">
 					<div class="page2">
 						<div class="corner_qrcode qrcode_border">
-              <%= qrcode_image_tag new_seller_url(agent_code: current_user.agent_code) %>
+              <%= qrcode_image_tag new_seller_url(agent_code: current_user.agent_code), logo: current_user.avatar_url(:w120) %>
 							<p class="p1">我要拥有专属商城</p>
 							<p>扫我也可以成为创客</p>
 						</div>
@@ -34,7 +34,7 @@
 				<div class="swiper-slide">
 					<div class="page3">
 						<div class="corner_qrcode">
-              <%= qrcode_image_tag new_seller_url(agent_code: current_user.agent_code) %>
+              <%= qrcode_image_tag new_seller_url(agent_code: current_user.agent_code), logo: current_user.avatar_url(:w120) %>
 							<p class="p1">我要拥有专属商城</p>
 							<p>扫我也可以成为创客</p>
 						</div>
@@ -43,7 +43,7 @@
 				<div class="swiper-slide">
 					<div class="page4">
 						<div class="corner_qrcode qrcode_border">
-              <%= qrcode_image_tag new_seller_url(agent_code: current_user.agent_code) %>
+              <%= qrcode_image_tag new_seller_url(agent_code: current_user.agent_code), logo: current_user.avatar_url(:w120) %>
 							<p class="p1">我要拥有专属商城</p>
 							<p>扫我也可以成为创客</p>
 						</div>
@@ -52,7 +52,7 @@
 				<div class="swiper-slide">
 					<div class="page5">
 						<div class="corner_qrcode">
-              <%= qrcode_image_tag new_seller_url(agent_code: current_user.agent_code) %>
+              <%= qrcode_image_tag new_seller_url(agent_code: current_user.agent_code), logo: current_user.avatar_url(:w120) %>
 							<p class="p1">我要拥有专属商城</p>
 							<p>扫我也可以成为创客</p>
 						</div>
@@ -75,7 +75,7 @@
 						<div class="qrcode_img">
 							<p>长按进入</p>
 
-              <%= qrcode_image_tag new_seller_url(agent_code: current_user.agent_code) %>
+              <%= qrcode_image_tag new_seller_url(agent_code: current_user.agent_code), logo: current_user.avatar_url(:w120) %>
 						</div>
 						<%= image_tag "mobile/maker/marketing6t.jpg",alt:"uboss",class:'qrcode_bottom' %>
 					</div>
