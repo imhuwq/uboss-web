@@ -149,7 +149,7 @@ zh-CN:
       bank_card: 银行卡
     attributes:
       carriage_template:
-        name: 名称
+        name: 模板名称
       different_area:
         first_item: 首件
         carriage: 运费

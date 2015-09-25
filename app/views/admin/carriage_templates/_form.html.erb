@@ -1,24 +1,36 @@
-<div class="inline-form">
+<div class="carriage_template_form_wrapper">
   <%= render partial: 'shared/form_error_message', locals: { obj: @carriage } %>
   <%= nested_form_for [:admin, @carriage] do |f| %>
     <%= f.label :name %>
     <%= f.text_field :name, class: 'form-control no-border'%>
-    <%= f.fields_for :different_areas do |p| %>
-      <%= p.select :region_ids, Region.provinces.collect { |p| [ p.name, p.id ] }, {include_blank: true}, class: 'form-control input-lg js-select2-privacy-tags', multiple: 'multiple' %>
-      <br>
-      <%= p.label :first_item %>
-      <%= p.number_field :first_item %>
-      <%= p.label :carriage %>
-      <%= p.number_field :carriage %>
-      <%= p.label :extend_item %>
-      <%= p.number_field :extend_item %>
-      <%= p.label :extend_carriage %>
-      <%= p.number_field :extend_carriage %>
-      <%= p.link_to_remove '', class: 'remove pull-right fa fa-times-circle', tabIndex: '-1' %>
-    <% end %>
-    <br>
-    <%= f.link_to_add "添加配送区域", :different_areas, class: 'fa fa-plus text-center add-chapter'%>
-    <%= f.submit '提交', class: 'btn btn-primary btn-lg' %>
-    <%= link_to '取消', admin_carriage_templates_path %>
+    <br />
+    <label for='carriage_template_area'>配送区域设定</label>
+    <div class='table-wrapper'>
+      <div class='head_title'>
+        <span>指定配送区域</span>
+        <span>首件(个)</span>
+        <span>运费(元)</span>
+        <span>续件(个)</span>
+        <span>续费(元)</span>
+        <span>操作</span>
+      </div>
+      <div class='table-body'>
+        <%= f.fields_for :different_areas do |p| %>
+          <span>
+            <%= p.select :region_ids, Region.provinces.collect { |p| [ p.name, p.id ] }, {include_blank: true}, class: 'form-control input-lg js-select2-privacy-tags', multiple: 'multiple' %>
+          </span>
+          <span><%= p.number_field :first_item %></span>
+          <span><%= p.number_field :carriage %></span>
+          <span><%= p.number_field :extend_item %></span>
+          <span><%= p.number_field :extend_carriage %></span>
+          <span><%= p.link_to_remove '删除', class: 'remove', tabIndex: '-1' %></span>
+        <% end %>
+        <div class='add_different_area'><%= f.link_to_add "添加配送区域", :different_areas, class: 'fa fa-plus text-center add-chapter'%></div>
+      </div>
+    </div>
+    <div class='submit_btn'>
+      <%= f.submit '提交', class: 'btn btn-primary btn-lg' %>
+      <%= link_to '取消', admin_carriage_templates_path %>
+    </div>
   <% end %>
 </div>
