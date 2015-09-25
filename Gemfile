@@ -23,6 +23,9 @@ gem 'weixin_authorize', github: "lanrion/weixin_authorize"
 gem 'ransack'
 gem 'rails-api'
 
+# copying of ActiveRecord objects and their associated children
+gem 'amoeba'
+
 # nested sharing_node
 gem 'awesome_nested_set'
 

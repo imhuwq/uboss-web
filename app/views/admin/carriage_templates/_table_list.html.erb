@@ -1,0 +1,39 @@
+<div class="carriage_template_table_list <%= "carriage_template_#{carriage.id}" %>">
+  <div class='table_head_name'>
+    <%= carriage.name %>
+    <div class='header_label_right'>
+      <span>最后编辑时间: <%= carriage.updated_at %></span>
+      <% if can? :create, CarriageTemplate %>
+        <%= link_to '复制模板', copy_admin_carriage_template_path(carriage), remote: true %>
+      <% end %>
+      <% if can? :update, carriage %>
+        <%= link_to '修改', edit_admin_carriage_template_path(carriage) %>
+      <% end %>
+      <% if can? :destroy, carriage %>
+        <%= link_to '删除模板', admin_carriage_template_path(carriage), method: 'DELETE', data: {confirm: "确定删除模板 #{carriage.name} ?"} %>
+      <% end %>
+    </div>
+  </div>
+  <table class='table table-bordered'>
+    <thead>
+      </tr>
+        <th>运送到</th>
+        <th>首件(个)</th>
+        <th>运费(元)</th>
+        <th>续件(个)</th>
+        <th>续费(元)</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% carriage.different_areas.each do |area| %>
+        <tr>
+          <td><%= area.regions.collect(&:name).join('、') %></td>
+          <td><%= area.first_item %></td>
+          <td><%= area.carriage %></td>
+          <td><%= area.extend_item %></td>
+          <td><%= area.extend_carriage %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>

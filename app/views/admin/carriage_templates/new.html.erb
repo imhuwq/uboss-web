@@ -1,4 +1,13 @@
+<div class="container admin-container">
+	<ul class="breadcrumb">
+		<li><a href="/admin">主页</a></li>
+		<li class="divider"><i class="fa fa-angle-right"></i></li>
+		<li><%= link_to '运费模板', [:admin, :carriage_templates] %></li>
+		<li class="divider"><i class="fa fa-caret-right"></i></li>
+		<li class="active">新建运费模板</li>
+	</ul>
+</div><!-- container -->
+<br />
 <div class='text-center container'>
-  <h2>新增运费模板</h2>
   <%= render 'form' %>
 </div>

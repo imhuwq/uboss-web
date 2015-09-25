@@ -90,6 +90,8 @@ GEM
     airbrake (4.3.0)
       builder
       multi_json
+    amoeba (3.0.0)
+      activerecord (>= 3.2.6)
     arel (6.0.2)
     autoprefixer-rails (5.2.0)
       execjs
@@ -455,6 +457,7 @@ PLATFORMS
 DEPENDENCIES
   aasm
   airbrake
+  amoeba
   awesome_nested_set
   better_errors
   bootstrap-sass

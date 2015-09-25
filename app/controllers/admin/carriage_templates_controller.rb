@@ -3,6 +3,19 @@ class Admin::CarriageTemplatesController < AdminController
 
   before_action :find_carriage, only: [:show, :edit, :update, :destroy]
 
+  def copy
+    @bak_carriage = CarriageTemplate.find(params[:id])
+    @carriage = @bak_carriage.amoeba_dup
+    name = @carriage.name.gsub(')', '\\)').gsub('(', '\\(')
+    last_copy_name = CarriageTemplate.where("name ~* ?",
+                                            "#{name}\\(\\d+\\)$")\
+                                      .reorder('created_at desc').first.try(:name).to_s
+    reg_result = last_copy_name.match(/\((\d+)\)$/)
+    index = (reg_result.blank? ? nil : reg_result[1].to_i + 1) || '1'
+    @carriage.name = @carriage.name + "(#{index.to_s})"
+    @carriage.save
+  end
+
   def index
     @carriages = CarriageTemplate.all.page(params[:page])
   end

@@ -3,11 +3,17 @@ class CarriageTemplate < ActiveRecord::Base
   has_many :different_areas
   has_many :products
 
-  default_scope {order("id desc")}
+  default_scope {order("updated_at desc")}
 
   accepts_nested_attributes_for :different_areas, allow_destroy: true
 
   before_destroy :confirm_products_is_nil
+  amoeba do
+    enable
+    append name: "的副本"
+    include_association :different_areas
+  end
+
   validates :name, presence: true, uniqueness: true
 
   validate do
