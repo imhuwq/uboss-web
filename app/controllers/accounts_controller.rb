@@ -1,5 +1,4 @@
 class AccountsController < ApplicationController
-
   layout :login_layout, only: [:set_password, :new_password, :merchant_confirm]
 
   before_action :authenticate_user!
@@ -93,10 +92,12 @@ class AccountsController < ApplicationController
   def invite_seller # 创客通过短信邀请的商家
     @histroys = AgentInviteSellerHistroy.where(agent_id: current_user.id)
     @bind = User.where(agent_id: current_user, authenticated: 1).count
+    render layout: 'mobile'
   end
 
   def edit_seller_note # 编辑发送信息备注
     @histroy = AgentInviteSellerHistroy.find(params[:id])
+    render layout: 'mobile'
   end
 
   def update_histroy_note # 修改发送信息备注
