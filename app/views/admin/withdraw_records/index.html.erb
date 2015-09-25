@@ -31,7 +31,12 @@
 </div>
 <br />
 <div class="container">
-	<h3 class="page-title">提现记录</h3>
+	<h3 class="page-title">
+		提现记录
+		<% if can?(:manage, WithdrawRecord) %> 
+			<%= link_to '下载表格', generate_excel_admin_withdraw_records_path, class: 'btn' %> 
+		<% end %>
+	</h3>
 	<table class="list-table" id="withdraw_records">
 		<thead>
 			<th>编号</th>
@@ -49,8 +54,8 @@
 			<td><%= link_to record.number, [:admin, record] %></td>
 			<td><%= record.user_identify %></td>
 			<td><%= record.card_username %></td>
-			<td><%= withdraw_target_title_txt(record) %></td>
-			<td><%= withdraw_target_content_txt(record) %></td>
+			<td><%= record.target_title %></td>
+			<td><%= record.target_content %></td>
 			<td><%= record.created_at %></td>
 			<td><%= record.amount %></td>
 			<td><%= record.state_i18n %></td>

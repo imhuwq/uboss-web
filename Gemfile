@@ -79,6 +79,9 @@ gem 'sucker_punch' # airbrake async use this
 
 gem 'china_city'
 
+# for generate excel
+gem 'axlsx', '~> 2.0.1'
+
 group :development do
   gem "thin"
   gem "capistrano"

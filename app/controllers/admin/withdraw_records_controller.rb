@@ -6,6 +6,17 @@ class Admin::WithdrawRecordsController < AdminController
     @withdraw_records = @withdraw_records.order('id DESC').page(param_page)
   end
 
+  def generate_excel
+    excel = Axlsx::Package.new
+    excel.workbook.add_worksheet(:name => "Basic Worksheet") do |sheet|
+      sheet.add_row ["编号", "申请人", "收款人", "收款银行", "收款账号", "申请时间", "金额", "状态"]
+      @withdraw_records.each do |record|
+        sheet.add_row [record.number, record.user_identify, record.card_username, record.target_title, record.target_content, record.created_at, record.amount, record.state_i18n]
+      end
+    end
+    send_data excel.to_stream.read, :filename => 'hello.xlsx', :type => 'application/xlsx'
+  end
+
   def show
   end
 
