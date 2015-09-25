@@ -13,9 +13,9 @@ class ProductsController < ApplicationController
       if qr_sharing?
         current_user && @privilege_card = current_user.privilege_cards.find_by(seller_id: @product.user_id)
       elsif @store_scode = get_seller_sharing_code(@seller.id)
-        sharing_node = SharingNode.find_by(code: @store_scode)
-        product_sharing_node = sharing_node.lastest_product_sharing_node(@product)
-        @sharing_node = (product_sharing_node || sharing_node)
+        @store_node = SharingNode.find_by(code: @store_scode)
+        @store_node && @product_sharing_node = @store_node.lastest_product_sharing_node(@product)
+        @sharing_node = (@product_sharing_node || @store_node)
         @privilege_card = @sharing_node.try(:privilege_card)
       elsif @scode = get_product_sharing_code(@product.id)
         @sharing_node = SharingNode.find_by(code: @scode)
