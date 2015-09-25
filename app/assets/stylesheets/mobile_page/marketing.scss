@@ -1,7 +1,7 @@
 
-@import 'mobile_page/swiper.3.1.2.min';
 @import 'shared/_application_variables';
 @import 'mobile_page/reset';
+@import 'swiper.min';
 
 html{
 	height: 100%;
@@ -51,7 +51,7 @@ body{
 	color: #F6F6F6;
 	background: red;
 	font-size: 20px;
-}*/	
+}*/
 .maker{
 	/*display: inline-block;*/
 	/*padding: 20px;*/
@@ -65,10 +65,10 @@ body{
     border-radius: 20px;
     /*float:left;*/
    display: inline-block;
-    
+
 }
 .share_content {
-   display: inline-block;	
+   display: inline-block;
 }
 .share_content dt {
 	padding: 5px;

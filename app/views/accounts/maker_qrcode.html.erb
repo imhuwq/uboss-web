@@ -6,8 +6,8 @@
 		<meta name="viewport" content="width=device-width,initial-scale=1" />
 
 		<%= stylesheet_link_tag    'mobile_page/marketing', media: 'all'  %>
-		<%= javascript_include_tag 'swiper.3.1.2.jquery.min' %>
-		<title></title>
+		<%= javascript_include_tag 'swiper.jquery.min' %>
+		<title>UBOSS</title>
 
 	</head>
 
@@ -18,14 +18,14 @@
 			<div class="swiper-wrapper">
 				<div class="swiper-slide">
 					<div class="page1">
-						<%= image_tag 'mobile/maker/uboss.png',alt:'二維碼' %>
+            <%= qrcode_image_tag new_seller_url(agent_code: current_user.agent_code) %>
 					</div>
 				</div>
 				<!--page2-->
 				<div class="swiper-slide">
 					<div class="page2">
 						<div class="corner_qrcode qrcode_border">
-							<%= image_tag 'mobile/maker/uboss.png',alt:'二維碼' %>
+              <%= qrcode_image_tag new_seller_url(agent_code: current_user.agent_code) %>
 							<p class="p1">我要拥有专属商城</p>
 							<p>扫我也可以成为创客</p>
 						</div>
@@ -34,7 +34,7 @@
 				<div class="swiper-slide">
 					<div class="page3">
 						<div class="corner_qrcode">
-							<%= image_tag 'mobile/maker/uboss.png',alt:'二維碼' %>
+              <%= qrcode_image_tag new_seller_url(agent_code: current_user.agent_code) %>
 							<p class="p1">我要拥有专属商城</p>
 							<p>扫我也可以成为创客</p>
 						</div>
@@ -43,7 +43,7 @@
 				<div class="swiper-slide">
 					<div class="page4">
 						<div class="corner_qrcode qrcode_border">
-							<%= image_tag 'mobile/maker/uboss.png',alt:'二維碼' %>
+              <%= qrcode_image_tag new_seller_url(agent_code: current_user.agent_code) %>
 							<p class="p1">我要拥有专属商城</p>
 							<p>扫我也可以成为创客</p>
 						</div>
@@ -52,7 +52,7 @@
 				<div class="swiper-slide">
 					<div class="page5">
 						<div class="corner_qrcode">
-							<%= image_tag 'mobile/maker/uboss.png',alt:'二維碼' %>
+              <%= qrcode_image_tag new_seller_url(agent_code: current_user.agent_code) %>
 							<p class="p1">我要拥有专属商城</p>
 							<p>扫我也可以成为创客</p>
 						</div>
@@ -63,8 +63,8 @@
 						<div class="marketing6top">
 							<%= image_tag "mobile/maker/content.jpg",alt:'宣传语', class:"qrcode_content1" %>
 							<div class="maker">
-							<%= image_tag "mobile/maker/portrait.jpg",alt:'头像', class:"share_portrait" %>
-								
+							<%= image_tag current_user.avatar_url(:w120), alt:'头像', class:"share_portrait" %>
+
 								<dl class="share_content">
 									<dt>带你装X带你飞</dt>
 									<dd>我是第123位BOSS</dd>
@@ -74,9 +74,8 @@
 
 						<div class="qrcode_img">
 							<p>长按进入</p>
-							
-							<%= image_tag "mobile/maker/uboss.png",alt:"二维码" %>
-							<!--<img src="http://qr.liantu.com/api.php?text=http://uboss.me/sellers/new?agent_code=941370=&logo=http://ssobu.b0.upaiyun.com/user/avatar/74252ffc73af87b9f89ed32983c5885b.png-thumb" alt="二维码" />-->
+
+              <%= qrcode_image_tag new_seller_url(agent_code: current_user.agent_code) %>
 						</div>
 						<%= image_tag "mobile/maker/marketing6t.jpg",alt:"uboss",class:'qrcode_bottom' %>
 					</div>

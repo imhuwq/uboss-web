@@ -4,7 +4,6 @@ class AccountsController < ApplicationController
 
   before_action :authenticate_user!
   before_action :authenticate_agent, only: [:send_message, :invite_seller, :edit_seller_note, :update_histroy_note]
-  skip_before_action :authenticate_user!, only: [:maker_qrcode]
 
   def show
     @orders = append_default_filter account_orders, page_size: 20
