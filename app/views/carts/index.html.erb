@@ -1,56 +1,65 @@
 <div class="wrap">
   <form method="post" action="order.html"> 
-    <div class="container">
-      <div class="cart clear">
-        <div class="shadow">
-          <div class="c_title">
-            <h3 class="fl">购买到的产品</h3>
-            <!--<td width="10%"> <input type="checkbox" class="checkbox"  name="check_all" id="check_all" > </td>-->
-          </div>
-          <div class="c_list cb">
 
-            <% @cart.items_group_by_seller.each do |seller, cart_items| %>
-              <div class="">
-                <h3 class="fl">店铺：<%= seller %></h3>
-                <ul>
-                  <% cart_items.each do |cart_item| %>
-                    <li>
-                      <table data-id="<%= cart_item.id %>">
-                        <tr>
-                          <td width="15%"><img src="<%= cart_item.image_url %>" width="52" height="44"></td>
-                          <td width="65%">
-                            <p><%= cart_item.name %></p>
-                            <p>
-                            <span class="lse">￥<%= cart_item.present_price %></span>
-                            <span class="pl15 c_count">数量：<input class="min" name="" type="button" value="-"/><input type="text" name="num" class="num" value="<%= cart_item.count %>" data-id="<%= cart_item.id %>"><input class="plus" name="" type="button" value="+" /> 包</span>
-                            </p>
-                          </td>
-                          <td width="10%" valign="middle"><a href="javascript:;" class="del c_delete <%= "c_delete_#{cart_item.id}" %>">删除</a></td>
-                          <td width="10%"> <input type="checkbox" class="checkbox checked"  name="check_item" data-id="<%= cart_item.id %>" checked='true'></td>
-                        </tr>
-                      </table>
-                    </li>
-                  <% end %>
-                </ul>
-              </div>
-            <% end %>
+    <% if @cart.empty? %>
+      <div class="container">
+        <p>购物车空空的~，去看看心仪的商品吧~</p>
+        <p><%= link_to "去购物", root_path %></p>
+      </div>
+    <% else %>
+      <div class="container">
+        <div class="cart clear">
+          <div class="shadow">
+            <div class="c_title">
+              <h3 class="fl">我的购物车</h3>
+              <!--<td width="10%"> <input type="checkbox" class="checkbox"  name="check_all" id="check_all" > </td>-->
+            </div>
+            <div class="c_list cb">
 
+              <% CartItem.group_by_seller(@cart.cart_items).each do |seller, cart_items| %>
+                <div class="c_shop">
+                  <div class="shop_title"><h3 class="fl">店铺：<%= seller %></h3></div>
+                  <ul>
+                    <% cart_items.each do |cart_item| %>
+                      <li>
+                        <table data-id="<%= cart_item.id %>">
+                          <tr>
+                            <td width="15%"><img src="<%= cart_item.image_url %>" width="52" height="44"></td>
+                            <td width="65%">
+                              <p><%= cart_item.name %></p>
+                              <p>
+                              <span class="lse">￥<%= cart_item.present_price %></span>
+                              <span class="pl15 c_count"> x <input class="min" name="" type="button" value="-"/><input type="text" name="num" class="num" value="<%= cart_item.count %>" data-id="<%= cart_item.id %>"><input class="plus" name="" type="button" value="+" /></span>
+                              </p>
+                            </td>
+                            <td width="10%" valign="middle"><a href="javascript:;" class="del c_delete <%= "c_delete_#{cart_item.id}" %>">删除</a></td>
+                            <td width="10%"> <input type="checkbox" class="checkbox checked"  name="check_item" data-id="<%= cart_item.id %>" checked='true'></td>
+                          </tr>
+                        </table>
+                      </li>
+                    <% end %>
+                  </ul>
+                </div>
+              <% end %>
+
+            </div>
           </div>
         </div>
       </div>
-    </div>
-    <div class="cart_bg">
-      <table width="100%" border="0">
-        <tr>
-          <td width="3%"></td>
-          <td width="25%"><input type="checkbox" class="checkbox checked" id="box_all"> 全选</td>
-          <td width="49%">
-            <p> <span class="pl15">金额合计：</span><span class="ff6 c_total_price">￥<%= @cart.total_price %></span></p>
-          </td>
-          <td width="20%"><button class="submit">去结算</button></td>
-          <td width="3%"></td>
-        </tr>
-      </table>
-    </div>
+      <div class="cart_bg">
+        <table width="100%" border="0">
+          <tr>
+            <td width="3%"></td>
+            <td width="25%"><input type="checkbox" class="checkbox checked" id="box_all"> 全选</td>
+            <td width="49%">
+              <p> <span class="pl15">金额合计：</span><span class="ff6 c_total_price">￥<%= @cart.total_price %></span></p>
+            </td>
+            <!--<td width="20%"><button class="submit">去结算</button></td>-->
+            <td width="20%"><%= link_to '去结算', new_order_path, class: 'cart-btn submit' %></td>
+            <td width="3%"></td>
+          </tr>
+        </table>
+      </div>
+    <% end %>
   </form>
 </div>

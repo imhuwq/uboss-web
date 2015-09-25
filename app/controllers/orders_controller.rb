@@ -34,33 +34,55 @@ class OrdersController < ApplicationController
     if browser.wechat? && session['devise.wechat_data'].blank?
       authenticate_user!
     end
-    @order_form = OrderForm.new(
-      buyer: current_user,
-      product_id: params[:product_id],
-      sharing_code: get_product_sharing_code(params[:product_id])
-    )
-    @product = @order_form.product
-    if @product.is_official_agent? && current_user && current_user.is_agent?
-      flash[:error] = "您已经是UBOSS创客，请勿重复购买"
-      redirect_to root_path
-    else
-      if current_user && @default_address = current_user.default_address
-        @order_form.user_address_id = @default_address.id
+
+    if params[:product_id]  # 直接购买
+      @order_form = OrderForm.new(
+        buyer: current_user,
+        product_id: params[:product_id],
+        amount: params[:amount],
+        sharing_code: get_product_sharing_code(params[:product_id])
+      )
+      @product = @order_form.product
+      if @product.is_official_agent? && current_user && current_user.is_agent?
+        flash[:error] = "您已经是UBOSS创客，请勿重复购买"
+        redirect_to root_path
+      else
+        set_user_address
       end
+    elsif !session[:cart_item_ids].blank?          # 购物车
+      @cart = current_cart
+      @cart_items = @cart.cart_items.find(session[:cart_item_ids])
+
+      @order_form = OrderForm.new(
+        buyer: current_user,
+      )
+
+      set_user_address
+      render "orders/new_with_cart"
+    else
+      redirect_to root_path
     end
   end
 
   def create
+    @cart = current_cart
+    @cart_items = @cart.cart_items.find(session[:cart_item_ids])
+
     @order_form = OrderForm.new(
       order_params.merge(
+        cart_item_ids: session[:cart_item_ids],
+        seller_ids: @cart_items.map(&:seller_id).uniq,
         buyer: current_user,
         session: session
       )
     )
-    @order_form.sharing_code = get_product_sharing_code(@order_form.product_id)
+    if @order_form.product_id
+      @order_form.sharing_code = get_product_sharing_code(@order_form.product_id)
+    end
 
     if @order_form.save
       sign_in(@order_form.buyer) if current_user.blank?
+      clean_current_cart
       @order_title = '确认订单'
       redirect_to order_path(@order_form.order, showwxpaytitle: 1)
     else
@@ -105,5 +127,16 @@ class OrdersController < ApplicationController
 
   def available_buy_official_agent?
     current_user && !current_user.is_agent?
+  end
+
+  def clean_current_cart
+    current_cart.remove_cart_items(session[:cart_item_ids])
+    session[:cart_item_ids] = nil
+  end
+
+  def set_user_address
+    if current_user && @default_address = current_user.default_address
+      @order_form.user_address_id = @default_address.id
+    end
   end
 end

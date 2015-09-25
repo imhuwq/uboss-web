@@ -155,9 +155,9 @@ ActiveRecord::Schema.define(version: 20150921061853) do
     t.datetime "created_at",                     null: false
     t.datetime "updated_at",                     null: false
     t.decimal  "pay_amount",       default: 0.0
+    t.decimal  "present_price",    default: 0.0
     t.integer  "sharing_node_id"
     t.integer  "evaluation_id"
-    t.decimal  "present_price",    default: 0.0
     t.decimal  "privilege_amount", default: 0.0
   end
 
@@ -165,16 +165,16 @@ ActiveRecord::Schema.define(version: 20150921061853) do
     t.integer  "user_id"
     t.integer  "seller_id"
     t.string   "number"
+    t.integer  "user_address_id"
     t.string   "mobile"
     t.string   "address"
+    t.string   "username"
     t.string   "invoice_title"
     t.integer  "state",           default: 0
     t.decimal  "pay_amount",      default: 0.0
     t.string   "pay_message"
     t.datetime "created_at",                      null: false
     t.datetime "updated_at",                      null: false
-    t.integer  "user_address_id"
-    t.string   "username"
     t.decimal  "income",          default: 0.0
     t.boolean  "sharing_rewared", default: false
     t.datetime "signed_at"

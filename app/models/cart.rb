@@ -5,11 +5,15 @@ class Cart < ActiveRecord::Base
 
   validates_presence_of :user_id
 
+  def empty?
+    cart_items.blank?
+  end
+
   def add_product(product, sharing_code, count=1)
     cart_item = cart_items.find_or_initialize_by(product_id: product.id, seller_id: product.user_id)
     cart_item.sharing_node = SharingNode.find_by(code: self.sharing_code) if sharing_code
     cart_item.count += count
-    cart_item.save
+    cart_item
   end
 
   def remove_product_from_cart(product_id)
@@ -18,6 +22,11 @@ class Cart < ActiveRecord::Base
 
   def remove_all_products_in_cart
     cart_items.destroy_all
+  end
+
+  def remove_cart_items(cart_item_ids)
+    cart_items.where(id: cart_item_ids).destroy_all
+    self.destroy if cart_items.blank?
   end
 
   def change_cart_item_count(product_id, count, current_cart_id)
@@ -34,14 +43,6 @@ class Cart < ActiveRecord::Base
   #def total_price(price_attribute)  # "original_price", "present_price"
   #  cart_items.inject(0){ |sum, item| sum + item.send(price_attribute)*CartItem.where("product_id = ? AND cart_id = ?", item.product_id, id).take!.count }
   #end
-
-  # 购物车商品按店铺分组
-  def items_group_by_seller
-    seller_ids = cart_items.map(&:seller_id).uniq
-    items = {}
-    seller_ids.each { |seller_id| items.merge!({User.find(seller_id).identify => cart_items.where(seller_id: seller_id)}) }
-    items
-  end
 
   # 合并购物车
   #def merge_cart(cart)

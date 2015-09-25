@@ -7,7 +7,6 @@ $ ->
     index = $("input[name='check_item']").index(this)
     $check_item.eq(index).toggleClass("checked") # 伪复选
     setTotalPriceOfSelect()
-    recordItemIds()
 
   # 全选
   $("#box_all").on 'click', (e) ->
@@ -20,7 +19,6 @@ $ ->
     else
       $check_item.removeClass("checked")
     setTotalPriceOfSelect()
-    recordItemIds()
 
   $('.c_count > .min').on 'click', (e) ->
     e.preventDefault()
@@ -51,14 +49,14 @@ $ ->
         data: {item_id: id}
         success: (res) ->
           if res['status'] == "ok"
-            alert('删除成功')
             $('.c_delete_'+res['id']).closest('li').remove()
             appendTotalPriceText(res["total_price"])
+            changeSubmitBtn()
           else
-            alert('删除失败')
             location.reload()
+            alert(res['message'])
         error: (data, status, e) ->
-          # do something
+          alert('ERROR')
     else
       return false
 
@@ -133,17 +131,13 @@ $ ->
   appendTotalPriceText = (total_price) ->
     $('.c_total_price').text("￥"+total_price)
 
-  # 记录勾选的item
-  recordItemIds = () ->
-    id_array = new Array()
-    $(".checked[name='check_item']").each ->
-      id_array.push(Number($(this).attr('data-id')))
-    if id_array.length > 0
-      document.cookie = "cart_item_ids=" + escape(id_array) + ";expires=1"
+  $("input[type='checkbox']").on 'click', (e) ->
+    e.preventDefault()
+    changeSubmitBtn()
+
+  changeSubmitBtn = () ->
+    if $(".checked[name='check_item']").length == 0
+      $('.cart-btn').attr('href', 'javascript:;')
     else
-      document.cookie = "cart_item_ids=" + null
-
-  if $("#box_all").length != 0
-    recordItemIds()
-
+      $('.cart-btn').attr('href', '/orders/new')
 

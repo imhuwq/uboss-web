@@ -43,7 +43,6 @@ Rails.application.routes.draw do
   resources :products do
     member do
       get :refact
-      post :add_to_cart
     end
     post :save_mobile, :democontent,  on: :collection
   end

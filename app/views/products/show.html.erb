@@ -79,7 +79,14 @@
 
   <% if @sharing_node.blank? %>
     <div class="sharer-info">
-      <%= link_to '立即购买', new_order_path(product_id: @product.id), class: 'btn btn-block' %>
+      <%= link_to '立即购买', new_order_path(product_id: @product.id), class: 'btn pull-right' %>
+      <% if current_user %>
+        <%= link_to '加入购物车', 'javascript:;', class: 'js-add-cart btn pull-left'%>
+      <% else %>
+        <%= link_to '加入购物车', '/cart_items', class: 'btn pull-left', method: 'post'%>
+      <% end %>
+      <input type="hidden" name="product[id]" value="<%= @product.id %>" />
+      <input type="hidden" name="product[count]" value="<%= 1 %>" />
     </div>
   <% else %>
     <div class="sharer-info">
@@ -98,4 +105,17 @@
     <%= render partial: 'new_share' %>
   <% end %>
 
+  <div class="shop_cart">
+    <a href="<%= carts_path %>">
+      <img src="/assets/cart/shop_cart.png" class="cart_img">
+      <p>购物车</p>
+    </a>
+  </div>
+
 </div>
+
+<style type="text/css">
+.shop_cart{position:fixed; right:5px; top:50px;z-index:100;}
+.shop_cart .cart_img{position:relative; width:60%; float:right;}
+.shop_cart p{position:absolute; top:13px; right:12px; color:#f9faf4;}
+</style>

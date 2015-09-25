@@ -5,7 +5,7 @@ class OrderForm
   include ActiveModel::Model
 
   ATTRIBUTES = [
-    :product_id, :amount, :mobile, :captcha, :user_address_id, :deliver_username,
+    :product_id, :amount, :mobile, :captcha, :user_address_id, :deliver_username, :seller_ids, :cart_item_ids,
     :province, :city, :country, :area, :building, :street, :deliver_mobile, :sharing_code
   ]
 
@@ -15,12 +15,13 @@ class OrderForm
 
   attr_accessor :sharing_node, :product, :buyer, :user_address, :order, :session
 
-  validates :product_id, :amount, presence: true
+  #validates :amount, presence: true, if: -> { self.product_id }
   validates :mobile, presence: true, mobile: true, if: -> { self.buyer.blank? }
   validates :deliver_mobile, :deliver_username, :province, :city, :area, presence: true, if: -> { self.user_address_id.blank? }
   validates :deliver_mobile, mobile: true, allow_blank: true
   validate  :captcha_must_be_valid, :mobile_blank_with_oauth, if: -> { self.buyer.blank? }
-  validate  :check_amount
+  validate  :check_product_account
+
 
   delegate :traffic_expense, to: :product, prefix: :product
 
@@ -105,11 +106,19 @@ class OrderForm
   end
 
   def create_order_and_order_item
-    self.order = Order.create!(
-      user: buyer,
-      seller: product.user,
-      user_address: self.user_address,
-      order_items_attributes: order_items_attributes)
+    self.order =
+      if product_id
+        Order.create!({
+          user: buyer,
+          seller: product.user,
+          user_address: self.user_address,
+          order_items_attributes: order_items_attributes
+        })
+      elsif seller_ids
+        Order.create!(
+          orders_split_by_seller(seller_ids)
+        )
+      end
   end
 
   def order_items_attributes
@@ -121,9 +130,41 @@ class OrderForm
     }]
   end
 
-  def check_amount
-    if amount.to_i > product.reload.count
-      errors.add(:amount, :invalid)
+  def orders_split_by_seller(seller_ids)
+    orders_attributes = []
+    seller_ids.each do |seller_id|
+      orders_attributes << {
+        user: buyer,
+        seller_id: seller_id,
+        user_address: self.user_address,
+        order_items_attributes: order_items_of_seller(seller_id)
+      }
+    end
+    orders_attributes
+  end
+
+  def order_items_of_seller(seller_id)
+    items = cart_items.select { |item| item.seller_id == seller_id }
+
+    return items.collect { |item| {
+      product_id: item.product_id,
+      user: buyer,
+      amount: item.count,
+      sharing_node: item.sharing_node
+    }}
+  end
+
+  def cart_items
+    @cart_itmes ||= CartItem.find(cart_item_ids)
+  end
+
+  def check_product_account
+    if product_id
+      errors.add(:amount, :invalid) if amount.to_i > product.reload.count
+    elsif seller_ids
+      cart_items.each do |cart_item|
+        errors.add(:amount, :invalid) if cart_item.count > cart_item.product.reload.count
+      end
     end
   end
 
