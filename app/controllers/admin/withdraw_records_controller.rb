@@ -14,7 +14,7 @@ class Admin::WithdrawRecordsController < AdminController
         sheet.add_row [record.number, record.user_identify, record.card_username, record.target_title, record.target_content, record.created_at, record.amount, record.state_i18n]
       end
     end
-    send_data excel.to_stream.read, :filename => 'hello.xlsx', :type => 'application/xlsx'
+    send_data excel.to_stream.read, :filename => 'UBOSS提现记录总表.xlsx', :type => 'application/xlsx'
   end
 
   def show
