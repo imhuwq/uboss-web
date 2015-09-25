@@ -20,6 +20,25 @@
     -webkit-animation: fadeInUp .7s ease 0s 1 backwards;
     animation: fadeInUp .7s ease 0s 1 backwards;
   }
+
+
+  /*商品列表样式*/
+  .container{overflow:hidden;}
+  .subOrd_box2{box-shadow:3px 3px 2px 2px #eee;}
+  .c_list{background-color:#fff;font-size:12px;margin:10px 1px;border: 1px solid rgba(70, 67, 67, 0.5);}
+  .c_list .c_shop{font-size:14px;margin-left: 15px;}
+  .c_list .shop_title{padding-top: 10px; font-size: 15px; text-align: center;}
+  .c_list ul li{clear:both; overflow:hidden; border-top:1px solid #E8E5E5; padding:10px 10px;}
+  .c_list ul li table{width:100%; }
+  .c_list ul li td{padding-right:5px;font-size:12px;}
+  .c_list ul li p{line-height:22px;font-size:12px;}
+  .c_list ul li a{font-size:12px;}
+  .c_list ul li a.del{font-size:12px;color:#ec5e38;}
+  .c_list ul li span{font-size:12px;float:right;}
+  .c_list ul li .lse{color:#43c3aa;}
+  .c_list ul li img{border:1px solid #e6e6e6;}
+  .c_list ul li .num{border:1px solid #dcdcdc;width:30px;height:15px;vertical-align:middle;text-align:center;}
+  .c_list ul li:first-child{border-top:1px solid #B9B6B6;}
 </style>
 
 <%= simple_form_for @order_form, url: orders_path, method: 'POST', wrapper: :default do |f| %>
@@ -42,10 +61,10 @@
 
   <div class="container">
     <!-- TODO -->
-    <div class="subOrd_box1 clearfix">
+    <div class="subOrd_box2 clearfix">
       <% CartItem.group_by_seller(@cart_items).each do |seller, cart_items| %>
         <div class="c_list">
-          <h3 class="fl">店铺：<%= seller %></h3>
+          <div class="c_shop"><h3 class="fl">店铺：<%= seller %></h3></div>
           <ul>
             <% cart_items.each do |cart_item| %>
               <li>
@@ -53,14 +72,13 @@
                   <tr>
                     <td width="15%"><img src="<%= cart_item.image_url %>" width="52" height="44"></td>
                     <td width="65%">
-                      <p><%= cart_item.name %></p>
                       <p>
+                      <strong><%= cart_item.name %></strong>
                       <span class="pl15 c_count">
-                        <span class="lse">￥<%= cart_item.present_price %></span>
-                        <span class="lse">x </span>
-                        <span class="lse"><%= cart_item.count %></span>
+                        <span class="lse">￥<%= cart_item.real_price %></span>
                       </span>
                       </p>
+                      <span class="lse">x <%= cart_item.count %></span>
                     </td>
                   </tr>
                 </table>
@@ -75,7 +93,7 @@
       <div class="subOrd_boxcont">
         <p class="sub_p1 sub_p2">
         <span class="sub_leftl">合计（含运费￥<%= '运费' %>）</span>
-        <span class="sub_left"><strong>￥</strong><b id="total_price"><%= '订单总价+运费' %></b></span>
+        <span class="sub_left"><strong>￥</strong><b id="total_price"><%= CartItem.total_price_of(session[:cart_item_ids])[1] %></b></span>
         </p>
       </div>
 

@@ -13,7 +13,7 @@ class CartItem < ActiveRecord::Base
 
   def self.total_price_of(id_array)
     items = CartItem.find(id_array)
-    total_price = items.inject(0){ |sum, item| sum + item.present_price*item.count }
+    total_price = items.inject(0){ |sum, item| sum + item.real_price*item.count }
     return true, total_price
   rescue ActiveRecord::RecordNotFound
     return false, 0
@@ -25,6 +25,10 @@ class CartItem < ActiveRecord::Base
     items = {}
     seller_ids.each { |seller_id| items.merge!({User.find(seller_id).identify => cart_items.select { |item| item.seller_id == seller_id }}) }
     items
+  end
+
+  def real_price
+    sharing_node ? (present_price - sharing_node.privilege_amount.to_f.to_d) : present_price
   end
 
   private
