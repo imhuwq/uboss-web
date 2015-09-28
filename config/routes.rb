@@ -17,6 +17,7 @@ Rails.application.routes.draw do
   get 'set_password', to: 'accounts#new_password'
 
   get 'sharing/:code', to: 'sharing#show', as: :sharing
+  get 'maker_qrcode', to: 'home#maker_qrcode', as: :maker_qrcode
 
   get 'service_centre_consumer', to: 'home#service_centre_consumer'
   get 'service_centre_agent', to: 'home#service_centre_agent'
