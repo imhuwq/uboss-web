@@ -1,5 +1,3 @@
-
-
 .product-box{
     .cover { position: relative;}
     .cover img{ width: 100%;}
@@ -38,6 +36,15 @@
           display: inline-block;
           
       }
+    }
+    .like-box{
+        position: absolute;
+        right: 10px;
+        z-index: 3;
+        bottom: 0px;
+        background: rgba(255,255,255,0.8);
+        padding: 5px 10px 3px;
+        border-radius: 4px 4px 0 0;
     }
 }
 .product-info-box{
