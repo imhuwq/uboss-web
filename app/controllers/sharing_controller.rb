@@ -17,11 +17,12 @@ class SharingController < ApplicationController
   def product_node
     @product = Product.find(params.fetch(:product_id))
     if current_user.present?
-      head(200)
+      @sharing_link_node ||=
+        SharingNode.find_or_create_by_resource_and_parent(current_user, @product)
     else
       @sharing_link_node = @user.sharing_nodes.order('id DESC').find_or_create_by(product_id: @product.id)
-      render_sharing_link_node
     end
+    render_sharing_link_node
   end
 
   def seller_node

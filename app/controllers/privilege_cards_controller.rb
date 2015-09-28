@@ -12,7 +12,7 @@ class PrivilegeCardsController < ApplicationController
   def show
     @privilege_card = current_user.privilege_cards.find(params[:id])
     @seller = @privilege_card.seller
-    @favour_products = current_user.favour_products
+    @favour_products = current_user.favoured_products.where(user_id: @seller.id)
     set_sharing_link_node
 
     @products = append_default_filter @seller.products.published, order_column: :updated_at

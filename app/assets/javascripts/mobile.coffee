@@ -43,7 +43,6 @@ $ ->
 
 
   $('.tab-nav .tab').on 'click', (e)->
-    e.preventDefault()
     $('.tab-nav .tab').removeClass('active')
     $(this).addClass('active')
     tid=$(this).attr('href')

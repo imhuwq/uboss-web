@@ -20,6 +20,7 @@ class User < ActiveRecord::Base
   has_many :daily_reports
   has_many :sharing_nodes
   has_many :favour_products
+  has_many :favoured_products, through: :favour_products, source: :product
   # for agent
   has_many :divide_incomes
   has_many :sellers, class_name: 'User', foreign_key: 'agent_id'

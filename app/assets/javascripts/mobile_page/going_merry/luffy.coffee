@@ -44,10 +44,14 @@ class GoingMerry.Luffy
     wx.hideOptionMenu()
 
   resetInvokeSharing: (info = {}) ->
-    @sharing_title = info.title || $('meta[name=sharing_title]').attr('content')
-    @sharing_link = info.link || $('meta[name=sharing_link]').attr('content')
-    @sharing_imgurl = info.imgurl || $('meta[name=sharing_imgurl]').attr('content')
-    @sharing_desc = info.desc || $('meta[name=sharing_desc]').attr('content')
+    if info.metaContainer?
+      metaContainer = info.metaContainer
+    else
+      metaContainer = $('html')
+    @sharing_title = info.title || metaContainer.find('meta[name=sharing_title]').attr('content')
+    @sharing_link = info.link || metaContainer.find('meta[name=sharing_link]').attr('content')
+    @sharing_imgurl = info.imgurl || metaContainer.find('meta[name=sharing_imgurl]').attr('content')
+    @sharing_desc = info.desc || metaContainer.find('meta[name=sharing_desc]').attr('content')
     $('.share-content').find('.sharing-link').text(@sharing_link)
     @invokeSharing()
 

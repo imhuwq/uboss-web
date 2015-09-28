@@ -20,6 +20,9 @@
   <p class="gray-color"><%= @seller.store_short_description %></p>
   <p class="gray-color"><%= number_to_percentage(@seller.good_reputation_rate, precision: 0) %> 好评（<%= @seller.total_reputations %>）</p>
   <div class="text-center border-top">
+    <div class="hidden sharing-meta-container">
+      <%= store_sharing_meta_tags(@seller, @seller_sharing_link_node) %>
+    </div>
     <a class="btn btn-large btn-longer p-sharing-btn">分享给朋友</a>
   </div>
   <br />
@@ -28,11 +31,20 @@
 
 <br />
 
-<div>
+<div class="box">
   <p>我喜欢的</p>
   <% @favour_products.each do |product| %>
-    <%= image_tag product.image_url(:w120) %>
-    <a href="#">分享</a>
+    <div class="box-w50">
+      <%= image_tag product.image_url(:w120) %>
+      <br />
+      <div>
+        <div class="hidden sharing-meta-container">
+          <%= sharing_meta_tags(product) %>
+        </div>
+        <%= link_to "分享", get_product_sharing_path(product_id: product.id), remote: true, class: 'req-favour-p-snode' %>
+        <a class='p-sharing-btn btn hidden' href="#">分享</a>
+      </div>
+    </div>
   <% end %>
 </div>
 
@@ -40,7 +52,7 @@
 
 <%= render partial: 'stores/banner_slider', locals: { seller: @seller } %>
 
-<div class="box border-box">
+<div class="box">
 	<div class="box-w100">
 		<div class="page-title like-color">
       <%= link_to hots_store_path(@seller), class: 'more-bar' do %>
