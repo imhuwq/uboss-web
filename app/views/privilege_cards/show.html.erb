@@ -1,2 +1,66 @@
-<h1>PrivilegeCards#show</h1>
-<p>Find me in app/views/privilege_cards/show.html.erb</p>
+<div class="product-info-box">
+  <br />
+  <div class="cover">
+    <%= image_tag @seller.avatar_url(:w120) %>
+  </div>
+  <br />
+  <p class="name"><%= @seller.store_name %></p>
+  <p class="gray-color"><%= @seller.store_short_description %></p>
+  <p class="gray-color"><%= number_to_percentage(@seller.good_reputation_rate, precision: 0) %> 好评（<%= @seller.total_reputations %>）</p>
+  <div class="text-center border-top">
+    <a class="btn btn-large btn-longer p-sharing-btn">分享给朋友</a>
+  </div>
+  <br />
+  <div class="read"><a href="/about"><small>查看说明</small></a></div>
+</div><!-- product-info-box -->
+
+<br />
+
+<div>
+  <p>我喜欢的</p>
+  <% @favour_products.each do |product| %>
+    <%= image_tag product.image_url(:w120) %>
+    <a href="#">分享</a>
+  <% end %>
+</div>
+
+<br />
+
+<%= render partial: 'stores/banner_slider', locals: { seller: @seller } %>
+
+<div class="box border-box">
+	<div class="box-w100">
+		<div class="page-title like-color">
+      <%= link_to hots_store_path(@seller), class: 'more-bar' do %>
+        more <%= image_tag 'mobile/arrow-right.png' %>
+      <% end %>
+      热门商品
+		</div>
+	</div>
+  <% @hots.each do |product| %>
+    <div class="box-w33">
+      <div class="product-box">
+        <div class="cover">
+          <%= link_to '', product, style: "background-image:url(#{product.image_url(:w120)})",class:'img',title:"#{product.name}" %>
+          <%= image_tag("mobile/img.jpg") %>
+        </div>
+        <div class="title"><%= link_to product.name, product_path(product) %></div>
+        <div class="price"><%= number_to_currency product.present_price %> <span><%= number_to_currency product.original_price %></span></div>
+      </div>
+    </div>
+  <% end %>
+</div>
+
+<div class="box store-list">
+	<div class="box-w100">
+    <div class="page-title">全部商品</div>
+	</div>
+
+  <%= render partial: 'stores/product', collection: @products, locals: { show_favour: true } %>
+</div>
+
+<% if @products.size > 6 %>
+  <div class="load-more" data-container='.store-list' data-ele='.p-item' data-ref='<%= store_path(@seller) %>'>加载更多</div>
+<% end %>
+
+<%= render partial: 'new_share' %>

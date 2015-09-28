@@ -7,6 +7,10 @@
       </div>
       <div class="title"><%= product.name %></div>
       <div class="price">￥<%= product.present_price %> <span>￥<%= product.original_price %></span></div>
+      <% if defined?(show_favour) %>
+        <%= link_to "喜欢", switch_favour_product_path(product),
+          method: 'PATCH', class: "#{user_favour_product_class(product)} btn btn-like like-product-btn", remote: true %>
+      <% end %>
     </div><!-- product-box -->
   </div><!-- box-w50 -->
 <% end %>

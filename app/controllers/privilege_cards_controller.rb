@@ -7,8 +7,12 @@ class PrivilegeCardsController < ApplicationController
   end
 
   def show
-    @seller = @privilege_card.seller
     @privilege_card = current_user.privilege_cards.find(params[:id])
+    @seller = @privilege_card.seller
+    @favour_products = current_user.favour_products
+
+    @products = append_default_filter @seller.products.published, order_column: :updated_at
+    @hots = @seller.products.hots.recent.limit(3)
   end
 
   def set_privilege_rate

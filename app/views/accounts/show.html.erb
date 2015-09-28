@@ -20,13 +20,13 @@
 <br />
 
 <div class="tab-nav">
-	<a class="tab" href="#showlist"><span>我的订单</span></a>
-	<a class="tab active" href="#showpcards"><span>我的友情卡</span></a>
+	<a class="tab active" href="#showlist"><span>我的订单</span></a>
+	<a class="tab" href="#showpcards"><span>我的友情卡</span></a>
 	<a class="tab" href="#showincome"><span>我的收益</span></a>
 </div><!-- tab-nav  -->
 
 <div class="tab-container">
-	<div class="tab-content" id="showlist">
+	<div class="tab-content" id="showlist" style="display: block;">
 		<div id="u-order-list">
 	    <%= render partial: 'order', collection: @orders %>
    	</div>
@@ -34,7 +34,7 @@
   	<div class="load-more" data-container='#u-order-list' data-ele='.order-list' data-ref='/account/orders'>加载更多</div>
   	<br />
 	</div><!-- tab-content showlist -->
-	<div class="tab-content" id="showpcards" style="display: block;">
+	<div class="tab-content" id="showpcards">
 		<div class="privilege-rate">
 		<%= link_to edit_rate_privilege_cards_path do %>
     	友情卡贡献值比率：<span class="like-color"><%= current_user.privilege_rate.to_i %>%</span>
