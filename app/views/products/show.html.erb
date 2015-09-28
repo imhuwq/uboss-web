@@ -18,13 +18,13 @@
   <div class="product-box product-page">
     <div class="cover">
       <div class="img" style="background-image:url('<%=@product.image_url()%>')"></div>
-      <%= image_tag("mobile/img.jpg") %> 
-      <% if defined?(show_favour) %>
+      <%= image_tag("mobile/img.jpg") %>
+      <% if current_user.present? %>
         <div class="like-box">
-	        <%= link_to "喜欢", switch_favour_product_path(product),
-	          method: 'PATCH', class: "#{user_favour_product_class(product)} btn btn-like like-product-btn", remote: true %>
+	        <%= link_to "喜欢", switch_favour_product_path(@product),
+	          method: 'PATCH', class: "#{user_favour_product_class(@product)} btn btn-like like-product-btn", remote: true %>
         </div>
-      <% end %>           
+      <% end %>
     </div>
   </div><!-- product-box -->
 
