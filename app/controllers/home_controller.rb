@@ -19,6 +19,11 @@ class HomeController < ApplicationController
   def service_centre_tutorial
   end
 
+  def maker_qrcode
+    @user = User.find(params.fetch(:uid))
+    render 'accounts/maker_qrcode', layout: false
+  end
+
   private
 
   def detect_layout

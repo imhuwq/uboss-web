@@ -17,6 +17,7 @@ Rails.application.routes.draw do
   get 'set_password', to: 'accounts#new_password'
 
   get 'sharing/:code', to: 'sharing#show', as: :sharing
+  get 'maker_qrcode', to: 'home#maker_qrcode', as: :maker_qrcode
 
   get 'service_centre_consumer', to: 'home#service_centre_consumer'
   get 'service_centre_agent', to: 'home#service_centre_agent'
@@ -53,7 +54,7 @@ Rails.application.routes.draw do
     get :settings,         :edit_password,     :reset_password,
         :orders,           :binding_agent, :invite_seller,
         :edit_seller_histroy, :edit_seller_note, :seller_agreement,
-        :merchant_confirm,    :binding_successed
+        :merchant_confirm,    :binding_successed, :maker_qrcode
     post :send_message
     put :bind_agent, :bind_seller, :update_histroy_note
     patch :merchant_confirm, to: 'accounts#merchant_confirmed'

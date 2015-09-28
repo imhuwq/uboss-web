@@ -181,6 +181,11 @@ class AccountsController < ApplicationController
     end
   end
 
+  def maker_qrcode
+    @user = current_user
+    render layout: nil
+ end
+
   private
 
   def account_orders
