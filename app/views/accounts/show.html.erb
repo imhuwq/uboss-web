@@ -5,14 +5,14 @@
 <div class="bg-white gap">
 		<div class="avatar">
       <div class="cover">
-      	<%= image_tag current_user.avatar_url(:thumb) %> 
+      	<%= image_tag current_user.avatar_url(:thumb) %>
       </div>
-      <div class="name">     
+      <div class="name">
       	<%= truncate current_user.identify,:length=>28,:omission=>'...' %>
       </div>
 			<div class="setting-icon">
 				<%= link_to settings_account_path do %>
-	      	<%= image_tag("mobile/setting.png") %>  
+	      	<%= image_tag("mobile/setting.png") %>
 	      <% end %>
       </div>
   	</div><!-- avatar -->
@@ -75,14 +75,3 @@
 		$(locationid).show();
 	}
 </script>
-      
-
-
-
-      
-
-
-
-      
-
-

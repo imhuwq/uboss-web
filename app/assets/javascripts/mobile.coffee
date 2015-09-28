@@ -10,6 +10,7 @@
 #= require mobile_page/going_merry
 #= require mobile_page/utilities
 #= require mobile_page/sharing
+#= require mobile_page/product
 #= reuqire_self
 
 $ ->
@@ -34,16 +35,17 @@ $ ->
 
   $("header .menu-btn").on 'click', ->
     $('header .nav-bar').toggle()
-  
-  
+
+
   $(document).on 'click', '.pop-bg', (e) ->
     unless $(e.target).closest('.pop-content').length > 0
       $(this).hide()
-  
-  
-  $('.tab-nav .tab').on 'click', ->
-    $('.tab-nav .tab').removeClass('active');
-    $(this).addClass('active');
-    tid=$(this).attr('href');
-    $('.tab-container .tab-content').hide();
-    $(tid).show();
+
+
+  $('.tab-nav .tab').on 'click', (e)->
+    e.preventDefault()
+    $('.tab-nav .tab').removeClass('active')
+    $(this).addClass('active')
+    tid=$(this).attr('href')
+    $('.tab-container .tab-content').hide()
+    $(tid).show()

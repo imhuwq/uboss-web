@@ -1,6 +1,8 @@
 # 商品展示
 class ProductsController < ApplicationController
 
+  before_action :set_product, only: [:switch_favour]
+
   def index
     @products = append_default_filter Product.published.includes(:asset_img), order_column: :updated_at
     render partial: 'products/product', collection: @products if request.xhr?
@@ -29,6 +31,25 @@ class ProductsController < ApplicationController
     else
       render action: :no_found, layout: 'mobile'
     end
+  end
+
+  def switch_favour
+    if current_user.favour_products.exists?(product_id: @product.id)
+      current_user.unfavour_product(@product)
+      render json: { favoured: false }
+    else
+      @favour_product = current_user.favour_product(@product)
+      if @favour_product.persisted?
+        render json: { favoured: true }
+      else
+        render json: { favoured: false, msg: model_errors(@favour_product) }, status: 422
+      end
+    end
+  end
+
+  private
+  def set_product
+    @product ||= Product.published.find(params[:id])
   end
 
 end

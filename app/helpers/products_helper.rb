@@ -1,5 +1,9 @@
 module ProductsHelper
 
+  def user_favour_product_class(product)
+    'active' if current_user.favour_products.exists?(product_id: product.id)
+  end
+
   def store_sharing_link(seller, sharing_node = nil)
     if sharing_node.blank?
       store_url(seller)

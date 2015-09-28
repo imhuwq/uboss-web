@@ -44,6 +44,9 @@ Rails.application.routes.draw do
     resource :charge, only: [:create]
   end
   resources :products, only: [:index, :show] do
+    member do
+      patch :switch_favour
+    end
     post :democontent,  on: :collection
   end
   resources :evaluations do

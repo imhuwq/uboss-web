@@ -19,6 +19,7 @@ class User < ActiveRecord::Base
   has_many :user_roles, through: :user_role_relations
   has_many :daily_reports
   has_many :sharing_nodes
+  has_many :favour_products
   # for agent
   has_many :divide_incomes
   has_many :sellers, class_name: 'User', foreign_key: 'agent_id'
@@ -353,6 +354,14 @@ class User < ActiveRecord::Base
 
   def has_seller_privilege_card?(seller)
     privilege_cards.where(seller_id: seller.id).exists?
+  end
+
+  def favour_product(product)
+    favour_products.create(product_id: product.id)
+  end
+
+  def unfavour_product(product)
+    favour_products.where(product_id: product.id).delete_all
   end
 
   private
