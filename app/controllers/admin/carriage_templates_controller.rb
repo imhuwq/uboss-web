@@ -7,11 +7,10 @@ class Admin::CarriageTemplatesController < AdminController
     @bak_carriage = CarriageTemplate.find(params[:id])
     @carriage = @bak_carriage.amoeba_dup
     name = @carriage.name.gsub(')', '\\)').gsub('(', '\\(')
-    last_copy_name = CarriageTemplate.where("name ~* ?",
-                                            "#{name}\\(\\d+\\)$")\
-                                      .reorder('name desc').first.try(:name).to_s
-    reg_result = last_copy_name.match(/\((\d+)\)$/)
-    index = reg_result.blank? ? '1' : (reg_result[1].to_i + 1)
+    index_array = CarriageTemplate.where("name ~* ?",
+                                         "#{name}\\(\\d+\\)$")\
+                                  .map(&:name).grep(/#{name}\((\d+)\)/){  $1.to_i }
+    index = index_array.blank? ? 1 : index_array.max + 1
     @carriage.name = @carriage.name + "(#{index})"
     @carriage.save
   end
