@@ -1,7 +1,7 @@
 $ ->
 
   $(document).on 'ajaxSuccess', '.req-favour-p-snode', (event, xhr, settings, data) ->
-    $(this).hide().next().show()
+    $(this).hide().next().removeClass('hidden')
     $(this).parent().find('meta[name=sharing_link]').attr('content', data.sharing_link)
     UBoss.luffy.resetInvokeSharing(metaContainer: $(this).parent())
     UBoss.luffy.toggleSharingContent()

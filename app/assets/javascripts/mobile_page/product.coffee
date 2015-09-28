@@ -18,4 +18,4 @@ $ ->
     , 3000
 
   $(document).on 'ajaxError', '.like-product-btn', () ->
-    console.log arguments
+    alert "操作失败"
