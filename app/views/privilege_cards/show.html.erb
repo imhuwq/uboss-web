@@ -1,3 +1,15 @@
+<%= content_for :extra_meta_tags do %>
+  <%= store_sharing_meta_tags(@seller, @seller_sharing_link_node) %>
+<% end %>
+
+<% if browser.wechat? %>
+  <%= content_for :extra_javascript do %>
+    <script type="text/javascript" charset="utf-8">
+      wx.ready(function(){ UBoss.luffy.invokeSharing(); });
+    </script>
+  <% end %>
+<% end %>
+
 <div class="product-info-box">
   <br />
   <div class="cover">
