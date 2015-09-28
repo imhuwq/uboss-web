@@ -95,6 +95,7 @@ Rails.application.routes.draw do
       end
       resources :sharing_incomes, only: [:index, :show, :update]
       resources :withdraw_records, only: [:index, :show, :new, :create] do
+        get :generate_excel, on: :collection
         member do
           patch :processed
           patch :close

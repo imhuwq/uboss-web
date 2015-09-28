@@ -23,14 +23,6 @@ module AdminHelper
     record.wechat_available? ? "微信打款" : "银行打款"
   end
 
-  def withdraw_target_title_txt(record)
-    record.wechat_available? ? "微信" : record.card_bankname
-  end
-
-  def withdraw_target_content_txt(record)
-    record.wechat_available? ? record.user.weixin_openid : record.card_number
-  end
-
   def withdraw_process_class(record)
     record.wechat_available? ? "btn-success" : "btn-primary"
   end
