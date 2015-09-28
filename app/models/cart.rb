@@ -44,10 +44,4 @@ class Cart < ActiveRecord::Base
   #def total_price(price_attribute)  # "original_price", "present_price"
   #  cart_items.inject(0){ |sum, item| sum + item.send(price_attribute)*CartItem.where("product_id = ? AND cart_id = ?", item.product_id, id).take!.count }
   #end
-
-  # 合并购物车
-  #def merge_cart(cart)
-  #  cart.cart_items.each { |cart_item| self.add_product(cart_item.product, cart_item.count) }
-  #  self
-  #end
 end

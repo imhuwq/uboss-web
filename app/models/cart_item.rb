@@ -23,7 +23,7 @@ class CartItem < ActiveRecord::Base
   def self.group_by_seller(cart_items)
     seller_ids = cart_items.map(&:seller_id).uniq
     items = {}
-    seller_ids.each { |seller_id| items.merge!({User.find(seller_id).identify => cart_items.select { |item| item.seller_id == seller_id }}) }
+    seller_ids.each { |seller_id| items.merge!({User.find(seller_id) => cart_items.select { |item| item.seller_id == seller_id }}) }
     items
   end
 

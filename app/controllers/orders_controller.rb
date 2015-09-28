@@ -54,24 +54,28 @@ class OrdersController < ApplicationController
       @cart_items = @cart.cart_items.find(session[:cart_item_ids])
 
       @order_form = OrderForm.new(
-        buyer: current_user,
+        buyer: current_user
       )
 
       set_user_address
-      render "orders/new_with_cart"
     else
       redirect_to root_path
     end
   end
 
   def create
-    @cart = current_cart
-    @cart_items = @cart.cart_items.find(session[:cart_item_ids])
+    unless params[:order_form][:product_id]
+      cart = current_cart
+      cart_item_ids = session[:cart_item_ids]
+      cart_items = cart.cart_items.find(cart_item_ids)
+      seller_ids = cart_items.map(&:seller_id).uniq
+    end
 
     @order_form = OrderForm.new(
       order_params.merge(
-        cart_item_ids: session[:cart_item_ids],
-        seller_ids: @cart_items.map(&:seller_id).uniq,
+        cart_item_ids: cart_item_ids,
+        seller_ids: seller_ids,
+        to_seller: params[:order][:to_seller],
         buyer: current_user,
         session: session
       )
@@ -82,7 +86,7 @@ class OrdersController < ApplicationController
 
     if @order_form.save
       sign_in(@order_form.buyer) if current_user.blank?
-      clean_current_cart
+      clean_current_cart unless params[:order_form][:product_id]
       @order_title = '确认订单'
       redirect_to order_path(@order_form.order, showwxpaytitle: 1)
     else

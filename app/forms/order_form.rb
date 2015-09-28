@@ -5,7 +5,7 @@ class OrderForm
   include ActiveModel::Model
 
   ATTRIBUTES = [
-    :product_id, :amount, :mobile, :captcha, :user_address_id, :deliver_username, :seller_ids, :cart_item_ids,
+    :product_id, :amount, :mobile, :captcha, :user_address_id, :deliver_username, :seller_ids, :cart_item_ids, :to_seller,
     :province, :city, :country, :area, :building, :street, :deliver_mobile, :sharing_code
   ]
 
@@ -111,12 +111,13 @@ class OrderForm
         Order.create!({
           user: buyer,
           seller: product.user,
+          to_seller: to_seller["#{product.user_id}"],
           user_address: self.user_address,
           order_items_attributes: order_items_attributes
         })
       elsif seller_ids
         Order.create!(
-          orders_split_by_seller(seller_ids)
+          orders_split_by_seller
         )
       end
   end
@@ -130,12 +131,13 @@ class OrderForm
     }]
   end
 
-  def orders_split_by_seller(seller_ids)
+  def orders_split_by_seller
     orders_attributes = []
     seller_ids.each do |seller_id|
       orders_attributes << {
         user: buyer,
         seller_id: seller_id,
+        to_seller: to_seller["#{seller_id}"],
         user_address: self.user_address,
         order_items_attributes: order_items_of_seller(seller_id)
       }

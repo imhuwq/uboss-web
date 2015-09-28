@@ -6,7 +6,7 @@ $ ->
     e.preventDefault()
     index = $("input[name='check_item']").index(this)
     $check_item.eq(index).toggleClass("checked") # 伪复选
-    setTotalPriceOfSelect()
+    #setTotalPriceOfSelect()
 
   # 全选
   $("#box_all").on 'click', (e) ->
@@ -18,7 +18,7 @@ $ ->
       $check_item.addClass("checked")
     else
       $check_item.removeClass("checked")
-    setTotalPriceOfSelect()
+    #setTotalPriceOfSelect()
 
   $('.c_count > .min').on 'click', (e) ->
     e.preventDefault()
@@ -78,11 +78,6 @@ $ ->
       this.style.imeMode = 'disabled' # 禁用输入法
     .bind "paste", () ->              # 禁用粘贴
       return false
-    #  clipboard = window.clipboardData.getData("Text")
-    #  if /^\d+$/.test(clipboard)
-    #    return true
-    #  else
-    #    return false
 
   $("input[name='num']").onlyNum()
 
@@ -110,7 +105,7 @@ $ ->
       error: (data, status, e) ->
         # do something
 
-  # 计算总价
+  # 计算总价(TODO 不涉及数据库修改，直接前端改价格)
   setTotalPriceOfSelect = ()->
     id_array = new Array()
     $(".checked[name='check_item']").each ->
