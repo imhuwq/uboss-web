@@ -2,7 +2,7 @@ class Admin::UsersController < AdminController
   load_and_authorize_resource
 
   def index
-    @users = User.admin.recent.page(param_page)
+    @users = append_default_filter @users.admin
   end
 
   def show
@@ -40,6 +40,9 @@ class Admin::UsersController < AdminController
     permit_keys = [:password, :password_confirmation, :email, :mobile, :nickname, user_role_ids: []]
     if params[:action] == "create"
       permit_keys += [:login]
+    end
+    if not current_user.is_role?(:super_admin)
+      permit_keys.delete(:user_role_ids)
     end
     if params[:action] == "update" && params[:user][:password].blank?
       permit_keys.delete(:password)

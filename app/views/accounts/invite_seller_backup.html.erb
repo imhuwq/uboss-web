@@ -1,0 +1,26 @@
+<%= content_for :page_title do %>
+  创客
+<% end %>
+<div class="container add_listall" >
+  <div class="add_inout">
+    <div style="min-height:30px;padding-top:10px;">
+      <div style="position:absolute;width:90px;margin-left:0;float:left;padding:8px 0 0 10px;">商家手机号</div>
+      <div style="margin-left:90px;">
+        <%= text_field_tag 'send_message[mobile]', '',type: :tel, placeholder: '商家手机号', class:"add_text", id:"new_mobile", style:"width:90%;float:left;"  %>
+      </div>
+    </div>
+    <p style="padding-top:10px;padding-right:10px;">
+      <%= link_to '发送', '###',class:"accunt_adilbtn", id: "timedown" %>
+    </p>
+    <div class="font_h4 text-center">
+      绑定数量
+    </div>
+    <div class="font_h2 text-center">
+      <%= @bind %>
+    </div>
+    <div id="invite_seller_histroy">
+      <%= render partial: "invite_seller_histroy" %>
+    </div>
+
+  </div>
+</div>

@@ -1,0 +1,44 @@
+.nogap{ padding:0;}
+.text-center{ text-align: center;}
+.text-left{ text-align: left;}
+.text-right{ text-align: right;}
+
+.pull-right{float:right}
+.pull-left{float:left}
+
+.border-box { border-bottom: 1px solid #dcdcdc; padding-bottom: 5px;}
+.fixed-container{ padding-bottom: 60px;}
+
+h3{font-size: 18px;margin:20px 0;}
+
+.main-color{ color: $brand-primary; }
+.like-color{ color: #f9ba10;}
+.gray-color{ color:#999}
+
+
+.bg-white{ background:#fff;}
+
+.page-title{ 
+    color: $brand-primary; 
+    padding: 8px 0;
+    font-size: 14px;
+}
+.page-title .more-bar { 
+  color: #b6b6b6;
+  font-size: 11px; 
+  float: right;
+  img{ height: 15px; margin-left: 5px;}
+ }
+.invite-title{
+    font-size: 18px;
+    padding:20px 4px;
+    border-bottom: 1px solid #eee; 
+}
+#invite_seller_histroy{font-size: 14px;color: #777;padding: 0 10px;}
+#invite_seller_histroy .edit-icon a{display: inline-block;width:19px;padding:9px;}
+.note-info{ font-size: 12px;color: #999; padding-top: 0;}
+#invite_seller_histroy .note-box{
+    td{ border: none; padding-bottom: 0;}
+    .edit-icon{ border-bottom: 1px solid #eee;}
+}
+

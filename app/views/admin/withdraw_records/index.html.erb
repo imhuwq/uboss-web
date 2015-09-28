@@ -37,6 +37,8 @@
 			<th>编号</th>
 			<th>申请人</th>
 			<th>收款人</th>
+			<th>收款银行</th>
+			<th>收款账号</th>
 			<th>申请时间</th>
 			<th>金额</th>
 			<th>状态</th>
@@ -47,6 +49,8 @@
 			<td><%= link_to record.number, [:admin, record] %></td>
 			<td><%= record.user_identify %></td>
 			<td><%= record.card_username %></td>
+			<td><%= withdraw_target_title_txt(record) %></td>
+			<td><%= withdraw_target_content_txt(record) %></td>
 			<td><%= record.created_at %></td>
 			<td><%= record.amount %></td>
 			<td><%= record.state_i18n %></td>
@@ -64,7 +68,7 @@
 			</td>
 		</tr>
 		<% end %>
-	</table>		
+	</table>
 	<br />
 	<%= paginate @withdraw_records %>
 </div>
