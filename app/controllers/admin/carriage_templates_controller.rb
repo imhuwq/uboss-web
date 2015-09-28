@@ -9,7 +9,7 @@ class Admin::CarriageTemplatesController < AdminController
     name = @carriage.name.gsub(')', '\\)').gsub('(', '\\(')
     last_copy_name = CarriageTemplate.where("name ~* ?",
                                             "#{name}\\(\\d+\\)$")\
-                                      .reorder('created_at desc').first.try(:name).to_s
+                                      .reorder('name desc').first.try(:name).to_s
     reg_result = last_copy_name.match(/\((\d+)\)$/)
     index = reg_result.blank? ? '1' : (reg_result[1].to_i + 1)
     @carriage.name = @carriage.name + "(#{index})"
