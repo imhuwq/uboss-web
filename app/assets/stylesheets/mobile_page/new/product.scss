@@ -1,30 +1,4 @@
-.store-list{
-   .product-box{
-        margin-bottom: 8px;       
-        background:#fff;
-        .title{
-            height: 30px;
-            overflow: hidden;
-            padding-top:2px;
-        }        
-   }   
-}
-.store-like{
-    position: relative;
-    .product-box{
-        position: relative;
-        .price{ 
-            position: absolute;
-            bottom: 0;
-            right: 0;
-            background: $brand-primary;
-            color: #fff;
-            z-index: 3;
-            padding: 2px;
-        }        
-    }    
-    .like-more{margin:150% 0;}
-}
+
 
 .product-box{
     .cover { position: relative;}
@@ -68,7 +42,7 @@
 }
 .product-info-box{
     background:#fff;
-    margin-bottom: 10px;
+    margin-bottom: 15px;
     padding:10px;
     text-align: center;
     overflow: hidden;
@@ -120,6 +94,23 @@
         font-weight: bold;
     }
     
+}
+.store-list{
+    padding:0 5px 0;
+    .product-box{
+        margin-bottom: 10px;       
+        background:#fff;       
+    }   
+}
+.store-like{   
+    padding: 0 5px 0;  
+    .share{
+        margin:10px 0;
+        text-align: center;
+        .btn{
+            padding: 5px 10px;
+        }
+    }  
 }
 .friend-card{    
     .cover{

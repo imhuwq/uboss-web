@@ -29,61 +29,71 @@
   <div class="read"><a href="/about"><small>查看说明</small></a></div>
 </div><!-- product-info-box -->
 
-<br />
-
-<div class="box">
-  <p>我喜欢的</p>
-  <% @favour_products.each do |product| %>
-    <div class="box-w50">
-      <%= image_tag product.image_url(:w120) %>
-      <br />
-      <div>
-        <div class="hidden sharing-meta-container">
-          <%= sharing_meta_tags(product) %>
-        </div>
-        <%= link_to "分享", get_product_sharing_path(product_id: product.id), remote: true, class: 'req-favour-p-snode' %>
-        <a class='p-sharing-btn btn hidden' href="#">分享</a>
-      </div>
-    </div>
-  <% end %>
+<div class="bg-white">
+	<div class="box store-like">
+		<div class="box-w100">
+  		<p class="page-title like-color">我喜欢的</p>
+  	</div>
+	  <% @favour_products.each do |product| %>
+		  <div class="box-w33">
+		  	<div class="product-box">
+		  		<div class="cover">
+	          <%= link_to '','', style: "background-image:url(#{product.image_url(:w120)})",class:'img' %>
+	          <%= image_tag("mobile/img.jpg") %>
+	        </div>
+	        <div class="share">
+	        	<div class="hidden sharing-meta-container">
+          		<%= sharing_meta_tags(product) %>
+        		</div>
+        		<%= link_to "分享", get_product_sharing_path(product_id: product.id), remote: true, class: 'btn btn-gray req-favour-p-snode' %>
+	        	<a href="#" class="btn btn-gray p-sharing-btn hidden">分享</a>
+	        </div>
+		   	</div>
+	  	</div>
+	  <% end %>
+ 	</div>
 </div>
-
 <br />
 
 <%= render partial: 'stores/banner_slider', locals: { seller: @seller } %>
 
-<div class="box">
-	<div class="box-w100">
-		<div class="page-title like-color">
-      <%= link_to hots_store_path(@seller), class: 'more-bar' do %>
-        more <%= image_tag 'mobile/arrow-right.png' %>
-      <% end %>
-      热门商品
+<div class="bg-white">
+	<div class="box store-list">
+		<div class="box-w100">
+			<div class="page-title like-color">
+	      <%= link_to hots_store_path(@seller), class: 'more-bar' do %>
+	        more <%= image_tag 'mobile/arrow-right.png' %>
+	      <% end %>
+	      热门商品
+			</div>
 		</div>
+	  <% @hots.each do |product| %>
+	    <div class="box-w33">
+	      <div class="product-box">
+	        <div class="cover">
+	          <%= link_to '', product, style: "background-image:url(#{product.image_url(:w120)})",class:'img',title:"#{product.name}" %>
+	          <%= image_tag("mobile/img.jpg") %>
+	        </div>
+	        <div class="title"><%= link_to product.name, product_path(product) %></div>
+	        <div class="price"><%= number_to_currency product.present_price %> <span><%= number_to_currency product.original_price %></span></div>
+	      </div>
+	    </div>
+	  <% end %>
 	</div>
-  <% @hots.each do |product| %>
-    <div class="box-w33">
-      <div class="product-box">
-        <div class="cover">
-          <%= link_to '', product, style: "background-image:url(#{product.image_url(:w120)})",class:'img',title:"#{product.name}" %>
-          <%= image_tag("mobile/img.jpg") %>
-        </div>
-        <div class="title"><%= link_to product.name, product_path(product) %></div>
-        <div class="price"><%= number_to_currency product.present_price %> <span><%= number_to_currency product.original_price %></span></div>
-      </div>
-    </div>
-  <% end %>
 </div>
 
+<br />
+
+<div class="bg-white">
 <div class="box store-list">
 	<div class="box-w100">
     <div class="page-title">全部商品</div>
 	</div>
-
   <%= render partial: 'stores/product', collection: @products, locals: { show_favour: true } %>
 </div>
-
+</div>
 <% if @products.size > 6 %>
+	<br />
   <div class="load-more" data-container='.store-list' data-ele='.p-item' data-ref='<%= store_path(@seller) %>'>加载更多</div>
 <% end %>
 

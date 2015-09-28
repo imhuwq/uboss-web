@@ -17,9 +17,9 @@ h4{font-size: 15px; line-height: 25px; font-weight: normal;}
 
 .bg-white{ background:#fff;}
 
-.page-title{
-    color: $brand-primary;
-    padding: 8px 0;
+.page-title{ 
+    color: $brand-primary; 
+    padding: 10px 0;
     font-size: 14px;
 }
 .page-title .more-bar {
@@ -51,6 +51,11 @@ h4{font-size: 15px; line-height: 25px; font-weight: normal;}
     background-color: lighten(#43c3aa, 10%);
   }
 }
+
+
+.main-color{ color: $brand-primary; }
+.like-color{ color: #f9ba10;}
+.gray-color{ color:#999}
 
 .hidden {
   display: none;
