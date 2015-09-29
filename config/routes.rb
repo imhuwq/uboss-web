@@ -39,6 +39,7 @@ Rails.application.routes.draw do
     get 'pay_complete', on: :member
     get 'cancel', on: :member
     resource :charge, only: [:create]
+    resources :pay,    only: [:index]
   end
   resources :products do
     member do

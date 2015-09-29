@@ -1,0 +1,33 @@
+<%= content_for :page_title do %>
+  支付订单
+<% end %>
+<div class="container">
+  <div class="payment-list wx-pay">
+    <span>微信支付</span>
+    <input type="radio" name="payment_item" value="微信支付" checked="checked" />
+  </div>
+  <div class="payment-list wx-pay">
+    <span>支付宝</span>
+    <input type="radio" name="payment_item" value="支付宝" checked="checked" />
+  </div>
+
+  <div class="pay-info">
+    <%= link_to '去付款', "javascript:;", class: 'btn pull-right' %>
+  </div>
+</div>
+
+<style>
+.payment-list{
+  line-height:40px;margin-top:10px;padding-left:10px;background-color:#F6F6F6;font-size:14px;
+}
+.pay-info{
+  position:fixed;bottom:0;width:100%;background:#E4E1E1;z-index:10;padding:10px;box-sizing:border-box;overflow:hidden;
+}
+.btn{
+  display:inline-block;font-size:14px;padding:5px;background:#43c3aa;color:#fff;border-radius:4px;float:right;
+}
+input[name="payment_item"]{
+  float:right;
+  margin:12px 12px;
+}
+</style>
