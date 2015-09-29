@@ -106,7 +106,7 @@ class AccountsController < ApplicationController
     note = params[:histroy][:note] rescue nil
     histroy = AgentInviteSellerHistroy.find_by(id: params[:id])
     if histroy.present? && note.present? && histroy.agent_id == current_user.id
-      histroy.update(note: note)
+      histroy.update_columns(note: note)
       flash[:success] = '修改成功'
     else
       flash[:error] = "修改失败#{histroy.errors.messages}."
