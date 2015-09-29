@@ -20,7 +20,9 @@
 				<div class="swiper-slide">
 					<div class="page1">
             <%= qrcode_image_tag new_seller_url(agent_code: @user.agent_code), logo: @user.avatar_url(:w120) %>
+						<%= image_tag 'mobile/maker/page1_bottom.jpg',alt:'向上滑',class:"page1_bottom"%>	
 					</div>
+
 				</div>
 				<!--page2-->
 				<div class="swiper-slide">
