@@ -2,6 +2,7 @@ class StoresController < ApplicationController
 
   layout 'mobile'
 
+  before_action :authenticate_user!, only: [:favours]
   before_action :set_seller, only: [:show, :hots, :favours]
   before_action :get_sharing_node, :set_sharing_link_node, only: [:show, :hots]
 
