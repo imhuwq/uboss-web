@@ -49,7 +49,7 @@
 				</p>
 			</div><!-- box-w45 -->
 			<div class="box-w10">
-				<p><img src="http://qr.liantu.com/api.php?&text=<%= "http://#{request.env["HTTP_HOST"]}/stores/#{@seller.id}" %>"/>	</p>
+				<p><img src="http://qr.liantu.com/api.php?&text=<%= store_url(@seller, shared: true) %>"/>	</p>
 			</div>
 		</div><!-- admin-box -->
 		<br />
