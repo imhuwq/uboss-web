@@ -33,7 +33,6 @@ class Ability
 
   def grant_permissions_to_super_admin user
     can :manage, :all
-    cannot :set_common, Express
     cannot :edit, Product
     cannot :create, Product
     cannot :update, Product
