@@ -1,0 +1,34 @@
+<div class="index_list">
+  <table class="list-table">
+    <thead>
+      <tr>
+        <th>公司名称</th>
+        <th>创建时间</th>
+        <th>操作</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% expresses.each do |express| %>
+        <tr>
+          <td><%= express.name  %></td>
+          <td><%= express.created_at %></td>
+          <td>
+            <% if can? :update, express %>
+              <%= link_to url_for(action: :edit, id: express.id), class:'edit-icon', title: '编辑' do %>
+                <i class="fa fa-pencil-square-o"></i>
+              <% end %>
+            <% end %>
+
+            <% if can? :set_common, express %>
+              <% if current_user.is_comman_express?(express) %>
+                <%= link_to '取消常用', cancel_common_admin_express_path(express) %>
+              <% else %>
+                <%= link_to '设为常用', set_common_admin_express_path(express), class: 'btn' %>
+              <% end %>
+            <% end %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
