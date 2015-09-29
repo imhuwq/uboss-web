@@ -35,7 +35,7 @@ Rails.application.routes.draw do
   get  'mobile_captchas/send_with_captcha', to: 'mobile_captchas#send_with_captcha'
 
   resources :stores, only: [:show] do
-    get :hots, on: :member
+    get :hots, :favours, on: :member
   end
   resources :orders, only: [:new, :create, :show] do
     get 'received', on: :member

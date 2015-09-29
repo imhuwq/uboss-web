@@ -31,7 +31,8 @@
       <% if current_user && current_user.has_seller_privilege_card?(@seller) %>
         <a class="btn btn-large btn-longer p-sharing-btn">分享给朋友</a>
       <% else %>
-        <%= link_to "领取友情卡", get_seller_sharing_path, data: { sid: @seller.id, uid: current_user.present? },
+        <%= link_to "领取友情卡", get_seller_sharing_path,
+          data: { sid: @seller.id, uid: current_user.present? },
           class: "btn btn-large btn-longer show-req-snode-modal"
         %>
         <a class="btn btn-large btn-longer hidden p-sharing-btn">分享给朋友</a>
@@ -58,47 +59,48 @@
 
 <%= render partial: 'banner_slider', locals: { seller: @seller } %>
 
-<% if !@hide_hot_box && @hots.present? %>
+<% if params[:action] == 'show' && @hots.present? %>
+  <div class="bg-white">
+    <div class="store-like">
+      <div class="box">
+        <div class="box-w100">
+          <div class="page-title like-color">
+            <%= link_to hots_store_path(@seller), class: 'more-bar' do %>
+              more <%= image_tag 'mobile/arrow-right.png' %>
+          <% end %>
+          热销商品
+          </div>
+        </div>
+        <%= render partial: 'hot_product', collection: @hots, as: :product %>
+      </div>
+    </div>
+  </div>
+  <br />
+<% end %>
 
 <div class="bg-white">
-  <div class="store-like">
-	  <div class="box">
-		  <div class="box-w100">
-		    <div class="page-title like-color">
-		    	<%= link_to hots_store_path(@seller), class: 'more-bar' do %>
-		        more <%= image_tag 'mobile/arrow-right.png' %>
-		      <% end %>
-		    	热销商品
-		    </div>
-		  </div>
-		
-		  <%= render partial: 'hot_product', collection: @hots, as: :product %>
-		
-	  </div>
+  <div class="box store-list">
+    <div class="box-w100">
+      <% if params[:action] == 'hots' %>
+        <div class="page-title like-color">热销商品</div>
+      <% elsif params[:action] == 'favours' %>
+        <div class="page-title like-color">我喜欢的</div>
+      <% else %>
+        <div class="page-title">全部商品</div>
+      <% end %>
+    </div>
+
+    <% if @products.present? %>
+      <%= render partial: 'product', collection: @products %>
+    <% else %>
+      <h2 class="page-title text-center">店家正在准备好货，敬请期待</h2>
+    <% end %>
+
   </div>
 </div>
-<br />
-<% end %>
-<div class="bg-white">
-<div class="box store-list">
-	<div class="box-w100">
-    <% if @hide_hot_box %>
-      <div class="page-title like-color">热销商品</div>
-    <% else %>
-      <div class="page-title">全部商品</div>
-    <% end %>
-	</div>
 
-  <% if @products.present? %>
-    <%= render partial: 'product', collection: @products %>
-  <% else %>
-    <h2 class="page-title text-center">店家正在准备好货，敬请期待</h2>
-  <% end %>
-
-</div>
-</div>
 <% if @products.size > 6 %>
-	<br />
+  <br />
   <div class="load-more" data-container='.store-list' data-ele='.p-item' data-ref='<%= request.path %>'>加载更多</div>
 <% end %>
 

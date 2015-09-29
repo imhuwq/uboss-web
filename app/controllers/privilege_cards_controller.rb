@@ -5,8 +5,12 @@ class PrivilegeCardsController < ApplicationController
   before_action :authenticate_user!
 
   def index
-    @privilege_cards = append_default_filter current_user.privilege_cards, order_column: :updated_at, page_size: 10
-    render partial: 'privilege_cards/privilege_card', collection: @privilege_cards if request.xhr?
+    if request.xhr?
+      @privilege_cards = append_default_filter current_user.privilege_cards, order_column: :updated_at, page_size: 10
+      render partial: 'privilege_cards/privilege_card', collection: @privilege_cards
+    else
+      redirect_to account_path(anchor: 'showpcards')
+    end
   end
 
   def show
