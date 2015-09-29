@@ -28,11 +28,12 @@ class SharingController < ApplicationController
   def seller_node
     @seller = User.find(params.fetch(:seller_id))
     if current_user.present?
-      head(200)
+      @sharing_link_node ||=
+        SharingNode.find_or_create_by_resource_and_parent(current_user, @seller)
     else
       @sharing_link_node = @user.sharing_nodes.order('id DESC').find_or_create_by(seller_id: @seller.id)
-      render_sharing_link_node
     end
+    render_sharing_link_node
   end
 
   private

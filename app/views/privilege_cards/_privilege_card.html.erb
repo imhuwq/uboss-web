@@ -6,7 +6,14 @@
     <div class="info">
       <p class="title"><%= privilege_card.seller.store_identify %></p>
       <p class="gray-color">商品共 <%= privilege_card.seller.products.published.count %> 件</p>
-      <div><a href="#" class="btn share-btn">分享</a></div>
+      <div>
+        <div class="hidden sharing-meta-container">
+          <%= store_sharing_meta_tags(privilege_card.seller) %>
+        </div>
+        <%= link_to "分享", get_seller_sharing_path(seller_id: privilege_card.seller_id), remote: true,
+          class: 'btn share-btn req-favour-p-snode' %>
+        <a href="#" class="btn share-btn p-sharing-btn hidden">分享</a>
+      </div>
     </div>
   </div><!-- share-card -->
 </a>
