@@ -1,11 +1,14 @@
 #= require jquery
 #= require modernizr-2.6.2.min
+#= require china_city/jquery.china_city
+#= require jquery_nested_form
 #= require jquery_ujs
 #= require bootstrap-sprockets
 #= require redactor-rails
 #= require redactor-rails/plugins/imagemanager
 #= require redactor-rails/langs/zh_cn
 #= require chosen.jquery.min
+#= require select2.min
 #= require jquery-fileupload/basic
 #= require querystring
 #= require shared/upyun

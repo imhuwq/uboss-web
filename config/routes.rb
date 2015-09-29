@@ -94,6 +94,14 @@ Rails.application.routes.draw do
 
   authenticate :user, lambda { |user| user.admin? } do
     namespace :admin do
+      resources :carriage_templates do
+        member do
+          get :copy
+        end
+      end
+
+      get '/select_carriage_template', to: 'products#select_carriage_template'
+
       resources :products, except: [:destroy] do
         member do
           patch :change_status

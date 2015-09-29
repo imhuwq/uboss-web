@@ -23,6 +23,9 @@ gem 'weixin_authorize', github: "lanrion/weixin_authorize"
 gem 'ransack'
 gem 'rails-api'
 
+# copying of ActiveRecord objects and their associated children
+gem 'amoeba'
+
 # nested sharing_node
 gem 'awesome_nested_set'
 
@@ -78,6 +81,7 @@ gem 'airbrake'
 gem 'sucker_punch' # airbrake async use this
 
 gem 'china_city'
+gem 'nested_form'
 
 # for generate excel
 gem 'axlsx', '~> 2.0.1'

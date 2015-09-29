@@ -1,0 +1,33 @@
+<div class='select_carriage_template_wrapper'>
+  <% if carriage.present? %>
+    <div class='select_carriage_template'>
+      <%= link_to '修改', edit_admin_carriage_template_path(carriage), class: 'prodcut_edit_carrage_template', target: '_blank' %>
+
+      <table class='table table-bordered'>
+        <thead>
+          <tr>
+            <th colspan='5'><%= carriage.name %> </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>运送到</td>
+            <td>首件(个)</td>
+            <td>运费(元)</td>
+            <td>续件(个)</td>
+            <td>续费(元)</td>
+          </tr>
+          <% carriage.different_areas.each do |area| %>
+            <tr>
+              <td><%= area.regions.collect(&:name).join('、') %></td>
+              <td><%= area.first_item %></td>
+              <td><%= area.carriage %></td>
+              <td><%= area.extend_item %></td>
+              <td><%= area.extend_carriage %></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  <% end %>
+</div>

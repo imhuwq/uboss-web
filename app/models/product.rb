@@ -7,11 +7,12 @@ class Product < ActiveRecord::Base
 
   # FIXME 请使用helper or i18n 做view的数值显示
   DataCalculateWay = { 0 => '按金额', 1 => '按售价比例' }
-  DataBuyerPay = { true => '买家付款', false => '包邮' }
+  DataBuyerPay = { 0 => '包邮', 1 => '统一邮费', 2 => '运费模板' }
 
   validates_presence_of :user_id, :name, :short_description
 
   belongs_to :user
+  belongs_to :carriage_template
   has_one :asset_img, class_name: 'AssetImg', autosave: true, as: :resource
   has_many :product_share_issue, dependent: :destroy
   has_many :order_items

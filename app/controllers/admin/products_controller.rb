@@ -4,6 +4,10 @@ class Admin::ProductsController < AdminController
 
   load_and_authorize_resource
 
+  def select_carriage_template
+    @carriage = CarriageTemplate.find(params[:tpl_id]) if params[:tpl_id].present?
+  end
+
   def index
     @products = Product.accessible_by(current_ability).where(status: [0,1]).order('created_at DESC')
     @products = @products.page(params[:page] || 1)
@@ -85,7 +89,8 @@ class Admin::ProductsController < AdminController
       :share_amount_total, :share_amount_lv_1, :share_amount_lv_2,
       :share_amount_lv_3,  :share_rate_total,  :share_rate_lv_1,
       :share_rate_lv_2,    :share_rate_lv_3,   :buyer_pay,
-      :traffic_expense,    :short_description
+      :traffic_expense,    :short_description, :transportation_way,
+      :carriage_template_id
     )
   end
 end

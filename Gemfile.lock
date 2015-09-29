@@ -90,6 +90,8 @@ GEM
     airbrake (4.3.0)
       builder
       multi_json
+    amoeba (3.0.0)
+      activerecord (>= 3.2.6)
     arel (6.0.2)
     autoprefixer-rails (5.2.0)
       execjs
@@ -251,6 +253,7 @@ GEM
     multi_json (1.11.1)
     multi_xml (0.5.5)
     multipart-post (2.0.0)
+    nested_form (0.3.2)
     net-scp (1.2.1)
       net-ssh (>= 2.6.5)
     net-ssh (2.9.2)
@@ -460,6 +463,7 @@ PLATFORMS
 DEPENDENCIES
   aasm
   airbrake
+  amoeba
   awesome_nested_set
   axlsx (~> 2.0.1)
   better_errors
@@ -494,6 +498,7 @@ DEPENDENCIES
   minitest-rails-capybara
   mocha
   mock_redis
+  nested_form
   omniauth-wechat-oauth2
   pg
   pry-byebug
