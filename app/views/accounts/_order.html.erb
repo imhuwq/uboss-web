@@ -1,16 +1,16 @@
 <div class="order-list" timestamp='<%= order.created_at %>'>
   <p class="order-code">
     <span class="pull-right"><%= order.created_at.strftime('%Y-%m-%d') %></span>
- 		订单号：<%= order.number %>  
+ 		订单号：<%= order.number %>
   </p>
   <div class="order-box">
-	  <div class="cover">  
+	  <div class="cover">
 	    <%= link_to order_path(order, showwxpaytitle: 1) do %>
 	    	<%= image_tag order.order_items.first.try(:product).try(:image_url, 'w120') %>
 	    <% end %>
 	  </div><!-- order-cover -->
-	  <div class="content">	  		
-			  <div class="pull-right text-right">			  	
+	  <div class="content">
+			  <div class="pull-right text-right">
 				  <p class="price gray-color">￥单价</p>
 				  <p class="number gray-color">
 						x<%= order.order_items.first.try(:amount) %>
@@ -19,10 +19,10 @@
 			  <div class="name">
 			  	<%= order.order_items.first.try(:product).try(:name) %>
 			  </div><!-- name -->
-	  </div><!-- content -->   
-  </div><!-- order-box --> 
-  
-  <div class="order-info">  	
+	  </div><!-- content -->
+  </div><!-- order-box -->
+
+  <div class="order-info">
 	  <div class="status pull-right">
 			<% if order.state == 'unpay' %>
 		    <%= link_to "付款", order_path(order, showwxpaytitle: 1), class: 'my_retur my_confir btn btn-orange' %>
@@ -34,11 +34,11 @@
 		  <% elsif order.state == 'signed' %>
 		  	<label class="label label-invited">已签收</label>
 		  <% elsif order.state == 'closed' %>
-		 	 	<label class="label">交易关闭</label>		    
+		 	 	<label class="label">交易关闭</label>
 		  <% elsif order.completed? %>
-		  	<label class="label label-bind">交易完成</label>		
+		  	<label class="label label-bind">交易完成</label>
 		  <% end %>
-		</div> <!-- status --> 
+		</div> <!-- status -->
   	<span class="text">
   		共<%= order.order_items.first.try(:amount) %>件商品,合计:￥<%= order.pay_amount %>
   	</span>
