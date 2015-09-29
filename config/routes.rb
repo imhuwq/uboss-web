@@ -2,6 +2,7 @@ require 'sidekiq/web'
 require 'okay_responder'
 
 Rails.application.routes.draw do
+
   mount OkayResponder.new, at: "__upyun_uploaded"
   mount ChinaCity::Engine => '/china_city'
 
@@ -16,6 +17,7 @@ Rails.application.routes.draw do
   get 'set_password', to: 'accounts#new_password'
 
   get 'sharing/:code', to: 'sharing#show', as: :sharing
+  get 'maker_qrcode', to: 'home#maker_qrcode', as: :maker_qrcode
 
   get 'service_centre_consumer', to: 'home#service_centre_consumer'
   get 'service_centre_agent', to: 'home#service_centre_agent'
@@ -41,10 +43,7 @@ Rails.application.routes.draw do
     resource :charge, only: [:create]
     resources :pay,    only: [:index]
   end
-  resources :products do
-    member do
-      get :refact
-    end
+  resources :products, only: [:index, :show] do
     post :save_mobile, :democontent,  on: :collection
   end
   resources :evaluations do
@@ -56,7 +55,7 @@ Rails.application.routes.draw do
     get :settings,         :edit_password,     :reset_password,
         :orders,           :binding_agent, :invite_seller,
         :edit_seller_histroy, :edit_seller_note, :seller_agreement,
-        :merchant_confirm,    :binding_successed
+        :merchant_confirm,    :binding_successed, :maker_qrcode
     post :send_message
     put :bind_agent, :bind_seller, :update_histroy_note
     patch :merchant_confirm, to: 'accounts#merchant_confirmed'
@@ -82,6 +81,17 @@ Rails.application.routes.draw do
   end
   resources :cart_items, only: [:create, :destroy]
 
+  namespace :api do
+    namespace :v1 do
+      post 'login', to: 'sessions#create'
+      resources :mobile_captchas, only: [:create]
+      resource :account, only: [] do
+        patch :update_password
+        get :orders, :privilege_cards
+      end
+    end
+  end
+
   authenticate :user, lambda { |user| user.admin? } do
     namespace :admin do
       resources :products, except: [:destroy] do
@@ -96,6 +106,7 @@ Rails.application.routes.draw do
       end
       resources :sharing_incomes, only: [:index, :show, :update]
       resources :withdraw_records, only: [:index, :show, :new, :create] do
+        get :generate_excel, on: :collection
         member do
           patch :processed
           patch :close

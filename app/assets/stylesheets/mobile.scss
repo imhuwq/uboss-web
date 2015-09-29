@@ -1,13 +1,17 @@
 @import 'shared/application_variables';
 @import "mobile_page/reset";
-@import 'mobile_page/header';
-@import 'mobile_page/slider';
-@import 'mobile_page/index';
-@import 'mobile_page/layout';
-@import 'mobile_page/form';
-@import 'mobile_page/store';
-@import 'mobile_page/share';
-@import 'mobile_page/product-page';
+@import 'mobile_page/new/layout';
+@import 'mobile_page/new/header';
+@import 'mobile_page/new/slider';
+@import 'mobile_page/new/form';
+@import 'mobile_page/new/table';
+@import 'mobile_page/new/button';
+@import 'mobile_page/new/pop';
+@import 'mobile_page/new/store';
+@import 'mobile_page/new/share';
+@import 'mobile_page/new/product';
+@import 'mobile_page/new/product-page';
+@import 'mobile_page/new/main';
 
 #load-more {
   color: #fff;

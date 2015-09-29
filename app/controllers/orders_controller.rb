@@ -39,15 +39,17 @@ class OrdersController < ApplicationController
       @order_form = OrderForm.new(
         buyer: current_user,
         product_id: params[:product_id],
-        amount: params[:amount],
-        sharing_code: get_product_sharing_code(params[:product_id])
+        amount: params[:amount]
       )
       @product = @order_form.product
+      @order_form.sharing_code = get_product_or_store_sharing_code(@product)
       if @product.is_official_agent? && current_user && current_user.is_agent?
         flash[:error] = "您已经是UBOSS创客，请勿重复购买"
         redirect_to root_path
       else
-        set_user_address
+        if current_user && @default_address = current_user.default_address
+          @order_form.user_address_id = @default_address.id
+        end
       end
     elsif !session[:cart_item_ids].blank?          # 购物车
       @cart = current_cart
@@ -80,8 +82,9 @@ class OrdersController < ApplicationController
         session: session
       )
     )
+
     if @order_form.product_id
-      @order_form.sharing_code = get_product_sharing_code(@order_form.product_id)
+      @order_form.sharing_code = get_product_or_store_sharing_code(@order_form.product)
     end
 
     if @order_form.save

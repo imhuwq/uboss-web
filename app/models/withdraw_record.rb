@@ -59,6 +59,14 @@ class WithdrawRecord < ActiveRecord::Base
     bank_info.blank? && user.weixin_openid.present?
   end
 
+  def target_title
+    wechat_available? ? "微信" : card_bankname
+  end
+
+  def target_content
+    wechat_available? ? user.weixin_openid : card_number
+  end
+
   private
 
   def delay_transfer_money

@@ -1,5 +1,17 @@
 module ApplicationHelper
 
+  def qrcode_image_tag(text, opts = {})
+    opts = {
+      text: text,
+      w: 300,
+      bg: 'ffffff',
+      fg: '000000',
+      logo: 'http://ssobu-dev.b0.upaiyun.com/asset_img/avatar/c25754e6ca9b5f2c5f02fb49aa109d82.png-w120'
+    }.merge(opts)
+    query = opts.inject("") {|s,opt| s+="&#{opt[0]}=#{opt[1]}"}
+    image_tag "http://qr.liantu.com/api.php?#{query}"
+  end
+
   def horizon_form_for(record, options = {}, &block)
     options = options.merge(
       html: { class: 'form-horizontal' },
@@ -70,6 +82,18 @@ module ApplicationHelper
       sharing_desc:   product_sharing_desc(product),
       sharing_imgurl: product.image_url(:thumb),
       sharing_link:   product_sharing_link(product, sharing_link_node)
+    }
+    meta_tags.collect do |key, value|
+      content_tag :meta, '', name: key, content: value
+    end.join.html_safe
+  end
+
+  def store_sharing_meta_tags(seller, sharing_link_node = nil)
+    meta_tags = {
+      sharing_title:  "UBOSS店铺【#{seller.store_identify}】好货不断，通过分享购买有惊喜！",
+      sharing_desc:   "消费分享还能拿返利，更多有趣玩法，快来UBOSS看看吧",
+      sharing_imgurl: seller.avatar_url(:thumb),
+      sharing_link:  store_sharing_link(seller, sharing_link_node)
     }
     meta_tags.collect do |key, value|
       content_tag :meta, '', name: key, content: value

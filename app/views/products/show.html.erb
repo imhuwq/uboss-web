@@ -44,7 +44,7 @@
         <div class="gray-color">每件为你多省<span class="like-color"><%= @privilege_card.privilege_amount %></span></div>
         <br />
         <div class="border-box">
-          <p class="name">友情价格</p>
+          <p class="name">友情价</p>
           <div class="price"><%= @product.present_price - @privilege_card.privilege_amount %></div>
         </div>
         <br />
@@ -95,7 +95,7 @@
       </div>
       <%= link_to '立即购买', new_order_path(product_id: @product.id), class: 'btn pull-right'%>
       <div class="content">
-        <p>分享者：<%= truncate (@sharing_node.user.identify),:length=>10,:omission=>'...' %></p>
+        <p>分享者：<%= @sharing_node.user.identify %></p>
         <p>好评率：<%= Evaluation.sharer_good_reputation_rate(@sharing_node.user) %></p>
       </div>
     </div>

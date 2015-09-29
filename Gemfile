@@ -21,6 +21,7 @@ gem "browser", github: 'xEasy/browser'
 gem 'wx_pay', github: 'xEasy/wx_pay'
 gem 'weixin_authorize', github: "lanrion/weixin_authorize"
 gem 'ransack'
+gem 'rails-api'
 
 # nested sharing_node
 gem 'awesome_nested_set'
@@ -77,6 +78,9 @@ gem 'airbrake'
 gem 'sucker_punch' # airbrake async use this
 
 gem 'china_city'
+
+# for generate excel
+gem 'axlsx', '~> 2.0.1'
 
 group :development do
   gem "thin"

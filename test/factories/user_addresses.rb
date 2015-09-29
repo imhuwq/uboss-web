@@ -6,6 +6,8 @@ FactoryGirl.define do
     mobile '13800001111'
     province 'province'
     city 'city'
+    area 'area'
+    building 'building'
     country 'country'
     street 'street'
   end

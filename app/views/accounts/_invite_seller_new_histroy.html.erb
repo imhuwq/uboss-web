@@ -1,0 +1,34 @@
+<% @histroys.each do |obj| %>
+  <tr 
+  	<% if(obj.note?) %>
+  	class="note-box"
+  	<% end %>	
+  >
+    <td>
+    	<%=  truncate (obj.mobile),:length=>15,:omission=>'...'  %>
+    </td>
+    <td>
+      <%= obj.created_at.strftime('%m/%d') %>
+    </td>
+    <td class="text-right">
+      <span class="label label-<%= obj.status%>"><%= obj.status_i18n %></span>
+    </td>
+    <td class="text-right nogap edit-icon v-top" 
+    	<% if(obj.note?) %>
+    	rowspan="2"
+    	<% end %>
+    >
+      <%= link_to edit_seller_note_account_path(id: obj.id) do %>
+        <%= image_tag("mobile/edit.png" ) %>
+      <% end %>
+    </td>
+  </tr>  
+	<% if(obj.note?) %>
+	<tr>
+		<td colspan="3" class="note-info">
+			备注：<%=truncate (obj.note),:length=>15,:omission=>'...'  %>
+		</td>
+	</tr>
+	<% end %>
+  
+<% end %>

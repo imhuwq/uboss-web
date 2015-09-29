@@ -1,0 +1,170 @@
+
+@import 'shared/_application_variables';
+@import 'mobile_page/reset';
+@import 'swiper.min';
+
+html{
+	height: 100%;
+	overflow: hidden;
+}
+body{
+	height: 100%;
+	overflow: hidden;
+}
+.swiper-container {
+	width: 100%;
+	height: 100%;
+}
+.qrcode {
+	text-align: center;
+	height:100%;
+	position: relative;
+	background: #F6F6F6;
+}
+.qrcode_top {
+	/*position:fixed;*/
+	/*height:100%;*/
+	top: 0;
+	width: 100%;
+}
+.qrcode_bottom {
+	bottom: 0;
+	width: 100%;
+	position: absolute;
+	left: 0;
+}
+.marketing6top {
+	background-image: image-url('mobile/maker/marketing6.jpg');
+	background-size: cover;
+	background-position: bottom;
+	text-align: center;
+}
+.qrcode_content1 {
+	/*width: 180px;
+    height: 105px;*/
+    width: 50%;
+    padding: 10px;
+    /*display: inline-block;*/
+}
+/*.marketing6top p {
+	display: inline-block;
+	color: #F6F6F6;
+	background: red;
+	font-size: 20px;
+}*/
+.maker{
+	/*display: inline-block;*/
+	/*padding: 20px;*/
+	padding-bottom:20px;
+	/*width:180px;*/
+	text-align: center;
+}
+.share_portrait {
+	width: 40px;
+    height: 40px;
+    border-radius: 20px;
+    /*float:left;*/
+   display: inline-block;
+
+}
+.share_content {
+   display: inline-block;
+}
+.share_content dt {
+	padding: 5px;
+    font-size: 18px;
+    color: #fafafa;
+}
+.share_content dd{
+	color:#FAFAFA;
+	font-size:12px;
+}
+.qrcode_img{
+	width: 65%;
+	padding:10px;
+	text-align: center;
+	display:inline-block;
+}
+.qrcode_img p{
+	font-size: 18px;
+    color: #000000;
+    font-weight: bolder;
+    /*padding: 10px;*/
+}
+.qrcode_img img{
+	padding-top: 20px;
+	/*width:200px;
+	height:200px;*/
+	/*padding:20px;*/
+}
+.page1{
+	width: 100%;
+    height: 100%;
+	background-image:image-url('mobile/maker/marketing1.jpg');
+	background-size: cover;
+	background-position: bottom;
+	text-align: center;
+	position: relative;
+}
+.page1 img{
+	width: 40px;
+    height: 40px;
+    left: 47%;
+    top: 57%;
+    position: absolute;
+}
+.page2{
+	width: 100%;
+    height: 100%;
+	background-image:image-url('mobile/maker/marketing2.jpg');
+	background-size: cover;
+	background-position: bottom;
+	text-align: center;
+	position: relative;
+}
+.corner_qrcode{
+	/*width: 100px;
+    height: 100px;*/
+    right: 10px;
+    top: 6px;
+    position: absolute;
+    border: 1px solid #f6f6f6;
+    padding: 2px;
+}
+.qrcode_border{
+	border: 1px solid #43c3aa;
+}
+.corner_qrcode img{
+	width: 70px;
+    height: 70px;
+}
+.p1{
+	font-weight: bold;
+}
+.page3{
+	width: 100%;
+    height: 100%;
+	background-image:image-url('mobile/maker/marketing3.jpg');
+	background-size: cover;
+	background-position: bottom;
+	text-align: center;
+	position: relative;
+}
+.page4{
+	width: 100%;
+    height: 100%;
+	background-image:image-url('mobile/maker/marketing4.jpg');
+	background-size: cover;
+	background-position: bottom;
+	text-align: center;
+	position: relative;
+}
+.page5{
+	width: 100%;
+    height: 100%;
+	background-image:image-url('mobile/maker/marketing5.jpg');
+	background-size: cover;
+	background-position: bottom;
+	text-align: center;
+	position: relative;
+}

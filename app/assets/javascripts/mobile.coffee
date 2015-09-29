@@ -7,6 +7,7 @@
 #= require zepto.waypoints.min
 #= require fastclick
 #= require swipe
+#= require mobile_page/sms
 #= require mobile_page/going_merry
 #= require mobile_page/utilities
 #= require mobile_page/product

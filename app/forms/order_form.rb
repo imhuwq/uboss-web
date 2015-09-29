@@ -49,7 +49,12 @@ class OrderForm
   end
 
   def sharing_node
-    @sharing_node ||= SharingNode.find_by(code: self.sharing_code)
+    return @sharing_node if @sharing_node.present?
+    @sharing_node = SharingNode.find_by(code: self.sharing_code)
+    if @sharing_node && @sharing_node.seller_id.present?
+      @sharing_node = @sharing_node.lastest_product_sharing_node(self.product)
+    end
+    @sharing_node
   end
 
   def real_price
