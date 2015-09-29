@@ -3,24 +3,27 @@
     <span class="pull-right"><%= order.created_at.strftime('%Y-%m-%d') %></span>
  		订单号：<%= order.number %>
   </p>
-  <div class="order-box">
-	  <div class="cover">
-	    <%= link_to order_path(order, showwxpaytitle: 1) do %>
-	    	<%= image_tag order.order_items.first.try(:product).try(:image_url, 'w120') %>
-	    <% end %>
-	  </div><!-- order-cover -->
-	  <div class="content">
-			  <div class="pull-right text-right">
-				  <p class="price gray-color">￥单价</p>
-				  <p class="number gray-color">
-						x<%= order.order_items.first.try(:amount) %>
-					</p>
-			  </div><!-- pull-right -->
-			  <div class="name">
-			  	<%= order.order_items.first.try(:product).try(:name) %>
-			  </div><!-- name -->
-	  </div><!-- content -->
-  </div><!-- order-box -->
+
+  <%= link_to order_path(order, showwxpaytitle: 1) do %>
+    <% order.order_items.each do |order_item| %>
+      <div class="order-box">
+        <div class="cover">
+          <%= image_tag order_item.try(:product).try(:image_url, 'w120') %>
+        </div><!-- order-cover -->
+        <div class="content">
+          <div class="pull-right text-right">
+            <p class="price gray-color">￥单价</p>
+            <p class="number gray-color">
+            x<%= order_item.try(:amount) %>
+          </p>
+          </div><!-- pull-right -->
+          <div class="name">
+            <%= order_item.try(:product).try(:name) %>
+          </div><!-- name -->
+        </div><!-- content -->
+      </div><!-- order-box -->
+    <% end %>
+  <% end %>
 
   <div class="order-info">
 	  <div class="status pull-right">
