@@ -1,4 +1,16 @@
-<div class='text-center container'>
-  <h2>编辑快递公司</h2>
-  <%= render 'form' %>
+<div class="container admin-container">
+  <ul class="breadcrumb">
+    <li><a href="/admin">主页</a></li>
+    <li class="divider"><i class="fa fa-angle-right"></i></li>
+    <li><%= link_to '快递公司', [:admin, :expresses] %></li>
+    <li class="divider"><i class="fa fa-caret-right"></i></li>
+    <li class="active">编辑快递公司</li>
+  </ul>
+</div><!-- container -->
+<br />
+
+<div class="container nogap">
+  <%= horizon_form_for @express, url: { action: :update } do |f| %>
+    <%= render 'form', f: f %>
+  <% end %>
 </div>

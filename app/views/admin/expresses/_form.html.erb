@@ -1,7 +1,10 @@
-<div class="inline-form">
-  <%= simple_form_for [:admin, @express] do |f| %>
+<div class="box-w70">
+  <div class="admin-box beige-bg-color">
+    <h4 class="edit-title">快递信息</h4>
     <%= f.input :name %>
-    <%= f.submit '提交', class: 'btn btn-large' %>
-    <%= link_to '取消', admin_expresses_path %>
-  <% end %>
+    <br />
+    <div class="form-actions text-center">
+      <%= f.submit @express.new_record? ? '创建' : '保存', class: "btn btn-large" %>
+    </div>
+  </div>
 </div>
