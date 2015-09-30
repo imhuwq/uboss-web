@@ -2,6 +2,7 @@ class CarriageTemplate < ActiveRecord::Base
   MIN_SECTION_SIZE = 1
   has_many :different_areas
   has_many :products
+  belongs_to :user
 
   default_scope {order("updated_at desc")}
 

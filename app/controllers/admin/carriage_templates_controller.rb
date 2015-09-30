@@ -4,7 +4,7 @@ class Admin::CarriageTemplatesController < AdminController
   before_action :find_carriage, only: [:show, :edit, :update, :destroy]
 
   def copy
-    @bak_carriage = CarriageTemplate.find(params[:id])
+    @bak_carriage = current_user.carriage_templates.find(params[:id])
     @carriage = @bak_carriage.amoeba_dup
     name = @carriage.name.gsub(')', '\\)').gsub('(', '\\(')
     index_array = CarriageTemplate.where("name ~* ?",
@@ -16,7 +16,7 @@ class Admin::CarriageTemplatesController < AdminController
   end
 
   def index
-    @carriages = CarriageTemplate.all.page(params[:page])
+    @carriages = current_user.carriage_templates.page(params[:page])
   end
 
   def edit
@@ -56,10 +56,10 @@ class Admin::CarriageTemplatesController < AdminController
 
   private
   def find_carriage
-    @carriage = CarriageTemplate.find(params[:id])
+    @carriage = current_user.carriage_templates.find(params[:id])
   end
 
   def carriage_template_params
-    params.require(:carriage_template).permit(:name, different_areas_attributes: [:id, :first_item, :carriage, :extend_item, :extend_carriage, :_destroy, region_ids: [] ])
+    params.require(:carriage_template).permit(:name, different_areas_attributes: [:id, :first_item, :carriage, :extend_item, :extend_carriage, :_destroy, region_ids: [] ]).merge(user_id: current_user.id)
   end
 end
