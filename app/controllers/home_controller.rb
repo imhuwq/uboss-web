@@ -19,6 +19,10 @@ class HomeController < ApplicationController
   def service_centre_tutorial
   end
 
+  def about_us
+    render layout: 'mobile'
+  end
+
   private
 
   def detect_layout
