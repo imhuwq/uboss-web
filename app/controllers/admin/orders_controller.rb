@@ -15,7 +15,8 @@ class Admin::OrdersController < AdminController
     if params[:order].present?
       params[:order].each do |order_id, param|
         order = Order.find(order_id)
-        express = Express.find_or_create_by(name: param[:express_name])
+        express = Express.find_by_name(param[:express_name])
+        express = Express.create(name: param[:express_name], private_id: current_user.id) if express.blank?
         if validate_batch_shipment_params(param) \
           && order.update({ship_number: param[:ship_number], express: express}) \
           && order.ship!
@@ -50,7 +51,8 @@ class Admin::OrdersController < AdminController
   end
 
   def set_express
-    express = Express.find_or_create_by(name: express_params)
+    express = Express.find_by_name(express_params)
+    express = Express.create(name: express_params, private_id: current_user.id) if express.blank?
     if @order.update(order_params.merge(express_id: express.id)) && @order.ship!
       flash[:success] = '发货成功'
     else

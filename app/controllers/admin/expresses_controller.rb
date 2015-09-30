@@ -27,7 +27,7 @@ class Admin::ExpressesController < AdminController
 
   def index
     authorize! :read, Express
-    @expresses = Express.all.page(params[:page])
+    @expresses = Express.where(private_id: [nil, current_user.id]).page(params[:page])
   end
 
   def new
