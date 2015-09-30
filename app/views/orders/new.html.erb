@@ -59,7 +59,7 @@
               <dl>
                 <dt><%= image_tag(url_for(cart_item.image_url),  alt: "-", style: "width:52px;") %></dt>
                 <dd>
-                <strong><%= cart_item.name %><span>￥<%= cart_item.real_price %></span></strong>
+                <strong><%= cart_item.name %><span>￥<%= cart_item.present_price %></span></strong>
                 <p><span class="lse">x <%= cart_item.count %></span></p>
                 </dd>
               </dl>
@@ -74,7 +74,7 @@
             <span class="sub_left"><strong></strong><b>￥ <%= "0.0" %></b></span>
             </p>
             <p class="sub_p1 sub_p2">
-            <span class="sub_left"><strong>合计：</strong><b id="total_price">￥ <%= "0.0" %></b></span>
+            <span class="sub_left"><strong>合计：</strong><b id="total_price">￥ <%= @cart.total_price_of(cart_items.map(&:id)) %></b></span>
             </p>
             <p class="sub_p1 sub_p2">
               <input placeholder="给卖家留言" type="text" name="order[to_seller][<%= seller.id %>]" style="width:98%;line-height:20px;border:0;">
@@ -88,7 +88,7 @@
         <div class="subOrd_boxcont">
           <p class="sub_p1 shs_qazwsxub_p2">
           <span class="sub_leftl">应付款：</span>
-          <span class="sub_left"><strong>￥</strong><b id="total_price"><%= CartItem.total_price_of(session[:cart_item_ids])[1] %></b></span>
+          <span class="sub_left"><strong>￥</strong><b id="total_price"><%= @cart.total_price_of(session[:cart_item_ids]) %></b></span>
           </span>
           </p>
         </div>

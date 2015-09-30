@@ -11,24 +11,18 @@ class CartItem < ActiveRecord::Base
 
   before_save :check_count
 
-  def self.total_price_of(id_array)
-    items = CartItem.find(id_array)
-    total_price = items.inject(0){ |sum, item| sum + item.real_price*item.count }
-    return true, total_price
-  rescue ActiveRecord::RecordNotFound
-    return false, 0
-  end
-
   # 购物车商品按店铺分组
   def self.group_by_seller(cart_items)
     seller_ids = cart_items.map(&:seller_id).uniq
-    items = {}
-    seller_ids.each { |seller_id| items.merge!({User.find(seller_id) => cart_items.select { |item| item.seller_id == seller_id }}) }
-    items
+    seller_ids.inject({}) do |items, seller_id|
+      items.merge!(
+        { User.find(seller_id) => cart_items.select { |item| item.seller_id == seller_id } }
+      )
+    end
   end
 
-  def real_price
-    sharing_node ? (present_price - sharing_node.privilege_amount.to_f.to_d) : present_price
+  def total_price
+    present_price*count
   end
 
   private
@@ -38,4 +32,5 @@ class CartItem < ActiveRecord::Base
       return false
     end
   end
+
 end

@@ -28,6 +28,7 @@
                               <p><%= cart_item.name %></p>
                               <p>
                               <span class="lse">￥<%= cart_item.present_price %></span>
+                              <span style="text-decoration:line-through">￥<%= cart_item.original_price %></span>
                               <span class="pl15 c_count"><input class="min" name="" type="button" value="-"/><input type="text" name="num" class="num" value="<%= cart_item.count %>" data-id="<%= cart_item.id %>"><input class="plus" name="" type="button" value="+" /></span>
                               </p>
                             </td>
@@ -38,6 +39,17 @@
                       </li>
                     <% end %>
                   </ul>
+                </div>
+
+                <div>
+                  <div style="line-height: 35px; border-top: 1px solid #e6e6e6;">
+                    <input name="checkbox" type="checkbox" value="checkbox" />
+                    <span>使用xxx的友情卡</span>
+                  </div>
+                  <div style="line-height: 35px; border-top: 1px solid #e6e6e6;">
+                    <span>本店合计：</span>
+                    <span>￥ <%= @cart.total_price_of(cart_items.map(&:id)) %></span>
+                  </div>
                 </div>
               <% end %>
 
@@ -52,6 +64,7 @@
             <td width="25%"><input type="checkbox" class="checkbox checked" id="box_all"> 全选</td>
             <td width="49%">
               <p> <span class="pl15">金额合计：</span><span class="ff6 c_total_price">￥<%= @cart.total_price %></span></p>
+              <p style="color:#aaa;">不含邮费、优惠减扣</p>
             </td>
             <!--<td width="20%"><button class="submit">去结算</button></td>-->
             <td width="20%"><%= link_to '去结算', new_order_path, class: 'cart-btn submit' %></td>

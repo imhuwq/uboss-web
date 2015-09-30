@@ -37,11 +37,14 @@ class Cart < ActiveRecord::Base
   end
 
   def total_price # present_price
-    cart_items.inject(0){ |sum, item| sum + item.present_price*CartItem.where("product_id = ? AND cart_id = ?", item.product_id, id).take!.count }
-    #cart_items.inject(0){ |sum, item| sum + item.real_price*CartItem.where("product_id = ? AND cart_id = ?", item.product_id, id).take!.count }
+    cart_items.inject(0){ |sum, item| sum + item.total_price }
   end
 
-  #def total_price(price_attribute)  # "original_price", "present_price"
-  #  cart_items.inject(0){ |sum, item| sum + item.send(price_attribute)*CartItem.where("product_id = ? AND cart_id = ?", item.product_id, id).take!.count }
-  #end
+  def total_price_of(cart_item_ids)
+    items = CartItem.find(cart_item_ids)
+    items.inject(0){ |sum, item| sum + item.total_price }
+  rescue ActiveRecord::RecordNotFound
+    return 0
+  end
+
 end
