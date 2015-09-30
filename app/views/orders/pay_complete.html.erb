@@ -36,43 +36,10 @@
 
   <% if @privilege_card.present? %>
     <div class="pay_sidba">您获得本商品的友情卡，确认收货后生效</div>
-
-    <%= simple_form_for @privilege_card, remote: true do |f| %>
-      <%= f.hidden_field_tag :origin_privilege_amount, @product.privilege_amount  %>
-      <%= f.hidden_field_tag :origin_sharing_amount, @product.share_amount_lv_1  %>
-      <%= f.hidden_field :present_price %>
-      <div class="pay_content">
-        <div class="pay_box2">
-
-          <p class="pay_line1">
-          <strong><%= number_with_precision(@privilege_card.discount, precision: 2) %></strong><span>折</span>
-          </p>
-
-          <p class="pay_line2">购买本商品每件多省</p>
-
-          <p class="pay_line3">
-          <a href="#" class="jian">-</a>
-          <%= f.input_field :privilege_amount, id: 'pay_text', type: :number %>
-          <a href="#" class="jia">+</a>
-          <span>元</span>
-          </p>
-
-          <p class="pay_line4">
-          返回<span class='sharing_lv1_amount'><%= @product.share_amount_lv_1 - @privilege_card.amount %></span>积分
-          </p>
-
-        </div>
-      </div>
-
-      <div class="pay_laugh">
-        <%= image_tag 'img/laugh.png' %>
-        <span>友情卡可以分享给朋友使用哟……</span>
-      </div>
-      <div class='pay-complete-actions'>
-        <button type='submit' class="pay-bottom" id="pay-bottom">完成</button>
-        <%= link_to "查看订单", order_path(@order), class: "pay-bottom" %>
-      </div>
-    <% end %>
+    <br />
+    <%= render partial: 'privilege_card', locals: { privilege_card: @privilege_card, product: @product } %>
   <% end %>
+
+  <%= link_to "查看订单", order_path(@order), class: "pay-bottom" %>
 
 <% end %>

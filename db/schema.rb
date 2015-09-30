@@ -145,15 +145,11 @@ ActiveRecord::Schema.define(version: 20150930062025) do
     t.integer  "sharing_node_id"
   end
 
-  create_table "expresses", force: :cascade do |t|
-    t.string   "name"
+  create_table "favour_products", force: :cascade do |t|
+    t.integer  "user_id"
+    t.integer  "product_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-  end
-
-  create_table "expresses_users", id: false, force: :cascade do |t|
-    t.integer "express_id"
-    t.integer "user_id"
   end
 
   create_table "mobile_captchas", force: :cascade do |t|
@@ -213,8 +209,6 @@ ActiveRecord::Schema.define(version: 20150930062025) do
     t.datetime "signed_at"
     t.datetime "shiped_at"
     t.datetime "completed_at"
-    t.string   "ship_number"
-    t.integer  "express_id"
     t.string   "to_seller"
     t.decimal  "ship_price",      default: 0.0
   end
@@ -235,12 +229,11 @@ ActiveRecord::Schema.define(version: 20150930062025) do
   end
 
   create_table "privilege_cards", force: :cascade do |t|
-    t.integer  "product_id"
     t.integer  "user_id"
-    t.decimal  "amount",     default: 0.0
     t.datetime "created_at",                 null: false
     t.datetime "updated_at",                 null: false
     t.boolean  "actived",    default: false
+    t.integer  "seller_id"
   end
 
   create_table "products", force: :cascade do |t|
@@ -447,6 +440,7 @@ ActiveRecord::Schema.define(version: 20150930062025) do
     t.integer  "authenticated",          default: 0
     t.integer  "agent_code"
     t.string   "authentication_token"
+    t.decimal  "privilege_rate",         default: 0.0
   end
 
   add_index "users", ["authentication_token"], name: "index_users_on_authentication_token", using: :btree
@@ -484,7 +478,6 @@ ActiveRecord::Schema.define(version: 20150930062025) do
   add_foreign_key "orders", "user_addresses", on_delete: :nullify
   add_foreign_key "orders", "users"
   add_foreign_key "orders", "users", column: "seller_id", name: "fk_order_seller_foreign_key"
-  add_foreign_key "privilege_cards", "products"
   add_foreign_key "privilege_cards", "users"
   add_foreign_key "selling_incomes", "orders"
   add_foreign_key "selling_incomes", "users"

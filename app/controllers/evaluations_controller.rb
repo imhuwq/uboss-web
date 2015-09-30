@@ -13,7 +13,7 @@ class EvaluationsController < ApplicationController
     @evaluation = Evaluation.find(params[:id])
     @product = @evaluation.product
     @sharing_node = @evaluation.sharing_node
-    @privilege_card = PrivilegeCard.find_by(user: current_user, product: @product, actived: true)
+    @privilege_card = PrivilegeCard.find_by(user: current_user, seller: @product.user, actived: true)
   end
 
   def index

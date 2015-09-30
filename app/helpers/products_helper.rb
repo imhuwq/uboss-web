@@ -1,5 +1,9 @@
 module ProductsHelper
 
+  def user_favour_product_class(product)
+    'active' if current_user.favour_products.exists?(product_id: product.id)
+  end
+
   def store_sharing_link(seller, sharing_node = nil)
     if sharing_node.blank?
       store_url(seller)
@@ -32,19 +36,23 @@ module ProductsHelper
     "#{product.short_description}"
   end
 
-  def store_good_rate(seller)
-    rate_data = seller.store_rates
-    total = store_total_rate(seller)
-    rate = if total > 0
-             rate_data['good'].to_i * 100 / total
-           else
-             100
-           end
-    number_to_percentage(rate, precision: 0)
+  def self_privilege_card?(privilege_card)
+    privilege_card && current_user && privilege_card.user_id == current_user.id
   end
 
-  def store_total_rate(seller)
-    rate_data = seller.store_rates
-    rate_data.inject(0) { |r, v| r += v[1].to_i }
+  def other_users_privilege_card?(privilege_card)
+    privilege_card && (current_user.blank? || (current_user && privilege_card.user_id != current_user.id))
+  end
+
+  def product_privilege_price(product, privilege_card)
+    product.present_price - product_privilege_amount(product, privilege_card)
+  end
+
+  def product_privilege_amount(product, privilege_card)
+    if privilege_card.present?
+      privilege_card.privilege_amount(product)
+    else
+      product.privilege_amount
+    end
   end
 end

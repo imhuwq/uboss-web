@@ -19,52 +19,109 @@
     <div class="cover">
       <div class="img" style="background-image:url('<%=@product.image_url()%>')"></div>
       <%= image_tag("mobile/img.jpg") %>
+      <% if current_user && current_user.has_seller_privilege_card?(@seller) %>
+        <div class="like-box">
+	        <%= link_to "喜欢", switch_favour_product_path(@product),
+	          method: 'PATCH', class: "#{user_favour_product_class(@product)} btn btn-like like-product-btn", remote: true %>
+        </div>
+      <% end %>
     </div>
   </div><!-- product-box -->
 
   <div class="product-info-box">
     <p class="title"><%=@product.name%></p>
     <p class="price"><small>￥</small><%=@product.present_price%></p>
-    <p class="gray-color">
-    <% if @product.buyer_pay? %>
-      快递：<%= product_traffic(@product) %>
-    <%else%>
-      包邮
-    <% end %>
-    </p>
-    <p class="product-rate"><%= Evaluation.product_good_reputation_rate(@product.id) %> 好评 (<%= Evaluation.product_good_reputation(@product.id) %>人)</p>
+    <p class="original-price">￥<%= @product.original_price %></p>
+    <div class="border-box">
+    	<br />
+    	<p class="gray-color">
+	    <% if @product.buyer_pay? %>
+	     	 快递：<%= product_traffic(@product) %>
+	    <%else%>
+	     	 包邮
+	    <% end %>
+	    </p>
+	    <p class="gray-color"><%= Evaluation.product_good_reputation_rate(@product.id) %> 好评 (<%= Evaluation.product_good_reputation(@product.id) %>人)</p>
+  	</div><!-- border-box -->
+  	<br />
+  	<div class="detail text-left">
+  		<%= @product.short_description %>
+  	</div><!-- detail -->
+  	<br />
   </div><!-- product-info-box -->
 
-  <% if @privilege_card %>
+  <!-- 自己的友情卡  -->
+  <% if self_privilege_card?(@privilege_card) || qr_sharing? %>
+  	<div class="product-info-box">
+      <br />
+      <div class="friend-card">
+	      <div class="name">友情价</div>
+	      <br />
+        <div class="price">
+          <%= product_privilege_price(@product, @privilege_card) %>
+        </div>
+	      <br/>
+	    	<p class="gray-color">帮朋友优惠<%= product_privilege_amount(@product, @privilege_card) %></p>
+        <div class="border-box">
+          <% if @privilege_card.present? %>
+            <br />
+            <div class="text-center"><a class="btn btn-large btn-longer p-sharing-btn">分享给朋友</a></div>
+            <br/>
+            <div class="text-center">
+              <%= link_to "喜欢", switch_favour_product_path(@product),
+                method: 'PATCH', class: "#{user_favour_product_class(@product)} btn btn-like like-product-btn", remote: true %>
+            </div>
+          <% else %>
+            <div class="text-center">
+              <%= link_to "领取友情卡", get_product_sharing_path, data: { pid: @product.id, uid: current_user.present? },
+                class: "btn btn-large btn-longer show-req-snode-modal"
+              %>
+              <a class="btn btn-large btn-longer hidden p-sharing-btn">分享给朋友</a>
+            </div>
+          <% end %>
+        </div><!-- border-box -->
+        <br />
+        <p class="gray-color">一级 <%= @product.share_amount_lv_1 %>　　二级 <%= @product.share_amount_lv_2 %>　　三级 <%= @product.share_amount_lv_3 %></p>
+        <div class="read"><a href="/about"><small>查看说明</small></a></div>
+      </div>  <!-- friend-card -->
+    </div><!-- product-info-box -->
+  <% elsif other_users_privilege_card?(@privilege_card) %>
     <div class="product-info-box">
       <br />
       <div class="friend-card">
-        <p class="cover"><%= image_tag @privilege_card.user.avatar_url(:h50) %></p>
+        <p class="cover"><%= image_tag @privilege_card.user.avatar_url(:w120) %></p>
         <p class="name"><%= @privilege_card.user.identify %> 分享</p>
-        <div class="gray-color">每件为你多省<span class="like-color"><%= @privilege_card.privilege_amount %></span></div>
+        <div class="gray-color">
+          每件为你多省<span class="like-color"><%= @privilege_card.privilege_amount(@product) %></span>
+        </div>
         <br />
         <div class="border-box">
           <p class="name">友情价</p>
-          <div class="price"><%= @product.present_price - @privilege_card.privilege_amount %></div>
+          <div class="price">
+            <%= @product.present_price - @privilege_card.privilege_amount(@product) %>
+          </div>
         </div>
         <br />
         <p class="name">关于分享者</p>
-        <div class="gray-color">共 <%= @sharing_node.user.total_reputations %> 分享 <span class="like-color"><%= @sharing_node.user.good_reputation_rate %>度靠谱</span></div>
+        <div class="gray-color">
+          共 <%= @sharing_node.user.total_reputations %> 分享
+          <span class="like-color"><%= @sharing_node.user.good_reputation_rate %>% 靠谱</span>
+        </div>
       </div>  <!-- friend-card -->
       <br />
     </div><!-- product-info-box -->
   <% end %>
+  <!-- end 自己的友情卡 -->
 
   <div class="product-info-box">
     <br />
     <div class="cover">
-      <% if @product.user.avatar.present? %>
-        <%= image_tag @seller.avatar_url(:h50) %>
-      <% end %>
+      <%= image_tag @seller.avatar_url(:w120) %>
     </div>
+    <br />
     <p class="name"><%= @seller.store_name %></p>
     <p class="gray-color"><%= @seller.store_short_description %></p>
-    <p class="gray-color border-top"><%= store_good_rate @seller %> 好评（<%= store_total_rate(@seller) %>）</p>
+    <p class="gray-color border-top"><%= number_to_percentage(@seller.good_reputation_rate, precision: 0) %> 好评（<%= @seller.total_reputations %>）</p>
     <div class="into">
       <%= link_to  store_path(@seller) do%>
         <%= image_tag("mobile/into.png") %> 进店逛逛
@@ -101,9 +158,7 @@
     </div>
   <% end %>
 
-  <% if params['shared'] == 'true' %>
-    <%= render partial: 'new_share' %>
-  <% end %>
+  <%= render partial: 'new_share' %>
 
   <div class="shop_cart">
     <a href="<%= carts_path %>">
@@ -119,3 +174,24 @@
 .shop_cart .cart_img{position:relative; width:60%; float:right;}
 .shop_cart p{position:absolute; top:13px; right:12px; color:#f9faf4;}
 </style>
+
+<div class="req-snode-modal pop-bg hidden">
+  <div class="pop-content">
+    <div class="alert">
+      <div class="req-snode-group">
+        <div class="page-title">留下手机号，现金礼品拿不停！</div>
+        <p><input type="tel" name="mobile" placeholder='输入手机号，获得分享收益' class='input-block' /></p>
+        <br />
+        <p>
+        <%= link_to "领取友情卡", get_product_sharing_path, data: { pid: @product.id },
+          class: "btn btn-large btn-block req-pro-snode-btn" %>
+        </p>
+      </div>
+      <div class="hidden">
+        <p>您已成功领取，赶紧分享给朋友吧</p>
+        <br />
+        <a class="btn btn-large btn-block pro-snode-success-btn">确定</a>
+      </div>
+    </div>
+  </div>
+</div>

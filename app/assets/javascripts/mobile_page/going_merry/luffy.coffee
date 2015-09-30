@@ -18,6 +18,7 @@ class GoingMerry.Luffy
       )
     else
       $('.share-wx-btn').remove()
+      $('.sharing-button-wx').remove()
 
   invokeDefaultSharing: ->
     if window.wx
@@ -43,16 +44,56 @@ class GoingMerry.Luffy
     wx.hideOptionMenu()
 
   resetInvokeSharing: (info = {}) ->
-    @sharing_title = info.title || $('meta[name=sharing_title]').attr('content')
-    @sharing_link = info.link || $('meta[name=sharing_link]').attr('content')
-    @sharing_imgurl = info.imgurl || $('meta[name=sharing_imgurl]').attr('content')
-    @sharing_desc = info.desc || $('meta[name=sharing_desc]').attr('content')
+    if info.metaContainer?
+      metaContainer = info.metaContainer
+    else
+      metaContainer = $('html')
+    @sharing_title = info.title || metaContainer.find('meta[name=sharing_title]').attr('content')
+    @sharing_link = info.link || metaContainer.find('meta[name=sharing_link]').attr('content')
+    @sharing_imgurl = info.imgurl || metaContainer.find('meta[name=sharing_imgurl]').attr('content')
+    @sharing_desc = info.desc || metaContainer.find('meta[name=sharing_desc]').attr('content')
+    $('.share-content').find('.sharing-link').text(@sharing_link)
     @invokeSharing()
 
   setSharingInfo: (with_detail_info)->
-      wx.onMenuShareAppMessage(with_detail_info)
-      wx.onMenuShareQQ(with_detail_info)
-      wx.onMenuShareWeibo(with_detail_info)
-      wx.onMenuShareQZone(with_detail_info)
+    wx.onMenuShareAppMessage(with_detail_info)
+    wx.onMenuShareQQ(with_detail_info)
+    wx.onMenuShareWeibo(with_detail_info)
+    wx.onMenuShareQZone(with_detail_info)
 
-UBoss.luffy = new GoingMerry.Luffy
+  showWxPopTip: ->
+    if window.wx?
+      $(".wx-mod-pop").show()
+    else
+      alert('朋友圈分享只在微信浏览器可用')
+
+  toggleSharingContent: ->
+    $('.share-container').toggleClass('hidden')
+
+  openUrl : (url, popup) ->
+    if popup == "true"
+      window.open(url,'popup','height=500,width=500')
+    else
+      window.open(url)
+      false
+
+  shareToWeibo: ->
+    @openUrl(
+      "http://service.weibo.com/share/share.php?url=#{@sharing_link}&type=3&pic=#{@sharing_imgurl}&title=#{@sharing_title}",
+      'false'
+    )
+
+  shareToQQ: ->
+   @openUrl(
+     "http://share.v.t.qq.com/index.php?c=share&a=index&url=#{@sharing_link}&title=#{@sharing_title}&pic=#{@sharing_imgurl}",
+     'fasle'
+   )
+
+  shareToQzone: ->
+   @openUrl(
+     "http://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=#{@sharing_link}&title=#{@sharing_imgurl}&pics=#{@sharing_imgurl}&summary=#{@sharing_desc}",
+     'false'
+   )
+
+$ ->
+  UBoss.luffy = new GoingMerry.Luffy

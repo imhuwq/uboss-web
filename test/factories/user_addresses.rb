@@ -4,9 +4,9 @@ FactoryGirl.define do
     user
     username 'username'
     mobile '13800001111'
-    province 'province'
-    city 'city'
-    area 'area'
+    province '440000'
+    city '440300'
+    area '440305'
     building 'building'
     country 'country'
     street 'street'

@@ -30,11 +30,11 @@ class OrderItem < ActiveRecord::Base
   alias_method :generate_sharing_link_node, :sharing_link_node
 
   def create_privilege_card_if_none
-    PrivilegeCard.find_or_create_by(user_id: user_id, product_id: product_id)
+    PrivilegeCard.find_or_active_card(user_id, product.user_id)
   end
 
   def active_privilege_card
-    if card = PrivilegeCard.find_by(user_id: user_id, product_id: product_id, actived: false)
+    if card = PrivilegeCard.find_by(user_id: user_id, seller_id: product.user_id, actived: false)
       card.update_column(:actived, true)
     end
   end
@@ -66,7 +66,7 @@ class OrderItem < ActiveRecord::Base
   end
 
   def set_privilege_amount
-    self.privilege_amount = privilege_card.present? ? privilege_card.privilege_amount : 0
+    self.privilege_amount = privilege_card.present? ? privilege_card.privilege_amount(product) : 0
   end
 
   def set_present_price

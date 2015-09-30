@@ -5,7 +5,6 @@
 //= require zepto/plugins/deferred
 //= require fastclick
 //= require rails-behaviors/index
-//= require zepto.waypoints.min.js
 //= require mobile_page/going_merry
 //= require mobile_page/order
 //= require mobile_page/account

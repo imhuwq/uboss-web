@@ -15,7 +15,8 @@
   </div>
 
   <% if @privilege_card.present? %>
-    <%= render partial: 'privilege_card', locals: { privilege_card: @privilege_card } %>
+    <%= render partial: 'privilege_card', locals: { privilege_card: @privilege_card, product: @product } %>
+    <br />
   <% end %>
 
   <div class="fenxinrated">

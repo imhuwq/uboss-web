@@ -86,5 +86,10 @@
         </span>
       </p>
       <% end %>
+      <% if not browser.wechat? %>      
+	      <p class="text-right">
+	        <%= link_to "退出账户", destroy_user_session_path, method: :delete %>      	
+	      </p>
+      <% end %>
     </div>
 </div>

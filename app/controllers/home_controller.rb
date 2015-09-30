@@ -24,6 +24,10 @@ class HomeController < ApplicationController
     render 'accounts/maker_qrcode', layout: false
   end
 
+  def about_us
+    render layout: 'mobile'
+  end
+
   private
 
   def detect_layout

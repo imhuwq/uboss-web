@@ -25,7 +25,7 @@ class OrdersController < ApplicationController
       }
       @pay_sign = WxPay::Sign.generate(@pay_p)
     elsif @order.signed? || @order.completed?
-      @privilege_card = PrivilegeCard.find_by(user: current_user, product: @product, actived: true)
+      @privilege_card = PrivilegeCard.find_by(user: current_user, seller: @product.user, actived: true)
       @sharing_link_node = @order_item.sharing_link_node
     end
   end
@@ -105,7 +105,7 @@ class OrdersController < ApplicationController
     @order.check_paid
     @order_charge = @order.order_charge
     @product = @order.order_items.first.product
-    @privilege_card = PrivilegeCard.find_by(user: current_user, product: @product)
+    @privilege_card = PrivilegeCard.find_by(user: current_user, seller: @product.user)
   end
 
   def received

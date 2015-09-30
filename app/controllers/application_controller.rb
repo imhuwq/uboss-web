@@ -64,7 +64,7 @@ class ApplicationController < ActionController::Base
   def set_sharing_code(sharing_node)
     if sharing_node.product_id.present?
       set_product_sharing_code(sharing_node.product_id, sharing_node.code)
-      seller_sharing_node = sharing_node.lastest_seller_sharing_node(sharing_node.product.user)
+      seller_sharing_node = sharing_node.lastest_seller_sharing_node
       set_seller_sharing_code(sharing_node.product.user_id, seller_sharing_node.code)
     else
       set_seller_sharing_code(sharing_node.seller_id, sharing_node.code)
@@ -117,4 +117,9 @@ class ApplicationController < ActionController::Base
       root_path
     end
   end
+
+  def qr_sharing?
+    params['shared'] == 'true'
+  end
+  helper_method :qr_sharing?
 end
