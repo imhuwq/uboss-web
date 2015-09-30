@@ -51,7 +51,7 @@ class SharingNode < ActiveRecord::Base
           node = nil
         end
       else
-        node.touch if user.id != node.user_id
+        node.touch if parent.present?
       end
 
       return nil if node.blank?
@@ -75,12 +75,12 @@ class SharingNode < ActiveRecord::Base
   #
   # 为店铺首页生成店铺分享节点
   #
-  def lastest_seller_sharing_node shared_seller
+  def lastest_seller_sharing_node
     @lastest_seller_sharing_node ||=
       if seller_id.present?
         self
       else
-        self.class.find_or_create_by_resource_and_parent(user, shared_seller)
+        self.class.find_or_create_by_resource_and_parent(user, product.user)
       end
   end
 

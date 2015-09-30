@@ -25,7 +25,7 @@ class ProductsController < ApplicationController
       end
       if current_user
         @sharing_link_node ||=
-          SharingNode.find_or_create_by_resource_and_parent(current_user, @product, @sharing_node)
+          SharingNode.find_or_create_by_resource_and_parent(current_user, @product, @sharing_node, need_touch: true)
       end
       render layout: 'mobile'
     else
