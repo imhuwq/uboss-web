@@ -51,6 +51,10 @@ class OrderItem < ActiveRecord::Base
     present_price - privilege_amount
   end
 
+  def count
+    amount
+  end
+
   private
 
   def adjust_product_stock(type)

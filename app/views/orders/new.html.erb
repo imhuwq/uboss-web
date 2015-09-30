@@ -71,7 +71,7 @@
           <div class="subOrd_boxcont">
             <p class="sub_p1 sub_p2">
             <span class="sub_leftl">运费</span>
-            <span class="sub_left"><strong></strong><b>￥ <%= "0.0" %></b></span>
+            <span class="sub_left"><strong></strong><b>￥ <%= calculate_ship_price(cart_items, @order_form.user_address) %></b></span>
             </p>
             <p class="sub_p1 sub_p2">
             <span class="sub_left"><strong>合计：</strong><b id="total_price">￥ <%= @cart.total_price_of(cart_items.map(&:id)) %></b></span>
