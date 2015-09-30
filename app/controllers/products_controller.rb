@@ -1,6 +1,8 @@
 # 商品展示
 class ProductsController < ApplicationController
 
+  before_action :set_product, only: [:switch_favour]
+
   def index
     @products = append_default_filter Product.published.includes(:asset_img), order_column: :updated_at
     render partial: 'products/product', collection: @products if request.xhr?
@@ -10,10 +12,12 @@ class ProductsController < ApplicationController
     @product = Product.published.find_by_id(params[:id])
     if @product.present?
       @seller = @product.user
-      if @store_scode = get_seller_sharing_code(@seller.id)
-        sharing_node = SharingNode.find_by(code: @store_scode)
-        product_sharing_node = sharing_node.lastest_product_sharing_node(@product)
-        @sharing_node = (product_sharing_node || sharing_node)
+      if qr_sharing?
+        current_user && @privilege_card = current_user.privilege_cards.find_by(seller_id: @product.user_id)
+      elsif @store_scode = get_seller_sharing_code(@seller.id)
+        @store_node = SharingNode.find_by(code: @store_scode)
+        @store_node && @product_sharing_node = @store_node.lastest_product_sharing_node(@product)
+        @sharing_node = (@product_sharing_node || @store_node)
         @privilege_card = @sharing_node.try(:privilege_card)
       elsif @scode = get_product_sharing_code(@product.id)
         @sharing_node = SharingNode.find_by(code: @scode)
@@ -29,19 +33,23 @@ class ProductsController < ApplicationController
     end
   end
 
-  def save_mobile
-    mobile = params[:mobile] rescue nil
-    if mobile.present?
-      user = User.find_or_create_guest(mobile)
+  def switch_favour
+    if current_user.favour_products.exists?(product_id: @product.id)
+      current_user.unfavour_product(@product)
+      render json: { favoured: false }
+    else
+      @favour_product = current_user.favour_product(@product)
+      if @favour_product.persisted?
+        render json: { favoured: true }
+      else
+        render json: { favoured: false, msg: model_errors(@favour_product) }, status: 422
+      end
     end
-    @product = Product.find(params[:id])
-    if @product.present? && user.present?
-      @sharing_link_node = SharingNode.find_or_create_by(user_id: user.id, product_id: @product.id)
-    end
-    respond_to do |format|
-      format.html { render nothing: true }
-      format.js
-    end
+  end
+
+  private
+  def set_product
+    @product ||= Product.published.find(params[:id])
   end
 
 end

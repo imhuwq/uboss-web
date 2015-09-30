@@ -18,6 +18,9 @@ class User < ActiveRecord::Base
   has_many :user_role_relations, dependent: :destroy
   has_many :user_roles, through: :user_role_relations
   has_many :daily_reports
+  has_many :sharing_nodes
+  has_many :favour_products
+  has_many :favoured_products, through: :favour_products, source: :product
   # for agent
   has_many :divide_incomes
   has_many :sellers, class_name: 'User', foreign_key: 'agent_id'
@@ -38,6 +41,8 @@ class User < ActiveRecord::Base
   validates :mobile, allow_nil: true, mobile: true
   validates :agent_code, uniqueness: true, allow_nil: true
   validates :authentication_token, uniqueness: true, presence: true
+  validates_numericality_of :privilege_rate,
+    greater_than_or_equal_to: 0, less_than_or_equal_to: 100, only_integer: true
 
   alias_attribute :regist_mobile, :login
 
@@ -61,7 +66,7 @@ class User < ActiveRecord::Base
       false
     end
   end
-  before_validation :ensure_authentication_token
+  before_validation :ensure_authentication_token, :ensure_privilege_rate
   before_create :set_mobile
   before_create :build_user_info, if: -> { user_info.blank? }
   before_save   :set_service_rate
@@ -141,18 +146,6 @@ class User < ActiveRecord::Base
       end
     end
 
-  end
-
-  # TODO 在评价时实时更新
-  def store_rates
-    @store_rates ||= Rails.cache.fetch ['seller-store-rate', id], expires_in: 1.day do
-      result = ActiveRecord::Base.connection.execute <<-SQL.squish!
-        SELECT SUM(good_evaluation) AS good, SUM(bad_evaluation) AS bad, SUM(normal_evaluation) AS normal
-        FROM products
-        WHERE products.user_id = #{id}
-      SQL
-      result = result.first || {}
-    end
   end
 
   # 默认绑定official agent
@@ -360,7 +353,23 @@ class User < ActiveRecord::Base
       sum("good_evaluation + normal_evaluation + bad_evaluation")
   end
 
+  def has_seller_privilege_card?(seller)
+    privilege_cards.where(seller_id: seller.id).exists?
+  end
+
+  def favour_product(product)
+    favour_products.create(product_id: product.id)
+  end
+
+  def unfavour_product(product)
+    favour_products.where(product_id: product.id).delete_all
+  end
+
   private
+
+  def ensure_privilege_rate
+    self.privilege_rate = self.privilege_rate.to_i
+  end
 
   def ensure_authentication_token
     if authentication_token.blank?

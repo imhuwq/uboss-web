@@ -578,12 +578,11 @@ a{
   	font-weight: normal;
 }
 .my_menu{
-	width: 94%;
 	margin:4px auto;
 	height: 55px;
 }
 .my_menu ul li{
-	width: 50%;
+	width: 33%;
 	height:55px;
 	line-height: 45px;
 	float: left;

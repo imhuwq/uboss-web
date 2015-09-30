@@ -61,5 +61,12 @@ input:focus{
 .input-border:focus{
     color: $brand-primary;
 }
-
+.form-group{
+    display: table;
+    width: 100%;
+    .form-label,.form-input {
+        display: table-cell;
+        padding: 0 10px;
+    }
+}
 

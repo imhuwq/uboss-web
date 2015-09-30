@@ -5,11 +5,13 @@ class AccountsController < ApplicationController
   before_action :authenticate_agent, only: [:send_message, :invite_seller, :edit_seller_note, :update_histroy_note]
 
   def show
-    @orders = append_default_filter account_orders, page_size: 20
+    @orders = append_default_filter account_orders, page_size: 10
+    @privilege_cards = append_default_filter current_user.privilege_cards, order_column: :updated_at, page_size: 10
+    render layout: 'mobile'
   end
 
   def orders
-    @orders = append_default_filter account_orders, page_size: 20
+    @orders = append_default_filter account_orders, page_size: 10
     render partial: 'accounts/order', collection: @orders
   end
 
@@ -104,7 +106,7 @@ class AccountsController < ApplicationController
     note = params[:histroy][:note] rescue nil
     histroy = AgentInviteSellerHistroy.find_by(id: params[:id])
     if histroy.present? && note.present? && histroy.agent_id == current_user.id
-      histroy.update(note: note)
+      histroy.update_columns(note: note)
       flash[:success] = '修改成功'
     else
       flash[:error] = "修改失败#{histroy.errors.messages}."
@@ -184,7 +186,11 @@ class AccountsController < ApplicationController
   def maker_qrcode
     @user = current_user
     render layout: nil
- end
+  end
+
+  def settings
+    #render layout: 'mobile'
+  end
 
   private
 

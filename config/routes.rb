@@ -16,6 +16,8 @@ Rails.application.routes.draw do
   patch 'set_password', to: 'accounts#set_password'
   get 'set_password', to: 'accounts#new_password'
 
+  get 'sharing/product_node', to: 'sharing#product_node', as: :get_product_sharing
+  get 'sharing/seller_node', to: 'sharing#seller_node', as: :get_seller_sharing
   get 'sharing/:code', to: 'sharing#show', as: :sharing
   get 'maker_qrcode', to: 'home#maker_qrcode', as: :maker_qrcode
 
@@ -34,7 +36,7 @@ Rails.application.routes.draw do
   get  'mobile_captchas/send_with_captcha', to: 'mobile_captchas#send_with_captcha'
 
   resources :stores, only: [:show] do
-    get :hots, on: :member
+    get :hots, :favours, on: :member
   end
   resources :orders, only: [:new, :create, :show] do
     get 'received', on: :member
@@ -43,7 +45,10 @@ Rails.application.routes.draw do
     resource :charge, only: [:create]
   end
   resources :products, only: [:index, :show] do
-    post :save_mobile, :democontent,  on: :collection
+    member do
+      patch :switch_favour
+    end
+    post :democontent,  on: :collection
   end
   resources :evaluations do
   end
@@ -67,7 +72,12 @@ Rails.application.routes.draw do
       post :wechat_alarm
     end
   end
-  resources :privilege_cards, only: [:show, :index, :update]
+  resources :privilege_cards, only: [:show, :index] do
+    collection do
+      patch :set_privilege_rate
+      get :edit_rate
+    end
+  end
   resources :sellers, only: [:new, :create, :update]
 
   namespace :api do

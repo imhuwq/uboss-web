@@ -1,49 +1,80 @@
 <%= content_for :page_title do %>
   我的UBOSS
 <% end %>
-
-<div class="container">
-  <div class="my_acuntbox1">
-    <div class="my_acuntcont">
-      <%= link_to settings_account_path do %>
-      <span class="my_img"><%= image_tag current_user.avatar_url(:thumb) %></span>
-      <span class="my_text">
-        <%= truncate current_user.identify,:length=>28,:omission=>'...' %>
-      </span>
-      <% end %>
-      <% if not browser.wechat? %>
-      <span class="my_btn">
-        <%= link_to "退出账户", destroy_user_session_path, method: :delete, class:'my_retur', style: 'padding:13px;' %>
-      </span>
-      <% end %>
-    </div>
-  </div>
-  <div class="my_acuntbox2">
-    <div class="my_menu">
-      <ul>
-        <li><a id="showlist" class="active">我的订单</a></li>
-        <li><a id="showincome">我的收益</a></li>
-      </ul>
-    </div>
-    <div class="my_con1">
-      <div id="u-order-list">
-        <%= render partial: 'order', collection: @orders %>
+<br />
+<div class="bg-white gap">
+		<div class="avatar">
+      <div class="cover">
+      	<%= image_tag current_user.avatar_url(:thumb) %>
       </div>
-      <div id="load-more" data-container='#u-order-list' data-ele='.acc-order' data-ref='/account/orders'>加载更多</div>
-    </div>
-
-    <div class="accunt_adil undis">
-      <div class="accunt_adil_box1">
-        <p>总收益</p>
-        <strong><%= number_to_currency(current_user.income.to_f + current_user.frozen_income.to_f) %></strong><span>元</span>
+      <div class="name">
+      	<%= truncate current_user.identify,:length=>28,:omission=>'...' %>
       </div>
-      <div class="accunt_adil_box2">
-        <p>可提现</p>
-        <strong><%= number_to_currency(current_user.income.to_f) %></strong><span>元</span>
+			<div class="setting-icon">
+				<%= link_to settings_account_path do %>
+	      	<%= image_tag("mobile/setting.png") %>
+	      <% end %>
       </div>
-      <div class="accunt_adil_box3">
-        <%= link_to("提现", new_withdraw_records_path , class:"accunt_adilbtn") %>
-      </div>
-    </div>
-  </div>
+  	</div><!-- avatar -->
 </div>
+<br />
+
+<div class="tab-nav">
+	<a class="tab active" href="#showlist"><span>我的订单</span></a>
+	<a class="tab" href="#showpcards"><span>我的友情卡</span></a>
+	<a class="tab" href="#showincome"><span>我的收益</span></a>
+</div><!-- tab-nav  -->
+
+<div class="tab-container">
+	<div class="tab-content" id="showlist" style="display: block;">
+		<div id="u-order-list">
+	    <%= render partial: 'order', collection: @orders %>
+   	</div>
+	  <br />
+  	<div class="load-more" data-container='#u-order-list' data-ele='.order-list' data-ref='/account/orders'>加载更多</div>
+  	<br />
+	</div><!-- tab-content showlist -->
+	<div class="tab-content" id="showpcards">
+		<div class="privilege-rate">
+		<%= link_to edit_rate_privilege_cards_path do %>
+    	友情卡贡献值比率：<span class="like-color"><%= current_user.privilege_rate.to_i %>%</span>
+  	<% end %>
+  	</div>
+	  <div id="pcards-list">
+	    <%= render partial: 'privilege_cards/privilege_card', collection: @privilege_cards %>
+	  </div>
+	  <br />
+	  <div class="load-more" data-container='#pcards-list' data-ele='.share-card' data-ref='/privilege_cards'>加载更多</div>
+	  <br />
+	</div><!-- tab-content showpcards -->
+	<div class="tab-content" id="showincome">
+		<div class="bg-white gap">
+			<br />
+	    <p class="gray-color">总收益</p>
+	    <h2 class="main-color"><%= number_to_currency(current_user.income.to_f + current_user.frozen_income.to_f) %> <small>元</small></h2>
+		  <hr />
+		  <br />
+	    <p class="gray-color">可提现</p>
+	    <h2 class="main-color"><%= number_to_currency(current_user.income.to_f) %><small>元</small></h2>
+	    <br />
+		  <%= link_to("提现", new_withdraw_records_path , class:"accunt_adilbtn btn btn-large btn-block") %>
+		  <br />
+	 </div><!-- bg-white -->
+	</div><!-- tab-content showincome -->
+</div><!-- tab-container  -->
+
+<%= render partial: 'new_share' %>
+
+<script>
+	var locationid=document.location.href.substr(document.location.href.indexOf('#'),document.location.href.length);
+	if($(locationid).length>0){
+		$('.tab-container .tab-content').hide();
+		$('.tab-nav .tab').removeClass('active');
+		$('.tab-nav .tab').each(function(){
+			if($(this).attr('href')==locationid){
+				$(this).addClass('active');
+			}
+		})
+		$(locationid).show();
+	}
+</script>

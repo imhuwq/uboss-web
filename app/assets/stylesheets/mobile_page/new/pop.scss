@@ -1,24 +1,18 @@
 .pop-bg{
     background: rgba(0,0,0,0.3);
-    display: table;
     position: fixed;
     z-index: 88;
     left: 0;
     top: 0;
     width: 100%;
-    height: 100%;  
-    animation: fadeIn .4s linear ;  
-    .pop-content{
-        display: table-cell;
-        vertical-align: middle;        
-        width: 100%;
-        height: 100%;
-    }
+    height: 100%;
+    box-sizing: border-box;
+    animation: fadeIn .4s linear ;
     .alert{
         background:#fff;
-        margin: 0 20px;   
+        margin: 0 20px;
         padding:15px;
-        position: relative; 
+        position: relative;
         border-radius:4px ;
         text-align:center;
     }
@@ -31,7 +25,7 @@
         width: 30px;
         height: 30px;
         color: #fff;
-        line-height: 26px;    
+        line-height: 26px;
         text-align: center;
         font-size: 16px;
         border-radius:50px ;
@@ -41,5 +35,42 @@
     .gray-color{
         font-size:14px;
         margin-bottom: 15px;
+    }
+}
+.pop-content{
+  width: 100%;
+  display: table;
+  top: 50%;
+  left: 50%;
+  position: absolute;
+  transform: translate3d(-50%, -50%, 0px);
+  -webkit-transform: translate3d(-50%, -50%, 0px);
+}
+.pop-alert{
+    position: fixed;
+    z-index: 99;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    animation:fadeIn .4s linear;
+    .pop-text{
+        color: #eee;
+        background: rgba(55,55,55,0.8);
+        width: 240px;
+        margin: 0 auto;
+        padding: 20px 30px;
+        font-size: 15px;
+        line-height: 20px;
+        border-radius:6px ;
+
+    }
+    .pop-text.gray{
+        background: #a9a9a9;
+        color: #fff;
+    }
+    .line-2{
+        padding:30px ;
+        text-align: center;
     }
 }

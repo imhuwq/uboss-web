@@ -1,3 +1,5 @@
+small{font-size: 70%;}
+.gap{padding:10px}
 .nogap{ padding:0;}
 .text-center{ text-align: center;}
 .text-left{ text-align: left;}
@@ -8,37 +10,54 @@
 
 .border-box { border-bottom: 1px solid #dcdcdc; padding-bottom: 5px;}
 .fixed-container{ padding-bottom: 60px;}
-
-h3{font-size: 18px;margin:20px 0;}
-
-.main-color{ color: $brand-primary; }
-.like-color{ color: #f9ba10;}
-.gray-color{ color:#999}
+h2{font-size: 21px; line-height: 30px;}
+h3{font-size: 18px;margin:20px 0; line-height: 25px;}
+h4{font-size: 15px; line-height: 25px; font-weight: normal;}
 
 
 .bg-white{ background:#fff;}
 
 .page-title{ 
     color: $brand-primary; 
-    padding: 8px 0;
+    padding: 10px 0;
     font-size: 14px;
 }
-.page-title .more-bar { 
+.page-title .more-bar {
   color: #b6b6b6;
-  font-size: 11px; 
+  font-size: 11px;
   float: right;
   img{ height: 15px; margin-left: 5px;}
  }
-.invite-title{
-    font-size: 18px;
-    padding:20px 4px;
-    border-bottom: 1px solid #eee; 
+
+.main-color{ color: $brand-primary; }
+.like-color{ color: #f9ba10;}
+.gray-color{ color:#999}
+
+.load-more {
+  color: #fff;
+  padding: 10px;
+  font-size: 15px;
+  text-align: center;
+  width: 200px;
+  margin: 0 auto;
+  border-radius: 0.2rem;
+  background-color: lighten(#43c3aa, 10%);
+  &.done {
+    background-color: lighten(#43c3aa, 20%);
+  }
+  &.loading {
+    background: image-url("ajax-loader.gif") no-repeat 50px;
+    background-size: 16px;
+    background-color: lighten(#43c3aa, 10%);
+  }
 }
-#invite_seller_histroy{font-size: 14px;color: #777;padding: 0 10px;}
-#invite_seller_histroy .edit-icon a{display: inline-block;width:19px;padding:9px;}
-.note-info{ font-size: 12px;color: #999; padding-top: 0;}
-#invite_seller_histroy .note-box{
-    td{ border: none; padding-bottom: 0;}
-    .edit-icon{ border-bottom: 1px solid #eee;}
+
+
+.main-color{ color: $brand-primary; }
+.like-color{ color: #f9ba10;}
+.gray-color{ color:#999}
+
+.hidden {
+  display: none;
 }
 
