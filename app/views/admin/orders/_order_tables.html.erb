@@ -58,7 +58,7 @@
                 <%= link_to '详情', [:admin, order], class: 'main-link-color' %>
                 <% if order.payed? && can?(:manage, order) %>
                   <%= link_to '发货', [:ship, :admin, order],
-                    class: 'btn', method: :PATCH, data: { confirm: '确认发货?' } %>
+                    class: 'btn', remote: true %>
                 <% end %>
               </td>
               <td rowspan=<%= size %>>
