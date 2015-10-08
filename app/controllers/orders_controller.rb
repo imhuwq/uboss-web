@@ -47,9 +47,7 @@ class OrdersController < ApplicationController
         flash[:error] = "您已经是UBOSS创客，请勿重复购买"
         redirect_to root_path
       else
-        if current_user && @default_address = current_user.default_address
-          @order_form.user_address_id = @default_address.id
-        end
+        set_user_address
       end
     elsif !session[:cart_item_ids].blank?          # 购物车
       @cart = current_cart
@@ -94,8 +92,14 @@ class OrdersController < ApplicationController
       redirect_to order_path(@order_form.order, showwxpaytitle: 1)
     else
       @order_form.captcha = nil
-      @product = @order_form.product
       @user_address = @order_form.user_address
+
+      if @order_form.product_id
+        @product = @order_form.product
+      elsif !session[:cart_item_ids].blank?          # 购物车
+        @cart = current_cart
+        @cart_items = @cart.cart_items.find(session[:cart_item_ids])
+      end
       flash.now[:error] = @order_form.errors.full_messages.join('<br/>')
       render :new
     end

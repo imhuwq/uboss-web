@@ -13,9 +13,12 @@
             <div class="c_title">
               <h3 class="fl">我的购物车</h3>
             </div>
+
+            <% valid_cart_items, invalid_cart_items = CartItem.group_by_seller(@cart.cart_items) %>
             <div class="c_list cb">
 
-              <% CartItem.group_by_seller(@cart.cart_items).each do |seller, cart_items| %>
+              <%# 购物车商品按不同的商家分开 %>
+              <% valid_cart_items.each do |seller, cart_items| %>
                 <div class="c_shop">
                   <div class="shop_title"><h3 class="fl">店铺：<%= seller.identify %></h3></div>
                   <ul>
@@ -53,6 +56,28 @@
                 </div>
               <% end %>
 
+            </div>
+
+            <%# 购物车失效商品 %>
+            <div class="c_list cb">
+              <div class="c_shop">
+                <ul>
+                  <% invalid_cart_items.each do |cart_item| %>
+                    <li>
+                    <table data-id="<%= cart_item.id %>">
+                      <tr>
+                        <td width="15%"><img src="<%= cart_item.image_url %>" width="52" height="44"></td>
+                        <td width="64%">
+                          <p><%= cart_item.name %></p>
+                          <p>宝贝已不能购买，请联系卖家</p>
+                        </td>
+                        <td width="11%" valign="middle"><a href="javascript:;" class="del c_delete <%= "c_delete_#{cart_item.id}" %>">删除</a></td>
+                      </tr>
+                    </table>
+                    </li>
+                  <% end %>
+                </ul>
+              </div>
             </div>
           </div>
         </div>

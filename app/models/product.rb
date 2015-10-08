@@ -84,6 +84,10 @@ class Product < ActiveRecord::Base
     order_items.joins(:order).where('orders.state > 2 AND orders.state <> 5').sum(:amount)
   end
 
+  def published?
+    status == 'published'
+  end
+
   private
   def get_shraing_rate(sharing_level, rate_level)
     Rails.application.secrets.product_sharing["level#{sharing_level}"].try(:[], "rate#{rate_level}").to_f

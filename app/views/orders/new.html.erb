@@ -50,7 +50,7 @@
   <div class="container">
 
     <% if @product.blank? %>
-      <% CartItem.group_by_seller(@cart_items).each do |seller, cart_items| %>
+      <% CartItem.group_by_seller(@cart_items)[0].each do |seller, cart_items| %>
         <div class="c_list">
           <div class="c_shop"><h3 class="fl">商家：<%= seller.identify %></h3></div>
 
