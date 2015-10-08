@@ -19,3 +19,61 @@
   &.state-closed { @extend .label-warning }
 }
 */
+
+.greyish_white_back_color {
+  background-color: #7A7A7A !important;
+  color: #D8D3D3;
+}
+
+.main-link-color {
+  color: #43C3AA;
+  display: block;
+}
+
+.admin-order-index-wrapper {
+  .buyer_phone {
+    background-color: red;
+    color: #1A1A1A;
+  }
+
+  .order_created_at {
+    padding-left: 40px;
+  }
+
+  .table-content {
+    .none-border-right {
+      border-right: none;
+
+      img {
+        float: left;
+      }
+      div {
+        padding-left: 53px;
+
+        .color {
+          padding-left: 10px;
+        }
+      }
+    }
+    .none-border-left {
+      border-left: none;
+    }
+    td {
+      background: none;
+      border-bottom: none;
+      border: 1px solid #A9A5A5;
+    }
+  }
+
+  .line {
+    height: 10px;
+
+    &:first-child {
+      display: none;
+    }
+  }
+
+  .margin-bottom-w20 {
+    margin-bottom: 20px;
+  }
+}
