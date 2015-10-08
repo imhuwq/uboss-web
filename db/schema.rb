@@ -164,16 +164,6 @@ ActiveRecord::Schema.define(version: 20150930064500) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "follower_associations", force: :cascade do |t|
-    t.integer "user_id"
-    t.integer "follower_id"
-  end
-
-  create_table "expresses_users", id: false, force: :cascade do |t|
-    t.integer "express_id"
-    t.integer "user_id"
-  end
-
   create_table "mobile_captchas", force: :cascade do |t|
     t.string   "code"
     t.datetime "expire_at"
@@ -231,8 +221,6 @@ ActiveRecord::Schema.define(version: 20150930064500) do
     t.datetime "signed_at"
     t.datetime "shiped_at"
     t.datetime "completed_at"
-    t.string   "to_seller"
-    t.decimal  "ship_price",      default: 0.0
     t.string   "ship_number"
     t.integer  "express_id"
     t.string   "to_seller"
@@ -292,14 +280,6 @@ ActiveRecord::Schema.define(version: 20150930064500) do
     t.boolean  "hot",                  default: false
     t.integer  "carriage_template_id"
     t.integer  "transportation_way",   default: 0
-  end
-
-  create_table "provinces", force: :cascade do |t|
-    t.string   "name"
-    t.integer  "numcode"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.boolean  "hot",                default: false
   end
 
   create_table "redactor_assets", force: :cascade do |t|
