@@ -4,7 +4,8 @@ small{font-size: 70%;}
 .text-center{ text-align: center;}
 .text-left{ text-align: left;}
 .text-right{ text-align: right;}
-
+.text-line{text-decoration: line-through;}
+.text-cut{overflow: hidden; text-overflow: ellipsis; white-space: nowrap;}
 .pull-right{float:right}
 .pull-left{float:left}
 

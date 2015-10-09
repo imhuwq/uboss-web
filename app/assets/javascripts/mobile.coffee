@@ -11,6 +11,7 @@
 #= require mobile_page/utilities
 #= require mobile_page/sharing
 #= require mobile_page/product
+#= require mobile_page/cart
 #= reuqire_self
 
 $ ->

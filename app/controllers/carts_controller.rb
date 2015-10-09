@@ -4,6 +4,7 @@ class CartsController < ApplicationController
   def index
     @cart = current_cart
     set_cart_session(current_cart.cart_items.map(&:id))
+    render layout: 'mobile'
   end
 
   def delete_item

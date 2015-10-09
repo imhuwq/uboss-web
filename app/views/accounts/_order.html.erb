@@ -11,11 +11,11 @@
           <%= image_tag order_item.try(:product).try(:image_url, 'w120') %>
         </div><!-- order-cover -->
         <div class="content">
-          <div class="pull-right text-right">
-            <p class="price gray-color">￥单价</p>
+          <div class="price text-right gray-color">
+            <p>￥单价</p>
             <p class="number gray-color">
-            x<%= order_item.try(:amount) %>
-          </p>
+            	x<%= order_item.try(:amount) %>
+          	</p>
           </div><!-- pull-right -->
           <div class="name">
             <%= order_item.try(:product).try(:name) %>

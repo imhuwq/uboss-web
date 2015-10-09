@@ -39,6 +39,14 @@
 .btn-like.active{
     background-position: 0 3px;
 }
+.btn-delete{
+    background: image-url('mobile/delete.png') no-repeat center right;
+    background-size: 19px;
+    height: 25px;
+    width: 25px;
+    float: right;
+    padding: 0;
+}
 .share-btn{
     color:#f9ba10;
     background: image-url('mobile/share-icon.png') no-repeat center;

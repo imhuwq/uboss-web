@@ -1,13 +1,22 @@
 $ ->
   $check_item = $("input[name='check_item']")
-
   # 单选
   $("input[name='check_item']").on 'click', (e) ->
     e.preventDefault()
     index = $("input[name='check_item']").index(this)
     $check_item.eq(index).toggleClass("checked") # 伪复选
-    #setTotalPriceOfSelect()
-
+    setTotalPrice()
+    setSingleTotalPrice()
+  # 单个商铺全选
+  $('.seller-checkbox').on 'click',(e) ->
+    e.preventDefault()
+    $this = $(this)
+    if $this.hasClass("checked")
+      $this.closest(".order-list").find(".checkbox").removeClass("checked")
+    else
+      $this.closest(".order-list").find(".checkbox").addClass("checked")
+    setTotalPrice()
+    setSingleTotalPrice()
   # 全选
   $("#box_all").on 'click', (e) ->
     e.preventDefault()
@@ -18,9 +27,10 @@ $ ->
       $check_item.addClass("checked")
     else
       $check_item.removeClass("checked")
-    #setTotalPriceOfSelect()
+    setTotalPrice()
+    setSingleTotalPrice()
 
-  $('.c_count > .min').on 'click', (e) ->
+  $('.count > .min').on 'click', (e) ->
     e.preventDefault()
     $this = $(this)
     $num = $this.parent().find('.num')
@@ -29,19 +39,21 @@ $ ->
       $this.attr('disabled', true)
     else
       $num.val(num-1)
-      setTotalPrice($num)
+      setTotalPrice()
+      setSingleTotalPrice()
 
-  $('.c_count > .plus').on 'click', (e) ->
+  $('.count > .plus').on 'click', (e) ->
     e.preventDefault()
     $this = $(this)
     $num = $this.parent().find('.num')
     $num.val(parseInt($num.val())+1)
     if parseInt($num.val()) != 1
       $this.parent().find('.min').removeAttr("disabled")
-    setTotalPrice($num)
+    setTotalPrice()
+    setSingleTotalPrice()
 
-  $('a.c_delete').on 'click', () ->
-    id = $(this).closest('table').attr('data-id')
+  $('button.delete').on 'click', () ->
+    id = $(this).closest('.order-box').attr('data-id')
     if confirm("确定要删除该商品吗？")
       $.ajax
         url: '/carts/delete_item'
@@ -49,7 +61,7 @@ $ ->
         data: {item_id: id}
         success: (res) ->
           if res['status'] == "ok"
-            $('.c_delete_'+res['id']).closest('li').remove()
+            $('.delete_'+res['id']).closest('.order-box').remove()
             appendTotalPriceText(res["total_price"])
             changeSubmitBtn()
           else
@@ -89,49 +101,30 @@ $ ->
       this.value = 1
     setTotalPrice($(this))
 
-  setTotalPrice = (e) ->
-    num = e.val()
-    id  = e.attr('data-id')
-    $.ajax
-      url: '/carts/change_item_count'
-      type: 'POST'
-      data: {item_id: id, count: num}
-      success: (res) ->
-        if res['status'] == "ok"
-          appendTotalPriceText(res["total_price"])
-        else
-          location.reload()
-          console.log('error')
-      error: (data, status, e) ->
-        # do something
-
-  # 计算总价(TODO 不涉及数据库修改，直接前端改价格)
-  setTotalPriceOfSelect = ()->
-    id_array = new Array()
-    $(".checked[name='check_item']").each ->
-      id_array.push(Number($(this).attr('data-id')))
-    $.ajax
-      url: '/carts/items_select'
-      type: 'POST'
-      data: {id_array: id_array}
-      success: (res) ->
-        if res['status'] == "ok"
-          appendTotalPriceText(res["total_price"])
-        else
-          location.reload()
-      error: (data, status, e) ->
-        # do something
-
-  # 修改总价
-  appendTotalPriceText = (total_price) ->
-    $('.c_total_price').text("￥"+total_price)
-
+  setTotalPrice = (e) ->    
+    # 总价计算
+    total_price=0
+    $(".order-box .checked").each ->
+      num = parseInt($(this).parent().find('.num').val())
+      price= $(this).parent().find('.product-price').text()
+      total_price+=num*price      
+    $('.total_price').text(total_price)
+  setSingleTotalPrice = (e) ->   
+    # 单商铺计算
+    $('.single_total_price').each ->
+      single_total_price=0
+      $(this).closest('.order-list').children('.order-box').children('.checked').each ->
+        num = parseInt($(this).parent().find('.num').val())
+        price= $(this).parent().find('.product-price').text()
+        single_total_price+=num*price      
+      $(this).text(single_total_price)
+        
   $("input[type='checkbox']").on 'click', (e) ->
     e.preventDefault()
     changeSubmitBtn()
 
   changeSubmitBtn = () ->
-    if $(".checked[name='check_item']").length == 0
+    if $(".checked[name='check_item'").length == 0
       $('.cart-btn').attr('href', 'javascript:;')
     else
       $('.cart-btn').attr('href', '/orders/new')

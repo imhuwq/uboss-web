@@ -1,38 +1,132 @@
 .order-list{
     background: #fff;
-    padding: 10px;
-    margin-bottom: 8px;
+    padding: 10px 0;
+    margin-bottom: 10px;
     .order-code{
-        padding-bottom: 5px;
-        border-bottom: 1px dashed #ddd;
-        margin-bottom: 10px;
+        padding: 0 10px 10px;
+        border-bottom: 1px solid #f6f6f6;
     }
     .order-box{
-        margin-bottom: 10px;
-        .cover{float: left;margin-right: 10px; width: 70px;}
+        padding: 0 10px 10px;
+        margin-top: 10px;
+        border-bottom: 1px solid #f6f6f6;
+        .cover{
+            float: left;margin-right: 10px; width: 60px;
+            img{
+                width: 60px;
+                height: 60px;
+            }
+        }
         .content{
+            overflow: hidden;
             .name{
                 font-size: 15px;
                 line-height: 20px;
                 color: #333;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+            }
+            .info{
+                color: #999;
+                font-size: 10px;
+                letter-spacing: 10px;
+                span{
+                    letter-spacing: 0;
+                }
+            }
+        }
+        .checkbox{
+            margin: 17.5px 10px 17.5px 0;
+        }
+        .price{
+            color: #444;
+            width: 77px;
+            float: right;
+            margin-left: 10px;
+            font-size: 15px;
+            line-height: 20px;
+            text-align: right;
+            .gray-color{
+                font-size: 10px;
+            }
+        }
+        .count{
+            button{
+                -webkit-appearance:none; 
+                -moz-appearance:none; 
+                border: 1px solid #f9ba10;
+                padding: 0;
+                background: none;
+                color: #f9ba10;
+                height: 25px;
+                width: 25px;
+                font-size: 18px;
+                line-height: 23px;
+                text-align: center;
+                vertical-align: top;
+                border-radius:5px ;
+            }
+            input[type="tel"]{
+                height: 19px;
+                padding: 2px 5px;
+                width: 30px;
+                text-align: center;
+                vertical-align: top;
+                border-radius:5px ;
+            }
+            input[type="tel"]:focus{
+                border-color: #f9ba10;
             }
         }
     }
-    .order-info{
-        padding: 10px 0 0;
-        border-top :1px solid #eee;
+    
+    .seller-box{
+        padding: 0 10px 10px;
+        font-size: 15px;
+        line-height: 25px;
         overflow: hidden;
-        .text{
-            padding: 4px 0;
-            display: inline-block;
-            line-height: 14px;
-        }
-        .btn{
-            font-size: 10px;
-            line-height: 12px;
-            padding: 5px 10px;
-        }
+        border-bottom: 1px solid #f6f6f6;
+        margin-bottom: 10px;
     }
+    
+}
+.order-info{
+    padding: 0 10px;
+    overflow: hidden;
+    .text{
+        padding: 5px 0;
+        display: inline-block;
+    }
+    .btn{
+        font-size: 10px;
+        line-height: 12px;
+        padding: 5px 10px;
+    }
+}
+.friend-info{
+    padding: 5px 10px ;
+    overflow: hidden;
+    .cover{
+        float: left;
+        margin-right: 10px;
+        width: 25px;
+        height: 25px;
+        border-radius: 100px;
+        border: 1px solid $brand-primary;
+        overflow: hidden;
+    }
+    .content{
+        overflow: hidden;
+        line-height: 25px;
+    }
+}
+.price-box{
+    padding: 10px 10px 0;
+    border-top: 1px solid #f6f6f6;
+    font-size: 15px;
+    color: #f9ba10;
+    text-align: right;
 }
 .order-list:after,.order-box:after{
     clear: both;
@@ -41,4 +135,48 @@
     height: 0;
     display: block;
 }
-
+.order-price{
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    box-sizing: border-box;
+    background: #fff;
+    border-top:1px solid #f6f6f6 ;
+    .cart-btn{
+        height: 46px;
+        line-height: 46px;
+        padding: 0 10px;
+        float: right;
+        border-radius:0 ;
+    }
+    .select-all{
+        float: left;
+        padding: 10px;
+        line-height: 26px;
+    }
+    .content{
+        padding: 9px 8px 7px;
+        overflow: hidden;
+    }
+}
+.cart-list{
+    margin-bottom: 45px;
+}
+.checkbox{
+    background:image-url('mobile/check.png') no-repeat; 
+    background-position: 0 0;
+    background-size:100%; 
+    -webkit-appearance:none; 
+    -moz-appearance:none; 
+    vertical-align: middle;
+    border:none; 
+    font-size: 0;
+    line-height: 0;
+    width:25px; 
+    height:25px;
+    float: left;
+    margin-right: 10px;
+}
+.checked{
+    background-position: 0 -39px;
+}
