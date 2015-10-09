@@ -126,7 +126,7 @@
     border-top: 1px solid #f6f6f6;
     font-size: 15px;
     color: #f9ba10;
-    text-align: right;
+    text-align: right;    
 }
 .order-list:after,.order-box:after{
     clear: both;
@@ -141,11 +141,12 @@
     width: 100%;
     box-sizing: border-box;
     background: #fff;
-    border-top:1px solid #f6f6f6 ;
+    border-top:1px solid #eee ;    
+    span{vertical-align: baseline;}
     .cart-btn{
         height: 46px;
         line-height: 46px;
-        padding: 0 10px;
+        padding: 0 20px;
         float: right;
         border-radius:0 ;
     }

@@ -54,22 +54,24 @@
             本店合计：￥
             <span class="single_total_price">0.0</span>
           </div><!-- price-box -->
-        </div><!-- order-list -->
+        </div><!-- order-list -->        
       <% end %>
       <%# 购物车失效商品 %>
-      <div class="order-list failed-list">
-        <% @invalid_items.each do |cart_item| %>
-          <div class="order-box" data-id="<%= cart_item.id %>">
-            <span class="label pull-left">失效</span>
-            <div class="cover"><img src="<%= cart_item.image_url %>"></div>
-            <div class="content">
-              <p class="name"><%= cart_item.name %></p>
-              <p class="gray-color">宝贝已不能购买，请联系卖家</p>
-              <p><button class="btn btn-gray <%= "c_delete_#{cart_item.id}" %>">删除</button></p>
-            </div><!-- content -->
-          </div><!-- order-box -->
-        <% end %>
-      </div><!-- order-list -->
+      <% if !@invalid_items.blank? %>
+        <div class="order-list failed-list">
+          <% @invalid_items.each do |cart_item| %>
+            <div class="order-box" data-id="<%= cart_item.id %>">
+              <span class="label pull-left">失效</span>
+              <div class="cover"><img src="<%= cart_item.image_url %>"></div>
+              <div class="content">
+                <p class="name"><%= cart_item.name %></p>
+                <p class="gray-color">宝贝已不能购买，请联系卖家</p>
+                <p><button class="btn btn-gray <%= "c_delete_#{cart_item.id}" %>">删除</button></p>
+              </div><!-- content -->
+            </div><!-- order-box -->
+          <% end %>
+        </div><!-- order-list -->
+      <% end %>      
     </div><!-- cart-list -->
 
     <div class="order-price">
