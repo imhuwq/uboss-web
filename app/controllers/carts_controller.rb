@@ -28,11 +28,18 @@ class CartsController < ApplicationController
 
   def change_item_count
     cart_item = CartItem.find(params[:item_id])
+    count = params[:count].to_i
 
-    if current_cart.change_cart_item_count(cart_item.product_id, params[:count].to_i, current_cart.id)
-      render json: { status: "ok", total_price: current_cart.total_price }
+    count = 1 if count <= 0
+    if count > (pcount = cart_item.product.reload.count)
+      count = pcount
+      alert = "最多只能购买#{count}件"
+    end
+
+    if current_cart.change_cart_item_count(cart_item.product_id, count, current_cart.id)
+      render json: { status: "ok", item_id: params[:item_id], count: count, alert: (alert || "") }
     else
-      render json: { status: "failure" }
+      render json: { status: "failure", error: "数量修改失败，请刷新再尝试" }
     end
   end
 
