@@ -221,10 +221,10 @@ ActiveRecord::Schema.define(version: 20150930064500) do
     t.datetime "signed_at"
     t.datetime "shiped_at"
     t.datetime "completed_at"
-    t.string   "ship_number"
-    t.integer  "express_id"
     t.string   "to_seller"
     t.decimal  "ship_price",      default: 0.0
+    t.string   "ship_number"
+    t.integer  "express_id"
   end
 
   add_index "orders", ["number"], name: "index_orders_on_number", unique: true, using: :btree

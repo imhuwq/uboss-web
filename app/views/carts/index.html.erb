@@ -55,30 +55,24 @@
 		          <span class="single_total_price">0</span>   
             </div><!-- price-box -->   
           </div><!-- order-list -->
+          <%# 购物车失效商品 %>
+            <div class="order-list failed-list">
+              <% invalid_cart_items.each do |cart_item| %>
+                <div class="order-box" data-id="<%= cart_item.id %>">
+                		<span class="label pull-left">失效</span>
+                    <div class="cover"><img src="<%= cart_item.image_url %>"></div>
+                    <div class="content">
+                      <p class="name"><%= cart_item.name %></p>
+                      <p class="gray-color">宝贝已不能购买，请联系卖家</p>
+                   		<p><button class="btn btn-gray <%= "c_delete_#{cart_item.id}" %>">删除</button></p>
+                   </div><!-- content -->
+                </div><!-- order-box -->
+              <% end %>
+            </div><!-- order-list -->
         	<% end %> 
       	</div><!-- cart-list --> 
       	
-      	<%# 购物车失效商品 %>
-            <div class="c_list cb">
-              <div class="c_shop">
-                <ul>
-                  <% invalid_cart_items.each do |cart_item| %>
-                    <li>
-                    <table data-id="<%= cart_item.id %>">
-                      <tr>
-                        <td width="15%"><img src="<%= cart_item.image_url %>" width="52" height="44"></td>
-                        <td width="64%">
-                          <p><%= cart_item.name %></p>
-                          <p>宝贝已不能购买，请联系卖家</p>
-                        </td>
-                        <td width="11%" valign="middle"><a href="javascript:;" class="del c_delete <%= "c_delete_#{cart_item.id}" %>">删除</a></td>
-                      </tr>
-                    </table>
-                    </li>
-                  <% end %>
-                </ul>
-              </div>
-            </div>
+      			
       	
       	<div class="order-price">
       		<%= link_to '去结算', new_order_path, class: 'cart-btn btn' %>
