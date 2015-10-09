@@ -7,6 +7,27 @@ $ ->
     $check_item.eq(index).toggleClass("checked") # 伪复选
     setTotalPrice()
     setSingleTotalPrice()
+    #全选判断  
+    i= 0
+    $("input[name='check_item']").each ->
+      if $(this).hasClass('checked')
+        i+=1;
+      else
+        $("#box_all").removeClass("checked")
+    if i == $("input[name='check_item']").size()
+      $("#box_all").addClass("checked")
+    #商铺全选判读
+    $(".order-list").each ->        
+      j=0
+      $(this).find("input[name='check_item']").each ->
+        if $(this).hasClass('checked')
+          j+=1;
+        else
+          $(this).closest('.order-list').find('.seller-checkbox').removeClass("checked")
+          
+      if j == $(this).find("input[name='check_item']").size()
+        $(this).find(".seller-checkbox").addClass("checked")
+            
   # 单个商铺全选
   $('.seller-checkbox').on 'click',(e) ->
     e.preventDefault()
@@ -20,7 +41,6 @@ $ ->
       if $(this).hasClass('checked')
         i+=1;
       else
-        all=false
         $("#box_all").removeClass("checked")
     if i == $("input[name='check_item']").size()
       $("#box_all").addClass("checked")
