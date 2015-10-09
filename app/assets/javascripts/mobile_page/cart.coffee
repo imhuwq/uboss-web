@@ -36,6 +36,15 @@ $ ->
       $this.closest(".order-list").find(".checkbox").removeClass("checked")
     else
       $this.closest(".order-list").find(".checkbox").addClass("checked")
+    i= 0
+    $("input[name='check_item']").each ->
+      if $(this).hasClass('checked')
+        i+=1;
+      else
+        all=false
+        $("#box_all").removeClass("checked")
+    if i == $("input[name='check_item']").size()
+      $("#box_all").addClass("checked")
     setTotalPrice()
     setSingleTotalPrice()
   # 全选
