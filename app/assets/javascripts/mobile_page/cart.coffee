@@ -99,7 +99,6 @@ $ ->
             $('.c_delete_'+res['id']).closest('.order-box').remove()
             setTotalPrice()
             setSingleTotalPrice()
-            changeSubmitBtn()
           else
             location.reload()
             alert(res['message'])
@@ -148,13 +147,15 @@ $ ->
         single_total_price+=num*price
       $(this).text(single_total_price)
 
-  $("input[type='checkbox']").on 'click', (e) ->
+  $('.new_order').on 'click', (e) ->
     e.preventDefault()
-    changeSubmitBtn()
-
-  changeSubmitBtn = () ->
-    if $(".checked[name='check_item'").length == 0
-      $('.cart-btn').attr('href', 'javascript:;')
+    checked_items = $(".checked[name='check_item'")
+    check_items_ids = []
+    for item, i in checked_items
+      check_items_ids.push($(item).closest('.order-box').data('id'))
+    if check_items_ids.length ==0
+      alert('请勾选您要购买商品')
     else
-      $('.cart-btn').attr('href', '/orders/new')
+      location.href = "/orders/new?item_ids="+check_items_ids.join(',')
+
 

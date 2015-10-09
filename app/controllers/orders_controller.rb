@@ -50,9 +50,11 @@ class OrdersController < ApplicationController
       else
         set_user_address
       end
-    elsif !session[:cart_item_ids].blank?          # 购物车
+    elsif params[:item_ids]
+      item_ids = params[:item_ids].split(',')
+      session[:cart_item_ids] = item_ids
       @cart = current_cart
-      @cart_items = @cart.cart_items.find(session[:cart_item_ids])
+      @cart_items = @cart.cart_items.find(item_ids)
 
       @order_form = OrderForm.new(
         buyer: current_user,

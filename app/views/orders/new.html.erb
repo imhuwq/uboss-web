@@ -77,7 +77,9 @@
             </p>
             <p class="sub_p1 sub_p2">
             <% cart_total_price = @cart.total_price_of(cart_items.map(&:id)) %>
-            <span class="sub_left"><strong>合计：</strong><b class="total_price_<%= seller.id.to_s %>" data-total-price="<%= cart_total_price %>">￥ <%= cart_total_price + ship_price %></b></span>
+            <span class="sub_left"><strong>合计：</strong>
+              <b class="total_price_<%= seller.id.to_s %>" data-total-price="<%= cart_total_price %>">￥ <%= cart_total_price + ship_price %></b>
+            </span>
             </p>
             <p class="sub_p1 sub_p2">
               <input placeholder="给卖家留言" type="text" name="order[to_seller][<%= seller.id %>]" style="width:98%;line-height:20px;border:0;">

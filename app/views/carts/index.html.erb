@@ -54,7 +54,7 @@
             本店合计：￥
             <span class="single_total_price">0.0</span>
           </div><!-- price-box -->
-        </div><!-- order-list -->        
+        </div><!-- order-list -->
       <% end %>
       <%# 购物车失效商品 %>
       <% if !@invalid_items.blank? %>
@@ -71,11 +71,11 @@
             </div><!-- order-box -->
           <% end %>
         </div><!-- order-list -->
-      <% end %>      
+      <% end %>
     </div><!-- cart-list -->
 
     <div class="order-price">
-      <%= link_to '去结算', new_order_path, class: 'cart-btn btn' %>
+      <%= link_to '去结算', 'javascript:;', class: 'cart-btn btn new_order' %>
       <div class="select-all"><input type="checkbox" class="checkbox" checked='false' id="box_all"> 全选</div>
       <div class="content">
 

@@ -87,7 +87,6 @@ Rails.application.routes.draw do
       post :delete_all
       post :delete_item
       post :change_item_count
-      post :items_select
     end
   end
   resources :cart_items, only: [:create, :destroy]
