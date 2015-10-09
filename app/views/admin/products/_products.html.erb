@@ -49,7 +49,7 @@
 				    <% end %>
 
             <%= link_to switch_hot_flag_admin_product_path(product),
-				      remote: true, method: :patch, 
+				      remote: true, method: :patch,
               class:" edit-icon switch-p-hot-btn " ,title:'是否为热销商品' do %>
               <i class="fa fachange <%=product.hot? ? 'fa-heart red-color' : 'fa-heart-o'%>">  </i>
             <% end %>

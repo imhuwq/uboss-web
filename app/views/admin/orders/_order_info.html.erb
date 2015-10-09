@@ -1,0 +1,80 @@
+<div class="box-w70">
+  <div class="admin-border admin-border-order-info">
+    <p class='number'>订单编号 : <%= order.number %><small class="pull-right"><%= order.username %> 促成的 二级订单</small></p>
+    <div class="index_list">
+      <table class="list-table order_info_tables">
+        <thead>
+          <tr>
+            <th>商品</th>
+            <th>商品属性</th>
+            <th>状态</th>
+            <th>单价(元)</th>
+            <th>数量</th>
+            <th>优惠</th>
+            <th>商品总价</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% order.order_items.each_with_index do |item, index| %>
+            <tr class='table-content'>
+              <td class='text-left'>
+                <%= link_to [:admin, item.product], class: 'main-link-color' do %>
+                  <%= image_tag(item.product.avatar.url(:thumb), size: "40x40", alt: "-") %>
+                  <%= item.product.name %>
+                <% end %>
+              </td>
+              <td>
+                <p class='color'>颜色分类:</p>
+                <p class='size'>尺寸:</p>
+              </td>
+              <td><%= order.state_i18n %></td>
+              <td><%= item.product.present_price %></td>
+              <td><%= item.amount %></td>
+              <td><%= item.amount %><p>(贡献值)</p></td>
+              <td>
+                <%=order.pay_amount%>
+                <p>(快递:<%= order.ship_price %>)</p>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+    <p class='date_time'>下单时间 : <%= order.created_at %><span class="pull-right">实收款 : <span class='main-color font-size-max'><%= order.pay_amount %></span>元</span></p>
+  </div>
+
+  <div class="admin-border admin-border-order-info">
+    <div class='bottom_line'>
+      <p class='logistics_info'>收货及物流信息</p>
+      <p>收货地址 : <%= order.username %>, <%= order.mobile %>, <%= order.address %></p>
+      <p>运送方式 : </p>
+      <p>买家留言 : </p>
+    </div>
+    <div class='evaluate'>
+      <p>发货时间 : <%= order.shiped_at || '未发货' %></p>
+      <p>快递公司 : <%= order.express.try(:name) %></p>
+      <p>快递单号 : <%= order.ship_number %></p>
+      <p class='float-left'>物流跟踪 : </p>
+      <div class='logistics_tracking'>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="box-w30">
+  <div class="admin-border admin-border-order-info">
+    <p class='pay_number'>支付流水号 : </p>
+    <p>付款方式 : </p>
+    <p>付款时间 : </p>
+    <p>付款金额 : </p>
+  </div>
+  <div class="admin-border admin-border-order-info">
+    <p class='complete_and_evaluate'>完成交易及评价</p>
+    <p>确认收货时间 : </p>
+    <p>评价时间 : </p>
+    <p>详细评价 : </p>
+  </div>
+  <div class="admin-border admin-border-order-info">
+    <p class='after_sale'>售后</p>
+  </div>
+</div>

@@ -10,6 +10,20 @@ class Admin::OrdersController < AdminController
     @orders = Order.where(id: params[:ids])
   end
 
+  def close
+    @order = Order.find(params[:id])
+    if @order.may_close? && @order.close!
+      flash[:success] = '订单关闭成功'
+    else
+      flash[:errors] = '订单关闭失败'
+    end
+    redirect_to admin_order_path(@order)
+  end
+
+  def modal_close
+    @order = Order.find(params[:id])
+  end
+
   def batch_shipments
     success, errors = 0, 0
     if params[:order].present?

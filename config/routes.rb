@@ -130,6 +130,8 @@ Rails.application.routes.draw do
       resources :orders, except: [:destroy] do
         patch :set_express, on: :member
         get :ship, on: :member
+        get :modal_close, on: :member
+        get :close, on: :member
         post :batch_shipments, on: :collection
         post :select_orders, on: :collection
       end
