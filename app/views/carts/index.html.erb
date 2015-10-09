@@ -23,8 +23,8 @@
             <div class="text-cut">商家：<%= seller.identify %></div>
           </div><!-- seller-box -->
           <% cart_items.each do |cart_item| %>
-            <div class="order-box">
-              <input type="checkbox" class="checkbox"  name="check_item" data-id="<%= cart_item.id %>" checked='true'>
+            <div class="order-box" data-id="<%= cart_item.id %>">
+              <input type="checkbox" class="checkbox"  name="check_item" checked='true'>
               <div class="cover"><img src="<%= cart_item.image_url %>"></div>
               <div class="content">
                 <div class="price">
@@ -38,7 +38,7 @@
                 <button class="btn btn-delete <%= "c_delete_#{cart_item.id}" %>"></button>
                 <div class="count">
                   <button class="min">-</button>
-                  <input type="tel" name="num" class="num" value="<%= cart_item.count %>" data-id="<%= cart_item.id %>">
+                  <input type="tel" name="num" class="num" value="<%= cart_item.count %>">
                   <button class="plus">+</button>
                 </div>
               </div>
@@ -52,24 +52,24 @@
           </div><!-- friend-info -->
           <div class="price-box">
             本店合计：￥
-            <span class="single_total_price">0</span>
+            <span class="single_total_price">0.0</span>
           </div><!-- price-box -->
         </div><!-- order-list -->
-        <%# 购物车失效商品 %>
-        <div class="order-list failed-list">
-          <% @invalid_items.each do |cart_item| %>
-            <div class="order-box" data-id="<%= cart_item.id %>">
-              <span class="label pull-left">失效</span>
-              <div class="cover"><img src="<%= cart_item.image_url %>"></div>
-              <div class="content">
-                <p class="name"><%= cart_item.name %></p>
-                <p class="gray-color">宝贝已不能购买，请联系卖家</p>
-                <p><button class="btn btn-gray <%= "c_delete_#{cart_item.id}" %>">删除</button></p>
-              </div><!-- content -->
-            </div><!-- order-box -->
-          <% end %>
-        </div><!-- order-list -->
       <% end %>
+      <%# 购物车失效商品 %>
+      <div class="order-list failed-list">
+        <% @invalid_items.each do |cart_item| %>
+          <div class="order-box" data-id="<%= cart_item.id %>">
+            <span class="label pull-left">失效</span>
+            <div class="cover"><img src="<%= cart_item.image_url %>"></div>
+            <div class="content">
+              <p class="name"><%= cart_item.name %></p>
+              <p class="gray-color">宝贝已不能购买，请联系卖家</p>
+              <p><button class="btn btn-gray <%= "c_delete_#{cart_item.id}" %>">删除</button></p>
+            </div><!-- content -->
+          </div><!-- order-box -->
+        <% end %>
+      </div><!-- order-list -->
     </div><!-- cart-list -->
 
     <div class="order-price">
@@ -77,7 +77,7 @@
       <div class="select-all"><input type="checkbox" class="checkbox" checked='false' id="box_all"> 全选</div>
       <div class="content">
 
-        <p>金额合计：￥<span class="total_price">0</span></p>
+        <p>金额合计：￥<span class="total_price">0.0</span></p>
         <p class="gray-color"><small>不含邮费、优惠减扣</small></p>
       </div>
     </div><!-- order-price -->

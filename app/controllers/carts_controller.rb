@@ -15,7 +15,7 @@ class CartsController < ApplicationController
 
     if current_cart.remove_product_from_cart(cart_item.product_id)
       session[:cart_item_ids].delete(params[:item_id])
-      render json: { status: "ok", total_price: current_cart.total_price, id: params[:item_id] }
+      render json: { status: "ok", id: params[:item_id] }
     else
       render json: { status: "failure" }
     end

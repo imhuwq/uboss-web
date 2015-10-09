@@ -52,7 +52,7 @@ $ ->
     setTotalPrice()
     setSingleTotalPrice()
 
-  $('button.delete').on 'click', () ->
+  $('button.btn-delete').on 'click', () ->
     id = $(this).closest('.order-box').attr('data-id')
     if confirm("确定要删除该商品吗？")
       $.ajax
@@ -61,14 +61,16 @@ $ ->
         data: {item_id: id}
         success: (res) ->
           if res['status'] == "ok"
-            $('.delete_'+res['id']).closest('.order-box').remove()
-            appendTotalPriceText(res["total_price"])
+            $('.c_delete_'+res['id']).closest('.order-box').remove()
+            setTotalPrice()
+            setSingleTotalPrice()
             changeSubmitBtn()
           else
             location.reload()
             alert(res['message'])
         error: (data, status, e) ->
           alert('ERROR')
+      return false
     else
       return false
 
@@ -101,24 +103,24 @@ $ ->
       this.value = 1
     setTotalPrice($(this))
 
-  setTotalPrice = (e) ->    
+  setTotalPrice = (e) ->
     # 总价计算
     total_price=0
     $(".order-box .checked").each ->
       num = parseInt($(this).parent().find('.num').val())
       price= $(this).parent().find('.product-price').text()
-      total_price+=num*price      
+      total_price+=num*price
     $('.total_price').text(total_price)
-  setSingleTotalPrice = (e) ->   
+  setSingleTotalPrice = (e) ->
     # 单商铺计算
     $('.single_total_price').each ->
       single_total_price=0
       $(this).closest('.order-list').children('.order-box').children('.checked').each ->
         num = parseInt($(this).parent().find('.num').val())
         price= $(this).parent().find('.product-price').text()
-        single_total_price+=num*price      
+        single_total_price+=num*price
       $(this).text(single_total_price)
-        
+
   $("input[type='checkbox']").on 'click', (e) ->
     e.preventDefault()
     changeSubmitBtn()
