@@ -5,7 +5,7 @@ class OrderForm
   include ActiveModel::Model
 
   ATTRIBUTES = [
-    :product_id, :amount, :mobile, :captcha, :user_address_id, :deliver_username, :seller_ids, :cart_item_ids, :to_seller,
+    :product_id, :amount, :mobile, :captcha, :user_address_id, :deliver_username, :seller_ids, :cart_id, :cart_item_ids, :to_seller,
     :province, :city, :country, :area, :building, :street, :deliver_mobile, :sharing_code
   ]
 

@@ -60,22 +60,17 @@ $ ->
     e.preventDefault()
     amount = parseInt($('#amount').val())
     $('#amount').val(amount + 1)
-    calulateTotalPrice(amount + 1)
+    calulateTotalPrice()
 
   $('#new_order_form .jian').on 'click', (e)->
     e.preventDefault()
     amount = parseInt($('#amount').val())
     if amount > 1
       $('#amount').val(amount - 1)
-      calulateTotalPrice(amount - 1)
+      calulateTotalPrice()
 
   $('.subOrd_box2 #amount').on 'keyup', (event) ->
-    amount = $(this).val()
-    calulateTotalPrice(amount)
-
-  calulateTotalPrice = (amount) ->
-    price = Number($('#order_form_real_price').val())
-    $('#total_price').html(amount * price + Number($('#order_form_product_traffic_expense').val()))
+    calulateTotalPrice()
 
   $('.order-address-dlg .add_line1').on 'click', ()->
     $('#order_form_user_address_id').val($(this).data('id'))
@@ -85,6 +80,7 @@ $ ->
       $(this).find('.adr-detail').text()
     )
     hideOrderAddressDlg()
+    changeShipPrice()
 
   $('.order-address-dlg .use-new-addr-btn').on 'click', (event)->
     event.preventDefault()
@@ -106,6 +102,7 @@ $ ->
         fillNewOrderAddressInfo(user, mobile, detail)
         $('#order_form_user_address_id').val('')
         hideOrderAddressDlg()
+        changeShipPrice()
         $(".accunt_adilbtn").removeAttr('disabled')
       else
         alert('手机号无效')
@@ -125,3 +122,54 @@ $ ->
     $('.new-order-addr-info .adr-mobile').text(mobile)
     $('.new-order-addr-info .adr-detail').text(detail)
     $('.new-order-addr-info').show()
+
+  # 修改运费
+  changeShipPrice = ->
+    cart_id = $('#order_form_cart_id').val()
+    product_id = $('#order_form_product_id').val()
+    count = $('#amount').val()
+    user_address_id = $('#order_form_user_address_id').val()
+    province = $('#province').val()
+    $.ajax
+      url: '/orders/ship_price'
+      type: 'POST'
+      data: {
+        cart_id: cart_id,
+        product_id: product_id,
+        count: count,
+        user_address_id: user_address_id,
+        province: province
+      }
+      success: (res) ->
+        alert('修改收货地址后请重新确认订单信息')
+        if res['status'] == "ok"
+          if res['is_cart'] == 1     # 购物车入口
+            $.each(res['ship_price'] , () ->
+              $('.ship_price_'+this[0]).text("￥ "+this[1])
+              calulateTotalPriceWithSeller(this[0], this[1])
+            )
+            calulateCartTotalPrice(res['ship_price'])
+          else                       # 直接购买入口
+            $('.ship_price').text("￥ "+ res['ship_price'])
+            $('#order_form_product_traffic_expense').val(res['ship_price'])
+            calulateTotalPrice()
+        else
+      error: (data, status, e) ->
+        alert('收货地址修改失败')
+        location.reload()
+
+  calulateTotalPrice = () ->
+    amount = parseInt($('#amount').val())
+    price = Number($('#order_form_real_price').val())
+    $('#total_price').html(amount * price + Number($('#order_form_product_traffic_expense').val()))
+
+  calulateTotalPriceWithSeller = (seller_id, ship_price) ->
+    total_price = Number($('.total_price_'+seller_id).data('total-price'))
+    $('.total_price_'+seller_id).text(total_price+Number(ship_price))
+
+  calulateCartTotalPrice = (ship_price) ->
+    total_price = 0.0
+    for price, i in ship_price
+      total_price += Number($('.total_price_'+price[0]).data('total-price'))
+      total_price += Number(price[1])
+    $('#total_price').text(total_price)

@@ -37,7 +37,7 @@ class Cart < ActiveRecord::Base
   end
 
   def total_price # present_price
-    cart_items.inject(0){ |sum, item| sum + item.total_price }
+    CartItem.valid_items(cart_items).inject(0){ |sum, item| sum + item.total_price }
   end
 
   def total_price_of(cart_item_ids)

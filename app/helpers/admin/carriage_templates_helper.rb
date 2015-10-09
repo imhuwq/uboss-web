@@ -36,7 +36,26 @@ module Admin::CarriageTemplatesHelper
       ship_price += total_carriage(carriage_template_id, items_count, province)
     end
 
-    ship_price
+    ship_price || 0.0
+  end
+
+  def sum_ship_price(cart_items, user_address)
+    sum = 0.0
+    CartItem.group_by_seller(cart_items).each do |seller, cart_item|
+      sum += calculate_ship_price(cart_item, user_address)
+    end
+    sum
+  end
+
+  def calculate_product_ship_price(product, count, user_address)
+    if product.transportation_way == 1
+      product.traffic_expense.to_f
+    elsif product.transportation_way == 2 && user_address.try(:province)
+      province = ChinaCity.get(user_address.province)
+      total_carriage(product.carriage_template_id, count, province)
+    else
+      0.0
+    end
   end
 
 end

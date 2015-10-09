@@ -13,15 +13,20 @@ class CartItem < ActiveRecord::Base
 
   # 购物车商品按店铺分组 TODO 什么情况下商品失效，下架、数量不正确 and ?
   def self.group_by_seller(cart_items)
-    return [], [] if cart_items.blank?
-
-    valid_cart_items = cart_items.map{ |cart_item| cart_item if cart_item.product_valid? }.compact
-    seller_ids = valid_cart_items.map(&:seller_id).uniq
-    return seller_ids.inject({}) { |items, seller_id|
+    seller_ids = cart_items.map(&:seller_id).uniq
+    seller_ids.inject({}) { |items, seller_id|
       items.merge!(
-        { User.find(seller_id) => valid_cart_items.select { |item| item.seller_id == seller_id } }
+        { User.find(seller_id) => cart_items.select { |item| item.seller_id == seller_id } }
       )
-    }, (cart_items - valid_cart_items)
+    }
+  end
+
+  def self.valid_items(cart_items)
+    cart_items.map{ |cart_item| cart_item if cart_item.product_valid? }.compact
+  end
+
+  def self.invaild_items(cart_items)
+    cart_items - valid_items(cart_items)
   end
 
   def total_price

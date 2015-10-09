@@ -1,6 +1,7 @@
 class OrdersController < ApplicationController
   before_action :authenticate_user!, except: [:new, :create]
   before_action :find_order, only: [:cancel, :show, :pay, :pay_complete, :received]
+  include Admin::CarriageTemplatesHelper
 
   def cancel
     if @order.may_close? && @order.close!
@@ -54,7 +55,8 @@ class OrdersController < ApplicationController
       @cart_items = @cart.cart_items.find(session[:cart_item_ids])
 
       @order_form = OrderForm.new(
-        buyer: current_user
+        buyer: current_user,
+        cart_id: @cart_id
       )
 
       set_user_address
@@ -116,6 +118,24 @@ class OrdersController < ApplicationController
     if @order.sign!
       flash[:success] = '已确认收货'
       redirect_to controller: :evaluations, action: :new, id: @order.order_items.first.id
+    end
+  end
+
+  def ship_price
+    user_address = current_user.user_addresses.find_by(id: params[:user_address_id]) || current_user.user_addresses.new(province: params[:province])
+
+    if params[:product_id].blank?
+      cart = current_cart
+      cart_items = cart.cart_items.find(session[:cart_item_ids])
+      ship_prices = []
+      CartItem.group_by_seller(cart_items).each do |seller, cart_items|
+        ship_prices << [seller.id, calculate_ship_price(cart_items, user_address).to_s]
+      end
+      render json: { status: 'ok', is_cart: 1, ship_price: ship_prices }
+    elsif !params[:count].blank?
+      product = Product.find(params[:product_id])
+      ship_price = calculate_product_ship_price(product, params[:count].to_i, user_address)
+      render json: { status: 'ok', is_cart: 0, ship_price: ship_price.to_s }
     end
   end
 
