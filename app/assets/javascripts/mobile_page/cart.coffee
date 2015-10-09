@@ -51,12 +51,10 @@ $ ->
   $("#box_all").on 'click', (e) ->
     e.preventDefault()
     $this = $(this)
-    $this.toggleClass("checked")
     if $this.hasClass("checked")
-      $check_item.removeClass("checked")
-      $check_item.addClass("checked")
+      $('.checkbox').removeClass("checked")
     else
-      $check_item.removeClass("checked")
+      $('.checkbox').addClass("checked")
     setTotalPrice()
     setSingleTotalPrice()
 
