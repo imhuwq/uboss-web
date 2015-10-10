@@ -23,7 +23,8 @@ class ChargesController < ApplicationController
     }
   end
 
-  def payment
+  def payments
+    render layout: 'mobile'
   end
 
 end
