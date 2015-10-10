@@ -128,6 +128,20 @@
     color: #f9ba10;
     text-align: right;    
 }
+.freight-box{
+    padding: 10px;
+    border-top: 1px solid #f6f6f6;
+    font-size: 15px;
+}
+.message-box{
+    padding:10px 10px 0;
+    input[type="text"]{
+        border: none;
+        border-radius: 4px;
+        background: #f6f6f6;
+        padding: 7px;
+    }
+}
 .order-list:after,.order-box:after{
     clear: both;
     content: ' ';
@@ -194,4 +208,41 @@
 }
 .checked{
     background-position: 0 -39px;
+}
+.address-box{
+    padding:20px 10px 20px 24px ;
+    background: image-url('mobile/local.png') #fff no-repeat;
+    background-position:10px 25px ;
+    background-size: 7px;
+    color: #888;
+    font-size: 13px;
+    line-height: 20px;
+    .content{
+        padding-right:40px ;
+        background:image-url('mobile/right.png') no-repeat right center ;
+        background-size: 10px;
+    }
+}
+.none-address-box{
+    background: #fff8dd;
+    border-top: 3px dashed #f9ba10;
+    border-bottom: 3px dashed #f9ba10;
+    text-align: center;
+    font-size: 15px;
+    font-weight: bold;
+    line-height: 20px;
+    padding: 27px 0;
+    .icon{
+        display: inline-block;
+        height: 20px; 
+        width: 20px; 
+        line-height: 18.5px;
+        text-align: center; 
+        color: #fff8dd; 
+        background: #888;
+        border-radius: 20px;
+        vertical-align: top;
+        margin-right: 5px;
+        
+    }
 }

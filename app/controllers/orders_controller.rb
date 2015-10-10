@@ -64,7 +64,8 @@ class OrdersController < ApplicationController
       set_user_address
     else
       redirect_to root_path
-    end
+    end    
+    render layout: 'mobile'
   end
 
   def create
