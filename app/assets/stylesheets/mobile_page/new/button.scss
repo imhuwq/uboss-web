@@ -79,6 +79,19 @@
 .label-authenticated{
     background: #5EA944;
 }
+.icon{
+        display: inline-block;
+        height: 20px; 
+        width: 20px; 
+        line-height: 18.5px;
+        text-align: center; 
+        color: #fff8dd; 
+        background: #888;
+        border-radius: 20px;
+        vertical-align: top;
+        margin-right: 5px;
+        
+}
 @keyframes btn-hover
 {
 0%{
@@ -103,3 +116,4 @@
     opacity: 1;
 }
 }
+

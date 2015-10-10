@@ -232,17 +232,103 @@
     font-weight: bold;
     line-height: 20px;
     padding: 27px 0;
-    .icon{
-        display: inline-block;
-        height: 20px; 
-        width: 20px; 
-        line-height: 18.5px;
-        text-align: center; 
-        color: #fff8dd; 
-        background: #888;
-        border-radius: 20px;
-        vertical-align: top;
-        margin-right: 5px;
+    
+}
+
+#address-list-box{ 
+    position: fixed; 
+    height: 100%;    
+    width: 100%;
+    top: 0;
+    left: 0;
+    z-index: 100;
+    background: #f6f6f6;
+    animation: leftIn .3s linear ;
+    .address-box { 
+        padding: 10px 10px 10px 24px;
+        border-bottom: 1px solid #f6f6f6;
+        background-position:10px 15px ;
+    }
+}
+.address-list{
+    height: 100%;
+    padding: 42px 0;
+    box-sizing: border-box;
+    overflow: scroll;
+}
+.address-title{
+    background: #fff;
+    padding: 10px 0;
+    font-size: 15px;
+    text-align: center;
+    border-bottom: 1px solid #ddd;
+    position: fixed;
+    color:$brand-primary;
+    width: 100%;
+    top: 0;
+    left: 0;
+    z-index: 200;
+    line-height: 20px;    
+    animation: leftIn .3s linear ;
+    .close{
+        padding: 10px;
+        position: fixed; 
+        right: 0;
+        top: 0;
+        font-size: 20px;
+        color: #444;
+        animation: fadeIn .3s linear ;
+    }
+}
+#address-more{
+    background: #fff;
+    padding: 10px 0;
+    border-top: 1px solid #ddd;
+    font-size: 15px;
+    position: fixed;    
+    width: 100%;
+    left: 0;
+    bottom: 0;
+    z-index: 200;
+    line-height: 20px;
+    text-align: center;
+    animation: leftIn .3s linear ;
+}
+
+#address-new{
+    position: fixed; 
+    height: 100%;    
+    width: 100%;
+    top: 0;
+    left: 0;
+    z-index: 300;
+    background: #fff;
+    overflow: hidden;
+    color:$brand-primary;
+    box-sizing: border-box;
+    padding: 47px 10px 20px;
+    animation: leftIn .3s linear ;
+    td{ border-bottom: 1px solid #f6f6f6;}
+    input,select{
+        border: none;
+        -webkit-appearance: none;
+        color: #444;
+        padding: 5px;
+        line-height: 20px;
+        outline: none;
+        background: none;
         
     }
+}
+@keyframes leftIn
+{
+0%{
+    left: 100%;
+}
+50%{
+    left: 50%;
+}
+100% {
+    left: 0%;
+}
 }

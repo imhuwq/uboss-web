@@ -169,7 +169,7 @@ $ ->
 
   $('.new_order').on 'click', (e) ->
     e.preventDefault()
-    checked_items = $(".checked[name='check_item'")
+    checked_items = $(".checked[name='check_item']")
     check_items_ids = []
     for item, i in checked_items
       check_items_ids.push($(item).closest('.order-box').data('id'))
