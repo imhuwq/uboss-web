@@ -47,7 +47,7 @@
               <div class="content">
               	<div class="price">
               		 <p>￥<span class="product-price"><%= cart_item.present_price %></span></p>
-              		 <p class="gray-color"><small class="num">x <%= cart_item.count %></small></p>
+              		 <p class="gray-color num">x <%= cart_item.count %></p>
               	</div>
 								<p class="name"><%= cart_item.name %></p>
 	              <p class="info">
@@ -65,7 +65,7 @@
 	        </div><!-- friend-info -->
 	        <div class="freight-box">
 	      		运费
-		        <% ship_price = calculate_ship_price(cart_items, @order_form.user_address) %>
+		        <% ship_price = Order.calculate_ship_price(cart_items, @order_form.user_address) %>
 		        <span class="pull-right ship_price_<%= seller.id.to_s %>" data-ship-price="<%= ship_price %>"><strong></strong>￥ <%= ship_price %></span>
           </div><!-- freight-box -->  
           <div class="price-box"> 
@@ -104,7 +104,7 @@
 	    	<%= submit_tag '提交订单',class:"accunt_adilbtn cart-btn btn" %>
 	    <% end %>
 	    <div class="content">
-				<p>应付款：<span id="total_price"><%= @cart.total_price_of(session[:cart_item_ids]) + sum_ship_price(@cart_items, @order_form.user_address) %></span></p>
+				<p>应付款：<span id="total_price"><%= @cart.total_price_of(session[:cart_item_ids]) + Order.sum_ship_price(@cart_items, @order_form.user_address) %></span></p>
 				<p class="gray-color"><small>共优惠XX元</small></p>
 		  </div>
   	</div><!-- order-price -->
@@ -112,7 +112,7 @@
     <% else %>
 			<%# 单个不需要特殊判断  %>
       <%#TODO arg 1%>
-      <% traffic_expense = calculate_product_ship_price(@product, 1, @order_form.user_address) %>
+      <% traffic_expense = @product.calculate_product_ship_price(1, @order_form.user_address) %>
       <%= f.hidden_field :product_id %>
       <%= f.hidden_field :real_price %>
       <%= f.hidden_field :product_traffic_expense, value: traffic_expense %>
@@ -203,7 +203,7 @@
 	      </tr>
 	  </table>
 	  <br />
-	  <div class="btn btn-block btn-large disabled">
+	  <div class="btn btn-block btn-large">
 	   	使用新地址
 	  </div>
 	</div><!-- address-new -->

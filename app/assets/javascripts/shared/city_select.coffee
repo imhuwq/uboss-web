@@ -1,7 +1,6 @@
 (($) ->
   $.fn.china_city = () ->
     @each ->
-      console.log(2)
       selects = $(@).find('.city-select')
       selects.change ->
         $this = $(@)
@@ -19,6 +18,5 @@
 
   $(document).on 'ready page:load', ->
     $('.city-group').china_city()
-    console.log(1)
 
 )(Zepto)

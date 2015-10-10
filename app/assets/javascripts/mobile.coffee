@@ -13,6 +13,7 @@
 #= require mobile_page/product
 #= require mobile_page/cart
 #= require mobile_page/address
+#= require shared/city_select
 #= reuqire_self
 
 $ ->
