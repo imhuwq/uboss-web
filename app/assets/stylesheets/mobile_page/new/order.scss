@@ -1,3 +1,21 @@
+.order-sort{
+    overflow: hidden;
+    background: #fff;
+    border-bottom: 1px solid #f6f6f6;
+    li{
+        float:left;
+        a{
+            display: block; 
+            border-right:1px solid #ddd ;
+            padding: 10px;
+            color: #888;
+            font-size: 13px;
+        }
+    }
+    li.active a{
+        color: #f9ba10;
+    }
+}
 .order-list{
     background: #fff;
     padding: 10px 0;
