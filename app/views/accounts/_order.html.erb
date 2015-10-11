@@ -1,8 +1,22 @@
 <div class="order-list" timestamp='<%= order.created_at %>'>
-  <p class="order-code">
-    <span class="pull-right"><%= order.created_at.strftime('%Y-%m-%d') %></span>
- 		订单号：<%= order.number %>
-  </p>
+  <div class="seller-box">
+  	<span class="pull-right like-color">
+  	<% if order.state == 'unpay' %>
+			未付款
+	  <% elsif order.state == 'payed' %>
+			等待卖家发货
+	  <% elsif order.state == 'shiped' %>
+			卖家已发货
+	  <% elsif order.state == 'signed' %>
+	  	已签收
+	  <% elsif order.state == 'closed' %>
+	 	 	交易关闭
+	  <% elsif order.completed? %>
+	  	交易完成
+	  <% end %>
+	  </span>
+  	<div class="text-cut">商家：名称</div>
+  </div>
 
   <%= link_to order_path(order, showwxpaytitle: 1) do %>
     <% order.order_items.each do |order_item| %>
@@ -24,26 +38,29 @@
       </div><!-- order-box -->
     <% end %>
   <% end %>
-
-  <div class="order-info">
-	  <div class="status pull-right">
-			<% if order.state == 'unpay' %>
-		    <%= link_to "付款", order_path(order, showwxpaytitle: 1), class: 'my_retur my_confir btn btn-orange' %>
-		  <% elsif order.state == 'payed' %>
-		    <label class="label label-authenticated">待发货</label>
-		  <% elsif order.state == 'shiped' %>
-		    <%= link_to "确认收货", received_order_path(order),
-		        class:"my_retur my_confir btn", data: { confirm: '确认收货？' } %>
-		  <% elsif order.state == 'signed' %>
-		  	<label class="label label-invited">已签收</label>
-		  <% elsif order.state == 'closed' %>
-		 	 	<label class="label">交易关闭</label>
-		  <% elsif order.completed? %>
-		  	<label class="label label-bind">交易完成</label>
-		  <% end %>
-		</div> <!-- status -->
-  	<span class="text">
-  		共<%= order.order_items.first.try(:amount) %>件商品,合计:￥<%= order.pay_amount %>
-  	</span>
-  </div><!-- order-info -->
+	<div class="friend-info">
+		<div class="cover">
+			<img src="" title="用户头像"/>
+		</div>
+		<div class="content"><span class="pull-right red-color">-XX</span><span class="main-color">xxx</span> 帮你优惠</div>
+	</div><!-- friend-info -->
+  <div class="price-box 
+  	<% if order.state == 'closed' %>	
+  	 gray-color
+  	<% end %>
+  ">
+		合计：￥<%= order.pay_amount %><small class="gray-color">（包含运费：￥0.00）</small>
+  </div><!-- price-box -->
+  
+	<% if order.state == 'unpay' %>
+	  <div class="order-info">
+    	<%= link_to "确认付款", order_path(order, showwxpaytitle: 1), class: 'my_retur my_confir btn btn-orange-border' %>
+    </div><!-- order-info -->
+  <% elsif order.state == 'shiped' %>
+  	<div class="order-info">
+	    <%= link_to "确认收货", received_order_path(order),
+	        class:"my_retur my_confir btn btn-orange-border", data: { confirm: '确认收货？' } %>
+    </div><!-- order-info -->
+  <% end %>	
+  
 </div>
