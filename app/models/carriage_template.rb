@@ -23,7 +23,26 @@ class CarriageTemplate < ActiveRecord::Base
     end
   end
 
+  def total_carriage(count, province)
+    template = find_template_by_address(province)
+    calculate_price(count, template)
+  end
+
   private
+  def calculate_price(count, template)
+    balance = count - template.first_item
+    extend_count = balance > 0 ? balance : 0
+
+    template.carriage + extend_count * template.extend_carriage
+  end
+
+  #address is provinces name
+  def find_template_by_address(address)
+    area = different_areas.joins(:regions).where(regions: {name: address}).first
+    area = different_areas.joins(:regions).where(regions: {name: '其他'}).first if area.blank?
+    area
+  end
+
   def confirm_products_is_nil
     errors[:base] << '模板已被引用不能删除' if products.present?
     errors.blank?

@@ -29,7 +29,7 @@ class Order < ActiveRecord::Base
 
   scope :selled, -> { where("orders.state <> 0") }
 
-  before_create :set_info_by_user_address
+  before_create :set_info_by_user_address, :set_ship_price
 
   aasm column: :state, enum: true, skip_validation_on_save: true, whiny_transitions: false do
     state :unpay
@@ -54,6 +54,36 @@ class Order < ActiveRecord::Base
     end
     event :complete do
       transitions from: :signed, to: :completed
+    end
+  end
+
+  class << self
+    def total_ship_price(items1, items2, user_address)
+      province = ChinaCity.get(user_address.province)
+      ship_price = items1.map { |item| item.product.traffic_expense.to_f }.min || 0.0                     # 固定运费
+
+      items2.group_by{ |item| item.product.carriage_template_id }.each do |carriage_template_id, items|   # 运费模版
+        items_count = items.sum{ |item| item.count }
+        carriage_template = CarriageTemplate.find(carriage_template_id)
+        ship_price += carriage_template.total_carriage(items_count, province)
+      end
+
+      ship_price || 0.0
+    end
+
+    def calculate_ship_price(cart_items, user_address)
+      items1 = cart_items.select{ |item| item.product.transportation_way == 1 }
+      items2 = cart_items.select{ |item| item.product.transportation_way == 2 }
+
+      total_ship_price(items1, items2, user_address)
+    end
+
+    def sum_ship_price(cart_items, user_address)
+      sum = 0.0
+      CartItem.group_by_seller(cart_items).each do |seller, cart_item|
+        sum += calculate_ship_price(cart_item, user_address)
+      end
+      sum
     end
   end
 
@@ -116,6 +146,17 @@ class Order < ActiveRecord::Base
     self.address = "#{user_address}"
     self.mobile = user_address.mobile
     self.username = user_address.username
+  end
+
+  def set_ship_price
+    self.ship_price = calculate_ship_price
+  end
+
+  def calculate_ship_price
+    items1 = order_items.select{ |item| item.product.transportation_way == 1 }
+    items2 = order_items.select{ |item| item.product.transportation_way == 2 }
+
+    Order.total_ship_price(items1, items2, user_address)
   end
 
   def call_order_complete_handler

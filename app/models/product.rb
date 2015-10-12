@@ -88,6 +88,18 @@ class Product < ActiveRecord::Base
     status == 'published'
   end
 
+  def calculate_ship_price(count, user_address)
+    if transportation_way == 1
+      traffic_expense.to_f
+    elsif transportation_way == 2 && user_address.try(:province)
+      province = ChinaCity.get(user_address.province)
+      carriage_template = CarriageTemplate.find(carriage_template_id)
+      carriage_template.total_carriage(count, province)
+    else
+      0.0
+    end
+  end
+
   private
   def get_shraing_rate(sharing_level, rate_level)
     Rails.application.secrets.product_sharing["level#{sharing_level}"].try(:[], "rate#{rate_level}").to_f

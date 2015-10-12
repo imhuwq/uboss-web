@@ -1,7 +1,6 @@
 class OrdersController < ApplicationController
   before_action :authenticate_user!, except: [:new, :create]
   before_action :find_order, only: [:cancel, :show, :pay, :pay_complete, :received]
-  include Admin::CarriageTemplatesHelper
 
   def cancel
     if @order.may_close? && @order.close!
@@ -133,12 +132,12 @@ class OrdersController < ApplicationController
       cart_items = cart.cart_items.find(session[:cart_item_ids])
       ship_prices = []
       CartItem.group_by_seller(cart_items).each do |seller, cart_items|
-        ship_prices << [seller.id, calculate_ship_price(cart_items, user_address).to_s]
+        ship_prices << [seller.id, Order.calculate_ship_price(cart_items, user_address).to_s]
       end
       render json: { status: 'ok', is_cart: 1, ship_price: ship_prices }
     elsif !params[:count].blank?
       product = Product.find(params[:product_id])
-      ship_price = calculate_product_ship_price(product, params[:count].to_i, user_address)
+      ship_price = product.calculate_product_ship_price(product, params[:count].to_i, user_address)
       render json: { status: 'ok', is_cart: 0, ship_price: ship_price.to_s }
     end
   end

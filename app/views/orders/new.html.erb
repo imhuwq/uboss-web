@@ -12,153 +12,153 @@
 </style>
 
 <%= simple_form_for @order_form, url: orders_path, method: 'POST',wrapper: :default do |f| %>
-	<br />
+  <br />
   <div id="address">
     <div class='address-box <%= displayable_class(@order_form.user_address.username.present?) %>'>
-        <%= f.hidden_field :user_address_id %>        
-        <div class="content">
-          <p>
-          	<span class='pull-right adr-mobile'><%= @order_form.user_address.mobile %></span>
-          	<span class='adr-user'><%= @order_form.user_address.username %></span>
-          </p>
-          <p class='adr-detail'><%= @order_form.user_address %></p>
-        </div>
+      <%= f.hidden_field :user_address_id %>
+      <div class="content">
+        <p>
+        <span class='pull-right adr-mobile'><%= @order_form.user_address.mobile %></span>
+        <span class='adr-user'><%= @order_form.user_address.username %></span>
+        </p>
+        <p class='adr-detail'><%= @order_form.user_address %></p>
+      </div>
     </div><!-- address-box -->
     <% if !@order_form.user_address.username.present? %>
-    	<div class="none-address-box">
-    		<span class="icon">+</span>收货地址
-    	</div>
+      <div class="none-address-box">
+        <span class="icon">+</span>收货地址
+      </div>
     <% else %>
-    
+
     <% end %>
   </div><!-- address -->
 	<br />
   <% if @product.blank? %>
-		<div class="cart-list">
+    <div class="cart-list">
       <%= f.hidden_field :cart_id %>
       <% CartItem.group_by_seller(@cart_items).each do |seller, cart_items| %>
         <div class="order-list">
           <div class="seller-box">
-          	<div class="text-cut">商家：<%= seller.identify %></div>
+            <div class="text-cut">商家：<%= seller.identify %></div>
           </div>
           <% cart_items.each do |cart_item| %>
             <div class="order-box">
               <div class="cover"><%= image_tag(url_for(cart_item.image_url),  alt: "-", style: "width:52px;") %></div>
               <div class="content">
-              	<div class="price">
-              		 <p>￥<span class="product-price"><%= cart_item.present_price %></span></p>
-              		 <p class="gray-color"><small class="num">x <%= cart_item.count %></small></p>
-              	</div>
-								<p class="name"><%= cart_item.name %></p>
-	              <p class="info">
-	                <span>尺寸：36</span>
-	                <span>颜色：灰色</span>
-		            </p>              	
+                <div class="price">
+                  <p>￥<span class="product-price"><%= cart_item.present_price %></span></p>
+                  <p class="gray-color"><small class="num">x <%= cart_item.count %></small></p>
+                </div>
+                <p class="name"><%= cart_item.name %></p>
+                <p class="info">
+                <span>尺寸：36</span>
+                <span>颜色：灰色</span>
+                </p>
               </div><!-- content -->
             </div><!-- order-box -->
-          <% end %>					
-	        <div class="friend-info">
-	        	<div class="cover">
-            	<img src="" title="用户头像"/>
+          <% end %>
+          <div class="friend-info">
+            <div class="cover">
+              <img src="" title="用户头像"/>
             </div>
             <div class="content"><span class="pull-right red-color">-XX</span><span class="main-color">xxx</span> 帮你优惠</div>
-	        </div><!-- friend-info -->
-	        <div class="freight-box">
-	      		运费
-		        <% ship_price = calculate_ship_price(cart_items, @order_form.user_address) %>
-		        <span class="pull-right ship_price_<%= seller.id.to_s %>" data-ship-price="<%= ship_price %>"><strong></strong>￥ <%= ship_price %></span>
-          </div><!-- freight-box -->  
-          <div class="price-box"> 
-	          <% cart_total_price = @cart.total_price_of(cart_items.map(&:id)) %>
-	        	合计	
-	          <span class="total_price_<%= seller.id.to_s %>" data-total-price="<%= cart_total_price %>">￥ <%= cart_total_price + ship_price %></span>
-          </div><!-- price-box --> 
+          </div><!-- friend-info -->
+          <div class="freight-box">
+            运费
+            <% ship_price = Order.calculate_ship_price(cart_items, @order_form.user_address) %>
+            <span class="pull-right ship_price_<%= seller.id.to_s %>" data-ship-price="<%= ship_price %>"><strong></strong>￥ <%= ship_price %></span>
+          </div><!-- freight-box -->
+          <div class="price-box">
+            <% cart_total_price = @cart.total_price_of(cart_items.map(&:id)) %>
+            合计
+            <span class="total_price_<%= seller.id.to_s %>" data-total-price="<%= cart_total_price %>">￥ <%= cart_total_price + ship_price %></span>
+          </div><!-- price-box -->
           <div class="message-box">
-          	<input placeholder="给卖家留言" type="text" name="order[to_seller][<%= seller.id %>]" class="input-block"/>
+            <input placeholder="给卖家留言" type="text" name="order[to_seller][<%= seller.id %>]" class="input-block"/>
           </div><!-- message-box -->
         </div><!-- order-list -->
-    	<% end %>     
-  	</div><!--cart-list -->  
-	  <% if current_user.blank? || (current_user && current_user.need_set_login?) %>
-	    <div class="subOrd_boxcont subOrd_boxbtn">
-	      <p class="sub_p">
-	        <span>
-	          <%= f.input_field :mobile, type: :tel, placeholder: '输入手机号', class:"sub_btphon",id:'new_mobile' %>
-	        </span>
-	        <span>
-	          <a style='color:#fff;' href='#' class="sub_yanzhen" id="send_mobile">发送验证码</a>
-	        </span>
-	        <div class="clear"></div>
-	      </p>
-	      <p class="sub_w">
-	      <span>
-	        <%= f.input_field :captcha, type: :tel, placeholder: '填写短信验证码', class: "sub_yanzhcont"  %>
-	      </span>
-	      </p>
-	    </div>
-	  <% end %>
-	  <div class="order-price">
-	  	<% if @order_form.user_address.username.present?  %>
-	    	<%= submit_tag '提交订单',class:"accunt_adilbtn cart-btn btn" %>
-	    <% else %>
-	    	<%= submit_tag '提交订单',class:"accunt_adilbtn cart-btn btn" %>
-	    <% end %>
-	    <div class="content">
-				<p>应付款：<span id="total_price"><%= @cart.total_price_of(session[:cart_item_ids]) + sum_ship_price(@cart_items, @order_form.user_address) %></span></p>
-				<p class="gray-color"><small>共优惠XX元</small></p>
-		  </div>
-  	</div><!-- order-price -->
+      <% end %>
+    </div><!--cart-list -->
+    <% if current_user.blank? || (current_user && current_user.need_set_login?) %>
+      <div class="subOrd_boxcont subOrd_boxbtn">
+        <p class="sub_p">
+        <span>
+          <%= f.input_field :mobile, type: :tel, placeholder: '输入手机号', class:"sub_btphon",id:'new_mobile' %>
+        </span>
+        <span>
+          <a style='color:#fff;' href='#' class="sub_yanzhen" id="send_mobile">发送验证码</a>
+        </span>
+        <div class="clear"></div>
+        </p>
+        <p class="sub_w">
+        <span>
+          <%= f.input_field :captcha, type: :tel, placeholder: '填写短信验证码', class: "sub_yanzhcont"  %>
+        </span>
+        </p>
+      </div>
+    <% end %>
+    <div class="order-price">
+      <% if @order_form.user_address.username.present?  %>
+        <%= submit_tag '提交订单',class:"accunt_adilbtn cart-btn btn" %>
+      <% else %>
+        <%= submit_tag '提交订单',class:"accunt_adilbtn cart-btn btn" %>
+      <% end %>
+      <div class="content">
+        <p>应付款：<span id="total_price"><%= @cart.total_price_of(session[:cart_item_ids]) + Order.sum_ship_price(@cart_items, @order_form.user_address) %></span></p>
+        <p class="gray-color"><small>共优惠XX元</small></p>
+      </div>
+    </div><!-- order-price -->
 
-    <% else %>
-			<%# 单个不需要特殊判断  %>
-      <%#TODO arg 1%>
-      <% traffic_expense = calculate_product_ship_price(@product, 1, @order_form.user_address) %>
-      <%= f.hidden_field :product_id %>
-      <%= f.hidden_field :real_price %>
-      <%= f.hidden_field :product_traffic_expense, value: traffic_expense %>
-      <div class="c_list">
-        <div class="c_shop"><h3 class="fl">商家：<%= @order_form.product.user.identify %></h3></div>
-        <div class="subOrd_box1 clearfix">
-          <dl>
-            <dt> <%= image_tag(url_for(@order_form.product.image_url),  alt: "-",:style=>"width:100%;") %></dt>
-            <dd>
-            <strong><%= @product.name %><span>￥<%= @order_form.real_price %></span></strong>
-            <p><%= @product.user.store_name %></p>
-            </dd>
-          </dl>
-        </div>
-        <div class="subOrd_box2">
-          <div class="subOrd_boxcont">
-            <p class="sub_p1">
-            <span class="sub_left">数量</span>
+  <% else %>
+    <%# 单个不需要特殊判断  %>
+    <%#TODO arg 1%>
+    <% traffic_expense = @product.calculate_product_ship_price(1, @order_form.user_address) %>
+    <%= f.hidden_field :product_id %>
+    <%= f.hidden_field :real_price %>
+    <%= f.hidden_field :product_traffic_expense, value: traffic_expense %>
+    <div class="c_list">
+      <div class="c_shop"><h3 class="fl">商家：<%= @order_form.product.user.identify %></h3></div>
+      <div class="subOrd_box1 clearfix">
+        <dl>
+          <dt> <%= image_tag(url_for(@order_form.product.image_url),  alt: "-",:style=>"width:100%;") %></dt>
+          <dd>
+          <strong><%= @product.name %><span>￥<%= @order_form.real_price %></span></strong>
+          <p><%= @product.user.store_name %></p>
+          </dd>
+        </dl>
+      </div>
+      <div class="subOrd_box2">
+        <div class="subOrd_boxcont">
+          <p class="sub_p1">
+          <span class="sub_left">数量</span>
+          <span class="sub_right">
             <span class="sub_right">
-              <span class="sub_right">
-                <a href="#" class="jia"><span>+</span></a>
-                <%= f.input_field :amount, value: 1, type: 'tel', class:"tow",id: "amount" %>
-                <a href="#" class="jian"><span>-</span></a>
-              </span>
+              <a href="#" class="jia"><span>+</span></a>
+              <%= f.input_field :amount, value: 1, type: 'tel', class:"tow",id: "amount" %>
+              <a href="#" class="jian"><span>-</span></a>
             </span>
-            </p>
-          </div>
-        </div>
-        <div class="subOrd_box2">
-          <div class="subOrd_boxcont">
-            <p class="sub_p1 sub_p2">
-            <span class="sub_leftl">运费</span>
-            <span class="sub_left ship_price">￥ <%= traffic_expense %></span>
-            </p>
-            <p class="sub_p1 sub_p2">
-            <span class="sub_left"><strong>合计：</strong><b id="total_price">￥ <%= @order_form.real_price + traffic_expense %></b></span>
-            </p>
-            <p class="sub_p1 sub_p2">
-              <input placeholder="给卖家留言" type="text" name="order[to_seller][<%= @product.user.id %>]" style="width:98%;line-height:20px;border:0;">
-            </p>
-          </div>
+          </span>
+          </p>
         </div>
       </div>
-      <%# 单个不需要特殊判断  end %>
-    <% end %>
-  
+      <div class="subOrd_box2">
+        <div class="subOrd_boxcont">
+          <p class="sub_p1 sub_p2">
+          <span class="sub_leftl">运费</span>
+          <span class="sub_left ship_price">￥ <%= traffic_expense %></span>
+          </p>
+          <p class="sub_p1 sub_p2">
+          <span class="sub_left"><strong>合计：</strong><b id="total_price">￥ <%= @order_form.real_price + traffic_expense %></b></span>
+          </p>
+          <p class="sub_p1 sub_p2">
+          <input placeholder="给卖家留言" type="text" name="order[to_seller][<%= @product.user.id %>]" style="width:98%;line-height:20px;border:0;">
+          </p>
+        </div>
+      </div>
+    </div>
+    <%# 单个不需要特殊判断  end %>
+  <% end %>
+
   <!--弹出层开始-->
   <div id="dlg">
     <div class="content" id="content">
@@ -185,42 +185,35 @@
           <div class="add_inout">
             <form id="add_inout_form">
               <p>
-                <span class="add_textd">收货人</span>
-                <%= f.input_field :deliver_username, placeholder: '名字', class: 'add_text' %>
+              <span class="add_textd">收货人</span>
+              <%= f.input_field :deliver_username, placeholder: '名字', class: 'add_text' %>
               </p>
               <p>
-                <span>联系电话</span>
-                <%= f.input_field :deliver_mobile, placeholder: '手机或固话', type: :tel, class: 'add_text' %>
+              <span>联系电话</span>
+              <%= f.input_field :deliver_mobile, placeholder: '手机或固话', type: :tel, class: 'add_text' %>
               </p>
               <%= render 'user_addresses/user_address', f: f  %>
               <p>
-                <span>详细地址</span>
-                <%= f.input_field :building, placeholder: '街道门牌信息', class: 'add_text' %>
+              <span>详细地址</span>
+              <%= f.input_field :building, placeholder: '街道门牌信息', class: 'add_text' %>
               </p>
             </form>
           </div>
           <div class="accunt_adil_box3 adbtn">
             <a href="#" class="accunt_adilbtn use-new-addr-btn">使用新地址</a>
           </div>
+        </div>
       </div>
     </div>
-  </div>
-  <!--弹出层结束-->
+    <!--弹出层结束-->
 
+  <% end %>
 
-
-<% end %>
-
-
-<% if browser.wechat? %>
-  <%= content_for :extra_javascript do %>
-    <script type="text/javascript" charset="utf-8">
-
-wx.ready(function(){
-  wx.hideOptionMenu();
-});
-
-    </script>
+  <% if browser.wechat? %>
+    <%= content_for :extra_javascript do %>
+      <script type="text/javascript" charset="utf-8">
+        wx.ready(function(){ wx.hideOptionMenu(); });
+      </script>
   <% end %>
 <% end %>
 
