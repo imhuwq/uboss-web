@@ -23,4 +23,7 @@ class ChargesController < ApplicationController
     }
   end
 
+  def payment
+  end
+
 end

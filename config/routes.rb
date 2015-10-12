@@ -44,7 +44,9 @@ Rails.application.routes.draw do
     get 'cancel', on: :member
     post 'ship_price', on: :collection
     resource :charge, only: [:create]
-    resources :pay,    only: [:index]
+  end
+  resources :charges, only: [] do
+    get 'payments', on: :member
   end
   resources :products, only: [:index, :show] do
     member do

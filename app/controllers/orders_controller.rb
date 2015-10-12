@@ -94,7 +94,8 @@ class OrdersController < ApplicationController
       sign_in(@order_form.buyer) if current_user.blank?
       clean_current_cart unless params[:order_form][:product_id]
       @order_title = '确认订单'
-      redirect_to order_path(@order_form.order, showwxpaytitle: 1)
+      #redirect_to order_path(@order_form.order, showwxpaytitle: 1)
+      redirect_to payments_charge_path(OrderCharge.last)
     else
       @order_form.captcha = nil
       @user_address = @order_form.user_address
