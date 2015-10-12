@@ -39,6 +39,7 @@ class OrdersController < ApplicationController
       @order_form = OrderForm.new(
         buyer: current_user,
         product_id: params[:product_id],
+        product_inventory_id: (params[:product_inventory_id] || 1),
         amount: params[:amount]
       )
       @product = @order_form.product
@@ -63,7 +64,7 @@ class OrdersController < ApplicationController
       set_user_address
     else
       redirect_to root_path
-    end    
+    end
     render layout: 'mobile'
   end
 

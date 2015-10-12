@@ -22,6 +22,7 @@ gem 'wx_pay', github: 'xEasy/wx_pay'
 gem 'weixin_authorize', github: "lanrion/weixin_authorize"
 gem 'ransack'
 gem 'rails-api'
+gem 'sanitize'
 
 # copying of ActiveRecord objects and their associated children
 gem 'amoeba'
@@ -38,7 +39,7 @@ gem "tabletastic", path: "vendor/gems"
 gem 'redactor-rails', github: 'xEasy/redactor-rails'
 gem "jquery-fileupload-rails"
 gem 'font-awesome-sass', '~> 4.4.0'
-gem 'sanitize'
+gem 'eco'
 
 # See https://github.com/rails/execjs#readme for more supported runtimes
 gem 'therubyracer', platforms: :ruby

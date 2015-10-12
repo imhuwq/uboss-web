@@ -20,6 +20,7 @@ class Admin::ProductsController < AdminController
   def create
     @product.user_id = current_user.id
     if @product.save
+      @product.save_product_properties({product_params[:property] => product_params[:property_value]})
       flash[:success] = '产品创建成功'
       redirect_to action: :show, id: @product.id
     else
@@ -30,6 +31,7 @@ class Admin::ProductsController < AdminController
 
   def update
     if @product.present? && @product.user_id == current_user.id && @product.update(product_params)
+      @product.save_product_properties({product_params[:property] => product_params[:property_value]})
       flash[:success] = '保存成功'
     else
       flash[:error] = "保存失败。#{@product.errors.full_messages.join('<br/>')}"
@@ -39,12 +41,12 @@ class Admin::ProductsController < AdminController
 
   def change_status
     if params[:status] == 'published'
-      #if @product.user.authenticated?
+      # if @product.user.authenticated?
         @product.status = 'published'
         @notice = '上架成功'
-      #else
-        #@error = '该帐号还未通过身份验证，请先验证:点击右上角用户名，进入“个人/企业认证”'
-      #end
+      # else
+      #   @error = '该帐号还未通过身份验证，请先验证:点击右上角用户名，进入“个人/企业认证”'
+      # end
     elsif params[:status] == 'unpublish'
       @product.status = 'unpublish'
       @notice = '取消上架成功'
@@ -84,13 +86,13 @@ class Admin::ProductsController < AdminController
 
   def product_params
     params.require(:product).permit(
-      :name,               :original_price,    :present_price, :count,
-      :content,            :has_share_lv,      :calculate_way, :avatar,
-      :share_amount_total, :share_amount_lv_1, :share_amount_lv_2,
-      :share_amount_lv_3,  :share_rate_total,  :share_rate_lv_1,
-      :share_rate_lv_2,    :share_rate_lv_3,   :buyer_pay,
-      :traffic_expense,    :short_description, :transportation_way,
-      :carriage_template_id
+      :name,                 :original_price,    :present_price, :count,
+      :content,              :has_share_lv,      :calculate_way, :avatar,
+      :share_amount_total,   :share_amount_lv_1, :share_amount_lv_2,
+      :share_amount_lv_3,    :share_rate_total,  :share_rate_lv_1,
+      :share_rate_lv_2,      :share_rate_lv_3,   :buyer_pay,
+      :traffic_expense,      :short_description, :transportation_way,
+      :carriage_template_id, :property,          :property_value
     )
   end
 end

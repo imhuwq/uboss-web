@@ -179,6 +179,11 @@ GEM
       warden (~> 1.2.3)
     domain_name (0.5.24)
       unf (>= 0.0.5, < 1.0.0)
+    eco (1.0.0)
+      coffee-script
+      eco-source
+      execjs
+    eco-source (1.1.0.rc.1)
     enum_help (0.0.14)
     erubis (2.7.0)
     eventmachine (1.0.7)
@@ -485,6 +490,7 @@ DEPENDENCIES
   dalli
   database_cleaner
   devise
+  eco
   enum_help
   factory_girl_rails
   font-awesome-sass (~> 4.4.0)

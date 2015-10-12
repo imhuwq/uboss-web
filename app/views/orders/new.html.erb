@@ -29,7 +29,7 @@
     		<span class="icon">+</span>收货地址
     	</div>
     <% else %>
-    
+
     <% end %>
   </div><!-- address -->
 	<br />
@@ -53,10 +53,10 @@
 	              <p class="info">
 	                <span>尺寸：36</span>
 	                <span>颜色：灰色</span>
-		            </p>              	
+		            </p>
               </div><!-- content -->
             </div><!-- order-box -->
-          <% end %>					
+          <% end %>
 	        <div class="friend-info">
 	        	<div class="cover">
             	<img src="" title="用户头像"/>
@@ -67,18 +67,18 @@
 	      		运费
 		        <% ship_price = Order.calculate_ship_price(cart_items, @order_form.user_address) %>
 		        <span class="pull-right ship_price_<%= seller.id.to_s %>" data-ship-price="<%= ship_price %>"><strong></strong>￥ <%= ship_price %></span>
-          </div><!-- freight-box -->  
-          <div class="price-box"> 
+          </div><!-- freight-box -->
+          <div class="price-box">
 	          <% cart_total_price = @cart.total_price_of(cart_items.map(&:id)) %>
 	        	合计	
 	          <span class="total_price_<%= seller.id.to_s %>" data-total-price="<%= cart_total_price %>">￥ <%= cart_total_price + ship_price %></span>
-          </div><!-- price-box --> 
+          </div><!-- price-box -->
           <div class="message-box">
           	<input placeholder="给卖家留言" type="text" name="order[to_seller][<%= seller.id %>]" class="input-block"/>
           </div><!-- message-box -->
         </div><!-- order-list -->
-    	<% end %>     
-  	</div><!--cart-list -->  
+    	<% end %>
+  	</div><!--cart-list -->
 	  <% if current_user.blank? || (current_user && current_user.need_set_login?) %>
 	    <div class="subOrd_boxcont subOrd_boxbtn">
 	      <p class="sub_p">
@@ -115,6 +115,7 @@
       <% traffic_expense = @product.calculate_product_ship_price(1, @order_form.user_address) %>
       <%= f.hidden_field :product_id %>
       <%= f.hidden_field :real_price %>
+      <%= f.hidden_field :product_inventory_id %>
       <%= f.hidden_field :product_traffic_expense, value: traffic_expense %>
       <div class="c_list">
         <div class="c_shop"><h3 class="fl">商家：<%= @order_form.product.user.identify %></h3></div>

@@ -86,6 +86,8 @@ zh-CN:
         created_at: 创建时间
         methods: 操作
         short_description: 简介
+        property_value:  属性值
+        property:        属性名
       mobile_auth_code:
         mobile: 手机号码
       order_form:

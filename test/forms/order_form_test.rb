@@ -24,6 +24,7 @@ class OrderFormTest < ActiveSupport::TestCase
         country: 'NS',
         area: 'area',
         building: 'kejiyuan',
+        to_seller: 'msg to seller',
         session: {},
         deliver_mobile: '13800002222'
       )
@@ -42,6 +43,7 @@ class OrderFormTest < ActiveSupport::TestCase
       amount: 12,
       session: {},
       buyer: @buyer,
+      to_seller: 'msg to seller',
       user_address_id: @buyer.default_address.id
     ).save
 
@@ -63,6 +65,7 @@ class OrderFormTest < ActiveSupport::TestCase
         country: 'NS',
         area: 'area',
         building: 'kejiyuan',
+        to_seller: 'msg to seller',
         session: {},
         deliver_mobile: '13800002222'
       ).save

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151012020733) do
+ActiveRecord::Schema.define(version: 20151012072302) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -192,13 +192,14 @@ ActiveRecord::Schema.define(version: 20151012020733) do
     t.integer  "product_id"
     t.integer  "user_id"
     t.integer  "amount"
-    t.datetime "created_at",                     null: false
-    t.datetime "updated_at",                     null: false
-    t.decimal  "pay_amount",       default: 0.0
+    t.datetime "created_at",                         null: false
+    t.datetime "updated_at",                         null: false
+    t.decimal  "pay_amount",           default: 0.0
     t.integer  "sharing_node_id"
     t.integer  "evaluation_id"
-    t.decimal  "present_price",    default: 0.0
-    t.decimal  "privilege_amount", default: 0.0
+    t.decimal  "present_price",        default: 0.0
+    t.decimal  "privilege_amount",     default: 0.0
+    t.integer  "product_inventory_id"
   end
 
   create_table "orders", force: :cascade do |t|
@@ -248,6 +249,48 @@ ActiveRecord::Schema.define(version: 20151012020733) do
     t.datetime "updated_at",                 null: false
     t.boolean  "actived",    default: false
     t.integer  "seller_id"
+  end
+
+  create_table "product_classes", force: :cascade do |t|
+    t.integer  "parent_id"
+    t.string   "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "product_inventories", force: :cascade do |t|
+    t.integer  "product_id"
+    t.integer  "product_class_id"
+    t.integer  "count"
+    t.jsonb    "sku_attributes",     default: {},  null: false
+    t.datetime "created_at",                       null: false
+    t.datetime "updated_at",                       null: false
+    t.integer  "user_id"
+    t.string   "name"
+    t.decimal  "price",              default: 0.0
+    t.decimal  "share_amount_total", default: 0.0
+    t.decimal  "share_amount_lv_1",  default: 0.0
+    t.decimal  "share_amount_lv_2",  default: 0.0
+    t.decimal  "share_amount_lv_3",  default: 0.0
+    t.decimal  "privilege_amount",   default: 0.0
+  end
+
+  add_index "product_inventories", ["sku_attributes"], name: "index_product_inventories_on_sku_attributes", using: :gin
+
+  create_table "product_properties", force: :cascade do |t|
+    t.string   "name"
+    t.boolean  "is_key_attr",      default: true
+    t.integer  "product_class_id"
+    t.datetime "created_at",                      null: false
+    t.datetime "updated_at",                      null: false
+  end
+
+  create_table "product_property_values", force: :cascade do |t|
+    t.string   "value"
+    t.integer  "product_property_id"
+    t.integer  "product_class_id"
+    t.datetime "created_at",          null: false
+    t.datetime "updated_at",          null: false
   end
 
   create_table "products", force: :cascade do |t|

@@ -6,6 +6,8 @@
 	  <%= f.input :original_price %>
 	  <%= f.input :present_price %>
 	  <%= f.input :count %>
+		<%= f.input :property %>
+		<%= f.input :property_value %>
 	  <%= f.input :short_description %>
 	  <%= f.input :asset_img, hint:"(点击图片进行替换)"  do %>
 	    <%= f.input_field :avatar, type: :hidden, as: :file %>
@@ -30,43 +32,43 @@
 	 	</div>
 	</div>
 </div>
-	<div class="box-w50">
-		<div class="admin-box beige-bg-color">
-		  <h4 class="edit-title">分成设置</h4>
-		  <div class='form-group'>
-		  	<label class='control-label'>
-		  		分成比例
-		  	</label>
-		   	<label class='control-label pull-right'>
-		   		%　
-		  		<% if @product.present? and @product.calculate_way == 1 %>
-		        <%= radio_button_tag('product[calculate_way]',1,:html=>{:checked=>'checked'}) %>
-		      <% else %>
-		        <%= radio_button_tag('product[calculate_way]',1) %>
-		      <% end %>
-		   	</label>
-		    <div class='control-input'>
-		      <%= f.input_field :share_rate_total, class: 'form-control' %>
-		    </div>
-		  </div>
-		  <div class='form-group'>
-		  	<label class='control-label'>现金分成</label>
-		    <label class='control-label pull-right'>
-		    	元　
-		      <% if @product.present? and @product.calculate_way == 0 %>
-		        <%= radio_button_tag 'product[calculate_way]',0,:html=>{:checked=>'checked'} %>
-		      <% else %>
-		        <%= radio_button_tag 'product[calculate_way]',0 %>
-		      <% end %>
-		    </label>
-		    <div class='control-input'>
-		      <%= f.input_field :share_amount_total, class: 'form-control' %>
-		    </div>
-		  </div>
-		  <%= f.input :has_share_lv, as: :radio_buttons,
-		    collection: {'不分成'=>0,'1'=>1,'2'=>2,'3'=>3},
-		    item_wrapper_class: "radio-inline"
-		  %>
+<div class="box-w50">
+	<div class="admin-box beige-bg-color">
+	  <h4 class="edit-title">分成设置</h4>
+	  <div class='form-group'>
+	  	<label class='control-label'>
+	  		分成比例
+	  	</label>
+	   	<label class='control-label pull-right'>
+	   		%　
+	  		<%# if @product.present? and @product.calculate_way == 1 %>
+	        <%= radio_button_tag('product[calculate_way]',1,:html=>{:checked=>'checked'}) %>
+	      <%# else %>
+	        <%#= radio_button_tag('product[calculate_way]',1) %>
+	      <%# end %>
+	   	</label>
+	    <div class='control-input'>
+	      <%= f.input_field :share_rate_total, class: 'form-control' %>
+	    </div>
+	  </div>
+	  <!-- <div class='form-group'>
+	  	<label class='control-label'>现金分成</label>
+	    <label class='control-label pull-right'>
+	    	元　
+	      <%# if @product.present? and @product.calculate_way == 0 %>
+	        <%#= radio_button_tag 'product[calculate_way]',0,:html=>{:checked=>'checked'} %>
+	      <%# else %>
+	        <%#= radio_button_tag 'product[calculate_way]',0 %>
+	      <%# end %>
+	    </label>
+	    <div class='control-input'>
+	      <%#= f.input_field :share_amount_total, class: 'form-control' %>
+	    </div>
+	  </div> -->
+	  <%= f.input :has_share_lv, as: :radio_buttons,
+	    collection: {'不分成'=>0,'1'=>1,'2'=>2,'3'=>3},
+	    item_wrapper_class: "radio-inline"
+	  %>
 
 		</div><!-- admin-box -->
 		<br  />
