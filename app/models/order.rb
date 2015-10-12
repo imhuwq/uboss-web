@@ -9,7 +9,7 @@ class Order < ActiveRecord::Base
   belongs_to :seller, class_name: "User"
   belongs_to :user_address
   has_many   :order_items
-  has_one    :order_charge, autosave: true
+  belongs_to :order_charge, autosave: true
   has_many   :divide_incomes
   has_many   :selling_incomes
   has_many   :sharing_incomes, through: :order_items

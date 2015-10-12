@@ -2,7 +2,7 @@ class OrderCharge < ActiveRecord::Base
 
   FAKE_PREPAY_ID = 'fake-prepay-id'
 
-  belongs_to :order
+  has_many :orders
 
   enum payment: { alipay: 0, alipay_wap: 1, alipay_qr: 2, wx: 3, wx_pub: 4, wx_pub_qr: 5, yeepay_wap: 6 }
 
