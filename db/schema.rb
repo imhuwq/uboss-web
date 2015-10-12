@@ -235,6 +235,16 @@ ActiveRecord::Schema.define(version: 20151012072302) do
     t.datetime "updated_at",          null: false
   end
 
+  create_table "product_property_values_products", id: false, force: :cascade do |t|
+    t.integer "product_id",                null: false
+    t.integer "product_property_value_id", null: false
+  end
+
+  create_table "product_propertys_products", id: false, force: :cascade do |t|
+    t.integer "product_id",          null: false
+    t.integer "product_property_id", null: false
+  end
+
   create_table "products", force: :cascade do |t|
     t.integer  "user_id"
     t.string   "name"

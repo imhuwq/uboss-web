@@ -16,6 +16,8 @@ class Product < ActiveRecord::Base
   has_one :asset_img, class_name: 'AssetImg', autosave: true, as: :resource
   has_many :product_share_issue, dependent: :destroy
   has_many :order_items
+  has_and_belongs_to_many :product_propertys
+  has_and_belongs_to_many :product_property_values
   has_many :product_inventories, dependent: :destroy
 
   delegate :image_url, to: :asset_img, allow_nil: true
@@ -28,6 +30,8 @@ class Product < ActiveRecord::Base
   before_create :generate_code
   before_save :set_share_rate
   after_save :calculate_shares
+
+  accepts_nested_attributes_for :product_inventories
 
   def self.official_agent
     find_by(user_id: User.official_account.try(:id), name: OFFICIAL_AGENT_NAME)

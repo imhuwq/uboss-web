@@ -1,0 +1,4 @@
+<div class='sku-pv'>
+  <%= @value %>
+  <a href='#' class="remove-pv">×</a>
+</div>

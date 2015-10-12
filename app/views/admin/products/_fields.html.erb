@@ -1,3 +1,10 @@
+<%= content_for :page_specific_javascript do %>
+  <script type="text/javascript" charset="utf-8">
+    propertyData = <%== ProductProperty.all.to_json(only: [:id, :name], include: {product_property_values: {only: [:id, :value]}}) %>
+  </script>
+  <%= javascript_include_tag 'sku_app/application' %>
+<% end %>
+
 <%= upyun_meta_tags prefix: 'asset_img/avatar' %>
 <div class="box-w50">
 	<div class="admin-box beige-bg-color">
@@ -33,6 +40,46 @@
 	</div>
 </div>
 <div class="box-w50">
+  <div class="admin-box beige-bg-color">
+    <h4 class="edit-title">库存/规格</h4>
+    <div id='product-sku'>
+      <p>规格</p>
+      <hr />
+      <div class="property-list">
+      </div>
+      <a class="btn btn-large add-property" href="#">添加规格</a>
+    </div>
+    <p>库存</p>
+    <br />
+    <table>
+      <thead>
+        <tr>
+          <th>Size</th>
+          <th>Color</th>
+          <th>价格</th>
+          <th>库存</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <input type="hidden" name="product[product_inventories_attributes][0][sku_attributes][Size]" value="M" />
+          <input type="hidden" name="product[product_inventories_attributes][0][sku_attributes][Color]" value="Black" />
+          <td rowspan='2'>M</td>
+          <td rowspan='1'>Black</td>
+          <td><input type="number" name="product[product_inventories_attributes][0][price]" value="100" /></td>
+          <td><input type="number" name="product[product_inventories_attributes][0][count]" value="100" /></td>
+        </tr>
+        <tr>
+          <input type="hidden" name="product[product_inventories_attributes][1][sku_attributes][Size]" value="M" />
+          <input type="hidden" name="product[product_inventories_attributes][1][sku_attributes][Color]" value="White" />
+          <td rowspan='1'>White</td>
+          <td><input type="number" name="product[product_inventories_attributes][1][price]" value="100" /></td>
+          <td><input type="number" name="product[product_inventories_attributes][1][count]" value="100" /></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <br />
 	<div class="admin-box beige-bg-color">
 	  <h4 class="edit-title">分成设置</h4>
 	  <div class='form-group'>
@@ -41,30 +88,12 @@
 	  	</label>
 	   	<label class='control-label pull-right'>
 	   		%　
-	  		<%# if @product.present? and @product.calculate_way == 1 %>
-	        <%= radio_button_tag('product[calculate_way]',1,:html=>{:checked=>'checked'}) %>
-	      <%# else %>
-	        <%#= radio_button_tag('product[calculate_way]',1) %>
-	      <%# end %>
+	    <%= hidden_field_tag('product[calculate_way]',1, html: {checked: 'checked'}) %>
 	   	</label>
 	    <div class='control-input'>
 	      <%= f.input_field :share_rate_total, class: 'form-control' %>
 	    </div>
 	  </div>
-	  <!-- <div class='form-group'>
-	  	<label class='control-label'>现金分成</label>
-	    <label class='control-label pull-right'>
-	    	元　
-	      <%# if @product.present? and @product.calculate_way == 0 %>
-	        <%#= radio_button_tag 'product[calculate_way]',0,:html=>{:checked=>'checked'} %>
-	      <%# else %>
-	        <%#= radio_button_tag 'product[calculate_way]',0 %>
-	      <%# end %>
-	    </label>
-	    <div class='control-input'>
-	      <%#= f.input_field :share_amount_total, class: 'form-control' %>
-	    </div>
-	  </div> -->
 	  <%= f.input :has_share_lv, as: :radio_buttons,
 	    collection: {'不分成'=>0,'1'=>1,'2'=>2,'3'=>3},
 	    item_wrapper_class: "radio-inline"
