@@ -26,7 +26,8 @@ class Product < ActiveRecord::Base
   scope :hots, -> { where(hot: true) }
 
   before_create :generate_code
-  before_save :calculates_before_save
+  before_save :set_share_rate
+  after_save :calculate_shares
 
   def self.official_agent
     find_by(user_id: User.official_account.try(:id), name: OFFICIAL_AGENT_NAME)
@@ -43,17 +44,17 @@ class Product < ActiveRecord::Base
     end
   end
 
-  def calculates_before_save
-    calculate_share_amount_total
-    set_share_rate
-    calculate_shares
-  end
+  # def calculates_after_save
+  #   calculate_share_amount_total
+  #   set_share_rate
+  #   calculate_shares
+  # end
 
-  def calculate_share_amount_total # 如果按比例进行分成，将分成比例换算成实质分成总金额
-    if calculate_way == 1
-      self.share_amount_total = ('%.2f' % (present_price * share_rate_total * 0.01)).to_f # 价格×总分成比例=总分成金额
-    end
-  end
+  # def calculate_share_amount_total(product_inventory) # 如果按比例进行分成，将分成比例换算成实质分成总金额
+  #   if calculate_way == 1
+  #     self.share_amount_total = ('%.2f' % (present_price * share_rate_total * 0.01)).to_f # 价格×总分成比例=总分成金额
+  #   end
+  # end
 
   def set_share_rate(*args) # 设置分成比例
     3.times do |index|
@@ -66,14 +67,25 @@ class Product < ActiveRecord::Base
     if has_share_lv != 0 # 参与分成的情况
       assigned_total = 0
 
-      3.times do |index|
-        level = index + 1
-        amount = (share_amount_total * self["share_rate_lv_#{level}"]).round(2)
-        __send__("share_amount_lv_#{level}=", amount)
-        assigned_total += amount
+      # 3.times do |index|
+      #   level = index + 1
+      #   amount = (share_amount_total * self["share_rate_lv_#{level}"]).round(2)
+      #   __send__("share_amount_lv_#{level}=", amount)
+      #   assigned_total += amount
+      # end
+      # self.privilege_amount = share_amount_total - assigned_total
+      reload
+      (product_inventories || {}).each do |obj|
+        obj.share_amount_total = ('%.2f' % (obj.price * share_rate_total * 0.01)).to_f
+        3.times do |index|
+          level = index + 1
+          amount = (obj.share_amount_total * self["share_rate_lv_#{level}"]).round(2)
+          obj.send("share_amount_lv_#{level}=", amount)
+          assigned_total += amount
+        end
+        obj.privilege_amount = obj.share_amount_total - assigned_total
+        obj.save
       end
-
-      self.privilege_amount = share_amount_total - assigned_total
     end
   end
 
@@ -97,20 +109,20 @@ class Product < ActiveRecord::Base
     #@inventory = ProductInventory.find_or_create_by(product_id: id)
     @inventory.update(
       sku_attributes:       hash,
-      count:                count,
+      # count:                count,
       user_id:              user_id,
       name:                 name,
-      price:                present_price,
-      share_amount_total:   share_amount_total,
-      share_amount_lv_1:    share_amount_lv_1,
-      share_amount_lv_2:    share_amount_lv_2,
-      share_amount_lv_3:    share_amount_lv_3,
-      share_rate_lv_1:      share_rate_lv_1,
-      share_rate_lv_2:      share_rate_lv_2,
-      share_rate_lv_3:      share_rate_lv_3,
-      share_rate_total:     share_rate_total,
-      calculate_way:        calculate_way,
-      privilege_amount:     privilege_amount
+      # price:                present_price,
+      # share_amount_total:   share_amount_total,
+      # share_amount_lv_1:    share_amount_lv_1,
+      # share_amount_lv_2:    share_amount_lv_2,
+      # share_amount_lv_3:    share_amount_lv_3,
+      # share_rate_lv_1:      share_rate_lv_1,
+      # share_rate_lv_2:      share_rate_lv_2,
+      # share_rate_lv_3:      share_rate_lv_3,
+      # share_rate_total:     share_rate_total,
+      # calculate_way:        calculate_way,
+      # privilege_amount:     privilege_amount
     )
   end
 
