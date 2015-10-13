@@ -107,7 +107,7 @@ class Order < ActiveRecord::Base
   end
 
   def update_pay_amount
-    update_column(:pay_amount, order_items.sum(:pay_amount))
+    update_column(:pay_amount, order_items.sum(:pay_amount) + ship_price)
   end
 
   def is_official_agent?

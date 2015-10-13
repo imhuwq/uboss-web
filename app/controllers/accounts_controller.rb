@@ -5,7 +5,8 @@ class AccountsController < ApplicationController
   before_action :authenticate_agent, only: [:send_message, :invite_seller, :edit_seller_note, :update_histroy_note]
 
   def show
-    @orders = append_default_filter account_orders, page_size: 10
+    type = params[:state] || "all"
+    @orders = append_default_filter account_orders(type), page_size: 10
     @privilege_cards = append_default_filter current_user.privilege_cards, order_column: :updated_at, page_size: 10
     render layout: 'mobile'
   end
@@ -194,8 +195,12 @@ class AccountsController < ApplicationController
 
   private
 
-  def account_orders
-    current_user.orders.includes(order_items: { product: :asset_img })
+  def account_orders(type)
+    if ["unpay", "payed", "shiped", "signed", "all"].include?(type)
+      current_user.orders.try(type).includes(order_items: { product_inventory: { product: :asset_img } })
+    else
+      raise "invalid orders state"
+    end
   end
 
   def authenticate_agent # 创客可以使用的action

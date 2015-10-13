@@ -1,67 +1,66 @@
-
 <div class="order-list" timestamp='<%= order.created_at %>'>
   <div class="seller-box">
-  	<span class="pull-right like-color">
-  	<% if order.state == 'unpay' %>
-			未付款
-	  <% elsif order.state == 'payed' %>
-			等待卖家发货
-	  <% elsif order.state == 'shiped' %>
-			卖家已发货
-	  <% elsif order.state == 'signed' %>
-	  	已签收
-	  <% elsif order.state == 'closed' %>
-	 	 	交易关闭
-	  <% elsif order.completed? %>
-	  	交易完成
-	  <% end %>
-	  </span>
-  	<div class="text-cut">商家：名称</div>
+    <span class="pull-right like-color">
+      <% if order.state == 'unpay' %>
+        未付款
+      <% elsif order.state == 'payed' %>
+        等待卖家发货
+      <% elsif order.state == 'shiped' %>
+        卖家已发货
+      <% elsif order.state == 'signed' %>
+        已签收
+      <% elsif order.state == 'closed' %>
+        交易关闭
+      <% elsif order.completed? %>
+        交易完成
+      <% end %>
+    </span>
+    <div class="text-cut">商家：名称</div>
   </div>
 
   <%= link_to order_path(order, showwxpaytitle: 1) do %>
     <% order.order_items.each do |order_item| %>
       <div class="order-box">
         <div class="cover">
-          <%= image_tag order_item.try(:product).try(:image_url, 'w120') %>
+          <%= image_tag order_item.try(:product_inventory).try(:product).try(:image_url, 'w120') %>
         </div><!-- order-cover -->
         <div class="content">
           <div class="price text-right gray-color">
             <p>￥单价</p>
             <p class="number gray-color">
-            	x<%= order_item.try(:amount) %>
-          	</p>
+              x<%= order_item.try(:amount) %>
+            </p>
           </div><!-- pull-right -->
           <div class="name">
-            <%= order_item.try(:product).try(:name) %>
+            <%= order_item.try(:product_inventory).try(:name) %>
           </div><!-- name -->
         </div><!-- content -->
       </div><!-- order-box -->
     <% end %>
   <% end %>
-	<div class="friend-info">
-		<div class="cover">
-			<img src="" title="用户头像"/>
-		</div>
-		<div class="content"><span class="pull-right red-color">-XX</span><span class="main-color">xxx</span> 帮你优惠</div>
-	</div><!-- friend-info -->
-  <div class="price-box 
-  	<% if order.state == 'closed' %>	
-  	 gray-color
-  	<% end %>
-  ">
-		合计：￥<%= order.pay_amount %><small class="gray-color">（包含运费：￥0.00）</small>
+  <div class="friend-info">
+    <div class="cover">
+      <img src="" title="用户头像"/>
+    </div>
+    <div class="content"><span class="pull-right red-color">-XX</span><span class="main-color">xxx</span> 帮你优惠</div>
+  </div><!-- friend-info -->
+  <div class="price-box
+    <% if order.state == 'closed' %>
+      gray-color
+    <% end %>
+    ">
+    合计：￥<%= order.pay_amount %><small class="gray-color">（包含运费：￥<%= order.ship_price %>）</small>
   </div><!-- price-box -->
-  
-	<% if order.state == 'unpay' %>
-	  <div class="order-info">
-    	<%= link_to "确认付款", order_path(order, showwxpaytitle: 1), class: 'my_retur my_confir btn btn-orange-border' %>
+
+  <% if order.state == 'unpay' %>
+    <div class="order-info">
+      <%= link_to "确认付款", order_path(order, showwxpaytitle: 1), class: 'my_retur my_confir btn btn-orange-border' %>
     </div><!-- order-info -->
   <% elsif order.state == 'shiped' %>
-  	<div class="order-info">
-	    <%= link_to "确认收货", received_order_path(order),
-	        class:"my_retur my_confir btn btn-orange-border", data: { confirm: '确认收货？' } %>
+    <div class="order-info">
+      <%= link_to "确认收货", received_order_path(order),
+        class:"my_retur my_confir btn btn-orange-border", data: { confirm: '确认收货？' } %>
     </div><!-- order-info -->
-  <% end %>	
-  
+  <% end %>
+
 </div>
