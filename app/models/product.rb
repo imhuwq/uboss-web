@@ -19,6 +19,8 @@ class Product < ActiveRecord::Base
   has_many :order_items
   has_many :product_inventories, dependent: :destroy
 
+  accepts_nested_attributes_for :product_inventories
+
   delegate :image_url, to: :asset_img, allow_nil: true
   delegate :avatar=, :avatar, to: :asset_img
 

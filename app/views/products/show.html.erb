@@ -152,7 +152,7 @@
   <% if @sharing_node.blank? %>
     <div class="sharer-info">
       <%#<%= link_to '立即购买', new_order_path(product_id: @product.id), class: 'btn pull-right' %>
-      <%= link_to '立即购买', '###', class: 'btn btn-right', id:"show_inventory" %>
+      <%= link_to '立即购买', 'javascript:;', class: 'btn', id:"show_inventory", style: 'float:right;' %>
       <% if current_user %>
         <%= link_to '加入购物车', 'javascript:;', class: 'js-add-cart btn pull-left'%>
       <% else %>
@@ -167,7 +167,7 @@
         <%= image_tag @sharing_node.user.avatar_url(:thumb), class: 'prvd_header' %>
       </div>
       <%#= link_to '立即购买', new_order_path(product_id: @product.id), class: 'btn pull-right'%>
-      <%= link_to '立即购买', '###', class: 'btn btn-block', id:"show_inventory" %>
+      <%= link_to '立即购买', 'javascript:;', class: 'btn', id:"show_inventory" %>
       <div class="content">
         <p>分享者：<%= @sharing_node.user.identify %></p>
         <p>好评率：<%= Evaluation.sharer_good_reputation_rate(@sharing_node.user) %></p>
