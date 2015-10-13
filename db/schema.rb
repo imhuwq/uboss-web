@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151012072302) do
+ActiveRecord::Schema.define(version: 20151013041804) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -164,6 +164,10 @@ ActiveRecord::Schema.define(version: 20151012072302) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "json_test", force: :cascade do |t|
+    t.jsonb "data"
+  end
+
   create_table "mobile_captchas", force: :cascade do |t|
     t.string   "code"
     t.datetime "expire_at"
@@ -221,10 +225,10 @@ ActiveRecord::Schema.define(version: 20151012072302) do
     t.datetime "signed_at"
     t.datetime "shiped_at"
     t.datetime "completed_at"
-    t.string   "to_seller"
-    t.decimal  "ship_price",      default: 0.0
     t.string   "ship_number"
     t.integer  "express_id"
+    t.string   "to_seller"
+    t.decimal  "ship_price",      default: 0.0
     t.integer  "order_charge_id"
   end
 
@@ -245,10 +249,11 @@ ActiveRecord::Schema.define(version: 20151012072302) do
 
   create_table "privilege_cards", force: :cascade do |t|
     t.integer  "user_id"
-    t.datetime "created_at",                 null: false
-    t.datetime "updated_at",                 null: false
-    t.boolean  "actived",    default: false
+    t.datetime "created_at",                           null: false
+    t.datetime "updated_at",                           null: false
+    t.boolean  "actived",              default: false
     t.integer  "seller_id"
+    t.integer  "product_inventory_id"
   end
 
   create_table "product_classes", force: :cascade do |t|
