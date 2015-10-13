@@ -84,7 +84,10 @@ class StockSku.Views.Property extends Backbone.View
           if not fullMatch
             data.results.unshift({id: query.term, value: query.term})
         else
-          data.results = @selectablePVs
+          if @selectablePVs.length == 0
+            data.results.push({id: query.term, value: query.term})
+          else
+            data.results = @selectablePVs
         query.callback(data)
 
     @pvSelect2.on 'change', (event) =>
@@ -118,8 +121,9 @@ class StockSku.Views.Property extends Backbone.View
 
     @ppSelect2.on 'change', (event) =>
       @model.set('id', event.val)
+      @model.set('name', event.added.name)
       if _.findLastIndex(StockSku.Data.propertyData, { id: Number(event.val) }) == -1
-        StockSku.Data.propertyData.push(id: event.val, name: event.val)
+        StockSku.Data.propertyData.push(id: event.val, name: event.val, product_property_values: [])
 
   clear: (e)->
     e.preventDefault()

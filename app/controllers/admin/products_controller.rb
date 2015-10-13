@@ -14,7 +14,6 @@ class Admin::ProductsController < AdminController
   def create
     @product.user_id = current_user.id
     if @product.save
-      #@product.save_product_properties({product_params[:property] => product_params[:property_value]})
       flash[:success] = '产品创建成功'
       redirect_to action: :show, id: @product.id
     else
@@ -24,9 +23,7 @@ class Admin::ProductsController < AdminController
   end
 
   def update
-    binding.pry
     if @product.present? && @product.user_id == current_user.id && @product.update(product_params)
-      #@product.save_product_properties({product_params[:property] => product_params[:property_value]})
       flash[:success] = '保存成功'
     else
       flash[:error] = "保存失败。#{@product.errors.full_messages.join('<br/>')}"
@@ -79,6 +76,10 @@ class Admin::ProductsController < AdminController
 
   private
 
+  def product_propertys_params
+    params.permit(product_propertys_names: [])
+  end
+
   def product_params
     params.require(:product).permit(
       :name,               :original_price,    :present_price, :count,
@@ -88,7 +89,9 @@ class Admin::ProductsController < AdminController
       :share_rate_lv_2,    :share_rate_lv_3,   :buyer_pay,
       :traffic_expense,    :short_description, :property,
       :property_value,
-      product_inventories_attributes: [:id, :price, :count, sku_attributes: [:Color, :Size]]
+      product_inventories_attributes: [
+        :id, :price, :count, sku_attributes: product_propertys_params[:product_propertys_names]
+      ]
     )
   end
 end

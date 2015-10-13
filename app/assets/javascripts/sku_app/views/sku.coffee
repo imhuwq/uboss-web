@@ -8,29 +8,21 @@ class StockSku.Views.Sku extends Backbone.View
     'click .add-property': 'addProperty'
 
   initialize: ->
-    @collection.bind 'reset', =>
-      @addAll()
-    @collection.bind 'add', (property) =>
-      @addOne(property)
+    @listenTo @collection, 'add', @addOne
+    @listenTo @collection, 'remove', @renderSku
 
   addProperty: (e) ->
     e.preventDefault()
-    console.log 'addProperty'
+    console.log 'add Property'
     newPropertyValues = new StockSku.Collections.PropertyValues
     newProperty = @collection.create(values: newPropertyValues)
-    @listenTo newProperty, 'destroy', @propertyDestoryed
-    @listenTo newPropertyValues, 'add', @renderSku
+    @listenTo newPropertyValues, 'add',    @renderSku
     @listenTo newPropertyValues, 'remove', @renderSku
 
   addOne: (property) =>
     propertyView = new StockSku.Views.Property(model: property, skuView: @)
     @.$('.property-list').append propertyView.render().el
 
-  addAll: =>
-    @collection.each @addOne, @
-
   renderSku: ->
-    console.log 'renderSKU'
-
-  propertyDestoryed: ->
-    console.log 'remove one property in sku'
+    console.log 'render stock'
+    StockSku.stock_view.trigger('skuchange', @collection)
