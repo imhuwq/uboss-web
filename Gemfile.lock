@@ -523,7 +523,7 @@ DEPENDENCIES
   redis-rails
   sanitize
   sass-rails (~> 5.0)
-  select2-rails
+  select2-rails (~> 3.5.9.1)
   sidekiq
   sidekiq-failures
   simple_captcha2

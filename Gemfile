@@ -40,7 +40,7 @@ gem 'redactor-rails', github: 'xEasy/redactor-rails'
 gem "jquery-fileupload-rails"
 gem 'font-awesome-sass', '~> 4.4.0'
 gem 'eco'
-gem "select2-rails"
+gem "select2-rails", '~> 3.5.9.1'
 
 # See https://github.com/rails/execjs#readme for more supported runtimes
 gem 'therubyracer', platforms: :ruby
