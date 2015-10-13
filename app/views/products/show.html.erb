@@ -154,7 +154,7 @@
       <%#<%= link_to '立即购买', new_order_path(product_id: @product.id), class: 'btn pull-right' %>
       <%= link_to '立即购买', 'javascript:;', class: 'btn', id:"show_inventory", style: 'float:right;' %>
       <% if current_user %>
-        <%= link_to '加入购物车', 'javascript:;', class: 'js-add-cart btn pull-left'%>
+        <%= link_to '加入购物车', 'javascript:;', class: 'btn pull-left', id: 'show_inventory_cart'%>
       <% else %>
         <%= link_to '加入购物车', '/cart_items', class: 'btn pull-left', method: 'post'%>
       <% end %>
@@ -286,7 +286,7 @@
     </div>
 
     <div class="done">
-      <a class="btn" id="make_order">确定</a>
+      <a class="btn" id="confirm-inventory">确定</a>
     </div>
   </div>
   <div style="clear: both;"></div>

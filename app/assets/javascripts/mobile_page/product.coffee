@@ -41,3 +41,36 @@ $ ->
 
   $(document).on 'ajaxError', '.like-product-btn', () ->
     alert "操作失败"
+
+  $('#show_inventory_cart').on 'click', ->
+    $('#confirm-inventory').removeClass('buy-now')
+    $('#confirm-inventory').addClass('add-to-cart')
+    showInventory()
+
+  $('#show_inventory').on 'click', ->
+    $('#confirm-inventory').removeClass('add-to-cart')
+    $('#confirm-inventory').addClass('buy-now')
+    showInventory()
+
+  showInventory = ->
+    $('#inventory').removeClass('hidden')
+    $('.fixed-container').css('-webkit-filter', 'blur(3px)')
+
+  $('.sku').on 'click', ->
+    console.log($(this).attr('id'));
+    product_inventory_id = $(this).attr('id')
+    $('#product_inventory_id').val(product_inventory_id);
+    $('.item_click').removeClass('item_click')
+    $(this).addClass('item_click')
+    $('#price_range').addClass('hidden')
+    $('.real_price').addClass('hidden')
+    $("#price_#{product_inventory_id}").removeClass('hidden')
+
+  $('#confirm-inventory').on 'click', ->
+    product_inventory_id = $('#product_inventory_id').val();
+    if product_inventory_id == ''
+      alert "请勾选您要的商品信息！"
+    else
+      want_buy = confirm "确认购买么？"
+      if want_buy
+          $('.product_inventory').submit()

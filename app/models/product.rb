@@ -119,6 +119,40 @@ class Product < ActiveRecord::Base
     end
   end
 
+  def save_product_properties(hash = {})
+    hash.each do |k, v|
+      @property = ProductProperty.find_or_create_by(name: k)
+      @property_value = ProductPropertyValue.find_or_create_by(product_property_id: @property.id, value: v)
+    end
+     @inventory = ProductInventory.where('product_id = ? and sku_attributes = ?', id, hash.to_json).first
+     unless @inventory.present?
+       @inventory = ProductInventory.create(product_id: id, sku_attributes: hash)
+     end
+    #@inventory = ProductInventory.find_or_create_by(product_id: id)
+    @inventory.update(
+      sku_attributes:       hash,
+      # count:                count,
+      user_id:              user_id,
+      name:                 name,
+      # price:                present_price,
+      # share_amount_total:   share_amount_total,
+      # share_amount_lv_1:    share_amount_lv_1,
+      # share_amount_lv_2:    share_amount_lv_2,
+      # share_amount_lv_3:    share_amount_lv_3,
+      # share_rate_lv_1:      share_rate_lv_1,
+      # share_rate_lv_2:      share_rate_lv_2,
+      # share_rate_lv_3:      share_rate_lv_3,
+      # share_rate_total:     share_rate_total,
+      # calculate_way:        calculate_way,
+      # privilege_amount:     privilege_amount
+    )
+  end
+
+  def convert_into_cart_item(buy_count, sharing_code)
+    sharing_node = SharingNode.find_by(code: sharing_code)
+    {}.merge({ user => [CartItem.new(product_id: id, seller_id: user_id, count: buy_count, sharing_node_id: sharing_node)] })
+  end
+
   private
 
   def get_shraing_rate(sharing_level, rate_level)
