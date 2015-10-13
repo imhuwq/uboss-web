@@ -13,7 +13,7 @@ class StockSku.Views.Property extends Backbone.View
   initialize: ->
     @propertyValues = @model.get('values')
     window.pvs = @propertyValues
-    @listenTo @model, 'change:id', @newProperty
+    @listenTo @model, 'change:name', @newProperty
     @listenTo @model, 'destroy', @removeProperty
     @listenTo @propertyValues, 'add', @addPropertyValue
     @setSelPVs()
@@ -25,7 +25,7 @@ class StockSku.Views.Property extends Backbone.View
 
   showPVSel: (e)->
     e.preventDefault()
-    if !!@model.get('id')
+    if !!@model.get('name')
       @.$('.pv-sel-group').show()
     else
       alert('请选择一个规格')
@@ -41,7 +41,7 @@ class StockSku.Views.Property extends Backbone.View
     @pvSelect2.select2('val', '')
 
   setSelPVs: ->
-    pIndex = _.findLastIndex(StockSku.Data.propertyData, { id: Number(@model.get('id')) })
+    pIndex = _.findLastIndex(StockSku.Data.propertyData, { name: @model.get('name') })
     @selectablePVs = if pIndex != -1
       StockSku.Data.propertyData[pIndex].product_property_values
     else
@@ -66,10 +66,9 @@ class StockSku.Views.Property extends Backbone.View
   initSelect: ->
     @pvSelect2 = @.$('input.pv-sel').select2
       width: 200
-      formatSelection: (item) ->
-        item.value
-      formatResult: (item) ->
-        item.value
+      id: (item) -> item.value
+      formatSelection: (item) -> item.value
+      formatResult: (item) -> item.value
       allowClear: true
       multiple: true
       query: (query) =>
@@ -93,16 +92,15 @@ class StockSku.Views.Property extends Backbone.View
     @pvSelect2.on 'change', (event) =>
       addedData = event.added
       return false unless addedData?
-      if _.findLastIndex(@selectablePVs, { id: Number(addedData.id) }) == -1
+      if _.findLastIndex(@selectablePVs, { value: addedData.value }) == -1
         console.log 'add new propertyValue'
-        @selectablePVs.push(id: addedData.value, value: addedData.value)
+        @selectablePVs.push(value: addedData.value)
 
     @ppSelect2 = @.$('input.property-inp').select2
       width: 200
-      formatSelection: (item) ->
-        item.name
-      formatResult: (item) ->
-        item.name
+      id: (item) -> item.name
+      formatSelection: (item) -> item.name
+      formatResult: (item) -> item.name
       query: (query) ->
         data = {results: [], text: 'name'}
         if query.term.length > 0
@@ -120,10 +118,9 @@ class StockSku.Views.Property extends Backbone.View
         query.callback(data)
 
     @ppSelect2.on 'change', (event) =>
-      @model.set('id', event.val)
       @model.set('name', event.added.name)
-      if _.findLastIndex(StockSku.Data.propertyData, { id: Number(event.val) }) == -1
-        StockSku.Data.propertyData.push(id: event.val, name: event.val, product_property_values: [])
+      if _.findLastIndex(StockSku.Data.propertyData, { name: event.val }) == -1
+        StockSku.Data.propertyData.push(name: event.val, product_property_values: [])
 
   clear: (e)->
     e.preventDefault()

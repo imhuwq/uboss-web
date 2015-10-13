@@ -173,7 +173,7 @@ class Order < ActiveRecord::Base
 
   def send_payed_sms_to_seller
     if seller
-      PostMan.send_sms(seller.login, {name: seller.identify}, 968369)
+      PostMan.delay.send_sms(seller.login, {name: seller.identify}, 968369)
     end
   end
 
