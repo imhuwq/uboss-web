@@ -2,8 +2,6 @@ class Product < ActiveRecord::Base
   include Orderable
   include Descriptiontable
 
-  attr_accessor :property, :property_value
-
   OFFICIAL_AGENT_NAME = 'UBOSS创客权'.freeze
 
   # FIXME: 请使用helper or i18n 做view的数值显示
@@ -31,6 +29,8 @@ class Product < ActiveRecord::Base
   before_create :generate_code
   before_save :set_share_rate
   after_save :calculate_shares
+
+  accepts_nested_attributes_for :product_inventories, reject_if: proc { |attributes| attributes['count'].to_i < 1 }
 
   def self.official_agent
     find_by(user_id: User.official_account.try(:id), name: OFFICIAL_AGENT_NAME)
@@ -79,6 +79,9 @@ class Product < ActiveRecord::Base
       # self.privilege_amount = share_amount_total - assigned_total
       reload
       (product_inventories || {}).each do |obj|
+        #
+        # FIXME 不要使用没有意义的变量名(obj, x, y, z ....)
+        #
         obj.share_amount_total = ('%.2f' % (obj.price * share_rate_total * 0.01)).to_f
         3.times do |index|
           level = index + 1
@@ -114,35 +117,6 @@ class Product < ActiveRecord::Base
     else
       0.0
     end
-  end
-
-  def save_product_properties(hash = {})
-    hash.each do |k, v|
-      @property = ProductProperty.find_or_create_by(name: k)
-      @property_value = ProductPropertyValue.find_or_create_by(product_property_id: @property.id, value: v)
-    end
-     @inventory = ProductInventory.where('product_id = ? and sku_attributes = ?', id, hash.to_json).first
-     unless @inventory.present?
-       @inventory = ProductInventory.create(product_id: id, sku_attributes: hash)
-     end
-    #@inventory = ProductInventory.find_or_create_by(product_id: id)
-    @inventory.update(
-      sku_attributes:       hash,
-      # count:                count,
-      user_id:              user_id,
-      name:                 name,
-      # price:                present_price,
-      # share_amount_total:   share_amount_total,
-      # share_amount_lv_1:    share_amount_lv_1,
-      # share_amount_lv_2:    share_amount_lv_2,
-      # share_amount_lv_3:    share_amount_lv_3,
-      # share_rate_lv_1:      share_rate_lv_1,
-      # share_rate_lv_2:      share_rate_lv_2,
-      # share_rate_lv_3:      share_rate_lv_3,
-      # share_rate_total:     share_rate_total,
-      # calculate_way:        calculate_way,
-      # privilege_amount:     privilege_amount
-    )
   end
 
   private

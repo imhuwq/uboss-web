@@ -1,8 +1,0 @@
-<% if @posts.length: %>
-  <% for post in @posts: %>
-    <a href=""><%= post.title %></a>
-    <p><%= post.content %></p>
-  <% end %>
-<% else: %>
-  No posts
-<% end %>

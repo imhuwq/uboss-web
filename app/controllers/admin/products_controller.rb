@@ -1,5 +1,3 @@
-# encoding:utf-8
-# 自定义管理系统
 class Admin::ProductsController < AdminController
 
   load_and_authorize_resource
@@ -20,7 +18,6 @@ class Admin::ProductsController < AdminController
   def create
     @product.user_id = current_user.id
     if @product.save
-      @product.save_product_properties({product_params[:property] => product_params[:property_value]})
       flash[:success] = '产品创建成功'
       redirect_to action: :show, id: @product.id
     else
@@ -31,7 +28,6 @@ class Admin::ProductsController < AdminController
 
   def update
     if @product.present? && @product.user_id == current_user.id && @product.update(product_params)
-      @product.save_product_properties({product_params[:property] => product_params[:property_value]})
       flash[:success] = '保存成功'
     else
       flash[:error] = "保存失败。#{@product.errors.full_messages.join('<br/>')}"
@@ -84,6 +80,10 @@ class Admin::ProductsController < AdminController
 
   private
 
+  def product_propertys_params
+    params.permit(product_propertys_names: [])
+  end
+
   def product_params
     params.require(:product).permit(
       :name,                 :original_price,    :present_price, :count,
@@ -92,7 +92,10 @@ class Admin::ProductsController < AdminController
       :share_amount_lv_3,    :share_rate_total,  :share_rate_lv_1,
       :share_rate_lv_2,      :share_rate_lv_3,   :buyer_pay,
       :traffic_expense,      :short_description, :transportation_way,
-      :carriage_template_id, :property,          :property_value
+      :carriage_template_id,
+      product_inventories_attributes: [
+        :id, :price, :count, sku_attributes: product_propertys_params[:product_propertys_names]
+      ]
     )
   end
 end

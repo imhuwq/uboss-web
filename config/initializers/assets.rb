@@ -11,6 +11,6 @@ Rails.application.config.assets.version = '1.0'
 
 Rails.application.config.assets.precompile += %w(
 desktop.css desktop.js admin.js admin.css login.js login.css mobile.css mobile.js
-jcrop/jquery.Jcrop.js jcrop/ajaxfileupload.js jcrop/jquery.Jcrop.css redactor-rails/*
-marketing.css redactor-rails/* marketing.js admin/product_class_attribute.js
+marketing.css redactor-rails/* marketing.js
+sku_app/application.js
 )
