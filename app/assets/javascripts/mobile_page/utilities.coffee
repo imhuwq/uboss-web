@@ -40,9 +40,6 @@ $ ->
       else
         disabledLoadMore(element)
 
-  $('#load-more').waypoint(waypointHandler, offset: '100%')
-
-
 
   $('#show_inventory').on 'click', ->
     $('#inventory').removeClass('hidden');
