@@ -43,7 +43,7 @@
           </div>
           <% cart_items.each do |cart_item| %>
             <div class="order-box">
-              <div class="cover"><%= image_tag(url_for(cart_item.image_url),  alt: "-", style: "width:52px;") %></div>
+              <div class="cover"><%= image_tag(url_for(cart_item.image_url),  alt: "-") %></div>
               <div class="content">
               	<div class="price">
               		 <p>￥<span class="product-price"><%= cart_item.present_price %></span></p>
@@ -164,7 +164,7 @@
   <div id="address-list-box" class="hidden">
     <div class="address-title">
       <span>收货地址列表</span>
-      <div class="close">x</div>
+      <div class="close"></div>
     </div>
     <div class="address-list">
 	  <% if @order_form.buyer %>
@@ -184,7 +184,7 @@
   <div id="address-new" class="hidden">
 		<div class="address-title">
       <span>填写新地址</span>
-      <div class="close">x</div>
+      <div class="close"></div>
     </div>
 	  <table>
 	      <tr>

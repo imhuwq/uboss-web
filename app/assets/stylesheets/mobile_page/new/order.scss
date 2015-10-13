@@ -212,11 +212,12 @@
 .address-box{
     padding:18px 10px 18px 24px ;
     background: image-url('mobile/local.png') #fff no-repeat;
-    background-position:10px 25px ;
+    background-position:10px 21.5px ;
     background-size: 7px;
     color: #888;
     font-size: 13px;
     line-height: 20px;
+    span{ vertical-align: top;}
     .content{
         padding-right:40px ;
         background:image-url('mobile/right.png') no-repeat right center ;
@@ -243,23 +244,25 @@
     left: 0;
     z-index: 100;
     background: #f6f6f6;
+    -webkit-animation: leftIn .3s linear ;
     animation: leftIn .3s linear ;
+    span{vertical-align: top;line-height: 20px;}
     .address-box { 
         padding: 10px 10px 10px 24px;
         border-bottom: 1px solid #f6f6f6;
-        background-position:10px 15px ;
+        background-position:10px 13.5px ;
     }
 }
 .address-list{
     height: 100%;
     padding: 42px 0;
     box-sizing: border-box;
-    overflow: scroll;
+    overflow-y: scroll;
 }
 .address-title{
     background: #fff;
     padding: 10px 0;
-    font-size: 15px;
+    font-size: 20px;
     text-align: center;
     border-bottom: 1px solid #ddd;
     position: fixed;
@@ -269,14 +272,19 @@
     left: 0;
     z-index: 200;
     line-height: 20px;    
+    -webkit-animation: leftIn .3s linear;
     animation: leftIn .3s linear ;
     .close{
         padding: 10px;
+        height: 18px;
+        width: 18px;
         position: fixed; 
         right: 0;
         top: 0;
-        font-size: 20px;
+        background:image-url('mobile/close.png') no-repeat center center ;
+        background-size:15px ;
         color: #444;
+        -webkit-animation: fadeIn .3s linear;
         animation: fadeIn .3s linear ;
     }
 }
@@ -292,7 +300,9 @@
     z-index: 200;
     line-height: 20px;
     text-align: center;
+    -webkit-animation: leftIn .3s linear;
     animation: leftIn .3s linear ;
+    span{vertical-align: top;line-height: 20px;}
 }
 
 #address-new{
@@ -308,6 +318,7 @@
     box-sizing: border-box;
     padding: 47px 10px 20px;
     animation: leftIn .3s linear ;
+    -webkit-animation: leftIn .3s linear;
     td{ border-bottom: 1px solid #f6f6f6;}
     input,select{
         border: none;
@@ -319,6 +330,18 @@
         background: none;
         
     }
+}
+
+@-webkit-keyframes leftIn{
+0%{
+    left: 100%;
+}
+50%{
+    left: 50%;
+}
+100% {
+    left: 0%;
+}
 }
 @keyframes leftIn
 {

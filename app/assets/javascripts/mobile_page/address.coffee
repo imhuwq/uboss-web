@@ -13,6 +13,14 @@ $ ->
   $('#address-new .close').on 'click',->
     $('#address-new').addClass('hidden')
   
+  $('#address-list-box .address-box').on 'click',->
+    user=$(this).find('.adr-user').text()
+    mobile=$(this).find('.adr-mobile').text()
+    detail=$(this).find('.adr-detail').text()
+    fillNewOrderAddressInfo(user, mobile, detail)
+    $('#address-list-box').addClass('hidden')
+    $('html,body').removeClass('lock')
+  
   $('#address-new .btn').on 'click', (event)->
     event.preventDefault()
     user = $('#order_form_deliver_username').val()
