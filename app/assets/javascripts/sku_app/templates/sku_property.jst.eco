@@ -1,5 +1,5 @@
 <h3>
-  <input class='property-inp' type='text' value=<%= @property.get('id') %>></input>
+  <input class='property-inp' type='text' value=<%= @property.get('id') %> >
   <span><%= @property.get('id') %></span>
   <a href='#' class="remove-property">×</a>
 </h3>
@@ -9,7 +9,7 @@
   <div class='add-pv-group'>
     <a class='show-sel-group btn btn-small' href='#'>+</a>
     <div class='pv-sel-group' style='display:none;'>
-      <input class='pv-sel' type='text'></input>
+      <input class='pv-sel' type='text' >
       <a class='add-pv btn btn-small' href='#'>确定</a>
       <a class='cancel-sel btn btn-small' href='#'>取消</a>
     </div>

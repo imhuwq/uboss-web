@@ -7,7 +7,7 @@
         <% for property in @propertys: %>
           <th>
             <% ppId = new Date().getTime() %>
-            <input type='hidden' name="product_propertys_names[]" value=<%= property %>></input>
+            <input type='hidden' name="product_propertys_names[]" value=<%= property %>>
             <%= property %>
           </th>
         <% end %>
@@ -21,13 +21,13 @@
         <tr>
           <% for pvIndex in [1..@property_length]: %>
             <% pvalue = @getPVByIndex(skuIndex, pvIndex) %>
-            <input type="hidden" name=<%= @getPVInputName(pvIndex, skuPVId + skuIndex) %> value=<%= pvalue %> />
+            <input type="hidden" name=<%= @getPVInputName(pvIndex, skuPVId + skuIndex) %> value=<%= pvalue %> >
             <% if 1==1: %>
               <td rowspan='1'><%= pvalue %></td>
             <% end %>
           <% end %>
-          <td><input type='number' name="product[product_inventories_attributes][<%= skuPVId + skuIndex %>][price]"></input></td>
-          <td><input type='number' name="product[product_inventories_attributes][<%= skuPVId + skuIndex %>][count]"></input></td>
+          <td><input type='number' name="product[product_inventories_attributes][<%= skuPVId + skuIndex %>][price]" ></td>
+          <td><input type='number' name="product[product_inventories_attributes][<%= skuPVId + skuIndex %>][count]" ></td>
         </tr>
       <% end %>
     </tbody>
