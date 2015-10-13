@@ -49,6 +49,10 @@ class OrderForm
     @product ||= Product.find(self.product_id)
   end
 
+  def product_inventory
+    @product_inventory ||= ProductInventory.find(self.product_inventory_id)
+  end
+
   def sharing_node
     return @sharing_node if @sharing_node.present?
     @sharing_node = SharingNode.find_by(code: self.sharing_code)
@@ -60,9 +64,9 @@ class OrderForm
 
   def real_price
     if sharing_node.present?
-      product.present_price.to_f.to_d - sharing_node.privilege_amount.to_f.to_d
+      product_inventory.price.to_f.to_d - sharing_node.privilege_amount.to_f.to_d
     else
-      product.present_price.to_f.to_d
+      product_inventory.price.to_f.to_d
     end
   end
 
@@ -113,7 +117,7 @@ class OrderForm
 
   def create_order_and_order_item
     self.order =
-      if product_id
+      if product_id.present?
         Order.create!({
           user: buyer,
           seller: product.user,
@@ -131,7 +135,7 @@ class OrderForm
 
   def order_items_attributes
     @order_items ||= [{
-      product: product,
+      product_inventory: product_inventory,
       user: buyer,
       amount: amount,
       sharing_node: sharing_node
@@ -158,7 +162,7 @@ class OrderForm
     items = cart_items.select { |item| item.seller_id == seller_id }
 
     return items.collect { |item| {
-      product_id: item.product_id,
+      product_inventory_id: item.product_inventory_id,
       user: buyer,
       amount: item.count,
       sharing_node: item.sharing_node
@@ -170,11 +174,11 @@ class OrderForm
   end
 
   def check_product_account
-    if product_id
-      errors.add(:amount, :invalid) if amount.to_i > product.reload.count
+    if product_id.present?
+      errors.add(:amount, :invalid) if amount.to_i > product_inventory.reload.count
     elsif seller_ids
       cart_items.each do |cart_item|
-        errors.add(:amount, :invalid) if cart_item.count > cart_item.product.reload.count
+        errors.add(:amount, :invalid) if cart_item.count > cart_item.product_inventory.reload.count
       end
     end
   end

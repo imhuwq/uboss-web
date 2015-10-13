@@ -38,14 +38,15 @@ class OrdersController < ApplicationController
     @order_form = OrderForm.new(
       buyer: current_user,
       product_id: params[:product_id],
-      product_inventory_id: (params[:product_inventory_id] || 1),
+      product_inventory_id: params[:product_inventory_id],     # TODO 创客权需要设置一个默认的product_inventory
       amount: params[:amount] || 1
     )
 
-    if params[:product_id]  # 直接购买
+    if params[:product_id].present?  # 直接购买
       @product = @order_form.product
+      @productInventory = @order_form.product_inventory
       @order_form.sharing_code = get_product_or_store_sharing_code(@product)
-      @products_group_by_seller = @product.convert_into_cart_item(@order_form.amount, @order_form.sharing_code)
+      @products_group_by_seller = @productInventory.convert_into_cart_item(@order_form.amount, @order_form.sharing_code)
 
       if @product.is_official_agent? && current_user && current_user.is_agent?
         flash[:error] = "您已经是UBOSS创客，请勿重复购买"
@@ -69,7 +70,7 @@ class OrdersController < ApplicationController
   end
 
   def create
-    unless params[:order_form][:product_id]
+    unless params[:order_form][:product_id].present?
       cart = current_cart
       cart_item_ids = session[:cart_item_ids]
       cart_items = cart.cart_items.find(cart_item_ids)
@@ -86,13 +87,13 @@ class OrdersController < ApplicationController
       )
     )
 
-    if @order_form.product_id
+    if @order_form.product_id.present?
       @order_form.sharing_code = get_product_or_store_sharing_code(@order_form.product)
     end
 
     if @order_form.save
       sign_in(@order_form.buyer) if current_user.blank?
-      clean_current_cart unless params[:order_form][:product_id]
+      clean_current_cart unless params[:order_form][:product_id].present?
       @order_title = '确认订单'
       #redirect_to order_path(@order_form.order, showwxpaytitle: 1)
       redirect_to payments_charge_path(OrderCharge.last)

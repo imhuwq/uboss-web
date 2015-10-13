@@ -14,7 +14,8 @@ class Product < ActiveRecord::Base
   belongs_to :carriage_template
   has_one :asset_img, class_name: 'AssetImg', autosave: true, as: :resource
   has_many :product_share_issue, dependent: :destroy
-  has_many :order_items
+  has_many :cart_items,  through: :product_inventories
+  has_many :order_items, through: :product_inventories
   has_many :product_inventories, dependent: :destroy
 
   accepts_nested_attributes_for :product_inventories
@@ -103,10 +104,6 @@ class Product < ActiveRecord::Base
     order_items.joins(:order).where('orders.state > 2 AND orders.state <> 5').sum(:amount)
   end
 
-  def published?
-    status == 'published'
-  end
-
   def calculate_ship_price(count, user_address)
     if transportation_way == 1
       traffic_expense.to_f
@@ -146,11 +143,6 @@ class Product < ActiveRecord::Base
       # calculate_way:        calculate_way,
       # privilege_amount:     privilege_amount
     )
-  end
-
-  def convert_into_cart_item(buy_count, sharing_code)
-    sharing_node = SharingNode.find_by(code: sharing_code)
-    {}.merge({ user => [CartItem.new(product_id: id, seller_id: user_id, count: buy_count, sharing_node_id: sharing_node)] })
   end
 
   private

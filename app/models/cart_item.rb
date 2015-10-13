@@ -1,13 +1,13 @@
 class CartItem < ActiveRecord::Base
   belongs_to :cart
-  belongs_to :product
+  belongs_to :product_inventory
   belongs_to :seller, class_name: "User"
   belongs_to :sharing_node
 
-  validates_presence_of   :cart_id, :product_id, :seller_id
-  validates_uniqueness_of :product_id, scope: :cart_id
+  validates_presence_of   :cart_id, :product_inventory_id, :seller_id
+  validates_uniqueness_of :product_inventory_id, scope: :cart_id
 
-  delegate :image_url, :name, :original_price, :present_price, to: :product
+  delegate :name, :price, to: :product_inventory
 
   before_save :check_count
 
@@ -22,24 +22,27 @@ class CartItem < ActiveRecord::Base
   end
 
   def self.valid_items(cart_items)
-    cart_items.map{ |cart_item| cart_item if cart_item.product_valid? }.compact
+    cart_items.map{ |cart_item| cart_item if cart_item.product_inventory_valid? }.compact
   end
 
   def self.invaild_items(cart_items)
     cart_items - valid_items(cart_items)
   end
 
+  def image_url
+    product_inventory.product.image_url
+  end
+
   def total_price
-    present_price*count
+    price*count
   end
 
-  def product_valid?
-    product.published? && check_count
+  def product_inventory_valid?
+    product_inventory.published? && check_count
   end
 
-  private
   def check_count
-    if count <= 0 || count > product.reload.count
+    if count <= 0 || count > product_inventory.reload.count
       errors.add(:count, :invalid)
       return false
     else

@@ -1,26 +1,4 @@
 $ ->
-  # 加入购物车 TODO
-  $('.js-add-cart').on 'click', (e)->
-    e.preventDefault()
-    product_id = Number($("input[name='product[id]']").val())
-    count = Number($("input[name='product[count]']").val())
-
-    if count >= 1
-      $.ajax
-        url: '/cart_items'
-        type: 'POST'
-        data: {product_id: product_id, count: count}
-        success: (res) ->
-          if res['status'] == "ok"
-            alert('添加成功，购物车有'+res['cart_items_count']+'件商品')
-            # TODO do something. 购物车标记空与不空
-          else
-            location.reload()
-            alert(res['message'])
-        error: (data, status, e) ->
-          alert("ERROR")
-    else
-      alert "请填写正确的商品数量"
 
   $(document).on 'ajaxSuccess', '.like-product-btn', (event, xhr, settings, data) ->
     flash_content = $('<div class="pop-alert flash_css"><div class="pop-content"></div>')
@@ -46,11 +24,13 @@ $ ->
     $('#confirm-inventory').removeClass('buy-now')
     $('#confirm-inventory').addClass('add-to-cart')
     showInventory()
+    bindAddToCartBtn()
 
   $('#show_inventory').on 'click', ->
     $('#confirm-inventory').removeClass('add-to-cart')
     $('#confirm-inventory').addClass('buy-now')
     showInventory()
+    bindBuyNowBtn()
 
   showInventory = ->
     $('#inventory').removeClass('hidden')
@@ -66,11 +46,40 @@ $ ->
     $('.real_price').addClass('hidden')
     $("#price_#{product_inventory_id}").removeClass('hidden')
 
-  $('#confirm-inventory').on 'click', ->
+  # 立即购买
+  bindBuyNowBtn = ->
+    $('.buy-now').on 'click', ->
+      if checkInventoriesSelect()
+        $('.product_inventory').submit()
+
+  # 加入购物车
+  bindAddToCartBtn = ->
+    $('.add-to-cart').on 'click', (e)->
+      e.preventDefault()
+      if checkInventoriesSelect()
+        product_inventory_id = Number($('input[name="product_inventory_id"]').val())
+        product_id = Number($('input[name="product_id"]').val())
+        count = Number($('input[name="amount"]').val())
+        if count >= 1
+          $.ajax
+            url: '/cart_items'
+            type: 'POST'
+            data: {product_inventory_id: product_inventory_id, product_id: product_id, count: count}
+            success: (res) ->
+              if res['status'] == "ok"
+                alert('添加成功，购物车有'+res['cart_items_count']+'件商品')
+              else
+                location.reload()
+                alert(res['message'])
+            error: (data, status, e) ->
+              alert("ERROR")
+        else
+          alert "请填写正确的商品数量"
+
+  checkInventoriesSelect = ->
     product_inventory_id = $('#product_inventory_id').val();
     if product_inventory_id == ''
       alert "请勾选您要的商品信息！"
+      return false
     else
-      want_buy = confirm "确认购买么？"
-      if want_buy
-          $('.product_inventory').submit()
+      return true

@@ -60,9 +60,9 @@ class Order < ActiveRecord::Base
   class << self
     def total_ship_price(items1, items2, user_address)
       province = ChinaCity.get(user_address.province)
-      ship_price = items1.map { |item| item.product.traffic_expense.to_f }.min || 0.0                     # 固定运费
+      ship_price = items1.map { |item| item.product_inventory.traffic_expense.to_f }.min || 0.0                     # 固定运费
 
-      items2.group_by{ |item| item.product.carriage_template_id }.each do |carriage_template_id, items|   # 运费模版
+      items2.group_by{ |item| item.product_inventory.carriage_template_id }.each do |carriage_template_id, items|   # 运费模版
         items_count = items.sum{ |item| item.count }
         carriage_template = CarriageTemplate.find(carriage_template_id)
         ship_price += carriage_template.total_carriage(items_count, province)
@@ -72,8 +72,8 @@ class Order < ActiveRecord::Base
     end
 
     def calculate_ship_price(cart_items, user_address)
-      items1 = cart_items.select{ |item| item.product.transportation_way == 1 }
-      items2 = cart_items.select{ |item| item.product.transportation_way == 2 }
+      items1 = cart_items.select{ |item| item.product_inventory.transportation_way == 1 }
+      items2 = cart_items.select{ |item| item.product_inventory.transportation_way == 2 }
 
       total_ship_price(items1, items2, user_address)
     end
@@ -153,8 +153,8 @@ class Order < ActiveRecord::Base
   end
 
   def calculate_ship_price
-    items1 = order_items.select{ |item| item.product.transportation_way == 1 }
-    items2 = order_items.select{ |item| item.product.transportation_way == 2 }
+    items1 = order_items.select{ |item| item.product_inventory.transportation_way == 1 }
+    items2 = order_items.select{ |item| item.product_inventory.transportation_way == 2 }
 
     Order.total_ship_price(items1, items2, user_address)
   end

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151012072302) do
+ActiveRecord::Schema.define(version: 20151013145338) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -67,12 +67,12 @@ ActiveRecord::Schema.define(version: 20151012072302) do
 
   create_table "cart_items", force: :cascade do |t|
     t.integer  "cart_id"
-    t.integer  "product_id"
     t.integer  "seller_id"
-    t.datetime "created_at",                  null: false
-    t.datetime "updated_at",                  null: false
-    t.integer  "count",           default: 0
+    t.datetime "created_at",                       null: false
+    t.datetime "updated_at",                       null: false
+    t.integer  "count",                default: 0
     t.integer  "sharing_node_id"
+    t.integer  "product_inventory_id"
   end
 
   create_table "carts", force: :cascade do |t|
@@ -216,7 +216,6 @@ ActiveRecord::Schema.define(version: 20151012072302) do
 
   create_table "order_items", force: :cascade do |t|
     t.integer  "order_id"
-    t.integer  "product_id"
     t.integer  "user_id"
     t.integer  "amount"
     t.datetime "created_at",                         null: false
@@ -276,6 +275,14 @@ ActiveRecord::Schema.define(version: 20151012072302) do
     t.datetime "updated_at",                 null: false
     t.boolean  "actived",    default: false
     t.integer  "seller_id"
+  end
+
+  create_table "product_attribute_names", force: :cascade do |t|
+    t.string   "name"
+    t.boolean  "is_key_attr",      default: true
+    t.integer  "product_class_id"
+    t.datetime "created_at",                      null: false
+    t.datetime "updated_at",                      null: false
   end
 
   create_table "product_classes", force: :cascade do |t|
@@ -561,14 +568,13 @@ ActiveRecord::Schema.define(version: 20151012072302) do
 
   add_foreign_key "bank_cards", "users"
   add_foreign_key "cart_items", "carts"
-  add_foreign_key "cart_items", "products"
+  add_foreign_key "cart_items", "product_inventories"
   add_foreign_key "cart_items", "users", column: "seller_id"
   add_foreign_key "carts", "users"
   add_foreign_key "categories", "users"
   add_foreign_key "categories_products", "categories"
   add_foreign_key "categories_products", "products"
   add_foreign_key "order_items", "orders"
-  add_foreign_key "order_items", "products"
   add_foreign_key "order_items", "sharing_nodes"
   add_foreign_key "order_items", "users"
   add_foreign_key "orders", "order_charges"

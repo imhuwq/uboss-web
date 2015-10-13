@@ -213,87 +213,88 @@
   </div>
 </div>
 
-<div class="hidden" id="inventory">
-  <img src="img/portrait.jpg" alt="handsome" class="blur" onclick="hideBuyNow()" />
-  <div class="share_buy">
-    <div class="half_left">
-      <img class="share_portrait" src="img/portrait.jpg" alt="头像"></img>
-      <dl class="share_content">
-        <dt><p>分享者</p></dt>
-        <dd>100%好评率</dd>
-      </dl>
-    </div>
-    <div class="half_right">
-      <button class="btn_add_to_cart">加入购物车</button>
-      <button class="btn_buy_now" onclick="buynow()">立即购买</button>
-    </div>
-  </div>
-  <div class="tab_buy_now">
-    <div class="buy_now_goods">
-      <img class="btn_cancle_buy_now close" src="img/cancel.jpg" alt="退出" onclick="hideBuyNow()"></img>
-      <img class="buy_now_goods_img" src="<%= @product.image_url() %>" alt="商品" />
-      <dl class="buy_now_goods_dl">
-        <dt><p><%=@product.name%></p></dt>
-        <dd>
-          <p>¥
-
-            <span id="price_range">
-              <% if @product_inventories.present? %>
-                <%
-                  from_price = @product_inventories.order("price").first.price
-                  to_price = @product_inventories.order("price").last.price
-                  %>
-                <% if from_price == to_price %>
-                  <%= from_price %>
-                <% else %>
-                  <%= "#{@product_inventories.order("price").first.price}-#{@product_inventories.order("price").last.price}" %>
-                <% end %>
-              <% else %>
-                <%= @product.present_price %>
-              <% end %>
-            </span>
-            <% (@product_inventories || {}).each do |obj| %>
-            <span id="price_<%= obj.id %>" class="real_price hidden"><%= obj.price %></span>
-            <% end %>
-          </p>
-        </dd>
-      </dl>
-    </div>
-    <div class="options">
-      <div class="buy_now_option">
-        <p class="buy_now_option_title"></p>
-        <ul>
-          <% (@product.product_inventories || {}).each do |obj| %>
-            <% if obj.count > 0 %>
-            <li class="item sku" id="<%= obj.id %>">
-              <p>
-                <% obj.sku_attributes.each do |k,v| %>
-                <%= obj.sku_attributes.map{|k,v| "#{k}:#{v}"}.join("-") %>
-                <% end %>
-              </p>
-            </li>
-            <% else %>
-            <li class="item disabled" id="<%= obj.id %>">
-              <p>
-                <%= obj.sku_attributes.map{|k,v| "#{k}:#{v}"}.join("-") %>
-              </p>
-            </li>
-            <% end %>
-          <% end %>
-        </ul>
-        <hr />
+<%= simple_form_for "product_inventory", url: new_order_path(product_id: @product.id), method: 'GET' do |f| %>
+  <%= hidden_field_tag "product_inventory_id" %>
+  <%= hidden_field_tag "product_id", @product.id %>
+  <%= hidden_field_tag "amount", 2 %>
+  <div class="hidden" id="inventory">
+    <img src="img/portrait.jpg" alt="handsome" class="blur" onclick="hideBuyNow()" />
+    <div class="share_buy">
+      <div class="half_left">
+        <img class="share_portrait" src="img/portrait.jpg" alt="头像"></img>
+        <dl class="share_content">
+          <dt><p>分享者</p></dt>
+          <dd>100%好评率</dd>
+        </dl>
+      </div>
+      <div class="half_right">
+        <button class="btn_add_to_cart">加入购物车</button>
+        <button class="btn_buy_now" onclick="buynow()">立即购买</button>
       </div>
     </div>
+    <div class="tab_buy_now">
+      <div class="buy_now_goods">
+        <img class="btn_cancle_buy_now close" src="img/cancel.jpg" alt="退出" onclick="hideBuyNow()"></img>
+        <img class="buy_now_goods_img" src="<%= @product.image_url() %>" alt="商品" />
+        <dl class="buy_now_goods_dl">
+          <dt><p><%=@product.name%></p></dt>
+          <dd>
+            <p>¥
 
-    <div class="done">
-      <a class="btn" id="confirm-inventory">确定</a>
+              <span id="price_range">
+                <% if @product_inventories.present? %>
+                  <%
+                    from_price = @product_inventories.order("price").first.price
+                    to_price = @product_inventories.order("price").last.price
+                    %>
+                  <% if from_price == to_price %>
+                    <%= from_price %>
+                  <% else %>
+                    <%= "#{@product_inventories.order("price").first.price}-#{@product_inventories.order("price").last.price}" %>
+                  <% end %>
+                <% else %>
+                  <%= @product.present_price %>
+                <% end %>
+              </span>
+              <% (@product_inventories || {}).each do |obj| %>
+              <span id="price_<%= obj.id %>" class="real_price hidden"><%= obj.price %></span>
+              <% end %>
+            </p>
+          </dd>
+        </dl>
+      </div>
+      <div class="options">
+        <div class="buy_now_option">
+          <p class="buy_now_option_title"></p>
+          <ul>
+            <% (@product.product_inventories || {}).each do |obj| %>
+              <% if obj.count > 0 %>
+              <li class="item sku" id="<%= obj.id %>">
+                <p>
+                  <% obj.sku_attributes.each do |k,v| %>
+                  <%= obj.sku_attributes.map{|k,v| "#{k}:#{v}"}.join("-") %>
+                  <% end %>
+                </p>
+              </li>
+              <% else %>
+              <li class="item disabled" id="<%= obj.id %>">
+                <p>
+                  <%= obj.sku_attributes.map{|k,v| "#{k}:#{v}"}.join("-") %>
+                </p>
+              </li>
+              <% end %>
+            <% end %>
+          </ul>
+          <hr />
+        </div>
+      </div>
+
+      <div class="done">
+        <a class="btn" id="confirm-inventory">确定</a>
+      </div>
     </div>
+    <div style="clear: both;"></div>
   </div>
-  <div style="clear: both;"></div>
-</div>
-<%= simple_form_for "product_inventory", url: new_order_path(product_id: @product.id), method: 'GET' do |f| %>
-  <%= hidden_field_tag "product_inventory_id", '', id:"product_inventory_id" %>
-  <%= hidden_field_tag "product_id", @product.id, id:"product_inventory_id" %>
 <% end %>
 
 

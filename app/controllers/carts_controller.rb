@@ -12,7 +12,7 @@ class CartsController < ApplicationController
   def delete_item
     cart_item = CartItem.find(params[:item_id])
 
-    if current_cart.remove_product_from_cart(cart_item.product_id)
+    if current_cart.remove_product_from_cart(cart_item.product_inventory_id)
       session[:cart_item_ids].try(:delete, params[:item_id])
       render json: { status: "ok", id: params[:item_id] }
     else
@@ -30,12 +30,12 @@ class CartsController < ApplicationController
     count = params[:count].to_i
 
     count = 1 if count <= 0
-    if count > (pcount = cart_item.product.reload.count)
+    if count > (pcount = cart_item.product_inventory.reload.count)
       count = pcount
       alert = "最多只能购买#{count}件"
     end
 
-    if current_cart.change_cart_item_count(cart_item.product_id, count, current_cart.id)
+    if current_cart.change_cart_item_count(cart_item.product_inventory_id, count, current_cart.id)
       render json: { status: "ok", item_id: params[:item_id], count: count, alert: (alert || "") }
     else
       render json: { status: "failure", error: "数量修改失败，请刷新再尝试" }

@@ -40,7 +40,7 @@
               <div class="cover"><%= image_tag(url_for(cart_item.image_url),  alt: "-") %></div>
               <div class="content">
               	<div class="price">
-              		 <p>￥<span class="product-price"><%= cart_item.present_price %></span></p>
+              		 <p>￥<span class="product-price"><%= cart_item.price %></span></p>
               		 <p class="gray-color num">x <%= cart_item.count %></p>
               	</div>
 								<p class="name"><%= cart_item.name %></p>
