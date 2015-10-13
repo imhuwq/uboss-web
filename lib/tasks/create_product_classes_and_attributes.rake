@@ -7,7 +7,7 @@ namespace :db do
                     产地 出行日期 出行人群 入住时段 房型 介质 开本
                     类型 有效期)
     class_name.each do |name|
-      ProductClass.find_or_create_by(name: name)
+      ProductProperty.find_or_create_by(name: name)
     end
     puts '商品分类添加成功!'
   end
