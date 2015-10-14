@@ -1,6 +1,6 @@
 <%= content_for :page_specific_javascript do %>
   <script type="text/javascript" charset="utf-8">
-    propertyData = <%== ProductProperty.all.to_json(only: [:name], include: {product_property_values: {only: [:value]}}) %>
+    propertyData = <%== ProductProperty.includes(:product_property_values).all.to_json(only: [:name], include: {product_property_values: {only: [:value]}}) %>
     <% if f.object %>
       stockData = <%== f.object.product_inventories.select(:id, :sku_attributes, :price, :count).to_json %>
     <% else %>
