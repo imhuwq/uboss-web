@@ -1,3 +1,4 @@
+<input type="hidden" name="product[product_inventories_attributes][<%= @id %>][id]" value=<%= @id %> >
 <% for pName of @sku_attributes: %>
   <% pValue = @sku_attributes[pName] %>
   <input type="hidden" name="product[product_inventories_attributes][<%= @id %>][sku_attributes][<%= pName %>]" value=<%= pValue %> >

@@ -2,6 +2,10 @@ class StockSku.Views.PropertyValue extends Backbone.View
 
   template: JST["#{StockSku.TemplatesPath}/property_value"]
 
+  tagName: 'span'
+
+  className: 'sku-pv'
+
   events:
     'click .remove-pv': 'removeValue'
 
