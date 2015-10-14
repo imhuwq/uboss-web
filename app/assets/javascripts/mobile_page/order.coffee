@@ -72,7 +72,7 @@ $ ->
   $('.subOrd_box2 #amount').on 'keyup', (event) ->
     calulateTotalPrice()
 
-  $('.order-address-dlg .add_line1').on 'click', ()->
+  $('#address-list-box .add_line1').on 'click', ()->
     $('#order_form_user_address_id').val($(this).data('id'))
     fillNewOrderAddressInfo(
       $(this).find('.adr-user').text(),
@@ -82,7 +82,7 @@ $ ->
     hideOrderAddressDlg()
     changeShipPrice()
 
-  $('.order-address-dlg .use-new-addr-btn').on 'click', (event)->
+  $('#address-new .use-new-addr-btn').on 'click', (event)->
     event.preventDefault()
     user = $('#order_form_deliver_username').val()
     mobile = $('#order_form_deliver_mobile').val()
@@ -127,7 +127,8 @@ $ ->
   changeShipPrice = ->
     cart_id = $('#order_form_cart_id').val()
     product_id = $('#order_form_product_id').val()
-    count = $('#amount').val()
+    product_inventory_id = $('#order_form_product_inventory_id').val()
+    count = $('#order_form_amount').val()
     user_address_id = $('#order_form_user_address_id').val()
     province = $('#province').val()
     $.ajax
@@ -136,6 +137,7 @@ $ ->
       data: {
         cart_id: cart_id,
         product_id: product_id,
+        product_inventory_id: product_inventory_id,
         count: count,
         user_address_id: user_address_id,
         province: province
@@ -145,13 +147,14 @@ $ ->
         if res['status'] == "ok"
           if res['is_cart'] == 1     # 购物车入口
             $.each(res['ship_price'] , () ->
-              $('.ship_price_'+this[0]).text("￥ "+this[1])
+              $('.ship_price_'+this[0]).html('<strong></strong>￥ '+this[1])
+              $('.ship_price_'+this[0]).data("ship-price"+this[1])
               calulateTotalPriceWithSeller(this[0], this[1])
             )
             calulateCartTotalPrice(res['ship_price'])
           else                       # 直接购买入口
-            $('.ship_price').text("￥ "+ res['ship_price'])
-            $('#order_form_product_traffic_expense').val(res['ship_price'])
+            $('.ship_price_'+res['seller_id']).html('<strong></strong>￥ '+res['ship_price'])
+            $('.ship_price_'+res['seller_id']).data("ship-price"+ res['ship_price'])
             calulateTotalPrice()
         else
       error: (data, status, e) ->

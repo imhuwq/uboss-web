@@ -59,6 +59,8 @@ class Order < ActiveRecord::Base
 
   class << self
     def total_ship_price(items1, items2, user_address)
+      return 0.0 if user_address.try(:province).blank?
+
       province = ChinaCity.get(user_address.province)
       max_traffic = max_traffic_expense(items1)
       carriage_template_group, items_count = uniq_carriage_template(items2)
@@ -95,26 +97,26 @@ class Order < ActiveRecord::Base
     def find_all_different_areas(items, province)
       different_areas = []
       items.each do |item|
-        different_areas.push(find_template_by_address(item.product.carriage_template, province))
+        different_areas.push(find_template_by_address(item.product_inventory.carriage_template, province))
       end
       different_areas
     end
 
     #{ 0 => '包邮', 1 => '统一邮费', 2 => '运费模板' }
     def unify_transportation_way(items)
-      items1 = items.select{ |item| item.product.transportation_way == 1 }
+      items1 = items.select{ |item| item.product_inventory.transportation_way == 1 }
     end
 
     def template_transportation_way(items)
-      items2 = items.select{ |item| item.product.transportation_way == 2 }
+      items2 = items.select{ |item| item.product_inventory.transportation_way == 2 }
     end
 
     def max_traffic_expense(items1)
-      items1.map { |item| item.product.traffic_expense }.max
+      items1.map { |item| item.product_inventory.traffic_expense }.max || 0.0
     end
 
     def carriage_template_group_by(items2)
-      items2.group_by{ |item| item.product.carriage_template_id }
+      items2.group_by{ |item| item.product_inventory.carriage_template_id }
     end
 
     def uniq_carriage_template(items2)

@@ -269,24 +269,25 @@
           <ul>
             <% (@product.product_inventories || {}).each do |obj| %>
               <% if obj.count > 0 %>
-              <li class="item sku" id="<%= obj.id %>">
+                <li class="item sku" id="<%= obj.id %>">
                 <p>
-                  <% obj.sku_attributes.each do |k,v| %>
+                <% obj.sku_attributes.each do |k,v| %>
                   <%= obj.sku_attributes.map{|k,v| "#{k}:#{v}"}.join("-") %>
-                  <% end %>
+                <% end %>
                 </p>
-              </li>
+                </li>
               <% else %>
-              <li class="item disabled" id="<%= obj.id %>">
+                <li class="item disabled" id="<%= obj.id %>">
                 <p>
-                  <%= obj.sku_attributes.map{|k,v| "#{k}:#{v}"}.join("-") %>
+                <%= obj.sku_attributes.map{|k,v| "#{k}:#{v}"}.join("-") %>
                 </p>
-              </li>
+                </li>
               <% end %>
-            </span>
-            <% (@product_inventories || {}).each do |obj| %>
-            <span id="price_<%= obj.id %>" class="real_price hidden"><%= obj.price %></span>
             <% end %>
+          </ul>
+          <% (@product_inventories || {}).each do |obj| %>
+            <span id="price_<%= obj.id %>" class="real_price hidden"><%= obj.price %></span>
+          <% end %>
           </p>
         </dd>
       </dl>
@@ -297,24 +298,25 @@
         <ul>
           <% (@product.product_inventories || {}).each do |obj| %>
             <% if obj.count.to_i > 0 %>
-            <li class="item sku" id="<%= obj.id %>">
+              <li class="item sku" id="<%= obj.id %>">
               <p>
-                <% obj.sku_attributes.each do |k,v| %>
+              <% obj.sku_attributes.each do |k,v| %>
                 <%= obj.sku_attributes.map{|k,v| "#{k}:#{v}"}.join("-") %>
-                <% end %>
+              <% end %>
               </p>
-            </li>
+              </li>
             <% else %>
-            <li class="item disabled" id="<%= obj.id %>">
+              <li class="item disabled" id="<%= obj.id %>">
               <p>
-                <%= obj.sku_attributes.map{|k,v| "#{k}:#{v}"}.join("-") %>
+              <%= obj.sku_attributes.map{|k,v| "#{k}:#{v}"}.join("-") %>
               </p>
-            </li>
+              </li>
             <% end %>
-          </ul>
-          <hr />
-        </div>
+          <% end %>
+        </ul>
+        <hr />
       </div>
+    </div>
 
       <div class="done">
         <a class="btn" id="confirm-inventory">确定</a>

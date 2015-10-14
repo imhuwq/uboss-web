@@ -26,82 +26,82 @@
   </div><!-- address -->
 	<br />
 
-		<div class="cart-list">
-      <%= f.hidden_field :cart_id %>
-      <%= f.hidden_field :product_id %>
-      <%= f.hidden_field :amount %>
-      <%= f.hidden_field :product_inventory_id %>
-      <% @products_group_by_seller.each do |seller, cart_items| %>
-        <div class="order-list">
-          <div class="seller-box"><div class="text-cut">商家：<%= seller.identify %></div></div>
+  <div class="cart-list">
+    <%= f.hidden_field :cart_id %>
+    <%= f.hidden_field :product_id %>
+    <%= f.hidden_field :amount %>
+    <%= f.hidden_field :product_inventory_id %>
+    <% @products_group_by_seller.each do |seller, cart_items| %>
+      <div class="order-list">
+        <div class="seller-box"><div class="text-cut">商家：<%= seller.identify %></div></div>
 
-          <% cart_items.each do |cart_item| %>
-            <div class="order-box">
-              <div class="cover"><%= image_tag(url_for(cart_item.image_url),  alt: "-") %></div>
-              <div class="content">
-              	<div class="price">
-              		 <p>￥<span class="product-price"><%= cart_item.price %></span></p>
-              		 <p class="gray-color num">x <%= cart_item.count %></p>
-              	</div>
-								<p class="name"><%= cart_item.name %></p>
-	              <p class="info">
-	                <span>尺寸：36</span>
-	                <span>颜色：灰色</span>
-		            </p>
-              </div><!-- content -->
-            </div><!-- order-box -->
-          <% end %>
-
-	        <div class="friend-info">
-	        	<div class="cover">
-            	<img src="" title="用户头像"/>
-            </div>
-            <div class="content"><span class="pull-right red-color">-XX</span><span class="main-color">xxx</span> 帮你优惠</div>
-	        </div><!-- friend-info -->
-	        <div class="freight-box">
-	      		运费
-		        <% ship_price = Order.calculate_ship_price(cart_items, @order_form.user_address) %>
-		        <span class="pull-right ship_price_<%= seller.id.to_s %>" data-ship-price="<%= ship_price %>"><strong></strong>￥ <%= ship_price %></span>
-          </div><!-- freight-box -->
-          <div class="price-box">
-	          <% cart_total_price = @product.blank? ? @cart.total_price_of(cart_items.map(&:id)) : @order_form.real_price*@order_form.amount.to_i %>
-	        	合计
-	          <span class="total_price_<%= seller.id.to_s %>" data-total-price="<%= cart_total_price %>">￥ <%= cart_total_price + ship_price %></span>
-          </div><!-- price-box -->
-          <div class="message-box">
-          	<input placeholder="给卖家留言" type="text" name="order[to_seller][<%= seller.id %>]" class="input-block"/>
-          </div><!-- message-box -->
-        </div><!-- order-list -->
-    	<% end %>
-  	</div><!--cart-list -->
-	  <% if current_user.blank? || (current_user && current_user.need_set_login?) %>
-	    <div class="subOrd_boxcont subOrd_boxbtn">
-	      <p class="sub_p">
-	        <span><%= f.input_field :mobile, type: :tel, placeholder: '输入手机号', class:"sub_btphon",id:'new_mobile' %></span>
-	        <span><a style='color:#fff;' href='#' class="sub_yanzhen" id="send_mobile">发送验证码</a></span>
-	        <div class="clear"></div>
-	      </p>
-	      <p class="sub_w">
-          <span><%= f.input_field :captcha, type: :tel, placeholder: '填写短信验证码', class: "sub_yanzhcont"  %></span>
-	      </p>
-	    </div>
-	  <% end %>
-	  <div class="order-price">
-	  	<% if @order_form.user_address.username.present?  %>
-	    	<%= submit_tag '提交订单',class:"accunt_adilbtn cart-btn btn" %>
-	    <% else %>
-	    	<%= submit_tag '提交订单',class:"accunt_adilbtn cart-btn btn" %>
-	    <% end %>
-	    <div class="content">
-        <% if @product.blank? %>
-          <p>应付款：<span id="total_price"><%= @cart.total_price_of(session[:cart_item_ids]) + Order.sum_ship_price(@cart_items, @order_form.user_address) %></span></p>
-          <p class="gray-color"><small>共优惠XX元</small></p>
-        <% else %>
-          <p>应付款：<span id="total_price"><%= @order_form.real_price*@order_form.amount.to_i + @product.calculate_ship_price(1, @order_form.user_address) %></span></p>
-          <p class="gray-color"><small>共优惠XX元</small></p>
+        <% cart_items.each do |cart_item| %>
+          <div class="order-box">
+            <div class="cover"><%= image_tag(url_for(cart_item.image_url),  alt: "-") %></div>
+            <div class="content">
+              <div class="price">
+                <p>￥<span class="product-price"><%= cart_item.price %></span></p>
+                <p class="gray-color num">x <%= cart_item.count %></p>
+              </div>
+              <p class="name"><%= cart_item.name %></p>
+              <p class="info">
+              <span>尺寸：36</span>
+              <span>颜色：灰色</span>
+              </p>
+            </div><!-- content -->
+          </div><!-- order-box -->
         <% end %>
-		  </div>
-  	</div><!-- order-price -->
+
+        <div class="friend-info">
+          <div class="cover">
+            <img src="" title="用户头像"/>
+          </div>
+          <div class="content"><span class="pull-right red-color">-XX</span><span class="main-color">xxx</span> 帮你优惠</div>
+        </div><!-- friend-info -->
+        <div class="freight-box">
+          运费
+          <% ship_price = Order.calculate_ship_price(cart_items, @order_form.user_address) %>
+          <span class="pull-right ship_price_<%= seller.id.to_s %>" data-ship-price="<%= ship_price %>"><strong></strong>￥ <%= ship_price %></span>
+        </div><!-- freight-box -->
+        <div class="price-box">
+          <% cart_total_price = @product.blank? ? @cart.total_price_of(cart_items.map(&:id)) : @order_form.real_price*@order_form.amount.to_i %>
+          合计
+          <span class="total_price_<%= seller.id.to_s %>" data-total-price="<%= cart_total_price %>">￥ <%= cart_total_price + ship_price %></span>
+        </div><!-- price-box -->
+        <div class="message-box">
+          <input placeholder="给卖家留言" type="text" name="order[to_seller][<%= seller.id %>]" class="input-block"/>
+        </div><!-- message-box -->
+      </div><!-- order-list -->
+    <% end %>
+  </div><!--cart-list -->
+  <% if current_user.blank? || (current_user && current_user.need_set_login?) %>
+    <div class="subOrd_boxcont subOrd_boxbtn">
+      <p class="sub_p">
+      <span><%= f.input_field :mobile, type: :tel, placeholder: '输入手机号', class:"sub_btphon",id:'new_mobile' %></span>
+      <span><a style='color:#fff;' href='#' class="sub_yanzhen" id="send_mobile">发送验证码</a></span>
+      <div class="clear"></div>
+      </p>
+      <p class="sub_w">
+      <span><%= f.input_field :captcha, type: :tel, placeholder: '填写短信验证码', class: "sub_yanzhcont"  %></span>
+      </p>
+    </div>
+  <% end %>
+  <div class="order-price">
+    <% if @order_form.user_address.username.present?  %>
+      <%= submit_tag '提交订单',class:"accunt_adilbtn cart-btn btn" %>
+    <% else %>
+      <%= submit_tag '提交订单',class:"accunt_adilbtn cart-btn btn" %>
+    <% end %>
+    <div class="content">
+      <% if @product.blank? %>
+        <p>应付款：<span id="total_price"><%= @cart.total_price_of(session[:cart_item_ids]) + Order.sum_ship_price(@cart_items, @order_form.user_address) %></span></p>
+        <p class="gray-color"><small>共优惠XX元</small></p>
+      <% else %>
+        <p>应付款：<span id="total_price"><%= @order_form.real_price*@order_form.amount.to_i + @product.calculate_ship_price(1, @order_form.user_address) %></span></p>
+        <p class="gray-color"><small>共优惠XX元</small></p>
+      <% end %>
+    </div>
+  </div><!-- order-price -->
 
   <!--弹出层开始-->
   <div id="address-list-box" class="hidden">
@@ -112,7 +112,7 @@
     <div class="address-list">
       <% if @order_form.buyer %>
         <% @order_form.buyer.user_addresses.each do |user_address| %>
-          <div class="address-box" data-id='<%= user_address.id %>'>
+          <div class="address-box add_line1" data-id='<%= user_address.id %>'>
             <p>
             <span class='pull-right adr-mobile'><%= user_address.try(:mobile) %></span>
             <span class='adr-user'><%= user_address.try(:username) %></span>
@@ -147,7 +147,7 @@
       </tr>
     </table>
     <br />
-    <div class="btn btn-block btn-large">
+    <div class="btn btn-block btn-large use-new-addr-btn">
       使用新地址
     </div>
   </div><!-- address-new -->

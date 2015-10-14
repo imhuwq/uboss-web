@@ -39,7 +39,8 @@ class OrdersController < ApplicationController
       buyer: current_user,
       product_id: params[:product_id],
       product_inventory_id: params[:product_inventory_id],     # TODO 创客权需要设置一个默认的product_inventory
-      amount: params[:amount] || 1
+      amount: params[:amount] || 1,
+      cart_id: current_cart.id
     )
 
     if params[:product_id].present?  # 直接购买
@@ -59,7 +60,6 @@ class OrdersController < ApplicationController
       session[:cart_item_ids] = item_ids
       @cart = current_cart
       @cart_items = @cart.cart_items.find(item_ids)
-      @order_form.cart_id = @cart_id
       @products_group_by_seller = CartItem.group_by_seller(@cart_items)
 
       set_user_address
@@ -140,8 +140,9 @@ class OrdersController < ApplicationController
       render json: { status: 'ok', is_cart: 1, ship_price: ship_prices }
     elsif !params[:count].blank?
       product = Product.find(params[:product_id])
-      ship_price = product.calculate_product_ship_price(product, params[:count].to_i, user_address)
-      render json: { status: 'ok', is_cart: 0, ship_price: ship_price.to_s }
+      ship_price = product.calculate_ship_price(params[:count].to_i, user_address)
+      #ship_price = product.calculate_product_ship_price(product, params[:count].to_i, user_address)
+      render json: { status: 'ok', is_cart: 0, seller_id: product.user_id, ship_price: ship_price.to_s }
     end
   end
 

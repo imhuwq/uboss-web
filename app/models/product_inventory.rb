@@ -6,7 +6,7 @@ class ProductInventory < ActiveRecord::Base
   has_many   :cart_items
   has_many   :order_items
 
-  delegate :user, :status, :traffic_expense, :carriage_template_id, :transportation_way, to: :product
+  delegate :user, :status, :traffic_expense, :carriage_template, :carriage_template_id, :transportation_way, to: :product
 
   after_create :create_product_properties
 
