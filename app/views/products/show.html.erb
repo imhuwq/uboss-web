@@ -257,41 +257,41 @@
                 <% end %>
               </span>
               <% (@product_inventories || {}).each do |obj| %>
-              <span id="price_<%= obj.id %>" class="real_price hidden"><%= obj.price %></span>
+                <span id="price_<%= obj.id %>" class="real_price hidden"><%= obj.price %></span>
               <% end %>
             </p>
           </dd>
         </dl>
       </div>
+
       <div class="options">
         <div class="buy_now_option">
           <p class="buy_now_option_title"></p>
           <ul>
             <% (@product.product_inventories || {}).each do |obj| %>
-              <% if obj.count > 0 %>
+              <% if obj.count.to_i > 0 %>
                 <li class="item sku" id="<%= obj.id %>">
-                <p>
-                <% obj.sku_attributes.each do |k,v| %>
-                  <%= obj.sku_attributes.map{|k,v| "#{k}:#{v}"}.join("-") %>
-                <% end %>
-                </p>
+                  <p>
+                    <% obj.sku_attributes.each do |k,v| %>
+                    <%= obj.sku_attributes.map{|k,v| "#{k}:#{v}"}.join("-") %>
+                    <% end %>
+                  </p>
                 </li>
               <% else %>
                 <li class="item disabled" id="<%= obj.id %>">
-                <p>
-                <%= obj.sku_attributes.map{|k,v| "#{k}:#{v}"}.join("-") %>
-                </p>
+                  <p>
+                    <%= obj.sku_attributes.map{|k,v| "#{k}:#{v}"}.join("-") %>
+                  </p>
                 </li>
               <% end %>
             <% end %>
+            <% (@product_inventories || {}).each do |obj| %>
+              <span id="price_<%= obj.id %>" class="real_price hidden"><%= obj.price %></span>
+            <% end %>
           </ul>
-          <% (@product_inventories || {}).each do |obj| %>
-            <span id="price_<%= obj.id %>" class="real_price hidden"><%= obj.price %></span>
-          <% end %>
-          </p>
-        </dd>
-      </dl>
-    </div>
+        </div>
+      </div>
+
     <div class="options">
       <div class="buy_now_option">
         <p class="buy_now_option_title"></p>
@@ -299,17 +299,17 @@
           <% (@product.product_inventories || {}).each do |obj| %>
             <% if obj.count.to_i > 0 %>
               <li class="item sku" id="<%= obj.id %>">
-              <p>
-              <% obj.sku_attributes.each do |k,v| %>
-                <%= obj.sku_attributes.map{|k,v| "#{k}:#{v}"}.join("-") %>
-              <% end %>
-              </p>
+                <p>
+                <% obj.sku_attributes.each do |k,v| %>
+                  <%= obj.sku_attributes.map{|k,v| "#{k}:#{v}"}.join("-") %>
+                <% end %>
+                </p>
               </li>
             <% else %>
               <li class="item disabled" id="<%= obj.id %>">
-              <p>
-              <%= obj.sku_attributes.map{|k,v| "#{k}:#{v}"}.join("-") %>
-              </p>
+                <p>
+                <%= obj.sku_attributes.map{|k,v| "#{k}:#{v}"}.join("-") %>
+                </p>
               </li>
             <% end %>
           <% end %>
@@ -318,16 +318,13 @@
       </div>
     </div>
 
-      <div class="done">
-        <a class="btn" id="confirm-inventory">确定</a>
-      </div>
+    <div class="done">
+      <a class="btn" id="confirm-inventory">确定</a>
     </div>
+
     <div style="clear: both;"></div>
   </div>
 <% end %>
-
-
-
 
 <script type="text/javascript">
   function buynow() {
@@ -340,5 +337,4 @@
     $('#inventory').addClass('hidden');
     $('.fixed-container').css('-webkit-filter', 'blur(0px)');
   }
-
 </script>
