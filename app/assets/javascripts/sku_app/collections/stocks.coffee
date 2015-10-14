@@ -1,3 +1,3 @@
-class StockSku.Collections.Properties extends Backbone.Collection
+class StockSku.Collections.Stock extends Backbone.Collection
 
   model: StockSku.Models.Stock

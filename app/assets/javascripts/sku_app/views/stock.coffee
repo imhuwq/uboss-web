@@ -6,6 +6,7 @@ class StockSku.Views.Stock extends Backbone.View
 
   initialize: ->
     @listenTo @, 'skuchange', @render
+    @render
 
   render: (skuCollection)->
     if skuCollection?
@@ -40,4 +41,4 @@ class StockSku.Views.Stock extends Backbone.View
           console.log "stockIndex: #{stockIndex}, pvIndex: #{pvIndex}, groupTotal: #{groupTotal}, getPVIndex:#{getPVIndex}"
           property = stockSkuCollection[pvIndex-1].get('values').at(getPVIndex-1).get('value')
     else
-      console.log 'rendering stock group view with collection'
+      console.log('render by self collection')

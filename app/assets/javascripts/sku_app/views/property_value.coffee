@@ -13,8 +13,8 @@ class StockSku.Views.PropertyValue extends Backbone.View
     @
 
   removeViewAndRegenerarteSku: ->
-    @remove()
     console.log 'removeViewAndRegenerarteSku'
+    @remove()
 
   removeValue: (e)->
     e.preventDefault()

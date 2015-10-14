@@ -51,6 +51,10 @@ class StockSku.Views.Property extends Backbone.View
     console.log 'removeProperty'
     @remove()
 
+  addAllPropertyValue: ->
+    @model.get('values').each (propertyValueItem)=>
+      @addPropertyValue(propertyValueItem)
+
   addPropertyValue: (propertyValue)->
     console.log('addPropertyValue')
     pValueView = new StockSku.Views.PropertyValue(model: propertyValue)
@@ -101,6 +105,8 @@ class StockSku.Views.Property extends Backbone.View
       id: (item) -> item.name
       formatSelection: (item) -> item.name
       formatResult: (item) -> item.name
+      initSelection: (element, callback) ->
+        callback({id: element.val(), name: element.val()})
       query: (query) ->
         data = {results: [], text: 'name'}
         if query.term.length > 0

@@ -1,5 +1,5 @@
 <h3>
-  <input class='property-inp' type='text' value=<%= @property.get('id') %> >
+  <input class='property-inp' type='text' value=<%= @property.get('name') %> >
   <span><%= @property.get('id') %></span>
   <a href='#' class="remove-property">×</a>
 </h3>

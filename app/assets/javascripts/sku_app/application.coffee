@@ -2,8 +2,12 @@
 #= require backbone-min
 #= require_self
 #= require_tree ./templates
-#= require_tree ./models
-#= require_tree ./collections
+#= require sku_app/models/property_value
+#= require sku_app/collections/property_values
+#= require sku_app/models/property
+#= require sku_app/collections/properties
+#= require sku_app/models/stock
+#= require sku_app/collections/stocks
 #= require_tree ./views
 #= require sku_app/boot
 
