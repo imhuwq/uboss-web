@@ -112,12 +112,13 @@ class OrdersController < ApplicationController
     end
   end
 
-  def pay_complete
-    @order.check_paid
-    @order_charge = @order.order_charge
-    @product = @order.order_items.first.product
-    @privilege_card = PrivilegeCard.find_by(user: current_user, seller: @product.user)
-  end
+  # TODO move to charges_controller
+  #def pay_complete
+    #@order.check_paid
+    #@order_charge = @order.order_charge
+    #@product = @order.order_items.first.product
+    #@privilege_card = PrivilegeCard.find_by(user: current_user, seller: @product.user)
+  #end
 
   def received
     if @order.sign!

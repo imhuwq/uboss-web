@@ -45,8 +45,9 @@ Rails.application.routes.draw do
     post 'ship_price', on: :collection
     resource :charge, only: [:create]
   end
-  resources :charges, only: [] do
-    get 'payments', on: :member
+  resources :charges, only: [:show] do
+    get 'payments',     on: :member
+    get 'pay_complete', on: :member
   end
   resources :products, only: [:index, :show] do
     member do

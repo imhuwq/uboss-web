@@ -55,6 +55,10 @@ class OrderItem < ActiveRecord::Base
     amount
   end
 
+  def product
+    product_inventory.product
+  end
+
   private
 
   def adjust_product_stock(type)
