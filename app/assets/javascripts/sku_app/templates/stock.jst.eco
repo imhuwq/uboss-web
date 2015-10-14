@@ -1,7 +1,7 @@
 <% if @property_length == 0: %>
   <h5>请添加产品规格属性</h5>
 <% else: %>
-  <table>
+  <table id='stock-group'>
     <thead>
       <tr>
         <% for property in @propertys: %>
@@ -16,20 +16,6 @@
       </tr>
     </thead>
     <tbody>
-      <% skuPVId = new Date().getTime() %>
-      <% for skuIndex in [1..@stock_length]: %>
-        <tr>
-          <% for pvIndex in [1..@property_length]: %>
-            <% pvalue = @getPVByIndex(skuIndex, pvIndex) %>
-            <input type="hidden" name=<%= @getPVInputName(pvIndex, skuPVId + skuIndex) %> value=<%= pvalue %> >
-            <% if 1==1: %>
-              <td rowspan='1'><%= pvalue %></td>
-            <% end %>
-          <% end %>
-          <td><input type='number' name="product[product_inventories_attributes][<%= skuPVId + skuIndex %>][price]" ></td>
-          <td><input type='number' name="product[product_inventories_attributes][<%= skuPVId + skuIndex %>][count]" ></td>
-        </tr>
-      <% end %>
     </tbody>
   </table>
 <% end %>

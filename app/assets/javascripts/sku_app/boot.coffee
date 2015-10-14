@@ -28,5 +28,5 @@ jQuery ($) ->
             propertyItem.get('values').add(value: skuAttrs[key])
             propertieCollectionData[key].push(skuAttrs[key])
 
-    StockSku.stock_view = new StockSku.Views.Stock(collections: StockSku.Collections.stock_collection)
+    StockSku.stock_view = new StockSku.Views.Stock(collection: StockSku.Collections.stock_collection)
     StockSku.sku_view = new StockSku.Views.Sku(collection: StockSku.Collections.property_collection)
