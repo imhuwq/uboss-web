@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151013145338) do
+ActiveRecord::Schema.define(version: 20151014035526) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -199,6 +199,7 @@ ActiveRecord::Schema.define(version: 20151013145338) do
     t.decimal  "present_price",        default: 0.0
     t.decimal  "privilege_amount",     default: 0.0
     t.integer  "product_inventory_id"
+    t.integer  "product_id"
   end
 
   create_table "orders", force: :cascade do |t|
@@ -545,6 +546,7 @@ ActiveRecord::Schema.define(version: 20151013145338) do
   add_foreign_key "cart_items", "users", column: "seller_id"
   add_foreign_key "carts", "users"
   add_foreign_key "order_items", "orders"
+  add_foreign_key "order_items", "products"
   add_foreign_key "order_items", "sharing_nodes"
   add_foreign_key "order_items", "users"
   add_foreign_key "orders", "order_charges"

@@ -2,6 +2,7 @@ class OrderItem < ActiveRecord::Base
 
   belongs_to :user
   belongs_to :order
+  belongs_to :product
   belongs_to :product_inventory
   belongs_to :sharing_node
   has_one    :evaluation
@@ -56,7 +57,7 @@ class OrderItem < ActiveRecord::Base
   end
 
   def product
-    product_inventory.product
+    product_inventory.try(:product) || product
   end
 
   private

@@ -11,6 +11,7 @@ class Product < ActiveRecord::Base
   validates_presence_of :user_id, :name, :short_description
 
   belongs_to :user
+  belongs_to :order_items
   belongs_to :carriage_template
   has_one :asset_img, class_name: 'AssetImg', autosave: true, as: :resource
   has_many :product_share_issue, dependent: :destroy
