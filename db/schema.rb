@@ -44,6 +44,11 @@ ActiveRecord::Schema.define(version: 20151014035526) do
     t.string   "url"
   end
 
+  create_table "attention_associations", force: :cascade do |t|
+    t.integer "user_id"
+    t.integer "following_id"
+  end
+
   create_table "bank_cards", force: :cascade do |t|
     t.integer  "user_id"
     t.string   "number"
@@ -77,6 +82,23 @@ ActiveRecord::Schema.define(version: 20151014035526) do
   end
 
   add_index "carts", ["user_id"], name: "index_carts_on_user_id", using: :btree
+
+  create_table "categories", force: :cascade do |t|
+    t.string   "name",       null: false
+    t.integer  "user_id",    null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_index "categories", ["user_id", "name"], name: "index_categories_on_user_id_and_name", unique: true, using: :btree
+
+  create_table "categories_products", id: false, force: :cascade do |t|
+    t.integer "product_id",  null: false
+    t.integer "category_id", null: false
+  end
+
+  add_index "categories_products", ["category_id"], name: "index_categories_products_on_category_id", using: :btree
+  add_index "categories_products", ["product_id"], name: "index_categories_products_on_product_id", using: :btree
 
   create_table "daily_reports", force: :cascade do |t|
     t.date     "day"
@@ -164,6 +186,11 @@ ActiveRecord::Schema.define(version: 20151014035526) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "follower_associations", force: :cascade do |t|
+    t.integer "user_id"
+    t.integer "follower_id"
+  end
+
   create_table "mobile_captchas", force: :cascade do |t|
     t.string   "code"
     t.datetime "expire_at"
@@ -221,10 +248,10 @@ ActiveRecord::Schema.define(version: 20151014035526) do
     t.datetime "signed_at"
     t.datetime "shiped_at"
     t.datetime "completed_at"
-    t.string   "to_seller"
-    t.decimal  "ship_price",      default: 0.0
     t.string   "ship_number"
     t.integer  "express_id"
+    t.string   "to_seller"
+    t.decimal  "ship_price",      default: 0.0
     t.integer  "order_charge_id"
   end
 
@@ -537,6 +564,9 @@ ActiveRecord::Schema.define(version: 20151014035526) do
   add_foreign_key "cart_items", "product_inventories"
   add_foreign_key "cart_items", "users", column: "seller_id"
   add_foreign_key "carts", "users"
+  add_foreign_key "categories", "users"
+  add_foreign_key "categories_products", "categories"
+  add_foreign_key "categories_products", "products"
   add_foreign_key "order_items", "orders"
   add_foreign_key "order_items", "products"
   add_foreign_key "order_items", "sharing_nodes"

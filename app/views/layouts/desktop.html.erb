@@ -11,7 +11,7 @@
     <%= csrf_meta_tags %>
     <link href="<%= image_url("desktop_image/favicon.ico") %>" type="image/x-icon" rel="shortcut icon">
   </head>
-  <body>
+  <body class='<%= controller_name %> <%= action_name %>'>
     <div class="wrapper">
 			<header>
 				<div class="container">
