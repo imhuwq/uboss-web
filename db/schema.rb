@@ -220,10 +220,10 @@ ActiveRecord::Schema.define(version: 20151013145338) do
     t.datetime "signed_at"
     t.datetime "shiped_at"
     t.datetime "completed_at"
-    t.string   "to_seller"
-    t.decimal  "ship_price",      default: 0.0
     t.string   "ship_number"
     t.integer  "express_id"
+    t.string   "to_seller"
+    t.decimal  "ship_price",      default: 0.0
     t.integer  "order_charge_id"
   end
 

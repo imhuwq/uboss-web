@@ -28,6 +28,3 @@ ChinaCity.provinces.each do |name, code|
     end
   end
 end
-
-Region.find_or_create_by(name: '其他')
-
