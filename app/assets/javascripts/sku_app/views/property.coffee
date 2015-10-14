@@ -63,9 +63,11 @@ class StockSku.Views.Property extends Backbone.View
 
   newPropertyValue: (e)->
     e.preventDefault()
-    console.log('newPropertyValue')
-    @propertyValues.add(@pvSelect2.select2('data'))
-    @pvSelect2.select2('val', '')
+    if @pvSelect2.select2('data').length > 0
+      console.log('newPropertyValue')
+      @propertyValues.add(@pvSelect2.select2('data'))
+      StockSku.stock_view.trigger('skuchange')
+      @pvSelect2.select2('val', '')
 
   initSelect: ->
     @pvSelect2 = @.$('input.pv-sel').select2

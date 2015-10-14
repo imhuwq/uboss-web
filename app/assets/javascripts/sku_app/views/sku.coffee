@@ -17,13 +17,13 @@ class StockSku.Views.Sku extends Backbone.View
     console.log 'add Property'
     newProperty = @collection.create(values: new StockSku.Collections.PropertyValues)
     newPropertyValues = newProperty.get('values')
-    @listenTo newPropertyValues, 'add',    @renderSku
+    #@listenTo newPropertyValues, 'add',    @renderSku
     @listenTo newPropertyValues, 'remove', @renderSku
 
   addAll: ->
     @collection.each (property) =>
       propertyValues = property.get('values')
-      @listenTo propertyValues, 'add',    @renderSku
+      #@listenTo propertyValues, 'add',    @renderSku
       @listenTo propertyValues, 'remove', @renderSku
       @addOne(property)
 

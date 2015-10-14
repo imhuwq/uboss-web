@@ -1,4 +1,4 @@
-<% if @property_length == 0: %>
+<% if @propertys.length == 0: %>
   <h5>请添加产品规格属性</h5>
 <% else: %>
   <table id='stock-group'>

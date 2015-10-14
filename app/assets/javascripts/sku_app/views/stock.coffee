@@ -27,6 +27,7 @@ class StockSku.Views.Stock extends Backbone.View
 
       @.$('.stock-list').html @template(propertys: propertys)
 
+      return true unless skuCollection.length > 0
       skuPVId = new Date().getTime()
       for stockIndex in [1..stock_length]
         skuAttrs = {}
@@ -51,8 +52,10 @@ class StockSku.Views.Stock extends Backbone.View
           unless stockItemModel?
             stockItemModel = @collection.add(id: skuPVId + stockIndex,sku_attributes: skuAttrs)
           stockItemView = new StockSku.Views.StockItem(model: stockItemModel)
+          console.log('new stockItemModel')
           @stock_cache.push(id: stockIdentify, view: stockItemView)
+          @.$('table#stock-group tbody').append stockItemView.render().el
         else
           stockItemView = @stock_cache[stockItemCacheIndex].view
-        @.$('table#stock-group tbody').append stockItemView.render().el
+          @.$('table#stock-group tbody').append stockItemView.el
     @
