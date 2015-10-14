@@ -1,4 +1,6 @@
-<input type="hidden" name="product[product_inventories_attributes][<%= @id %>][id]" value=<%= @id %> >
+<% if @id < 1444813700000: %>
+  <input type="hidden" name="product[product_inventories_attributes][<%= @id %>][id]" value=<%= @id %> >
+<% end %>
 <% for pName of @sku_attributes: %>
   <% pValue = @sku_attributes[pName] %>
   <input type="hidden" name="product[product_inventories_attributes][<%= @id %>][sku_attributes][<%= pName %>]" value=<%= pValue %> >
