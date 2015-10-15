@@ -21,6 +21,16 @@ class Evaluation < ActiveRecord::Base
     end
   end
 
+  ##### 构建问题零时方案 ######
+  def product_id
+    self.order_item.product_inventory.product_id
+  end
+
+  def product
+    self.order_item.product_inventory.product
+  end
+  ################
+
   def count_evaluation # 计算出用户和产品的好、中、差评论数并保存
     seller_user_info_id = Product.find(self.product_id).user.user_info.id
     evaluation_column = "#{self.status}_evaluation"
