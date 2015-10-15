@@ -198,8 +198,10 @@
     background-color: black;
   }
 }
-.pv-list {
+.pv-list-group {
   padding: 10px 0;
+}
+.pv-list {
   display: inline-block;
 }
 .add-pv-group {
@@ -223,6 +225,7 @@
   border-radius: 3px;
   position: relative;
   margin-right: 10px;
+  margin-bottom: 5px;
   &:hover{
     .remove-pv{
       display: block;

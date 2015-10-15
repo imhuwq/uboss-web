@@ -32,6 +32,8 @@ class StockSku.Views.Sku extends Backbone.View
     @.$('.property-list').append propertyView.render().el
     if property.get('values').length > 0
       propertyView.addAllPropertyValue()
+    else
+      propertyView.trigger('openSelect')
 
   renderSku: ->
     console.log 'render stock'

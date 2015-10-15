@@ -20,3 +20,8 @@ class StockSku.Views.StockItem extends Backbone.View
 
   setCount: (e)->
     @model.attributes['count'] = $(e.target).val()
+    if @model.collection?
+      total = @model.collection.reduce (num, item)->
+        Number(item.get('count')) + num
+      , 0
+      $('#product_count').val(total)

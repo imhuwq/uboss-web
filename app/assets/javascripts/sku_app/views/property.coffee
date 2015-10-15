@@ -16,6 +16,7 @@ class StockSku.Views.Property extends Backbone.View
     @listenTo @model, 'change:name', @newProperty
     @listenTo @model, 'destroy', @removeProperty
     @listenTo @propertyValues, 'add', @addPropertyValue
+    @listenTo @, 'openSelect', @openSelect
     @setSelPVs()
 
   render: =>
@@ -23,10 +24,14 @@ class StockSku.Views.Property extends Backbone.View
     @initSelect()
     @
 
+  openSelect: ->
+    @ppSelect2.select2("open")
+
   showPVSel: (e)->
     e.preventDefault()
     if !!@model.get('name')
       @.$('.pv-sel-group').show()
+      @pvSelect2.select2('open')
     else
       alert('请选择一个规格')
 
@@ -126,9 +131,13 @@ class StockSku.Views.Property extends Backbone.View
         query.callback(data)
 
     @ppSelect2.on 'change', (event) =>
-      @model.set('name', event.added.name)
-      if _.findLastIndex(StockSku.Data.propertyData, { name: event.val }) == -1
-        StockSku.Data.propertyData.push(name: event.val, product_property_values: [])
+      if @model.collection.findWhere({name: event.added.name})?
+        alert("您已添加规格：#{event.added.name}")
+        @ppSelect2.select2('val', '')
+      else
+        @model.set('name', event.added.name)
+        if _.findLastIndex(StockSku.Data.propertyData, { name: event.val }) == -1
+          StockSku.Data.propertyData.push(name: event.val, product_property_values: [])
 
   clear: (e)->
     e.preventDefault()
