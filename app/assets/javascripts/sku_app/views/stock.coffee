@@ -4,10 +4,18 @@ class StockSku.Views.Stock extends Backbone.View
 
   el: '#product-stock'
 
+  read_only: false
+
   initialize: ->
     @listenTo @, 'skuchange', @render
+    @listenTo @, 'initShow', @render_show
 
   stock_cache: []
+
+  render_show: ->
+    console.log 'render_show'
+    @read_only = true
+    @render()
 
   render: ->
     skuCollection = StockSku.Collections.property_collection
@@ -51,6 +59,7 @@ class StockSku.Views.Stock extends Backbone.View
           stockItemModel = @collection.findWhere(identify: stockIdentify)
           unless stockItemModel?
             stockItemModel = @collection.add(id: skuPVId + stockIndex,sku_attributes: skuAttrs)
+          stockItemModel.set('read_only', @read_only)
           stockItemView = new StockSku.Views.StockItem(model: stockItemModel)
           console.log('new stockItemModel')
           @stock_cache.push(id: stockIdentify, view: stockItemView)

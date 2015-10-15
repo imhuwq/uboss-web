@@ -1,6 +1,6 @@
 jQuery ($) ->
 
-  if $('#product-sku').length > 0
+  if $('#product-sku').length > 0 || $('#product-stock').length > 0
     console.log 'boot skuapp'
     StockSku.Data.propertyData = window.propertyData
     StockSku.Data.stockData = window.stockData
@@ -28,5 +28,9 @@ jQuery ($) ->
             propertyItem.get('values').add(value: skuAttrs[key])
             propertieCollectionData[key].push(skuAttrs[key])
 
-    StockSku.stock_view = new StockSku.Views.Stock(collection: StockSku.Collections.stock_collection)
-    StockSku.sku_view = new StockSku.Views.Sku(collection: StockSku.Collections.property_collection)
+    if $('#product-sku').length > 0
+      StockSku.stock_view = new StockSku.Views.Stock(collection: StockSku.Collections.stock_collection)
+      StockSku.sku_view = new StockSku.Views.Sku(collection: StockSku.Collections.property_collection)
+    else if $('#product-stock').length > 0
+      StockSku.stock_view = new StockSku.Views.Stock(collection: StockSku.Collections.stock_collection)
+      StockSku.stock_view.trigger('initShow')

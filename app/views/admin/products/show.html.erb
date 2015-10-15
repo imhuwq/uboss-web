@@ -1,3 +1,10 @@
+<%= content_for :page_specific_javascript do %>
+  <script type="text/javascript" charset="utf-8">
+    stockData = <%== @product.product_inventories.saling.select(:id, :sku_attributes, :price, :count).to_json %>
+  </script>
+  <%= javascript_include_tag 'sku_app/application' %>
+<% end %>
+
 <div class="container admin-container">
 	<ul class="breadcrumb">
 		<li><a href="/admin">主页</a></li>
@@ -26,55 +33,20 @@
 	    			<span class="control-txt"><%= @product.name %></span>
 	    		</div>
 	    	</div>
-	    	<!-- <div class="form-group">
-	    		<label class="control-label">原价</label>
-	    		<div class="control-input">
-	    			<span class="control-txt"><%#= number_to_currency @product.original_price %></span>
-	    		</div>
-	    	</div>
-	    	<div class="form-group">
-	    		<label class="control-label">现价</label>
-	    		<div class="control-input">
-	    			<span class="control-txt"><%#= number_to_currency @product.present_price %></span>
-	    		</div>
-	    	</div> -->
-				<% (@product.product_inventories.saling || {}).each do |obj| %>
-				<div class="">
-					<span>
-						<% (obj.sku_attributes || {}).each do |k,v| %>
-						<%= "#{k}:#{v}" %>
-						<% end %>
-					</span>
-					<span>数量：<%= obj.count %></span>
-					<span>价格：<%= obj.price %></span>
-				</div>
-				<% end %>
-	    	<!-- <div class="form-group">
-	    		<label class="control-label">库存</label>
-	    		<div class="control-input">
-	    			<span class="control-txt"><%#= @product.product_inventories.collect(&:count).inject(:+) %></span>
-	    		</div>
-	    	</div> -->
 	      <div class="form-group">
-	        <label class="control-label">
-						描述
-	        </label>
+	        <label class="control-label"> 描述 </label>
 	        <div class="control-input">
 	          <span class="control-txt"><%= @product.short_description %></span>
 	        </div>
 	      </div>
 	      <div class="form-group">
-	        <label class="control-label">
-						商品主图
-	        </label>
+	        <label class="control-label"> 商品主图 </label>
 	        <div class="control-input">
 	          <span><%= image_tag(@product.image_url) %></span>
 	        </div>
 	      </div>
 	      <div class="form-group">
-	        <label class="control-label">
-						图文详情
-	        </label>
+	        <label class="control-label"> 图文详情 </label>
 	        <div class="control-input">
 	          <div class="control-txt"><%= raw @product.content %>　</div>
 	        </div>
@@ -82,37 +54,33 @@
 	  	</div><!-- admin-box -->
 	</div><!-- box-w50 -->
 	<div class="box-w50">
+    <div id="product-stock" class="admin-box beige-bg-color">
+			<h4 class="edit-title">库存</h4>
+      <div class='stock-list'>
+      </div>
+    </div>
+    <br />
 		<div class="admin-box beige-bg-color">
 			<h4 class="edit-title">分成设置</h4>
 			<% if @product.calculate_way == 1 %>
 				<div class="form-group">
-			  	<label class="control-label">
-			  		分成比例
-			  	</label>
-			   	<label class="control-label pull-right">
-			   		%　
-			   	</label>
+			  	<label class="control-label"> 分成比例 </label>
+			   	<label class="control-label pull-right"> % </label>
 			    <div class="control-input">
 			      <div class="control-txt"><%= @product.share_rate_total %></div>
 			    </div>
 			  </div>
 			<% elsif @product.calculate_way == 0 %>
 					 <div class="form-group">
-				  	<label class="control-label">
-				  		现金分成
-				  	</label>
-				   	<label class="control-label pull-right">
-				   		元　
-				   	</label>
+				  	<label class="control-label"> 现金分成 </label>
+				   	<label class="control-label pull-right"> 元　 </label>
 				    <div class="control-input">
 				      <div class="control-txt"><%= @product.share_amount_total %></div>
 				    </div>
 				  </div>
 		  <% end %>
 		  <div class="form-group">
-		  	<label class="control-label">
-		  		一级分成
-		  	</label>
+		  	<label class="control-label"> 一级分成 </label>
 		  	<div class="control-input">
 		  		<span><%= @product.share_rate_lv_1*100 %>%(占总分成金额比重，下同)</span>
 		  	</div>
@@ -132,7 +100,7 @@
 		  <div class="form-group">
 		  	<label class="control-label">分享优惠</label>
 		  	<div class="control-input">
-		  		<span><%= @product.privilege_amount %>元</span>
+		  		<span><%= number_to_percentage(@product.privilege_rate*100, precision: 1) %></span>
 		  	</div>
 		  </div>
 	 	</div>

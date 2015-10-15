@@ -103,6 +103,10 @@ class Product < ActiveRecord::Base
     super || build_asset_img
   end
 
+  def privilege_rate
+    1 - share_rate_lv_1 - share_rate_lv_2 - share_rate_lv_3
+  end
+
   def generate_code
     loop do
       self.code = SecureRandom.hex(10)

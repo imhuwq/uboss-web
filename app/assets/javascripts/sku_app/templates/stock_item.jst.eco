@@ -6,5 +6,5 @@
   <input type="hidden" name="product[product_inventories_attributes][<%= @id %>][sku_attributes][<%= pName %>]" value=<%= pValue %> >
   <td rowspan='1'><%= pValue %></td>
 <% end %>
-<td><input class='sku-price' type='number' name="product[product_inventories_attributes][<%= @id %>][price]" value=<%= @price %> ></td>
-<td><input class='sku-count' type='number' name="product[product_inventories_attributes][<%= @id %>][count]" value=<%= @count %>></td>
+<td><input class='sku-price' <%= 'disabled' if @read_only %> type='number' name="product[product_inventories_attributes][<%= @id %>][price]" value=<%= @price %> ></td>
+<td><input class='sku-count' <%= 'disabled' if @read_only %> type='number' name="product[product_inventories_attributes][<%= @id %>][count]" value=<%= @count %>></td>
