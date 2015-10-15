@@ -73,19 +73,18 @@
         </div><!-- message-box -->
       </div><!-- order-list -->
     <% end %>
-  </div><!--cart-list -->
   <% if current_user.blank? || (current_user && current_user.need_set_login?) %>
-    <div class="subOrd_boxcont subOrd_boxbtn">
-      <p class="sub_p">
-      <span><%= f.input_field :mobile, type: :tel, placeholder: '输入手机号', class:"sub_btphon",id:'new_mobile' %></span>
-      <span><a style='color:#fff;' href='#' class="sub_yanzhen" id="send_mobile">发送验证码</a></span>
-      <div class="clear"></div>
-      </p>
-      <p class="sub_w">
-      <span><%= f.input_field :captcha, type: :tel, placeholder: '填写短信验证码', class: "sub_yanzhcont"  %></span>
-      </p>
-    </div>
+    <div class="no-login">
+    	<div class="mobile">
+	    	<a href='#' class="btn pull-right" id="send_mobile"><small>发送验证码</small></a>
+	      <div class="content"><%= f.input_field :mobile, type: :tel, placeholder: '输入手机号', class:"input-block",id:'new_mobile' %></div>
+    	</div>
+    	<div class="gap">    	
+      	<%= f.input_field :captcha, type: :tel, placeholder: '填写短信验证码', class: "input-block"  %>
+      </div> 
+    </div><!-- no-login -->
   <% end %>
+  </div><!--cart-list -->
   <div class="order-price">
     <% if @order_form.user_address.username.present?  %>
       <%= submit_tag '提交订单',class:"accunt_adilbtn cart-btn btn" %>

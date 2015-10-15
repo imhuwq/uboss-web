@@ -23,81 +23,7 @@
     .order-code{
         padding: 0 10px 10px;
         border-bottom: 1px solid #f6f6f6;
-    }
-    .order-box{
-        padding: 0 10px 10px;
-        margin-top: 10px;
-        border-bottom: 1px solid #f6f6f6;
-        .cover{
-            float: left;margin-right: 10px; width: 60px;
-            img{
-                width: 60px;
-                height: 60px;
-            }
-        }
-        .content{
-            overflow: hidden;
-            .name{
-                font-size: 15px;
-                line-height: 20px;
-                color: #333;
-                overflow: hidden;
-                text-overflow: ellipsis;
-                white-space: nowrap;
-            }
-            .info{
-                color: #999;
-                font-size: 10px;
-                letter-spacing: 10px;
-                span{
-                    letter-spacing: 0;
-                }
-            }
-        }
-        .checkbox{
-            margin: 17.5px 10px 17.5px 0;
-        }
-        .price{
-            color: #444;
-            max-width: 77px;
-            float: right;
-            margin-left: 10px;
-            font-size: 15px;
-            line-height: 20px;
-            text-align: right;
-            .gray-color{
-                font-size: 10px;
-            }
-        }
-        .count{
-            button{
-                -webkit-appearance:none; 
-                -moz-appearance:none; 
-                border: 1px solid #f9ba10;
-                padding: 0;
-                background: none;
-                color: #f9ba10;
-                height: 25px;
-                width: 25px;
-                font-size: 18px;
-                line-height: 23px;
-                text-align: center;
-                vertical-align: top;
-                border-radius:5px ;
-            }
-            input[type="tel"]{
-                height: 19px;
-                padding: 2px 5px;
-                width: 30px;
-                text-align: center;
-                vertical-align: top;
-                border-radius:5px ;
-            }
-            input[type="tel"]:focus{
-                border-color: #f9ba10;
-            }
-        }
-    }
+    }   
     span{vertical-align: baseline;}
     .seller-box{
         padding: 0 10px 10px;
@@ -108,6 +34,80 @@
         margin-bottom: 10px;
     }
     
+}
+ .order-box{
+    padding: 0 10px 10px;
+    margin-top: 10px;
+    border-bottom: 1px solid #f6f6f6;
+    .cover{
+        float: left;margin-right: 10px; width: 60px;
+        img{
+            width: 60px;
+            height: 60px;
+        }
+    }
+    .content{
+        overflow: hidden;
+        .name{
+            font-size: 15px;
+            line-height: 20px;
+            color: #333;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        .info{
+            color: #999;
+            font-size: 10px;
+            letter-spacing: 10px;
+            span{
+                letter-spacing: 0;
+            }
+        }
+    }
+    .checkbox{
+        margin: 17.5px 10px 17.5px 0;
+    }
+    .price{
+        color: #444;
+        max-width: 77px;
+        float: right;
+        margin-left: 10px;
+        font-size: 15px;
+        line-height: 20px;
+        text-align: right;
+        .gray-color{
+            font-size: 10px;
+        }
+    }
+    .count{
+        button{
+            -webkit-appearance:none; 
+            -moz-appearance:none; 
+            border: 1px solid #f9ba10;
+            padding: 0;
+            background: none;
+            color: #f9ba10;
+            height: 25px;
+            width: 25px;
+            font-size: 18px;
+            line-height: 23px;
+            text-align: center;
+            vertical-align: top;
+            border-radius:5px ;
+        }
+        input[type="tel"]{
+            height: 19px;
+            padding: 2px 5px;
+            width: 30px;
+            text-align: center;
+            vertical-align: top;
+            border-radius:5px ;
+        }
+        input[type="tel"]:focus{
+            border-color: #f9ba10;
+        }
+    }
 }
 .order-info{
     border-top:1px solid #f6f6f6 ;
@@ -368,6 +368,15 @@
     }
 }
 
+.no-login{
+    background: #fff;
+    input{border: none;}
+    .mobile{
+        border-bottom: 1px solid #f6f6f6;
+        padding: 10px;
+        .content{ overflow: hidden;}
+    }
+}
 @-webkit-keyframes leftIn{
 0%{
     left: 100%;
