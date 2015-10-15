@@ -59,16 +59,18 @@ class Order < ActiveRecord::Base
 
   class << self
     def total_ship_price(items1, items2, user_address)
-      return 0.0 if user_address.try(:province).blank?
-
-      province = ChinaCity.get(user_address.province)
+      begin
+        province = ChinaCity.get(user_address.province)
+      rescue
+        return 0.0
+      end
       max_traffic = max_traffic_expense(items1)
       carriage_template_group, items_count = uniq_carriage_template(items2)
       different_areas = find_all_different_areas(carriage_template_group, province)
 
       max_carriage_expense = different_areas.sort_by{|area| [-area.carriage, area.extend_carriage]}.first
 
-      if max_traffic >= max_carriage_expense.carriage && max_carriage_expense.extend_carriage > 0
+      if max_traffic.to_f >= max_carriage_expense.try(:carriage).to_f && max_carriage_expense.try(:extend_carriage).to_f > 0
         ship_price = max_traffic
         different_areas.each_with_index do |area, index|
           ship_price += carriage_way(area, items_count[index])
@@ -76,12 +78,15 @@ class Order < ActiveRecord::Base
       else
         ship_price = max_traffic + max_carriage_expense.carriage
         different_areas.each_with_index do |area, index|
-          next if area == max_carriage_expense
+          if area == max_carriage_expense
+            balance = items_count[index] - max_carriage_expense.first_item
+            ship_price += carriage_way(area, balance)
+          end
           ship_price += carriage_way(area, items_count[index])
         end
       end
 
-      ship_price || 0.0
+      ship_price
     end
 
     def carriage_way(different_area, count)
@@ -112,7 +117,8 @@ class Order < ActiveRecord::Base
     end
 
     def max_traffic_expense(items1)
-      items1.map { |item| item.product_inventory.traffic_expense }.max || 0.0
+      return 0 if items1.blank?
+      items1.map { |item| item.product.traffic_expense }.max
     end
 
     def carriage_template_group_by(items2)
@@ -120,8 +126,8 @@ class Order < ActiveRecord::Base
     end
 
     def uniq_carriage_template(items2)
-      uniq_items = []
-      items_count = []
+      uniq_items, items_count = [], []
+      return [uniq_items, items_count] if items2.blank?
       carriage_template_group_by(items2).each do |carriage_template_id, items|
         items_count.push(items.sum{ |item| item.count })
         uniq_items.push(items.first)
