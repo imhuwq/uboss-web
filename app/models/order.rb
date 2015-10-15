@@ -59,6 +59,7 @@ class Order < ActiveRecord::Base
 
   class << self
     def total_ship_price(items1, items2, user_address)
+      return 0.0 if items1.blank? && items2.blank?
       begin
         province = ChinaCity.get(user_address.province)
       rescue
@@ -86,7 +87,7 @@ class Order < ActiveRecord::Base
         end
       end
 
-      ship_price
+      ship_price || 0.0
     end
 
     def carriage_way(different_area, count)
