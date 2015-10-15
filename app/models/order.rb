@@ -82,6 +82,7 @@ class Order < ActiveRecord::Base
           if area == max_carriage_expense
             balance = items_count[index] - max_carriage_expense.first_item
             ship_price += carriage_way(area, balance)
+            next
           end
           ship_price += carriage_way(area, items_count[index])
         end
