@@ -56,10 +56,6 @@ class OrderItem < ActiveRecord::Base
     amount
   end
 
-  def product
-    product_inventory.try(:product) || product
-  end
-
   private
 
   def adjust_product_stock(type)
