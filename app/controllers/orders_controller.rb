@@ -12,8 +12,8 @@ class OrdersController < ApplicationController
   end
 
   def show
-    @order_item = @order.order_items.first
-    @product = @order_item.product
+    @order_items = @order.order_items
+    @product = @order_items.first.item_product
     if available_pay?(@order, @product)
       @order_charge = ChargeService.find_or_create_charge(@order, remote_ip: request.ip)
       @pay_p = {
@@ -39,8 +39,7 @@ class OrdersController < ApplicationController
       buyer: current_user,
       product_id: params[:product_id],
       product_inventory_id: params[:product_inventory_id],     # TODO 创客权需要设置一个默认的product_inventory
-      amount: params[:amount] || 1,
-      cart_id: current_cart.id
+      amount: params[:amount] || 1
     )
 
     if params[:product_id].present?  # 直接购买
@@ -60,6 +59,7 @@ class OrdersController < ApplicationController
       session[:cart_item_ids] = item_ids
       @cart = current_cart
       @cart_items = @cart.cart_items.find(item_ids)
+      @order_form.cart_id = current_cart.id
       @products_group_by_seller = CartItem.group_by_seller(@cart_items)
 
       set_user_address

@@ -25,12 +25,12 @@
           <% cart_items.each do |cart_item| %>
             <div class="order-box" data-id="<%= cart_item.id %>">
               <input type="checkbox" class="checkbox"  name="check_item" checked='true'>
-              <div class="cover"><img src="<%= cart_item.image_url %>"></div>
+              <div class="cover"><a href="<%= product_path(cart_item.product) %>"><img src="<%= cart_item.image_url %>"></a></div>
               <div class="content">
                 <div class="price">
                   <p>￥<span class="product-price"><%= cart_item.price %></span></p>
                 </div>
-                <p class="name"><%= cart_item.name %></p>
+                <p class="name"><%= cart_item.product_name %></p>
                 <p class="info">
                 <span>尺寸：36</span>
                 <span>颜色：灰色</span>
@@ -64,7 +64,7 @@
               <span class="label pull-left">失效</span>
               <div class="cover"><img src="<%= cart_item.image_url %>"></div>
               <div class="content">
-                <p class="name"><%= cart_item.name %></p>
+                <p class="name"><%= cart_item.product_name %></p>
                 <p class="gray-color">宝贝已不能购买，请联系卖家</p>
                 <p><button class="btn btn-gray <%= "c_delete_#{cart_item.id}" %>">删除</button></p>
               </div><!-- content -->

@@ -9,7 +9,7 @@ class ProductInventory < ActiveRecord::Base
   scope :saling, -> { where(saling: true) }
   scope :not_saling, -> { where(saling: false) }
 
-  delegate :user, :status, :traffic_expense, :carriage_template, :carriage_template_id, :transportation_way, to: :product
+  delegate :image_url, :status, :traffic_expense, :carriage_template, :carriage_template_id, :transportation_way, to: :product
 
   after_create :create_product_properties
 
@@ -17,13 +17,18 @@ class ProductInventory < ActiveRecord::Base
     status == 'published'
   end
 
-  def image_url
-    product.image_url
+  # XXX: 商品名展示 product_inventory.name 还是 product.name ?
+  def product_name
+    self.name || product.name
+  end
+
+  def seller_id
+    product.user_id
   end
 
   def convert_into_cart_item(buy_count, sharing_code)
     sharing_node = SharingNode.find_by(code: sharing_code)
-    {}.merge({ user => [CartItem.new(product_inventory_id: id, seller_id: user_id, count: buy_count, sharing_node_id: sharing_node)] })
+    {}.merge({ product.user => [CartItem.new(product_inventory_id: id, seller_id: user_id, count: buy_count, sharing_node_id: sharing_node)] })
   end
 
   private

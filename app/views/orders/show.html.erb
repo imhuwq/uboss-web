@@ -10,34 +10,34 @@
   <%= I18n.t("order_status_bar.#{@order.state}") %>
 </div>
 
+<p><%= "商家： #{@product.user.store_identify}" %></p>
 <div class="container">
-  <div class="subOrd_box1 clearfix">
-    <dl>
-      <dt>
-      <%= link_to product_path(@product) do %>
-        <%= image_tag @product.image_url(:thumb) %>
-      <% end %>
-      </dt>
-      <dd>
-        <strong><%= @product.name %><span>￥<%= @order_item.present_price %></span></strong>
-        <p><%= truncate @product.short_description, length: 18 %></p>
-        <p><%= @product.user.store_identify %></p>
-      </dd>
-    </dl>
-  </div>
+  <% @order_items.each do |order_item| %>
+    <div class="subOrd_box1 clearfix">
+      <dl>
+        <dt>
+        <%= link_to product_path(order_item.item_product) do %>
+          <%= image_tag order_item.image_url(:thumb) %>
+        <% end %>
+        </dt>
+        <dd>
+        <strong><%= order_item.product_name %><span>￥<%= order_item.present_price %></span></strong>
+        <p><%= "颜色：红色   尺寸：2.5m" %></p>
+        </dd>
+      </dl>
+      <p class="sub_p1" style="display:block;float:right;">
+      <span class="sub_right sub_num">x <%= order_item.amount %></span>
+      </p>
+    </div>
+  <% end %>
+
   <div class="subOrd_box2">
     <div class="subOrd_boxcont">
-      <p class="sub_p1">
-        <span class="sub_left">数量</span>
-        <span class="sub_right sub_num">
-          <a href="#"><%= @order_item.amount %></a>
-        </span>
-      </p>
       <p class="sub_p1 sub_p2">
-        <span class="sub_leftl">合计（含运费￥<%= @product.traffic_expense %>）</span>
-        <span class="sub_left">
-          <strong>￥</strong><b id="total_price"><%= @order.pay_amount %></b>
-        </span>
+      <span class="sub_leftl">合计（含运费￥<%= @order.ship_price %>）</span>
+      <span class="sub_left">
+        <strong>￥</strong><b id="total_price"><%= @order.pay_amount %></b>
+      </span>
       </p>
     </div>
 

@@ -7,7 +7,7 @@ class CartItem < ActiveRecord::Base
   validates_presence_of   :cart_id, :product_inventory_id, :seller_id
   validates_uniqueness_of :product_inventory_id, scope: :cart_id
 
-  delegate :name, :price, to: :product_inventory
+  delegate :product_name, :price, to: :product_inventory
 
   before_save :check_count
 
@@ -30,7 +30,11 @@ class CartItem < ActiveRecord::Base
   end
 
   def image_url
-    product_inventory.product.image_url
+    product_inventory.image_url
+  end
+
+  def product
+    product_inventory.product
   end
 
   def total_price

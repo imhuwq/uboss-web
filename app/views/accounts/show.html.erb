@@ -38,7 +38,11 @@
 	    <%= render partial: 'order', collection: @orders %>
    	</div>
 	  <br />
-  	<div class="load-more" data-container='#u-order-list' data-ele='.order-list' data-ref='/account/orders'>加载更多</div>
+    <% if @orders.blank? %>
+      <div style="text-align:center;">您还没有相关的订单</div>
+    <% else %>
+      <div class="load-more" data-container='#u-order-list' data-ele='.order-list' data-ref='/account/orders'>加载更多</div>
+    <% end %>
   	<br />
 	</div><!-- tab-content showlist -->
 	<div class="tab-content" id="showpcards">

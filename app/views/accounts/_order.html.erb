@@ -15,7 +15,7 @@
         交易完成
       <% end %>
     </span>
-    <div class="text-cut">商家：名称</div>
+    <div class="text-cut">商家：<%= order.seller.identify %></div>
   </div>
 
   <%= link_to order_path(order, showwxpaytitle: 1) do %>
@@ -26,13 +26,13 @@
         </div><!-- order-cover -->
         <div class="content">
           <div class="price text-right gray-color">
-            <p>￥单价</p>
+            <p>￥<%= order_item.present_price %></p>
             <p class="number gray-color">
               x<%= order_item.try(:amount) %>
             </p>
           </div><!-- pull-right -->
           <div class="name">
-            <%= order_item.try(:product_inventory).try(:name) %>
+            <%= order_item.try(:product_inventory).try(:product_name) %>
           </div><!-- name -->
         </div><!-- content -->
       </div><!-- order-box -->

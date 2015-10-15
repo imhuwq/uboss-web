@@ -10,7 +10,7 @@ class Cart < ActiveRecord::Base
   end
 
   def add_product(product_inventory, sharing_code, count=1)
-    cart_item = cart_items.find_or_initialize_by(product_inventory_id: product_inventory.id, seller_id: product_inventory.user_id)
+    cart_item = cart_items.find_or_initialize_by(product_inventory_id: product_inventory.id, seller_id: product_inventory.seller_id)
     cart_item.sharing_node = SharingNode.find_by(code: sharing_code) if sharing_code
     cart_item.count += count
     cart_item

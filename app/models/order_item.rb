@@ -13,8 +13,7 @@ class OrderItem < ActiveRecord::Base
   delegate :name, :traffic_expense, to: :product, prefix: true
   delegate :privilege_card, to: :sharing_node, allow_nil: true
 
-  before_save :set_privilege_amount, :set_present_price,
-    :set_pay_amount, if: -> { order.paid_at.blank? }
+  before_save  :set_privilege_amount, :set_present_price, :set_pay_amount, if: -> { order.paid_at.blank? }
   after_create :decrease_product_stock
   after_commit :update_order_pay_amount, if: -> {
     previous_changes.include?(:pay_amount) &&
@@ -54,6 +53,18 @@ class OrderItem < ActiveRecord::Base
 
   def count
     amount
+  end
+
+  def item_product
+    product || product_inventory.product
+  end
+
+  def product_name
+    product ? product.name : product_inventory.product.name
+  end
+
+  def image_url(version=nil)
+    item_product.image_url(version)
   end
 
   private
