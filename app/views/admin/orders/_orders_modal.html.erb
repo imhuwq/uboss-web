@@ -16,7 +16,7 @@
                 </span>
                 <span class='form-group-span'>
                   <%= f.label :express_name %>:
-                  <%= select_tag "order[#{@order.id}][express_name]", options_from_collection_for_select(current_user.expresses, 'name', 'name'), class: 'form-control input-lg js-select2-express-tags', multiple: "multiple" %>
+                  <%= text_field_tag "order[#{@order.id}][express_name]", '', class: 'form-control input-lg js-select2-express-tags' %>
                 </span>
                 <span class='form-group-span form_ship_number'>
                   <%= f.label :ship_number %>:
@@ -36,7 +36,7 @@
 </div>
 <script>
   $(".js-select2-express-tags").select2({
-    tags: true,
+    tags: <%== current_user.expresses.pluck(:name) %>,
     maximumSelectionLength: 1,
     placeholder: "可输入其他快递公司名称, 按回车结束"
   })
