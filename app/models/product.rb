@@ -30,8 +30,6 @@ class Product < ActiveRecord::Base
   before_save :set_share_rate
   after_save :calculate_shares
 
-  accepts_nested_attributes_for :product_inventories, reject_if: proc { |attributes| attributes['count'].to_i < 1 }
-
   def self.official_agent
     find_by(user_id: User.official_account.try(:id), name: OFFICIAL_AGENT_NAME)
   end
