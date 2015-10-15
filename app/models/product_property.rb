@@ -3,7 +3,7 @@ class ProductProperty < ActiveRecord::Base
   belongs_to :product_class
   has_many :product_property_values, dependent: :destroy
 
-  validates_uniqueness_of :name
+  validates :name, presence: true, uniqueness: true
 
   def to_json
     {

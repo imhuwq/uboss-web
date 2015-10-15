@@ -75,18 +75,29 @@ class ProductTest < ActiveSupport::TestCase
     end
     assert_equal(20, product.total_sells)
   end
-  test "save_product_properties" do
-    p = Product.create(share_amount_total: 10, has_share_lv: 0, user_id: 1, name: '1', share_rate_lv_2: 0.3, share_rate_lv_3: 0.2,short_description:"123")
-    p.save_product_properties({color: 'red', size: 'L'})
-    pp = ProductProperty.find_by(name: 'color')
-    ppv = pp.product_property_values.first
-    assert_equal(ppv.value, "red")
-    pi = ProductInventory.where("product_id = :product_id and sku_attributes = :sku_attributes",product_id: p.id, sku_attributes: {color: 'red', size: 'L'}.to_json).first
-    assert_equal(pi.sku_attributes['color'],"red" )
 
-    p2 = Product.create(share_amount_total: 10, has_share_lv: 0, user_id: 1, name: '1', share_rate_lv_2: 0.3, share_rate_lv_3: 0.2,short_description:"1234")
-    p2.save_product_properties({color: 'red', size: 'L'})
-    assert_equal( ProductProperty.where(name:'color').count, 1)
-    assert_equal( ProductProperty.where(name:'size').count, 1)
+  test 'product_inventories_attributes=' do
+    product_inventories_attributes = {
+      '0' => { price: 100, count: 100, sku_attributes: { size: 'x', color: 'red' } },
+      '1' => { price: 100, count: 100, sku_attributes: { size: 'm', color: 'red' } },
+      '2' => { price: 100, count: 100, sku_attributes: { size: 'l', color: 'red' } },
+    }
+
+    product = create(:product, product_inventories_attributes: product_inventories_attributes)
+
+    assert_equal 3, product.product_inventories.count
+
+    product_inventories_attributes_with_update = [
+      { price: 200, count: 100, sku_attributes: { size: 'l', color: 'red' } },
+      { price: 100, count: 100, sku_attributes: { size: 'xl', color: 'red' } },
+      { price: 100, count: 100, sku_attributes: { size: 'xxl', color: 'red' } }
+    ]
+
+    product.update(product_inventories_attributes: product_inventories_attributes_with_update)
+
+    assert_equal 5, product.product_inventories.count
+    assert_equal 3, product.product_inventories.saling.count
+    assert_equal 200, product.product_inventories.find_by(sku_attributes: [{ size: 'l', color: 'red' }]).price
   end
+
 end

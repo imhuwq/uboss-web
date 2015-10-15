@@ -27,12 +27,13 @@ class Admin::ProductsController < AdminController
   end
 
   def update
-    if @product.present? && @product.user_id == current_user.id && @product.update(product_params)
+    if @product.update(product_params)
       flash[:success] = '保存成功'
+      redirect_to action: :show, id: @product.id
     else
       flash[:error] = "保存失败。#{@product.errors.full_messages.join('<br/>')}"
+      render :edit
     end
-    redirect_to action: :show, id: @product.id
   end
 
   def change_status

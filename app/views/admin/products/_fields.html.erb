@@ -2,7 +2,7 @@
   <script type="text/javascript" charset="utf-8">
     propertyData = <%== ProductProperty.includes(:product_property_values).all.to_json(only: [:name], include: {product_property_values: {only: [:value]}}) %>
     <% if f.object %>
-      stockData = <%== f.object.product_inventories.select(:id, :sku_attributes, :price, :count).to_json %>
+      stockData = <%== f.object.product_inventories.saling.select(:id, :sku_attributes, :price, :count).to_json %>
     <% else %>
       stockData = []
     <% end %>

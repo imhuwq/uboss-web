@@ -10,6 +10,7 @@
 #= require redactor-rails/config
 #= require chosen.jquery.min
 #= require select2
+#= require select2_locale_zh-CN
 #= require jquery-fileupload/basic
 #= require querystring
 #= require shared/upyun

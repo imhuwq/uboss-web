@@ -38,7 +38,7 @@
 	    			<span class="control-txt"><%#= number_to_currency @product.present_price %></span>
 	    		</div>
 	    	</div> -->
-				<% (@product.product_inventories || {}).each do |obj| %>
+				<% (@product.product_inventories.saling || {}).each do |obj| %>
 				<div class="">
 					<span>
 						<% (obj.sku_attributes || {}).each do |k,v| %>

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151014035526) do
+ActiveRecord::Schema.define(version: 20151015023108) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -289,9 +289,9 @@ ActiveRecord::Schema.define(version: 20151014035526) do
     t.integer  "product_id"
     t.integer  "product_class_id"
     t.integer  "count"
-    t.jsonb    "sku_attributes",     default: {},  null: false
-    t.datetime "created_at",                       null: false
-    t.datetime "updated_at",                       null: false
+    t.jsonb    "sku_attributes",     default: {},   null: false
+    t.datetime "created_at",                        null: false
+    t.datetime "updated_at",                        null: false
     t.integer  "user_id"
     t.string   "name"
     t.decimal  "price",              default: 0.0
@@ -300,6 +300,7 @@ ActiveRecord::Schema.define(version: 20151014035526) do
     t.decimal  "share_amount_lv_2",  default: 0.0
     t.decimal  "share_amount_lv_3",  default: 0.0
     t.decimal  "privilege_amount",   default: 0.0
+    t.boolean  "saling",             default: true
   end
 
   add_index "product_inventories", ["sku_attributes"], name: "index_product_inventories_on_sku_attributes", using: :gin

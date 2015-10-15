@@ -3,7 +3,8 @@ class ProductPropertyValue < ActiveRecord::Base
   belongs_to :product_property
   belongs_to :product_class
 
-  validates_uniqueness_of :value
+  validates :value, presence: true, uniqueness: { scope: :product_property_id }
+  validates_presence_of :product_property_id
 
   def to_json
     {
