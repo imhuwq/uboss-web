@@ -1,0 +1,10 @@
+
+<p class="buy_now_option_title"><%= properties  %></p>
+  <ul>
+  <li class="item sku">
+    <p>
+      红
+    </p>
+  </li>
+  </ul>
+<hr />
