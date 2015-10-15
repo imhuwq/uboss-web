@@ -17,7 +17,7 @@ class Product < ActiveRecord::Base
   has_many :product_share_issue, dependent: :destroy
   has_many :cart_items,  through: :product_inventories
   has_many :order_items, through: :product_inventories
-  has_many :product_inventories, dependent: :destroy
+  has_many :product_inventories, autosave: true, dependent: :destroy
 
   delegate :image_url, to: :asset_img, allow_nil: true
   delegate :avatar=, :avatar, to: :asset_img
@@ -28,12 +28,15 @@ class Product < ActiveRecord::Base
 
   before_create :generate_code
   before_save :set_share_rate
-  after_save :calculate_shares
+  #after_save :calculate_shares
 
   def self.official_agent
     find_by(user_id: User.official_account.try(:id), name: OFFICIAL_AGENT_NAME)
   end
 
+  # SKU(product_inventory) 更新保存逻辑
+  # 1. 更新OR创建新传入的SKU
+  # 2. 正在销售的SKU，如果没有在传入的SKU规格参数中，这些SKU记录将会被Flag: saling -> false
   def product_inventories_attributes= attributes_collection
     unless attributes_collection.is_a?(Hash) || attributes_collection.is_a?(Array)
       raise ArgumentError, "Hash or Array expected, got #{attributes_collection.class.name} (#{attributes_collection.inspect})"
