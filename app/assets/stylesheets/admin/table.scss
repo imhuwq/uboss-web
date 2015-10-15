@@ -12,10 +12,18 @@
 .list-table .edit-icon{ font-size: 20px;}
 
 .border-table{
-    width: 100%;
-    td,th{
-        padding: 10px;
-        border-bottom: 1px solid #ccc;
-        text-align: left;
-    }
+  width: 100%;
+  td,th{
+    padding: 8px;
+  }
+  td{
+    border: 1px solid #ccc;
+    text-align: left;
+  }
+  td:first-of-type {
+    border-left: none;
+  }
+  td:last-of-type {
+    border-right: none;
+  }
 }

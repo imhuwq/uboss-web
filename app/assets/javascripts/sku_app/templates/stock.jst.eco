@@ -1,7 +1,7 @@
 <% if @propertys.length == 0: %>
   <h5>请添加产品规格属性</h5>
 <% else: %>
-  <table id='stock-group'>
+  <table id='stock-group' class='border-table'>
     <thead>
       <tr>
         <% for property in @propertys: %>
