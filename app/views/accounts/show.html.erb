@@ -37,10 +37,18 @@
 		<div id="u-order-list">
 	    <%= render partial: 'order', collection: @orders %>
    	</div>
-	  <br />
     <% if @orders.blank? %>
-      <div style="text-align:center;">您还没有相关的订单</div>
+      <div class="bg-white text-center gap">
+      	<br/>
+      	<p><%= image_tag 'mobile/cart-big.png' %></p>
+      	<br />
+      	<p class="gray-color">您还没有相关的订单</p>
+      	<br />
+      	<p><a href="/" class="btn btn-longer">去逛逛</a></p>
+      	<br />
+      </div>
     <% else %>
+    	<br />
       <div class="load-more" data-container='#u-order-list' data-ele='.order-list' data-ref='/account/orders'>加载更多</div>
     <% end %>
   	<br />
