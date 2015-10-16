@@ -38,13 +38,13 @@ $ ->
             $(element.data('container')).append(data)
             element.removeClass('loading')
             element.text('加载更多')
-            $('#load-more').waypoint(waypointHandler, offset: '100%')
+            # $('#load-more').waypoint(waypointHandler, offset: '100%')
           else
             disabledLoadMore(element)
       else
         disabledLoadMore(element)
 
-  $('#load-more').waypoint(waypointHandler, offset: '100%')
+  # $('#load-more').waypoint(waypointHandler, offset: '100%')
 
 
 
