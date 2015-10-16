@@ -81,6 +81,7 @@ class Product < ActiveRecord::Base
           association.add_to_target(existing_record, :skip_callbacks)
         end
         unseling_ids.delete(existing_record.id)
+        attributes[:saling] = true
         existing_record.assign_attributes(attributes.except(*UNASSIGNABLE_KEYS))
       else
         association.build(attributes.except(*ActiveRecord::NestedAttributes::UNASSIGNABLE_KEYS))

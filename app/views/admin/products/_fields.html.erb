@@ -1,10 +1,10 @@
 <%= content_for :page_specific_javascript do %>
   <script type="text/javascript" charset="utf-8">
     propertyData = <%== ProductProperty.includes(:product_property_values).all.to_json(only: [:name], include: {product_property_values: {only: [:value]}}) %>
-    <% if f.object %>
-      stockData = <%== f.object.product_inventories.saling.select(:id, :sku_attributes, :price, :count).to_json %>
+    <% if f.object.new_record? %>
+      stockData = <%== get_product_seling_inventories_json f.object %>
     <% else %>
-      stockData = []
+      stockData = <%== get_product_seling_inventories_json f.object %>
     <% end %>
   </script>
   <%= javascript_include_tag 'sku_app/application' %>
@@ -100,4 +100,10 @@
     <%= render partial: 'show_carriage_template', locals: {carriage: @product.carriage_template} %>
 
   </div><!-- admin-box -->
+
+  <br />
+
+  <div class="form-actions text-right">
+    <%= f.submit "保存", class: "btn btn-large" %>
+  </div>
 </div>

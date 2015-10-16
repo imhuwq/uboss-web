@@ -7,15 +7,14 @@
 		<li class="active">创建商品信息</li>
 	</ul>
 </div><!-- container -->
+
 <br />
+
 <div class="container nogap">
-    <%= horizon_form_for :product, url: {action: :create} do |f| %>
+    <%= horizon_form_for [:admin, @product] do |f| %>
 
       <%= render 'fields', f: f %>
-			<br />
-      <div class="form-actions text-right">
-        <%= f.submit "创建", class: "btn btn-large" %>
-      </div>
+
     <% end %>
 
 </div>

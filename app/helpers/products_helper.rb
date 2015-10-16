@@ -55,4 +55,17 @@ module ProductsHelper
       product.privilege_amount
     end
   end
+
+  def get_product_seling_inventories_json(product)
+    #binding.pry
+    if product.new_record?
+      product.product_inventories.to_json(only: [:id, :sku_attributes, :price, :count])
+    elsif product.association(:product_inventories).target.present?
+      product.association(:product_inventories).target.
+        select { |inventory| inventory.saling }.
+        to_json(only: [:id, :sku_attributes, :price, :count])
+    else
+      product.product_inventories.saling.select(:id, :sku_attributes, :price, :count).to_json
+    end
+  end
 end
