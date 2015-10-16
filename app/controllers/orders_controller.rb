@@ -134,7 +134,7 @@ class OrdersController < ApplicationController
     elsif !params[:count].blank?
       product = Product.find(params[:product_id])
       ship_price = product.calculate_ship_price(params[:count].to_i, user_address)
-      render json: { status: 'ok', is_cart: 0, seller_id: product.user_id, ship_price: ship_price.to_s }
+      render json: { status: 'ok', is_cart: 0, ship_price: [[product.user_id, ship_price.to_s]] }
     end
   end
 

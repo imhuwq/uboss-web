@@ -69,7 +69,7 @@ class Order < ActiveRecord::Base
       carriage_template_group, items_count = uniq_carriage_template(items2)
       different_areas = find_all_different_areas(carriage_template_group, province)
 
-      max_carriage_expense = different_areas.sort_by{|area| [-area.carriage, area.extend_carriage]}.first
+      max_carriage_expense = different_areas.sort_by{ |area| [-area.carriage, area.extend_carriage] }.first
 
       if max_traffic.to_f >= max_carriage_expense.try(:carriage).to_f && max_carriage_expense.try(:extend_carriage).to_f >= 0
         ship_price = max_traffic

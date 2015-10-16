@@ -20,7 +20,7 @@
 
   <% order.order_items.each do |order_item| %>
     <div class="order-box">
-      <%= link_to order_item.product_inventory.product do %>
+      <%= link_to order_path(order) do %>
         <div class="cover">
           <%= image_tag order_item.try(:product_inventory).try(:product).try(:image_url, 'w120') %>
         </div><!-- order-cover -->
