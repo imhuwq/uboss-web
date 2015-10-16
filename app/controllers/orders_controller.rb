@@ -28,6 +28,7 @@ class OrdersController < ApplicationController
       @privilege_card = PrivilegeCard.find_by(user: current_user, seller: @product.user, actived: true)
       @sharing_link_node = @order_item.sharing_link_node
     end
+    render layout: 'mobile'
   end
 
   def new

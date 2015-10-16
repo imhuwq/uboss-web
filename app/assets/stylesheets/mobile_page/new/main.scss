@@ -1,6 +1,16 @@
 small{font-size: 70%;}
 .gap{padding:10px}
 .nogap{ padding:0;}
+.line-gap{
+    p{
+        line-height: 1;
+        font-size: 110%;
+        margin-bottom: 8px;
+    }
+    p:last-child{
+        margin: 0;
+    }
+}
 .text-center{ text-align: center;}
 .text-left{ text-align: left;}
 .text-right{ text-align: right;}
@@ -17,6 +27,7 @@ h4{font-size: 15px; line-height: 25px; font-weight: normal;}
 
 
 .bg-white{ background:#fff;}
+.bg-main{ background: $brand-primary;color: #fff;}
 
 .page-title{ 
     color: $brand-primary; 

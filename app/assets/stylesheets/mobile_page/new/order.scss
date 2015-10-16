@@ -25,15 +25,30 @@
         border-bottom: 1px solid #f6f6f6;
     }   
     span{vertical-align: baseline;}
-    .seller-box{
-        padding: 0 10px 10px;
-        font-size: 15px;
-        line-height: 25px;
-        overflow: hidden;
-        border-bottom: 1px solid #f6f6f6;
-        margin-bottom: 10px;
-    }
     
+    
+    
+}
+.seller-box{
+    padding: 0 10px 10px;
+    font-size: 15px;
+    line-height: 25px;
+    overflow: hidden;
+    border-bottom: 1px solid #f6f6f6;
+    margin-bottom: 10px;
+    .cover{
+        float: left;
+        margin-right: 10px;
+        width: 25px;
+        height: 25px;
+        border-radius: 100px;
+        border: 1px solid #f9ba10;
+        overflow: hidden;
+    }
+    .content{
+        overflow: hidden;
+        line-height: 25px;
+    }
 }
  .order-box{
     padding: 0 10px 10px;
