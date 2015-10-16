@@ -5,7 +5,7 @@ class OrderItem < ActiveRecord::Base
   belongs_to :product
   belongs_to :product_inventory
   belongs_to :sharing_node
-  has_one    :evaluation
+  has_many  :evaluations
   has_many   :sharing_incomes
 
   validates :user, :product_inventory, :amount, :present_price, :pay_amount, presence: true
@@ -34,7 +34,7 @@ class OrderItem < ActiveRecord::Base
   end
 
   def active_privilege_card
-    if card = PrivilegeCard.find_by(user_id: user_id, seller_id: product.user_id, actived: false)
+    if card = PrivilegeCard.find_by(user_id: user_id, seller_id: product_inventory.product.user_id, actived: false)
       card.update_column(:actived, true)
     end
   end

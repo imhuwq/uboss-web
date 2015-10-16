@@ -98,6 +98,16 @@ class ProductTest < ActiveSupport::TestCase
     assert_equal 5, product.product_inventories.count
     assert_equal 3, product.product_inventories.saling.count
     assert_equal 200, product.product_inventories.find_by(sku_attributes: [{ size: 'l', color: 'red' }]).price
+    assert_not product.product_inventories.find_by(sku_attributes: [{ size: 'x', color: 'red' }]).saling
+
+    product_inventories_attributes_with_update = [
+      { price: 200, count: 100, sku_attributes: { size: 'x', color: 'red' } }
+    ]
+    product.update(product_inventories_attributes: product_inventories_attributes_with_update)
+    assert_equal 1, product.product_inventories.saling.count
+    assert product.product_inventories.find_by(sku_attributes: [{ size: 'x', color: 'red' }]).saling
+
+    assert_equal 5, product.product_inventories.count
   end
 
 end
