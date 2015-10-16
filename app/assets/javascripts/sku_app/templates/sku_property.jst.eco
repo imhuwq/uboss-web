@@ -1,8 +1,8 @@
-<h3>
+<div class='sku-group-title'>
   <input class='property-inp' type='text' value=<%= @property.get('name') %> >
   <span><%= @property.get('id') %></span>
-  <a href='#' class="remove-property">×</a>
-</h3>
+  <a href='#' class="remove-property pull-right">×</a>
+</div>
 <div class='pv-list-group'>
   <div class='pv-list'>
   </div>
@@ -15,4 +15,3 @@
     </div>
   </div>
 </div>
-<hr>

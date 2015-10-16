@@ -178,3 +178,70 @@
   }
 }
 
+.sku-group-title {
+  padding: 5px;
+  background-color: #ccc;
+  border-radius: 4px;
+  &:hover {
+    .remove-property {
+      display: block;
+    }
+  }
+}
+.remove-property {
+  display: none;
+  background-color: rgba(0,0,0,0.5);
+  border-radius: 10px;
+  padding: 0 3px;
+  &:hover{
+    color: white;
+    background-color: black;
+  }
+}
+.pv-list-group {
+  padding: 10px 0;
+}
+.pv-list {
+  display: inline-block;
+}
+.add-pv-group {
+  display: inline-block;
+  position: relative;
+  .pv-sel-group{
+    position: absolute;
+    z-index: 999;
+    padding: 10px;
+    border-radius: 5px;
+    border: 2px solid;
+    width: 330px;
+    display: block;
+    background: white;
+  }
+}
+.sku-pv {
+  padding: 3px 15px;
+  display: inline-block;
+  border: 1px solid #999;
+  border-radius: 3px;
+  position: relative;
+  margin-right: 10px;
+  margin-bottom: 5px;
+  &:hover{
+    .remove-pv{
+      display: block;
+    }
+  }
+}
+.remove-pv{
+  display: none;
+  position: absolute;
+  right: -7px;
+  top: -9px;
+  background-color: rgba(0,0,0,0.5);
+  border-radius: 10px;
+  padding: 0 3px;
+  &:hover{
+    color: white;
+    background-color: black;
+  }
+}

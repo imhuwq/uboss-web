@@ -118,14 +118,14 @@ class OrderForm
   def create_order_and_order_item
     self.order =
       if product_id.present?
-        Order.create!({
+        Order.create!([{
           user: buyer,
           seller: product.user,
           to_seller: to_seller["#{product.user_id}"],
           user_address: self.user_address,
           order_items_attributes: order_items_attributes,
           order_charge: OrderCharge.new
-        })
+        }])
       elsif seller_ids
         Order.create!(
           orders_split_by_seller

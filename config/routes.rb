@@ -43,10 +43,10 @@ Rails.application.routes.draw do
     get 'pay_complete', on: :member
     get 'cancel', on: :member
     post 'ship_price', on: :collection
-    resource :charge, only: [:create]
+    #resource :charge, only: [:create]
   end
   resources :charges, only: [:show] do
-    get 'payments',     on: :member
+    get 'payments',     on: :collection
     get 'pay_complete', on: :member
   end
   resources :products, only: [:index, :show] do

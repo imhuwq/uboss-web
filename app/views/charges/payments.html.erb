@@ -6,15 +6,46 @@
 	<span>微信支付</span>
 	<input type="radio" name="payment_item" value="微信支付" class="pay-checkbox pay-checked" checked="checked" />
 </div>
-<%#<div class="payment-list wx-pay">%>
-	<%#<span>支付宝</span>%>
-	<%#<input type="radio" name="payment_item" value="支付宝" checked="checked" />%>
-<%#</div>%>
 
 <div class="order-price">
-  	<%= link_to '去付款', "javascript:;", class: 'cart-btn btn' %>
+  	<%= link_to '去付款', "javascript:;", class: 'cart-btn btn', id: 'wx-pay-btn' %>
     <div class="content">
-			<p>应付款：￥<span id="total_price">400</span></p>
+			<p>应付款：￥<span id="total_price"><%= @order_charge.pay_amount %></span></p>
 			<p class="gray-color"><small>已优惠了XX元</small></p>
 	  </div>
 </div><!-- order-price -->
+
+
+<% if browser.wechat? %>
+  <% if OrderCharge.unpay?(@orders) && @pay_p.present? %>
+    <%= content_for :extra_javascript do %>
+      <script type="text/javascript" charset="utf-8">
+         wx.ready(function(){
+           UBoss.nami.setPayenv("<%= $wechat_env %>");
+           $('#wx-pay-btn').on('click', function(event){
+             event.preventDefault();
+             UBoss.nami.chooseWXPay({
+               "timestamp": "<%= @pay_p[:timeStamp] %>",
+               "nonceStr": "<%= @pay_p[:nonceStr] %>",
+               "package": "<%= @pay_p[:package] %>",
+               "signType": "<%= @pay_p[:signType] %>",
+               "paySign": "<%= @pay_sign %>", // 支付签名
+               "success": function (res) {
+                 window.location.href = "/charges/" + "<%= @order_charge.id %>" + "/pay_complete";
+               }
+             });
+           });
+           wx.hideOptionMenu();
+         })
+      </script>
+    <% end %>
+  <% end %>
+  <%#<% if @order.signed? || @order.completed? %>
+  <% if false %>
+    <%= content_for :extra_javascript do %>
+      <script type="text/javascript" charset="utf-8">
+        wx.ready(function(){ UBoss.luffy.invokeSharing(); });
+      </script>
+    <% end %>
+  <% end %>
+<% end %>

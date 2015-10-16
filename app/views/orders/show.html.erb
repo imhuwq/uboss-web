@@ -102,6 +102,7 @@
 <%# end %>
 
 <br />
+
 <div class="bg-white gap text-right">
 	<% if @order.may_close? %>
 	  <%= link_to "取消订单", cancel_order_path(@order), data: { confirm: '确认取消订单？' }, id: 'close-order-btn', class: 'btn btn-gray' %>  
@@ -118,35 +119,5 @@
 	  <% end %>
 	<% end %>
 </div><!-- bg-white -->
-<% if browser.wechat? %>
-  <% if @order.unpay? && @pay_p.present? %>
-    <%= content_for :extra_javascript do %>
-      <script type="text/javascript" charset="utf-8">
-         wx.ready(function(){
-           UBoss.nami.setPayenv("<%= $wechat_env %>");
-           $('#wx-pay-btn').on('click', function(event){
-             event.preventDefault();
-             UBoss.nami.chooseWXPay({
-               "timestamp": "<%= @pay_p[:timeStamp] %>",
-               "nonceStr": "<%= @pay_p[:nonceStr] %>",
-               "package": "<%= @pay_p[:package] %>",
-               "signType": "<%= @pay_p[:signType] %>",
-               "paySign": "<%= @pay_sign %>", // 支付签名
-               "success": function (res) {
-                 window.location.href = "/orders/" + "<%= @order.id %>" + "/pay_complete";
-               }
-             });
-           });
-           wx.hideOptionMenu();
-         })
-      </script>
-    <% end %>
-  <% end %>
-  <% if @order.signed? || @order.completed? %>
-    <%= content_for :extra_javascript do %>
-      <script type="text/javascript" charset="utf-8">
-        wx.ready(function(){ UBoss.luffy.invokeSharing(); });
-      </script>
-    <% end %>
-  <% end %>
-<% end %>
+
+
