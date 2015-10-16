@@ -152,7 +152,7 @@
 <% end %>
 
 <% if @order.signed? || @order.completed? %>
-  <% if @order_item.evaluation_id.blank? %>
+  <% if @order_item.evaluations.blank? %>
     <div class="accunt_adil_box3">
       <%= link_to "评价", new_evaluation_path(id: @order_item.id), class: 'accunt_adilbtn' %>
     </div>

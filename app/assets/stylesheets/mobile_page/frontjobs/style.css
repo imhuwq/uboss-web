@@ -849,7 +849,8 @@ a{
   width: 276px;
   height: 94px;
   border: none;
-  padding: 5px;
+  padding: 10px;
+  border: 1px solid rgba(221, 221, 221, 0.38);
 }
 /*end_receiving assessment*/
 

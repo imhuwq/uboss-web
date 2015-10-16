@@ -6,7 +6,6 @@ class Evaluation < ActiveRecord::Base
   belongs_to :product
 
   before_save :relate_attrs
-  after_save :set_order_item_evaluation_id
   after_create :count_evaluation, :create_or_attach_sharing_node
 
   validates :order_item_id, :status, presence: true
@@ -41,10 +40,6 @@ class Evaluation < ActiveRecord::Base
       sharer_user_info_id = sharer_user.user_info.id
       UserInfo.update_counters(sharer_user_info_id, evaluation_column => 1)
     end
-  end
-
-  def set_order_item_evaluation_id # 找到关联的OrderItem并修改他的evaluation_id
-    OrderItem.find_by_id(order_item_id).update_attribute(:evaluation_id, id)
   end
 
   def self.sharer_good_reputation(sharer_id) # 分享者好评数
