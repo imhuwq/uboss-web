@@ -7,6 +7,20 @@ class OrderCharge < ActiveRecord::Base
 
   enum payment: { alipay: 0, alipay_wap: 1, alipay_qr: 2, wx: 3, wx_pub: 4, wx_pub_qr: 5, yeepay_wap: 6 }
 
+  def self.unpay?(orders)
+    bool = true
+    orders.each { |order| bool = false unless order.unpay? }
+    bool
+  end
+
+  def user
+    orders[0].user
+  end
+
+  def pay_amount
+    orders.sum(:pay_amount).to_f
+  end
+
   def check_paid?
     return true if paid_at.present?
 

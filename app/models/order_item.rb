@@ -8,7 +8,7 @@ class OrderItem < ActiveRecord::Base
   has_one    :evaluation
   has_many   :sharing_incomes
 
-  validates :product_inventory_id, :amount, :user_id, :present_price, presence: true
+  validates :user, :product_inventory, :amount, :present_price, :pay_amount, presence: true
 
   delegate :name, :traffic_expense, to: :product, prefix: true
   delegate :privilege_card, to: :sharing_node, allow_nil: true

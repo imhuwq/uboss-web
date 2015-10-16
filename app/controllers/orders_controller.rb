@@ -1,5 +1,5 @@
 class OrdersController < ApplicationController
-  before_action :authenticate_user!, except: [:new, :create]
+  before_action :authenticate_user!, except: [:new, :create, :ship_price]
   before_action :find_order, only: [:cancel, :show, :pay, :pay_complete, :received]
 
   def cancel
@@ -14,17 +14,8 @@ class OrdersController < ApplicationController
   def show
     @order_items = @order.order_items
     @product = @order_items.first.item_product
-    if available_pay?(@order, @product)
-      @order_charge = ChargeService.find_or_create_charge(@order, remote_ip: request.ip)
-      @pay_p = {
-        appId: WxPay.appid,
-        timeStamp: Time.now.to_i.to_s,
-        nonceStr: SecureRandom.hex,
-        package: "prepay_id=#{@order_charge.prepay_id}",
-        signType: "MD5"
-      }
-      @pay_sign = WxPay::Sign.generate(@pay_p)
-    elsif @order.signed? || @order.completed?
+
+    if @order.signed? || @order.completed?
       @privilege_card = PrivilegeCard.find_by(user: current_user, seller: @product.user, actived: true)
       @sharing_link_node = @order_item.sharing_link_node
     end
@@ -53,6 +44,7 @@ class OrdersController < ApplicationController
         redirect_to root_path
       else
         set_user_address
+        render layout: 'mobile'
       end
     elsif params[:item_ids]
       item_ids = params[:item_ids].split(',')
@@ -63,10 +55,10 @@ class OrdersController < ApplicationController
       @products_group_by_seller = CartItem.group_by_seller(@cart_items)
 
       set_user_address
+      render layout: 'mobile'
     else
       redirect_to root_path
     end
-    render layout: 'mobile'
   end
 
   def create
@@ -95,8 +87,7 @@ class OrdersController < ApplicationController
       sign_in(@order_form.buyer) if current_user.blank?
       clean_current_cart unless params[:order_form][:product_id].present?
       @order_title = '确认订单'
-      #redirect_to order_path(@order_form.order, showwxpaytitle: 1)
-      redirect_to payments_charge_path(OrderCharge.last)
+      redirect_to payments_charges_path(order_ids: @order_form.order.map(&:id).join(','), showwxpaytitle: 1)
     else
       @order_form.captcha = nil
       @user_address = @order_form.user_address
@@ -112,7 +103,7 @@ class OrdersController < ApplicationController
     end
   end
 
-  # TODO move to charges_controller
+  # xxx: move to charges_controller
   #def pay_complete
     #@order.check_paid
     #@order_charge = @order.order_charge
@@ -128,7 +119,7 @@ class OrdersController < ApplicationController
   end
 
   def ship_price
-    user_address = current_user.user_addresses.find_by(id: params[:user_address_id]) || current_user.user_addresses.new(province: params[:province])
+    user_address = UserAddress.find_by(id: params[:user_address_id]) || UserAddress.new(province: params[:province])
 
     if params[:product_id].blank?
       cart = current_cart
@@ -141,7 +132,6 @@ class OrdersController < ApplicationController
     elsif !params[:count].blank?
       product = Product.find(params[:product_id])
       ship_price = product.calculate_ship_price(params[:count].to_i, user_address)
-      #ship_price = product.calculate_product_ship_price(product, params[:count].to_i, user_address)
       render json: { status: 'ok', is_cart: 0, seller_id: product.user_id, ship_price: ship_price.to_s }
     end
   end
@@ -158,7 +148,6 @@ class OrdersController < ApplicationController
 
   def available_pay?(order, product)
     order.unpay? &&
-      browser.wechat? &&
       (product.is_official_agent? ? available_buy_official_agent? : true)
   end
   helper_method :available_pay?
