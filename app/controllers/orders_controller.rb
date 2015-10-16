@@ -105,6 +105,7 @@ class OrdersController < ApplicationController
   end
 
   # xxx: move to charges_controller
+  # FIXME 不需要的代码，清除(view,model...any useless pleace)干净就好了，不要留下一大堆的注释代码
   #def pay_complete
     #@order.check_paid
     #@order_charge = @order.order_charge
