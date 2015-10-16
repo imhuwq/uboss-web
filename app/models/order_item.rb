@@ -5,7 +5,7 @@ class OrderItem < ActiveRecord::Base
   belongs_to :product
   belongs_to :product_inventory
   belongs_to :sharing_node
-  has_many  :evaluations
+  has_many   :evaluations
   has_many   :sharing_incomes
 
   validates :user, :product_inventory, :amount, :present_price, :pay_amount, presence: true
@@ -14,7 +14,7 @@ class OrderItem < ActiveRecord::Base
   delegate :privilege_card, to: :sharing_node, allow_nil: true
 
   before_save  :set_privilege_amount, :set_present_price, :set_pay_amount, if: -> { order.paid_at.blank? }
-  after_create :decrease_product_stock
+  after_create :set_product_id, :decrease_product_stock
   after_commit :update_order_pay_amount, if: -> {
     previous_changes.include?(:pay_amount) &&
     previous_changes[:pay_amount].first != previous_changes[:pay_amount].last
@@ -30,11 +30,11 @@ class OrderItem < ActiveRecord::Base
   alias_method :generate_sharing_link_node, :sharing_link_node
 
   def create_privilege_card_if_none
-    PrivilegeCard.find_or_active_card(user_id, product.user_id)
+    PrivilegeCard.find_or_active_card(user_id, order.seller_id)
   end
 
   def active_privilege_card
-    if card = PrivilegeCard.find_by(user_id: user_id, seller_id: product_inventory.product.user_id, actived: false)
+    if card = PrivilegeCard.find_by(user_id: user_id, seller_id: order.seller_id, actived: false)
       card.update_column(:actived, true)
     end
   end
@@ -94,5 +94,11 @@ class OrderItem < ActiveRecord::Base
 
   def update_order_pay_amount
     order.update_pay_amount
+  end
+
+  def set_product_id
+    if product_inventory && product_id.blank?
+      self.product_id = self.product_inventory.product_id
+    end
   end
 end
