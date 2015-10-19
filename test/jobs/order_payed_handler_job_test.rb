@@ -45,6 +45,7 @@ class OrderPayedHandlerJobTest < ActiveJob::TestCase
 
     it 'should only reward 1 user' do
       product = create :product_with_1sharing
+      product_inventory = create(:product_inventory, product: product)
       sharing_reward_lv1 = product.share_amount_lv_1
 
       level1_node = create(:sharing_node, product: product)
@@ -56,6 +57,7 @@ class OrderPayedHandlerJobTest < ActiveJob::TestCase
                       user: buyer,
                       order_items_attributes: [{
                         product: product,
+                        product_inventory: product_inventory,
                         user: buyer,
                         amount: buy_amount,
                         sharing_node: level2_node
@@ -71,6 +73,7 @@ class OrderPayedHandlerJobTest < ActiveJob::TestCase
 
     it 'should reward sharing user success' do
       product = create :product_with_3sharing
+      product_inventory = create(:product_inventory, product: product)
 
       sharing_reward_lv1 = product.share_amount_lv_1
       sharing_reward_lv2 = product.share_amount_lv_2
@@ -87,6 +90,7 @@ class OrderPayedHandlerJobTest < ActiveJob::TestCase
                       user: buyer,
                       order_items_attributes: [{
                         product: product,
+                        product_inventory: product_inventory,
                         user: buyer,
                         amount: buy_amount,
                         sharing_node: level4_node
