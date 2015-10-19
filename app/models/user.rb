@@ -50,7 +50,7 @@ class User < ActiveRecord::Base
   alias_attribute :regist_mobile, :login
 
   delegate :sex, :sex=, :province, :province=, :city, :city=, :country, :country=,
-    :good_evaluation, :normal_evaluation, :bad_evaluation,
+    :good_evaluation, :best_evaluation, :better_evaluation, :worst_evaluation, :bad_evaluation,
     :store_name, :store_name=,      :income_level_thr, :frozen_income,
     :income,     :income_level_one, :income_level_two, :service_rate,
     :store_banner_one_identifier,  :store_banner_two_identifier,  :store_banner_thr_identifier,
@@ -353,7 +353,7 @@ class User < ActiveRecord::Base
 
   def total_reputations
     @total_reputations ||= UserInfo.where(user_id: id).
-      sum("good_evaluation + normal_evaluation + bad_evaluation")
+      sum("good_evaluation + bad_evaluation + better_evaluation + best_evaluation + worst_evaluation")
   end
 
   def has_seller_privilege_card?(seller)

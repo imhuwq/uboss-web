@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151016032432) do
+ActiveRecord::Schema.define(version: 20151019094545) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -326,13 +326,15 @@ ActiveRecord::Schema.define(version: 20151016032432) do
     t.integer  "calculate_way",        default: 0
     t.integer  "status",               default: 0
     t.integer  "good_evaluation",      default: 0
-    t.integer  "normal_evaluation",    default: 0
     t.integer  "bad_evaluation",       default: 0
     t.decimal  "privilege_amount",     default: 0.0
     t.string   "short_description"
     t.boolean  "hot",                  default: false
     t.integer  "carriage_template_id"
     t.integer  "transportation_way",   default: 0
+    t.integer  "best_evaluation"
+    t.integer  "better_evaluation"
+    t.integer  "worst_evaluation"
   end
 
   create_table "redactor_assets", force: :cascade do |t|
@@ -453,7 +455,6 @@ ActiveRecord::Schema.define(version: 20151016032432) do
     t.string   "province"
     t.string   "country"
     t.integer  "good_evaluation",           default: 0
-    t.integer  "normal_evaluation",         default: 0
     t.integer  "bad_evaluation",            default: 0
     t.string   "store_name"
     t.integer  "service_rate",              default: 5
@@ -465,6 +466,9 @@ ActiveRecord::Schema.define(version: 20151016032432) do
     t.string   "recommend_resource_two_id"
     t.string   "recommend_resource_thr_id"
     t.string   "store_short_description"
+    t.integer  "worst_evaluation"
+    t.integer  "better_evaluation"
+    t.integer  "best_evaluation"
   end
 
   add_index "user_infos", ["user_id"], name: "index_user_infos_on_user_id", unique: true, using: :btree
