@@ -5,6 +5,7 @@ header {
     overflow: hidden;
     line-height: 20px;
     background: #fff;
+    a{display: inline-block;}
     .logo{height: 20px; margin-left: 58px;padding:10px 0;}
     .title{
       margin:10px 0 10px 42px;
@@ -17,10 +18,20 @@ header {
       white-space:nowrap;
       overflow: hidden;
     }
-    .menu-btn{
+    .menu-btn,.submit{
       float: right;
       padding: 10px;
+      font-size: 14px;
       img{ width: 21px;}
+    }
+    .back{
+        float: left;
+        padding: 10px;
+        img{ 
+          height: 14px;
+          -webkit-transform: rotate(180deg);
+          transform: rotate(180deg);
+        }
     }
   }
   .nav-bar{

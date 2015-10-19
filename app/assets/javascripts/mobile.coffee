@@ -15,6 +15,7 @@
 #= require mobile_page/order
 #= require mobile_page/address
 #= require mobile_page/pay
+#= require mobile_page/evaluations
 #= require shared/city_select
 #= reuqire_self
 

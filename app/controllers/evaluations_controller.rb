@@ -2,6 +2,7 @@ class EvaluationsController < ApplicationController
   def new
     @order_item = OrderItem.find(params[:id])
     @evaluation = Evaluation.new(order_item: @order_item)
+    render layout: 'mobile'
   end
 
   def show

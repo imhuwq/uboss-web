@@ -14,6 +14,16 @@
 	  </ul>
 	</div>
 </div>
+<% elsif controller_name == "evaluations" && action_name == "new" %>
+<div class="header-bar">
+	<a class="back" onclick="history.go(-1)"><%= image_tag 'mobile/right.png' %></a>
+  	<a href="#" class="submit" onclick="submitEvaluationStatus()">提交</a>
+	  <% if content_for?(:page_title) %>
+	    <span class="title"><%= yield(:page_title) %></span>
+	  <% else %>
+	    <%= image_tag 'mobile/logo.png',class:'logo' %>
+	  <% end %>
+</div>
 <% else %>
 <div class="header-bar">
   	<div class="menu-btn"><%= image_tag 'mobile/navbar.png' %></div>
