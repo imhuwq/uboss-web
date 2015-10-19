@@ -1,31 +1,42 @@
 <%= content_for :page_title do %>
-追加评价
+  追加评价
 <% end %>
 <br />
 <div class="emoticon-box">
-	
 </div>
 <div class="evaluations-box bg-white">
   <div class="star-box">
   	<!-- 星数判断 -->
-	<div class="star"></div>
-	<div class="star"></div>
-	<div class="star"></div>
-	<div class="star half"></div>
+    <% Evaluation.statuses[@evaluation.status.to_sym].times do |star| %>
+      <div class="star"></div>
+    <% end %>
   </div><!-- start-box -->
   <div class="gap">
-  	<textarea class="input-block" rows="6" placeholder="我还想说..."></textarea>
+  <%= simple_form_for @evaluation do |f| %>
+    <%= f.input_field :status, class:'hidden' %>
+    <%= f.hidden_field :order_item_id, class:'hidden' %>
+    <%= f.text_area :content, value: '', placeholder: '我还想说...', id:"y_textarea" ,rows:"6",class:"input-block" %>
+  <% end %>
   </div>
 </div><!-- evaluations-box -->
 <div class="evaluations-list">
-  <br />
-  <div class="bg-white gap line-gap">
-  	<p class="main-color">2015-10-12</p>
-  	<p>还好啦</p>
-  </div>
-  <br />
-  <div class="bg-white gap line-gap">
-  	<p class="main-color">2015-10-12</p>
-  	<p>一般般</p>
-  </div>
+  <% @order_item.evaluations.each do |evaluation| %>
+    <br />
+    <div class="bg-white gap line-gap">
+      <p class="main-color"><%= evaluation.created_at %></p>
+      <p><%= evaluation.content %></p>
+    </div>
+  <% end %>
 </div><!-- evaluation-box -->
+
+<script type="text/javascript">
+  function submitEvaluationStatus() {
+    var val = $("#y_textarea").val()
+    if (val == '') {
+      alert("请写点什么吧");
+    }
+    else{
+      $('#new_evaluation').submit();
+    };
+  };
+</script>
