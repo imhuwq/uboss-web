@@ -9,4 +9,3 @@ class StockSku.Models.Stock extends Backbone.Model
     sku_attributes: {}
     count: 0
     price: 0
-    identify: ""
