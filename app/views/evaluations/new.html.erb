@@ -3,7 +3,7 @@
 <% end %>
 <br />
 <%= simple_form_for @evaluation do |f| %>
-  <%= f.input_field :status, value: 'good', class:'hidden' %>
+  <%= f.input_field :status, selected: 'good', class:'hidden' %>
   <%= f.hidden_field :order_item_id, class:'hidden' %>
   <div class="emoticon-box">
     <div class="emoticon" data-star="1">
@@ -41,11 +41,6 @@
 
 <script type="text/javascript">
   function submitEvaluationStatus() {
-    var status = $('#evaluation_status').val();
-    if (status == ''){
-      $('#evaluation_status').val('good');
-    }
-
     var val = $("#y_textarea").val()
     if (val == '') {
       alert("请写点什么吧");
