@@ -42,12 +42,12 @@
 <script type="text/javascript">
 
 function submitEvaluationStatus() {
-  var val = $("#y_textarea").val()
   var status = $('#evaluation_status').val();
   if (status == ''){
     $('#evaluation_status').val('good');
   }
-  var val = $("y_textarea").text()
+
+  var val = $("#y_textarea").val()
   if (val == '') {
     alert("请写点什么吧");
   }
