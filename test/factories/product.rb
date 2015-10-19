@@ -10,6 +10,7 @@ FactoryGirl.define do
     count 100
     content "product desc"
     short_description "product short desc"
+    product_inventories_attributes [{ price: 100, count: 100, sku_attributes: { size: 'x', color: 'red' } }]
 
     trait :sharing_thr do
       calculate_way 0
