@@ -1,4 +1,3 @@
-#= require jquery
 #= require underscore-min
 #= require backbone-min
 #= require_self

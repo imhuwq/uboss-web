@@ -27,8 +27,8 @@ ProductInventory.View = Backbone.View.extend()
 ProductInventory.Collections.Properties = Backbone.Collection.extend()
 
 
-# Zepto ($) ->
-jQuery ($) ->
+Zepto ($) ->
+# jQuery ($) ->
   console.log "ProductInventory is ready"
   if $('#inventory').length > 0
 
