@@ -4,7 +4,11 @@ class EvaluationsController < ApplicationController
     @evaluation = Evaluation.new(order_item: @order_item)
     render layout: 'mobile'
   end
-
+  
+  def append
+    render layout: 'mobile'    
+  end
+  
   def show
     @evaluation = Evaluation.find(params[:id])
     @product = @evaluation.product
