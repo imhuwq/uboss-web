@@ -3,31 +3,31 @@
 <% end %>
 <br />
 <%= simple_form_for @evaluation do |f| %>
-  <%= f.input_field :status, class:'hidden' %>
+  <%= f.input_field :status, value: 'good', class:'hidden' %>
   <%= f.hidden_field :order_item_id, class:'hidden' %>
   <div class="emoticon-box">
     <div class="emoticon" data-star="1">
     	<p><i class="icon worst-icon"></i></p>
-    	<p>不满 </p>
-    </div><!-- emoticon-->
-    <div class="emoticon" data-star="2">
+    	<p class='worst'>不满 </p>
+    </div>
+    <div class="emoticon">
     	<p><i class="icon bad-icon"></i></p>
-    	<p>减分</p>
-    </div><!-- emoticon-->
-    <div class="emoticon active" data-star="3">
+    	<p class='bad'>减分</p>
+    </div>
+    <div class="emoticon active">
     	<p><i class="icon good-icon"></i></p>
-    	<p>满意</p>
-    </div><!-- emoticon-->
-    <div class="emoticon" data-star="4">
+    	<p class='good'>满意</p>
+    </div>
+    <div class="emoticon">
     	<p><i class="icon better-icon"></i></p>
-    	<p>加分</p>
-    </div><!-- emoticon-->
-    <div class="emoticon" data-star="5">
+    	<p class='better'>加分</p>
+    </div>
+    <div class="emoticon">
     	<p><i class="icon best-icon"></i></p>
-    	<p>惊喜</p>
-    </div><!-- emoticon-->
-  </div><!-- emoticon-box -->
-  <div class="evaluations-box bg-white">
+    	<p class='best'>惊喜</p>
+    </div>
+  </div>
+  <div class="evaluations-box bg-white gap">
   	<div class="star-box">
   		<div class="star"></div>
   		<div class="star"></div>
@@ -37,14 +37,6 @@
   		<%= f.text_area :content, placeholder: '写点什么吧...', id:"y_textarea" ,rows:"6",class:"input-block" %>
   	</div>
   </div><!-- evaluations-box -->
-
-<% @order_item.evaluations.each do |evaluation| %>
-  <p>
-    <span><%= evaluation.created_at %></span>
-    <span><%= evaluation.status %></span>
-  </p>
-  <p><%= evaluation.content %></p>
-<% end %>
 
 <script type="text/javascript">
 

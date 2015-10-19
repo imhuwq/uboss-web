@@ -7,3 +7,5 @@ $ ->
       $('.star-box').empty()
       for i in [star_num..1]
         $('.star-box').append('<div class="star"></div>')
+      active_name = $(this).find('p').last().attr('class');
+      $('#evaluation_status').val(active_name);

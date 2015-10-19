@@ -215,9 +215,11 @@ zh-CN:
   enums:
     evaluation:
       status:
-        good:   好评
-        normal: 中评
-        bad:    差评
+        good:   满意
+        better: 加分
+        bad:    减分
+        worst: 不满
+        best: 惊喜
     agent_invite_seller_histroy:
       status:
         invited: 已邀请

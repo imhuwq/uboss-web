@@ -17,7 +17,6 @@ class EvaluationsController < ApplicationController
 
   def create
     @evaluation = Evaluation.new(validate_attrs)
-    @order_item = @evaluation.order_item
     if @evaluation.save
       flash[:success] = '评价成功'
       redirect_to action: :show, id: @evaluation.id
