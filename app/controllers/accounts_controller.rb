@@ -9,8 +9,8 @@ class AccountsController < ApplicationController
     @orders = append_default_filter account_orders(type), page_size: 10
     @privilege_cards = append_default_filter current_user.privilege_cards, order_column: :updated_at, page_size: 10
     render layout: 'mobile'
-  end
-
+  end  
+  
   def orders
     @orders = append_default_filter account_orders, page_size: 10
     render partial: 'accounts/order', collection: @orders

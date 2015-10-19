@@ -1,42 +1,45 @@
 
 <%= content_for :page_title do %>
-  管理地址
+  收货地址列表
 <% end %>
-<div class="container add_listall" >
-  <div class="add_title">
-    <span>收货地址列表</span>
-    <!-- <div class="close"><a href="#"><img src="img/close.png"></a></div> -->
-  </div>
-  <div class="add_conts">
-    <%
-       default_user_addresses = []
-       user_address = current_user.default_address
-       default_user_addresses << user_address
-        %>
-    <% if user_address %>
-    <dl class="add_line1 addrr bg_green">
-      <%= link_to edit_account_user_address_path(user_address), class:"add_line2" do %>
-        <dd><span style="color:white;">收货人：<%= user_address.username %></span><strong><%= user_address.mobile %></strong></dd>
-        <dd><span style="color:white;">收货地址：<%= excerpt( "#{user_address}", "#{user_address}".split('')[-1],separator: '', radius: 12)  %></span></dd>
-
-        <!-- <%= image_tag("img/right.png" ) %> -->
-        <%= image_tag("uboss_29/edit.png" ) %>
-      <% end %>
-    </dl>
-    <% end %>
-    <%- (@user_addresses-default_user_addresses).each do |user_address| %>
-    <dl class="add_line1 addrr">
-      <%= link_to edit_account_user_address_path(user_address), class:"add_line2" do %>
-        <dd><span>收货人：<%= user_address.username %></span><strong><%= user_address.mobile %></strong></dd>
-        <dd><span>收货地址：<%= excerpt( "#{user_address}", "#{user_address}".split('')[-1],separator: '', radius: 12)  %></span></dd>
-
-        <!-- <%= image_tag("uboss_29/right.png" ) %> -->
-        <%= image_tag("uboss_29/edit.png" ) %>
-      <% end %>
-    </dl>
-    <% end %>
-    <div class="accunt_adil_box3 adbtn">
-      <%= link_to("添加新地址", new_account_user_address_path , class:"accunt_adilbtn") %>
+<br />
+<%
+   default_user_addresses = []
+   user_address = current_user.default_address
+   default_user_addresses << user_address
+%>
+<% if user_address %>
+	<%= link_to edit_account_user_address_path(user_address), class:"add_line2" do %>
+		
+    <div class="address-box">
+    	
+    	<div class="content default">
+	    	<p>
+	        <span class='pull-right adr-mobile'><%= user_address.mobile %></span>
+	        <span class='adr-user'><%= user_address.username %></span>
+	        </p>
+	      <p class='adr-detail'>【默认】<%= excerpt( "#{user_address}", "#{user_address}".split('')[-1],separator: '', radius: 12)  %></p>
+      </div>
     </div>
-  </div>
+	<% end %>
+<% end %>
+<br />
+<div class="address-list">
+<%- (@user_addresses-default_user_addresses).each do |user_address| %>
+  <%= link_to edit_account_user_address_path(user_address), class:"add_line2" do %>
+  	<div class="address-box">
+  		<div class="content">
+		    <p>
+		    	<span class='pull-right'><%= user_address.mobile %></span>
+		    	<span><%= user_address.username %></span>
+		    </p>
+		    <p><%= excerpt( "#{user_address}", "#{user_address}".split('')[-1],separator: '', radius: 12)  %></p>
+	    </div>
+		</div>
+  <% end %>
+<% end %>
 </div>
+    
+<%= link_to  new_account_user_address_path , id:"address-more" do %>
+	<b class="icon">+</b>添加新地址
+<% end %><!-- address-more -->

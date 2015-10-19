@@ -1,10 +1,21 @@
-<div class="add_inout">
-  <p>
-    <span class="add_textd">收货人</span>
-    <%= f.input_field :username, placeholder: '收件人姓名', class:"add_text" %>
-  </p>
-  <p><span>联系电话</span><%= f.input_field :mobile, type: :tel, placeholder: '输入手机',class:"add_text" %></p>
-  <%= render 'user_addresses/user_address', f: f  %>
-  <p><span>详细地址</span><%= f.input_field :building, placeholder: '街道、门牌号',class:"add_text" %></p>
-  <p><span>设为默认</span><%= f.input_field :default,class:"add_text" %></p>
-</div>
+<table>
+  <tr>
+    <td>收货人</td>
+    <td><%= f.input_field :username, placeholder: '名字', class: 'input-block' %></td>
+  </tr>
+  <tr>
+    <td>联系电话</td>
+    <td><%= f.input_field :mobile, placeholder: '手机或固话', type: :tel, class: 'input-block' %></td>
+  </tr>
+  <tr>
+    <%= render 'user_addresses/user_address', f: f  %>
+  </tr>
+  <tr>
+    <td>详细地址</td>
+    <td><%= f.input_field :building, placeholder: '街道门牌信息', class: 'input-block' %></td>
+  </tr>
+</table>
+<br />
+<p class="text-right">
+	设为默认 <%= f.input_field :default %>
+</p>

@@ -4,10 +4,12 @@ class UserAddressesController < ApplicationController
 
   def index
     @user_addresses = current_user.user_addresses.recent
+    render layout: 'mobile'
   end
 
   def new
     @user_address = UserAddress.new
+    render layout: 'mobile'
   end
 
   def create
@@ -22,6 +24,7 @@ class UserAddressesController < ApplicationController
   end
 
   def edit
+    render layout: 'mobile'
   end
 
   def update

@@ -265,6 +265,7 @@
     background: image-url('mobile/local.png') #fff no-repeat;
     background-position:10px 21.5px ;
     background-size: 7px;
+    border-bottom: 1px solid #f6f6f6;
     color: #888;
     font-size: 13px;
     line-height: 20px;
@@ -273,6 +274,11 @@
         padding-right:40px ;
         background:image-url('mobile/right.png') no-repeat right center ;
         background-size: 10px;
+    }
+    .content.default{
+        background: image-url('mobile/check.png') no-repeat right center;
+        background-position-y: -41px;
+        background-size: 30px;
     }
 }
 .none-address-box{
@@ -300,15 +306,22 @@
     span{vertical-align: top;line-height: 20px;}
     .address-box { 
         padding: 10px 10px 10px 24px;
-        border-bottom: 1px solid #f6f6f6;
         background-position:10px 13.5px ;
+    }
+    .address-list{        
+        padding: 41px 0;
+        margin-bottom: 0;
+    }
+    #address-more{
+        -webkit-animation: leftIn .3s linear;
+        animation: leftIn .3s linear ;
     }
 }
 .address-list{
     height: 100%;
-    padding: 42px 0;
     box-sizing: border-box;
     overflow-y: scroll;
+    margin-bottom: 42px;
 }
 .address-title{
     background: #fff;
@@ -351,27 +364,16 @@
     z-index: 200;
     line-height: 20px;
     text-align: center;
-    -webkit-animation: leftIn .3s linear;
-    animation: leftIn .3s linear ;
     span{vertical-align: top;line-height: 20px;}
 }
 
-#address-new{
-    position: fixed; 
-    height: 100%;    
-    width: 100%;
-    top: 0;
-    left: 0;
-    z-index: 300;
+.address-new{    
     background: #fff;
     overflow: hidden;
     color:$brand-primary;
-    box-sizing: border-box;
-    padding: 47px 10px 20px;
-    animation: leftIn .3s linear ;
-    -webkit-animation: leftIn .3s linear;
+    box-sizing: border-box;    
     td{ border-bottom: 1px solid #f6f6f6;}
-    input,select{
+    input[type="tel"],input[type="text"],select{
         border: none;
         -webkit-appearance: none;
         color: #444;
@@ -381,6 +383,17 @@
         background: none;
         
     }
+}
+#address-new{
+    position: fixed; 
+    height: 100%;    
+    width: 100%;
+    top: 0;
+    left: 0;
+    z-index: 300;
+    animation: leftIn .3s linear ;
+    -webkit-animation: leftIn .3s linear;
+    padding: 47px 10px 20px;
 }
 
 .no-login{
