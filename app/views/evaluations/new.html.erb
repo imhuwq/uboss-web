@@ -38,6 +38,12 @@
   	</div>
   </div><!-- evaluations-box -->
 
+<% @order_item.evaluations.each do |evaluation| %>
+  <p>
+    <span><%= evaluation.created_at %></span>
+    <span><%= evaluation.status %></span>
+  </p>
+  <p><%= evaluation.content %></p>
 <% end %>
 
 <script type="text/javascript">
