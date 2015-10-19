@@ -106,8 +106,7 @@ class ApplicationController < ActionController::Base
 
   def find_cart
     cart = current_user.cart
-    cart = Cart.create(user: current_user) unless cart
-    cart
+    cart ||= Cart.create(user: current_user)
   end
 
   def logined_redirect_path
