@@ -8,8 +8,6 @@ class Product < ActiveRecord::Base
   DataCalculateWay = { 0 => '按金额', 1 => '按售价比例' }
   DataBuyerPay = { 0 => '包邮', 1 => '统一邮费', 2 => '运费模板' }
 
-  validates_presence_of :user_id, :name, :short_description
-
   belongs_to :user
   belongs_to :order_items
   belongs_to :carriage_template
@@ -18,6 +16,7 @@ class Product < ActiveRecord::Base
   has_many :cart_items,  through: :product_inventories
   has_many :order_items, through: :product_inventories
   has_many :product_inventories, autosave: true, dependent: :destroy
+  has_many :seling_inventories, -> { where(saling: true) }, class_name: 'ProductInventory'
 
   delegate :image_url, to: :asset_img, allow_nil: true
   delegate :avatar=, :avatar, to: :asset_img
@@ -25,6 +24,9 @@ class Product < ActiveRecord::Base
   enum status: { unpublish: 0, published: 1, closed: 2 }
 
   scope :hots, -> { where(hot: true) }
+
+  validates_presence_of :user_id, :name, :short_description
+  validate :must_has_one_product_inventory
 
   before_create :generate_code
   before_save :set_share_rate
@@ -187,6 +189,10 @@ class Product < ActiveRecord::Base
   end
 
   private
+
+  def must_has_one_product_inventory
+    errors.add(:product_inventories, '至少添加一个产品规格属性') unless product_inventories.size > 0
+  end
 
   def get_shraing_rate(sharing_level, rate_level)
     Rails.application.secrets.product_sharing["level#{sharing_level}"].try(:[], "rate#{rate_level}").to_f

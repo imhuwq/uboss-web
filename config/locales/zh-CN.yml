@@ -64,6 +64,7 @@ zh-CN:
     city: 城市
     area: 区/县
     building: 详细地址
+    product_inventories: 库存/规格
   simple_form:
     labels:
       express:
