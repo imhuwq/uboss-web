@@ -16,7 +16,7 @@ class Product < ActiveRecord::Base
   has_many :cart_items,  through: :product_inventories
   has_many :order_items, through: :product_inventories
   has_many :product_inventories, autosave: true, dependent: :destroy
-  has_many :seling_inventories, -> { where(saling: true) }, class_name: 'ProductInventory'
+  has_many :seling_inventories, -> { where(saling: true) }, class_name: 'ProductInventory', autosave: true
 
   delegate :image_url, to: :asset_img, allow_nil: true
   delegate :avatar=, :avatar, to: :asset_img
@@ -30,7 +30,7 @@ class Product < ActiveRecord::Base
 
   before_create :generate_code
   before_save :set_share_rate
-  #after_save :calculate_shares
+  after_save :calculate_sharing_amount, if: -> { has_share_lv_changed? || share_rate_total_changed? }
 
   def self.official_agent
     find_by(user_id: User.official_account.try(:id), name: OFFICIAL_AGENT_NAME)
@@ -71,7 +71,7 @@ class Product < ActiveRecord::Base
       }
 
       if existing_record
-        # Make sure we are operating on the actual object which is in the association's
+        # Make sure we are operating on the actual inventoryect which is in the association's
         # proxy_target array (either by finding it, or adding it if not found)
         # Take into account that the proxy_target may have changed due to callbacks
         target_record = association.target.detect { |record|
@@ -120,18 +120,6 @@ class Product < ActiveRecord::Base
     end
   end
 
-  # def calculates_after_save
-  #   calculate_share_amount_total
-  #   set_share_rate
-  #   calculate_shares
-  # end
-
-  # def calculate_share_amount_total(product_inventory) # 如果按比例进行分成，将分成比例换算成实质分成总金额
-  #   if calculate_way == 1
-  #     self.share_amount_total = ('%.2f' % (present_price * share_rate_total * 0.01)).to_f # 价格×总分成比例=总分成金额
-  #   end
-  # end
-
   def set_share_rate(*args) # 设置分成比例
     3.times do |index|
       rate = args[index] || get_shraing_rate(has_share_lv, index + 1)
@@ -139,31 +127,12 @@ class Product < ActiveRecord::Base
     end
   end
 
-  def calculate_shares # 计算具体的分成金额
-    if has_share_lv != 0 # 参与分成的情况
-      assigned_total = 0
-
-      # 3.times do |index|
-      #   level = index + 1
-      #   amount = (share_amount_total * self["share_rate_lv_#{level}"]).round(2)
-      #   __send__("share_amount_lv_#{level}=", amount)
-      #   assigned_total += amount
-      # end
-      # self.privilege_amount = share_amount_total - assigned_total
-      reload
-      (product_inventories || {}).each do |obj|
-        #
-        # FIXME 不要使用没有意义的变量名(obj, x, y, z ....)
-        #
-        obj.share_amount_total = ('%.2f' % (obj.price * share_rate_total * 0.01)).to_f
-        3.times do |index|
-          level = index + 1
-          amount = (obj.share_amount_total * self["share_rate_lv_#{level}"]).round(2)
-          obj.send("share_amount_lv_#{level}=", amount)
-          assigned_total += amount
-        end
-        obj.privilege_amount = obj.share_amount_total - assigned_total
-        obj.save
+  # 计算具体的分成金额
+  def calculate_sharing_amount
+    if has_share_lv != 0
+      seling_inventories.each do |inventory|
+        inventory.calculate_sharing_amount(self)
+        inventory.save(validate: false)
       end
     end
   end
