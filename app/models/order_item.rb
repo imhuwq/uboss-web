@@ -20,6 +20,26 @@ class OrderItem < ActiveRecord::Base
     previous_changes[:pay_amount].first != previous_changes[:pay_amount].last
   }
 
+  def deal_price
+    present_price - privilege_amount
+  end
+
+  def count
+    amount
+  end
+
+  def item_product
+    product || product_inventory.product
+  end
+
+  def product_name
+    product.try(:name) || product_inventory.product.name
+  end
+
+  def image_url(version=nil)
+    item_product.image_url(version)
+  end
+
   def sharing_link_node
     @sharing_link_node ||= SharingNode.find_or_create_by(
       user_id: user_id,
@@ -47,26 +67,6 @@ class OrderItem < ActiveRecord::Base
     adjust_product_stock(-1)
   end
 
-  def deal_price
-    present_price - privilege_amount
-  end
-
-  def count
-    amount
-  end
-
-  def item_product
-    product || product_inventory.product
-  end
-
-  def product_name
-    product ? product.name : product_inventory.product.name
-  end
-
-  def image_url(version=nil)
-    item_product.image_url(version)
-  end
-
   private
 
   def adjust_product_stock(type)
@@ -87,7 +87,6 @@ class OrderItem < ActiveRecord::Base
   end
 
   def set_pay_amount
-    #self.pay_amount = deal_price * amount + product.traffic_expense
     self.pay_amount = deal_price * amount
   end
 

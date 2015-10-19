@@ -1,7 +1,6 @@
 class Cart < ActiveRecord::Base
   has_many   :cart_items, dependent: :destroy
   belongs_to :user
-  #has_many   :items, through: :cart_items, source: :product
 
   validates_presence_of :user_id
 

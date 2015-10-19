@@ -8,8 +8,8 @@ class OrderCharge < ActiveRecord::Base
   enum payment: { alipay: 0, alipay_wap: 1, alipay_qr: 2, wx: 3, wx_pub: 4, wx_pub_qr: 5, yeepay_wap: 6 }
 
   def self.unpay?(orders)
-    bool = true
-    orders.each { |order| bool = false unless order.unpay? }
+    bool = false
+    orders.each { |order| bool = true if order.unpay? }
     bool
   end
 
@@ -21,12 +21,18 @@ class OrderCharge < ActiveRecord::Base
     orders.sum(:pay_amount).to_f
   end
 
+  def orders_check_paid
+    ActiveRecord::Base.transaction do
+      orders.each { |order| order.check_paid }
+    end
+  end
+
   def check_paid?
     return true if paid_at.present?
 
     if $wechat_env.test?
       update_with_wx_pay_result(
-        "total_fee" => order.pay_amount * 100,
+        "total_fee" => pay_amount * 100,
         "payment" => 'wx',
         "time_end" => Time.now
       )
@@ -38,7 +44,7 @@ class OrderCharge < ActiveRecord::Base
   alias_method :paid?, :check_paid?
 
   def update_with_wx_pay_result(result)
-    paid_amount_result = Rails.env.production? ? (BigDecimal(result["total_fee"]) / 100) : order.paid_amount
+    paid_amount_result = Rails.env.production? ? (BigDecimal(result["total_fee"]) / 100) : paid_amount
     self.paid_amount = paid_amount_result
     self.payment = 'wx'
     self.paid_at = result['time_end']

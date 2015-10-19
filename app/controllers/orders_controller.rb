@@ -104,15 +104,6 @@ class OrdersController < ApplicationController
     end
   end
 
-  # xxx: move to charges_controller
-  # FIXME 不需要的代码，清除(view,model...any useless pleace)干净就好了，不要留下一大堆的注释代码
-  #def pay_complete
-    #@order.check_paid
-    #@order_charge = @order.order_charge
-    #@product = @order.order_items.first.product
-    #@privilege_card = PrivilegeCard.find_by(user: current_user, seller: @product.user)
-  #end
-
   def received
     if @order.sign!
       flash[:success] = '已确认收货'
@@ -127,8 +118,8 @@ class OrdersController < ApplicationController
       cart = current_cart
       cart_items = cart.cart_items.find(session[:cart_item_ids])
       ship_prices = []
-      CartItem.group_by_seller(cart_items).each do |seller, cart_items|
-        ship_prices << [seller.id, Order.calculate_ship_price(cart_items, user_address).to_s]
+      CartItem.group_by_seller(cart_items).each do |seller, items|
+        ship_prices << [seller.id, Order.calculate_ship_price(items, user_address).to_s]
       end
       render json: { status: 'ok', is_cart: 1, ship_price: ship_prices }
     elsif !params[:count].blank?

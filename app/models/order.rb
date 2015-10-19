@@ -120,7 +120,7 @@ class Order < ActiveRecord::Base
 
     def max_traffic_expense(items1)
       return 0 if items1.blank?
-      items1.map { |item| item.product_inventory.product.traffic_expense }.max
+      items1.map { |item| item.item_product.traffic_expense }.max
     end
 
     def carriage_template_group_by(items2)
@@ -177,7 +177,7 @@ class Order < ActiveRecord::Base
   end
 
   def is_official_agent?
-    order_items.first.product.is_official_agent?
+    order_items.first.product_inventory.is_official_agent?
   end
 
   def order_item
@@ -185,7 +185,7 @@ class Order < ActiveRecord::Base
   end
 
   def product
-    @product ||= order_item.try(:product) || Product.new
+    @product ||= order_item.try(:item_product) || Product.new
   end
 
   private
@@ -248,7 +248,7 @@ class Order < ActiveRecord::Base
   end
 
   def invoke_official_agent_order_process
-    if order_items.first.product.is_official_agent?
+    if order_items.first.product_inventory.is_official_agent?
       OfficialAgentOrderJob.set(wait: 5.seconds).perform_later(self)
     end
   end

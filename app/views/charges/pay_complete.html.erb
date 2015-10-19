@@ -3,50 +3,71 @@
 <% end %>
 
 <div class="box">
-  <br  />
-  <div class="bg-white">
-    <div class="box-m40 text-center">
-    	<br />
-    	<h2>支付成功</h2>
-    	<br />
-    	<div class="gray-color">恭喜你，获得 <span class="like-color">2</span> 家店铺友情卡</div>
-    	<br />
-    </div>
-  </div><!-- bg-white -->
-  <br  />
-  <div class="bg-white">
-    <div class="box-m40 text-center">
-    	<br />
-    	<h2>支付成功</h2>
-    	<br />
-    	<div class="gray-color">恭喜你，获得 <span class="like-color">创客权</span> 的友情卡</div>
-    	<br />
-    </div>
-  </div><!-- bg-white -->
-  <br  />
-  <div class="bg-white">
-    <div class="box-m40 text-center">
-    	<br />
-    	<h2>友情卡</h2>
-    	<br />
-    	<div class="gray-color">帮你省钱和赚钱的会员卡</div>
-    	<br />
-    	<a href="/account#showpcards" class="btn btn-block btn-large">查看我的友情卡</a>
-    	<br />
-    	<p><a href="/about" class="gray-color">了解更多</a></p>
-    	<br />
-    </div>
-  </div><!-- bg-white -->
-  <br  />
-  <div class="bg-white">
-    <div class="box-m40 text-center">
-    	<br />
-    	<p>恭喜你成为UBOSS的第 <span class="like-color">12134</span> 位创客</p>
-    	<br />
-    	<a href="/about" class="btn btn-block btn-large">查看创客教程</a>
-    	<br />
-    </div>
-  </div><!-- bg-white -->
+  <% if OrderCharge.unpay?(@orders) %>
+
+    <br  />
+    <div class="bg-white">
+      <div class="box-m40 text-center">
+        <br />
+        <h2>暂未收到订单支付结果</h2>
+        <br />
+        <div class="gray-color">支付结果可能会有几分钟延迟，您可以刷新结果或稍晚查看我的订单。</div>
+        <br />
+      </div>
+    </div><!-- bg-white -->
+
+  <% else %>
+
+    <br  />
+    <div class="bg-white">
+      <div class="box-m40 text-center">
+        <br />
+        <h2>支付成功</h2>
+        <br />
+        <div class="gray-color">恭喜你，获得 <span class="like-color"><%= @privilege_cards.count %></span> 家店铺友情卡</div>
+        <br />
+      </div>
+    </div><!-- bg-white -->
+    <br  />
+    <% if @product.is_official_agent? %>
+      <div class="bg-white">
+        <div class="box-m40 text-center">
+          <br />
+          <h2>支付成功</h2>
+          <br />
+          <div class="gray-color">恭喜你，获得 <span class="like-color">创客权</span> 的友情卡</div>
+          <br />
+        </div>
+      </div><!-- bg-white -->
+    <% end %>
+    <br  />
+    <div class="bg-white">
+      <div class="box-m40 text-center">
+        <br />
+        <h2>友情卡</h2>
+        <br />
+        <div class="gray-color">帮你省钱和赚钱的会员卡</div>
+        <br />
+        <a href="/account#showpcards" class="btn btn-block btn-large">查看我的友情卡</a>
+        <br />
+        <p><a href="/about" class="gray-color">了解更多</a></p>
+        <br />
+      </div>
+    </div><!-- bg-white -->
+    <br  />
+    <% if @product.is_official_agent? %>
+      <div class="bg-white">
+        <div class="box-m40 text-center">
+          <br />
+          <p>恭喜你成为UBOSS的第 <span class="like-color"><%= UserRole.agent.users.count %></span> 位创客</p>
+          <br />
+          <a href="/about" class="btn btn-block btn-large">查看创客教程</a>
+          <br />
+        </div>
+      </div><!-- bg-white -->
+    <% end %>
+
+  <% end %>
 </div><!-- box -->
 <br />
 <div class="gap">

@@ -49,9 +49,9 @@ class ChargesController < ApplicationController
   end
 
   def pay_complete
-    #@order.check_paid
+    @order_charge.orders_check_paid
     @orders = @order_charge.orders
-    @product = @order_charge.order_items.first.product
+    @product = @order_charge.order_items.first.item_product
     @privilege_cards = @orders.inject([]) { |cards, order| cards << PrivilegeCard.find_by(user: current_user, seller: order.seller) }
     render layout: 'mobile'
   end

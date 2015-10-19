@@ -135,6 +135,7 @@ class OrderForm
 
   def order_items_attributes
     @order_items ||= [{
+      product: product,
       product_inventory: product_inventory,
       user: buyer,
       amount: amount,
@@ -162,6 +163,7 @@ class OrderForm
     items = cart_items.select { |item| item.seller_id == seller_id }
 
     return items.collect { |item| {
+      product_id: item.product_inventory.try(:product_id),
       product_inventory_id: item.product_inventory_id,
       user: buyer,
       amount: item.count,
