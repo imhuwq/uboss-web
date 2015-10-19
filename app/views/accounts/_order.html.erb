@@ -25,25 +25,25 @@
           <%= image_tag order_item.try(:product_inventory).try(:product).try(:image_url, 'w120') %>
         </div><!-- order-cover -->
       <% end %>
-      <div class="content">   
+      <div class="content">
         <div class="price text-right gray-color">
           <p>￥<%= order_item.present_price %></p>
           <p class="number gray-color">
             x<%= order_item.try(:amount) %>
           </p>
-          <p>          	
+          <p>
 		      <% if order.signed? || order.completed? %>
 		        <% if order_item.evaluations.blank? %>
 		          <%= link_to "评价", new_evaluation_path(id: order_item.id), class: 'btn btn-mid btn-orange' %>
 		        <% else %>
-		          <%= link_to "追评", new_evaluation_path(id: order_item.id), class: 'btn btn-mid btn-orange' %>
+		          <%= link_to "追评", append_evaluation_path(id: order_item.id), class: 'btn btn-mid btn-orange' %>
 		        <% end %>
 		      <% end %>
           </p>
-        </div><!-- price -->      	
+        </div><!-- price -->
         <div class="name">
           <%= order_item.try(:product_inventory).try(:product_name) %>
-        </div><!-- name -->     
+        </div><!-- name -->
         <div class="info">
         	<span>规格</span>
         	<span>规格</span>

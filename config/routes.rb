@@ -56,6 +56,7 @@ Rails.application.routes.draw do
     post :democontent,  on: :collection
   end
   resources :evaluations do
+    get :append, on: :member
   end
   resource :withdraw_records, only: [:show, :new, :create] do
     get :success, on: :member
