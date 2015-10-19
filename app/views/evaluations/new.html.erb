@@ -33,10 +33,14 @@
   	</div>
   	<%= f.text_area :content, placeholder: '写点什么吧...', id:"y_textarea" ,rows:"6",class:"input-block" %>
   </div>
-	
-	
-   
+<% end %>
 
+<% @order_item.evaluations.each do |evaluation| %>
+  <p>
+    <span><%= evaluation.created_at %></span>
+    <span><%= evaluation.status %></span>
+  </p>
+  <p><%= evaluation.content %></p>
 <% end %>
 
 <script type="text/javascript">
