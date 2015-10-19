@@ -120,7 +120,7 @@ class Order < ActiveRecord::Base
 
     def max_traffic_expense(items1)
       return 0 if items1.blank?
-      items1.map { |item| item.item_product.traffic_expense }.max
+      items1.map { |item| item.product_inventory.product.traffic_expense }.max
     end
 
     def carriage_template_group_by(items2)

@@ -6,6 +6,7 @@ class OrderFormTest < ActiveSupport::TestCase
 
   before do
     @product = create(:product, count: 100)
+    @product_inventory = create(:product_inventory, product: @product)
     @seller = @product.user
     @buyer = create(:user_with_address)
   end
@@ -15,6 +16,7 @@ class OrderFormTest < ActiveSupport::TestCase
       MobileCaptcha.expects(:auth_code).with('13800002222', '123').returns(true)
       order_form = OrderForm.new(
         product_id: @product.id,
+        product_inventory_id: @product_inventory.id,
         amount: 1,
         mobile: '13800002222',
         captcha: '123',
@@ -40,6 +42,7 @@ class OrderFormTest < ActiveSupport::TestCase
   it 'should decrease product stock and inc seller orders' do
     assert_equal true, OrderForm.new(
       product_id: @product.id,
+      product_inventory_id: @product_inventory.id,
       amount: 12,
       session: {},
       buyer: @buyer,
@@ -48,7 +51,7 @@ class OrderFormTest < ActiveSupport::TestCase
     ).save
 
     assert_equal 1, @seller.sold_orders.count
-    assert_equal 88, @product.reload.count
+    assert_equal 88, @product_inventory.reload.count
   end
 
   describe 'when old user without login' do
@@ -56,6 +59,7 @@ class OrderFormTest < ActiveSupport::TestCase
       MobileCaptcha.expects(:auth_code).returns(true)
       assert_equal true, OrderForm.new(
         product_id: @product.id,
+        product_inventory_id: @product_inventory.id,
         amount: 12,
         mobile: @buyer.mobile,
         captcha: '123',
@@ -76,7 +80,7 @@ class OrderFormTest < ActiveSupport::TestCase
 
   it 'should verify mobile while no buyer' do
     MobileCaptcha.expects(:auth_code).with('13800002222', 'MustBeWrong').returns(false)
-    order_form = OrderForm.new(product_id: @product.id, mobile: '13800002222', captcha: 'MustBeWrong')
+    order_form = OrderForm.new(product_id: @product.id, product_inventory_id: @product_inventory.id, mobile: '13800002222', captcha: 'MustBeWrong')
 
     assert_equal false, order_form.valid?
     assert_includes order_form.errors.keys, :captcha

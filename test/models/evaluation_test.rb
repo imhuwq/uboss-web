@@ -5,12 +5,14 @@ class EvaluationTest < ActiveSupport::TestCase
     it 'should have match attrs' do
       buyer = create(:user)
       product = create :product_with_1sharing
+      product_inventory = create(:product_inventory, product: product)
       level1_node = create(:sharing_node, product: product)
       level2_node = create(:sharing_node, product: product, parent: level1_node)
       order = create(:order,
                      user: buyer,
                      order_items_attributes: [{
                        product: product,
+                       product_inventory: product_inventory,
                        user: buyer,
                        amount: 2,
                        sharing_node: level2_node
@@ -27,6 +29,7 @@ class EvaluationTest < ActiveSupport::TestCase
                       user: buyer,
                       order_items_attributes: [{
                         product: product,
+                        product_inventory: product_inventory,
                         user: buyer,
                         amount: 2,
                         sharing_node: level2_node
