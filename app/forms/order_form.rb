@@ -70,6 +70,12 @@ class OrderForm
     end
   end
 
+  def privilege_amount
+    if product.present?
+      sharing_node && sharing_node.privilege_amount(self.product_inventory).to_f.to_d
+    end
+  end
+
   def save
     # - verify Mobile captcha
     # - check product valid?
