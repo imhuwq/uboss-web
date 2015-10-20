@@ -29,10 +29,13 @@ class OrdersController < ApplicationController
 
     @order_form = OrderForm.new(
       buyer: current_user,
+      cart_id: current_cart.try(:id),
+      amount: params[:amount] || 1,
       product_id: params[:product_id],
-      product_inventory_id: params[:product_inventory_id],     # TODO 创客权需要设置一个默认的product_inventory
-      amount: params[:amount] || 1
+      product_inventory_id: params[:product_inventory_id]
     )
+
+    set_user_address
 
     if params[:product_id].present?  # 直接购买
       @product = @order_form.product
@@ -44,18 +47,16 @@ class OrdersController < ApplicationController
         flash[:error] = "您已经是UBOSS创客，请勿重复购买"
         redirect_to root_path
       else
-        set_user_address
         render layout: 'mobile'
       end
     elsif params[:item_ids]
-      item_ids = params[:item_ids].split(',')
-      session[:cart_item_ids] = item_ids
       @cart = current_cart
+      item_ids = params[:item_ids].split(',')
       @cart_items = @cart.cart_items.find(item_ids)
-      @order_form.cart_id = current_cart.id
+
+      session[:cart_item_ids] = item_ids
       @products_group_by_seller = CartItem.group_by_seller(@cart_items)
 
-      set_user_address
       render layout: 'mobile'
     else
       redirect_to root_path

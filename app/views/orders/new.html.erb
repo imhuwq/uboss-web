@@ -24,8 +24,8 @@
 
   <div class="cart-list">
     <%= f.hidden_field :cart_id %>
-    <%= f.hidden_field :product_id %>
     <%= f.hidden_field :amount %>
+    <%= f.hidden_field :product_id %>
     <%= f.hidden_field :product_inventory_id %>
     <% @products_group_by_seller.each do |seller, cart_items| %>
       <div class="order-list">
@@ -37,7 +37,7 @@
             <div class="content">
               <div class="price">
                 <p>￥<span class="product-price"><%= cart_item.price %></span></p>
-                <p class="gray-color num">x <%= cart_item.count %></p>
+                <p class="gray-color num" data-num="<%= cart_item.count %>">x <%= cart_item.count %></p>
               </div>
               <p class="name"><%= cart_item.product_name %></p>
               <p class="info">
@@ -60,26 +60,26 @@
           <span class="pull-right ship_price_<%= seller.id.to_s %>" data-ship-price="<%= ship_price %>"><strong></strong>￥ <%= ship_price %></span>
         </div><!-- freight-box -->
         <div class="price-box">
-          <% cart_total_price = @product.blank? ? @cart.total_price_of(cart_items.map(&:id)) : @order_form.real_price*@order_form.amount.to_i %>
           合计
-          <span class="total_price_<%= seller.id.to_s %>" data-total-price="<%= cart_total_price %>">￥ <%= cart_total_price + ship_price %></span>
+          <span class="total_price_<%= seller.id.to_s %>" data-total-price="0.0">￥ 0.0</span>
         </div><!-- price-box -->
         <div class="message-box">
           <input placeholder="给卖家留言" type="text" name="order[to_seller][<%= seller.id %>]" class="input-block"/>
         </div><!-- message-box -->
       </div><!-- order-list -->
     <% end %>
-  <% if current_user.blank? || (current_user && current_user.need_set_login?) %>
-    <div class="no-login">
-    	<div class="mobile">
-	    	<a href='#' class="btn pull-right" id="send_mobile"><small>发送验证码</small></a>
-	      <div class="content"><%= f.input_field :mobile, type: :tel, placeholder: '输入手机号', class:"input-block",id:'new_mobile' %></div>
-    	</div>
-    	<div class="gap">
-      	<%= f.input_field :captcha, type: :tel, placeholder: '填写短信验证码', class: "input-block"  %>
-      </div>
-    </div><!-- no-login -->
-  <% end %>
+
+    <% if current_user.blank? || (current_user && current_user.need_set_login?) %>
+      <div class="no-login">
+        <div class="mobile">
+          <a href='#' class="btn pull-right" id="send_mobile"><small>发送验证码</small></a>
+          <div class="content"><%= f.input_field :mobile, type: :tel, placeholder: '输入手机号', class:"input-block",id:'new_mobile' %></div>
+        </div>
+        <div class="gap">
+          <%= f.input_field :captcha, type: :tel, placeholder: '填写短信验证码', class: "input-block"  %>
+        </div>
+      </div><!-- no-login -->
+    <% end %>
   </div><!--cart-list -->
   <div class="order-price">
     <% if @order_form.user_address.username.present?  %>
@@ -88,14 +88,8 @@
       <%= submit_tag '提交订单',class:"accunt_adilbtn cart-btn btn" %>
     <% end %>
     <div class="content">
-      <% if @product.blank? %>
-        <p>应付款：<span id="total_price"><%= @cart.total_price_of(session[:cart_item_ids]) + orders_ship_price(@cart_items, @order_form.user_address) %></span></p>
-        <p class="gray-color"><small>共优惠XX元</small></p>
-      <% else %>
-        <%#TODO 直接购买商品，修改计算运费的商品数量%>
-        <p>应付款：<span id="total_price"><%= @order_form.real_price*@order_form.amount.to_i + @product.calculate_ship_price(1, @order_form.user_address) %></span></p>
-        <p class="gray-color"><small>共优惠XX元</small></p>
-      <% end %>
+      <p>应付款：<span id="total_price">0.0</span></p>
+      <p class="gray-color"><small>共优惠XX元</small></p>
     </div>
   </div><!-- order-price -->
 
