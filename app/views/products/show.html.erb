@@ -136,10 +136,9 @@
   <div class="product-info-box">
     <%= raw @product.content %>
   </div>
-	  
-	
+
+
   <% if @sharing_node.blank? %>
-<<<<<<< HEAD
     <div class="share_buy">
     	<div class="half_left">
     		&nbsp;
@@ -151,7 +150,7 @@
 	      <% else %>
 	        <%= link_to '加入购物车', '/cart_items', class: 'btn_add_to_cart', method: 'post'%>
 	      <% end %>
-	      <%= link_to '立即购买', 'javascript:;', class: 'btn_buy_now', id:"show_inventory", style: 'float:right;' %>	      
+	      <%= link_to '立即购买', 'javascript:;', class: 'btn_buy_now', id:"show_inventory", style: 'float:right;' %>
 		  </div>
 
       <input type="hidden" name="product[id]" value="<%= @product.id %>" />
@@ -173,7 +172,7 @@
 	      <% else %>
 	        <%= link_to '加入购物车', '/cart_items', class: 'btn_add_to_cart', method: 'post'%>
 	      <% end %>
-	      <%= link_to '立即购买', 'javascript:;', class: 'btn_buy_now', id:"show_inventory", style: 'float:right;' %>	      
+	      <%= link_to '立即购买', 'javascript:;', class: 'btn_buy_now', id:"show_inventory", style: 'float:right;' %>
 		  </div>
     </div>
   <% end %>
@@ -207,7 +206,7 @@
   <%= hidden_field_tag "product_inventory_id" %>
   <%= hidden_field_tag "product_id", @product.id %>
   <%= hidden_field_tag "amount", 2 %>
-  <div class="hidden" id="inventory">  
+  <div class="hidden" id="inventory">
     <div class="tab_buy_now">
       <div class="buy_now_goods">
       	<%= image_tag 'mobile/close.png',class:'btn_cancle_buy_now close',onclick:'hideBuyNow()' %>
