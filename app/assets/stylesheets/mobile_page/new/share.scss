@@ -23,7 +23,7 @@
     z-index: 89;
     background: #fff;
     box-sizing: border-box;
-    padding: 10px 10px 20px;
+    padding: 20px 0 ;
   }
   p{margin-bottom: 8px;}
 }
@@ -45,3 +45,27 @@
   top: 0;
   display: block;
 }
+.share-icon {
+  width: 60px;
+  overflow: hidden;
+  display: inline-block;
+  margin: 0 20px;
+  padding-top: 60px;
+  background: image-url('mobile/share.png') no-repeat;
+  background-size:auto 50px ;
+  color: #3eb135;
+  text-align: center;
+}
+.sharing-button-tsina{    
+  background-position:-70px 0 ;
+  color: #df4d69;
+}
+.sharing-button-tqq{    
+  background-position:-225px 0 ;
+  color: #eecf3d;
+}
+.sharing-copycardid{    
+  background-position:-147px 0 ;
+  color: #31a4e6;
+}
+
