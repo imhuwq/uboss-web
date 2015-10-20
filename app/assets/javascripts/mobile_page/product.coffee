@@ -42,13 +42,16 @@ $ ->
     if num < 2 
       alert('数量必须大于1')
       $('.count-box .count_num').val(1)
+      $('#count_amount').val(1)
     else
       $('.count-box .count_num').val(num-1)
+      $('#count_amount').val(num-1)
     
     
   $('.count-box .count_plus').on 'click',->
     num=parseInt($('.count-box .count_num').val())
     $('.count-box .count_num').val(num+1)
+    $('#count_amount').val(num+1)
   
   $.fn.onlyNum = () ->
     $(this).keyup () ->
@@ -72,8 +75,10 @@ $ ->
   $(".count-box .count_num").on 'change',->
     $this = $(this)
     this.value = this.value.replace(/[^\d]/g, '')
+    $('#count_amount').val(this.value)
     if this.value == '' || this.value == "0"
       this.value = 1
+      $('#count_amount').val(1)
       
   $(".count-box .count_num").onlyNum()
   
