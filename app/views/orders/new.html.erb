@@ -28,7 +28,7 @@
     <%= f.hidden_field :product_id %>
     <%= f.hidden_field :product_inventory_id %>
     <% @products_group_by_seller.each do |seller, cart_items| %>
-      <div class="order-list">
+      <div class="order-list valid-order-list">
         <div class="seller-box"><div class="text-cut">商家：<%= seller.identify %></div></div>
 
         <% cart_items.each do |cart_item| %>
