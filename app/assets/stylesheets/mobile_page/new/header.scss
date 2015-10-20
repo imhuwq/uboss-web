@@ -34,6 +34,13 @@ header {
         }
     }
   }
+  .cart-icon{
+    float: left;
+    padding: 10px;
+    img{
+        height: 16px;
+    }
+  }
   .nav-bar{
     display: none;
     position: absolute;
@@ -92,6 +99,7 @@ header {
       .nav-bar{
           text-align: left;          
       }
+      
   }
 }
 

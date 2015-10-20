@@ -1,5 +1,8 @@
 <% if controller_name == "products" && action_name == "show" %>
 <div class="only-products-nav">
+	<%= link_to carts_path,class:'cart-icon' do%>
+		<%= image_tag 'mobile/cart.png' %>
+	<% end %>
 	<div class="menu-btn"><%= image_tag 'mobile/navbar.png' %></div>
 	<div class="nav-bar">
 	  <ul>
@@ -26,12 +29,17 @@
 </div>
 <% else %>
 <div class="header-bar">
-  	<div class="menu-btn"><%= image_tag 'mobile/navbar.png' %></div>
-	  <% if content_for?(:page_title) %>
-	    <span class="title"><%= yield(:page_title) %></span>
-	  <% else %>
-	    <%= image_tag 'mobile/logo.png',class:'logo' %>
-	  <% end %>
+  <% if controller_name == "home" || controller_name == "accounts" || controller_name == "stores" %>
+  	<%= link_to carts_path,class:'cart-icon' do%>
+	  <%= image_tag 'mobile/cart.png' %>
+	<% end %>
+  <% end %>
+  <div class="menu-btn"><%= image_tag 'mobile/navbar.png' %></div>
+  <% if content_for?(:page_title) %>
+    <span class="title"><%= yield(:page_title) %></span>
+  <% else %>
+    <%= image_tag 'mobile/logo.png',class:'logo' %>
+  <% end %>
 </div>
 <div class="nav-bar">
   <ul>
