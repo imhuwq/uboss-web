@@ -24,7 +24,6 @@ class OrdersController < ApplicationController
 
     @order_form = OrderForm.new(
       buyer: current_user,
-      cart_id: current_cart.try(:id),
       amount: params[:amount] || 1,
       product_id: params[:product_id],
       product_inventory_id: params[:product_inventory_id]
@@ -46,6 +45,7 @@ class OrdersController < ApplicationController
       end
     elsif params[:item_ids]
       @cart = current_cart
+      @order_form.cart_id = current_cart.id,
       item_ids = params[:item_ids].split(',')
       @cart_items = @cart.cart_items.find(item_ids)
 
@@ -87,16 +87,14 @@ class OrdersController < ApplicationController
       redirect_to payments_charges_path(order_ids: @order_form.order.map(&:id).join(','), showwxpaytitle: 1)
     else
       @order_form.captcha = nil
-      @user_address = @order_form.user_address
+      flash[:error] = @order_form.errors.full_messages.join('<br/>')
 
-      if @order_form.product_id
-        @product = @order_form.product
-      elsif !session[:cart_item_ids].blank?          # 购物车
-        @cart = current_cart
-        @cart_items = @cart.cart_items.find(session[:cart_item_ids])
-      end
-      flash.now[:error] = @order_form.errors.full_messages.join('<br/>')
-      render :new
+      redirect_to new_order_path(
+        product_id: @order_form.product_id,
+        product_inventory_id: @order_form.product_inventory_id,
+        amount: @order_form.amount,
+        item_ids: session[:cart_item_ids].try(:join, ',')
+      )
     end
   end
 
