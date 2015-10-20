@@ -10,6 +10,7 @@ class CartItem < ActiveRecord::Base
   delegate :product_name, :price, to: :product_inventory
 
   before_save :check_count
+  after_update :update_user_cart_sharing_info_in_one_store, if: :sharing_node_store_changed?
 
   # 购物车商品按店铺分组 TODO 什么情况下商品失效，下架、数量不正确 and ?
   def self.group_by_seller(cart_items)
@@ -52,6 +53,31 @@ class CartItem < ActiveRecord::Base
     else
       return true
     end
+  end
+
+  private
+
+  def sharing_node_store_changed?
+    if self.sharing_node_id_changed? && sharing_node.present?
+      sharing_node_was = if sharing_node_id_was.present?
+                           SharingNode.find(sharing_node_id_was)
+                         else
+                           nil
+                         end
+      return true if sharing_node_was.blank?
+      if sharing_node_was.sharing_store_id != sharing_node.sharing_store_id
+        return true
+      end
+      false
+    end
+    false
+  end
+
+  def update_user_cart_sharing_info_in_one_store
+    cart.cart_items.
+      where.not(id: self.id).
+      where(seller_id: sharing_node.sharing_store_id).
+      update_all(sharing_node_id: sharing_node.lastest_seller_sharing_node.id)
   end
 
 end
