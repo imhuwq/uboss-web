@@ -12,21 +12,19 @@
 
 .share_buy {
   position: fixed;
-  height: 80px;
   bottom: 0px;
   width: 100%;
-  background: #f6f6f6;
+  background: #fff;
+  border-top:1px solid #ddd ;
   z-index: 10;
-  padding: 10px;
   text-align: center;
   box-sizing: border-box;
 
   .half_left {
     height: 60px;
     width: 50%;
-    background: #fafafa;
     float: left;
-    /*margin-right: -3px;*/
+    overflow: hidden;
 
     .share_portrait {
       width: 40px;
@@ -50,12 +48,14 @@
 
   .half_right {
     height: 60px;
-    /*margin-left: 50%;*/
-
-    background: #43c3aa;
-
+    line-height: 60px;
+    float: left;
+    width: 50%;
+    overflow: hidden;
+    color: #fff;
+    a{color: #fff;}
     .btn_add_to_cart {
-      width: 25%;
+      width: 50%;
       height: 100%;
       float: left;
       background: #f9ba10;
@@ -63,7 +63,7 @@
     }
 
     .btn_buy_now {
-      width: 25%;
+      width: 50%;
       height: 100%;
       background: #43c3aa;
       border: none;
@@ -111,11 +111,14 @@
     }
   }
   .options {
-    height: 260px;
+    max-height: 260px;
+    background: #f6f6f6;
     overflow-y: scroll;
+    border-bottom: 1px solid #ddd;
   }
   .buy_now_goods {
-    margin-bottom: 20px;
+    background: #fff;
+    overflow: hidden;
   }
   .buy_now_goods_img {
     width: 80px;
@@ -140,16 +143,8 @@
     float: right;
     padding: 10px;
   }
-  button {
-    border: none;
-  }
-  hr {
-    color: #dddddd;
-    margin-top: 35px;
-  }
   .buy_now_option {
     width: 100%;
-    background: #FAFAFA;
   }
   .buy_now_option_title {
     margin: 0px 0 20px 10px;
@@ -157,14 +152,14 @@
     /*margin-bottom: 20px;*/
   }
   .buy_now_option ul {
-    height: auto;
-    margin-left: 10px;
+    padding: 10px 0 0 10px;
   }
   .item {
     display: inline-block;
+    border: 1px solid #ddd;
+    color: #999;
     margin-right: 10px;
-    /*background: #F6F6F6;*/
-    background: skyblue;
+    margin-bottom: 10px;
     position: relative;
   }
   /*
@@ -174,9 +169,8 @@
     height: 25px;
     display: inline-block;
     margin-right: 10px;
-    /*background: #F6F6F6;*/
-    background: skyblue;
     position: relative;
+    color: #666;
   }
   .item_click:after{
     content: "";
@@ -192,7 +186,6 @@
   .buy_now_option ul li p {
     display: inline-block;
     margin: 5px 20px;
-    /*background: greenyellow;*/
   }
   .btn_done {
     height: 30px;
@@ -210,9 +203,9 @@
   .done {
     bottom: 0px;
     width: 100%;
-    background: #f6f6f6;
+    background: #fff;
     text-align: center;
-    padding: 20px 0;
+    padding: 10px 0;
   }
   .btn {
     font-size: 18px;
@@ -221,53 +214,35 @@
     background: #43C3AA;
     padding: 10px 30px;
   }
-  .counts {
-    border-color: #43C3AA;
-    /*padding-top: 0px;*/
-  }
-  .reduction {
-    display: inline-block;
-    background-color: #43C3AA;
-    font-size: 10px;
-    padding: 10px;
-    height: 12px;
-    width: 12px;
-    border-radius: 100%;
-  }
-  .reduction:after {
-    content: "——";
-    /*height: 2px;
-    width:8px;*/
-    font-size: 12px;
-    color: #f6f6f6;
-    font-weight: bolder;
-     /*background-color: #f6f6f6;*/
-    margin-left: -5px;
-  }
-  .number{
-    border: solid thin;
-    border-color:#43C3AA;
-    height: 30px;
-    width: 50px;
-    display: inline-block;
-  }
-  .count{
-      padding: 6px;
-      font-size: 30px;
-      color: #F6F6F6;
-      font-weight: bolder;
-      background-color: #43C3AA;
-      display: inline-block;
-      border-radius: 100%;
-  }
-  .add{
-    padding: 8px;
-      font-size: 25px;
-      color: #F6F6F6;
-      font-weight: bolder;
-      background-color: #43C3AA;
-      display: inline-block;
-      border-radius: 100%;
+  .count-box {
+    background: #f6f6f6;
+    input[type="tel"]{
+      height: 19px;
+      padding: 2px 5px;
+      width: 30px;
+      text-align: center;
+      vertical-align: top;
+      background: none;
+      -webkit-appearance:none;
+    }
+    .count_icon{
+        display: inline-block;
+        background: none;
+        border: 1px solid #43C3AA;
+        padding: 2px 5px;
+        text-align: center;
+        span{
+            display: inline-block;
+            background: #43C3AA;
+            color: #fff;
+            font-weight: bold;
+            height: 19px;
+            width: 19px;
+            line-height: 18px;
+            font-size: 19px;
+            border-radius: 400px;
+        }
+    }
   }
   .item.disabled{
     background-color: #dadcdd;

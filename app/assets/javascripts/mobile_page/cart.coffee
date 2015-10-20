@@ -148,7 +148,6 @@ $ ->
       return false
 
   $("input[name='num']").onlyNum()
-
   setTotalPrice = (e) ->
     # 总价计算
     total_price=0

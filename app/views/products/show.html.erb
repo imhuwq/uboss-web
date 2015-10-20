@@ -148,30 +148,43 @@
   <div class="product-info-box">
     <%= raw @product.content %>
   </div>
-
+	  
+	
   <% if @sharing_node.blank? %>
-    <div class="sharer-info">
-      <%#<%= link_to '立即购买', new_order_path(product_id: @product.id), class: 'btn pull-right' %>
-      <%= link_to '立即购买', 'javascript:;', class: 'btn', id:"show_inventory", style: 'float:right;' %>
-      <% if current_user %>
-        <%= link_to '加入购物车', 'javascript:;', class: 'btn pull-left', id: 'show_inventory_cart'%>
-      <% else %>
-        <%= link_to '加入购物车', '/cart_items', class: 'btn pull-left', method: 'post'%>
-      <% end %>
+    <div class="share_buy">
+    	<div class="half_left">
+    		&nbsp;
+    	</div>
+    	<div class="half_right">
+	      <%#<%= link_to '立即购买', new_order_path(product_id: @product.id), class: 'btn pull-right' %>
+	      <% if current_user %>
+	        <%= link_to '加入购物车', 'javascript:;', class: 'btn_add_to_cart', id: 'show_inventory_cart'%>
+	      <% else %>
+	        <%= link_to '加入购物车', '/cart_items', class: 'btn_add_to_cart', method: 'post'%>
+	      <% end %>
+	      <%= link_to '立即购买', 'javascript:;', class: 'btn_buy_now', id:"show_inventory", style: 'float:right;' %>	      
+		  </div>
       <input type="hidden" name="product[id]" value="<%= @product.id %>" />
       <input type="hidden" name="product[count]" value="<%= 1 %>" />
     </div>
   <% else %>
-    <div class="sharer-info">
-      <div class="cover">
-        <%= image_tag @sharing_node.user.avatar_url(:thumb), class: 'prvd_header' %>
-      </div>
-      <%#= link_to '立即购买', new_order_path(product_id: @product.id), class: 'btn pull-right'%>
-      <%= link_to '立即购买', 'javascript:;', class: 'btn', id:"show_inventory" %>
-      <div class="content">
-        <p>分享者：<%= @sharing_node.user.identify %></p>
-        <p>好评率：<%= Evaluation.sharer_good_reputation_rate(@sharing_node.user) %></p>
-      </div>
+    <div class="share_buy">
+    	<div class="half_left">
+    		<%= image_tag @sharing_node.user.avatar_url(:thumb), class: 'share_portrait' %>
+		    <dl class="share_content">
+		      <dt><p><%= @sharing_node.user.identify %></p></dt>
+		      <dd><%= Evaluation.sharer_good_reputation_rate(@sharing_node.user) %>好评率</dd>
+		    </dl>
+		  </div>
+		  <div class="half_right">
+	      <%#<%= link_to '立即购买', new_order_path(product_id: @product.id), class: 'btn pull-right' %>
+	      <% if current_user %>
+	        <%= link_to '加入购物车', 'javascript:;', class: 'btn_add_to_cart', id: 'show_inventory_cart'%>
+	      <% else %>
+	        <%= link_to '加入购物车', '/cart_items', class: 'btn_add_to_cart', method: 'post'%>
+	      <% end %>
+	      <%= link_to '立即购买', 'javascript:;', class: 'btn_buy_now', id:"show_inventory", style: 'float:right;' %>	      
+		  </div>
     </div>
   <% end %>
 
@@ -205,24 +218,10 @@
   <%= hidden_field_tag "product_inventory_id" %>
   <%= hidden_field_tag "product_id", @product.id %>
   <%= hidden_field_tag "amount", 2 %>
-  <div class="hidden" id="inventory">
-    <img src="img/portrait.jpg" alt="handsome" class="blur" onclick="hideBuyNow()" />
-    <div class="share_buy">
-      <div class="half_left">
-        <img class="share_portrait" src="img/portrait.jpg" alt="头像"></img>
-        <dl class="share_content">
-          <dt><p>分享者</p></dt>
-          <dd>100%好评率</dd>
-        </dl>
-      </div>
-      <div class="half_right">
-        <button class="btn_add_to_cart">加入购物车</button>
-        <button class="btn_buy_now" onclick="buynow()">立即购买</button>
-      </div>
-    </div>
+  <div class="hidden" id="inventory">  
     <div class="tab_buy_now">
       <div class="buy_now_goods">
-        <img class="btn_cancle_buy_now close" src="img/cancel.jpg" alt="退出" onclick="hideBuyNow()"></img>
+      	<%= image_tag 'mobile/close.png',class:'btn_cancle_buy_now close',onclick:'hideBuyNow()' %>
         <img class="buy_now_goods_img" src="<%= @product.image_url() %>" alt="商品" />
         <dl class="buy_now_goods_dl">
           <dt><p><%=@product.name%></p></dt>
@@ -251,17 +250,17 @@
           </dd>
         </dl>
       </div>
-
+      <%# 循环  %>
       <div class="options">
         <div class="buy_now_option">
-          <p class="buy_now_option_title"></p>
+          <%# <p class="buy_now_option_title"></p>%>
           <ul>
             <% (@product.product_inventories || {}).each do |obj| %>
               <% if obj.count.to_i > 0 %>
                 <li class="item sku" id="<%= obj.id %>">
                   <p>
                     <% obj.sku_attributes.each do |k,v| %>
-                    <%= obj.sku_attributes.map{|k,v| "#{k}:#{v}"}.join("-") %>
+                    	<%= obj.sku_attributes.map{|k,v| "#{k}:#{v}"}.join("-") %>
                     <% end %>
                   </p>
                 </li>
@@ -279,33 +278,16 @@
           </ul>
         </div>
       </div>
-
-    <div class="options">
-      <div class="buy_now_option">
-        <p class="buy_now_option_title"></p>
-        <ul>
-          <% (@product.product_inventories || {}).each do |obj| %>
-            <% if obj.count.to_i > 0 %>
-              <li class="item sku" id="<%= obj.id %>">
-                <p>
-                <% obj.sku_attributes.each do |k,v| %>
-                  <%= obj.sku_attributes.map{|k,v| "#{k}:#{v}"}.join("-") %>
-                <% end %>
-                </p>
-              </li>
-            <% else %>
-              <li class="item disabled" id="<%= obj.id %>">
-                <p>
-                <%= obj.sku_attributes.map{|k,v| "#{k}:#{v}"}.join("-") %>
-                </p>
-              </li>
-            <% end %>
-          <% end %>
-        </ul>
-        <hr />
-      </div>
-    </div>
-
+			<%# end 循环  %>
+			<div class="count-box gap">
+				<p>数量</p>
+				<br/>
+				<div class="content">
+		      <a class="count_min count_icon"><span>-</span></a>
+		      <input type="tel" class="count_num" value="1" />
+		      <a class="count_plus count_icon"><span>+</span></a>
+	      </div>
+	    </div>
     <div class="done">
       <a class="btn" id="confirm-inventory">确定</a>
     </div>
@@ -315,14 +297,9 @@
 <% end %>
 
 <script type="text/javascript">
-  function buynow() {
-    //alert('buynow()');
-    $('img.blur').css('-webkit-filter', 'blur(3px)');
-    $(".tab_buy_now").css('display', 'block');
-  }
-
   function hideBuyNow() {
     $('#inventory').addClass('hidden');
     $('.fixed-container').css('-webkit-filter', 'blur(0px)');
+    $('html').removeClass('lock')
   }
 </script>
