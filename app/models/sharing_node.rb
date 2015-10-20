@@ -88,12 +88,12 @@ class SharingNode < ActiveRecord::Base
     code
   end
 
-  def privilege_amount
-    @privilege_amount ||= privilege_card.present? ? privilege_card.privilege_amount(product) : 0
+  def privilege_amount(product_inventory)
+    @privilege_amount ||= privilege_card.present? ? privilege_card.privilege_amount(product_inventory) : 0
   end
 
   def privilege_card
-    @privilege_card ||= PrivilegeCard.find_by(user_id: user_id, seller_id: product.user_id)
+    @privilege_card ||= PrivilegeCard.find_by(user_id: user_id, seller_id: sharing_store_id)
   end
 
   def sharing_store_id

@@ -32,8 +32,9 @@
                 </div>
                 <p class="name"><%= cart_item.product_name %></p>
                 <p class="info">
-                  <span>尺寸：36</span>
-                  <span>颜色：灰色</span>
+                  <% cart_item.product_inventory.sku_attributes.each do |property, value| %>
+                    <span><%= "#{property} : #{value}" %></span>
+                  <% end %>
                 </p>
                 <button class="btn btn-delete <%= "c_delete_#{cart_item.id}" %>"></button>
                 <div class="count">

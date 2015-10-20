@@ -92,7 +92,7 @@ class User < ActiveRecord::Base
 
   class << self
     def official_account
-      @@official_account ||= find_by(login: OFFICIAL_ACCOUNT_LOGIN)
+      @official_account ||= find_by(login: OFFICIAL_ACCOUNT_LOGIN)
     end
 
     def find_or_update_by_wechat_oauth(oauth_info)

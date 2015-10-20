@@ -41,19 +41,26 @@
               </div>
               <p class="name"><%= cart_item.product_name %></p>
               <p class="info">
-              <span>尺寸：36</span>
-              <span>颜色：灰色</span>
+              <% cart_item.product_inventory.sku_attributes.each do |property, value| %>
+                <span><%= "#{property} : #{value}" %></span>
+              <% end %>
               </p>
             </div><!-- content -->
           </div><!-- order-box -->
         <% end %>
 
-        <div class="friend-info">
-          <div class="cover">
-            <img src="" title="用户头像"/>
-          </div>
-          <div class="content"><span class="pull-right red-color">-XX</span><span class="main-color">xxx</span> 帮你优惠</div>
-        </div><!-- friend-info -->
+        <% sharing_user = cart_items.first.sharing_user %>
+        <% if sharing_user.present? %>
+          <div class="friend-info">
+            <div class="cover">
+              <%= image_tag sharing_user.avatar_url(:thumb) %>
+            </div>
+            <div class="content">
+              <span class="pull-right red-color"><%= cart_items.sum(&:privilege_amount) %></span><span class="main-color"><%= sharing_user.identify %></span> 帮你优惠
+            </div>
+          </div><!-- friend-info -->
+        <% end %>
+
         <div class="freight-box">
           运费
           <% ship_price = order_ship_price(cart_items, @order_form.user_address) %>
@@ -81,15 +88,22 @@
       </div><!-- no-login -->
     <% end %>
   </div><!--cart-list -->
+
   <div class="order-price">
     <% if @order_form.user_address.username.present?  %>
-      <%= submit_tag '提交订单',class:"accunt_adilbtn cart-btn btn" %>
+      <%= submit_tag '提交订单', class: "accunt_adilbtn cart-btn btn" %>
     <% else %>
-      <%= submit_tag '提交订单',class:"accunt_adilbtn cart-btn btn" %>
+      <%= submit_tag '提交订单', class: "accunt_adilbtn cart-btn btn" %>
     <% end %>
     <div class="content">
-      <p>应付款：<span id="total_price">0.0</span></p>
-      <p class="gray-color"><small>共优惠XX元</small></p>
+      <% if @product.blank? %>
+        <p>应付款：<span id="total_price"><%= @cart.total_price_of(session[:cart_item_ids]) + orders_ship_price(@cart_items, @order_form.user_address) %></span></p>
+        <p class="gray-color"><small>共优惠<%= @cart_items.sum(&:privilege_amount) %>元</small></p>
+      <% else %>
+        <%#TODO 直接购买商品，修改计算运费的商品数量%>
+        <p>应付款：<span id="total_price"><%= @order_form.real_price*@order_form.amount.to_i + @product.calculate_ship_price(1, @order_form.user_address) %></span></p>
+        <p class="gray-color"><small>共优惠<%= @order_form.sharing_node.privilege_amount(@product_inventory) %>元</small></p>
+      <% end %>
     </div>
   </div><!-- order-price -->
 

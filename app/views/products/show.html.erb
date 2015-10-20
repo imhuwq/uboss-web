@@ -153,6 +153,11 @@
       <div class="cover">
         <%= image_tag @sharing_node.user.avatar_url(:thumb), class: 'prvd_header' %>
       </div>
+      <% if current_user %>
+        <%= link_to '加入购物车', 'javascript:;', class: 'btn pull-left', id: 'show_inventory_cart'%>
+      <% else %>
+        <%= link_to '加入购物车', '/cart_items', class: 'btn pull-left', method: 'post'%>
+      <% end %>
       <%= link_to '立即购买', 'javascript:;', class: 'btn', id:"show_inventory" %>
       <div class="content">
         <p>分享者：<%= @sharing_node.user.identify %></p>
@@ -227,7 +232,7 @@
       <div class="buy_now_option">
         <p class="buy_now_option_title"></p>
         <ul>
-          <% (@product.product_inventories || {}).each do |obj| %>
+          <% @product_inventories.each do |obj| %>
             <% if obj.count.to_i > 0 %>
               <li class="item sku" id="<%= obj.id %>">
                 <p>

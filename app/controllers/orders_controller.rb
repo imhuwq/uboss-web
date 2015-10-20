@@ -39,9 +39,9 @@ class OrdersController < ApplicationController
 
     if params[:product_id].present?  # 直接购买
       @product = @order_form.product
-      @productInventory = @order_form.product_inventory
+      @product_inventory = @order_form.product_inventory
       @order_form.sharing_code = get_product_or_store_sharing_code(@product)
-      @products_group_by_seller = @productInventory.convert_into_cart_item(@order_form.amount, @order_form.sharing_code)
+      @products_group_by_seller = @product_inventory.convert_into_cart_item(@order_form.amount, @order_form.sharing_code)
 
       if @product.is_official_agent? && current_user && current_user.is_agent?
         flash[:error] = "您已经是UBOSS创客，请勿重复购买"

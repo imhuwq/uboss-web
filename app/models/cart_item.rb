@@ -8,6 +8,7 @@ class CartItem < ActiveRecord::Base
   validates_uniqueness_of :product_inventory_id, scope: :cart_id
 
   delegate :product_name, :price, to: :product_inventory
+  delegate :privilege_card, to: :sharing_node, allow_nil: true
 
   before_save :check_count
   after_update :update_user_cart_sharing_info_in_one_store, if: :sharing_node_store_changed?
@@ -38,8 +39,20 @@ class CartItem < ActiveRecord::Base
     product_inventory.product
   end
 
+  def deal_price
+    @deal_price ||= price - privilege_amount
+  end
+
+  def privilege_amount
+    @privilege_amount ||= privilege_card.present? ? privilege_card.privilege_amount(product_inventory) : 0
+  end
+
+  def sharing_user
+    sharing_node && sharing_node.user
+  end
+
   def total_price
-    price*count
+    deal_price * count
   end
 
   def product_inventory_valid?
