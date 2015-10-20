@@ -38,8 +38,8 @@
                 <%= link_to [:admin, item.product_inventory.product], class: 'main-link-color' do %>
                   <%= item.product_inventory.product.name %>
                 <% end %>
-                <span class='size'>尺寸:</span>
-                <span class='color'>颜色分类:</span>
+                <span class='size'>尺寸: <%= item.product_inventory.sku_attributes["尺寸"]%></span>
+                <span class='color'>颜色分类: <%= item.product_inventory.sku_attributes["颜色"]%></span>
               <div>
             </td>
             <td class='none-border-left'><%= item.product_inventory.product.present_price %>(<%= item.amount %>件)</td>

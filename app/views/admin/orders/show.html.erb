@@ -17,7 +17,7 @@
         <%= link_to '关闭交易', modal_close_admin_order_path(@order), class: 'btn btn-sm' , remote: true %>
       <% end %>
       <div class='buyer-info'>
-        <span>买家 : 大小姐<span>
+        <span>买家 : <%= @order.buyer_identify %><span>
         <%= link_to '联系买家', nil, class: 'contact-buyer' %>
       </div>
 		</div>

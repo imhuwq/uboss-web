@@ -5,6 +5,13 @@ class EvaluationsController < ApplicationController
     render layout: 'mobile'
   end
 
+  def append
+    @order_item = OrderItem.find(params[:id])
+    @evaluations = @order_item.evaluations.where(buyer_id: current_user.id)
+    @evaluation = @evaluations.first.dup
+    render layout: 'mobile'
+  end
+
   def show
     @evaluation = Evaluation.find(params[:id])
     @product = @evaluation.product

@@ -10,9 +10,9 @@ class Evaluation < ActiveRecord::Base
 
   validates :order_item_id, :status, presence: true
 
-  enum status: { good: 1, normal: 2, bad: 3 }
+  enum status: { worst: 1, bad: 2, good: 3, better: 4, best: 5 }
 
-  def relate_attrs # 取出order_item的值并斌给Evaluation中对应的属性
+  def relate_attrs # 取出order_item的值并赋给Evaluation中对应的属性
     if order_item
       self.buyer_id = order_item.user_id
       self.sharer_id = order_item.sharing_node.try(:user_id)
@@ -43,13 +43,14 @@ class Evaluation < ActiveRecord::Base
   end
 
   def self.sharer_good_reputation(sharer_id) # 分享者好评数
-    User.find_by_id(sharer_id).user_info.good_evaluation
+    user_info = User.find_by_id(sharer_id).user_info
+    user_info.good_evaluation.to_f +  user_info.better_evaluation.to_f + user_info.best_evaluation.to_f
   end
 
   def self.sharer_good_reputation_rate(sharer) # 分享者好评率
-    total = UserInfo.where(user_id:sharer.id || sharer).sum("good_evaluation + normal_evaluation + bad_evaluation")
+    total = UserInfo.where(user_id:sharer.id || sharer).sum("good_evaluation + better_evaluation + best_evaluation + bad_evaluation + worst_evaluation")
     if total > 0
-    rate = sharer.user_info.good_evaluation.to_f/total
+    rate = (sharer.user_info.good_evaluation.to_f+sharer.user_info.best_evaluation.to_f+sharer.user_info.better_evaluation.to_f)/total
     else
       rate = 1
     end
@@ -57,13 +58,15 @@ class Evaluation < ActiveRecord::Base
   end
 
   def self.product_good_reputation(product_id) # 商品好评数
-    Product.find_by_id(product_id).good_evaluation
+    product = Product.find_by_id(product_id)
+    product.good_evaluation.to_f + product.best_evaluation.to_f + product.better_evaluation.to_f
   end
 
   def self.product_good_reputation_rate(product_id) # 商品好评率
     product = Product.find_by_id(product_id)
-    total_evalution = product.good_evaluation + product.normal_evaluation + product.bad_evaluation
-    rate = total_evalution > 0 ? product.good_evaluation/total_evalution.to_f : 1
+    total_evalution = product.good_evaluation.to_f + product.bad_evaluation.to_f + product.worst_evaluation.to_f + product.best_evaluation.to_f + product.better_evaluation.to_f
+    good = product.good_evaluation.to_i + product.best_evaluation.to_i + product.better_evaluation.to_i
+    rate = total_evalution > 0 ? good/total_evalution.to_f : 1
     "#{'%.2f' % (rate*100)}%"
   end
 
