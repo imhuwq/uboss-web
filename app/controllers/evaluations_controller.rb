@@ -7,7 +7,8 @@ class EvaluationsController < ApplicationController
 
   def append
     @order_item = OrderItem.find(params[:id])
-    @evaluation = @order_item.evaluations.where(buyer_id: current_user.id).first.dup
+    @evaluations = @order_item.evaluations.where(buyer_id: current_user.id)
+    @evaluation = @evaluations.first.dup
     render layout: 'mobile'
   end
 

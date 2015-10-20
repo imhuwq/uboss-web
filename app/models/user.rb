@@ -344,8 +344,9 @@ class User < ActiveRecord::Base
 
   def good_reputation_rate
     return @sharer_good_reputation_rate if @sharer_good_reputation_rate
+    good = user_info.best_evaluation.to_i + user_info.better_evaluation.to_i + user_info.good_evaluation.to_i
     @sharer_good_reputation_rate = if total_reputations > 0
-                                     user_info.good_evaluation.to_i * 100 / total_reputations
+                                     good * 100 / total_reputations
                                    else
                                      100
                                    end
