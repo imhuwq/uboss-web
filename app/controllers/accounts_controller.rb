@@ -12,7 +12,7 @@ class AccountsController < ApplicationController
   end
 
   def orders
-    @orders = append_default_filter account_orders, page_size: 10
+    @orders = append_default_filter account_orders(params[:state]), page_size: 10
     render partial: 'accounts/order', collection: @orders
   end
 
