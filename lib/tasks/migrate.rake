@@ -12,5 +12,9 @@ namespace :migrate do
           sku_attributes: { '其它' => '默认' }
         )
       end
+
+    OrderItem.where(product_inventory_id: nil).all.each do |order_item|
+      order_item.update_columns(product_inventory_id: order_item.product.product_inventories.first.id)
+    end
   end
 end
