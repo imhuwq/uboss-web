@@ -12,13 +12,8 @@ class OrdersController < ApplicationController
   end
 
   def show
+    @seller = @order.seller
     @order_items = @order.order_items
-    @product = @order_items.first.item_product
-
-    if @order.signed? || @order.completed?
-      @privilege_card = PrivilegeCard.find_by(user: current_user, seller: @product.user, actived: true)
-      @sharing_link_node = @order_item.sharing_link_node
-    end
     render layout: 'mobile'
   end
 
@@ -138,16 +133,6 @@ class OrdersController < ApplicationController
 
   def find_order
     @order = current_user.orders.find(params[:id])
-  end
-
-  def available_pay?(order, product)
-    order.unpay? &&
-      (product.is_official_agent? ? available_buy_official_agent? : true)
-  end
-  helper_method :available_pay?
-
-  def available_buy_official_agent?
-    current_user && !current_user.is_agent?
   end
 
   def clean_current_cart

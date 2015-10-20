@@ -193,6 +193,10 @@ class Order < ActiveRecord::Base
     ).exists?
   end
 
+  def available_pay?
+    unpay? && (official_agent? ? !user.is_agent? : true)
+  end
+
   private
 
   def generate_number

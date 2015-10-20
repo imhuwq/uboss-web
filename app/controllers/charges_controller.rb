@@ -30,7 +30,7 @@ class ChargesController < ApplicationController
     @orders = Order.where(id: order_ids)
     @product = @orders[0].order_items.first.item_product
 
-    if available_pay?(@orders, @product)
+    if available_pay?(@orders)
       @order_charge = ChargeService.find_or_create_charge(@orders, remote_ip: request.ip)
       @pay_p = {
         appId: WxPay.appid,
@@ -58,14 +58,15 @@ class ChargesController < ApplicationController
 
   private
 
-  def available_pay?(orders, product)
-    OrderCharge.unpay?(orders) &&
-      browser.wechat? &&
-      (product.is_official_agent? ? available_buy_official_agent? : true)
-  end
-
-  def available_buy_official_agent?
-    current_user && !current_user.is_agent?
+  def available_pay?(orders)
+    result = true
+    orders.each do |order|
+      if !order.available_pay?
+        result = false
+        break
+      end
+    end
+    result
   end
 
   def find_order_charge

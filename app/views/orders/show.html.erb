@@ -3,7 +3,7 @@
 <% end %>
 
 <%= content_for :extra_meta_tags do %>
-  <%= sharing_meta_tags(@product, @sharing_link_node) %>
+  <%= store_sharing_meta_tags(@seller, @sharing_link_node) %>
 <% end %>
 
 <br />
@@ -28,10 +28,10 @@
 
 <div class="order-list">
 	<div class="seller-box">
-	  <div class="cover"><%= image_tag @product.user.image_url(:thumb) %></div>
-		<div class="pull-right">电话：<%= @product.user.mobile %></div>
+	  <div class="cover"><%= image_tag @seller.image_url(:thumb) %></div>
+		<div class="pull-right">电话：<%= @seller.mobile %></div>
 		<div class="content">
-			<div class="text-cut"><%= @product.user.store_identify %></div>
+			<div class="text-cut"><%= @seller.store_identify %></div>
 		</div>
 	</div>
 
@@ -103,7 +103,7 @@
   </div>
 <% end %>
 
-<% if @order.completed? && @product.official_agent? %>
+<% if @order.completed? && @order.official_agent? %>
   <br />
   <div class="bg-white gap gray-color line-gap">
     <p>创客权订单信息</p>
@@ -120,15 +120,9 @@
 	<% if @order.may_close? %>
 	  <%= link_to "取消订单", cancel_order_path(@order), data: { confirm: '确认取消订单？' }, id: 'close-order-btn', class: 'btn btn-gray' %>
 	<% end %>
-	<% if available_pay?(@order, @product) %>
+	<% if @order.available_pay? %>
 	  <%= link_to "去支付", '#', id: 'wx-pay-btn', class: 'btn' %>
 	<% elsif @order.shiped? %>
 	  <%= link_to "确认收货", received_order_path(@order), class:"btn", data: { confirm: '确认收货？' } %>
-	<% end %>
-
-	<% if @order.signed? || @order.completed? %>
-	  <% if @order_item.evaluation_id.blank? %>
-	    <%= link_to "我要评价", new_evaluation_path(id: @order_item.id), class: 'btn' %>
-	  <% end %>
 	<% end %>
 </div><!-- bg-white -->
