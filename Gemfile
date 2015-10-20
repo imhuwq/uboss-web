@@ -100,6 +100,8 @@ group :development do
   gem "better_errors"
   gem "quiet_assets"
   gem 'rack-mini-profiler', require: false
+  # 在线查询数据库
+  gem 'rails_db'
 end
 
 group :development, :test do

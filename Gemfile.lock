@@ -152,6 +152,8 @@ GEM
       rails (>= 3.1.0)
     china_sms (0.0.7)
     chronic (0.10.2)
+    codemirror-rails (5.6)
+      railties (>= 3.0, < 5)
     coderay (1.1.0)
     coffee-rails (4.1.0)
       coffee-script (>= 2.2.0)
@@ -195,8 +197,13 @@ GEM
       railties (>= 3.0.0)
     faraday (0.9.1)
       multipart-post (>= 1.2, < 3)
+    font-awesome-rails (4.4.0.0)
+      railties (>= 3.2, < 5.0)
     font-awesome-sass (4.4.0)
       sass (>= 3.2)
+    foundation-rails (5.5.3.2)
+      railties (>= 3.1.0)
+      sass (>= 3.3.0, < 3.5)
     get_process_mem (0.2.0)
     globalid (0.3.5)
       activesupport (>= 4.1.0)
@@ -329,6 +336,14 @@ GEM
       rails-deprecated_sanitizer (>= 1.0.1)
     rails-html-sanitizer (1.0.2)
       loofah (~> 2.0)
+    rails_db (0.1)
+      codemirror-rails
+      font-awesome-rails
+      foundation-rails
+      jquery-rails
+      rails (>= 3.1.0)
+      sass
+      sass-rails
     railties (4.2.2)
       actionpack (= 4.2.2)
       activesupport (= 4.2.2)
@@ -516,6 +531,7 @@ DEPENDENCIES
   rack-mini-profiler
   rails (= 4.2.2)
   rails-api
+  rails_db
   ransack
   redactor-rails!
   redis (~> 3.0)
