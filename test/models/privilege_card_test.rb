@@ -6,30 +6,31 @@ class PrivilegeCardTest < ActiveSupport::TestCase
     before do
       @sharing_user = create(:user, privilege_rate: 50)
       @product = create(:product_with_3sharing)
-      @product.update_columns(
+      @product_inventory = @product.seling_inventories.first
+      @product_inventory.update_columns(
         share_amount_lv_1: 10,
         share_amount_lv_2: 5,
         share_amount_lv_3: 2,
         privilege_amount: 5,
-        present_price: 100
+        price: 100
       )
       @privilege_card = create(:privilege_card, user: @sharing_user, seller: @product.user)
     end
 
     it 'should cal right returning_amount' do
-      assert_equal 5, @privilege_card.returning_amount(@product)
+      assert_equal 5, @privilege_card.returning_amount(@product_inventory)
     end
 
     it 'should cal right privilege_card amount' do
-      assert_equal 5, @privilege_card.amount(@product)
+      assert_equal 5, @privilege_card.amount(@product_inventory)
     end
 
     it 'should cal right privilege_amount' do
-      assert_equal 10, @privilege_card.privilege_amount(@product)
+      assert_equal 10, @privilege_card.privilege_amount(@product_inventory)
     end
 
     it 'discount right' do
-      assert_equal 9, @privilege_card.discount(@product)
+      assert_equal 9, @privilege_card.discount(@product_inventory)
     end
   end
 

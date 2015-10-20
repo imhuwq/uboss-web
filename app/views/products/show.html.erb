@@ -32,19 +32,7 @@
     <p class="title"><%=@product.name%></p>
     <p class="price">
       <small>￥</small>
-        <% if @product_inventories.present? %>
-          <%
-            from_price = @product_inventories.order("price").first.price
-            to_price = @product_inventories.order("price").last.price
-            %>
-          <% if from_price == to_price %>
-            <%= from_price %>
-          <% else %>
-            <%= "#{@product_inventories.order("price").first.price}-#{@product_inventories.order("price").last.price}" %>
-          <% end %>
-        <% else %>
-        <%=@product.present_price%>
-        <% end %>
+      <%= product_price(@product).join(' - ') %>
     </p>
     <p class="original-price">￥<%= @product.original_price %></p>
     <div class="border-box">
@@ -73,10 +61,10 @@
 	      <div class="name">友情价</div>
 	      <br />
         <div class="price">
-          <%= product_privilege_price(@product, @privilege_card) %>
+          <%= product_privilege(@product, @privilege_card, :price).join(' - ') %>
         </div>
 	      <br/>
-	    	<p class="gray-color">帮朋友优惠<%= product_privilege_amount(@product, @privilege_card) %></p>
+	    	<p class="gray-color">帮朋友优惠<%= product_privilege(@product, @privilege_card, :amount).join(' - ') %></p>
         <div class="border-box">
           <% if @privilege_card.present? %>
             <br />
@@ -107,13 +95,13 @@
         <p class="cover"><%= image_tag @privilege_card.user.avatar_url(:w120) %></p>
         <p class="name"><%= @privilege_card.user.identify %> 分享</p>
         <div class="gray-color">
-          每件为你多省<span class="like-color"><%= @privilege_card.privilege_amount(@product) %></span>
+          每件为你多省<span class="like-color"><%= product_privilege(@product, @privilege_card, :amount).join(' - ') %></span>
         </div>
         <br />
         <div class="border-box">
           <p class="name">友情价</p>
           <div class="price">
-            <%= @product.present_price - @privilege_card.privilege_amount(@product) %>
+            <%= product_privilege(@product, @privilege_card, :price).join(' - ') %>
           </div>
         </div>
         <br />
@@ -151,7 +139,6 @@
 
   <% if @sharing_node.blank? %>
     <div class="sharer-info">
-      <%#<%= link_to '立即购买', new_order_path(product_id: @product.id), class: 'btn pull-right' %>
       <%= link_to '立即购买', 'javascript:;', class: 'btn', id:"show_inventory", style: 'float:right;' %>
       <% if current_user %>
         <%= link_to '加入购物车', 'javascript:;', class: 'btn pull-left', id: 'show_inventory_cart'%>
@@ -166,7 +153,6 @@
       <div class="cover">
         <%= image_tag @sharing_node.user.avatar_url(:thumb), class: 'prvd_header' %>
       </div>
-      <%#= link_to '立即购买', new_order_path(product_id: @product.id), class: 'btn pull-right'%>
       <%= link_to '立即购买', 'javascript:;', class: 'btn', id:"show_inventory" %>
       <div class="content">
         <p>分享者：<%= @sharing_node.user.identify %></p>
@@ -206,10 +192,10 @@
   <%= hidden_field_tag "product_id", @product.id %>
   <%= hidden_field_tag "amount", 2 %>
   <div class="hidden" id="inventory">
-    <img src="img/portrait.jpg" alt="handsome" class="blur" onclick="hideBuyNow()" />
+    <%#= image_tag @sharing_node.user.avatar_url(:thumb), class: 'share_portrait', onclick: 'hideBuyNow()' %>
     <div class="share_buy">
       <div class="half_left">
-        <img class="share_portrait" src="img/portrait.jpg" alt="头像"></img>
+        <%#= image_tag @sharing_node.user.avatar_url(:thumb), class: 'share_portrait' %>
         <dl class="share_content">
           <dt><p>分享者</p></dt>
           <dd>100%好评率</dd>
@@ -222,62 +208,19 @@
     </div>
     <div class="tab_buy_now">
       <div class="buy_now_goods">
-        <img class="btn_cancle_buy_now close" src="img/cancel.jpg" alt="退出" onclick="hideBuyNow()"></img>
+        <%= image_tag 'mobile/close.png', class: 'btn_cancle_buy_now close', onclick: 'hideBuyNow()' %>
         <img class="buy_now_goods_img" src="<%= @product.image_url() %>" alt="商品" />
         <dl class="buy_now_goods_dl">
           <dt><p><%=@product.name%></p></dt>
           <dd>
             <p>¥
-
-              <span id="price_range">
-                <% if @product_inventories.present? %>
-                  <%
-                    from_price = @product_inventories.order("price").first.price
-                    to_price = @product_inventories.order("price").last.price
-                    %>
-                  <% if from_price == to_price %>
-                    <%= from_price %>
-                  <% else %>
-                    <%= "#{@product_inventories.order("price").first.price}-#{@product_inventories.order("price").last.price}" %>
-                  <% end %>
-                <% else %>
-                  <%= @product.present_price %>
-                <% end %>
-              </span>
-              <% (@product_inventories || {}).each do |obj| %>
-                <span id="price_<%= obj.id %>" class="real_price hidden"><%= obj.price %></span>
+              <span id="price_range"> <%= product_price(@product).join(' - ') %> </span>
+              <% @product_inventories.each do |inventory| %>
+                <span id="price_<%= inventory.id %>" class="real_price hidden"><%= inventory.price %></span>
               <% end %>
             </p>
           </dd>
         </dl>
-      </div>
-
-      <div class="options">
-        <div class="buy_now_option">
-          <p class="buy_now_option_title"></p>
-          <ul>
-            <% (@product.product_inventories || {}).each do |obj| %>
-              <% if obj.count.to_i > 0 %>
-                <li class="item sku" id="<%= obj.id %>">
-                  <p>
-                    <% obj.sku_attributes.each do |k,v| %>
-                    <%= obj.sku_attributes.map{|k,v| "#{k}:#{v}"}.join("-") %>
-                    <% end %>
-                  </p>
-                </li>
-              <% else %>
-                <li class="item disabled" id="<%= obj.id %>">
-                  <p>
-                    <%= obj.sku_attributes.map{|k,v| "#{k}:#{v}"}.join("-") %>
-                  </p>
-                </li>
-              <% end %>
-            <% end %>
-            <% (@product_inventories || {}).each do |obj| %>
-              <span id="price_<%= obj.id %>" class="real_price hidden"><%= obj.price %></span>
-            <% end %>
-          </ul>
-        </div>
       </div>
 
     <div class="options">
