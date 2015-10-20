@@ -1,6 +1,6 @@
 <div class="box-w70">
   <div class="admin-border admin-border-order-info">
-    <p class='number'>订单编号 : <%= order.number %><small class="pull-right"><%= order.username %> 促成的 二级订单</small></p>
+    <p class='number'>订单编号 : <%= order.number %><!--small class="pull-right"><%= order.username %> 促成的 二级订单</small--!></p>
     <div class="index_list">
       <table class="list-table order_info_tables">
         <thead>
@@ -24,13 +24,13 @@
                 <% end %>
               </td>
               <td>
-                <p class='color'>颜色分类:</p>
-                <p class='size'>尺寸:</p>
+                <p class='color'>颜色分类: <%= item.product_inventory.sku_attributes["颜色"]%></p>
+                <p class='size'>尺寸: <%= item.product_inventory.sku_attributes["尺寸"]%></p>
               </td>
               <td><%= order.state_i18n %></td>
               <td><%= item.product.present_price %></td>
               <td><%= item.amount %></td>
-              <td><%= item.amount %><p>(贡献值)</p></td>
+              <td><%= item.privilege_amount %><p>(贡献值)</p></td>
               <td>
                 <%=order.pay_amount%>
                 <p>(快递:<%= order.ship_price %>)</p>
@@ -47,8 +47,8 @@
     <div class='bottom_line'>
       <p class='logistics_info'>收货及物流信息</p>
       <p>收货地址 : <%= order.username %>, <%= order.mobile %>, <%= order.address %></p>
-      <p>运送方式 : </p>
-      <p>买家留言 : </p>
+      <p>运送方式 : 快递</p>
+      <p>买家留言 : <%= order.to_seller %></p>
     </div>
     <div class='evaluate'>
       <p>发货时间 : <%= order.shiped_at || '未发货' %></p>
@@ -63,17 +63,15 @@
 
 <div class="box-w30">
   <div class="admin-border admin-border-order-info">
-    <p class='pay_number'>支付流水号 : </p>
-    <p>付款方式 : </p>
-    <p>付款时间 : </p>
-    <p>付款金额 : </p>
+    <p class='pay_number'>支付流水号 : <%= order.order_charge.pay_serial_number%></p>
+    <p>付款方式 : <%= order.order_charge.payment %></p>
+    <p>付款时间 : <%= order.order_charge.paid_at %></p>
+    <p>付款金额 : <%= order.order_charge.paid_amount %></p>
   </div>
-  <div class="admin-border admin-border-order-info">
-    <p class='complete_and_evaluate'>完成交易及评价</p>
+  <!--div class="admin-border admin-border-order-info">
+    <p class='complete_and_evaluate'>完成交易</p>
     <p>确认收货时间 : </p>
-    <p>评价时间 : </p>
-    <p>详细评价 : </p>
-  </div>
+  </div--!>
   <div class="admin-border admin-border-order-info">
     <p class='after_sale'>售后</p>
   </div>
