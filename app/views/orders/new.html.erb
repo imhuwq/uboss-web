@@ -56,7 +56,7 @@
               <%= image_tag sharing_user.avatar_url(:thumb) %>
             </div>
             <div class="content">
-              <span class="pull-right red-color"><%= cart_items.sum(&:privilege_amount) %></span><span class="main-color"><%= sharing_user.identify %></span> 帮你优惠
+              <span class="pull-right red-color order-privilege-amount"><%= cart_items.sum(&:privilege_amount) %></span><span class="main-color"><%= sharing_user.identify %></span> 帮你优惠
             </div>
           </div><!-- friend-info -->
         <% end %>

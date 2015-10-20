@@ -146,16 +146,20 @@ $ ->
         price = parseFloat($(this).find('.product-price').text())
         total_price += price*num
       ship_price = parseFloat($this.find('.freight-box>span').data('ship-price'))
-      total_price += ship_price
+      privilege_amount = parseFloat($this.find('.order-privilege-amount').text()) || 0.0
+      total_price += ship_price - privilege_amount
       $this.find('.price-box>span').data('total-price', total_price)
       $this.find('.price-box>span').text('￥ '+total_price)
 
   # 总价
   setOrderTotalPrice = ->
     total_price = 0.0
+    privelege_price = 0.0
     $('.price-box').each ->
       total_price += parseFloat($(this).find('span').data('total-price'))
+      privelege_price += (parseFloat($(this).parent().find('.order-privilege-amount').text()) || 0.0)
     $('#total_price').text(total_price)
+    $('.order-price').find('small').text('共优惠'+privelege_price+'元')
 
   if $('#total_price').length != 0
     setSingleOrderTotalPrice()
