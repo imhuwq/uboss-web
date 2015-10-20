@@ -46,8 +46,20 @@
         border-radius:6px ;
         padding: 10px;
         -webkit-appearance: none;
-        box-shadow: 2px 2px #999;
-        -webkit-box-shadow: 2px 2px #999;
+        box-shadow: 2px 2px 3px #999;
+        -webkit-box-shadow: 2px 2px 3px #999;
+    }
+    .star{
+        float: left;
+        width: 20%;
+        background: image-url('mobile/star.png') center top no-repeat;
+        background-size: 30px;
+        height: 30px;
+        margin-top: 10px;
+        
+    }
+    .star.half{
+        background-position-y: -56px;
     }
 }
 

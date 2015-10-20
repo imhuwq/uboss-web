@@ -44,15 +44,51 @@ module ProductsHelper
     privilege_card && (current_user.blank? || (current_user && privilege_card.user_id != current_user.id))
   end
 
-  def product_privilege_price(product, privilege_card)
-    product.present_price - product_privilege_amount(product, privilege_card)
+  def product_privilege(product, privilege_card, type)
+    unless [:price, :amount].include?(type.to_sym)
+      raise "product_privilege type only accept: [price, amount]"
+    end
+    privilege_method = "sku_privilege_#{type}"
+    if product.seling_inventories.size == 1
+      [__send__(privilege_method, product.seling_inventories.first, privilege_card)]
+    else
+      max_inventory = product.seling_inventories.max { |inventory| inventory.price }
+      min_inventory = product.seling_inventories.min { |inventory| inventory.price }
+      if max_inventory.price == min_inventory.price
+        [ __send__(privilege_method, max_inventory, privilege_card) ]
+      else
+        [
+          __send__(privilege_method, min_inventory, privilege_card),
+          __send__(privilege_method, max_inventory, privilege_card),
+        ]
+      end
+    end
   end
 
-  def product_privilege_amount(product, privilege_card)
+  def sku_privilege_price(product_inventory, privilege_card)
+    product_inventory.price - sku_privilege_amount(product_inventory, privilege_card)
+  end
+
+  def sku_privilege_amount(product_inventory, privilege_card)
     if privilege_card.present?
-      privilege_card.privilege_amount(product)
+      privilege_card.privilege_amount(product_inventory)
     else
-      product.privilege_amount
+      product_inventory.privilege_amount
+    end
+  end
+
+  def product_price(product)
+    product_inventories = product.seling_inventories
+    if product_inventories.size == 1
+      [product_inventories.first.price]
+    else
+      max_inventory = product_inventories.max { |inventory| inventory.price }
+      min_inventory = product_inventories.min { |inventory| inventory.price }
+      if max_inventory.price == min_inventory.price
+        [max_inventory.price]
+      else
+        [min_inventory.price, max_inventory.price]
+      end
     end
   end
 
@@ -64,7 +100,7 @@ module ProductsHelper
         select { |inventory| inventory.saling }.
         to_json(only: [:id, :sku_attributes, :price, :count])
     else
-      product.product_inventories.saling.select(:id, :sku_attributes, :price, :count).to_json
+      product.seling_inventories.select(:id, :sku_attributes, :price, :count).to_json
     end
   end
 end

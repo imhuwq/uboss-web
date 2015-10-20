@@ -5,9 +5,17 @@ class EvaluationsController < ApplicationController
     render layout: 'mobile'
   end
 
+  def append
+    @order_item = OrderItem.find(params[:id])
+    @evaluations = @order_item.evaluations.where(buyer_id: current_user.id)
+    @evaluation = @evaluations.first.dup
+    render layout: 'mobile'
+  end
+
   def show
     @evaluation = Evaluation.find(params[:id])
     @product = @evaluation.product
+    @product_inventory = @evaluation.order_item.product_inventory
     @sharing_node = @evaluation.sharing_node
     @privilege_card = PrivilegeCard.find_by(user: current_user, seller: @product.user, actived: true)
   end

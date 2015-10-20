@@ -32,19 +32,7 @@
     <p class="title"><%=@product.name%></p>
     <p class="price">
       <small>￥</small>
-        <% if @product_inventories.present? %>
-          <%
-            from_price = @product_inventories.order("price").first.price
-            to_price = @product_inventories.order("price").last.price
-            %>
-          <% if from_price == to_price %>
-            <%= from_price %>
-          <% else %>
-            <%= "#{@product_inventories.order("price").first.price}-#{@product_inventories.order("price").last.price}" %>
-          <% end %>
-        <% else %>
-        <%=@product.present_price%>
-        <% end %>
+      <%= product_price(@product).join(' - ') %>
     </p>
     <p class="original-price">￥<%= @product.original_price %></p>
     <div class="border-box">
@@ -73,10 +61,10 @@
 	      <div class="name">友情价</div>
 	      <br />
         <div class="price">
-          <%= product_privilege_price(@product, @privilege_card) %>
+          <%= product_privilege(@product, @privilege_card, :price).join(' - ') %>
         </div>
 	      <br/>
-	    	<p class="gray-color">帮朋友优惠<%= product_privilege_amount(@product, @privilege_card) %></p>
+	    	<p class="gray-color">帮朋友优惠<%= product_privilege(@product, @privilege_card, :amount).join(' - ') %></p>
         <div class="border-box">
           <% if @privilege_card.present? %>
             <br />
@@ -107,13 +95,13 @@
         <p class="cover"><%= image_tag @privilege_card.user.avatar_url(:w120) %></p>
         <p class="name"><%= @privilege_card.user.identify %> 分享</p>
         <div class="gray-color">
-          每件为你多省<span class="like-color"><%= @privilege_card.privilege_amount(@product) %></span>
+          每件为你多省<span class="like-color"><%= product_privilege(@product, @privilege_card, :amount).join(' - ') %></span>
         </div>
         <br />
         <div class="border-box">
           <p class="name">友情价</p>
           <div class="price">
-            <%= @product.present_price - @privilege_card.privilege_amount(@product) %>
+            <%= product_privilege(@product, @privilege_card, :price).join(' - ') %>
           </div>
         </div>
         <br />
@@ -151,6 +139,7 @@
 	  
 	
   <% if @sharing_node.blank? %>
+<<<<<<< HEAD
     <div class="share_buy">
     	<div class="half_left">
     		&nbsp;
@@ -164,6 +153,7 @@
 	      <% end %>
 	      <%= link_to '立即购买', 'javascript:;', class: 'btn_buy_now', id:"show_inventory", style: 'float:right;' %>	      
 		  </div>
+
       <input type="hidden" name="product[id]" value="<%= @product.id %>" />
       <input type="hidden" name="product[count]" value="<%= 1 %>" />
     </div>
@@ -187,7 +177,6 @@
 		  </div>
     </div>
   <% end %>
-
   <%= render partial: 'new_share' %>
 
 </div>
@@ -227,24 +216,9 @@
           <dt><p><%=@product.name%></p></dt>
           <dd>
             <p>¥
-
-              <span id="price_range">
-                <% if @product_inventories.present? %>
-                  <%
-                    from_price = @product_inventories.order("price").first.price
-                    to_price = @product_inventories.order("price").last.price
-                    %>
-                  <% if from_price == to_price %>
-                    <%= from_price %>
-                  <% else %>
-                    <%= "#{@product_inventories.order("price").first.price}-#{@product_inventories.order("price").last.price}" %>
-                  <% end %>
-                <% else %>
-                  <%= @product.present_price %>
-                <% end %>
-              </span>
-              <% (@product_inventories || {}).each do |obj| %>
-                <span id="price_<%= obj.id %>" class="real_price hidden"><%= obj.price %></span>
+              <span id="price_range"> <%= product_price(@product).join(' - ') %> </span>
+              <% @product_inventories.each do |inventory| %>
+                <span id="price_<%= inventory.id %>" class="real_price hidden"><%= inventory.price %></span>
               <% end %>
             </p>
           </dd>

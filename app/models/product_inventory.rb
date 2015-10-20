@@ -5,6 +5,8 @@ class ProductInventory < ActiveRecord::Base
   has_many   :cart_items
   has_many   :order_items
 
+  validates_presence_of :product_id
+
   scope :saling, -> { where(saling: true) }
   scope :not_saling, -> { where(saling: false) }
 
@@ -17,6 +19,7 @@ class ProductInventory < ActiveRecord::Base
     status == 'published'
   end
 
+  # FIXME product_inventory.name 没有用处
   # XXX: 商品名展示 product_inventory.name 还是 product.name ?
   def product_name
     name.present? ? name : product.name
@@ -31,8 +34,16 @@ class ProductInventory < ActiveRecord::Base
   end
 
   def convert_into_cart_item(buy_count, sharing_code)
-    sharing_node = SharingNode.find_by(code: sharing_code)
-    {}.merge({ seller => [CartItem.new(product_inventory_id: id, seller_id: user_id, count: buy_count, sharing_node_id: sharing_node)] })
+    {
+      seller => [
+        CartItem.new(
+          product_inventory_id: id,
+          seller_id: user_id,
+          count: buy_count,
+          sharing_node: SharingNode.find_by(code: sharing_code)
+        )
+      ]
+    }
   end
 
   def calculate_sharing_amount(changed_product = nil)

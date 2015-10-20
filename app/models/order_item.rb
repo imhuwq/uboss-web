@@ -79,11 +79,15 @@ class OrderItem < ActiveRecord::Base
   end
 
   def set_privilege_amount
-    self.privilege_amount = privilege_card.present? ? privilege_card.privilege_amount(product) : 0
+    self.privilege_amount = privilege_card.present? ? privilege_card.privilege_amount(product_inventory) : 0
   end
 
   def set_present_price
-    self.present_price = (product_inventory.try(:price) || product.try(:present_price))
+    self.present_price = if product_inventory.present?
+                           product_inventory.price
+                         else
+                           product.price
+                         end
   end
 
   def set_pay_amount

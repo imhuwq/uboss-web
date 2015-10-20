@@ -12,13 +12,8 @@ class OrdersController < ApplicationController
   end
 
   def show
+    @seller = @order.seller
     @order_items = @order.order_items
-    @product = @order_items.first.item_product
-
-    if @order.signed? || @order.completed?
-      @privilege_card = PrivilegeCard.find_by(user: current_user, seller: @product.user, actived: true)
-      @sharing_link_node = @order_item.sharing_link_node
-    end
     render layout: 'mobile'
   end
 
@@ -29,33 +24,34 @@ class OrdersController < ApplicationController
 
     @order_form = OrderForm.new(
       buyer: current_user,
+      cart_id: current_cart.try(:id),
+      amount: params[:amount] || 1,
       product_id: params[:product_id],
-      product_inventory_id: params[:product_inventory_id],     # TODO 创客权需要设置一个默认的product_inventory
-      amount: params[:amount] || 1
+      product_inventory_id: params[:product_inventory_id]
     )
+
+    set_user_address
 
     if params[:product_id].present?  # 直接购买
       @product = @order_form.product
-      @productInventory = @order_form.product_inventory
+      @product_inventory = @order_form.product_inventory
       @order_form.sharing_code = get_product_or_store_sharing_code(@product)
-      @products_group_by_seller = @productInventory.convert_into_cart_item(@order_form.amount, @order_form.sharing_code)
+      @products_group_by_seller = @product_inventory.convert_into_cart_item(@order_form.amount, @order_form.sharing_code)
 
       if @product.is_official_agent? && current_user && current_user.is_agent?
         flash[:error] = "您已经是UBOSS创客，请勿重复购买"
         redirect_to root_path
       else
-        set_user_address
         render layout: 'mobile'
       end
     elsif params[:item_ids]
-      item_ids = params[:item_ids].split(',')
-      session[:cart_item_ids] = item_ids
       @cart = current_cart
+      item_ids = params[:item_ids].split(',')
       @cart_items = @cart.cart_items.find(item_ids)
-      @order_form.cart_id = current_cart.id
+
+      session[:cart_item_ids] = item_ids
       @products_group_by_seller = CartItem.group_by_seller(@cart_items)
 
-      set_user_address
       render layout: 'mobile'
     else
       redirect_to root_path
@@ -137,16 +133,6 @@ class OrdersController < ApplicationController
 
   def find_order
     @order = current_user.orders.find(params[:id])
-  end
-
-  def available_pay?(order, product)
-    order.unpay? &&
-      (product.is_official_agent? ? available_buy_official_agent? : true)
-  end
-  helper_method :available_pay?
-
-  def available_buy_official_agent?
-    current_user && !current_user.is_agent?
   end
 
   def clean_current_cart

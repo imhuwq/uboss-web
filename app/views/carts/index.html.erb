@@ -15,7 +15,7 @@
     </div>
   <% else %>
     <div class="cart-list">
-      <%# 购物车有效商品按不同的商家分开 %>
+      <!-- 购物车有效商品按不同的商家分开 -->
       <% CartItem.group_by_seller(@valid_items).each do |seller, cart_items| %>
         <div class="order-list">
           <div class="seller-box">
@@ -32,8 +32,9 @@
                 </div>
                 <p class="name"><%= cart_item.product_name %></p>
                 <p class="info">
-                <span>尺寸：36</span>
-                <span>颜色：灰色</span>
+                  <% cart_item.product_inventory.sku_attributes.each do |property, value| %>
+                    <span><%= "#{property} : #{value}" %></span>
+                  <% end %>
                 </p>
                 <button class="btn btn-delete <%= "c_delete_#{cart_item.id}" %>"></button>
                 <div class="count">
@@ -44,12 +45,15 @@
               </div>
             </div><!-- order-box-->
           <% end %>
-          <div class="friend-info">
-            <div class="cover">
-              <img src="" title="用户头像"/>
-            </div>
-            <div class="content">使用 <span class="main-color">xxx</span> 的友情卡</div>
-          </div><!-- friend-info -->
+          <% if cart_items.first.sharing_node.present? %>
+            <% sharing_user = cart_items.first.sharing_node.user %>
+            <div class="friend-info">
+              <div class="cover">
+                <img src="<%= sharing_user.avatar_url(:thumb) %>" title="<%= sharing_user.identify %>"/>
+              </div>
+              <div class="content">使用 <span class="main-color"><%= sharing_user.identify %></span> 的友情卡</div>
+            </div><!-- friend-info -->
+          <% end %>
           <div class="price-box">
             本店合计：￥
             <span class="single_total_price">0.0</span>

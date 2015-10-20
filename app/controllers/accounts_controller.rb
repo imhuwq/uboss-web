@@ -1,16 +1,16 @@
 class AccountsController < ApplicationController
+
   layout :login_layout, only: [:set_password, :new_password, :merchant_confirm]
 
   before_action :authenticate_user!
   before_action :authenticate_agent, only: [:send_message, :invite_seller, :edit_seller_note, :update_histroy_note]
 
   def show
-    type = params[:state] || "all"
-    @orders = append_default_filter account_orders(type), page_size: 10
+    @orders = append_default_filter account_orders(params[:state]), page_size: 10
     @privilege_cards = append_default_filter current_user.privilege_cards, order_column: :updated_at, page_size: 10
     render layout: 'mobile'
-  end  
-  
+  end
+
   def orders
     @orders = append_default_filter account_orders, page_size: 10
     render partial: 'accounts/order', collection: @orders
@@ -196,6 +196,7 @@ class AccountsController < ApplicationController
   private
 
   def account_orders(type)
+    type ||= 'all'
     if ["unpay", "payed", "shiped", "signed", "all"].include?(type)
       current_user.orders.try(type).includes(order_items: { product_inventory: { product: :asset_img } })
     else

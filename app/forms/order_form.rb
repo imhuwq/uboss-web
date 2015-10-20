@@ -64,9 +64,15 @@ class OrderForm
 
   def real_price
     if sharing_node.present?
-      product_inventory.price.to_f.to_d - sharing_node.privilege_amount.to_f.to_d
+      product_inventory.price.to_f.to_d - sharing_node.privilege_amount(self.product_inventory).to_f.to_d
     else
       product_inventory.price.to_f.to_d
+    end
+  end
+
+  def privilege_amount
+    if product.present?
+      sharing_node && sharing_node.privilege_amount(self.product_inventory).to_f.to_d
     end
   end
 
@@ -163,7 +169,7 @@ class OrderForm
     items = cart_items.select { |item| item.seller_id == seller_id }
 
     return items.collect { |item| {
-      product_id: item.product_inventory.try(:product_id),
+      product_id: item.product_inventory.product_id,
       product_inventory_id: item.product_inventory_id,
       user: buyer,
       amount: item.count,

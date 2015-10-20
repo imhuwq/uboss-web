@@ -19,7 +19,7 @@ class UserAddressesController < ApplicationController
       redirect_to account_user_addresses_path
     else
       flash[:error] = @user_address.errors.full_messages.join("</br>")
-      render :new
+      render :new, layout: 'mobile'
     end
   end
 

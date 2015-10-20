@@ -10,8 +10,8 @@ class ProductsController < ApplicationController
 
   def show
     @product = Product.published.find_by_id(params[:id])
-    @product_inventories = @product.product_inventories.where("count > ?",0)
-    if @product.present? && (@product.product_inventories.collect(&:count).compact.inject(:+) || @product.count) > 0
+    @product_inventories = @product.seling_inventories.where("count > ?",0)
+    if @product.present? && @product_inventories.sum(:count) > 0
       @seller = @product.user
       if qr_sharing?
         current_user && @privilege_card = current_user.privilege_cards.find_by(seller_id: @product.user_id)

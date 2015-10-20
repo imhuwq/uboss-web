@@ -29,11 +29,4 @@ module OrdersHelper
     end
   end
 
-  def orders_ship_price(cart_items, user_address)
-    if user_address.try(:province).blank?
-      0.0
-    else
-      Order.sum_ship_price(cart_items, user_address)
-    end
-  end
 end

@@ -43,11 +43,4 @@ class Cart < ActiveRecord::Base
     CartItem.valid_items(cart_items).inject(0){ |sum, item| sum + item.total_price }
   end
 
-  def total_price_of(cart_item_ids)
-    items = CartItem.find(cart_item_ids)
-    items.inject(0){ |sum, item| sum + item.total_price }
-  rescue ActiveRecord::RecordNotFound
-    return 0
-  end
-
 end

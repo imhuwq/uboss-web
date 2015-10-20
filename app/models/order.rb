@@ -111,11 +111,11 @@ class Order < ActiveRecord::Base
 
     #{ 0 => '包邮', 1 => '统一邮费', 2 => '运费模板' }
     def unify_transportation_way(items)
-      items1 = items.select{ |item| item.product_inventory.transportation_way == 1 }
+      items.select{ |item| item.product_inventory.transportation_way == 1 }
     end
 
     def template_transportation_way(items)
-      items2 = items.select{ |item| item.product_inventory.transportation_way == 2 }
+      items.select{ |item| item.product_inventory.transportation_way == 2 }
     end
 
     def max_traffic_expense(items1)
@@ -180,12 +180,21 @@ class Order < ActiveRecord::Base
     order_items.first.product_inventory.is_official_agent?
   end
 
-  def order_item
-    @order_item ||= order_items.first || OrderItem.new
+  def sharing_user
+    @sharing_user ||= order_items.first.sharing_node.try(:user)
   end
 
-  def product
-    @product ||= order_item.try(:item_product) || Product.new
+  def official_agent?
+    return false if seller_id != User.official_account.try(:id)
+    official_agent_product = Product.official_agent
+    return false if official_agent_product.blank?
+    order_items.joins(:product).where(
+      products: { id: official_agent_product.id }
+    ).exists?
+  end
+
+  def available_pay?
+    unpay? && (official_agent? ? !user.is_agent? : true)
   end
 
   private
