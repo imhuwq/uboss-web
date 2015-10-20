@@ -30,10 +30,14 @@ class CarriageTemplate < ActiveRecord::Base
 
   private
   def calculate_price(count, template)
-    balance = count - template.first_item
-    extend_count = balance > 0 ? balance : 0
+    if template.present?
+      balance = count - template.first_item
+      extend_count = balance > 0 ? balance : 0
 
-    template.carriage + extend_count * template.extend_carriage
+      template.carriage + extend_count * template.extend_carriage
+    else
+      0
+    end
   end
 
   #address is provinces name

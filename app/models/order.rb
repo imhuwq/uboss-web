@@ -69,7 +69,7 @@ class Order < ActiveRecord::Base
       carriage_template_group, items_count = uniq_carriage_template(items2)
       different_areas = find_all_different_areas(carriage_template_group, province)
 
-      max_carriage_expense = different_areas.sort_by{ |area| [-area.carriage, area.extend_carriage] }.first
+      max_carriage_expense = (different_areas.sort_by{ |area| [-area.carriage, area.extend_carriage] }.try(:first) || 0)
 
       if max_traffic.to_f >= max_carriage_expense.try(:carriage).to_f && max_carriage_expense.try(:extend_carriage).to_f >= 0
         ship_price = max_traffic
@@ -98,7 +98,7 @@ class Order < ActiveRecord::Base
 
     def find_template_by_address(carriage_template, address)
       different_areas = carriage_template.different_areas
-      different_areas.joins(:regions).where(regions: {name: address}).first
+      different_areas.joins(:regions).where(regions: {name: address}).try(:first)
     end
 
     def find_all_different_areas(items, province)
@@ -106,7 +106,7 @@ class Order < ActiveRecord::Base
       items.each do |item|
         different_areas.push(find_template_by_address(item.product_inventory.carriage_template, province))
       end
-      different_areas
+      different_areas.compact
     end
 
     #{ 0 => '包邮', 1 => '统一邮费', 2 => '运费模板' }
