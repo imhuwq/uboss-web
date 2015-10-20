@@ -15,6 +15,7 @@ class EvaluationsController < ApplicationController
   def show
     @evaluation = Evaluation.find(params[:id])
     @product = @evaluation.product
+    @product_inventory = @evaluation.order_item.product_inventory
     @sharing_node = @evaluation.sharing_node
     @privilege_card = PrivilegeCard.find_by(user: current_user, seller: @product.user, actived: true)
   end

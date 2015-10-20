@@ -21,10 +21,10 @@
           </p>
           <p>
 		      <% if order.signed? || order.completed? %>
-		        <% if order_item.evaluations.size > 0 %>
-		          <%= link_to "评价", new_evaluation_path(id: order_item.id), class: 'btn btn-mid btn-orange' %>
-		        <% else %>
+            <% if order_item.evaluations.size > 0 %>
 		          <%= link_to "追评", append_evaluation_path(id: order_item.id), class: 'btn btn-mid btn-orange' %>
+		        <% else %>
+		          <%= link_to "评价", new_evaluation_path(id: order_item.id), class: 'btn btn-mid btn-orange' %>
 		        <% end %>
 		      <% end %>
           </p>
