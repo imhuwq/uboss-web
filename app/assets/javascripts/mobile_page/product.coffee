@@ -105,7 +105,7 @@ $ ->
       if checkInventoriesSelect()
         product_inventory_id = Number($('input[name="product_inventory_id"]').val())
         product_id = Number($('input[name="product_id"]').val())
-        count = Number($('input[name="amount"]').val())
+        count = Number($('.count_num').val())
         if count >= 1
           $.ajax
             url: '/cart_items'

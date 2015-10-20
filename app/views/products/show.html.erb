@@ -205,7 +205,7 @@
 <%= simple_form_for "product_inventory", url: new_order_path(product_id: @product.id), method: 'GET' do |f| %>
   <%= hidden_field_tag "product_inventory_id" %>
   <%= hidden_field_tag "product_id", @product.id %>
-  <%= hidden_field_tag "amount", 1,id:'count_amount' %>
+  <%= hidden_field_tag "amount", 1, id:'count_amount' %>
   <div class="hidden" id="inventory">
     <div class="tab_buy_now">
       <div class="buy_now_goods">
