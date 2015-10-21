@@ -31,8 +31,8 @@ class CartItem < ActiveRecord::Base
     cart_items - valid_items(cart_items)
   end
 
-  def image_url
-    product_inventory.image_url
+  def image_url(type = :w120)
+    product_inventory.image_url(type)
   end
 
   def product
