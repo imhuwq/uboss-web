@@ -252,10 +252,7 @@ ActiveRecord::Schema.define(version: 20151019094545) do
     t.datetime "updated_at",                           null: false
     t.boolean  "actived",              default: false
     t.integer  "seller_id"
-<<<<<<< HEAD
     t.integer  "product_inventory_id"
-=======
->>>>>>> feature/shopping_cart
   end
 
   create_table "product_classes", force: :cascade do |t|
