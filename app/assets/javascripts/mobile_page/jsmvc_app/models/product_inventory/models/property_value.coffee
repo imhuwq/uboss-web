@@ -2,4 +2,6 @@ class ProductInventory.Models.PropertyValue extends Backbone.Model
 
   defaults:
     value: ''
-    cid: 0
+    disabled: "false"
+    selected: "false"
+    relate_sku: []

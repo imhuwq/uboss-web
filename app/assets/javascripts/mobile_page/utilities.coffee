@@ -63,11 +63,11 @@ $ ->
     $("#price_#{product_inventory_id}").removeClass('hidden')
 
 
-  $('#make_order').on 'click', ->
-    product_inventory_id = $('#product_inventory_id').val();
-    if product_inventory_id == ''
-      confirm "请选择你要购买的型号。"
-    else
-      want_buy = confirm "确认购买么？"
-      if want_buy
-          $('.product_inventory').submit()
+  # $('#make_order').on 'click', ->
+  #   product_inventory_id = $('#product_inventory_id').val();
+  #   if product_inventory_id == ''
+  #     confirm "请选择你要购买的型号。"
+  #   else
+  #     want_buy = confirm "确认购买么？"
+  #     if want_buy
+  #         $('.product_inventory').submit()

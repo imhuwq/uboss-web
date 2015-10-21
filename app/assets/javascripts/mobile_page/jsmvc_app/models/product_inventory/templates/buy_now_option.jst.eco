@@ -1,1 +1,4 @@
 <div class="buy_now_option"></div>
+<div class="done">
+  <a class="btn" id="make_order">确定</a>
+</div>

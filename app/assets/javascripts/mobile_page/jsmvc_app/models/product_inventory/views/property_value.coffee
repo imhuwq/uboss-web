@@ -5,6 +5,10 @@ class ProductInventory.View.PropertyValue extends Backbone.View
   className: "item sku"
 
   render: ->
-    @$el.html @template(property_value: @model.attributes.value)
+    @$el.html @template(property_value: @model.attributes.property_value)
     $(@$el).attr('id', @model.cid)
+    if @model.attributes.disabled == "true"
+      $(@$el).addClass('disabled')
+    if @model.attributes.selected == "true"
+      $(@$el).addClass('item_click')
     @
