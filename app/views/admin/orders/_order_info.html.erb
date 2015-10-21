@@ -24,8 +24,9 @@
                 <% end %>
               </td>
               <td>
-                <p class='color'>颜色分类: <%= item.product_inventory.sku_attributes["颜色"]%></p>
-                <p class='size'>尺寸: <%= item.product_inventory.sku_attributes["尺寸"]%></p>
+                <% item.product_inventory.sku_attributes.each do |k, v| %>
+                  <p class='attribute'><%= k %> : <%= v %></p>
+                <% end %>
               </td>
               <td><%= order.state_i18n %></td>
               <td><%= item.product.present_price %></td>
