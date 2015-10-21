@@ -1,27 +1,105 @@
 /*header*/
-.head-title { margin: 40px 0 20px;}
-header,footer{ background: rgba(0,0,0,0.7); background: #4C4C4C\9; overflow: hidden;color:#fff;width:100%;min-width:1220px}
-header .header{ padding: 15px 0;}
-header .logo { float: left;}
-header nav > ul{ margin: 0;}
-header nav > ul > li { display: inline-block;*zoom:1;*display:inline; margin-left: 60px; padding: 15px 0;}
-header nav > ul > li > a {font-size: 16px; font-weight: bold; color: #fff;}
-header nav > ul > li > a:hover,header nav > ul > li > a:focus{ color: #43C3AA; }
-
+html,body{
+    height: 100%;
+    min-height: 100%;
+    background: #1f1f1f;
+}
+header{
+    background: rgba(0,0,0,0.5);
+    padding: 20px 0;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 88;
+    ul{
+        padding: 0;
+        margin: 0;
+    }
+    nav > ul > li{
+        display: inline-block;
+        padding: 0;
+        margin: 0 20px;
+        font-size: 16px;
+    }
+    nav > ul > li > a{
+        display: block;
+        padding: 10px;
+        color: #fff;
+    }
+    .btn-tag a{
+        background:#43c3aa ;
+        border-radius:6px ;
+    }
+}
 footer { padding: 30px 0 0; height: 120px;}
 footer p{ margin: 0 0 20px;}
 footer .footer-tel{ font-size: 15px;}
 
-/*空白置底*/
-html, body { height: 100%;}
-.wrapper { min-height: 100%;   height: auto !important;   height: 100%;   margin: 0 auto -150px;}
-.push { height: 150px}
-/*btn*/
-.btn{display:inline-block; padding:8px 15px;background:#FF9000;color:#fff;border-radius:4px}
-.btn-shadow{ box-shadow:2px 2px 2px #999}
-.btn:hover ,.btn:active{ background:#DC7C00}
-
-.header-img{ background-image:url('<%= asset_path("desktop_image/bg.jpg") %>');background-size: cover;background-position: center center;background-repeat: no-repeat;padding:120px 0 40px;position:relative;}
+.banner{
+    background:image-url('new_desktop/slide.jpg') center no-repeat;
+    height: 100%;
+    width: 100%;
+    color: #fff;
+    display: table;
+    position: relative;
+    .content{
+        display: table-cell;
+        vertical-align: middle;
+    }
+    .top{
+        text-shadow: 3px 3px 30px rgba(0,0,0,0.4);
+    }    
+    h1{
+        font-size: 140px;
+        font-family: "Impact";
+        margin-bottom: 0px;
+        
+    }
+    h2{
+        font-weight: lighter;
+        font-size: 47px;
+        font-family: "Microsoft JhengHei","STHeiti Light";
+    }
+    h3{
+        font-weight: lighter;
+        font-size: 25px;
+        letter-spacing: 3px;
+    }
+}
+#arrow-down{
+    position: absolute;
+    bottom: 20px;
+    margin-left: -15px;
+    left: 50%;
+    z-index: 888;
+}
+.btn{
+    background: none;
+    color: #43c3aa;
+    padding: 20px 40px;
+    border: 2px solid #43c3aa;
+    font-size: 30px;
+    border-radius:10px ;
+    transition: all .5s linear; 
+    
+}
+.btn-bold{
+  border-width: 5px;
+  font-weight: bold;
+}
+.btn-shadow{
+  text-shadow: 3px 3px 30px rgba(0,0,0,0.4);
+  box-shadow: 3px 3px 30px rgba(0,0,0,0.4);
+}
+.btn-shadow:hover{
+    color: #fff;
+    border-color:#fff ;
+    text-shadow:none;
+    box-shadow: 0px 0px 50px rgba(233,212,74,0.4);
+    transition: all .5s linear; 
+}
+.header-img{ background-image:image-url("desktop_image/bg.jpg");background-size: cover;background-position: center center;background-repeat: no-repeat;padding:120px 0 40px;position:relative;}
 .wenzi{margin:60px 0;color:#fff;}
 .wenzi h4{ font-weight:normal}
 .video-banner{ border-radius:10px;font-size:16px; padding:25px 15px;color:#fff;overflow:hidden;position:relative;background-size: cover;background-position: center center;background-repeat: no-repeat;height:150px;}
