@@ -2,7 +2,7 @@ class Cart < ActiveRecord::Base
   has_many   :cart_items, dependent: :destroy
   belongs_to :user
 
-  validates_presence_of :user_id
+  validates :user_id, presence: true, uniqueness: true
 
   def empty?
     cart_items.blank?
