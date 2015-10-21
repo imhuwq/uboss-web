@@ -2,7 +2,7 @@
   提交订单
 <% end %>
 
-<%= simple_form_for @order_form, url: orders_path, method: 'POST',wrapper: :default do |f| %>
+<%= simple_form_for @order_form, url: orders_path, method: 'POST', wrapper: :default do |f| %>
 	<br />
   <div id="address">
     <div class='address-box <%= displayable_class(@order_form.user_address.username.present?) %>'>
@@ -29,7 +29,7 @@
     <%= f.hidden_field :product_inventory_id %>
     <% @products_group_by_seller.each do |seller, cart_items| %>
       <div class="order-list valid-order-list">
-        <div class="seller-box"><div class="text-cut">商家：<%= seller.identify %></div></div>
+        <div class="seller-box"><div class="text-cut">商家：<%= seller.store_identify %></div></div>
 
         <% cart_items.each do |cart_item| %>
           <div class="order-box">
@@ -56,7 +56,7 @@
               <%= image_tag sharing_user.avatar_url(:thumb) %>
             </div>
             <div class="content">
-              <span class="pull-right red-color order-privilege-amount"><%= cart_items.sum(&:privilege_amount) %></span><span class="main-color"><%= sharing_user.identify %></span> 帮你优惠
+              <span class="pull-right red-color order-privilege-amount"><%= cart_items.sum(&:total_privilege_amount) %></span><span class="main-color"><%= sharing_user.identify %></span> 帮你优惠
             </div>
           </div><!-- friend-info -->
         <% end %>

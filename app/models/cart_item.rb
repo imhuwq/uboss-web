@@ -7,7 +7,7 @@ class CartItem < ActiveRecord::Base
   validates_presence_of   :cart_id, :product_inventory_id, :seller_id
   validates_uniqueness_of :product_inventory_id, scope: :cart_id
 
-  delegate :product_name, :price, to: :product_inventory
+  delegate :product_name, :price, :sku_attributes, :sku_attributes_str, to: :product_inventory
   delegate :privilege_card, to: :sharing_node, allow_nil: true
 
   before_save :check_count
@@ -39,8 +39,16 @@ class CartItem < ActiveRecord::Base
     product_inventory.product
   end
 
+  def product_amount
+    product_inventory.count
+  end
+
   def deal_price
     @deal_price ||= price - privilege_amount
+  end
+
+  def total_privilege_amount
+    privilege_amount*count
   end
 
   def privilege_amount

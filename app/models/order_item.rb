@@ -11,6 +11,7 @@ class OrderItem < ActiveRecord::Base
   validates :user, :product_inventory, :amount, :present_price, :pay_amount, presence: true
 
   delegate :name, :traffic_expense, to: :product, prefix: true
+  delegate :product_name, :price, :sku_attributes, :sku_attributes_str, to: :product_inventory
   delegate :privilege_card, to: :sharing_node, allow_nil: true
 
   before_save  :set_privilege_amount, :set_present_price, :set_pay_amount, if: -> { order.paid_at.blank? }

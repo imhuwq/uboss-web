@@ -62,20 +62,6 @@ class OrderForm
     @sharing_node
   end
 
-  def real_price
-    if sharing_node.present?
-      product_inventory.price.to_f.to_d - sharing_node.privilege_amount(self.product_inventory).to_f.to_d
-    else
-      product_inventory.price.to_f.to_d
-    end
-  end
-
-  def privilege_amount
-    if product.present?
-      sharing_node && sharing_node.privilege_amount(self.product_inventory).to_f.to_d
-    end
-  end
-
   def save
     # - verify Mobile captcha
     # - check product valid?
@@ -183,10 +169,14 @@ class OrderForm
 
   def check_product_account
     if product_id.present?
-      errors.add(:amount, :invalid) if amount.to_i > product_inventory.reload.count
+      if amount.to_i > product_inventory.reload.count
+        errors.add(:base, "#{product_inventory.product_name}[#{product_inventory.sku_attributes_str}] 库存不足，最多购买 #{product_inventory.count} 件")
+      end
     elsif seller_ids
       cart_items.each do |cart_item|
-        errors.add(:amount, :invalid) if cart_item.count > cart_item.product_inventory.reload.count
+        if cart_item.count > cart_item.product_inventory.reload.count
+          errors[:base] << "#{cart_item.product_name}[#{cart_item.sku_attributes_str}] 库存不足，最多购买 #{cart_item.product_amount} 件"
+        end
       end
     end
   end

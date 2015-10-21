@@ -33,7 +33,7 @@
           <%= order_item.product_name %>
         </div><!-- name -->
         <div class="info">
-          <% order_item.product_inventory.sku_attributes.each do |key, value| %>
+          <% order_item.sku_attributes.each do |key, value| %>
             <span><%= "#{key}：#{value}" %></span>
           <% end %>
         </div>
