@@ -4,10 +4,9 @@
 #= require jquery_nested_form
 #= require jquery_ujs
 #= require bootstrap-sprockets
-#= require redactor-rails
+#= require redactor-rails/redactor
 #= require redactor-rails/plugins/imagemanager
 #= require redactor-rails/langs/zh_cn
-#= require redactor-rails/config
 #= require chosen.jquery.min
 #= require select2
 #= require select2_locale_zh-CN
