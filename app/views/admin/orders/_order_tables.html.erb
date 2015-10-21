@@ -43,7 +43,7 @@
                 <% end %>
               <div>
             </td>
-            <td class='none-border-left'><%= item.product_inventory.product.present_price %>(<%= item.amount %>件)</td>
+            <td class='none-border-left'><%= item.present_price %>(<%= item.amount %>件)</td>
             <% if index == 0 %>
               <td rowspan=<%= size %>>
                 <%= link_to order.buyer_identify, nil, class: 'main-link-color' %>
