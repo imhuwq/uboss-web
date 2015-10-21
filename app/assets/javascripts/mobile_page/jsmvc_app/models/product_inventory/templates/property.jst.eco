@@ -1,0 +1,6 @@
+
+<p class="buy_now_option_title"><%= @property_name %></p>
+<ul>
+  <%- @property_views %>
+</ul>
+<hr />

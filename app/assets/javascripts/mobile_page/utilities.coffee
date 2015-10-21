@@ -39,4 +39,3 @@ $ ->
             disabledLoadMore(element)
       else
         disabledLoadMore(element)
-

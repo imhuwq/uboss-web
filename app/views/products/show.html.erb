@@ -14,6 +14,8 @@
   <% end %>
 <% end %>
 
+<%= javascript_include_tag "mobile_page/jsmvc_app/application" %>
+
 <div class="fixed-container">
   <div class="product-box product-page">
     <div class="cover">
@@ -180,7 +182,6 @@
 
 </div>
 
-
 <div class="req-snode-modal pop-bg hidden">
   <div class="pop-content">
     <div class="alert">
@@ -223,51 +224,34 @@
           </dd>
         </dl>
       </div>
-      <%# 循环  %>
-      <div class="options">
-        <div class="buy_now_option">
-          <%# <p class="buy_now_option_title"></p>%>
-          <ul>
-            <% (@product.product_inventories || {}).each do |obj| %>
-              <% if obj.count.to_i > 0 %>
-                <li class="item sku" id="<%= obj.id %>">
-                  <p>
-                    <% obj.sku_attributes.each do |k,v| %>
-                    	<%= obj.sku_attributes.map{|k,v| "#{k}:#{v}"}.join("-") %>
-                    <% end %>
-                  </p>
-                </li>
-              <% else %>
-                <li class="item disabled" id="<%= obj.id %>">
-                  <p>
-                    <%= obj.sku_attributes.map{|k,v| "#{k}:#{v}"}.join("-") %>
-                  </p>
-                </li>
-              <% end %>
-            <% end %>
-            <% (@product_inventories || {}).each do |obj| %>
-              <span id="price_<%= obj.id %>" class="real_price hidden"><%= obj.price %></span>
-            <% end %>
-          </ul>
-        </div>
-      </div>
-			<%# end 循环  %>
-			<div class="count-box gap">
-				<p>数量</p>
-				<br/>
-				<div class="content">
-		      <a class="count_min count_icon"><span>-</span></a>
-		      <input type="tel" class="count_num" value="1" />
-		      <a class="count_plus count_icon"><span>+</span></a>
-	      </div>
-	    </div>
-    <div class="done">
-      <a class="btn" id="confirm-inventory">确定</a>
     </div>
-
-    <div style="clear: both;"></div>
+    <div class="options" id="product_inventory_options">
+      <div class="buy_now_option">
+        <p class="buy_now_option_title"></p>
+        <ul>
+          <% (@product.product_inventories || {}).each do |obj| %>
+            <% if obj.count > 0 %>
+            <li class="item sku" id="<%= obj.id %>">
+              <p>
+                <% obj.sku_attributes.each do |k,v| %>
+                <%= obj.sku_attributes.map{|k,v| "#{k}:#{v}"}.join("-") %>
+                <% end %>
+              </p>
+            </li>
+            <% else %>
+            <li class="item disabled" id="<%= obj.id %>">
+              <p>
+                <%= obj.sku_attributes.map{|k,v| "#{k}:#{v}"}.join("-") %>
+              </p>
+            </li>
+            <% end %>
+          <% end %>
+        </ul>
+      </div>
+    </div>
   </div>
 <% end %>
+<%= hidden_field_tag "submit_way" %>
 
 <script type="text/javascript">
   function hideBuyNow() {

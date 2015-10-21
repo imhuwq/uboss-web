@@ -51,3 +51,4 @@ config/rootca.pem
 nohup.out
 config/nginx.conf
 .ackrc
+.idea/
