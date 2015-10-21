@@ -250,15 +250,15 @@ class ProductInventory.View.BuyNowOption extends Backbone.View
 
   # 限制只能输入数字
   limitToNumKeypress: (event) ->
-      eventObj = event || e
-      keyCode = eventObj.keyCode || eventObj.which
-      if (keyCode >= 48 && keyCode <= 57)
-        return true
-      else
-        return false
-    .focus () ->
+    eventObj = event || e
+    keyCode = eventObj.keyCode || eventObj.which
+    if (keyCode >= 48 && keyCode <= 57)
+      return true
+    else
+      return false
+    this.focus () ->
       this.style.imeMode = 'disabled' # 禁用输入法
-    .bind "paste", () ->              # 禁用粘贴
+    this.bind "paste", () ->              # 禁用粘贴
       return false
 
   limitToNumChange: ->
