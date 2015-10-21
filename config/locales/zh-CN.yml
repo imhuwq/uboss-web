@@ -158,7 +158,10 @@ zh-CN:
       selling_income: 销售收入
       divide_income: 分成收入
       bank_card: 银行卡
+      product_inventory: 库存/规格
     attributes:
+      product_inventories:
+        product_id: SKU产品
       carriage_template:
         name: 模板名称
       different_area:
