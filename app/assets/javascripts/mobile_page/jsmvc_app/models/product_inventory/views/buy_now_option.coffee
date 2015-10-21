@@ -24,6 +24,11 @@ class ProductInventory.View.BuyNowOption extends Backbone.View
   events:
     'click .sku': 'selectSkuItem'
     'click #confirm-inventory' : 'confirmInventory'
+    'click .count_min' : 'minNum'
+    'click .count_plus' : "plusNum"
+    'change .count_num' : 'limitToNumChange'
+    'keyup  .count_num' : 'limitToNumKeyup'
+    'keypress .count_num' : 'limitToNumKeypress'
 
 
   # getSKU: (product_id)->
@@ -222,3 +227,44 @@ class ProductInventory.View.BuyNowOption extends Backbone.View
       if flip[this[i]] != undefined
         res.push(this[i])
     return res;
+
+  minNum: ->
+    num=parseInt($('.count-box .count_num').val())
+    if num < 2
+      alert('数量必须大于1')
+      $('.count-box .count_num').val(1)
+      $('#count_amount').val(1)
+    else
+      $('.count-box .count_num').val(num-1)
+      $('#count_amount').val(num-1)
+
+
+  plusNum: ->
+    num=parseInt($('.count-box .count_num').val())
+    $('.count-box .count_num').val(num+1)
+    $('#count_amount').val(num+1)
+
+  limitToNumKeyup: ->
+      $this = $(this)
+      this.value = this.value.replace(/[^\d]/g, '')
+
+  # 限制只能输入数字
+  limitToNumKeypress: (event) ->
+      eventObj = event || e
+      keyCode = eventObj.keyCode || eventObj.which
+      if (keyCode >= 48 && keyCode <= 57)
+        return true
+      else
+        return false
+    .focus () ->
+      this.style.imeMode = 'disabled' # 禁用输入法
+    .bind "paste", () ->              # 禁用粘贴
+      return false
+
+  limitToNumChange: ->
+    $this = $(this)
+    this.value = this.value.replace(/[^\d]/g, '')
+    $('#count_amount').val(this.value)
+    if this.value == '' || this.value == "0"
+      this.value = 1
+      $('#count_amount').val(1)
