@@ -38,8 +38,8 @@
                 <%= link_to [:admin, item.product_inventory.product], class: 'main-link-color' do %>
                   <%= item.product_inventory.product.name %>
                 <% end %>
-                <% item.product_inventory.sku_attributes.each do |k, v| %>
-                  <span class='color'><%= k %> : <%= v %></span>
+                <% item.product_inventory.properties.each do |property| %>
+                  <span class='color'><%= property.key %> : <%= property.value %></span>
                 <% end %>
               <div>
             </td>

@@ -24,8 +24,8 @@
                 <% end %>
               </td>
               <td>
-                <% item.product_inventory.sku_attributes.each do |k, v| %>
-                  <p class='attribute'><%= k %> : <%= v %></p>
+                <% item.product_inventory.properties.each do |property| %>
+                  <p class='attribute'><%= property.key %> : <%= property.value %></p>
                 <% end %>
               </td>
               <td><%= order.state_i18n %></td>

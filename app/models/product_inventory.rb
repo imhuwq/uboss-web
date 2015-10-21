@@ -65,6 +65,13 @@ class ProductInventory < ActiveRecord::Base
     self.privilege_amount = last_amount > 0 ? last_amount : 0
   end
 
+  SkuProperty = Struct.new(:key, :value)
+  def properties
+    @properties ||= sku_attributes.collect do |key, value|
+      SkuProperty.new(key, value)
+    end
+  end
+
   private
 
   def create_product_properties
