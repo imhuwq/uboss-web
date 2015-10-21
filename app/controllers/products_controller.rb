@@ -12,8 +12,8 @@ class ProductsController < ApplicationController
     @product = Product.published.find_by_id(params[:id])
     return render_product_invalid if @product.blank?
 
-    @product_inventories = @product.seling_inventories.where("count > ?",0)
-    return render_product_invalid if @product_inventories.sum(:count) > 0
+    @product_inventories = @product.seling_inventories.where("count > ?", 0)
+    return render_product_invalid unless @product_inventories.sum(:count) > 0
 
     @seller = @product.user
     if qr_sharing?
