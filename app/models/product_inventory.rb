@@ -19,10 +19,8 @@ class ProductInventory < ActiveRecord::Base
     status == 'published'
   end
 
-  # FIXME product_inventory.name 没有用处
-  # XXX: 商品名展示 product_inventory.name 还是 product.name ?
   def product_name
-    name.present? ? name : product.name
+    product.name
   end
 
   def seller
@@ -31,6 +29,12 @@ class ProductInventory < ActiveRecord::Base
 
   def seller_id
     seller.id
+  end
+
+  def sku_attributes_str
+    sku_attributes.inject([]) do |attributes, property|
+      attributes << property.try(:join, ':')
+    end.try(:join, ';')
   end
 
   def convert_into_cart_item(buy_count, sharing_code)
@@ -59,6 +63,13 @@ class ProductInventory < ActiveRecord::Base
     end
     last_amount = share_amount_total - assigned_total
     self.privilege_amount = last_amount > 0 ? last_amount : 0
+  end
+
+  SkuProperty = Struct.new(:key, :value)
+  def properties
+    @properties ||= sku_attributes.collect do |key, value|
+      SkuProperty.new(key, value)
+    end
   end
 
   private

@@ -32,8 +32,8 @@
                 </div>
                 <p class="name"><%= cart_item.product_name %></p>
                 <p class="info">
-                  <% cart_item.product_inventory.sku_attributes.each do |property, value| %>
-                    <span><%= "#{property} : #{value}" %></span>
+                  <% cart_item.product_inventory.properties.each do |property| %>
+                    <span><%= "#{property.key} : #{property.value}" %></span>
                   <% end %>
                 </p>
                 <button class="btn btn-delete <%= "c_delete_#{cart_item.id}" %>"></button>

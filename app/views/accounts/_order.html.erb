@@ -33,8 +33,9 @@
           <%= order_item.product_name %>
         </div><!-- name -->
         <div class="info">
-        	<span>规格</span>
-        	<span>规格</span>
+          <% order_item.product_inventory.properties.each do |property| %>
+            <span><%= "#{property.key}：#{property.value}" %></span>
+          <% end %>
         </div>
       </div><!-- content -->
     </div><!-- order-box -->

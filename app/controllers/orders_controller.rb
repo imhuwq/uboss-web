@@ -31,26 +31,23 @@ class OrdersController < ApplicationController
 
     set_user_address
 
-    if params[:product_id].present?  # 直接购买
-      @product = @order_form.product
-      @product_inventory = @order_form.product_inventory
-      @order_form.sharing_code = get_product_or_store_sharing_code(@product)
-      @products_group_by_seller = @product_inventory.convert_into_cart_item(@order_form.amount, @order_form.sharing_code)
+    if check_buy_now?  # 直接购买
+      product = @order_form.product
+      @order_form.sharing_code = get_product_or_store_sharing_code(product)
+      @products_group_by_seller =  @order_form.product_inventory.convert_into_cart_item(@order_form.amount, @order_form.sharing_code)
 
-      if @product.is_official_agent? && current_user && current_user.is_agent?
+      if product.is_official_agent? && current_user && current_user.is_agent?
         flash[:error] = "您已经是UBOSS创客，请勿重复购买"
         redirect_to root_path
       else
         render layout: 'mobile'
       end
-    elsif params[:item_ids]
-      @cart = current_cart
-      @order_form.cart_id = current_cart.id,
+    elsif current_user && params[:item_ids]
       item_ids = params[:item_ids].split(',')
-      @cart_items = @cart.cart_items.find(item_ids)
-
+      cart_items = current_cart.cart_items.find(item_ids)
       session[:cart_item_ids] = item_ids
-      @products_group_by_seller = CartItem.group_by_seller(@cart_items)
+      @order_form.cart_id = current_cart.id
+      @products_group_by_seller = CartItem.group_by_seller(cart_items)
 
       render layout: 'mobile'
     else
@@ -76,10 +73,6 @@ class OrdersController < ApplicationController
       )
     )
 
-    if @order_form.product_id.present?
-      @order_form.sharing_code = get_product_or_store_sharing_code(@order_form.product)
-    end
-
     if @order_form.save
       sign_in(@order_form.buyer) if current_user.blank?
       clean_current_cart unless params[:order_form][:product_id].present?
@@ -89,12 +82,13 @@ class OrdersController < ApplicationController
       @order_form.captcha = nil
       flash[:error] = @order_form.errors.full_messages.join('<br/>')
 
-      redirect_to new_order_path(
-        product_id: @order_form.product_id,
-        product_inventory_id: @order_form.product_inventory_id,
-        amount: @order_form.amount,
-        item_ids: session[:cart_item_ids].try(:join, ',')
-      )
+      if check_buy_now?
+        redirect_to new_order_path(product_id: @order_form.product_id, product_inventory_id: @order_form.product_inventory_id, amount: @order_form.amount)
+      elsif current_user && session[:cart_item_ids].present?
+        redirect_to new_order_path(item_ids: session[:cart_item_ids].join(','))
+      else
+        redirect_to root_path
+      end
     end
   end
 
@@ -142,5 +136,11 @@ class OrdersController < ApplicationController
     if current_user && @default_address = current_user.default_address
       @order_form.user_address_id = @default_address.id
     end
+  end
+
+  def check_buy_now?
+    @order_form.product_id.present? &&
+      @order_form.product_inventory_id.present? &&
+      @order_form.amount.present?
   end
 end

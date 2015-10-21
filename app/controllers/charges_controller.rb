@@ -27,24 +27,28 @@ class ChargesController < ApplicationController
 
   def payments
     order_ids = params[:order_ids].split(',')
-    @orders = Order.where(id: order_ids)
-    @product = @orders[0].order_items.first.item_product
-
-    if available_pay?(@orders)
-      @order_charge = ChargeService.find_or_create_charge(@orders, remote_ip: request.ip)
-      @pay_p = {
-        appId: WxPay.appid,
-        timeStamp: Time.now.to_i.to_s,
-        nonceStr: SecureRandom.hex,
-        package: "prepay_id=#{@order_charge.prepay_id}",
-        signType: "MD5"
-      }
-      p @pay_p
-      @pay_sign = WxPay::Sign.generate(@pay_p)
-      render layout: 'mobile'
+    @orders = current_user.orders.where(id: order_ids)
+    if @orders.blank?
+      redirect_to root_path
     else
-      flash[:error] = '请在微信浏览器进行支付'
-      redirect_to account_path
+      @product = @orders[0].order_items.first.item_product
+
+      if available_pay?(@orders)
+        @order_charge = ChargeService.find_or_create_charge(@orders, remote_ip: request.ip)
+        @pay_p = {
+          appId: WxPay.appid,
+          timeStamp: Time.now.to_i.to_s,
+          nonceStr: SecureRandom.hex,
+          package: "prepay_id=#{@order_charge.prepay_id}",
+          signType: "MD5"
+        }
+        p @pay_p
+        @pay_sign = WxPay::Sign.generate(@pay_p)
+        render layout: 'mobile'
+      else
+        flash[:error] = '请在微信浏览器进行支付'
+        redirect_to account_path
+      end
     end
   end
 
