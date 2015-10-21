@@ -67,3 +67,16 @@ namespace :logs do
     end
   end
 end
+
+namespace :rakes do
+  desc "remote rake task"
+  task :invoke do
+    on roles(:db) do
+      within current_path do
+        with rails_env: fetch(:rails_env) do
+          execute :rake, ENV['TASK']
+        end
+      end
+    end
+  end
+end
