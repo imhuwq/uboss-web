@@ -5,7 +5,7 @@ class ProductInventory < ActiveRecord::Base
   has_many   :cart_items
   has_many   :order_items
 
-  validates_presence_of :product_id
+  validates_presence_of :product
 
   scope :saling, -> { where(saling: true) }
   scope :not_saling, -> { where(saling: false) }
