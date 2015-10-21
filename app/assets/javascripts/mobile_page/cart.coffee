@@ -67,8 +67,6 @@ $ ->
     else
       $num.val(num-1)
       updateItemNum($num)
-      setTotalPrice()
-      setSingleTotalPrice()
 
   $('.count > .plus').on 'click', (e) ->
     e.preventDefault()
@@ -78,8 +76,6 @@ $ ->
     updateItemNum($num)
     if parseInt($num.val()) != 1
       $this.parent().find('.min').removeAttr("disabled")
-    setTotalPrice()
-    setSingleTotalPrice()
 
   updateItemNum = (e) ->
     num = e.val()
@@ -95,6 +91,8 @@ $ ->
             alert(res['alert'])
         else
           alert(res['error'])
+        setSingleTotalPrice()
+        setTotalPrice($this)
 
   # 监听input值变化
   $("input[name='num']").on 'change', (e) ->
@@ -104,8 +102,6 @@ $ ->
     if this.value == '' || this.value == "0"
       this.value = 1
     updateItemNum($this)
-    setSingleTotalPrice()
-    setTotalPrice($this)
 
   $('button.btn-delete').on 'click', () ->
     id = $(this).closest('.order-box').attr('data-id')
@@ -176,5 +172,3 @@ $ ->
       alert('请勾选您要购买商品')
     else
       location.href = "/orders/new?item_ids="+check_items_ids.join(',')
-
-
