@@ -6,7 +6,6 @@
       <tr>
         <% for property in @propertys: %>
           <th>
-            <% ppId = new Date().getTime() %>
             <input type='hidden' name="product_propertys_names[]" value=<%= property %>>
             <%= property %>
           </th>
