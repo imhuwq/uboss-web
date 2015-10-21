@@ -35,9 +35,12 @@ $ ->
     bindBuyNowBtn()
 
   showInventory = ->
-    $('#inventory').removeClass('hidden')
-    $('.fixed-container').css('-webkit-filter', 'blur(3px)')
-    $('html').addClass('lock')
+    if $('#inventory').length > 0
+      $('#inventory').removeClass('hidden')
+      $('.fixed-container').css('-webkit-filter', 'blur(3px)')
+      $('html').addClass('lock')
+      productInventoryPropertyBuyNowOption = new ProductInventory.View.BuyNowOption
+      productInventoryPropertyBuyNowOption.render('','',$('#submit_way').val(),$('#product_id').val())
 
   $('.count-box .count_min').on 'click',->
     num=parseInt($('.count-box .count_num').val())

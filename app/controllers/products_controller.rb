@@ -34,6 +34,25 @@ class ProductsController < ApplicationController
     end
   end
 
+  def get_sku
+    # binding.pry
+    product = Product.find(params[:product_id])
+    hash = {}
+    product.product_inventories.where("count > 0").each do |obj|
+      obj.sku_attributes.each do |k,v|
+        if !hash[k].present?
+          hash[k] = {}
+        end
+        if !hash[k][v].present?
+          hash[k][v] = []
+        end
+        hash[k][v] << obj.id
+      end
+    end
+    render json: hash
+    # render json: {'颜色':{'红': [1,2],'白': [3,4],'黄': [3]},'尺寸':{'L':[1,3],'XL':[2,4]}}
+  end
+
   def switch_favour
     if current_user.favour_products.exists?(product_id: @product.id)
       current_user.unfavour_product(@product)

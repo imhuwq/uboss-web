@@ -62,36 +62,12 @@ ActiveRecord::Schema.define(version: 20151019094545) do
 
   create_table "cart_items", force: :cascade do |t|
     t.integer  "cart_id"
-<<<<<<< HEAD
     t.integer  "seller_id"
     t.datetime "created_at",                       null: false
     t.datetime "updated_at",                       null: false
     t.integer  "count",                default: 0
     t.integer  "sharing_node_id"
     t.integer  "product_inventory_id"
-  end
-
-  create_table "carts", force: :cascade do |t|
-    t.integer  "user_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
-  add_index "carts", ["user_id"], name: "index_carts_on_user_id", using: :btree
-
-  create_table "categories", force: :cascade do |t|
-    t.string   "name",       null: false
-    t.integer  "user_id",    null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-=======
-    t.integer  "product_id"
-    t.integer  "seller_id"
-    t.datetime "created_at",                  null: false
-    t.datetime "updated_at",                  null: false
-    t.integer  "count",           default: 0
-    t.integer  "sharing_node_id"
->>>>>>> feature/SKU
   end
 
   create_table "carts", force: :cascade do |t|
@@ -248,15 +224,10 @@ ActiveRecord::Schema.define(version: 20151019094545) do
     t.datetime "signed_at"
     t.datetime "shiped_at"
     t.datetime "completed_at"
-    t.string   "to_seller"
-    t.decimal  "ship_price",      default: 0.0
     t.string   "ship_number"
     t.integer  "express_id"
-<<<<<<< HEAD
-=======
     t.string   "to_seller"
     t.decimal  "ship_price",      default: 0.0
->>>>>>> feature/SKU
     t.integer  "order_charge_id"
   end
 
@@ -282,14 +253,6 @@ ActiveRecord::Schema.define(version: 20151019094545) do
     t.boolean  "actived",              default: false
     t.integer  "seller_id"
     t.integer  "product_inventory_id"
-  end
-
-  create_table "product_attribute_names", force: :cascade do |t|
-    t.string   "name"
-    t.boolean  "is_key_attr",      default: true
-    t.integer  "product_class_id"
-    t.datetime "created_at",                      null: false
-    t.datetime "updated_at",                      null: false
   end
 
   create_table "product_classes", force: :cascade do |t|
@@ -580,18 +543,9 @@ ActiveRecord::Schema.define(version: 20151019094545) do
 
   add_foreign_key "bank_cards", "users"
   add_foreign_key "cart_items", "carts"
-<<<<<<< HEAD
   add_foreign_key "cart_items", "product_inventories"
   add_foreign_key "cart_items", "users", column: "seller_id"
   add_foreign_key "carts", "users"
-  add_foreign_key "categories", "users"
-  add_foreign_key "categories_products", "categories"
-  add_foreign_key "categories_products", "products"
-=======
-  add_foreign_key "cart_items", "products"
-  add_foreign_key "cart_items", "users", column: "seller_id"
-  add_foreign_key "carts", "users"
->>>>>>> feature/SKU
   add_foreign_key "order_items", "orders"
   add_foreign_key "order_items", "products"
   add_foreign_key "order_items", "sharing_nodes"
