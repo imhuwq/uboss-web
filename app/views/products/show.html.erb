@@ -226,28 +226,7 @@
       </div>
 
       <div class="options" id="product_inventory_options">
-        <div class="buy_now_option">
-          <p class="buy_now_option_title"></p>
-          <ul>
-            <% (@product.product_inventories || {}).each do |obj| %>
-              <% if obj.count > 0 %>
-              <li class="item sku" id="<%= obj.id %>">
-                <p>
-                  <% obj.sku_attributes.each do |k,v| %>
-                  <%= obj.sku_attributes.map{|k,v| "#{k}:#{v}"}.join("-") %>
-                  <% end %>
-                </p>
-              </li>
-              <% else %>
-              <li class="item disabled" id="<%= obj.id %>">
-                <p>
-                  <%= obj.sku_attributes.map{|k,v| "#{k}:#{v}"}.join("-") %>
-                </p>
-              </li>
-              <% end %>
-            <% end %>
-          </ul>
-        </div>
+        
       </div>
     </div>
   </div>

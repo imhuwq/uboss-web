@@ -96,7 +96,6 @@ class ProductInventory.View.BuyNowOption extends Backbone.View
 
     that = this
 
-    console.log '#submit_way', submit_way
     @submit_way = submit_way
     @product_id = product_id
 
