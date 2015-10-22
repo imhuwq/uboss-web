@@ -29,9 +29,9 @@ class HomeController < ApplicationController
   end
 
   def qrcode
-    url = QrcodeService.request_qrcode_url(params.fetch(:text), params[:logo])
-    if url.present?
-      redirect_to url
+    qrcode = QrcodeService.new(params.fetch(:text), params[:logo])
+    if qrcode.url.present?
+      redirect_to qrcode.url
     else
       head(422)
     end
