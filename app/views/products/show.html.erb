@@ -217,16 +217,13 @@
           <dd>
             <p>¥
               <span id="price_range"> <%= product_price(@product).join(' - ') %> </span>
-              <% @product_inventories.each do |inventory| %>
-                <span id="price_<%= inventory.id %>" class="real_price hidden"><%= inventory.price %></span>
-              <% end %>
             </p>
           </dd>
         </dl>
       </div>
 
       <div class="options" id="product_inventory_options">
-        
+
       </div>
     </div>
   </div>

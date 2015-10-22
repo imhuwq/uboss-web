@@ -1,10 +1,11 @@
+<input type="hidden" id="sku_price" value="">
 <div class="buy_now_option"></div>
 <div class="count-box gap">
   <p>数量</p>
   <br/>
   <div class="content">
     <a class="count_min count_icon"><span>-</span></a>
-    <input type="tel" class="count_num" value="1" />
+    <input type="tel" class="count_num" value="<%= @count %>" />
     <a class="count_plus count_icon"><span>+</span></a>
   </div>
 </div>

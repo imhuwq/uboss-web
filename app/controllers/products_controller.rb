@@ -12,9 +12,6 @@ class ProductsController < ApplicationController
     @product = Product.published.find_by_id(params[:id])
     return render_product_invalid if @product.blank?
 
-    @product_inventories = @product.seling_inventories.where("count > ?", 0)
-    return render_product_invalid unless @product_inventories.sum(:count) > 0
-
     @seller = @product.user
     if qr_sharing?
       current_user && @privilege_card = current_user.privilege_cards.find_by(seller_id: @product.user_id)
@@ -51,6 +48,22 @@ class ProductsController < ApplicationController
     end
     render json: hash
     # render json: {'颜色':{'红': [1,2],'白': [3,4],'黄': [3]},'尺寸':{'L':[1,3],'XL':[2,4]}}
+  end
+
+  def get_sku_detail
+    # binding.pry
+    product = Product.find(params[:product_id])
+    hash = {}
+    product.product_inventories.where("count > 0").each do |obj|
+      if !hash[obj.id].present?
+        hash[obj.id] = {}
+      end
+      hash[obj.id][:count] = obj.count
+      hash[obj.id][:sku_attributes] = obj.sku_attributes
+      hash[obj.id][:price] = obj.price
+    end
+    render json: hash
+    # render json: { '1': {count: 100, sku_attributes: {'颜色': '红', '尺寸': 'XL'},price: "1111"}, '2': {count: 50, sku_attributes: {'颜色': '白', '尺寸': 'L'},price: "1111"} }
   end
 
   def switch_favour

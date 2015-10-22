@@ -25,14 +25,14 @@ $ ->
     # $('#confirm-inventory').addClass('add-to-cart')
     $('#submit_way').val('cart')
     showInventory()
-    bindAddToCartBtn()
+    # bindAddToCartBtn()
 
   $('#show_inventory').on 'click', ->
     # $('#confirm-inventory').removeClass('add-to-cart')
     # $('#confirm-inventory').addClass('buy-now')
     $('#submit_way').val('buy')
     showInventory()
-    bindBuyNowBtn()
+    # bindBuyNowBtn()
 
   showInventory = ->
     if $('#inventory').length > 0
@@ -96,40 +96,7 @@ $ ->
     $('.real_price').addClass('hidden')
     $("#price_#{product_inventory_id}").removeClass('hidden')
 
-  # 立即购买
-  bindBuyNowBtn = ->
-    $('.buy-now').on 'click', ->
-      if checkInventoriesSelect()
-        $('.product_inventory').submit()
 
-  # 加入购物车
-  bindAddToCartBtn = ->
-    $('.add-to-cart').on 'click', (e)->
-      e.preventDefault()
-      if checkInventoriesSelect()
-        product_inventory_id = Number($('input[name="product_inventory_id"]').val())
-        product_id = Number($('input[name="product_id"]').val())
-        count = Number($('.count_num').val())
-        if count >= 1
-          $.ajax
-            url: '/cart_items'
-            type: 'POST'
-            data: {product_inventory_id: product_inventory_id, product_id: product_id, count: count}
-            success: (res) ->
-              if res['status'] == "ok"
-                alert('添加成功，购物车有'+res['cart_items_count']+'件商品')
-              else
-                location.reload()
-                alert(res['message'])
-            error: (data, status, e) ->
-              alert("ERROR")
-        else
-          alert "请填写正确的商品数量"
-
-  checkInventoriesSelect = ->
-    product_inventory_id = $('#product_inventory_id').val();
-    if product_inventory_id == ''
-      alert "请勾选您要的商品信息！"
-      return false
-    else
-      return true
+  $('#sku_price').on 'change', ->
+    console.log "changed"
+    $('#price_range').html($('#sku_price').val())

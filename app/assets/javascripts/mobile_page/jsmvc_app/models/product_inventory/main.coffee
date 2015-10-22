@@ -24,7 +24,9 @@ console.log "main is ready"
 )(window)
 ProductInventory.View = Backbone.View.extend()
 ProductInventory.Collections.Properties = Backbone.Collection.extend()
+
 Zepto ($) ->
   ((root) ->
     root.product_inventory_property_buy_now_option = new ProductInventory.View.BuyNowOption
+    root.product_inventory_property_price_range = new ProductInventory.View.PriceRange
   )(window)

@@ -16,7 +16,13 @@ class ProductInventory.View.BuyNowOption extends Backbone.View
 
   submit_way: ''
 
-  # skus: null
+  skus: null
+
+  single_price: 0
+
+  total_price: 0
+
+  count: 1
 
   # initialize: ->
   #   @getSKU()
@@ -31,14 +37,24 @@ class ProductInventory.View.BuyNowOption extends Backbone.View
     'keypress .count_num' : 'limitToNumKeypress'
 
 
-  # getSKU: (product_id)->
-  #   # 获取sku信息 ->>
-  #   @skus = new ProductInventory.Collections.SKUs
-  #   sku_list = { '1': {count: 100, sku_attributes: {'颜色': '红', '尺寸': 'XL'}}, '2': {count: 50, sku_attributes: {'颜色': '白', '尺寸': 'L'}} }
-  #   for key,value of sku_list
-  #     newSKU = new ProductInventory.Models.SKU(id: key, count: value['count'], sku_attributes: value['sku_attributes'])
-  #     @skus.add(newSKU)
-  #   # <<= 获取sku信息
+  getSKU: (product_id)->
+
+    that = this
+
+    # 获取sku信息 ->>
+    that.skus = new ProductInventory.Collections.SKUs
+    # sku_list = { '1': {count: 100, sku_attributes: {'颜色': '红', '尺寸': 'XL'},price: "1111"}, '2': {count: 50, sku_attributes: {'颜色': '白', '尺寸': 'L'},price: "1111"} }
+    $.ajax
+      url: '/products/get_sku_detail'
+      type: 'GET'
+      data: {product_id: that.product_id}
+      success: (res) ->
+        for key,value of res
+          newSKU = new ProductInventory.Models.SKU(id: key, count: value['count'], sku_attributes: value['sku_attributes'],price: value['price'])
+          that.skus.add(newSKU)
+      error: (data, status, e) ->
+        alert("ERROR")
+    # <<= 获取sku信息
 
 
   getProperties: (product_inventory_ids=[])-> # 写入（model生成模式）
@@ -55,11 +71,8 @@ class ProductInventory.View.BuyNowOption extends Backbone.View
       data: {product_id: that.product_id}
       success: (res) ->
         for key,value of res
-          console.log "key", key
-          console.log "value", value
           newPropertyValues = new ProductInventory.Collections.PropertyValues
           for k,v of value
-            console.log "#{k}:#{v}"
             if product_inventory_ids.length > 0 && v.intersect(product_inventory_ids).length == 0
               newValue = new ProductInventory.Models.PropertyValue(property_value: k, relate_sku: v, disabled: "true")
               newPropertyValues.add(newValue)
@@ -73,22 +86,6 @@ class ProductInventory.View.BuyNowOption extends Backbone.View
       error: (data, status, e) ->
         alert("ERROR")
 
-    # console.log "hash" , hash
-    # for key,value of hash
-    #   console.log "key", key
-    #   console.log "value", value
-    #   newPropertyValues = new ProductInventory.Collections.PropertyValues
-    #   for k,v of value
-    #     if product_inventory_ids.length > 0 && v.intersect(product_inventory_ids).length == 0
-    #       newValue = new ProductInventory.Models.PropertyValue(property_value: k, relate_sku: v, disabled: "true")
-    #       newPropertyValues.add(newValue)
-    #     else
-    #       newValue = new ProductInventory.Models.PropertyValue(property_value: k, relate_sku: v, disabled: "false")
-    #       newPropertyValues.add(newValue)
-    #
-    #   newProperty = new ProductInventory.Models.Property(name: key, property_values: newPropertyValues)
-    #   @properties.add(newProperty)
-
     # <<= 获取属性列表
 
 
@@ -99,10 +96,14 @@ class ProductInventory.View.BuyNowOption extends Backbone.View
     @submit_way = submit_way
     @product_id = product_id
 
+    if @skus == null
+      @getSKU()
+
     if @properties == null
       @getProperties()
 
-    $('#product_inventory_options').html @template()
+
+    $('#product_inventory_options').html @template(count: @count)
     @properties.each (propertyModel) ->
       propertyView = new ProductInventory.View.Property(model: propertyModel)
       $('#product_inventory_options .buy_now_option').append propertyView.render().el
@@ -130,24 +131,6 @@ class ProductInventory.View.BuyNowOption extends Backbone.View
 
         parentPorperty.find('ul').append new ProductInventory.View.PropertyValue(model: value).render().el
 
-    # if that.relate_sku_ids.length == 0
-    #   that.relate_sku_ids = product_inventory_ids
-    # else if that.relate_sku_ids.length > 1
-    #   that.relate_sku_ids = that.relate_sku_ids.intersect(product_inventory_ids)
-    # else if that.relate_sku_ids.length == 1
-    #   that.relate_sku_ids = that.pre_relate_sku_ids.intersect(product_inventory_ids)
-
-    # that.pre_relate_sku_ids[select_value_cid] = product_inventory_ids
-    # for key,value,i for that.pre_relate_sku_ids
-    #   if i==0
-    #     that.relate_sku_ids = value
-    #   else
-    #     that.relate_sku_ids = that.relate_sku_ids.intersect(value)
-    #
-    # console.log "@relate_sku_ids", that.relate_sku_ids
-    #
-    # @properties.each (propertyModel) ->
-    #   propertyModel.selected_sku_ids
     cids = []
     that.relate_sku_ids = []
     for tag in $('.item_click')
@@ -171,6 +154,13 @@ class ProductInventory.View.BuyNowOption extends Backbone.View
       relate_sku_ids = @properties.get(propertyCid).attributes.property_values.get(valueCid).attributes.relate_sku # 获取关联sku的ids
 
       @render(relate_sku_ids,valueCid,@submit_way)
+      if @relate_sku_ids.length == 1
+        @single_price = @skus.search(@relate_sku_ids[0],['id']).at(0).attributes.price
+        @calculateTotalPrice()
+
+
+
+
 
   confirmInventory: (e) ->
 
@@ -236,12 +226,17 @@ class ProductInventory.View.BuyNowOption extends Backbone.View
     else
       $('.count-box .count_num').val(num-1)
       $('#count_amount').val(num-1)
+      @count = num-1
+      @calculateTotalPrice()
 
 
   plusNum: ->
     num=parseInt($('.count-box .count_num').val())
     $('.count-box .count_num').val(num+1)
     $('#count_amount').val(num+1)
+    @count = num+1
+    @calculateTotalPrice()
+
 
   limitToNumKeyup: ->
       $this = $(this)
@@ -267,3 +262,8 @@ class ProductInventory.View.BuyNowOption extends Backbone.View
     if this.value == '' || this.value == "0"
       this.value = 1
       $('#count_amount').val(1)
+
+  calculateTotalPrice: ->
+    @total_price = @single_price * @count
+    if @relate_sku_ids.length == 1
+      product_inventory_property_price_range.render(@total_price)
