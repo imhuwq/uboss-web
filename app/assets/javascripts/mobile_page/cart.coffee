@@ -92,7 +92,7 @@ $ ->
         else
           alert(res['error'])
         setSingleTotalPrice()
-        setTotalPrice($this)
+        setTotalPrice()
 
   # 监听input值变化
   $("input[name='num']").on 'change', (e) ->
@@ -144,6 +144,7 @@ $ ->
       return false
 
   $("input[name='num']").onlyNum()
+
   setTotalPrice = (e) ->
     # 总价计算
     total_price=0
