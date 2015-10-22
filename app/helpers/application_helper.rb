@@ -6,7 +6,7 @@ module ApplicationHelper
       text: text,
       logo: 'http://ssobu-dev.b0.upaiyun.com/asset_img/avatar/c25754e6ca9b5f2c5f02fb49aa109d82.png-w120'
     }.merge(opts)
-    image_tag request_qrcode_path(opts), html_opts
+    image_tag request_qrcode_url(opts), html_opts
   end
 
   def horizon_form_for(record, options = {}, &block)
