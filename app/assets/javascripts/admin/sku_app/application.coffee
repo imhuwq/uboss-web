@@ -2,14 +2,14 @@
 #= require backbone-min
 #= require_self
 #= require_tree ./templates
-#= require sku_app/models/property_value
-#= require sku_app/collections/property_values
-#= require sku_app/models/property
-#= require sku_app/collections/properties
-#= require sku_app/models/stock
-#= require sku_app/collections/stocks
+#= require ./models/property_value
+#= require ./collections/property_values
+#= require ./models/property
+#= require ./collections/properties
+#= require ./models/stock
+#= require ./collections/stocks
 #= require_tree ./views
-#= require sku_app/boot
+#= require ./boot
 
 ((root) ->
 
@@ -18,7 +18,7 @@
     return false
 
   StockSku =
-    TemplatesPath: 'sku_app/templates'
+    TemplatesPath: 'admin/sku_app/templates'
     Data: {}
     Views: {}
     Models: {}

@@ -12,8 +12,15 @@
 #= require select2_locale_zh-CN
 #= require jquery-fileupload/basic
 #= require querystring
+#= require admin/carriage_template
+#= require admin/dashboard
+#= require admin/functions
+#= require admin/order
+#= require admin/product
+#= require admin/product_class_attribute
+#= require admin/redactor-config
+#= require admin/sms
 #= require shared/upyun
-#= require_tree ./admin
 #= require_self
 
 jQuery ($) ->
