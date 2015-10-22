@@ -69,8 +69,8 @@
 							<%= image_tag @user.avatar_url(:w120), alt:'头像', class:"share_portrait" %>
 
 								<dl class="share_content">
-									<dt>带你装X带你飞</dt>
-									<dd>我是第123位BOSS</dd>
+									<dt><%= @user.identify %></dt>
+									<dd>我是第<%= 100 + @user.id %>位BOSS</dd>
 								</dl>
 							</div>
 						</div>

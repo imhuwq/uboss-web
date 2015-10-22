@@ -28,6 +28,15 @@ class HomeController < ApplicationController
     render layout: 'mobile'
   end
 
+  def qrcode
+    qrcode = QrcodeService.new(params.fetch(:text), params[:logo])
+    if qrcode.url.present?
+      redirect_to qrcode.url
+    else
+      head(422)
+    end
+  end
+
   private
 
   def detect_layout

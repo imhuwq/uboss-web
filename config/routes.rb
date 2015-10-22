@@ -20,6 +20,7 @@ Rails.application.routes.draw do
   get 'sharing/seller_node', to: 'sharing#seller_node', as: :get_seller_sharing
   get 'sharing/:code', to: 'sharing#show', as: :sharing
   get 'maker_qrcode', to: 'home#maker_qrcode', as: :maker_qrcode
+  get 'qrcode', to: 'home#qrcode', as: :request_qrcode
 
   get 'service_centre_consumer', to: 'home#service_centre_consumer'
   get 'service_centre_agent', to: 'home#service_centre_agent'
