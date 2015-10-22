@@ -71,7 +71,7 @@ class StockSku.Views.Property extends Backbone.View
     if @pvSelect2.select2('data').length > 0
       console.log('newPropertyValue')
       @propertyValues.add(@pvSelect2.select2('data'))
-      StockSku.stock_view.trigger('skuchange')
+      StockSku.Collections.stock_collection.trigger('skuchange')
       @pvSelect2.select2('val', '')
 
   initSelect: ->
@@ -94,7 +94,7 @@ class StockSku.Views.Property extends Backbone.View
           if not fullMatch
             data.results.unshift({id: query.term, value: query.term})
         else
-          if @selectablePVs.length == 0
+          if @selectablePVs.length == 0 and query.term.length > 0
             data.results.push({id: query.term, value: query.term})
           else
             data.results = @selectablePVs

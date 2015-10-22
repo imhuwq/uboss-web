@@ -46,7 +46,13 @@ html, body {min-width:1220px;}
 .yellow-btn{ background: #F39C12;}
 .gray-btn{ background: #E5E5E5;color:#1A1A1A}
 .black-btn{background: #383736;}
-.btn-link{ background: none; }
+.btn-link{
+  color: inherit; background: none;
+  &:hover {
+    color: inherit;
+  }
+}
+.btn-border{ border: 1px solid #ccc; }
 
 /*pagination*/
 .pagination {list-style:none;margin:0;padding:0;display:inline-block;zoom:1;*display:inline}

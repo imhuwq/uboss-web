@@ -37,4 +37,4 @@ class StockSku.Views.Sku extends Backbone.View
 
   renderSku: ->
     console.log 'render stock'
-    StockSku.stock_view.trigger('skuchange')
+    StockSku.Collections.stock_collection.trigger('skuchange')
