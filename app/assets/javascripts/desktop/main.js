@@ -14,21 +14,24 @@ $(document).ready(function() {
 		 	scrollTop: bh
 		},500)
 	})
-	var comma_separator_number_step = $.animateNumber.numberStepFactories.separator(',')
-	$(window).scroll(function(){
-		if($('#number').hasClass('animated')){
-			setTimeout(function(){
-				$('#number span').animateNumber(
-				  {
-				    number: 8349375,
-				    numberStep: comma_separator_number_step
-				  }
-				);
-			},3500)
-			
-		}
-	})
-	
+	if(navigator.appName == "Microsoft Internet Explorer" && navigator.appVersion .split(";")[1].replace(/[ ]/g,"")=="MSIE8.0"){
+		$('#number span').text('8,349,375')
+  	}else{
+		var comma_separator_number_step = $.animateNumber.numberStepFactories.separator(',')
+		$(window).scroll(function(){
+			if($('#number').hasClass('animated')){
+				setTimeout(function(){
+					$('#number span').animateNumber(
+					  {
+					    number: 8349375,
+					    numberStep: comma_separator_number_step
+					  }
+					);
+				},3500)
+				
+			}
+		})
+	}
     $(".video-banner").click(function (){
     	var isrc=$(this).attr('data-src');
     	$(".video-bg").fadeIn();
@@ -38,11 +41,5 @@ $(document).ready(function() {
     	$(".video-bg").fadeOut();
     	$(".video-box").empty();
     });
-    $(function(){
-		NumbersAnimate.Target=$(".textC");
-		NumbersAnimate.Numbers=12389623;
-		NumbersAnimate.Duration=1500;
-		NumbersAnimate.Animate();
-	});
     
 })

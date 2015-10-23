@@ -6,6 +6,7 @@ html,body{
 }
 header{
     background: rgba(0,0,0,0.5);
+    background: #333\9;
     padding: 20px 0;
     position: absolute;
     top: 0;
@@ -52,6 +53,55 @@ footer {
 .w80{    
     display: inline-block;
     width: 80%;  
+}
+
+.page1{
+    background:image-url('new_desktop/bg.png') repeat-x bottom center #1e1e1e;
+    background-size:100% ;
+    padding:40px 0 180px;
+    color: #fff;
+    position: relative;
+}
+.page1:before{
+    position: absolute;
+    top: 348px;
+    left: 0;
+    width: 100%;
+    content: ' ';
+    height: 4px;
+    background: #43c3aa;
+    z-index: 0;
+}
+.page2{
+    .text{
+        margin-top: 100px;
+    }
+    .content{
+        margin-left: 46px;
+        font-size: 16px;
+        color: #333;
+    }
+}
+.page4{
+    h4{
+        font-weight: lighter;
+        
+    }
+}
+.page5{
+    background: image-url('new_desktop/footer.png') bottom center no-repeat #fff;
+    padding: 0 0 100px 0;
+    h1,h3{
+        font-weight: lighter;
+    }
+    h1{
+        font-size: 54px;
+        letter-spacing: 3px;
+    }
+    h3{
+        font-size: 25px;
+        letter-spacing: 3px;
+    }
 }
 .banner{
     background:image-url('new_desktop/slide.jpg') bottom center no-repeat;
@@ -119,6 +169,7 @@ footer {
     h1{
       font-weight: lighter;
       margin: 0;
+      font-size: 36px;
     }
 }
 
@@ -283,51 +334,3 @@ footer {
     transition: all .5s linear; 
 }
 
-.page1{
-    background:image-url('new_desktop/bg.png') repeat-x bottom center #1e1e1e;
-    background-size:100% ;
-    padding:40px 0 180px;
-    color: #fff;
-    position: relative;
-}
-.page1:before{
-    position: absolute;
-    top: 348px;
-    left: 0;
-    width: 100%;
-    content: ' ';
-    height: 4px;
-    background: #43c3aa;
-    z-index: 0;
-}
-.page2{
-    .text{
-        margin-top: 100px;
-    }
-    .content{
-        margin-left: 46px;
-        font-size: 16px;
-        color: #333;
-    }
-}
-.page4{
-    h4{
-        font-weight: lighter;
-        
-    }
-}
-.page5{
-    background: image-url('new_desktop/footer.png') bottom center no-repeat #fff;
-    padding: 0 0 100px 0;
-    h1,h3{
-        font-weight: lighter;
-    }
-    h1{
-        font-size: 54px;
-        letter-spacing: 3px;
-    }
-    h3{
-        font-size: 25px;
-        letter-spacing: 3px;
-    }
-}
