@@ -1,11 +1,7 @@
 <%= content_for :page_specific_javascript do %>
   <script type="text/javascript" charset="utf-8">
     propertyData = <%== ProductProperty.includes(:product_property_values).all.to_json(only: [:name], include: {product_property_values: {only: [:value]}}) %>
-    <% if f.object.new_record? %>
-      stockData = <%== get_product_seling_inventories_json f.object %>
-    <% else %>
-      stockData = <%== get_product_seling_inventories_json f.object %>
-    <% end %>
+    stockData = <%== get_product_seling_inventories_json f.object %>
   </script>
   <%= javascript_include_tag 'admin/sku_app/application' %>
 <% end %>
@@ -60,7 +56,7 @@
 </div>
 <br />
 <div class="admin-box beige-bg-color">
-  <h4 class="edit-title">分成设置</h4>
+  <h4 class="edit-title">返利设置</h4>
   <div id='sku-privelege-group'>
     <div class='sku-privilege-lvs-group'>
       <div>返利方案</div>

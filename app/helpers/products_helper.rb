@@ -93,14 +93,19 @@ module ProductsHelper
   end
 
   def get_product_seling_inventories_json(product)
+    json_attributes = [
+      :id, :sku_attributes, :price, :count,
+      :share_amount_lv_3, :share_amount_lv_2, :share_amount_lv_1,
+      :privilege_amount, :share_amount_total
+    ]
     if product.new_record?
-      product.product_inventories.to_json(only: [:id, :sku_attributes, :price, :count])
+      product.product_inventories.to_json(only: json_attributes)
     elsif product.association(:product_inventories).target.present?
       product.association(:product_inventories).target.
         select { |inventory| inventory.saling }.
-        to_json(only: [:id, :sku_attributes, :price, :count])
+        to_json(only: json_attributes)
     else
-      product.seling_inventories.select(:id, :sku_attributes, :price, :count).to_json
+      product.seling_inventories.select(json_attributes).to_json
     end
   end
 end

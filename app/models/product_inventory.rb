@@ -6,6 +6,7 @@ class ProductInventory < ActiveRecord::Base
   has_many   :order_items
 
   validates_presence_of :product
+  validate :share_amount_total_must_lt_price
 
   scope :saling, -> { where(saling: true) }
   scope :not_saling, -> { where(saling: false) }
@@ -62,6 +63,12 @@ class ProductInventory < ActiveRecord::Base
     sku_attributes.each do |property_name, property_value|
       property = ProductProperty.find_or_create_by(name: property_name)
       ProductPropertyValue.find_or_create_by(product_property_id: property.id, value: property_value)
+    end
+  end
+
+  def share_amount_total_must_lt_price
+    if (share_amount_lv_3 + share_amount_lv_2 + share_amount_lv_1 + privilege_amount) > price
+      errors.add(:share_amount_total, '必须小于对应（商品/规格）的价格')
     end
   end
 

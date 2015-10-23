@@ -12,7 +12,6 @@ class Product < ActiveRecord::Base
   belongs_to :order_items
   belongs_to :carriage_template
   has_one :asset_img, class_name: 'AssetImg', autosave: true, as: :resource
-  has_many :product_share_issue, dependent: :destroy
   has_many :cart_items,  through: :product_inventories
   has_many :order_items, through: :product_inventories
   has_many :product_inventories, autosave: true, dependent: :destroy

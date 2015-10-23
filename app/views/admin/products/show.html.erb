@@ -1,6 +1,6 @@
 <%= content_for :page_specific_javascript do %>
   <script type="text/javascript" charset="utf-8">
-    stockData = <%== @product.product_inventories.saling.select(:id, :sku_attributes, :price, :count).to_json %>
+    stockData = <%== get_product_seling_inventories_json @product %>
   </script>
   <%= javascript_include_tag 'admin/sku_app/application' %>
 <% end %>
@@ -59,46 +59,22 @@
   </div>
   <br />
   <div class="admin-box beige-bg-color">
-    <h4 class="edit-title">分成设置</h4>
-    <% if @product.calculate_way == 1 %>
-      <div class="form-group">
-        <label class="control-label"> 分成比例 </label>
-        <label class="control-label pull-right"> % </label>
-        <div class="control-input">
-          <div class="control-txt"><%= @product.share_rate_total %></div>
+  <h4 class="edit-title">返利设置</h4>
+    <div id='sku-privelege-group'>
+      <div class='sku-privilege-lvs-group'>
+        <div>返利方案</div>
+        <hr />
+        <div class='sku-plvs-btns'>
+          <a class='btn btn-link btn-border' data-level='3'>三级返利</a>
+          <a class='btn btn-link btn-border' data-level='2'>二级返利</a>
+          <a class='btn btn-link btn-border' data-level='1'>一级返利</a>
         </div>
       </div>
-    <% elsif @product.calculate_way == 0 %>
-         <div class="form-group">
-          <label class="control-label"> 现金分成 </label>
-          <label class="control-label pull-right"> 元　 </label>
-          <div class="control-input">
-            <div class="control-txt"><%= @product.share_amount_total %></div>
-          </div>
-        </div>
-    <% end %>
-    <div class="form-group">
-      <label class="control-label"> 一级分成 </label>
-      <div class="control-input">
-        <span><%= @product.share_rate_lv_1*100 %>%(占总分成金额比重，下同)</span>
-      </div>
-    </div>
-    <div class="form-group">
-      <label class="control-label">二级分成</label>
-      <div class="control-input">
-        <span><%= @product.share_rate_lv_2*100 %>%</span>
-      </div>
-    </div>
-    <div class="form-group">
-      <label class="control-label">三级分成</label>
-      <div class="control-input">
-        <span><%= @product.share_rate_lv_3*100 %>%</span>
-      </div>
-    </div>
-    <div class="form-group">
-      <label class="control-label">分享优惠</label>
-      <div class="control-input">
-        <span><%= number_to_percentage(@product.privilege_rate*100, precision: 1) %></span>
+      <br />
+      <div class='sku-privilege-list-group'>
+        <div>返利金额</div>
+        <hr />
+        <div class='sku-privilege-list'></div>
       </div>
     </div>
   </div>
@@ -128,7 +104,7 @@
         <p>即可在各大社交平台</p>
         <p>传播你的商品</p>
       </div>
-      <div class="box-w30">
+      <div class="box-w20">
         <img src="http://qr.liantu.com/api.php?&text=<%= "http://#{request.env["HTTP_HOST"]}/products/#{@product.id}?shared=true" %>"/>
       </div>
     </div>
