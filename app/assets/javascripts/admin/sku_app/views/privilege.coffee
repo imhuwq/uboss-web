@@ -7,17 +7,11 @@ class StockSku.Views.Privilege extends Backbone.View
   events:
     'click .sku-plvs-btns .btn': 'setLevel'
 
-  readOnly: false
-
   initialize: ->
     @listenTo @collection, 'skuchange', @render
-    @listenTo @, 'initShow', @renderShow
+    @listenTo @, 'initShow', @render
     @currentLevel = 3
     @setLevel()
-
-  renderShow: ->
-    @readOnly = true
-    @render()
 
   render: ->
     skuCollection = StockSku.Collections.property_collection
@@ -62,7 +56,6 @@ class StockSku.Views.Privilege extends Backbone.View
     @
 
   setLevel: (event)->
-    return false if @readOnly
     if event?
       event.preventDefault()
       @currentLevel = Number($(event.currentTarget).data('level'))
