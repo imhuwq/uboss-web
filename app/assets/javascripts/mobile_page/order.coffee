@@ -150,7 +150,14 @@ $ ->
         amount = parseFloat($(this).data('privilege-amount'))
         num   = parseInt($(this).find('.num').data('num'))
         privilege_amount += parseInt(amount*100)*num/100
-      $this.find('.order-privilege-amount').text(privilege_amount)
+      $privilege_amount = $this.find('.order-privilege-amount')
+      $friend_info = $privilege_amount.closest('.friend-info')
+      $privilege_amount.text(privilege_amount)
+      if parseFloat($privilege_amount.text()) == 0
+        $friend_info.removeClass('hidden').addClass('hidden')
+        $friend_info.next().css('border-top', '0px')
+      else
+        $friend_info.removeClass('hidden')
 
 
   # 单商铺计算总价
@@ -225,7 +232,7 @@ $ ->
         item['name'] +
         '</p> <p class="info">' +
         item['sku'] +
-        '</p> </div></div>'
+        '</p><p class="like-color text-break"><small>抱歉，该商品在收货地址内不可售，请重新选择收货地址</small></p></div></div>'
     $(".dead-items").empty().append(html)
 
   if $('#total_price').length != 0
