@@ -12,6 +12,7 @@ class ProductInventory.View.BuyNowOption extends Backbone.View
 
   product_id: '1'
 
+  # pre_relate_sku_ids: new ProductInventory.Collections.PreRelateSkuIds
   pre_relate_sku_ids: {}
 
   submit_way: ''
@@ -83,7 +84,9 @@ class ProductInventory.View.BuyNowOption extends Backbone.View
 
   render: (product_inventory_ids = [], select_value_cid="", submit_way="",product_id='')-> # 读出（model生成模式）
     that = this
-    console.log "that.pre_relate_sku_ids", that.pre_relate_sku_ids
+    hash = {a:[1,2,3],b:[4,5,6],c:[7,8,9]}
+    for k,v of hash
+      console.log "#{k}=", v
 
     @submit_way = submit_way
     @product_id = product_id
@@ -92,48 +95,16 @@ class ProductInventory.View.BuyNowOption extends Backbone.View
       @getSKU()
       return
 
-    # if @properties == null
-    #   @getProperties()
-
 
     $('#product_inventory_options').html @template(count: @count)
-    @properties.each (propertyModel) ->
-      propertyView = new ProductInventory.View.Property(model: propertyModel)
-      $('#product_inventory_options .buy_now_option').append propertyView.render().el
 
-      # 找出已选属性值的同级所有属性值的cid
-      property_model_value_cids = []
-      propertyModel.get('property_values').each (value) ->
-        if select_value_cid.length > 0 && select_value_cid == value.cid
-          that.pre_relate_sku_ids[propertyModel.cid] = product_inventory_ids
-          propertyModel.get('property_values').each (value) ->
-            property_model_value_cids = property_model_value_cids.concat([value.cid])
+    @judgeItemDisable(product_inventory_ids, select_value_cid)
+    @judgeItemClick()
 
+    @
 
-
-      propertyModel.get('property_values').each (value) ->
-        parentPorperty = $('#product_inventory_options').find("##{propertyModel.cid}")
-        if product_inventory_ids.length > 0 && value.attributes.relate_sku.intersect(product_inventory_ids).length == 0 && property_model_value_cids.intersect([value.cid]).length == 0
-          value.attributes.disabled = "true"
-        else
-          init = []
-          for k,v of that.pre_relate_sku_ids
-            if k != propertyModel.cid
-              if init.length == 0
-                init = v
-              else
-                init = init.intersect(v)
-          if product_inventory_ids.length > 0 && value.attributes.relate_sku.intersect(init).length > 0
-            value.attributes.disabled = "false"
-
-
-
-        if select_value_cid.length > 0 && select_value_cid == value.cid
-          value.attributes.selected = "true"
-        else if property_model_value_cids.intersect([value.cid]).length > 0 || value.attributes.disabled == "true"
-          value.attributes.selected = "false"
-
-        parentPorperty.find('ul').append new ProductInventory.View.PropertyValue(model: value).render().el
+  judgeItemClick: () ->
+    that = this
     cids = []
     that.relate_sku_ids = []
     for tag in $('.item_click')
@@ -147,7 +118,61 @@ class ProductInventory.View.BuyNowOption extends Backbone.View
           else
             that.relate_sku_ids = that.relate_sku_ids.intersect( value.attributes.relate_sku )
 
-    @
+
+
+  judgeItemDisable: (product_inventory_ids = [], select_value_cid="") ->
+    that = this
+    @properties.each (propertyModel) ->
+      propertyView = new ProductInventory.View.Property(model: propertyModel)
+      $('#product_inventory_options .buy_now_option').append propertyView.render().el
+
+      # 找出已选属性值的同级所有属性值的cid
+      property_model_value_cids = []
+      propertyModel.get('property_values').each (value) ->
+        if select_value_cid.length > 0 && select_value_cid == value.cid
+          # property_relate_sku_id = new ProductInventory.Models.PreRelateSkuId(property_cid: propertyModel.cid, relate_sku: product_inventory_ids)
+          # origin_property_relate_sku_id = that.pre_relate_sku_ids.search(propertyModel.cid, ['property_cid']).at(0)
+          # console.log "origin_property_relate_sku_id",origin_property_relate_sku_id
+          # # if origin_property_relate_sku_id
+          #
+          # that.pre_relate_sku_ids.add(pre_relate_sku_id)
+          that.pre_relate_sku_ids[propertyModel.cid] = product_inventory_ids
+          propertyModel.get('property_values').each (value) ->
+            property_model_value_cids = property_model_value_cids.concat([value.cid])
+
+      propertyModel.get('property_values').each (value) ->
+        parentPorperty = $('#product_inventory_options').find("##{propertyModel.cid}")
+        if product_inventory_ids.length > 0 && value.attributes.relate_sku.intersect(product_inventory_ids).length == 0 && property_model_value_cids.intersect([value.cid]).length == 0
+          value.attributes.disabled = "true"
+        else
+          init = []
+          console.log "bafore that.pre_relate_sku_ids", that.pre_relate_sku_ids
+          # for k1,v1 of that.pre_relate_sku_ids
+          #   console.log "that.pre_relate_sku_ids[#{k1}]", that.pre_relate_sku_ids
+          #   console.log "k=#{k1}", v1
+          for k,v of that.pre_relate_sku_ids
+            if k != propertyModel.cid
+              if init.length == 0
+                console.log "init.length == 0"
+                console.log "#{k}.v", v
+                init = v
+              else
+                console.log "#{k}.v", v
+                init = init.intersect(v)
+          # console.log "that.pre_relate_sku_ids", that.pre_relate_sku_ids
+          console.log "init", init
+          # console.log "value.attributes.relate_sku", value.attributes.relate_sku
+          console.log "propertyModel.cid", propertyModel.cid
+          console.log "value.cid", value.cid
+          if product_inventory_ids.length > 0 && value.attributes.relate_sku.intersect(init).length > 0
+            value.attributes.disabled = "false"
+
+        if select_value_cid.length > 0 && select_value_cid == value.cid
+          value.attributes.selected = "true"
+        else if property_model_value_cids.intersect([value.cid]).length > 0 || value.attributes.disabled == "true"
+          value.attributes.selected = "false"
+
+        parentPorperty.find('ul').append new ProductInventory.View.PropertyValue(model: value).render().el
 
   selectSkuItem: (e) ->
     if $(e.target).parent('.sku').length == 1
