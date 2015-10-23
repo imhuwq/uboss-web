@@ -15,8 +15,8 @@ class ProductInventory < ActiveRecord::Base
 
   after_create :create_product_properties
 
-  def published?
-    status == 'published'
+  def saling?
+    status == 'published' && saling
   end
 
   def product_name

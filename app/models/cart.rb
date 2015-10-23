@@ -8,7 +8,7 @@ class Cart < ActiveRecord::Base
     cart_items.blank?
   end
 
-  def add_product(product_inventory, sharing_code, count=1)
+  def add_product(product_inventory, sharing_code, count = 1)
     cart_item = cart_items.find_or_initialize_by(product_inventory_id: product_inventory.id, seller_id: product_inventory.seller_id)
     cart_item.sharing_node = SharingNode.find_by(code: sharing_code) if sharing_code
     cart_item.count += count
@@ -36,6 +36,7 @@ class Cart < ActiveRecord::Base
   end
 
   def sum_items_count
+    #cart_items.sum(:count)  #SQL Query
     cart_items.inject(0){ |sum, item| sum + item.count }
   end
 

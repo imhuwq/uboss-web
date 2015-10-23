@@ -1,21 +1,20 @@
 $ ->
 
-  $(document).on 'ajaxSuccess', '.like-product-btn', (event, xhr, settings, data) ->
-    flash_content = $('<div class="pop-alert flash_css"><div class="pop-content"></div>')
+  @flashPopContent = (html_str) ->
+    flash_content = $('<div class="pop-alert flash_css text-center"><div class="pop-content"></div>')
     flash_content.appendTo('body')
-    if data.favoured
-      $(this).addClass('active')
-      flash_content.find('.pop-content').append '''
-        <div class="pop-text">您喜欢了该商品，可以在店铺主页<br/>我的喜欢模块找到本商品</div>
-      '''
-    else
-      $(this).removeClass('active')
-      flash_content.find('.pop-content').append '''
-        <div class="pop-text line-2 gray">您取消了该喜欢商品</div>
-      '''
+    flash_content.find('.pop-content').append(html_str)
     setTimeout ->
       flash_content.remove()
     , 3000
+
+  $(document).on 'ajaxSuccess', '.like-product-btn', (event, xhr, settings, data) ->
+    if data.favoured
+      $(this).addClass('active')
+      flashPopContent('<div class="pop-text">您喜欢了该商品，可以在店铺主页<br/>我的喜欢模块找到本商品</div>')
+    else
+      $(this).removeClass('active')
+      flashPopContent('<div class="pop-text line-2 gray">您取消了该喜欢商品</div>')
 
   $(document).on 'ajaxError', '.like-product-btn', () ->
     alert "操作失败"
@@ -34,9 +33,9 @@ $ ->
 
   showInventory = ->
     $('#inventory').removeClass('hidden')
-    $('.fixed-container').css('-webkit-filter', 'blur(3px)')    
+    $('.fixed-container').css('-webkit-filter', 'blur(3px)')
     $('html').addClass('lock')
-  
+
   $('.count-box .count_min').on 'click',->
     num=parseInt($('.count-box .count_num').val())
     if num < 2 
@@ -46,13 +45,12 @@ $ ->
     else
       $('.count-box .count_num').val(num-1)
       $('#count_amount').val(num-1)
-    
-    
+
   $('.count-box .count_plus').on 'click',->
     num=parseInt($('.count-box .count_num').val())
     $('.count-box .count_num').val(num+1)
     $('#count_amount').val(num+1)
-  
+
   $.fn.onlyNum = () ->
     $(this).keyup () ->
       $this = $(this)
@@ -71,7 +69,7 @@ $ ->
       this.style.imeMode = 'disabled' # 禁用输入法
     .bind "paste", () ->              # 禁用粘贴
       return false
-      
+
   $(".count-box .count_num").on 'change',->
     $this = $(this)
     this.value = this.value.replace(/[^\d]/g, '')
@@ -79,9 +77,9 @@ $ ->
     if this.value == '' || this.value == "0"
       this.value = 1
       $('#count_amount').val(1)
-      
+
   $(".count-box .count_num").onlyNum()
-  
+
   $('.sku').on 'click', ->
     console.log($(this).attr('id'));
     product_inventory_id = $(this).attr('id')
@@ -113,14 +111,14 @@ $ ->
             data: {product_inventory_id: product_inventory_id, product_id: product_id, count: count}
             success: (res) ->
               if res['status'] == "ok"
-                alert('添加成功，购物车有'+res['cart_items_count']+'件商品')
+                flashPopContent('<div class="pop-text">添加成功<br/>购物车有'+res['cart_items_count']+'件商品</div>')
               else
+                flashPopContent('<div class="pop-text">'+res['message']+'</div>')
                 location.reload()
-                alert(res['message'])
             error: (data, status, e) ->
-              alert("ERROR")
+              alert("操作错误")
         else
-          alert "请填写正确的商品数量"
+          flashPopContent('<div class="pop-text">请填写正确的商品数量</div>')
 
   checkInventoriesSelect = ->
     product_inventory_id = $('#product_inventory_id').val();
