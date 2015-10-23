@@ -13,7 +13,6 @@ class ProductInventory < ActiveRecord::Base
   delegate :image_url, :status, :traffic_expense, :carriage_template, :carriage_template_id, :transportation_way, :is_official_agent?, to: :product
 
   after_create :create_product_properties
-  before_save :calculate_sharing_amount, if: -> { price_changed? }
 
   def published?
     status == 'published'
@@ -48,21 +47,6 @@ class ProductInventory < ActiveRecord::Base
         )
       ]
     }
-  end
-
-  def calculate_sharing_amount(changed_product = nil)
-    assigned_total = 0
-    changed_product ||= self.product
-
-    self.share_amount_total = (price * changed_product.share_rate_total).to_i / 100
-    3.times do |index|
-      level = index + 1
-      amount = (self.share_amount_total * changed_product["share_rate_lv_#{level}"]).round(2)
-      __send__("share_amount_lv_#{level}=", amount)
-      assigned_total += amount
-    end
-    last_amount = share_amount_total - assigned_total
-    self.privilege_amount = last_amount > 0 ? last_amount : 0
   end
 
   SkuProperty = Struct.new(:key, :value)
