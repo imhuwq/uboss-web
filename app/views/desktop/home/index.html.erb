@@ -3,7 +3,8 @@
     <%= seo_meta_tag %>
   <% end %>
 <% end %>
-<div class="banner text-center">
+<div id="pagepiling">
+<div class="banner text-center section">
 	<div class="content">
 		<div class="top">
 			<h1 class="main-color"><b>UBOSS</b></h1>
@@ -37,7 +38,8 @@
 		</div>
 	</div><!-- content -->
 </div><!-- banner -->
-<br />
+<!--
+<br/>
 <div class="text-center">
 	<div class="qrcode-box wow zoomInDown" >
 		<%= image_tag "new_desktop/qr.png", alt:"快扫一下我吧",width:'156',height:'156' %>
@@ -45,11 +47,11 @@
 			扫码进入<br/>
 			UBOSS官方旗舰商城		
 		</div>		
-	</div><!-- qrcod-box -->
-</div><!-- text-center -->
+	</div><!-- qrcod-box 
+</div><!-- text-center 
 <br />
-<div class="bg-white">
-	<div class="page1">
+-->
+	<div class="page1 section">
 		<div class="container nogap" >
 			<div class="box-w100">
 				<div class="title-bar wow bounceInDown" data-wow-duration="2s">
@@ -81,11 +83,9 @@
 			</div><!-- video-content -->
 		</div><!-- video-bg -->
 	</div><!-- page1 -->
-	<br/>
-	<div class="page2">
-		<br />
+
+	<div class="page2 section">
 		<div class="container nogap">
-			<br />
 			<div class="box-w100">
 				<div class="title-bar wow bounceInDown" data-wow-duration="1s">
 					<h1>EFFECT</h1>
@@ -116,11 +116,9 @@
 		</div><!-- container -->
 		<br />
 	</div><!-- page2 -->
-	<br />
-	<div class="page3">
-		<br />
+	
+	<div class="page3 section">
 		<div class="container nogap text-center">
-			<br />
 			<div class="box-w100">
 				<div class="title-bar wow bounceInDown" data-wow-duration="1s">
 					<h1>WAY</h1>
@@ -154,12 +152,10 @@
 				</p>
 			</div>
 		</div><!-- container -->
-	</div>
-	<br />
-	<div class="page4">
-		<br />
+	</div><!-- page3 -->
+	
+	<div class="page4 section">
 		<div class="container nogap text-center">
-			<br />
 			<div class="box-w100">
 				<div class="title-bar wow bounceInDown" data-wow-duration="1s">
 					<h1>PROFIT</h1>
@@ -203,21 +199,18 @@
 			<div class="box-w100">
 				<br />
 				<h3 class="wow fadeInRight"  data-wow-delay="2.5s">10×50×2.5％（1＋2＋…＋365）</h3>
-				<h1 class="main-color wow fadeIn" id="number"  data-wow-delay="3s">＝<span></span></h1>
+				<h1 class="main-color wow fadeIn" id="number"  data-wow-delay="3s">＝<span>8349375</span></h1>
 			</div>
 		</div><!-- container -->
 		<br />
 	</div><!-- page4 -->
-	<br />
-	<div class="page5">
-		<br />
+
+	<div class="page5 section">
 		<div class="container text-center">
-			<br />
 			<div class="title-bar wow bounceInDown" data-wow-duration="1s">
 				<h1>WAY</h1>
 				<div><b>成为创客</b></div>
 			</div><!-- title-bar -->
-			<br />
 			<div class="pirce-icon wow bounce" data-wow-delay="1s">
 				<br />
 				<div class="price-box">
@@ -238,5 +231,30 @@
 			<h3 class="main-color wow slideInDown" data-wow-delay="2.5s">即刻开启轻创业！</h3>
 		</div><!-- container -->
 	</div><!-- page5 -->
-</div><!-- bg-white -->
-
+	
+  <div class="page6 text-center section">
+  	<br/>
+		<div class="text-center">
+			<div class="qrcode-box wow zoomInDown" >
+				<%= image_tag "new_desktop/qr.png", alt:"快扫一下我吧",width:'156',height:'156' %>
+				<div class="content">
+					扫码进入<br/>
+					UBOSS官方旗舰商城		
+				</div>		
+			</div><!-- qrcod-box 
+		</div><!-- text-center -->
+		<br />
+		<h2>FIND US</h2>
+		<p>
+			<%= image_tag "new_desktop/call.png", alt:"call",width:'63',height:'66' %>
+		</p>
+		<br />
+		<h2>0755-66691053</h2>
+		<div class="copyright">
+			<p><%= image_tag "new_desktop/footer-logo.png", alt:"UBoss",width:'28',height:'54' %></p>
+			<br />
+			<p>Copyright 2015 www.uboss.me.</p> 
+			<div>All Rights Reserved 粤ICP备15032292号-1 </div>
+		</div>
+  </div><!-- page6 -->
+</div><!-- pagepiling -->

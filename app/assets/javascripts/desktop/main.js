@@ -1,19 +1,8 @@
 $(window).load(function() {
-	if(navigator.appName == "Microsoft Internet Explorer" && navigator.appVersion .split(";")[1].replace(/[ ]/g,"")=="MSIE8.0"){
-
-  	}else{
-    	new WOW().init();
-    }
   	$('.banner .content').fadeIn()
 })
 $(document).ready(function() {
   	$('.banner .content').hide()
-	$('#arrow-down').click(function(){		
-		var bh=$(window).height();
-		$('html, body').animate({
-		 	scrollTop: bh
-		},500)
-	})
 	if(navigator.appName == "Microsoft Internet Explorer" && navigator.appVersion .split(";")[1].replace(/[ ]/g,"")=="MSIE8.0"){
 		$('#number span').text('8,349,375')
   	}else{
@@ -41,5 +30,24 @@ $(document).ready(function() {
     	$(".video-bg").fadeOut();
     	$(".video-box").empty();
     });
-    
+    $('#pagepiling').pagepiling({
+        menu: null,
+        direction: 'vertical',
+        verticalCentered: true,        
+        scrollingSpeed: 700,
+        easing: 'swing',     
+        keyboardScrolling: true,
+        sectionSelector: '.section',
+
+        //events
+        onLeave: function(index, nextIndex, direction){
+        	if(nextIndex != 1 && nextIndex != 7){
+        		$('header').fadeOut()
+        	}else{
+        		$('header').show()
+        	}
+        },
+        afterLoad: function(anchorLink, index){},
+        afterRender: function(){},
+    });
 })
