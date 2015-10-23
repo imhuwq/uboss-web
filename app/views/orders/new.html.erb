@@ -28,11 +28,11 @@
     <%= f.hidden_field :product_id %>
     <%= f.hidden_field :product_inventory_id %>
     <% @products_group_by_seller.each do |seller, cart_items| %>
-      <div class="order-list valid-order-list">
+      <div class="order-list valid-order-list valid-list" data-seller-id="<%= seller.id %>">
         <div class="seller-box"><div class="text-cut">商家：<%= seller.store_identify %></div></div>
 
         <% cart_items.each do |cart_item| %>
-          <div class="order-box">
+          <div class="order-box <%= valid_order_box_class(@invalid_items.include?(cart_item)) %>" data-item-id="<%= cart_item.id %>" data-privilege-amount="<%= cart_item.privilege_amount %>">
             <div class="cover"><%= image_tag(url_for(cart_item.image_url),  alt: "-") %></div>
             <div class="content">
               <div class="price">
@@ -56,15 +56,14 @@
               <%= image_tag sharing_user.avatar_url(:thumb) %>
             </div>
             <div class="content">
-              <span class="pull-right red-color order-privilege-amount"><%= cart_items.sum(&:total_privilege_amount) %></span><span class="main-color"><%= sharing_user.identify %></span> 帮你优惠
+              <span class="pull-right red-color order-privilege-amount">0.0</span><span class="main-color"><%= sharing_user.identify %></span> 帮你优惠
             </div>
           </div><!-- friend-info -->
         <% end %>
 
         <div class="freight-box">
           运费
-          <% ship_price = order_ship_price(cart_items, @order_form.user_address) %>
-          <span class="pull-right ship_price_<%= seller.id.to_s %>" data-ship-price="<%= ship_price %>"><strong></strong>￥ <%= ship_price %></span>
+          <span class="pull-right ship_price_<%= seller.id.to_s %>" data-ship-price="0.0"><strong></strong>￥ 0.0</span>
         </div><!-- freight-box -->
         <div class="price-box">
           合计
@@ -75,6 +74,28 @@
         </div><!-- message-box -->
       </div><!-- order-list -->
     <% end %>
+
+    <div class="order-list dead-items">
+      <div class="seller-box"><div class="text-cut">失效宝贝</div></div>
+
+      <% @invalid_items.each do |cart_item| %>
+        <div class="order-box valid-box">
+          <div class="cover"><%= image_tag(url_for(cart_item.image_url),  alt: "-") %></div>
+          <div class="content">
+            <div class="price">
+              <p class="gray-color">￥<span class="product-price"><%= cart_item.price %></span></p>
+              <p class="gray-color num" data-num="<%= cart_item.count %>">x <%= cart_item.count %></p>
+            </div>
+            <p class="name"><%= cart_item.product_name %></p>
+            <p class="info">
+            <% cart_item.product_inventory.properties.each do |property| %>
+              <span><%= "#{property.key} : #{property.value}" %></span>
+            <% end %>
+            </p>
+          </div><!-- content -->
+        </div><!-- order-box -->
+      <% end %>
+    </div>
 
     <% if current_user.blank? || (current_user && current_user.need_set_login?) %>
       <div class="no-login">
@@ -164,3 +185,7 @@
   <% end %>
 <% end %>
 
+<style type="text/css" media="all">
+  .invalid-box{ display:none; }
+  .invalid-list{ display:none; }
+</style>

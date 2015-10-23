@@ -63,7 +63,7 @@ $ ->
       $(this).find('.adr-detail').text()
     )
     hideOrderAddressDlg()
-    changeShipPrice()
+    setOrderRelativeData()
 
   $('#address-new .use-new-addr-btn').on 'click', (event)->
     event.preventDefault()
@@ -85,7 +85,7 @@ $ ->
         fillNewOrderAddressInfo(user, mobile, detail)
         $('#order_form_user_address_id').val('')
         hideOrderAddressDlg()
-        changeShipPrice()
+        setOrderRelativeData()
         $(".accunt_adilbtn").removeAttr('disabled')
       else
         alert('手机号无效')
@@ -106,8 +106,8 @@ $ ->
     $('.new-order-addr-info .adr-detail').text(detail)
     $('.new-order-addr-info').show()
 
-  # 修改运费(收货地址改变)
-  changeShipPrice = ->
+  # 获取有效商品、无效商品、运费、优惠等信息(收货地址改变) XXX===========
+  setOrderRelativeData = ->
     $.ajax
       url: '/orders/ship_price'
       type: 'POST'
@@ -120,11 +120,13 @@ $ ->
         province: $('#province').val()
       }
       success: (res) ->
-        alert('修改收货地址后请重新确认订单信息')
+        #console.log('修改收货地址后请重新确认订单信息')
         if res['status'] == "ok"
-          $.each(res['ship_price'] , () ->
-            appendShipPriceAndSubtotal(this[0], this[1])
-          )
+          refreshInvalidItems(res['invalid_items'])
+          refreshValidItemsList(res['valid_item_ids'])
+          setOrderListVisible()
+          setSingleOrderShipPrice(res['ship_price'])
+          setSingleOrderPrivilegeAmount()
           setSingleOrderTotalPrice()
           setOrderTotalPrice()
         else
@@ -132,16 +134,31 @@ $ ->
         alert('收货地址修改失败')
         location.reload()
 
-  appendShipPriceAndSubtotal = (seller_id, ship_price) ->
-    $('.ship_price_'+seller_id).html('<strong></strong>￥ '+ship_price)
-    $('.ship_price_'+seller_id).data("ship-price", ship_price)
+  # 单商铺修改运费
+  setSingleOrderShipPrice = (ship_price_arr) ->
+    $.each(ship_price_arr , () ->
+      $('.ship_price_'+this[0]).html('<strong></strong>￥ '+this[1])
+      $('.ship_price_'+this[0]).data("ship-price", this[1])
+    )
+
+  # 单商铺计算优惠
+  setSingleOrderPrivilegeAmount = ->
+    $('.valid-order-list.valid-list').each ->
+      $this = $(this)
+      privilege_amount = 0.0
+      $this.find('.order-box.valid-box').each ->
+        amount = parseFloat($(this).data('privilege-amount'))
+        num   = parseInt($(this).find('.num').data('num'))
+        privilege_amount += parseInt(amount*100)*num/100
+      $this.find('.order-privilege-amount').text(privilege_amount)
+
 
   # 单商铺计算总价
   setSingleOrderTotalPrice = ->
-    $('.valid-order-list').each ->
+    $('.valid-order-list.valid-list').each ->
       $this = $(this)
       total_price = 0.0
-      $this.find('.order-box').each ->
+      $this.find('.order-box.valid-box').each ->
         num   = parseInt($(this).find('.num').data('num'))
         price = parseFloat($(this).find('.product-price').text())
         total_price += price*num
@@ -155,13 +172,64 @@ $ ->
   setOrderTotalPrice = ->
     total_price = 0.0
     privelege_price = 0.0
-    $('.price-box').each ->
+    $('.valid-order-list.valid-list').find('.price-box').each ->
       total_price += parseFloat($(this).find('span').data('total-price'))
       privelege_price += (parseFloat($(this).parent().find('.order-privilege-amount').text()) || 0.0)
     $('#total_price').text(total_price)
     $('.order-price').find('small').text('共优惠'+privelege_price+'元')
 
+  setOrderListVisible = ->
+    $('.order-list').each ->
+      $this = $(this)
+      if $this.find('.order-box.valid-box').length == 0
+        $this.removeClass('valid-list').addClass('invalid-list')
+      else
+        $this.removeClass('invalid-list').addClass('valid-list')
+
+  # 更新有效的商品列表
+  refreshValidItemsList = (valid_item_ids) ->
+    $('.valid-order-list').find('.order-box').each ->
+      if valid_item_ids
+        item_id = $(this).data('item-id')
+        if inArray(valid_item_ids, item_id)
+          $(this).removeClass('invalid-box').addClass('valid-box')
+        else
+          $(this).removeClass('valid-box').addClass('invalid-box')
+      else
+        if $('.dead-items').find('.order-box').length == 0
+          $(this).removeClass('invalid-box').addClass('valid-box')
+        else
+          $(this).removeClass('valid-box').addClass('invalid-box')
+
+  # 检查元素是否在数组内
+  inArray = (arr, item) ->
+    for a in arr
+      if a == item
+        return true
+        break
+
+  # 更新无效的商品列表
+  refreshInvalidItems = (invalid_items) ->
+    html = ''
+    if invalid_items.length == 0
+    else
+      html += '<div class="seller-box"><div class="text-cut">失效宝贝</div></div>'
+      for item in invalid_items
+        html += '<div class="order-box valid-box"> <div class="cover"><img alt="-" src="' +
+        item['image_url'] +
+        '"></div> <div class="content"> <div class="price"> <p class="gray-color">￥<span class="product-price">' +
+        item['price']+
+        '</span></p> <p class="gray-color num" data-num="1">x ' +
+        item['count'] +
+        '</p> </div> <p class="name">' +
+        item['name'] +
+        '</p> <p class="info">' +
+        item['sku'] +
+        '</p> </div></div>'
+    $(".dead-items").empty().append(html)
+
   if $('#total_price').length != 0
+    setOrderListVisible()
+    setOrderRelativeData()
     setSingleOrderTotalPrice()
     setOrderTotalPrice()
-

@@ -95,7 +95,6 @@ class OrderItem < ActiveRecord::Base
     self.pay_amount = deal_price * amount
   end
 
-
   def update_order_pay_amount
     order.update_pay_amount
   end

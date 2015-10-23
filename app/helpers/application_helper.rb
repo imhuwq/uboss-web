@@ -108,6 +108,10 @@ module ApplicationHelper
     boolean_value ? '' : 'disabled'
   end
 
+  def valid_order_box_class(boolean_value)
+    boolean_value ? 'invalid-box' : 'valid-box'
+  end
+
   def seo_meta_tag
     [
       content_tag(:meta, '', name: :Keywords,    content: Rails.application.secrets.metas['keywords']),
