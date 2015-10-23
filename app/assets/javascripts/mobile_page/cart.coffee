@@ -46,6 +46,7 @@ $ ->
       $("#box_all").addClass("checked")
     setTotalPrice()
     setSingleTotalPrice()
+
   # 全选
   $("#box_all").on 'click', (e) ->
     e.preventDefault()
@@ -88,7 +89,7 @@ $ ->
         if res['status'] == "ok"
           $('.order-box[data-id="'+res["item_id"]+'"]').find('.num').val(res["count"])
           if res['alert'].length != 0
-            alert(res['alert'])
+            flashPopContent('<div class="pop-text">'+res['alert']+'</div>')
         else
           alert(res['error'])
         setSingleTotalPrice()
@@ -113,16 +114,27 @@ $ ->
         success: (res) ->
           if res['status'] == "ok"
             $('.c_delete_'+res['id']).closest('.order-box').remove()
+            checkDeleteOrderList()
             setTotalPrice()
             setSingleTotalPrice()
           else
-            location.reload()
             alert(res['message'])
+            location.reload()
         error: (data, status, e) ->
-          alert('ERROR')
+          alert('操作错误')
       return false
     else
       return false
+
+  checkDeleteOrderList = ->
+    $('.order-list').each ->
+      $this = $(this)
+      if $this.find('.order-box').length == 0
+        $this.addClass('hidden')
+      if $('.order-box').length == 0
+        $('.cart-list').empty()
+        $('.order-price').empty()
+        $('.empty-cart').removeClass('hidden')
 
   $.fn.onlyNum = () ->
     $(this).keyup () ->
@@ -145,16 +157,17 @@ $ ->
 
   $("input[name='num']").onlyNum()
 
+  # 总价计算
   setTotalPrice = (e) ->
-    # 总价计算
     total_price=0
     $(".order-box .checked").each ->
       num = parseInt($(this).parent().find('.num').val())
       price= $(this).parent().find('.product-price').text()
       total_price+=num*price
     $('.total_price').text(total_price)
+
+  # 单商铺计算
   setSingleTotalPrice = (e) ->
-    # 单商铺计算
     $('.single_total_price').each ->
       single_total_price=0
       $(this).closest('.order-list').children('.order-box').children('.checked').each ->
@@ -170,6 +183,6 @@ $ ->
     for item, i in checked_items
       check_items_ids.push($(item).closest('.order-box').data('id'))
     if check_items_ids.length ==0
-      alert('请勾选您要购买商品')
+      flashPopContent('<div class="pop-text">请勾选您要购买商品</div>')
     else
       location.href = "/orders/new?item_ids="+check_items_ids.join(',')

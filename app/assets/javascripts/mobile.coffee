@@ -13,7 +13,6 @@
 #= require mobile_page/product
 #= require mobile_page/cart
 #= require mobile_page/order
-#= require mobile_page/address
 #= require mobile_page/pay
 #= require mobile_page/evaluations
 #= require shared/city_select
@@ -54,3 +53,4 @@ $ ->
     tid=$(this).attr('href')
     $('.tab-container .tab-content').hide()
     $(tid).show()
+
