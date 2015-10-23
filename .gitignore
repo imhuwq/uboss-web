@@ -52,3 +52,6 @@ nohup.out
 config/nginx.conf
 .ackrc
 .idea/
+
+# Ignore application configuration
+/config/application.yml
