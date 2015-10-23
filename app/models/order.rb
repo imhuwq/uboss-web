@@ -58,6 +58,24 @@ class Order < ActiveRecord::Base
   end
 
   class << self
+    def valid_items(cart_items, province)
+      if province.present?
+        province = ChinaCity.get(province)
+        cart_items.inject([]){ |items, cart_item| valid_to_sales?(cart_item.product_inventory.product, province) ? items << cart_item : items  }
+      else
+        cart_items
+      end
+    end
+
+    def valid_to_sales?(product, province)   # province = "北京市"
+      if province.present? && product.transportation_way == 2 && product.carriage_template
+        different_areas = product.carriage_template.different_areas
+        different_areas.joins(:regions).where(regions: {name: province}).first.present? ? true : false
+      else
+        true
+      end
+    end
+
     def total_ship_price(items1, items2, user_address)
       return 0.0 if items1.blank? && items2.blank?
       begin

@@ -36,6 +36,10 @@ class OrdersController < ApplicationController
       @order_form.sharing_code = get_product_or_store_sharing_code(product)
       @products_group_by_seller =  @order_form.product_inventory.convert_into_cart_item(@order_form.amount, @order_form.sharing_code)
 
+      province = @order_form.user_address.province
+      @invalid_items = province.present? && !Order.valid_to_sales?(product, ChinaCity.get(province)) ?
+        @products_group_by_seller[product.user] : []
+
       if product.is_official_agent? && current_user && current_user.is_agent?
         flash[:error] = "您已经是UBOSS创客，请勿重复购买"
         redirect_to root_path
@@ -45,7 +49,10 @@ class OrdersController < ApplicationController
     elsif current_user && params[:item_ids]
       item_ids = params[:item_ids].split(',')
       cart_items = current_cart.cart_items.find(item_ids)
+      valid_items = Order.valid_items(cart_items, @order_form.user_address.province)
+      session[:valid_items_ids] = valid_items.map(&:id)
       session[:cart_item_ids] = item_ids
+      @invalid_items = cart_items - valid_items
       @order_form.cart_id = current_cart.id
       @products_group_by_seller = CartItem.group_by_seller(cart_items)
 
@@ -58,7 +65,7 @@ class OrdersController < ApplicationController
   def create
     unless params[:order_form][:product_id].present?
       cart = current_cart
-      cart_item_ids = session[:cart_item_ids]
+      cart_item_ids = session[:valid_items_ids]
       cart_items = cart.cart_items.find(cart_item_ids)
       seller_ids = cart_items.map(&:seller_id).uniq
     end
@@ -72,6 +79,18 @@ class OrdersController < ApplicationController
         session: session
       )
     )
+
+    if @order_form.product_id.present?
+      @order_form.sharing_code = get_product_or_store_sharing_code(@order_form.product)
+      province = @order_form.user_address.try(:province) || params[:province]
+      if !Order.valid_to_sales?(@order_form.product, ChinaCity.get(province))
+        redirect_to root_path
+        return
+      end
+    elsif cart_item_ids.blank?
+      redirect_to root_path
+      return
+    end
 
     if @order_form.save
       sign_in(@order_form.buyer) if current_user.blank?
@@ -103,21 +122,35 @@ class OrdersController < ApplicationController
     user_address = UserAddress.find_by(id: params[:user_address_id]) || UserAddress.new(province: params[:province])
 
     if params[:product_id].blank?
-      cart = current_cart
-      cart_items = cart.cart_items.find(session[:cart_item_ids])
+      cart_items = current_cart.cart_items.find(session[:cart_item_ids])
+      valid_items = Order.valid_items(cart_items, user_address.province)
+      session[:valid_items_ids] = valid_items.map(&:id)
+      invalid_items = cart_items - valid_items
       ship_prices = []
-      CartItem.group_by_seller(cart_items).each do |seller, items|
+      CartItem.group_by_seller(valid_items).each do |seller, items|
         ship_prices << [seller.id, Order.calculate_ship_price(items, user_address).to_s]
       end
-      render json: { status: 'ok', is_cart: 1, ship_price: ship_prices }
+      render json: { status: 'ok', type: 0, ship_price: ship_prices, invalid_items: json_of(invalid_items), valid_item_ids: session[:valid_items_ids] }
     elsif !params[:count].blank?
       product = Product.find(params[:product_id])
       ship_price = product.calculate_ship_price(params[:count].to_i, user_address)
-      render json: { status: 'ok', is_cart: 0, ship_price: [[product.user_id, ship_price.to_s]] }
+      invalid_items = !Order.valid_to_sales?(product, ChinaCity.get(user_address.province)) ?
+        [CartItem.new(product_inventory_id: params[:product_inventory_id], seller_id: product.user_id, count: params[:count])] : []
+      render json: { status: 'ok', type: (invalid_items.blank? ? 1 : 2), ship_price: [[product.user_id, ship_price.to_s]], invalid_items: json_of(invalid_items) }
     end
   end
 
   private
+
+  def json_of(invalid_items)
+    invalid_items.collect { |item| {
+      name: item.product_name,
+      image_url: item.image_url,
+      price: item.price,
+      count: item.count,
+      sku: item.sku_attr_str
+    }}
+  end
 
   def order_params
     params.require(:order_form).permit(OrderForm::ATTRIBUTES)

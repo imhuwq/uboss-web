@@ -43,12 +43,14 @@ class CartItem < ActiveRecord::Base
     product_inventory.count
   end
 
-  def deal_price
-    @deal_price ||= price - privilege_amount
+  def sku_attr_str
+    sku_attributes.inject("") do |str, property|
+      str += "<span>#{property[0]} : #{property[1]}</span>"
+    end
   end
 
-  def total_privilege_amount
-    privilege_amount*count
+  def deal_price
+    @deal_price ||= price - privilege_amount
   end
 
   def privilege_amount

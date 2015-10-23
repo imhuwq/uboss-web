@@ -8,6 +8,10 @@ module OrdersHelper
     end
   end
 
+  def total_privelege_amount(order_items)
+    order_items.inject(0){ |sum, oi| sum + oi.privilege_amount*oi.amount}
+  end
+
   def sign_package
     if params[:js_mode] == 'admin'
       {
@@ -20,13 +24,4 @@ module OrdersHelper
       @sign_package ||= $weixin_client.get_jssign_package(request.url)
     end
   end
-
-  def order_ship_price(cart_items, user_address)
-    if user_address.try(:province).blank?
-      0.0
-    else
-      Order.calculate_ship_price(cart_items, user_address)
-    end
-  end
-
 end

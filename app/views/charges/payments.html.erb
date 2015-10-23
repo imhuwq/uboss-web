@@ -11,7 +11,7 @@
   	<%= link_to '去付款', "javascript:;", class: 'cart-btn btn', id: 'wx-pay-btn' %>
     <div class="content">
       <p>应付款：￥<span id="payment_total_price"><%= @order_charge.pay_amount %></span></p>
-			<p class="gray-color"><small>已优惠了<%= @order_charge.order_items.sum(:privilege_amount) %>元</small></p>
+			<p class="gray-color"><small>已优惠了<%= total_privelege_amount(@order_charge.order_items) %>元</small></p>
 	  </div>
 </div><!-- order-price -->
 
