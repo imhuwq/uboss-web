@@ -8,7 +8,7 @@ module OrdersHelper
     end
   end
 
-  def total_privelege_amount(order_items)
+  def total_privilege_amount(order_items)
     order_items.inject(0){ |sum, oi| sum + oi.privilege_amount*oi.amount}
   end
 
