@@ -207,4 +207,5 @@ Rails.application.routes.draw do
 
   root 'home#index'
 
+  get '/discourse/sso', to: 'discourse_sso#sso'
 end
