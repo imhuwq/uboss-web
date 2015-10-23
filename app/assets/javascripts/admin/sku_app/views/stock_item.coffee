@@ -9,14 +9,14 @@ class StockSku.Views.StockItem extends Backbone.View
     'blur input.sku-count': 'setCount'
 
   initialize: ->
-    @listenTo @model, "change", @render
+    @listenTo @model, "change:id", @render
 
   render: ->
     @$el.html @template(@model.toJSON())
     @
 
   setPrice: (e)->
-    @model.attributes['price'] = $(e.target).val()
+    @model.set 'price', $(e.target).val()
 
   setCount: (e)->
     @model.attributes['count'] = $(e.target).val()

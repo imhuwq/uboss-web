@@ -31,7 +31,7 @@ class StockSku.Views.Stock extends Backbone.View
     propertys = stockSkuCollection.map (item)-> item.get('name')
     @.$('.stock-list').html @template(propertys: propertys)
 
-    return @ unless skuCollection.length > 0
+    return @ unless stockSkuCollection.length > 0
     skuPVId = new Date().getTime()
     for stockIndex in [1..stock_length]
       skuAttrs = {}

@@ -12,99 +12,96 @@
 
 <%= upyun_meta_tags prefix: 'asset_img/avatar' %>
 
-<div class="box-w50">
-	<div class="admin-box beige-bg-color">
-	  <h4 class="edit-title">商品信息</h4>
-	  <%= f.input :name %>
-	  <%= f.input :original_price %>
-	  <%= f.input :present_price %>
-	  <%= f.input :count %>
-	  <%= f.input :short_description %>
-	  <%= f.input :asset_img, hint:"(点击图片进行替换)"  do %>
-	    <%= f.input_field :avatar, type: :hidden, as: :file %>
-		  <p><span>建议上传比例为1:1的图片，最佳尺寸为<b style="color: red;">600x600</b>像素</span></p>
-	    <p class="fileinput-button">
-	      	<% if @product.new_record? %>
-	      		<%= image_tag("admin/no-img.png") %>
-	      	<% else %>
-	      		<%= image_tag(@product.image_url(:thumb))%>
-	      	<% end %>
-	      <%= file_field_tag "image", class: "upyun_file" %>
-	      <b class="loading"><i class="fa fa-spinner"></i></b>
-	    </p>
-	  <% end %>
-		<div class="form-group ">
-		  <label class="control-label">图文详情</label>
-		  <div class="control-input">
-		  	<%= f.input_field :content, as: :text, class: "redactor" %>
-		  </div>
-	 	</div>
-	</div>
+<div class="admin-box beige-bg-color">
+  <h4 class="edit-title">商品信息</h4>
+  <%= f.input :name %>
+  <%= f.input :original_price %>
+  <%= f.input :present_price %>
+  <%= f.input :count %>
+  <%= f.input :short_description %>
+  <%= f.input :asset_img, hint:"(点击图片进行替换)"  do %>
+    <%= f.input_field :avatar, type: :hidden, as: :file %>
+    <p><span>建议上传比例为1:1的图片，最佳尺寸为<b style="color: red;">600x600</b>像素</span></p>
+    <p class="fileinput-button">
+        <% if @product.new_record? %>
+          <%= image_tag("admin/no-img.png") %>
+        <% else %>
+          <%= image_tag(@product.image_url(:thumb))%>
+        <% end %>
+      <%= file_field_tag "image", class: "upyun_file" %>
+      <b class="loading"><i class="fa fa-spinner"></i></b>
+    </p>
+  <% end %>
+  <div class="form-group ">
+    <label class="control-label">图文详情</label>
+    <div class="control-input" style='width: 430px;'>
+      <%= f.input_field :content, as: :text, class: "redactor" %>
+    </div>
+  </div>
 </div>
-<div class="box-w50">
-  <div class="admin-box beige-bg-color">
-    <h4 class="edit-title">库存/规格</h4>
-    <div id='product-sku'>
-      <h5>规格</h5>
+<br />
+<div class="admin-box beige-bg-color">
+  <h4 class="edit-title">库存/规格</h4>
+  <div id='product-sku'>
+    <h5>规格</h5>
+    <hr />
+    <div class="property-list">
+    </div>
+    <a class="btn add-property" href="#">添加规格</a>
+  </div>
+  <br />
+  <div id="product-stock">
+    <h5>库存</h5>
+    <hr />
+    <div class='stock-list'>
+      <p>请添加产品规格属性</p>
+    </div>
+  </div>
+</div>
+<br />
+<div class="admin-box beige-bg-color">
+  <h4 class="edit-title">分成设置</h4>
+  <div id='sku-privelege-group'>
+    <div class='sku-privilege-lvs-group'>
+      <div>返利方案</div>
       <hr />
-      <div class="property-list">
+      <div class='sku-plvs-btns'>
+        <a href="#" class='btn btn-link btn-border' data-level='3'>三级返利</a>
+        <a href="#" class='btn btn-link btn-border' data-level='2'>二级返利</a>
+        <a href="#" class='btn btn-link btn-border' data-level='1'>一级返利</a>
       </div>
-      <a class="btn add-property" href="#">添加规格</a>
     </div>
     <br />
-    <div id="product-stock">
-      <h5>库存</h5>
+    <div class='sku-privilege-list-group'>
+      <div>返利金额</div>
       <hr />
-      <div class='stock-list'>
-        <p>请添加产品规格属性</p>
+      <div class='sku-privilege-list'></div>
+    </div>
+  </div>
+</div><!-- admin-box -->
+<br  />
+<div class="admin-box beige-bg-color logistics_and_other">
+  <h4 class="edit-title">物流及其他</h4>
+  <div class='radio_transportation_way_wrap'>
+    <div class='form-group radio_buttons optional product_transportation_way'>
+      <label class='optional text-right traffic_expense_label control-label'>运费</label>
+      <div class='control-input'>
+        <%= f.collection_radio_buttons :transportation_way, Product::DataBuyerPay.invert, :last, :first %>
       </div>
     </div>
   </div>
-  <br />
-	<div class="admin-box beige-bg-color">
-	  <h4 class="edit-title">分成设置</h4>
-    <div id='sku-privelege-group'>
-      <div class='sku-privilege-lvs-group'>
-        <div>返利方案</div>
-        <hr />
-        <div class='sku-plvs-btns'>
-          <a href="#" class='btn btn-link btn-border' data-level='3'>三级返利</a>
-          <a href="#" class='btn btn-link btn-border' data-level='2'>二级返利</a>
-          <a href="#" class='btn btn-link btn-border' data-level='1'>一级返利</a>
-        </div>
-      </div>
-      <br />
-      <div class='sku-privilege-list-group'>
-        <div>返利金额</div>
-        <hr />
-        <div class='sku-privilege-list'></div>
-      </div>
-    </div>
-	</div><!-- admin-box -->
-  <br  />
-  <div class="admin-box beige-bg-color logistics_and_other">
-    <h4 class="edit-title">物流及其他</h4>
-    <div class='radio_transportation_way_wrap'>
-      <div class='form-group radio_buttons optional product_transportation_way'>
-        <label class='optional text-right traffic_expense_label control-label'>运费</label>
-        <div class='control-input'>
-          <%= f.collection_radio_buttons :transportation_way, Product::DataBuyerPay.invert, :last, :first %>
-        </div>
-      </div>
-    </div>
-    <div class='unify_carriage'>
-      <%= f.text_field :traffic_expense, placeholder: '请在此处输入金额', class: 'form-control' %>
-      <span class='price_label'>元</span>
-    </div>
-    <%= f.select :carriage_template_id, current_user.carriage_templates.collect { |p| [ p.name, p.id ] }, include_blank: '请选择运费模板...' %>
-    <span class='link_new_carriage_temp'><%= link_to '新建运费模板', new_admin_carriage_template_path, target: '_blank', class: 'label new_admin_carriage_template' %></span>
-    <%= render partial: 'show_carriage_template', locals: {carriage: @product.carriage_template} %>
-
-  </div><!-- admin-box -->
-
-  <br />
-
-  <div class="form-actions text-right">
-    <%= f.submit "保存", class: "btn btn-large" %>
+  <div class='unify_carriage'>
+    <%= f.text_field :traffic_expense, placeholder: '请在此处输入金额', class: 'form-control' %>
+    <span class='price_label'>元</span>
   </div>
+  <%= f.select :carriage_template_id, current_user.carriage_templates.collect { |p| [ p.name, p.id ] }, include_blank: '请选择运费模板...' %>
+  <span class='link_new_carriage_temp'><%= link_to '新建运费模板', new_admin_carriage_template_path, target: '_blank', class: 'label new_admin_carriage_template' %></span>
+  <%= render partial: 'show_carriage_template', locals: {carriage: @product.carriage_template} %>
+
+</div><!-- admin-box -->
+
+<br />
+
+<div class="form-actions text-right">
+  <%= f.submit "保存", class: "btn btn-large" %>
 </div>

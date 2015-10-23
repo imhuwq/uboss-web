@@ -7,6 +7,8 @@ class StockSku.Views.Privilege extends Backbone.View
   events:
     'click .sku-plvs-btns .btn': 'setLevel'
 
+  readOnly: false
+
   initialize: ->
     @listenTo @collection, 'skuchange', @render
     @currentLevel = 3
@@ -29,32 +31,37 @@ class StockSku.Views.Privilege extends Backbone.View
         groupTotal *= totalPv
       property_group_counter.push(groupTotal)
 
-    console.log property_group_counter
     @renderPrivilegeItem(skuCollection, property_group_counter)
     @
 
-  renderPrivilegeItem: (skuCollection, property_group_counter, skuIndex = 0) ->
-    console.log("skuIndex:#{skuIndex}")
-    propertyValues = skuCollection[skuIndex].get('values')
-    propertyValues.each (propertyValue, pvIndex) =>
+  renderPrivilegeItem: (skuCollection, property_group_counter, skuIndex = 0, skuAttrs = {})->
+    property = skuCollection[skuIndex]
+    propertyValues = property.get('values')
+    propertyType = property.get('name')
+    propertyValues.each (propertyValue) =>
+      skuAttrs[propertyType] = propertyValue.get('value')
       groupTotal = property_group_counter[skuIndex]
-      console.log("getTotal: #{groupTotal}")
       if groupTotal == 1
-        @getPrivilegeView(skuIndex)
+        @getPrivilegeView(skuAttrs)
       else
-        console.log "Recall: #{property_group_counter[skuIndex]}"
-        @renderPrivilegeItem(skuCollection, property_group_counter, skuIndex+1)
-        true
+        @renderPrivilegeItem(skuCollection, property_group_counter, skuIndex+1, skuAttrs)
+    @
 
-  getPrivilegeView: (attr) ->
-    console.log("getPrivilegeView: #{attr}")
-    false
+  getPrivilegeView: (skuAttrs) ->
+    stockIdentify = JSON.stringify(skuAttrs)
+    stockItemModel = @collection.findWhere(identify: stockIdentify)
+    unless stockItemModel?
+      stockItemModel = @collection.add(id: skuPVId + stockIndex, sku_attributes: skuAttrs)
+    stockItemView = new StockSku.Views.PrivilegeItem(model: stockItemModel)
+    @.$('table#privilege-list-table tbody').append stockItemView.render().el
+    @
 
   setLevel: (event)->
-    console.log 'click lev'
     if event?
       event.preventDefault()
-      @currentLevel = $(event.currentTarget).data('level')
+      @currentLevel = Number($(event.currentTarget).data('level'))
+      @collection.each (privilegeItem) =>
+        privilegeItem.set('share_level', @currentLevel)
     @.$('.sku-plvs-btns .btn').each (_, btn) =>
       btn = $(btn)
       if btn.data('level') == @currentLevel
