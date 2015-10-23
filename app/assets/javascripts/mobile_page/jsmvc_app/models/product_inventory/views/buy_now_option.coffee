@@ -12,7 +12,7 @@ class ProductInventory.View.BuyNowOption extends Backbone.View
 
   product_id: '1'
 
-  pre_relate_sku_ids: []
+  pre_relate_sku_ids: {}
 
   submit_way: ''
 
@@ -37,70 +37,63 @@ class ProductInventory.View.BuyNowOption extends Backbone.View
     'keypress .count_num' : 'limitToNumKeypress'
 
 
-  getSKU: (product_id)->
+  getSKU: (product_inventory_ids=[])->
 
     that = this
 
-    # 获取sku信息 ->>
-    that.skus = new ProductInventory.Collections.SKUs
-    # sku_list = { '1': {count: 100, sku_attributes: {'颜色': '红', '尺寸': 'XL'},price: "1111"}, '2': {count: 50, sku_attributes: {'颜色': '白', '尺寸': 'L'},price: "1111"} }
-    $.ajax
-      url: '/products/get_sku_detail'
-      type: 'GET'
-      data: {product_id: that.product_id}
-      success: (res) ->
-        for key,value of res
-          newSKU = new ProductInventory.Models.SKU(id: key, count: value['count'], sku_attributes: value['sku_attributes'],price: value['price'])
-          that.skus.add(newSKU)
-      error: (data, status, e) ->
-        alert("ERROR")
-    # <<= 获取sku信息
-
-
-  getProperties: (product_inventory_ids=[])-> # 写入（model生成模式）
-
-    that = this
-
-    # 获取属性列表 ->>
-    that.properties = new ProductInventory.Collections.Properties
-    # hash = {'颜色':{'红': [1,2],'白': [3,4],'黄': [3]},'尺寸':{'L':[1,3],'XL':[2,4]}}
-    hash = {}
     $.ajax
       url: '/products/get_sku'
       type: 'GET'
       data: {product_id: that.product_id}
       success: (res) ->
-        for key,value of res
-          newPropertyValues = new ProductInventory.Collections.PropertyValues
-          for k,v of value
-            if product_inventory_ids.length > 0 && v.intersect(product_inventory_ids).length == 0
-              newValue = new ProductInventory.Models.PropertyValue(property_value: k, relate_sku: v, disabled: "true")
-              newPropertyValues.add(newValue)
-            else
-              newValue = new ProductInventory.Models.PropertyValue(property_value: k, relate_sku: v, disabled: "false")
-              newPropertyValues.add(newValue)
+        # 获取属性列表 ->>
+        that.newProperties(res['skus'])
+        # <<= 获取属性列表
 
-          newProperty = new ProductInventory.Models.Property(name: key, property_values: newPropertyValues)
-          that.properties.add(newProperty)
+        # 获取sku信息 ->>
+        that.newSKUs(res['sku_details'])
+        # <<= 获取sku信息
+
         that.render('','',that.submit_way,that.product_id)
       error: (data, status, e) ->
         alert("ERROR")
 
-    # <<= 获取属性列表
+  newProperties: (properties) ->
+    that = this
+    that.properties = new ProductInventory.Collections.Properties
+    cid = ''
+    for key,value of properties
+      newPropertyValues = new ProductInventory.Collections.PropertyValues
+      for k,v of value
+        newValue = new ProductInventory.Models.PropertyValue(property_value: k, relate_sku: v, disabled: "false")
+        newPropertyValues.add(newValue)
+
+      newProperty = new ProductInventory.Models.Property(name: key, property_values: newPropertyValues)
+      cid = newProperty.cid
+      that.properties.add(newProperty)
+
+  newSKUs: (skus) ->
+    that = this
+    that.skus = new ProductInventory.Collections.SKUs
+    for key,value of skus
+      newSKU = new ProductInventory.Models.SKU(id: key, count: value['count'], sku_attributes: value['sku_attributes'],price: value['price'])
+      that.skus.add(newSKU)
+
 
 
   render: (product_inventory_ids = [], select_value_cid="", submit_way="",product_id='')-> # 读出（model生成模式）
-
     that = this
+    console.log "that.pre_relate_sku_ids", that.pre_relate_sku_ids
 
     @submit_way = submit_way
     @product_id = product_id
 
-    if @skus == null
+    if @skus == null || @properties == null
       @getSKU()
+      return
 
-    if @properties == null
-      @getProperties()
+    # if @properties == null
+    #   @getProperties()
 
 
     $('#product_inventory_options').html @template(count: @count)
@@ -112,17 +105,28 @@ class ProductInventory.View.BuyNowOption extends Backbone.View
       property_model_value_cids = []
       propertyModel.get('property_values').each (value) ->
         if select_value_cid.length > 0 && select_value_cid == value.cid
-          # propertyModel.attributes.selected_sku_ids = value.relate_sku
+          that.pre_relate_sku_ids[propertyModel.cid] = product_inventory_ids
           propertyModel.get('property_values').each (value) ->
             property_model_value_cids = property_model_value_cids.concat([value.cid])
+
 
 
       propertyModel.get('property_values').each (value) ->
         parentPorperty = $('#product_inventory_options').find("##{propertyModel.cid}")
         if product_inventory_ids.length > 0 && value.attributes.relate_sku.intersect(product_inventory_ids).length == 0 && property_model_value_cids.intersect([value.cid]).length == 0
           value.attributes.disabled = "true"
-        else if product_inventory_ids.length > 0 && value.attributes.relate_sku.intersect(product_inventory_ids).length > 0
-          value.attributes.disabled = "false"
+        else
+          init = []
+          for k,v of that.pre_relate_sku_ids
+            if k != propertyModel.cid
+              if init.length == 0
+                init = v
+              else
+                init = init.intersect(v)
+          if product_inventory_ids.length > 0 && value.attributes.relate_sku.intersect(init).length > 0
+            value.attributes.disabled = "false"
+
+
 
         if select_value_cid.length > 0 && select_value_cid == value.cid
           value.attributes.selected = "true"
@@ -130,7 +134,6 @@ class ProductInventory.View.BuyNowOption extends Backbone.View
           value.attributes.selected = "false"
 
         parentPorperty.find('ul').append new ProductInventory.View.PropertyValue(model: value).render().el
-
     cids = []
     that.relate_sku_ids = []
     for tag in $('.item_click')
@@ -143,6 +146,7 @@ class ProductInventory.View.BuyNowOption extends Backbone.View
             that.relate_sku_ids = value.attributes.relate_sku
           else
             that.relate_sku_ids = that.relate_sku_ids.intersect( value.attributes.relate_sku )
+
     @
 
   selectSkuItem: (e) ->
@@ -152,11 +156,12 @@ class ProductInventory.View.BuyNowOption extends Backbone.View
       valueCid = $(e.target).parents('.sku').attr('id') # 获取属性cid
       propertyCid = $($(e.target).parents('div')[0]).attr('id') # 获取属性值cid
       relate_sku_ids = @properties.get(propertyCid).attributes.property_values.get(valueCid).attributes.relate_sku # 获取关联sku的ids
-
-      @render(relate_sku_ids,valueCid,@submit_way)
       if @relate_sku_ids.length == 1
         @single_price = @skus.search(@relate_sku_ids[0],['id']).at(0).attributes.price
         @calculateTotalPrice()
+
+      @render(relate_sku_ids,valueCid,@submit_way)
+
 
 
 
@@ -170,13 +175,10 @@ class ProductInventory.View.BuyNowOption extends Backbone.View
       count = Number($('.count_num').val())
       if count >= 1
         if @submit_way == 'buy'
-          want_buy = confirm "确认购买么？"
-          if want_buy
-              $('.product_inventory').submit()
+          $('.product_inventory').submit()
         else if @submit_way == 'cart'
           product_inventory_id = Number(@relate_sku_ids[0])
           product_id = Number(@product_id)
-          console.log "cart inject"
           $.ajax
             url: '/cart_items'
             type: 'POST'

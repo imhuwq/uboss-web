@@ -53,7 +53,7 @@ Rails.application.routes.draw do
     member do
       patch :switch_favour
     end
-    get :get_sku, :get_sku_detail, on: :collection
+    get :get_sku, on: :collection
     post :democontent,  on: :collection
   end
   resources :evaluations do
