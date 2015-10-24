@@ -3,7 +3,7 @@ class StockSku.Collections.Properties extends Backbone.Collection
   model: StockSku.Models.Property
 
   available: ->
-    @.filter (property) ->
+    @filter (property) ->
       property.get('values').length > 0
 
   propertyCounter: ->
@@ -23,9 +23,9 @@ class StockSku.Collections.Properties extends Backbone.Collection
     @available().map (item)-> item.get('name')
 
   renderStockItems: (renderFunc) ->
-    availableCollection = @.available()
+    availableCollection = @available()
     return @ if availableCollection.length == 0
-    propertyGroupCounter = @.propertyGroupCounter()
+    propertyGroupCounter = @propertyGroupCounter()
     @renderStockItem(availableCollection, propertyGroupCounter, renderFunc)
     @
 

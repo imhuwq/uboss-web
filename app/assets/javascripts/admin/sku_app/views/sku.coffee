@@ -27,7 +27,7 @@ class StockSku.Views.Sku extends Backbone.View
 
   addOne: (property) =>
     propertyView = new StockSku.Views.Property(model: property, skuView: @)
-    @.$('.property-list').append propertyView.render().el
+    @$('.property-list').append propertyView.render().el
     if property.get('values').length > 0
       propertyView.addAllPropertyValue()
     else

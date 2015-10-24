@@ -22,7 +22,7 @@ class StockSku.Views.Privilege extends Backbone.View
 
     skuCollection = skuCollection.available()
     propertys = skuCollection.map (item)-> item.get('name')
-    @.$('.sku-privilege-list').html @template(propertys: propertys)
+    @$('.sku-privilege-list').html @template(propertys: propertys)
 
     @clearPrivilegeItemViews()
     @privilegeItemViews = []
@@ -36,7 +36,7 @@ class StockSku.Views.Privilege extends Backbone.View
       stockItemModel = @collection.add(id: skuPVId + stockIndex, sku_attributes: skuAttrs)
     stockItemView = new StockSku.Views.PrivilegeItem(model: stockItemModel)
     @privilegeItemViews.push(stockItemView)
-    @.$('table#privilege-list-table tbody').append stockItemView.render().el
+    @$('table#privilege-list-table tbody').append stockItemView.render().el
     @
 
   setLevel: (event)->
@@ -45,7 +45,7 @@ class StockSku.Views.Privilege extends Backbone.View
       @currentLevel = Number($(event.currentTarget).data('level'))
       @collection.each (privilegeItem) =>
         privilegeItem.set('share_level', @currentLevel)
-    @.$('.sku-plvs-btns .btn').each (_, btn) =>
+    @$('.sku-plvs-btns .btn').each (_, btn) =>
       btn = $(btn)
       if btn.data('level') == @currentLevel
         btn.removeClass('btn-link')

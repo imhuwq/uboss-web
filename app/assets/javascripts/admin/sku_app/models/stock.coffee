@@ -24,15 +24,15 @@ class StockSku.Models.Stock extends Backbone.Model
     privilege_amount: 0
 
   calculateSharingAmount: ->
-    shareAmountTotal = Number(@.get('share_amount_total'))
+    shareAmountTotal = Number(@get('share_amount_total'))
     assignedTotal = 0
 
     _(3).times (level) =>
       amount = (parseInt(shareAmountTotal * @getSharingRate(level))/100).toFixed(2)
-      @.attributes["share_amount_lv_#{level+1}"] = amount
+      @attributes["share_amount_lv_#{level+1}"] = amount
       assignedTotal += Number(amount)
-    @.attributes['privilege_amount'] = (shareAmountTotal - assignedTotal).toFixed(2)
-    @.trigger('sharingAmountChanged')
+    @attributes['privilege_amount'] = (shareAmountTotal - assignedTotal).toFixed(2)
+    @trigger('sharingAmountChanged')
 
   getSharingRate: (rateLevel) ->
-    @sharingRate["level#{@.get('share_level')}"][rateLevel]
+    @sharingRate["level#{@get('share_level')}"][rateLevel]
