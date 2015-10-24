@@ -1,5 +1,5 @@
 <% if @propertys.length == 0: %>
-  <h5>请添加产品规格属性</h5>
+  <p>请添加产品规格属性</p>
 <% else: %>
   <table id='stock-group' class='border-table'>
     <thead>
@@ -10,7 +10,7 @@
             <%= property %>
           </th>
         <% end %>
-        <th>价格</th>
+        <th style='width:100px;'>价格</th>
         <th>库存</th>
       </tr>
     </thead>

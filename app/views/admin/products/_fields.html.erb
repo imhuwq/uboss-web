@@ -38,41 +38,35 @@
 <br />
 <div class="admin-box beige-bg-color">
   <h4 class="edit-title">库存/规格</h4>
-  <div id='product-sku'>
-    <h5>规格</h5>
-    <hr />
-    <div class="property-list">
+  <div class="form-group ">
+    <label class="control-label">规格</label>
+    <div id='product-sku' class='control-input'>
+      <div class="property-list">
+      </div>
+      <a class="btn add-property" href="#">添加规格</a>
     </div>
-    <a class="btn add-property" href="#">添加规格</a>
   </div>
-  <br />
-  <div id="product-stock">
-    <h5>库存</h5>
-    <hr />
-    <div class='stock-list'>
+  <div id="product-stock" class="form-group ">
+    <label class="control-label">库存</label>
+    <div  class="stock-list control-input">
       <p>请添加产品规格属性</p>
     </div>
   </div>
 </div>
 <br />
-<div class="admin-box beige-bg-color">
+<div id="sku-privelege-group" class="admin-box beige-bg-color">
   <h4 class="edit-title">分成设置</h4>
-  <div id='sku-privelege-group'>
-    <div class='sku-privilege-lvs-group'>
-      <div>返利方案</div>
-      <hr />
-      <div class='sku-plvs-btns'>
-        <a href="#" class='btn btn-link btn-border' data-level='3'>三级返利</a>
-        <a href="#" class='btn btn-link btn-border' data-level='2'>二级返利</a>
-        <a href="#" class='btn btn-link btn-border' data-level='1'>一级返利</a>
-      </div>
+  <div class="form-group sku-privilege-lvs-group">
+    <label class="control-label">返利方案</label>
+    <div class='sku-plvs-btns control-input'>
+      <a href="#" class='btn btn-link btn-border' data-level='3'>三级返利</a>
+      <a href="#" class='btn btn-link btn-border' data-level='2'>二级返利</a>
+      <a href="#" class='btn btn-link btn-border' data-level='1'>一级返利</a>
     </div>
-    <br />
-    <div class='sku-privilege-list-group'>
-      <div>返利金额</div>
-      <hr />
-      <div class='sku-privilege-list'></div>
-    </div>
+  </div>
+  <div class="form-group sku-privilege-list-group">
+    <label class="control-label">返利金额</label>
+    <div class='sku-privilege-list control-input'></div>
   </div>
 </div><!-- admin-box -->
 <br  />

@@ -10,7 +10,7 @@
           </th>
         <% end %>
         <th>价格</th>
-        <th>总返利</th>
+        <th style='width:100px;'>返利</th>
         <th>一级</th>
         <th>二级</th>
         <th>三级</th>
