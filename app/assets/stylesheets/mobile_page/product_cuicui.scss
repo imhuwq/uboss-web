@@ -45,23 +45,18 @@
       /*width: 200px;*/
     }
   }
-  .btn_add_to_cart {
-    height: 60px;
-    line-height: 60px;  
+  .btn_add_to_cart ,.btn_buy_now {
+    height: 50px;
+    line-height: 50px;  
     width: 50%;
     height: 100%;
     float: left;
     background: #f9ba10;
     border: none;
+    font-size: 15px;
   }
-
   .btn_buy_now {
-    height: 60px;
-    line-height: 60px; 
-    width: 50%;
-    height: 100%;
-    background: #43c3aa;
-    border: none;
+      background:$brand-primary ;
   }
   a{color: #fff;}
   .half_right {
@@ -69,7 +64,11 @@
     width: 50%;
     overflow: hidden;
     color: #fff;
-    
+    .btn_add_to_cart ,.btn_buy_now {
+      font-size: 12px;
+      height: 60px;
+      line-height: 60px;
+    }
     
   }
 }
