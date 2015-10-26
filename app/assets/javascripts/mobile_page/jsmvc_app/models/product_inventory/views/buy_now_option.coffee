@@ -12,8 +12,7 @@ class ProductInventory.View.BuyNowOption extends Backbone.View
 
   product_id: '1'
 
-  # pre_relate_sku_ids: new ProductInventory.Collections.PreRelateSkuIds
-  pre_relate_sku_ids: {}
+  pre_relate_sku_ids: []
 
   submit_way: ''
 
@@ -122,6 +121,11 @@ class ProductInventory.View.BuyNowOption extends Backbone.View
 
   judgeItemDisable: (product_inventory_ids = [], select_value_cid="") ->
     that = this
+    console.log "that.pre_relate_sku_ids.length" ,that.pre_relate_sku_ids.length == 0
+    if that.pre_relate_sku_ids.length == 0
+
+      that.pre_relate_sku_ids = new ProductInventory.Collections.PreRelateSkuIds
+
     @properties.each (propertyModel) ->
       propertyView = new ProductInventory.View.Property(model: propertyModel)
       $('#product_inventory_options .buy_now_option').append propertyView.render().el
@@ -129,14 +133,24 @@ class ProductInventory.View.BuyNowOption extends Backbone.View
       # 找出已选属性值的同级所有属性值的cid
       property_model_value_cids = []
       propertyModel.get('property_values').each (value) ->
+        # console.log "select_value_cid", select_value_cid
+        # console.log "value.cid", value.cid
         if select_value_cid.length > 0 && select_value_cid == value.cid
-          # property_relate_sku_id = new ProductInventory.Models.PreRelateSkuId(property_cid: propertyModel.cid, relate_sku: product_inventory_ids)
-          # origin_property_relate_sku_id = that.pre_relate_sku_ids.search(propertyModel.cid, ['property_cid']).at(0)
-          # console.log "origin_property_relate_sku_id",origin_property_relate_sku_id
-          # # if origin_property_relate_sku_id
-          #
-          # that.pre_relate_sku_ids.add(pre_relate_sku_id)
-          that.pre_relate_sku_ids[propertyModel.cid] = product_inventory_ids
+          # TODO
+          # property_relate_sku_ids = that.pre_relate_sku_ids.search(propertyModel.cid, ['property_cid'])
+          property_relate_sku_ids = that.pre_relate_sku_ids.where({'property_cid': propertyModel.cid})
+          console.log "that.pre_relate_sku_ids.where({#{propertyModel.cid}: propertyModel.cid})=",property_relate_sku_ids
+          if property_relate_sku_ids != []
+            chaged_property_relate_sku_ids = property_relate_sku_ids.at(0).set(relate_sku: product_inventory_ids)
+            that.pre_relate_sku_ids.remove(property_relate_sku_ids.at(0))
+            that.pre_relate_sku_ids.add(chaged_property_relate_sku_ids)
+            console.log "that.pre_relate_sku_ids.add(chaged_property_relate_sku_ids)",that.pre_relate_sku_ids
+          else
+            property_relate_sku_ids = new ProductInventory.Models.PreRelateSkuIds(property_cid: propertyModel.cid, relate_sku: product_inventory_ids)
+            that.pre_relate_sku_ids.add(property_relate_sku_ids)
+            console.log "that.pre_relate_sku_ids.add(property_relate_sku_ids)", that.pre_relate_sku_ids.add(property_relate_sku_ids)
+
+          # that.pre_relate_sku_ids[propertyModel.cid] = product_inventory_ids
           propertyModel.get('property_values').each (value) ->
             property_model_value_cids = property_model_value_cids.concat([value.cid])
 
@@ -150,15 +164,16 @@ class ProductInventory.View.BuyNowOption extends Backbone.View
           # for k1,v1 of that.pre_relate_sku_ids
           #   console.log "that.pre_relate_sku_ids[#{k1}]", that.pre_relate_sku_ids
           #   console.log "k=#{k1}", v1
-          for k,v of that.pre_relate_sku_ids
-            if k != propertyModel.cid
+          that.pre_relate_sku_ids.each (model) ->
+
+            if model.get('property_cid') != propertyModel.cid
               if init.length == 0
                 console.log "init.length == 0"
-                console.log "#{k}.v", v
-                init = v
+                console.log "#{model.get('property_cid')}.v", model.get('relate_sku')
+                init = model.get('relate_sku')
               else
-                console.log "#{k}.v", v
-                init = init.intersect(v)
+                console.log "#{model.get('property_cid')}.v", model.get('relate_sku')
+                init = init.intersect(model.get('relate_sku'))
           # console.log "that.pre_relate_sku_ids", that.pre_relate_sku_ids
           console.log "init", init
           # console.log "value.attributes.relate_sku", value.attributes.relate_sku
