@@ -145,7 +145,11 @@ class ProductInventory.View.BuyNowOption extends Backbone.View
       propertyCid = $($(e.target).parents('div')[0]).attr('id') # 获取属性值cid
       relate_sku_ids = @properties.get(propertyCid).attributes.property_values.get(valueCid).attributes.relate_sku # 获取关联sku的ids
       if @relate_sku_ids.length == 1
-        @single_price = @skus.search(@relate_sku_ids[0],['id']).at(0).attributes.price
+        # @single_price = @skus.search(@relate_sku_ids[0],['id']).at(0).attributes.price
+        console.log "@relate_sku_ids[0]", @relate_sku_ids[0]
+        console.log "@skus.where({'id':@relate_sku_ids[0]})", @skus.where('id': "#{@relate_sku_ids[0]}")
+        console.log "@skus", @skus
+        @single_price =  @skus.where('id': "#{@relate_sku_ids[0]}")[0].attributes.price
         @calculateTotalPrice()
       @render(relate_sku_ids,valueCid,@submit_way)
 
