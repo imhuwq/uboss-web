@@ -1,6 +1,5 @@
-<% is_sso_url = cookies.delete(:is_sso_url) %>
 <%= content_for :page_title do %>
-  <% if is_sso_url %>
+  <% if params[:redirect] == 'discourse' %>
     登录优创客
   <% else %>
     登录UBOSS
@@ -8,8 +7,8 @@
 <% end %>
 
 <div class='login-container <%= @using_password ? 'using-pwd' : 'using-cap' %>'>
-  <%= simple_form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
-    <% if is_sso_url %>
+  <%= simple_form_for(resource, as: resource_name, url: session_path(resource_name, redirect: params[:redirect])) do |f| %>
+    <% if params[:redirect] == 'discourse' %>
       <h2>优创客联盟</h2>
     <% else %>
       <h2>UBOSS</h2>
@@ -20,7 +19,6 @@
       <a class="lpwd-btn col-md-6" href="#">已有账户</a>
       <a class="lcap-btn col-md-6" href="#">验证码登陆/注册</a>
     </div>
-
     <div class="form-inputs">
       <%= f.input :login, required: false, autofocus: true, input_html: {id: 'new_mobile'} %>
 
@@ -63,10 +61,10 @@
 
     <% if !browser.wechat? %>
       <div class="button_div  col-xs-12"  style="margin: 10px 0 10px 0;">
-        <% if is_sso_url %>
-          <%= link_to "返回主页", root_path, class: "btn btn-large btn-link col-xs-12"%>
+        <% if params[:redirect] == 'discourse' %>
+          <%= link_to "返回主页", ENV['DISCOURSE_URL'], class: "btn btn-large btn-link col-xs-12"%>
         <% else %>
-          <%= link_to "返回主页", ENV[:DISCOURSE_URL], class: "btn btn-large btn-link col-xs-12"%>
+          <%= link_to "返回主页", root_path, class: "btn btn-large btn-link col-xs-12"%>
         <% end %>
       </div>
     <% end %>
