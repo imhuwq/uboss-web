@@ -7,7 +7,7 @@
 <% end %>
 
 <div class='login-container <%= @using_password ? 'using-pwd' : 'using-cap' %>'>
-  <%= simple_form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
+  <%= simple_form_for(resource, as: resource_name, url: session_path(resource_name, redirect: params[:redirect])) do |f| %>
     <% if params[:redirect] == 'discourse' %>
       <h2>优创客联盟</h2>
     <% else %>
