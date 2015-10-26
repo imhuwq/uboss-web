@@ -45,29 +45,32 @@
       /*width: 200px;*/
     }
   }
-
-  .half_right {
+  .btn_add_to_cart {
     height: 60px;
-    line-height: 60px;
+    line-height: 60px;  
+    width: 50%;
+    height: 100%;
+    float: left;
+    background: #f9ba10;
+    border: none;
+  }
+
+  .btn_buy_now {
+    height: 60px;
+    line-height: 60px; 
+    width: 50%;
+    height: 100%;
+    background: #43c3aa;
+    border: none;
+  }
+  a{color: #fff;}
+  .half_right {
     float: left;
     width: 50%;
     overflow: hidden;
     color: #fff;
-    a{color: #fff;}
-    .btn_add_to_cart {
-      width: 50%;
-      height: 100%;
-      float: left;
-      background: #f9ba10;
-      border: none;
-    }
-
-    .btn_buy_now {
-      width: 50%;
-      height: 100%;
-      background: #43c3aa;
-      border: none;
-    }
+    
+    
   }
 }
 

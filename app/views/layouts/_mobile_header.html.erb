@@ -1,9 +1,9 @@
 <% if controller_name == "products" && action_name == "show" %>
 <div class="only-products-nav">
-	<%= link_to carts_path,class:'cart-icon' do%>
+	<%= link_to carts_path,class:'cart-icon white-icon' do%>
 		<%= image_tag 'mobile/cart.png' %>
 	<% end %>
-	<div class="menu-btn"><%= image_tag 'mobile/navbar.png' %></div>
+	<div class="menu-btn white-icon"><%= image_tag 'mobile/navbar.png' %></div>
 	<div class="nav-bar">
 	  <ul>
 	    <li><%= link_to '首页', root_path %></li>
