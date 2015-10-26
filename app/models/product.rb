@@ -12,7 +12,6 @@ class Product < ActiveRecord::Base
   belongs_to :order_items
   belongs_to :carriage_template
   has_one :asset_img, class_name: 'AssetImg', autosave: true, as: :resource
-  has_many :product_share_issue, dependent: :destroy
   has_many :cart_items,  through: :product_inventories
   has_many :order_items, through: :product_inventories
   has_many :product_inventories, autosave: true, dependent: :destroy
@@ -29,8 +28,6 @@ class Product < ActiveRecord::Base
   validate :must_has_one_product_inventory
 
   before_create :generate_code
-  before_save :set_share_rate
-  after_save :calculate_sharing_amount, if: -> { has_share_lv_changed? || share_rate_total_changed? }
 
   def self.official_agent
     find_by(user_id: User.official_account.try(:id), name: OFFICIAL_AGENT_NAME)
@@ -109,31 +106,10 @@ class Product < ActiveRecord::Base
     super || build_asset_img
   end
 
-  def privilege_rate
-    1 - share_rate_lv_1 - share_rate_lv_2 - share_rate_lv_3
-  end
-
   def generate_code
     loop do
       self.code = SecureRandom.hex(10)
       break unless Product.find_by(code: code)
-    end
-  end
-
-  def set_share_rate(*args) # 设置分成比例
-    3.times do |index|
-      rate = args[index] || get_shraing_rate(has_share_lv, index + 1)
-      __send__("share_rate_lv_#{index + 1}=", rate)
-    end
-  end
-
-  # 计算具体的分成金额
-  def calculate_sharing_amount
-    if has_share_lv != 0
-      seling_inventories.each do |inventory|
-        inventory.calculate_sharing_amount(self)
-        inventory.save(validate: false)
-      end
     end
   end
 

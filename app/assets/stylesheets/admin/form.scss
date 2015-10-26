@@ -41,7 +41,7 @@ textarea {
  input[type="tel"]:focus,
  input[type="color"]:focus,
  select:focus,
- textarea:focus{color:#1a1a1a;}
+ textarea:focus{ color:#1a1a1a; }
 
  .form-group{
    margin-bottom: 20px;
@@ -63,7 +63,7 @@ textarea {
    .control-input{
      overflow: hidden;
      span{
-       margin:8px 0px;
+       /*margin:8px 0px;*/
        display: inline-block;
      }
      .btn{
@@ -99,6 +99,9 @@ textarea {
    textarea{
      display: block;
      width: 100%;
+   }
+   input.input-mini {
+     width: 80px;
    }
    abbr[title='必填'] {
      border: none;
@@ -205,4 +208,7 @@ textarea {
    img {
      height: 140px;
    }
+ }
+ .input-mini {
+   width: 80px;
  }

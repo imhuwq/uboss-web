@@ -2,6 +2,11 @@ jQuery ($) ->
 
   if $('#product-sku').length > 0 || $('#product-stock').length > 0
     console.log 'boot skuapp'
+    skuPVId = new Date().getTime()
+    _.each window.stockData, (data) ->
+      if not data.id?
+        data.id = skuPVId
+        skuPVId += 1
     StockSku.Data.propertyData = window.propertyData
     StockSku.Data.stockData = window.stockData
 
@@ -30,7 +35,11 @@ jQuery ($) ->
 
     if $('#product-sku').length > 0
       StockSku.stock_view = new StockSku.Views.Stock(collection: StockSku.Collections.stock_collection)
+      StockSku.privilege_view = new StockSku.Views.Privilege(collection: StockSku.Collections.stock_collection)
       StockSku.sku_view = new StockSku.Views.Sku(collection: StockSku.Collections.property_collection)
+
     else if $('#product-stock').length > 0
       StockSku.stock_view = new StockSku.Views.Stock(collection: StockSku.Collections.stock_collection)
+      StockSku.privilege_view = new StockSku.Views.Privilege(collection: StockSku.Collections.stock_collection)
       StockSku.stock_view.trigger('initShow')
+      StockSku.privilege_view.trigger('initShow')

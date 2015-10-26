@@ -55,6 +55,20 @@ $ ->
   $('.edit_privilege_card').on 'ajaxError', (event, xhr, status, error) ->
     alert xhr.responseText
 
+  $('#address').on 'click', ->
+    $('#address-list-box').removeClass('hidden')
+    $('html,body').addClass('lock')
+
+  $('#address-list-box .close').on 'click',->
+    $('#address-list-box').addClass('hidden')
+    $('html,body').removeClass('lock')
+
+  $('#address-more').on 'click', ->
+    $('#address-new').removeClass('hidden')
+
+  $('#address-new .close').on 'click',->
+    $('#address-new').addClass('hidden')
+
   $('#address-list-box .add_line1').on 'click', ()->
     $('#order_form_user_address_id').val($(this).data('id'))
     fillNewOrderAddressInfo(
@@ -62,8 +76,10 @@ $ ->
       $(this).find('.adr-mobile').text(),
       $(this).find('.adr-detail').text()
     )
-    hideOrderAddressDlg()
+    $('#address-list-box').addClass('hidden')
+    $('html,body').removeClass('lock')
     setOrderRelativeData()
+    flashPopContent('<div class="pop-text">修改收货地址后请重新确认订单信息</div>')
 
   $('#address-new .use-new-addr-btn').on 'click', (event)->
     event.preventDefault()
@@ -84,27 +100,23 @@ $ ->
         detail = "#{province}#{city}#{area}#{building}"
         fillNewOrderAddressInfo(user, mobile, detail)
         $('#order_form_user_address_id').val('')
-        hideOrderAddressDlg()
+        $('#address-list-box').addClass('hidden')
+        $('html,body').removeClass('lock')
+        $('#address-new').addClass('hidden')
         setOrderRelativeData()
+        flashPopContent('<div class="pop-text">修改收货地址后请重新确认订单信息</div>')
         $(".accunt_adilbtn").removeAttr('disabled')
       else
         alert('手机号无效')
     else
-      alert('请填写完整收货信息')
-
-  hideOrderAddressDlg = ->
-    dlg = $('#dlg')
-    console.log dlg.attr("status")
-    if dlg.attr("status") == '1'
-      dlg.attr("status", "0")
-      dlg.hide()
-      $('#new_order_form #content').removeClass('active')
+      flashPopContent('<div class="pop-text">请填写完整收货信息</div>')
 
   fillNewOrderAddressInfo = (user, mobile, detail)->
-    $('.new-order-addr-info .adr-user').text(user)
-    $('.new-order-addr-info .adr-mobile').text(mobile)
-    $('.new-order-addr-info .adr-detail').text(detail)
-    $('.new-order-addr-info').show()
+    $('#address .address-box .adr-user').text(user)
+    $('#address .address-box .adr-mobile').text(mobile)
+    $('#address .address-box .adr-detail').text(detail)
+    $('#address .address-box').removeClass('hidden')
+    $('.none-address-box').hide()
 
   # 获取有效商品、无效商品、运费、优惠等信息(收货地址改变) XXX===========
   setOrderRelativeData = ->
@@ -120,7 +132,7 @@ $ ->
         province: $('#province').val()
       }
       success: (res) ->
-        #console.log('修改收货地址后请重新确认订单信息')
+        #flashPopContent('<div class="pop-text">修改收货地址后请重新确认订单信息</div>')
         if res['status'] == "ok"
           refreshInvalidItems(res['invalid_items'])
           refreshValidItemsList(res['valid_item_ids'])
@@ -150,7 +162,14 @@ $ ->
         amount = parseFloat($(this).data('privilege-amount'))
         num   = parseInt($(this).find('.num').data('num'))
         privilege_amount += parseInt(amount*100)*num/100
-      $this.find('.order-privilege-amount').text(privilege_amount)
+      $privilege_amount = $this.find('.order-privilege-amount')
+      $friend_info = $privilege_amount.closest('.friend-info')
+      $privilege_amount.text(privilege_amount)
+      if parseFloat($privilege_amount.text()) == 0
+        $friend_info.removeClass('hidden').addClass('hidden')
+        $friend_info.next().css('border-top', '0px')
+      else
+        $friend_info.removeClass('hidden')
 
 
   # 单商铺计算总价
@@ -225,7 +244,7 @@ $ ->
         item['name'] +
         '</p> <p class="info">' +
         item['sku'] +
-        '</p> </div></div>'
+        '</p><p class="like-color text-break"><small>抱歉，该商品在收货地址内不可售，请重新选择收货地址</small></p></div></div>'
     $(".dead-items").empty().append(html)
 
   if $('#total_price').length != 0

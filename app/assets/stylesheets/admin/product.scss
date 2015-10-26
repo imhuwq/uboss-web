@@ -210,12 +210,13 @@
   .pv-sel-group{
     position: absolute;
     z-index: 999;
-    padding: 10px;
+    padding: 5px;
     border-radius: 5px;
     border: 2px solid;
     width: 330px;
     display: block;
     background: white;
+    top: 30px;
   }
 }
 .sku-pv {

@@ -2,90 +2,91 @@
   我的购物车
 <% end %>
 <br/>
-<form method="post">
-  <% if @cart.empty? %>
-    <div class="bg-white text-center">
-      <div class="box-m40">
-        <br/>
-        <p class="gray-color">购物车空空的~，去看看心仪的商品吧~</p>
-        <br/>
-        <p><%= link_to "去购物", root_path , class:'btn btn-longer btn-orange' %></p>
-        <br/>
-      </div>
+
+<div class="bg-white text-center empty-cart <%= 'hidden' unless @cart.empty? %>">
+  <div class="box-m40">
+    <br/>
+    <p class="gray-color">购物车空空的~，去看看心仪的商品吧~</p>
+    <br/>
+    <p><%= link_to "去购物", root_path , class:'btn btn-longer btn-orange' %></p>
+    <br/>
+  </div>
+</div>
+
+<% unless @cart.empty? %>
+  <div class="cart-list">
+    <!-- 购物车有效商品按不同的商家分开 -->
+    <% CartItem.group_by_seller(@valid_items).each do |seller, cart_items| %>
+      <div class="order-list">
+        <div class="seller-box">
+          <input type="checkbox" class="checkbox seller-checkbox" checked='true'>
+          <div class="text-cut">商家：<%= seller.identify %></div>
+        </div><!-- seller-box -->
+        <% cart_items.each do |cart_item| %>
+          <div class="order-box" data-id="<%= cart_item.id %>">
+            <input type="checkbox" class="checkbox"  name="check_item" checked='true'>
+            <div class="cover"><a href="<%= product_path(cart_item.product) %>"><img src="<%= cart_item.image_url %>"></a></div>
+            <div class="content">
+              <div class="price">
+                <p>￥<span class="product-price"><%= cart_item.price %></span></p>
+              </div>
+              <p class="name"><%= cart_item.product_name %></p>
+              <p class="info">
+              <% cart_item.product_inventory.properties.each do |property| %>
+                <span><%= "#{property.key} : #{property.value}" %></span>
+              <% end %>
+              </p>
+              <button class="btn btn-delete <%= "c_delete_#{cart_item.id}" %>"></button>
+              <div class="count">
+                <button class="min">-</button>
+                <input type="tel" name="num" class="num" value="<%= cart_item.count %>">
+                <button class="plus">+</button>
+              </div>
+            </div>
+          </div><!-- order-box-->
+        <% end %>
+        <% if cart_items.first.sharing_node.present? %>
+          <% sharing_user = cart_items.first.sharing_node.user %>
+          <div class="friend-info">
+            <div class="cover">
+              <img src="<%= sharing_user.avatar_url(:thumb) %>" title="<%= sharing_user.identify %>"/>
+            </div>
+            <div class="content">使用 <span class="main-color"><%= sharing_user.identify %></span> 的友情卡</div>
+          </div><!-- friend-info -->
+        <% end %>
+        <div class="price-box">
+          本店合计：￥
+          <span class="single_total_price">0.0</span>
+        </div><!-- price-box -->
+      </div><!-- order-list -->
+    <% end %>
+
+    <%# 购物车失效商品 %>
+    <% if !@invalid_items.blank? %>
+      <div class="order-list failed-list">
+        <% @invalid_items.each do |cart_item| %>
+          <div class="order-box" data-id="<%= cart_item.id %>">
+            <span class="label pull-left">失效</span>
+            <div class="cover"><img src="<%= cart_item.image_url %>"></div>
+            <div class="content">
+              <p class="name"><%= cart_item.product_name %></p>
+              <p class="gray-color">宝贝已不能购买，请联系卖家</p>
+              <p><button class="btn btn-gray btn-delete <%= "c_delete_#{cart_item.id}" %>"></button></p>
+            </div><!-- content -->
+          </div><!-- order-box -->
+        <% end %>
+      </div><!-- order-list -->
+    <% end %>
+
+  </div><!-- cart-list -->
+
+  <div class="order-price">
+    <%= link_to '去结算', 'javascript:;', class: 'cart-btn btn new_order' %>
+    <div class="select-all"><input type="checkbox" class="checkbox" checked='false' id="box_all"> 全选</div>
+    <div class="content">
+
+      <p>金额合计：￥<span class="total_price">0.0</span></p>
+      <p class="gray-color"><small>不含邮费、优惠减扣</small></p>
     </div>
-  <% else %>
-    <div class="cart-list">
-      <!-- 购物车有效商品按不同的商家分开 -->
-      <% CartItem.group_by_seller(@valid_items).each do |seller, cart_items| %>
-        <div class="order-list">
-          <div class="seller-box">
-            <input type="checkbox" class="checkbox seller-checkbox" checked='true'>
-            <div class="text-cut">商家：<%= seller.identify %></div>
-          </div><!-- seller-box -->
-          <% cart_items.each do |cart_item| %>
-            <div class="order-box" data-id="<%= cart_item.id %>">
-              <input type="checkbox" class="checkbox"  name="check_item" checked='true'>
-              <div class="cover"><a href="<%= product_path(cart_item.product) %>"><img src="<%= cart_item.image_url %>"></a></div>
-              <div class="content">
-                <div class="price">
-                  <p>￥<span class="product-price"><%= cart_item.price %></span></p>
-                </div>
-                <p class="name"><%= cart_item.product_name %></p>
-                <p class="info">
-                  <% cart_item.product_inventory.properties.each do |property| %>
-                    <span><%= "#{property.key} : #{property.value}" %></span>
-                  <% end %>
-                </p>
-                <button class="btn btn-delete <%= "c_delete_#{cart_item.id}" %>"></button>
-                <div class="count">
-                  <button class="min">-</button>
-                  <input type="tel" name="num" class="num" value="<%= cart_item.count %>">
-                  <button class="plus">+</button>
-                </div>
-              </div>
-            </div><!-- order-box-->
-          <% end %>
-          <% if cart_items.first.sharing_node.present? %>
-            <% sharing_user = cart_items.first.sharing_node.user %>
-            <div class="friend-info">
-              <div class="cover">
-                <img src="<%= sharing_user.avatar_url(:thumb) %>" title="<%= sharing_user.identify %>"/>
-              </div>
-              <div class="content">使用 <span class="main-color"><%= sharing_user.identify %></span> 的友情卡</div>
-            </div><!-- friend-info -->
-          <% end %>
-          <div class="price-box">
-            本店合计：￥
-            <span class="single_total_price">0.0</span>
-          </div><!-- price-box -->
-        </div><!-- order-list -->
-      <% end %>
-      <%# 购物车失效商品 %>
-      <% if !@invalid_items.blank? %>
-        <div class="order-list failed-list">
-          <% @invalid_items.each do |cart_item| %>
-            <div class="order-box" data-id="<%= cart_item.id %>">
-              <span class="label pull-left">失效</span>
-              <div class="cover"><img src="<%= cart_item.image_url %>"></div>
-              <div class="content">
-                <p class="name"><%= cart_item.product_name %></p>
-                <p class="gray-color">宝贝已不能购买，请联系卖家</p>
-                <p><button class="btn btn-gray btn-delete <%= "c_delete_#{cart_item.id}" %>">删除</button></p>
-              </div><!-- content -->
-            </div><!-- order-box -->
-          <% end %>
-        </div><!-- order-list -->
-      <% end %>
-    </div><!-- cart-list -->
-
-    <div class="order-price">
-      <%= link_to '去结算', 'javascript:;', class: 'cart-btn btn new_order' %>
-      <div class="select-all"><input type="checkbox" class="checkbox" checked='false' id="box_all"> 全选</div>
-      <div class="content">
-
-        <p>金额合计：￥<span class="total_price">0.0</span></p>
-        <p class="gray-color"><small>不含邮费、优惠减扣</small></p>
-      </div>
-    </div><!-- order-price -->
-  <% end %>
-</form>
+  </div><!-- order-price -->
+<% end %>

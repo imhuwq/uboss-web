@@ -30,14 +30,14 @@ class StockSku.Views.Property extends Backbone.View
   showPVSel: (e)->
     e.preventDefault()
     if !!@model.get('name')
-      @.$('.pv-sel-group').show()
+      @$('.pv-sel-group').show()
       @pvSelect2.select2('open')
     else
       alert('请选择一个规格')
 
   hidePVSel: (e)->
     e? && e.preventDefault()
-    @.$('.pv-sel-group').hide()
+    @$('.pv-sel-group').hide()
 
   newProperty: (e)->
     _.each @propertyValues.models, =>
@@ -63,7 +63,7 @@ class StockSku.Views.Property extends Backbone.View
   addPropertyValue: (propertyValue)->
     console.log('addPropertyValue')
     pValueView = new StockSku.Views.PropertyValue(model: propertyValue)
-    @.$('.pv-list').append pValueView.render().el
+    @$('.pv-list').append pValueView.render().el
     @hidePVSel()
 
   newPropertyValue: (e)->
@@ -71,11 +71,11 @@ class StockSku.Views.Property extends Backbone.View
     if @pvSelect2.select2('data').length > 0
       console.log('newPropertyValue')
       @propertyValues.add(@pvSelect2.select2('data'))
-      StockSku.stock_view.trigger('skuchange')
+      StockSku.Collections.stock_collection.trigger('skuchange')
       @pvSelect2.select2('val', '')
 
   initSelect: ->
-    @pvSelect2 = @.$('input.pv-sel').select2
+    @pvSelect2 = @$('input.pv-sel').select2
       width: 200
       id: (item) -> item.value
       formatSelection: (item) -> item.value
@@ -94,7 +94,7 @@ class StockSku.Views.Property extends Backbone.View
           if not fullMatch
             data.results.unshift({id: query.term, value: query.term})
         else
-          if @selectablePVs.length == 0
+          if @selectablePVs.length == 0 and query.term.length > 0
             data.results.push({id: query.term, value: query.term})
           else
             data.results = @selectablePVs
@@ -107,7 +107,7 @@ class StockSku.Views.Property extends Backbone.View
         console.log 'add new propertyValue'
         @selectablePVs.push(value: addedData.value)
 
-    @ppSelect2 = @.$('input.property-inp').select2
+    @ppSelect2 = @$('input.property-inp').select2
       width: 200
       id: (item) -> item.name
       formatSelection: (item) -> item.name

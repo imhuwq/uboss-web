@@ -1,7 +1,6 @@
 class ProductInventory.View.PropertySelectBlock extends Backbone.View
 
   template: JST["#{ProductInventory.TemplatesPath}/property_select_block"]
-#  collection: new ProductInventory.Collections.Properties
   tagName: 'div'
   className: 'buy_now_option'
 

@@ -24,11 +24,7 @@ class CartItem < ActiveRecord::Base
   end
 
   def self.valid_items(cart_items)
-    cart_items.map{ |cart_item| cart_item if cart_item.product_inventory_valid? }.compact
-  end
-
-  def self.invaild_items(cart_items)
-    cart_items - valid_items(cart_items)
+    cart_items.map{ |cart_item| cart_item if cart_item.product_inventory.saling? }.compact
   end
 
   def image_url(type = :w120)
@@ -65,16 +61,12 @@ class CartItem < ActiveRecord::Base
     deal_price * count
   end
 
-  def product_inventory_valid?
-    product_inventory.published? && check_count
-  end
-
   def check_count
     if count <= 0 || count > product_inventory.reload.count
-      errors.add(:count, :invalid)
-      return false
+      errors[:base] << "#{product_name} [ #{sku_attributes_str} ] 库存不足，最多购买 #{product_amount} 件"
+      false
     else
-      return true
+      true
     end
   end
 

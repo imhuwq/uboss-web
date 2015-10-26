@@ -87,15 +87,14 @@ class Admin::ProductsController < AdminController
 
   def product_params
     params.require(:product).permit(
-      :name,                 :original_price,    :present_price, :count,
-      :content,              :has_share_lv,      :calculate_way, :avatar,
-      :share_amount_total,   :share_amount_lv_1, :share_amount_lv_2,
-      :share_amount_lv_3,    :share_rate_total,  :share_rate_lv_1,
-      :share_rate_lv_2,      :share_rate_lv_3,   :buyer_pay,
-      :traffic_expense,      :short_description, :transportation_way,
+      :name,      :original_price,  :present_price,     :count,
+      :content,   :has_share_lv,    :calculate_way,     :avatar,
+      :buyer_pay, :traffic_expense, :short_description, :transportation_way,
       :carriage_template_id,
       product_inventories_attributes: [
-        :id, :price, :count, sku_attributes: product_propertys_params[:product_propertys_names]
+        :id, :price, :count, :share_amount_total, :privilege_amount,
+        :share_amount_lv_1, :share_amount_lv_2, :share_amount_lv_3,
+        sku_attributes: product_propertys_params[:product_propertys_names],
       ]
     )
   end

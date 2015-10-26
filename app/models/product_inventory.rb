@@ -6,6 +6,7 @@ class ProductInventory < ActiveRecord::Base
   has_many   :order_items
 
   validates_presence_of :product
+  validate :share_amount_total_must_lt_price
 
   scope :saling, -> { where(saling: true) }
   scope :not_saling, -> { where(saling: false) }
@@ -13,10 +14,9 @@ class ProductInventory < ActiveRecord::Base
   delegate :image_url, :status, :traffic_expense, :carriage_template, :carriage_template_id, :transportation_way, :is_official_agent?, to: :product
 
   after_create :create_product_properties
-  before_save :calculate_sharing_amount, if: -> { price_changed? }
 
-  def published?
-    status == 'published'
+  def saling?
+    status == 'published' && saling
   end
 
   def product_name
@@ -50,21 +50,6 @@ class ProductInventory < ActiveRecord::Base
     }
   end
 
-  def calculate_sharing_amount(changed_product = nil)
-    assigned_total = 0
-    changed_product ||= self.product
-
-    self.share_amount_total = (price * changed_product.share_rate_total).to_i / 100
-    3.times do |index|
-      level = index + 1
-      amount = (self.share_amount_total * changed_product["share_rate_lv_#{level}"]).round(2)
-      __send__("share_amount_lv_#{level}=", amount)
-      assigned_total += amount
-    end
-    last_amount = share_amount_total - assigned_total
-    self.privilege_amount = last_amount > 0 ? last_amount : 0
-  end
-
   SkuProperty = Struct.new(:key, :value)
   def properties
     @properties ||= sku_attributes.collect do |key, value|
@@ -78,6 +63,12 @@ class ProductInventory < ActiveRecord::Base
     sku_attributes.each do |property_name, property_value|
       property = ProductProperty.find_or_create_by(name: property_name)
       ProductPropertyValue.find_or_create_by(product_property_id: property.id, value: property_value)
+    end
+  end
+
+  def share_amount_total_must_lt_price
+    if (share_amount_lv_3 + share_amount_lv_2 + share_amount_lv_1 + privilege_amount) > price
+      errors.add(:share_amount_total, '必须小于对应（商品/规格）的价格')
     end
   end
 

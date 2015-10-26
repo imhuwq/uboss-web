@@ -17,19 +17,17 @@ class StockSku.Views.Sku extends Backbone.View
     console.log 'add Property'
     newProperty = @collection.create(values: new StockSku.Collections.PropertyValues)
     newPropertyValues = newProperty.get('values')
-    #@listenTo newPropertyValues, 'add',    @renderSku
     @listenTo newPropertyValues, 'remove', @renderSku
 
   addAll: ->
     @collection.each (property) =>
       propertyValues = property.get('values')
-      #@listenTo propertyValues, 'add',    @renderSku
       @listenTo propertyValues, 'remove', @renderSku
       @addOne(property)
 
   addOne: (property) =>
     propertyView = new StockSku.Views.Property(model: property, skuView: @)
-    @.$('.property-list').append propertyView.render().el
+    @$('.property-list').append propertyView.render().el
     if property.get('values').length > 0
       propertyView.addAllPropertyValue()
     else
@@ -37,4 +35,4 @@ class StockSku.Views.Sku extends Backbone.View
 
   renderSku: ->
     console.log 'render stock'
-    StockSku.stock_view.trigger('skuchange')
+    StockSku.Collections.stock_collection.trigger('skuchange')
