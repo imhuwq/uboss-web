@@ -11,7 +11,7 @@ module Imagable
             if file.is_a?(String)
               write_uploader column, file
             else
-              __send__("#{column}=", file)
+              super(file)
             end
           end
           __send__(column)
