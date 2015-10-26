@@ -95,8 +95,3 @@ $ ->
     $('#price_range').addClass('hidden')
     $('.real_price').addClass('hidden')
     $("#price_#{product_inventory_id}").removeClass('hidden')
-
-
-  $('#sku_price').on 'change', ->
-    console.log "changed"
-    $('#price_range').html($('#sku_price').val())

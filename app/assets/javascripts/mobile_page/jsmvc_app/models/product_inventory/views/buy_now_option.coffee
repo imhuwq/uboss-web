@@ -1,31 +1,17 @@
 class ProductInventory.View.BuyNowOption extends Backbone.View
 
   template: JST["#{ProductInventory.TemplatesPath}/buy_now_option"]
-
   className: "buy_now_option"
-
   el: "#product_inventory_options"
-
   properties: null
-
   relate_sku_ids: []
-
   product_id: '1'
-
-  pre_relate_sku_ids: []
-
+  pre_relate_sku_ids: {}
   submit_way: ''
-
   skus: null
-
   single_price: 0
-
   total_price: 0
-
   count: 1
-
-  # initialize: ->
-  #   @getSKU()
 
   events:
     'click .sku': 'selectSkuItem'
@@ -36,11 +22,9 @@ class ProductInventory.View.BuyNowOption extends Backbone.View
     'keyup  .count_num' : 'limitToNumKeyup'
     'keypress .count_num' : 'limitToNumKeypress'
 
-
   getSKU: (product_inventory_ids=[])->
 
     that = this
-
     $.ajax
       url: '/products/get_sku'
       type: 'GET'
@@ -49,11 +33,9 @@ class ProductInventory.View.BuyNowOption extends Backbone.View
         # 获取属性列表 ->>
         that.newProperties(res['skus'])
         # <<= 获取属性列表
-
         # 获取sku信息 ->>
         that.newSKUs(res['sku_details'])
         # <<= 获取sku信息
-
         that.render('','',that.submit_way,that.product_id)
       error: (data, status, e) ->
         alert("ERROR")
@@ -94,12 +76,9 @@ class ProductInventory.View.BuyNowOption extends Backbone.View
       @getSKU()
       return
 
-
     $('#product_inventory_options').html @template(count: @count)
-
     @judgeItemDisable(product_inventory_ids, select_value_cid)
     @judgeItemClick()
-
     @
 
   judgeItemClick: () ->
@@ -120,37 +99,20 @@ class ProductInventory.View.BuyNowOption extends Backbone.View
 
 
   judgeItemDisable: (product_inventory_ids = [], select_value_cid="") ->
-    that = this
-    console.log "that.pre_relate_sku_ids.length" ,that.pre_relate_sku_ids.length == 0
-    if that.pre_relate_sku_ids.length == 0
 
-      that.pre_relate_sku_ids = new ProductInventory.Collections.PreRelateSkuIds
+    that = this
+    @properties.each (propertyModel) ->
+      propertyModel.get('property_values').each (value) ->
+        if select_value_cid.length > 0 && select_value_cid == value.cid
+          that.pre_relate_sku_ids[propertyModel.cid] = product_inventory_ids
 
     @properties.each (propertyModel) ->
       propertyView = new ProductInventory.View.Property(model: propertyModel)
       $('#product_inventory_options .buy_now_option').append propertyView.render().el
-
       # 找出已选属性值的同级所有属性值的cid
       property_model_value_cids = []
       propertyModel.get('property_values').each (value) ->
-        # console.log "select_value_cid", select_value_cid
-        # console.log "value.cid", value.cid
         if select_value_cid.length > 0 && select_value_cid == value.cid
-          # TODO
-          # property_relate_sku_ids = that.pre_relate_sku_ids.search(propertyModel.cid, ['property_cid'])
-          property_relate_sku_ids = that.pre_relate_sku_ids.where({'property_cid': propertyModel.cid})
-          console.log "that.pre_relate_sku_ids.where({#{propertyModel.cid}: propertyModel.cid})=",property_relate_sku_ids
-          if property_relate_sku_ids != []
-            chaged_property_relate_sku_ids = property_relate_sku_ids.at(0).set(relate_sku: product_inventory_ids)
-            that.pre_relate_sku_ids.remove(property_relate_sku_ids.at(0))
-            that.pre_relate_sku_ids.add(chaged_property_relate_sku_ids)
-            console.log "that.pre_relate_sku_ids.add(chaged_property_relate_sku_ids)",that.pre_relate_sku_ids
-          else
-            property_relate_sku_ids = new ProductInventory.Models.PreRelateSkuIds(property_cid: propertyModel.cid, relate_sku: product_inventory_ids)
-            that.pre_relate_sku_ids.add(property_relate_sku_ids)
-            console.log "that.pre_relate_sku_ids.add(property_relate_sku_ids)", that.pre_relate_sku_ids.add(property_relate_sku_ids)
-
-          # that.pre_relate_sku_ids[propertyModel.cid] = product_inventory_ids
           propertyModel.get('property_values').each (value) ->
             property_model_value_cids = property_model_value_cids.concat([value.cid])
 
@@ -160,25 +122,12 @@ class ProductInventory.View.BuyNowOption extends Backbone.View
           value.attributes.disabled = "true"
         else
           init = []
-          console.log "bafore that.pre_relate_sku_ids", that.pre_relate_sku_ids
-          # for k1,v1 of that.pre_relate_sku_ids
-          #   console.log "that.pre_relate_sku_ids[#{k1}]", that.pre_relate_sku_ids
-          #   console.log "k=#{k1}", v1
-          that.pre_relate_sku_ids.each (model) ->
-
-            if model.get('property_cid') != propertyModel.cid
+          for k,v of that.pre_relate_sku_ids
+            if k != propertyModel.cid
               if init.length == 0
-                console.log "init.length == 0"
-                console.log "#{model.get('property_cid')}.v", model.get('relate_sku')
-                init = model.get('relate_sku')
+                init = v
               else
-                console.log "#{model.get('property_cid')}.v", model.get('relate_sku')
-                init = init.intersect(model.get('relate_sku'))
-          # console.log "that.pre_relate_sku_ids", that.pre_relate_sku_ids
-          console.log "init", init
-          # console.log "value.attributes.relate_sku", value.attributes.relate_sku
-          console.log "propertyModel.cid", propertyModel.cid
-          console.log "value.cid", value.cid
+                init = init.intersect(v)
           if product_inventory_ids.length > 0 && value.attributes.relate_sku.intersect(init).length > 0
             value.attributes.disabled = "false"
 
@@ -186,7 +135,6 @@ class ProductInventory.View.BuyNowOption extends Backbone.View
           value.attributes.selected = "true"
         else if property_model_value_cids.intersect([value.cid]).length > 0 || value.attributes.disabled == "true"
           value.attributes.selected = "false"
-
         parentPorperty.find('ul').append new ProductInventory.View.PropertyValue(model: value).render().el
 
   selectSkuItem: (e) ->
@@ -199,16 +147,9 @@ class ProductInventory.View.BuyNowOption extends Backbone.View
       if @relate_sku_ids.length == 1
         @single_price = @skus.search(@relate_sku_ids[0],['id']).at(0).attributes.price
         @calculateTotalPrice()
-
       @render(relate_sku_ids,valueCid,@submit_way)
 
-
-
-
-
-
   confirmInventory: (e) ->
-
     e.preventDefault()
     if @relate_sku_ids.length == 1
       $('#product_inventory_id').val(@relate_sku_ids[0])
@@ -233,7 +174,6 @@ class ProductInventory.View.BuyNowOption extends Backbone.View
               alert("ERROR")
       else
         alert "请填写正确的商品数量"
-
     else
       alert "请选择您需要购买的属性。"
 
@@ -253,7 +193,6 @@ class ProductInventory.View.BuyNowOption extends Backbone.View
     res = [];
     for _b,i in b
       flip[b[i]] = i
-
     for _this,i in this
       if flip[this[i]] != undefined
         res.push(this[i])
