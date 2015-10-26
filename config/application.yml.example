@@ -6,3 +6,4 @@ SSO_SECRET: 'is_a_secret_leng_max_10'
 SECRET: 'is_a_secret_leng_max_10'
 KEY: '123'
 CALLBACK_URL: http://stage.bbs.uboss.me/session/sso_login
+DISCOURSE_URL: http://stage.bbs.uboss.me

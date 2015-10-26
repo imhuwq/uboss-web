@@ -63,7 +63,11 @@
 
     <% if !browser.wechat? %>
       <div class="button_div  col-xs-12"  style="margin: 10px 0 10px 0;">
-        <%= link_to "返回主页", root_path, class: "btn btn-large btn-link col-xs-12"%>
+        <% if is_sso_url %>
+          <%= link_to "返回主页", root_path, class: "btn btn-large btn-link col-xs-12"%>
+        <% else %>
+          <%= link_to "返回主页", ENV[:DISCOURSE_URL], class: "btn btn-large btn-link col-xs-12"%>
+        <% end %>
       </div>
     <% end %>
   <% end %>
