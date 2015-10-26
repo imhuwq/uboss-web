@@ -17,7 +17,7 @@ class ApplicationController < ActionController::Base
       return
     end
     if( request.path == discourse_sso_path )
-      session[:discourse_sso] = request.fullpath
+      session[:discourse_sso] = request.fullpath if current_user.blank?
     end
   end
 

@@ -1,10 +1,19 @@
+<% is_sso_url = cookies.delete(:is_sso_url) %>
 <%= content_for :page_title do %>
-  登录UBOSS
+  <% if is_sso_url %>
+    登录优创客
+  <% else %>
+    登录UBOSS
+  <% end %>
 <% end %>
 
 <div class='login-container <%= @using_password ? 'using-pwd' : 'using-cap' %>'>
   <%= simple_form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
-    <h2>UBOSS</h2>
+    <% if is_sso_url %>
+      <h2>优创客联盟</h2>
+    <% else %>
+      <h2>UBOSS</h2>
+    <% end %>
     <hr />
 
     <div class='login-type-acs row'>
