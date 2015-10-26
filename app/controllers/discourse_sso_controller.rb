@@ -9,6 +9,7 @@ class DiscourseSsoController < ApplicationController
       sso.sso_secret = secret
       redirect_to sso.to_url(ENV['CALLBACK_URL'])
     else
+      cookies[:is_sso_url] = true
       redirect_to(new_user_session_url)
     end
   end
