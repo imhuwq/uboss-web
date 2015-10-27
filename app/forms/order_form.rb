@@ -21,15 +21,12 @@ class OrderForm
   validates :deliver_mobile, :deliver_username, :province, :city, :area, presence: true, if: -> { self.user_address_id.blank? }
   validates :deliver_mobile, mobile: true, allow_blank: true
   validate  :captcha_must_be_valid, :mobile_blank_with_oauth, if: -> { self.buyer.blank? }
-  validate  :check_product_account
-
-
-  delegate :traffic_expense, to: :product, prefix: :product
+  validate  :product_must_be_valid
 
   def user_address
     return @user_address if @user_address.present?
     if buyer && user_address_id.present?
-      @user_address = buyer.user_addresses.find(self.user_address_id)
+      @user_address = buyer.user_addresses.find(user_address_id)
     else
       @user_address = UserAddress.new(
         user: buyer,
@@ -51,6 +48,10 @@ class OrderForm
 
   def product_inventory
     @product_inventory ||= ProductInventory.find(self.product_inventory_id)
+  end
+
+  def cart_items
+    @cart_itmes ||= CartItem.includes(:sharing_node, product_inventory: [:product]).find(cart_item_ids)
   end
 
   def sharing_node
@@ -163,19 +164,25 @@ class OrderForm
     }}
   end
 
-  def cart_items
-    @cart_itmes ||= CartItem.find(cart_item_ids)
-  end
-
-  def check_product_account
+  def product_must_be_valid
     if product_id.present?
-      if amount.to_i > product_inventory.reload.count
-        errors.add(:base, "#{product_inventory.product_name}[#{product_inventory.sku_attributes_str}] 库存不足，最多购买 #{product_inventory.count} 件")
+      if !product_inventory.saling?
+        errors.add(:base, "该商品不可售")
+      elsif !Order.valid_to_sales?(product, ChinaCity.get(user_address.try(:province) || province))
+        errors.add(:base, "该商品在收货地址内不可售，请重新选择收货地址")
+      elsif amount.to_i > product_inventory.reload.count
+        self.amount = product_inventory.count
+        errors.add(:base, "该商品库存不足，最多购买 #{amount} 件")
       end
-    elsif seller_ids
+    elsif seller_ids.present?
       cart_items.each do |cart_item|
-        if cart_item.count > cart_item.product_inventory.reload.count
-          errors[:base] << "#{cart_item.product_name}[#{cart_item.sku_attributes_str}] 库存不足，最多购买 #{cart_item.product_amount} 件"
+        if !cart_item.product_inventory.saling?
+          errors.add(:base, "#{cart_item.product_name}[#{cart_item.sku_attributes_str}] 不可售")
+        elsif !Order.valid_to_sales?(cart_item.product, ChinaCity.get(user_address.try(:province) || province))
+          errors.add(:base, "#{cart_item.product_name} 在收货地址内不可售，请重新选择收货地址") && return
+        elsif cart_item.count > cart_item.product_inventory.reload.count
+          cart_item.update_attribute(:count, cart_item.product_amount)
+          errors.add(:base, "#{cart_item.product_name}[#{cart_item.sku_attributes_str}] 库存不足，最多购买 #{cart_item.product_amount} 件")
         end
       end
     end

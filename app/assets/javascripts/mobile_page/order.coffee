@@ -118,7 +118,7 @@ $ ->
     $('#address .address-box').removeClass('hidden')
     $('.none-address-box').hide()
 
-  # 获取有效商品、无效商品、运费、优惠等信息(收货地址改变) XXX===========
+  # 获取有效商品、无效商品、运费等信息(收货地址改变) XXX===========
   setOrderRelativeData = ->
     $.ajax
       url: '/orders/ship_price'
@@ -141,6 +141,7 @@ $ ->
           setSingleOrderPrivilegeAmount()
           setSingleOrderTotalPrice()
           setOrderTotalPrice()
+          setSubmitOrderBtn()
         else
       error: (data, status, e) ->
         alert('收货地址修改失败')
@@ -205,6 +206,14 @@ $ ->
       else
         $this.removeClass('invalid-list').addClass('valid-list')
 
+  setSubmitOrderBtn = ->
+    $cart_btn = $('.order-price').find('.cart-btn')
+    if $('.order-list.valid-order-list.valid-list').length == 0
+      $cart_btn.attr('disabled', true)
+    else
+      $cart_btn.removeAttr('disabled')
+
+
   # 更新有效的商品列表
   refreshValidItemsList = (valid_item_ids) ->
     $('.valid-order-list').find('.order-box').each ->
@@ -237,7 +246,7 @@ $ ->
         html += '<div class="order-box valid-box"> <div class="cover"><img alt="-" src="' +
         item['image_url'] +
         '"></div> <div class="content"> <div class="price"> <p class="gray-color">￥<span class="product-price">' +
-        item['price']+
+        item['price'] +
         '</span></p> <p class="gray-color num" data-num="1">x ' +
         item['count'] +
         '</p> </div> <p class="name">' +
@@ -248,7 +257,4 @@ $ ->
     $(".dead-items").empty().append(html)
 
   if $('#total_price').length != 0
-    setOrderListVisible()
     setOrderRelativeData()
-    setSingleOrderTotalPrice()
-    setOrderTotalPrice()
