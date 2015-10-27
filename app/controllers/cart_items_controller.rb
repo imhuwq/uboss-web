@@ -1,5 +1,8 @@
 class CartItemsController < ApplicationController
   before_action :authenticate_user!
+  def index
+    redirect_to (params[:product_id].present? ? product_path(params[:product_id]) : root_path)
+  end
 
   def create
     product_inventory = ProductInventory.find(params[:product_inventory_id])
