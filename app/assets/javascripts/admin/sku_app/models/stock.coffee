@@ -2,11 +2,6 @@ class StockSku.Models.Stock extends Backbone.Model
 
   idAttribute: 'identify'
 
-  sharingRate:
-    'level1': [80, 0,  0]
-    'level2': [50, 40, 0]
-    'level3': [40, 30, 20]
-
   initialize: ->
     @set('identify', JSON.stringify(@get('sku_attributes')))
     @listenTo @, 'change:share_amount_total', @calculateSharingAmount
@@ -22,6 +17,26 @@ class StockSku.Models.Stock extends Backbone.Model
     share_amount_lv_3: 0
     share_level: 3
     privilege_amount: 0
+
+  validate: (attrs, options) ->
+    console.log 'attrs', attrs
+    errors = {}
+    if attrs.count < 0
+      errors.count = '库存必须大于0'
+    if attrs.share_amount_total >= attrs.price
+      errors.share_amount_total = '返利需小于商品价格'
+      errors.price = '商品价格需大于返利值'
+    if attrs.share_amount_total < 0
+      errors.share_amount_total = '返利不能小于0'
+    if attrs.price < 0.01
+      errors.price = '价格必须大于0.01'
+    if not _.isEmpty(errors)
+      return errors
+
+  sharingRate:
+    'level1': [80, 0,  0]
+    'level2': [50, 40, 0]
+    'level3': [40, 30, 20]
 
   calculateSharingAmount: ->
     shareAmountTotal = Number(@get('share_amount_total'))
