@@ -1,6 +1,7 @@
 class OrdersController < ApplicationController
   before_action :authenticate_user!, except: [:new, :create, :ship_price]
   before_action :find_order, only: [:cancel, :show, :pay, :pay_complete, :received]
+  before_action :authenticate_user_if_browser_wechat, only: [:new]
 
   def cancel
     if @order.may_close? && @order.close!
@@ -18,10 +19,6 @@ class OrdersController < ApplicationController
   end
 
   def new
-    if browser.wechat? && session['devise.wechat_data'].blank?
-      authenticate_user!
-    end
-
     @order_form = OrderForm.new(
       buyer: current_user,
       amount: params[:amount] || 1,
@@ -134,6 +131,11 @@ class OrdersController < ApplicationController
   end
 
   private
+  def authenticate_user_if_browser_wechat
+    if browser.wechat? && session['devise.wechat_data'].blank?
+      authenticate_user!
+    end
+  end
 
   def json_of(invalid_items)
     invalid_items.collect { |item| {
