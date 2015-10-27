@@ -142,18 +142,13 @@
 
   <% if @sharing_node.blank? %>
     <div class="share_buy">
-    	<div class="half_left">
-    		&nbsp;
-    	</div>
-    	<div class="half_right">
-	      <%#<%= link_to '立即购买', new_order_path(product_id: @product.id), class: 'btn pull-right' %>
-	      <% if current_user %>
-	        <%= link_to '加入购物车', 'javascript:;', class: 'btn_add_to_cart', id: 'show_inventory_cart'%>
-	      <% else %>
-	        <%= link_to '加入购物车', '/cart_items', class: 'btn_add_to_cart', method: 'post'%>
-	      <% end %>
-	      <%= link_to '立即购买', 'javascript:;', class: 'btn_buy_now', id:"show_inventory", style: 'float:right;' %>
-		  </div>
+      <%#<%= link_to '立即购买', new_order_path(product_id: @product.id), class: 'btn pull-right' %>
+      <% if current_user %>
+        <%= link_to '加入购物车', 'javascript:;', class: 'btn_add_to_cart', id: 'show_inventory_cart'%>
+      <% else %>
+        <%= link_to '加入购物车', "/cart_items?product_id=#{@product.id}", class: 'btn_add_to_cart', method: 'post'%>
+      <% end %>
+      <%= link_to '立即购买', 'javascript:;', class: 'btn_buy_now', id:"show_inventory", style: 'float:right;' %>
 
       <input type="hidden" name="product[id]" value="<%= @product.id %>" />
       <input type="hidden" name="product[count]" value="<%= 1 %>" />

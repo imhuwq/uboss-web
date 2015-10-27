@@ -94,7 +94,7 @@ Rails.application.routes.draw do
       post :change_item_count
     end
   end
-  resources :cart_items, only: [:create, :destroy]
+  resources :cart_items, only: [:index, :create]
 
   namespace :api do
     namespace :v1 do

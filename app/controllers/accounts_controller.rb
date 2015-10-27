@@ -190,7 +190,7 @@ class AccountsController < ApplicationController
   end
 
   def settings
-    #render layout: 'mobile'
+    render layout: 'mobile'
   end
 
   private

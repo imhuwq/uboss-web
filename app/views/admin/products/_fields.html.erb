@@ -19,7 +19,7 @@
     <%= f.input_field :avatar, type: :hidden, as: :file %>
     <p><span>建议上传比例为1:1的图片，最佳尺寸为<b style="color: red;">600x600</b>像素</span></p>
     <p class="fileinput-button">
-        <% if @product.new_record? %>
+        <% if @product.image_url.blank? %>
           <%= image_tag("admin/no-img.png") %>
         <% else %>
           <%= image_tag(@product.image_url(:thumb))%>
