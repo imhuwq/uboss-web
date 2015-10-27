@@ -1,4 +1,5 @@
 class ProductInventory.View.PriceRange extends Backbone.View
+  
   el: "#price_range"
   price_range: 0
 

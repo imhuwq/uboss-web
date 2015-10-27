@@ -7,7 +7,6 @@
 console.log "main is ready"
 
 ((root) ->
-
   # disable backbone sync
   Backbone.sync = ->
     return false

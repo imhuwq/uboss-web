@@ -4,7 +4,6 @@ class ProductInventory.View.PropertySelectBlock extends Backbone.View
   tagName: 'div'
   className: 'buy_now_option'
 
-
   render:() ->
     # this.preventDefault()
     console.log "view", "ProductInventory.View.OutterBlock"

@@ -76,7 +76,7 @@ class ProductInventory.View.BuyNowOption extends Backbone.View
       @getSKU()
       return
 
-    $('#product_inventory_options').html @template(count: @count)
+    @$el.html @template(count: @count)
     @judgeItemDisable(product_inventory_ids, select_value_cid)
     @judgeItemClick()
     @

@@ -1,5 +1,3 @@
-
-  <p>
-    <%= @property_value %>
-  </p>
-
+<p>
+  <%= @property_value %>
+</p>
