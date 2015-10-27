@@ -136,19 +136,20 @@ class ProductInventory.View.BuyNowOption extends Backbone.View
             value.attributes.disabled = "false"
 
         if select_value_cid.length > 0 && select_value_cid == value.cid
-          value.attributes.selected = "true"
+            value.attributes.selected = "true"
         else if property_model_value_cids.intersect([value.cid]).length > 0 || value.attributes.disabled == "true"
           value.attributes.selected = "false"
         parentPorperty.find('ul').append new ProductInventory.View.PropertyValue(model: value).render().el
 
   selectSkuItem: (e) ->
     if $(e.target).parent('.sku').length == 1
-      unSelectValues = $($(e.target).parents('ul')).find('.item_click')
-      unSelectValues.removeClass('item_click') # 取消原来同级选中状态
       valueCid = $(e.target).parents('.sku').attr('id') # 获取属性cid
       propertyCid = $($(e.target).parents('div')[0]).attr('id') # 获取属性值cid
       relate_sku_ids = @properties.get(propertyCid).attributes.property_values.get(valueCid).attributes.relate_sku # 获取关联sku的ids
-      @render(relate_sku_ids,valueCid,@submit_way)
+      if @properties.get(propertyCid).attributes.property_values.get(valueCid).attributes.disabled == 'false'
+        unSelectValues = $($(e.target).parents('ul')).find('.item_click')
+        unSelectValues.removeClass('item_click') # 取消原来同级选中状态
+        @render(relate_sku_ids,valueCid,@submit_way)
 
   confirmInventory: (e) ->
     e.preventDefault()
