@@ -5,21 +5,22 @@ class OrderForm
   include ActiveModel::Model
 
   ATTRIBUTES = [
-    :product_id, :amount, :mobile, :captcha, :user_address_id, :deliver_username,
-    :province, :city, :country, :area, :building, :street, :deliver_mobile, :sharing_code,
-    :seller_ids, :cart_id, :cart_item_ids, :to_seller, :product_inventory_id
+    :mobile, :captcha, :product_id, :product_inventory_id, :amount, :cart_id,
+    :user_address_id, :deliver_username, :province, :city, :area, :building, :deliver_mobile
   ]
 
   ATTRIBUTES.each do |order_attr|
     attr_accessor order_attr
   end
 
-  attr_accessor :sharing_node, :product, :buyer, :user_address, :order, :session
+  attr_accessor :sharing_code, :seller_ids, :cart_item_ids, :to_seller, :session,
+    :sharing_node, :product, :product_inventory, :buyer, :user_address, :order
 
   #validates :amount, presence: true, if: -> { self.product_id }
   validates :mobile, presence: true, mobile: true, if: -> { self.buyer.blank? }
   validates :deliver_mobile, :deliver_username, :province, :city, :area, presence: true, if: -> { self.user_address_id.blank? }
   validates :deliver_mobile, mobile: true, allow_blank: true
+  validates :seller_ids, :cart_item_ids, presence: true, if: -> { self.product_id.blank? }
   validate  :captcha_must_be_valid, :mobile_blank_with_oauth, if: -> { self.buyer.blank? }
   validate  :product_must_be_valid
 
@@ -32,11 +33,9 @@ class OrderForm
         user: buyer,
         mobile: deliver_mobile,
         username: deliver_username,
-        country: country,
         province: province,
         city: city,
         area: area,
-        street: street,
         building: building
       )
     end
@@ -64,9 +63,6 @@ class OrderForm
   end
 
   def save
-    # - verify Mobile captcha
-    # - check product valid?
-    # - check SKU amount
     if self.valid?
       ActiveRecord::Base.transaction do
         create_or_update_user

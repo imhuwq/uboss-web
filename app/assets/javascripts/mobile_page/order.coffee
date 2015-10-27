@@ -121,7 +121,7 @@ $ ->
   # 获取有效商品、无效商品、运费等信息(收货地址改变) XXX===========
   setOrderRelativeData = ->
     $.ajax
-      url: '/orders/ship_price'
+      url: '/orders/change_address'
       type: 'POST'
       data: {
         cart_id: $('#order_form_cart_id').val(),
@@ -132,7 +132,6 @@ $ ->
         province: $('#province').val()
       }
       success: (res) ->
-        #flashPopContent('<div class="pop-text">修改收货地址后请重新确认订单信息</div>')
         if res['status'] == "ok"
           refreshInvalidItems(res['invalid_items'])
           refreshValidItemsList(res['valid_item_ids'])
@@ -143,8 +142,10 @@ $ ->
           setOrderTotalPrice()
           setSubmitOrderBtn()
         else
+          flashPopContent('<div class="pop-text">操作错误</div>')
+          location.reload()
       error: (data, status, e) ->
-        alert('收货地址修改失败')
+        flashPopContent('<div class="pop-text">操作错误</div>')
         location.reload()
 
   # 单商铺修改运费

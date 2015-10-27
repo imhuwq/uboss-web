@@ -23,10 +23,12 @@
 	<br />
 
   <div class="cart-list">
-    <%= f.hidden_field :cart_id %>
-    <%= f.hidden_field :amount %>
-    <%= f.hidden_field :product_id %>
-    <%= f.hidden_field :product_inventory_id %>
+    <%= f.hidden_field :cart_id if @order_form.cart_id.present? %>
+    <% if @order_form.product_id.present? %>
+      <%= f.hidden_field :product_id %>
+      <%= f.hidden_field :product_inventory_id %>
+      <%= f.hidden_field :amount %>
+    <% end %>
     <% @products_group_by_seller.each do |seller, cart_items| %>
       <div class="order-list valid-order-list valid-list" data-seller-id="<%= seller.id %>">
         <div class="seller-box"><div class="text-cut">商家：<%= seller.store_identify %></div></div>

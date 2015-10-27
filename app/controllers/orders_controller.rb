@@ -82,7 +82,7 @@ class OrdersController < ApplicationController
 
     if @order_form.save
       sign_in(@order_form.buyer) if current_user.blank?
-      clean_current_cart unless params[:order_form][:product_id].present?
+      clean_current_cart unless @order_form.product_id.present?
       @order_title = '确认订单'
       redirect_to payments_charges_path(order_ids: @order_form.order.map(&:id).join(','), showwxpaytitle: 1)
     else
@@ -106,7 +106,7 @@ class OrdersController < ApplicationController
     end
   end
 
-  def ship_price
+  def change_address
     user_address = UserAddress.find_by(id: params[:user_address_id]) || UserAddress.new(province: params[:province])
 
     if params[:product_id].blank?
