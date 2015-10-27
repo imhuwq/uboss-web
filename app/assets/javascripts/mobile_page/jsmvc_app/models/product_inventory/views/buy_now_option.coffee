@@ -10,6 +10,7 @@ class ProductInventory.View.BuyNowOption extends Backbone.View
   submit_way: ''
   skus: null
   single_price: 0
+  single_sku_count: 0
   total_price: 0
   count: 1
 
@@ -64,10 +65,7 @@ class ProductInventory.View.BuyNowOption extends Backbone.View
 
 
   render: (product_inventory_ids = [], select_value_cid="", submit_way="",product_id='')-> # 读出（model生成模式）
-    that = this
-    hash = {a:[1,2,3],b:[4,5,6],c:[7,8,9]}
-    for k,v of hash
-      console.log "#{k}=", v
+    console.log "render"
 
     @submit_way = submit_way
     @product_id = product_id
@@ -95,6 +93,12 @@ class ProductInventory.View.BuyNowOption extends Backbone.View
             that.relate_sku_ids = value.attributes.relate_sku
           else
             that.relate_sku_ids = that.relate_sku_ids.intersect( value.attributes.relate_sku )
+
+    if that.relate_sku_ids.length == 1
+      sku_attributes = that.skus.where('id': "#{that.relate_sku_ids[0]}")[0].attributes
+      that.single_price = sku_attributes.price
+      that.single_sku_count = sku_attributes.count
+      that.calculateTotalPrice()
 
 
 
@@ -144,13 +148,6 @@ class ProductInventory.View.BuyNowOption extends Backbone.View
       valueCid = $(e.target).parents('.sku').attr('id') # 获取属性cid
       propertyCid = $($(e.target).parents('div')[0]).attr('id') # 获取属性值cid
       relate_sku_ids = @properties.get(propertyCid).attributes.property_values.get(valueCid).attributes.relate_sku # 获取关联sku的ids
-      if @relate_sku_ids.length == 1
-        # @single_price = @skus.search(@relate_sku_ids[0],['id']).at(0).attributes.price
-        console.log "@relate_sku_ids[0]", @relate_sku_ids[0]
-        console.log "@skus.where({'id':@relate_sku_ids[0]})", @skus.where('id': "#{@relate_sku_ids[0]}")
-        console.log "@skus", @skus
-        @single_price =  @skus.where('id': "#{@relate_sku_ids[0]}")[0].attributes.price
-        @calculateTotalPrice()
       @render(relate_sku_ids,valueCid,@submit_way)
 
   confirmInventory: (e) ->
@@ -223,9 +220,8 @@ class ProductInventory.View.BuyNowOption extends Backbone.View
     @calculateTotalPrice()
 
 
-  limitToNumKeyup: ->
-      $this = $(this)
-      this.value = this.value.replace(/[^\d]/g, '')
+  limitToNumKeyup: (e) ->
+    $('.count-box .count_num').val( $('.count-box .count_num').val().replace(/[^\d]/g, ''))
 
   # 限制只能输入数字
   limitToNumKeypress: (event) ->
@@ -241,14 +237,17 @@ class ProductInventory.View.BuyNowOption extends Backbone.View
       return false
 
   limitToNumChange: ->
-    $this = $(this)
-    this.value = this.value.replace(/[^\d]/g, '')
-    $('#count_amount').val(this.value)
-    if this.value == '' || this.value == "0"
-      this.value = 1
-      $('#count_amount').val(1)
+    $('.count-box .count_num').val( $('.count-box .count_num').val().replace(/[^\d]/g, ''))
+    if $('.count-box .count_num').val() == '' || $('.count-box .count_num').val() == "0"
+      $('.count-box .count_num').val(1)
 
   calculateTotalPrice: ->
-    @total_price = @single_price * @count
     if @relate_sku_ids.length == 1
+      if @single_sku_count >= @count
+        @total_price = @single_price * @count
+      else
+        @count = @single_sku_count
+        @total_price = @single_price * @count
+        alert "此类型商品最多购买#{@count}件"
+      $('.count-box .count_num').val(@count)
       product_inventory_property_price_range.render(@total_price)

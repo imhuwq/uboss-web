@@ -133,6 +133,33 @@ class Product < ActiveRecord::Base
     end
   end
 
+  def sku_hash
+    skus = {}
+    sku_details = {}
+    self.product_inventories.where("count > 0").each do |obj|
+      obj.sku_attributes.each do |k,v|
+        if !skus[k].present?
+          skus[k] = {}
+        end
+        if !skus[k][v].present?
+          skus[k][v] = []
+        end
+        skus[k][v] << obj.id
+      end
+
+      if !sku_details[obj.id].present?
+        sku_details[obj.id] = {}
+      end
+      sku_details[obj.id][:count] = obj.count
+      sku_details[obj.id][:sku_attributes] = obj.sku_attributes
+      sku_details[obj.id][:price] = obj.price
+    end
+    hash = {}
+    hash[:skus] = skus
+    hash[:sku_details] = sku_details
+    return hash
+  end
+
   private
 
   def must_has_one_product_inventory

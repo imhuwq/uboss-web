@@ -34,31 +34,31 @@ class ProductsController < ApplicationController
   def get_sku
     # binding.pry
     product = Product.find(params[:product_id])
-    skus = {}
-    sku_details = {}
-    product.product_inventories.where("count > 0").each do |obj|
-      obj.sku_attributes.each do |k,v|
-        if !skus[k].present?
-          skus[k] = {}
-        end
-        if !skus[k][v].present?
-          skus[k][v] = []
-        end
-        skus[k][v] << obj.id
-      end
+    # skus = {}
+    # sku_details = {}
+    # product.product_inventories.where("count > 0").each do |obj|
+    #   obj.sku_attributes.each do |k,v|
+    #     if !skus[k].present?
+    #       skus[k] = {}
+    #     end
+    #     if !skus[k][v].present?
+    #       skus[k][v] = []
+    #     end
+    #     skus[k][v] << obj.id
+    #   end
+    #
+    #   if !sku_details[obj.id].present?
+    #     sku_details[obj.id] = {}
+    #   end
+    #   sku_details[obj.id][:count] = obj.count
+    #   sku_details[obj.id][:sku_attributes] = obj.sku_attributes
+    #   sku_details[obj.id][:price] = obj.price
+    # end
+    # hash = {}
+    # hash[:skus] = skus
+    # hash[:sku_details] = sku_details
 
-      if !sku_details[obj.id].present?
-        sku_details[obj.id] = {}
-      end
-      sku_details[obj.id][:count] = obj.count
-      sku_details[obj.id][:sku_attributes] = obj.sku_attributes
-      sku_details[obj.id][:price] = obj.price
-    end
-    hash = {}
-    hash[:skus] = skus
-    hash[:sku_details] = sku_details
-    puts hash[:skus]
-    render json: hash
+    render json: product.sku_hash
     # render json: {'颜色':{'红': [1,2],'白': [3,4],'黄': [3]},'尺寸':{'L':[1,3],'XL':[2,4]}}
   end
 
