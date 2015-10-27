@@ -1,6 +1,12 @@
+<% if params[:redirect] == 'discourse' %>
+  <%= content_for :title do %>
+    <%= Rails.application.secrets.metas["discourse_title"] %>
+  <% end %>
+<% end %>
+
 <%= content_for :page_title do %>
   <% if params[:redirect] == 'discourse' %>
-    登录优创客
+    <%= Rails.application.secrets.metas["discourse_page_title"] %>
   <% else %>
     登录UBOSS
   <% end %>
@@ -9,7 +15,7 @@
 <div class='login-container <%= @using_password ? 'using-pwd' : 'using-cap' %>'>
   <%= simple_form_for(resource, as: resource_name, url: session_path(resource_name, redirect: params[:redirect])) do |f| %>
     <% if params[:redirect] == 'discourse' %>
-      <h2>优创客联盟</h2>
+      <h2><%= Rails.application.secrets.metas["discourse_head"] %></h2>
     <% else %>
       <h2>UBOSS</h2>
     <% end %>
