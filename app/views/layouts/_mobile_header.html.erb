@@ -28,11 +28,13 @@
       <% end %>
   </div>
 <% else %>
-<div class="header-bar">
   <% if controller_name == "home" || controller_name == "accounts" || controller_name == "stores" %>
+	<div class="header-bar">
   	<%= link_to carts_path,class:'cart-icon' do%>
 	  <%= image_tag 'mobile/cart.png' %>
 	<% end %>
+  <% else %>
+  	<div class="header-bar title-gap">
   <% end %>
   <div class="menu-btn"><%= image_tag 'mobile/navbar.png' %></div>
   <% if content_for?(:page_title) %>

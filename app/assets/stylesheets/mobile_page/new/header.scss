@@ -6,10 +6,10 @@ header {
     line-height: 20px;
     background: #fff;
     a{display: inline-block;}
-    .logo{height: 20px; margin-left: 58px;padding:10px 0;}
+    .logo{height: 20px; margin-left: 5px;padding:10px 0;}
     .title{
-      margin:10px 0 10px 42px;
       display: inline-block;
+      margin:10px 0;
       font-size: 20px;
       color:$brand-primary;
       line-height: 20px;
@@ -17,6 +17,9 @@ header {
       text-overflow:ellipsis;
       white-space:nowrap;
       overflow: hidden;
+    }
+    &.title-gap .title{      
+      margin:10px 0 10px 22px;
     }
     .menu-btn,.submit{
       float: right;
@@ -35,7 +38,7 @@ header {
     }
   }
   .cart-icon{
-    float: left;
+    float: left;    
     padding: 10px;
     img{
         height: 16px;
