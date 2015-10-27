@@ -39,7 +39,7 @@ class ProductInventory.View.BuyNowOption extends Backbone.View
         # <<= 获取sku信息
         that.render('','',that.submit_way,that.product_id)
       error: (data, status, e) ->
-        alert("ERROR")
+        alert("操作错误")
 
   newProperties: (properties) ->
     that = this
@@ -167,42 +167,33 @@ class ProductInventory.View.BuyNowOption extends Backbone.View
             data: {product_inventory_id: product_inventory_id, product_id: product_id, count: count}
             success: (res) ->
               if res['status'] == "ok"
-                alert('添加成功，购物车有'+res['cart_items_count']+'件商品')
+                flashPopContent('<div class="pop-text">添加成功<br/>购物车有'+res['cart_items_count']+'件商品</div>')
               else
                 location.reload()
-                alert(res['message'])
+                flashPopContent('<div class="pop-text">'+res['message']+'</div>')
             error: (data, status, e) ->
-              alert("ERROR")
+              alert("操作错误")
       else
-        alert "请填写正确的商品数量"
+        flashPopContent('<div class="pop-text">请填写正确的商品数量</div>')
     else
-      alert "请选择您需要购买的属性。"
-
-  checkInventoriesSelect = ->
-    product_inventory_id = $('#product_inventory_id').val();
-    if product_inventory_id == ''
-      alert "请勾选您要的商品信息！"
-      return false
-    else
-      return true
-
+      flashPopContent('<div class="pop-text">请选择您需要购买的属性</div>')
 
 
 
   Array.prototype.intersect = (b) ->
-    flip = {};
-    res = [];
+    flip = {}
+    res = []
     for _b,i in b
       flip[b[i]] = i
     for _this,i in this
       if flip[this[i]] != undefined
         res.push(this[i])
-    return res;
+    return res
 
   minNum: ->
     num=parseInt($('.count-box .count_num').val())
     if num < 2
-      alert('数量必须大于1')
+      flashPopContent('<div class="pop-text">数量必须大于1</div>')
       $('.count-box .count_num').val(1)
       $('#count_amount').val(1)
     else
@@ -248,6 +239,6 @@ class ProductInventory.View.BuyNowOption extends Backbone.View
       else
         @count = @single_sku_count
         @total_price = @single_price * @count
-        alert "此类型商品最多购买#{@count}件"
+        flashPopContent('<div class="pop-text">此类型商品最多购买'+"#{@count}"+'件</div>')
       $('.count-box .count_num').val(@count)
       product_inventory_property_price_range.render(@total_price)
