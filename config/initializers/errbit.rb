@@ -1,5 +1,6 @@
 require "rake"
 require "airbrake/rake_handler"
+require 'active_support/concern'
 
 Airbrake.configure do |config|
   api_key        = Rails.env.production? ? '3b73c8421cf90fccd9b574d237caf97d' : '53ba15ae15505882c00122b48f307dac'
@@ -12,15 +13,18 @@ Airbrake.configure do |config|
   config.rescue_rake_exceptions = true
 end
 
-class Object
+module ErrbitNotifyExt
+  extend ActiveSupport::Concern
 
-  def self.send_exception_message(exception, parameters)
-    if Rails.env.staging? || Rails.env.production?
-      Airbrake.notify_or_ignore(e,
-                                parameters: parameters,
-                                cgi_data: ENV.to_hash)
-    else
-      raise exception
+  module ClassMethods
+    def send_exception_message(exception, parameters)
+      if Rails.env.staging? || Rails.env.production?
+        Airbrake.notify_or_ignore(exception,
+                                  parameters: parameters,
+                                  cgi_data: ENV.to_hash)
+      else
+        raise exception
+      end
     end
   end
 
@@ -29,3 +33,5 @@ class Object
   end
 
 end
+
+Object.send(:include, ErrbitNotifyExt)

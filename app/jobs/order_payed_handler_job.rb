@@ -1,5 +1,8 @@
 class OrderPayedHandlerJob < ActiveJob::Base
 
+  class OrderNotSigned < StandardError; ;end
+  class OrderHadDivided < StandardError; ;end
+
   include Loggerable
 
   queue_as :orders
@@ -11,15 +14,18 @@ class OrderPayedHandlerJob < ActiveJob::Base
     logger.info "Start divide @order: #{order.number}, total_paid: #{order.paid_amount}"
     if not order.reload.signed?
       logger.error "Break divide order: #{@order.number} as it is not signed!"
-      return false
+      raise OrderNotSigned
     end
     if order.sharing_rewared?
       logger.error "Break divide order: #{@order.number} as it had divided!"
-      return false
+      raise OrderHadDivided
     end
 
     start_divide_order_paid_amount
     logger.info "Done divide order: #{@order.number}"
+  rescue => e
+    send_exception_message(e, @order.attributes)
+    raise e # make job fail for reprocessing
   end
 
   private
@@ -96,9 +102,10 @@ class OrderPayedHandlerJob < ActiveJob::Base
     sharing_node = order_item.sharing_node
     return false if sharing_node.blank?
     product = order_item.product
+    product_inventory = order_item.product_inventory
 
     LEVEL_AMOUNT_FIELDS.each_with_index do |key, index|
-      reward_amount = get_reward_amount_by_product_level_and_order_item(product, key, order_item)
+      reward_amount = get_reward_amount_by_product_level_and_order_item(product_inventory, key, order_item)
       reward_amount = reward_amount * order_item.amount
 
       if reward_amount > 0
@@ -119,10 +126,10 @@ class OrderPayedHandlerJob < ActiveJob::Base
     end
   end
 
-  def get_reward_amount_by_product_level_and_order_item(product, level, order_item)
-    reward_amount = product.read_attribute(level)
-    if level == :share_amount_lv_1 && (order_item.privilege_amount > product.privilege_amount)
-      reward_amount -= (order_item.privilege_amount - product.privilege_amount)
+  def get_reward_amount_by_product_level_and_order_item(product_inventory, level, order_item)
+    reward_amount = product_inventory.read_attribute(level)
+    if level == :share_amount_lv_1 && (order_item.privilege_amount > product_inventory.privilege_amount)
+      reward_amount -= (order_item.privilege_amount - product_inventory.privilege_amount)
     end
     reward_amount
   end
