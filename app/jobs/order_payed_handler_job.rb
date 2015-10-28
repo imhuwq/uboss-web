@@ -23,9 +23,8 @@ class OrderPayedHandlerJob < ActiveJob::Base
 
     start_divide_order_paid_amount
     logger.info "Done divide order: #{@order.number}"
-  rescue => e
-    send_exception_message(e, @order.attributes)
-    raise e # make job fail for reprocessing
+  rescue => exception
+    send_exception_message(exception, @order.attributes)
   end
 
   private
