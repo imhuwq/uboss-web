@@ -15,6 +15,25 @@ class ProductInventory < ActiveRecord::Base
 
   # TODO custom properties
   # after_create :create_product_properties
+  after_commit :update_unpay_order_items, if: -> { price_and_share_amount_changes }
+
+  def update_unpay_order_items
+    Order.joins(:order_items).unpay
+      .inject([]){ |order_items, order|  order.order_items.where(product_inventory: 15) }
+      .each { |order_item| order_item.save }
+    # order_item save callback:
+    # set_privilege_amount && set_present_price && set_pay_amount && update_order_pay_amount
+  end
+
+  def price_and_share_amount_changes
+    (
+      previous_changes.include?(:price) &&
+      previous_changes[:price].first != previous_changes[:price].last
+    ) || (
+      previous_changes.include?(:share_amount_total) &&
+      previous_changes[:share_amount_total].first != previous_changes[:share_amount_total].last
+    )
+  end
 
   def saling?
     status == 'published' && saling && count > 0
