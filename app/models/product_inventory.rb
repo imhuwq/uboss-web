@@ -7,6 +7,7 @@ class ProductInventory < ActiveRecord::Base
 
   validates_presence_of :product
   validate :share_amount_total_must_lt_price
+  validate :price_can_not_less_than_zero
 
   scope :saling, -> { where(saling: true) }
   scope :not_saling, -> { where(saling: false) }
@@ -33,6 +34,10 @@ class ProductInventory < ActiveRecord::Base
       previous_changes.include?(:share_amount_total) &&
       previous_changes[:share_amount_total].first != previous_changes[:share_amount_total].last
     )
+  end
+
+  def price_can_not_less_than_zero
+    errors.add(:price,'价格不能小于0') if price < 0
   end
 
   def saling?
