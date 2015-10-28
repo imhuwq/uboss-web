@@ -10,11 +10,11 @@ class SingleSignOnService
   attr_accessor :sso_secret, :sso_url
 
   def self.sso_secret
-    ENV['SECRET']
+    ENV['DISCOURSE_SECRET']
   end
 
   def self.sso_url
-    ENV['CALLBACK_URL']
+    ENV['DISCOURSE_CALLBACK_URL']
   end
 
   def self.parse(payload, sso_secret = nil)
