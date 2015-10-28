@@ -1,9 +1,8 @@
 # 论坛SSO单点登录配置, http://xxx/discourse/sso, 本地测试: http://localhost:3000/discourse/sso, sso secret 与 SECRET 一致
-SSO_URL: http://stage.uboss.me/discourse/sso
-SSO_SECRET: 'is_a_secret_leng_max_10'
+# SSO_URL: http://stage.uboss.me/discourse/sso
+# SSO_SECRET: 'is_a_secret_leng_max_10'
 
 # 配置以下信息secret要与discourse上的secret一致, key 取一个唯一值, callback_url认证后跳转路径: http://discourse_url/session/sso_login
 SECRET: 'is_a_secret_leng_max_10'
-KEY: '123'
 CALLBACK_URL: http://stage.bbs.uboss.me/session/sso_login
 DISCOURSE_URL: http://stage.bbs.uboss.me
