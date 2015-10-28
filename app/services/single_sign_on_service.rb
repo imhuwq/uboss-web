@@ -1,4 +1,5 @@
-class SingleSignOn
+class SingleSignOnService
+
   ACCESSORS = [:nonce, :name, :username, :email, :avatar_url, :avatar_force_update, :require_activation,
                :about_me, :external_id, :return_sso_url, :admin, :moderator, :suppress_welcome_message]
   FIXNUMS = []
@@ -9,11 +10,11 @@ class SingleSignOn
   attr_accessor :sso_secret, :sso_url
 
   def self.sso_secret
-    raise RuntimeError, "sso_secret not implemented on class, be sure to set it on instance"
+    ENV['SECRET']
   end
 
   def self.sso_url
-    raise RuntimeError, "sso_url not implemented on class, be sure to set it on instance"
+    ENV['CALLBACK_URL']
   end
 
   def self.parse(payload, sso_secret = nil)
@@ -53,6 +54,16 @@ class SingleSignOn
     end
 
     sso
+  end
+
+  def assign_attributes_with_user(user)
+    @email = user.email || "#{user.login}@uboss.me" # FAKE Email for discourse if blank
+    @name = user.identify
+    @username = user.login
+    @external_id = user.id
+    @avatar_url = user.avatar_url
+    @avatar_force_update = true
+    @admin = user.is_super_admin?
   end
 
   def sso_secret
