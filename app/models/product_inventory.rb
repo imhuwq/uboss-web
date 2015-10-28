@@ -13,7 +13,8 @@ class ProductInventory < ActiveRecord::Base
 
   delegate :image_url, :status, :traffic_expense, :carriage_template, :carriage_template_id, :transportation_way, :is_official_agent?, to: :product
 
-  after_create :create_product_properties
+  # TODO custom properties
+  # after_create :create_product_properties
 
   def saling?
     status == 'published' && saling && count > 0
