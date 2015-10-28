@@ -9,6 +9,17 @@ class ApplicationController < ActionController::Base
   helper_method :desktop_request?
 
   before_action :configure_permitted_parameters, if: :devise_controller?
+  before_action :store_discourse_sso_location
+
+
+  def store_discourse_sso_location
+    if request.xhr? or ! request.get?
+      return
+    end
+    if( request.path == discourse_sso_path )
+      session[:discourse_sso] = request.fullpath if current_user.blank?
+    end
+  end
 
   protected
 
@@ -86,7 +97,9 @@ class ApplicationController < ActionController::Base
   end
 
   def after_sign_in_path_for(resource, opts = {need_new_passowrd: true})
-    if desktop_request? && !current_user.admin?
+    if session[:discourse_sso]
+      path = session.delete(:discourse_sso)
+    elsif desktop_request? && !current_user.admin?
       merchant_confirm_account_path
     elsif current_user.need_reset_password? && opts[:need_new_passowrd]
       flash[:new_password_enabled] = true

@@ -1,10 +1,24 @@
+<% if params[:redirect] == 'discourse' %>
+  <%= content_for :title do %>
+    <%= Rails.application.secrets.metas["discourse_title"] %>
+  <% end %>
+<% end %>
+
 <%= content_for :page_title do %>
-  登录UBOSS
+  <% if params[:redirect] == 'discourse' %>
+    <%= Rails.application.secrets.metas["discourse_page_title"] %>
+  <% else %>
+    登录UBOSS
+  <% end %>
 <% end %>
 
 <div class='login-container <%= @using_password ? 'using-pwd' : 'using-cap' %>'>
-  <%= simple_form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
-    <h2>UBOSS</h2>
+  <%= simple_form_for(resource, as: resource_name, url: session_path(resource_name, redirect: params[:redirect])) do |f| %>
+    <% if params[:redirect] == 'discourse' %>
+      <h2><%= Rails.application.secrets.metas["discourse_head"] %></h2>
+    <% else %>
+      <h2>UBOSS</h2>
+    <% end %>
     <hr />
 
     <div class='login-type-acs clearfix'>
@@ -51,7 +65,11 @@
 
     <% if !browser.wechat? %>
       <div class="button_div  col-xs-12"  style="margin: 10px 0 10px 0;">
-        <%= link_to "返回主页", root_path, class: "btn btn-large btn-link col-xs-12"%>
+        <% if params[:redirect] == 'discourse' %>
+          <%= link_to "返回主页", ENV['DISCOURSE_URL'], class: "btn btn-large btn-link col-xs-12"%>
+        <% else %>
+          <%= link_to "返回主页", root_path, class: "btn btn-large btn-link col-xs-12"%>
+        <% end %>
       </div>
     <% end %>
   <% end %>

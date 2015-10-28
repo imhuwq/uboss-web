@@ -23,6 +23,8 @@ gem 'weixin_authorize', github: "lanrion/weixin_authorize"
 gem 'ransack'
 gem 'rails-api'
 
+#配置密码
+gem 'figaro'
 # nested sharing_node
 gem 'awesome_nested_set'
 
