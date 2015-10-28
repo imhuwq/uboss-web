@@ -69,10 +69,10 @@
     <p>付款时间 : <%= order.order_charge.paid_at %></p>
     <p>付款金额 : <%= order.order_charge.paid_amount %></p>
   </div>
-  <!--div class="admin-border admin-border-order-info">
+  <div class="admin-border admin-border-order-info">
     <p class='complete_and_evaluate'>完成交易</p>
-    <p>确认收货时间 : </p>
-  </div--!>
+    <p>确认收货时间 : <%= order.completed_at %></p>
+  </div>
   <div class="admin-border admin-border-order-info">
     <p class='after_sale'>售后</p>
   </div>
