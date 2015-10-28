@@ -9,6 +9,11 @@ namespace :migrate do
           product_id: product.id,
           price: product.present_price,
           count: product.count,
+          share_amount_total: product.share_amount_total,
+          share_amount_lv_1: product.share_amount_lv_1,
+          share_amount_lv_2: product.share_amount_lv_2,
+          share_amount_lv_3: product.share_amount_lv_3,
+          privilege_amount: product.privilege_amount,
           sku_attributes: { '其它' => '默认' }
         )
       end
