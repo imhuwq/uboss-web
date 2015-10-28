@@ -8,7 +8,7 @@
 # SSO_URL: http://stage.uboss.me/discourse/sso
 # SSO_SECRET: 'is_a_secret_leng_max_10'
 #
-SECRET: 'is_a_secret_leng_max_10'
+DISCOURSE_SECRET: 'is_a_secret_leng_max_10'
 #认证后跳转路径
-CALLBACK_URL: http://stage.bbs.uboss.me/session/sso_login
+DISCOURSE_CALLBACK_URL: http://stage.bbs.uboss.me/session/sso_login
 DISCOURSE_URL: http://stage.bbs.uboss.me
