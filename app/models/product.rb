@@ -30,7 +30,9 @@ class Product < ActiveRecord::Base
   before_create :generate_code
 
   def self.official_agent
-    find_by(user_id: User.official_account.try(:id), name: OFFICIAL_AGENT_NAME)
+    official_account = User.official_account
+    return nil if official_account.blank?
+    @official_agent_product ||= find_by(user_id: official_account.id, name: OFFICIAL_AGENT_NAME)
   end
 
   # SKU(product_inventory) 更新保存逻辑
@@ -136,7 +138,7 @@ class Product < ActiveRecord::Base
   def sku_hash
     skus = {}
     sku_details = {}
-    self.product_inventories.where("count > 0").each do |obj|
+    self.seling_inventories.where("count > 0").each do |obj|
       obj.sku_attributes.each do |k,v|
         if !skus[k].present?
           skus[k] = {}
@@ -166,7 +168,4 @@ class Product < ActiveRecord::Base
     errors.add(:product_inventories, '至少添加一个产品规格属性') unless product_inventories.size > 0
   end
 
-  def get_shraing_rate(sharing_level, rate_level)
-    Rails.application.secrets.product_sharing["level#{sharing_level}"].try(:[], "rate#{rate_level}").to_f
-  end
 end
