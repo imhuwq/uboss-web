@@ -2,7 +2,7 @@ class OfficialAgentOrderJob < ActiveJob::Base
   queue_as :agent_orders
 
   def perform(order)
-    if order.order_items.first.product.is_official_agent?
+    if order.official_agent?
       user = order.user
 
       User.transaction do
@@ -11,7 +11,9 @@ class OfficialAgentOrderJob < ActiveJob::Base
           user.user_roles << UserRole.agent
         end
 
-        order.sign!
+        if order.may_sign?
+          order.sign!
+        end
       end
     end
   end
