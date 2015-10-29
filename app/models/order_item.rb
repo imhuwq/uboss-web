@@ -18,7 +18,7 @@ class OrderItem < ActiveRecord::Base
   # 1 退款, 2 退款不退货, 3 退款退货, 4 退款中, 5 退款成功, 6 退款关闭, 7 UBOSS介入
   enum refund_state: { nothing: 0, refund: 1, unreturn_good: 2, return_good: 3, refunding: 4, refunded: 5, refund_close: 6, uboss_deal: 7 }
 
-  before_save  :set_privilege_amount, :set_present_price, :set_pay_amount, if: -> { order.paid_at.blank? }
+  before_save  :reset_payment_info, if: -> { order.paid_at.blank? }
   after_create :set_product_id, :decrease_product_stock
   after_commit :update_order_pay_amount, if: -> {
     previous_changes.include?(:pay_amount) &&
@@ -76,11 +76,16 @@ class OrderItem < ActiveRecord::Base
     adjust_product_stock(-1)
   end
 
+  def reset_payment_info
+    set_privilege_amount
+    set_present_price
+    set_pay_amount
+  end
+
   private
 
   def adjust_product_stock(type)
     if [1, -1].include?(type)
-      #Product.update_counters(product_id, count: amount * type) # TODO 全部采用sku后注释掉这里
       ProductInventory.update_counters(product_inventory_id, count: amount * type)
     else
       raise 'Accept value is -1 or 1'
