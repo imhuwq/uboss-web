@@ -9,13 +9,15 @@ class OrderItem < ActiveRecord::Base
   has_many   :sharing_incomes
 
   validates :user, :product_inventory, :amount, :present_price, :pay_amount, presence: true
+  validate :limit_official_agent_amount_
 
   delegate :name, :traffic_expense, to: :product, prefix: true
   delegate :product_name, :price, :sku_attributes, :sku_attributes_str, to: :product_inventory
   delegate :privilege_card, to: :sharing_node, allow_nil: true
 
+  before_create :set_product_id
   before_save  :reset_payment_info, if: -> { order.paid_at.blank? }
-  after_create :set_product_id, :decrease_product_stock
+  after_create :decrease_product_stock
   after_commit :update_order_pay_amount, if: -> {
     previous_changes.include?(:pay_amount) &&
     previous_changes[:pay_amount].first != previous_changes[:pay_amount].last
