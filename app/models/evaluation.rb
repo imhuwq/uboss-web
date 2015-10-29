@@ -20,16 +20,6 @@ class Evaluation < ActiveRecord::Base
     end
   end
 
-  ##### 构建问题零时方案 ######
-  def product_id
-    self.order_item.product_inventory.product_id
-  end
-
-  def product
-    self.order_item.product_inventory.product
-  end
-  ################
-
   def count_evaluation # 计算出用户和产品的好、中、差评论数并保存
     seller_user_info_id = Product.find(self.product_id).user.user_info.id
     evaluation_column = "#{self.status}_evaluation"
@@ -47,13 +37,19 @@ class Evaluation < ActiveRecord::Base
     user_info.good_evaluation.to_f +  user_info.better_evaluation.to_f + user_info.best_evaluation.to_f
   end
 
-  def self.sharer_good_reputation_rate(sharer) # 分享者好评率
-    total = UserInfo.where(user_id:sharer.id || sharer).sum("good_evaluation + better_evaluation + best_evaluation + bad_evaluation + worst_evaluation")
+  def self.sharer_good_reputation_rate(user) # 分享者好评率
+    user_info = user.user_info
+    total = Evaluation.statuses.keys.inject(0) do |sum, statue|
+      sum + user_info["#{statue}_evaluation"].to_i
+    end
     if total > 0
-    rate = (sharer.user_info.good_evaluation.to_f+sharer.user_info.best_evaluation.to_f+sharer.user_info.better_evaluation.to_f)/total
+      rate = (user_info.good_evaluation.to_f +
+              user_info.best_evaluation.to_f +
+              user_info.better_evaluation.to_f) / total
     else
       rate = 1
     end
+    # FIXME 格式化的内容让helper去处理
     "#{'%.2f' % (rate.try(:to_f)*100)}%"
   end
 

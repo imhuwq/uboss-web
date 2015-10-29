@@ -118,7 +118,7 @@ class Product < ActiveRecord::Base
   def is_official_agent?
     return @is_official_agent unless @is_official_agent.nil?
     @is_official_agent =
-      user_id == User.official_account.id && name == OFFICIAL_AGENT_NAME
+      user_id == User.official_account.try(:id) && name == OFFICIAL_AGENT_NAME
   end
 
   def total_sells

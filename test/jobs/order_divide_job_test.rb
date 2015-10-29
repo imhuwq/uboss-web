@@ -24,10 +24,9 @@ class OrderDivideJobTest < ActiveJob::TestCase
 
     assert_equal false, @order.payed?
 
-    assert_equal false, OrderDivideJob.perform_now(@order)
-    #assert_raises OrderDivideJob::OrderNotPayed do
-      #OrderDivideJob.perform_now(@order)
-    #end
+    assert_raises OrderDivideJob::OrderNotSigned do
+      OrderDivideJob.perform_now(@order)
+    end
   end
 
   it 'should setup seller income' do
