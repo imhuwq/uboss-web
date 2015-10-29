@@ -61,6 +61,9 @@ footer {
     padding:40px 0 180px;
     color: #fff;
     position: relative;
+    .title-bar{
+        color: #fff;
+    }
 }
 .page1:before{
     position: absolute;
@@ -117,7 +120,30 @@ footer {
     }
     .top{
         text-shadow: 3px 3px 30px rgba(0,0,0,0.4);
-    }    
+    }   
+    .fa{
+        /* Firefox: */
+        -moz-animation: rubberBand 1.5s linear 5s infinite ;
+        /* Safari 和 Chrome: */
+        -webkit-animation: rubberBand 1.5s linear 5s infinite;
+        /* Opera: */
+        -o-animation: rubberBand 1.5s linear 5s infinite;
+        animation: rubberBand 1.5s linear 5s infinite ;
+    } 
+    .middle span:first-child .fa{
+        -webkit-animation-delay:3s;
+        -moz-animation-delay:3s;
+        -o-animation-delay:3s;
+        animation-delay:3s;
+    }
+    .middle span:last-child .fa{
+        -webkit-animation-delay:7s;
+        -moz-animation-delay:7s;
+        -o-animation-delay:7s;
+        animation-delay:7s;
+    }
+       
+    
     h1{
         font-size: 140px;
         font-family: "Impact";
@@ -133,6 +159,9 @@ footer {
         font-weight: lighter;
         font-size: 25px;
         letter-spacing: 3px;
+    }
+    .fa{
+        
     }
 }
 #arrow-down{
@@ -159,18 +188,40 @@ footer {
     }
 }
 .title-bar{
-    background: image-url('new_desktop/title-bg.png') center bottom no-repeat;
     text-align: center;
-    color: #fff;
+    color: #333;
     padding: 15px 0 30px;
     font-size: 15px;
     letter-spacing: 2px;
     margin-bottom: 60px;
+    >div{
+        display: inline-block;        
+        vertical-align: middle;
+    }
+    .content{
+        margin: 0 15px;
+    }
+    .circle-icon{
+        i{
+            margin: 0 5px;
+        }
+        color:#43c3aa
+    }
     h1{
       font-weight: lighter;
       margin: 0;
       font-size: 36px;
     }
+    
+}
+.fa-sm{
+    font-size: 10px;
+}
+.fa-md{
+    font-size: 20px;
+}
+.fa-lg{
+    font-size: 35px;
 }
 
 .bg-white{background: #fff;}
@@ -320,8 +371,7 @@ footer {
   font-size: 30px;
 }
 .btn-shadow{
-  background: none;
-  text-shadow: 0px 0px 8px rgba(0,0,0,0.6);
+  background: rgba(255,255,255,.25);
   box-shadow: 3px 3px 30px rgba(0,0,0,0.4);
   transition: all .5s linear; 
 }
@@ -329,7 +379,7 @@ footer {
     color: #fff;
     border-color:#fff ;
     text-shadow:none;
-    background: none;
+    background: rgba(255,255,255,.2);
     box-shadow: 0px 0px 50px rgba(233,212,74,0.4);
     transition: all .5s linear; 
 }
