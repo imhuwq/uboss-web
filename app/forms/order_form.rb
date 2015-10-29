@@ -100,6 +100,7 @@ class OrderForm
 
   def create_user_address
     if user_address_id.blank? && user_address.new_record?
+      user_address.user ||= self.buyer
       user_address.save!
     end
   end
