@@ -130,7 +130,7 @@
                     </td>
                     <td><%= seller.created_at.to_date %></td>
                     <td><%= seller.login %></td>
-                    <td><%= User::DATA_AUTHENTICATED[seller.authenticated] %></td>
+                    <td><%= seller.authenticated_i18n %></td>
                   </tr>
                 <% end %>
               </tbody>

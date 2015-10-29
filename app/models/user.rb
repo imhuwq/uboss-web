@@ -1,8 +1,5 @@
 class User < ActiveRecord::Base
 
-  # FIXME 如果只是需要在页面转换请使用helper方法，或者I18n
-  DATA_AUTHENTICATED = {'no'=> '未认证', 'yes'=> '已认证'}
-
   include Orderable
 
   attr_accessor :code, :mobile_auth_code
@@ -62,7 +59,7 @@ class User < ActiveRecord::Base
     :store_short_description, :store_short_description=,
     to: :user_info, allow_nil: true
 
-  enum authenticated: {no: 0, yes: 1}
+  enum authenticated: {negative: 0, positive: 1}
 
   before_destroy do # prevent destroy official account
     if login == OFFICIAL_ACCOUNT_LOGIN
