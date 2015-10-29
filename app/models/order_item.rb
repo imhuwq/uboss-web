@@ -10,7 +10,6 @@ class OrderItem < ActiveRecord::Base
   has_many   :order_item_refunds
 
   validates :user, :product_inventory, :amount, :present_price, :pay_amount, presence: true
-  validate :limit_official_agent_amount_
 
   delegate :name, :traffic_expense, to: :product, prefix: true
   delegate :product_name, :price, :sku_attributes, :sku_attributes_str, to: :product_inventory
@@ -19,7 +18,7 @@ class OrderItem < ActiveRecord::Base
   # 1 退款, 2 退款不退货, 3 退款退货, 4 退款中, 5 退款成功, 6 退款关闭, 7 UBOSS介入
   enum refund_state: { nothing: 0, refund: 1, unreturn_good: 2, return_good: 3, refunding: 4, refunded: 5, refund_close: 6, uboss_deal: 7 }
 
-  before_create :set_product_id
+  before_validation :set_product_id
   before_save  :reset_payment_info, if: -> { order.paid_at.blank? }
   after_create :decrease_product_stock
   after_commit :update_order_pay_amount, if: -> {
