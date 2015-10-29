@@ -16,25 +16,7 @@ class ProductInventory < ActiveRecord::Base
 
   # TODO custom properties
   # after_create :create_product_properties
-  after_commit :update_unpay_order_items, if: -> { price_and_share_amount_changes }
-
-  def update_unpay_order_items
-    Order.joins(:order_items).unpay
-      .inject([]){ |order_items, order|  order.order_items.where(product_inventory: 15) }
-      .each { |order_item| order_item.save }
-    # order_item save callback:
-    # set_privilege_amount && set_present_price && set_pay_amount && update_order_pay_amount
-  end
-
-  def price_and_share_amount_changes
-    (
-      previous_changes.include?(:price) &&
-      previous_changes[:price].first != previous_changes[:price].last
-    ) || (
-      previous_changes.include?(:share_amount_total) &&
-      previous_changes[:share_amount_total].first != previous_changes[:share_amount_total].last
-    )
-  end
+  after_commit :update_unpay_order_items, on: :update, if: -> { price_or_share_amount_changes }
 
   def price_can_not_less_than_zero
     errors.add(:price,'价格不能小于0') if price < 0
@@ -83,6 +65,23 @@ class ProductInventory < ActiveRecord::Base
   end
 
   private
+
+  def update_unpay_order_items
+    order_items.includes(:order).merge(Order.unpay).references(:order).find_each do |order_item|
+      order_item.reset_payment_info
+      order_item.save
+    end
+  end
+
+  def price_or_share_amount_changes
+    (
+      previous_changes.include?(:price) &&
+      previous_changes[:price].first != previous_changes[:price].last
+    ) || (
+      previous_changes.include?(:share_amount_total) &&
+      previous_changes[:share_amount_total].first != previous_changes[:share_amount_total].last
+    )
+  end
 
   def create_product_properties
     sku_attributes.each do |property_name, property_value|

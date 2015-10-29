@@ -14,7 +14,7 @@ class OrderItem < ActiveRecord::Base
   delegate :product_name, :price, :sku_attributes, :sku_attributes_str, to: :product_inventory
   delegate :privilege_card, to: :sharing_node, allow_nil: true
 
-  before_save  :set_privilege_amount, :set_present_price, :set_pay_amount, if: -> { order.paid_at.blank? }
+  before_save  :reset_payment_info, if: -> { order.paid_at.blank? }
   after_create :set_product_id, :decrease_product_stock
   after_commit :update_order_pay_amount, if: -> {
     previous_changes.include?(:pay_amount) &&
@@ -68,11 +68,16 @@ class OrderItem < ActiveRecord::Base
     adjust_product_stock(-1)
   end
 
+  def reset_payment_info
+    set_privilege_amount
+    set_present_price
+    set_pay_amount
+  end
+
   private
 
   def adjust_product_stock(type)
     if [1, -1].include?(type)
-      #Product.update_counters(product_id, count: amount * type) # TODO 全部采用sku后注释掉这里
       ProductInventory.update_counters(product_inventory_id, count: amount * type)
     else
       raise 'Accept value is -1 or 1'
