@@ -2,10 +2,10 @@ require 'test_helper'
 
 class OrderFormTest < ActiveSupport::TestCase
   #:product_id, :amount, :mobile, :captcha, :user_address_id, :deliver_username,
-  #:province, :city, :country, :street, :deliver_mobile, :sharing_code
+  #:province, :city, :street, :deliver_mobile, :sharing_code
 
   before do
-    @product = create(:product, count: 100)
+    @product = create(:product, count: 100, status: 'published')
     @product_inventory = create(:product_inventory, product: @product)
     @seller = @product.user
     @buyer = create(:user_with_address)
@@ -21,15 +21,15 @@ class OrderFormTest < ActiveSupport::TestCase
         mobile: '13800002222',
         captcha: '123',
         deliver_username: 'newBuyer',
-        province: 'GD',
+        province: '440000',
         city: 'SZ',
-        country: 'NS',
         area: 'area',
         building: 'kejiyuan',
         to_seller: 'msg to seller',
         session: {},
         deliver_mobile: '13800002222'
       )
+
       assert_equal true, order_form.save
 
       user = User.find_by(login: '13800002222')
@@ -64,9 +64,8 @@ class OrderFormTest < ActiveSupport::TestCase
         mobile: @buyer.mobile,
         captcha: '123',
         deliver_username: 'newBuyer',
-        province: 'GD',
+        province: '440000',
         city: 'SZ',
-        country: 'NS',
         area: 'area',
         building: 'kejiyuan',
         to_seller: 'msg to seller',
