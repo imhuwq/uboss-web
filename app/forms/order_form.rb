@@ -169,6 +169,9 @@ class OrderForm
       elsif amount.to_i > product_inventory.reload.count
         self.amount = product_inventory.count
         errors.add(:base, "该商品库存不足，最多购买 #{amount} 件")
+      elsif amount.to_i > 1 && product.is_official_agent?
+        self.amount = 1
+        errors.add(:base, '创客权只能购买一个')
       end
     elsif seller_ids.present?
       cart_items.each do |cart_item|
@@ -179,6 +182,9 @@ class OrderForm
         elsif cart_item.count > cart_item.product_inventory.reload.count
           cart_item.update_attribute(:count, cart_item.product_amount)
           errors.add(:base, "#{cart_item.product_name}[#{cart_item.sku_attributes_str}] 库存不足，最多购买 #{cart_item.product_amount} 件")
+        elsif cart_item.product_inventory.is_official_agent? && cart_item.count > 1
+          cart_item.update_attribute(:count, 1)
+          errors.add(:base, '创客权只能购买一个')
         end
       end
     end
