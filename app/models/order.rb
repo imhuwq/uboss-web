@@ -47,7 +47,7 @@ class Order < ActiveRecord::Base
     end
     event :sign, after_commit: :call_order_complete_handler do
       transitions from: :shiped, to: :signed
-      transitions from: :payed, to: :signed, guards: :is_official_agent?
+      transitions from: :payed, to: :signed, guards: :single_official_agent?
     end
     event :close do
       transitions from: :unpay, to: :closed
@@ -198,19 +198,27 @@ class Order < ActiveRecord::Base
     update_column(:pay_amount, order_items.sum(:pay_amount) + ship_price)
   end
 
-  def is_official_agent?
-    order_items.first.product_inventory.is_official_agent?
-  end
-
   def sharing_user
     @sharing_user ||= order_items.first.sharing_node.try(:user)
   end
 
+  def single_official_agent?
+    order_items.size == 1 && official_agent?
+  end
+
   def official_agent?
-    return false if seller_id != User.official_account.try(:id)
+    return @is_official_agent unless @is_official_agent.nil?
+
+    if seller_id != User.official_account.try(:id)
+      return @is_official_agent = false
+    end
+
     official_agent_product = Product.official_agent
-    return false if official_agent_product.blank?
-    order_items.joins(:product).where(
+    if official_agent_product.blank?
+      return @is_official_agent = false
+    end
+
+    @is_official_agent = order_items.joins(:product).where(
       products: { id: official_agent_product.id }
     ).exists?
   end
@@ -279,9 +287,7 @@ class Order < ActiveRecord::Base
   end
 
   def invoke_official_agent_order_process
-    if order_items.first.product_inventory.is_official_agent?
-      OfficialAgentOrderJob.set(wait: 5.seconds).perform_later(self)
-    end
+    OfficialAgentOrderJob.set(wait: 5.seconds).perform_later(self)
   end
 
 end
