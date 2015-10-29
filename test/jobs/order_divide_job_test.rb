@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class OrderPayedHandlerJobTest < ActiveJob::TestCase
+class OrderDivideJobTest < ActiveJob::TestCase
   before :each do
     official_account = create(:user)
     User.stubs(:official_account).returns(official_account)
@@ -12,7 +12,7 @@ class OrderPayedHandlerJobTest < ActiveJob::TestCase
       assert_enqueued_jobs 0
       User.stubs(:official_account).returns(User.new)
       order.update(state: 'shiped')
-      assert_enqueued_with(job: OrderPayedHandlerJob, args: [order]) do
+      assert_enqueued_with(job: OrderDivideJob, args: [order]) do
         assert_equal true, order.sign!
       end
       assert_enqueued_jobs 1
@@ -24,9 +24,9 @@ class OrderPayedHandlerJobTest < ActiveJob::TestCase
 
     assert_equal false, @order.payed?
 
-    assert_equal false, OrderPayedHandlerJob.perform_now(@order)
-    #assert_raises OrderPayedHandlerJob::OrderNotPayed do
-      #OrderPayedHandlerJob.perform_now(@order)
+    assert_equal false, OrderDivideJob.perform_now(@order)
+    #assert_raises OrderDivideJob::OrderNotPayed do
+      #OrderDivideJob.perform_now(@order)
     #end
   end
 
@@ -35,7 +35,7 @@ class OrderPayedHandlerJobTest < ActiveJob::TestCase
 
     assert_equal 0, @order.income
 
-    OrderPayedHandlerJob.perform_now(@order)
+    OrderDivideJob.perform_now(@order)
 
     assert_equal true, @order.reload.income > 0
   end
@@ -65,7 +65,7 @@ class OrderPayedHandlerJobTest < ActiveJob::TestCase
                       state: 'signed'
                      )
 
-      OrderPayedHandlerJob.perform_now(@order.reload)
+      OrderDivideJob.perform_now(@order.reload)
 
       assert_equal 0, level1_node.user.income.to_f
       assert_equal sharing_reward_lv1 * buy_amount, level2_node.user.income
@@ -98,7 +98,7 @@ class OrderPayedHandlerJobTest < ActiveJob::TestCase
                       state: 'signed'
                      )
 
-      OrderPayedHandlerJob.perform_now(@order.reload)
+      OrderDivideJob.perform_now(@order.reload)
 
       assert_equal 0, level1_node.user.income.to_f
       assert_equal sharing_reward_lv3 * buy_amount, level2_node.user.income

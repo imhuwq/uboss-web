@@ -265,7 +265,7 @@ class Order < ActiveRecord::Base
   end
 
   def call_order_complete_handler
-    OrderPayedHandlerJob.set(wait: 5.seconds).perform_later(self)
+    OrderDivideJob.set(wait: 5.seconds).perform_later(self)
   end
 
   def recover_product_stock

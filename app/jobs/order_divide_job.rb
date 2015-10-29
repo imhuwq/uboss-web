@@ -1,4 +1,4 @@
-class OrderPayedHandlerJob < ActiveJob::Base
+class OrderDivideJob < ActiveJob::Base
 
   class OrderNotSigned < StandardError; ;end
   class OrderHadDivided < StandardError; ;end
