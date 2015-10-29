@@ -6,9 +6,7 @@ class Product < ActiveRecord::Base
 
   OFFICIAL_AGENT_NAME = 'UBOSS创客权'.freeze
 
-  # FIXME: @dalezhang 请使用helper or i18n 做view的数值显示
-  DataCalculateWay = { 0 => '按金额', 1 => '按售价比例' }
-  DataBuyerPay = { 0 => '包邮', 1 => '统一邮费', 2 => '运费模板' }
+  DataBuyerPay = { seller_pay: '包邮', united: '统一邮费', carriage_template: '运费模板' }
 
   has_one_image autosave: true
   #has_many_images name: :figure_images, accepts_nested: true
@@ -25,6 +23,8 @@ class Product < ActiveRecord::Base
   delegate :avatar=, :avatar, to: :asset_img
 
   enum status: { unpublish: 0, published: 1, closed: 2 }
+  enum calculate_way: { by_cash: 0, by_rate: 1 }
+  enum transportation_way: { seller_pay: 0, united: 1, carriage_template: 2 }
 
   scope :hots, -> { where(hot: true) }
   scope :available, -> { where.not(status: 2) }

@@ -60,7 +60,6 @@ class Ability
   end
 
   def grant_permissions_to_agent user
-    can :read, User, agent_id: user.id
     can :read, DailyReport, user: { agent_id: user.id }
     can :read, SellingIncome, user: { agent_id: user.id }
     # 暂时取消agent的认证权利
@@ -69,8 +68,6 @@ class Ability
     can :read, DivideIncome, user_id: user.id
     can :read,   WithdrawRecord, user_id: user.id
     can :create, WithdrawRecord, user_id: user.id
-    # FIXME @dalezhang read sellers == read user，这样定义如何判断只能查看自己的商家？？
-    # @yijie 获取的方式是 user.sellers,结果一定是跟自己绑定过的商家，已测试，无法访问没跟当前用户绑定的seller
     can :read, :sellers
     can :manage, BankCard, user_id: user.id
   end
