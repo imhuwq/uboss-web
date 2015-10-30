@@ -60,6 +60,14 @@ class Admin::CarriageTemplatesController < AdminController
   end
 
   def carriage_template_params
-    params.require(:carriage_template).permit(:name, different_areas_attributes: [:id, :first_item, :carriage, :extend_item, :extend_carriage, :_destroy, region_ids: [] ]).merge(user_id: current_user.id)
+    params.require(:carriage_template).
+      permit(
+        :name,
+        different_areas_attributes: [
+          :id, :first_item, :carriage, :extend_item, :extend_carriage, :_destroy, region_ids: []
+        ]
+    ).merge(
+      user_id: current_user.id
+    )
   end
 end
