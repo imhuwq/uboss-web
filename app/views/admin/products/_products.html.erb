@@ -32,7 +32,6 @@
 				<td><%= product.total_sells %></td>
 				<td><%= product.created_at %></td>
 				<td>
-
 					<% if can? :update, product %>
 						<% if product.status == 'unpublish' %>
 				      <p>
