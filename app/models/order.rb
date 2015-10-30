@@ -33,7 +33,7 @@ class Order < ActiveRecord::Base
 
   aasm column: :state, enum: true, skip_validation_on_save: true, whiny_transitions: false do
     state :unpay
-    state :payed, after_enter: [:create_privilege_card_if_none, :send_payed_sms_to_seller]
+    state :payed, after_enter: [:create_privilege_card_if_none, :send_payed_sms_to_seller, :send_payed_wx_template_msg]
     state :shiped, after_enter: :fill_shiped_at
     state :signed, after_enter: [:fill_signed_at, :active_privilege_card]
     state :completed, after_enter: :fill_completed_at
@@ -268,6 +268,18 @@ class Order < ActiveRecord::Base
     if seller
       PostMan.delay.send_sms(seller.login, {name: seller.identify}, 968369)
     end
+  end
+
+  # TODO set delay-job
+  def send_payed_wx_template_msg
+    order = Order.includes(:user, seller: [:agent]).find(self.id)
+    seller = order.seller
+    buyer = order.user
+    agent = seller.agent
+
+    WxTemplateMsg.order_payed_msg_to_seller(seller.weixin_openid, '', self) if seller && order.seller.weixin_openid.present?
+    WxTemplateMsg.order_payed_msg_to_buyer(buyer.weixin_openid, '', self)   if buyer && order.user.weixin_openid.present?
+    WxTemplateMsg.order_payed_msg_to_agent(agent.weixin_openid, '', self)   if agent && agent.weixin_openid.present?
   end
 
   def active_privilege_card

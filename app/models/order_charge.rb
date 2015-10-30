@@ -17,6 +17,15 @@ class OrderCharge < ActiveRecord::Base
     orders[0].user
   end
 
+  def orders_detail
+    count = order_items.count
+    if count > 1
+      "#{order_items.first.item_product.name}等#{count}款商品"
+    else
+      "#{order_items.first.item_product.name}"
+    end
+  end
+
   def pay_amount
     orders.sum(:pay_amount).to_f
   end
