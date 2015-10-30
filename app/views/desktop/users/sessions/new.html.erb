@@ -70,7 +70,7 @@
     <% if !browser.wechat? %>
       <div class="button_div  col-xs-12"  style="margin: 10px 0 10px 0;">
         <% if params[:redirect] == 'discourse' %>
-          <%= link_to "返回主页", ENV['DISCOURSE_URL'], class: "btn btn-large btn-link col-xs-12"%>
+          <%= link_to "返回主页", Rails.application.secrets.discourse['url'], class: "btn btn-large btn-link col-xs-12"%>
         <% else %>
           <%= link_to "返回主页", root_path, class: "btn btn-large btn-link col-xs-12"%>
         <% end %>

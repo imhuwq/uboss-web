@@ -10,11 +10,11 @@ class SingleSignOnService
   attr_accessor :sso_secret, :sso_url
 
   def self.sso_secret
-    ENV['DISCOURSE_SECRET']
+    Rails.application.secrets.discourse['secret']
   end
 
   def self.sso_url
-    ENV['DISCOURSE_CALLBACK_URL']
+    Rails.application.secrets.discourse['callback_url']
   end
 
   def self.parse(payload, sso_secret = nil)
