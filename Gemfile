@@ -27,8 +27,6 @@ gem 'sanitize'
 # copying of ActiveRecord objects and their associated children
 gem 'amoeba'
 
-#配置密码
-gem 'figaro'
 # nested sharing_node
 gem 'awesome_nested_set'
 
