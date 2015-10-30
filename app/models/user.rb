@@ -81,11 +81,11 @@ class User < ActiveRecord::Base
   scope :unauthenticated_seller_identify, -> { where(authenticated: 0) }
 
   UserRole::ROLE_NAMES.each do |role|
-    User.class_eval do
-      define_method "is_#{role}?" do
-        user_roles.exists?(name: role)
+    class_eval <<-RUBY, __FILE__, __LINE__+1
+      def is_#{role}?
+        @is_#{role} ||= user_roles.exists?(name: '#{role}')
       end
-    end
+    RUBY
   end
 
   def image_url(version = nil)
