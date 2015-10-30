@@ -8,7 +8,7 @@ class DiscourseSsoController < ApplicationController
       Rails.logger.debug("Redirect To Discourse With Playload: #{sso.unsigned_payload}")
       redirect_to sso.to_url
     else
-      redirect_to(new_user_session_url(redirect: 'discourse'))
+      redirect_to(new_user_session_url(redirect: 'discourse', redirectUrl: request.fullpath))
     end
   end
 

@@ -17,6 +17,7 @@
     <% if params[:redirect] == 'discourse' %>
       <h2><%= Rails.application.secrets.metas["discourse_title"] %></h2>
       <%= hidden_field_tag 'redirect', params[:redirect] %>
+      <%= hidden_field_tag 'redirectUrl', params[:redirectUrl] %>
     <% else %>
       <h2>UBOSS</h2>
     <% end %>
