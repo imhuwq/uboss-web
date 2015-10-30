@@ -32,6 +32,7 @@ class ProductsController < ApplicationController
   end
 
   def get_sku
+    # FIXME 不要大片的注释代码，遇到已经不用的代码直接删除
     # binding.pry
     product = Product.find(params[:product_id])
     # skus = {}
