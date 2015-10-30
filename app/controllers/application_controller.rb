@@ -9,17 +9,6 @@ class ApplicationController < ActionController::Base
   helper_method :desktop_request?
 
   before_action :configure_permitted_parameters, if: :devise_controller?
-  before_action :store_discourse_sso_location
-
-
-  def store_discourse_sso_location
-    if request.xhr? or ! request.get?
-      return
-    end
-    if( request.path == discourse_sso_path )
-      session[:discourse_sso] = request.fullpath if current_user.blank?
-    end
-  end
 
   protected
 
@@ -91,14 +80,20 @@ class ApplicationController < ActionController::Base
   end
 
   def configure_permitted_parameters
-    devise_parameter_sanitizer.for(:sign_up) { |u| u.permit(:login, :captcha, :password, :password_confirmation, :remember_me) }
-    devise_parameter_sanitizer.for(:sign_in) { |u| u.permit(:login, :password, :remember_me, :mobile_auth_code, :captcha, :captcha_key) }
-    devise_parameter_sanitizer.for(:account_update) { |u| u.permit(:login, :password, :password_confirmation, :current_password) }
+    devise_parameter_sanitizer.for(:sign_up) { |u|
+      u.permit(:login, :captcha, :password, :password_confirmation, :remember_me)
+    }
+    devise_parameter_sanitizer.for(:sign_in) { |u|
+      u.permit(:login, :password, :remember_me, :mobile_auth_code, :captcha, :captcha_key)
+    }
+    devise_parameter_sanitizer.for(:account_update) { |u|
+      u.permit(:login, :password, :password_confirmation, :current_password)
+    }
   end
 
   def after_sign_in_path_for(resource, opts = {need_new_passowrd: true})
-    if session[:discourse_sso]
-      path = session.delete(:discourse_sso)
+    if params[:redirect] == 'discourse'
+      params[:redirectUrl]
     elsif desktop_request? && !current_user.admin?
       merchant_confirm_account_path
     elsif current_user.need_reset_password? && opts[:need_new_passowrd]
