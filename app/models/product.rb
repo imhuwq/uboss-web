@@ -140,6 +140,7 @@ class Product < ActiveRecord::Base
   def sku_hash
     skus = {}
     sku_details = {}
+    # FIXME 不要使用毫无意义的变量名 obj, k , v ~
     self.seling_inventories.where("count > 0").each do |obj|
       obj.sku_attributes.each do |k,v|
         if !skus[k].present?
