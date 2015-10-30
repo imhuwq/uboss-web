@@ -1,8 +1,7 @@
 class DiscourseSsoController < ApplicationController
 
   def sso
-    if current_user
-
+    if current_user.present?
       sso = SingleSignOnService.parse(request.query_string)
       sso.assign_attributes_with_user(current_user)
 
