@@ -8,6 +8,7 @@ FactoryGirl.define do
     original_price 110
     present_price 100
     count 100
+    status 1
     content "product desc"
     short_description "product short desc"
     product_inventories_attributes [{ price: 100, count: 100, sku_attributes: { size: 'x', color: 'red' } }]
