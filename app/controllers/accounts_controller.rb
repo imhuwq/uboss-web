@@ -196,11 +196,6 @@ class AccountsController < ApplicationController
     end
   end
 
-  def maker_qrcode
-    @user = current_user
-    render layout: nil
-  end
-
   def settings
     render layout: 'mobile'
   end

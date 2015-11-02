@@ -21,7 +21,7 @@ class HomeController < ApplicationController
 
   def maker_qrcode
     @user = User.find(params.fetch(:uid))
-    render 'accounts/maker_qrcode', layout: false
+    render layout: false
   end
 
   def about_us
