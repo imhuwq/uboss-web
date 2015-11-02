@@ -45,6 +45,14 @@ Rails.application.routes.draw do
     post 'change_address', on: :collection
     #resource :charge, only: [:create]
   end
+
+  resources :order_items, only: [] do
+    resources :order_item_refunds do
+      get 'consult_info', on: :member
+      resources :consult_info, only: [:new, :create]
+    end
+  end
+
   resources :charges, only: [:show] do
     get 'payments',     on: :collection
     get 'pay_complete', on: :member
@@ -116,6 +124,8 @@ Rails.application.routes.draw do
       end
 
       get '/select_carriage_template', to: 'products#select_carriage_template'
+
+      resources :refund_reasons
 
       resources :expresses do
         member do

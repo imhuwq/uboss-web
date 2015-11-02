@@ -7,6 +7,7 @@ class OrderItem < ActiveRecord::Base
   belongs_to :sharing_node
   has_many   :evaluations
   has_many   :sharing_incomes
+  has_many   :order_item_refunds
 
   validates :user, :product_inventory, :amount, :present_price, :pay_amount, presence: true
 
@@ -21,8 +22,38 @@ class OrderItem < ActiveRecord::Base
     previous_changes[:pay_amount].first != previous_changes[:pay_amount].last
   }
 
+
+  include AASM
+  aasm do
+    state :unrefund, initial: true
+    state :refunding
+    state :refunded
+    state :success
+    state :closed
+
+    event :apply_refund do
+      transitions from: [:unrefund, :closed], to: :refunding
+    end
+
+    event :approve do
+      transitions from: :refunding, to: :refunded
+    end
+
+    event :refund_success do
+      transitions from: :refunded, to: :success
+    end
+
+    event :refuse do
+      transitions from: :refunding, to: :closed
+    end
+  end
+
   def deal_price
     present_price - privilege_amount
+  end
+
+  def last_refund
+    order_item_refunds.reorder("created_at desc").first
   end
 
   def count

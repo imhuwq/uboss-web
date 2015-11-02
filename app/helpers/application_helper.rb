@@ -1,5 +1,9 @@
 module ApplicationHelper
 
+  def countdown_time(time)
+    time.strftime('%Y/%m/%d %H:%M:%S')
+  end
+
   def qrcode_image_tag(text, opts = {})
     opts = {
       text: text,
