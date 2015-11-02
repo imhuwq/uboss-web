@@ -1,15 +1,20 @@
 <%= content_for :page_title do %>
   编辑用户
 <% end %>
-<div class="upass main">
-<div class="container add_listall" >
-  <div class="add_conts">
-    <%= simple_form_for current_user, url: account_path, method: :PUT do |f| %>
-    <div class="add_inout">
-      <p><span>账户名称</span><%= f.input_field :nickname,placeholder: '输入昵称', class:"add_text" %></p>
-    </div>
-    <div class="accunt_adil_box3 adbtn">
-      <%= f.submit '修改', class:"accunt_adilbtn" %>
-    </div>
-    <% end %>
-</div>
+<br />
+<%= simple_form_for current_user, url: account_path, method: :PUT do |f| %>  
+	<div class="address-new">
+		<div class="box-m10">
+			<table>
+				<tr>
+					<td>账户名称</td>
+					<td><%= f.input_field :nickname,placeholder: '输入昵称', class:"add_text input-block" %></td>
+				</tr>
+			</table>
+			<br />		
+			<p><%= f.submit '修改', class:"btn btn-block btn-large" %></p>
+			<br />
+		</div>
+	</div>		
+
+<% end %>

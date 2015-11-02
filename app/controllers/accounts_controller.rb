@@ -17,6 +17,7 @@ class AccountsController < ApplicationController
   end
 
   def edit
+    render layout: 'mobile'
   end
 
   def update
