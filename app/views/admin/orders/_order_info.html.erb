@@ -33,15 +33,14 @@
               <td><%= item.amount %></td>
               <td><%= item.privilege_amount %><p>(贡献值)</p></td>
               <td>
-                <%=order.pay_amount%>
-                <p>(快递:<%= order.ship_price %>)</p>
+                <%= item.pay_amount %>
               </td>
             </tr>
           <% end %>
         </tbody>
       </table>
     </div>
-    <p class='date_time'>下单时间 : <%= order.created_at %><span class="pull-right">实收款 : <span class='main-color font-size-max'><%= order.pay_amount %></span>元</span></p>
+    <p class='date_time'>下单时间 : <%= order.created_at %><span class="pull-right">实收款：<span class='main-color font-size-max'><%= order.pay_amount %></span> 元 （含运费：<%= order.ship_price %> 元）</span></p>
   </div>
 
   <div class="admin-border admin-border-order-info">
