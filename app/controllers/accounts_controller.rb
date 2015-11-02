@@ -70,6 +70,7 @@ class AccountsController < ApplicationController
   end
 
   def edit_password # 修改密码页面
+    render layout: 'mobile'
   end
 
   def binding_agent # 商家绑定创客
