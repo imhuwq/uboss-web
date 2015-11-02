@@ -44,6 +44,7 @@ bower.json
 .DS_Store
 /db/schema.rb
 .rubocop.yml
+.project
 /public/uploads
 dump.rdb
 config/apiclient_cert.p12
