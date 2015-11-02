@@ -44,8 +44,10 @@ class OrderDivideJobTest < ActiveJob::TestCase
 
     it 'should only reward 1 user' do
       product = create :product_with_1sharing
-      product_inventory = create(:product_inventory, product: product)
-      sharing_reward_lv1 = product.share_amount_lv_1
+      product_inventory = product.seling_inventories.first
+      sharing_reward_lv1 = product_inventory.share_amount_lv_1
+
+      assert sharing_reward_lv1 > 0
 
       level1_node = create(:sharing_node, product: product)
       level2_node = create(:sharing_node, product: product, parent: level1_node)
@@ -66,25 +68,32 @@ class OrderDivideJobTest < ActiveJob::TestCase
 
       OrderDivideJob.perform_now(@order.reload)
 
-      assert_equal 0, level1_node.user.income.to_f
-      assert_equal sharing_reward_lv1 * buy_amount, level2_node.user.income
+      assert_equal 0, level1_node.user.reload.income.to_f
+      assert_equal sharing_reward_lv1 * buy_amount, level2_node.user.reload.income
     end
 
     it 'should reward sharing user success' do
       product = create :product_with_3sharing
-      product_inventory = create(:product_inventory, product: product)
+      product_inventory = product.seling_inventories.first
 
-      sharing_reward_lv1 = product.share_amount_lv_1
-      sharing_reward_lv2 = product.share_amount_lv_2
-      sharing_reward_lv3 = product.share_amount_lv_3
+      sharing_reward_lv1 = product_inventory.share_amount_lv_1
+      sharing_reward_lv2 = product_inventory.share_amount_lv_2
+      sharing_reward_lv3 = product_inventory.share_amount_lv_3
+
+      assert sharing_reward_lv1 > 0
+      assert sharing_reward_lv2 > 0
+      assert sharing_reward_lv3 > 0
 
       level1_node = create(:sharing_node, product: product)
       level2_node = create(:sharing_node, product: product, parent: level1_node)
       level3_node = create(:sharing_node, product: product, parent: level2_node)
       level4_node = create(:sharing_node, product: product, parent: level3_node)
 
-      buyer = create(:user)
+      assert level2_node.user.income == 0
+      assert level3_node.user.income == 0
+      assert level4_node.user.income == 0
 
+      buyer = create(:user)
       @order = create(:order,
                       user: buyer,
                       order_items_attributes: [{
@@ -99,10 +108,10 @@ class OrderDivideJobTest < ActiveJob::TestCase
 
       OrderDivideJob.perform_now(@order.reload)
 
-      assert_equal 0, level1_node.user.income.to_f
-      assert_equal sharing_reward_lv3 * buy_amount, level2_node.user.income
-      assert_equal sharing_reward_lv2 * buy_amount, level3_node.user.income
-      assert_equal sharing_reward_lv1 * buy_amount, level4_node.user.income
+      assert_equal 0, level1_node.user.reload.income.to_f
+      assert_equal sharing_reward_lv3 * buy_amount, level2_node.user.reload.income
+      assert_equal sharing_reward_lv2 * buy_amount, level3_node.user.reload.income
+      assert_equal sharing_reward_lv1 * buy_amount, level4_node.user.reload.income
     end
   end
 

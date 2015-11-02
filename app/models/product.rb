@@ -9,12 +9,11 @@ class Product < ActiveRecord::Base
   DataBuyerPay = { 0 => '包邮', 1 => '统一邮费', 2 => '运费模板' }
 
   belongs_to :user
-  belongs_to :order_items
   belongs_to :carriage_template
   has_one :asset_img, class_name: 'AssetImg', autosave: true, as: :resource
-  has_many :cart_items,  through: :product_inventories
-  has_many :order_items, through: :product_inventories
+  has_many :order_items
   has_many :product_inventories, autosave: true, dependent: :destroy
+  has_many :cart_items,  through: :product_inventories
   has_many :seling_inventories, -> { where(saling: true) }, class_name: 'ProductInventory', autosave: true
 
   delegate :image_url, to: :asset_img, allow_nil: true
@@ -23,6 +22,7 @@ class Product < ActiveRecord::Base
   enum status: { unpublish: 0, published: 1, closed: 2 }
 
   scope :hots, -> { where(hot: true) }
+  scope :available, -> { where.not(status: 'closed') }
 
   validates_presence_of :user_id, :name, :short_description
   validate :must_has_one_product_inventory
@@ -140,6 +140,7 @@ class Product < ActiveRecord::Base
   def sku_hash
     skus = {}
     sku_details = {}
+    # FIXME 不要使用毫无意义的变量名 obj, k , v ~
     self.seling_inventories.where("count > 0").each do |obj|
       obj.sku_attributes.each do |k,v|
         if !skus[k].present?

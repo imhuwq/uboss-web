@@ -5,7 +5,7 @@ class PrivilegeCardTest < ActiveSupport::TestCase
   describe 'with 50 user privilege_rate' do
     before do
       @sharing_user = create(:user, privilege_rate: 50)
-      @product = create(:product_with_3sharing)
+      @product = create(:product)
       @product_inventory = @product.seling_inventories.first
       @product_inventory.update_columns(
         share_amount_lv_1: 10,

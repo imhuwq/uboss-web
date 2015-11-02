@@ -6,15 +6,14 @@
   <%= sharing_meta_tags(@product, @sharing_link_node) %>
 <% end %>
 
-<% if browser.wechat? %>
-  <%= content_for :extra_javascript do %>
+<%= content_for :extra_javascript do %>
+  <% if browser.wechat? %>
     <script type="text/javascript" charset="utf-8">
       wx.ready(function(){ UBoss.luffy.invokeSharing(); });
     </script>
   <% end %>
+  <%= javascript_include_tag "mobile_page/jsmvc_app/application" %>
 <% end %>
-
-<%= javascript_include_tag "mobile_page/jsmvc_app/application" %>
 
 <div class="fixed-container">
   <div class="product-box product-page">
@@ -136,9 +135,8 @@
   </div><!-- product-info-box -->
 
   <div class="product-info-box">
-    <%= raw @product.content %>
+    <%== @product.content %>
   </div>
-
 
   <% if @sharing_node.blank? %>
     <div class="share_buy">
@@ -173,6 +171,7 @@
 		  </div>
     </div>
   <% end %>
+
   <%= render partial: 'new_share' %>
 
 </div>
@@ -223,6 +222,7 @@
     </div>
   </div>
 <% end %>
+
 <%= hidden_field_tag "submit_way" %>
 
 <script type="text/javascript">

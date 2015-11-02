@@ -67,10 +67,7 @@ class ProductInventory < ActiveRecord::Base
   private
 
   def update_unpay_order_items
-    order_items.includes(:order).merge(Order.unpay).references(:order).find_each do |order_item|
-      order_item.reset_payment_info
-      order_item.save
-    end
+    RecalculateOrderPaymentJob.perform_later(self)
   end
 
   def price_or_share_amount_changes

@@ -117,6 +117,7 @@ class Admin::PersonalAuthenticationsController < AdminController
   alias :create_params :personal_authentication_params
   alias :update_params :personal_authentication_params
 
+  # FIXME 将model的数据校验移到model
   def valid_create_params
     @errors = []
     code15 = /^[1-9]\d{7}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}$/ # 15位身份证号
