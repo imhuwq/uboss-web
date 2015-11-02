@@ -59,10 +59,7 @@ class OrderCharge < ActiveRecord::Base
 
   private
   def invoke_wx_pay_cheking
-    response = WxPay::Service.invoke_orderquery(
-      nonce_str: SecureRandom.uuid.tr('-', ''),
-      out_trade_no: pay_serial_number
-    )
+    response = WxPay::Service.order_query(out_trade_no: pay_serial_number)
     if response.success? && WxPay::Sign.verify?(response) && response['trade_state'] == 'SUCCESS'
       update_with_wx_pay_result(response)
       true
