@@ -19,7 +19,7 @@
     padding-left: 10px;
   }
 
-  label[for='order_item_refund_asset_imgs'] {
+  label[for='order_item_refund_asset_imgs'], label[for='refund_message_asset_imgs'] {
     display: none;
   }
 }

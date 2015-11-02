@@ -29,7 +29,7 @@ $ ->
 
 
   updateFile = (e,data,upyun_bucket_domain) ->
-    if $('#order_item_refund_avatar').val().split(',').length >= 3
+    if $('.refund_avatar').val().split(',').length >= 3
       alert('最多只能上传三张图片')
       return
     $this = $(e.target)

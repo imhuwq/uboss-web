@@ -174,3 +174,4 @@ class OrdersController < ApplicationController
       @order_form.amount.present?
   end
 end
+

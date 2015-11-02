@@ -12,10 +12,14 @@
 # It's strongly recommended that you check this file into your version control system.
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 ActiveRecord::Schema.define(version: 20151113032754) do
 =======
 ActiveRecord::Schema.define(version: 20151030093203) do
 >>>>>>> 3181364... 用户退款
+=======
+ActiveRecord::Schema.define(version: 20151102085234) do
+>>>>>>> 44f6327... 协商退款
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -453,6 +457,7 @@ ActiveRecord::Schema.define(version: 20151030093203) do
     t.string   "money_to"
     t.string   "explain"
 <<<<<<< HEAD
+<<<<<<< HEAD
     t.datetime "created_at",           null: false
     t.datetime "updated_at",           null: false
     t.integer  "refund_reason_id"
@@ -462,6 +467,12 @@ ActiveRecord::Schema.define(version: 20151030093203) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
 >>>>>>> 3181364... 用户退款
+=======
+    t.datetime "created_at",       null: false
+    t.datetime "updated_at",       null: false
+    t.integer  "refund_reason_id"
+    t.string   "action"
+>>>>>>> 44f6327... 协商退款
   end
 
   create_table "refund_reasons", force: :cascade do |t|
