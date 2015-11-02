@@ -4,7 +4,16 @@ $(window).load(function() {
   	}else{
     	new WOW().init();
     }
-  	$('.banner .content').fadeIn()
+  	$('.banner .content').fadeIn();
+  	f
+	
+		
+	
+	
+		
+	
+	
+  	
 })
 $(document).ready(function() {
   	$('.banner .content').hide()

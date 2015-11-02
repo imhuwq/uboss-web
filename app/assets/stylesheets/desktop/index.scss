@@ -121,28 +121,19 @@ footer {
     .top{
         text-shadow: 3px 3px 30px rgba(0,0,0,0.4);
     }   
-    .fa{
-        /* Firefox: */
-        -moz-animation: rubberBand 1.5s linear 5s infinite ;
-        /* Safari 和 Chrome: */
-        -webkit-animation: rubberBand 1.5s linear 5s infinite;
-        /* Opera: */
-        -o-animation: rubberBand 1.5s linear 5s infinite;
-        animation: rubberBand 1.5s linear 5s infinite ;
-    } 
-    .middle span:first-child .fa{
-        -webkit-animation-delay:3s;
-        -moz-animation-delay:3s;
-        -o-animation-delay:3s;
-        animation-delay:3s;
-    }
-    .middle span:last-child .fa{
-        -webkit-animation-delay:7s;
-        -moz-animation-delay:7s;
-        -o-animation-delay:7s;
-        animation-delay:7s;
-    }
+    .middle { height: 100px;}
+    .flashed1{
        
+        animation: flashed1 10s linear infinite ;
+    } 
+    .flashed2{
+       
+        animation: flashed2 10s linear infinite ;
+    } 
+    .flashed3{
+        
+        animation: flashed3 10s linear infinite ;
+    } 
     
     h1{
         font-size: 140px;
@@ -242,13 +233,16 @@ footer {
     cursor: pointer;
     .play-icon{
         position: absolute;
-        width: 40px;
-        height: 40px;
-        line-height: 40px;
-        font-size: 40px;
+        width: 100px;
+        height: 60px;
+        line-height: 59px;
+        border: 2px solid #fff;
+        border-radius: 100px;
+        font-size: 38px;
         left: 50%;
         top: 50%;
-        margin: -20px 0 0 -20px;
+        margin: -30px 0 0 -50px;
+        text-align: center;
     }
     
 }
@@ -383,4 +377,26 @@ footer {
     box-shadow: 0px 0px 50px rgba(233,212,74,0.4);
     transition: all .5s linear; 
 }
+@keyframes flashed1
+{
+    0%{transform:scale(1);}
+    3%{transform:scale(1.5);}
+    6%{transform:scale(1);}
+}
 
+
+@keyframes flashed2
+{
+    6%{transform:scale(1);}
+    9%{transform:scale(1.5);}
+    12% {transform:scale(1);}
+    
+}
+
+@keyframes flashed3
+{
+    12%{transform:scale(1);}
+    15%{transform:scale(1.5);}
+    18% {transform:scale(1);}
+    
+}
