@@ -29,7 +29,7 @@ class OrderItem < ActiveRecord::Base
     state :refunding
     state :refunded
     state :success
-    state :closed
+    state :cancel
 
     event :apply_refund do
       transitions from: [:unrefund, :closed], to: :refunding
@@ -44,7 +44,17 @@ class OrderItem < ActiveRecord::Base
     end
 
     event :refuse do
-      transitions from: :refunding, to: :closed
+      transitions from: :refunding, to: :cancel
+    end
+  end
+
+  def refund_page_title
+    if order.may_ship?
+      '退款详情'
+    elsif order.may_sign?
+      '未收到货 退款'
+    elsif order.sign?
+      '已收到货 仅退款'
     end
   end
 

@@ -22,7 +22,7 @@
       <tr>
         <td>
           <%= f.input :asset_imgs, hint:"上传凭证(最多三张)"  do %>
-            <%= f.input_field :avatar, type: :hidden, as: :file %>
+            <%= f.input_field :avatar, value: @refund.image_files, type: :hidden, as: :file, class: 'refund_avatar' %>
             <p class="fileinput-button">
               <%= image_tag("admin/no-img.png") %>
               <% @refund.asset_imgs.each do |img| %>
