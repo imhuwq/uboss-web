@@ -11,7 +11,11 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
+<<<<<<< HEAD
 ActiveRecord::Schema.define(version: 20151113032754) do
+=======
+ActiveRecord::Schema.define(version: 20151030093203) do
+>>>>>>> 3181364... 用户退款
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -175,6 +179,46 @@ ActiveRecord::Schema.define(version: 20151113032754) do
 
   add_index "mobile_captchas", ["mobile"], name: "index_mobile_captchas_on_mobile", using: :btree
 
+  create_table "oauth_access_grants", force: :cascade do |t|
+    t.integer  "resource_owner_id", null: false
+    t.integer  "application_id",    null: false
+    t.string   "token",             null: false
+    t.integer  "expires_in",        null: false
+    t.text     "redirect_uri",      null: false
+    t.datetime "created_at",        null: false
+    t.datetime "revoked_at"
+    t.string   "scopes"
+  end
+
+  add_index "oauth_access_grants", ["token"], name: "index_oauth_access_grants_on_token", unique: true, using: :btree
+
+  create_table "oauth_access_tokens", force: :cascade do |t|
+    t.integer  "resource_owner_id"
+    t.integer  "application_id"
+    t.string   "token",             null: false
+    t.string   "refresh_token"
+    t.integer  "expires_in"
+    t.datetime "revoked_at"
+    t.datetime "created_at",        null: false
+    t.string   "scopes"
+  end
+
+  add_index "oauth_access_tokens", ["refresh_token"], name: "index_oauth_access_tokens_on_refresh_token", unique: true, using: :btree
+  add_index "oauth_access_tokens", ["resource_owner_id"], name: "index_oauth_access_tokens_on_resource_owner_id", using: :btree
+  add_index "oauth_access_tokens", ["token"], name: "index_oauth_access_tokens_on_token", unique: true, using: :btree
+
+  create_table "oauth_applications", force: :cascade do |t|
+    t.string   "name",                      null: false
+    t.string   "uid",                       null: false
+    t.string   "secret",                    null: false
+    t.text     "redirect_uri",              null: false
+    t.string   "scopes",       default: "", null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "oauth_applications", ["uid"], name: "index_oauth_applications_on_uid", unique: true, using: :btree
+
   create_table "order_charges", force: :cascade do |t|
     t.string   "channel"
     t.datetime "created_at",                         null: false
@@ -207,8 +251,18 @@ ActiveRecord::Schema.define(version: 20151113032754) do
     t.jsonb    "state_at_attributes", default: {}, null: false
   end
 
+  create_table "order_item_refunds", force: :cascade do |t|
+    t.decimal  "money"
+    t.integer  "refund_reason_id"
+    t.string   "description"
+    t.integer  "order_item_id"
+    t.datetime "created_at",       null: false
+    t.datetime "updated_at",       null: false
+  end
+
   create_table "order_items", force: :cascade do |t|
     t.integer  "order_id"
+    t.integer  "product_id"
     t.integer  "user_id"
     t.integer  "amount"
     t.datetime "created_at",                         null: false
@@ -218,9 +272,13 @@ ActiveRecord::Schema.define(version: 20151113032754) do
     t.decimal  "present_price",        default: 0.0
     t.decimal  "privilege_amount",     default: 0.0
     t.integer  "product_inventory_id"
+<<<<<<< HEAD
     t.integer  "product_id"
     t.integer  "order_item_refund_id"
     t.integer  "refund_state",         default: 0
+=======
+    t.string   "aasm_state"
+>>>>>>> 3181364... 用户退款
   end
 
   create_table "orders", force: :cascade do |t|
@@ -383,18 +441,28 @@ ActiveRecord::Schema.define(version: 20151113032754) do
     t.integer  "user_id"
     t.string   "money_to"
     t.string   "explain"
+<<<<<<< HEAD
     t.datetime "created_at",           null: false
     t.datetime "updated_at",           null: false
     t.integer  "refund_reason_id"
     t.string   "action"
     t.integer  "order_item_refund_id"
+=======
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+>>>>>>> 3181364... 用户退款
   end
 
   create_table "refund_reasons", force: :cascade do |t|
     t.string   "reason"
+<<<<<<< HEAD
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
     t.string   "reason_type"
+=======
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+>>>>>>> 3181364... 用户退款
   end
 
   create_table "regions", force: :cascade do |t|

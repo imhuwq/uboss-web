@@ -1,0 +1,118 @@
+<%= content_for :page_title do %>
+  <%= link_to order_path(@order_item.order) do %>
+    <div>
+      <i class="fa fa-chevron-left"></i>
+      退款详情
+    </div>
+  <% end %>
+<% end %>
+<br />
+<div id="order_item_refund_show">
+  <div class='refund-box'>
+    <% if @order_item.refunding? %>
+      <p>卖家处理中</p>
+      <div class="countdown">
+        <span id="clock_refund" data-endtime=<%= countdown_time(@refund.created_at+2.days) %>></span>
+      </div>
+      <ul>
+        <li>
+          <span>如果卖家同意：</span><span>申请将达成并退款回您当时支付的账号或银行卡</span>
+        </li>
+        <li>
+          <span>如果商家发货：</span><span>申请将关闭；您可以再次发起退款</span>
+         </li>
+        <li>
+          <span>如果商家超时未处理：</span><span>申请将默认达成并退款回您当时支付的账号或银行卡</span>
+        </li>
+      </ul>
+      <%= link_to '修改退款申请', edit_order_item_order_item_refund_path(order_item_id: @order_item.id, id: @refund.id) %>
+
+    <% elsif @order_item.refunded? %>
+      <p>卖家同意申请</p>
+      <p>卖家退款给买家0.05元</p>
+      <p>UBOSS将在24小时内退款会您当时支付的账号或银行卡，请注意查收</p>
+
+    <% elsif @order_item.closed? %>
+      <p>退款关闭</p>
+      <p>卖家已发货，此申请被自动撤销</p>
+
+    <% elsif @order_item.success? %>
+      <p>退款成功</p>
+      <p>退款金额：0.05元</p>
+    <% end %>
+    <%= link_to '查看协商详情', consult_info_order_item_order_item_refund_path(order_item_id: @order_item.id, id: @refund.id) %>
+  </div>
+
+  <br />
+  <div class="order-list">
+    <div class="seller-box">
+      <div class="content">
+        商家:
+        <div class="text-cut"><%= @order_item.order.seller.store_identify %></div>
+      </div>
+    </div>
+    <div class="order-box">
+      <div class="cover">
+        <%= link_to product_path(@order_item.item_product) do %>
+          <%= image_tag @order_item.image_url(:w120) %>
+        <% end %>
+      </div><!-- cover -->
+
+      <div class="content">
+        <div class="price">
+          <p>￥<%= @order_item.present_price %></p>
+          <p class="gray-color num">x <%= @order_item.amount %></p>
+        </div>
+        <p class="name">
+          <%= @order_item.product_name %>
+        </p>
+        <p class="info">
+          <% @order_item.product_inventory.properties.each do |property| %>
+            <span><%= "#{property.key}：#{property.value}" %></span>
+          <% end %>
+        </p>
+      </div><!-- content -->
+    </div><!-- order-box -->
+    <table>
+      <tr class='order-box'>
+        <th>退款类型</th>
+        <td>仅退款</td>
+      </tr>
+      <tr class='order-box'>
+        <th>退款金额</th>
+        <td><%= @refund.money %>元</td>
+      </tr>
+      <tr class='order-box'>
+        <th>退款原因</th>
+        <td><%= @refund.refund_reason.try(:reason) %>/<%= @refund.description %></td>
+      </tr>
+      <tr class='order-box'>
+        <th>退款说明 </th>
+        <td>———</td>
+      </tr>
+    </table>
+    <% @refund.asset_imgs.each do |img| %>
+      <div class="box-w33">
+        <%= image_tag img.image_url(:thumb), class: 'order-box-img'%>
+      </div>
+    <% end %>
+  </div><!-- order-list -->
+
+  <br />
+  <div class='refund-box'>
+    <p>来源订单：<%= @order_item.order.number %> <%= link_to '查看', @order_item.order, target: '_blank' %></p>
+    <p>退款编号：810231312</p>
+    <p>申请时间：<%= @refund.created_at %></p>
+    <% if @order_item.refunded? %>
+      <p>同意时间：2015-10-24 10：42</p>
+    <% end %>
+    <% if @order_item.success?%>
+      <p>同意时间：2015-10-24 10：42</p>
+      <p>退款时间：2015-10-24 15：42</p>
+    <% end %>
+    <% if @order_item.closed?%>
+      <p>关闭时间：2015-10-24 10：42</p>
+    <% end %>
+  </div>
+</div>
+

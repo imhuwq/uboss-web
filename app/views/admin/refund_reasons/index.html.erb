@@ -1,0 +1,16 @@
+<div class="container admin-container">
+  <ul class="breadcrumb">
+    <li><a href="/admin">主页</a></li>
+    <li class="divider"><i class="fa fa-caret-right"></i></li>
+    <li>退款理由</li>
+  </ul>
+</div>
+<br />
+<div class="container  mod-inner">
+  <div class="list-search-bar">
+    <%= link_to("+ 添加退款理由", url_for(:action=>:new), :class=>"btn btn-large",:role=>"button") %>
+  </div>
+  <br />
+    <%= render partial: 'reasons', locals: { reasons: @reasons } %>
+    <%= paginate @reasons %>
+</div>
