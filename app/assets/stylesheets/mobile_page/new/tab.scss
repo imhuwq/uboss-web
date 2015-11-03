@@ -26,6 +26,20 @@
     }
     
 }
+.login-style{
+    .tab{color: $brand-primary;}
+    .tab:first-child{
+        border-radius:4px 0 0 4px ;
+    }
+    .tab:last-child{
+        border-radius:0 4px 4px 0 ;
+    }
+    .tab.active{
+        background: $brand-primary;
+        color: #fff;
+        
+    }
+}
 .tab-container .tab-content{
     display: none;
 }

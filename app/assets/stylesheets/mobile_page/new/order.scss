@@ -373,7 +373,7 @@
     color:$brand-primary;
     box-sizing: border-box;    
     td{ border-bottom: 1px solid #f6f6f6;}
-    input[type="tel"],input[type="text"],select{
+    input[type="tel"],input[type="text"],input[type="password"],select{
         border: none;
         -webkit-appearance: none;
         color: #444;
