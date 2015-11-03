@@ -23,6 +23,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 ActiveRecord::Schema.define(version: 20151113032754) do
 =======
 ActiveRecord::Schema.define(version: 20151030093203) do
@@ -60,6 +61,9 @@ ActiveRecord::Schema.define(version: 20151115185505) do
 =======
 ActiveRecord::Schema.define(version: 20151022034456) do
 >>>>>>> fb8d04f... fix 'FIXME'
+=======
+ActiveRecord::Schema.define(version: 20151029092708) do
+>>>>>>> 2832ff4... migration
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -212,6 +216,26 @@ ActiveRecord::Schema.define(version: 20151022034456) do
     t.datetime "updated_at", null: false
   end
 
+<<<<<<< HEAD
+=======
+  create_table "job_histories", force: :cascade do |t|
+    t.integer  "user_id"
+    t.integer  "status"
+    t.string   "message"
+    t.string   "resource_type"
+    t.string   "resource_id"
+    t.string   "job_class"
+    t.string   "job_method"
+    t.jsonb    "options"
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
+  end
+
+  create_table "json_test", force: :cascade do |t|
+    t.jsonb "data"
+  end
+
+>>>>>>> 2832ff4... migration
   create_table "mobile_captchas", force: :cascade do |t|
     t.string   "code"
     t.datetime "expire_at"
