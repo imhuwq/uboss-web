@@ -14,6 +14,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 ActiveRecord::Schema.define(version: 20151113032754) do
 =======
 ActiveRecord::Schema.define(version: 20151030093203) do
@@ -24,6 +25,9 @@ ActiveRecord::Schema.define(version: 20151102085234) do
 =======
 ActiveRecord::Schema.define(version: 20151103081217) do
 >>>>>>> 91dd742... 退款流程
+=======
+ActiveRecord::Schema.define(version: 20151103103909) do
+>>>>>>> d6a5a01... add add_order_item_refund_id to refund_messages
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -272,7 +276,6 @@ ActiveRecord::Schema.define(version: 20151103081217) do
 
   create_table "order_items", force: :cascade do |t|
     t.integer  "order_id"
-    t.integer  "product_id"
     t.integer  "user_id"
     t.integer  "amount"
     t.datetime "created_at",                         null: false
@@ -285,6 +288,9 @@ ActiveRecord::Schema.define(version: 20151103081217) do
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> d6a5a01... add add_order_item_refund_id to refund_messages
     t.integer  "product_id"
     t.integer  "order_item_refund_id"
     t.integer  "refund_state",         default: 0
@@ -318,10 +324,10 @@ ActiveRecord::Schema.define(version: 20151103081217) do
     t.datetime "signed_at"
     t.datetime "shiped_at"
     t.datetime "completed_at"
-    t.string   "ship_number"
-    t.integer  "express_id"
     t.string   "to_seller"
     t.decimal  "ship_price",      default: 0.0
+    t.string   "ship_number"
+    t.integer  "express_id"
     t.integer  "order_charge_id"
     t.decimal  "paid_amount",     default: 0.0
   end
@@ -347,6 +353,14 @@ ActiveRecord::Schema.define(version: 20151103081217) do
     t.datetime "updated_at",                 null: false
     t.boolean  "actived",    default: false
     t.integer  "seller_id"
+  end
+
+  create_table "product_attribute_names", force: :cascade do |t|
+    t.string   "name"
+    t.boolean  "is_key_attr",      default: true
+    t.integer  "product_class_id"
+    t.datetime "created_at",                      null: false
+    t.datetime "updated_at",                      null: false
   end
 
   create_table "product_classes", force: :cascade do |t|
@@ -461,6 +475,7 @@ ActiveRecord::Schema.define(version: 20151103081217) do
     t.string   "explain"
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     t.datetime "created_at",           null: false
     t.datetime "updated_at",           null: false
     t.integer  "refund_reason_id"
@@ -476,6 +491,13 @@ ActiveRecord::Schema.define(version: 20151103081217) do
     t.integer  "refund_reason_id"
     t.string   "action"
 >>>>>>> 44f6327... 协商退款
+=======
+    t.datetime "created_at",           null: false
+    t.datetime "updated_at",           null: false
+    t.integer  "refund_reason_id"
+    t.string   "action"
+    t.integer  "order_item_refund_id"
+>>>>>>> d6a5a01... add add_order_item_refund_id to refund_messages
   end
 
   create_table "refund_reasons", force: :cascade do |t|
