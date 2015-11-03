@@ -22,32 +22,6 @@ class OrderItem < ActiveRecord::Base
     previous_changes[:pay_amount].first != previous_changes[:pay_amount].last
   }
 
-
-  include AASM
-  aasm do
-    state :unrefund, initial: true
-    state :refunding
-    state :refunded
-    state :success
-    state :cancel
-
-    event :apply_refund do
-      transitions from: [:unrefund, :closed], to: :refunding
-    end
-
-    event :approve do
-      transitions from: :refunding, to: :refunded
-    end
-
-    event :refund_success do
-      transitions from: :refunded, to: :success
-    end
-
-    event :refuse do
-      transitions from: :refunding, to: :cancel
-    end
-  end
-
   def refund_page_title
     if order.may_ship?
       '退款详情'

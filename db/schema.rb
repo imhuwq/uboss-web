@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151102085234) do
+ActiveRecord::Schema.define(version: 20151103081217) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -234,10 +234,13 @@ ActiveRecord::Schema.define(version: 20151102085234) do
     t.integer  "order_item_id"
     t.datetime "created_at",       null: false
     t.datetime "updated_at",       null: false
+    t.string   "aasm_state"
+    t.integer  "order_state"
   end
 
   create_table "order_items", force: :cascade do |t|
     t.integer  "order_id"
+    t.integer  "product_id"
     t.integer  "user_id"
     t.integer  "amount"
     t.datetime "created_at",                         null: false
@@ -247,8 +250,7 @@ ActiveRecord::Schema.define(version: 20151102085234) do
     t.decimal  "present_price",        default: 0.0
     t.decimal  "privilege_amount",     default: 0.0
     t.integer  "product_inventory_id"
-    t.integer  "product_id"
-    t.string   "aasm_state"
+    t.integer  "order_item_refund_id"
   end
 
   create_table "orders", force: :cascade do |t|
@@ -270,10 +272,10 @@ ActiveRecord::Schema.define(version: 20151102085234) do
     t.datetime "signed_at"
     t.datetime "shiped_at"
     t.datetime "completed_at"
-    t.string   "to_seller"
-    t.decimal  "ship_price",      default: 0.0
     t.string   "ship_number"
     t.integer  "express_id"
+    t.string   "to_seller"
+    t.decimal  "ship_price",      default: 0.0
     t.integer  "order_charge_id"
   end
 
@@ -298,14 +300,6 @@ ActiveRecord::Schema.define(version: 20151102085234) do
     t.datetime "updated_at",                 null: false
     t.boolean  "actived",    default: false
     t.integer  "seller_id"
-  end
-
-  create_table "product_attribute_names", force: :cascade do |t|
-    t.string   "name"
-    t.boolean  "is_key_attr",      default: true
-    t.integer  "product_class_id"
-    t.datetime "created_at",                      null: false
-    t.datetime "updated_at",                      null: false
   end
 
   create_table "product_classes", force: :cascade do |t|
