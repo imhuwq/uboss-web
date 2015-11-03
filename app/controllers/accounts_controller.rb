@@ -1,6 +1,8 @@
 class AccountsController < ApplicationController
 
-  layout :login_layout, only: [:set_password, :new_password, :merchant_confirm]
+  detect_device only: [:new_password, :set_password]
+
+  layout :login_layout, only: [:merchant_confirm]
 
   before_action :authenticate_user!
   before_action :authenticate_agent, only: [:send_message, :invite_seller, :edit_seller_note, :update_histroy_note]
@@ -43,6 +45,8 @@ class AccountsController < ApplicationController
   def new_password
     if flash[:new_password_enabled] != true
       redirect_to after_sign_in_path_for(current_user, need_new_passowrd: false)
+    else
+      render layout: new_login_layout
     end
   end
 
@@ -55,10 +59,10 @@ class AccountsController < ApplicationController
     else
       flash.now[:new_password_enabled] = true
       flash.now[:error] = current_user.errors.full_messages.join('<br/>')
-      render :new_password
+      render :new_password, layout: new_login_layout
     end
   end
- 
+
   def merchant_confirmed
     if current_user.is_seller?
       flash[:notice] = '您已经是UBOSS商家'
@@ -68,9 +72,11 @@ class AccountsController < ApplicationController
       redirect_to binding_agent_admin_account_path
     end
   end
-  def password      
+
+  def password
     render layout: 'mobile'
   end
+
   def edit_password # 修改密码页面
     render layout: 'mobile'
   end

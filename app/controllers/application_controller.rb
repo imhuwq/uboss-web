@@ -72,11 +72,11 @@ class ApplicationController < ActionController::Base
   end
 
   def login_layout
-    if desktop_request?
-      'login'
-    else
-      'mobile'
-    end
+    desktop_request? ? 'login' : 'application'
+  end
+
+  def new_login_layout
+    desktop_request? ? 'login' : 'mobile'
   end
 
   def configure_permitted_parameters
