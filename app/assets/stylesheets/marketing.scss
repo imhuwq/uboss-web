@@ -29,6 +29,7 @@ body{
 }
 .qrcode_bottom {
 	bottom: 0;
+	height: 12%;
 	width: 100%;
 	position: absolute;
 	left: 0;
@@ -36,14 +37,15 @@ body{
 .marketing6top {
 	background-image: image-url('mobile/maker/marketing6.jpg');
 	background-size: cover;
-	background-position: bottom;
+	background-position: top;
 	text-align: center;
+	height: 35%;
 }
 .qrcode_content1 {
 	/*width: 180px;
     height: 105px;*/
     width: 50%;
-    padding: 10px;
+    padding: 5px;
     /*display: inline-block;*/
 }
 /*.marketing6top p {
@@ -92,7 +94,7 @@ body{
     /*padding: 10px;*/
 }
 .qrcode_img img{
-	padding-top: 20px;
+	padding-top: 4px;
 	/*width:200px;
 	height:200px;*/
 	/*padding:20px;*/
@@ -102,15 +104,20 @@ body{
     height: 100%;
 	background-image:image-url('mobile/maker/marketing1.jpg');
 	background-size: cover;
-	background-position: bottom;
+	background-position: top;
 	text-align: center;
 	position: relative;
 }
-.page1 img{
+.page1_bottom{
+	position: absolute;
+    left: 0;
+    bottom: 0;
+}
+.page1_qrcode{
 	width: 40px;
     height: 40px;
     left: 47%;
-    top: 57%;
+	top: 62%;
     position: absolute;
 }
 .page2{
@@ -118,7 +125,7 @@ body{
     height: 100%;
 	background-image:image-url('mobile/maker/marketing2.jpg');
 	background-size: cover;
-	background-position: bottom;
+	background-position: top;
 	text-align: center;
 	position: relative;
 }
@@ -146,7 +153,7 @@ body{
     height: 100%;
 	background-image:image-url('mobile/maker/marketing3.jpg');
 	background-size: cover;
-	background-position: bottom;
+	background-position: top;
 	text-align: center;
 	position: relative;
 }
@@ -155,7 +162,7 @@ body{
     height: 100%;
 	background-image:image-url('mobile/maker/marketing4.jpg');
 	background-size: cover;
-	background-position: bottom;
+	background-position: top;
 	text-align: center;
 	position: relative;
 }
@@ -164,7 +171,7 @@ body{
     height: 100%;
 	background-image:image-url('mobile/maker/marketing5.jpg');
 	background-size: cover;
-	background-position: bottom;
+	background-position: top;
 	text-align: center;
 	position: relative;
 }

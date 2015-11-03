@@ -24,7 +24,7 @@ set :assets_roles, [:web, :app]
 set :keep_releases, 5
 
 set :linked_files, fetch(:linked_files, []).push(
-  'config/database.yml', 'config/secrets.yml', 'config/apiclient_cert.p12'
+  'config/database.yml', 'config/secrets.yml', 'config/apiclient_cert.p12', 'config/application.yml'
 )
 set :linked_dirs, fetch(:linked_dirs, []).push(
   'log', 'tmp/pids', 'tmp/cache', 'tmp/sockets', 'vendor/bundle', 'public/system', 'public/assets'

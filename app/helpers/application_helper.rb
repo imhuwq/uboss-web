@@ -1,15 +1,12 @@
 module ApplicationHelper
 
   def qrcode_image_tag(text, opts = {})
+    html_opts = opts.delete(:html) || {}
     opts = {
       text: text,
-      w: 300,
-      bg: 'ffffff',
-      fg: '000000',
       logo: 'http://ssobu-dev.b0.upaiyun.com/asset_img/avatar/c25754e6ca9b5f2c5f02fb49aa109d82.png-w120'
     }.merge(opts)
-    query = opts.inject("") {|s,opt| s+="&#{opt[0]}=#{opt[1]}"}
-    image_tag "http://qr.liantu.com/api.php?#{query}"
+    image_tag request_qrcode_url(opts), html_opts
   end
 
   def horizon_form_for(record, options = {}, &block)

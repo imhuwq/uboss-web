@@ -19,8 +19,10 @@
 			<div class="swiper-wrapper">
 				<div class="swiper-slide">
 					<div class="page1">
-            <%= qrcode_image_tag new_seller_url(agent_code: @user.agent_code), logo: @user.avatar_url(:w120) %>
+            <%= qrcode_image_tag new_seller_url(agent_code: @user.agent_code), logo: @user.avatar_url(:w120), html: { class: 'page1_qrcode' } %>
+						<%= image_tag 'mobile/maker/page1_bottom.jpg',alt:'向上滑',class:"page1_bottom"%>
 					</div>
+
 				</div>
 				<!--page2-->
 				<div class="swiper-slide">
@@ -67,8 +69,8 @@
 							<%= image_tag @user.avatar_url(:w120), alt:'头像', class:"share_portrait" %>
 
 								<dl class="share_content">
-									<dt>带你装X带你飞</dt>
-									<dd>我是第123位BOSS</dd>
+									<dt><%= @user.identify %></dt>
+									<dd>我是第<%= 100 + @user.id %>位BOSS</dd>
 								</dl>
 							</div>
 						</div>

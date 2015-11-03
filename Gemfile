@@ -43,7 +43,7 @@ gem 'eco'
 gem "select2-rails", '~> 3.5.9.1'
 
 # See https://github.com/rails/execjs#readme for more supported runtimes
-gem 'therubyracer', platforms: :ruby
+gem 'therubyracer', '~> 0.12.2', platforms: :ruby
 
 # Use jquery as the JavaScript library
 gem 'jquery-rails'
@@ -68,7 +68,7 @@ gem 'redis-rails'
 gem "redis-namespace"
 
 # backend process
-gem 'sidekiq'
+gem 'sidekiq', '~> 3.5.1'
 gem 'sidekiq-failures'
 gem 'sinatra', :require => nil
 
