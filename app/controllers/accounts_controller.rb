@@ -48,7 +48,7 @@ class AccountsController < ApplicationController
       render :new_password
     end
   end
-
+ 
   def merchant_confirmed
     if current_user.is_seller?
       flash[:notice] = '您已经是UBOSS商家'
@@ -58,7 +58,9 @@ class AccountsController < ApplicationController
       redirect_to binding_agent_admin_account_path
     end
   end
-
+  def password      
+    render layout: 'mobile'
+  end
   def edit_password # 修改密码页面
     render layout: 'mobile'
   end
@@ -78,14 +80,14 @@ class AccountsController < ApplicationController
         redirect_to settings_account_path, notice: '修改密码成功'
       else
         flash.now[:error] = '验证码错误'
-        render :edit_password
+        render :edit_password,layout:'mobile'
       end
     elsif current_user.update_with_password(user_params)
       sign_in current_user, bypass: true
       redirect_to settings_account_path, notice: '修改密码成功'
     else
       flash.now[:error] = current_user.errors.full_messages.join('<br/>')
-      render :edit_password
+      render :edit_password,layout:'mobile'
     end
   end
 
@@ -194,7 +196,6 @@ class AccountsController < ApplicationController
   def settings
     render layout: 'mobile'
   end
-
   private
 
   def account_orders(type)

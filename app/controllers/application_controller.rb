@@ -75,7 +75,7 @@ class ApplicationController < ActionController::Base
     if desktop_request?
       'login'
     else
-      'application'
+      'mobile'
     end
   end
 
