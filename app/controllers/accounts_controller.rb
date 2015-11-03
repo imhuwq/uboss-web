@@ -8,8 +8,13 @@ class AccountsController < ApplicationController
   before_action :authenticate_agent, only: [:send_message, :invite_seller, :edit_seller_note, :update_histroy_note]
 
   def show
-    @orders = append_default_filter account_orders(params[:state]), page_size: 10
-    @privilege_cards = append_default_filter current_user.privilege_cards, order_column: :updated_at, page_size: 10
+    if params[:state] == 'refund'
+      @order_items = append_default_filter account_orders(params[:state]), page_size: 10
+      @privilege_cards = append_default_filter current_user.privilege_cards, order_column: :updated_at, page_size: 10
+    else
+      @orders = append_default_filter account_orders(params[:state]), page_size: 10
+      @privilege_cards = append_default_filter current_user.privilege_cards, order_column: :updated_at, page_size: 10
+    end
     render layout: 'mobile'
   end
 
@@ -212,6 +217,8 @@ class AccountsController < ApplicationController
     type ||= 'all'
     if ["unpay", "payed", "shiped", "signed", "completed", "all"].include?(type)
       current_user.orders.try(type).includes(order_items: { product_inventory: { product: :asset_img } })
+    elsif ['refund'].include?(type)
+      OrderItem.where(user_id: current_user.id).not.where(aasm_state: 'unrefund')
     else
       raise "invalid orders state"
     end

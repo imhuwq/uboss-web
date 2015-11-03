@@ -13,6 +13,7 @@
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 ActiveRecord::Schema.define(version: 20151113032754) do
 =======
 ActiveRecord::Schema.define(version: 20151030093203) do
@@ -20,6 +21,9 @@ ActiveRecord::Schema.define(version: 20151030093203) do
 =======
 ActiveRecord::Schema.define(version: 20151102085234) do
 >>>>>>> 44f6327... 协商退款
+=======
+ActiveRecord::Schema.define(version: 20151103081217) do
+>>>>>>> 91dd742... 退款流程
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -262,10 +266,13 @@ ActiveRecord::Schema.define(version: 20151102085234) do
     t.integer  "order_item_id"
     t.datetime "created_at",       null: false
     t.datetime "updated_at",       null: false
+    t.string   "aasm_state"
+    t.integer  "order_state"
   end
 
   create_table "order_items", force: :cascade do |t|
     t.integer  "order_id"
+    t.integer  "product_id"
     t.integer  "user_id"
     t.integer  "amount"
     t.datetime "created_at",                         null: false
@@ -277,6 +284,7 @@ ActiveRecord::Schema.define(version: 20151102085234) do
     t.integer  "product_inventory_id"
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     t.integer  "product_id"
     t.integer  "order_item_refund_id"
     t.integer  "refund_state",         default: 0
@@ -286,6 +294,9 @@ ActiveRecord::Schema.define(version: 20151102085234) do
 >>>>>>> 476e348... Fix admin order show error
     t.string   "aasm_state"
 >>>>>>> 3181364... 用户退款
+=======
+    t.integer  "order_item_refund_id"
+>>>>>>> 91dd742... 退款流程
   end
 
   create_table "orders", force: :cascade do |t|
@@ -307,10 +318,10 @@ ActiveRecord::Schema.define(version: 20151102085234) do
     t.datetime "signed_at"
     t.datetime "shiped_at"
     t.datetime "completed_at"
-    t.string   "to_seller"
-    t.decimal  "ship_price",      default: 0.0
     t.string   "ship_number"
     t.integer  "express_id"
+    t.string   "to_seller"
+    t.decimal  "ship_price",      default: 0.0
     t.integer  "order_charge_id"
     t.decimal  "paid_amount",     default: 0.0
   end
@@ -336,14 +347,6 @@ ActiveRecord::Schema.define(version: 20151102085234) do
     t.datetime "updated_at",                 null: false
     t.boolean  "actived",    default: false
     t.integer  "seller_id"
-  end
-
-  create_table "product_attribute_names", force: :cascade do |t|
-    t.string   "name"
-    t.boolean  "is_key_attr",      default: true
-    t.integer  "product_class_id"
-    t.datetime "created_at",                      null: false
-    t.datetime "updated_at",                      null: false
   end
 
   create_table "product_classes", force: :cascade do |t|
