@@ -1,5 +1,7 @@
 class OrderCharge < ActiveRecord::Base
 
+  include Numberable
+
   FAKE_PREPAY_ID = 'fake-prepay-id'
 
   has_many :orders
@@ -13,8 +15,8 @@ class OrderCharge < ActiveRecord::Base
     bool
   end
 
-  def user
-    orders[0].user
+  def reset_pay_serial_number
+    self.pay_serial_number = "#{number}-#{Time.current.to_i}"
   end
 
   def pay_amount
