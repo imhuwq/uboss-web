@@ -1,6 +1,7 @@
 class OrderItemRefund < ActiveRecord::Base
   belongs_to :order_item
   belongs_to :refund_reason
+  has_many :refund_messages
   has_many :asset_imgs, class_name: 'AssetImg', autosave: true, as: :resource
 
   before_create :check_can_create?
