@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151106034522) do
+ActiveRecord::Schema.define(version: 20151110082525) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -225,7 +225,13 @@ ActiveRecord::Schema.define(version: 20151106034522) do
     t.decimal  "paid_amount",          default: 0.0
     t.integer  "payment"
     t.datetime "paid_at"
+    t.string   "wx_code_url"
+    t.string   "number"
+    t.integer  "user_id"
+    t.string   "wx_trade_type"
   end
+
+  add_index "order_charges", ["number"], name: "index_order_charges_on_number", using: :btree
 
   create_table "order_item_refunds", force: :cascade do |t|
     t.decimal  "money"
@@ -281,6 +287,7 @@ ActiveRecord::Schema.define(version: 20151106034522) do
     t.string   "ship_number"
     t.integer  "express_id"
     t.integer  "order_charge_id"
+    t.decimal  "paid_amount",     default: 0.0
   end
 
   add_index "orders", ["number"], name: "index_orders_on_number", unique: true, using: :btree
@@ -563,6 +570,7 @@ ActiveRecord::Schema.define(version: 20151106034522) do
     t.integer  "worst_evaluation"
     t.integer  "better_evaluation"
     t.integer  "best_evaluation"
+    t.string   "store_cover"
   end
 
   add_index "user_infos", ["user_id"], name: "index_user_infos_on_user_id", unique: true, using: :btree
@@ -639,7 +647,7 @@ ActiveRecord::Schema.define(version: 20151106034522) do
   add_foreign_key "order_items", "products"
   add_foreign_key "order_items", "sharing_nodes"
   add_foreign_key "order_items", "users"
-  add_foreign_key "orders", "order_charges"
+  add_foreign_key "orders", "order_charges", on_delete: :nullify
   add_foreign_key "orders", "user_addresses", on_delete: :nullify
   add_foreign_key "orders", "users"
   add_foreign_key "orders", "users", column: "seller_id", name: "fk_order_seller_foreign_key"

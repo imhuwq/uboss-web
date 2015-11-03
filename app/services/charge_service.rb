@@ -16,11 +16,8 @@ module ChargeService
 
   def create_and_clean_charge(orders)
     charge = OrderCharge.create!()
-    orders.each do |order|
-      #TODO 删除无用order_charge
-      order.order_charge_id = charge.id
-      order.save(validate: false)
-    end
+    #TODO 删除无用order_charge
+    charge.orders = orders
     charge
   end
 
@@ -36,7 +33,7 @@ module ChargeService
   # 只有当微信支付时使用到，订单一旦确认(confirm)，即进行获取
   def create_or_refresh_order_wx_charge(orders, charge, options)
     # 重新更新支付流水号
-    charge.pay_serial_number = "#{orders[0].number}-#{Time.current.to_i}"
+    charge.reset_pay_serial_number
     charge.prepay_id_expired_at = Time.current + 2.hours
 
     if $wechat_env.test?
@@ -45,6 +42,7 @@ module ChargeService
     else
       request_weixin_unifiedorder(charge, options) do |res|
         charge.prepay_id = res["prepay_id"]
+        charge.wx_code_url = res["code_url"]
         Rails.logger.debug("set prepay_id: #{charge.prepay_id}")
       end
     end
@@ -61,7 +59,7 @@ module ChargeService
       total_fee: pay_amount, # 需要转换为分
       spbill_create_ip: options[:remote_ip] || '127.0.0.1',
       notify_url: wx_notify_url,
-      trade_type: "JSAPI",
+      trade_type: options[:trade_type] || "JSAPI",
       nonce_str: SecureRandom.hex,
       openid: charge.user.weixin_openid
     }
@@ -77,13 +75,6 @@ module ChargeService
 
   def wx_notify_url
     "#{Rails.application.secrets.pay_host}/pay_notify/wechat_notify"
-  end
-
-  def charge_success(params)
-    order = Order.find_by(number: params[:order_no])
-    if params[:paid] == true
-      order.pay!
-    end
   end
 
 end

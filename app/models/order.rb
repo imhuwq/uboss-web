@@ -286,6 +286,7 @@ class Order < ActiveRecord::Base
     order_items.each(&:active_privilege_card)
   end
 
+  # 在work 中判断订单是否是创客权订单
   def invoke_official_agent_order_process
     OfficialAgentOrderJob.set(wait: 5.seconds).perform_later(self)
   end
