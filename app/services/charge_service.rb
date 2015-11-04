@@ -15,10 +15,13 @@ module ChargeService
   end
 
   def handle_pay_notify(result)
-    pay_serial_number = result["out_trade_no"]
-    order_charge = OrderCharge.find_by(pay_serial_number: pay_serial_number)
-    order_charge.update_with_wx_pay_result(result)
-    order_charge.orders.each { |order| order.pay! }
+    result = WxPay::Result[result]
+    if result.success?
+      pay_serial_number = result["out_trade_no"]
+      order_charge = OrderCharge.find_by(pay_serial_number: pay_serial_number)
+      order_charge.update_with_wx_pay_result(result)
+      order_charge.orders.each { |order| order.pay! }
+    end
   end
 
   def available_pay?(orders)
