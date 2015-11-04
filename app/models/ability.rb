@@ -60,6 +60,7 @@ class Ability
     can :manage, CarriageTemplate
     can :read, Express
     can :set_common, Express
+    can :manage, OrderItemRefund
   end
 
   def grant_permissions_to_agent user
