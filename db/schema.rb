@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151103095301) do
+ActiveRecord::Schema.define(version: 20151104080522) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -254,6 +254,7 @@ ActiveRecord::Schema.define(version: 20151103095301) do
     t.datetime "paid_at"
     t.string   "wx_code_url"
     t.string   "number"
+    t.integer  "user_id"
   end
 
   add_index "order_charges", ["number"], name: "index_order_charges_on_number", using: :btree
@@ -296,6 +297,7 @@ ActiveRecord::Schema.define(version: 20151103095301) do
     t.string   "to_seller"
     t.decimal  "ship_price",      default: 0.0
     t.integer  "order_charge_id"
+    t.decimal  "paid_amount",     default: 0.0
   end
 
   add_index "orders", ["number"], name: "index_orders_on_number", unique: true, using: :btree
@@ -623,7 +625,7 @@ ActiveRecord::Schema.define(version: 20151103095301) do
   add_foreign_key "order_items", "products"
   add_foreign_key "order_items", "sharing_nodes"
   add_foreign_key "order_items", "users"
-  add_foreign_key "orders", "order_charges"
+  add_foreign_key "orders", "order_charges", on_delete: :nullify
   add_foreign_key "orders", "user_addresses", on_delete: :nullify
   add_foreign_key "orders", "users"
   add_foreign_key "orders", "users", column: "seller_id", name: "fk_order_seller_foreign_key"

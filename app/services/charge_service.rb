@@ -5,20 +5,13 @@ module ChargeService
   extend self
 
   def find_or_create_charge(orders, options)
-    order_charge = orders.count > 1 ? create_and_clean_charge(orders) : orders[0].order_charge
+    order_charge = find_or_create_order_charge_for_orders(orders)
 
-    if order_charge.new_record? || !order_charge.wx_prepay_valid?
+    if !order_charge.wx_prepay_valid?
       create_or_refresh_order_wx_charge(orders, order_charge, options)
     else
       order_charge
     end
-  end
-
-  def create_and_clean_charge(orders)
-    charge = OrderCharge.create!()
-    #TODO 删除无用order_charge
-    charge.orders = orders
-    charge
   end
 
   def handle_pay_notify(result)
@@ -28,7 +21,41 @@ module ChargeService
     order_charge.orders.each { |order| order.pay! }
   end
 
+  def available_pay?(orders)
+    orders.map(&:available_pay?).all? { |result| result }
+  end
+
   private
+
+  def find_or_create_order_charge_for_orders(orders)
+    old_order_charges_ids = orders.pluck(:order_charge_id).uniq.compact
+
+    case old_order_charges_ids.size
+    when 0
+      create_new_order_charges_for_orders(orders)
+    when 1
+      old_order_charge = OrderCharge.find(old_order_charges_ids.first)
+      if old_order_charge.orders.size == orders.size
+        return old_order_charge
+      else
+        close_old_order_charges_with_ids(old_order_charges_ids)
+        create_new_order_charges_for_orders(orders)
+      end
+    else
+      close_old_order_charges_with_ids(old_order_charges_ids)
+      create_new_order_charges_for_orders(orders)
+    end
+  end
+
+  def close_old_order_charges_with_ids(old_order_charges_ids)
+    OrderCharge.delay.check_and_close_prepay(ids: old_order_charges_ids)
+  end
+
+  def create_new_order_charges_for_orders(orders)
+    charge = OrderCharge.create! user_id: orders.first.user_id
+    charge.orders = orders
+    charge
+  end
 
   # 只有当微信支付时使用到，订单一旦确认(confirm)，即进行获取
   def create_or_refresh_order_wx_charge(orders, charge, options)
@@ -46,7 +73,7 @@ module ChargeService
         Rails.logger.debug("set prepay_id: #{charge.prepay_id}")
       end
     end
-    charge.save(validate: false)
+    charge.save
 
     charge
   end
