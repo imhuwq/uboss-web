@@ -18,6 +18,10 @@ class OrderItem < ActiveRecord::Base
   before_validation :set_product_id
   before_save  :reset_payment_info, if: -> { order.paid_at.blank? }
   after_create :decrease_product_stock
+  # 1 退款, 2 退款不退货, 3 退款退货, 4 退款中, 5 退款成功, 6 退款关闭, 7 UBOSS介入
+  enum refund_state: { nothing: 0, refund: 1, unreturn_good: 2, return_good: 3, refunding: 4, refunded: 5, refund_close: 6, uboss_deal: 7 }
+
+  before_save  :set_privilege_amount, :set_present_price, :set_pay_amount, if: -> { order.paid_at.blank? }
   after_commit :update_order_pay_amount, if: -> {
     previous_changes.include?(:pay_amount) &&
     previous_changes[:pay_amount].first != previous_changes[:pay_amount].last

@@ -15,6 +15,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 ActiveRecord::Schema.define(version: 20151113032754) do
 =======
 ActiveRecord::Schema.define(version: 20151030093203) do
@@ -28,6 +29,9 @@ ActiveRecord::Schema.define(version: 20151103081217) do
 =======
 ActiveRecord::Schema.define(version: 20151103103909) do
 >>>>>>> d6a5a01... add add_order_item_refund_id to refund_messages
+=======
+ActiveRecord::Schema.define(version: 20151104062424) do
+>>>>>>> 925fa45... add refund_state to order_items
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -302,7 +306,11 @@ ActiveRecord::Schema.define(version: 20151103103909) do
 >>>>>>> 3181364... 用户退款
 =======
     t.integer  "order_item_refund_id"
+<<<<<<< HEAD
 >>>>>>> 91dd742... 退款流程
+=======
+    t.integer  "refund_state",         default: 0
+>>>>>>> 925fa45... add refund_state to order_items
   end
 
   create_table "orders", force: :cascade do |t|

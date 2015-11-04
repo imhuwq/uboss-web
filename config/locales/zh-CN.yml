@@ -263,6 +263,15 @@ zh-CN:
         signed: 已签收
         completed: 已完成
         closed: 关闭
+    order_item:
+      refund_state:
+        refund: 退款
+        unreturn_good: 退款
+        return_good: 退款退货
+        refunding: 退款中
+        refunded: 退款成功
+        refund_close: 退款关闭
+        uboss_deal: 退款|UBOSS介入
     order_charge:
       payment:
         alipay: 支付宝手机
