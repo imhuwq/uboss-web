@@ -4,6 +4,7 @@ class ProductInventory < ActiveRecord::Base
   belongs_to :product_class
   has_many   :cart_items
   has_many   :order_items
+  has_many   :orders, through: :order_items
 
   validates_presence_of :product
   validate :share_amount_total_must_lt_price

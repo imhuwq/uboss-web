@@ -5,34 +5,32 @@ class ChargesController < ApplicationController
 
   def payments
     order_ids = params[:order_ids].split(',')
-    @orders = current_user.orders.where(id: order_ids)
-    if @orders.blank?
-      redirect_to root_path
-    else
-      @product = @orders[0].order_items.first.item_product
+    @orders = current_user.orders.where(id: order_ids).all
+    return redirect_to root_path if @orders.blank?
 
-      if available_pay?(@orders)
-        trade_type = browser.wechat? ? 'JSAPI' : 'NATIVE'
-        @order_charge = ChargeService.find_or_create_charge(
-          @orders,
-          remote_ip: request.ip,
-          trade_type: trade_type
-        )
-        @pay_p = {
-          appId: WxPay.appid,
-          timeStamp: Time.now.to_i.to_s,
-          nonceStr: SecureRandom.hex,
-          package: "prepay_id=#{@order_charge.prepay_id}",
-          signType: "MD5"
-        }
-        p @pay_p
-        @pay_sign = WxPay::Sign.generate(@pay_p)
-        render layout: 'mobile'
-      else
-        flash[:error] = '请在微信浏览器进行支付'
-        redirect_to account_path
-      end
+    unless ChargeService.available_pay?(@orders)
+      flash[:error] = @orders.map { |order|
+        "#{order.seller.store_identify}的订单，#{model_errors(order).join('、')}" if !order.errors.empty?
+      }.compact.join('<br/>')
+      return redirect_to account_path
     end
+
+    trade_type = browser.wechat? ? 'JSAPI' : 'NATIVE'
+    @order_charge = ChargeService.find_or_create_charge(
+      @orders,
+      remote_ip: request.ip,
+      trade_type: trade_type
+    )
+    @pay_p = {
+      appId: WxPay.appid,
+      timeStamp: Time.now.to_i.to_s,
+      nonceStr: SecureRandom.hex,
+      package: "prepay_id=#{@order_charge.prepay_id}",
+      signType: "MD5"
+    }
+    p @pay_p
+    @pay_sign = WxPay::Sign.generate(@pay_p)
+    render layout: 'mobile'
   end
 
   def pay_complete
@@ -44,17 +42,6 @@ class ChargesController < ApplicationController
   end
 
   private
-
-  def available_pay?(orders)
-    result = true
-    orders.each do |order|
-      if !order.available_pay?
-        result = false
-        break
-      end
-    end
-    result
-  end
 
   def find_order_charge
     @order_charge = OrderCharge.find(params[:id])
