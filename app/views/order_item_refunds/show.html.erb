@@ -1,45 +1,15 @@
 <%= content_for :page_title do %>
-  <%= link_to order_path(@order_item.order) do %>
+  <%= link_to :back do %>
     <div>
       <i class="fa fa-chevron-left"></i>
-      <%= @order_item.refund_page_title %>
+        <%= @refund.refund_type_text == '退款' ? '退款详情':@refund.refund_type_text %>
     </div>
   <% end %>
 <% end %>
 <br />
 <div id="order_item_refund_show">
   <div class='refund-box'>
-    <% if @order_item.refunding? %>
-      <p>卖家处理中</p>
-      <div class="countdown">
-        <span id="clock_refund" data-endtime=<%= countdown_time(@refund.created_at+2.days) %>></span>
-      </div>
-      <ul>
-        <li>
-          <span>如果卖家同意：</span><span>申请将达成并退款回您当时支付的账号或银行卡</span>
-        </li>
-        <li>
-          <span>如果商家发货：</span><span>申请将关闭；您可以再次发起退款</span>
-         </li>
-        <li>
-          <span>如果商家超时未处理：</span><span>申请将默认达成并退款回您当时支付的账号或银行卡</span>
-        </li>
-      </ul>
-      <%= link_to '修改退款申请', edit_order_item_order_item_refund_path(order_item_id: @order_item.id, id: @refund.id) %>
-
-    <% elsif @order_item.refunded? %>
-      <p>卖家同意申请</p>
-      <p>卖家退款给买家0.05元</p>
-      <p>UBOSS将在24小时内退款会您当时支付的账号或银行卡，请注意查收</p>
-
-    <% elsif @order_item.cancel? %>
-      <p>退款关闭</p>
-      <p>卖家已发货，此申请被自动撤销</p>
-
-    <% elsif @order_item.success? %>
-      <p>退款成功</p>
-      <p>退款金额：0.05元</p>
-    <% end %>
+    <%= render partial: 'refund_info_status', locals: { refund: @refund } %>
     <%= link_to '查看协商详情', new_order_item_order_item_refund_refund_message_path(order_item_id: @order_item.id, order_item_refund_id: @refund.id) %>
   </div>
 
@@ -100,19 +70,7 @@
 
   <br />
   <div class='refund-box'>
-    <p>来源订单：<%= @order_item.order.number %> <%= link_to '查看', @order_item.order, target: '_blank' %></p>
-    <p>退款编号：810231312</p>
-    <p>申请时间：<%= @refund.created_at %></p>
-    <% if @order_item.refunded? %>
-      <p>同意时间：2015-10-24 10：42</p>
-    <% end %>
-    <% if @order_item.success?%>
-      <p>同意时间：2015-10-24 10：42</p>
-      <p>退款时间：2015-10-24 15：42</p>
-    <% end %>
-    <% if @order_item.cancel?%>
-      <p>关闭时间：2015-10-24 10：42</p>
-    <% end %>
+    <%= render partial: 'refund_basic_info', locals: { refund: @refund } %>
   </div>
 </div>
 

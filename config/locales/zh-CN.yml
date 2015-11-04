@@ -1,4 +1,13 @@
 zh-CN:
+  enumerize:
+    order_item_refund:
+      refund_type:
+        refund: '退款'
+        receipted_refund: '已收到货 仅退款'
+        unreceipt_refund: '未收到货 退款'
+        return_goods_and_refund: '退款退货'
+        after_sale_only_refund: '售后—仅退款'
+        after_sale_return_goods_and_refund: '售后—退款退货'
   attributes: &attributes
     express_name: 快递公司
     store_cover: 店铺封面背景
@@ -163,6 +172,17 @@ zh-CN:
       bank_card: 银行卡
       product_inventory: 库存/规格
     attributes:
+      order_item_refund:
+        aasm_state:
+          pending: '卖家处理中'
+          approved: '卖家同意退款'
+          declined: '卖家拒绝退款'
+          completed_express_number: '等待卖家确认收货'
+          confirm_received: '卖家确认收货'
+          decline_received: '卖家拒绝收货'
+          applied_uboss: '申请uboss介入'
+          finished: '退款成功'
+          cancelled: '退款关闭'
       refund_reason:
         reason: 理由
       product_inventories:

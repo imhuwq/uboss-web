@@ -54,12 +54,8 @@
         <div class="price">
         	<p>￥<%= order_item.present_price %></p>
         	<p class="gray-color num">x <%= order_item.amount %></p>
-          <% if @order.payed? && order_item.unrefund? %>
-            <%= link_to '退款', new_order_item_order_item_refund_path(order_item_id: order_item.id) %>
-          <% elsif order_item.refunding? %>
-            <%= link_to '退款中', order_item_order_item_refund_path(order_item_id: order_item.id, id: order_item.last_refund.id) %>
-          <% elsif order_item.refunded? %>
-            <%= link_to '退款成功', order_item_order_item_refund_path(order_item_id: order_item.id, id: order_item.last_refund.id) %>
+          <% if @order.payed? %>
+            <%= link_to order_item_refund_state(order_item), order_item_refund_url(order_item) %>
           <% end %>
         </div>
         <p class="name">

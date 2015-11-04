@@ -1,11 +1,17 @@
 class OrderItemRefund < ActiveRecord::Base
   belongs_to :order_item
   belongs_to :refund_reason
+  belongs_to :user
   has_many :refund_messages
   has_many :asset_imgs, class_name: 'AssetImg', autosave: true, as: :resource
 
-  before_create :check_can_create?
+  validates :order_state, presence: true, uniqueness: true
+  after_create :save_state_at_attributes
   after_create  :set_order_item_state
+
+  extend Enumerize
+
+  enumerize :refund_type, in: [:refund, :receipted_refund, :unreceipt_refund, :return_goods_and_refund, :after_sale_only_refund, :after_sale_return_goods_and_refund]
 
   include AASM
   aasm do
@@ -28,39 +34,67 @@ class OrderItemRefund < ActiveRecord::Base
     #撤销
     state :cancelled,                after_enter: :update_order_item_state_6
 
-    #guard: :check_can_start?
     event :approve do
-      transitions from: :pending, to: :approved
+      transitions from: [:pending, :applied_uboss], to: :approved
+      after do
+        #如果只退款不退货, 同意后就直接进入退款流程
+        if !self.refund_type.includ?('goods')
+          #打款给买家
+          self.may_finish? && self.finish!
+        end
+        self.state_at_attributes['同意时间'] = time_now
+      end
+    end
+
+    event :decline do
+      transitions from: :pending, to: :declined
     end
 
     event :complete_express_number do
       transitions from: [:approved, :decline_received], to: :completed_express_number
+      after do
+        self.state_at_attributes['退货时间'] = time_now
+      end
     end
 
     event :confirm_receive do
-      transitions from: :completed_express_number, to: :confirm_received
+      transitions from: [:completed_express_number, :applied_uboss], to: :confirm_received
+      after do
+        self.state_at_attributes['卖家确认收货时间'] = time_now
+      end
     end
 
     event :decline_receive do
       transitions from: :completed_express_number, to: :decline_received
     end
 
-    event :apply_uboos do
-      transitions from: [:completed_express_number, :decline_received, :declined], to: :applied_uboos
+    event :apply_uboss do
+      transitions from: [:completed_express_number, :decline_received, :declined], to: :applied_uboss
     end
 
     event :finish do
       transitions from: [:approved, :confirm_receive], to: :finished
+      after do
+        self.state_at_attributes['退款时间'] = time_now
+      end
     end
 
 
     event :cancel do
-      transitions from: [:pending, :approved, :completed_express_number, :decline_received], to: :cancelled
+      transitions from: [:pending, :approved, :completed_express_number, :decline_received, :applied_uboss], to: :cancelled
+      after do
+        self.state_at_attributes['关闭时间'] = time_now
+      end
     end
   end
 
-  def check_can_create?
-    #检查order同一状态下是否已经有过申请
+  def save_state_at_attributes
+    self.state_at_attributes = {'申请时间' => time_now}
+    self.save
+  end
+
+  def time_now
+    Time.now
   end
 
   def image_files
