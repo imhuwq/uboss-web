@@ -1,0 +1,89 @@
+<div class="container admin-container">
+  <ul class="breadcrumb">
+    <li><a href="/admin">主页</a></li>
+    <li class="divider"><i class="fa fa-angle-right"></i></li>
+    <li><%= link_to '订单', [:admin, :orders] %></li>
+    <li class="divider"><i class="fa fa-caret-right"></i></li>
+    <li class="active">订单详情</li>
+    <li class="divider"><i class="fa fa-caret-right"></i></li>
+    <li class="active">退款详情</li>
+  </ul>
+</div><!-- container -->
+<br />
+<div class="container admin_orders_show_order_wrapper">
+  <div class="container admin_order_item_refunds_wrapper">
+    <div class="box-w70">
+
+      <div class="admin-border admin-border-order-info">
+        <div class="bottom_line">
+          <p class='logistics_info'>请处理退款</p>
+          <p>* 如果未发货，请点击同意退款给买家</p>
+          <p>* 如果实际已发货，请主动与买家联系</p>
+          <p>* 如果您逾期未响应，视作同意买家申请，系统将自动退款给买家</p>
+        </div>
+        <div class='evaluate' style='display:inline-flex;'>
+          <a class="btn btn-sm" href="">同意退款申请</a>
+          您还可以：<a class="main-link-color" href="">发货</a>
+        </div>
+      </div>
+
+      <div class="admin-border admin-border-order-info">
+        <p class='number'>退款编号 : <%= 'order.number' %></p>
+        <div class="index_list">
+          <table class="list-table order_info_tables">
+            <thead>
+              <tr>
+                <th>商品</th>
+                <th>商品属性</th>
+                <th>申请时间</th>
+                <th>退款金额</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class='table-content'>
+                <td class='text-left'>
+                  <%= link_to [:admin, @order_item.product], class: 'main-link-color' do %>
+                    <%= image_tag(@order_item.product.avatar.url(:thumb), size: "40x40", alt: "-") %>
+                    <%= @order_item.product.name %>
+                  <% end %>
+                </td>
+                <td>
+                  <% @order_item.product_inventory.properties.each do |property| %>
+                    <p class='attribute'><%= property.key %> : <%= property.value %></p>
+                  <% end %>
+                </td>
+                <td><%= Time.now  %></td>
+                <td>
+                  <%= @order_item.present_price %>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="admin-border admin-border-order-info">
+        <p class='number'>留言板<%= 'order.number' %></p>
+
+        <div id="order_item_refund_message">
+          <%= simple_form_for [:admin, @order_item, @refund_message] do |f| %>
+            <%= f.text_area :message, class: 'required form-control', cols: 105, rows: 4 %>
+            <%= f.input :asset_imgs, label: false do %>
+              <%= f.input_field :avatar, value: @refund_message.image_files, type: :hidden, as: :file, class: 'refund_message_avatar' %>
+              <p class="fileinput-button">
+              <%= image_tag("admin/no-img.png") %>
+              <%= file_field_tag "image", class: "upyun_file" %>
+              <b class="loading"><i class="fa fa-spinner"></i></b>
+              </p>
+            <% end %>
+            <%= f.submit "发表留言", class: "btn btn-large btn-block" %>
+          <% end %>
+        </div>
+
+        <div id="order_item_refund_messages_list">
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>

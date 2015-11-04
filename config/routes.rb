@@ -148,6 +148,10 @@ Rails.application.routes.draw do
         post :batch_shipments, on: :collection
         post :select_orders, on: :collection
       end
+      resources :order_items, only: [] do
+        resources :order_item_refunds, only: [:index]
+        resources :refund_messages, only: [:create]
+      end
       resources :sharing_incomes, only: [:index, :show, :update]
       resources :withdraw_records, only: [:index, :show, :new, :create] do
         get :generate_excel, on: :collection
