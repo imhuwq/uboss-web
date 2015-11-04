@@ -42,6 +42,9 @@ gem 'font-awesome-sass', '~> 4.4.0'
 gem 'eco'
 gem "select2-rails", '~> 3.5.9.1'
 
+# enum i18n
+gem 'enumerize'
+
 # See https://github.com/rails/execjs#readme for more supported runtimes
 gem 'therubyracer', platforms: :ruby
 

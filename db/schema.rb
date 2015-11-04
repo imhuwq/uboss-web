@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151104062424) do
+ActiveRecord::Schema.define(version: 20151104075017) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -232,10 +232,13 @@ ActiveRecord::Schema.define(version: 20151104062424) do
     t.integer  "refund_reason_id"
     t.string   "description"
     t.integer  "order_item_id"
-    t.datetime "created_at",       null: false
-    t.datetime "updated_at",       null: false
+    t.datetime "created_at",          null: false
+    t.datetime "updated_at",          null: false
     t.string   "aasm_state"
     t.integer  "order_state"
+    t.string   "refund_type"
+    t.integer  "user_id"
+    t.jsonb    "state_at_attributes"
   end
 
   create_table "order_items", force: :cascade do |t|

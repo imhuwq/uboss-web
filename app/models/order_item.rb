@@ -25,16 +25,6 @@ class OrderItem < ActiveRecord::Base
     previous_changes[:pay_amount].first != previous_changes[:pay_amount].last
   }
 
-  def refund_page_title
-    if order.may_ship?
-      '退款详情'
-    elsif order.may_sign?
-      '未收到货 退款'
-    elsif order.sign?
-      '已收到货 仅退款'
-    end
-  end
-
   def deal_price
     present_price - privilege_amount
   end

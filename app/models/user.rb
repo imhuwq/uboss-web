@@ -17,6 +17,7 @@ class User < ActiveRecord::Base
   has_one :user_info, autosave: true
   has_one :cart
   has_many :refund_messages
+  has_many :order_item_refunds
   has_many :carriage_templates
   has_many :transactions
   has_many :user_role_relations, dependent: :destroy
