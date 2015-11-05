@@ -1,70 +1,38 @@
-<div class="order-list" timestamp='<%= order.created_at %>'>
+<div class="order-list" timestamp='<%= refund.created_at %>'>
+  <% order_item = refund.order_item %>
   <div class="seller-box">
     <span class="pull-right like-color">
-      <%= I18n.t("order_status_bar.#{order.state}") %>
+      <%= refund.aasm.human_state %>
     </span>
-    <div class="text-cut">商家：<%= order.seller.identify %></div>
+    <div class="text-cut">商家：<%= order_item.order.seller.identify %></div>
   </div>
 
-  <% order.order_items.each do |order_item| %>
-    <div class="order-box">
-      <%= link_to order_path(order) do %>
-        <div class="cover">
-          <%= image_tag order_item.item_product.image_url('w120') %>
-        </div><!-- order-cover -->
-      <% end %>
-      <div class="content">
-        <div class="price text-right gray-color">
-          <p>￥<%= order_item.present_price %></p>
-          <p class="number gray-color">
-            x<%= order_item.try(:amount) %>
-          </p>
-          <p>
-		      <% if order.signed? || order.completed? %>
-            <% if order_item.evaluations.size > 0 %>
-		          <%= link_to "追评", append_evaluation_path(id: order_item.id), class: 'btn btn-mid btn-orange' %>
-		        <% else %>
-		          <%= link_to "评价", new_evaluation_path(id: order_item.id), class: 'btn btn-mid btn-orange' %>
-		        <% end %>
-		      <% end %>
-          </p>
-        </div><!-- price -->
-        <div class="name">
-          <%= order_item.product_name %>
-        </div><!-- name -->
-        <div class="info">
-          <% order_item.product_inventory.properties.each do |property| %>
-            <span><%= "#{property.key}：#{property.value}" %></span>
-          <% end %>
-        </div>
-      </div><!-- content -->
-    </div><!-- order-box -->
-  <% end %>
-
-  <% if order.sharing_user.present? %>
-    <div class="friend-info">
+  <div class="order-box">
+    <%= link_to order_path(order_item.order) do %>
       <div class="cover">
-        <%= image_tag order.sharing_user.avatar_url(:thumb) %>
+        <%= image_tag order_item.item_product.image_url('w120') %>
+      </div><!-- order-cover -->
+    <% end %>
+    <div class="content">
+      <div class="price text-right gray-color">
+        <p>￥<%= order_item.present_price %></p>
+        <p class="number gray-color">
+          x<%= order_item.try(:amount) %>
+        </p>
+      </div><!-- price -->
+      <div class="name">
+        <%= order_item.product_name %>
+      </div><!-- name -->
+      <div class="info">
+        <% order_item.product_inventory.properties.each do |property| %>
+          <span><%= "#{property.key}：#{property.value}" %></span>
+        <% end %>
       </div>
-      <div class="content">
-        <span class="pull-right red-color">-<%= total_privilege_amount(order.order_items) %></span><span class="main-color"><%= order.sharing_user.identify %></span> 帮你优惠
-      </div>
-    </div><!-- friend-info -->
-  <% end %>
-
-  <div class="price-box <%= 'gray-color' if order.state == 'closed' %> ">
-    合计：￥<%= order.pay_amount %><small class="gray-color">（包含运费：￥<%= order.ship_price %>）</small>
-  </div><!-- price-box -->
-
-  <% if order.state == 'unpay' %>
-    <div class="order-info">
-      <%= link_to "确认付款", payments_charges_path(order_ids: order.id, showwxpaytitle: 1), class: 'my_retur my_confir btn btn-orange-border' %>
-    </div><!-- order-info -->
-  <% elsif order.state == 'shiped' %>
-    <div class="order-info">
-      <%= link_to "确认收货", received_order_path(order),
-        class:"my_retur my_confir btn btn-orange-border", data: { confirm: '确认收货？' } %>
-    </div><!-- order-info -->
-  <% end %>
+    </div><!-- content -->
+    <div>
+      <p>交易金额: ￥<%= order_item.pay_amount %></p>
+      <p>退款金额: ￥<%= refund.money %></p>
+    </div>
+  </div><!-- order-box -->
 
 </div>
