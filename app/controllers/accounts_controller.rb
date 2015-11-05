@@ -1,4 +1,5 @@
 class AccountsController < ApplicationController
+
   layout :login_layout, only: [:set_password, :new_password, :merchant_confirm]
 
   before_action :authenticate_user!
@@ -181,11 +182,6 @@ class AccountsController < ApplicationController
         redirect_to action: :binding_agent, agent_code: params[:agent_code]
       end
     end
-  end
-
-  def maker_qrcode
-    @user = current_user
-    render layout: nil
   end
 
   def settings
