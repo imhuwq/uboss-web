@@ -1,58 +1,36 @@
-<% if controller_name == "products" && action_name == "show" %>
-<div class="only-products-nav">
-	<%= link_to carts_path,class:'cart-icon white-icon' do%>
-		<%= image_tag 'mobile/cart.png' %>
-	<% end %>
-	<div class="menu-btn white-icon"><%= image_tag 'mobile/navbar.png' %></div>
-	<div class="nav-bar">
-	  <ul>
-	    <li><%= link_to '首页', root_path %></li>
-	    <li><%= link_to '我的UBOSS', account_path %></li>
-      <% if current_user && current_user.is_agent? %>
-	    <li><%= link_to '邀请商家', invite_seller_account_path %></li>
-	    <% end %>
-	    <li>
-	      <%= link_to '关于', about_path %>
-	    </li>
-	  </ul>
-	</div>
-</div>
-<% elsif controller_name == "evaluations" %>
-  <div class="header-bar">
-    <a class="back" onclick="history.go(-1)"><%= image_tag 'mobile/right.png' %></a>
-      <a href="#" class="submit" onclick="submitEvaluationStatus()">提交</a>
-      <% if content_for?(:page_title) %>
-        <span class="title"><%= yield(:page_title) %></span>
-      <% else %>
-        <%= image_tag 'mobile/logo.png',class:'logo' %>
-      <% end %>
-  </div>
-<% else %>
-  <% if controller_name == "home" || controller_name == "accounts" || controller_name == "stores" %>
-	<div class="header-bar">
-  	<%= link_to carts_path,class:'cart-icon' do%>
-	  <%= image_tag 'mobile/cart.png' %>
-	<% end %>
+<div class="<%= product_show? ? 'only-products-nav' : 'header-bar' %>">
+
+  <% if content_for?(:header_left) %>
+    <%= yield :header_left %>
   <% else %>
-  	<div class="header-bar title-gap">
+    <%= link_to carts_path, class: "cart-icon #{'white-icon' if product_show?}" do %>
+      <%= image_tag 'mobile/cart.png' %>
+    <% end %>
   <% end %>
-  <div class="menu-btn"><%= image_tag 'mobile/navbar.png' %></div>
+
+  <% if content_for? :header_right %>
+    <%= yield :header_right %>
+  <% else %>
+    <div class="menu-btn <%= 'white-icon' if product_show? %>"><%= image_tag 'mobile/navbar.png' %></div>
+
+    <div class="nav-bar">
+      <ul>
+        <li><%= link_to '首页', root_path %></li>
+        <li><%= link_to '我的UBOSS', account_path %></li>
+        <% if current_user && current_user.is_agent? %>
+          <li><%= link_to '邀请商家', invite_seller_account_path %></li>
+        <% end %>
+        <li>
+          <%= link_to '关于', about_path %>
+        </li>
+      </ul>
+    </div>
+  <% end %>
+
   <% if content_for?(:page_title) %>
     <span class="title"><%= yield(:page_title) %></span>
-  <% else %>
-    <%= image_tag 'mobile/logo.png',class:'logo' %>
+  <% elsif !product_show? %>
+    <%= image_tag 'mobile/logo.png', class: 'logo' %>
   <% end %>
+
 </div>
-<div class="nav-bar">
-  <ul>
-    <li><%= link_to '首页', root_path %></li>
-    <li><%= link_to '我的UBOSS', account_path %></li>
-    <% if current_user && current_user.is_agent? %>
-      <li><%= link_to '邀请商家', invite_seller_account_path %></li>
-    <% end %>
-    <li>
-      <%= link_to '关于', about_path %>
-    </li>
-  </ul>
-</div>
-<% end %>
