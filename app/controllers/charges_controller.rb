@@ -15,7 +15,7 @@ class ChargesController < ApplicationController
       return redirect_to account_path
     end
 
-    trade_type = browser.wechat? ? 'JSAPI' : 'NATIVE'
+    trade_type = browser.wechat? ? ChargeService::WX_JS_TRADETYPE : ChargeService::WX_NATIVE_TRADETYPE
     @order_charge = ChargeService.find_or_create_charge(
       @orders,
       remote_ip: request.ip,

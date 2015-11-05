@@ -1,14 +1,17 @@
-module ChargeService
+module ChargeService extend self
 
-  SITE_NAME = 'UBOSS'
+  SITE_NAME = 'UBOSS'.freeze
+  WX_JS_TRADETYPE = 'JSAPI'.freeze
+  WX_NATIVE_TRADETYPE = 'NATIVE'.freeze
 
-  extend self
+  class WrongWxTradeType < StandardError; ;end
 
   def find_or_create_charge(orders, options)
-    order_charge = find_or_create_order_charge_for_orders(orders)
+    validate_options(options)
+    order_charge = find_or_create_order_charge_for_orders(orders, options)
 
     if !order_charge.wx_prepay_valid?
-      create_or_refresh_order_wx_charge(orders, order_charge, options)
+      refresh_order_wx_charge(orders, order_charge, options)
     else
       order_charge
     end
@@ -17,6 +20,7 @@ module ChargeService
   def handle_pay_notify(result)
     result = WxPay::Result[result]
     return false unless result.success?
+
     pay_serial_number = result["out_trade_no"]
     order_charge = OrderCharge.find_by(pay_serial_number: pay_serial_number)
     order_charge.update_with_wx_pay_result(result)
@@ -29,28 +33,33 @@ module ChargeService
 
   private
 
-  def find_or_create_order_charge_for_orders(orders)
-    old_order_charges_ids = orders.pluck(:order_charge_id).uniq.compact
+  def find_or_create_order_charge_for_orders(orders, options = {})
+    existing_order_charges_ids = orders.pluck(:order_charge_id).uniq.compact
 
-    case old_order_charges_ids.size
+    case existing_order_charges_ids.size
     when 0
       create_new_order_charges_for_orders(orders)
     when 1
-      old_order_charge = OrderCharge.find(old_order_charges_ids.first)
-      if old_order_charge.orders.size == orders.size
-        return old_order_charge
+      existing_order_charge = OrderCharge.find(existing_order_charges_ids.first)
+      if existing_order_charge.orders.size == orders.size
+        if existing_order_charge.wx_trade_type == options[:trade_type]
+          return existing_order_charge
+        else
+          close_existing_order_charges_with_ids(existing_order_charges_ids)
+          create_new_order_charges_for_orders(orders)
+        end
       else
-        close_old_order_charges_with_ids(old_order_charges_ids)
+        close_existing_order_charges_with_ids(existing_order_charges_ids)
         create_new_order_charges_for_orders(orders)
       end
     else
-      close_old_order_charges_with_ids(old_order_charges_ids)
+      close_existing_order_charges_with_ids(existing_order_charges_ids)
       create_new_order_charges_for_orders(orders)
     end
   end
 
-  def close_old_order_charges_with_ids(old_order_charges_ids)
-    OrderCharge.delay.check_and_close_prepay(ids: old_order_charges_ids)
+  def close_existing_order_charges_with_ids(existing_order_charges_ids)
+    OrderCharge.delay.check_and_close_prepay(ids: existing_order_charges_ids)
   end
 
   def create_new_order_charges_for_orders(orders)
@@ -60,7 +69,7 @@ module ChargeService
   end
 
   # 只有当微信支付时使用到，订单一旦确认(confirm)，即进行获取
-  def create_or_refresh_order_wx_charge(orders, charge, options)
+  def refresh_order_wx_charge(orders, charge, options)
     # 重新更新支付流水号
     charge.reset_pay_serial_number
     charge.prepay_id_expired_at = Time.current + 2.hours
@@ -72,6 +81,7 @@ module ChargeService
       request_weixin_unifiedorder(charge, options) do |res|
         charge.prepay_id = res["prepay_id"]
         charge.wx_code_url = res["code_url"]
+        charge.wx_trade_type = options[:trade_type]
         Rails.logger.debug("set prepay_id: #{charge.prepay_id}")
       end
     end
@@ -104,6 +114,12 @@ module ChargeService
 
   def wx_notify_url
     "#{Rails.application.secrets.pay_host}/pay_notify/wechat_notify"
+  end
+
+  def validate_options options
+    unless [WX_JS_TRADETYPE, WX_NATIVE_TRADETYPE].include? options[:trade_type]
+      raise WrongWxTradeType, "Trade type #{options[:trade_type]} is not accept."
+    end
   end
 
 end
