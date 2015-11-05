@@ -1,9 +1,8 @@
 <p><%= @refund.aasm.human_state %></p>
 <% case @refund.aasm_state %>
-
 <% when 'pending' %>
   <div class="countdown">
-    <span id="clock_refund" data-endtime=<%= countdown_time(@refund.created_at+2.days) %>></span>
+    <span id="clock_refund" data-endtime=<%= countdown_time(@refund.created_at + Rails.application.secrets.refund_timeout.days) %>></span>
   </div>
   <ul>
     <li>
@@ -17,21 +16,37 @@
     </li>
   </ul>
   <%= link_to '修改退款申请', edit_order_item_order_item_refund_path(order_item_id: @order_item.id, id: @refund.id) %>
+  <%= link_to '撤销申请', close_order_item_order_item_refund_path(order_item_id: @order_item.id, id: @refund.id), data: {confirm: '确定撤销申请？'}%>
 
 <% when 'approved' %>
-  <p>卖家同意申请</p>
-  <p>卖家退款给买家0.05元</p>
-  <p>UBOSS将在24小时内退款会您当时支付的账号或银行卡，请注意查收</p>
+  <% if @refund.refund_type_include_goods? %>
+    <p>卖家同意申请：请退货</p>
+    <%= link_to '退货', new_order_item_order_item_refund_sales_return_path(order_item_id: @order_item.id, order_item_refund_id: @refund.id %>
+    <%= link_to '撤销申请', close_order_item_order_item_refund_path(order_item_id: @order_item.id, id: @refund.id), data: {confirm: '确定撤销申请？'}%>
+  <% else %>
+    <p>卖家退款给买家0.05元</p>
+    <p>UBOSS将在24小时内退款会您当时支付的账号或银行卡，请注意查收</p>
+  <% end %>
 
 <% when 'completed_express_number' %>
 
 <% when 'declined' %>
 
+  <%= link_to '修改申请', nil %>
+  <%= link_to '撤销申请', close_order_item_order_item_refund_path(order_item_id: @order_item.id, id: @refund.id), data: {confirm: '确定撤销申请？'}%>
+  <%= link_to 'UBOSS介入', nil %>
+
 <% when 'cancelled' %>
   <p>退款关闭</p>
   <p>卖家已发货，此申请被自动撤销</p>
+  <%= link_to '再次申请', nil %>
+
 <% when 'confirm_received' %>
 
+<% when 'decline_received' %>
+  <%= link_to '修改申请', nil %>
+  <%= link_to '撤销申请', close_order_item_order_item_refund_path(order_item_id: @order_item.id, id: @refund.id), data: {confirm: '确定撤销申请？'}%>
+  <%= link_to 'UBOSS介入', nil %>
 <% when 'applied_uboss' %>
 
 <% when 'finished' %>

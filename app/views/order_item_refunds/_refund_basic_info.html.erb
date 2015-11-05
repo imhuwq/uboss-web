@@ -1,6 +1,5 @@
 <p>来源订单：<%= @order_item.order.number %> <%= link_to '查看', @order_item.order, target: '_blank' %></p>
 <p>退款编号：810231312</p>
-<p>申请时间：<%= @refund.created_at %></p>
 <% Hash[@refund.state_at_attributes.sort].each do |key, value| %>
   <span><%= key %>:</span>
   <span><%= value %></span>
