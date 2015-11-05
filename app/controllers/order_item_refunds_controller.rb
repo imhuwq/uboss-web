@@ -11,6 +11,15 @@ class OrderItemRefundsController < ApplicationController
   def edit
   end
 
+  def close
+    if @refund.may_cancel? && @refund.cancel!
+      flash[:success] = '退款撤销成功'
+    else
+      flash[:error] = '退款撤销失败'
+    end
+      redirect_to order_item_order_item_refund_path(order_item_id: @order_item.id, id: @refund.id)
+  end
+
   def update
     add_multi_img
     if @refund.update(order_item_refund_params)
@@ -25,7 +34,7 @@ class OrderItemRefundsController < ApplicationController
   def create
     @refund = @order_item.order_item_refunds.new(order_item_refund_params)
     add_multi_img
-    if @refund.save && @order_item.may_apply_refund? && @order_item.apply_refund!
+    if @refund.save
       create_refund_message('买家发起申请')
       flash[:success] = '申请退款成功'
       redirect_to order_item_order_item_refund_path(order_item_id: @order_item.id, id: @refund.id)
@@ -64,7 +73,7 @@ class OrderItemRefundsController < ApplicationController
   end
 
   def order_item_refund_params
-    params.require(:order_item_refund).permit(:money, :refund_reason_id, :description)
+    params.require(:order_item_refund).permit(:money, :refund_reason_id, :description).merge(order_state: @order_item.order.state)
   end
 
 end

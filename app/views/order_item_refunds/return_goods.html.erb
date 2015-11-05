@@ -1,0 +1,41 @@
+<%= content_for :page_title do %>
+  '退货'
+<% end %>
+<br />
+<div id="order_item_refund">
+  <%= simple_form_for [@order_item, @refund, @sales_return] do |f| %>
+    <%= upyun_meta_tags prefix: 'asset_img/avatar' %>
+
+    <table>
+      <tr class='refund-box'>
+        <td>物流公司</td>
+        <td><%= f.input_field :logistics_company, class: 'input-block' %></td>
+      </tr>
+      <tr class='refund-box'>
+        <td>物流单号</td>
+        <td><%= f.input_field :ship_number, class: 'input-block' %></td>
+      </tr>
+      <tr class='refund-box'>
+        <td>退货说明</td>
+        <td><%= f.text_area :description, class: 'input-block' %></td>
+      </tr>
+
+      <tr>
+        <td>
+          <%= f.input :asset_imgs, hint:"上传凭证(最多三张)"  do %>
+            <%= f.input_field :avatar, value: @refund.image_files, type: :hidden, as: :file, class: 'refund_avatar' %>
+            <p class="fileinput-button">
+              <%= image_tag("admin/no-img.png") %>
+              <% @refund.asset_imgs.each do |img| %>
+                  <%= image_tag(img.image_url(:thumb))%>
+              <% end %>
+              <%= file_field_tag "image", class: "upyun_file" %>
+              <b class="loading"><i class="fa fa-spinner"></i></b>
+            </p>
+          <% end %>
+        </td>
+      </tr>
+    </table>
+    <%= f.submit "提交申请", class: "btn btn-large btn-block use-new-addr-btn" %>
+  <% end %>
+</div>

@@ -2,6 +2,7 @@ class OrderItemRefund < ActiveRecord::Base
   belongs_to :order_item
   belongs_to :refund_reason
   belongs_to :user
+  has_one :sales_return
   has_many :refund_messages
   has_many :asset_imgs, class_name: 'AssetImg', autosave: true, as: :resource
 
@@ -38,7 +39,7 @@ class OrderItemRefund < ActiveRecord::Base
       transitions from: [:pending, :applied_uboss], to: :approved
       after do
         #如果只退款不退货, 同意后就直接进入退款流程
-        if !self.refund_type.includ?('goods')
+        if !refund_type_include_goods?
           #打款给买家
           self.may_finish? && self.finish!
         end
@@ -88,13 +89,17 @@ class OrderItemRefund < ActiveRecord::Base
     end
   end
 
+  def refund_type_include_goods?
+    refund_type.include?('goods')
+  end
+
   def save_state_at_attributes
     self.state_at_attributes = {'申请时间' => time_now}
     self.save
   end
 
   def time_now
-    Time.now
+    Time.now.strftime('%Y-%m-%d %H:%M:%S')
   end
 
   def image_files
@@ -110,9 +115,9 @@ class OrderItemRefund < ActiveRecord::Base
   end
 
   def set_order_item_state
-    if self.order.payed?
+    if self.order_item.order.payed?
       self.order_item.update_attributes!(refund_state: 1)
-    elsif self.order.shiped?
+    elsif self.order_item.order.shiped?
       # TODO refund_type 退款 or 退款退货
       self.order_item.update_attributes!(refund_state: 3)
     else

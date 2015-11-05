@@ -49,6 +49,8 @@ Rails.application.routes.draw do
 
   resources :order_items, only: [] do
     resources :order_item_refunds do
+      get 'close', on: :member
+      resources :sales_returns, only:[:new, :create]
       resources :refund_messages, only: [:new, :create]
     end
   end
