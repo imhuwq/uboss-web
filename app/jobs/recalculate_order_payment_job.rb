@@ -15,8 +15,13 @@ class RecalculateOrderPaymentJob < ActiveJob::Base
 
   def close_all_order_charge_within
     product_inventory.orders.unpay.find_each do |order|
-      order.check_paid
-      if order.unpay?
+
+      order_charge = order.order_charge
+      if order_charge.wx_prepay_valid?
+        order.check_paid
+      end
+
+      if order.reload.unpay?
         order.order_charge.close_prepay
       end
     end
