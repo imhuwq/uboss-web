@@ -21,19 +21,20 @@
 <% when 'approved' %>
   <% if @refund.refund_type_include_goods? %>
     <p>卖家同意申请：请退货</p>
-    <%= link_to '退货', new_order_item_order_item_refund_sales_return_path(order_item_id: @order_item.id, order_item_refund_id: @refund.id %>
-    <%= link_to '撤销申请', close_order_item_order_item_refund_path(order_item_id: @order_item.id, id: @refund.id), data: {confirm: '确定撤销申请？'}%>
+
+    <%= link_to '退货', new_order_item_order_item_refund_sales_return_path(order_item_id: @order_item.id, order_item_refund_id: @refund.id) %>
+
+    <%= link_to '撤销申请', close_order_item_order_item_refund_path(order_item_id: @order_item.id, id: @refund.id), data: {confirm: '确定撤销申请?'}%>
   <% else %>
     <p>卖家退款给买家0.05元</p>
     <p>UBOSS将在24小时内退款会您当时支付的账号或银行卡，请注意查收</p>
   <% end %>
-
 <% when 'completed_express_number' %>
 
 <% when 'declined' %>
 
   <%= link_to '修改申请', nil %>
-  <%= link_to '撤销申请', close_order_item_order_item_refund_path(order_item_id: @order_item.id, id: @refund.id), data: {confirm: '确定撤销申请？'}%>
+  <%= link_to '撤销申请', close_order_item_order_item_refund_path(order_item_id: @order_item.id, id: @refund.id), data: {confirm: '确定撤销申请?'}%>
   <%= link_to 'UBOSS介入', nil %>
 
 <% when 'cancelled' %>
@@ -45,7 +46,7 @@
 
 <% when 'decline_received' %>
   <%= link_to '修改申请', nil %>
-  <%= link_to '撤销申请', close_order_item_order_item_refund_path(order_item_id: @order_item.id, id: @refund.id), data: {confirm: '确定撤销申请？'}%>
+  <%= link_to '撤销申请', close_order_item_order_item_refund_path(order_item_id: @order_item.id, id: @refund.id), data: {confirm: '确定撤销申请?'} %>
   <%= link_to 'UBOSS介入', nil %>
 <% when 'applied_uboss' %>
 
