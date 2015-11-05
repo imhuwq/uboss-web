@@ -47,26 +47,19 @@ module ChargeService extend self
   def find_or_create_order_charge_for_orders(orders, options = {})
     existing_order_charges_ids = orders.pluck(:order_charge_id).uniq.compact
 
-    case existing_order_charges_ids.size
-    when 0
-      create_new_order_charges_for_orders(orders)
-    when 1
+    if existing_order_charges_ids.size == 1
       existing_order_charge = OrderCharge.find(existing_order_charges_ids.first)
-      if existing_order_charge.orders.size == orders.size
-        if existing_order_charge.wx_trade_type == options[:trade_type]
-          return existing_order_charge
-        else
-          close_existing_order_charges_with_ids(existing_order_charges_ids)
-          create_new_order_charges_for_orders(orders)
-        end
-      else
-        close_existing_order_charges_with_ids(existing_order_charges_ids)
-        create_new_order_charges_for_orders(orders)
+
+      if existing_order_charge.orders.size == orders.size &&
+          existing_order_charge.wx_trade_type == options[:trade_type]
+        return existing_order_charge
       end
-    else
-      close_existing_order_charges_with_ids(existing_order_charges_ids)
-      create_new_order_charges_for_orders(orders)
     end
+
+    if existing_order_charges_ids.size > 0
+      close_existing_order_charges_with_ids existing_order_charges_ids
+    end
+    create_new_order_charges_for_orders orders
   end
 
   def close_existing_order_charges_with_ids(existing_order_charges_ids)
