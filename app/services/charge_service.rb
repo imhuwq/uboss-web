@@ -8,6 +8,7 @@ module ChargeService extend self
 
   def find_or_create_charge(orders, options)
     validate_options(options)
+
     order_charge = find_or_create_order_charge_for_orders(orders, options)
 
     if !order_charge.wx_prepay_valid?
@@ -59,6 +60,7 @@ module ChargeService extend self
     if existing_order_charges_ids.size > 0
       close_existing_order_charges_with_ids existing_order_charges_ids
     end
+
     create_new_order_charges_for_orders orders
   end
 
@@ -89,8 +91,8 @@ module ChargeService extend self
         Rails.logger.debug("set prepay_id: #{charge.prepay_id}")
       end
     end
-    charge.save
 
+    charge.save!(validate: false)
     charge
   end
 
