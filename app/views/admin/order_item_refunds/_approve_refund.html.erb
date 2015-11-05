@@ -1,0 +1,17 @@
+<div class="modal fade" id="approve-refund-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document" style="margin:15% auto;width:60%;height:50%;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span class='close' aria-hidden="true">&times;</span></button>
+        <h5 class="modal-title" id="myModalLabel" style="text-align:center;">同意退款申请</h5>
+      </div>
+
+      <div class="modal-body">
+        <p class='text-center close_info'>确定后：退款<%= @order_item_refund.money %>元将立即退到买家账户</p>
+        <div class="text-center close_btn">
+          <%= link_to '确定', [:finish_refund, :admin, @order_item, @order_item_refund], class: 'btn btn-default' %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

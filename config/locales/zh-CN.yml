@@ -131,6 +131,8 @@ zh-CN:
         ship_number: 运单号
       seller:
         <<: *attributes
+      refund_message:
+        asset_img: 上传凭证
   simple_captcha:
     label: 验证码
     placeholder: 请输入验证码

@@ -1,0 +1,27 @@
+<div class="modal-body">
+  <div class='form-group'>
+    <label class="control-label">拒绝原因</label>
+    <div class="control-input">
+      <%= f.select :refund_reason_id, [1, 2, 3], include_blank: '请选择拒绝退款申请原因...', class:'input-block control-input', style: "border:1px solid #e5e5e5;height:32px;" %>
+    </div>
+  </div>
+  <div class="form-group">
+    <label class="control-label">拒绝说明</label>
+    <%= f.text_area :explain, rows: 4, class: 'control-input', style: "border:1px solid #e5e5e5;width:80%;" %>
+  </div>
+  <div class="form-group">
+    <%= f.input :asset_img, hint:"(点击图片进行替换)"  do %>
+      <%= f.input_field :avatar, type: :hidden, label: false, as: :file %>
+      <p class="fileinput-button">
+      <%= image_tag("admin/no-img.png") %>
+      <%= file_field_tag "image", class: "upyun_file" %>
+      <b class="loading"><i class="fa fa-spinner"></i></b>
+      </p>
+    <% end %>
+  </div>
+</div>
+
+<div class="modal-footer">
+  <%= f.submit '确定拒绝', class: "btn btn-info" %>
+  <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+</div>
