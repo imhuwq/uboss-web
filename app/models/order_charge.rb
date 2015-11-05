@@ -14,9 +14,7 @@ class OrderCharge < ActiveRecord::Base
   enum payment: { alipay: 0, alipay_wap: 1, alipay_qr: 2, wx: 3, wx_pub: 4, wx_pub_qr: 5, yeepay_wap: 6 }
 
   def self.unpay?(orders)
-    bool = false
-    orders.each { |order| bool = true if order.unpay? }
-    bool
+    orders.pluck(:state).any? { |order_state| order_state == Order.states[:unpay] }
   end
 
   def self.check_and_close_prepay(opts = {})
@@ -36,12 +34,6 @@ class OrderCharge < ActiveRecord::Base
 
   def pay_amount
     orders.sum(:pay_amount)
-  end
-
-  def orders_check_paid
-    ActiveRecord::Base.transaction do
-      orders.each { |order| order.check_paid }
-    end
   end
 
   def check_paid?
@@ -68,6 +60,21 @@ class OrderCharge < ActiveRecord::Base
     self.save(validate: false)
   end
 
+  def assign_paid_amount_to_order
+    distribute_amount = self.paid_amount
+    distribute_orders_size = orders.size
+
+    orders.each_with_index do |order, index|
+      order_paid_amount = if index == distribute_orders_size - 1
+                            distribute_amount
+                          else
+                            distribute_amount >= order.pay_amount ? order.pay_amount : distribute_amount
+                          end
+      order.update_column :paid_amount, order_paid_amount
+      distribute_amount -= order_paid_amount
+    end
+  end
+
   # 判断是否有效
   def wx_prepay_valid?
     return false if prepay_id == FAKE_PREPAY_ID && !$wechat_env.test?
@@ -81,7 +88,7 @@ class OrderCharge < ActiveRecord::Base
     elsif result['return_code'] == WXPAY_SUCCESS_FLAG
       case result['err_code']
       when 'ORDERPAID'
-        orders_check_paid
+        check_paid?
       else
         discard_deal
       end
@@ -91,27 +98,10 @@ class OrderCharge < ActiveRecord::Base
   private
   def invoke_wx_pay_cheking
     response = WxPay::Service.order_query(out_trade_no: pay_serial_number)
-    if response.success? && WxPay::Sign.verify?(response) && response['trade_state'] == 'SUCCESS'
-      update_with_wx_pay_result(response)
-      assign_paid_amount_to_order
-      true
+    if response['trade_state'] == 'SUCCESS'
+      ChargeService.process_paid_result(result: response, order_charge: self)
     else
       false
-    end
-  end
-
-  def assign_paid_amount_to_order
-    distribute_amount = self.paid_amount
-    distribute_orders_size = orders.size
-
-    orders.each_with_index do |order, index|
-      order_paid_amount = if index == distribute_orders_size - 1
-                            distribute_amount
-                          else
-                            distribute_amount >= order.pay_amount ? order.pay_amount : distribute_amount
-                          end
-      order.update_column :paid_amount, order_paid_amount
-      distribute_amount -= order_paid_amount
     end
   end
 
