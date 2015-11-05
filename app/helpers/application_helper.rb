@@ -1,5 +1,9 @@
 module ApplicationHelper
 
+  def product_show?
+    controller_name == 'products' && action_name == 'show'
+  end
+
   def qrcode_image_tag(text, opts = {})
     opts = {
       text: text,
