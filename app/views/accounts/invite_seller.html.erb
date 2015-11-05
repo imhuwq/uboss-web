@@ -18,7 +18,8 @@
   <div class="bg-white">
     <div class="box-m40">
       <h3 class="main-color text-center">邀请商家</h3>
-      <p><%= text_field_tag 'send_message[mobile]', '',type: :tel, placeholder: '填入商家注册手机号', class:"add_text input-radius input-large input-block", id:"new_mobile"  %></p>
+      <p><%= text_field_tag 'send_message[mobile]', '',type: :tel, placeholder: '填入商家注册手机号',
+        class:"add_text input-radius input-large input-block", id:"new_mobile"  %></p>
       <br />
       <div class="accunt_adilbtn btn btn-large btn-block" id="timedown">短信发送绑定验证码给商家</div>
       <br />
@@ -31,7 +32,8 @@
     <div class="box-m40">
       <%= simple_form_for 'bind_seller', url: bind_seller_account_path, method: :put do |f| %>
         <h3 class="main-color text-center">绑定验证</h3>
-        <p><%= f.input_field :invite_code, type: :tel, placeholder: '填入从商家获取绑定验证码', class:"add_text input-radius input-large input-block" %></p>
+        <p><%= f.input_field :invite_code, type: :tel, placeholder: '填入从商家获取绑定验证码',
+          class:"add_text input-radius input-large input-block" %></p>
         <br />
         <div><%= f.submit '绑定商家', class:"accunt_adilbtn btn btn-large btn-block" %>    </div>
         <br />

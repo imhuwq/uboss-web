@@ -57,7 +57,6 @@ class OrderItem < ActiveRecord::Base
       parent_id: sharing_node_id
     )
   end
-  alias_method :generate_sharing_link_node, :sharing_link_node
 
   def create_privilege_card_if_none
     PrivilegeCard.find_or_active_card(user_id, order.seller_id)

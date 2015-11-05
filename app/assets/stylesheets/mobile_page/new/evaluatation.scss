@@ -1,57 +1,63 @@
 .emoticon-box{
-    display: table;
-    width: 100%;
-    .emoticon{
-        width: 1%;
-        vertical-align: middle;
-        padding:5px 10px;
-        display: table-cell;
-        text-align: center;
-        color: #999;        
-    }
+  display: table;
+  width: 100%;
+  .emoticon{
+    width: 1%;
+    vertical-align: middle;
+    padding:5px 10px;
+    display: table-cell;
+    text-align: center;
+    color: #999;
+  }
+  .icon{
+    background: image-url('mobile/evaluations.png') no-repeat;
+    background-size:330px ;
+    height: 40px;
+    width: 40px;
+    overflow: hidden;
+    margin: 0 0 4px 0;
+  }
+  .bad-icon{
+    background-position-x: -72.5px;
+  }
+  .good-icon{
+    background-position-x: -145px;
+  }
+  .better-icon{
+    background-position-x: -218px;
+  }
+  .best-icon{
+    background-position-x: -290px;
+  }
+  .emoticon.active{
+    background: #fff;
+    color: $brand-primary;
     .icon{
-        background: image-url('mobile/evaluations.png') no-repeat;
-        background-size:330px ;
-        height: 40px;
-        width: 40px;
-        overflow: hidden;
-        margin: 0 0 4px 0;            
+      background-position-y: -72px;
     }
-    .bad-icon{
-        background-position-x: -72.5px;
-    }
-    .good-icon{
-        background-position-x: -145px; 
-    }
-    .better-icon{
-        background-position-x: -218px;
-    }
-    .best-icon{
-        background-position-x: -290px;
-    }
-    .emoticon.active{        
-        background: #fff;
-        color: $brand-primary;
-        .icon{
-            background-position-y: -72px;
-        }
-    }
-    
+  }
+
 }
-.evaluations-box{    
-    .star{
-        float: left;
-        width: 20%;
-        background: image-url('mobile/star.png') center top no-repeat;
-        background-size: 30px;
-        height: 30px;
-        margin-top: 10px;
-        
-    }
-    .star.half{
-        background-position-y: -56px;
-    }
+.evaluations-box{
+  textarea{
+    border: none;
+    outline: none;
+    background: #f6f6f6;
+    border-radius:6px ;
+    padding: 10px;
+    -webkit-appearance: none;
+    box-shadow: 2px 2px 3px #999;
+    -webkit-box-shadow: 2px 2px 3px #999;
+  }
+  .star{
+    float: left;
+    width: 20%;
+    background: image-url('mobile/star.png') center top no-repeat;
+    background-size: 30px;
+    height: 30px;
+    margin-top: 10px;
+  }
+  .star.half{
+    background-position-y: -56px;
+  }
 }
-
-
-
