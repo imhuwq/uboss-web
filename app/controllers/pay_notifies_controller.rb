@@ -2,19 +2,21 @@ class PayNotifiesController < ActionController::Base
 
   # 支付异步通知
   def wechat_notify
-    result = Hash.from_xml(request.body.read)["xml"]
-    Rails.logger.debug("weixin notify: #{result}")
+    result = WxPay::Result[Hash.from_xml(request.body.read)]
+    Rails.logger.info("weixin notify: #{result}")
 
     if WxPay::Sign.verify?(result)
 
-      ChargeService.handle_pay_notify(result)
+      ChargeService.process_paid_result(result: result)
+
+      Rails.logger.info("[SUCCESS] weixin notify: #{result}")
 
       render xml: {
         return_code: "SUCCESS"
       }.to_xml(root: 'xml', dasherize: false)
     else
       render xml: {
-        return_code: "SUCCESS",
+        return_code: "FAIL",
         return_msg: "签名失败"
       }.to_xml(root: 'xml', dasherize: false)
     end

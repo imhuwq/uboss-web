@@ -17,14 +17,25 @@ module ChargeService extend self
     end
   end
 
-  def handle_pay_notify(result)
-    result = WxPay::Result[result]
+  def process_paid_result(options = {})
+    result = options.fetch :result
+    return false unless WxPay::Sign.verify?(result)
     return false unless result.success?
 
-    pay_serial_number = result["out_trade_no"]
-    order_charge = OrderCharge.find_by(pay_serial_number: pay_serial_number)
-    order_charge.update_with_wx_pay_result(result)
-    order_charge.orders.each { |order| order.pay! }
+    order_charge = options.fetch :order_charge do
+      pay_serial_number = result["out_trade_no"]
+      OrderCharge.find_by(pay_serial_number: pay_serial_number)
+    end
+
+    return true if order_charge.paid_at.present?
+
+    order_charge.transaction do
+      order_charge.update_with_wx_pay_result(result)
+      order_charge.assign_paid_amount_to_order
+      order_charge.orders.each { |order| order.pay! }
+    end
+
+    true
   end
 
   def available_pay?(orders)
