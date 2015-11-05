@@ -2,38 +2,47 @@
   个人信息
 <% end %>
 
-<div class="container add_listall" >
-  <div class="add_inout">
+<br />
+<div class="box bg-white" >
+  <br />
+  <div class="box-m40">
     <% if current_user.can_rebind_agent? %>
       <%= simple_form_for current_user, url: bind_agent_account_path, method: :put do |f| %>
-        <div style="min-height:30px;padding:15px 0;width:100%" class="clearfix">
 
-          <div style="margin-right:110px;">
-            <%= f.input_field :login, type: :tel, placeholder: '输入手机号', class:"add_text_2",id:'new_mobile', disabled:"disabled", style:"width:90%;float:right;margin-top:5px;" %>
-          </div>
-          <div style="position:absolute;width:90px;margin-right:10px;right:0;">
-            <a style='color:#fff;' href='#' class="add_text_2 btn" id="send_mobile">发送验证码</a>
-          </div>
+        <h3 class="gray-color"><%= current_user.login %></h3>
+        <%= f.hidden_field :login, id:'new_mobile' %>
+        <div class="btn btn-large btn-block" id="send_mobile">发送验证码</div>
+
+        <br />
+        <div class="address-new">
+          <table>
+            <tr>
+              <td>验证码</td>
+              <td>
+                <%= f.input_field :mobile_auth_code, as: :tel, required: true,
+                  placeholder: '填写短信验证码', id: "mobile_auth_code", class:"input-block" %>
+              </td>
+            </tr>
+            <tr>
+              <td>邀请码</td>
+              <td>
+                <%= text_field_tag :agent_code, params[:agent_code], placeholder: '创客邀请码', class:"input-block" %>
+              </td>
+            </tr>
+          </table>
         </div>
-        <p><span>验证码</span>
-          <%= f.input_field :mobile_auth_code, as: :tel, required: true, placeholder: '填写短信验证码',:id=>"mobile_auth_code", class:"add_text"  %>
-        </p>
-        <p style="border-bottom:0">
-          <span class="add_textd">邀请码</span>
-          <%= text_field_tag :agent_code, params[:agent_code],placeholder: '创客邀请码', class:"add_text" %>
-        </p>
-        <div class="row font_h4" style="padding:10px 20px;border-bottom:1px solid #cccccc">
+        <br />
+        <p class="gray-color">
           填写创客发与您的邀请码即可与创客绑定入驻UBOSS平台，您也可以不填写邀请码直接入驻UBOSS平台.
-        </div>
-        <p class="accunt_adil_box3 adbtn">
-          <%= f.submit '绑定', class:"accunt_adilbtn",id:"submit_bottom", disabled: 'disabled' %>
         </p>
+        <br />
+        <%= f.submit '绑定', class:"btn btn-large btn-block", id:"submit_bottom" %>
       <% end %>
     <% else %>
-      <h3 class="text-center" style='padding:30px 0'>
+      <h3 class="text-center">
         <%= model_errors(current_user).join('<br/>') %>
       </h3>
     <% end %>
   </div>
-
+  <br />
 </div>

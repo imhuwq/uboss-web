@@ -72,6 +72,7 @@ class AccountsController < ApplicationController
   end
 
   def binding_agent # 商家绑定创客
+    render layout: 'mobile'
   end
 
   def update_password
@@ -200,6 +201,14 @@ class AccountsController < ApplicationController
   end
 
   def settings
+    render layout: 'mobile'
+  end
+
+  def seller_agreement
+    render layout: 'mobile'
+  end
+
+  def binding_successed
     render layout: 'mobile'
   end
   private

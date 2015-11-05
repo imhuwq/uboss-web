@@ -1,4 +1,5 @@
 class EvaluationsController < ApplicationController
+
   def new
     @order_item = OrderItem.find(params[:id])
     @evaluation = Evaluation.new(order_item: @order_item)
@@ -15,12 +16,8 @@ class EvaluationsController < ApplicationController
   def show
     @evaluation = Evaluation.find(params[:id])
     @product = @evaluation.product
-    @product_inventory = @evaluation.order_item.product_inventory
-    @sharing_node = @evaluation.sharing_node
-    @privilege_card = PrivilegeCard.find_by(user: current_user, seller: @product.user, actived: true)
-  end
-
-  def index
+    @sharing_link_node = @evaluation.order_item.sharing_link_node
+    render layout: 'mobile'
   end
 
   def create
@@ -30,7 +27,7 @@ class EvaluationsController < ApplicationController
       redirect_to action: :show, id: @evaluation.id
     else
       flash[:error] = @evaluation.errors.full_messages.join('<br/>')
-      render action: :new, id: params[:id]
+      render action: :new, id: params[:id], layout: 'mobile'
     end
   end
 
