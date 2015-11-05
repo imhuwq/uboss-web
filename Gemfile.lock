@@ -35,7 +35,7 @@ GIT
 
 GIT
   remote: git://github.com/xEasy/wx_pay.git
-  revision: 9a5599367eeeaa073f357859a53e232b6868f136
+  revision: cd0a652fb04c1cd314675a6d4f3e505d4120351b
   specs:
     wx_pay (0.2.0)
       activesupport (>= 3.2)

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151104080522) do
+ActiveRecord::Schema.define(version: 20151105024126) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -255,6 +255,7 @@ ActiveRecord::Schema.define(version: 20151104080522) do
     t.string   "wx_code_url"
     t.string   "number"
     t.integer  "user_id"
+    t.string   "wx_trade_type"
   end
 
   add_index "order_charges", ["number"], name: "index_order_charges_on_number", using: :btree
