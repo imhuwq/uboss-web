@@ -1,7 +1,7 @@
 FactoryGirl.define do
 
   factory :user do
-    sequence(:login) { |n| "18912345#{rand(100)}#{n%10}" }
+    sequence(:login) { |n| "138#{n}".ljust(11, '0') }
     password "superPassword"
 
     trait :agent do
