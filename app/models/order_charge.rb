@@ -53,8 +53,7 @@ class OrderCharge < ActiveRecord::Base
   alias_method :paid?, :check_paid?
 
   def update_with_wx_pay_result(result)
-    paid_amount_result = Rails.env.production? ? (BigDecimal(result["total_fee"]) / 100) : pay_amount
-    self.paid_amount = paid_amount_result
+    self.paid_amount = parse_total_fee(result["total_fee"])
     self.payment = 'wx'
     self.paid_at = result['time_end']
     self.save(validate: false)
@@ -96,6 +95,15 @@ class OrderCharge < ActiveRecord::Base
   end
 
   private
+  def parse_total_fee total_fee
+    # product & test model should be real
+    if Rails.env.production? || Rails.env.test?
+      BigDecimal(total_fee) / 100
+    else
+      pay_amount
+    end
+  end
+
   def invoke_wx_pay_cheking
     response = WxPay::Service.order_query(out_trade_no: pay_serial_number)
     if response['trade_state'] == 'SUCCESS'

@@ -28,7 +28,7 @@ module ChargeService extend self
       OrderCharge.find_by(pay_serial_number: pay_serial_number)
     end
 
-    return true if order_charge.paid_at.present?
+    return false if order_charge.paid_at.present?
 
     order_charge.transaction do
       order_charge.update_with_wx_pay_result(result)

@@ -1,4 +1,5 @@
 class Product < ActiveRecord::Base
+
   include Orderable
   include Descriptiontable
 
