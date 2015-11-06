@@ -44,6 +44,7 @@ class OrderItemRefund < ActiveRecord::Base
           self.may_finish? && self.finish!
         end
         self.state_at_attributes['同意时间'] = time_now
+        self.save
       end
     end
 
@@ -55,6 +56,7 @@ class OrderItemRefund < ActiveRecord::Base
       transitions from: [:approved, :decline_received], to: :completed_express_number
       after do
         self.state_at_attributes['退货时间'] = time_now
+        self.save
       end
     end
 
@@ -62,6 +64,7 @@ class OrderItemRefund < ActiveRecord::Base
       transitions from: [:completed_express_number, :applied_uboss], to: :confirm_received
       after do
         self.state_at_attributes['卖家确认收货时间'] = time_now
+        self.save
       end
     end
 
@@ -77,6 +80,7 @@ class OrderItemRefund < ActiveRecord::Base
       transitions from: [:approved, :confirm_receive], to: :finished
       after do
         self.state_at_attributes['退款时间'] = time_now
+        self.save
       end
     end
 
@@ -85,12 +89,13 @@ class OrderItemRefund < ActiveRecord::Base
       transitions from: [:pending, :approved, :completed_express_number, :decline_received, :applied_uboss], to: :cancelled
       after do
         self.state_at_attributes['关闭时间'] = time_now
+        self.save
       end
     end
   end
 
   def refund_type_include_goods?
-    refund_type.include?('goods')
+    refund_type.to_s.include?('goods')
   end
 
   def save_state_at_attributes

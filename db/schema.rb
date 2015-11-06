@@ -18,6 +18,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 ActiveRecord::Schema.define(version: 20151113032754) do
 =======
 ActiveRecord::Schema.define(version: 20151030093203) do
@@ -40,6 +41,9 @@ ActiveRecord::Schema.define(version: 20151104075017) do
 =======
 ActiveRecord::Schema.define(version: 20151105065144) do
 >>>>>>> e69ec7a... 退货
+=======
+ActiveRecord::Schema.define(version: 20151106034522) do
+>>>>>>> abab8ef... 退款理由改成rake文件
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -478,6 +482,7 @@ ActiveRecord::Schema.define(version: 20151105065144) do
   create_table "refund_reasons", force: :cascade do |t|
     t.string   "reason"
 <<<<<<< HEAD
+<<<<<<< HEAD
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
     t.string   "reason_type"
@@ -485,6 +490,11 @@ ActiveRecord::Schema.define(version: 20151105065144) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
 >>>>>>> 3181364... 用户退款
+=======
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+    t.string   "reason_type"
+>>>>>>> abab8ef... 退款理由改成rake文件
   end
 
   create_table "regions", force: :cascade do |t|

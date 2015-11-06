@@ -127,8 +127,6 @@ Rails.application.routes.draw do
 
       get '/select_carriage_template', to: 'products#select_carriage_template'
 
-      resources :refund_reasons
-
       resources :expresses do
         member do
           get :set_common
