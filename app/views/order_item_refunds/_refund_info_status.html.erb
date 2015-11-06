@@ -38,9 +38,8 @@
   <%= link_to 'UBOSS介入', nil %>
 
 <% when 'cancelled' %>
-  <p>退款关闭</p>
   <p>卖家已发货，此申请被自动撤销</p>
-  <%= link_to '再次申请', nil %>
+  <%= link_to '再次申请', new_order_item_order_item_refund_path(order_item_id: @order_item.id, refund_type: 'refund') %>
 
 <% when 'confirm_received' %>
 

@@ -6,7 +6,7 @@ class RefundMessagesController < ApplicationController
 
   def new
     @refund_message = RefundMessage.new
-    @refund_messages = current_user.refund_messages
+    @refund_messages = current_user.refund_messages.order('created_at desc')
   end
 
   def create

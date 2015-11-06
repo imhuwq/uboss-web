@@ -1,11 +1,11 @@
 class OrderItemRefundsController < ApplicationController
   before_action :authenticate_user!
   before_action :find_order_item
-  before_action :find_order_item_refund, only: [:show, :edit, :update]
+  before_action :find_order_item_refund, only: [:show, :edit, :update, :close]
   layout 'mobile'
 
   def new
-    @refund = OrderItemRefund.new
+    @refund = OrderItemRefund.new(refund_type: params[:refund_type])
   end
 
   def edit
@@ -52,7 +52,7 @@ class OrderItemRefundsController < ApplicationController
                                         action: action,
                                         refund_reason: @refund.refund_reason,
                                         money: @refund.money,
-                                        user_type: 'buyer',
+                                        user_type: '买家',
                                         user_id: current_user.id,
                                         )
   end
