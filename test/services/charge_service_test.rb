@@ -12,18 +12,17 @@ class ChargeServiceTest < ActiveSupport::TestCase
       ChargeService.find_or_create_charge(orders, trade_type: 'WRONG_TYPE')
     end
 
-    stub_wx_invoke_unifiedorder!
+    stub_wx_invoke_unifiedorder!.times(3)
+
     order_charge = ChargeService.find_or_create_charge(orders, trade_type: 'JSAPI')
     assert_equal orders_ids.sort, order_charge.orders.pluck(:id).sort
     assert_equal 0, Sidekiq::Extensions::DelayedClass.jobs.size
 
     merged_orders = Order.where id:  orders_ids[0..2]
-    stub_wx_invoke_unifiedorder!
     order_charge = ChargeService.find_or_create_charge(merged_orders.reload, trade_type: 'JSAPI')
     assert_equal 3, order_charge.orders.size
     assert_equal 1, Sidekiq::Extensions::DelayedClass.jobs.size
 
-    stub_wx_invoke_unifiedorder!
     repeat_order_charge = ChargeService.find_or_create_charge(merged_orders.reload, trade_type: 'JSAPI')
     assert_equal order_charge.id, repeat_order_charge.id
   end
