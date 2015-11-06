@@ -1,7 +1,7 @@
 <div id="order_item_refund">
   <%= simple_form_for [@order_item, @refund] do |f| %>
     <%= upyun_meta_tags prefix: 'asset_img/avatar' %>
-
+    <%= f.hidden_field :refund_type %>
     <table>
       <tr class='refund-box'>
         <td>退款金额</td>
@@ -12,7 +12,7 @@
       </tr>
       <tr class='refund-box'>
         <td>退款原因 (必填)</td>
-        <td><%= f.select :refund_reason_id, RefundReason.all.collect { |r| [ r.reason, r.id ] }, {include_blank: true}, class: 'input-block' %></td>
+        <td><%= f.select :refund_reason_id, RefundReason.reason_type(params[:refund_type]).collect { |r| [ r.reason, r.id ] }, {include_blank: true}, class: 'input-block' %></td>
       </tr>
       <tr class='refund-box'>
         <td>退款说明 (选填)</td>

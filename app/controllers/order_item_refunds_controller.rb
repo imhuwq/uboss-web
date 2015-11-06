@@ -5,7 +5,7 @@ class OrderItemRefundsController < ApplicationController
   layout 'mobile'
 
   def new
-    @refund = OrderItemRefund.new
+    @refund = OrderItemRefund.new(refund_type: params[:refund_type])
   end
 
   def edit
