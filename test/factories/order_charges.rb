@@ -4,6 +4,7 @@ FactoryGirl.define do
     prepay_id "fake-prepay_id"
     wx_code_url 'fake-prepay-url'
     wx_trade_type 'JSAPI'
+    prepay_id_expired_at Time.current + 2.hours
 
     trait :paid_order_charge do
       paid_at { Time.current }

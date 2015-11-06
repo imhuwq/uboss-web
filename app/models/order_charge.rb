@@ -77,7 +77,7 @@ class OrderCharge < ActiveRecord::Base
   # 判断是否有效
   def wx_prepay_valid?
     return false if prepay_id == FAKE_PREPAY_ID && !$wechat_env.test?
-    prepay_id.present? && Time.current.to_i <= prepay_id_expired_at.to_i
+    prepay_id.present? && Time.current.to_i <= prepay_id_expired_at.to_i && paid_at.blank?
   end
 
   def close_prepay
@@ -115,6 +115,6 @@ class OrderCharge < ActiveRecord::Base
 
   def discard_deal
     reload.orders.update_all order_charge_id: nil
-    update_column :prepay_id_expired_at, Time.current
+    update_column :prepay_id_expired_at, Time.current - 1.minute
   end
 end
