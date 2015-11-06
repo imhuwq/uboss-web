@@ -40,7 +40,7 @@ class OrderChargeTest < ActiveSupport::TestCase
     @order_charge = create :charge_with_orders
     charge_orders = @order_charge.orders
 
-    assert @order_charge.wx_prepay_valid?, 'prepay should be valid'
+    assert_equal true, @order_charge.reload.wx_prepay_valid?
 
     stub_wx_invoke_closeorder!
     @order_charge.close_prepay
