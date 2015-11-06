@@ -73,9 +73,7 @@ class Ability
     can :create, WithdrawRecord, user_id: user.id
     # FIXME @dalezhang read sellers == read user，这样定义如何判断只能查看自己的商家？？
     can :read, :sellers
-    can :read, CarriageTemplate
     can :manage, BankCard, user_id: user.id
-    can :read, Express
   end
 
 end
