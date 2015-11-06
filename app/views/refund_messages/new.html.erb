@@ -12,7 +12,7 @@
     <%= simple_form_for [@order_item, @refund, @refund_message] do |f| %>
       <%= upyun_meta_tags prefix: 'asset_img/avatar' %>
       <%= f.text_area :message, class: 'input-block' %>
-      <%= f.hidden_field :user_type, value: 'buyer', class: 'input-block' %>
+      <%= f.hidden_field :user_type, value: '买家', class: 'input-block' %>
       <%= f.input :asset_imgs, hint:"上传凭证(最多三张)"  do %>
         <%= f.input_field :avatar, type: :hidden, as: :file, class: 'refund_avatar' %>
         <p class="fileinput-button">
@@ -28,8 +28,12 @@
   <div class='refund-box'>
     <% @refund_messages.each do |message| %>
       <p><%= image_tag(message.user.image_url(:thumb)) %></p>
+      <p><%= message.user_type %></p>
       <p><%= message.user.nickname %></p>
+      <p><%= message.created_at %></p>
+      <p><%= message.action %></p>
       <p><%= message.message %></p>
+      <p><%= message.explain %></p>
       <p class="fileinput-button">
         <% message.asset_imgs.each do |img| %>
           <%= image_tag(img.image_url(:thumb)) %>

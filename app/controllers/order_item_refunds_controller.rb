@@ -52,7 +52,7 @@ class OrderItemRefundsController < ApplicationController
                                         action: action,
                                         refund_reason: @refund.refund_reason,
                                         money: @refund.money,
-                                        user_type: 'buyer',
+                                        user_type: '买家',
                                         user_id: current_user.id,
                                         )
   end
