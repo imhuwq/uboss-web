@@ -9,6 +9,25 @@ input,input:focus{
     vertical-align: middle;
    
 }
+textarea{
+    border: none;
+    outline: none;
+    background: #f6f6f6;
+    border-radius:6px ;
+    padding: 10px;
+    -webkit-appearance: none;
+    box-shadow: 2px 2px 3px #999;
+    -webkit-box-shadow: 2px 2px 3px #999;
+}
+select{
+    border: none;
+    outline: none;
+    -webkit-appearance: none;
+    padding-right: 10px;
+    background: image-url('mobile/down.png') no-repeat right center;
+    background-size:10px ;
+    line-height: 20px;
+}
 input:focus{
     border-color: $brand-primary;
     color: #333;
