@@ -10,6 +10,8 @@ class OrderItemRefund < ActiveRecord::Base
   after_create :save_state_at_attributes
   after_create  :set_order_item_state
 
+  enum order_state: { unpay: 0, payed: 1, shiped: 3, signed: 4, closed: 5, completed: 6 }
+
   extend Enumerize
 
   enumerize :refund_type, in: [:refund, :receipted_refund, :unreceipt_refund, :return_goods_and_refund, :after_sale_only_refund, :after_sale_return_goods_and_refund]

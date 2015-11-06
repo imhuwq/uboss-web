@@ -29,7 +29,7 @@
     <div class="bg-white gap">
     	<%= f.text_area :description, class: 'input-block',placeholder:'退款说明',rows:'6' %>
     </div>
-    <%= f.input :asset_imgs, hint:"上传凭证(最多三张)"  do %>
+    <div class='form-group string optional order_item_refund_asset_imgs'>
 	    <%= f.input_field :avatar, value: @refund.image_files, type: :hidden, as: :file, class: 'refund_avatar' %>
 	    <div class="fileinput-button">
 	      <%= image_tag("admin/no-img.png") %>
@@ -38,7 +38,7 @@
 	      <% end %>
 	      <%= file_field_tag "image", class: "upyun_file" %>
 	    </div>
-	  <% end %>
+    </div>
 	  <div class="gap">
     	<%= f.submit "提交申请", class: "btn btn-large btn-block use-new-addr-btn" %>
     </div>
