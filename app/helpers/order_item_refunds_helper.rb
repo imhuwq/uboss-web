@@ -17,8 +17,10 @@ module OrderItemRefundsHelper
   def order_item_refund_url(order_item)
     refunds = order_item.order_item_refunds
     last_refund = order_item.last_refund
-    if refunds.blank?
-      new_order_item_order_item_refund_path(order_item_id: order_item.id)
+    if order_item.order.may_ship? && refunds.blank?
+      new_order_item_order_item_refund_path(order_item_id: order_item.id, refund_type: 'refund')
+    elsif refunds.blank?
+      service_select_order_item_order_item_refunds_path(order_item_id: order_item.id)
     else
       order_item_order_item_refund_path(order_item_id: order_item.id, id: last_refund.id)
     end

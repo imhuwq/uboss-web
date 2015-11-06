@@ -54,7 +54,7 @@
         <div class="price">
         	<p>￥<%= order_item.present_price %></p>
         	<p class="gray-color num">x <%= order_item.amount %></p>
-          <% if @order.payed? %>
+          <% if @order.has_payed? %>
             <%= link_to order_item_refund_state(order_item), order_item_refund_url(order_item) %>
           <% end %>
         </div>
