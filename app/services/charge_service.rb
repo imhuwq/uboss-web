@@ -82,6 +82,7 @@ module ChargeService extend self
 
     if $wechat_env.test?
       charge.prepay_id = OrderCharge::FAKE_PREPAY_ID
+      charge.wx_trade_type = options[:trade_type]
       Rails.logger.debug("set FAKE prepay_id: #{charge.prepay_id}")
     else
       request_weixin_unifiedorder(charge, options) do |res|
