@@ -2,7 +2,7 @@
   <div class='form-group'>
     <label class="control-label">拒绝原因</label>
     <div class="control-input">
-      <%= f.select :refund_reason_id, [1, 2, 3], include_blank: '请选择拒绝退款申请原因...', class:'input-block control-input', style: "border:1px solid #e5e5e5;height:32px;" %>
+      <%= f.select :refund_reason_id, reasons, include_blank: '请选择拒绝退款申请原因...', class:'input-block control-input', style: "border:1px solid #e5e5e5;height:32px;" %>
     </div>
   </div>
   <div class="form-group">

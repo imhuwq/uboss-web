@@ -22,7 +22,7 @@
           <p>* 如果您逾期未响应，视作同意买家申请，系统将自动退款给买家</p>
         </div>
         <div class='evaluate' style='display:inline-flex;'>
-          <%= link_to '同意退款申请', [:approve_receive, :admin, @order_item, @order_item_refund], class: 'btn btn-sm', remote: true %>
+          <%= link_to '同意退款申请', [:decline_receive, :admin, @order_item, @order_item_refund], class: 'btn btn-sm', remote: true %>
           您还可以：<a class="main-link-color" href="">发货</a>
         </div>
       </div>
