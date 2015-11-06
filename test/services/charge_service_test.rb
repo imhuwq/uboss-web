@@ -8,6 +8,10 @@ class ChargeServiceTest < ActiveSupport::TestCase
     orders = Order.where(id: orders_ids)
     assert 5, orders_ids
 
+    assert_raises ChargeService::WrongWxTradeType do
+      ChargeService.find_or_create_charge(orders, trade_type: 'WRONG_TYPE')
+    end
+
     stub_wx_invoke_unifiedorder!
     order_charge = ChargeService.find_or_create_charge(orders, trade_type: 'JSAPI')
     assert_equal orders_ids.sort, order_charge.orders.pluck(:id).sort
