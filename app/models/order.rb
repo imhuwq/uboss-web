@@ -57,6 +57,10 @@ class Order < ActiveRecord::Base
     end
   end
 
+  def has_payed?
+    Order.states[self.state] >= 1
+  end
+
   class << self
     def valid_items(cart_items, province)
       if province.present?

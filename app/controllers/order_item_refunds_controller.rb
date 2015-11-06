@@ -8,6 +8,9 @@ class OrderItemRefundsController < ApplicationController
     @refund = OrderItemRefund.new(refund_type: params[:refund_type])
   end
 
+  def service_select
+  end
+
   def edit
   end
 

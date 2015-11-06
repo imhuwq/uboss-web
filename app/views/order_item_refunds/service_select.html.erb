@@ -1,0 +1,12 @@
+<%= content_for :page_title do %>
+  服务选择
+<% end %>
+<br />
+<div>
+  <p><%= link_to '退货退款', new_order_item_order_item_refund_path(order_item_id: @order_item.id, refund_type: 'return_goods_and_refund') %><small>货已收到，需要退货并退款</small></p>
+  <p><%= link_to '已收到货，仅退款', new_order_item_order_item_refund_path(order_item_id: @order_item.id, refund_type: 'receipted_refund') %><small>与卖家协商同意退款</small></p>
+
+  <% if @order_item.order.shiped? %>
+    <p><%= link_to '未收到货，退款', new_order_item_order_item_refund_path(order_item_id: @order_item.id, refund_type: 'unreceipt_refund') %><small>订单状态为已发货，但实际还未收到货</small></p>
+  <% end %>
+</div>
