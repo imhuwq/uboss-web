@@ -13,14 +13,14 @@
       <%= upyun_meta_tags prefix: 'asset_img/avatar' %>
       <%= f.text_area :message, class: 'input-block' %>
       <%= f.hidden_field :user_type, value: '买家', class: 'input-block' %>
-      <%= f.input :asset_imgs, hint:"上传凭证(最多三张)"  do %>
+      <div class='form-group string optional order_item_refund_asset_imgs'>
         <%= f.input_field :avatar, type: :hidden, as: :file, class: 'refund_avatar' %>
         <p class="fileinput-button">
           <%= image_tag("admin/no-img.png") %>
           <%= file_field_tag "image", class: "upyun_file" %>
           <b class="loading"><i class="fa fa-spinner"></i></b>
         </p>
-      <% end %>
+      </div>
       <%= f.submit "发表留言", class: "btn btn-large btn-block use-new-addr-btn" %>
     <% end %>
   </div>

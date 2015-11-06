@@ -1,40 +1,46 @@
 <div id="order_item_refund">
   <%= simple_form_for [@order_item, @refund] do |f| %>
     <%= upyun_meta_tags prefix: 'asset_img/avatar' %>
-    <%= f.hidden_field :refund_type %>
-    <table>
-      <tr class='refund-box'>
+    <table class="refund-table">
+      <tr>
         <td>退款金额</td>
-        <td><%= f.input_field :money, class: 'input-block' %></td>
-      </tr>
-      <tr>
-        <td><p class='color'>退款金额不可修改</p></td>
-      </tr>
-      <tr class='refund-box'>
-        <td>退款原因 (必填)</td>
-        <td><%= f.select :refund_reason_id, RefundReason.reason_type(params[:refund_type]).collect { |r| [ r.reason, r.id ] }, {include_blank: true}, class: 'input-block' %></td>
-      </tr>
-      <tr class='refund-box'>
-        <td>退款说明 (选填)</td>
-        <td><%= f.text_area :description, class: 'input-block' %></td>
-      </tr>
-
-      <tr>
-        <td>
-          <%= f.input :asset_imgs, hint:"上传凭证(最多三张)"  do %>
-            <%= f.input_field :avatar, value: @refund.image_files, type: :hidden, as: :file, class: 'refund_avatar' %>
-            <p class="fileinput-button">
-              <%= image_tag("admin/no-img.png") %>
-              <% @refund.asset_imgs.each do |img| %>
-                  <%= image_tag(img.image_url(:thumb))%>
-              <% end %>
-              <%= file_field_tag "image", class: "upyun_file" %>
-              <b class="loading"><i class="fa fa-spinner"></i></b>
-            </p>
-          <% end %>
+        <td class="like-color">
+        	<% if 1==1 %>  
+        		<span class="pull-left">￥</span>
+        		<div class="money">
+        			<%= f.input_field :money, class: 'input-block',placeholder:'' %>
+        		</div>
+        	<% else %>
+        		<%# 未发货的时候 %>        		
+        		￥（订单价格）
+        	<% end %>
         </td>
       </tr>
+      <%# if 未发货 %>
+      <tr>
+        <td colspan="2" class="info">退款金额不可修改</td>
+      </tr>
+      <%# end %>
+      <tr>
+        <td>退款原因</td>
+        <td><%= f.select :refund_reason_id, RefundReason.all.collect { |r| [ r.reason, r.id ] }, {include_blank: true}, class: 'input-block' %></td>
+      </tr>
     </table>
-    <%= f.submit "提交申请", class: "btn btn-large btn-block use-new-addr-btn" %>
+    <div class="bg-white gap">
+    	<%= f.text_area :description, class: 'input-block',placeholder:'退款说明',rows:'6' %>
+    </div>
+    <div class='form-group string optional order_item_refund_asset_imgs'>
+	    <%= f.input_field :avatar, value: @refund.image_files, type: :hidden, as: :file, class: 'refund_avatar' %>
+	    <div class="fileinput-button">
+	      <%= image_tag("admin/no-img.png") %>
+	      <% @refund.asset_imgs.each do |img| %>
+	        <%= image_tag(img.image_url(:thumb))%>
+	      <% end %>
+	      <%= file_field_tag "image", class: "upyun_file" %>
+	    </div>
+    </div>
+	  <div class="gap">
+    	<%= f.submit "提交申请", class: "btn btn-large btn-block use-new-addr-btn" %>
+    </div>
   <% end %>
 </div>
