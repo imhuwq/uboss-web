@@ -8,6 +8,7 @@ class OrderCharge < ActiveRecord::Base
   belongs_to :user
   has_many :orders
   has_many :order_items, through: :orders
+  has_many :products, -> { uniq }, through: :order_items
 
   validates_presence_of :user_id
 
@@ -25,6 +26,10 @@ class OrderCharge < ActiveRecord::Base
         order_charge.close_prepay
       end
     end
+  end
+
+  def orders_detail
+    @orders_detail ||= products.limit(10).pluck(:name)
   end
 
   def reset_pay_serial_number
