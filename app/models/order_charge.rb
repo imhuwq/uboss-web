@@ -88,14 +88,19 @@ class OrderCharge < ActiveRecord::Base
 
   def close_prepay
     result = WxPay::Service.invoke_closeorder(out_trade_no: pay_serial_number)
+
     if result.success?
       discard_deal
-    elsif result['return_code'] == WXPAY_SUCCESS_FLAG
+      return true
+    end
+
+    if result['return_code'] == WXPAY_SUCCESS_FLAG
       case result['err_code']
       when 'ORDERPAID'
-        check_paid?
+        !check_paid?
       else
         discard_deal
+        true
       end
     end
   end
