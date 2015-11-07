@@ -14,7 +14,7 @@ class RecalculateOrderPaymentJob < ActiveJob::Base
   private
 
   def close_all_order_charge_within
-    OrderCharge.joins(orders: { order_items: :product_inventory }).
+    OrderCharge.joins(orders: { order_items: :product_inventory }).merge(Order.unpay).
       where(product_inventories: { id: product_inventory.id }).uniq.
       find_in_batches(batch_size: 100) do |overdue_order_charges|
         OrderCharge.check_and_close_prepay(order_charges: overdue_order_charges)
