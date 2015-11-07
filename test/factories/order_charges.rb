@@ -1,7 +1,7 @@
 FactoryGirl.define do
   factory :order_charge do
     user
-    prepay_id "fake-prepay_id"
+    prepay_id "prepay_id-in-factory-girl"
     wx_code_url 'fake-prepay-url'
     wx_trade_type 'JSAPI'
     prepay_id_expired_at Time.current + 2.hours
