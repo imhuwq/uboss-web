@@ -11,7 +11,7 @@ class OfficialAgentOrderJob < ActiveJob::Base
           user.user_roles << UserRole.agent
         end
 
-        if order.may_sign?
+        if order.order_items.size == 1 && order.may_sign?
           order.sign!
         end
       end
