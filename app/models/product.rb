@@ -23,7 +23,7 @@ class Product < ActiveRecord::Base
   enum status: { unpublish: 0, published: 1, closed: 2 }
 
   scope :hots, -> { where(hot: true) }
-  scope :available, -> { where.not(status: 'closed') }
+  scope :available, -> { where.not(status: 2) }
 
   validates_presence_of :user_id, :name, :short_description
   validate :must_has_one_product_inventory
