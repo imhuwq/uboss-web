@@ -11,10 +11,10 @@ class OfficialAgentOrderJob < ActiveJob::Base
       if !user.is_agent?
         user.user_roles << UserRole.agent
       end
+    end
 
-      if order.order_items.size == 1 && order.may_sign?
-        order.sign!
-      end
+    if order.order_items.size == 1 && order.may_sign?
+      order.sign!
     end
   end
 
