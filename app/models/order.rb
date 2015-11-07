@@ -180,7 +180,7 @@ class Order < ActiveRecord::Base
   end
 
   def paid?
-    paid_at.present?
+    @paid ||= paid_at.present?
   end
 
   def check_paid
