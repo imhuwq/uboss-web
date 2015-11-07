@@ -22,6 +22,7 @@ class OrderCharge < ActiveRecord::Base
     order_charges = opts[:order_charges]
     order_charges ||= where(id: opts[:ids])
     order_charges.each do |order_charge|
+      next unless order_charge.wx_prepay_valid?
       unless order_charge.check_paid?
         order_charge.close_prepay
       end

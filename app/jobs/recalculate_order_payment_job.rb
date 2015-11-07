@@ -14,17 +14,11 @@ class RecalculateOrderPaymentJob < ActiveJob::Base
   private
 
   def close_all_order_charge_within
-    product_inventory.orders.unpay.find_each do |order|
-
-      order_charge = order.order_charge
-      if order_charge.wx_prepay_valid?
-        order.check_paid
+    OrderCharge.joins(orders: { order_items: :product_inventory }).
+      where(product_inventories: { id: product_inventory.id }).uniq.
+      find_in_batches(batch_size: 100) do |overdue_order_charges|
+        OrderCharge.check_and_close_prepay(order_charges: overdue_order_charges)
       end
-
-      if order.reload.unpay?
-        order.order_charge.close_prepay
-      end
-    end
   end
 
   def recalculate_order_payment
