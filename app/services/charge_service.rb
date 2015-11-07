@@ -88,7 +88,7 @@ module ChargeService extend self
       request_weixin_unifiedorder(charge, options) do |res|
         charge.prepay_id = res["prepay_id"]
         charge.wx_code_url = res["code_url"]
-        charge.wx_trade_type = options[:trade_type]
+        charge.wx_trade_type = res["trade_type"]
         Rails.logger.debug("set prepay_id: #{charge.prepay_id}")
       end
     end
@@ -100,15 +100,18 @@ module ChargeService extend self
   def request_weixin_unifiedorder(charge, options)
     pay_amount = Rails.env.production? ? (charge.pay_amount * 100).to_i : 1
     unifiedorder = {
-      body: "#{SITE_NAME}-#{charge.pay_serial_number}",
+      body: "#{SITE_NAME}订单-#{charge.orders_detail.join('、')}".first(32),
       out_trade_no: charge.pay_serial_number,
       total_fee: pay_amount, # 需要转换为分
       spbill_create_ip: options[:remote_ip] || '127.0.0.1',
       notify_url: wx_notify_url,
-      trade_type: options[:trade_type] || "JSAPI",
-      nonce_str: SecureRandom.hex,
-      openid: charge.user.weixin_openid
+      trade_type: options[:trade_type] || WX_JS_TRADETYPE,
+      nonce_str: SecureRandom.hex
     }
+    if unifiedorder[:trade_type] == WX_JS_TRADETYPE
+      unifiedorder[:openid] = charge.user.weixin_openid
+    end
+
     Rails.logger.debug("unifiedorder_params: #{unifiedorder}")
     res = WxPay::Service.invoke_unifiedorder(unifiedorder)
     if res.success?
