@@ -34,11 +34,13 @@ class OrderItemRefund < ActiveRecord::Base
     state :completed_express_number, after_enter: :update_order_item_state_4
     #完成
     state :finished,                 after_enter: :update_order_item_state_5
-    #撤销
+    #撤销（买家）
     state :cancelled,                after_enter: :update_order_item_state_6
+    #关闭（待发货时申请退款，商家选择发货）
+    state :closed,                   after_enter: :update_order_item_state_6
 
     event :approve do
-      transitions from: [:pending, :applied_uboss], to: :approved
+      transitions from: [:pending, :declined, :applied_uboss], to: :approved
       after do
         #如果只退款不退货, 同意后就直接进入退款流程
         if !refund_type_include_goods?
@@ -86,12 +88,18 @@ class OrderItemRefund < ActiveRecord::Base
       end
     end
 
-
     event :cancel do
       transitions from: [:pending, :approved, :completed_express_number, :decline_received, :applied_uboss], to: :cancelled
       after do
         self.state_at_attributes['关闭时间'] = time_now
         self.save
+      end
+    end
+
+    event :close do
+      transitions from: [:pending], to: :closed
+      after do
+        self.state_at_attributes['关闭时间'] = time_now
       end
     end
   end
@@ -124,12 +132,12 @@ class OrderItemRefund < ActiveRecord::Base
   def set_order_item_state
     if self.order_item.order.payed?
       self.order_item.update_attributes!(refund_state: 1)
-    elsif self.order_item.order.shiped?
-      # TODO refund_type 退款 or 退款退货
-      self.order_item.update_attributes!(refund_state: 3)
     else
-      # TODO refund_type 退款 or 退款退货
-      self.order_item.update_attributes!(refund_state: 3)
+      if refund_type_include_goods?
+        self.order_item.update_attributes!(refund_state: 3)
+      else
+        self.order_item.update_attributes!(refund_state: 2)
+      end
     end
   end
 

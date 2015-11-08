@@ -20,6 +20,7 @@
 #= require admin/redactor-config
 #= require admin/sms
 #= require shared/upyun
+#= require shared/multi_upyun_admin
 #= require_self
 
 jQuery ($) ->
