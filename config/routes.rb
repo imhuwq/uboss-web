@@ -151,14 +151,10 @@ Rails.application.routes.draw do
       end
       resources :order_items, only: [] do
         resources :order_item_refunds, only: [:index] do
-          get  :approve_refund,   on: :member
-          get  :approve_return,   on: :member
-          get  :approve_receive,  on: :member
-          get  :decline_refund,   on: :member
-          get  :decline_receive,  on: :member
-          get  :finish_refund,    on: :member
+          get  :approved_refund,  on: :member
           post :approved_return,  on: :member
           post :declined_refund,  on: :member
+          post :declined_return,  on: :member
           post :declined_receive, on: :member
         end
         resources :refund_messages, only: [:create]

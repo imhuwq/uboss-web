@@ -4,7 +4,7 @@
     <li class="divider"><i class="fa fa-angle-right"></i></li>
     <li><%= link_to '订单', [:admin, :orders] %></li>
     <li class="divider"><i class="fa fa-caret-right"></i></li>
-    <li class="active">订单详情</li>
+    <li><%= link_to '订单详情', [:admin, @order_item.order] %></li>
     <li class="divider"><i class="fa fa-caret-right"></i></li>
     <li class="active">退款详情</li>
   </ul>
@@ -15,16 +15,7 @@
     <div class="box-w70">
 
       <div class="admin-border admin-border-order-info">
-        <div class="bottom_line">
-          <p class='logistics_info'>请处理退款</p>
-          <p>* 如果未发货，请点击同意退款给买家</p>
-          <p>* 如果实际已发货，请主动与买家联系</p>
-          <p>* 如果您逾期未响应，视作同意买家申请，系统将自动退款给买家</p>
-        </div>
-        <div class='evaluate' style='display:inline-flex;'>
-          <%= link_to '同意退款申请', [:decline_receive, :admin, @order_item, @order_item_refund], class: 'btn btn-sm', remote: true %>
-          您还可以：<a class="main-link-color" href="">发货</a>
-        </div>
+        <%= render "refund_info_status" %>
       </div>
 
       <div class="admin-border admin-border-order-info">
@@ -53,9 +44,7 @@
                   <% end %>
                 </td>
                 <td><%= Time.now  %></td>
-                <td>
-                  <%= @order_item.present_price %>
-                </td>
+                <td><%= @order_item.present_price %></td>
               </tr>
             </tbody>
           </table>
@@ -66,14 +55,15 @@
         <p class='number'>留言板<%= 'order.number' %></p>
 
         <div id="order_item_refund_message">
-          <%= simple_form_for [:admin, @order_item, @refund_message] do |f| %>
-            <%= f.text_area :message, class: 'required form-control', cols: 105, rows: 4 %>
-            <%= f.input :asset_imgs, label: false do %>
-              <%= f.input_field :avatar, value: @refund_message.image_files, type: :hidden, as: :file, class: 'refund_message_avatar' %>
+          <%= horizon_form_for @refund_message, url: 'create_refund_message_url' do |f| %>
+            <%= upyun_meta_tags prefix: 'asset_img/avatar' %>
+            <%= f.text_area :message, class: 'required control-input', cols: 105, rows: 4 %>
+            <%= f.input :asset_imgs, label: false, hint:"上传凭证(最多三张)" do %>
+              <%= f.input_field :avatar, type: :hidden, as: :file, class: 'refund_avatar' %>
               <p class="fileinput-button">
-              <%= image_tag("admin/no-img.png") %>
-              <%= file_field_tag "image", class: "upyun_file" %>
-              <b class="loading"><i class="fa fa-spinner"></i></b>
+                <%= image_tag("admin/no-img.png") %>
+                <%= file_field_tag "image", class: "upyun_file" %>
+                <b class="loading"><i class="fa fa-spinner"></i></b>
               </p>
             <% end %>
             <%= f.submit "发表留言", class: "btn btn-large btn-block" %>
@@ -81,6 +71,26 @@
         </div>
 
         <div id="order_item_refund_messages_list">
+          <% @order_item_refund.refund_messages.each do |message| %>
+            <div style="margin-top:30px;border-top:1px outset buttonface;">
+              <div style="float:left;width:40px;">
+                <img src="<%= message.user.avatar_url(:thumb) %>" alt="" />
+              </div>
+              <div>
+                <p><span><%= message.user_type %></span> <%= message.user.identify %></p>
+                <p><%= message.created_at %></p>
+                <p><%= message.action %></p>
+                <p>金额：0.05元</p>
+                <p>退款原因：卖家缺货</p>
+                <p>说明：XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX</p>
+                <p>
+                <% message.asset_imgs.each do |img| %>
+                  <img src="<%= img.avatar_url(:thumb) %>" alt="" />
+                <% end %>
+                </p>
+              </div>
+            </div>
+          <% end %>
         </div>
       </div>
 
