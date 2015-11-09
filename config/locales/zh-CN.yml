@@ -55,6 +55,7 @@ zh-CN:
     seller_today_joins: 今日简约商家
     seller_total_joins: 累计签约商家
     amount: 数量
+    count: 数量
     deliver_mobile: 收货手机
     deliver_username: 收件人
     street: 详细地址
@@ -63,8 +64,11 @@ zh-CN:
     city: 城市
     area: 区/县
     building: 详细地址
+    product_inventories: 库存/规格
   simple_form:
     labels:
+      express:
+        name: 名称
       product: &product
         name: 产品名
         original_price: 原价
@@ -72,7 +76,7 @@ zh-CN:
         count: 库存
         content: 图文详情
         buyer_pay: 付款方式
-        traffic_expense: 运费
+        transportation_way: 运费
         asset_img: 商品主图
         has_share_lv: 分成级数
         share_amount_total: 分成总金额
@@ -83,6 +87,8 @@ zh-CN:
         created_at: 创建时间
         methods: 操作
         short_description: 简介
+        property_value:  属性值
+        property:        属性名
       mobile_auth_code:
         mobile: 手机号码
       order_form:
@@ -112,6 +118,8 @@ zh-CN:
         address:                                 地址
         mobile:                                  手机号码
         mobile_auth_code:                        验证码
+      order:
+        ship_number: 运单号
       seller:
         <<: *attributes
   simple_captcha:
@@ -121,10 +129,14 @@ zh-CN:
     message:
       default: 验证码错误
   nav_groups:
+    order_manage: 订单管理
     orders: 订单
+    product_manage: 商品管理
     withdraw_records: 提现
   li_link:
     dashboard: 主页
+    carriage_templates: 运费模板
+    expresses: 快递管理
     data: 数据
     orders: 订单
     sharing_incomes: 分成
@@ -146,7 +158,24 @@ zh-CN:
       selling_income: 销售收入
       divide_income: 分成收入
       bank_card: 银行卡
+      product_inventory: 库存/规格
     attributes:
+      product_inventories:
+        product_id: SKU产品
+        share_amount_total: 总返利
+      carriage_template:
+        name: 模板名称
+      different_area:
+        first_item: 首件
+        carriage: 运费
+        extend_item: 续件
+        extend_carriage: 续费
+      carriage_template/different_areas:
+        base: 地区
+        first_item: 首件
+        carriage: 运费
+        extend_item: 续件
+        extend_carriage: 续费
       mobile_auth_code:
         code: 手机验证码
       user_address:
@@ -174,6 +203,8 @@ zh-CN:
         login: 登录手机
         password: 密码
       order:
+        express_name: 快递公司
+        ship_number: 运单号
         number: 订单编号
         buyer_regist_mobile: 买家
         created_at: 创建时间
@@ -189,9 +220,11 @@ zh-CN:
   enums:
     evaluation:
       status:
-        good:   好评
-        normal: 中评
-        bad:    差评
+        good:   满意
+        better: 加分
+        bad:    减分
+        worst: 不满
+        best: 惊喜
     agent_invite_seller_histroy:
       status:
         invited: 已邀请

@@ -72,11 +72,11 @@ class ApplicationController < ActionController::Base
   end
 
   def login_layout
-    if desktop_request?
-      'login'
-    else
-      'application'
-    end
+    desktop_request? ? 'login' : 'application'
+  end
+
+  def new_login_layout
+    desktop_request? ? 'login' : 'mobile'
   end
 
   def configure_permitted_parameters
@@ -106,6 +106,16 @@ class ApplicationController < ActionController::Base
     end
   end
   helper_method :after_sign_in_path_for
+
+  def current_cart
+    @current_cart ||= find_cart
+  end
+  helper_method :current_cart
+
+  def find_cart
+    cart = current_user.cart
+    cart ||= Cart.create(user: current_user)
+  end
 
   def logined_redirect_path
     if desktop_request?

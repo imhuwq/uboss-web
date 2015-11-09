@@ -11,16 +11,26 @@
 }
 .btn-large,input.btn:focus{padding:10px }
 
+.btn-mid,.btn-mid:focus{ padding:5px 10px}
 .btn-longer,.btn-longer:focus{ padding:10px 40px}
 .btn-orange{
     background: #f9ba10;
     color: #fff;
     
 }
-.btn-gray{
+.btn-orange-border{
+    background: none;
+    color:#f9ba10;
+    border: 1px solid #f9ba10;
+}
+.btn-black-border{
     background: #fff;
-    border: 1px solid #ddd;
-    color: #999;
+    color: #444;
+    border:1px solid #ddd;
+}
+.btn-gray{
+    background: #999;
+    color: #fff;
 }
 .btn-block{ 
     display:block;
@@ -38,6 +48,14 @@
 }
 .btn-like.active{
     background-position: 0 3px;
+}
+.btn-delete{
+    background: image-url('mobile/delete.png') no-repeat center right;
+    background-size: 19px;
+    height: 25px;
+    width: 25px;
+    float: right;
+    padding: 0;
 }
 .share-btn{
     color:#f9ba10;
@@ -71,6 +89,19 @@
 .label-authenticated{
     background: #5EA944;
 }
+.icon{
+        display: inline-block;
+        height: 20px; 
+        width: 20px; 
+        line-height: 18.5px;
+        text-align: center; 
+        color: #fff8dd; 
+        background: #888;
+        border-radius: 20px;
+        vertical-align: top;        
+        margin-right: 5px;
+        
+}
 @keyframes btn-hover
 {
 0%{
@@ -95,3 +126,4 @@
     opacity: 1;
 }
 }
+

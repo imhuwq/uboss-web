@@ -6,7 +6,7 @@
 	</ul>
 </div><!-- container -->
 <br />
-<div class="container nogap">
+<div class="container nogap admin-order-index-wrapper">
 	<div class="box-w25">
 		<div class="admin-box red-bg-color">
 			<h4>等待发货</h4>
@@ -22,31 +22,7 @@
 	<div class="clear"></div>
 	<br />
 	<div class="box-w100">
-		<table class="list-table">
-			<thead>
-				<th>订单时间</th>
-				<th>订单编号</th>
-				<th>买家</th>
-				<th>状态</th>
-				<th>操作</th>
-			</thead>
-			<% @orders.each do |order| %>
-			<tr>
-				<td><%= order.created_at %></td>
-				<td><%= link_to order.number, [:admin, order] %></td>
-				<td><%= order.buyer_identify %></td>
-				<td><%= order.state_i18n %></td>
-				<td>
-					<% if order.payed? && can?(:manage, order) %>
-			      <%= link_to '发货', [:ship, :admin, order],
-			        class: 'btn', method: :PATCH, data: { confirm: '确认发货?' } %>
-			    <%- end%>
-    		</td>
-			</tr>
-			<% end %>
-		</table>
-		<br />
-		<%= paginate @orders %>
+    <%= render 'order_tables' %>
 	</div>
 </div><!-- container-->
 <br />

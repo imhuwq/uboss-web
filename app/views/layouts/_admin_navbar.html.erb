@@ -23,8 +23,14 @@
         <%= li_link(:dashboard, admin_root_path, action_check: false) %>
         <%= can_li_link(:read, :sellers, admin_sellers_path) %>
         <%= can_li_link(:manage, :agents, admin_agents_path) %>
-        <%= can_li_link(:read, Product, admin_products_path) %>
-        <%= can_li_link(:manage, Order, admin_orders_path) %>
+        <%= nav_group :product_manage do %>
+          <%= can_li_link(:read, Product, admin_products_path) %>
+          <%= can_li_link(:read, CarriageTemplate, admin_carriage_templates_path ) %>
+        <% end %>
+        <%= nav_group :order_manage do %>
+          <%= can_li_link(:manage, Order, admin_orders_path) %>
+          <%= can_li_link(:read, Express, admin_expresses_path) %>
+        <% end %>
         <%= can_li_link(:manage, SharingIncome, admin_sharing_incomes_path) %>
         <%= nav_group :withdraw_records do %>
           <%= can_li_link(:read, WithdrawRecord, admin_withdraw_records_path) %>

@@ -1,0 +1,23 @@
+<% if @propertys.length == 0: %>
+  <p>请添加产品库存</p>
+<% else: %>
+  <table id='privilege-list-table' class='border-table'>
+    <thead>
+      <tr>
+        <% for property in @propertys: %>
+          <th>
+            <%= property %>
+          </th>
+        <% end %>
+        <th>价格</th>
+        <th style='width:100px;'>返利</th>
+        <th>一级</th>
+        <th>二级</th>
+        <th>三级</th>
+        <th>购买</th>
+      </tr>
+    </thead>
+    <tbody>
+    </tbody>
+  </table>
+<% end %>

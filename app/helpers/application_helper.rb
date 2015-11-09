@@ -1,10 +1,13 @@
 module ApplicationHelper
 
+  def product_show?
+    controller_name == 'products' && action_name == 'show'
+  end
+
   def qrcode_image_tag(text, opts = {})
     html_opts = opts.delete(:html) || {}
     opts = {
-      text: text,
-      logo: 'http://ssobu-dev.b0.upaiyun.com/asset_img/avatar/c25754e6ca9b5f2c5f02fb49aa109d82.png-w120'
+      text: text
     }.merge(opts)
     image_tag request_qrcode_url(opts), html_opts
   end
@@ -103,6 +106,10 @@ module ApplicationHelper
 
   def abled_class(boolean_value)
     boolean_value ? '' : 'disabled'
+  end
+
+  def valid_order_box_class(boolean_value)
+    boolean_value ? 'invalid-box' : 'valid-box'
   end
 
   def seo_meta_tag

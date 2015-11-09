@@ -13,7 +13,10 @@ class User < ActiveRecord::Base
 
   mount_uploader :avatar, ImageUploader
 
+  has_and_belongs_to_many :expresses, uniq: true
   has_one :user_info, autosave: true
+  has_one :cart
+  has_many :carriage_templates
   has_many :transactions
   has_many :user_role_relations, dependent: :destroy
   has_many :user_roles, through: :user_role_relations
@@ -47,7 +50,7 @@ class User < ActiveRecord::Base
   alias_attribute :regist_mobile, :login
 
   delegate :sex, :sex=, :province, :province=, :city, :city=, :country, :country=,
-    :good_evaluation, :normal_evaluation, :bad_evaluation,
+    :good_evaluation, :best_evaluation, :better_evaluation, :worst_evaluation, :bad_evaluation,
     :store_name, :store_name=,      :income_level_thr, :frozen_income,
     :income,     :income_level_one, :income_level_two, :service_rate,
     :store_banner_one_identifier,  :store_banner_two_identifier,  :store_banner_thr_identifier,
@@ -72,15 +75,16 @@ class User < ActiveRecord::Base
   before_save   :set_service_rate
 
   scope :admin, -> { where(admin: true) }
-  scope :agent, -> { joins(:user_roles).where(user_roles: {name: 'agent'}) }
+  scope :agent, -> { role('agent') }
+  scope :role,  -> (role_name) { joins(:user_roles).where(user_roles: {name: role_name}) }
   scope :unauthenticated_seller_identify, -> { where(authenticated: 0) }
 
   UserRole::ROLE_NAMES.each do |role|
-    User.class_eval do
-      define_method "is_#{role}?" do
-        user_roles.exists?(name: role)
+    class_eval <<-RUBY, __FILE__, __LINE__+1
+      def is_#{role}?
+        @is_#{role} ||= user_roles.exists?(name: '#{role}')
       end
-    end
+    RUBY
   end
 
   def image_url(version = nil)
@@ -89,7 +93,7 @@ class User < ActiveRecord::Base
 
   class << self
     def official_account
-      @@official_account ||= find_by(login: OFFICIAL_ACCOUNT_LOGIN)
+      @official_account ||= find_by(login: OFFICIAL_ACCOUNT_LOGIN)
     end
 
     def find_or_update_by_wechat_oauth(oauth_info)
@@ -341,8 +345,9 @@ class User < ActiveRecord::Base
 
   def good_reputation_rate
     return @sharer_good_reputation_rate if @sharer_good_reputation_rate
+    good = user_info.best_evaluation.to_i + user_info.better_evaluation.to_i + user_info.good_evaluation.to_i
     @sharer_good_reputation_rate = if total_reputations > 0
-                                     user_info.good_evaluation.to_i * 100 / total_reputations
+                                     good * 100 / total_reputations
                                    else
                                      100
                                    end
@@ -350,7 +355,7 @@ class User < ActiveRecord::Base
 
   def total_reputations
     @total_reputations ||= UserInfo.where(user_id: id).
-      sum("good_evaluation + normal_evaluation + bad_evaluation")
+      sum("good_evaluation + bad_evaluation + better_evaluation + best_evaluation + worst_evaluation")
   end
 
   def has_seller_privilege_card?(seller)
@@ -363,6 +368,10 @@ class User < ActiveRecord::Base
 
   def unfavour_product(product)
     favour_products.where(product_id: product.id).delete_all
+  end
+
+  def is_comman_express?(express)
+    self.expresses.exists?(express)
   end
 
   private

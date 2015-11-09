@@ -11,6 +11,11 @@
 #= require mobile_page/utilities
 #= require mobile_page/sharing
 #= require mobile_page/product
+#= require mobile_page/cart
+#= require mobile_page/order
+#= require mobile_page/pay
+#= require mobile_page/evaluations
+#= require shared/city_select
 #= reuqire_self
 
 $ ->
@@ -48,3 +53,4 @@ $ ->
     tid=$(this).attr('href')
     $('.tab-container .tab-content').hide()
     $(tid).show()
+

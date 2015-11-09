@@ -9,14 +9,17 @@
 	  <%= javascript_include_tag 'admin' %>
 	  <%= csrf_meta_tags %>
 	</head>
-	<body>
+	<body class="<%= controller_name %> <%= action_name %>">
 	  <%= render 'layouts/admin_navbar' %>
 		<%= render 'layouts/flash_alert' %>
-		<%= yield %>
+    <div class='modal'></div>
+    <div class='content'>
+      <%= yield %>
+    </div>
 		<br />
 		<p class="text-center">copyright &copy; ULAIBER</p>
 
-	  <%= render partial: 'baidu_tongji' %>
 		<%= yield :page_specific_javascript %>
+	  <%= render partial: 'baidu_tongji' %>
 	</body>
 </html>

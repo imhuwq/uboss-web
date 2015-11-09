@@ -1,0 +1,43 @@
+<div class="modal fade" id="orders-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span class='close' aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">批量发货</h4>
+      </div>
+      <%= form_for Order.new, url: batch_shipments_admin_orders_path do |form| %>
+        <div class="modal-body">
+          <% for @order in @orders %>
+            <%= fields_for 'order[]' do |f| %>
+              <p>
+                <span class='form-group-span'>
+                  <%= f.label :number %>:
+                  <%= f.text_field :number, disabled: true %>
+                </span>
+                <span class='form-group-span'>
+                  <%= f.label :express_name %>:
+                  <%= text_field_tag "order[#{@order.id}][express_name]", '', class: 'form-control input-lg js-select2-express-tags' %>
+                </span>
+                <span class='form-group-span form_ship_number'>
+                  <%= f.label :ship_number %>:
+                  <%= f.text_field :ship_number %>
+                </span>
+              </p>
+            <% end %>
+          <% end %>
+        </div>
+        <div class="modal-footer">
+          <%= form.submit '确定', class: 'btn btn-default' %>
+          <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>
+<script>
+  $(".js-select2-express-tags").select2({
+    tags: <%== current_user.expresses.pluck(:name) %>,
+    maximumSelectionLength: 1,
+    placeholder: "可输入其他快递公司名称, 按回车结束"
+  })
+</script>

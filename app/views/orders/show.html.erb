@@ -3,117 +3,119 @@
 <% end %>
 
 <%= content_for :extra_meta_tags do %>
-  <%= sharing_meta_tags(@product, @sharing_link_node) %>
+  <%= store_sharing_meta_tags(@seller, @sharing_link_node) %>
 <% end %>
 
-<div class="order-status-bar">
-  <%= I18n.t("order_status_bar.#{@order.state}") %>
-</div>
-
-<div class="container">
-  <div class="subOrd_box1 clearfix">
-    <dl>
-      <dt>
-      <%= link_to product_path(@product) do %>
-        <%= image_tag @product.image_url(:thumb) %>
-      <% end %>
-      </dt>
-      <dd>
-        <strong><%= @product.name %><span>￥<%= @order_item.present_price %></span></strong>
-        <p><%= truncate @product.short_description, length: 18 %></p>
-        <p><%= @product.user.store_identify %></p>
-      </dd>
-    </dl>
-  </div>
-  <div class="subOrd_box2">
-    <div class="subOrd_boxcont">
-      <p class="sub_p1">
-        <span class="sub_left">数量</span>
-        <span class="sub_right sub_num">
-          <a href="#"><%= @order_item.amount %></a>
-        </span>
-      </p>
-      <p class="sub_p1 sub_p2">
-        <span class="sub_leftl">合计（含运费￥<%= @product.traffic_expense %>）</span>
-        <span class="sub_left">
-          <strong>￥</strong><b id="total_price"><%= @order.pay_amount %></b>
-        </span>
-      </p>
-    </div>
-
-    <div class="sub_p3">个人信息</div>
-
-  </div>
-</div>
-
-<div class="sub_box3">
-  <div class="sub_box3_cont">
-    <div class="sub_box3_cont1">
-      <table width="100%" border="1" class="table1">
-        <tr>
-          <td><span>收件人：</span></td>
-          <td><span>电话：</span></td>
-        </tr>
-        <tr>
-          <td class="hidd"><%= @order.username %></td>
-          <td class="hidd"><%= @order.mobile %></td>
-        </tr>
-        <tr>
-          <td colspan="3"><span>收件地址：</span></td>
-        </tr>
-        <tr>
-          <td colspan="3" class="hidd"><%= @order.address %></td>
-        </tr>
-      </table>
-    </div>
-  </div>
-</div>
-
-<% if @privilege_card.present? %>
-  <br />
-  <%= render partial: 'privilege_card', locals: { privilege_card: @privilege_card, product: @product } %>
+<%= content_for :extra_javascript do %>
+  <% if browser.wechat? %>
+    <script type="text/javascript" charset="utf-8">
+      wx.ready(function(){ UBoss.luffy.invokeSharing(); });
+    </script>
+  <% end %>
 <% end %>
+
+<br />
+
+<div class="bg-main gap line-gap">
+  <p><%= I18n.t("order_status_bar.#{@order.state}") %></p>
+</div>
+
+<br />
+
+<div id="address">
+  <div class="address-box">
+    <p>
+    <span class="pull-right"><%= @order.mobile %></span>
+    <span><%= @order.username %></span>
+    </p>
+    <p><%= @order.address %></p>
+  </div>
+</div>
+
+<br />
+
+<div class="order-list">
+	<div class="seller-box">
+	  <div class="cover"><%= image_tag @seller.image_url(:w120) %></div>
+		<div class="pull-right">电话：<%= @seller.mobile %></div>
+		<div class="content">
+			<div class="text-cut"><%= @seller.store_identify %></div>
+		</div>
+	</div>
+
+  <% @order_items.each do |order_item| %>
+    <div class="order-box">
+      <div class="cover">
+        <%= link_to product_path(order_item.item_product) do %>
+          <%= image_tag order_item.image_url(:w120) %>
+        <% end %>
+      </div><!-- cover -->
+      <div class="content">
+        <div class="price">
+        	<p>￥<%= order_item.present_price %></p>
+        	<p class="gray-color num">x <%= order_item.amount %></p>
+        </div>
+        <p class="name">
+        	<%= order_item.product_name %>
+        </p>
+        <p class="info">
+          <% order_item.product_inventory.properties.each do |property| %>
+            <span><%= "#{property.key}：#{property.value}" %></span>
+          <% end %>
+        </p>
+    	</div><!-- content -->
+    </div><!-- order-box -->
+  <% end %>
+
+  <% if @order.sharing_user.present? %>
+    <div class="friend-info">
+      <div class="cover">
+        <%= image_tag @order.sharing_user.avatar_url(:thumb) %>
+      </div>
+      <div class="content">
+        <span class="pull-right red-color"><%= total_privilege_amount(@order.order_items) %></span><span class="main-color"><%= @order.sharing_user.identify %></span> 帮你优惠
+      </div>
+    </div><!-- friend-info -->
+  <% end %>
+
+	<div class="price-box">
+	  合计￥<%= @order.pay_amount %><small class="gray-color">（含运费￥<%= @order.ship_price %>）	  </small>
+	</div><!-- price-box -->
+
+</div><!-- order-list -->
 
 <br/>
 
-<div class="pay-comment order-store-info">
-  <div class='store-title'>
-    <%= link_to store_path(@product.user) do%>
-      <%= "#{@product.user.store_identify}" %> <%= image_tag("uboss_29/right.png" ) %>
-    <% end %>
-  </div>
-  <div>
-    <p> <small>订单编号:<%= @order.number %></small> </p>
-    <p> <small>创建时间:<%= @order.created_at %></small> </p>
-    <% if @order.paid_at %>
-      <p> <small>付款时间:<%= @order.paid_at %></small> </p>
-    <% end %>
-    <% if @order.shiped_at %>
-      <p> <small>发货时间:<%= @order.shiped_at %></small> </p>
-    <% end %>
-    <% if @order.signed_at %>
-      <p> <small>成交时间:<%= @order.signed_at %></small> </p>
-    <% end %>
-  </div>
+<div class="bg-white gap gray-color line-gap">
+  <p>订单编号：<%= @order.number %> </p>
+  <p>创建时间：<%= @order.created_at %></p>
+  <% if @order.paid_at %>
+    <p>付款时间：<%= @order.paid_at %> </p>
+  <% end %>
+  <% if @order.shiped_at %>
+    <p>发货时间：<%= @order.shiped_at %></p>
+  <% end %>
+  <% if @order.signed_at %>
+    <p>成交时间：<%= @order.signed_at %></p>
+  <% end %>
 </div>
 
 
-<% if @order.payed? && @product.is_official_agent? %>
+<% if @order.payed? && @order.official_agent? %>
   <br />
-  <div class="pay-comment order-store-info">
-    <div class="store-title">
-      创客权订单信息
-    </div>
+  <div class="bg-white gap gray-color line-gap">
+    <p> 创客权订单信息 </p>
+    <hr />
     <p>恭喜您成功购买UBOSS创客权，订单已提交后台自动处理。</p>
     <p>订单处理完成后，您将成为UBOSS创客，请到<%= link_to "个人设置", settings_account_path %>设置您的密码(如果您还没有设置过密码)。</p>
   </div>
 <% end %>
 
-<% if @order.completed? && @product.is_official_agent? %>
-  <div class="pay-comment order-store-info">
-    <div class="store-title">
-      创客权订单信息
-    </div>
+<% if @order.completed? && @order.official_agent? %>
+  <br />
+  <div class="bg-white gap gray-color line-gap">
+    <p>创客权订单信息</p>
+    <hr />
     <p>恭喜您的UBOSS创客权订单已处理完毕。</p>
     <p>您已成为UBOSS创客，请到<%= link_to "个人设置", settings_account_path %>设置您的密码(如果您还没有设置过密码)。</p>
     <p>电脑端打开UBOSS官网 <a ref="http://uboss.me">http://uboss.me</a> 登陆您的后台，登陆账号为您初次在UBOSS购买登记的手机号。</p>
@@ -122,75 +124,13 @@
 
 <br />
 
-<% if available_pay?(@order, @product) %>
-  <div class="accunt_adil_box3">
-    <%= link_to "支付", '#', id: 'wx-pay-btn', class: 'accunt_adilbtn' %>
-  </div>
-<% elsif @order.unpay? && @product.is_official_agent? && current_user.is_agent? %>
-  <div class="pay-comment order-store-info">
-    <div class="store-title">
-      创客权订单信息
-    </div>
-    <p>恭喜，您已经成为UBOSS创客，此订单已失效，请勿重复购买。</p>
-    <p>请到<%= link_to "个人设置", settings_account_path %>设置您的密码(如果您还没有设置过密码)。</p>
-    <p>电脑端打开UBOSS官网 <a ref="http://uboss.me">http://uboss.me</a> 登陆您的后台，登陆账号为您初次在UBOSS购买登记的手机号。</p>
-  </div>
-  <br />
-  <div class="accunt_adil_box3">
-    <a ref="none" class='accunt_adilbtn disabled'>支付</a>
-  </div>
-<% elsif @order.shiped? %>
-  <div class="accunt_adil_box3">
-    <%= link_to "确认收货", received_order_path(@order), class:"accunt_adilbtn", data: { confirm: '确认收货？' } %>
-  </div>
-<% end %>
-
-<% if @order.may_close? %>
-  <div class="close_order">
-    <%= link_to "取消订单", cancel_order_path(@order), data: { confirm: '确认取消订单？' }, id: 'close-order-btn', class: 'close_order_btn' %>
-  </div>
-<% end %>
-
-<% if @order.signed? || @order.completed? %>
-  <% if @order_item.evaluation_id.blank? %>
-    <div class="accunt_adil_box3">
-      <%= link_to "评价", new_evaluation_path(id: @order_item.id), class: 'accunt_adilbtn' %>
-    </div>
-  <% end %>
-  <div class="fenxinrated">
-    <%= render partial: 'application/share_buttoms', locals: { product: @product, node: @sharing_link_node } %>
-  </div>
-<% end %>
-
-<% if browser.wechat? %>
-  <% if @order.unpay? && @pay_p.present? %>
-    <%= content_for :extra_javascript do %>
-      <script type="text/javascript" charset="utf-8">
-         wx.ready(function(){
-           UBoss.nami.setPayenv("<%= $wechat_env %>");
-           $('#wx-pay-btn').on('click', function(event){
-             event.preventDefault();
-             UBoss.nami.chooseWXPay({
-               "timestamp": "<%= @pay_p[:timeStamp] %>",
-               "nonceStr": "<%= @pay_p[:nonceStr] %>",
-               "package": "<%= @pay_p[:package] %>",
-               "signType": "<%= @pay_p[:signType] %>",
-               "paySign": "<%= @pay_sign %>", // 支付签名
-               "success": function (res) {
-                 window.location.href = "/orders/" + "<%= @order.id %>" + "/pay_complete";
-               }
-             });
-           });
-           wx.hideOptionMenu();
-         })
-      </script>
-    <% end %>
-  <% end %>
-  <% if @order.signed? || @order.completed? %>
-    <%= content_for :extra_javascript do %>
-      <script type="text/javascript" charset="utf-8">
-        wx.ready(function(){ UBoss.luffy.invokeSharing(); });
-      </script>
-    <% end %>
-  <% end %>
-<% end %>
+<div class="bg-white gap text-right">
+	<% if @order.may_close? %>
+	  <%= link_to "取消订单", cancel_order_path(@order), data: { confirm: '确认取消订单？' }, id: 'close-order-btn', class: 'btn btn-gray' %>
+	<% end %>
+	<% if @order.available_pay? %>
+	  <%= link_to "去支付", payments_charges_path(order_ids: @order.id, showwxpaytitle: 1), id: 'wx-pay-btn', class: 'btn' %>
+	<% elsif @order.shiped? %>
+	  <%= link_to "确认收货", received_order_path(@order), class:"btn", data: { confirm: '确认收货？' } %>
+	<% end %>
+</div><!-- bg-white -->

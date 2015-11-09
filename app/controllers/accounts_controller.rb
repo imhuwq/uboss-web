@@ -1,22 +1,25 @@
 class AccountsController < ApplicationController
 
-  layout :login_layout, only: [:set_password, :new_password, :merchant_confirm]
+  detect_device only: [:new_password, :set_password]
+
+  layout :login_layout, only: [:merchant_confirm]
 
   before_action :authenticate_user!
   before_action :authenticate_agent, only: [:send_message, :invite_seller, :edit_seller_note, :update_histroy_note]
 
   def show
-    @orders = append_default_filter account_orders, page_size: 10
+    @orders = append_default_filter account_orders(params[:state]), page_size: 10
     @privilege_cards = append_default_filter current_user.privilege_cards, order_column: :updated_at, page_size: 10
     render layout: 'mobile'
   end
 
   def orders
-    @orders = append_default_filter account_orders, page_size: 10
+    @orders = append_default_filter account_orders(params[:state]), page_size: 10
     render partial: 'accounts/order', collection: @orders
   end
 
   def edit
+    render layout: 'mobile'
   end
 
   def update
@@ -32,6 +35,8 @@ class AccountsController < ApplicationController
   def new_password
     if flash[:new_password_enabled] != true
       redirect_to after_sign_in_path_for(current_user, need_new_passowrd: false)
+    else
+      render layout: new_login_layout
     end
   end
 
@@ -44,7 +49,7 @@ class AccountsController < ApplicationController
     else
       flash.now[:new_password_enabled] = true
       flash.now[:error] = current_user.errors.full_messages.join('<br/>')
-      render :new_password
+      render :new_password, layout: new_login_layout
     end
   end
 
@@ -58,10 +63,16 @@ class AccountsController < ApplicationController
     end
   end
 
+  def password
+    render layout: 'mobile'
+  end
+
   def edit_password # 修改密码页面
+    render layout: 'mobile'
   end
 
   def binding_agent # 商家绑定创客
+    render layout: 'mobile'
   end
 
   def update_password
@@ -76,14 +87,14 @@ class AccountsController < ApplicationController
         redirect_to settings_account_path, notice: '修改密码成功'
       else
         flash.now[:error] = '验证码错误'
-        render :edit_password
+        render :edit_password,layout:'mobile'
       end
     elsif current_user.update_with_password(user_params)
       sign_in current_user, bypass: true
       redirect_to settings_account_path, notice: '修改密码成功'
     else
       flash.now[:error] = current_user.errors.full_messages.join('<br/>')
-      render :edit_password
+      render :edit_password,layout:'mobile'
     end
   end
 
@@ -185,13 +196,25 @@ class AccountsController < ApplicationController
   end
 
   def settings
-    #render layout: 'mobile'
+    render layout: 'mobile'
   end
 
+  def seller_agreement
+    render layout: 'mobile'
+  end
+
+  def binding_successed
+    render layout: 'mobile'
+  end
   private
 
-  def account_orders
-    current_user.orders.includes(order_items: { product: :asset_img })
+  def account_orders(type)
+    type ||= 'all'
+    if ["unpay", "payed", "shiped", "signed", "all"].include?(type)
+      current_user.orders.try(type).includes(order_items: { product_inventory: { product: :asset_img } })
+    else
+      raise "invalid orders state"
+    end
   end
 
   def authenticate_agent # 创客可以使用的action

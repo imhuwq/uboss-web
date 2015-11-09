@@ -51,7 +51,8 @@ config/apiclient_cert.p12
 config/rootca.pem
 nohup.out
 config/nginx.conf
-
+.ackrc
+.idea/
 # Ignore application configuration
 /config/application.yml
 Thumbs.db

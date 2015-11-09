@@ -8,6 +8,10 @@ module OrdersHelper
     end
   end
 
+  def total_privilege_amount(order_items)
+    order_items.inject(0){ |sum, oi| sum + oi.privilege_amount*oi.amount}
+  end
+
   def sign_package
     if params[:js_mode] == 'admin'
       {
@@ -20,5 +24,4 @@ module OrdersHelper
       @sign_package ||= $weixin_client.get_jssign_package(request.url)
     end
   end
-
 end

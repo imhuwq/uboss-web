@@ -1,14 +1,62 @@
 class Admin::OrdersController < AdminController
   load_and_authorize_resource
 
+  before_filter :validate_express_params, only: :set_express
+
   # TODO record use operations
-  after_action :record_operation, only: [:update, :ship]
+  after_action :record_operation, only: [:update]
+
+  def select_orders
+    @orders = Order.where(id: params[:ids])
+  end
+
+  def close
+    @order = Order.find(params[:id])
+    if @order.may_close? && @order.close!
+      flash[:success] = '订单关闭成功'
+    else
+      flash[:errors] = '订单关闭失败'
+    end
+    redirect_to admin_order_path(@order)
+  end
+
+  def modal_close
+    @order = Order.find(params[:id])
+  end
+
+  def batch_shipments
+    success, errors = 0, 0
+    if params[:order].present?
+      params[:order].each do |order_id, param|
+        order = Order.find(order_id)
+        express = Express.find_by_name(param[:express_name])
+        express = Express.create(name: param[:express_name], private_id: current_user.id) if express.blank?
+        if validate_batch_shipment_params(param) \
+          && order.update({ship_number: param[:ship_number], express: express}) \
+          && order.ship!
+          success += 1
+        else
+          errors += 1
+        end
+      end
+    end
+
+    if errors != 0
+      flash[:error] = "批量发货 #{errors} 个订单发货失败"
+    else
+      flash[:success] = "所有订单发货成功"
+    end
+    redirect_to admin_orders_path
+  end
 
   def index
-    @orders = append_default_filter @orders.recent
+    @type = params[:type] || 'all'
+    @orders = append_default_filter @orders.recent.includes(:user, order_items: [:product, :product_inventory])
+    @counting_orders = @orders
     @unship_amount = @orders.payed.total_count
     @today_selled_amount = @orders.today.selled.total_count
     @shiped_amount = @orders.shiped.total_count
+    @orders = @orders.where(state: Order.states[@type.to_sym]) if @type != 'all'
   end
 
   def show
@@ -19,19 +67,39 @@ class Admin::OrdersController < AdminController
     @order.update(order_params)
   end
 
-  def ship
-    if @order.ship!
-      flash[:notice] = '发货成功'
-      redirect_to :back
+  def set_express
+    express = Express.find_by_name(express_params)
+    express = Express.create(name: express_params, private_id: current_user.id) if express.blank?
+    if @order.update(order_params.merge(express_id: express.id)) && @order.ship!
+      flash[:success] = '发货成功'
     else
-      flash[:notice] = '发货失败'
-      redirect_to :back
+      flash[:error] = '发货失败'
     end
+    redirect_to admin_orders_path
   end
 
   private
+
+  def validate_batch_shipment_params(param)
+    param[:express_name].present? && param[:ship_number].present?
+  end
+
+  def validate_express_params
+    errors = []
+    errors << '快递公司名称不能为空' if express_params.blank?
+    errors << '运单号不能为空' if order_params['ship_number'].blank?
+    if errors.present?
+      flash[:error] = errors.join('; ')
+      redirect_to admin_orders_path and return
+    end
+  end
+
   def order_params
-    params.require(:order).permit(:mobile, :address)
+    params.require(:order).permit(:mobile, :address, :ship_number)
+  end
+
+  def express_params
+    params[:express_name]
   end
 
   def record_operation

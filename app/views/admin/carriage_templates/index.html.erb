@@ -1,0 +1,19 @@
+<div class="container admin-container">
+	<ul class="breadcrumb">
+		<li><a href="/admin">主页</a></li>
+		<li class="divider"><i class="fa fa-caret-right"></i></li>
+		<li>运费模板</li>
+	</ul>
+</div>
+<br />
+<div class="container admin-container carriage_template_index_wrapper">
+  <% if can? :create, CarriageTemplate %>
+    <%= link_to '新增运费模板', new_admin_carriage_template_path, class: 'btn btn-primary' %>
+  <% end %>
+  <div class='carriage_template_table_list_wrapper'>
+    <% @carriages.each do |carriage| %>
+      <%= render partial: 'table_list', locals: { carriage: carriage } %>
+    <% end %>
+  </div>
+  <%= paginate @carriages %>
+</div>

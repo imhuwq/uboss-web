@@ -5,10 +5,11 @@ header {
     overflow: hidden;
     line-height: 20px;
     background: #fff;
-    .logo{height: 20px; margin-left: 58px;padding:10px 0;}
+    a{display: inline-block;}
+    .logo{height: 20px; margin-left: 5px;padding:10px 0;}
     .title{
-      margin:10px 0 10px 42px;
       display: inline-block;
+      margin:10px 0;
       font-size: 20px;
       color:$brand-primary;
       line-height: 20px;
@@ -17,16 +18,36 @@ header {
       white-space:nowrap;
       overflow: hidden;
     }
-    .menu-btn{
+    &.title-gap .title{      
+      margin:10px 0 10px 22px;
+    }
+    .menu-btn,.submit{
       float: right;
       padding: 10px;
+      font-size: 14px;
       img{ width: 21px;}
+    }
+    .back{
+        float: left;
+        padding: 10px;
+        img{ 
+          height: 14px;
+          -webkit-transform: rotate(180deg);
+          transform: rotate(180deg);
+        }
+    }
+  }
+  .cart-icon{
+    float: left;    
+    padding: 10px;
+    img{
+        height: 16px;
     }
   }
   .nav-bar{
     display: none;
     position: absolute;
-    z-index: 50;
+    z-index: 999;
     top:45px;
     right:5px;
     background: #fff;
@@ -67,20 +88,25 @@ header {
       text-align: right;
       background: -moz-linear-gradient(top, rgba(200,200,200,0.8), rgba(200,200, 200, 0));
       background:-webkit-gradient(linear, 0 0, 0 bottom, from(rgba(200,200,200,0.5)), to(rgba(200,200, 200, 0))); 
+      .white-icon{
+        padding: 8px;
+        height: 16px;
+        width: 16px;
+        line-height: 15px;
+        text-align: center;
+        border-radius: 500px ;
+        background: rgba(255,255,255,0.8);
+        margin: 10px;
+        display: inline-block;
+        z-index: 50; 
+      }
       
-      .menu-btn{     
-          z-index: 50;      
-          display: inline-block;
-          width: 40px;
-          height: 40px; 
-          line-height: 35px;
-          text-align: center;
-          border-radius: 500px ;
-          img{ width: 21px;}
-      }
       .nav-bar{
-          text-align: left;          
+        text-align: left;      
+        right: 10px;
+        top: 55px;    
       }
+      
   }
 }
 

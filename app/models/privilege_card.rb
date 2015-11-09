@@ -14,22 +14,22 @@ class PrivilegeCard < ActiveRecord::Base
     card
   end
 
-  def discount(product)
-    (product.present_price - privilege_amount(product)) * 10 / product.present_price
+  def discount(product_inventory)
+    (product_inventory.price - privilege_amount(product_inventory)) * 10 / product_inventory.price
   end
 
-  def returning_amount(product)
-    result = product.share_amount_lv_1 - amount(product)
+  def returning_amount(product_inventory)
+    result = product_inventory.share_amount_lv_1 - amount(product_inventory)
     result > 0 ? result : 0
   end
 
-  def privilege_amount(product)
-    result = amount(product) + product.privilege_amount
-    result > product.share_amount_lv_1 ? product.share_amount_lv_1 : result
+  def privilege_amount(product_inventory)
+    result = amount(product_inventory) + product_inventory.privilege_amount
+    result > product_inventory.share_amount_lv_1 ? product_inventory.share_amount_lv_1 : result
   end
 
-  def amount(product)
-    user.privilege_rate * product.share_amount_lv_1 / 100
+  def amount(product_inventory)
+    user.privilege_rate * product_inventory.share_amount_lv_1 / 100
   end
 
 end
