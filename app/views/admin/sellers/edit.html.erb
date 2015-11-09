@@ -11,8 +11,13 @@
 
   <%= horizon_form_for @seller, url: {:action=>:update}, method: 'PATCH' do |f| %>
     <div class="admin-box black-bg-color">
-      <%= f.input :store_name %>
-      <%= f.input :store_short_description, hint: '请控制在20字以内，以保证显示效果' %>
+    	<div class="box-w90 nogap-left">
+	      <%= f.input :store_name %>
+	      <%= f.input :store_short_description, hint: '请控制在20字以内，以保证显示效果' %>
+      </div>
+      <div class="box-w10 nogap-right">
+      	<img src="http://qr.liantu.com/api.php?&amp;text=商店地址">
+      </div>
     </div>
     <br />
     <div class="admin-box black-bg-color">
