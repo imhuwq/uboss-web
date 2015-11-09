@@ -51,3 +51,4 @@ config/apiclient_cert.p12
 config/rootca.pem
 nohup.out
 config/nginx.conf
+Thumbs.db
