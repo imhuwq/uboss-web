@@ -23,7 +23,5 @@ class AddUniqIndexForUniqColumns < ActiveRecord::Migration
     add_index :user_role_relations, [:user_id, :user_role_id], unique: true
 
     add_index :descriptions, [:resource_type, :resource_id], unique: true
-
-    add_index :order_charges, :number, unique: true
   end
 end
