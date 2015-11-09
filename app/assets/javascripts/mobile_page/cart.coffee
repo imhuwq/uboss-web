@@ -7,7 +7,7 @@ $ ->
     $check_item.eq(index).toggleClass("checked") # 伪复选
     setTotalPrice()
     setSingleTotalPrice()
-    #全选判断  
+    #全选判断
     i= 0
     $("input[name='check_item']").each ->
       if $(this).hasClass('checked')
@@ -136,11 +136,13 @@ $ ->
         $('.order-price').empty()
         $('.empty-cart').removeClass('hidden')
 
+  # FIXME 将扩展的代码单独到另一个文件中
   $.fn.onlyNum = () ->
     $(this).keyup () ->
       $this = $(this)
       this.value = this.value.replace(/[^\d]/g, '')
 
+  # FIXME 上下两个函数名称重复
   # 限制只能输入数字
   $.fn.onlyNum = () ->
     $(this).keypress (event) ->
