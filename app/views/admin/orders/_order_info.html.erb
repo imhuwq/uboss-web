@@ -31,16 +31,17 @@
               <td><%= order.state_i18n %></td>
               <td><%= item.present_price %></td>
               <td><%= item.amount %></td>
-              <td><%= item.privilege_amount %><p>(贡献值)</p></td>
+              <td><%= item.privilege_amount %></td>
               <td>
-                <%= item.pay_amount %>
+                <%=item.pay_amount%>
               </td>
             </tr>
           <% end %>
         </tbody>
       </table>
     </div>
-    <p class='date_time'>下单时间 : <%= order.created_at %><span class="pull-right">实收款：<span class='main-color font-size-max'><%= order.pay_amount %></span> 元 （含运费：<%= order.ship_price %> 元）</span></p>
+    <p class="date_time"> <span class="pull-right">快递：<%= order.ship_price %></span> </p>
+    <p class='date_time'>下单时间 : <%= order.created_at %><span class="pull-right">实收款： <span class='main-color font-size-max'><%= order.pay_amount %></span>元</span></p>
   </div>
 
   <div class="admin-border admin-border-order-info">
@@ -54,9 +55,9 @@
       <p>发货时间 : <%= order.shiped_at || '未发货' %></p>
       <p>快递公司 : <%= order.express.try(:name) %></p>
       <p>快递单号 : <%= order.ship_number %></p>
-      <p class='float-left'>物流跟踪 : </p>
-      <div class='logistics_tracking'>
-      </div>
+      <!-- <p class='float&#45;left'>物流跟踪 : </p> -->
+      <!-- <div class='logistics_tracking'> -->
+      <!-- </div> -->
     </div>
   </div>
 </div>
@@ -66,7 +67,7 @@
     <p class='pay_number'>支付流水号 : <%= order.order_charge.pay_serial_number%></p>
     <p>付款方式 : <%= order.order_charge.payment_i18n %></p>
     <p>付款时间 : <%= order.order_charge.paid_at %></p>
-    <p>付款金额 : <%= order.order_charge.paid_amount %></p>
+    <p>付款金额 : <%= order.paid_amount %></p>
   </div>
   <div class="admin-border admin-border-order-info">
     <p class='complete_and_evaluate'>完成交易</p>
