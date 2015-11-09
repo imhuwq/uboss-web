@@ -37,6 +37,10 @@ class ActiveSupport::TestCase
     Warden.test_reset!
   end
 
+  def wechat_test!
+    $wechat_env = ActiveSupport::StringInquirer.new 'test'
+  end
+
   def inline_sidekiq
     Sidekiq::Testing.inline!
   end

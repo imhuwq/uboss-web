@@ -22,4 +22,13 @@ namespace :migrate do
       order_item.update_columns(product_inventory_id: order_item.product.product_inventories.first.id)
     end
   end
+
+
+  desc "Fix wrong paid_amount nonpro env"
+  task :fix_paid_amount do
+    return false if Rails.env.production?
+    OrderCharge.where('paid_at IS NOT NULL').find_each do |order_charge|
+      order_charge.update_column :paid_amount, order_charge.pay_amount
+    end
+  end
 end

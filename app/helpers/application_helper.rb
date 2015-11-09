@@ -7,8 +7,7 @@ module ApplicationHelper
   def qrcode_image_tag(text, opts = {})
     html_opts = opts.delete(:html) || {}
     opts = {
-      text: text,
-      logo: 'http://ssobu-dev.b0.upaiyun.com/asset_img/avatar/c25754e6ca9b5f2c5f02fb49aa109d82.png-w120'
+      text: text
     }.merge(opts)
     image_tag request_qrcode_url(opts), html_opts
   end

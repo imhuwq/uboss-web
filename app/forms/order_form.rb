@@ -114,7 +114,6 @@ class OrderForm
           to_seller: to_seller["#{product.user_id}"],
           user_address: self.user_address,
           order_items_attributes: order_items_attributes,
-          order_charge: OrderCharge.new
         }])
       elsif seller_ids
         Order.create!(
@@ -135,14 +134,12 @@ class OrderForm
 
   def orders_split_by_seller
     orders_attributes = []
-    order_charge = OrderCharge.new
     seller_ids.each do |seller_id|
       orders_attributes << {
         user: buyer,
         seller_id: seller_id,
         to_seller: to_seller["#{seller_id}"],
         user_address: self.user_address,
-        order_charge: order_charge,
         order_items_attributes: order_items_of_seller(seller_id)
       }
     end
