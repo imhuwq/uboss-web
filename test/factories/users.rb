@@ -13,6 +13,7 @@ FactoryGirl.define do
     trait :seller do
       after(:create) do |user|
         create(:seller_role_relation, user: user)
+        user.user_info.update(service_rate: 5)
       end
     end
 

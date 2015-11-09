@@ -9,6 +9,8 @@ class OrderDivideJob < ActiveJob::Base
 
   LEVEL_AMOUNT_FIELDS = [:share_amount_lv_1, :share_amount_lv_2, :share_amount_lv_3]
 
+  attr_reader :order_income
+
   def perform(order)
     @order = order
     logger.info "Start divide @order: #{order.number}, total_paid: #{order.paid_amount}"
@@ -21,6 +23,7 @@ class OrderDivideJob < ActiveJob::Base
       raise OrderHadDivided
     end
 
+    @order_income = Rails.env.production? ? @order.paid_amount : @order.pay_amount
     start_divide_order_paid_amount
 
     logger.info "Done divide order: #{@order.number}"
@@ -37,8 +40,6 @@ class OrderDivideJob < ActiveJob::Base
   # 3. 平台|创客收入
   #
   def start_divide_order_paid_amount
-    order_income = Rails.env.production? ? @order.paid_amount : @order.pay_amount
-
     # NOTE
     # ----------------------
     # Any fail transaction should raise Exception
@@ -49,12 +50,12 @@ class OrderDivideJob < ActiveJob::Base
       begin
         @order.order_items.each do |order_item|
           reward_sharing_users order_item do |reward_amount|
-            order_income -= reward_amount
+            @order_income -= reward_amount
           end
         end
 
-        divide_income_for_official_or_agent order_income do |divide_amount|
-          order_income -= divide_amount
+        divide_income_for_official_or_agent do |divide_amount|
+          @order_income -= divide_amount
         end
 
         SellingIncome.create!(user: @order.seller, amount: order_income, order: @order)
@@ -67,10 +68,10 @@ class OrderDivideJob < ActiveJob::Base
     end
   end
 
-  def divide_income_for_official_or_agent(income)
+  def divide_income_for_official_or_agent
     seller = @order.seller
-    if seller.service_rate
-      divide_income = income * seller.service_rate / 100
+    if seller.service_rate && order_income > 0
+      divide_income = order_income * seller.service_rate / 100
       agent_divide_income = 0
 
       if agent = seller.agent
@@ -107,6 +108,7 @@ class OrderDivideJob < ActiveJob::Base
     LEVEL_AMOUNT_FIELDS.each_with_index do |key, index|
       reward_amount = get_reward_amount_by_product_level_and_order_item(product_inventory, key, order_item)
       reward_amount = reward_amount * order_item.amount
+      reward_amount = parse_divide_amount(reward_amount)
 
       if reward_amount > 0
         sharing_income = SharingIncome.create!(
@@ -132,6 +134,10 @@ class OrderDivideJob < ActiveJob::Base
       reward_amount -= (order_item.privilege_amount - product_inventory.privilege_amount)
     end
     reward_amount
+  end
+
+  def parse_divide_amount(amount)
+    amount <= order_income ? amount : order_income
   end
 
 end

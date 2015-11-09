@@ -73,7 +73,10 @@ class OrderDivideJobTest < ActiveJob::TestCase
     end
 
     it 'should reward sharing user success' do
-      product = create :product_with_3sharing
+      agent = create(:agent_user)
+      seller = create(:seller_user, agent: agent)
+
+      product = create :product_with_3sharing, user: seller
       product_inventory = product.seling_inventories.first
 
       sharing_reward_lv1 = product_inventory.share_amount_lv_1
@@ -92,10 +95,13 @@ class OrderDivideJobTest < ActiveJob::TestCase
       assert level2_node.user.income == 0
       assert level3_node.user.income == 0
       assert level4_node.user.income == 0
+      assert agent.income == 0
+      assert seller.income == 0
 
       buyer = create(:user)
       @order = create(:order,
                       user: buyer,
+                      seller: seller,
                       order_items_attributes: [{
                         product: product,
                         product_inventory: product_inventory,
@@ -106,12 +112,19 @@ class OrderDivideJobTest < ActiveJob::TestCase
                       state: 'signed'
                      )
 
+      @order.update(paid_amount: @order.reload.pay_amount)
       OrderDivideJob.perform_now(@order.reload)
 
       assert_equal 0, level1_node.user.reload.income.to_f
       assert_equal sharing_reward_lv3 * buy_amount, level2_node.user.reload.income
       assert_equal sharing_reward_lv2 * buy_amount, level3_node.user.reload.income
       assert_equal sharing_reward_lv1 * buy_amount, level4_node.user.reload.income
+      assert seller.reload.income > 0, 'Seller get selling income'
+      assert agent.reload.income > 0, 'Agent get deviding income'
+      assert_equal(
+        @order.paid_amount,
+        level2_node.user.income + level3_node.user.income + level4_node.user.income + seller.income + agent.income + User.official_account.reload.income
+      )
     end
   end
 
