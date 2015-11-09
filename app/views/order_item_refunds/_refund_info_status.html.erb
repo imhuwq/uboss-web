@@ -1,8 +1,12 @@
-<p><%= @refund.aasm.human_state %></p>
+<%= content_for :page_title do %>
+  退款详情
+<% end %>
+<br />
+<div class="bg-white gap"><%= @refund.aasm.human_state %></div>
 <% case @refund.aasm_state %>
 <% when 'pending' %>
   <div class="countdown">
-    <span id="clock_refund" data-endtime=<%= countdown_time(@refund.created_at + Rails.application.secrets.refund_timeout.days) %>></span>
+    <span data-endtime=<%= countdown_time(@refund.created_at + Rails.application.secrets.refund_timeout.days) %>></span>
   </div>
   <ul>
     <li>
