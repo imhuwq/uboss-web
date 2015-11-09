@@ -10,6 +10,7 @@ class DifferentArea < ActiveRecord::Base
   end
 
   validates :first_item, :carriage, :extend_item, :extend_carriage, presence: true
+  validates_numericality_of :first_item, :carriage, :extend_item, :extend_carriage, greater_than_or_equal_to: 0
 
   validate do
     if self.regions.size < MIN_SECTION_SIZE
