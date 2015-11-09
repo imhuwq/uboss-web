@@ -75,7 +75,8 @@ class User < ActiveRecord::Base
   before_save   :set_service_rate
 
   scope :admin, -> { where(admin: true) }
-  scope :agent, -> { joins(:user_roles).where(user_roles: {name: 'agent'}) }
+  scope :agent, -> { role('agent') }
+  scope :role,  -> (role_name) { joins(:user_roles).where(user_roles: {name: role_name}) }
   scope :unauthenticated_seller_identify, -> { where(authenticated: 0) }
 
   UserRole::ROLE_NAMES.each do |role|
