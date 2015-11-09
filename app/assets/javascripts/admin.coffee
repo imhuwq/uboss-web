@@ -17,7 +17,6 @@
 #= require admin/functions
 #= require admin/order
 #= require admin/product
-#= require admin/product_class_attribute
 #= require admin/redactor-config
 #= require admin/sms
 #= require shared/upyun
