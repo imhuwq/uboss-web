@@ -19,7 +19,7 @@
 #= require mobile_page/order
 #= require mobile_page/pay
 #= require mobile_page/evaluations
-#= require mobile_page/count_down
+#= require shared/count_down
 #= require jquery.countdown
 #= require shared/multi_upyun
 #= require shared/city_select
