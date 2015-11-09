@@ -31,4 +31,12 @@ namespace :migrate do
       order_charge.update_column :paid_amount, order_charge.pay_amount
     end
   end
+
+  desc "Init Express"
+  task :init_express do
+    comment_express = %w(EMS 顺丰快递 申通快递 韵达快递 圆通快递 中通快递 天天快递 天天快递 德邦 百世汇通)
+    comment_express.each do |express|
+      Express.find_or_create_by(name: express)
+    end
+  end
 end
