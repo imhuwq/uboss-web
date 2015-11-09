@@ -20,6 +20,17 @@ class AddUniqIndexForUniqColumns < ActiveRecord::Migration
     add_index :users, :agent_code, unique: true
 
     add_index :user_roles, :name, unique: true
+
+    ActiveRecord::Base.connection.execute <<-SQL.squish!
+DELETE user_role_relations
+FROM user_role_relations
+LEFT OUTER JOIN (
+   SELECT MIN(id) as id
+   FROM user_role_relations
+   GROUP BY user_id, user_role_id
+) as KeepRows ON user_role_relations.id = KeepRows.id
+WHERE KeepRows.id IS NULL
+    SQL
     add_index :user_role_relations, [:user_id, :user_role_id], unique: true
 
     add_index :descriptions, [:resource_type, :resource_id], unique: true
