@@ -4,7 +4,7 @@ a,body{ color: #444;}
 html, body {min-width:1220px;}
 .container{ margin: 0 auto; padding:0 10px;width:1200px;overflow: hidden;box-sizing:border-box; }
 .container:after { clear:both;content: ".";   display: block;overflow: hidden; visibility: hidden;    font-size: 0;    line-height: 0;    width: 0;    height: 0;}
-.box-w5,.box-w10,.box-w15,.box-w20,.box-w25,.box-w30,.box-w33,.box-w35,.box-w40,.box-w45,.box-w50,.box-w55,.box-w60,.box-w66,.box-w70,.box-w80,.box-w100{ box-sizing:border-box;padding:0 10px;float:left; }
+.box-w5,.box-w10,.box-w15,.box-w20,.box-w25,.box-w30,.box-w33,.box-w35,.box-w40,.box-w45,.box-w50,.box-w55,.box-w60,.box-w66,.box-w70,.box-w80,.box-w90,.box-w100{ box-sizing:border-box;padding:0 10px;float:left; }
 .box-w5{ width:5%;}
 .box-w10{ width:10%;}
 .box-w15{ width:15%;}
@@ -21,6 +21,7 @@ html, body {min-width:1220px;}
 .box-w66{ width:67%;}
 .box-w70{ width:70%;}
 .box-w80{ width:80%;}
+.box-w90{ width:90%;}
 .box-w100{ width:100%;}
 .text-center { text-align: center;}
 .text-left{ text-align: left;}
