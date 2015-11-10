@@ -171,6 +171,7 @@ Rails.application.routes.draw do
       end
       resources :transactions, only: [:index]
       resources :bank_cards, only: [:index, :new, :edit, :create, :update, :destroy]
+      resources :user_addresses, only: [:index, :show, :new, :edit, :destroy]
 
       get '/data', to: 'data#index'
       get '/backend_status', to: 'dashboard#backend_status'

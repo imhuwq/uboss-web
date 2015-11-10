@@ -1,0 +1,22 @@
+<div class="form-group string required user_address_mobile">
+  <label class="string required control-label"><abbr title="必填">*</abbr>所在地区</label>
+  <div class="city-group control-input" style="padding-top:7px;">
+    <%= f.select(:province, options_for_select([['--省份--', '']] + ChinaCity.provinces ), {},
+    	class: 'city-select ', id: "province", style:"width:100px;display:inline;" ) %>
+    <%= f.select :city, options_for_select([['--城市--', '']] ), {},
+     	:class => 'city-select', id: "city", style:"width:100px;display:inline;" %>
+    <%= f.select :area, options_for_select([['--地区--', '']]), {},
+     	:class => 'city-select', id: "area", style:"width:100px;display:inline;" %>
+  </div>
+</div>
+
+
+<script type="text/javascript">
+
+$(document).ready(function()
+{
+	$('.chosen-container.chosen-container-single').remove()
+	$('.city-select').show()
+});
+
+</script>
