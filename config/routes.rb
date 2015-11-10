@@ -155,6 +155,7 @@ Rails.application.routes.draw do
           post :declined_refund,  on: :member
           post :declined_return,  on: :member
           post :declined_receive, on: :member
+          post :refund_message,   on: :member
         end
         resources :refund_messages, only: [:create]
       end

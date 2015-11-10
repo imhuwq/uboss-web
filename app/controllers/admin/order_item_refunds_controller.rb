@@ -1,6 +1,6 @@
 class Admin::OrderItemRefundsController < AdminController
   load_and_authorize_resource
-  before_action :find_order_item_and_refund, only: [:approved_refund, :approved_return, :approved_receive, :declined_refund, :declined_receive]
+  before_action :find_order_item_and_refund, only: [:approved_refund, :approved_return, :approved_receive, :declined_refund, :declined_receive, :refund_message]
   before_action :refund_reason_must_be_present, only: [:declined_refund, :declined_return, :declined_receive]
 
   def index
@@ -76,6 +76,17 @@ class Admin::OrderItemRefundsController < AdminController
       flash[:success] = '拒绝收货操作成功'
     else
       flash[:error] = '拒绝收货操作失败'
+    end
+    redirect_to admin_order_item_order_item_refunds_path(@order_item)
+  end
+
+  def refund_message
+    if params[:refund_message][:message].blank?
+      flash[:error] = '留言内容不能为空'
+    elsif create_refund_message({message: params[:refund_message][:message], asset_imgs: refund_message_images})
+      flash[:success] = '发表留言成功'
+    else
+      flash[:error] = '发表留言失败'
     end
     redirect_to admin_order_item_order_item_refunds_path(@order_item)
   end
