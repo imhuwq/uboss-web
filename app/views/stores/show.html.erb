@@ -15,6 +15,7 @@
     </script>
   <% end %>
 <% end %>
+
 <%= render partial: 'banner_slider', locals: { seller: @seller } %>
 
 <% if params[:action] == 'show' && @hots.present? %>
@@ -36,35 +37,41 @@
   <br />
 <% end %>
 
-<div class="store-cover text-center" style="background-image:url('http://images.missyuan.com/attachments/day_100408/20100408_11f7cdb2cd9ca270c6642m3ZfAsN9B2p.jpg')">	
-	<div class="content">
-  <h2 class="name"><%= @seller.store_name %></h2>
-  <% if !@seller.store_short_description.blank?  %>
-  	<p class="gray-color"><%= @seller.store_short_description %></p>
-  <% end %>
-  <p><span class="like-color"><%= number_to_percentage(@seller.good_reputation_rate, precision: 0) %></span> 好评（<%= @seller.total_reputations %>）</p>
-  <% if qr_sharing? %>  	
-    <p class="text-center border-top nogap">
-    	<br />
-      <% if current_user && current_user.has_seller_privilege_card?(@seller) %>
-        <a class="btn btn-large p-sharing-btn">分享给朋友</a>
-      <% else %>
-        <%= link_to "领取友情卡", get_seller_sharing_path,
-          data: { sid: @seller.id, uid: current_user.present? },
-          class: "btn btn-large show-req-snode-modal"
-        %>
-        <a class="btn btn-large hidden p-sharing-btn">分享给朋友</a>
-      <% end %>
+<div class="store-cover text-center" style="background-image:url('http://images.missyuan.com/attachments/day_100408/20100408_11f7cdb2cd9ca270c6642m3ZfAsN9B2p.jpg')">
+  <div class="content">
+    <h2 class="name"><%= @seller.store_name %></h2>
+
+    <% if @seller.store_short_description.present?  %>
+      <p class="gray-color"><%= @seller.store_short_description %></p>
+    <% end %>
+
+    <p>
+      <span class="like-color"><%= number_to_percentage(@seller.good_reputation_rate, precision: 0) %></span> 好评（<%= @seller.total_reputations %>）
     </p>
-    <div><a href="/about">查看说明</a></div>
-  <% end %>
-  <% if @sharing_node %>
-  <div class="share-box border-top nogap">
-  	<br />
-	  <p class="cover"><%= image_tag @sharing_node.user.avatar_url(:w120) %></p>
-	  <p class="name"><%= @sharing_node.user.identify %> 分享</p>
-	</div>
-  <% end %>  
+
+    <% if qr_sharing? %>
+      <p class="text-center border-top nogap">
+        <br />
+        <% if current_user && current_user.has_seller_privilege_card?(@seller) %>
+          <a class="btn btn-large p-sharing-btn">分享给朋友</a>
+        <% else %>
+          <%= link_to "领取友情卡", get_seller_sharing_path,
+            data: { sid: @seller.id, uid: current_user.present? },
+            class: "btn btn-large show-req-snode-modal"
+          %>
+          <a class="btn btn-large hidden p-sharing-btn">分享给朋友</a>
+        <% end %>
+      </p>
+      <div><a href="/about">查看说明</a></div>
+    <% end %>
+
+    <% if @sharing_node %>
+      <div class="share-box border-top nogap">
+        <br />
+        <p class="cover"><%= image_tag @sharing_node.user.avatar_url(:w120) %></p>
+        <p class="name"><%= @sharing_node.user.identify %> 分享</p>
+      </div>
+    <% end %>
   </div>
 </div><!-- store-cover -->
 
