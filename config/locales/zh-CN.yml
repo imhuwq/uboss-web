@@ -10,6 +10,7 @@ zh-CN:
         after_sale_return_goods_and_refund: '售后—退款退货'
   attributes: &attributes
     express_name: 快递公司
+    store_cover: 店铺封面背景
     store_short_description: 店铺简介
     captcha: 验证码
     privilege_rate: 贡献值比率
