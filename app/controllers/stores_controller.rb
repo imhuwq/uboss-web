@@ -6,6 +6,10 @@ class StoresController < ApplicationController
   before_action :set_seller, only: [:show, :hots, :favours]
   before_action :get_sharing_node, :set_sharing_link_node, only: [:show, :hots]
 
+  def index
+    @products = append_default_filter Product.published.includes(:asset_img), order_column: :updated_at
+  end
+
   def show
     @products = append_default_filter @seller.products.published, order_column: :updated_at
     @hots = @seller.products.hots.recent.limit(3)
