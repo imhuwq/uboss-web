@@ -170,7 +170,6 @@ class ProductInventory.View.BuyNowOption extends Backbone.View
               if res['status'] == "ok"
                 flashPopContent('<div class="pop-text">添加成功<br/>购物车有'+res['cart_items_count']+'件商品</div>')
               else
-                location.reload()
                 flashPopContent('<div class="pop-text">'+res['message']+'</div>')
             error: (data, status, e) ->
               alert("操作错误")
