@@ -37,7 +37,7 @@
   <br />
 <% end %>
 
-<div class="store-cover text-center" style="background-image:url('http://images.missyuan.com/attachments/day_100408/20100408_11f7cdb2cd9ca270c6642m3ZfAsN9B2p.jpg')">
+<div class="store-cover text-center" style="<%= "background-image:url('#{@seller.store_cover.url(:w640)}')" if @seller.user_info.store_cover_identifier.present? %>">
   <div class="content">
     <h2 class="name"><%= @seller.store_name %></h2>
 

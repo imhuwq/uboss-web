@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151105024126) do
+ActiveRecord::Schema.define(version: 20151110082525) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -547,6 +547,7 @@ ActiveRecord::Schema.define(version: 20151105024126) do
     t.integer  "worst_evaluation"
     t.integer  "better_evaluation"
     t.integer  "best_evaluation"
+    t.string   "store_cover"
   end
 
   add_index "user_infos", ["user_id"], name: "index_user_infos_on_user_id", unique: true, using: :btree
