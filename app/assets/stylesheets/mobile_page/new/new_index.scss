@@ -87,12 +87,15 @@ body,html,.new-index{
     width: 69px;
 }
 .page4{
-    background: image-url('mobile/new_index/bg.png') no-repeat center center;
-    background-size: cover;
+    background: image-url('mobile/new_index/bg.png') no-repeat top center #1F1F1F;
     color: #fff;
     overflow: hidden;
     text-align: center;
     padding: 10px;
+    .title-bar{
+        color: #333;
+        margin-bottom: 100px;
+    }
     .btn-index{
         background: none;
         border: 2px solid #fff;
