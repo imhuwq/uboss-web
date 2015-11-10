@@ -61,7 +61,7 @@ class User < ActiveRecord::Base
     :store_banner_one=, :store_banner_two=, :store_banner_thr=,
     :recommend_resource_one_id, :recommend_resource_two_id, :recommend_resource_thr_id,
     :recommend_resource_one_id=, :recommend_resource_two_id=, :recommend_resource_thr_id=,
-    :store_short_description, :store_short_description=,
+    :store_short_description, :store_short_description=, :store_cover, :store_cover=,
     to: :user_info, allow_nil: true
 
   enum authenticated: {no: 0, yes: 1}
