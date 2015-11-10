@@ -86,3 +86,21 @@ body,html,.new-index{
     background-position:-491px  0;
     width: 65px;
 }
+.page4{
+    background: image-url('mobile/new_index/bg.png') no-repeat center center;
+    background-size: cover;
+    color: #fff;
+    overflow: hidden;
+    text-align: center;
+    padding: 10px;
+    .btn-index{
+        background: none;
+        border: 2px solid #fff;
+        border-radius: 50px;
+        padding: 10px 20px;
+        font-size: 15px;
+    }
+    img{
+        vertical-align: baseline;
+    }
+}

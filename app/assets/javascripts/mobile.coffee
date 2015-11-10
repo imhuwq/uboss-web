@@ -40,7 +40,9 @@ $ ->
 
   $("header .menu-btn").on 'click', ->
     $('header .nav-bar').toggle()
-
+  
+  $('.container ').on 'click', ->
+    $('header .nav-bar').hide();
 
   $(document).on 'click', '.pop-bg', (e) ->
     unless $(e.target).closest('.pop-content').length > 0
