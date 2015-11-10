@@ -1,129 +1,133 @@
-.btn,input.btn:focus{ 
-    display:inline-block;
-    font-size: 14px;
-    padding:5px;
-    background: $brand-primary;
-    color: #fff;
-    border-radius: 4px;
-    line-height: 15px;
-    outline: none;
-    border: none;
+.btn,input.btn:focus{
+  display:inline-block;
+  font-size: 14px;
+  padding:5px;
+  background: $brand-primary;
+  color: #fff;
+  border-radius: 4px;
+  line-height: 15px;
+  outline: none;
+  border: none;
 }
 .btn-large,input.btn:focus{padding:10px }
 
 .btn-mid,.btn-mid:focus{ padding:5px 10px}
 .btn-longer,.btn-longer:focus{ padding:10px 40px}
 .btn-orange{
-    background: #f9ba10;
-    color: #fff;
-    
+  background: #f9ba10;
+  color: #fff;
+
 }
 .btn-orange-border{
-    background: none;
-    color:#f9ba10;
-    border: 1px solid #f9ba10;
+  background: none;
+  color:#f9ba10;
+  border: 1px solid #f9ba10;
 }
 .btn-black-border{
-    background: #fff;
-    color: #444;
-    border:1px solid #ddd;
+  background: #fff;
+  color: #444;
+  border:1px solid #ddd;
 }
 .btn-gray{
-    background: #999;
-    color: #fff;
+  background: #999;
+  color: #fff;
 }
-.btn-block{ 
-    display:block;
-    text-align: center;
-    width: 100%;
-    box-sizing: border-box;
+.btn-block{
+  display:block;
+  text-align: center;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .btn-like{
-    background: image-url('mobile/like.png') no-repeat;
-    background-position: 0 -20.5px;
-    background-size: 37%;
-    padding-left: 25px;
-    color: #aaa;
+  background: image-url('mobile/like.png') no-repeat;
+  background-position: 0 -20.5px;
+  background-size: 37%;
+  padding-left: 25px;
+  color: #aaa;
 }
 .btn-like.active{
-    background-position: 0 3px;
+  background-position: 0 3px;
 }
 .btn-delete{
-    background: image-url('mobile/delete.png') no-repeat center right;
-    background-size: 19px;
-    height: 25px;
-    width: 25px;
-    float: right;
-    padding: 0;
+  background: image-url('mobile/delete.png') no-repeat center right;
+  background-size: 19px;
+  height: 25px;
+  width: 25px;
+  float: right;
+  padding: 0;
 }
 .share-btn{
-    color:#f9ba10;
-    background: image-url('mobile/share-icon.png') no-repeat center;
-    background-size: 15px;
-    background-position-x: 10px;
-    padding: 6px 10px 6px 35px;
-    border: 1px solid #f9ba10;
-    line-height: 20px;
+  color:#f9ba10;
+  background: image-url('mobile/share-icon.png') no-repeat center;
+  background-size: 15px;
+  background-position-x: 10px;
+  padding: 6px 10px 6px 35px;
+  border: 1px solid #f9ba10;
+  line-height: 20px;
+}
+.p-sharing-btn, .req-favour-p-snode{
+  background:rgba(255,255,255,0.5);
+  border: 1px solid #666;
+  color:#333
 }
 .btn:hover{
-    animation: btn-hover .5s linear ;
+  animation: btn-hover .5s linear ;
 }
 .btn.disabled{
-    background: #aaa;
+  background: #aaa;
 }
 .label{
-    display: inline-block;
-    padding: 4px;
-    background: #666;
-    color: #fff;
-    font-size: 10px;
-    line-height: 12px;
+  display: inline-block;
+  padding: 4px;
+  background: #666;
+  color: #fff;
+  font-size: 10px;
+  line-height: 12px;
 }
 .label-invited{
-    background: #FFB024;
+  background: #FFB024;
 }
 .label-bind{
-    background: #58B3FA;
+  background: #58B3FA;
 }
 .label-authenticated{
-    background: #5EA944;
+  background: #5EA944;
 }
 .icon{
-        display: inline-block;
-        height: 20px; 
-        width: 20px; 
-        line-height: 18.5px;
-        text-align: center; 
-        color: #fff8dd; 
-        background: #888;
-        border-radius: 20px;
-        vertical-align: top;        
-        margin-right: 5px;
-        
+  display: inline-block;
+  height: 20px;
+  width: 20px;
+  line-height: 18.5px;
+  text-align: center;
+  color: #fff8dd;
+  background: #888;
+  border-radius: 20px;
+  vertical-align: top;
+  margin-right: 5px;
 }
 @keyframes btn-hover
 {
-0%{
+  0%{
     opacity: 1;
-}
-50%{
+  }
+  50%{
     opacity: 0.5;
-}
-100% {
+  }
+  100% {
     opacity: 1;
-}
+  }
 }
 @keyframes fadeIn
 {
-0%{
+  0%{
     opacity: 0;
-}
-50%{
+  }
+  50%{
     opacity: 0.5;
-}
-100% {
+  }
+  100% {
     opacity: 1;
-}
+  }
 }
 
