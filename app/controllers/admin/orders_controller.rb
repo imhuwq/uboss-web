@@ -51,11 +51,12 @@ class Admin::OrdersController < AdminController
 
   def index
     @type = params[:type] || 'all'
-    @orders = append_default_filter @orders.recent
-    @orders = @orders.where(state: Order.states[@type.to_sym]) if @type != 'all'
+    @orders = append_default_filter @orders.recent.includes(:user, order_items: [:product, :product_inventory])
+    @counting_orders = @orders
     @unship_amount = @orders.payed.total_count
     @today_selled_amount = @orders.today.selled.total_count
     @shiped_amount = @orders.shiped.total_count
+    @orders = @orders.where(state: Order.states[@type.to_sym]) if @type != 'all'
   end
 
   def show

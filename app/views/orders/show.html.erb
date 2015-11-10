@@ -6,6 +6,14 @@
   <%= store_sharing_meta_tags(@seller, @sharing_link_node) %>
 <% end %>
 
+<%= content_for :extra_javascript do %>
+  <% if browser.wechat? %>
+    <script type="text/javascript" charset="utf-8">
+      wx.ready(function(){ UBoss.luffy.invokeSharing(); });
+    </script>
+  <% end %>
+<% end %>
+
 <br />
 
 <div class="bg-main gap line-gap">

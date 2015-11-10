@@ -12,7 +12,6 @@
 	<div class="admin-border no-border">
 		<div class="box-w100">
       <span class="order-info-state label label-default"><%= @order.state_i18n %></span>
-      <%= link_to '修改价格', nil, class: 'btn btn-sm' %>
       <% if @order.may_close? %>
         <%= link_to '关闭交易', modal_close_admin_order_path(@order), class: 'btn btn-sm' , remote: true %>
       <% end %>

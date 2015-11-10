@@ -1,3 +1,4 @@
+require 'wx_pay_ext'
 
 $wechat_env = ActiveSupport::StringInquirer.new(ENV['WECHAT_ENV'] || 'production')
 
@@ -16,4 +17,4 @@ else
 end
 
 # optional - configurations for RestClient timeout, etc.
-WxPay.extra_rest_client_options = {timeout: 10, open_timeout: 10}
+WxPay.extra_rest_client_options = { timeout: 10, open_timeout: 10 }

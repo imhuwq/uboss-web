@@ -22,7 +22,7 @@ class Order < ActiveRecord::Base
   delegate :mobile, :regist_mobile, :identify,
     to: :user, prefix: :buyer
   delegate :prepay_id, :prepay_id=, :prepay_id_expired_at, :prepay_id_expired_at=,
-    :pay_serial_number, :pay_serial_number=, :payment, :payment_i18n, :paid_at, :paid_amount,
+    :pay_serial_number, :pay_serial_number=, :payment, :payment_i18n, :paid_at,
     to: :order_charge, allow_nil: true
 
   enum state: { unpay: 0, payed: 1, shiped: 3, signed: 4, closed: 5, completed: 6 }
@@ -176,7 +176,7 @@ class Order < ActiveRecord::Base
   end
 
   def paid?
-    paid_at.present?
+    @paid ||= paid_at.present?
   end
 
   def check_paid
@@ -220,7 +220,9 @@ class Order < ActiveRecord::Base
   end
 
   def available_pay?
-    unpay? && (official_agent? ? !user.is_agent? : true)
+    errors.add(:base, '已支付') unless unpay?
+    errors.add(:base, '重复购买创客权') if official_agent? && user.is_agent?
+    errors.empty?
   end
 
   private
@@ -282,6 +284,7 @@ class Order < ActiveRecord::Base
     order_items.each(&:active_privilege_card)
   end
 
+  # 在work 中判断订单是否是创客权订单
   def invoke_official_agent_order_process
     OfficialAgentOrderJob.set(wait: 5.seconds).perform_later(self)
   end

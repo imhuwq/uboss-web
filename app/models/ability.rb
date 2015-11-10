@@ -68,9 +68,7 @@ class Ability
     can :read,   WithdrawRecord, user_id: user.id
     can :create, WithdrawRecord, user_id: user.id
     can :read, :sellers
-    can :read, CarriageTemplate
     can :manage, BankCard, user_id: user.id
-    can :read, Express
   end
 
 end

@@ -1,4 +1,5 @@
 class Product < ActiveRecord::Base
+
   include Orderable
   include Descriptiontable
 
@@ -22,7 +23,7 @@ class Product < ActiveRecord::Base
   enum transportation_way: { seller_pay: 0, united: 1, carriage_template: 2 }
 
   scope :hots, -> { where(hot: true) }
-  scope :available, -> { where.not(status: 'closed') }
+  scope :available, -> { where.not(status: 2) }
 
   validates_presence_of :user_id, :name, :short_description
   validate :must_has_one_product_inventory

@@ -31,8 +31,9 @@ class Users::SessionsController < Devise::SessionsController
          render :new
        end
      else
+       wechat_omniauth_data = { "devise.wechat_data" => session["devise.wechat_data"] }
        super do |user|
-         user.update_with_oauth_session(session)
+         user.update_with_oauth_session(wechat_omniauth_data) if wechat_omniauth_data.present?
        end
      end
    end

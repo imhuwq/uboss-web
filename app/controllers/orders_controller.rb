@@ -1,5 +1,5 @@
 class OrdersController < ApplicationController
-  before_action :authenticate_user!, except: [:new, :create, :ship_price]
+  before_action :authenticate_user!, except: [:new, :create, :ship_price, :change_address]
   before_action :find_order, only: [:cancel, :show, :pay, :pay_complete, :received]
   before_action :authenticate_user_if_browser_wechat, only: [:new]
 
@@ -15,6 +15,8 @@ class OrdersController < ApplicationController
   def show
     @seller = @order.seller
     @order_items = @order.order_items
+    @sharing_link_node ||=
+      SharingNode.find_or_create_by_resource_and_parent(current_user, @seller)
     render layout: 'mobile'
   end
 

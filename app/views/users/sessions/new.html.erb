@@ -16,6 +16,8 @@
   <%= simple_form_for(resource, as: resource_name, url: session_path(resource_name, redirect: params[:redirect])) do |f| %>
     <% if params[:redirect] == 'discourse' %>
       <h2><%= Rails.application.secrets.metas["discourse_head"] %></h2>
+      <%= hidden_field_tag 'redirect', params[:redirect] %>
+      <%= hidden_field_tag 'redirectUrl', params[:redirectUrl] %>
     <% else %>
       <h2>UBOSS</h2>
     <% end %>
@@ -27,7 +29,7 @@
     </div>
 
     <div class="form-inputs">
-      <%= f.input :login, required: false, autofocus: true, input_html: {id: 'new_mobile'} %>
+      <%= f.input :login, required: false, input_html: {id: 'new_mobile'} %>
 
       <div class="cap-inputs">
         <%= f.input :image_captcha do %>
@@ -54,7 +56,7 @@
 
       <div class='pwd-inputs'>
         <%= f.input :password, required: false %>
-        <%= f.input :remember_me, as: :boolean, label_html: {class:'pull-right'}, label: '下次自动登录' if devise_mapping.rememberable? %>
+        <%= f.input :remember_me, as: :boolean, label_html: {class:''}, label: '下次自动登录' if devise_mapping.rememberable? %>
       </div>
 
     </div>

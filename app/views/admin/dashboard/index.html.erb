@@ -137,10 +137,10 @@
             </table>
           </div>
         <% else %>
-          <div class='v-center'>
+          <div class='v-center text-center'>
             <h2>购买UBoss创客权为创客</h2>
             <% if @official_agent_product.present? %>
-              <%= image_tag @official_agent_product.image_url(:w640) %>
+              <%= image_tag @official_agent_product.image_url(:w640),width:'200'%>
             <% end %>
           </div>
         <% end %>

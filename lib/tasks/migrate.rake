@@ -22,4 +22,21 @@ namespace :migrate do
       order_item.update_columns(product_inventory_id: order_item.product.product_inventories.first.id)
     end
   end
+
+
+  desc "Fix wrong paid_amount nonpro env"
+  task :fix_paid_amount do
+    return false if Rails.env.production?
+    OrderCharge.where('paid_at IS NOT NULL').find_each do |order_charge|
+      order_charge.update_column :paid_amount, order_charge.pay_amount
+    end
+  end
+
+  desc "Init Express"
+  task :init_express do
+    comment_express = %w(EMS 顺丰快递 申通快递 韵达快递 圆通快递 中通快递 天天快递 天天快递 德邦 百世汇通)
+    comment_express.each do |express|
+      Express.find_or_create_by(name: express)
+    end
+  end
 end
