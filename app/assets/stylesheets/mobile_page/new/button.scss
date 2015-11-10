@@ -66,6 +66,11 @@
     border: 1px solid #f9ba10;
     line-height: 20px;
 }
+.p-sharing-btn{
+    background:rgba(255,255,255,0.5);
+    border: 1px solid #666;
+    color:#333
+}
 .btn:hover{
     animation: btn-hover .5s linear ;
 }
