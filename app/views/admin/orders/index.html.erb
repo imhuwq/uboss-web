@@ -38,9 +38,9 @@
 
       <%= simple_form_for :order, method: :patch do |f| %>
         <div class="modal-body">
-          <div class='form-group'>
+          <%= f.input :express_name, hint: '您可在 (订单 -> 快递管理) 中设置您的常用发货快递公司' do %>
             <%= text_field_tag 'express_name', '', class: 'form-control input-lg js-select2-express-tags' %>
-          </div>
+          <% end %>
           <%= f.input :ship_number, required: true %>
         </div>
 
