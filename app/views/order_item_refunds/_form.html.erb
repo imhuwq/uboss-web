@@ -5,13 +5,13 @@
       <tr>
         <td>退款金额</td>
         <td class="like-color">
-        	<% if 1==1 %>  
+        	<% if 1==1 %>
         		<span class="pull-left">￥</span>
         		<div class="money">
         			<%= f.input_field :money, class: 'input-block',placeholder:'' %>
         		</div>
         	<% else %>
-        		<%# 未发货的时候 %>        		
+        		<%# 未发货的时候 %>
         		￥（订单价格）
         	<% end %>
         </td>
