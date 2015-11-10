@@ -4,7 +4,7 @@ $ ->
   upyunUrl = $("meta[name='upyun-form-url']").attr("content")
   upyunBucketDomain = $("meta[name='upyun-domain']").attr("content")
 
-  $("input.upyun_file").click ->
+  $("input.multi_upyun_file").click ->
     $(this).fileupload
       paramName: "file"
       url: upyunUrl
@@ -16,15 +16,15 @@ $ ->
         updateFile(e,data,upyunBucketDomain)
 
   updateFile = (e,data,upyun_bucket_domain) ->
-    if $('.refund_avatar').val().split(',').length >= 3
+    $this = $(e.target)
+    formGroup = $this.closest(".form-group")
+    if formGroup.find('input.file[type=hidden]').val().split(',').length >= 3
       alert('最多只能上传三张图片')
       return
-    $this = $(e.target)
     button = $this.closest('.fileinput-button')
     buttonTxt = button.children('span')
     form = $this.closest("form")
     form.data("waiting-upload", true)
-    formGroup = $this.closest(".form-group")
     fileName = data.originalFiles[0].name
     fieldName = $this.prop("name")
     unless button.hasClass('uploading')

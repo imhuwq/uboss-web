@@ -15,9 +15,9 @@
     <%= f.input :asset_img, label: false, hint:"(最多三张)"  do %>
       <%= f.input_field :avatar, type: :hidden, as: :file, class: 'refund_avatar' %>
       <p class="fileinput-button">
-      <%= image_tag("admin/no-img.png") %>
-      <%= file_field_tag "image", class: "upyun_file" %>
-      <b class="loading"><i class="fa fa-spinner"></i></b>
+        <%= image_tag("admin/no-img.png") %>
+        <%= file_field_tag "image", class: "multi_upyun_file" %>
+        <b class="loading"><i class="fa fa-spinner"></i></b>
       </p>
     <% end %>
   </div>

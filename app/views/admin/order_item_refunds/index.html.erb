@@ -55,14 +55,14 @@
         <p class='number'>留言板<%= 'order.number' %></p>
 
         <div id="order_item_refund_message">
-          <%= horizon_form_for @refund_message, url: 'create_refund_message_url' do |f| %>
+          <%= horizon_form_for @refund_message, url: [:refund_message, :admin, @order_item, @order_item_refund] do |f| %>
             <%= upyun_meta_tags prefix: 'asset_img/avatar' %>
             <%= f.text_area :message, class: 'required control-input', cols: 105, rows: 4 %>
             <%= f.input :asset_imgs, label: false, hint:"上传凭证(最多三张)" do %>
               <%= f.input_field :avatar, type: :hidden, as: :file, class: 'refund_avatar' %>
               <p class="fileinput-button">
                 <%= image_tag("admin/no-img.png") %>
-                <%= file_field_tag "image", class: "upyun_file" %>
+                <%= file_field_tag "image", class: "multi_upyun_file" %>
                 <b class="loading"><i class="fa fa-spinner"></i></b>
               </p>
             <% end %>
