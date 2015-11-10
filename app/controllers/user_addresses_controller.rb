@@ -34,7 +34,7 @@ class UserAddressesController < ApplicationController
       end
       redirect_to account_user_addresses_path
     else
-      render :edit
+      render :edit, layout: 'mobile'
     end
   end
 
