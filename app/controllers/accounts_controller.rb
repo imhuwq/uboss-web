@@ -220,7 +220,7 @@ class AccountsController < ApplicationController
 
   def account_orders(type)
     type ||= 'all'
-    if ["unpay", "payed", "shiped", "signed", "all"].include?(type)
+    if ["unpay", "payed", "shiped", "signed", "completed", "all"].include?(type)
       current_user.orders.try(type).includes(order_items: { product_inventory: { product: :asset_img } })
     else
       raise "invalid orders state"
