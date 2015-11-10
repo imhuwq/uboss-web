@@ -1,6 +1,6 @@
 namespace :db do
   desc 'Fill database with sample data'
-  task create_product_classes: :environment do
+  task create_product_properties: :environment do
     puts '开始添加商品分类'
     class_name = %w(颜色 尺寸 尺码 规格 款式 净含量 种类 内存 版本
                     重量 套餐 容量 上市时间 系列 机芯 适用 包装 口味

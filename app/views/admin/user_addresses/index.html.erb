@@ -1,0 +1,51 @@
+<div class="container  admin-container">
+	<ul class="breadcrumb">
+		<li>主页</li>
+		<li class="divider"><i class="fa fa-caret-right"></i></li>
+		<li>地址库</li>
+	</ul>
+</div><!-- container -->
+<br />
+<div class="container">
+	<h3 class="page-title">地址库</h3>
+
+	<div class="list-search-bar">
+		<%= link_to("+ 新增地址", url_for(:action=>:new), :class=>"btn btn-large",:role=>"button") %>
+	</div>
+	<br />
+
+	<table class="list-table">
+		<thead>
+			<th class="text-left">默认地址</th>
+			<th>联系人</th>
+			<th>联系电话</th>
+			<th>联系地址</th>
+			<th>邮政编码</th>
+			<th>备注</th>
+      <th>操作</th>
+		</thead>
+		<% @user_addresses.each do |obj| %>
+			<tr>
+				<td class="text-left">
+          <% if obj.usage[:post_address] %>
+            <span class='btn'>发货地址</span>
+          <% end %>
+          <% if obj.usage[:get_address] %>
+            <span class='btn red-btn'>收货地址</span>
+          <% end %>
+        </td>
+				<td><%= obj.username %></td>
+				<td><%= obj.mobile %></td>
+				<td><%= obj.to_s %></td>
+				<td><%= obj.post_code %></td>
+				<td><%= obj.note %></td>
+        <td>
+          <%= link_to '编辑', url_for(controller: 'admin/user_addresses', action: :edit, id: obj.id) %>
+          <%= link_to '删除', url_for(controller: 'admin/user_addresses', action: :destroy, id: obj.id), method: :delete, data: {confirm: '确认删除么？'} %>
+        </td>
+			</tr>
+		<% end %>
+	</table>
+	<br />
+	<%= paginate @user_addresses %>
+</div>

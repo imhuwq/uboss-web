@@ -24,6 +24,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 ActiveRecord::Schema.define(version: 20151113032754) do
 =======
 ActiveRecord::Schema.define(version: 20151030093203) do
@@ -64,6 +65,9 @@ ActiveRecord::Schema.define(version: 20151022034456) do
 =======
 ActiveRecord::Schema.define(version: 20151029092708) do
 >>>>>>> 2832ff4... migration
+=======
+ActiveRecord::Schema.define(version: 20151104032830) do
+>>>>>>> d456cfd... back up
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"

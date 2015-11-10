@@ -3,7 +3,7 @@ class UserAddress < ActiveRecord::Base
 
   belongs_to :user
 
-  validates :user, :username, :mobile, :building, :province, :city, presence: true
+  validates :user, :username, :mobile, :building, :province, :city, :street, presence: true
   validates :mobile, mobile: true
 
   def to_s
