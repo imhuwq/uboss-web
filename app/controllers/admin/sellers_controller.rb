@@ -4,11 +4,9 @@ class Admin::SellersController < AdminController
 
   def index
     authorize! :read, :sellers
-    if current_user.is_super_admin?
-      @sellers = User.joins(:user_roles).where(user_roles: { name: 'seller' }).page(params[:page] || 1).per(15)
-    else
-      @sellers = User.joins(:user_roles).where(user_roles: { name: 'seller' }, agent_id: current_user.id).page(params[:page] || 1).per(15)
-    end
+    @sellers = User.role('seller')
+    @sellers = @sellers.where(agent_id: current_user.id) if !current_user.is_super_admin?
+    @sellers = @sellers.page(params[:page] || 1).per(15)
   end
 
   def show
