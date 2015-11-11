@@ -1,59 +1,70 @@
 <%= content_for :page_title do %>
   退款详情
 <% end %>
-<br />
 <div class="bg-white gap"><%= @refund.aasm.human_state %></div>
 <% case @refund.aasm_state %>
 <% when 'pending' %>
-  <div class="countdown">
-    <span data-endtime=<%= countdown_time(@refund.created_at + Rails.application.secrets.refund_timeout.days) %>></span>
+  <div class="countdown bg-like gap" id="timer">   
   </div>
-  <ul>
+  <div class="bg-white gap-lr">
+  <ul class="ul-list">
     <li>
-      <span>如果卖家同意：</span><span>申请将达成并退款回您当时支付的账号或银行卡</span>
+      <span>如果卖家同意：</span> <span class="gray-color">申请将达成并退款回您当时支付的账号或银行卡</span>
     </li>
     <li>
-      <span>如果商家发货：</span><span>申请将关闭；您可以再次发起退款</span>
+      <span>如果商家发货：</span> <span class="gray-color">申请将关闭；您可以再次发起退款</span>
      </li>
     <li>
-      <span>如果商家超时未处理：</span><span>申请将默认达成并退款回您当时支付的账号或银行卡</span>
+      <span>如果商家超时未处理：</span> <span class="gray-color">申请将默认达成并退款回您当时支付的账号或银行卡</span>
     </li>
   </ul>
-  <%= link_to '修改退款申请', edit_order_item_order_item_refund_path(order_item_id: @order_item.id, id: @refund.id) %>
-  <%= link_to '撤销申请', close_order_item_order_item_refund_path(order_item_id: @order_item.id, id: @refund.id), data: {confirm: '确定撤销申请？'}%>
-
+  <br />
+  <p><%= link_to '修改退款申请', edit_order_item_order_item_refund_path(order_item_id: @order_item.id, id: @refund.id),class:'btn btn-block btn-black-border' %></p>
+  <br />
+  <p><%= link_to '撤销申请', close_order_item_order_item_refund_path(order_item_id: @order_item.id, id: @refund.id), data: {confirm: '确定撤销申请？'},class:'btn btn-block btn-black-border'%></p>
+	<br />
 <% when 'approved' %>
+	<div class="bg-white gap line-gap">
   <% if @refund.refund_type_include_goods? %>
     <p>卖家同意申请：请退货</p>
-
-    <%= link_to '退货', new_order_item_order_item_refund_sales_return_path(order_item_id: @order_item.id, order_item_refund_id: @refund.id) %>
-
-    <%= link_to '撤销申请', close_order_item_order_item_refund_path(order_item_id: @order_item.id, id: @refund.id), data: {confirm: '确定撤销申请?'}%>
+    <p><%= link_to '退货', new_order_item_order_item_refund_sales_return_path(order_item_id: @order_item.id, order_item_refund_id: @refund.id),class:'btn btn-block btn-black-border' %>
+    <p><%= link_to '撤销申请', close_order_item_order_item_refund_path(order_item_id: @order_item.id, id: @refund.id), data: {confirm: '确定撤销申请?'},class:'btn btn-block btn-black-border'%>
   <% else %>
     <p>卖家退款给买家0.05元</p>
     <p>UBOSS将在24小时内退款会您当时支付的账号或银行卡，请注意查收</p>
   <% end %>
+  </div>
+  <br />
 <% when 'completed_express_number' %>
 
 <% when 'declined' %>
-
-  <%= link_to '修改申请', nil %>
-  <%= link_to '撤销申请', close_order_item_order_item_refund_path(order_item_id: @order_item.id, id: @refund.id), data: {confirm: '确定撤销申请?'}%>
-  <%= link_to 'UBOSS介入', nil %>
-
+	<div class="bg-white gap line-gap">
+	  <p><%= link_to '修改申请', nil,class:'btn btn-block btn-black-border' %></p>
+	  <p><%= link_to '撤销申请', close_order_item_order_item_refund_path(order_item_id: @order_item.id, id: @refund.id), data: {confirm: '确定撤销申请?'},class:'btn btn-block btn-black-border'%></p>
+	  <p><%= link_to 'UBOSS介入', nil ,class:'btn btn-block btn-black-border'%></p>
+	</div>
+  <br />
 <% when 'cancelled' %>
+<div class="bg-white gap line-gap">
   <p>卖家已发货，此申请被自动撤销</p>
-  <%= link_to '再次申请', new_order_item_order_item_refund_path(order_item_id: @order_item.id, refund_type: 'refund') %>
+  <%= link_to '再次申请', new_order_item_order_item_refund_path(order_item_id: @order_item.id, refund_type: 'refund') ,class:'btn btn-block btn-black-border'%>
+</div>
 
 <% when 'confirm_received' %>
 
 <% when 'decline_received' %>
-  <%= link_to '修改申请', nil %>
-  <%= link_to '撤销申请', close_order_item_order_item_refund_path(order_item_id: @order_item.id, id: @refund.id), data: {confirm: '确定撤销申请?'} %>
-  <%= link_to 'UBOSS介入', nil %>
+	<div class="bg-white gap line-gap">
+	  <p><%= link_to '修改申请', nil,class:'btn btn-block btn-black-border' %></p>
+	  <p><%= link_to '撤销申请', close_order_item_order_item_refund_path(order_item_id: @order_item.id, id: @refund.id), data: {confirm: '确定撤销申请?'},class:'btn btn-block btn-black-border' %></p>
+	  <p><%= link_to 'UBOSS介入', nil ,class:'btn btn-block btn-black-border'%></p>
+  </div>
+  <br />
 <% when 'applied_uboss' %>
 
 <% when 'finished' %>
-  <p>退款成功</p>
-  <p>退款金额：0.05元</p>
+	<div class="bg-white gap line-gap">
+	  <p>退款成功</p>
+	  <p>退款金额：0.05元</p>
+	</div>
+  <br />
 <% end %>

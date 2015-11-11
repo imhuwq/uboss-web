@@ -9,17 +9,17 @@
 <br />
 <div id="order_item_refund_show">
   <div class='refund-box'>
-    <%= render partial: 'refund_info_status', locals: { refund: @refund } %>
-    <%= link_to '查看协商详情', new_order_item_order_item_refund_refund_message_path(order_item_id: @order_item.id, order_item_refund_id: @refund.id) %>
+	    <%= render partial: 'refund_info_status', locals: { refund: @refund } %>
+	    <p><%= link_to '查看协商详情', new_order_item_order_item_refund_refund_message_path(order_item_id: @order_item.id, order_item_refund_id: @refund.id),class:'btn btn-block btn-black-border' %></p>
+	    <br />
+  	</div><!-- bg-white -->
   </div>
 
   <br />
-  <div class="order-list">
-    <div class="seller-box">
-      <div class="content">
-        商家:
-        <div class="text-cut"><%= @order_item.order.seller.store_identify %></div>
-      </div>
+  <div class="bg-white">
+  	<br />
+    <div class="seller-box">       
+      <div class="text-cut">商家:<%= @order_item.order.seller.store_identify %></div>
     </div>
     <div class="order-box">
       <div class="cover">
@@ -43,34 +43,59 @@
         </p>
       </div><!-- content -->
     </div><!-- order-box -->
-    <table>
-      <tr class='order-box'>
-        <th>退款类型</th>
-        <td>仅退款</td>
-      </tr>
-      <tr class='order-box'>
-        <th>退款金额</th>
-        <td><%= @refund.money %>元</td>
-      </tr>
-      <tr class='order-box'>
-        <th>退款原因</th>
-        <td><%= @refund.refund_reason.try(:reason) %>/<%= @refund.description %></td>
-      </tr>
-      <tr class='order-box'>
-        <th>退款说明 </th>
-        <td>———</td>
-      </tr>
-    </table>
-    <% @refund.asset_imgs.each do |img| %>
-      <div class="box-w33">
-        <%= image_tag img.image_url(:thumb), class: 'order-box-img'%>
-      </div>
-    <% end %>
-  </div><!-- order-list -->
+  </div><!-- bg-white -->  
+  <div class="refund-info-list bg-white gap-lr">
+    <p>退款类型:填充数据</p>
+    <p>退款金额:<%= @refund.money %>元</p>
+    <p>退款原因:<%= @refund.refund_reason.try(:reason) %></p>
+    <p>
+    	退款说明:<br />  
+    	<%= @refund.description %>
+    </p>  
+    <div class="box-w100">
+	    <% @refund.asset_imgs.each do |img| %>
+	      <div class="box-w33">
+	        <%= image_tag img.image_url(:thumb), class: 'order-box-img'%>
+	      </div>
+	    <% end %>
+    </div><!-- box-w100 -->
+  </div><!-- refund-info -->
 
   <br />
-  <div class='refund-box'>
+  <div class="bg-white gap line-gap">
     <%= render partial: 'refund_basic_info', locals: { refund: @refund } %>
   </div>
 </div>
 
+<script>
+function TimeTo(t){	
+	var e_time='<%= countdown_time(@refund.created_at + Rails.application.secrets.refund_timeout.days + 10) %>';
+  var n = new Date(e_time.replace(/-/,"/")),
+      c = n - t;   
+  if(c<=0){
+    clearInterval(window['ttt']);
+    $('#timer').remove();
+		location.reload(true) 
+    return;
+  }  
+  var ds = 60*60*24*1000,
+      d = parseInt(c/ds),
+      h = parseInt((c-d*ds)/(3600*1000)),
+      m = parseInt((c - d*ds - h*3600*1000)/(60*1000)),
+      s = parseInt((c-d*ds-h*3600*1000-m*60*1000)/1000);
+      if(d<10){d='0'+d}  
+      if(h<10){h='0'+h}   
+      if(m<10){m='0'+m}   
+      if(s<10){s='0'+s}       
+      document.getElementById('timer').innerHTML ='倒计时 <span> '+d+' </span> 天 <span>'+h+' </span> 时 <span>'+m+' </span> 分 <span>'+s+' </span> 秒';
+}  
+var n_time='<%= Time.now %>';
+var t = new Date(n_time.replace(/-/,"/"));
+window.onload=setInterval(function(){			
+	t.setSeconds(t.getSeconds()+1)
+	TimeTo(t)
+},1000);
+
+	
+   
+</script>
