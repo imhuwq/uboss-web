@@ -22,7 +22,7 @@ module OrderItemRefundsHelper
 
     if refund.aasm_state == 'pending'
       return refund_timeout_2_days if refund.refund_type == 'refund'
-      return refund_timeout_5_days if refund.refund_type == 'receipted_refund' || refund.refund_type == 'unreceipt_refund' || refund.refund_type == 'return_goods_and_refund' || refund.refund_type == 'after_sale_only_refund' || refund.refund_type == 'after_sale_return_goods_and_refund'
+      return refund_timeout_5_days if refund.refund_type.in?(['receipted_refund', 'unreceipt_refund', 'return_goods_and_refund', 'after_sale_only_refund', 'after_sale_return_goods_and_refund'])
 
     elsif refund.aasm_state == 'declined' || refund.aasm_state == 'approved'
       refund_timeout_7_days
