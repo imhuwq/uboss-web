@@ -5,9 +5,11 @@
 #= require zepto/plugins/deferred
 #= require rails-behaviors/index
 #= require fastclick
+#
 #= require jquery
 #= require jquery_ujs
 #= require jquery-fileupload/basic
+#
 #= require querystring
 #= require swipe
 #= require mobile_page/sms

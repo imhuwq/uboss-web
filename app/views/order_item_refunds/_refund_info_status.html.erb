@@ -6,7 +6,7 @@
 <% case @refund.aasm_state %>
 <% when 'pending' %>
   <div class="countdown">
-    <span data-endtime=<%= countdown_time(@refund.created_at + Rails.application.secrets.refund_timeout.days) %>></span>
+    <span  id="clock_refund" data-endtime=<%= countdown_time(@refund.created_at + refund_timeout(@refund).days) %>></span>
   </div>
   <ul>
     <li>
