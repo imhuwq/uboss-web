@@ -1,18 +1,21 @@
 <div id="order_item_refund">
   <%= simple_form_for [@order_item, @refund] do |f| %>
     <%= upyun_meta_tags prefix: 'asset_img/avatar' %>
+
+    <%= f.hidden_field :refund_type %>
     <table class="refund-table">
       <tr>
         <td>退款金额</td>
         <td class="like-color">
-        	<% if 1==1 %>  
+          <% flag, money = check_refund_and_get_money(@order_item, @refund) %>
+        	<% if flag %>
         		<span class="pull-left">￥</span>
         		<div class="money">
-        			<%= f.input_field :money, class: 'input-block',placeholder:'' %>
+        			<%= f.input_field :money, value: money, class: 'input-block' %>
         		</div>
         	<% else %>
-        		<%# 未发货的时候 %>        		
-        		￥（订单价格）
+        		<%# 未发货的时候 %>
+            ￥<%= money %>
         	<% end %>
         </td>
       </tr>
@@ -23,7 +26,7 @@
       <%# end %>
       <tr>
         <td>退款原因</td>
-        <td><%= f.select :refund_reason_id, RefundReason.all.collect { |r| [ r.reason, r.id ] }, {include_blank: true}, class: 'input-block' %></td>
+        <td><%= f.select :refund_reason_id, RefundReason.reason_type(@refund.refund_type).collect { |r| [ r.reason, r.id ] }, {include_blank: true}, class: 'input-block' %></td>
       </tr>
     </table>
     <div class="bg-white gap">
