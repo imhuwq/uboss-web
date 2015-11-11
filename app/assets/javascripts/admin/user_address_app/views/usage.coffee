@@ -23,12 +23,10 @@ class UserAddress.Views.Usage extends Backbone.View
   selectUsage: (e) ->
     usage_model = @usage_collections.get( e.target.id )
     if usage_model.get('status') == 'true'
-      usage_model.attributes.status = 'false'
+      usage_model.set({status: 'false'})
       $("#user_address_usage_#{usage_model.get('usage')}").val('false')
-      usage_model.attributes.class_name = 'btn-link'
     else
-      usage_model.attributes.status = 'true'
+      usage_model.set({status: 'true'})
       $("#user_address_usage_#{usage_model.get('usage')}").val('true')
-      usage_model.attributes.class_name = ''
     @usage_collections.set([usage_model], {remove: false})
     @render()

@@ -11,11 +11,10 @@ class UserAddress.Models.Usage extends Backbone.Model
     else
       @attributes.class_name = 'btn-link'
 
-    this.on( 'change', this.alertLog, this)
+    this.on( 'change', this.changeClassName, this)
 
-  # alertLog: ->
-  #   console.log 'change:attributes:status'
-  #   if @attributes.status == 'true'
-  #     @attributes.class_name= ''
-  #   else
-  #     @attributes.class_name = 'btn-link'
+  changeClassName: ->
+    if @attributes.status == 'true'
+      @attributes.class_name= ''
+    else
+      @attributes.class_name = 'btn-link'
