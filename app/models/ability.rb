@@ -56,6 +56,8 @@ class Ability
     can :manage, CarriageTemplate
     can :read, Express
     can :set_common, Express
+    can :manage, UserAddress, user_id: user.id
+    # can :manage, :user_addresses
   end
 
   def grant_permissions_to_agent user
