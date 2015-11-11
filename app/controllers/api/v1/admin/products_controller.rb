@@ -38,7 +38,7 @@ class Api::V1::Admin::ProductsController < ApiBaseController
       :name,      :original_price,  :present_price,     :count,
       :content,   :has_share_lv,    :calculate_way,     :avatar,
       :buyer_pay, :traffic_expense, :short_description, :transportation_way,
-      :carriage_template_id,
+      :carriage_template_id, :status,
       product_inventories_attributes: [
         :id, :price, :count, :share_amount_total, :privilege_amount,
         :share_amount_lv_1, :share_amount_lv_2, :share_amount_lv_3,
