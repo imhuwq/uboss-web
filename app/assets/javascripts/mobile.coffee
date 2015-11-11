@@ -20,7 +20,6 @@
 #= require mobile_page/pay
 #= require mobile_page/evaluations
 #= require shared/count_down
-#= require jquery.countdown
 #= require shared/multi_upyun
 #= require shared/city_select
 #= reuqire_self
