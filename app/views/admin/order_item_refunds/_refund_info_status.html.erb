@@ -106,7 +106,6 @@
   <% else %>
     <div class="bottom_line">
       <p class='refund_info_title'>您已同意退款</p>
-      <!--<p>* 您在48小时内未处理此申请，系统已默认您同意此次申请</p><%# TODO 区分卖家同意/超时同意 %>-->
       <p>* 退款金额：<%= @order_item_refund.money %>元</p>
       <p>* 同意申请时间：<%= @order_item_refund.state_at_attributes['同意时间'] %></p>
     </div>
@@ -142,9 +141,7 @@
 <% when 'decline_received' %>
   <div class="bottom_line">
     <p class='refund_info_title'>请等待买家回应</p>
-      <div class="countdown">
-        <span id="clock_refund" data-endtime="<%= countdown_time(@order_item_refund.created_at + 7.days) %>"></span>
-      </div>
+    <p><span id="clock_refund" data-endtime="<%= countdown_time(@order_item_refund.created_at + 7.days) %>"></span></p>
     <p>* 买家修改退货申请后，需要您重新处理</p>
     <p>* 买家超时未处理，退货申请将自动关闭</p>
   </div>
@@ -154,6 +151,7 @@
   <%= render 'refund_modal', page: 'confirm_receive', title: '退款给买家' %>
 
 <% when 'applied_uboos' %>
+  <%#TODO%>
 
 <% when 'completed_express_number' %>
   <div class="bottom_line">
@@ -169,8 +167,8 @@
     您还可以：<%= link_to '拒绝确认收货', 'javascripts:;', class: 'main-link-color', onclick: '$("#refund_confirm_receive").modal("show")' %> | <a class="main-link-color" href="">要求UBOSS介入</a><!-- TODO 出现“要求UBOSS介入”的条件：1.等待卖家处理,2.拒绝过买家后买家修改申请并提交后 -->
   </div>
   <div class="bottom_line">
-    <p>* 物流公司：XXX</p>
-    <p>* 运单号：XXXXXXX</p>
+    <p>* 物流公司：XXX</p>     <%#TODO%>
+    <p>* 运单号：XXXXXXX</p>   <%#TODO%>
     <p>* 退货时间：<%= @order_item_refund.state_at_attributes['退货时间'] %></p>
   </div>
   <%= render 'refund_modal', page: 'confirm_receive', title: '退款给买家' %>
@@ -194,13 +192,13 @@
   <% if @order_item_refund.refund_type_include_goods? %>
     <div class="bottom_line">
       <p class='refund_info_title'>退货关闭</p>
-      <p>* 买家已撤销此次退货申请</p>                                              <%# TODO 两种情况：买家、UBOSS介入 %>
+      <p>* 买家已撤销此次退货申请</p>
       <p>* 撤销时间：<%= @order_item_refund.state_at_attributes['关闭时间'] %></p>
     </div>
   <% else %>
     <div class="bottom_line">
       <p class='refund_info_title'>退款关闭</p>
-      <p>* 买家已撤销此次退款申请</p>                                              <%# TODO 两种情况：买家、UBOSS介入 %>
+      <p>* 买家已撤销此次退款申请</p>
       <p>* 撤销时间：<%= @order_item_refund.state_at_attributes['关闭时间'] %></p>
     </div>
   <% end %>
