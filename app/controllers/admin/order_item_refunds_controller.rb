@@ -36,7 +36,7 @@ class Admin::OrderItemRefundsController < AdminController
   # 同意收货
   def approved_receive
     if @order_item_refund.may_confirm_receive? && @order_item_refund.confirm_receive!
-      create_refund_message({action: '同意收货'})
+      create_refund_message({action: '确认收货'})
       flash[:success] = '同意收货操作成功'
     else
       flash[:error] = '同意收货操作失败'

@@ -121,6 +121,27 @@ class OrderItemRefund < ActiveRecord::Base
     self.asset_imgs.map{ |img| img.avatar.file.filename }.join(',')
   end
 
+  def create_timeout_message(timeout_days)
+    if self.approved?
+      if self.refund_type_include_goods?
+        action  = "同意退货"
+        message = "商家在#{timeout_days}天内未处理此申请，系统已默认商家同意此次申请"
+      else
+        action  = "同意退款"
+        message = "商家在#{timeout_days}天内未处理此申请，系统已默认商家同意此次申请"
+      end
+    elsif self.confirm_received?
+      action  = "确认收货"
+      message = "商家在#{timeout_days}天内未确认收货，系统已默认商家已收货"
+    end
+
+    self.refund_messages.create(user_type: 'seller',
+                                user_id: self.order_item.order.seller_id,
+                                message: message,
+                                action: action
+                               )
+  end
+
   private
 
   (4..7).each do |refund_state|
