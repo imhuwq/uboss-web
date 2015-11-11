@@ -90,8 +90,8 @@ module ApplicationHelper
 
   def store_sharing_meta_tags(seller, sharing_link_node = nil)
     meta_tags = {
-      sharing_title:  "UBOSS店铺【#{seller.store_identify}】好货不断，通过分享购买有惊喜！",
-      sharing_desc:   "消费分享还能拿返利，更多有趣玩法，快来UBOSS看看吧",
+      sharing_title:  "【#{seller.store_identify}】好货不断，通过分享购买更有优惠惊喜！",
+      sharing_desc:   "在我这儿，谁还会用市场价购买啊？",
       sharing_imgurl: seller.avatar_url(:thumb),
       sharing_link:  store_sharing_link(seller, sharing_link_node)
     }
