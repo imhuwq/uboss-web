@@ -1,6 +1,7 @@
 <%= content_for :page_title do %>
   退款详情
 <% end %>
+<br />
 <div class="bg-white gap"><%= @refund.aasm.human_state %></div>
 <% case @refund.aasm_state %>
 <% when 'pending' %>
@@ -48,8 +49,9 @@
 <% when 'cancelled' %>
 <div class="bg-white gap line-gap">
   <p>卖家已发货，此申请被自动撤销</p>
-  <%= link_to '再次申请', new_order_item_order_item_refund_path(order_item_id: @order_item.id, refund_type: 'refund') ,class:'btn btn-block btn-black-border'%>
-</div>
+  <% if can_reapply?(@order_item) %>
+    <%= link_to '再次申请', new_order_item_order_item_refund_path(order_item_id: @order_item.id, refund_type: 'refund') %>
+  <% end %>
 
 <% when 'confirm_received' %>
 
