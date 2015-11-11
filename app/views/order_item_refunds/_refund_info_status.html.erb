@@ -4,7 +4,8 @@
 <div class="bg-white gap"><%= @refund.aasm.human_state %></div>
 <% case @refund.aasm_state %>
 <% when 'pending' %>
-  <div class="countdown bg-like gap" id="timer">   
+  <div class="countdown">
+    <span  id="clock_refund" data-endtime=<%= countdown_time(@refund.created_at + refund_timeout(@refund).days) %>></span>
   </div>
   <div class="bg-white gap-lr">
   <ul class="ul-list">

@@ -6,7 +6,9 @@ class OrderItemRefund < ActiveRecord::Base
   has_many :refund_messages
   has_many :asset_imgs, class_name: 'AssetImg', autosave: true, as: :resource
 
-  validates :order_state, presence: true, uniqueness: true
+  validates :order_state, :money, :refund_reason_id, presence: true
+  validates_uniqueness_of :order_state, scope: :order_item_id
+
   after_create :save_state_at_attributes
   after_create  :set_order_item_state
 
