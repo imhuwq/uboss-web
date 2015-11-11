@@ -57,6 +57,8 @@ class Ability
     can :read, Express
     can :set_common, Express
     can :manage, OrderItemRefund
+    can :manage, UserAddress, user_id: user.id
+    # can :manage, :user_addresses
   end
 
   def grant_permissions_to_agent user

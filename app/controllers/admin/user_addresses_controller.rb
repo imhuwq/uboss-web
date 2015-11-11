@@ -1,9 +1,12 @@
 class Admin::UserAddressesController < AdminController
+
+  load_and_authorize_resource
+
   def index
     @user_addresses = current_user.user_addresses.page(param_page)
   end
   def new
-    @user_address = UserAddress.new
+    # @user_address = UserAddress.new
   end
   def edit
     @user_address = current_user.user_addresses.find(params[:id])
