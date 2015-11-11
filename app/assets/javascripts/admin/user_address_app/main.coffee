@@ -29,4 +29,4 @@ jQuery ($) ->
   ((root) ->
     root.userAddressUsage = new UserAddress.Views.Usage
   )(window)
-  $('#user_address_usage').html = userAddressUsage.render()
+  userAddressUsage.render()

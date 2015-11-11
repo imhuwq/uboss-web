@@ -10,13 +10,25 @@ class UserAddress.Views.Usage extends Backbone.View
   render: ->
     that = this
     usages = {'默认收货地址': 'btn-link', '默认发货地址':''}
-    @usage_collections.add( new UserAddress.Models.Usage(name: '默认收货地址', status: 'true', class: '') )
-    @usage_collections.add( new UserAddress.Models.Usage(name: '默认发货地址', status: 'false', class: 'btn-link') )
-    @$el.html = ''
+    $(@$el).empty()
+    if @usage_collections.length == 0
+      @usage_collections.add( new UserAddress.Models.Usage(name: '默认收货地址', status: $('#user_address_usage_default_get_address').val(), usage: 'default_get_address') )
+      @usage_collections.add( new UserAddress.Models.Usage(name: '默认发货地址', status: $('#user_address_usage_default_post_address').val(), usage: 'default_post_address') )
     @usage_collections.each (usage_model) ->
-      that.$el.append that.template(name: usage_model.get('name'), class: usage_model.get('class'), id: usage_model.get('cid') )
+      that.$el.append that.template(name: usage_model.get('name'), id: usage_model.cid , class_name: usage_model.get('class_name'))
+
+
+
 
   selectUsage: (e) ->
-    console.log 'e', e
-    usage_model = usage_collections.get( e.attr('id') )
-    console.log 'usage_model', usage_model
+    usage_model = @usage_collections.get( e.target.id )
+    if usage_model.get('status') == 'true'
+      usage_model.attributes.status = 'false'
+      $("#user_address_usage_#{usage_model.get('usage')}").val('false')
+      usage_model.attributes.class_name = 'btn-link'
+    else
+      usage_model.attributes.status = 'true'
+      $("#user_address_usage_#{usage_model.get('usage')}").val('true')
+      usage_model.attributes.class_name = ''
+    @usage_collections.set([usage_model], {remove: false})
+    @render()

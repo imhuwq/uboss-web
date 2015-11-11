@@ -209,6 +209,8 @@ zh-CN:
         code: 手机验证码
       user_address:
         username: 收件人
+        post_code: 邮政编码
+        note: 备注
       evaluation:
         status: 评价
       bank_card:
