@@ -7,14 +7,15 @@
       <tr>
         <td>退款金额</td>
         <td class="like-color">
-        	<% if 1==1 %>
+          <% flag, money = check_refund_and_get_money(@order_item, @refund) %>
+        	<% if flag %>
         		<span class="pull-left">￥</span>
         		<div class="money">
-        			<%= f.input_field :money, class: 'input-block',placeholder:'' %>
+        			<%= f.input_field :money, value: money, class: 'input-block' %>
         		</div>
         	<% else %>
         		<%# 未发货的时候 %>
-        		￥（订单价格）
+            ￥<%= money %>
         	<% end %>
         </td>
       </tr>

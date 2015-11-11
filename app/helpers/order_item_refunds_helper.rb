@@ -1,4 +1,19 @@
 module OrderItemRefundsHelper
+
+  def can_reapply?(order_item)
+    OrderItemRefund.where(order_item_id: order_item.id, order_state: Order.states[order_item.order.state]).blank?
+  end
+
+  def check_refund_and_get_money(order_item, refund)
+    order = order_item.order
+    return [false, order_item.pay_amount] if order.state == 'payed'
+    return [true, order_item.pay_amount] if refund.refund_type == 'receipted_refund'
+    return [false, order_item.pay_amount] if refund.refund_type == 'unreceipt_refund'
+    return [true, order_item.pay_amount] if refund.refund_type == 'return_goods_and_refund'
+    return [true, order_item.pay_amount] if refund.refund_type == 'after_sale_only_refund'
+    return [true, order_item.pay_amount] if refund.refund_type == 'after_sale_return_goods_and_refund'
+  end
+
   def refund_timeout(refund)
     refund_timeout_2_days = Rails.application.secrets.refund_timeout['days_2']
     refund_timeout_5_days = Rails.application.secrets.refund_timeout['days_5']
