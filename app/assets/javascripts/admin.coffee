@@ -22,7 +22,6 @@
 #= require shared/upyun
 #= require shared/multi_upyun_admin
 #= require shared/count_down
-#= require jquery.countdown
 #= require_self
 
 jQuery ($) ->
