@@ -11,7 +11,7 @@ class Product < ActiveRecord::Base
   DataBuyerPay = { 0 => '包邮', 1 => '统一邮费', 2 => '运费模板' }
 
   has_one_image autosave: true
-  has_many_images name: :figure_images, accepts_nested: true
+  #has_many_images name: :figure_images, accepts_nested: true
 
   belongs_to :user
   belongs_to :carriage_template
