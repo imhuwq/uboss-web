@@ -369,6 +369,14 @@ class User < ActiveRecord::Base
     self.expresses.exists?(express)
   end
 
+  def default_get_address
+    user_addresses.where('usage @> ?', {default_get_address: 'true'}.to_json).first.to_s
+  end
+
+  def default_post_address
+    user_addresses.where('usage @> ?', {default_post_address: 'true'}.to_json).first.to_s
+  end
+
   private
 
   def ensure_privilege_rate
@@ -407,4 +415,5 @@ class User < ActiveRecord::Base
       end
     end
   end
+
 end

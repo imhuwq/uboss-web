@@ -163,6 +163,7 @@ zh-CN:
     banking:  提现
     daily_reports: 收益
     authentications: 认证
+    user_addresses: 地址库
   activerecord:
     models:
       withdraw_record: 提现记录

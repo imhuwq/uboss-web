@@ -176,6 +176,7 @@ ActiveRecord::Schema.define(version: 20151105024126) do
   end
 
 <<<<<<< HEAD
+<<<<<<< HEAD
   create_table "districts", force: :cascade do |t|
     t.string   "name"
     t.integer  "numcode"
@@ -185,6 +186,8 @@ ActiveRecord::Schema.define(version: 20151105024126) do
   
 =======
 >>>>>>> 013bc0b... fix mobile page product show sku app
+=======
+>>>>>>> 1228deb... basic function finished
   create_table "divide_incomes", force: :cascade do |t|
     t.integer  "user_id"
     t.integer  "order_id"
@@ -326,6 +329,7 @@ ActiveRecord::Schema.define(version: 20151105024126) do
 
   add_index "order_charges", ["number"], name: "index_order_charges_on_number", using: :btree
 
+<<<<<<< HEAD
   create_table "order_item_refunds", force: :cascade do |t|
     t.decimal  "money"
     t.integer  "refund_reason_id"
@@ -369,6 +373,8 @@ ActiveRecord::Schema.define(version: 20151105024126) do
     t.string   "return_explain"
   end
 
+=======
+>>>>>>> 1228deb... basic function finished
   create_table "order_items", force: :cascade do |t|
     t.integer  "order_id"
     t.integer  "product_id"
@@ -381,6 +387,7 @@ ActiveRecord::Schema.define(version: 20151105024126) do
     t.decimal  "present_price",        default: 0.0
     t.decimal  "privilege_amount",     default: 0.0
     t.integer  "product_inventory_id"
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -419,6 +426,8 @@ ActiveRecord::Schema.define(version: 20151105024126) do
 >>>>>>> 925fa45... add refund_state to order_items
 =======
 >>>>>>> fb8d04f... fix 'FIXME'
+=======
+>>>>>>> 1228deb... basic function finished
   end
 
   create_table "orders", force: :cascade do |t|
@@ -578,6 +587,7 @@ ActiveRecord::Schema.define(version: 20151105024126) do
   add_index "redactor_assets", ["assetable_type", "assetable_id"], name: "idx_redactor_assetable", using: :btree
   add_index "redactor_assets", ["assetable_type", "type", "assetable_id"], name: "idx_redactor_assetable_type", using: :btree
 
+<<<<<<< HEAD
   create_table "refund_messages", force: :cascade do |t|
     t.string   "message"
     t.decimal  "money"
@@ -650,12 +660,15 @@ ActiveRecord::Schema.define(version: 20151105024126) do
 
   add_index "refund_records", ["order_item_refund_id"], name: "index_refund_records_on_order_item_refund_id", using: :btree
 
+=======
+>>>>>>> 1228deb... basic function finished
   create_table "regions", force: :cascade do |t|
     t.string  "name"
     t.string  "numcode"
     t.integer "parent_id"
   end
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 =======
@@ -679,6 +692,8 @@ ActiveRecord::Schema.define(version: 20151105024126) do
     t.integer  "order_item_refund_id"
   end
 
+=======
+>>>>>>> 1228deb... basic function finished
   create_table "selling_incomes", force: :cascade do |t|
     t.datetime "created_at",               null: false
     t.datetime "updated_at",               null: false
@@ -874,10 +889,13 @@ ActiveRecord::Schema.define(version: 20151105024126) do
   add_foreign_key "orders", "users", column: "seller_id", name: "fk_order_seller_foreign_key"
   add_foreign_key "privilege_cards", "users"
 <<<<<<< HEAD
+<<<<<<< HEAD
   add_foreign_key "refund_messages", "order_item_refunds"
   add_foreign_key "refund_records", "order_item_refunds"
 =======
 >>>>>>> 013bc0b... fix mobile page product show sku app
+=======
+>>>>>>> 1228deb... basic function finished
   add_foreign_key "selling_incomes", "orders"
   add_foreign_key "selling_incomes", "users"
   add_foreign_key "sharing_incomes", "order_items"

@@ -20,7 +20,6 @@ class UserAddress < ActiveRecord::Base
     user_addresses = UserAddress.where(user_id: user_id)
     user_addresses.each do |obj|
       unless obj.id == self.id
-        # binding.pry
         obj_usage = obj.usage
         obj_usage['default_post_address'] = 'false' if self.usage['default_post_address'] == 'true'
         obj_usage['default_get_address'] = 'false' if self.usage['default_get_address'] == 'true'
