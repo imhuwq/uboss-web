@@ -134,6 +134,9 @@ class ProductInventory.View.BuyNowOption extends Backbone.View
                 init = init.intersect(v)
           if product_inventory_ids.length > 0 && value.attributes.relate_sku.intersect(init).length > 0
             value.attributes.disabled = "false"
+          else
+            if product_inventory_ids.length > 0 && property_model_value_cids.intersect([value.cid]).length == 0
+              value.attributes.disabled = "true"
 
         if select_value_cid.length > 0 && select_value_cid == value.cid
             value.attributes.selected = "true"

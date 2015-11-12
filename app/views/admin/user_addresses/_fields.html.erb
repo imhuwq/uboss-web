@@ -3,11 +3,11 @@
   <%= f.input :username, hint: false %>
   <%= f.input :mobile %>
   <%= render 'admin/user_addresses/user_address', f: f  %>
-  <%= f.input :street %>
+  <%= f.input :building %>
   <%= f.input :post_code %>
-  <%= f.input :note %>
-  <%= hidden_field_tag 'user_address[usage][default_get_address]', @user_address.usage['default_get_address'], id: "user_address_usage_default_get_address" %>
-  <%= hidden_field_tag 'user_address[usage][default_post_address]', @user_address.usage['default_post_address'], id: "user_address_usage_default_post_address" %>
+  <%= f.input :note, as: :text %>
+  <%= hidden_field_tag 'user_address[usage][default_get_address]', @user_address.usage['default_get_address'] || 'false', id: "user_address_usage_default_get_address" %>
+  <%= hidden_field_tag 'user_address[usage][default_post_address]', @user_address.usage['default_post_address'] || 'false', id: "user_address_usage_default_post_address" %>
   <div class="form-group">
     <label class="control-label">默认地址设置</label>
     <div class='control-input' id='user_address_usage'>
