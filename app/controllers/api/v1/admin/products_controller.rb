@@ -1,6 +1,6 @@
 class Api::V1::Admin::ProductsController < ApiBaseController
 
-  before_action :find_product, only: [:show, :inventories]
+  before_action :find_product, only: [:show, :inventories, :detail]
 
   def index
     @products = append_default_filter current_user.products.available, order_column: :updated_at
@@ -17,6 +17,9 @@ class Api::V1::Admin::ProductsController < ApiBaseController
   end
 
   def show
+  end
+
+  def detail
   end
 
   def inventories

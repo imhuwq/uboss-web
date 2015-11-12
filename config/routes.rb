@@ -101,7 +101,9 @@ Rails.application.routes.draw do
     namespace :v1 do
       namespace :admin do
         resources :products, only: [:index, :show, :create] do
-          get :inventories, on: :member
+          member do
+            get :inventories, :detail
+          end
         end
       end
       post 'login', to: 'sessions#create'
