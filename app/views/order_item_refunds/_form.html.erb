@@ -8,22 +8,17 @@
         <td width="100">退款金额</td>
         <td class="like-color">
           <% flag, money = check_refund_and_get_money(@order_item, @refund) %>
-        	<% if flag %>
-        		<span class="pull-left">￥</span>
-        		<div class="money">
-        			<%= f.input_field :money, value: money, class: 'input-block' %>
-        		</div>
-        	<% else %>
-        		<%# 未发货的时候 %>
-            ￥<%= money %>
-        	<% end %>
+          <span class="pull-left">￥</span>
+          <div class="money">
+            <%= f.input_field :money, value: money, class: 'input-block', disabled: !flag %>
+          </div>
         </td>
       </tr>
-      <%# if 未发货 %>
+      <% if !flag %>
       <tr>
         <td colspan="2" class="info">退款金额不可修改</td>
       </tr>
-      <%# end %>
+      <% end %>
       <tr>
         <td>退款原因</td>
         <td><%= f.select :refund_reason_id, RefundReason.reason_type(@refund.refund_type).collect { |r| [ r.reason, r.id ] }, {include_blank: true}, class: 'input-block' %></td>
