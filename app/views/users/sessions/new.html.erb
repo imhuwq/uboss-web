@@ -12,7 +12,7 @@
   <% end %>
 <% end %>
 
-<div class='login-container <%= @using_password ? 'using-pwd' : 'using-cap' %>'>
+<div class='login-container <%= @using_captcha ? 'using-cap' : 'using-pwd' %>'>
   <%= simple_form_for(resource, as: resource_name, url: session_path(resource_name, redirect: params[:redirect])) do |f| %>
     <% if params[:redirect] == 'discourse' %>
       <h2><%= Rails.application.secrets.metas["discourse_head"] %></h2>
