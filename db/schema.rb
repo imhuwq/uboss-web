@@ -25,6 +25,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 ActiveRecord::Schema.define(version: 20151113032754) do
 =======
 ActiveRecord::Schema.define(version: 20151030093203) do
@@ -68,6 +69,9 @@ ActiveRecord::Schema.define(version: 20151029092708) do
 =======
 ActiveRecord::Schema.define(version: 20151104032830) do
 >>>>>>> d456cfd... back up
+=======
+ActiveRecord::Schema.define(version: 20151105024126) do
+>>>>>>> 013bc0b... fix mobile page product show sku app
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -97,7 +101,10 @@ ActiveRecord::Schema.define(version: 20151104032830) do
     t.datetime "created_at"
     t.string   "alt"
     t.string   "url"
+<<<<<<< HEAD
     t.string   "image_type"
+=======
+>>>>>>> 013bc0b... fix mobile page product show sku app
   end
 
   create_table "bank_cards", force: :cascade do |t|
@@ -168,6 +175,7 @@ ActiveRecord::Schema.define(version: 20151104032830) do
     t.integer "region_id"
   end
 
+<<<<<<< HEAD
   create_table "districts", force: :cascade do |t|
     t.string   "name"
     t.integer  "numcode"
@@ -175,6 +183,8 @@ ActiveRecord::Schema.define(version: 20151104032830) do
     t.datetime "updated_at", null: false
   end
   
+=======
+>>>>>>> 013bc0b... fix mobile page product show sku app
   create_table "divide_incomes", force: :cascade do |t|
     t.integer  "user_id"
     t.integer  "order_id"
@@ -455,9 +465,9 @@ ActiveRecord::Schema.define(version: 20151104032830) do
 
   create_table "privilege_cards", force: :cascade do |t|
     t.integer  "user_id"
-    t.datetime "created_at",                 null: false
-    t.datetime "updated_at",                 null: false
-    t.boolean  "actived",    default: false
+    t.datetime "created_at",                           null: false
+    t.datetime "updated_at",                           null: false
+    t.boolean  "actived",              default: false
     t.integer  "seller_id"
 <<<<<<< HEAD
 =======
@@ -863,8 +873,11 @@ ActiveRecord::Schema.define(version: 20151104032830) do
   add_foreign_key "orders", "users"
   add_foreign_key "orders", "users", column: "seller_id", name: "fk_order_seller_foreign_key"
   add_foreign_key "privilege_cards", "users"
+<<<<<<< HEAD
   add_foreign_key "refund_messages", "order_item_refunds"
   add_foreign_key "refund_records", "order_item_refunds"
+=======
+>>>>>>> 013bc0b... fix mobile page product show sku app
   add_foreign_key "selling_incomes", "orders"
   add_foreign_key "selling_incomes", "users"
   add_foreign_key "sharing_incomes", "order_items"

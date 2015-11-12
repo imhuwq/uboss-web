@@ -3,10 +3,10 @@ class UserAddress < ActiveRecord::Base
 
   belongs_to :user
 
-  validates :user, :username, :mobile, :building, :province, :city, :street, presence: true
+  validates :user, :username, :mobile, :province, :city, :building, presence: true
   validates :mobile, mobile: true
 
-  before_save :set_default_get_address, :set_default_post_address
+  after_save :set_default_address
 
   def to_s
     @province = ChinaCity.get(province) rescue province
@@ -15,22 +15,16 @@ class UserAddress < ActiveRecord::Base
     "#{@province}#{@city}#{@area}#{building}"
   end
 
-  def set_default_get_address
-    if usage[:defalult_get_address] = 'true'
-      user_addresses = UserAddress.where(user_id: user_id).where('usage @> ?', {defalult_get_address: true}.to_json)
-      user_addresses.each do |obj|
-        obj.usage[:defalult_get_address] = 'false'
-        obj.save(validate: false)
-      end
-    end
-  end
-  
-  def set_default_post_address
-    if usage[:defalult_post_address] = 'true'
-      user_addresses = UserAddress.where(user_id: user_id).where('usage @> ?', {defalult_post_address: true}.to_json)
-      user_addresses.each do |obj|
-        obj.usage[:defalult_post_address] = 'false'
-        obj.save(validate: false)
+  def set_default_address
+
+    user_addresses = UserAddress.where(user_id: user_id)
+    user_addresses.each do |obj|
+      unless obj.id == self.id
+        # binding.pry
+        obj_usage = obj.usage
+        obj_usage['default_post_address'] = 'false' if self.usage['default_post_address'] == 'true'
+        obj_usage['default_get_address'] = 'false' if self.usage['default_get_address'] == 'true'
+        obj.update_column(:usage ,obj_usage)
       end
     end
   end
