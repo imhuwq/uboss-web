@@ -70,6 +70,7 @@ class Admin::OrdersController < AdminController
     express = Express.find_by_name(express_params)
     express = Express.create(name: express_params, private_id: current_user.id) if express.blank?
     if @order.update(order_params.merge(express_id: express.id)) && @order.ship!
+      close_order_item_refund
       flash[:success] = '发货成功'
     else
       flash[:error] = '发货失败'
@@ -99,6 +100,19 @@ class Admin::OrdersController < AdminController
 
   def express_params
     params[:express_name]
+  end
+
+  def close_order_item_refund
+    @order.order_items.each do |item|
+      if refund = item.last_refund
+        refund.may_close? && refund.close
+        refund.refund_messages.create(user_type: 'seller',
+                                      user_id: refund.order_item.order.seller_id,
+                                      message: '商家选择发货，退款申请关闭',
+                                      action: '退款关闭'
+                                     )
+      end
+    end
   end
 
   def record_operation
