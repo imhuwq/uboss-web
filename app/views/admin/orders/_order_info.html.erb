@@ -1,6 +1,6 @@
 <div class="box-w70">
   <div class="admin-border admin-border-order-info">
-    <p class='number'>订单编号 : <%= order.number %><!--small class="pull-right"><%= order.username %> 促成的 二级订单</small--!></p>
+    <p class='number'><span class='btn red-btn' style="margin-right:10px;">第一步</span>订单编号 : <%= order.number %><!--small class="pull-right"><%= order.username %> 促成的 二级订单</small--!></p>
     <div class="index_list">
       <table class="list-table order_info_tables">
         <thead>
@@ -43,13 +43,19 @@
     <p class="date_time"> <span class="pull-right">快递：<%= order.ship_price %></span> </p>
     <p class='date_time'>下单时间 : <%= order.created_at %><span class="pull-right">实收款： <span class='main-color font-size-max'><%= order.pay_amount %></span>元</span></p>
   </div>
+  <div class="admin-border admin-border-order-info">
+    <p class='logistics_info'>收货及物流信息</p>
+    <p>收货地址 : <%= order.username %>, <%= order.mobile %>, <%= order.address %></p>
+    <p>运送方式 : 快递</p>
+    <p>买家留言 : <%= order.to_seller %></p>
+  </div>
 
   <div class="admin-border admin-border-order-info">
+
     <div class='bottom_line'>
-      <p class='logistics_info'>收货及物流信息</p>
-      <p>收货地址 : <%= order.username %>, <%= order.mobile %>, <%= order.address %></p>
-      <p>运送方式 : 快递</p>
-      <p>买家留言 : <%= order.to_seller %></p>
+      <p class='logistics_info'><span class='btn red-btn' style="margin-right:10px;">第二步</span>确认发货/退货信息</p>
+      <p>我的发货信息 : <%= order.user.default_post_address %></p>
+      <p>我的退货信息 : <%= order.user.default_get_address %></p>
     </div>
     <div class='evaluate'>
       <p>发货时间 : <%= order.shiped_at || '未发货' %></p>
