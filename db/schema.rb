@@ -241,6 +241,7 @@ ActiveRecord::Schema.define(version: 20151105024126) do
   end
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
   create_table "job_histories", force: :cascade do |t|
     t.integer  "user_id"
@@ -260,6 +261,8 @@ ActiveRecord::Schema.define(version: 20151105024126) do
   end
 
 >>>>>>> 2832ff4... migration
+=======
+>>>>>>> f28bcfb... order page style
   create_table "mobile_captchas", force: :cascade do |t|
     t.string   "code"
     t.datetime "expire_at"
@@ -270,46 +273,6 @@ ActiveRecord::Schema.define(version: 20151105024126) do
   end
 
   add_index "mobile_captchas", ["mobile"], name: "index_mobile_captchas_on_mobile", using: :btree
-
-  create_table "oauth_access_grants", force: :cascade do |t|
-    t.integer  "resource_owner_id", null: false
-    t.integer  "application_id",    null: false
-    t.string   "token",             null: false
-    t.integer  "expires_in",        null: false
-    t.text     "redirect_uri",      null: false
-    t.datetime "created_at",        null: false
-    t.datetime "revoked_at"
-    t.string   "scopes"
-  end
-
-  add_index "oauth_access_grants", ["token"], name: "index_oauth_access_grants_on_token", unique: true, using: :btree
-
-  create_table "oauth_access_tokens", force: :cascade do |t|
-    t.integer  "resource_owner_id"
-    t.integer  "application_id"
-    t.string   "token",             null: false
-    t.string   "refresh_token"
-    t.integer  "expires_in"
-    t.datetime "revoked_at"
-    t.datetime "created_at",        null: false
-    t.string   "scopes"
-  end
-
-  add_index "oauth_access_tokens", ["refresh_token"], name: "index_oauth_access_tokens_on_refresh_token", unique: true, using: :btree
-  add_index "oauth_access_tokens", ["resource_owner_id"], name: "index_oauth_access_tokens_on_resource_owner_id", using: :btree
-  add_index "oauth_access_tokens", ["token"], name: "index_oauth_access_tokens_on_token", unique: true, using: :btree
-
-  create_table "oauth_applications", force: :cascade do |t|
-    t.string   "name",                      null: false
-    t.string   "uid",                       null: false
-    t.string   "secret",                    null: false
-    t.text     "redirect_uri",              null: false
-    t.string   "scopes",       default: "", null: false
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  add_index "oauth_applications", ["uid"], name: "index_oauth_applications_on_uid", unique: true, using: :btree
 
   create_table "order_charges", force: :cascade do |t|
     t.string   "channel"
@@ -330,6 +293,9 @@ ActiveRecord::Schema.define(version: 20151105024126) do
   add_index "order_charges", ["number"], name: "index_order_charges_on_number", using: :btree
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> f28bcfb... order page style
   create_table "order_item_refunds", force: :cascade do |t|
     t.decimal  "money"
     t.integer  "refund_reason_id"
@@ -337,9 +303,14 @@ ActiveRecord::Schema.define(version: 20151105024126) do
     t.integer  "order_item_id"
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     t.datetime "created_at",                       null: false
     t.datetime "updated_at",                       null: false
 <<<<<<< HEAD
+=======
+    t.datetime "created_at",                       null: false
+    t.datetime "updated_at",                       null: false
+>>>>>>> f28bcfb... order page style
     t.string   "aasm_state"
     t.integer  "order_state"
     t.string   "refund_type"
@@ -347,6 +318,7 @@ ActiveRecord::Schema.define(version: 20151105024126) do
     t.jsonb    "state_at_attributes", default: {}, null: false
   end
 
+<<<<<<< HEAD
   create_table "order_item_refunds", force: :cascade do |t|
     t.decimal  "money"
     t.integer  "refund_reason_id"
@@ -375,9 +347,10 @@ ActiveRecord::Schema.define(version: 20151105024126) do
 
 =======
 >>>>>>> 1228deb... basic function finished
+=======
+>>>>>>> f28bcfb... order page style
   create_table "order_items", force: :cascade do |t|
     t.integer  "order_id"
-    t.integer  "product_id"
     t.integer  "user_id"
     t.integer  "amount"
     t.datetime "created_at",                         null: false
@@ -387,6 +360,7 @@ ActiveRecord::Schema.define(version: 20151105024126) do
     t.decimal  "present_price",        default: 0.0
     t.decimal  "privilege_amount",     default: 0.0
     t.integer  "product_inventory_id"
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -428,6 +402,11 @@ ActiveRecord::Schema.define(version: 20151105024126) do
 >>>>>>> fb8d04f... fix 'FIXME'
 =======
 >>>>>>> 1228deb... basic function finished
+=======
+    t.integer  "product_id"
+    t.integer  "order_item_refund_id"
+    t.integer  "refund_state",         default: 0
+>>>>>>> f28bcfb... order page style
   end
 
   create_table "orders", force: :cascade do |t|
@@ -474,14 +453,17 @@ ActiveRecord::Schema.define(version: 20151105024126) do
 
   create_table "privilege_cards", force: :cascade do |t|
     t.integer  "user_id"
-    t.datetime "created_at",                           null: false
-    t.datetime "updated_at",                           null: false
-    t.boolean  "actived",              default: false
+    t.datetime "created_at",                 null: false
+    t.datetime "updated_at",                 null: false
+    t.boolean  "actived",    default: false
     t.integer  "seller_id"
+<<<<<<< HEAD
 <<<<<<< HEAD
 =======
     t.integer  "product_inventory_id"
 >>>>>>> fb8d04f... fix 'FIXME'
+=======
+>>>>>>> f28bcfb... order page style
   end
 
   create_table "product_classes", force: :cascade do |t|
@@ -588,6 +570,9 @@ ActiveRecord::Schema.define(version: 20151105024126) do
   add_index "redactor_assets", ["assetable_type", "type", "assetable_id"], name: "idx_redactor_assetable_type", using: :btree
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> f28bcfb... order page style
   create_table "refund_messages", force: :cascade do |t|
     t.string   "message"
     t.decimal  "money"
@@ -598,11 +583,15 @@ ActiveRecord::Schema.define(version: 20151105024126) do
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> f28bcfb... order page style
     t.datetime "created_at",           null: false
     t.datetime "updated_at",           null: false
     t.integer  "refund_reason_id"
     t.string   "action"
     t.integer  "order_item_refund_id"
+<<<<<<< HEAD
 =======
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -620,10 +609,13 @@ ActiveRecord::Schema.define(version: 20151105024126) do
     t.string   "action"
     t.integer  "order_item_refund_id"
 >>>>>>> d6a5a01... add add_order_item_refund_id to refund_messages
+=======
+>>>>>>> f28bcfb... order page style
   end
 
   create_table "refund_reasons", force: :cascade do |t|
     t.string   "reason"
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
     t.datetime "created_at",  null: false
@@ -662,12 +654,20 @@ ActiveRecord::Schema.define(version: 20151105024126) do
 
 =======
 >>>>>>> 1228deb... basic function finished
+=======
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+    t.string   "reason_type"
+  end
+
+>>>>>>> f28bcfb... order page style
   create_table "regions", force: :cascade do |t|
     t.string  "name"
     t.string  "numcode"
     t.integer "parent_id"
   end
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -683,6 +683,8 @@ ActiveRecord::Schema.define(version: 20151105024126) do
 >>>>>>> e69ec7a... 退货
 =======
 >>>>>>> 529e607... 拒绝退款/收货原因
+=======
+>>>>>>> f28bcfb... order page style
   create_table "sales_returns", force: :cascade do |t|
     t.string   "logistics_company"
     t.string   "ship_number"
@@ -692,8 +694,11 @@ ActiveRecord::Schema.define(version: 20151105024126) do
     t.integer  "order_item_refund_id"
   end
 
+<<<<<<< HEAD
 =======
 >>>>>>> 1228deb... basic function finished
+=======
+>>>>>>> f28bcfb... order page style
   create_table "selling_incomes", force: :cascade do |t|
     t.datetime "created_at",               null: false
     t.datetime "updated_at",               null: false
@@ -890,12 +895,16 @@ ActiveRecord::Schema.define(version: 20151105024126) do
   add_foreign_key "privilege_cards", "users"
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
   add_foreign_key "refund_messages", "order_item_refunds"
   add_foreign_key "refund_records", "order_item_refunds"
 =======
 >>>>>>> 013bc0b... fix mobile page product show sku app
 =======
 >>>>>>> 1228deb... basic function finished
+=======
+  add_foreign_key "refund_messages", "order_item_refunds"
+>>>>>>> f28bcfb... order page style
   add_foreign_key "selling_incomes", "orders"
   add_foreign_key "selling_incomes", "users"
   add_foreign_key "sharing_incomes", "order_items"
