@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151110082525) do
+ActiveRecord::Schema.define(version: 20151112041324) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -37,11 +37,11 @@ ActiveRecord::Schema.define(version: 20151110082525) do
     t.integer  "size"
     t.integer  "width"
     t.integer  "height"
-    t.integer  "parent_id"
     t.string   "thumbnail"
     t.datetime "created_at"
     t.string   "alt"
     t.string   "url"
+    t.string   "image_type"
   end
 
   create_table "attention_associations", force: :cascade do |t|
