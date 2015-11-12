@@ -10,7 +10,7 @@
           <% flag, money = check_refund_and_get_money(@order_item, @refund) %>
           <span class="pull-left">￥</span>
           <div class="money">
-            <%= f.input_field :money, value: money, class: 'input-block', disabled: !flag %>
+            <%= f.input_field :money, value: money, class: 'input-block', readonly: !flag %>
           </div>
         </td>
       </tr>
