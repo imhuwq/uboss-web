@@ -1,12 +1,9 @@
-<%= content_for :page_title do %>
-  退款详情
-<% end %>
 	<br />
 	<div class="gap-lr"><%= @refund.aasm.human_state %></div>
 <% case @refund.aasm_state %>
 <% when 'pending' %>
 	<br />
-  <div class="countdown bg-like gap" id="timer">   
+  <div class="countdown bg-like gap" id="timer">
   </div>
   <div class="gap">
 	  <ul class="ul-list">
@@ -50,7 +47,7 @@
     <%= link_to '再次申请', new_order_item_order_item_refund_path(order_item_id: @order_item.id, refund_type: 'refund')  ,class:'btn btn-block btn-black-border'%>
   <% end %>
 </div>
-  
+
 
 
 <% when 'confirm_received' %>
