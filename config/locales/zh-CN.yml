@@ -191,6 +191,10 @@ zh-CN:
         share_amount_total: 总返利
       carriage_template:
         name: 模板名称
+      order_item_refund:
+        money: 金额
+        refund_reason_id: 退款理由
+        refund_type: 退款类型
       different_area:
         first_item: 首件
         carriage: 运费

@@ -2,6 +2,7 @@
   <%= simple_form_for [@order_item, @refund] do |f| %>
     <%= upyun_meta_tags prefix: 'asset_img/avatar' %>
 
+    <%= render partial: 'shared/form_error_message', locals: { obj: @refund } %>
     <%= f.hidden_field :refund_type %>
     <table class="refund-table">
       <tr>
