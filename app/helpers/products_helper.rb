@@ -29,11 +29,11 @@ module ProductsHelper
   end
 
   def product_sharing_title(product)
-    "【#{product.name}】#{number_to_currency(product.present_price)}优惠购买，分享还能拿返利，快来UBOSS看看吧"
+    "【#{product.name}】#{number_to_currency(product.present_price)}优惠购买，这个优惠我給的！分享还能拿返利！"
   end
 
   def product_sharing_desc(product)
-    "#{product.short_description}"
+    "在我这儿，谁还会用市场价购买啊？"
   end
 
   def self_privilege_card?(privilege_card)
