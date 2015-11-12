@@ -1,6 +1,11 @@
 <div class="box-w70">
   <div class="admin-border admin-border-order-info">
-    <p class='number'><span class='btn red-btn' style="margin-right:10px;">第一步</span>订单编号 : <%= order.number %><!--small class="pull-right"><%= order.username %> 促成的 二级订单</small--!></p>
+    <p class='number'><span class='btn red-btn' style="margin-right:10px;">第一步</span>订单编号 : <%= order.number %>
+    	<!--
+    		<small class="pull-right"><%= order.username %> 促成的 二级订单</small>
+    	-->
+    		
+    </p>
     <div class="index_list">
       <table class="list-table order_info_tables">
         <thead>
@@ -50,13 +55,156 @@
     <p>买家留言 : <%= order.to_seller %></p>
   </div>
 
-  <div class="admin-border admin-border-order-info">
+  <div class="admin-border admin-border-order-info address-list-box">
 
     <div class='bottom_line'>
       <p class='logistics_info'><span class='btn red-btn' style="margin-right:10px;">第二步</span>确认发货/退货信息</p>
-      <p>我的发货信息 : <%= order.user.default_post_address %></p>
-      <p>我的退货信息 : <%= order.user.default_get_address %></p>
+      <p>我的发货信息 : <%= order.user.default_post_address %> <span class="pull-right address-alert" title="发货地址">修改发货地址</span></p>
+      <p>我的退货信息 : <%= order.user.default_get_address %> <span class="pull-right address-alert" title="退货地址">修改退货地址</span></p>
     </div>
+    <div id="address-list-box" class="hidden">
+    	<div class="content">
+    		<div class="close"><i class="fa fa-times"></i></div>
+	    	<div class="title">
+	    		<span class="name"></span>
+	    		<span><a href="">地址管理</a></span>
+	    	</div>
+	    	<table>
+	    		<tr>
+	    			<td><input type="checkbox" /></td>
+	    			<td>收货人名称</td>
+	    			<td>电话号码</td>
+	    			<td>收货地址</td>
+	    			<td>邮编</td>
+	    			<td>
+	    				备注
+	    				if为空
+	    				&nbsp;
+	    			</td>
+	    		</tr>
+	    		<tr>
+	    			<td><input type="checkbox" /></td>
+	    			<td>收货人名称</td>
+	    			<td>电话号码</td>
+	    			<td>收货地址</td>
+	    			<td>邮编</td>
+	    			<td>
+	    				备注
+	    				if为空
+	    				&nbsp;
+	    			</td>
+	    		</tr>
+	    		<tr>
+	    			<td><input type="checkbox" /></td>
+	    			<td>收货人名称</td>
+	    			<td>电话号码</td>
+	    			<td>收货地址</td>
+	    			<td>邮编</td>
+	    			<td>
+	    				备注
+	    				if为空
+	    				&nbsp;
+	    			</td>
+	    		</tr>
+	    		<tr>
+	    			<td><input type="checkbox" /></td>
+	    			<td>收货人名称</td>
+	    			<td>电话号码</td>
+	    			<td>收货地址</td>
+	    			<td>邮编</td>
+	    			<td>
+	    				备注
+	    				if为空
+	    				&nbsp;
+	    			</td>
+	    		</tr>
+	    		<tr>
+	    			<td><input type="checkbox" /></td>
+	    			<td>收货人名称</td>
+	    			<td>电话号码</td>
+	    			<td>收货地址</td>
+	    			<td>邮编</td>
+	    			<td>
+	    				备注
+	    				if为空
+	    				&nbsp;
+	    			</td>
+	    		</tr>
+	    		<tr>
+	    			<td><input type="checkbox" /></td>
+	    			<td>收货人名称</td>
+	    			<td>电话号码</td>
+	    			<td>收货地址</td>
+	    			<td>邮编</td>
+	    			<td>
+	    				备注
+	    				if为空
+	    				&nbsp;
+	    			</td>
+	    		</tr>
+	    		<tr>
+	    			<td><input type="checkbox" /></td>
+	    			<td>收货人名称</td>
+	    			<td>电话号码</td>
+	    			<td>收货地址</td>
+	    			<td>邮编</td>
+	    			<td>
+	    				备注
+	    				if为空
+	    				&nbsp;
+	    			</td>
+	    		</tr>
+	    		<tr>
+	    			<td><input type="checkbox" /></td>
+	    			<td>收货人名称</td>
+	    			<td>电话号码</td>
+	    			<td>收货地址</td>
+	    			<td>邮编</td>
+	    			<td>
+	    				备注
+	    				if为空
+	    				&nbsp;
+	    			</td>
+	    		</tr>
+	    		<tr>
+	    			<td><input type="checkbox" /></td>
+	    			<td>收货人名称</td>
+	    			<td>电话号码</td>
+	    			<td>收货地址</td>
+	    			<td>邮编</td>
+	    			<td>
+	    				备注
+	    				if为空
+	    				&nbsp;
+	    			</td>
+	    		</tr>
+	    		<tr>
+	    			<td><input type="checkbox" /></td>
+	    			<td>收货人名称</td>
+	    			<td>电话号码</td>
+	    			<td>收货地址</td>
+	    			<td>邮编</td>
+	    			<td>
+	    				备注
+	    				if为空
+	    				&nbsp;
+	    			</td>
+	    		</tr>
+	    		<tr>
+	    			<td><input type="checkbox" /></td>
+	    			<td>收货人名称</td>
+	    			<td>电话号码</td>
+	    			<td>收货地址</td>
+	    			<td>邮编</td>
+	    			<td>
+	    				备注
+	    				if为空
+	    				&nbsp;
+	    			</td>
+	    		</tr>
+	    	</table>
+    	</div><!-- content -->
+    </div><!-- title -->
     <div class='evaluate'>
       <p>发货时间 : <%= order.shiped_at || '未发货' %></p>
       <p>快递公司 : <%= order.express.try(:name) %></p>
