@@ -8,12 +8,16 @@
 <% end %>
 <br />
 <div id="order_item_refund_show">
-  <div class='refund-box'>
+  <div class='refund-box'>  		
+		<div class="bg-white">
 	    <%= render partial: 'refund_info_status', locals: { refund: @refund } %>
-	    <p><%= link_to '查看协商详情', new_order_item_order_item_refund_refund_message_path(order_item_id: @order_item.id, order_item_refund_id: @refund.id),class:'btn btn-block btn-black-border' %></p>
-	    <br />
-  	</div><!-- bg-white -->
-  </div>
+		    <div class="gap-lr">
+		    	<%= link_to '查看协商详情', new_order_item_order_item_refund_refund_message_path(order_item_id: @order_item.id, order_item_refund_id: @refund.id),class:'btn btn-block btn-black-border' %>
+		    	<br />
+		    </div>
+	 	</div><!-- bg-white -->
+  </div><!-- refund-box -->
+</div><!-- order_item_refund_show -->
 
   <br />
   <div class="bg-white">

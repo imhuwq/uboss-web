@@ -5,7 +5,7 @@
     <%= f.hidden_field :refund_type %>
     <table class="refund-table">
       <tr>
-        <td>退款金额</td>
+        <td width="100">退款金额</td>
         <td class="like-color">
           <% flag, money = check_refund_and_get_money(@order_item, @refund) %>
         	<% if flag %>
