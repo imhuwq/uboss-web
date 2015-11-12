@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151110082525) do
+ActiveRecord::Schema.define(version: 20151112030528) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -42,11 +42,6 @@ ActiveRecord::Schema.define(version: 20151110082525) do
     t.datetime "created_at"
     t.string   "alt"
     t.string   "url"
-  end
-
-  create_table "attention_associations", force: :cascade do |t|
-    t.integer "user_id"
-    t.integer "following_id"
   end
 
   create_table "bank_cards", force: :cascade do |t|
@@ -82,23 +77,6 @@ ActiveRecord::Schema.define(version: 20151110082525) do
   end
 
   add_index "carts", ["user_id"], name: "index_carts_on_user_id", using: :btree
-
-  create_table "categories", force: :cascade do |t|
-    t.string   "name",       null: false
-    t.integer  "user_id",    null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
-  add_index "categories", ["user_id", "name"], name: "index_categories_on_user_id_and_name", unique: true, using: :btree
-
-  create_table "categories_products", id: false, force: :cascade do |t|
-    t.integer "product_id",  null: false
-    t.integer "category_id", null: false
-  end
-
-  add_index "categories_products", ["category_id"], name: "index_categories_products_on_category_id", using: :btree
-  add_index "categories_products", ["product_id"], name: "index_categories_products_on_product_id", using: :btree
 
   create_table "daily_reports", force: :cascade do |t|
     t.date     "day"
@@ -186,9 +164,17 @@ ActiveRecord::Schema.define(version: 20151110082525) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "follower_associations", force: :cascade do |t|
-    t.integer "user_id"
-    t.integer "follower_id"
+  create_table "job_histories", force: :cascade do |t|
+    t.integer  "user_id"
+    t.integer  "status"
+    t.string   "message"
+    t.string   "resource_type"
+    t.string   "resource_id"
+    t.string   "job_class"
+    t.string   "job_method"
+    t.jsonb    "options"
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
   end
 
   create_table "mobile_captchas", force: :cascade do |t|
@@ -260,6 +246,20 @@ ActiveRecord::Schema.define(version: 20151110082525) do
 
   add_index "order_charges", ["number"], name: "index_order_charges_on_number", using: :btree
 
+  create_table "order_item_refunds", force: :cascade do |t|
+    t.decimal  "money"
+    t.integer  "refund_reason_id"
+    t.string   "description"
+    t.integer  "order_item_id"
+    t.datetime "created_at",                       null: false
+    t.datetime "updated_at",                       null: false
+    t.string   "aasm_state"
+    t.integer  "order_state"
+    t.string   "refund_type"
+    t.integer  "user_id"
+    t.jsonb    "state_at_attributes", default: {}, null: false
+  end
+
   create_table "order_items", force: :cascade do |t|
     t.integer  "order_id"
     t.integer  "product_id"
@@ -272,6 +272,8 @@ ActiveRecord::Schema.define(version: 20151110082525) do
     t.decimal  "present_price",        default: 0.0
     t.decimal  "privilege_amount",     default: 0.0
     t.integer  "product_inventory_id"
+    t.integer  "order_item_refund_id"
+    t.integer  "refund_state",         default: 0
   end
 
   create_table "orders", force: :cascade do |t|
@@ -357,7 +359,6 @@ ActiveRecord::Schema.define(version: 20151110082525) do
     t.integer  "product_class_id"
     t.datetime "created_at",                      null: false
     t.datetime "updated_at",                      null: false
-    t.integer  "user_id"
   end
 
   create_table "product_property_values", force: :cascade do |t|
@@ -366,10 +367,7 @@ ActiveRecord::Schema.define(version: 20151110082525) do
     t.integer  "product_class_id"
     t.datetime "created_at",          null: false
     t.datetime "updated_at",          null: false
-    t.integer  "user_id"
   end
-
-  add_index "product_property_values", ["user_id"], name: "index_product_property_values_on_user_id", using: :btree
 
   create_table "product_property_values_products", id: false, force: :cascade do |t|
     t.integer "product_id",                null: false
@@ -388,7 +386,6 @@ ActiveRecord::Schema.define(version: 20151110082525) do
     t.decimal  "original_price",       default: 0.0
     t.decimal  "present_price",        default: 0.0
     t.integer  "count",                default: 0
-    t.boolean  "buyer_pay",            default: true
     t.decimal  "traffic_expense",      default: 0.0
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -432,10 +429,48 @@ ActiveRecord::Schema.define(version: 20151110082525) do
   add_index "redactor_assets", ["assetable_type", "assetable_id"], name: "idx_redactor_assetable", using: :btree
   add_index "redactor_assets", ["assetable_type", "type", "assetable_id"], name: "idx_redactor_assetable_type", using: :btree
 
+  create_table "refund_messages", force: :cascade do |t|
+    t.string   "message"
+    t.decimal  "money"
+    t.string   "user_type"
+    t.integer  "user_id"
+    t.string   "money_to"
+    t.string   "explain"
+    t.datetime "created_at",           null: false
+    t.datetime "updated_at",           null: false
+    t.integer  "refund_reason_id"
+    t.string   "action"
+    t.integer  "order_item_refund_id"
+  end
+
+  create_table "refund_reasons", force: :cascade do |t|
+    t.string   "reason"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+    t.string   "reason_type"
+  end
+
   create_table "regions", force: :cascade do |t|
     t.string  "name"
     t.string  "numcode"
     t.integer "parent_id"
+  end
+
+  create_table "return_goods", force: :cascade do |t|
+    t.string   "logistics_company"
+    t.string   "ship_number"
+    t.string   "description"
+    t.datetime "created_at",        null: false
+    t.datetime "updated_at",        null: false
+  end
+
+  create_table "sales_returns", force: :cascade do |t|
+    t.string   "logistics_company"
+    t.string   "ship_number"
+    t.string   "description"
+    t.datetime "created_at",           null: false
+    t.datetime "updated_at",           null: false
+    t.integer  "order_item_refund_id"
   end
 
   create_table "selling_incomes", force: :cascade do |t|
@@ -620,9 +655,6 @@ ActiveRecord::Schema.define(version: 20151110082525) do
   add_foreign_key "cart_items", "product_inventories"
   add_foreign_key "cart_items", "users", column: "seller_id"
   add_foreign_key "carts", "users"
-  add_foreign_key "categories", "users"
-  add_foreign_key "categories_products", "categories"
-  add_foreign_key "categories_products", "products"
   add_foreign_key "order_items", "orders"
   add_foreign_key "order_items", "products"
   add_foreign_key "order_items", "sharing_nodes"
@@ -632,8 +664,7 @@ ActiveRecord::Schema.define(version: 20151110082525) do
   add_foreign_key "orders", "users"
   add_foreign_key "orders", "users", column: "seller_id", name: "fk_order_seller_foreign_key"
   add_foreign_key "privilege_cards", "users"
-  add_foreign_key "product_properties", "users"
-  add_foreign_key "product_property_values", "users"
+  add_foreign_key "refund_messages", "order_item_refunds"
   add_foreign_key "selling_incomes", "orders"
   add_foreign_key "selling_incomes", "users"
   add_foreign_key "sharing_incomes", "order_items"

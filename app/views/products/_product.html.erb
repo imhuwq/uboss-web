@@ -8,7 +8,7 @@
         <div class="li_contentinteo">
           <div class="con_title"><%= product.name %></div>
           <div class="intrdu"><%= product.short_description %></div>
-          <div class="baoyou">邮费：<%= Product::DataBuyerPay[product.buyer_pay] %></div>
+          <div class="baoyou">邮费：<%= Product::DataBuyerPay[product.transportation_way] %></div>
           <div class="pric"><strong>￥<%= product.present_price %></strong></div>
         </div>
      </div>

@@ -89,7 +89,7 @@ class Admin::ProductsController < AdminController
     params.require(:product).permit(
       :name,      :original_price,  :present_price,     :count,
       :content,   :has_share_lv,    :calculate_way,     :avatar,
-      :buyer_pay, :traffic_expense, :short_description, :transportation_way,
+      :traffic_expense, :short_description, :transportation_way,
       :carriage_template_id,
       product_inventories_attributes: [
         :id, :price, :count, :share_amount_total, :privilege_amount,
