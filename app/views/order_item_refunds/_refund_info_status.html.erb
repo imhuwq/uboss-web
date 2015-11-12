@@ -1,31 +1,32 @@
-
 <%= content_for :page_title do %>
   退款详情
 <% end %>
-<div class="bg-white gap"><%= @refund.aasm.human_state %></div>
+	<br />
+	<div class="gap-lr"><%= @refund.aasm.human_state %></div>
 <% case @refund.aasm_state %>
 <% when 'pending' %>
+	<br />
   <div class="countdown bg-like gap" id="timer">   
   </div>
-  <div class="bg-white gap-lr">
-  <ul class="ul-list">
-    <li>
-      <span>如果卖家同意：</span> <span class="gray-color">申请将达成并退款回您当时支付的账号或银行卡</span>
-    </li>
-    <li>
-      <span>如果商家发货：</span> <span class="gray-color">申请将关闭；您可以再次发起退款</span>
-     </li>
-    <li>
-      <span>如果商家超时未处理：</span> <span class="gray-color">申请将默认达成并退款回您当时支付的账号或银行卡</span>
-    </li>
-  </ul>
-  <br />
-  <p><%= link_to '修改退款申请', edit_order_item_order_item_refund_path(order_item_id: @order_item.id, id: @refund.id),class:'btn btn-block btn-black-border' %></p>
-  <br />
-  <p><%= link_to '撤销申请', close_order_item_order_item_refund_path(order_item_id: @order_item.id, id: @refund.id), data: {confirm: '确定撤销申请？'},class:'btn btn-block btn-black-border'%></p>
-	<br />
+  <div class="gap">
+	  <ul class="ul-list">
+	    <li>
+	      <span>如果卖家同意：</span> <span class="gray-color">申请将达成并退款回您当时支付的账号或银行卡</span>
+	    </li>
+	    <li>
+	      <span>如果商家发货：</span> <span class="gray-color">申请将关闭；您可以再次发起退款</span>
+	     </li>
+	    <li>
+	      <span>如果商家超时未处理：</span> <span class="gray-color">申请将默认达成并退款回您当时支付的账号或银行卡</span>
+	    </li>
+	  </ul>
+	  <br />
+	  <p><%= link_to '修改退款申请', edit_order_item_order_item_refund_path(order_item_id: @order_item.id, id: @refund.id),class:'btn btn-block btn-black-border' %></p>
+	  <br />
+	  <p><%= link_to '撤销申请', close_order_item_order_item_refund_path(order_item_id: @order_item.id, id: @refund.id), data: {confirm: '确定撤销申请？'},class:'btn btn-block btn-black-border'%></p>
+	</div>
 <% when 'approved' %>
-	<div class="bg-white gap line-gap">
+	<div class="gap line-gap">
   <% if @refund.refund_type_include_goods? %>
     <p>卖家同意申请：请退货</p>
     <p><%= link_to '退货', new_order_item_order_item_refund_sales_return_path(order_item_id: @order_item.id, order_item_refund_id: @refund.id),class:'btn btn-block btn-black-border' %>
@@ -34,43 +35,37 @@
     <p>卖家退款给买家0.05元</p>
     <p>UBOSS将在24小时内退款会您当时支付的账号或银行卡，请注意查收</p>
   <% end %>
-  </div>
-  <br />
 <% when 'completed_express_number' %>
 
 <% when 'declined' %>
-	<div class="bg-white gap line-gap">
+	<div class="gap line-gap">
 	  <p><%= link_to '修改申请', nil,class:'btn btn-block btn-black-border' %></p>
 	  <p><%= link_to '撤销申请', close_order_item_order_item_refund_path(order_item_id: @order_item.id, id: @refund.id), data: {confirm: '确定撤销申请?'},class:'btn btn-block btn-black-border'%></p>
 	  <p><%= link_to 'UBOSS介入', nil ,class:'btn btn-block btn-black-border'%></p>
 	</div>
-  <br />
 <% when 'cancelled' %>
-<div class="bg-white gap line-gap">
+<div class="gap line-gap">
   <p>卖家已发货，此申请被自动撤销</p>
 	<% if can_reapply?(@order_item) %>
     <%= link_to '再次申请', new_order_item_order_item_refund_path(order_item_id: @order_item.id, refund_type: 'refund')  ,class:'btn btn-block btn-black-border'%>
   <% end %>
 </div>
-<br />
   
 
 
 <% when 'confirm_received' %>
 
 <% when 'decline_received' %>
-	<div class="bg-white gap line-gap">
+	<div class="gap line-gap">
 	  <p><%= link_to '修改申请', nil,class:'btn btn-block btn-black-border' %></p>
 	  <p><%= link_to '撤销申请', close_order_item_order_item_refund_path(order_item_id: @order_item.id, id: @refund.id), data: {confirm: '确定撤销申请?'},class:'btn btn-block btn-black-border' %></p>
 	  <p><%= link_to 'UBOSS介入', nil ,class:'btn btn-block btn-black-border'%></p>
   </div>
-  <br />
 <% when 'applied_uboss' %>
 
 <% when 'finished' %>
-	<div class="bg-white gap line-gap">
+	<div class="gap line-gap">
 	  <p>退款成功</p>
 	  <p>退款金额：0.05元</p>
 	</div>
-  <br />
 <% end %>
