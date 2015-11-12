@@ -32,7 +32,7 @@ class MobileCaptcha < ActiveRecord::Base
   end
 
 	def generate_code #生成验证码
-    self.code ||= rand(9999..100_000).to_s.ljust(5, '0')
+    self.code ||= rand(9999..100_000).to_s.ljust(4, '0')
   end
 
   def set_expire_time # 设定过期时间
@@ -41,7 +41,7 @@ class MobileCaptcha < ActiveRecord::Base
 
 	def regenerate_code
     self.tap do |mobile_auth_code|
-      mobile_auth_code.code = rand(9999..100_000).to_s.ljust(5,'0')
+      mobile_auth_code.code = rand(9999..100_000).to_s.ljust(4,'0')
       mobile_auth_code.expire_at = DateTime.now + 30.minute
     end
   end
