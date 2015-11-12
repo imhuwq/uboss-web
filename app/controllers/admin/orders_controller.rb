@@ -20,10 +20,6 @@ class Admin::OrdersController < AdminController
     redirect_to admin_order_path(@order)
   end
 
-  def modal_close
-    @order = Order.find(params[:id])
-  end
-
   def batch_shipments
     success, errors = 0, 0
     if params[:order].present?

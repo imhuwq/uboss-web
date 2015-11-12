@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151105024126) do
+ActiveRecord::Schema.define(version: 20151110082525) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -112,6 +112,13 @@ ActiveRecord::Schema.define(version: 20151105024126) do
     t.integer "region_id"
   end
 
+  create_table "districts", force: :cascade do |t|
+    t.string   "name"
+    t.integer  "numcode"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "divide_incomes", force: :cascade do |t|
     t.integer  "user_id"
     t.integer  "order_id"
@@ -192,46 +199,6 @@ ActiveRecord::Schema.define(version: 20151105024126) do
 
   add_index "mobile_captchas", ["mobile"], name: "index_mobile_captchas_on_mobile", using: :btree
 
-  create_table "oauth_access_grants", force: :cascade do |t|
-    t.integer  "resource_owner_id", null: false
-    t.integer  "application_id",    null: false
-    t.string   "token",             null: false
-    t.integer  "expires_in",        null: false
-    t.text     "redirect_uri",      null: false
-    t.datetime "created_at",        null: false
-    t.datetime "revoked_at"
-    t.string   "scopes"
-  end
-
-  add_index "oauth_access_grants", ["token"], name: "index_oauth_access_grants_on_token", unique: true, using: :btree
-
-  create_table "oauth_access_tokens", force: :cascade do |t|
-    t.integer  "resource_owner_id"
-    t.integer  "application_id"
-    t.string   "token",             null: false
-    t.string   "refresh_token"
-    t.integer  "expires_in"
-    t.datetime "revoked_at"
-    t.datetime "created_at",        null: false
-    t.string   "scopes"
-  end
-
-  add_index "oauth_access_tokens", ["refresh_token"], name: "index_oauth_access_tokens_on_refresh_token", unique: true, using: :btree
-  add_index "oauth_access_tokens", ["resource_owner_id"], name: "index_oauth_access_tokens_on_resource_owner_id", using: :btree
-  add_index "oauth_access_tokens", ["token"], name: "index_oauth_access_tokens_on_token", unique: true, using: :btree
-
-  create_table "oauth_applications", force: :cascade do |t|
-    t.string   "name",                      null: false
-    t.string   "uid",                       null: false
-    t.string   "secret",                    null: false
-    t.text     "redirect_uri",              null: false
-    t.string   "scopes",       default: "", null: false
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  add_index "oauth_applications", ["uid"], name: "index_oauth_applications_on_uid", unique: true, using: :btree
-
   create_table "order_charges", force: :cascade do |t|
     t.string   "channel"
     t.datetime "created_at",                         null: false
@@ -250,9 +217,22 @@ ActiveRecord::Schema.define(version: 20151105024126) do
 
   add_index "order_charges", ["number"], name: "index_order_charges_on_number", using: :btree
 
+  create_table "order_item_refunds", force: :cascade do |t|
+    t.decimal  "money"
+    t.integer  "refund_reason_id"
+    t.string   "description"
+    t.integer  "order_item_id"
+    t.datetime "created_at",                       null: false
+    t.datetime "updated_at",                       null: false
+    t.string   "aasm_state"
+    t.integer  "order_state"
+    t.string   "refund_type"
+    t.integer  "user_id"
+    t.jsonb    "state_at_attributes", default: {}, null: false
+  end
+
   create_table "order_items", force: :cascade do |t|
     t.integer  "order_id"
-    t.integer  "product_id"
     t.integer  "user_id"
     t.integer  "amount"
     t.datetime "created_at",                         null: false
@@ -262,6 +242,9 @@ ActiveRecord::Schema.define(version: 20151105024126) do
     t.decimal  "present_price",        default: 0.0
     t.decimal  "privilege_amount",     default: 0.0
     t.integer  "product_inventory_id"
+    t.integer  "product_id"
+    t.integer  "order_item_refund_id"
+    t.integer  "refund_state",         default: 0
   end
 
   create_table "orders", force: :cascade do |t|
@@ -419,10 +402,40 @@ ActiveRecord::Schema.define(version: 20151105024126) do
   add_index "redactor_assets", ["assetable_type", "assetable_id"], name: "idx_redactor_assetable", using: :btree
   add_index "redactor_assets", ["assetable_type", "type", "assetable_id"], name: "idx_redactor_assetable_type", using: :btree
 
+  create_table "refund_messages", force: :cascade do |t|
+    t.string   "message"
+    t.decimal  "money"
+    t.string   "user_type"
+    t.integer  "user_id"
+    t.string   "money_to"
+    t.string   "explain"
+    t.datetime "created_at",           null: false
+    t.datetime "updated_at",           null: false
+    t.integer  "refund_reason_id"
+    t.string   "action"
+    t.integer  "order_item_refund_id"
+  end
+
+  create_table "refund_reasons", force: :cascade do |t|
+    t.string   "reason"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+    t.string   "reason_type"
+  end
+
   create_table "regions", force: :cascade do |t|
     t.string  "name"
     t.string  "numcode"
     t.integer "parent_id"
+  end
+
+  create_table "sales_returns", force: :cascade do |t|
+    t.string   "logistics_company"
+    t.string   "ship_number"
+    t.string   "description"
+    t.datetime "created_at",           null: false
+    t.datetime "updated_at",           null: false
+    t.integer  "order_item_refund_id"
   end
 
   create_table "selling_incomes", force: :cascade do |t|
@@ -537,6 +550,7 @@ ActiveRecord::Schema.define(version: 20151105024126) do
     t.integer  "worst_evaluation"
     t.integer  "better_evaluation"
     t.integer  "best_evaluation"
+    t.string   "store_cover"
   end
 
   add_index "user_infos", ["user_id"], name: "index_user_infos_on_user_id", unique: true, using: :btree
@@ -618,6 +632,7 @@ ActiveRecord::Schema.define(version: 20151105024126) do
   add_foreign_key "orders", "users"
   add_foreign_key "orders", "users", column: "seller_id", name: "fk_order_seller_foreign_key"
   add_foreign_key "privilege_cards", "users"
+  add_foreign_key "refund_messages", "order_item_refunds"
   add_foreign_key "selling_incomes", "orders"
   add_foreign_key "selling_incomes", "users"
   add_foreign_key "sharing_incomes", "order_items"

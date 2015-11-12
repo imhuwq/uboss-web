@@ -3,173 +3,197 @@
     <%= seo_meta_tag %>
   <% end %>
 <% end %>
-
-<div class="banner-slider">
-  <div id='slider' class='swipe'>
-    <div class='swipe-wrap'>
-      <div>
-      	<a href="/lady" class="text-center"> <%= image_tag 'mobile/slideshow/1.jpg' %></a>
-        <!--<a href="/" class="img-100-200" style="background-image:url('<%= asset_path("mobile/slideshow/1.jpg") %>') ;"></a> -->
-      </div>
-      <div>
-        <a href="/maca" class="text-center"> <%= image_tag 'mobile/slideshow/2.jpg' %></a>
-      </div>
-      <div>
-        <a href="/snacks" class="text-center"> <%= image_tag 'mobile/slideshow/3.jpg' %></a>
-      </div>
-    </div>
-  </div>
-  <div id='slider-points'>
-    <span class='active'>*</span>
-    <span>*</span>
-    <span>*</span>
-  </div>
-</div>
-
-<div class="box border-box">
-	<div class="box-w100">
-		<div class="page-title like-color">
-      <%= link_to store_path(User.official_account), class: 'more-bar' do %>
-        more <%= image_tag 'mobile/arrow-right.png' %>
-      <% end %>
-			猜你喜欢
+<div class="banner text-center">
+	<div class="content">
+		<div class="top">
+			<h1 class="main-color"><b>UBOSS</b></h1>
+			<h3 class="main-color">基于人，超乎想象</h3>
+			<h4><b>零成本建立线上分销移动商城</b></h4>
+			<br />
+		</div><!-- top -->
+		<br />
+		<div class="middle">
+			<h4>
+				<span>
+					<i class="fa-circle main-color flashed1"></i> 免费建立
+				</span>　
+				<span>
+					<i class="fa-circle main-color flashed2"></i> 裂变销售
+				</span>　
+				<span>
+					<i class="fa-circle main-color flashed3"></i> 数据支持
+				</span>
+			</h4>
+			<br />
+		</div><!-- middle -->		
+	</div><!-- content -->
+</div><!-- banner -->
+<div class="bg-white">
+	<br/>
+	<div class="page1">
+		<div class="box-w100">
+			<div class="title-bar">
+				<div class="circle-icon">
+					<i class="fa-circle fa-sm"></i>
+					<i class="fa-circle fa-md"></i>
+					<i class="fa-circle fa-lg"></i>
+				</div>
+				<div class="content">
+					<h1>EFFECT</h1>
+					<div><b>商家优势</b></div>
+				</div>
+				<div class="circle-icon">
+					<i class="fa-circle fa-lg"></i>
+					<i class="fa-circle fa-md"></i>
+					<i class="fa-circle fa-sm"></i>
+				</div>					
+			</div><!-- title-bar -->
 		</div>
-	</div>
-	<div class="box-w33">
-		<div class="product-box">
-			<div class="cover"><a href="/products/21"><%= image_tag 'mobile/product/1.jpg' %></a></div>
-			<div class="title"><a href="/products/21">黑玛卡干果丽江黑玛咖干片黄紫黑玛卡种子马卡男性补肾端端牌100g</a></div>
-			<div class="price">￥70.0 <span>￥185.0</span></div>
+		<br />
+		<div class="box-w100">
+			<p class="text-center"><%= image_tag "mobile/new_index/effect.png", alt:"商家优势",width:'70%' %>		</p>
+			<br />
 		</div>
-	</div>
-	<div class="box-w33">
-		<div class="product-box">
-			<div class="cover"><a href="/products/16"><%= image_tag 'mobile/product/3.jpg' %></a></div>
-			<div class="title"><a href="/products/16">那曲虫草专柜正品青海冬虫夏草同仁堂品质保真3条/克新草礼盒送人</a></div>
-			<div class="price">￥225.0 <span>￥311.0</span></div>
+		<div class="box-w50">	
+			<h3 class="main-color gap"><i class="fa-circle"></i>　线下引流</h3>
+			<div class="content gap">
+				<p>成为UBOSS进驻商户消费者随时随地将商品分享到线上</p>
+			</div><!-- content -->
+			<br />
+		</div>	
+		<div class="box-w50">	
+			<h3 class="main-color gap"><i class="fa-circle"></i>　线上传播</h3>
+			<div class="content gap">
+				<p>消费者帮朋友打折，给自己返现口碑分享引爆好商品销量</p>
+			</div><!-- content -->
+		</div>			
+	</div><!-- page1 -->
+	<br />
+	<div class="page2 text-center">
+		<br />
+		<div class="box-w100">
+			<div class="title-bar">
+				<div class="circle-icon">
+					<i class="fa-circle fa-sm"></i>
+					<i class="fa-circle fa-md"></i>
+					<i class="fa-circle fa-lg"></i>
+				</div>
+				<div class="content">
+					<h1>WAY</h1>
+					<div><b>商家流程</b></div>
+				</div>
+				<div class="circle-icon">
+					<i class="fa-circle fa-lg"></i>
+					<i class="fa-circle fa-md"></i>
+					<i class="fa-circle fa-sm"></i>
+				</div>					
+			</div><!-- title-bar -->
+			<p class="text-center">进行注册与认证<br/>请用电脑登录UBOSS.cn</p>
+			<br />
+		</div><!-- box-w100 -->
+		<div class="box-w50">
+			<h1>01</h1>
+			<p><%= image_tag "mobile/new_index/way1.png", alt:"注册开店",width:'70%' %></p>
+			<br />
+			<h3>注册开店</h3>
+			<p>开店完全免费</p>
+			<br />
 		</div>
-	</div>
-	<div class="box-w33">
-		<div class="product-box">
-			<div class="cover"><a href="/products/12"><%= image_tag 'mobile/product/2.jpg' %></a></div>
-			<div class="title"><a href="/products/12">Clinie 可莱丝NMF针剂水库补水睡眠面膜贴</a></div>
-			<div class="price">￥70.0 <span>￥96.0</span></div>
+		<div class="box-w50">			
+			<h1>02</h1>
+			<p><%= image_tag "mobile/new_index/way2.png", alt:"认证店铺",width:'70%' %></p>
+			<br />
+			<h3>认证店铺</h3>
+			<p>提款需要认证</p>
+			<br />
 		</div>
-	</div>
-</div><!-- box -->
-<div class="box border-box">
-	<div class="box-w100">
-		<div class="page-title">
-			<a href="/stores/6" class="more-bar">more <%= image_tag 'mobile/arrow-right.png' %></a>
-			零食天地
+	</div><!-- page2 -->
+	<br />
+	<div class="page3 text-center">
+		<br />
+		<div class="box-w100">
+			<div class="title-bar ">
+				<div class="circle-icon">
+					<i class="fa-circle fa-sm"></i>
+					<i class="fa-circle fa-md"></i>
+					<i class="fa-circle fa-lg"></i>
+				</div>
+				<div class="content">
+					<h1>PROFIT</h1>
+					<div><b>创客收益</b></div>
+				</div>
+				<div class="circle-icon">
+					<i class="fa-circle fa-lg"></i>
+					<i class="fa-circle fa-md"></i>
+					<i class="fa-circle fa-sm"></i>
+				</div>					
+			</div><!-- title-bar -->
+			<p> 
+				用一个简单的算法<br/>来说明成为UBOSS创客的强大收益
+			</p>
+			<br />
+		</div><!-- box-w100 -->
+		<div class="box-w50">
+			<br />
+			<p class="profit-icon profit1"></p>
+			<br />
+			<h4>2.5%提成</h4>
+			<br />
+		</div><!-- box-w50 -->
+		<div class="box-w50">
+			<br />
+			<p class="profit-icon profit2"></p>
+			<br />
+			<h4>每天签订10家</h4>
+			<br />
+		</div><!-- box-w50 -->
+		<div class="box-w50">
+			<br />
+			<p class="profit-icon profit3"></p>
+			<br />
+			<h4>每家每天50元</h4>
+			<br />
+		</div><!-- box-w50 -->
+		<div class="box-w50">
+			<br />
+			<p class="profit-icon profit4"></p>
+			<br />
+			<h4>一年365天</h4>
+			<br />
+		</div><!-- box-w50 -->
+		<div class="box-w100">
+			<br />
+			<h3>10×50×2.5％（1＋2＋…＋365）</h3>
+			<h1 class="main-color" id="number" >＝8,349,375</h1>
 		</div>
-	</div>
-	<div class="box-w33">
-		<div class="product-box">
-			<div class="cover"><a href="/products/11"><%= image_tag 'mobile/product/4.jpg' %></a></div>
-			<div class="title"><a href="/products/11">马来西亚 小熊饼干500g</a></div>
-			<div class="price">￥70.0 <span>￥185.0</span></div>
+		<br />
+	</div><!-- page3 -->
+	<br />
+	<div class="box-w100 nogap page4">
+		<div class="box-w100">
+			<br />
+			<div class="title-bar ">
+				<div class="circle-icon">
+					<i class="fa-circle fa-sm"></i>
+					<i class="fa-circle fa-md"></i>
+					<i class="fa-circle fa-lg"></i>
+				</div>
+				<div class="content">
+					<h1>WAY</h1>
+					<div><b>马上体验</b></div>
+				</div>
+				<div class="circle-icon">
+					<i class="fa-circle fa-lg"></i>
+					<i class="fa-circle fa-md"></i>
+					<i class="fa-circle fa-sm"></i>
+				</div>					
+			</div><!-- title-bar -->
+			<br />		
 		</div>
-	</div>
-	<div class="box-w33">
-		<div class="product-box">
-			<div class="cover"><a href="/products/13"><%= image_tag 'mobile/product/5.jpg' %></a></div>
-			<div class="title"><a href="/products/13">越南 TIPO白巧克力面包干/克新草礼盒送人</a></div>
-			<div class="price">￥13.8 <span>￥17.9</span></div>
-		</div>
-	</div>
-	<div class="box-w33">
-		<div class="product-box">
-			<div class="cover"><a href="/products/10"><%= image_tag 'mobile/product/6.jpg' %></a></div>
-			<div class="title"><a href="/products/10">【鲜花饼】云南嘉华饼屋500g</a></div>
-			<div class="price">￥39.0 <span>￥51.8</span></div>
-		</div>
-	</div>
-</div><!-- box -->
-<div class="box border-box">
-	<div class="box-w100">
-		<div class="page-title">
-			<a href="/stores/14" class="more-bar">more <%= image_tag 'mobile/arrow-right.png' %></a>
-			女士最爱
-		</div>
-	</div>
-	<div class="box-w33">
-		<div class="product-box">
-			<div class="cover"><a href="/products/29"><%= image_tag 'mobile/product/7.jpg' %></a></div>
-			<div class="title"><a href="/products/29">【正品】兰芝气垫BB霜#13</a></div>
-			<div class="price">￥241.0 <span>￥299.0</span></div>
-		</div>
-	</div>
-	<div class="box-w33">
-		<div class="product-box">
-			<div class="cover"><a href="/products/30"><%= image_tag 'mobile/product/8.jpg' %></a></div>
-			<div class="title"><a href="/products/30">菲诗小铺黑杆睫毛膏 2只装</a></div>
-			<div class="price">￥48.0 <span>￥57.0</span></div>
-		</div>
-	</div>
-	<div class="box-w33">
-		<div class="product-box">
-			<div class="cover"><a href="/products/30"><%= image_tag 'mobile/product/9.jpg' %></a></div>
-			<div class="title"><a href="/products/30">laura mercier透明定妆蜜粉饼</a></div>
-			<div class="price">￥347.0 <span>￥399.0</span></div>
-		</div>
-	</div>
-</div><!-- box -->
-<div class="box border-box">
-	<div class="box-w100">
-		<div class="page-title">
-			<a href="/stores/5" class="more-bar">more <%= image_tag 'mobile/arrow-right.png' %></a>
-			男士专区
-		</div>
-	</div>
-	<div class="box-w33">
-		<div class="product-box">
-			<div class="cover"><a href="/products/18"><%= image_tag 'mobile/product/10.jpg' %></a></div>
-			<div class="title"><a href="/products/18">马七匹狼钱包男短款真皮软</a></div>
-			<div class="price">￥99.0 <span>￥129.0</span></div>
-		</div>
-	</div>
-	<div class="box-w33">
-		<div class="product-box">
-			<div class="cover"><a href="/products/19"><%= image_tag 'mobile/product/11.jpg' %></a></div>
-			<div class="title"><a href="/products/19">男士皮带 双面头层牛皮 休闲自动扣腰带</a></div>
-			<div class="price">￥159.0 <span>￥199.0</span></div>
-		</div>
-	</div>
-	<div class="box-w33">
-		<div class="product-box">
-			<div class="cover"><a href="/products/20"><%= image_tag 'mobile/product/12.jpg' %></a></div>
-			<div class="title"><a href="/products/20">［韩国 ］YGESHOP BIGBANG 袜子套装</a></div>
-			<div class="price">￥176.0 <span>￥199.0</span></div>
-		</div>
-	</div>
-</div><!-- box -->
-<div class="box border-box">
-	<div class="box-w100">
-		<div class="page-title">
-			<a href="stores/2" class="more-bar">more <%= image_tag 'mobile/arrow-right.png' %></a>
-			日用超商
-		</div>
-	</div>
-	<div class="box-w33">
-		<div class="product-box">
-			<div class="cover"><a href="/products/23"><%= image_tag 'mobile/product/13.jpg' %></a></div>
-			<div class="title"><a href="/products/23">Amore爱茉莉 麦迪安 86%美白牙膏</a></div>
-			<div class="price">￥38.0 <span>￥57.0</span></div>
-		</div>
-	</div>
-	<div class="box-w33">
-		<div class="product-box">
-			<div class="cover"><a href="/products/24"><%= image_tag 'mobile/product/14.jpg' %></a></div>
-			<div class="title"><a href="/products/24">ibling电动牙刷超声波防水</a></div>
-			<div class="price">￥148.0 <span>￥199.0</span></div>
-		</div>
-	</div>
-	<div class="box-w33">
-		<div class="product-box">
-			<div class="cover"><a href="/products/25"><%= image_tag 'mobile/product/15.jpg' %></a></div>
-			<div class="title"><a href="/products/25">【正品】韩国 RYOE吕洗发水400g</a></div>
-			<div class="price">￥79.0 <span>￥127.0</span></div>
-		</div>
-	</div>
-</div><!-- box -->
+		<div class="box-w50"><br/><p><a href="/stores" class="btn btn-index"><%= image_tag "mobile/new_index/icon1.png"%> 店铺示例</a></p><br/></div>
+		<div class="box-w50"><br/><p><a href="/sign_in" class="btn btn-index"><%= image_tag "mobile/new_index/icon2.png"%> 马上注册</a></p><br/></div>
+	</div><!-- page4 -->
+</div><!-- bg-white -->
+<script>
+	$('.container').addClass('new-index');
+</script>

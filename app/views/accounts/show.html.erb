@@ -32,7 +32,7 @@
 			<li><a href="<%= account_path(state: 'unpay') %>">未付款</a></li>
 			<li><a href="<%= account_path(state: 'payed') %>">未发货</a></li>
 			<li><a href="<%= account_path(state: 'shiped') %>">未收货</a></li>
-			<li><a href="<%= account_path(state: 'signed') %>">未评价</a></li>
+      <li><a href="<%= account_path(state: 'completed') %>">已完成</a></li>
 		</ul>
 		<div id="u-order-list">
 	    <%= render partial: 'order', collection: @orders %>

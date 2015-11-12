@@ -36,7 +36,7 @@ Rails.application.routes.draw do
   post 'mobile_captchas/create', to: 'mobile_captchas#create'
   get  'mobile_captchas/send_with_captcha', to: 'mobile_captchas#send_with_captcha'
 
-  resources :stores, only: [:show] do
+  resources :stores, only: [:index, :show] do
     get :hots, :favours, on: :member
   end
   resources :orders, only: [:new, :create, :show] do
@@ -134,8 +134,6 @@ Rails.application.routes.draw do
       end
       resources :orders, except: [:destroy] do
         patch :set_express, on: :member
-        get :ship, on: :member
-        get :modal_close, on: :member
         get :close, on: :member
         post :batch_shipments, on: :collection
         post :select_orders, on: :collection
