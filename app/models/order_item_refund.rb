@@ -9,6 +9,12 @@ class OrderItemRefund < ActiveRecord::Base
   validates :order_state, :money, :refund_reason_id, presence: true
   validates_uniqueness_of :order_state, scope: :order_item_id
 
+  validate do
+    if money <= 0 || money > self.order_item.pay_amount
+      self.errors.add(:money, "不能小于等于0或大于#{self.order_item.pay_amount}")
+    end
+  end
+
   after_create :save_state_at_attributes
   after_create  :set_order_item_state
 

@@ -11,14 +11,18 @@
           <% flag, money = check_refund_and_get_money(@order_item, @refund) %>
           <span class="pull-left">￥</span>
           <div class="money">
-            <%= f.input_field :money, value: money, class: 'input-block', readonly: !flag %>
+            <%= f.number_field :money, value: money, min: 0, max: money, class: 'input-block', readonly: !flag %>
           </div>
         </td>
       </tr>
       <% if !flag %>
-      <tr>
-        <td colspan="2" class="info">退款金额不可修改</td>
-      </tr>
+        <tr>
+          <td colspan="2" class="info">退款金额不可修改</td>
+        </tr>
+      <% else %>
+        <tr>
+          <td colspan="2" class="info">(最多<%= money %>元，含发货邮费0.00元)</td>
+        </tr>
       <% end %>
       <tr>
         <td>退款原因</td>
