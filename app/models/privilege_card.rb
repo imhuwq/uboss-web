@@ -25,11 +25,11 @@ class PrivilegeCard < ActiveRecord::Base
 
   def privilege_amount(product_inventory)
     result = amount(product_inventory) + product_inventory.privilege_amount
-    result > product_inventory.share_amount_lv_1 ? product_inventory.share_amount_lv_1 : result
+    result > product_inventory.max_privilege_amount ? product_inventory.max_privilege_amount : result
   end
 
   def amount(product_inventory)
-    (user.privilege_rate * product_inventory.share_amount_lv_1).to_i / 100
+    (user.privilege_rate * product_inventory.share_amount_lv_1 / 100).truncate(2)
   end
 
 end
