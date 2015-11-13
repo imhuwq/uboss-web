@@ -62,8 +62,8 @@
     <%= render partial: 'refund_basic_info', locals: { refund: @refund } %>
   </div>
 </div>
-<% case @refund.aasm_state %>
-<% when 'pending' %>
+
+<% if ['completed_express_number', 'pending'].include?(@refund.aasm_state) %>
 <script>
 function TimeTo(t){
 	var e_time='<%= countdown_time(@refund.created_at + Rails.application.secrets.refund_timeout['days_10'].days) %>';

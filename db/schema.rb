@@ -257,8 +257,8 @@ ActiveRecord::Schema.define(version: 20151113094711) do
     t.integer  "order_state"
     t.string   "refund_type"
     t.integer  "user_id"
-    t.string   "address"
     t.jsonb    "state_at_attributes", default: {}, null: false
+    t.string   "address"
   end
 
   create_table "order_items", force: :cascade do |t|
