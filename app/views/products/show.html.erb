@@ -35,7 +35,7 @@
     <div class="border-box">
     	<br />
     	<p class="gray-color">
-	    <% if @product.buyer_pay? %>
+	    <% if @product.transportation_way != 0 %>
 	     	 快递：<%= product_traffic(@product) %>
 	    <%else%>
 	     	 包邮

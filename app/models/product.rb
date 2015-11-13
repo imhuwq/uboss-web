@@ -15,6 +15,7 @@ class Product < ActiveRecord::Base
 
   belongs_to :user
   belongs_to :carriage_template
+  has_many :different_areas, through: :carriage_template
   has_many :order_items
   has_many :product_inventories, autosave: true, dependent: :destroy
   has_many :cart_items,  through: :product_inventories
@@ -106,6 +107,14 @@ class Product < ActiveRecord::Base
       end
       existing_record.assign_attributes(saling: false)
     end
+  end
+
+  def traffic_expense
+    @traffic_expense ||= if transportation_way == 2
+                           different_areas.minimum(:carriage)
+                         else transportation_way == 1
+                           super
+                         end
   end
 
   def asset_img

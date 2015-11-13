@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151112041324) do
+ActiveRecord::Schema.define(version: 20151112030528) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -333,7 +333,6 @@ ActiveRecord::Schema.define(version: 20151112041324) do
     t.decimal  "original_price",       default: 0.0
     t.decimal  "present_price",        default: 0.0
     t.integer  "count",                default: 0
-    t.boolean  "buyer_pay",            default: true
     t.decimal  "traffic_expense",      default: 0.0
     t.datetime "created_at"
     t.datetime "updated_at"
