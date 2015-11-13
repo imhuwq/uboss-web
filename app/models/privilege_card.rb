@@ -29,7 +29,7 @@ class PrivilegeCard < ActiveRecord::Base
   end
 
   def amount(product_inventory)
-    user.privilege_rate * product_inventory.share_amount_lv_1 / 100
+    (user.privilege_rate * product_inventory.share_amount_lv_1).to_i / 100
   end
 
 end
