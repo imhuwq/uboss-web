@@ -1,3 +1,3 @@
-<%= horizon_form_for @refund_message, url: declined_receive_admin_order_item_order_item_refund_path(@order_item, @order_item_refund) do |f| %>
+<%= horizon_form_for @refund_message, url: declined_receive_admin_order_item_order_item_refund_path(@order_item, @order_item_refund), method: 'POST' do |f| %>
   <%= render 'fields', f: f, reasons: RefundMessage::DECLINE_RECEIVE %>
 <% end %>
