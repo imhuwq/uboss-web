@@ -26,6 +26,8 @@
 	<div class="gap line-gap">
   <% if @refund.refund_type_include_goods? %>
     <!-- TODO -->
+    <div class="countdown bg-like gap" id="timer">
+    </div>
     <p>卖家同意申请：请退货</p>
     <p>退货信息:</p>
     <p>广东省深圳市XXXXXXXXXXXX</p>
@@ -42,11 +44,12 @@
 <% when 'completed_express_number' %>
 
 	<div class="gap line-gap">
+    <div class="countdown bg-like gap" id="timer">
+    </div>
     <p>卖家确认收货或超时自动确认收货后，将退款回您当时支付的账号或银行卡，请注意查收
     如果卖家拒绝退款，需要您修改退货申请</p>
     <p>物流公司：<%= @refund.sales_return.logistics_company %></p>
     <p>物流单号：<%= @refund.sales_return.ship_number %></p>
-
     <p><%= link_to '修改退货信息', edit_order_item_order_item_refund_sales_return_path(order_item_id: @order_item.id, order_item_refund_id: @refund.id, id: @refund.sales_return),class:'btn btn-block btn-black-border' %>
     <p><%= link_to '撤销申请', close_order_item_order_item_refund_path(order_item_id: @order_item.id, id: @refund.id), data: {confirm: '确定撤销申请?'},class:'btn btn-block btn-black-border'%>
   </div>
