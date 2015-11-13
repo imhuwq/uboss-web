@@ -37,14 +37,10 @@ module OrderItemRefundsHelper
     last_refund = order_item.last_refund
     order = order_item.order
     if refunds.blank?
-      return '退款' if order.payed?
       return '申请售后' if order.completed? || order.signed?
-    elsif last_refund.present? && last_refund.cancelled?
-      '退款关闭'
-    elsif last_refund.present? && !last_refund.finished?
-      '退款中'
-    elsif last_refund.finished?
-      '退款成功'
+      return '退款'
+    elsif last_refund.present?
+      last_refund.aasm.human_state
     end
   end
 

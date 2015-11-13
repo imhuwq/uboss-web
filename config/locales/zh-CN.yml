@@ -185,7 +185,8 @@ zh-CN:
           decline_received: '卖家拒绝收货'
           applied_uboss: '等待UBOSS处理'
           finished: '退款成功'
-          cancelled: '退款关闭'
+          cancelled: '退款撤销'
+          closed: '退款关闭'
       refund_reason:
         reason: 理由
       product_inventories:

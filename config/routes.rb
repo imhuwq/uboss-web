@@ -52,7 +52,7 @@ Rails.application.routes.draw do
       get  :apply_uboss, on: :member
       get  :close, on: :member
       get  :service_select,   on: :collection
-      resources :sales_returns, only:[:new, :create]
+      resources :sales_returns, only:[:new, :create, :edit, :update]
       resources :refund_messages, only: [:new, :create]
     end
   end

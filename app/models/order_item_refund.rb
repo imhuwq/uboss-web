@@ -146,7 +146,8 @@ class OrderItemRefund < ActiveRecord::Base
     self.refund_messages.create(user_type: 'seller',
                                 user_id: self.order_item.order.seller_id,
                                 message: message,
-                                action: action
+                                action: action,
+                                order_item_refund_id: id
                                )
   end
 

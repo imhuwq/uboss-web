@@ -22,45 +22,82 @@
 	  <p><%= link_to '撤销申请', close_order_item_order_item_refund_path(order_item_id: @order_item.id, id: @refund.id), data: {confirm: '确定撤销申请？'},class:'btn btn-block btn-black-border'%></p>
 	</div>
 <% when 'approved' %>
+
 	<div class="gap line-gap">
   <% if @refund.refund_type_include_goods? %>
+    <!-- TODO -->
     <p>卖家同意申请：请退货</p>
+    <p>退货信息:</p>
+    <p>广东省深圳市XXXXXXXXXXXX</p>
+    <p>退货说明：请在包裹内留下纸条，写上退款编号、您的UBOSS帐号以及联系方式，以便及时确认完成退款。</p>
+    <p>UBOSS温馨提示：未经卖家同意，请不要使用到付或平邮</p>
+    <p>交易的钱款还在UBOSS中间账户，确保您资金安全退货完成后请点击“退货”填写物流信息，逾期未填写，申请将关闭</p>
     <p><%= link_to '退货', new_order_item_order_item_refund_sales_return_path(order_item_id: @order_item.id, order_item_refund_id: @refund.id),class:'btn btn-block btn-black-border' %>
     <p><%= link_to '撤销申请', close_order_item_order_item_refund_path(order_item_id: @order_item.id, id: @refund.id), data: {confirm: '确定撤销申请?'},class:'btn btn-block btn-black-border'%>
   <% else %>
     <p>卖家退款给买家0.05元</p>
     <p>UBOSS将在24小时内退款会您当时支付的账号或银行卡，请注意查收</p>
   <% end %>
+
 <% when 'completed_express_number' %>
 
+	<div class="gap line-gap">
+    <p>卖家确认收货或超时自动确认收货后，将退款回您当时支付的账号或银行卡，请注意查收
+    如果卖家拒绝退款，需要您修改退货申请</p>
+    <p>物流公司：<%= @refund.sales_return.logistics_company %></p>
+    <p>物流单号：<%= @refund.sales_return.ship_number %></p>
+
+    <p><%= link_to '修改退货信息', edit_order_item_order_item_refund_sales_return_path(order_item_id: @order_item.id, order_item_refund_id: @refund.id, id: @refund.sales_return),class:'btn btn-block btn-black-border' %>
+    <p><%= link_to '撤销申请', close_order_item_order_item_refund_path(order_item_id: @order_item.id, id: @refund.id), data: {confirm: '确定撤销申请?'},class:'btn btn-block btn-black-border'%>
+  </div>
+
 <% when 'declined' %>
+
 	<div class="gap line-gap">
 	  <p><%= link_to '修改申请', edit_order_item_order_item_refund_path(order_item_id: @order_item.id, id: @refund.id),class:'btn btn-block btn-black-border' %></p>
 	  <p><%= link_to '撤销申请', close_order_item_order_item_refund_path(order_item_id: @order_item.id, id: @refund.id), data: {confirm: '确定撤销申请?'},class:'btn btn-block btn-black-border'%></p>
     <p><%= link_to 'UBOSS介入', apply_uboss_order_item_order_item_refund_path(order_item_id: @order_item.id, id: @refund.id), data: {confirm: '确定申请UBOSS?'}, class:'btn btn-block btn-black-border'%></p>
 	</div>
+
 <% when 'cancelled' %>
-<div class="gap line-gap">
-  <p>卖家已发货，此申请被自动撤销</p>
-	<% if can_reapply?(@order_item) %>
-    <%= link_to '再次申请', new_order_item_order_item_refund_path(order_item_id: @order_item.id, refund_type: 'refund')  ,class:'btn btn-block btn-black-border'%>
-  <% end %>
-</div>
-<br />
+
+  <div class="gap line-gap">
+    <p>您已撤销此次退款申请</p>
+    <% if can_reapply?(@order_item) %>
+      <%= link_to '再次申请', service_select_order_item_order_item_refunds_path(order_item_id: @order_item.id)  ,class:'btn btn-block btn-black-border'%>
+    <% end %>
+  </div>
 
 <% when 'confirm_received' %>
 
+  <p>卖家确认收货时间</p>
+
 <% when 'decline_received' %>
+
 	<div class="gap line-gap">
 	  <p><%= link_to '修改申请', edit_order_item_order_item_refund_path(order_item_id: @order_item.id, id: @refund.id),class:'btn btn-block btn-black-border' %></p>
 	  <p><%= link_to '撤销申请', close_order_item_order_item_refund_path(order_item_id: @order_item.id, id: @refund.id), data: {confirm: '确定撤销申请?'},class:'btn btn-block btn-black-border' %></p>
     <p><%= link_to 'UBOSS介入', apply_uboss_order_item_order_item_refund_path(order_item_id: @order_item.id, id: @refund.id), data: {confirm: '确定申请UBOSS?'}, class:'btn btn-block btn-black-border'%></p>
   </div>
+
 <% when 'applied_uboss' %>
+
   <p>退款金额：<%= @order_item.refund_money %>元(含发货邮费0.00元)</p>
 
 <% when 'finished' %>
-	<div class="gap line-gap">
+
+  <div class="gap line-gap">
     <p>退款金额：<%= @order_item.refund_money %>元</p>
-	</div>
+  </div>
+
+<% when 'closed' %>
+
+  <div class="gap line-gap">
+    <p>卖家已发货，此申请被自动撤销</p>
+    <% if can_reapply?(@order_item) %>
+      <p>您可以再次发起申请</p>
+      <%= link_to '再次申请', service_select_order_item_order_item_refunds_path(order_item_id: @order_item.id)  ,class:'btn btn-block btn-black-border'%>
+    <% end %>
+  </div>
+
 <% end %>

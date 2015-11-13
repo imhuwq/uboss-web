@@ -66,6 +66,7 @@ class OrderItemRefundsController < ApplicationController
                                         money: @refund.money,
                                         user_type: '买家',
                                         user_id: current_user.id,
+                                        order_item_refund_id: @refund.id
                                         )
   end
 
