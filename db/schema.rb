@@ -19,6 +19,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 ActiveRecord::Schema.define(version: 20151113032754) do
 =======
 ActiveRecord::Schema.define(version: 20151030093203) do
@@ -44,6 +45,9 @@ ActiveRecord::Schema.define(version: 20151105065144) do
 =======
 ActiveRecord::Schema.define(version: 20151106034522) do
 >>>>>>> abab8ef... 退款理由改成rake文件
+=======
+ActiveRecord::Schema.define(version: 20151113094711) do
+>>>>>>> 18d006b... 增加退货地址字段
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -291,6 +295,7 @@ ActiveRecord::Schema.define(version: 20151106034522) do
     t.string   "refund_type"
     t.integer  "user_id"
     t.jsonb    "state_at_attributes"
+    t.string   "address"
   end
 
   create_table "order_items", force: :cascade do |t|
