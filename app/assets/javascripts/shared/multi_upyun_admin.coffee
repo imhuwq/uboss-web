@@ -49,8 +49,7 @@ $ ->
           values.push(fileName)
           hiddenFile.val(values.join(','))
 
-          img = $('<img>')
-          img.attr('src', "#{ upyunBucketDomain }/#{ qs.url }-w320")
+          img = $('<div><img src='+ "#{ upyunBucketDomain }/#{ qs.url }-w320" +'></div>')
           img.appendTo('#imagediv')
 
           $(formGroup.find('.fileinput-button img')[0]).after(img)
