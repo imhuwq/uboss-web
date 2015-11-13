@@ -1,7 +1,7 @@
 class OrderItemRefundsController < ApplicationController
   before_action :authenticate_user!
   before_action :find_order_item
-  before_action :find_order_item_refund, only: [:show, :edit, :update, :close]
+  before_action :find_order_item_refund, only: [:show, :edit, :update, :close, :apply_uboss]
   layout 'mobile'
 
   def new
@@ -9,6 +9,15 @@ class OrderItemRefundsController < ApplicationController
   end
 
   def service_select
+  end
+
+  def apply_uboss
+    if @refund.may_apply_uboss? && @refund.apply_uboss!
+      flash[:success] = '申请UBOSS成功'
+    else
+      flash[:error] = '申请UBOSS失败'
+    end
+      redirect_to order_item_order_item_refund_path(order_item_id: @order_item.id, id: @refund.id)
   end
 
   def edit

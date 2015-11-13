@@ -184,7 +184,7 @@ zh-CN:
           completed_express_number: '等待卖家确认收货'
           confirm_received: '卖家确认收货'
           decline_received: '卖家拒绝收货'
-          applied_uboss: '申请uboss介入'
+          applied_uboss: '等待UBOSS处理'
           finished: '退款成功'
           cancelled: '退款关闭'
       refund_reason:
