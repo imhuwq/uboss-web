@@ -20,6 +20,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 ActiveRecord::Schema.define(version: 20151113032754) do
 =======
 ActiveRecord::Schema.define(version: 20151030093203) do
@@ -48,6 +49,9 @@ ActiveRecord::Schema.define(version: 20151106034522) do
 =======
 ActiveRecord::Schema.define(version: 20151113094711) do
 >>>>>>> 18d006b... 增加退货地址字段
+=======
+ActiveRecord::Schema.define(version: 20151113110404) do
+>>>>>>> 12ea2ff... 增加退货说明字段
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -211,6 +215,46 @@ ActiveRecord::Schema.define(version: 20151113094711) do
 
   add_index "mobile_captchas", ["mobile"], name: "index_mobile_captchas_on_mobile", using: :btree
 
+  create_table "oauth_access_grants", force: :cascade do |t|
+    t.integer  "resource_owner_id", null: false
+    t.integer  "application_id",    null: false
+    t.string   "token",             null: false
+    t.integer  "expires_in",        null: false
+    t.text     "redirect_uri",      null: false
+    t.datetime "created_at",        null: false
+    t.datetime "revoked_at"
+    t.string   "scopes"
+  end
+
+  add_index "oauth_access_grants", ["token"], name: "index_oauth_access_grants_on_token", unique: true, using: :btree
+
+  create_table "oauth_access_tokens", force: :cascade do |t|
+    t.integer  "resource_owner_id"
+    t.integer  "application_id"
+    t.string   "token",             null: false
+    t.string   "refresh_token"
+    t.integer  "expires_in"
+    t.datetime "revoked_at"
+    t.datetime "created_at",        null: false
+    t.string   "scopes"
+  end
+
+  add_index "oauth_access_tokens", ["refresh_token"], name: "index_oauth_access_tokens_on_refresh_token", unique: true, using: :btree
+  add_index "oauth_access_tokens", ["resource_owner_id"], name: "index_oauth_access_tokens_on_resource_owner_id", using: :btree
+  add_index "oauth_access_tokens", ["token"], name: "index_oauth_access_tokens_on_token", unique: true, using: :btree
+
+  create_table "oauth_applications", force: :cascade do |t|
+    t.string   "name",                      null: false
+    t.string   "uid",                       null: false
+    t.string   "secret",                    null: false
+    t.text     "redirect_uri",              null: false
+    t.string   "scopes",       default: "", null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "oauth_applications", ["uid"], name: "index_oauth_applications_on_uid", unique: true, using: :btree
+
   create_table "order_charges", force: :cascade do |t|
     t.string   "channel"
     t.datetime "created_at",                         null: false
@@ -234,6 +278,7 @@ ActiveRecord::Schema.define(version: 20151113094711) do
     t.integer  "refund_reason_id"
     t.string   "description"
     t.integer  "order_item_id"
+<<<<<<< HEAD
     t.datetime "created_at",                       null: false
     t.datetime "updated_at",                       null: false
 <<<<<<< HEAD
@@ -253,17 +298,21 @@ ActiveRecord::Schema.define(version: 20151113094711) do
     t.datetime "updated_at",          null: false
 =======
 >>>>>>> 142b69a... schema
+=======
+    t.datetime "created_at",          null: false
+    t.datetime "updated_at",          null: false
+>>>>>>> 12ea2ff... 增加退货说明字段
     t.string   "aasm_state"
     t.integer  "order_state"
     t.string   "refund_type"
     t.integer  "user_id"
-    t.jsonb    "state_at_attributes", default: {}, null: false
+    t.jsonb    "state_at_attributes"
     t.string   "address"
+    t.string   "return_explain"
   end
 
   create_table "order_items", force: :cascade do |t|
     t.integer  "order_id"
-    t.integer  "product_id"
     t.integer  "user_id"
     t.integer  "amount"
     t.datetime "created_at",                         null: false
@@ -273,6 +322,7 @@ ActiveRecord::Schema.define(version: 20151113094711) do
     t.decimal  "present_price",        default: 0.0
     t.decimal  "privilege_amount",     default: 0.0
     t.integer  "product_inventory_id"
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -298,6 +348,9 @@ ActiveRecord::Schema.define(version: 20151113094711) do
 >>>>>>> e69ec7a... 退货
 =======
 >>>>>>> 142b69a... schema
+=======
+    t.integer  "product_id"
+>>>>>>> 12ea2ff... 增加退货说明字段
     t.integer  "order_item_refund_id"
 <<<<<<< HEAD
 >>>>>>> 91dd742... 退款流程
@@ -325,10 +378,10 @@ ActiveRecord::Schema.define(version: 20151113094711) do
     t.datetime "signed_at"
     t.datetime "shiped_at"
     t.datetime "completed_at"
-    t.string   "ship_number"
-    t.integer  "express_id"
     t.string   "to_seller"
     t.decimal  "ship_price",      default: 0.0
+    t.string   "ship_number"
+    t.integer  "express_id"
     t.integer  "order_charge_id"
     t.decimal  "paid_amount",     default: 0.0
   end
@@ -354,6 +407,14 @@ ActiveRecord::Schema.define(version: 20151113094711) do
     t.datetime "updated_at",                 null: false
     t.boolean  "actived",    default: false
     t.integer  "seller_id"
+  end
+
+  create_table "product_attribute_names", force: :cascade do |t|
+    t.string   "name"
+    t.boolean  "is_key_attr",      default: true
+    t.integer  "product_class_id"
+    t.datetime "created_at",                      null: false
+    t.datetime "updated_at",                      null: false
   end
 
   create_table "product_classes", force: :cascade do |t|

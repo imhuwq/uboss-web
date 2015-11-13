@@ -162,7 +162,7 @@
   </div>
   <div class='evaluate' style='display:inline-flex;'>
     <%= link_to '确认收货并打款', 'javascripts:;', class: 'btn btn-sm', onclick: '$("#refund_confirm_receive").modal("show")' %>
-    您还可以：<%= link_to '拒绝确认收货', 'javascripts:;', class: 'main-link-color', onclick: '$("#refund_confirm_receive").modal("show")' %> | <a class="main-link-color" href="">要求UBOSS介入</a><!-- TODO 出现“要求UBOSS介入”的条件：1.等待卖家处理,2.拒绝过买家后买家修改申请并提交后 -->
+    您还可以：<%= link_to '拒绝确认收货', 'javascripts:;', class: 'main-link-color', onclick: '$("#refund_decline_receive").modal("show")' %> | <a class="main-link-color" href="">要求UBOSS介入</a><!-- TODO 出现“要求UBOSS介入”的条件：1.等待卖家处理,2.拒绝过买家后买家修改申请并提交后 -->
   </div>
   <div class="bottom_line">
     <p>* 物流公司：XXX</p>     <%#TODO%>
