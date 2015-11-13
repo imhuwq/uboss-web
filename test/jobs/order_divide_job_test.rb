@@ -126,6 +126,23 @@ class OrderDivideJobTest < ActiveJob::TestCase
         level2_node.user.income + level3_node.user.income + level4_node.user.income + seller.income + agent.income + User.official_account.reload.income
       )
     end
+
+    it 'divide amount should only be take 2 decimal' do
+      official_account = create_or_find_official_account
+      agent = create(:agent_user)
+      seller = create(:seller_user, agent: agent)
+
+      @order = create(:order, seller: seller, state: 'signed')
+      @order.stubs(:pay_amount).returns(BigDecimal('11.11'))
+      @order.update_columns(paid_amount: 11.11)
+
+      OrderDivideJob.perform_now(@order.reload)
+
+      assert_equal 0.27, agent.reload.income
+      assert_equal 0.28, official_account.reload.income
+      assert_equal 10.56, seller.reload.income
+    end
+
   end
 
 end
