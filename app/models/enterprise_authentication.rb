@@ -3,6 +3,7 @@ class EnterpriseAuthentication < ActiveRecord::Base
   include AASM
   include Imagable
 
+  # FIXME 貌似没有地方用到
   attr_accessor :mobile_auth_code
 
   mount_uploader :business_license_img, ImageUploader
