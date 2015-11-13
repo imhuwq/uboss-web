@@ -1,10 +1,5 @@
 <%= content_for :page_title do %>
-  <%= link_to :back do %>
-    <div>
-      <i class="fa fa-chevron-left"></i>
-        <%= @refund.refund_type_text == '退款' ? '退款详情':@refund.refund_type_text %>
-    </div>
-  <% end %>
+  <%= @refund.refund_type_text == '退款' ? '退款详情':@refund.refund_type_text %>
 <% end %>
 <br />
 <div id="order_item_refund_show">
@@ -49,13 +44,10 @@
     </div><!-- order-box -->
   </div><!-- bg-white -->
   <div class="refund-info-list bg-white gap-lr">
-    <p>退款类型:填充数据</p>
-    <p>退款金额:<%= @refund.money %>元</p>
-    <p>退款原因:<%= @refund.refund_reason.try(:reason) %></p>
-    <p>
-    	退款说明:<br />
-    	<%= @refund.description %>
-    </p>
+    <p><span class="gray-color">退款类型</span> ： 填充数据</p>
+    <p><span class="gray-color">退款金额</span> ： <%= @refund.money %>元</p>
+    <p><span class="gray-color">退款原因</span> ： <%= @refund.refund_reason.try(:reason) %></p>
+    <p><span class="gray-color">退款说明</span> ： <%= @refund.description %></p>
     <div class="box-w100">
 	    <% @refund.asset_imgs.each do |img| %>
 	      <div class="box-w33">
@@ -70,15 +62,14 @@
     <%= render partial: 'refund_basic_info', locals: { refund: @refund } %>
   </div>
 </div>
-
+<% case @refund.aasm_state %>
+<% when 'pending' %>
 <script>
-function TimeTo(t){
-	var e_time='<%= countdown_time(@refund.created_at + Rails.application.secrets.refund_timeout['days_10']) %>';
-  var n = new Date(e_time.replace(/-/,"/")),
-      c = n - t;
+function TimeTo(t,n){
+  var c = n - t;
   if(c<=0){
-    clearInterval(window['ttt']);
-    $('#timer').remove();
+    clearInterval(inter);
+    int=window.clearInterval(int)
     return;
   }
   var ds = 60*60*24*1000,
@@ -93,10 +84,18 @@ function TimeTo(t){
       document.getElementById('timer').innerHTML ='倒计时 <span> '+d+' </span> 天 <span>'+h+' </span> 时 <span>'+m+' </span> 分 <span>'+s+' </span> 秒';
 }
 var n_time='<%= Time.now %>';
+var e_time='<%= countdown_time(@refund.created_at + Rails.application.secrets.refund_timeout['days_10'].days) %>';
+var n = new Date(e_time.replace(/-/,"/"));
 var t = new Date(n_time.replace(/-/,"/"));
-window.onload=setInterval(function(){
+
+var inter=self.setInterval(function(){
 	t.setSeconds(t.getSeconds()+1)
-	TimeTo(t)
+	TimeTo(t,n)
 },1000);
+if(n-t <= 0){
+	$('#timer').remove();
+	inter=window.clearInterval(inter)
+}
 
 </script>
+<% end %>

@@ -2,7 +2,6 @@
 	<div class="gap-lr"><%= @refund.aasm.human_state %></div>
 <% case @refund.aasm_state %>
 <% when 'pending' %>
-	<br />
   <div class="countdown bg-like gap" id="timer">
   </div>
   <div class="gap">
