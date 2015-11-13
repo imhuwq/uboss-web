@@ -1,5 +1,6 @@
 class Product < ActiveRecord::Base
 
+  include Imagable
   include Orderable
   include Descriptiontable
 
@@ -7,9 +8,12 @@ class Product < ActiveRecord::Base
 
   DataBuyerPay = { seller_pay: '包邮', united: '统一邮费', carriage_template: '运费模板' }
 
+  has_one_image autosave: true
+  #has_many_images name: :figure_images, accepts_nested: true
+
   belongs_to :user
   belongs_to :carriage_template
-  has_one :asset_img, class_name: 'AssetImg', autosave: true, as: :resource
+  has_many :different_areas, through: :carriage_template
   has_many :order_items
   has_many :product_inventories, autosave: true, dependent: :destroy
   has_many :cart_items,  through: :product_inventories
@@ -103,6 +107,14 @@ class Product < ActiveRecord::Base
       end
       existing_record.assign_attributes(saling: false)
     end
+  end
+
+  def traffic_expense
+    @traffic_expense ||= if transportation_way == 2
+                           different_areas.minimum(:carriage)
+                         else transportation_way == 1
+                           super
+                         end
   end
 
   def asset_img

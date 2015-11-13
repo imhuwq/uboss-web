@@ -77,7 +77,6 @@ zh-CN:
         present_price: 现价
         count: 库存
         content: 图文详情
-        buyer_pay: 付款方式
         transportation_way: 运费
         asset_img: 商品主图
         has_share_lv: 分成级数

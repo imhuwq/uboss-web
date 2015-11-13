@@ -5,7 +5,8 @@
     <meta id='MobileViewport' name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
     <meta content="telephone=no" name="format-detection" />
     <meta content="email=no" name="format-detection" />
-    <link href="<%= image_url("desktop_image/favicon.ico") %>" type="image/x-icon" rel="shortcut icon">
+    <link href="<%= image_url("favicon-lg.png") %>" type="image/x-icon" rel="shortcut icon">
+    <link rel="apple-touch-icon" href="<%= image_url("favicon-lg.png") %>">
     <%= yield(:extra_meta_tags) %>
     <%= render partial: "page_title" %>
     <%= stylesheet_link_tag "mobile" %>

@@ -164,11 +164,7 @@ class User < ActiveRecord::Base
     if self.can_rebind_agent?
       self.agent = agent_user
       self.admin = true
-      if agent_user.id == User.official_account.id
-        self.user_info.service_rate = 6
-      else
-        self.user_info.service_rate = 5
-      end
+      self.user_info.service_rate = 5
       self.user_roles << UserRole.seller if not self.is_seller?
       self.save
     else

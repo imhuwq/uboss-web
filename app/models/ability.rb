@@ -62,9 +62,6 @@ class Ability
   def grant_permissions_to_agent user
     can :read, DailyReport, user: { agent_id: user.id }
     can :read, SellingIncome, user: { agent_id: user.id }
-    # 暂时取消agent的认证权利
-    # can :manage, PersonalAuthentication, user_id: user.id
-    # can :manage, EnterpriseAuthentication, user_id: user.id
     can :read, DivideIncome, user_id: user.id
     can :read,   WithdrawRecord, user_id: user.id
     can :create, WithdrawRecord, user_id: user.id

@@ -37,11 +37,11 @@ ActiveRecord::Schema.define(version: 20151113084820) do
     t.integer  "size"
     t.integer  "width"
     t.integer  "height"
-    t.integer  "parent_id"
     t.string   "thumbnail"
     t.datetime "created_at"
     t.string   "alt"
     t.string   "url"
+    t.string   "image_type"
   end
 
   create_table "bank_cards", force: :cascade do |t|
@@ -375,7 +375,6 @@ ActiveRecord::Schema.define(version: 20151113084820) do
     t.decimal  "original_price",       default: 0.0
     t.decimal  "present_price",        default: 0.0
     t.integer  "count",                default: 0
-    t.boolean  "buyer_pay",            default: true
     t.decimal  "traffic_expense",      default: 0.0
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -581,7 +580,7 @@ ActiveRecord::Schema.define(version: 20151113084820) do
     t.integer  "authenticated",          default: 0
     t.integer  "agent_code"
     t.string   "authentication_token"
-    t.decimal  "privilege_rate",         default: 0.0
+    t.decimal  "privilege_rate",         default: 50.0
   end
 
   add_index "users", ["authentication_token"], name: "index_users_on_authentication_token", using: :btree
