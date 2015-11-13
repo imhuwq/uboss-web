@@ -272,18 +272,6 @@ zh-CN:
         wx_pub: 微信公众账号
         wx_pub_qr: 微信公众账号扫码
         yeepay_wap: 易宝手机网页
-    product:
-      calculate_way:
-        by_cash: 按金额
-        by_rate: 按售价比例
-      transportation_way:
-        seller_pay: 包邮
-        united: 统一邮费
-        carriage_template: 运费模板
-    user:
-      authenticated:
-        positive: 已认证
-        negative: 未认证
   views:
     pagination:
       first: '&laquo; 第一页'
