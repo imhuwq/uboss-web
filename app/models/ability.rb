@@ -66,8 +66,6 @@ class Ability
     can :read, User, agent_id: user.id
     can :read, DailyReport, user: { agent_id: user.id }
     can :read, SellingIncome, user: { agent_id: user.id }
-    can :manage, PersonalAuthentication, user_id: user.id
-    can :manage, EnterpriseAuthentication, user_id: user.id
     can :read, DivideIncome, user_id: user.id
     can :read,   WithdrawRecord, user_id: user.id
     can :create, WithdrawRecord, user_id: user.id
