@@ -57,6 +57,7 @@ class Admin::OrdersController < AdminController
 
   def show
     @order_item = @order.order_items.first
+    @user_addresses = current_user.user_addresses
   end
 
   def update

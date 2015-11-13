@@ -19,6 +19,7 @@
 #= require admin/product
 #= require admin/redactor-config
 #= require admin/sms
+#= require admin/user_address
 #= require shared/upyun
 #= require_self
 
@@ -39,12 +40,5 @@ jQuery ($) ->
       tabid = $(this).attr('data-title')
       $(tabid).fadeIn()
     return
-  $('.address-alert').on 'click',->
-    $('#address-list-box').slideDown()
-    $('#address-list-box .name').html($(this).attr('title'))
-    $('html').addClass('lock');
-  $('#address-list-box .close').on 'click',->
-    $('#address-list-box').slideUp();
-    $('html').removeClass('lock');
-  
+
   $("select").filter(":not([data-manual-chosen])").chosen()
