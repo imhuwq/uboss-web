@@ -10,7 +10,7 @@ class SalesReturnsController < ApplicationController
   def create
     @sales_return = SalesReturn.new(sales_return_params)
     add_multi_img
-    if @sales_return.save
+    if @refund.may_complete_express_number? && @sales_return.save && @refund.complete_express_number!
       flash[:success] = '退货信息保存成功'
     else
       flash[:error] = '退款信息保存失败'

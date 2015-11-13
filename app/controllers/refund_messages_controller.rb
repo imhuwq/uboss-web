@@ -6,7 +6,7 @@ class RefundMessagesController < ApplicationController
 
   def new
     @refund_message = RefundMessage.new
-    @refund_messages = current_user.refund_messages.order('created_at desc')
+    @refund_messages = current_user.refund_messages.where(order_item_refund_id: @order_item.order_item_refund_ids).order('created_at desc')
   end
 
   def create
@@ -33,7 +33,7 @@ class RefundMessagesController < ApplicationController
   end
 
   def refund_message_params
-    params.require(:refund_message).permit(:message, :user_type)
+    params.require(:refund_message).permit(:message, :user_type).merge(order_item_refund_id: @refund.id)
   end
 
   def add_multi_img

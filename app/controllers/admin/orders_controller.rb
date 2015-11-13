@@ -102,7 +102,7 @@ class Admin::OrdersController < AdminController
   def close_order_item_refund
     @order.order_items.each do |item|
       if refund = item.last_refund
-        refund.may_close? && refund.close
+        refund.may_close? && refund.close!
         refund.refund_messages.create(user_type: 'seller',
                                       user_id: refund.order_item.order.seller_id,
                                       message: '商家选择发货，退款申请关闭',

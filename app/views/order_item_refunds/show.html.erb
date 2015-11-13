@@ -84,7 +84,7 @@ function TimeTo(t,n){
       document.getElementById('timer').innerHTML ='倒计时 <span> '+d+' </span> 天 <span>'+h+' </span> 时 <span>'+m+' </span> 分 <span>'+s+' </span> 秒';
 }
 var n_time='<%= Time.now %>';
-var e_time='<%= countdown_time(@refund.created_at + Rails.application.secrets.refund_timeout['days_10'].days) %>';
+var e_time='<%= countdown_time(@refund.created_at + refund_timeout(@refund).days) %>';
 var n = new Date(e_time.replace(/-/,"/"));
 var t = new Date(n_time.replace(/-/,"/"));
 
