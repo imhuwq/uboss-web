@@ -74,9 +74,7 @@
     <div class="form-group">
         <label class="control-label">付款方式</label>
         <div class="control-input">
-          <span>
-            <%= @product.transportation_way_i18n %>
-          </span>
+          <span><%= Product::DataBuyerPay[@product.transportation_way] %></span>
         </div>
     </div>
     <div class="form-group">
