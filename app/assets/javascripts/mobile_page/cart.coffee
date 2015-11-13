@@ -8,20 +8,20 @@ $ ->
     setTotalPrice()
     setSingleTotalPrice()
     #全选判断
-    i= 0
+    i = 0
     $("input[name='check_item']").each ->
       if $(this).hasClass('checked')
-        i+=1;
+        i += 1
       else
         $("#box_all").removeClass("checked")
     if i == $("input[name='check_item']").size()
       $("#box_all").addClass("checked")
     #商铺全选判读
     $(".order-list").each ->
-      j=0
+      j = 0
       $(this).find("input[name='check_item']").each ->
         if $(this).hasClass('checked')
-          j+=1;
+          j += 1
         else
           $(this).closest('.order-list').find('.seller-checkbox').removeClass("checked")
 
@@ -39,7 +39,7 @@ $ ->
     i= 0
     $("input[name='check_item']").each ->
       if $(this).hasClass('checked')
-        i+=1;
+        i += 1
       else
         $("#box_all").removeClass("checked")
     if i == $("input[name='check_item']").size()
@@ -66,14 +66,14 @@ $ ->
     if num == 1
       $this.attr('disabled', true)
     else
-      $num.val(num-1)
+      $num.val(num - 1)
       updateItemNum($num)
 
   $('.count > .plus').on 'click', (e) ->
     e.preventDefault()
     $this = $(this)
     $num = $this.parent().find('.num')
-    $num.val(parseInt($num.val())+1)
+    $num.val(parseInt($num.val()) + 1)
     updateItemNum($num)
     if parseInt($num.val()) != 1
       $this.parent().find('.min').removeAttr("disabled")
@@ -163,19 +163,19 @@ $ ->
   setTotalPrice = (e) ->
     total_price=0
     $(".order-box .checked").each ->
-      num = parseInt($(this).parent().find('.num').val())
-      price= $(this).parent().find('.product-price').text()
-      total_price+=num*price
+      num   = parseInt($(this).parent().find('.num').val())
+      price = $(this).parent().find('.product-price').text()
+      total_price += floatMul(price, num)
     $('.total_price').text(total_price)
 
   # 单商铺计算
   setSingleTotalPrice = (e) ->
     $('.single_total_price').each ->
-      single_total_price=0
+      single_total_price = 0
       $(this).closest('.order-list').children('.order-box').children('.checked').each ->
-        num = parseInt($(this).parent().find('.num').val())
-        price= $(this).parent().find('.product-price').text()
-        single_total_price+=num*price
+        num   = parseInt($(this).parent().find('.num').val())
+        price = $(this).parent().find('.product-price').text()
+        single_total_price += floatMul(price, num)
       $(this).text(single_total_price)
 
   $('.new_order').on 'click', (e) ->
@@ -184,7 +184,7 @@ $ ->
     check_items_ids = []
     for item, i in checked_items
       check_items_ids.push($(item).closest('.order-box').data('id'))
-    if check_items_ids.length ==0
+    if check_items_ids.length == 0
       flashPopContent('<div class="pop-text">请勾选您要购买商品</div>')
     else
-      location.href = "/orders/new?item_ids="+check_items_ids.join(',')
+      location.href = "/orders/new?item_ids=" + check_items_ids.join(',')

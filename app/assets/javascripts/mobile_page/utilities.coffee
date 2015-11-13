@@ -39,3 +39,19 @@ $ ->
             disabledLoadMore(element)
       else
         disabledLoadMore(element)
+
+  # 浮点数运算 加
+  @floatAdd = (arg1, arg2) ->
+    (parseInt(arg1 * 100) + parseInt(arg2 * 100)) / 100
+
+  # 减
+  @floatSub = (arg1, arg2) ->
+    (parseInt(arg1 * 100) - parseInt(arg2 * 100)) / 100
+
+  # 乘
+  @floatMul = (arg1, arg2) ->
+    parseInt(arg1 * 100) * parseInt(arg2 * 100) / 10000
+
+  # 除
+  @floatDiv = (arg1, arg2) ->
+    parseInt(arg1 * 100) / parseInt(arg2 * 100)
