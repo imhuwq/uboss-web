@@ -37,7 +37,7 @@
 	<div class="gap line-gap">
 	  <p><%= link_to '修改申请', edit_order_item_order_item_refund_path(order_item_id: @order_item.id, id: @refund.id),class:'btn btn-block btn-black-border' %></p>
 	  <p><%= link_to '撤销申请', close_order_item_order_item_refund_path(order_item_id: @order_item.id, id: @refund.id), data: {confirm: '确定撤销申请?'},class:'btn btn-block btn-black-border'%></p>
-	  <p><%= link_to 'UBOSS介入', apply_uboss_order_item_order_item_refund_path(order_item_id: @order_item.id, id: @refund.id) ,class:'btn btn-block btn-black-border'%></p>
+    <p><%= link_to 'UBOSS介入', apply_uboss_order_item_order_item_refund_path(order_item_id: @order_item.id, id: @refund.id), data: {confirm: '确定申请UBOSS?'}, class:'btn btn-block btn-black-border'%></p>
 	</div>
 <% when 'cancelled' %>
 <div class="gap line-gap">
@@ -53,7 +53,7 @@
 	<div class="gap line-gap">
 	  <p><%= link_to '修改申请', edit_order_item_order_item_refund_path(order_item_id: @order_item.id, id: @refund.id),class:'btn btn-block btn-black-border' %></p>
 	  <p><%= link_to '撤销申请', close_order_item_order_item_refund_path(order_item_id: @order_item.id, id: @refund.id), data: {confirm: '确定撤销申请?'},class:'btn btn-block btn-black-border' %></p>
-	  <p><%= link_to 'UBOSS介入', apply_uboss_order_item_order_item_refund_path(order_item_id: @order_item.id, id: @refund.id) ,class:'btn btn-block btn-black-border'%></p>
+    <p><%= link_to 'UBOSS介入', apply_uboss_order_item_order_item_refund_path(order_item_id: @order_item.id, id: @refund.id), data: {confirm: '确定申请UBOSS?'}, class:'btn btn-block btn-black-border'%></p>
   </div>
 <% when 'applied_uboss' %>
   <p>退款金额：<%= @order_item.refund_money %>元(含发货邮费0.00元)</p>
