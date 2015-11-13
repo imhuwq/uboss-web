@@ -1,4 +1,4 @@
-<%= form_for @order_item_refund, url: approved_return_admin_order_item_order_item_refund_path(@order_item, @order_item_refund) do |f| %>
+<%= horizon_form_for @order_item_refund, url: approved_return_admin_order_item_order_item_refund_path(@order_item, @order_item_refund), method: 'POST' do |f| %>
   <div class="modal-body" style="color:#000;">
     <div class='form-group'>
       <label class="control-label">退货地址：</label>
