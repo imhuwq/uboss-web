@@ -65,8 +65,10 @@
 <% case @refund.aasm_state %>
 <% when 'pending' %>
 <script>
-function TimeTo(t,n){
-  var c = n - t;
+function TimeTo(t){
+	var e_time='<%= countdown_time(@refund.created_at + Rails.application.secrets.refund_timeout['days_10'].days) %>';
+  var n = new Date(e_time.replace(/-/,"/")),
+      c = n - t;
   if(c<=0){
     clearInterval(inter);
     int=window.clearInterval(int)
