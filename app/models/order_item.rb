@@ -30,6 +30,14 @@ class OrderItem < ActiveRecord::Base
     present_price - privilege_amount
   end
 
+  def refund_money
+    if order_item_refund_id.present?
+      OrderItemRefund.find(order_item_refund_id).money
+    else
+      '0.0'
+    end
+  end
+
   def last_refund
     order_item_refunds.reorder("created_at desc").first
   end
