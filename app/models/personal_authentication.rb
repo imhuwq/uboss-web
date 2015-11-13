@@ -3,6 +3,7 @@ class PersonalAuthentication < ActiveRecord::Base
   include AASM
   include Imagable
 
+  # FIXME 貌似没有地方用到
   attr_accessor :mobile_auth_code
   mount_uploader :face_with_identity_card_img, ImageUploader
   mount_uploader :identity_card_front_img, ImageUploader

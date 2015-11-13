@@ -61,6 +61,8 @@ class Ability
   end
 
   def grant_permissions_to_agent user
+    can :read, User, id: user.id
+    can :read, User, agent_id: user.id
     can :read, DailyReport, user: { agent_id: user.id }
     can :read, SellingIncome, user: { agent_id: user.id }
     # 暂时取消agent的认证权利
@@ -69,7 +71,6 @@ class Ability
     can :read, DivideIncome, user_id: user.id
     can :read,   WithdrawRecord, user_id: user.id
     can :create, WithdrawRecord, user_id: user.id
-    can :read, :sellers
     can :manage, BankCard, user_id: user.id
   end
 
