@@ -22,6 +22,8 @@ class Admin::OrderItemRefundsController < AdminController
 
   # 同意退货
   def approved_return
+    @order_item_refund.address = "#TODO 退货地址"
+
     if @order_item_refund.may_approve? && @order_item_refund.approve!
       #TODO 发送退货地址、退货说明
       message = "退货地址：#{'TODO退货地货'}</br>退货说明：#{params[:return_message]}"

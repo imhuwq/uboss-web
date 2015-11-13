@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151110082525) do
+ActiveRecord::Schema.define(version: 20151113094711) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -245,6 +245,7 @@ ActiveRecord::Schema.define(version: 20151110082525) do
     t.string   "refund_type"
     t.integer  "user_id"
     t.jsonb    "state_at_attributes"
+    t.string   "address"
   end
 
   create_table "order_items", force: :cascade do |t|
