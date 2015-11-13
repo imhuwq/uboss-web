@@ -17,7 +17,7 @@ class UserAddress < ActiveRecord::Base
 
   def set_default_address
 
-    user_addresses = UserAddress.where(user_id: user_id)
+    user_addresses = UserAddress.where(user_id: user_id, seller_address: true)
     user_addresses.each do |obj|
       unless obj.id == self.id
         obj_usage = obj.usage
