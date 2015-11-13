@@ -13,14 +13,25 @@ class RefundMessagesController < ApplicationController
     @refund_message = RefundMessage.new(refund_message_params)
     @refund_message.user = current_user
     add_multi_img
-    if @refund_message.save
+    if validate_message && @refund_message.save
       redirect_to new_order_item_order_item_refund_refund_message_path(order_item_id: @order_item.id, order_item_refund_id: @refund.id)
     else
+      @refund_messages = current_user.refund_messages.order('created_at desc')
       render 'new'
     end
   end
 
   private
+
+  def validate_message
+    if @refund_message.message.blank?
+      @refund_message.errors.add(:message, '不能为空')
+      false
+    else
+      true
+    end
+  end
+
   def refund_message_params
     params.require(:refund_message).permit(:message, :user_type)
   end

@@ -39,6 +39,8 @@ module OrderItemRefundsHelper
     if refunds.blank?
       return '退款' if order.payed?
       return '申请售后' if order.completed? || order.signed?
+    elsif last_refund.present? && last_refund.cancelled?
+      '退款关闭'
     elsif last_refund.present? && !last_refund.finished?
       '退款中'
     elsif last_refund.finished?

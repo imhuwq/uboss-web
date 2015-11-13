@@ -8,7 +8,7 @@
   </div>
 
   <div class="order-box">
-    <%= link_to order_path(order_item.order) do %>
+    <%= link_to order_item_order_item_refund_path(order_item_id: order_item.id, id: refund.id ) do %>
       <div class="cover">
         <%= image_tag order_item.item_product.image_url('w120') %>
       </div><!-- order-cover -->
