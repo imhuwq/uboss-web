@@ -8,7 +8,7 @@ module OrderItemRefundsHelper
     order = order_item.order
     return [false, order_item.pay_amount] if order.state == 'payed'
     return [true, order_item.pay_amount] if refund.refund_type == 'receipted_refund'
-    return [false, order_item.pay_amount] if refund.refund_type == 'unreceipt_refund'
+    return [refund.aasm_state == 'declined', order_item.pay_amount] if refund.refund_type == 'unreceipt_refund'
     return [true, order_item.pay_amount] if refund.refund_type == 'return_goods_and_refund'
     return [true, order_item.pay_amount] if refund.refund_type == 'after_sale_only_refund'
     return [true, order_item.pay_amount] if refund.refund_type == 'after_sale_return_goods_and_refund'
@@ -40,7 +40,10 @@ module OrderItemRefundsHelper
       return '申请售后' if order.completed? || order.signed?
       return '退款'
     elsif last_refund.present?
-      last_refund.aasm.human_state
+      return '退款成功' if last_refund.finished?
+      return '退款撤销' if last_refund.cancelled?
+      return '退款关闭' if last_refund.closed?
+      return '退款中'
     end
   end
 

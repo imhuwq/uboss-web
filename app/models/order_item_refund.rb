@@ -38,7 +38,7 @@ class OrderItemRefund < ActiveRecord::Base
     #拒绝收货
     state :decline_received,         after_enter: :update_order_item_state_4
     #申请uboss介入
-    state :applied_uboos,            after_enter: :update_order_item_state_7
+    state :applied_uboss,            after_enter: :update_order_item_state_7
     #买家填写快递单号
     state :completed_express_number, after_enter: :update_order_item_state_4
     #完成
@@ -58,6 +58,10 @@ class OrderItemRefund < ActiveRecord::Base
         self.state_at_attributes['同意时间'] = time_now
         self.save
       end
+    end
+
+    event :repending do
+      transitions from: :declined, to: :pending
     end
 
     event :decline do

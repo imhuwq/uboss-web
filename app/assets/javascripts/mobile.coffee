@@ -6,6 +6,9 @@
 #= require rails-behaviors/index
 #= require fastclick
 #= require swipe
+#= require querystring
+#= require mobile_page/upyun/zepto-iframe-fileupload
+#= require mobile_page/upyun/upload
 #= require mobile_page/sms
 #= require mobile_page/going_merry
 #= require mobile_page/utilities
@@ -16,10 +19,6 @@
 #= require mobile_page/pay
 #= require mobile_page/evaluations
 #= require shared/count_down
-#= require mobile_page/upyun/async
-#= require mobile_page/upyun/spark-md5.min
-#= require mobile_page/upyun/upyun-mu
-#= require shared/multi_upyun.js
 #= require shared/city_select
 #= reuqire_self
 
@@ -45,7 +44,7 @@ $ ->
 
   $("header .menu-btn").on 'click', ->
     $('header .nav-bar').toggle()
-  
+
   $('.container ').on 'click', ->
     $('header .nav-bar').hide();
 
