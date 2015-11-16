@@ -27,6 +27,9 @@ class PrivilegeCardTest < ActiveSupport::TestCase
 
     it 'should cal right privilege_amount' do
       assert_equal 10, @privilege_card.privilege_amount(@product_inventory)
+      @sharing_user.update privilege_rate: 33
+      @product_inventory.update_columns share_amount_lv_1: 5
+      assert_equal 6.65, @privilege_card.reload.privilege_amount(@product_inventory.reload)
     end
 
     it 'discount right' do

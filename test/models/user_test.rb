@@ -13,7 +13,7 @@ class UserTest < ActiveSupport::TestCase
     it 'should be integer & between 0 and 100' do
       user = build(:user)
       assert user.valid?
-      assert_equal 0, user.privilege_rate
+      assert_equal 50, user.privilege_rate
       assert_not user.update(privilege_rate: 1001)
       assert_not user.update(privilege_rate: -10)
       assert user.update(privilege_rate: 10.8)
