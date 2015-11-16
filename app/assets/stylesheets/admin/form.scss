@@ -26,23 +26,26 @@ textarea {
   background: #fff;
   color: #999;
 }
- input[type="text"]:focus,
- input[type="password"]:focus,
- input[type="email"]:focus,
- input[type="url"]:focus,
- input[type="date"]:focus,
- input[type="month"]:focus,
- input[type="time"]:focus,
- input[type="datetime"]:focus,
- input[type="datetime-local"]:focus,
- input[type="week"]:focus,
- input[type="number"]:focus,
- input[type="search"]:focus,
- input[type="tel"]:focus,
- input[type="color"]:focus,
- select:focus,
- textarea:focus{ color:#1a1a1a; }
-
+input[type="text"]:focus,
+input[type="password"]:focus,
+input[type="email"]:focus,
+input[type="url"]:focus,
+input[type="date"]:focus,
+input[type="month"]:focus,
+input[type="time"]:focus,
+input[type="datetime"]:focus,
+input[type="datetime-local"]:focus,
+input[type="week"]:focus,
+input[type="number"]:focus,
+input[type="search"]:focus,
+input[type="tel"]:focus,
+input[type="color"]:focus,
+select:focus,
+textarea:focus{ color:#1a1a1a; }
+.input-block{
+  display: block;
+  width: 100%;
+}
  .form-group{
    margin-bottom: 20px;
    padding-right:13px;
@@ -63,7 +66,7 @@ textarea {
    .control-input{
      overflow: hidden;
      span{
-       /*margin:8px 0px;*/
+       margin:8px 0px;
        display: inline-block;
      }
      .btn{
@@ -110,7 +113,7 @@ textarea {
      margin-left: 2px;
    }
 
-
+    
  }
 
 
@@ -218,3 +221,6 @@ textarea {
      color: #b94a48;
    }
  }
+.form-group .control-input .select2-container span{
+  margin: 0;
+}

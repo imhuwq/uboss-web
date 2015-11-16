@@ -33,20 +33,32 @@
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span class='close' aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">快递信息</h4>
+        <h3 class="modal-title" id="myModalLabel">快递信息</h3>
       </div>
 
       <%= simple_form_for :order, method: :patch do |f| %>
         <div class="modal-body">
-          <%= f.input :express_name, hint: '您可在 (订单 -> 快递管理) 中设置您的常用发货快递公司' do %>
-            <%= text_field_tag 'express_name', '', class: 'form-control input-lg js-select2-express-tags' %>
-          <% end %>
-          <%= f.input :ship_number, required: true %>
+        	<h4>快递公司</h4>
+          <p><%= text_field_tag 'express_name', '', class: 'input-block form-control input-lg js-select2-express-tags select2-offscreen',placeholder:'可输入其他快递公司名称, 按回车结束'%></p>
+          <p>
+						您可在 (订单 -> 快递管理) 中设置您的常用发货快递公司
+					</p>
+					<br />
+					<h4>快递单号</h4>
+          <p><%= text_field_tag 'order[ship_number]', '', class: 'input-block',placeholder:'快递单号' %></p>
+          <br />
+		      <h4>确认发货/退货信息</h4>
+		      <p>我的发货信息 : <%= current_user.default_post_address %> <span class="pull-right address-alert" title="发货地址">修改发货地址</span></p>
+		      <p>我的退货信息 : <%= current_user.default_get_address %> <span class="pull-right address-alert" title="退货地址">修改退货地址</span></p>
+			    <br />
+			    <div id="address-list-box" class="hidden">
+			    	<%= render partial: "/admin/user_addresses/seller_address_list", locals: { user_addresses: @user_addresses } %>
+			    </div><!-- title -->
         </div>
-
+        
         <div class="modal-footer">
-          <%= f.submit '确定', class: 'btn btn-info' %>
-          <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+          <%= f.submit '确定', class: 'btn btn-large' %>
+          <button type="button" class="btn btn-large gray-btn" data-dismiss="modal">取消</button>
         </div>
       <% end %>
     </div>
