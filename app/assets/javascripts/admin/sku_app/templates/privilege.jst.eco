@@ -37,7 +37,7 @@
         <th>
         	<div class='tips-info'>
         		购买 <i class='fa fa-info-circle'></i>
-        		<div class='info-hover'>购买者获得的返利优惠</div>
+        		<div class='info-hover'>购买者获得的优惠</div>
         	</div>
         </th>
       </tr>
@@ -45,15 +45,13 @@
     <tbody>
     </tbody>
   </table>
-  
+
 	<script>
-		$(document).ready(function(){	
+		$(document).ready(function(){
 		  $('.tips-info').hover(function(){
 		  	$(this).find('.info-hover').fadeIn();
 		  },function(){
-		  	
 		  	$('.info-hover').fadeOut();
-		  	
 		  })
 		})
 	</script>
