@@ -40,7 +40,10 @@ module OrderItemRefundsHelper
       return '申请售后' if order.completed? || order.signed?
       return '退款'
     elsif last_refund.present?
-      last_refund.aasm.human_state
+      return '退款成功' if last_refund.finished?
+      return '退款撤销' if last_refund.cancelled?
+      return '退款关闭' if last_refund.closed?
+      return '退款中'
     end
   end
 
