@@ -4,9 +4,9 @@
       <label class="control-label">退货地址：</label>
       <div class="control-input">
         <ul>
-          <li><input name="return_address" type="radio" value="1" /> 扎西 18292930234 广东省 深圳市 XXXXXXXXXXXXXX</li>
-          <li><input name="return_address" type="radio" value="2" /> 扎西 18292930235 广东省 深圳市 XXXXXXXXXXXXXX</li>
-          <li><input name="return_address" type="radio" value="3" /> 扎西 18292930236 广东省 深圳市 XXXXXXXXXXXXXX</li>
+          <% current_user.seller_addresses.each do |address| %>
+            <li><input name="return_address" type="radio" checked="<%= 'true' if address.usage['default_post_address'] == true %>" value="<%= address.id %>" /> <%= address.username %> <%= address.mobile %> <%= address.to_s %> <%= address.post_code %> <%= address.note %></li>
+          <% end %>
         </ul>
       </div>
     </div>

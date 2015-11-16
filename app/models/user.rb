@@ -372,20 +372,16 @@ class User < ActiveRecord::Base
     self.expresses.exists?(express)
   end
 
-  def default_get_address
-    user_addresses.where('usage @> ?', {default_get_address: 'true'}.to_json).first.to_s
+  def seller_addresses
+    user_addresses.where(seller_address: true)
   end
 
   def default_post_address
-    user_addresses.where('usage @> ?', {default_post_address: 'true'}.to_json).first.to_s
-  end
-
-  def default_post_address
-    user_addresses.where(seller_address: true).where('usage @> ?', {default_post_address: 'true'}.to_json).first
+    seller_addresses.find_by('usage @> ?', {default_post_address: 'true'}.to_json)
   end
 
   def default_get_address
-    user_addresses.where(seller_address: true).where('usage @> ?', {default_get_address: 'true'}.to_json).first
+    seller_addresses.find_by('usage @> ?', {default_get_address: 'true'}.to_json)
   end
 
   private
