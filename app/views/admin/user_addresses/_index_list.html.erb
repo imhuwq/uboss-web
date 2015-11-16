@@ -25,7 +25,9 @@
       <td><%= obj.note %></td>
       <td>
         <%= link_to '编辑', url_for(controller: 'admin/user_addresses', action: :edit, id: obj.id) %>
-        <%= link_to '删除', url_for(controller: 'admin/user_addresses', action: :destroy, id: obj.id), method: :delete, data: {confirm: '确认删除么？'} %>
+        <% if obj.usage['default_get_address'] == 'false' && obj.usage['default_post_address'] == 'false' %>
+          <%= link_to '删除', url_for(controller: 'admin/user_addresses', action: :destroy, id: obj.id), method: :delete, data: {confirm: '确认删除么？'} %>
+        <% end %>
       </td>
     </tr>
   <% end %>
