@@ -32,7 +32,7 @@
       <p><%= message.user.nickname %></p>
       <p><%= message.created_at %></p>
       <p><%= message.action %></p>
-      <p><%= message.message %></p>
+      <p><%= sanitize message.message %></p>
       <p><%= message.explain %></p>
       <p class="fileinput-button">
         <% message.asset_imgs.each do |img| %>
