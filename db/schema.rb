@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151113110404) do
+ActiveRecord::Schema.define(version: 20151115185505) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -399,6 +399,26 @@ ActiveRecord::Schema.define(version: 20151113110404) do
     t.string   "reason_type"
   end
 
+  create_table "refund_records", force: :cascade do |t|
+    t.integer  "order_item_refund_id"
+    t.string   "out_trade_no"
+    t.decimal  "total_fee",            default: 0.0
+    t.decimal  "refund_fee",           default: 0.0
+    t.string   "out_refund_no"
+    t.datetime "applied_at"
+    t.string   "applied_status"
+    t.datetime "refunded_at"
+    t.string   "refund_channel"
+    t.string   "refund_status"
+    t.integer  "query_count",          default: 0
+    t.text     "applied_content"
+    t.text     "query_content"
+    t.datetime "created_at",                         null: false
+    t.datetime "updated_at",                         null: false
+  end
+
+  add_index "refund_records", ["order_item_refund_id"], name: "index_refund_records_on_order_item_refund_id", using: :btree
+
   create_table "regions", force: :cascade do |t|
     t.string  "name"
     t.string  "numcode"
@@ -491,14 +511,15 @@ ActiveRecord::Schema.define(version: 20151113110404) do
     t.string   "country"
     t.string   "street"
     t.string   "mobile"
-    t.datetime "created_at",                 null: false
-    t.datetime "updated_at",                 null: false
-    t.boolean  "default",    default: false
+    t.datetime "created_at",                     null: false
+    t.datetime "updated_at",                     null: false
+    t.boolean  "default",        default: false
     t.string   "area"
     t.string   "building"
-    t.jsonb    "usage",      default: {}
+    t.jsonb    "usage",          default: {}
     t.string   "note"
     t.integer  "post_code"
+    t.boolean  "seller_address", default: false
   end
 
   create_table "user_infos", force: :cascade do |t|
@@ -609,6 +630,7 @@ ActiveRecord::Schema.define(version: 20151113110404) do
   add_foreign_key "orders", "users", column: "seller_id", name: "fk_order_seller_foreign_key"
   add_foreign_key "privilege_cards", "users"
   add_foreign_key "refund_messages", "order_item_refunds"
+  add_foreign_key "refund_records", "order_item_refunds"
   add_foreign_key "selling_incomes", "orders"
   add_foreign_key "selling_incomes", "users"
   add_foreign_key "sharing_incomes", "order_items"

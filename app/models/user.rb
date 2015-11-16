@@ -169,11 +169,7 @@ class User < ActiveRecord::Base
     if self.can_rebind_agent?
       self.agent = agent_user
       self.admin = true
-      if agent_user.id == User.official_account.id
-        self.user_info.service_rate = 6
-      else
-        self.user_info.service_rate = 5
-      end
+      self.user_info.service_rate = 5
       self.user_roles << UserRole.seller if not self.is_seller?
       self.save
     else
@@ -275,8 +271,8 @@ class User < ActiveRecord::Base
   end
 
   def default_address
-    @default_address ||= user_addresses.where(default: true).first
-    @default_address ||= user_addresses.first
+    @default_address ||= user_addresses.where(default: true, seller_address: false).first
+    @default_address ||= user_addresses.where(seller_address: false).first
   end
 
   def set_default_address(address = nil)
@@ -376,6 +372,14 @@ class User < ActiveRecord::Base
     self.expresses.exists?(express)
   end
 
+  def default_get_address
+    user_addresses.where('usage @> ?', {default_get_address: 'true'}.to_json).first.to_s
+  end
+
+  def default_post_address
+    user_addresses.where('usage @> ?', {default_post_address: 'true'}.to_json).first.to_s
+  end
+
   private
 
   def ensure_privilege_rate
@@ -414,4 +418,5 @@ class User < ActiveRecord::Base
       end
     end
   end
+
 end

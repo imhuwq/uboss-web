@@ -53,13 +53,13 @@
       <p class="text-center border-top nogap">
         <br />
         <% if current_user && current_user.has_seller_privilege_card?(@seller) %>
-          <a class="btn btn-large p-sharing-btn">分享给朋友</a>
+          <a class="btn btn-large p-sharing-btn cover-share-btn">分享给朋友</a>
         <% else %>
           <%= link_to "领取友情卡", get_seller_sharing_path,
             data: { sid: @seller.id, uid: current_user.present? },
-            class: "btn btn-large show-req-snode-modal"
+            class: "btn btn-large show-req-snode-modal cover-share-btn"
           %>
-          <a class="btn btn-large hidden p-sharing-btn">分享给朋友</a>
+          <a class="btn btn-large hidden p-sharing-btn cover-share-btn">分享给朋友</a>
         <% end %>
       </p>
       <div><a href="/about">查看说明</a></div>

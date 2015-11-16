@@ -1,6 +1,6 @@
 class Admin::OrderItemRefundsController < AdminController
   load_and_authorize_resource
-  before_action :find_order_item_and_refund, only: [:approved_refund, :approved_return, :approved_receive, :declined_refund, :declined_receive, :refund_message]
+  before_action :find_order_item_and_refund, only: [:approved_refund, :approved_return, :confirm_received, :declined_refund, :declined_return, :declined_receive, :refund_message]
   before_action :refund_reason_must_be_present, only: [:declined_refund, :declined_return, :declined_receive]
 
   def index
@@ -36,13 +36,13 @@ class Admin::OrderItemRefundsController < AdminController
     redirect_to admin_order_item_order_item_refunds_path(@order_item)
   end
 
-  # 同意收货
-  def approved_receive
+  # 确认收货
+  def confirm_received
     if @order_item_refund.may_confirm_receive? && @order_item_refund.confirm_receive!
       create_refund_message({action: '确认收货'})
-      flash[:success] = '同意收货操作成功'
+      flash[:success] = '确认收货操作成功'
     else
-      flash[:error] = '同意收货操作失败'
+      flash[:error] = '确认收货操作失败'
     end
     redirect_to admin_order_item_order_item_refunds_path(@order_item)
   end
@@ -102,7 +102,7 @@ class Admin::OrderItemRefundsController < AdminController
   end
 
   def create_refund_message(options={})
-    options.merge!({order_item_refund: @order_item_refund, user_type: 'seller', user_id: current_user.id})
+    options.merge!({order_item_refund: @order_item_refund, user_type: '卖家', user_id: current_user.id})
     RefundMessage.create options
   end
 

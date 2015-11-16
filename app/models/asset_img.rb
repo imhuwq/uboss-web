@@ -2,8 +2,7 @@ class AssetImg < ActiveRecord::Base
 
   include Imagable
 
-  has_many :children, :class_name=>'AssetImg', :foreign_key=>'parent_id'
-  belongs_to :resource, :polymorphic => true #指定图片的类型/对象
+  belongs_to :resource, polymorphic: true #指定图片的类型/对象
 
   mount_uploader :avatar, ImageUploader
 

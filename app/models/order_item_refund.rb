@@ -3,6 +3,7 @@ class OrderItemRefund < ActiveRecord::Base
   belongs_to :refund_reason
   belongs_to :user
   has_one :sales_return
+  has_one :refund_record
   has_many :refund_messages
   has_many :asset_imgs, class_name: 'AssetImg', autosave: true, as: :resource
 
@@ -52,8 +53,7 @@ class OrderItemRefund < ActiveRecord::Base
       after do
         #如果只退款不退货, 同意后就直接进入退款流程
         if !refund_type_include_goods?
-          #打款给买家
-          self.may_finish? && self.finish!
+          WxRefundJob.perform_later(self)          # 微信退款申请
         end
         self.state_at_attributes['同意时间'] = time_now
         self.save
@@ -73,8 +73,9 @@ class OrderItemRefund < ActiveRecord::Base
     end
 
     event :confirm_receive do
-      transitions from: [:completed_express_number, :applied_uboss], to: :confirm_received
+      transitions from: [:decline_received, :completed_express_number, :applied_uboss], to: :confirm_received
       after do
+        WxRefundJob.perform_later(self)          # 微信退款申请
         self.state_at_attributes['卖家确认收货时间'] = time_now
         self.save
       end
@@ -143,12 +144,28 @@ class OrderItemRefund < ActiveRecord::Base
       message = "商家在#{timeout_days}天内未确认收货，系统已默认商家已收货"
     end
 
-    self.refund_messages.create(user_type: 'seller',
+    self.refund_messages.create(user_type: '卖家',
                                 user_id: self.order_item.order.seller_id,
                                 message: message,
                                 action: action,
                                 order_item_refund_id: id
                                )
+  end
+
+  def order_charge
+    order_item.order.order_charge
+  end
+
+  def order_charge_number
+    order_charge.number
+  end
+
+  def refund_number
+    "#{order_charge_number}#{id}"
+  end
+
+  def total_fee
+    order_charge.paid_amount * 100
   end
 
   private

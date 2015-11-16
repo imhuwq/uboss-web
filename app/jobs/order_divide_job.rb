@@ -71,11 +71,11 @@ class OrderDivideJob < ActiveJob::Base
   def divide_income_for_official_or_agent
     seller = @order.seller
     if seller.service_rate && order_income > 0
-      divide_income = order_income * seller.service_rate / 100
+      divide_income = (order_income * seller.service_rate / 100).truncate(2)
       agent_divide_income = 0
 
       if agent = seller.agent
-        agent_divide_income = divide_income / 2
+        agent_divide_income = (divide_income / 2).truncate(2)
         divide_record = DivideIncome.create!(
           order: @order,
           amount: agent_divide_income,

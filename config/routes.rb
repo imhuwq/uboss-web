@@ -152,6 +152,7 @@ Rails.application.routes.draw do
       resources :order_items, only: [] do
         resources :order_item_refunds, only: [:index] do
           get  :approved_refund,  on: :member
+          get  :confirm_received, on: :member
           post :approved_return,  on: :member
           post :declined_refund,  on: :member
           post :declined_return,  on: :member
@@ -191,6 +192,9 @@ Rails.application.routes.draw do
       end
       resources :transactions, only: [:index]
       resources :bank_cards, only: [:index, :new, :edit, :create, :update, :destroy]
+      resources :user_addresses do
+        get :change_default_address, on: :collection
+      end
 
       get '/data', to: 'data#index'
       get '/backend_status', to: 'dashboard#backend_status'

@@ -9,19 +9,19 @@
     <%= javascript_include_tag 'desktop' %>
     <%= render partial: 'baidu_tongji' %>
     <%= csrf_meta_tags %>
-    <link href="<%= image_url("desktop_image/favicon.ico") %>" type="image/x-icon" rel="shortcut icon">
+    <link href="<%= image_url("favicon.png") %>" type="image/x-icon" rel="shortcut icon">
   </head>
   <body>
 	<header>
 			<div class="container">
-				<div class="box-w30"> 
+				<div class="box-w30">
 					<div class="logo">
-						<%= link_to 'http://www.uboss.me' do %>
+						<%= link_to 'http://www.uboss.cn' do %>
 						<%= image_tag "new_desktop/logo.png" %>
 						<% end %>
 					</div><!-- logo -->
 				</div><!-- box-w30 -->
-				<div class="box-w70"> 
+				<div class="box-w70">
 				<nav class="text-right">
 					<ul>
 						<li><a href="<%= root_path  %>" >关于UBOSS</a></li>
@@ -51,7 +51,7 @@
 		<div class="copyright">
 			<p><%= image_tag "new_desktop/footer-logo.png", alt:"UBoss",width:'28',height:'54' %></p>
 			<br />
-			<p>Copyright 2015 www.uboss.me.</p> 
+			<p>Copyright 2015 www.uboss.cn</p>
 			<div>All Rights Reserved 粤ICP备15032292号-1 </div>
 		</div>
    </footer>

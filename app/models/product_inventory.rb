@@ -1,5 +1,7 @@
 class ProductInventory < ActiveRecord::Base
 
+  SkuProperty = Struct.new(:key, :value)
+
   belongs_to :product
   belongs_to :product_class
   has_many   :cart_items
@@ -39,6 +41,10 @@ class ProductInventory < ActiveRecord::Base
     seller.id
   end
 
+  def max_privilege_amount
+    @max_privilege_amount ||= share_amount_lv_1 + privilege_amount
+  end
+
   def sku_attributes_str
     sku_attributes.inject([]) do |attributes, property|
       attributes << property.try(:join, ':')
@@ -58,7 +64,6 @@ class ProductInventory < ActiveRecord::Base
     }
   end
 
-  SkuProperty = Struct.new(:key, :value)
   def properties
     @properties ||= sku_attributes.collect do |key, value|
       SkuProperty.new(key, value)
