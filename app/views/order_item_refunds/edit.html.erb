@@ -1,12 +1,12 @@
 <%= upyun_meta_tags prefix: 'asset_img/avatar' %>
 
 <%= content_for :page_title do %>
-  <%= link_to order_item_order_item_refund_path(order_item_id: @order_item.id, id: @refund.id) do %>
-    <div>
+  <div>
+    <%= link_to order_item_order_item_refund_path(order_item_id: @order_item.id, id: @refund.id) do %>
       <i class="fa fa-chevron-left"></i>
-      修改退款申请
-    </div>
-  <% end %>
+    <% end %>
+    修改退款申请
+  </div>
 <% end %>
 <br />
 <%= render 'form' %>
