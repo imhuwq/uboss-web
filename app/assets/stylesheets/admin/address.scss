@@ -1,6 +1,6 @@
 .address-list-box{
     #address-list-box{
-      position: absolute;
+      position: fixed;
       top:50%;
       left: 50%;
       height: 360px;
@@ -23,13 +23,19 @@
         top: 0;  
         color: #000;
       }
-    }
+    }  
     
-    .address-alert{
-      cursor: pointer;
-      color: #43c3aa;
-    }
+}
+
+.address-alert{
+  cursor: pointer;
+  color: #43c3aa;      
+}
+#address-list-box{
     .title .name{color:#999 }
+    .title a{
+        color: #43c3aa;
+    }
     table{
       margin-top:10px ;
       width: 100%;

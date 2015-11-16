@@ -16,7 +16,6 @@ jQuery ($) ->
       data: {
         title: title
         address_id: address_id
-        order_id: order_id
       },
     .done ->
       $('#address-list-box').slideUp();
