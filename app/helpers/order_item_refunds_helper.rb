@@ -8,7 +8,7 @@ module OrderItemRefundsHelper
     order = order_item.order
     return [false, order_item.pay_amount] if order.state == 'payed'
     return [true, order_item.pay_amount] if refund.refund_type == 'receipted_refund'
-    return [false, order_item.pay_amount] if refund.refund_type == 'unreceipt_refund'
+    return [refund.aasm_state == 'declined', order_item.pay_amount] if refund.refund_type == 'unreceipt_refund'
     return [true, order_item.pay_amount] if refund.refund_type == 'return_goods_and_refund'
     return [true, order_item.pay_amount] if refund.refund_type == 'after_sale_only_refund'
     return [true, order_item.pay_amount] if refund.refund_type == 'after_sale_return_goods_and_refund'
