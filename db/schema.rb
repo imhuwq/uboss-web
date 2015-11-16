@@ -92,6 +92,9 @@ ActiveRecord::Schema.define(version: 20151113084820) do
     t.datetime "expire_at"
   end
 
+  add_index "agent_invite_seller_histroys", ["invite_code", "agent_id"], name: "index_agent_invite_seller_histroys_on_invite_code_and_agent_id", unique: true, using: :btree
+  add_index "agent_invite_seller_histroys", ["mobile", "agent_id"], name: "index_agent_invite_seller_histroys_on_mobile_and_agent_id", unique: true, using: :btree
+
   create_table "asset_imgs", force: :cascade do |t|
     t.string   "filename"
     t.string   "avatar"
@@ -137,6 +140,8 @@ ActiveRecord::Schema.define(version: 20151113084820) do
     t.integer  "product_inventory_id"
   end
 
+  add_index "cart_items", ["product_inventory_id", "cart_id"], name: "index_cart_items_on_product_inventory_id_and_cart_id", unique: true, using: :btree
+
   create_table "carts", force: :cascade do |t|
     t.integer  "user_id"
     t.datetime "created_at", null: false
@@ -163,6 +168,8 @@ ActiveRecord::Schema.define(version: 20151113084820) do
     t.string  "resource_type"
     t.text    "content"
   end
+
+  add_index "descriptions", ["resource_type", "resource_id"], name: "index_descriptions_on_resource_type_and_resource_id", unique: true, using: :btree
 
   create_table "different_areas", force: :cascade do |t|
     t.integer  "carriage_template_id"
@@ -213,6 +220,8 @@ ActiveRecord::Schema.define(version: 20151113084820) do
     t.datetime "updated_at"
   end
 
+  add_index "enterprise_authentications", ["user_id"], name: "index_enterprise_authentications_on_user_id", unique: true, using: :btree
+
   create_table "evaluations", force: :cascade do |t|
     t.integer  "buyer_id"
     t.integer  "sharer_id"
@@ -232,6 +241,8 @@ ActiveRecord::Schema.define(version: 20151113084820) do
     t.integer  "private_id"
   end
 
+  add_index "expresses", ["name"], name: "index_expresses_on_name", unique: true, using: :btree
+
   create_table "expresses_users", id: false, force: :cascade do |t|
     t.integer "express_id"
     t.integer "user_id"
@@ -247,9 +258,14 @@ ActiveRecord::Schema.define(version: 20151113084820) do
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 =======
 >>>>>>> 8cb0813... next to test
+=======
+  add_index "favour_products", ["product_id", "user_id"], name: "index_favour_products_on_product_id_and_user_id", unique: true, using: :btree
+
+>>>>>>> a98c02d... seller addresses
   create_table "job_histories", force: :cascade do |t|
     t.integer  "user_id"
     t.integer  "status"
@@ -268,11 +284,14 @@ ActiveRecord::Schema.define(version: 20151113084820) do
   end
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> 2832ff4... migration
 =======
 >>>>>>> f28bcfb... order page style
 =======
 >>>>>>> 8cb0813... next to test
+=======
+>>>>>>> a98c02d... seller addresses
   create_table "mobile_captchas", force: :cascade do |t|
     t.string   "code"
     t.datetime "expire_at"
@@ -426,6 +445,7 @@ ActiveRecord::Schema.define(version: 20151113084820) do
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> d6a5a01... add add_order_item_refund_id to refund_messages
 =======
@@ -459,6 +479,8 @@ ActiveRecord::Schema.define(version: 20151113084820) do
 >>>>>>> 1228deb... basic function finished
 =======
     t.integer  "product_id"
+=======
+>>>>>>> a98c02d... seller addresses
     t.integer  "order_item_refund_id"
     t.integer  "refund_state",         default: 0
 >>>>>>> f28bcfb... order page style
@@ -508,12 +530,16 @@ ActiveRecord::Schema.define(version: 20151113084820) do
     t.datetime "updated_at"
   end
 
+  add_index "personal_authentications", ["identity_card_code"], name: "index_personal_authentications_on_identity_card_code", unique: true, using: :btree
+  add_index "personal_authentications", ["user_id"], name: "index_personal_authentications_on_user_id", unique: true, using: :btree
+
   create_table "privilege_cards", force: :cascade do |t|
     t.integer  "user_id"
     t.datetime "created_at",                           null: false
     t.datetime "updated_at",                           null: false
     t.boolean  "actived",              default: false
     t.integer  "seller_id"
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -525,7 +551,12 @@ ActiveRecord::Schema.define(version: 20151113084820) do
 =======
     t.integer  "product_inventory_id"
 >>>>>>> 8cb0813... next to test
+=======
+    t.integer  "product_inventory_id"
+>>>>>>> a98c02d... seller addresses
   end
+
+  add_index "privilege_cards", ["user_id", "seller_id"], name: "index_privilege_cards_on_user_id_and_seller_id", unique: true, using: :btree
 
   create_table "product_classes", force: :cascade do |t|
     t.integer  "parent_id"
@@ -889,12 +920,16 @@ ActiveRecord::Schema.define(version: 20151113084820) do
     t.integer "user_role_id"
   end
 
+  add_index "user_role_relations", ["user_id", "user_role_id"], name: "index_user_role_relations_on_user_id_and_user_role_id", unique: true, using: :btree
+
   create_table "user_roles", force: :cascade do |t|
     t.string   "name"
     t.string   "display_name"
     t.datetime "created_at",   null: false
     t.datetime "updated_at",   null: false
   end
+
+  add_index "user_roles", ["name"], name: "index_user_roles_on_name", unique: true, using: :btree
 
   create_table "users", force: :cascade do |t|
     t.string   "login",                  default: "",    null: false
@@ -925,7 +960,9 @@ ActiveRecord::Schema.define(version: 20151113084820) do
     t.decimal  "privilege_rate",         default: 50.0
   end
 
+  add_index "users", ["agent_code"], name: "index_users_on_agent_code", unique: true, using: :btree
   add_index "users", ["authentication_token"], name: "index_users_on_authentication_token", using: :btree
+  add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
   add_index "users", ["login"], name: "index_users_on_login", unique: true, using: :btree
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
 
