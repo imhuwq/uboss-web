@@ -30,7 +30,13 @@
       <% if @agent.present? %>
         <h6>您将与<%= @agent.try(:identify) %>创客进行绑定</h6>
       <% end %>
-      <div class="text-center" style="margin-top:30px;margin-bottom:10px;">您现在的状况不允许更换绑定</div>
+      <div class="text-center" style="margin-top:30px;margin-bottom:10px;">
+        <% if current_user.agent.present? %>
+        您已经绑定创客，不允许更换绑定。
+        <% elsif current_user.authenticated? %>
+        您已经通过身份验证，不允许更换绑定。
+        <% end %>
+      </div>
 
     </div>
     <div class="button_div  col-xs-12"  style="margin-top:10px;padding-bottom:30px;">
