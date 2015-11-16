@@ -37,11 +37,11 @@ ActiveRecord::Schema.define(version: 20151113110404) do
     t.integer  "size"
     t.integer  "width"
     t.integer  "height"
-    t.integer  "parent_id"
     t.string   "thumbnail"
     t.datetime "created_at"
     t.string   "alt"
     t.string   "url"
+    t.string   "image_type"
   end
 
   create_table "bank_cards", force: :cascade do |t|
@@ -175,46 +175,6 @@ ActiveRecord::Schema.define(version: 20151113110404) do
 
   add_index "mobile_captchas", ["mobile"], name: "index_mobile_captchas_on_mobile", using: :btree
 
-  create_table "oauth_access_grants", force: :cascade do |t|
-    t.integer  "resource_owner_id", null: false
-    t.integer  "application_id",    null: false
-    t.string   "token",             null: false
-    t.integer  "expires_in",        null: false
-    t.text     "redirect_uri",      null: false
-    t.datetime "created_at",        null: false
-    t.datetime "revoked_at"
-    t.string   "scopes"
-  end
-
-  add_index "oauth_access_grants", ["token"], name: "index_oauth_access_grants_on_token", unique: true, using: :btree
-
-  create_table "oauth_access_tokens", force: :cascade do |t|
-    t.integer  "resource_owner_id"
-    t.integer  "application_id"
-    t.string   "token",             null: false
-    t.string   "refresh_token"
-    t.integer  "expires_in"
-    t.datetime "revoked_at"
-    t.datetime "created_at",        null: false
-    t.string   "scopes"
-  end
-
-  add_index "oauth_access_tokens", ["refresh_token"], name: "index_oauth_access_tokens_on_refresh_token", unique: true, using: :btree
-  add_index "oauth_access_tokens", ["resource_owner_id"], name: "index_oauth_access_tokens_on_resource_owner_id", using: :btree
-  add_index "oauth_access_tokens", ["token"], name: "index_oauth_access_tokens_on_token", unique: true, using: :btree
-
-  create_table "oauth_applications", force: :cascade do |t|
-    t.string   "name",                      null: false
-    t.string   "uid",                       null: false
-    t.string   "secret",                    null: false
-    t.text     "redirect_uri",              null: false
-    t.string   "scopes",       default: "", null: false
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  add_index "oauth_applications", ["uid"], name: "index_oauth_applications_on_uid", unique: true, using: :btree
-
   create_table "order_charges", force: :cascade do |t|
     t.string   "channel"
     t.datetime "created_at",                         null: false
@@ -238,13 +198,13 @@ ActiveRecord::Schema.define(version: 20151113110404) do
     t.integer  "refund_reason_id"
     t.string   "description"
     t.integer  "order_item_id"
-    t.datetime "created_at",          null: false
-    t.datetime "updated_at",          null: false
+    t.datetime "created_at",                       null: false
+    t.datetime "updated_at",                       null: false
     t.string   "aasm_state"
     t.integer  "order_state"
     t.string   "refund_type"
     t.integer  "user_id"
-    t.jsonb    "state_at_attributes"
+    t.jsonb    "state_at_attributes", default: {}, null: false
     t.string   "address"
     t.string   "return_explain"
   end
@@ -284,10 +244,10 @@ ActiveRecord::Schema.define(version: 20151113110404) do
     t.datetime "signed_at"
     t.datetime "shiped_at"
     t.datetime "completed_at"
-    t.string   "to_seller"
-    t.decimal  "ship_price",      default: 0.0
     t.string   "ship_number"
     t.integer  "express_id"
+    t.string   "to_seller"
+    t.decimal  "ship_price",      default: 0.0
     t.integer  "order_charge_id"
     t.decimal  "paid_amount",     default: 0.0
   end
@@ -313,14 +273,6 @@ ActiveRecord::Schema.define(version: 20151113110404) do
     t.datetime "updated_at",                 null: false
     t.boolean  "actived",    default: false
     t.integer  "seller_id"
-  end
-
-  create_table "product_attribute_names", force: :cascade do |t|
-    t.string   "name"
-    t.boolean  "is_key_attr",      default: true
-    t.integer  "product_class_id"
-    t.datetime "created_at",                      null: false
-    t.datetime "updated_at",                      null: false
   end
 
   create_table "product_classes", force: :cascade do |t|
@@ -383,7 +335,6 @@ ActiveRecord::Schema.define(version: 20151113110404) do
     t.decimal  "original_price",       default: 0.0
     t.decimal  "present_price",        default: 0.0
     t.integer  "count",                default: 0
-    t.boolean  "buyer_pay",            default: true
     t.decimal  "traffic_expense",      default: 0.0
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -545,6 +496,9 @@ ActiveRecord::Schema.define(version: 20151113110404) do
     t.boolean  "default",    default: false
     t.string   "area"
     t.string   "building"
+    t.jsonb    "usage",      default: {}
+    t.string   "note"
+    t.integer  "post_code"
   end
 
   create_table "user_infos", force: :cascade do |t|
@@ -615,7 +569,7 @@ ActiveRecord::Schema.define(version: 20151113110404) do
     t.integer  "authenticated",          default: 0
     t.integer  "agent_code"
     t.string   "authentication_token"
-    t.decimal  "privilege_rate",         default: 0.0
+    t.decimal  "privilege_rate",         default: 50.0
   end
 
   add_index "users", ["authentication_token"], name: "index_users_on_authentication_token", using: :btree

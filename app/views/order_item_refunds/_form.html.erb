@@ -33,13 +33,9 @@
     	<%= f.text_area :description, class: 'input-block',placeholder:'退款说明',rows:'6' %>
     </div>
     <div class='form-group string optional order_item_refund_asset_imgs'>
-	    <%= f.input_field :avatar, value: @refund.image_files, type: :hidden, as: :file, class: 'refund_avatar' %>
-	    <div class="fileinput-button">
-	      <%= image_tag("admin/no-img.png") %>
-	      <% @refund.asset_imgs.each do |img| %>
-	        <%= image_tag(img.image_url(:thumb))%>
-	      <% end %>
-	      <%= file_field_tag "image", class: "upyun_file" %>
+	      <p><%= file_field_tag "file", class: "upyun_file" %></p>
+	      <br />
+	      <a href="#" id="upload">上传</a>
 	    </div>
     </div>
 	  <div class="gap">
@@ -47,4 +43,3 @@
     </div>
   <% end %>
 </div>
-
