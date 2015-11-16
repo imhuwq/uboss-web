@@ -1,8 +1,9 @@
-<div class="row">
+<div class="row" style="width: 380px;
+    margin: 50px auto;">
 
   <% if current_user.present? and current_user.can_rebind_agent? and @agent.present? %>
     <%= horizon_form_for(:seller, url: seller_path(current_user), method: 'PUT') do |f| %>
-    <div class="well">
+    <div class="well" >
       <h4>注册绑定UBOSS</h4>
       <h6>您将与<%= @agent.try(:identify) %>创客进行绑定</h6>
       <hr />
