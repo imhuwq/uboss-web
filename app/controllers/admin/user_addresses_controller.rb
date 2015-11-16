@@ -31,7 +31,11 @@ class Admin::UserAddressesController < AdminController
   end
 
   def destroy
-    if current_user.user_addresses.where(seller_address: true).find(params[:id]).destroy
+    user_address = current_user.user_addresses.where(seller_address: true).find(params[:id])
+    if user_address.usage['default_get_address'] == 'true' || user_address.usage['default_post_address'] == 'true'
+      flash[:error] = "删除失败,不能删除默认地址，请先设置其他默认地址。"
+
+    elsif user_address.destroy
       flash[:success] = "删除成功"
     else
       flash[:error] = "删除失败"
