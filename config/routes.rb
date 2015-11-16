@@ -152,6 +152,7 @@ Rails.application.routes.draw do
       resources :order_items, only: [] do
         resources :order_item_refunds, only: [:index] do
           get  :approved_refund,  on: :member
+          get  :confirm_received, on: :member
           post :approved_return,  on: :member
           post :declined_refund,  on: :member
           post :declined_return,  on: :member

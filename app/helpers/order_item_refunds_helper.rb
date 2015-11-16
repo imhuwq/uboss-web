@@ -24,7 +24,7 @@ module OrderItemRefundsHelper
       return refund_timeout_2_days if refund.refund_type == 'refund'
       return refund_timeout_5_days if refund.refund_type.in?(['receipted_refund', 'unreceipt_refund', 'return_goods_and_refund', 'after_sale_only_refund', 'after_sale_return_goods_and_refund'])
 
-    elsif refund.aasm_state == 'declined' || refund.aasm_state == 'approved'
+    elsif refund.aasm_state.in?(['approved', 'declined', 'decline_received'])
       refund_timeout_7_days
 
     elsif refund.aasm_state == 'completed_express_number'

@@ -118,7 +118,7 @@
       <p>* 买家超时未处理，退货申请将自动关闭</p>
     </div>
     <div class='evaluate' style='display:inline-flex;'>
-      您还可以：<%= link_to '同意退货申请', 'javascripts:;', class: 'main-link-color', onclick: '$("#refund_decline_return").modal("show")' %> | <a class="main-link-color" href="">要求UBOSS介入</a><!-- TODO 出现“要求UBOSS介入”的条件：1.等待卖家处理,2.拒绝过买家后买家修改申请并提交后 -->
+      您还可以：<%= link_to '同意退货申请', 'javascripts:;', class: 'main-link-color', onclick: '$("#refund_approve_return").modal("show")' %> | <a class="main-link-color" href="">要求UBOSS介入</a><!-- TODO 出现“要求UBOSS介入”的条件：1.等待卖家处理,2.拒绝过买家后买家修改申请并提交后 -->
     </div>
     <%= render 'refund_modal', page: 'approve_return', title: '同意退货申请' %>
   <% else %>
@@ -135,6 +135,11 @@
   <% end %>
 
 <% when 'confirm_received' %>
+  <div class="bottom_line">
+    <p class='refund_info_title'>已确认收货</p>
+    <p>* 退款给买家<%= @order_item_refund.money %>元</p>
+    <p>* 将在三个工作日内退款回买家支付的账号或银行卡！</p>
+  </div>
 
 <% when 'decline_received' %>
   <div class="bottom_line">
