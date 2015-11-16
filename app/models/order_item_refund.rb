@@ -73,7 +73,7 @@ class OrderItemRefund < ActiveRecord::Base
     end
 
     event :confirm_receive do
-      transitions from: [:completed_express_number, :applied_uboss], to: :confirm_received
+      transitions from: [:decline_received, :completed_express_number, :applied_uboss], to: :confirm_received
       after do
         WxRefundJob.perform_later(self)          # 微信退款申请
         self.state_at_attributes['卖家确认收货时间'] = time_now
@@ -144,7 +144,7 @@ class OrderItemRefund < ActiveRecord::Base
       message = "商家在#{timeout_days}天内未确认收货，系统已默认商家已收货"
     end
 
-    self.refund_messages.create(user_type: 'seller',
+    self.refund_messages.create(user_type: '卖家',
                                 user_id: self.order_item.order.seller_id,
                                 message: message,
                                 action: action,
