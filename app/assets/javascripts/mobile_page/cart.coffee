@@ -165,7 +165,7 @@ $ ->
     $(".order-box .checked").each ->
       num   = parseInt($(this).parent().find('.num').val())
       price = $(this).parent().find('.product-price').text()
-      total_price += floatMul(price, num)
+      total_price = floatAdd(total_price, floatMul(price, num))
     $('.total_price').text(total_price)
 
   # 单商铺计算
@@ -175,7 +175,7 @@ $ ->
       $(this).closest('.order-list').children('.order-box').children('.checked').each ->
         num   = parseInt($(this).parent().find('.num').val())
         price = $(this).parent().find('.product-price').text()
-        single_total_price += floatMul(price, num)
+        single_total_price = floatAdd(single_total_price, floatMul(price, num))
       $(this).text(single_total_price)
 
   $('.new_order').on 'click', (e) ->

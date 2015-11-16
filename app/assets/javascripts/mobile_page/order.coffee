@@ -163,7 +163,7 @@ $ ->
       $this.find('.order-box.valid-box').each ->
         amount = parseFloat($(this).data('privilege-amount'))
         num   = parseInt($(this).find('.num').data('num'))
-        privilege_amount += floatMul(amount, num)
+        privilege_amount = floatAdd(privilege_amount, floatMul(amount, num))
       $privilege_amount = $this.find('.order-privilege-amount')
       $friend_info = $privilege_amount.closest('.friend-info')
       $privilege_amount.text(privilege_amount)
@@ -182,20 +182,20 @@ $ ->
       $this.find('.order-box.valid-box').each ->
         num   = parseInt($(this).find('.num').data('num'))
         price = parseFloat($(this).find('.product-price').text())
-        total_price += floatMul(price, num)
+        total_price = floatAdd(total_price, floatMul(price, num))
       ship_price = parseFloat($this.find('.freight-box>span').data('ship-price'))
       privilege_amount = parseFloat($this.find('.order-privilege-amount').text()) || 0.0
-      total_price += ship_price - privilege_amount
+      total_price = floatAdd(total_price, floatSub(ship_price, privilege_amount))
       $this.find('.price-box>span').data('total-price', total_price)
-      $this.find('.price-box>span').text('￥ '+total_price)
+      $this.find('.price-box>span').text('￥ ' + total_price)
 
   # 总价
   setOrderTotalPrice = ->
     total_price = 0.0
     privelege_price = 0.0
     $('.valid-order-list.valid-list').find('.price-box').each ->
-      total_price += parseFloat($(this).find('span').data('total-price'))
-      privelege_price += (parseFloat($(this).parent().find('.order-privilege-amount').text()) || 0.0)
+      total_price = floatAdd(total_price, parseFloat($(this).find('span').data('total-price')))
+      privelege_price = floatAdd(privelege_price, (parseFloat($(this).parent().find('.order-privilege-amount').text()) || 0.0))
     $('#total_price').text(total_price)
     $('.order-price').find('small').text('共优惠'+privelege_price+'元')
 
