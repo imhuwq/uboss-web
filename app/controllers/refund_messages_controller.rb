@@ -6,7 +6,7 @@ class RefundMessagesController < ApplicationController
 
   def new
     @refund_message = RefundMessage.new
-    @refund_messages = current_user.refund_messages.where(order_item_refund_id: @order_item.order_item_refund_ids).order('created_at desc')
+    @refund_messages = RefundMessage.where(order_item_refund_id: @order_item.order_item_refund_ids).order('created_at desc')
   end
 
   def create
