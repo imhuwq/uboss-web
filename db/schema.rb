@@ -21,6 +21,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 ActiveRecord::Schema.define(version: 20151113032754) do
 =======
 ActiveRecord::Schema.define(version: 20151030093203) do
@@ -52,6 +53,9 @@ ActiveRecord::Schema.define(version: 20151113094711) do
 =======
 ActiveRecord::Schema.define(version: 20151113110404) do
 >>>>>>> 12ea2ff... 增加退货说明字段
+=======
+ActiveRecord::Schema.define(version: 20151115185505) do
+>>>>>>> 8c3df9b... 微信退款
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -529,6 +533,26 @@ ActiveRecord::Schema.define(version: 20151113110404) do
 >>>>>>> abab8ef... 退款理由改成rake文件
   end
 
+  create_table "refund_records", force: :cascade do |t|
+    t.integer  "order_item_refund_id"
+    t.string   "out_trade_no"
+    t.decimal  "total_fee",            default: 0.0
+    t.decimal  "refund_fee",           default: 0.0
+    t.string   "out_refund_no"
+    t.datetime "applied_at"
+    t.string   "applied_status"
+    t.datetime "refunded_at"
+    t.string   "refund_channel"
+    t.string   "refund_status"
+    t.integer  "query_count",          default: 0
+    t.text     "applied_content"
+    t.text     "query_content"
+    t.datetime "created_at",                         null: false
+    t.datetime "updated_at",                         null: false
+  end
+
+  add_index "refund_records", ["order_item_refund_id"], name: "index_refund_records_on_order_item_refund_id", using: :btree
+
   create_table "regions", force: :cascade do |t|
     t.string  "name"
     t.string  "numcode"
@@ -753,6 +777,7 @@ ActiveRecord::Schema.define(version: 20151113110404) do
   add_foreign_key "orders", "users", column: "seller_id", name: "fk_order_seller_foreign_key"
   add_foreign_key "privilege_cards", "users"
   add_foreign_key "refund_messages", "order_item_refunds"
+  add_foreign_key "refund_records", "order_item_refunds"
   add_foreign_key "selling_incomes", "orders"
   add_foreign_key "selling_incomes", "users"
   add_foreign_key "sharing_incomes", "order_items"
