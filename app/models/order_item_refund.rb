@@ -60,6 +60,10 @@ class OrderItemRefund < ActiveRecord::Base
       end
     end
 
+    event :repending do
+      transitions from: :declined, to: :pending
+    end
+
     event :decline do
       transitions from: :pending, to: :declined
     end

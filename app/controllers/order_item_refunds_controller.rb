@@ -35,6 +35,8 @@ class OrderItemRefundsController < ApplicationController
   def update
     add_multi_img
     if @refund.update(order_item_refund_params)
+      @refund.declined? && @refund.may_repending? && @refund.repending!
+      @refund.decline_received? && @refund.may_complete_express_number? && @refund.complete_express_number!
       create_refund_message('买家修改了申请')
       flash[:success] = '修改退款成功'
       redirect_to order_item_order_item_refund_path(order_item_id: @order_item.id, id: @refund.id)
