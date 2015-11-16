@@ -8,6 +8,8 @@ class RefundMessage < ActiveRecord::Base
   DECLINE_RETURN  = ["退款金额不对，买家要求过高", "商品没问题，买家举证无效", "商品没问题，买家未举证", "申请时间已超过售后服务时限", "商品退回后才能退款", "其它"]
   DECLINE_RECEIVE = ["退回的商品影响二次销售", "已经协商好换货或维修", "买家退回的商品不是我店铺的", "买家填写的退货单号无记录", "未收到退货，快递还在途中", "买家擅自使用到付或平邮", "买家退回的商品不全"]
 
+  default_scope {order("updated_at desc")}
+
   def image_files
     self.asset_imgs.map{ |img| img.avatar.file.filename }.join(',')
   end

@@ -80,9 +80,18 @@
                 <p><span><%= message.user_type %></span> <%= message.user.identify %></p>
                 <p><%= message.created_at %></p>
                 <p><%= message.action %></p>
-                <p>金额：0.05元</p>
-                <p>退款原因：卖家缺货</p>
-                <p>说明：XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX</p>
+                <% if !message.money.blank? %>
+                  <p>金额：<%= message.money %>元</p>
+                <% end %>
+                <% if !message.refund_reason_id.blank? %>
+                  <p>退款原因：TODO 卖家缺货</p>
+                <% end %>
+                <% if !message.explain.blank? %>
+                  <p>说明：<%= message.explain %></p>
+                <% end %>
+                <% if !message.message.blank? %>
+                  <p><%= raw message.message %></p>
+                <% end %>
                 <p>
                 <% message.asset_imgs.each do |img| %>
                   <img src="<%= img.avatar_url(:thumb) %>" alt="" />
