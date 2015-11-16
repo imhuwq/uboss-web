@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151113032754) do
+ActiveRecord::Schema.define(version: 20151116025201) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -112,13 +112,6 @@ ActiveRecord::Schema.define(version: 20151113032754) do
     t.integer "region_id"
   end
 
-  create_table "districts", force: :cascade do |t|
-    t.string   "name"
-    t.integer  "numcode"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-  
   create_table "divide_incomes", force: :cascade do |t|
     t.integer  "user_id"
     t.integer  "order_id"
@@ -200,6 +193,21 @@ ActiveRecord::Schema.define(version: 20151113032754) do
 
   add_index "order_charges", ["number"], name: "index_order_charges_on_number", using: :btree
 
+  create_table "order_item_refunds", force: :cascade do |t|
+    t.decimal  "money"
+    t.integer  "refund_reason_id"
+    t.string   "description"
+    t.integer  "order_item_id"
+    t.datetime "created_at",                       null: false
+    t.datetime "updated_at",                       null: false
+    t.string   "aasm_state"
+    t.integer  "order_state"
+    t.string   "refund_type"
+    t.integer  "user_id"
+    t.jsonb    "state_at_attributes", default: {}, null: false
+    t.string   "address"
+  end
+
   create_table "order_items", force: :cascade do |t|
     t.integer  "order_id"
     t.integer  "product_id"
@@ -212,6 +220,8 @@ ActiveRecord::Schema.define(version: 20151113032754) do
     t.decimal  "present_price",        default: 0.0
     t.decimal  "privilege_amount",     default: 0.0
     t.integer  "product_inventory_id"
+    t.integer  "order_item_refund_id"
+    t.integer  "refund_state",         default: 0
   end
 
   create_table "orders", force: :cascade do |t|
@@ -348,6 +358,9 @@ ActiveRecord::Schema.define(version: 20151113032754) do
     t.integer  "best_evaluation"
     t.integer  "better_evaluation"
     t.integer  "worst_evaluation"
+    t.boolean  "full_cut",             default: false
+    t.integer  "full_cut_number"
+    t.string   "full_cut_unit"
   end
 
   create_table "redactor_assets", force: :cascade do |t|
@@ -367,10 +380,40 @@ ActiveRecord::Schema.define(version: 20151113032754) do
   add_index "redactor_assets", ["assetable_type", "assetable_id"], name: "idx_redactor_assetable", using: :btree
   add_index "redactor_assets", ["assetable_type", "type", "assetable_id"], name: "idx_redactor_assetable_type", using: :btree
 
+  create_table "refund_messages", force: :cascade do |t|
+    t.string   "message"
+    t.decimal  "money"
+    t.string   "user_type"
+    t.integer  "user_id"
+    t.string   "money_to"
+    t.string   "explain"
+    t.datetime "created_at",           null: false
+    t.datetime "updated_at",           null: false
+    t.integer  "refund_reason_id"
+    t.string   "action"
+    t.integer  "order_item_refund_id"
+  end
+
+  create_table "refund_reasons", force: :cascade do |t|
+    t.string   "reason"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+    t.string   "reason_type"
+  end
+
   create_table "regions", force: :cascade do |t|
     t.string  "name"
     t.string  "numcode"
     t.integer "parent_id"
+  end
+
+  create_table "sales_returns", force: :cascade do |t|
+    t.string   "logistics_company"
+    t.string   "ship_number"
+    t.string   "description"
+    t.datetime "created_at",           null: false
+    t.datetime "updated_at",           null: false
+    t.integer  "order_item_refund_id"
   end
 
   create_table "selling_incomes", force: :cascade do |t|
@@ -564,6 +607,7 @@ ActiveRecord::Schema.define(version: 20151113032754) do
   add_foreign_key "orders", "users"
   add_foreign_key "orders", "users", column: "seller_id", name: "fk_order_seller_foreign_key"
   add_foreign_key "privilege_cards", "users"
+  add_foreign_key "refund_messages", "order_item_refunds"
   add_foreign_key "selling_incomes", "orders"
   add_foreign_key "selling_incomes", "users"
   add_foreign_key "sharing_incomes", "order_items"
