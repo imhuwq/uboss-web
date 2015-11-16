@@ -10,8 +10,8 @@
       <div class="form-group string required enterprise_authentication_mobile" style="position:relative;">
         <%= f.label :mobile, class:"string required control-label" %>
         <div class="clearfix">
-          <div style="float:left;width:100%;padding-right:110px;"><%= f.input_field :mobile , value: current_user.login, disabled: :disabled, as: :tel, id:"new_mobile",class:"form-control", style:"width:100%;" %></div>
-          <%= link_to '发送手机验证码', '###',class: "btn btn-danger ",id:"send_mobile", style:"position:absolute;right:0;width:90px;margin-right:15px;" %>
+          <div style="float:left;width:100%;padding-right:150px;"><%= f.input_field :mobile , value: current_user.login, disabled: :disabled, as: :tel, id:"new_mobile",class:"form-control", style:"width:100%;" %></div>
+          <%= link_to '发送手机验证码', '###',class: "btn btn-danger ",id:"send_mobile", style:"position:absolute;right:0;width:140px;margin-right:5px;" %>
         </div>
       </div>
       <%= f.input :mobile_auth_code, as: :tel, :input_html=>{:id=>"mobile_auth_code"} %>
