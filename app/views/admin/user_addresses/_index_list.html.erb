@@ -1,0 +1,35 @@
+<table class="list-table">
+  <thead>
+    <th class="text-left">默认地址</th>
+    <th>联系人</th>
+    <th>联系电话</th>
+    <th>联系地址</th>
+    <th>邮政编码</th>
+    <th>备注</th>
+    <th>操作</th>
+  </thead>
+  <% user_addresses.each do |obj| %>
+    <tr>
+      <td class="text-left">
+        <% if obj.usage['default_post_address'] == 'true' %>
+          <span class='btn red-btn'>发货</span>
+        <% end %>
+        <% if obj.usage['default_get_address'] == 'true' %>
+          <span class='btn'>收货</span>
+        <% end %>
+      </td>
+      <td><%= obj.username %></td>
+      <td><%= obj.mobile %></td>
+      <td><%= obj.to_s %></td>
+      <td><%= obj.post_code %></td>
+      <td><%= obj.note %></td>
+      <td>
+        <%= link_to '编辑', url_for(controller: 'admin/user_addresses', action: :edit, id: obj.id) %>
+        <%= link_to '删除', url_for(controller: 'admin/user_addresses', action: :destroy, id: obj.id), method: :delete, data: {confirm: '确认删除么？'} %>
+      </td>
+    </tr>
+  <% end %>
+</table>
+
+<br />
+<%= paginate user_addresses %>

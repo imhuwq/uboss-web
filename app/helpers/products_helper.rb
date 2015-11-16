@@ -21,7 +21,7 @@ module ProductsHelper
   end
 
   def product_traffic(product)
-    if @product.buyer_pay
+    if @product.transportation_way != 0
       "￥#{@product.traffic_expense}"
     else
       '包邮'

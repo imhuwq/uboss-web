@@ -86,7 +86,6 @@ zh-CN:
         present_price: 现价
         count: 库存
         content: 图文详情
-        buyer_pay: 付款方式
         transportation_way: 运费
         asset_img: 商品主图
         has_share_lv: 分成级数
@@ -164,6 +163,7 @@ zh-CN:
     banking:  提现
     daily_reports: 收益
     authentications: 认证
+    user_addresses: 地址库
   activerecord:
     models:
       withdraw_record: 提现记录
@@ -210,6 +210,8 @@ zh-CN:
         code: 手机验证码
       user_address:
         username: 收件人
+        post_code: 邮政编码
+        note: 备注
       evaluation:
         status: 评价
       bank_card:

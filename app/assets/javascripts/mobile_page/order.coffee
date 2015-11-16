@@ -163,7 +163,7 @@ $ ->
       $this.find('.order-box.valid-box').each ->
         amount = parseFloat($(this).data('privilege-amount'))
         num   = parseInt($(this).find('.num').data('num'))
-        privilege_amount += parseInt(amount*100)*num/100
+        privilege_amount += floatMul(amount, num)
       $privilege_amount = $this.find('.order-privilege-amount')
       $friend_info = $privilege_amount.closest('.friend-info')
       $privilege_amount.text(privilege_amount)
@@ -182,7 +182,7 @@ $ ->
       $this.find('.order-box.valid-box').each ->
         num   = parseInt($(this).find('.num').data('num'))
         price = parseFloat($(this).find('.product-price').text())
-        total_price += price*num
+        total_price += floatMul(price, num)
       ship_price = parseFloat($this.find('.freight-box>span').data('ship-price'))
       privilege_amount = parseFloat($this.find('.order-privilege-amount').text()) || 0.0
       total_price += ship_price - privilege_amount
