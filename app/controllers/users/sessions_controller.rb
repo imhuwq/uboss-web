@@ -8,7 +8,7 @@ class Users::SessionsController < Devise::SessionsController
 
   # GET /resource/sign_in
   def new
-    @using_password = sign_in_params[:mobile_auth_code].blank?
+    @using_captcha = sign_in_params[:password].blank?
     super
   end
 
