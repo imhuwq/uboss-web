@@ -137,8 +137,10 @@ class OrderItemRefund < ActiveRecord::Base
   def create_timeout_message(timeout_days)
     if self.approved?
       if self.refund_type_include_goods?
+        self.address = self.order_item.order.seller.default_post_address.try(:refund_label)
+        self.save
         action  = "同意退货"
-        message = "商家在#{timeout_days}天内未处理此申请，系统已默认商家同意此次申请"
+        message = "退货地址：#{self.address}</br>商家在#{timeout_days}天内未处理此申请，系统已默认商家同意此次申请"
       else
         action  = "同意退款"
         message = "商家在#{timeout_days}天内未处理此申请，系统已默认商家同意此次申请"

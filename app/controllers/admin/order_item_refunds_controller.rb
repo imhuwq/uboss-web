@@ -22,16 +22,19 @@ class Admin::OrderItemRefundsController < AdminController
 
   # 同意退货
   def approved_return
-    @order_item_refund.address = "#TODO 退货地址"
-    @order_item_refund.return_explain = "#TODO 退货说明"
+    if address = current_user.seller_addresses.find_by(id: params[:return_address])
+      @order_item_refund.address = address.refund_label
+      @order_item_refund.return_explain = params[:return_explain]
 
-    if @order_item_refund.save && @order_item_refund.may_approve? && @order_item_refund.approve!
-      #TODO 发送退货地址、退货说明
-      message = "退货地址：#{'TODO退货地货'}</br>退货说明：#{params[:return_message]}"
-      create_refund_message({action: '同意退货', message: message})
-      flash[:success] = '同意退货申请操作成功'
+      if @order_item_refund.save && @order_item_refund.may_approve? && @order_item_refund.approve!
+        message = "退货地址：#{@order_item_refund.address}</br>退货说明：#{@order_item_refund.return_explain}"
+        create_refund_message({action: '同意退货', message: message})
+        flash[:success] = '同意退货申请操作成功'
+      else
+        flash[:error] = '同意退货申请操作失败'
+      end
     else
-      flash[:error] = '同意退货申请操作失败'
+      flash[:error] = '退货地址不能为空'
     end
     redirect_to admin_order_item_order_item_refunds_path(@order_item)
   end

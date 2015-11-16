@@ -32,7 +32,6 @@ class RefundTimeoutJob < ActiveJob::Base
       .where("updated_at >= :date", date: Time.now - refund_timeout_5.days)
       .each do |refund|
       refund.may_approve? && refund.approve! && refund.create_timeout_message(refund_timeout_5)
-      # TODO 发送退货地址信息 refund_message
     end
 
     #买家退货申请处理
