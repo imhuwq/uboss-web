@@ -5,12 +5,6 @@
 #= require zepto/plugins/deferred
 #= require rails-behaviors/index
 #= require fastclick
-#
-#= require jquery
-#= require jquery_ujs
-#= require jquery-fileupload/basic
-#
-#= require querystring
 #= require swipe
 #= require mobile_page/sms
 #= require mobile_page/going_merry
@@ -22,7 +16,10 @@
 #= require mobile_page/pay
 #= require mobile_page/evaluations
 #= require shared/count_down
-#= require shared/multi_upyun
+#= require mobile_page/upyun/async
+#= require mobile_page/upyun/spark-md5.min
+#= require mobile_page/upyun/upyun-mu
+#= require shared/multi_upyun.js
 #= require shared/city_select
 #= reuqire_self
 
