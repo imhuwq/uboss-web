@@ -53,11 +53,12 @@ class Admin::OrdersController < AdminController
     @today_selled_amount = @orders.today.selled.total_count
     @shiped_amount = @orders.shiped.total_count
     @orders = @orders.where(state: Order.states[@type.to_sym]) if @type != 'all'
+    @user_addresses = current_user.user_addresses.where(seller_address: true)
   end
 
   def show
     @order_item = @order.order_items.first
-    @user_addresses = current_user.user_addresses
+    @user_addresses = current_user.user_addresses.where(seller_address: true)
   end
 
   def update
