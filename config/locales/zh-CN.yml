@@ -90,9 +90,9 @@ zh-CN:
         short_description: 简介
         property_value:  属性值
         property:        属性名
-        full_cut: 运费满减
-        full_cut_number: 满减数
-        full_cut_unit: 满减单位
+        full_cut: 指定条件包邮
+        full_cut_number: 数量
+        full_cut_unit: 单位
       mobile_auth_code:
         mobile: 手机号码
       order_form:
