@@ -13,6 +13,7 @@ class OrderItemRefundsController < ApplicationController
 
   def apply_uboss
     if @refund.may_apply_uboss? && @refund.apply_uboss!
+      create_refund_message('买家申请了UBOSS介入')
       flash[:success] = '申请UBOSS成功'
     else
       flash[:error] = '申请UBOSS失败'
