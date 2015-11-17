@@ -47,15 +47,12 @@
 					<h4>快递单号</h4>
           <p><%= text_field_tag 'order[ship_number]', '', class: 'input-block',placeholder:'快递单号' %></p>
           <br />
-		      <h4>确认发货/退货信息</h4>
-		      <p>我的发货信息 : <%= current_user.default_post_address %> <span class="pull-right address-alert" title="发货地址">修改发货地址</span></p>
-		      <p>我的退货信息 : <%= current_user.default_get_address %> <span class="pull-right address-alert" title="退货地址">修改退货地址</span></p>
-			    <br />
-			    <div id="address-list-box" class="hidden">
-			    	<%= render partial: "/admin/user_addresses/seller_address_list", locals: { user_addresses: @user_addresses } %>
-			    </div><!-- title -->
+					<div id="default_addresses">
+						<%= render partial: 'default_address_for_index' %>
+					</div>
+
         </div>
-        
+
         <div class="modal-footer">
           <%= f.submit '确定', class: 'btn btn-large' %>
           <button type="button" class="btn btn-large gray-btn" data-dismiss="modal">取消</button>
