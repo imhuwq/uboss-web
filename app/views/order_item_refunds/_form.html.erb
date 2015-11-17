@@ -33,10 +33,12 @@
     	<%= f.text_area :description, class: 'input-block',placeholder:'退款说明',rows:'6' %>
     </div>
     <div class='form-group string optional order_item_refund_asset_imgs'>
-	      <p><%= file_field_tag "file", class: "upyun_file" %></p>
+      <%= f.input_field :avatar, type: :hidden, as: :file, class: 'refund_avatar' %>
+      <p class="fileinput-button">
+        <%= file_field_tag "file", class: "upyun_file" %>
 	      <br />
 	      <a href="#" id="upload">上传</a>
-	    </div>
+      </p>
     </div>
 	  <div class="gap">
     	<%= f.submit "提交申请", class: "btn btn-large btn-block use-new-addr-btn" %>
