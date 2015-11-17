@@ -18,7 +18,7 @@ class Order < ActiveRecord::Base
 
   validates :user_id, :user_address_id, :seller_id, presence: true
   validates_uniqueness_of :number, allow_blank: true
-  validate :check_default_get_address
+  # validate :check_default_get_address
 
   delegate :mobile, :regist_mobile, :identify,
     to: :user, prefix: :buyer
