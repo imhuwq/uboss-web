@@ -9,13 +9,14 @@ jQuery ($) ->
   $(document).on 'click', '#address-list-box .check_default_address',->
     address_id = $(this).attr('id')
     title = $('#address-list-box .name').html()
-    order_id = $('#order_id').val()
+    request_path = $('#request_path').val()
     $.ajax
       url: '/admin/user_addresses/change_default_address',
       type: 'GET',
       data: {
         title: title
         address_id: address_id
+        request_path: $('#request_path').val()
       },
     .done ->
       $('#address-list-box').slideUp();

@@ -57,16 +57,11 @@
   </div>
 
   <div class="admin-border admin-border-order-info address-list-box">
-
-    <div class='bottom_line'>
-      <p class='logistics_info'><span class='btn red-btn' style="margin-right:10px;">第二步</span>确认发货/退货信息</p>
-      <p>我的发货信息 : <%= current_user.default_post_address %> <span class="pull-right address-alert" title="发货地址">修改发货地址</span></p>
-      <p>我的退货信息 : <%= current_user.default_get_address %> <span class="pull-right address-alert" title="退货地址">修改退货地址</span></p>
+    <div id="default_addresses">
+      <%= render partial: 'default_address_for_show' %>
     </div>
-    <div id="address-list-box" class="hidden">
-    	<%= render partial: "/admin/user_addresses/seller_address_list", locals: { user_addresses: @user_addresses } %>
-    </div><!-- title -->
-    
+
+
     <div class='evaluate'>
       <p>发货时间 : <%= order.shiped_at || '未发货' %></p>
       <p>快递公司 : <%= order.express.try(:name) %></p>

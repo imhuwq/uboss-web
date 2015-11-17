@@ -78,8 +78,12 @@ class Admin::UserAddressesController < AdminController
     respond_to do |format|
       format.js do
         @user_addresses = current_user.user_addresses
-        @order = Order.find(params[:order_id])
-        render '/admin/orders/change_default_address'
+        case params["request_path"]
+        when "orders/show"
+          render '/admin/orders/change_show_default_address'
+        when "orders/index"
+          render '/admin/orders/change_index_default_address'
+        end
       end
     end
 
