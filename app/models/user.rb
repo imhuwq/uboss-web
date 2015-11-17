@@ -70,7 +70,7 @@ class User < ActiveRecord::Base
     end
   end
   before_validation :ensure_authentication_token, :ensure_privilege_rate
-  before_create :set_mobile
+  before_create :set_mobile, :set_default_role
   before_create :build_user_info, if: -> { user_info.blank? }
   before_save   :set_service_rate
 
@@ -396,6 +396,13 @@ class User < ActiveRecord::Base
   def set_mobile
     if !need_set_login?
       self.mobile ||= login
+    end
+  end
+
+  def set_default_role
+    if !self.is_agent?
+      self.admin = true
+      self.user_roles << UserRole.agent
     end
   end
 
