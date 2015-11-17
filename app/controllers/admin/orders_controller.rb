@@ -68,7 +68,7 @@ class Admin::OrdersController < AdminController
   def set_express
     express = Express.find_by_name(express_params)
     express = Express.create(name: express_params, private_id: current_user.id) if express.blank?
-    if @order.update(order_params.merge(express_id: express.id)) && @order.ship!
+    if @order.update(order_params.merge(express_id: express.id)) && @order.can_be_ship? && @order.may_ship? && @order.ship!
       close_order_item_refund
       flash[:success] = '发货成功'
     else

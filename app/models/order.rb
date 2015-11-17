@@ -18,7 +18,6 @@ class Order < ActiveRecord::Base
 
   validates :user_id, :user_address_id, :seller_id, presence: true
   validates_uniqueness_of :number, allow_blank: true
-  # validate :check_default_get_address
 
   delegate :mobile, :regist_mobile, :identify,
     to: :user, prefix: :buyer
@@ -230,6 +229,13 @@ class Order < ActiveRecord::Base
     errors.empty?
   end
 
+  def can_be_ship?
+    if !User.find(self.user_id).default_get_address.present?
+      errors[:base] << "请设置默认退货地址"
+      return false
+    end
+  end
+
   private
 
   def generate_number
@@ -242,11 +248,7 @@ class Order < ActiveRecord::Base
     update_column(:shiped_at, Time.now)
   end
 
-  def check_default_get_address
-    if !User.find(self.user_id).default_get_address.present?
-      errors[:base] << "请设置默认退货地址"
-    end
-  end
+
 
   def fill_signed_at
     update_column(:signed_at, Time.now)
