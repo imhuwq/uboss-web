@@ -15,7 +15,7 @@
           <%= link_to '发送手机验证码', '###',class: "btn btn-danger ",id:"send_mobile", style:"position:absolute;right:0;width:140px;margin-right:5px;" %>
         </div>
       </div>
-      <%= f.input :mobile_auth_code, as: :tel, :input_html=>{:id=>"mobile_auth_code"} %>
+      <%= f.input :mobile_auth_code, as: :tel, :input_html=>{:id=>"mobile_auth_code"}, hint:'请输入5位验证码' %>
     </div>
 
     <div class="button_div col-xs-12"  style="margin-top:30px;">
