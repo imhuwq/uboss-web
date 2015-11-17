@@ -26,6 +26,7 @@ class OrderItemRefundsController < ApplicationController
 
   def close
     if @refund.may_cancel? && @refund.cancel!
+      create_refund_message('买家撤销了退款申请')
       flash[:success] = '退款撤销成功'
     else
       flash[:error] = '退款撤销失败'
