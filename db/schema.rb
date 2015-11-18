@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151113032754) do
+ActiveRecord::Schema.define(version: 20151113112538) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -42,6 +42,11 @@ ActiveRecord::Schema.define(version: 20151113032754) do
     t.string   "alt"
     t.string   "url"
     t.string   "image_type"
+  end
+
+  create_table "attention_associations", force: :cascade do |t|
+    t.integer "user_id"
+    t.integer "following_id"
   end
 
   create_table "bank_cards", force: :cascade do |t|
@@ -78,6 +83,23 @@ ActiveRecord::Schema.define(version: 20151113032754) do
 
   add_index "carts", ["user_id"], name: "index_carts_on_user_id", using: :btree
 
+  create_table "categories", force: :cascade do |t|
+    t.string   "name",       null: false
+    t.integer  "user_id",    null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_index "categories", ["user_id", "name"], name: "index_categories_on_user_id_and_name", unique: true, using: :btree
+
+  create_table "categories_products", id: false, force: :cascade do |t|
+    t.integer "product_id",  null: false
+    t.integer "category_id", null: false
+  end
+
+  add_index "categories_products", ["category_id"], name: "index_categories_products_on_category_id", using: :btree
+  add_index "categories_products", ["product_id"], name: "index_categories_products_on_product_id", using: :btree
+
   create_table "daily_reports", force: :cascade do |t|
     t.date     "day"
     t.decimal  "amount"
@@ -112,13 +134,6 @@ ActiveRecord::Schema.define(version: 20151113032754) do
     t.integer "region_id"
   end
 
-  create_table "districts", force: :cascade do |t|
-    t.string   "name"
-    t.integer  "numcode"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-  
   create_table "divide_incomes", force: :cascade do |t|
     t.integer  "user_id"
     t.integer  "order_id"
@@ -171,6 +186,11 @@ ActiveRecord::Schema.define(version: 20151113032754) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "follower_associations", force: :cascade do |t|
+    t.integer "user_id"
+    t.integer "follower_id"
+  end
+
   create_table "mobile_captchas", force: :cascade do |t|
     t.string   "code"
     t.datetime "expire_at"
@@ -181,6 +201,46 @@ ActiveRecord::Schema.define(version: 20151113032754) do
   end
 
   add_index "mobile_captchas", ["mobile"], name: "index_mobile_captchas_on_mobile", using: :btree
+
+  create_table "oauth_access_grants", force: :cascade do |t|
+    t.integer  "resource_owner_id", null: false
+    t.integer  "application_id",    null: false
+    t.string   "token",             null: false
+    t.integer  "expires_in",        null: false
+    t.text     "redirect_uri",      null: false
+    t.datetime "created_at",        null: false
+    t.datetime "revoked_at"
+    t.string   "scopes"
+  end
+
+  add_index "oauth_access_grants", ["token"], name: "index_oauth_access_grants_on_token", unique: true, using: :btree
+
+  create_table "oauth_access_tokens", force: :cascade do |t|
+    t.integer  "resource_owner_id"
+    t.integer  "application_id"
+    t.string   "token",             null: false
+    t.string   "refresh_token"
+    t.integer  "expires_in"
+    t.datetime "revoked_at"
+    t.datetime "created_at",        null: false
+    t.string   "scopes"
+  end
+
+  add_index "oauth_access_tokens", ["refresh_token"], name: "index_oauth_access_tokens_on_refresh_token", unique: true, using: :btree
+  add_index "oauth_access_tokens", ["resource_owner_id"], name: "index_oauth_access_tokens_on_resource_owner_id", using: :btree
+  add_index "oauth_access_tokens", ["token"], name: "index_oauth_access_tokens_on_token", unique: true, using: :btree
+
+  create_table "oauth_applications", force: :cascade do |t|
+    t.string   "name",                      null: false
+    t.string   "uid",                       null: false
+    t.string   "secret",                    null: false
+    t.text     "redirect_uri",              null: false
+    t.string   "scopes",       default: "", null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "oauth_applications", ["uid"], name: "index_oauth_applications_on_uid", unique: true, using: :btree
 
   create_table "order_charges", force: :cascade do |t|
     t.string   "channel"
@@ -297,6 +357,7 @@ ActiveRecord::Schema.define(version: 20151113032754) do
     t.integer  "product_class_id"
     t.datetime "created_at",                      null: false
     t.datetime "updated_at",                      null: false
+    t.integer  "user_id"
   end
 
   create_table "product_property_values", force: :cascade do |t|
@@ -305,7 +366,10 @@ ActiveRecord::Schema.define(version: 20151113032754) do
     t.integer  "product_class_id"
     t.datetime "created_at",          null: false
     t.datetime "updated_at",          null: false
+    t.integer  "user_id"
   end
+
+  add_index "product_property_values", ["user_id"], name: "index_product_property_values_on_user_id", using: :btree
 
   create_table "product_property_values_products", id: false, force: :cascade do |t|
     t.integer "product_id",                null: false
@@ -526,6 +590,7 @@ ActiveRecord::Schema.define(version: 20151113032754) do
     t.integer  "agent_code"
     t.string   "authentication_token"
     t.decimal  "privilege_rate",         default: 50.0
+    t.string   "rongcloud_token"
   end
 
   add_index "users", ["authentication_token"], name: "index_users_on_authentication_token", using: :btree
@@ -555,6 +620,9 @@ ActiveRecord::Schema.define(version: 20151113032754) do
   add_foreign_key "cart_items", "product_inventories"
   add_foreign_key "cart_items", "users", column: "seller_id"
   add_foreign_key "carts", "users"
+  add_foreign_key "categories", "users"
+  add_foreign_key "categories_products", "categories"
+  add_foreign_key "categories_products", "products"
   add_foreign_key "order_items", "orders"
   add_foreign_key "order_items", "products"
   add_foreign_key "order_items", "sharing_nodes"
@@ -564,6 +632,8 @@ ActiveRecord::Schema.define(version: 20151113032754) do
   add_foreign_key "orders", "users"
   add_foreign_key "orders", "users", column: "seller_id", name: "fk_order_seller_foreign_key"
   add_foreign_key "privilege_cards", "users"
+  add_foreign_key "product_properties", "users"
+  add_foreign_key "product_property_values", "users"
   add_foreign_key "selling_incomes", "orders"
   add_foreign_key "selling_incomes", "users"
   add_foreign_key "sharing_incomes", "order_items"

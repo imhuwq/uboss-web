@@ -63,6 +63,9 @@ Rails.application.routes.draw do
   resource :withdraw_records, only: [:show, :new, :create] do
     get :success, on: :member
   end
+  resource :chat, only: [:show] do
+    get :token
+  end
   resource :account, only: [:show, :edit, :update] do
     get :settings,         :edit_password,     :reset_password,
         :orders,           :binding_agent, :invite_seller,

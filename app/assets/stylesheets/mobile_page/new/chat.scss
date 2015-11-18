@@ -1,0 +1,25 @@
+#conversation-list {
+  li {
+    padding: 10px;
+    border-bottom: 1px solid #eee;
+  }
+  .user_img {
+    img {
+      height: 35px;
+      width: 35px;
+      border-radius: 25px;
+    }
+  }
+}
+
+#chat-notice {
+  margin: 5px 0 0;
+  padding: 7px;
+  color: $brand-primary;
+  border: 1px solid #eee;
+  &.error {
+    background-color: #f2dede;
+    color: #a94442;
+    border-color: #ebccd1;
+  }
+}
