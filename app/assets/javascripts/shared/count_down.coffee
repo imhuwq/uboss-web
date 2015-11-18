@@ -52,6 +52,6 @@ $ ->
         , 1000
 
       else
-        $this.html('')
+        $this.closest('.countdown-box').html('')
 
     count_down()
