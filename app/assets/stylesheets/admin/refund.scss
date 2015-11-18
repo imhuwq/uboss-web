@@ -1,0 +1,17 @@
+.evaluate{
+  span{
+    margin-left: 40px;
+  }
+  .btn-link,.btn-link:hover{
+    color: #43C3AA;
+  }
+    
+}
+.message-list{
+  .user-info-box:after{
+    clear:both;content: ".";   display: block;overflow: hidden; visibility: hidden;    font-size: 0;    line-height: 0;    width: 0;    height: 0;
+  }
+  .user-info-box .cover{
+    float: left;
+  }
+}

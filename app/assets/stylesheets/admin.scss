@@ -13,6 +13,9 @@
 @import "admin/product";
 @import "admin/user";
 @import "admin/address";
+@import "admin/refund";
+@import "admin/cuntdown";
+@import "admin/upload";
 @import "shared/base";
 
 body{background: #1A1A1A;color:#A6A6A6;}
@@ -90,7 +93,7 @@ header nav > ul > li.active > a,header nav > ul > li > a:hover{color:#43C3AA}
 .modal.in .modal-dialog{-webkit-transform:translate(0,0);-ms-transform:translate(0,0);-o-transform:translate(0,0);transform:translate(0,0)}
 .modal-open .modal{overflow-x:hidden;overflow-y:auto}
 .modal-dialog{position:relative;width:auto;margin:10px}
-.modal-content{position:relative;background-color:#fff;-webkit-background-clip:padding-box;background-clip:padding-box;border:1px solid #999;border:1px solid rgba(0,0,0,.2);border-radius:6px;outline:0;-webkit-box-shadow:0 3px 9px rgba(0,0,0,.5);box-shadow:0 3px 9px rgba(0,0,0,.5)}
+.modal-content{position:relative;background-color:#fff;color:#1a1a1a;-webkit-background-clip:padding-box;background-clip:padding-box;border:1px solid #999;border:1px solid rgba(0,0,0,.2);border-radius:6px;outline:0;-webkit-box-shadow:0 3px 9px rgba(0,0,0,.5);box-shadow:0 3px 9px rgba(0,0,0,.5)}
 .modal-backdrop{position:fixed;top:0;right:0;bottom:0;left:0;z-index:1040;background-color:#000}
 .modal-backdrop.fade{filter:alpha(opacity=0);opacity:0}
 .modal-backdrop.in{filter:alpha(opacity=50);opacity:.5}
@@ -116,9 +119,9 @@ header nav > ul > li.active > a,header nav > ul > li > a:hover{color:#43C3AA}
 .pop-img img{ display: none; }
 .pop-html{overflow-y: scroll;height: 100%;width: 100%;}
 .pop-html body{ overflow: hidden;height: 100%; width: 100%;}
-.pop-bg{ background: rgba(0,0,0,.3); position: fixed;top:0; left: 0; height: 100%; width: 100%; z-index: 8;}
-.pop-bg .pop-container { position: absolute; left: 50%;top:50%; }
-.pop-bg .pop-content{ background: #fff; padding: 10px; border-radius:10px; position: relative;}
+.pop-bg{ background: rgba(0,0,0,.3); position: fixed;top:0; left: 0; height: 100%; width: 100%; z-index: 8; display: table;}
+.pop-bg .pop-container {display: table-cell; vertical-align: middle; text-align: center;}
+.pop-bg .pop-content{ background: #fff; padding: 10px; border-radius:10px; position: relative; display: inline-block;}
 .pop-bg .pop-close{position:absolute;z-index: 10;color: #333;right:-15px;top:-15px;border: 3px solid #333; background: #fff; width: 30px; height: 30px; line-height: 29px; font-size: 20px; text-align: center;border-radius:500px; cursor: pointer; }
 
 .tips-info{display: inline-block;position: relative; cursor: pointer;}

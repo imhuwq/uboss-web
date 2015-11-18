@@ -11,8 +11,7 @@
 </div><!-- container -->
 <br />
 <div class="container admin_orders_show_order_wrapper">
-  <div class="container admin_order_item_refunds_wrapper">
-    <div class="box-w70">
+  <div class="admin_order_item_refunds_wrapper">
 
       <div class="admin-border admin-border-order-info">
         <%= render "refund_info_status" %>
@@ -52,57 +51,77 @@
       </div>
 
       <div class="admin-border admin-border-order-info">
-        <p class='number'>留言板<%= 'order.number' %></p>
+        <p class='number'>留言板</p>
 
         <div id="order_item_refund_message">
           <%= horizon_form_for @refund_message, url: [:refund_message, :admin, @order_item, @order_item_refund] do |f| %>
             <%= upyun_meta_tags prefix: 'asset_img/avatar' %>
-            <%= f.text_area :message, class: 'required control-input', cols: 105, rows: 4 %>
-            <%= f.input :asset_imgs, label: false, hint:"上传凭证(最多三张)" do %>
+            <%= f.text_area :message, class: 'required control-input input-block', cols: 105, rows: 8 ,placeholder:'请输入说明文字'%>
+            <br />
+            <%= f.input :asset_imgs, label: false do %>
               <%= f.input_field :avatar, type: :hidden, as: :file, class: 'refund_avatar' %>
-              <p class="fileinput-button">
-                <%= image_tag("admin/no-img.png") %>
-                <%= file_field_tag "image", class: "multi_upyun_file" %>
-                <b class="loading"><i class="fa fa-spinner"></i></b>
-              </p>
+              <div class="upload-box" id="upload-box">
+	              <div class="fileinput-button image-box">
+	                <%= image_tag("admin/no-img.png") %>
+	                <%= file_field_tag "image", class: "multi_upyun_file" %>
+	                <b class="loading"><i class="fa fa-spinner"></i></b>
+	              </div>
+              </div>
+              <br />
+              <div>上传凭证(最多三张)</div>
             <% end %>
-            <%= f.submit "发表留言", class: "btn btn-large btn-block" %>
+            <p class="text-center"><%= f.submit "发表留言", class: "btn btn-large btn-noraidus" %></p>
+            <br />
           <% end %>
         </div>
 
-        <div id="order_item_refund_messages_list">
+        <div id="order_item_refund_messages_list" class="message-list">
           <% @order_item_refund.refund_messages.each do |message| %>
-            <div style="margin-top:30px;border-top:1px outset buttonface;">
-              <div style="float:left;width:40px;">
+          	<div class="user-info-box">
+          		<div class="cover">
                 <img src="<%= message.user.avatar_url(:thumb) %>" alt="" />
               </div>
-              <div>
-                <p><span><%= message.user_type %></span> <%= message.user.identify %></p>
-                <p><%= message.created_at %></p>
-                <p><%= message.action %></p>
-                <% if !message.money.blank? %>
-                  <p>金额：<%= message.money %>元</p>
-                <% end %>
-                <% if !message.refund_reason_id.blank? %>
-                  <p>退款原因：TODO 卖家缺货</p>
-                <% end %>
-                <% if !message.explain.blank? %>
-                  <p>说明：<%= message.explain %></p>
-                <% end %>
-                <% if !message.message.blank? %>
-                  <p><%= raw message.message %></p>
-                <% end %>
-                <p>
-                <% message.asset_imgs.each do |img| %>
-                  <img src="<%= img.avatar_url(:thumb) %>" alt="" />
-                <% end %>
-                </p>
-              </div>
-            </div>
+              <p class="title"><span><%= message.user_type %></span> <%= message.user.identify %></p>
+              <p><%= message.created_at %></p>
+          	</div><!-- user-info-box -->
+                
+            <p><%= message.action %></p>
+            <% if !message.money.blank? %>
+              <p>金额：<%= message.money %>元</p>
+            <% end %>
+            <% if !message.refund_reason_id.blank? %>
+              <p>退款原因：TODO 卖家缺货</p>
+            <% end %>
+            <% if !message.explain.blank? %>
+              <p>说明：<%= message.explain %></p>
+            <% end %>
+            <% if !message.message.blank? %>
+              <p><%= raw message.message %></p>
+            <% end %>
+            <p>
+            <% message.asset_imgs.each do |img| %>
+              <img src="<%= img.avatar_url(:thumb) %>" alt="" />
+            <% end %>
+            </p>
           <% end %>
-        </div>
+        </div><!-- message-list -->
       </div>
-
-    </div>
   </div>
 </div>
+<script>
+$(window).load(function(){
+	$("body").on('click','.pop-img',function(){
+		$("html").addClass("lock");		
+		var pop_html="<div class='pop-bg'><div class='pop-container'>"
+		pop_html=pop_html+"<div class='pop'><div class='pop-content'>";
+		pop_html=pop_html+"<img src='"+$(this).attr("data-src")+"'/>"+"<div class='pop-close'><i class='fa fa-times'></i></div></div></div></div>";
+		$("body").append(pop_html);
+	
+		
+	})
+	$("body").on("click",".pop-bg .pop-close",function(){
+		$(".pop-bg").remove();
+		$("html").removeClass("lock");
+	})
+})
+</script>
