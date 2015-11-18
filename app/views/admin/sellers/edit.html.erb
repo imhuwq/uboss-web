@@ -16,7 +16,7 @@
 	      <%= f.input :store_short_description, hint: '请控制在20字以内，以保证显示效果' %>
       </div>
       <div class="box-w10 nogap-right">
-        <%= qrcode_image_tag store_path(shared: true) %>
+        <%= qrcode_image_tag store_url(shared: true) %>
       </div>
     </div>
     <br />
