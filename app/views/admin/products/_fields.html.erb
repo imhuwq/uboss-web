@@ -89,8 +89,8 @@
   <%= render partial: 'show_carriage_template', locals: {carriage: @product.carriage_template} %>
 
   <div class='full_cut_wrap'>
-    <label class='optional text-right control-label'>更多设置:</label>
-    <%= f.input :full_cut, class: 'full_cut_check_box' %>
+    <label class='optional text-right control-label'>更多设置</label>
+    <%= f.input :full_cut, label_html: { class: @product.full_cut ? 'checkbox_is_checked':'checkbox_no_checked' } %>
     <div class='full_cut_params' style=<%=@product.full_cut ? '': 'display:none'%>>
       <%= f.number_field :full_cut_number, placeholder: '输入金额或件数' %>
       <%= f.select :full_cut_unit, Product::FullCut.invert %>

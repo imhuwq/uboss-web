@@ -48,5 +48,9 @@ $ ->
   $("label[for='product_full_cut']").click (event)->
     if $(this).find('input')[0].checked
       $('.full_cut_params').show()
+      $(this).addClass('checkbox_is_checked')
+      $(this).removeClass('checkbox_no_checked')
     else
       $('.full_cut_params').hide()
+      $(this).addClass('checkbox_no_checked')
+      $(this).removeClass('checkbox_is_checked')

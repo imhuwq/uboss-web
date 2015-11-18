@@ -247,3 +247,61 @@
   }
 }
 
+.full_cut_wrap {
+  margin-top: 26px;
+
+  .product_full_cut {
+    display: inline-block;
+    padding-left: 11px;
+  }
+
+  .full_cut_params {
+    display: inline-block;
+
+    #product_full_cut_number {
+      height: 30px;
+    }
+
+    #product_full_cut_unit_chosen {
+      a {
+        padding: 7px 4px 4px 8px;
+      }
+    }
+  }
+
+  input[type="checkbox"] {
+    display:none;
+  }
+
+  .checkbox_no_checked {
+    display: inline-block;
+    width: 72px;
+    background-color: #FFFFFF;
+    cursor: default;
+    padding: 4px;
+    font-size: 12px;
+    font-family: sans-serif;
+    line-height: 1;
+    color: #333;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: baseline;
+    border-radius: 2px;
+  }
+
+  .checkbox_is_checked {
+    background-color: #43C3AA;
+    display: inline-block;
+    width: 72px;
+    cursor: default;
+    padding: 4px;
+    font-size: 12px;
+    font-family: sans-serif;
+    line-height: 1;
+    color: #fff;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: baseline;
+    border-radius: 2px;
+  }
+}
