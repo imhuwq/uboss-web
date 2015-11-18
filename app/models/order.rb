@@ -30,6 +30,10 @@ class Order < ActiveRecord::Base
   scope :selled, -> { where("orders.state <> 0") }
 
   before_create :set_info_by_user_address, :set_ship_price
+  after_commit :update_order_pay_amount, if: -> {
+    previous_changes.include?(:ship_price) &&
+    previous_changes[:ship_price].first != previous_changes[:ship_price].last
+  }
 
   aasm column: :state, enum: true, skip_validation_on_save: true, whiny_transitions: false do
     state :unpay
@@ -191,7 +195,10 @@ class Order < ActiveRecord::Base
   end
 
   def update_pay_amount
-    update_column(:pay_amount, order_items.sum(:pay_amount) + ship_price)
+    if update(pay_amount: (order_items.sum(:pay_amount) + ship_price)) && order_charge.payment == 'wx'
+      WxOrderCloseJob.perform_later(order_charge.number)
+      order_charge.destroy
+    end
   end
 
   def sharing_user
@@ -253,6 +260,10 @@ class Order < ActiveRecord::Base
 
   def set_ship_price
     self.ship_price = calculate_ship_price
+  end
+
+  def update_order_pay_amount
+    self.update_pay_amount
   end
 
   def calculate_ship_price

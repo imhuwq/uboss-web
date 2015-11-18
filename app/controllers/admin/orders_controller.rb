@@ -74,6 +74,18 @@ class Admin::OrdersController < AdminController
     redirect_to admin_orders_path
   end
 
+  def change_ship_price
+    @order = current_user.sold_orders.find(params[:id])
+
+    if @order.unpay? && @order.update(ship_price_params)
+      flash[:success] = '运费修改成功'
+    else
+      flash[:error] = '运费修改失败'
+    end
+
+    redirect_to admin_order_path(@order)
+  end
+
   private
 
   def validate_batch_shipment_params(param)
@@ -96,6 +108,10 @@ class Admin::OrdersController < AdminController
 
   def express_params
     params[:express_name]
+  end
+
+  def ship_price_params
+    params.require(:order).permit(:ship_price)
   end
 
   def record_operation

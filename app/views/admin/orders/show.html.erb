@@ -15,6 +15,10 @@
       <% if @order.may_close? %>
         <a class="btn btn-sm" href="#" data-toggle="modal" data-target="#close_admin_order_modal">关闭交易</a>
       <% end %>
+      <% if @order.unpay?  %>
+        <a class="btn btn-sm" href="#" data-toggle="modal" data-target="#change_admin_order_ship_price_modal">修改运费</a>
+        <%= render 'change_ship_price_modal' %>
+      <% end %>
       <div class='buyer-info'>
         <span>买家 : <%= @order.buyer_identify %><span>
         <%= link_to '联系买家', nil, class: 'contact-buyer' %>
