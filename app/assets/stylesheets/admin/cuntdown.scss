@@ -1,0 +1,14 @@
+.countdown-box{
+    
+    p#clock_refund{ 
+        margin: 0;
+        display: inline-block;
+        background:image-url('admin/clock.png') #ebc0bb no-repeat 10px 10px ;
+        padding: 10px 40px;
+        color: #1a1a1a;
+        border: 2px solid #e74c3c;
+    }
+    span{
+        color: #e74c3c;
+    }
+}
