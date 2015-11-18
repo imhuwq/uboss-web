@@ -27,6 +27,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 ActiveRecord::Schema.define(version: 20151113032754) do
 =======
 ActiveRecord::Schema.define(version: 20151030093203) do
@@ -76,6 +77,9 @@ ActiveRecord::Schema.define(version: 20151105024126) do
 =======
 ActiveRecord::Schema.define(version: 20151113084820) do
 >>>>>>> 8cb0813... next to test
+=======
+ActiveRecord::Schema.define(version: 20151118094804) do
+>>>>>>> 9bd521d... 记录退款申请状态的最新切换时间
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -265,6 +269,7 @@ ActiveRecord::Schema.define(version: 20151113084820) do
 =======
   add_index "favour_products", ["product_id", "user_id"], name: "index_favour_products_on_product_id_and_user_id", unique: true, using: :btree
 
+<<<<<<< HEAD
 >>>>>>> a98c02d... seller addresses
   create_table "job_histories", force: :cascade do |t|
     t.integer  "user_id"
@@ -292,6 +297,8 @@ ActiveRecord::Schema.define(version: 20151113084820) do
 >>>>>>> 8cb0813... next to test
 =======
 >>>>>>> a98c02d... seller addresses
+=======
+>>>>>>> 9bd521d... 记录退款申请状态的最新切换时间
   create_table "mobile_captchas", force: :cascade do |t|
     t.string   "code"
     t.datetime "expire_at"
@@ -374,6 +381,7 @@ ActiveRecord::Schema.define(version: 20151113084820) do
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     t.datetime "created_at",                       null: false
     t.datetime "updated_at",                       null: false
 <<<<<<< HEAD
@@ -406,13 +414,18 @@ ActiveRecord::Schema.define(version: 20151113084820) do
     t.datetime "created_at",                       null: false
     t.datetime "updated_at",                       null: false
 >>>>>>> 7dc4c6c... upload problem
+=======
+    t.datetime "created_at",          null: false
+    t.datetime "updated_at",          null: false
+>>>>>>> 9bd521d... 记录退款申请状态的最新切换时间
     t.string   "aasm_state"
     t.integer  "order_state"
     t.string   "refund_type"
     t.integer  "user_id"
-    t.jsonb    "state_at_attributes", default: {}, null: false
+    t.jsonb    "state_at_attributes"
     t.string   "address"
     t.string   "return_explain"
+    t.datetime "deal_at"
   end
 
 =======
@@ -423,7 +436,6 @@ ActiveRecord::Schema.define(version: 20151113084820) do
 >>>>>>> 8cb0813... next to test
   create_table "order_items", force: :cascade do |t|
     t.integer  "order_id"
-    t.integer  "product_id"
     t.integer  "user_id"
     t.integer  "amount"
     t.datetime "created_at",                         null: false
@@ -446,10 +458,13 @@ ActiveRecord::Schema.define(version: 20151113084820) do
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> d6a5a01... add add_order_item_refund_id to refund_messages
 =======
 >>>>>>> 529e607... 拒绝退款/收货原因
+=======
+>>>>>>> 9bd521d... 记录退款申请状态的最新切换时间
     t.integer  "product_id"
     t.integer  "order_item_refund_id"
     t.integer  "refund_state",         default: 0
@@ -507,10 +522,10 @@ ActiveRecord::Schema.define(version: 20151113084820) do
     t.datetime "signed_at"
     t.datetime "shiped_at"
     t.datetime "completed_at"
-    t.string   "ship_number"
-    t.integer  "express_id"
     t.string   "to_seller"
     t.decimal  "ship_price",      default: 0.0
+    t.string   "ship_number"
+    t.integer  "express_id"
     t.integer  "order_charge_id"
     t.decimal  "paid_amount",     default: 0.0
   end
@@ -535,10 +550,11 @@ ActiveRecord::Schema.define(version: 20151113084820) do
 
   create_table "privilege_cards", force: :cascade do |t|
     t.integer  "user_id"
-    t.datetime "created_at",                           null: false
-    t.datetime "updated_at",                           null: false
-    t.boolean  "actived",              default: false
+    t.datetime "created_at",                 null: false
+    t.datetime "updated_at",                 null: false
+    t.boolean  "actived",    default: false
     t.integer  "seller_id"
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -554,9 +570,19 @@ ActiveRecord::Schema.define(version: 20151113084820) do
 =======
     t.integer  "product_inventory_id"
 >>>>>>> a98c02d... seller addresses
+=======
+>>>>>>> 9bd521d... 记录退款申请状态的最新切换时间
   end
 
   add_index "privilege_cards", ["user_id", "seller_id"], name: "index_privilege_cards_on_user_id_and_seller_id", unique: true, using: :btree
+
+  create_table "product_attribute_names", force: :cascade do |t|
+    t.string   "name"
+    t.boolean  "is_key_attr",      default: true
+    t.integer  "product_class_id"
+    t.datetime "created_at",                      null: false
+    t.datetime "updated_at",                      null: false
+  end
 
   create_table "product_classes", force: :cascade do |t|
     t.integer  "parent_id"

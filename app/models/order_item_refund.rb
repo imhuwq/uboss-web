@@ -19,6 +19,8 @@ class OrderItemRefund < ActiveRecord::Base
   after_create :save_state_at_attributes
   after_create  :set_order_item_state
 
+  delegate :logistics_company, :ship_number, :description, to: :sales_return, allow_nil: true
+
   enum order_state: { unpay: 0, payed: 1, shiped: 3, signed: 4, closed: 5, completed: 6 }
 
   extend Enumerize
@@ -30,90 +32,53 @@ class OrderItemRefund < ActiveRecord::Base
     #申请退款
     state :pending, initial: true
     #同意
-    state :approved,                 after_enter: :update_order_item_state_4
+    state :approved,                 after_enter: [:update_order_item_state_4, :set_deal_times, :wx_order_refund]
     #拒绝
-    state :declined,                 after_enter: :update_order_item_state_4
+    state :declined,                 after_enter: [:update_order_item_state_4, :set_deal_times]
     #确认收货
-    state :confirm_received,         after_enter: :update_order_item_state_4
+    state :confirm_received,         after_enter: [:update_order_item_state_4, :set_deal_times]
     #拒绝收货
-    state :decline_received,         after_enter: :update_order_item_state_4
+    state :decline_received,         after_enter: [:update_order_item_state_4, :set_deal_times, :wx_order_refund]
     #申请uboss介入
-    state :applied_uboss,            after_enter: :update_order_item_state_7
+    state :applied_uboss,            after_enter: [:update_order_item_state_7, :set_deal_times]
     #买家填写快递单号
-    state :completed_express_number, after_enter: :update_order_item_state_4
+    state :completed_express_number, after_enter: [:update_order_item_state_4, :set_deal_times]
     #完成
-    state :finished,                 after_enter: :update_order_item_state_5
+    state :finished,                 after_enter: [:update_order_item_state_5, :set_deal_times]
     #撤销（买家）
-    state :cancelled,                after_enter: :update_order_item_state_6
+    state :cancelled,                after_enter: [:update_order_item_state_6, :set_deal_times]
     #关闭（待发货时申请退款，商家选择发货）
-    state :closed,                   after_enter: :update_order_item_state_6
+    state :closed,                   after_enter: [:update_order_item_state_6, :set_deal_times]
 
     event :approve do
       transitions from: [:pending, :declined, :applied_uboss], to: :approved
-      after do
-        #如果只退款不退货, 同意后就直接进入退款流程
-        if !refund_type_include_goods?
-          WxRefundJob.perform_later(self)          # 微信退款申请
-        end
-        self.state_at_attributes['同意时间'] = time_now
-        self.save
-      end
     end
-
     event :repending do
       transitions from: :declined, to: :pending
     end
-
     event :decline do
       transitions from: :pending, to: :declined
     end
-
     event :complete_express_number do
       transitions from: [:approved, :decline_received], to: :completed_express_number
-      after do
-        self.state_at_attributes['退货时间'] = time_now
-        self.save
-      end
     end
-
     event :confirm_receive do
       transitions from: [:decline_received, :completed_express_number, :applied_uboss], to: :confirm_received
-      after do
-        WxRefundJob.perform_later(self)          # 微信退款申请
-        self.state_at_attributes['卖家确认收货时间'] = time_now
-        self.save
-      end
     end
-
     event :decline_receive do
       transitions from: :completed_express_number, to: :decline_received
     end
-
     event :apply_uboss do
       transitions from: [:completed_express_number, :decline_received, :declined], to: :applied_uboss
     end
-
     event :finish do
       transitions from: [:approved, :confirm_receive], to: :finished
-      after do
-        self.state_at_attributes['退款时间'] = time_now
-        self.save
-      end
     end
-
     event :cancel do
       transitions from: [:pending, :approved, :completed_express_number, :decline_received, :applied_uboss], to: :cancelled
-      after do
-        self.state_at_attributes['关闭时间'] = time_now
-        self.save
-      end
     end
-
     event :close do
       transitions from: [:pending], to: :closed
-      after do
-        self.state_at_attributes['关闭时间'] = time_now
-      end
     end
   end
 
@@ -122,6 +87,7 @@ class OrderItemRefund < ActiveRecord::Base
   end
 
   def save_state_at_attributes
+    self.deal_at = time_now
     self.state_at_attributes = {'申请时间' => time_now}
     self.save
   end
@@ -191,6 +157,34 @@ class OrderItemRefund < ActiveRecord::Base
       else
         self.order_item.update_attributes!(refund_state: 2)
       end
+    end
+  end
+
+  def set_deal_times
+    case aasm_state
+    when 'approved'
+      self.state_at_attributes['同意时间'] = time_now
+    when 'completed_express_number'
+      self.state_at_attributes['退货时间'] = time_now
+    when 'confirm_received'
+      self.state_at_attributes['卖家确认收货时间'] = time_now
+    when 'finished'
+      self.state_at_attributes['退款时间'] = time_now
+    when 'cancelled'
+      self.state_at_attributes['关闭时间'] = time_now
+    when 'closed'
+      self.state_at_attributes['关闭时间'] = time_now
+    end
+    self.deal_at = time_now
+    self.save
+  end
+
+  # 微信退款
+  def wx_order_refund
+    if self.approved? && !refund_type_include_goods?    # 如果只退款不退货, 同意退款申请后就直接进入退款流程
+      WxRefundJob.perform_later(self)
+    elsif self.confirm_received                         # 卖家确认收货
+      WxRefundJob.perform_later(self)
     end
   end
 
