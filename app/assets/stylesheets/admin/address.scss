@@ -29,7 +29,8 @@
 
 .address-alert{
   cursor: pointer;
-  color: #43c3aa;      
+  color: #43c3aa;    
+  z-index: 8;  
 }
 #address-list-box{
     .title .name{color:#999 }

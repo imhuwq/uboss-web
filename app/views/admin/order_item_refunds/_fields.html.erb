@@ -3,7 +3,7 @@
   <div class='form-group'>
     <label class="control-label">拒绝原因</label>
     <div class="control-input">
-      <%= f.select :refund_reason_id, reasons, include_blank: '请选择拒绝退款申请原因...', class:'input-block control-input', style: "border:1px solid #e5e5e5;height:32px;" %>
+      <%= f.select :refund_reason_id, reasons, include_blank: '请选择拒绝退款申请原因...', class:'input-block control-input js-select2', style: "border:1px solid #e5e5e5;height:32px;" %>
     </div>
   </div>
   <div class="form-group">
@@ -27,3 +27,10 @@
   <%= f.submit '确定拒绝', class: "btn btn-info" %>
   <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
 </div>
+<script>
+ $(".js-select2").select2({
+    tags: '拒绝退款申请原因',
+    maximumSelectionLength: 1,
+    placeholder: "拒绝退款申请原因"
+  })
+</script>
