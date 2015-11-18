@@ -15,6 +15,10 @@ class UserAddress < ActiveRecord::Base
     "#{@province}#{@city}#{@area}#{building}"
   end
 
+  def refund_label
+    "#{username} #{mobile} #{to_s} #{note}"
+  end
+
   def set_default_address
 
     user_addresses = UserAddress.where(user_id: user_id, seller_address: true)
