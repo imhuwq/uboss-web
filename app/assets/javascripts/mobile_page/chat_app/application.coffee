@@ -20,6 +20,7 @@
     Collections: {}
     Router: null
     Services: {}
+    currentConversationTargetId: null
 
   UXin.init = ->
     RongIMClient.init "mgb7ka1nb9jng"

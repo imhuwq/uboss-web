@@ -2,6 +2,5 @@
 </ul>
 
 <div>
-  <input type="text" name="" id="sendMsg" value="" />
   <a class="btn btn-large pull-right" id="send-message" ref="#">发消息</a>
 </div>

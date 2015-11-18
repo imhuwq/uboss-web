@@ -2,11 +2,12 @@ class UXin.Views.Chat extends Backbone.View
 
   template: JST["#{UXin.TemplatesPath}/chat"]
 
-  el: '#chat-box'
+  class: 'con-list-box'
 
   initialize: ->
+    @hasSync = false
     if @connection().currentStatus == RongIMClient.ConnectionStatus.CONNECTED
-      @synConversations
+      @synConversations()
     else
       @listenTo UXin.Services.connectionService, 'success', @synConversations
 
@@ -36,6 +37,7 @@ class UXin.Views.Chat extends Backbone.View
               when RongIMClient.ConversationType.PRIVATE
                 item.getConversationTitle() || item.setConversationTitle('陌生人:'+item.getTargetId())
           @render()
+          @trigger('syncdone')
         , 300
       onError: ->
         UXin.Services.noticeService.warn('获取聊天列表失败')
@@ -43,3 +45,4 @@ class UXin.Views.Chat extends Backbone.View
 
   render: ->
     @$el.html @template(conversations: UXin.ConversationList)
+    @
