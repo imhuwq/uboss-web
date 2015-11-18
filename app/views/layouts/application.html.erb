@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta id='MobileViewport' name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
-    <link href="<%= image_url("desktop_image/favicon.ico") %>" type="image/x-icon" rel="shortcut icon">
+    <link href="<%= image_url("favicon.png") %>" type="image/x-icon" rel="shortcut icon">
 
     <%= yield(:extra_meta_tags) %>
 
@@ -18,7 +18,7 @@
     <%= csrf_meta_tags %>
   </head>
 
-  <body class="bg_grey">
+  <body class="bg_grey <%= controller_name %> <%= action_name %>">
     <div id="window"></div>
     <div class="upass main bg_grey">
 

@@ -16,7 +16,11 @@ Rails.application.routes.draw do
   patch 'set_password', to: 'accounts#set_password'
   get 'set_password', to: 'accounts#new_password'
 
+  get 'sharing/product_node', to: 'sharing#product_node', as: :get_product_sharing
+  get 'sharing/seller_node', to: 'sharing#seller_node', as: :get_seller_sharing
   get 'sharing/:code', to: 'sharing#show', as: :sharing
+  get 'maker_qrcode', to: 'home#maker_qrcode', as: :maker_qrcode
+  get 'qrcode', to: 'home#qrcode', as: :request_qrcode
 
   get 'service_centre_consumer', to: 'home#service_centre_consumer'
   get 'service_centre_agent', to: 'home#service_centre_agent'
@@ -32,19 +36,29 @@ Rails.application.routes.draw do
   post 'mobile_captchas/create', to: 'mobile_captchas#create'
   get  'mobile_captchas/send_with_captcha', to: 'mobile_captchas#send_with_captcha'
 
-  resources :stores, only: [:show] do
-    get :hots, on: :member
+  resources :stores, only: [:index, :show] do
+    get :hots, :favours, on: :member
   end
   resources :orders, only: [:new, :create, :show] do
     get 'received', on: :member
     get 'pay_complete', on: :member
     get 'cancel', on: :member
-    resource :charge, only: [:create]
+    post 'change_address', on: :collection
+    #resource :charge, only: [:create]
+  end
+  resources :charges, only: [:show] do
+    get 'payments',     on: :collection
+    get 'pay_complete', on: :member
   end
   resources :products, only: [:index, :show] do
-    post :save_mobile, :democontent,  on: :collection
+    member do
+      patch :switch_favour
+    end
+    get :get_sku, on: :collection
+    post :democontent,  on: :collection
   end
   resources :evaluations do
+    get :append, on: :member
   end
   resource :withdraw_records, only: [:show, :new, :create] do
     get :success, on: :member
@@ -66,8 +80,22 @@ Rails.application.routes.draw do
       post :wechat_alarm
     end
   end
-  resources :privilege_cards, only: [:show, :index, :update]
+  resources :privilege_cards, only: [:show, :index] do
+    collection do
+      patch :set_privilege_rate
+      get :edit_rate
+    end
+  end
   resources :sellers, only: [:new, :create, :update]
+  resources :carts, only: [:index] do
+    collection do
+      post :checkout
+      post :delete_all
+      post :delete_item
+      post :change_item_count
+    end
+  end
+  resources :cart_items, only: [:index, :create]
 
   namespace :api do
     namespace :v1 do
@@ -82,6 +110,21 @@ Rails.application.routes.draw do
 
   authenticate :user, lambda { |user| user.admin? } do
     namespace :admin do
+      resources :carriage_templates do
+        member do
+          get :copy
+        end
+      end
+
+      get '/select_carriage_template', to: 'products#select_carriage_template'
+
+      resources :expresses do
+        member do
+          get :set_common
+          get :cancel_common
+        end
+      end
+
       resources :products, except: [:destroy] do
         member do
           patch :change_status
@@ -90,10 +133,14 @@ Rails.application.routes.draw do
         end
       end
       resources :orders, except: [:destroy] do
-        patch :ship, on: :member
+        patch :set_express, on: :member
+        get :close, on: :member
+        post :batch_shipments, on: :collection
+        post :select_orders, on: :collection
       end
       resources :sharing_incomes, only: [:index, :show, :update]
       resources :withdraw_records, only: [:index, :show, :new, :create] do
+        get :generate_excel, on: :collection
         member do
           patch :processed
           patch :close
@@ -139,4 +186,5 @@ Rails.application.routes.draw do
 
   root 'home#index'
 
+  get '/discourse/sso', to: 'discourse_sso#sso'
 end

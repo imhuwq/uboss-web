@@ -2,7 +2,7 @@ class CreateOrderCharges < ActiveRecord::Migration
   def change
     create_table :order_charges do |t|
       t.belongs_to :order
-      t.string :charge_id 
+      t.string :charge_id
       t.string :channel
 
       t.timestamps null: false

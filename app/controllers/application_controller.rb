@@ -64,7 +64,7 @@ class ApplicationController < ActionController::Base
   def set_sharing_code(sharing_node)
     if sharing_node.product_id.present?
       set_product_sharing_code(sharing_node.product_id, sharing_node.code)
-      seller_sharing_node = sharing_node.lastest_seller_sharing_node(sharing_node.product.user)
+      seller_sharing_node = sharing_node.lastest_seller_sharing_node
       set_seller_sharing_code(sharing_node.product.user_id, seller_sharing_node.code)
     else
       set_seller_sharing_code(sharing_node.seller_id, sharing_node.code)
@@ -72,21 +72,29 @@ class ApplicationController < ActionController::Base
   end
 
   def login_layout
-    if desktop_request?
-      'login'
-    else
-      'application'
-    end
+    desktop_request? ? 'login' : 'application'
+  end
+
+  def new_login_layout
+    desktop_request? ? 'login' : 'mobile'
   end
 
   def configure_permitted_parameters
-    devise_parameter_sanitizer.for(:sign_up) { |u| u.permit(:login, :captcha, :password, :password_confirmation, :remember_me) }
-    devise_parameter_sanitizer.for(:sign_in) { |u| u.permit(:login, :password, :remember_me, :mobile_auth_code, :captcha, :captcha_key) }
-    devise_parameter_sanitizer.for(:account_update) { |u| u.permit(:login, :password, :password_confirmation, :current_password) }
+    devise_parameter_sanitizer.for(:sign_up) { |u|
+      u.permit(:login, :captcha, :password, :password_confirmation, :remember_me)
+    }
+    devise_parameter_sanitizer.for(:sign_in) { |u|
+      u.permit(:login, :password, :remember_me, :mobile_auth_code, :captcha, :captcha_key)
+    }
+    devise_parameter_sanitizer.for(:account_update) { |u|
+      u.permit(:login, :password, :password_confirmation, :current_password)
+    }
   end
 
   def after_sign_in_path_for(resource, opts = {need_new_passowrd: true})
-    if desktop_request? && !current_user.admin?
+    if params[:redirect] == 'discourse'
+      params[:redirectUrl]
+    elsif desktop_request? && !current_user.admin?
       merchant_confirm_account_path
     elsif current_user.need_reset_password? && opts[:need_new_passowrd]
       flash[:new_password_enabled] = true
@@ -99,6 +107,16 @@ class ApplicationController < ActionController::Base
   end
   helper_method :after_sign_in_path_for
 
+  def current_cart
+    @current_cart ||= find_cart
+  end
+  helper_method :current_cart
+
+  def find_cart
+    cart = current_user.cart
+    cart ||= Cart.create(user: current_user)
+  end
+
   def logined_redirect_path
     if desktop_request?
       current_user.admin? ? admin_root_path : root_path
@@ -106,4 +124,9 @@ class ApplicationController < ActionController::Base
       root_path
     end
   end
+
+  def qr_sharing?
+    params['shared'] == 'true'
+  end
+  helper_method :qr_sharing?
 end

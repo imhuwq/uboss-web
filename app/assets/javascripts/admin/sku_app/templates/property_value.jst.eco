@@ -1,0 +1,2 @@
+<%= @value %>
+<a href='#' class="remove-pv">×</a>

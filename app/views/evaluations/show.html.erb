@@ -2,37 +2,40 @@
   已评价
 <% end %>
 
-<%= content_for :extra_meta_tags do %>
-  <%= sharing_meta_tags(@product, @sharing_node) %>
+<%= content_for :header_left do %>
+  <a class="back" onclick="history.go(-1)"><%= image_tag 'mobile/right.png' %></a>
 <% end %>
 
-<div class="container" style='margin-bottom: 60px;'>
+<%= content_for :extra_meta_tags do %>
+  <%= sharing_meta_tags(@product, @sharing_link_node) %>
+<% end %>
 
-  <div class="p_comment">
-    <div class="p_img <%= @evaluation.status %>"></div>
-    <strong><%= @evaluation.status_i18n %></strong>
+<br />
+
+<div class="box bg-white">
+  <div class="box-m40 text-center">
+    <br />
+    <div class="emoticon-box">
+      <div class="emoticon active">
+        <p><i class="icon <%= "#{@evaluation.status}-icon" %>"></i></p>
+      </div>
+    </div>
+    <h3 class="gray-color"><%= @evaluation.status_i18n %></h3>
     <p>感谢你的评价!</p>
+    <br />
+    <%= link_to "分享", '#', class: "btn btn-large btn-block p-sharing-btn" %>
+    <br />
+    <%= link_to "返回首页", root_path, class: "btn btn-large btn-block btn-black-border" %>
   </div>
-
-  <% if @privilege_card.present? %>
-    <%= render partial: 'privilege_card', locals: { privilege_card: @privilege_card } %>
-  <% end %>
-
-  <div class="fenxinrated">
-    <%= render partial: 'application/share_buttoms',
-      locals: { product: @product, node: @sharing_node } %>
-  </div>
-
-  <div class="accunt_adil_box4">
-    <%= link_to("返回首页", root_path, class:"accunt_adilbtnt") %>
-  </div>
-
+  <br />
 </div>
+
+<%= render partial: 'new_share' %>
 
 <% if browser.wechat? %>
   <%= content_for :extra_javascript do %>
     <script type="text/javascript">
-      wx.ready(function(){ UBoss.luffy.invokeSharing(); });
+wx.ready(function(){ UBoss.luffy.invokeSharing(); });
     </script>
   <% end %>
 <% end %>

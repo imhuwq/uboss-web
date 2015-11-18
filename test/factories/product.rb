@@ -8,19 +8,35 @@ FactoryGirl.define do
     original_price 110
     present_price 100
     count 100
+    status 1
     content "product desc"
     short_description "product short desc"
+    product_inventories_attributes [{ price: 100, count: 100, sku_attributes: { size: 'x', color: 'red' } }]
 
     trait :sharing_thr do
-      calculate_way 0
-      share_amount_total 20
-      has_share_lv 3
+      product_inventories_attributes [
+        {
+          price: 100,
+          count: 100,
+          share_amount_lv_1: 10,
+          share_amount_lv_2: 5,
+          share_amount_lv_3: 2,
+          privilege_amount: 5,
+          sku_attributes: { size: 'x', color: 'red' }
+        }
+      ]
     end
 
     trait :sharing_one do
-      calculate_way 0
-      share_amount_total 20
-      has_share_lv 1
+      product_inventories_attributes [
+        {
+          price: 100,
+          count: 100,
+          share_amount_lv_1: 10,
+          privilege_amount: 5,
+          sku_attributes: { size: 'x', color: 'red' }
+        }
+      ]
     end
 
     factory :product_with_3sharing, traits: [:sharing_thr]

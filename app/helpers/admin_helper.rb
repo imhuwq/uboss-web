@@ -19,16 +19,12 @@ module AdminHelper
     dropdown_list_string.html_safe
   end
 
+  def active_for(controller_name, navbar_name)
+    controller_name.to_sym == navbar_name.to_s.to_sym ? "active" : ""
+  end
+
   def withdraw_process_txt(record)
     record.wechat_available? ? "微信打款" : "银行打款"
-  end
-
-  def withdraw_target_title_txt(record)
-    record.wechat_available? ? "微信" : record.card_bankname
-  end
-
-  def withdraw_target_content_txt(record)
-    record.wechat_available? ? record.user.weixin_openid : record.card_number
   end
 
   def withdraw_process_class(record)

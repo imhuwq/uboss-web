@@ -8,68 +8,33 @@
 	</ul>
 </div><!-- container -->
 <br />
-<div class="container">
-	<h3 class="page-title">订单信息 <small class="pull-right"><%= @order.state_i18n %></small></h3>
-	<div class="admin-box">
-		<div class="box-w50">
-			<p>订单编号：<%= @order.number %></p>
-	    <p>运费：<%= @order_item.product_traffic_expense %></p>
-	    <p>合计：<%= @order.pay_amount %></p>
-		</div>
-		<div class="box-w50">
-			<p>买家：<%= @order.buyer_identify %></p>
-	    <p>下单时间：<%= @order.created_at %></p>
-		</div>
-	</div><!-- admin-box -->
-  <br />
-  <h3 class="page-title">订购商品</h3>
-  <div class="admin-box">
-    <div class="box-w50">
-	    <p>商品名称：<%= @order_item.product_name %></p>
-	    <p>购买数量：<%= @order_item.amount %></p>
-    </div>
-    <div class="box-w50">
-	    <p>实际单价：<%= number_to_currency @order_item.present_price %></p>
-	    <p>分享优惠：<%= number_to_currency @order_item.privilege_amount %></p>
-	    <p>成交单价：<%= number_to_currency @order_item.deal_price %></p>
-    </div>
-  </div>
-	<br />
-	<h3 class="page-title">付款信息 </h3>
-	<div class="admin-box">
+<div class="container admin_orders_show_order_wrapper">
+	<div class="admin-border no-border">
 		<div class="box-w100">
-      <p>付款方式：<%= @order.payment_i18n %></p>
-      <p>付款金额：<%= number_to_currency @order.pay_amount %></p>
-      <p>付款时间：<%= @order.paid_at %></p>
+      <span class="order-info-state label label-default"><%= @order.state_i18n %></span>
+      <% if @order.may_close? %>
+        <a class="btn btn-sm" href="#" data-toggle="modal" data-target="#close_admin_order_modal">关闭交易</a>
+      <% end %>
+      <div class='buyer-info'>
+        <span>买家 : <%= @order.buyer_identify %><span>
+        <%= link_to '联系买家', nil, class: 'contact-buyer' %>
+      </div>
 		</div>
-	</div><!-- admin-box -->
-	<br />
-	<h3 class="page-title">
-		物流信息
-		<% if @order.payed? && can?(:manage, @order) %>
-		  <%= link_to '发货', [:ship, :admin, @order],
-		    class: 'btn', method: :PATCH, data: { confirm: 'Are your sure?' } %>
-		<% end %>
-	</h3>
-	<div class="admin-box">
-    <div class="box-w50">
-      <p>收货人：<%= @order.username %></p>
-      <p>联系电话：<%= @order.mobile %></p>
-      <p>收货地址：<%= @order.address %></p>
-    </div>
-    <div class="box-w50">
-      <p>发货时间：<%= @order.shiped_at || '未发货' %></p>
-      <p>签收时间：<%= @order.signed_at || '未签收' %></p>
-    </div>
-	</div><!-- admin-box -->
-  <br />
-  <h3 class="page-title">收益&分成</h3>
-  <div class="admin-box">
-    <div class="box-w100">
-      <p>营收：<%= number_to_currency @order.pay_amount %></p>
-      <p>收益：<%= number_to_currency @order.income %></p>
-      <p>创客分成：<%= number_to_currency @order.divide_incomes.sum(:amount) %> </p>
-      <p>分享分成：<%= number_to_currency @order.sharing_incomes.sum(:amount) %></p>
+  </div>
+
+  <%= render partial: 'order_info', locals: { obj: @type, order: @order } %>
+
+</div>
+
+<div class="modal fade" id="close_admin_order_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <p class="text-center close_title" id="myModalLabel">你确认关闭交易么</p>
+      <p class='text-center close_info'>请您在与买家达成一致的前提下, 使用关闭交易这个功能哟!</p>
+      <div class="text-center close_btn">
+        <button type="button" class="btn btn-default" data-dismiss="modal">点错了</button>
+        <%= link_to '关闭交易', close_admin_order_path(@order), class: 'btn btn-default' %>
+      </div>
     </div>
   </div>
 </div>

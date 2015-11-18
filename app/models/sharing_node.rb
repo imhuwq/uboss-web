@@ -20,8 +20,6 @@ class SharingNode < ActiveRecord::Base
 
   before_create :set_code, :set_product
 
-  delegate :amount, to: :privilege_card, prefix: :privilege, allow_nil: true
-
   class << self
     def find_or_create_by_resource_and_parent(user, resource, parent = nil)
       if parent.present? && parent.user_id == user.id
@@ -53,7 +51,7 @@ class SharingNode < ActiveRecord::Base
           node = nil
         end
       else
-        node.touch if user.id != node.user_id
+        node.touch if parent.present?
       end
 
       return nil if node.blank?
@@ -77,25 +75,30 @@ class SharingNode < ActiveRecord::Base
   #
   # 为店铺首页生成店铺分享节点
   #
-  def lastest_seller_sharing_node shared_seller
+  def lastest_seller_sharing_node
     @lastest_seller_sharing_node ||=
       if seller_id.present?
         self
       else
-        self.class.find_or_create_by_resource_and_parent(user, shared_seller)
+        self.class.find_or_create_by_resource_and_parent(user, product.user)
       end
-  end
-
-  def privilege_amount
-    privilege_card.present? ? privilege_card.privilege_amount : 0
   end
 
   def to_param
     code
   end
 
+  def privilege_amount(product_inventory)
+    @privilege_amount ||= privilege_card.present? ? privilege_card.privilege_amount(product_inventory) : 0
+  end
+
   def privilege_card
-    @privilege_card ||= PrivilegeCard.find_by(user_id: user_id, product_id: product_id, actived: true)
+    @privilege_card ||= PrivilegeCard.find_by(user_id: user_id, seller_id: sharing_store_id)
+  end
+
+  def sharing_store_id
+    return seller_id if seller_id.present?
+    product.user_id
   end
 
   private

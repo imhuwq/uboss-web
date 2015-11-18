@@ -3,22 +3,44 @@ class OrderItem < ActiveRecord::Base
   belongs_to :user
   belongs_to :order
   belongs_to :product
+  belongs_to :product_inventory
   belongs_to :sharing_node
-  has_one    :evaluation
+  has_many   :evaluations
   has_many   :sharing_incomes
 
-  validates :product_id, presence: true
+  validates :user, :product_inventory, :amount, :present_price, :pay_amount, presence: true
 
-  delegate :name, :traffic_expense, :present_price, to: :product, prefix: true
+  delegate :name, :traffic_expense, to: :product, prefix: true
+  delegate :product_name, :price, :sku_attributes, :sku_attributes_str, to: :product_inventory
   delegate :privilege_card, to: :sharing_node, allow_nil: true
 
-  before_save :set_privilege_amount, :set_present_price,
-    :set_pay_amount, if: -> { order.paid_at.blank? }
+  before_validation :set_product_id
+  before_save  :reset_payment_info, if: -> { order.paid_at.blank? }
   after_create :decrease_product_stock
   after_commit :update_order_pay_amount, if: -> {
     previous_changes.include?(:pay_amount) &&
     previous_changes[:pay_amount].first != previous_changes[:pay_amount].last
   }
+
+  def deal_price
+    present_price - privilege_amount
+  end
+
+  def count
+    amount
+  end
+
+  def item_product
+    product || product_inventory.product
+  end
+
+  def product_name
+    product.try(:name) || product_inventory.product.name
+  end
+
+  def image_url(version=nil)
+    item_product.image_url(version)
+  end
 
   def sharing_link_node
     @sharing_link_node ||= SharingNode.find_or_create_by(
@@ -27,14 +49,13 @@ class OrderItem < ActiveRecord::Base
       parent_id: sharing_node_id
     )
   end
-  alias_method :generate_sharing_link_node, :sharing_link_node
 
   def create_privilege_card_if_none
-    PrivilegeCard.find_or_create_by(user_id: user_id, product_id: product_id)
+    PrivilegeCard.find_or_active_card(user_id, order.seller_id)
   end
 
   def active_privilege_card
-    if card = PrivilegeCard.find_by(user_id: user_id, product_id: product_id, actived: false)
+    if card = PrivilegeCard.find_by(user_id: user_id, seller_id: order.seller_id, actived: false)
       card.update_column(:actived, true)
     end
   end
@@ -47,34 +68,45 @@ class OrderItem < ActiveRecord::Base
     adjust_product_stock(-1)
   end
 
-  def deal_price
-    present_price - privilege_amount
+  def reset_payment_info
+    set_privilege_amount
+    set_present_price
+    set_pay_amount
   end
 
   private
 
   def adjust_product_stock(type)
     if [1, -1].include?(type)
-      Product.update_counters(product_id, count: amount * type)
+      ProductInventory.update_counters(product_inventory_id, count: amount * type)
     else
       raise 'Accept value is -1 or 1'
     end
   end
 
   def set_privilege_amount
-    self.privilege_amount = privilege_card.present? ? privilege_card.privilege_amount : 0
+    self.privilege_amount = privilege_card.present? ? privilege_card.privilege_amount(product_inventory) : 0
   end
 
   def set_present_price
-    self.present_price = product.present_price
+    self.present_price = if product_inventory.present?
+                           product_inventory.price
+                         else
+                           product.price
+                         end
   end
 
   def set_pay_amount
-    self.pay_amount = deal_price * amount + product.traffic_expense
+    self.pay_amount = deal_price * amount
   end
-
 
   def update_order_pay_amount
     order.update_pay_amount
+  end
+
+  def set_product_id
+    if product_inventory && product_id.blank?
+      self.product_id = self.product_inventory.product_id
+    end
   end
 end

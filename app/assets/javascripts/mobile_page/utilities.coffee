@@ -16,19 +16,16 @@ $ ->
       $(this).remove()
   , 5000
 
-  $(document).on 'click', '.alert', ->
-    $(this).closest('.flash_css').remove()
+  $(document).on 'click', '.flash_css', ->
+    $(this).remove()
 
   disabledLoadMore = (e)->
-    e.removeClass('loading')
-    e.addClass('done')
-    e.text('已无更多')
     e.remove()
 
-  waypointHandler = (direction) ->
-    element = $(this.element)
-    if not element.hasClass('loading') and direction == 'down'
-      Waypoint.destroyAll()
+  $(document).on 'click', '.load-more', (e) ->
+    e.preventDefault()
+    element = $(this)
+    if not element.hasClass('loading')
       if $(element.data('ele')).length > 6 # nothing but set it anyway
         element.addClass('loading')
         element.text('加载中...')
@@ -38,10 +35,23 @@ $ ->
             $(element.data('container')).append(data)
             element.removeClass('loading')
             element.text('加载更多')
-            $('#load-more').waypoint(waypointHandler, offset: '100%')
           else
             disabledLoadMore(element)
       else
         disabledLoadMore(element)
 
-  $('#load-more').waypoint(waypointHandler, offset: '100%')
+  # 浮点数运算 加
+  @floatAdd = (arg1, arg2) ->
+    (parseInt(arg1 * 100) + parseInt(arg2 * 100)) / 100
+
+  # 减
+  @floatSub = (arg1, arg2) ->
+    (parseInt(arg1 * 100) - parseInt(arg2 * 100)) / 100
+
+  # 乘
+  @floatMul = (arg1, arg2) ->
+    parseInt(arg1 * 100) * parseInt(arg2 * 100) / 10000
+
+  # 除
+  @floatDiv = (arg1, arg2) ->
+    parseInt(arg1 * 100) / parseInt(arg2 * 100)

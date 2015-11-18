@@ -1,42 +1,64 @@
 <%= content_for :page_title do %>
-  收货评价
+评价
 <% end %>
 
+<%= content_for :header_left do %>
+  <a class="back" onclick="history.go(-1)"><%= image_tag 'mobile/right.png' %></a>
+<% end %>
+
+<%= content_for :header_right do %>
+  <a href="#" class="submit" onclick="submitEvaluationStatus()">提交</a>
+<% end %>
+
+<br />
+
 <%= simple_form_for @evaluation do |f| %>
-  <div class="appr_box">
-    <p><%= image_tag 'img/pay_sucsss.png' %></p>
-    <p>亲，您已确认收货，给个评价吧！</p>
-    <div class="appr_feelbox">
-      <div class="appr_feellist">
-        <a class="laugh" id="good" onclick="good()"> <p>好评</p></a>
-        <a class="averg"id="normal" onclick="normal()"> <p>中评</p> </a>
-        <a class="kry" id="bad" onclick="bad()"> <p>差评</p> </a>
-        <%= f.input_field :status, style:"display:none;" %>
-        <%= f.hidden_field :order_item_id, style:"display:none;" %>
-      </div>
+  <%= f.input_field :status, selected: 'good', class:'hidden' %>
+  <%= f.hidden_field :order_item_id, class:'hidden' %>
+  <div class="emoticon-box">
+    <div class="emoticon" data-star="1">
+    	<p><i class="icon worst-icon"></i></p>
+    	<p class='worst'>不满 </p>
+    </div>
+    <div class="emoticon" data-star="2">
+    	<p><i class="icon bad-icon"></i></p>
+    	<p class='bad'>减分</p>
+    </div>
+    <div class="emoticon active" data-star="3">
+    	<p><i class="icon good-icon"></i></p>
+    	<p class='good'>满意</p>
+    </div>
+    <div class="emoticon" data-star="4">
+    	<p><i class="icon better-icon"></i></p>
+    	<p class='better'>加分</p>
+    </div>
+    <div class="emoticon" data-star="5">
+    	<p><i class="icon best-icon"></i></p>
+    	<p class='best'>惊喜</p>
     </div>
   </div>
-
-  <div style="background-color: white; text-align: center; padding-bottom:1px;">
-    <%= f.text_area :content, placeholder: 'BOSS, 写点评价吧', id:"y_textarea" %>
-
-    <div class="accunt_adil_box3" style='margin-top: 25px;'>
-      <a onclick="submitEvaluationStatus()" class="accunt_adilbtn">提交</a>
-    </div>
-  </div>
-
+  <div class="evaluations-box bg-white gap">
+  	<div class="star-box">
+  		<div class="star"></div>
+  		<div class="star"></div>
+  		<div class="star"></div>
+  	</div><!-- start-box -->
+  	<div class="gap">
+  		<%= f.text_area :content, placeholder: '写点什么吧...', id:"y_textarea" ,rows:"6",class:"input-block" %>
+  	</div>
+  </div><!-- evaluations-box -->
 <% end %>
 
 <script type="text/javascript">
-function good() {$("#evaluation_status").val("good");$("#good").addClass('y_hover');$("#normal").removeClass('y_hover');$("#bad").removeClass('y_hover')};
-function normal() {$("#evaluation_status").val("normal");$("#normal").addClass('y_hover');$("#good").removeClass('y_hover');$("#bad").removeClass('y_hover')};
-function bad() {$("#evaluation_status").val("bad");$("#bad").addClass('y_hover');$("#normal").removeClass('y_hover');$("#good").removeClass('y_hover');};
-function submitEvaluationStatus() {
-  var val = $("#evaluation_status").val()
-  if (val == '0') {
-    alert("请评价");
-  }else{$('#new_evaluation').submit();};
-};
+  function submitEvaluationStatus() {
+    var val = $("#y_textarea").val()
+    if (val == '') {
+      alert("请写点什么吧");
+    }
+    else{
+      $('#new_evaluation').submit();
+    };
+  };
 </script>
 
 <% if browser.wechat? %>
@@ -46,3 +68,4 @@ function submitEvaluationStatus() {
     </script>
   <% end %>
 <% end %>
+

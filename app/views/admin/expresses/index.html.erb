@@ -1,0 +1,18 @@
+<div class="container admin-container">
+  <ul class="breadcrumb">
+    <li><a href="/admin">主页</a></li>
+    <li class="divider"><i class="fa fa-caret-right"></i></li>
+    <li>快递公司</li>
+  </ul>
+</div>
+<br />
+<div class="container  mod-inner">
+  <div class="list-search-bar">
+    <% if can? :create, Express %>
+      <%= link_to("+ 添加快递信息", url_for(:action=>:new), :class=>"btn btn-large",:role=>"button") %>
+    <% end %>
+  </div>
+  <br />
+    <%= render partial: 'expresses', locals: { expresses: @expresses } %>
+    <%= paginate @expresses %>
+</div>

@@ -4,10 +4,12 @@ class UserAddressesController < ApplicationController
 
   def index
     @user_addresses = current_user.user_addresses.recent
+    render layout: 'mobile'
   end
 
   def new
     @user_address = UserAddress.new
+    render layout: 'mobile'
   end
 
   def create
@@ -17,11 +19,12 @@ class UserAddressesController < ApplicationController
       redirect_to account_user_addresses_path
     else
       flash[:error] = @user_address.errors.full_messages.join("</br>")
-      render :new
+      render :new, layout: 'mobile'
     end
   end
 
   def edit
+    render layout: 'mobile'
   end
 
   def update
@@ -31,7 +34,7 @@ class UserAddressesController < ApplicationController
       end
       redirect_to account_user_addresses_path
     else
-      render :edit
+      render :edit, layout: 'mobile'
     end
   end
 

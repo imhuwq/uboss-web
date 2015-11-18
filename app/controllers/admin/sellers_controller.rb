@@ -4,11 +4,9 @@ class Admin::SellersController < AdminController
 
   def index
     authorize! :read, :sellers
-    if current_user.is_super_admin?
-      @sellers = User.joins(:user_roles).where(user_roles: { name: 'seller' }).page(params[:page] || 1).per(15)
-    else
-      @sellers = User.joins(:user_roles).where(user_roles: { name: 'seller' }, agent_id: current_user.id).page(params[:page] || 1).per(15)
-    end
+    @sellers = User.role('seller')
+    @sellers = @sellers.where(agent_id: current_user.id) if !current_user.is_super_admin?
+    @sellers = @sellers.page(params[:page] || 1).per(15)
   end
 
   def show
@@ -77,7 +75,7 @@ class Admin::SellersController < AdminController
     params.require(:user).permit(
       :store_banner_one,          :store_banner_two,          :store_banner_thr,
       :recommend_resource_one_id, :recommend_resource_two_id, :recommend_resource_thr_id,
-      :store_name, :store_short_description
+      :store_name, :store_short_description, :store_cover
     )
   end
 end

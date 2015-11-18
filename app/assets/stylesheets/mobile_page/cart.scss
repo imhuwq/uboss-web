@@ -1,0 +1,78 @@
+@charset "utf-8";
+.wrap{
+  max-width:640px;
+  margin:10px auto;
+  .container{
+    margin:10px;
+    overflow:hidden;
+
+    /*购物车页面样式*/
+    .cart{
+      background-color:#fff;
+      padding-bottom:5px;
+      box-shadow:3px 3px 2px 2px #eee;
+
+      .c_title{
+        padding: 10px;
+        font-size: 20px;
+        text-align: center;
+      }
+
+      .c_list{
+        width:100%;
+        font-size:12px;
+        .c_shop{ border-top:1px solid #9C8B8B; }
+        .c_count{ position:absolute;left:50%; }
+        .shop_title{padding-top: 10px; font-size: 15px; text-align: center;}
+        ul li{
+          clear:both;
+          overflow:hidden;
+          border-top:1px solid #e6e6e6;
+          padding:10px 5px;
+
+          table{
+            width:100%;
+          }
+          td{
+            padding-right:5px;
+            font-size:12px;
+            p{
+              line-height:22px;
+              font-size:12px;
+            }
+            a{
+              font-size:12px;
+            }
+            a.del{
+              font-size:12px;
+              color:#ec5e38;
+            }
+            span{
+              font-size:12px;
+            }
+          }
+          .lse{
+            color:#43c3aa;
+          }
+          img{
+            border:1px solid #e6e6e6;
+          }
+          .num{
+            border:1px solid #dcdcdc;
+            width:30px;
+            height:15px;
+            vertical-align:middle;
+            text-align:center;
+          }
+        }
+        li:first-child{border-top:0;}
+      }
+    }
+  }
+  .cart_bg{background:url(cart/cart_f_bg.jpg) 0 0 repeat-x; height:50px; padding-top:10px;}
+  .checkbox{font-size:10px; color:#ccc; background:url(cart/box.png) 0 0 no-repeat; background-size:100%; -webkit-appearance:none; -moz-appearance:none; border:0; border:none; vertical-align:middle; width:36px; height:36px;}
+  .checked{font-size:10px; color:#ccc; background:url(cart/check.png) 0 0 no-repeat; background-size:100%; -webkit-appearance:none; -moz-appearance:none; border:0; border:none; vertical-align:middle; width:36px; height:36px;}
+  .ff6{color:#ff6000;}
+  a.ff6{color:#ff6000;}
+  .submit{background:url(cart/quding.png) 0 0 no-repeat; border:0; width:100%; line-height:41px; color:#fff;text-align:center; display:block; border-radius:5px;}
+}

@@ -9,43 +9,51 @@
     <%= javascript_include_tag 'desktop' %>
     <%= render partial: 'baidu_tongji' %>
     <%= csrf_meta_tags %>
-    <link href="<%= image_url("desktop_image/favicon.ico") %>" type="image/x-icon" rel="shortcut icon">
+    <link href="<%= image_url("favicon.png") %>" type="image/x-icon" rel="shortcut icon">
   </head>
   <body>
-    <div class="wrapper">
-			<header>
-				<div class="container">
-					<div class="header">
-						<div class="logo">
-							<%= link_to 'http://www.uboss.me' do %>
-							<%= image_tag "desktop_image/UBss.png" %>
-							<% end %>
-						</div>
-						<nav class="text-right">
-							<ul>
-								<li class="header_tag"><a href="<%= root_path  %>" >关于UBOSS</a></li>
-								<li class="header_tag"><a href="service_centre_consumer">服务中心</a></li>
-                <% if current_user and current_user.admin? %>
-                  <li >
-                    <a href="<%= admin_root_path %>">后台</a>
-                  </li>
-                <% else %>
-                  <li>
-                    <a href="<%= new_user_session_path %>" >登录/注册</a>
-                  </li>
-                <% end %>
-						</ul>
-					</nav>
-				</div><!-- .header -->
-			</div><!-- container -->
-		</header>
-		<%= yield %>
-		<div class="push"></div>
-  </div><!-- wrapper -->
+	<header>
+			<div class="container">
+				<div class="box-w30">
+					<div class="logo">
+						<%= link_to 'http://www.uboss.cn' do %>
+						<%= image_tag "new_desktop/logo.png" %>
+						<% end %>
+					</div><!-- logo -->
+				</div><!-- box-w30 -->
+				<div class="box-w70">
+				<nav class="text-right">
+					<ul>
+						<li><a href="<%= root_path  %>" >关于UBOSS</a></li>
+						<%#<li><a href="service_centre_consumer">服务中心</a></li>%>
+		        <% if current_user and current_user.admin? %>
+		          <li>
+		            <a href="<%= admin_root_path %>">后台</a>
+		          </li>
+		        <% else %>
+		          <li class="btn-tag">
+		            <a href="<%= new_user_session_path %>" >登录/注册</a>
+		          </li>
+		        <% end %>
+					</ul>
+				</nav>
+				</div><!-- box-w70 -->
+		</div><!-- container -->
+	</header>
+	<%= yield %>
   <footer class="text-center">
-  			<h3 class="footer-name">UBOSS</h3>
-  			<p class="footer_tel">联系我们：0755-66691053</p>
-  			<p class="copyright">Copyright    2015 www.uboss.me. All Rights Reserved 粤ICP备15032292号-1 </p>
+		<h2>FIND US</h2>
+		<p>
+			<%= image_tag "new_desktop/call.png", alt:"call",width:'63',height:'66' %>
+		</p>
+		<br />
+		<h2>0755-66691053</h2>
+		<div class="copyright">
+			<p><%= image_tag "new_desktop/footer-logo.png", alt:"UBoss",width:'28',height:'54' %></p>
+			<br />
+			<p>Copyright 2015 www.uboss.cn</p>
+			<div>All Rights Reserved 粤ICP备15032292号-1 </div>
+		</div>
    </footer>
   </body>
 </html>

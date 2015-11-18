@@ -2,17 +2,18 @@
   成为商家
 <% end %>
 
-<div class="upass main">
-<div class="container add_listall" >
-  <div class="row text-center font_h1" style="padding-top:60px;">
-    成为UBOSS商家
+<br />
+
+<div class="box bg-white text-center">
+  <div class="box-m40">
+    <h3> 成为UBOSS商家 </h3>
+
+    <p>
+    您已经成为UBOSS商家并与创客<%= current_user.agent.identify %>绑定，电脑登录uboss.cn管理你的店铺吧。
+    </p>
+
+    <br />
+    <%= link_to "返回", settings_account_path, class:"btn btn-large btn-block" %>
   </div>
-  <div class="row font_h4 text-center" style="padding:10px;">
-    您已经成为UBOSS商家并与创客<%= current_user.agent.identify %>绑定，电脑登录uboss.me管理你的店铺吧。
-  </div>
-  <div class="add_conts">
-    <div class="accunt_adil_box3 adbtn">
-      <%= link_to "返回", settings_account_path, class:"accunt_adilbtn" %>
-    </div>
-  </div>
+  <br />
 </div>

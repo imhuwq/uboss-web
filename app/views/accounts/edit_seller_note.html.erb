@@ -1,21 +1,37 @@
 <%= content_for :page_title do %>
-  创客
+  修改备注
 <% end %>
-<div class="container add_listall" >
-  <div class="add_inout">
-    <p style="border-bottom:0;">
-      <span class="add_textd">手机</span>
-      <%= @histroy.mobile %>
-    </p>
+
+<br />
+
+<div class="bg-white">
+  <div class="box-m40">
+    <br />
+    <div class="input-group">
+      <label>
+        手机
+      </label>
+      <div class="input-box">
+        <p class="text"><%= @histroy.mobile %></p>
+      </div>
+    </div><!-- input-group -->
     <%= simple_form_for 'histroy', url: update_histroy_note_account_path, method: :put do |f| %>
       <%= hidden_field_tag :id, @histroy.id %>
-      <p style="border-bottom:0;">
-        <span class="add_textd">备注</span>
-        <%= f.input_field :note, type: :tel, placeholder: '商家备注', class:"add_text"  %>
-      </p>
-      <p style="padding-top:10px;padding-right:10px;">
-        <%= f.submit '提交', class:"accunt_adilbtn" %>
+      <div class="input-group large">
+        <label>
+          备注
+        </label>
+        <div class="input-box">
+          <%= f.input_field :note, type: :text, placeholder: '商家备注', class:"add_text input-large input-block input-border"  %>
+        </div>
+      </div><!-- input-group -->
+      <br />
+      <p>
+      <%= f.submit '修改', class:"accunt_adilbtn  btn btn-large btn-block" %>
       </p>
     <% end %>
-  </div>
-</div>
+    <br />
+  </div><!-- box-m40 -->
+  <br />
+</div><!-- bg-white -->
+

@@ -24,7 +24,7 @@ set :assets_roles, [:web, :app]
 set :keep_releases, 5
 
 set :linked_files, fetch(:linked_files, []).push(
-  'config/database.yml', 'config/secrets.yml', 'config/apiclient_cert.p12'
+  'config/database.yml', 'config/secrets.yml', 'config/apiclient_cert.p12', 'config/application.yml'
 )
 set :linked_dirs, fetch(:linked_dirs, []).push(
   'log', 'tmp/pids', 'tmp/cache', 'tmp/sockets', 'vendor/bundle', 'public/system', 'public/assets'
@@ -64,6 +64,19 @@ namespace :logs do
   task :tail_rails do
     on roles(:app) do
       execute "tail -f #{shared_path}/log/#{fetch(:rails_env)}.log"
+    end
+  end
+end
+
+namespace :rakes do
+  desc "remote rake task"
+  task :invoke do
+    on roles(:db) do
+      within current_path do
+        with rails_env: fetch(:rails_env) do
+          execute :rake, ENV['TASK']
+        end
+      end
     end
   end
 end

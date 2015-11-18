@@ -1,14 +1,13 @@
-
 <%= content_for :page_title do %>
   新建地址
 <% end %>
-<div class="upass main">
-<div class="container add_listall" >
-  <div class="add_conts">
-    <%= simple_form_for @user_address, url: account_user_addresses_path, method: :POST do |f| %>
-    <%= render 'field', f: f %>
-    <div class="accunt_adil_box3 adbtn">
-      <%= f.submit '保存', class:"accunt_adilbtn" %>
-    </div>
-    <% end %>
+<br />
+<%= simple_form_for @user_address, url: account_user_addresses_path, method: :POST do |f| %>
+<div class="address-new gap">
+	<%= render 'field', f: f %>
+</div><!-- address-new -->
+<br />
+<div class="gap">
+  <%= f.submit '保存', class:"btn btn-large btn-block" %>
 </div>
+<% end %>

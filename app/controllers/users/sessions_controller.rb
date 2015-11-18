@@ -8,7 +8,7 @@ class Users::SessionsController < Devise::SessionsController
 
   # GET /resource/sign_in
   def new
-    @using_password = sign_in_params[:mobile_auth_code].blank?
+    @using_captcha = sign_in_params[:password].blank?
     super
   end
 
@@ -31,8 +31,9 @@ class Users::SessionsController < Devise::SessionsController
          render :new
        end
      else
+       wechat_omniauth_data = { "devise.wechat_data" => session["devise.wechat_data"] }
        super do |user|
-         user.update_with_oauth_session(session)
+         user.update_with_oauth_session(wechat_omniauth_data) if wechat_omniauth_data.present?
        end
      end
    end

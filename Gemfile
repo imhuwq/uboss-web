@@ -22,6 +22,10 @@ gem 'wx_pay', github: 'xEasy/wx_pay'
 gem 'weixin_authorize', github: "lanrion/weixin_authorize"
 gem 'ransack'
 gem 'rails-api'
+gem 'sanitize'
+
+# copying of ActiveRecord objects and their associated children
+gem 'amoeba'
 
 # nested sharing_node
 gem 'awesome_nested_set'
@@ -35,10 +39,11 @@ gem "tabletastic", path: "vendor/gems"
 gem 'redactor-rails', github: 'xEasy/redactor-rails'
 gem "jquery-fileupload-rails"
 gem 'font-awesome-sass', '~> 4.4.0'
-gem 'sanitize'
+gem 'eco'
+gem "select2-rails", '~> 3.5.9.1'
 
 # See https://github.com/rails/execjs#readme for more supported runtimes
-gem 'therubyracer', platforms: :ruby
+gem 'therubyracer', '~> 0.12.2', platforms: :ruby
 
 # Use jquery as the JavaScript library
 gem 'jquery-rails'
@@ -63,7 +68,7 @@ gem 'redis-rails'
 gem "redis-namespace"
 
 # backend process
-gem 'sidekiq'
+gem 'sidekiq', '~> 3.5.1'
 gem 'sidekiq-failures'
 gem 'sinatra', :require => nil
 
@@ -78,6 +83,10 @@ gem 'airbrake'
 gem 'sucker_punch' # airbrake async use this
 
 gem 'china_city'
+gem 'nested_form'
+
+# for generate excel
+gem 'axlsx', '~> 2.0.1'
 
 group :development do
   gem "thin"
@@ -92,6 +101,11 @@ group :development do
   gem "quiet_assets"
   gem 'rack-mini-profiler', require: false
   gem 'awesome_print'
+end
+
+group :staging, :development do
+  # 在线查询数据库
+  gem 'rails_db'
 end
 
 group :development, :test do

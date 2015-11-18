@@ -1,0 +1,430 @@
+.order-sort{
+    overflow: hidden;
+    background: #fff;
+    border-bottom: 1px solid #f6f6f6;
+    li{
+        float:left;
+        a{
+            display: block; 
+            border-right:1px solid #ddd ;
+            padding: 10px;
+            color: #888;
+            font-size: 13px;
+        }
+    }
+    li.active a{
+        color: #f9ba10;
+    }
+}
+.order-list{
+    background: #fff;
+    padding: 10px 0;
+    margin-bottom: 10px;
+    .order-code{
+        padding: 0 10px 10px;
+        border-bottom: 1px solid #f6f6f6;
+    }   
+    span{vertical-align: baseline;}
+    
+    
+    
+}
+.seller-box{
+    padding: 0 10px 10px;
+    font-size: 15px;
+    line-height: 25px;
+    overflow: hidden;
+    border-bottom: 1px solid #f6f6f6;
+    margin-bottom: 10px;
+    .cover{
+        float: left;
+        margin-right: 10px;
+        width: 25px;
+        height: 25px;
+        border-radius: 100px;
+        border: 1px solid #f9ba10;
+        overflow: hidden;
+    }
+    .content{
+        overflow: hidden;
+        line-height: 25px;
+    }
+}
+ .order-box{
+    padding: 0 10px 10px;
+    margin-top: 10px;
+    border-bottom: 1px solid #f6f6f6;
+    .cover{
+        float: left;margin-right: 10px; width: 60px;
+        img{
+            width: 60px;
+            height: 60px;
+        }
+    }
+    .content{
+        overflow: hidden;
+        .name{
+            font-size: 15px;
+            line-height: 20px;
+            color: #333;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        .info{
+            color: #999;
+            font-size: 10px;
+            letter-spacing: 10px;
+            span{
+                letter-spacing: 0;
+            }
+        }
+    }
+    .checkbox{
+        margin: 17.5px 10px 17.5px 0;
+    }
+    .price{
+        color: #444;
+        max-width: 77px;
+        float: right;
+        margin-left: 10px;
+        font-size: 15px;
+        line-height: 20px;
+        text-align: right;
+        .gray-color{
+            font-size: 10px;
+        }
+    }
+    .count{
+        button{
+            -webkit-appearance:none; 
+            -moz-appearance:none; 
+            border: 1px solid #f9ba10;
+            padding: 0;
+            background: none;
+            color: #f9ba10;
+            height: 25px;
+            width: 25px;
+            font-size: 18px;
+            line-height: 23px;
+            text-align: center;
+            vertical-align: top;
+            border-radius:5px ;
+        }
+        input[type="tel"]{
+            height: 19px;
+            padding: 2px 5px;
+            width: 30px;
+            text-align: center;
+            vertical-align: top;
+            border-radius:5px ;
+        }
+        input[type="tel"]:focus{
+            border-color: #f9ba10;
+        }
+    }
+}
+.order-info{
+    border-top:1px solid #f6f6f6 ;
+    margin-top: 10px;
+    padding: 10px 10px 0;
+    overflow: hidden;
+    .text{
+        padding: 5px 0;
+        display: inline-block;
+    }
+    .btn{
+        font-size: 10px;
+        line-height: 12px;
+        padding: 5px 10px;
+        float: right;
+    }
+}
+.friend-info{
+    padding: 5px 10px ;
+    overflow: hidden;
+    .cover{
+        float: left;
+        margin-right: 10px;
+        width: 25px;
+        height: 25px;
+        border-radius: 100px;
+        border: 1px solid $brand-primary;
+        overflow: hidden;
+    }
+    .content{
+        overflow: hidden;
+        line-height: 25px;
+    }
+}
+.price-box{
+    padding: 10px 10px 0;
+    border-top: 1px solid #f6f6f6;
+    font-size: 15px;
+    color: #f9ba10;
+    text-align: right;    
+}
+.freight-box{
+    padding: 10px;
+    border-top: 1px solid #f6f6f6;
+    font-size: 15px;
+}
+.message-box{
+    padding:10px 10px 0;
+    input[type="text"]{
+        border: none;
+        border-radius: 4px;
+        background: #f6f6f6;
+        padding: 7px;
+    }
+}
+.order-list:after,.order-box:after{
+    clear: both;
+    content: ' ';
+    width: 0;
+    height: 0;
+    display: block;
+}
+.order-price{
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    box-sizing: border-box;
+    background: #fff;
+    border-top:1px solid #eee ;    
+    span{vertical-align: baseline;}
+    .cart-btn{
+        height: 46px;
+        line-height: 46px;
+        padding: 0 20px;
+        float: right;
+        border-radius:0 ;
+    }
+    .select-all{
+        float: left;
+        padding: 10px;
+        line-height: 26px;
+    }
+    .content{
+        padding: 9px 8px 7px;
+        overflow: hidden;
+    }
+}
+.cart-list{
+    margin-bottom: 45px;
+}
+.failed-list{
+    overflow: hidden;
+    .order-box { padding: 0 10px; margin: 0;}
+    .order-box:last-child{
+        border: none;
+    }
+    .label{
+        margin: 19px 10px 19px 0;
+        background: #bebebe;
+        color: #414141;
+        padding: 5px 10px;
+    }
+    .btn{ padding:4px 15px;}
+}
+.checkbox,.pay-checkbox{
+    background:image-url('mobile/check.png') no-repeat; 
+    background-position: 0 0;
+    background-size:100%; 
+    -webkit-appearance:none; 
+    -moz-appearance:none; 
+    vertical-align: middle;
+    border:none; 
+    font-size: 0;
+    line-height: 0;
+    width:25px; 
+    height:25px;
+    float: left;
+    margin-right: 10px;
+}
+.checked,.pay-checked{
+    background-position: 0 -39px;
+}
+.payment-box{
+    background: #fff;
+    padding: 10px;
+    overflow: hidden;
+    margin-bottom: 15px;
+    span{
+        display: inline-block;
+        line-height: 25px;
+        font-size: 15px;
+    }
+    .pay-checkbox{
+        float: right;
+        margin: 0;
+    }
+}
+.address-box{
+    padding:18px 10px 18px 24px ;
+    background: image-url('mobile/local.png') #fff no-repeat;
+    background-position:10px 21.5px ;
+    background-size: 7px;
+    border-bottom: 1px solid #f6f6f6;
+    color: #888;
+    font-size: 13px;
+    line-height: 20px;
+    span{ vertical-align: top;}
+    .content{
+        padding-right:40px ;
+        background:image-url('mobile/right.png') no-repeat right center ;
+        background-size: 10px;
+    }
+    .content.default{
+        background: image-url('mobile/check.png') no-repeat right center;
+        background-position-y: -41px;
+        background-size: 30px;
+    }
+}
+.none-address-box{
+    background: #fff8dd;
+    border-top: 3px dashed #f9ba10;
+    border-bottom: 3px dashed #f9ba10;
+    text-align: center;
+    font-size: 15px;
+    font-weight: bold;
+    line-height: 20px;
+    padding: 27px 0;
+    
+}
+
+#address-list-box{ 
+    position: fixed; 
+    height: 100%;    
+    width: 100%;
+    top: 0;
+    left: 0;
+    z-index: 100;
+    background: #f6f6f6;
+    -webkit-animation: leftIn .3s linear ;
+    animation: leftIn .3s linear ;
+    span{vertical-align: top;line-height: 20px;}
+    .address-box { 
+        padding: 10px 10px 10px 24px;
+        background-position:10px 13.5px ;
+    }
+    .address-list{        
+        padding: 41px 0;
+        margin-bottom: 0;
+    }
+    #address-more{
+        -webkit-animation: leftIn .3s linear;
+        animation: leftIn .3s linear ;
+    }
+}
+.address-list{
+    height: 100%;
+    box-sizing: border-box;
+    overflow-y: scroll;
+    margin-bottom: 42px;
+}
+.address-title{
+    background: #fff;
+    padding: 10px 0;
+    font-size: 20px;
+    text-align: center;
+    border-bottom: 1px solid #ddd;
+    position: fixed;
+    color:$brand-primary;
+    width: 100%;
+    top: 0;
+    left: 0;
+    z-index: 200;
+    line-height: 20px;    
+    -webkit-animation: leftIn .3s linear;
+    animation: leftIn .3s linear ;
+    .close{
+        padding: 10px;
+        height: 18px;
+        width: 18px;
+        position: fixed; 
+        right: 0;
+        top: 0;
+        background:image-url('mobile/close.png') no-repeat center center ;
+        background-size:15px ;
+        color: #444;
+        -webkit-animation: fadeIn .3s linear;
+        animation: fadeIn .3s linear ;
+    }
+}
+#address-more{
+    background: #fff;
+    padding: 10px 0;
+    border-top: 1px solid #ddd;
+    font-size: 15px;
+    position: fixed;    
+    width: 100%;
+    left: 0;
+    bottom: 0;
+    z-index: 200;
+    line-height: 20px;
+    text-align: center;
+    span{vertical-align: top;line-height: 20px;}
+}
+
+.address-new{    
+    background: #fff;
+    overflow: hidden;
+    color:$brand-primary;
+    box-sizing: border-box;    
+    td{ border-bottom: 1px solid #f6f6f6;}
+    input[type="tel"],input[type="text"],input[type="password"],select{
+        border: none;
+        -webkit-appearance: none;
+        color: #444;
+        padding: 5px;
+        line-height: 20px;
+        outline: none;
+        background: none;
+        
+    }
+}
+#address-new{
+    position: fixed; 
+    height: 100%;    
+    width: 100%;
+    top: 0;
+    left: 0;
+    z-index: 300;
+    animation: leftIn .3s linear ;
+    -webkit-animation: leftIn .3s linear;
+    padding: 47px 10px 20px;
+}
+
+.no-login{
+    background: #fff;
+    input{border: none;}
+    .mobile{
+        border-bottom: 1px solid #f6f6f6;
+        padding: 10px;
+        .content{ overflow: hidden;}
+    }
+}
+@-webkit-keyframes leftIn{
+0%{
+    left: 100%;
+}
+50%{
+    left: 50%;
+}
+100% {
+    left: 0%;
+}
+}
+@keyframes leftIn
+{
+0%{
+    left: 100%;
+}
+50%{
+    left: 50%;
+}
+100% {
+    left: 0%;
+}
+}

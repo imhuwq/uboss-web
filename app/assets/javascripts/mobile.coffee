@@ -4,11 +4,18 @@
 #= require zepto/plugins/callbacks
 #= require zepto/plugins/deferred
 #= require rails-behaviors/index
-#= require zepto.waypoints.min
 #= require fastclick
 #= require swipe
+#= require mobile_page/sms
 #= require mobile_page/going_merry
 #= require mobile_page/utilities
+#= require mobile_page/sharing
+#= require mobile_page/product
+#= require mobile_page/cart
+#= require mobile_page/order
+#= require mobile_page/pay
+#= require mobile_page/evaluations
+#= require shared/city_select
 #= reuqire_self
 
 $ ->
@@ -33,6 +40,19 @@ $ ->
 
   $("header .menu-btn").on 'click', ->
     $('header .nav-bar').toggle()
+  
+  $('.container ').on 'click', ->
+    $('header .nav-bar').hide();
 
-  $("#close-area").on 'click' , ->
-    $('.share-container').remove()
+  $(document).on 'click', '.pop-bg', (e) ->
+    unless $(e.target).closest('.pop-content').length > 0
+      $(this).hide()
+
+
+  $('.tab-nav .tab').on 'click', (e)->
+    $('.tab-nav .tab').removeClass('active')
+    $(this).addClass('active')
+    tid=$(this).attr('href')
+    $('.tab-container .tab-content').hide()
+    $(tid).show()
+

@@ -13,11 +13,17 @@ class User < ActiveRecord::Base
 
   mount_uploader :avatar, ImageUploader
 
+  has_and_belongs_to_many :expresses, uniq: true
   has_one :user_info, autosave: true
+  has_one :cart
+  has_many :carriage_templates
   has_many :transactions
   has_many :user_role_relations, dependent: :destroy
   has_many :user_roles, through: :user_role_relations
   has_many :daily_reports
+  has_many :sharing_nodes
+  has_many :favour_products
+  has_many :favoured_products, through: :favour_products, source: :product
   # for agent
   has_many :divide_incomes
   has_many :sellers, class_name: 'User', foreign_key: 'agent_id'
@@ -39,11 +45,13 @@ class User < ActiveRecord::Base
   validates :mobile, allow_nil: true, mobile: true
   validates :agent_code, uniqueness: true, allow_nil: true
   validates :authentication_token, uniqueness: true, presence: true
+  validates_numericality_of :privilege_rate,
+    greater_than_or_equal_to: 0, less_than_or_equal_to: 100, only_integer: true
 
   alias_attribute :regist_mobile, :login
 
   delegate :sex, :sex=, :province, :province=, :city, :city=, :country, :country=,
-    :good_evaluation, :normal_evaluation, :bad_evaluation,
+    :good_evaluation, :best_evaluation, :better_evaluation, :worst_evaluation, :bad_evaluation,
     :store_name, :store_name=,      :income_level_thr, :frozen_income,
     :income,     :income_level_one, :income_level_two, :service_rate,
     :store_banner_one_identifier,  :store_banner_two_identifier,  :store_banner_thr_identifier,
@@ -52,7 +60,7 @@ class User < ActiveRecord::Base
     :store_banner_one=, :store_banner_two=, :store_banner_thr=,
     :recommend_resource_one_id, :recommend_resource_two_id, :recommend_resource_thr_id,
     :recommend_resource_one_id=, :recommend_resource_two_id=, :recommend_resource_thr_id=,
-    :store_short_description, :store_short_description=,
+    :store_short_description, :store_short_description=, :store_cover, :store_cover=,
     to: :user_info, allow_nil: true
 
   enum authenticated: {no: 0, yes: 1}
@@ -62,21 +70,22 @@ class User < ActiveRecord::Base
       false
     end
   end
-  before_validation :ensure_authentication_token
+  before_validation :ensure_authentication_token, :ensure_privilege_rate
   before_create :set_mobile
   before_create :build_user_info, if: -> { user_info.blank? }
   before_save   :set_service_rate
 
   scope :admin, -> { where(admin: true) }
-  scope :agent, -> { joins(:user_roles).where(user_roles: {name: 'agent'}) }
+  scope :agent, -> { role('agent') }
+  scope :role,  -> (role_name) { joins(:user_roles).where(user_roles: {name: role_name}) }
   scope :unauthenticated_seller_identify, -> { where(authenticated: 0) }
 
   UserRole::ROLE_NAMES.each do |role|
-    User.class_eval do
-      define_method "is_#{role}?" do
-        user_roles.exists?(name: role)
+    class_eval <<-RUBY, __FILE__, __LINE__+1
+      def is_#{role}?
+        @is_#{role} ||= user_roles.exists?(name: '#{role}')
       end
-    end
+    RUBY
   end
 
   def image_url(version = nil)
@@ -85,7 +94,7 @@ class User < ActiveRecord::Base
 
   class << self
     def official_account
-      @@official_account ||= find_by(login: OFFICIAL_ACCOUNT_LOGIN)
+      @official_account ||= find_by(login: OFFICIAL_ACCOUNT_LOGIN)
     end
 
     def find_or_update_by_wechat_oauth(oauth_info)
@@ -144,18 +153,6 @@ class User < ActiveRecord::Base
 
   end
 
-  # TODO 在评价时实时更新
-  def store_rates
-    @store_rates ||= Rails.cache.fetch ['seller-store-rate', id], expires_in: 1.day do
-      result = ActiveRecord::Base.connection.execute <<-SQL.squish!
-        SELECT SUM(good_evaluation) AS good, SUM(bad_evaluation) AS bad, SUM(normal_evaluation) AS normal
-        FROM products
-        WHERE products.user_id = #{id}
-      SQL
-      result = result.first || {}
-    end
-  end
-
   # 默认绑定official agent
   def bind_agent(binding_code = nil)
     agent_user = if binding_code.present?
@@ -171,11 +168,7 @@ class User < ActiveRecord::Base
     if self.can_rebind_agent?
       self.agent = agent_user
       self.admin = true
-      if agent_user.id == User.official_account.id
-        self.user_info.service_rate = 6
-      else
-        self.user_info.service_rate = 5
-      end
+      self.user_info.service_rate = 5
       self.user_roles << UserRole.seller if not self.is_seller?
       self.save
     else
@@ -344,13 +337,14 @@ class User < ActiveRecord::Base
     self.country        ||= data['country']
     self.weixin_unionid   = data['unionid']
     self.weixin_openid    = data['openid']
-    self.remote_avatar_url = data['headimgurl']
+    self.remote_avatar_url = data['headimgurl'] if self.avatar.blank?
   end
 
   def good_reputation_rate
     return @sharer_good_reputation_rate if @sharer_good_reputation_rate
+    good = user_info.best_evaluation.to_i + user_info.better_evaluation.to_i + user_info.good_evaluation.to_i
     @sharer_good_reputation_rate = if total_reputations > 0
-                                     user_info.good_evaluation.to_i * 100 / total_reputations
+                                     good * 100 / total_reputations
                                    else
                                      100
                                    end
@@ -358,10 +352,30 @@ class User < ActiveRecord::Base
 
   def total_reputations
     @total_reputations ||= UserInfo.where(user_id: id).
-      sum("good_evaluation + normal_evaluation + bad_evaluation")
+      sum("good_evaluation + bad_evaluation + better_evaluation + best_evaluation + worst_evaluation")
+  end
+
+  def has_seller_privilege_card?(seller)
+    privilege_cards.where(seller_id: seller.id).exists?
+  end
+
+  def favour_product(product)
+    favour_products.create(product_id: product.id)
+  end
+
+  def unfavour_product(product)
+    favour_products.where(product_id: product.id).delete_all
+  end
+
+  def is_comman_express?(express)
+    self.expresses.exists?(express)
   end
 
   private
+
+  def ensure_privilege_rate
+    self.privilege_rate = self.privilege_rate.to_i
+  end
 
   def ensure_authentication_token
     if authentication_token.blank?

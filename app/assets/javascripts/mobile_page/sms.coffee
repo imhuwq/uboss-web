@@ -1,4 +1,5 @@
 $ ->
+  console.log("application is load")
   mobile_submit_time = 0
   @btn_text = ''
   $('#send_mobile').on 'click', (e) ->

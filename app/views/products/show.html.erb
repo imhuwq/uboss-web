@@ -1,17 +1,14 @@
-<%= content_for :page_title do %>
-  商品详情
-<% end %>
-
 <%= content_for :extra_meta_tags do %>
   <%= sharing_meta_tags(@product, @sharing_link_node) %>
 <% end %>
 
-<% if browser.wechat? %>
-  <%= content_for :extra_javascript do %>
+<%= content_for :extra_javascript do %>
+  <% if browser.wechat? %>
     <script type="text/javascript" charset="utf-8">
       wx.ready(function(){ UBoss.luffy.invokeSharing(); });
     </script>
   <% end %>
+  <%= javascript_include_tag "mobile_page/jsmvc_app/application" %>
 <% end %>
 
 <div class="fixed-container">
@@ -19,52 +16,112 @@
     <div class="cover">
       <div class="img" style="background-image:url('<%=@product.image_url()%>')"></div>
       <%= image_tag("mobile/img.jpg") %>
+      <% if current_user && current_user.has_seller_privilege_card?(@seller) %>
+        <div class="like-box">
+	        <%= link_to "喜欢", switch_favour_product_path(@product),
+	          method: 'PATCH', class: "#{user_favour_product_class(@product)} btn btn-like like-product-btn", remote: true %>
+        </div>
+      <% end %>
     </div>
   </div><!-- product-box -->
 
   <div class="product-info-box">
     <p class="title"><%=@product.name%></p>
-    <p class="price"><small>￥</small><%=@product.present_price%></p>
-    <p class="gray-color">
-    <% if @product.buyer_pay? %>
-      快递：<%= product_traffic(@product) %>
-    <%else%>
-      包邮
-    <% end %>
+    <p class="price">
+      <small>￥</small>
+      <%= product_price(@product).join(' - ') %>
     </p>
-    <p class="product-rate"><%= Evaluation.product_good_reputation_rate(@product.id) %> 好评 (<%= Evaluation.product_good_reputation(@product.id) %>人)</p>
+    <p class="original-price">￥<%= @product.original_price %></p>
+    <div class="border-box">
+    	<br />
+    	<p class="gray-color">
+	    <% if @product.transportation_way != 0 %>
+	     	 快递：<%= product_traffic(@product) %>
+	    <%else%>
+	     	 包邮
+	    <% end %>
+	    </p>
+	    <p class="gray-color"><%= Evaluation.product_good_reputation_rate(@product.id) %> 好评 (<%= Evaluation.product_good_reputation(@product.id) %>人)</p>
+  	</div><!-- border-box -->
+  	<br />
+  	<div class="detail text-left">
+  		<%= @product.short_description %>
+  	</div><!-- detail -->
+  	<br />
   </div><!-- product-info-box -->
 
-  <% if @privilege_card %>
+  <!-- 自己的友情卡  -->
+  <% if self_privilege_card?(@privilege_card) || qr_sharing? %>
+  	<div class="product-info-box">
+      <br />
+      <div class="friend-card">
+	      <div class="name">友情价</div>
+	      <br />
+        <div class="price">
+          <%= product_privilege(@product, @privilege_card, :price).join(' - ') %>
+        </div>
+	      <br/>
+	    	<p class="gray-color">帮朋友优惠<%= product_privilege(@product, @privilege_card, :amount).join(' - ') %></p>
+        <div class="border-box">
+          <% if @privilege_card.present? %>
+            <br />
+            <div class="text-center"><a class="btn btn-large btn-longer p-sharing-btn">分享给朋友</a></div>
+            <br/>
+            <div class="text-center">
+              <%= link_to "喜欢", switch_favour_product_path(@product),
+                method: 'PATCH', class: "#{user_favour_product_class(@product)} btn btn-like like-product-btn", remote: true %>
+            </div>
+          <% else %>
+            <div class="text-center">
+              <%= link_to "领取友情卡", get_product_sharing_path, data: { pid: @product.id, uid: current_user.present? },
+                class: "btn btn-large btn-longer show-req-snode-modal"
+              %>
+              <a class="btn btn-large btn-longer hidden p-sharing-btn">分享给朋友</a>
+            </div>
+          <% end %>
+        </div><!-- border-box -->
+        <br />
+        <p class="gray-color">一级 <%= @product.share_amount_lv_1 %>　　二级 <%= @product.share_amount_lv_2 %>　　三级 <%= @product.share_amount_lv_3 %></p>
+        <div class="read"><a href="/about"><small>查看说明</small></a></div>
+      </div>  <!-- friend-card -->
+    </div><!-- product-info-box -->
+  <% elsif other_users_privilege_card?(@privilege_card) %>
     <div class="product-info-box">
       <br />
       <div class="friend-card">
-        <p class="cover"><%= image_tag @privilege_card.user.avatar_url(:h50) %></p>
+        <p class="cover"><%= image_tag @privilege_card.user.avatar_url(:w120) %></p>
         <p class="name"><%= @privilege_card.user.identify %> 分享</p>
-        <div class="gray-color">每件为你多省<span class="like-color"><%= @privilege_card.privilege_amount %></span></div>
+        <div class="gray-color">
+          每件为你多省<span class="like-color"><%= product_privilege(@product, @privilege_card, :amount).join(' - ') %></span>
+        </div>
         <br />
         <div class="border-box">
           <p class="name">友情价</p>
-          <div class="price"><%= @product.present_price - @privilege_card.privilege_amount %></div>
+          <div class="price">
+            <%= product_privilege(@product, @privilege_card, :price).join(' - ') %>
+          </div>
         </div>
         <br />
         <p class="name">关于分享者</p>
-        <div class="gray-color">共 <%= @sharing_node.user.total_reputations %> 分享 <span class="like-color"><%= @sharing_node.user.good_reputation_rate %>度靠谱</span></div>
+        <div class="gray-color">
+          共 <%= @sharing_node.user.total_reputations %> 分享
+          <span class="like-color"><%= @sharing_node.user.good_reputation_rate %>% 靠谱</span>
+        </div>
       </div>  <!-- friend-card -->
       <br />
     </div><!-- product-info-box -->
   <% end %>
+  <!-- end 自己的友情卡 -->
 
   <div class="product-info-box">
     <br />
     <div class="cover">
-      <% if @product.user.avatar.present? %>
-        <%= image_tag @seller.avatar_url(:h50) %>
-      <% end %>
+      <%= image_tag @seller.avatar_url(:w120) %>
     </div>
+    <br />
     <p class="name"><%= @seller.store_name %></p>
     <p class="gray-color"><%= @seller.store_short_description %></p>
-    <p class="gray-color border-top"><%= store_good_rate @seller %> 好评（<%= store_total_rate(@seller) %>）</p>
+    <p class="gray-color border-top"><%= number_to_percentage(@seller.good_reputation_rate, precision: 0) %> 好评（<%= @seller.total_reputations %>）</p>
     <div class="into">
       <%= link_to  store_path(@seller) do%>
         <%= image_tag("mobile/into.png") %> 进店逛逛
@@ -74,28 +131,98 @@
   </div><!-- product-info-box -->
 
   <div class="product-info-box">
-    <%= raw @product.content %>
+    <%== @product.content %>
   </div>
 
   <% if @sharing_node.blank? %>
-    <div class="sharer-info">
-      <%= link_to '立即购买', new_order_path(product_id: @product.id), class: 'btn btn-block' %>
+    <div class="share_buy">
+      <% if current_user %>
+        <%= link_to '加入购物车', 'javascript:;', class: 'btn_add_to_cart', id: 'show_inventory_cart'%>
+      <% else %>
+        <%= link_to '加入购物车', "/cart_items?product_id=#{@product.id}", class: 'btn_add_to_cart', method: 'post'%>
+      <% end %>
+      <%= link_to '立即购买', 'javascript:;', class: 'btn_buy_now', id:"show_inventory", style: 'float:right;' %>
+
+      <input type="hidden" name="product[id]" value="<%= @product.id %>" />
+      <input type="hidden" name="product[count]" value="<%= 1 %>" />
     </div>
   <% else %>
-    <div class="sharer-info">
-      <div class="cover">
-        <%= image_tag @sharing_node.user.avatar_url(:thumb), class: 'prvd_header' %>
-      </div>
-      <%= link_to '立即购买', new_order_path(product_id: @product.id), class: 'btn pull-right'%>
-      <div class="content">
-        <p>分享者：<%= truncate (@sharing_node.user.identify),:length=>10,:omission=>'...' %></p>
-        <p>好评率：<%= Evaluation.sharer_good_reputation_rate(@sharing_node.user) %></p>
-      </div>
+    <div class="share_buy">
+    	<div class="half_left">
+    		<%= image_tag @sharing_node.user.avatar_url(:thumb), class: 'share_portrait' %>
+		    <dl class="share_content">
+		      <dt><p><%= @sharing_node.user.identify %></p></dt>
+		      <dd><%= Evaluation.sharer_good_reputation_rate(@sharing_node.user) %>好评率</dd>
+		    </dl>
+		  </div>
+		  <div class="half_right">
+	      <% if current_user %>
+	        <%= link_to '加入购物车', 'javascript:;', class: 'btn_add_to_cart', id: 'show_inventory_cart'%>
+	      <% else %>
+	        <%= link_to '加入购物车', '/cart_items', class: 'btn_add_to_cart', method: 'post'%>
+	      <% end %>
+	      <%= link_to '立即购买', 'javascript:;', class: 'btn_buy_now', id:"show_inventory", style: 'float:right;' %>
+		  </div>
     </div>
   <% end %>
 
-  <% if params['shared'] == 'true' %>
-    <%= render partial: 'new_share' %>
-  <% end %>
+  <%= render partial: 'new_share' %>
 
 </div>
+
+<div class="req-snode-modal pop-bg hidden">
+  <div class="pop-content">
+    <div class="alert">
+      <div class="req-snode-group">
+        <div class="page-title">留下手机号，现金礼品拿不停！</div>
+        <p><input type="tel" name="mobile" placeholder='输入手机号，获得分享收益' class='input-block' /></p>
+        <br />
+        <p>
+        <%= link_to "领取友情卡", get_product_sharing_path, data: { pid: @product.id },
+          class: "btn btn-large btn-block req-pro-snode-btn" %>
+        </p>
+      </div>
+      <div class="hidden">
+        <p>您已成功领取，赶紧分享给朋友吧</p>
+        <br />
+        <a class="btn btn-large btn-block pro-snode-success-btn">确定</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<%= simple_form_for "product_inventory", url: new_order_path(product_id: @product.id), method: 'GET' do |f| %>
+  <%= hidden_field_tag "product_inventory_id" %>
+  <%= hidden_field_tag "product_id", @product.id %>
+  <%= hidden_field_tag "amount", 1, id:'count_amount' %>
+  <div class="hidden" id="inventory">
+    <div class="tab_buy_now">
+      <div class="buy_now_goods">
+      	<%= image_tag 'mobile/close.png',class:'btn_cancle_buy_now close',onclick:'hideBuyNow()' %>
+        <img class="buy_now_goods_img" src="<%= @product.image_url() %>" alt="商品" />
+        <dl class="buy_now_goods_dl">
+          <dt><p><%=@product.name%></p></dt>
+          <dd>
+            <p>¥
+              <span id="price_range"> <%= product_price(@product).join(' - ') %> </span>
+            </p>
+          </dd>
+        </dl>
+      </div>
+
+      <div class="options" id="product_inventory_options">
+
+      </div>
+    </div>
+  </div>
+<% end %>
+
+<%= hidden_field_tag "submit_way" %>
+
+<script type="text/javascript">
+  function hideBuyNow() {
+    $('#inventory').addClass('hidden');
+    $('.fixed-container').css('-webkit-filter', 'blur(0px)');
+    $('html').removeClass('lock')
+  }
+</script>

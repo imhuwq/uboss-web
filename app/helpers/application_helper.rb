@@ -1,5 +1,17 @@
 module ApplicationHelper
 
+  def product_show?
+    controller_name == 'products' && action_name == 'show'
+  end
+
+  def qrcode_image_tag(text, opts = {})
+    html_opts = opts.delete(:html) || {}
+    opts = {
+      text: text
+    }.merge(opts)
+    image_tag request_qrcode_url(opts), html_opts
+  end
+
   def horizon_form_for(record, options = {}, &block)
     options = options.merge(
       html: { class: 'form-horizontal' },
@@ -78,8 +90,8 @@ module ApplicationHelper
 
   def store_sharing_meta_tags(seller, sharing_link_node = nil)
     meta_tags = {
-      sharing_title:  "UBOSS店铺【#{seller.store_identify}】好货不断，通过分享购买有惊喜！",
-      sharing_desc:   "消费分享还能拿返利，更多有趣玩法，快来UBOSS看看吧",
+      sharing_title:  "【#{seller.store_identify}】好货不断，通过分享购买更有优惠惊喜！",
+      sharing_desc:   "在我这儿，谁还会用市场价购买啊？",
       sharing_imgurl: seller.avatar_url(:thumb),
       sharing_link:  store_sharing_link(seller, sharing_link_node)
     }
@@ -94,6 +106,10 @@ module ApplicationHelper
 
   def abled_class(boolean_value)
     boolean_value ? '' : 'disabled'
+  end
+
+  def valid_order_box_class(boolean_value)
+    boolean_value ? 'invalid-box' : 'valid-box'
   end
 
   def seo_meta_tag

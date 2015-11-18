@@ -6,7 +6,7 @@
 	</ul>
 </div><!-- container -->
 <br />
-<div class="container nogap">
+<div class="container nogap admin-order-index-wrapper">
 	<div class="box-w25">
 		<div class="admin-box red-bg-color">
 			<h4>等待发货</h4>
@@ -22,31 +22,41 @@
 	<div class="clear"></div>
 	<br />
 	<div class="box-w100">
-		<table class="list-table">
-			<thead>
-				<th>订单时间</th>
-				<th>订单编号</th>
-				<th>买家</th>
-				<th>状态</th>
-				<th>操作</th>
-			</thead>
-			<% @orders.each do |order| %>
-			<tr>
-				<td><%= order.created_at %></td>
-				<td><%= link_to order.number, [:admin, order] %></td>
-				<td><%= order.buyer_identify %></td>
-				<td><%= order.state_i18n %></td>
-				<td>
-					<% if order.payed? && can?(:manage, order) %>
-			      <%= link_to '发货', [:ship, :admin, order],
-			        class: 'btn', method: :PATCH, data: { confirm: '确认发货?' } %>
-			    <%- end%>
-    		</td>
-			</tr>
-			<% end %>
-		</table>
-		<br />
-		<%= paginate @orders %>
+    <%= render 'order_tables' %>
 	</div>
 </div><!-- container-->
+
 <br />
+
+<div class="modal fade" id="ship-express-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span class='close' aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">快递信息</h4>
+      </div>
+
+      <%= simple_form_for :order, method: :patch do |f| %>
+        <div class="modal-body">
+          <%= f.input :express_name, hint: '您可在 (订单 -> 快递管理) 中设置您的常用发货快递公司' do %>
+            <%= text_field_tag 'express_name', '', class: 'form-control input-lg js-select2-express-tags' %>
+          <% end %>
+          <%= f.input :ship_number, required: true %>
+        </div>
+
+        <div class="modal-footer">
+          <%= f.submit '确定', class: 'btn btn-info' %>
+          <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>
+
+<script>
+  $(".js-select2-express-tags").select2({
+    tags: <%== current_user.expresses.pluck(:name) %>,
+    maximumSelectionSize: 1,
+    placeholder: "可输入其他快递公司名称, 按回车结束"
+  })
+</script>

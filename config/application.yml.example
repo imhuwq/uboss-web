@@ -1,0 +1,14 @@
+#
+# DISCOURSE SingleSignOnService CONFIG
+#
+# 论坛SSO单点登录配置, http://xxx/discourse/sso,
+# 本地测试: http://localhost:3000/discourse/sso,
+# 远程 sso secret 需要与 本地 SECRET 一致
+#
+# SSO_URL: http://stage.uboss.me/discourse/sso
+# SSO_SECRET: 'is_a_secret_leng_max_10'
+#
+DISCOURSE_SECRET: 'is_a_secret_leng_max_10'
+#认证后跳转路径
+DISCOURSE_CALLBACK_URL: http://stage.bbs.uboss.me/session/sso_login
+DISCOURSE_URL: http://stage.bbs.uboss.me

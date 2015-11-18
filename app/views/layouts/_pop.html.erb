@@ -1,0 +1,27 @@
+<% if flash.any? %>
+  <div class="pop-bg flash_css <%= "auto_close_flash_css" unless flash[:error] || flash[:alert] %>">
+    <div class="pop-content" id="flash-messages">
+      <% if flash[:success] %>
+        <div class="alert alert-success">
+          <h3 class="main-color">成功</h3>
+          <p class="gray-color"><%== flash[:success] %></p>
+          <p><button class="btn btn-large" data-dismiss="alert">我知道了</button></p>
+        </div>
+      <% end %>
+      <% if flash[:info] || flash[:notice] %>
+        <div class="alert alert-info">
+          <p class="gray-color"><%== flash[:info] || flash[:notice] %></p>
+          <p><button class="btn btn-large" data-dismiss="alert">我知道了</button></p>
+        </div>
+      <% end %>
+
+      <% if flash[:error] || flash[:alert] %>
+        <div class="alert alert-error">
+          <h3 class="main-color">失败</h3>
+          <p class="gray-color"><%== flash[:error] || flash[:alert] %></p>
+          <p><button class="btn btn-large" data-dismiss="alert">我知道了</button></p>
+        </div>
+      <% end %>
+    </div><!-- pop-content -->
+  </div><!-- pop-bg -->
+<% end %>

@@ -2,89 +2,56 @@
 <%= content_for :page_title do %>
   个人信息
 <% end %>
-<div class="container add_listall" >
-
-    <div class="add_inout">
-      <p>
-        <%= image_tag("uboss_29/touxiang.png") %>
-        <span>昵称</span>
-        <span class="center_content">
-          <%= truncate current_user.identify,:length=>28,:omission=>'...' %>
-        </span>
-        <span class="right_content">
-          <%= link_to edit_account_path do %>
-          修改<%= image_tag("uboss_29/right.png" ) %>
-          <% end %>
-        </span>
-      </p>
-      <p>
-        <%= image_tag("uboss_29/phone.png") %>
-        <span>绑定手机</span>
-        <span class="center_content">
-          <%= current_user.login %>
-        </span>
-      </p>
-      <% if current_user.login.present? %>
-        <p>
-          <%= image_tag("uboss_29/mima.png") %>
-          <span>设置密码</span>
-          <span class="center_content">
-          </span>
-          <span class="right_content">
-            <%= link_to edit_password_account_path do %>
-            修改<%= image_tag("uboss_29/right.png") %>
-            <% end %>
-          </span>
-        </p>
-      <% end %>
-      <p>
-        <%= image_tag("uboss_29/dizhi.png") %>
-        <span>收货地址</span>
-        <span class="center_content">
-        </span>
-        <span class="right_content">
-          <%= link_to account_user_addresses_path do %>
-          修改<%= image_tag("uboss_29/right.png" ) %>
-          <% end %>
-        </span>
-      </p>
-      <% if !current_user.is_seller? && !current_user.authenticated? %>
-      <p>
-        <%= image_tag("uboss_29/touxiang.png") %>
-        <span>成为商家</span>
-        <span class="center_content">
-        </span>
-        <span class="right_content">
-          <%= link_to url_for(action: :seller_agreement) do %>
-          绑定<%= image_tag("uboss_29/right.png") %>
-          <% end %>
-        </span>
-      </p>
-      <% elsif !current_user.authenticated? %>
-      <p>
-        <%= image_tag("uboss_29/touxiang.png") %>
-        <span>绑定创客</span>
-        <span class="center_content">
-        </span>
-        <span class="right_content">
-          <%= link_to seller_agreement_account_path do %>
-          绑定<%= image_tag("uboss_29/right.png") %>
-          <% end %>
-        </span>
-      </p>
-      <% end %>
-      <% if current_user.is_agent? %>
-      <p>
-        <%= image_tag("uboss_29/shangjia.png") %>
-        <span>创客</span>
-        <span class="center_content">
-        </span>
-        <span class="right_content">
-          <%= link_to invite_seller_account_path do %>
-            邀请商家<%= image_tag("uboss_29/right.png") %>
-          <% end %>
-        </span>
-      </p>
-      <% end %>
-    </div>
-</div>
+<br />
+<div class="bg-white" >
+	<div class="setting-list">
+	  <%= link_to edit_account_path do %>
+				昵称
+				<span class="pull-right right-icon main-color"><%= truncate current_user.identify,:length=>28,:omission=>'...' %></span>
+	  <% end %>
+	  
+	  <% if !current_user.is_seller? && !current_user.authenticated? %>
+	      <%= link_to url_for(action: :seller_agreement) do %>
+					成为商家 
+					<span class="pull-right right-icon main-color">绑定</span>
+	      <% end %>
+	  <% elsif !current_user.authenticated? %>
+	      <%= link_to seller_agreement_account_path do %>	        
+					绑定创客
+					<span class="pull-right right-icon main-color">绑定</span>
+	      <% end %>
+	  <% end %>
+	  
+	  <a href="#">
+				绑定手机
+				<span class="pull-right  main-color"><%= current_user.login %></span>
+	  </a>
+	  
+	</div><!-- setting-list -->	 
+</div> <!-- bg-white -->
+<br />
+<div class="bg-white" >
+	<div class="setting-list">
+	  <% if current_user.login.present? %>
+	    <%= link_to edit_password_account_path do %>
+					设置密码
+					<span class="pull-right right-icon">&nbsp;</span>
+	    <% end %>
+	  <% end %>
+	  
+	  <%= link_to account_user_addresses_path do %>
+				收货地址   
+				<span class="pull-right right-icon">&nbsp;</span>
+	  <% end %> 
+	  
+	  <% if current_user.is_agent? %>
+	      <%= link_to invite_seller_account_path do %>        
+					邀请商家
+					<span class="pull-right right-icon">&nbsp;</span>
+	      <% end %>
+	  <% end %>
+	  <% if not browser.wechat? %>      
+	      <%= link_to "退出账户", destroy_user_session_path, method: :delete %>
+	  <% end %>
+	</div><!-- setting-list -->	 
+</div><!-- bg-white -->

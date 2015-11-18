@@ -1,0 +1,17 @@
+<div class='sku-group-title'>
+  <input class='property-inp' type='text' value=<%= @property.get('name') %> >
+  <span><%= @property.get('id') %></span>
+  <a href='#' class="remove-property pull-right">×</a>
+</div>
+<div class='pv-list-group'>
+  <div class='pv-list'>
+  </div>
+  <div class='add-pv-group'>
+    <a class='show-sel-group btn btn-small' href='#'>+</a>
+    <div class='pv-sel-group' style='display:none;'>
+      <input class='pv-sel' type='text' >
+      <a class='add-pv btn btn-small' href='#'>确定</a>
+      <a class='cancel-sel btn btn-small' href='#'>取消</a>
+    </div>
+  </div>
+</div>

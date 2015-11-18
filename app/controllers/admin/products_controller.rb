@@ -1,12 +1,14 @@
-# encoding:utf-8
-# 自定义管理系统
 class Admin::ProductsController < AdminController
 
   load_and_authorize_resource
 
+  def select_carriage_template
+    @carriage = CarriageTemplate.find(params[:tpl_id]) if params[:tpl_id].present?
+  end
+
   def index
-    @products = Product.accessible_by(current_ability).where(status: [0,1]).order('created_at DESC')
-    @products = @products.page(params[:page] || 1)
+    @products = current_user.products.available.order('created_at DESC')
+    @products = @products.includes(:asset_img).page(params[:page] || 1)
     @statistics = {}
     @statistics[:create_today] = @products.where('created_at > ? and created_at < ?', Time.now.beginning_of_day, Time.now.end_of_day).count
     @statistics[:count] = @products.count
@@ -25,22 +27,23 @@ class Admin::ProductsController < AdminController
   end
 
   def update
-    if @product.present? && @product.user_id == current_user.id && @product.update(product_params)
+    if @product.update(product_params)
       flash[:success] = '保存成功'
+      redirect_to action: :show, id: @product.id
     else
       flash[:error] = "保存失败。#{@product.errors.full_messages.join('<br/>')}"
+      render :edit
     end
-    redirect_to action: :show, id: @product.id
   end
 
   def change_status
     if params[:status] == 'published'
-      #if @product.user.authenticated?
+      # if @product.user.authenticated?
         @product.status = 'published'
         @notice = '上架成功'
-      #else
-        #@error = '该帐号还未通过身份验证，请先验证:点击右上角用户名，进入“个人/企业认证”'
-      #end
+      # else
+      #   @error = '该帐号还未通过身份验证，请先验证:点击右上角用户名，进入“个人/企业认证”'
+      # end
     elsif params[:status] == 'unpublish'
       @product.status = 'unpublish'
       @notice = '取消上架成功'
@@ -78,14 +81,21 @@ class Admin::ProductsController < AdminController
 
   private
 
+  def product_propertys_params
+    params.permit(product_propertys_names: [])
+  end
+
   def product_params
     params.require(:product).permit(
-      :name,               :original_price,    :present_price, :count,
-      :content,            :has_share_lv,      :calculate_way, :avatar,
-      :share_amount_total, :share_amount_lv_1, :share_amount_lv_2,
-      :share_amount_lv_3,  :share_rate_total,  :share_rate_lv_1,
-      :share_rate_lv_2,    :share_rate_lv_3,   :buyer_pay,
-      :traffic_expense,    :short_description
+      :name,      :original_price,  :present_price,     :count,
+      :content,   :has_share_lv,    :calculate_way,     :avatar,
+      :traffic_expense, :short_description, :transportation_way,
+      :carriage_template_id,
+      product_inventories_attributes: [
+        :id, :price, :count, :share_amount_total, :privilege_amount,
+        :share_amount_lv_1, :share_amount_lv_2, :share_amount_lv_3,
+        sku_attributes: product_propertys_params[:product_propertys_names],
+      ]
     )
   end
 end

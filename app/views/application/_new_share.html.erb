@@ -1,0 +1,29 @@
+<div class="share-container hidden">
+  <div id="close-area"></div>
+  <div class="share-content" id="share_buttons">
+    <div class='share-btns-group'>
+      <div id="share_buttoms">
+        <a class='share-icon sharing-button-wx'>
+        	微信好友
+        </a>
+        <a class="share-icon sharing-button-tsina">
+        	新浪微博
+        </a>
+        <a class="share-icon sharing-button-tqq">
+        	QQ空间
+        </a>
+        <a class="share-icon sharing-copycardid">
+        	复制链接
+        </a>
+      </div>
+
+      <div class="font-h4 hidden bg_white text-center sharing-link" style="padding:20px 10px 0;word-wrap: break-word;">
+        <% if @product.present? %>
+          <%= product_sharing_link(@product, @sharing_link_node) %>
+        <% elsif @seller.present? %>
+          <%= store_sharing_link(@seller, @sharing_link_node) %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>

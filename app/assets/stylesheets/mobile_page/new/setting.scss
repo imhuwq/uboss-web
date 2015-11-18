@@ -1,0 +1,20 @@
+.setting-list{
+    color: #333;
+    > a{
+        display: block;
+        color: #333;
+        padding:10px ;
+        border-bottom: 1px solid #F6F6F6;
+        font-size: 13px;
+        
+    }
+    .pull-right{        
+        padding-right: 20px;
+    }
+    .right-icon{
+        background: image-url('mobile/gray-arrow-right.png') no-repeat center right;
+        background-size: 8px;
+        padding-right: 20px;
+        display: block;
+    }
+}

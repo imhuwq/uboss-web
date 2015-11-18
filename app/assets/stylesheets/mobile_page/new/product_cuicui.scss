@@ -1,0 +1,240 @@
+.share_buy {
+  position: fixed;
+  bottom: 0px;
+  width: 100%;
+  background: #fff;
+  border-top:1px solid #ddd ;
+  z-index: 10;
+  text-align: center;
+  box-sizing: border-box;
+
+  .half_left {
+    height: 60px;
+    width: 50%;
+    float: left;
+    overflow: hidden;
+
+    .share_portrait {
+      width: 40px;
+      height: 40px;
+      border-radius: 20px;
+      /*background: orangered;*/
+
+      vertical-align: middle;
+      margin: 10px;
+      left: 10px;
+      float: left;
+    }
+
+    .share_content {
+      left: 30px;
+      margin-top: 15px;
+      margin-bottom: 15px;
+      /*width: 200px;*/
+    }
+  }
+  .btn_add_to_cart ,.btn_buy_now {
+    height: 50px;
+    line-height: 50px;  
+    width: 50%;
+    height: 100%;
+    float: left;
+    background: #f9ba10;
+    border: none;
+    font-size: 15px;
+  }
+  .btn_buy_now {
+      background:$brand-primary ;
+  }
+  a{color: #fff;}
+  .half_right {
+    float: left;
+    width: 50%;
+    overflow: hidden;
+    color: #fff;
+    .btn_add_to_cart ,.btn_buy_now {
+      font-size: 12px;
+      height: 60px;
+      line-height: 60px;
+    }
+
+  }
+}
+
+#inventory {
+  img.blur {
+    width: 400px;
+    height: 490px;
+    /*-webkit-filter: blur(3px);*/
+    /*filter: blur(3px);*/
+  }
+
+  /**
+   * 立即购买弹框
+   */
+
+  .tab_buy_now {
+    width: 100%;
+    /*height: 75%;*/
+
+    position: fixed;
+    bottom: 0;
+    z-index: 2000;
+    /*display: none;*/
+
+    display: block;
+    background: #ffffff;
+    box-sizing: border-box;
+    animation: buynow 0.1s;
+    animation-fill-mode: forwards;
+    /*-webkit-transition: height 5s;*/
+  }
+  @-webkit-keyframes buynow
+  /* Safari and Chrome */
+
+  {
+    from {
+      bottom: -100%;
+    }
+    to {
+      bottom: 0%;
+    }
+  }
+  .options {
+    max-height: 260px;
+    background: #f6f6f6;
+    overflow-y: scroll;
+    border-bottom: 1px solid #ddd;
+  }
+  .buy_now_goods {
+    background: #fff;
+    overflow: hidden;
+  }
+  .buy_now_goods_img {
+    width: 80px;
+    height: 80px;
+    padding: 10px;
+    float: left;
+  }
+  .buy_now_goods_dl {
+    padding: 20px;
+  }
+  .buy_now_goods_dl dt p {
+    font-size: 14px;
+  }
+  .buy_now_goods_dl dd p {
+    font-size: 12px;
+    margin-top: 10px;
+    color: #43C3AA;
+  }
+  .btn_cancle_buy_now {
+    height: 20px;
+    width: 20px;
+    float: right;
+    padding: 10px;
+  }
+  .buy_now_option {
+    width: 100%;
+  }
+  .buy_now_option_title {
+    padding: 10px;
+  }
+  .buy_now_option ul {
+    padding: 0 10px;
+  }
+  .item {
+    display: inline-block;
+    border: 1px solid #ddd;
+    color: #999;
+    margin-right: 10px;
+    margin-bottom: 10px;
+    position: relative;
+  }
+  /*
+   * 点击后出现一角
+   */
+  .item_click{
+    height: 25px;
+    display: inline-block;
+    margin-right: 10px;
+    position: relative;
+    color: #666;
+  }
+  .item_click:after{
+    content: "";
+    width:0px;
+    height:0px;
+    border-top:15px solid #43C3AA;
+    border-right:20px solid transparent;
+    top: 0;
+      left: 0;
+    position: absolute;
+  }
+
+  .buy_now_option ul li p {
+    display: inline-block;
+    padding: 5px 20px;
+  }
+  .btn_done {
+    height: 30px;
+    width: 90px;
+    background: #43c3aa;
+    display: inline-block;
+    vertical-align: middle;
+    margin-top: 15px;
+  }
+  .btn_done p {
+    font-size: 18px;
+    color: #F6F6F6;
+    margin-top: 8px;
+  }
+  .done {
+    bottom: 0px;
+    width: 100%;
+    background: #fff;
+    text-align: center;
+    padding: 10px 0;
+  }
+  .btn {
+    font-size: 18px;
+    color: #F6F6F6;
+    display: inline-block;
+    background: #43C3AA;
+    padding: 10px 30px;
+  }
+  .count-box {
+    background: #f6f6f6;
+    input[type="tel"]{
+      height: 19px;
+      padding: 2px 5px;
+      width: 30px;
+      text-align: center;
+      vertical-align: top;
+      background: none;
+      -webkit-appearance:none;
+    }
+    .count_icon{
+        display: inline-block;
+        background: none;
+        border: 1px solid #43C3AA;
+        padding: 2px 5px;
+        text-align: center;
+        span{
+            display: inline-block;
+            background: #43C3AA;
+            color: #fff;
+            font-weight: bold;
+            height: 19px;
+            width: 19px;
+            line-height: 18px;
+            font-size: 19px;
+            border-radius: 400px;
+        }
+    }
+  }
+  .item.disabled{
+    background-color: #dadcdd;
+    border: 1px solid #bab6b6;
+    color: #bab6b6;
+  }
+}

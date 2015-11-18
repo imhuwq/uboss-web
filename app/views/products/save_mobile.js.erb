@@ -1,7 +1,0 @@
-// 向页面插入分享按钮
-$('#share_buttons').html(
-  '<%= escape_javascript render(
-    partial: '/application/share_buttoms.html',
-    locals: { product: @product, node: @sharing_link_node }
-  ) %>'
-);
