@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151116025201) do
+ActiveRecord::Schema.define(version: 20151118025746) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -361,7 +361,7 @@ ActiveRecord::Schema.define(version: 20151116025201) do
     t.integer  "worst_evaluation"
     t.boolean  "full_cut",             default: false
     t.integer  "full_cut_number"
-    t.string   "full_cut_unit"
+    t.integer  "full_cut_unit"
   end
 
   create_table "redactor_assets", force: :cascade do |t|
