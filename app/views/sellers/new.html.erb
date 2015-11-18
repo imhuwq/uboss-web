@@ -15,7 +15,7 @@
           <%= link_to '发送手机验证码', '###',class: "btn btn-danger ",id:"send_mobile", style:"position:absolute;right:0;width:140px;" %>
         </div>
       </div>
-      <%= f.input :mobile_auth_code, as: :tel, :input_html=>{:id=>"mobile_auth_code"}, hint:'请输入5位验证码' %>
+      <%= f.input :mobile_auth_code, as: :tel, :input_html=>{:id=>"mobile_auth_code"}, hint:'请输入4位验证码' %>
     </div>
 
     <div class="button_div col-xs-12"  style="margin-top:30px;">
@@ -60,7 +60,7 @@
           </div>
 
         </div>
-        <%= f.input :mobile_auth_code, as: :tel, :input_html=>{:id=>"mobile_auth_code"} %>
+        <%= f.input :mobile_auth_code, as: :tel, :input_html=>{:id=>"mobile_auth_code"}, hint:'请输入4位验证码' %>
         <%= f.input :password, required: true, hint: "至少六位以上的字母数字组合",:label_html=>{:class=>"text-right"}  %>
         <%= f.input :password_confirmation, required: true,:label_html=>{:class=>"text-right"}  %>
       </div>

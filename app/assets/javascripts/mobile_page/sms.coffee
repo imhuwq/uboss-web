@@ -80,7 +80,7 @@ $ ->
 
   $('#mobile_auth_code').on 'keyup', (m)->
     code = $(this).val()
-    if code.length == 5
+    if code.length == 4
       $('#submit_bottom').removeAttr('disabled')
     else
       $('#submit_bottom').attr('disabled','disabled')
