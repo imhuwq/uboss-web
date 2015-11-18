@@ -229,6 +229,13 @@ class Order < ActiveRecord::Base
     errors.empty?
   end
 
+  def can_be_ship?
+    if !User.find(self.user_id).default_get_address.present?
+      errors[:base] << "请设置默认退货地址"
+      return false
+    end
+  end
+
   private
 
   def generate_number
@@ -240,6 +247,8 @@ class Order < ActiveRecord::Base
   def fill_shiped_at
     update_column(:shiped_at, Time.now)
   end
+
+
 
   def fill_signed_at
     update_column(:signed_at, Time.now)

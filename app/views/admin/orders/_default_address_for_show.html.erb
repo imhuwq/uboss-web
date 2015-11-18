@@ -1,0 +1,9 @@
+<div class='bottom_line'>
+  <p class='logistics_info'><span class='btn red-btn' style="margin-right:10px;">第二步</span>确认发货/退货信息</p>
+  <p>我的发货信息 : <%= current_user.default_post_address %> <span class="pull-right address-alert" title="发货地址">修改发货地址</span></p>
+  <p>我的退货信息 : <%= current_user.default_get_address %> <span class="pull-right address-alert" title="退货地址">修改退货地址</span></p>
+  <%= hidden_field_tag 'request_path', "orders/show",id:"request_path" %>
+</div>
+<div id="address-list-box" class="hidden">
+  <%= render partial: "/admin/user_addresses/seller_address_list", locals: { user_addresses: @user_addresses } %>
+</div><!-- title -->
