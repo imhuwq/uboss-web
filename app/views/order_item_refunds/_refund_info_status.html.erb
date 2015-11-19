@@ -30,14 +30,14 @@
     </div>
     <p>卖家同意申请：请退货</p>
     <p>退货信息:</p>
-    <p>广东省深圳市XXXXXXXXXXXX</p>
-    <p>退货说明：请在包裹内留下纸条，写上退款编号、您的UBOSS帐号以及联系方式，以便及时确认完成退款。</p>
+    <p><%= @refund.address %></p>
+    <p>退货说明：<%= @refund.return_explain %></p>
     <p>UBOSS温馨提示：未经卖家同意，请不要使用到付或平邮</p>
     <p>交易的钱款还在UBOSS中间账户，确保您资金安全退货完成后请点击“退货”填写物流信息，逾期未填写，申请将关闭</p>
     <p><%= link_to '退货', new_order_item_order_item_refund_sales_return_path(order_item_id: @order_item.id, order_item_refund_id: @refund.id),class:'btn btn-block btn-black-border' %>
     <p><%= link_to '撤销申请', close_order_item_order_item_refund_path(order_item_id: @order_item.id, id: @refund.id), data: {confirm: '确定撤销申请?'},class:'btn btn-block btn-black-border'%>
   <% else %>
-    <p>卖家退款给买家0.05元</p>
+    <p>卖家退款给买家<%= @refund.money %>元</p>
     <p>UBOSS将在24小时内退款会您当时支付的账号或银行卡，请注意查收</p>
   <% end %>
 
