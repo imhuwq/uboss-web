@@ -36,16 +36,21 @@
     <div class='form-group string optional order_item_refund_asset_imgs'>
       <%= f.input_field :avatar, type: :hidden, value: @refund.image_files, as: :file, class: 'refund_avatar' %>
       <div id="upload-box" class="upload-box box gap">
-		      <div class="fileinput-button text-center">
-		      	<p class="plus">+</p>
-		      	<p class="text">上传凭证</p>
-		      	<p><small>(最多三张)</small></p>
-		        <%= file_field_tag "file", class: "upyun_file" %>
-		        <div class="loading"><%= image_tag "mobile/loading.png" %></div>
-            <% @refund.asset_imgs.each do |img| %>
-		          <div><%= image_tag img.image_url() %></div>
-            <% end %>
-		      </div>
+	      <div class="fileinput-button text-center">
+	      	<p class="plus">+</p>
+	      	<p class="text">上传凭证</p>
+	      	<p><small>(最多三张)</small></p>
+	        <%= file_field_tag "file", class: "upyun_file" %>
+	        <div class="loading"><%= image_tag "mobile/loading.png" %></div>          
+	      </div>
+	      <% @refund.asset_imgs.each do |img| %>
+          <div class="upload-image-box">
+          	<a href="<%= img.image_url() %>" style="background-image:url('<%= img.image_url() %>') ;">
+          		<%= image_tag img.image_url() %>
+          	</a>
+          	<div class="close"></div>
+          </div>
+        <% end %>
       </div><!-- upload-box -->
     </div>
 	  <div class="gap">
