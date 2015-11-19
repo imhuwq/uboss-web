@@ -1,31 +1,31 @@
 <%= upyun_meta_tags prefix: 'asset_img/avatar' %>
 <div class="modal-body" style="color:#000;">
-  <div class='form-group'>
-    <label class="control-label">拒绝原因</label>
-    <div class="control-input">
-      <%= text_field_tag 'refund_message[refund_reason]', '', class:'input-block js-select2' %>
-    </div>
-  </div>
-  <div class="form-group">
-    <label class="control-label">拒绝说明</label>
-    <%= f.text_area :explain, rows: 4, class: 'control-input', style: "border:1px solid #e5e5e5;width:80%;" %>
-  </div>
-  <div class="form-group">
-    <label class="control-label">上传凭证</label>
-    <%= f.input :asset_img, label: false, hint:"(最多三张)"  do %>
-      <%= f.input_field :avatar, type: :hidden, as: :file, class: 'refund_avatar' %>
-      <p class="fileinput-button">
+  <p>拒绝原因</p>
+  <p>
+    <%= text_field_tag 'refund_message[refund_reason]', '', class:'input-block js-select2' %>
+  </p>
+  <br/>
+  <p>拒绝说明</p>
+  <p><%= f.text_area :explain, rows: 4, class: 'input-block' %></p>  
+  <br />
+  <p>上传凭证</p>
+	<%= f.input :asset_img, label: false do %>
+    <%= f.input_field :avatar, type: :hidden, as: :file, class: 'refund_avatar' %>
+    <div class="upload-box" id="upload-box">
+      <div class="fileinput-button image-box">
         <%= image_tag("admin/no-img.png") %>
         <%= file_field_tag "image", class: "multi_upyun_file" %>
         <b class="loading"><i class="fa fa-spinner"></i></b>
-      </p>
-    <% end %>
-  </div>
+      </div>
+    </div>
+    <br />
+    <div>上传凭证(最多三张)</div>
+  <% end %>
 </div>
 
 <div class="modal-footer">
-  <%= f.submit '确定拒绝', class: "btn btn-info" %>
-  <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+  <%= f.submit '确定拒绝', class: "btn btn-large btn-info" %>
+  <button type="button" class="btn btn-large gray-btn" data-dismiss="modal">取消</button>
 </div>
 <script>
  $(".js-select2").select2({

@@ -26,6 +26,12 @@
     opacity: 1;
   }
 }
+.modal-body{
+  .fileinput-button img,.upload-box .image-box{
+    width: 120px; 
+    height: 90px;
+  }
+}
 .upload-box:after{
   clear:both;content: ".";   display: block;overflow: hidden; visibility: hidden;    font-size: 0;    line-height: 0;    width: 0;    height: 0;
 }

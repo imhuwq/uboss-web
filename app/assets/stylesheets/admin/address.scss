@@ -40,14 +40,16 @@
     
 }
 .address-table{
+    width: 100%;
     table{
       margin-top:10px ;
       width: 100%;
       padding-left: 10px;
-      td{
-        border-top:1px solid #555 ;
-        vertical-align: middle;     
-        padding:10px 10px 10px 0;  
-      }
+      
+    }
+    td{
+      border-top:1px solid #555 ;
+      vertical-align: middle;     
+      padding:10px 10px 10px 0;  
     }
 }

@@ -51,7 +51,7 @@ $ ->
           img = '<div class="image-box">'
           img = img+'<a class="pop-img" data-src="'+ "#{ upyunBucketDomain }/#{ qs.url }"+'" style="background-image:url('+"#{ upyunBucketDomain }/#{ qs.url }"+'">'
           img = img+'<img src="'+ "#{ upyunBucketDomain }/#{ qs.url }" +'" alt="'+"#{ qs.url }"+'"></a><div class="close"><i class="fa fa-times"></i></div></div>'
-          $('#upload-box').append(img)
+          $this.closest('.upload-box').append(img)
 
           form.data("waiting-upload", false)
 
