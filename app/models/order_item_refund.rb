@@ -100,28 +100,83 @@ class OrderItemRefund < ActiveRecord::Base
     self.asset_imgs.map{ |img| img.avatar.file.filename }.join(',')
   end
 
-  def create_timeout_message(timeout_days)
+  def create_timeout_message
     if self.approved?
       if self.refund_type_include_goods?
-        self.address = self.order_item.order.seller.default_post_address.try(:refund_label)
-        self.save
+        self.address = self.order_item.order.seller.default_post_address.try(:refund_label) && self.save
         action  = "同意退货"
-        message = "退货地址：#{self.address}</br>商家在#{timeout_days}天内未处理此申请，系统已默认商家同意此次申请"
+        message = "退货地址：#{self.address}</br>商家在#{Rails.application.secrets.refund_timeout['days_5']}天内未处理此申请，系统已默认商家同意此次申请"
       else
         action  = "同意退款"
-        message = "商家在#{timeout_days}天内未处理此申请，系统已默认商家同意此次申请"
+        message = "商家在#{Rails.application.secrets.refund_timeout['days_2']}天内未处理此申请，系统已默认商家同意此次申请"
       end
     elsif self.confirm_received?
       action  = "确认收货"
-      message = "商家在#{timeout_days}天内未确认收货，系统已默认商家已收货"
+      message = "商家在#{Rails.application.secrets.refund_timeout['days_10']}天内未确认收货，系统已默认商家已收货"
     end
 
-    self.refund_messages.create(user_type: '卖家',
-                                user_id: self.order_item.order.seller_id,
-                                message: message,
-                                action: action,
-                                order_item_refund_id: id
-                               )
+    action.present? && self.refund_messages.create(
+      user_type: '卖家',
+      user_id: self.order_item.order.seller_id,
+      message: message,
+      action: action,
+      order_item_refund_id: id
+    )
+  end
+
+  def deal_with_timeout_refund
+    case aasm_state
+    when 'pending'
+      timeout_approve if (refund_type == 'refund' && timeout_approve_refund?) || (refund_type != 'refund' && timeout_approve_return?)
+    when 'approved'
+      timeout_cancel  if refund_type_include_goods? && timeout_cancel?
+      check_wx_refund if !refund_type_include_goods?
+    when 'declined'
+      timeout_cancel if timeout_cancel?
+    when 'confirm_received'
+      check_wx_refund
+    when 'decline_received'
+      timeout_cancel if timeout_cancel?
+    when 'applied_uboss'      # UBOSS 介入
+    when 'completed_express_number'
+      timeout_confirm_receive if timeout_confirm_receive?
+    end
+  end
+
+  def days_form_deal_at
+    Time.current - deal_at
+  end
+
+  def timeout_approve_refund?
+    days_form_deal_at > Rails.application.secrets.refund_timeout['days_2'].days
+  end
+
+  def timeout_approve_return?
+    days_form_deal_at > Rails.application.secrets.refund_timeout['days_5'].days
+  end
+
+  def timeout_confirm_receive?
+    days_form_deal_at > Rails.application.secrets.refund_timeout['days_10'].days
+  end
+
+  def timeout_cancel?
+    days_form_deal_at > Rails.application.secrets.refund_timeout['days_7'].days
+  end
+
+  def timeout_approve
+    may_approve? && approve! && create_timeout_message
+  end
+
+  def timeout_confirm_receive
+    may_confirm_receive? && confirm_receive! && create_timeout_message
+  end
+
+  def timeout_cancel
+    may_cancel? && cancel! && create_timeout_message
+  end
+
+  def check_wx_refund
+    # 判断是否退款成功，然后finish退款申请
   end
 
   def order_charge
@@ -138,6 +193,10 @@ class OrderItemRefund < ActiveRecord::Base
 
   def total_fee
     order_charge.paid_amount * 100
+  end
+
+  def deal_at
+    super || updated_at
   end
 
   private
