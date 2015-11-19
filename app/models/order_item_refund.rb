@@ -36,9 +36,9 @@ class OrderItemRefund < ActiveRecord::Base
     #拒绝
     state :declined,                 after_enter: [:update_order_item_state_4, :set_deal_times]
     #确认收货
-    state :confirm_received,         after_enter: [:update_order_item_state_4, :set_deal_times]
+    state :confirm_received,         after_enter: [:update_order_item_state_4, :set_deal_times, :wx_order_refund]
     #拒绝收货
-    state :decline_received,         after_enter: [:update_order_item_state_4, :set_deal_times, :wx_order_refund]
+    state :decline_received,         after_enter: [:update_order_item_state_4, :set_deal_times]
     #申请uboss介入
     state :applied_uboss,            after_enter: [:update_order_item_state_7, :set_deal_times]
     #买家填写快递单号
