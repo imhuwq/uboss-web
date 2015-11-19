@@ -1,10 +1,10 @@
 
 <div class="content">
 	<div class="close"><i class="fa fa-times"></i></div>
-	<div class="title">
+	<p class="title">
 		<span class="name"></span>
 		<span><%= link_to '地址管理', url_for(controller: 'admin/user_addresses', action: :index), target: '_blank' %></span>
-	</div>
+	</p>
 	<table class="address-table">
     <% (user_addresses || []).each do |obj| %>
   		<tr>

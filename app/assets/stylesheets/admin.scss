@@ -88,6 +88,9 @@ header nav > ul > li.active > a,header nav > ul > li > a:hover{color:#43C3AA}
   h1,h2,h3,h4,h5{
     font-weight: normal;
   }
+  textarea{
+    border: 1px solid #ddd;
+  }
 }
 .modal.fade .modal-dialog{-webkit-transition:-webkit-transform .3s ease-out;-o-transition:-o-transform .3s ease-out;transition:transform .3s ease-out;-webkit-transform:translate(0,-25%);-ms-transform:translate(0,-25%);-o-transform:translate(0,-25%);transform:translate(0,-25%)}
 .modal.in .modal-dialog{-webkit-transform:translate(0,0);-ms-transform:translate(0,0);-o-transform:translate(0,0);transform:translate(0,0)}
@@ -119,7 +122,7 @@ header nav > ul > li.active > a,header nav > ul > li > a:hover{color:#43C3AA}
 .pop-img img{ display: none; }
 .pop-html{overflow-y: scroll;height: 100%;width: 100%;}
 .pop-html body{ overflow: hidden;height: 100%; width: 100%;}
-.pop-bg{ background: rgba(0,0,0,.3); position: fixed;top:0; left: 0; height: 100%; width: 100%; z-index: 8; display: table;}
+.pop-bg{ background: rgba(0,0,0,.3); position: fixed;top:0; left: 0; height: 100%; width: 100%; z-index:99999; display: table;}
 .pop-bg .pop-container {display: table-cell; vertical-align: middle; text-align: center;}
 .pop-bg .pop-content{ background: #fff; padding: 10px; border-radius:10px; position: relative; display: inline-block;}
 .pop-bg .pop-close{position:absolute;z-index: 10;color: #333;right:-15px;top:-15px;border: 3px solid #333; background: #fff; width: 30px; height: 30px; line-height: 29px; font-size: 20px; text-align: center;border-radius:500px; cursor: pointer; }
