@@ -112,7 +112,7 @@ class Order < ActiveRecord::Base
 
     def carriage_way(different_area, count)
       extend_price = count.to_f / different_area.extend_item.to_f
-      different_area.extend_carriage * ( extend_price < 1 ? 1 : extend_price )
+      different_area.extend_carriage * ( extend_price < 1 ? 1 : extend_price.round )
     end
 
     def find_template_by_address(carriage_template, address)
