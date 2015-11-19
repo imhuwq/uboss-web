@@ -63,7 +63,7 @@
   </div>
 </div>
 
-<% if ['completed_express_number', 'pending'].include?(@refund.aasm_state) %>
+<% if ['completed_express_number', 'pending'].include?(@refund.aasm_state) || (@refund.refund_type_include_goods? && ['approved'].include?(@refund.aasm_state)) %>
 <script>
 function TimeTo(t,n){
   var c = n - t;
