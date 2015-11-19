@@ -1,6 +1,9 @@
 <%= content_for :page_title do %>
    协商详情
 <% end %>
+<%= content_for :header_left do %>
+  <a class="back" onclick="history.go(-1)"><%= image_tag 'mobile/right.png' %></a>
+<% end %>
 <br />
 <div id="order_item_refund_consult_info">
   <div class='refund-box'>

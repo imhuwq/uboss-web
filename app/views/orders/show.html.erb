@@ -1,7 +1,9 @@
 <%= content_for :page_title do %>
   <%= @order_title || @order.state_i18n %>
 <% end %>
-
+<%= content_for :header_left do %>
+  <a class="back" onclick="history.go(-1)"><%= image_tag 'mobile/right.png' %></a>
+<% end %>
 <%= content_for :extra_meta_tags do %>
   <%= store_sharing_meta_tags(@seller, @sharing_link_node) %>
 <% end %>

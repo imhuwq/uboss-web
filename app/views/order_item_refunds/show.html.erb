@@ -1,6 +1,9 @@
 <%= content_for :page_title do %>
   <%= @refund.refund_type_text == '退款' ? '退款详情':@refund.refund_type_text %>
 <% end %>
+<%= content_for :header_left do %>
+  <a class="back" onclick="history.go(-1)"><%= image_tag 'mobile/right.png' %></a>
+<% end %>
 <br />
 <div id="order_item_refund_show">
   <div class='refund-box'>

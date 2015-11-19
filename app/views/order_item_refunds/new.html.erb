@@ -1,5 +1,8 @@
 <%= content_for :page_title do %>
   <%= @refund.refund_type_text == '退款' ? '申请退款':@refund.refund_type_text %>
 <% end %>
+<%= content_for :header_left do %>
+  <a class="back" onclick="history.go(-1)"><%= image_tag 'mobile/right.png' %></a>
+<% end %>
 <br />
 <%= render 'form' %>

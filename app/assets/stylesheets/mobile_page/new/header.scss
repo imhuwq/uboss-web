@@ -6,11 +6,11 @@ header {
     line-height: 20px;
     background: #fff;
     a{display: inline-block;}
-    .logo{height: 20px; margin-left: 5px;padding:10px 0;}
+    .logo{height: 20px; margin-left: 5px;padding:12px 0;}
     .title{
       display: inline-block;
-      margin:10px 0;
-      font-size: 20px;
+      margin:12px 0;
+      font-size: 18px;
       color:$brand-primary;
       line-height: 20px;
       max-width: 190px;
@@ -19,17 +19,17 @@ header {
       overflow: hidden;
     }
     &.title-gap .title{      
-      margin:10px 0 10px 22px;
+      margin:12px 0 12px 22px;
     }
     .menu-btn,.submit{
       float: right;
-      padding: 10px;
+      padding: 12px;
       font-size: 14px;
       img{ width: 21px;}
     }
     .back{
         float: left;
-        padding: 10px;
+        padding: 12px;
         img{ 
           height: 14px;
           -webkit-transform: rotate(180deg);
