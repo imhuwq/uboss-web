@@ -30,18 +30,21 @@
       </tr>
     </table>
     <div class="bg-white gap">
-    	<%= f.text_area :description, class: 'input-block',placeholder:'退款说明',rows:'6' %>
+    	<%= f.text_area :description, class: 'input-block', placeholder:'退款说明', rows:'6' %>
     </div>
     <br />
     <div class='form-group string optional order_item_refund_asset_imgs'>
-      <%= f.input_field :avatar, type: :hidden, as: :file, class: 'refund_avatar' %>
+      <%= f.input_field :avatar, type: :hidden, value: @refund.image_files, as: :file, class: 'refund_avatar' %>
       <div id="upload-box" class="upload-box box gap">
 		      <div class="fileinput-button text-center">
 		      	<p class="plus">+</p>
 		      	<p class="text">上传凭证</p>
-		      	<p><small>(最多三张)</small></p>      	
+		      	<p><small>(最多三张)</small></p>
 		        <%= file_field_tag "file", class: "upyun_file" %>
 		        <div class="loading"><%= image_tag "mobile/loading.png" %></div>
+            <% @refund.asset_imgs.each do |img| %>
+		          <div><%= image_tag img.image_url() %></div>
+            <% end %>
 		      </div>
       </div><!-- upload-box -->
     </div>

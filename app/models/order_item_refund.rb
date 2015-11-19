@@ -19,7 +19,7 @@ class OrderItemRefund < ActiveRecord::Base
   after_create :save_state_at_attributes
   after_create  :set_order_item_state
 
-  delegate :logistics_company, :ship_number, :description, to: :sales_return, allow_nil: true
+  delegate :logistics_company, :ship_number, to: :sales_return, allow_nil: true
 
   enum order_state: { unpay: 0, payed: 1, shiped: 3, signed: 4, closed: 5, completed: 6 }
 
