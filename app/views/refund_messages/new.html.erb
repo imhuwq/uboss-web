@@ -21,21 +21,21 @@
 			        <div class="loading"><%= image_tag "mobile/loading.png" %></div>
 			      </div>
 	      </div><!-- upload-box -->
-	    </div>      
-      <div class="gap text-center">
-      	<%= f.submit "发表留言", class: "btn btn-large btn-longer use-new-addr-btn" %>
-      </div>
+	      <div class="text-center"><%= f.submit "发表留言", class: "btn btn-large btn-longer use-new-addr-btn" %></div>
+	      <br />
+	    </div>   
     <% end %>
   </div>
-
+	<br />
   <div class='message-list'>
     <% @refund_messages.each do |message| %>
+    <div class="message-box">
       <div class="user-info-box">
       	<div class="cover"><%= image_tag(message.user.image_url(:thumb)) %></div>
-      	<div class="name"><%= message.user_type %> <%= message.user.nickname %></div>
+      	<div class="main-color"><%= message.user_type %> <%= message.user.nickname %></div>
       	<div class="gray-color"><%= message.created_at %></div>
       </div>
-      <h4 class="like-color"><%= message.action %></h4>
+      <p class="like-color status-title"><%= message.action %></p>
       <div class="line-gap">
 	      <p><%= sanitize message.message %></p>
 	      <p><%= message.explain %></p>
@@ -50,6 +50,7 @@
           </div>
         <% end %>
       </div>
+    </div><!-- message-box -->
     <% end %>
   </div><!-- message-list -->
 </div>
