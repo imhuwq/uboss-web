@@ -1,0 +1,9 @@
+<li class="xiaoxiti <%= @direction %> user">
+  <div class="user_img">
+    <img src="<%= @avatar %>"/>
+  </div>
+  <div class="msg">
+    <span><%= @content %></span>
+  </div>
+  <div messageId="<%= @messageId %>" class="status"></div>
+</li>

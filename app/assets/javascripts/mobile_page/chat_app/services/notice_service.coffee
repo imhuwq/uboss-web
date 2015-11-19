@@ -2,6 +2,10 @@ class UXin.Services.NoticeService
 
   el: '#chat-notice'
 
+  flashWarn: (msg) ->
+    @warn msg
+    @hideNote()
+
   flashNote: (msg) ->
     @note msg
     @hideNote()
