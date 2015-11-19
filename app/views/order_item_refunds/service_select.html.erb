@@ -1,6 +1,9 @@
 <%= content_for :page_title do %>
   服务选择
 <% end %>
+<%= content_for :header_left do %>
+  <a class="back" onclick="history.go(-1)"><%= image_tag 'mobile/right.png' %></a>
+<% end %>
 <br />
 <div class="service-select">
   <%= link_to  new_order_item_order_item_refund_path(order_item_id: @order_item.id, refund_type: 'return_goods_and_refund') do %>

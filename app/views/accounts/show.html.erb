@@ -32,7 +32,7 @@
 			<li><a href="<%= account_path(state: 'unpay') %>">未付款</a></li>
 			<li><a href="<%= account_path(state: 'payed') %>">未发货</a></li>
 			<li><a href="<%= account_path(state: 'shiped') %>">未收货</a></li>
-      <li><a href="<%= account_path(state: 'completed') %>">已完成</a></li>
+      <!-- <li><a href="<%= account_path(state: 'completed') %>">已完成</a></li> -->
 			<li><a href="<%= account_path(state: 'after_sale') %>">售后</a></li>
 		</ul>
 		<div id="u-order-list">
@@ -49,8 +49,6 @@
           <br />
           <p class="gray-color">您还没有相关信息</p>
           <br />
-          <p><a href="/" class="btn btn-longer">去逛逛</a></p>
-          <br />
         </div>
       <% else %>
         <div class="load-more" data-container='#u-order-list' data-ele='.order-list' data-ref='/account/orders'>加载更多</div>
@@ -62,8 +60,6 @@
           <p><%= image_tag 'mobile/cart-big.png' %></p>
           <br />
           <p class="gray-color">您还没有相关的订单</p>
-          <br />
-          <p><a href="/" class="btn btn-longer">去逛逛</a></p>
           <br />
         </div>
       <% else %>
