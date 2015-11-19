@@ -11,75 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-ActiveRecord::Schema.define(version: 20151113032754) do
-=======
-ActiveRecord::Schema.define(version: 20151030093203) do
->>>>>>> 3181364... 用户退款
-=======
-ActiveRecord::Schema.define(version: 20151102085234) do
->>>>>>> 44f6327... 协商退款
-=======
-ActiveRecord::Schema.define(version: 20151103081217) do
->>>>>>> 91dd742... 退款流程
-=======
-ActiveRecord::Schema.define(version: 20151103103909) do
->>>>>>> d6a5a01... add add_order_item_refund_id to refund_messages
-=======
-ActiveRecord::Schema.define(version: 20151104062424) do
->>>>>>> 925fa45... add refund_state to order_items
-=======
-ActiveRecord::Schema.define(version: 20151104075017) do
->>>>>>> 9535d19... 退款状态处理
-=======
-ActiveRecord::Schema.define(version: 20151105065144) do
->>>>>>> e69ec7a... 退货
-=======
-ActiveRecord::Schema.define(version: 20151106034522) do
->>>>>>> abab8ef... 退款理由改成rake文件
-=======
-ActiveRecord::Schema.define(version: 20151113094711) do
->>>>>>> 18d006b... 增加退货地址字段
-=======
-ActiveRecord::Schema.define(version: 20151113110404) do
->>>>>>> 12ea2ff... 增加退货说明字段
-=======
-ActiveRecord::Schema.define(version: 20151115185505) do
->>>>>>> 8c3df9b... 微信退款
-=======
-ActiveRecord::Schema.define(version: 20151022034456) do
->>>>>>> fb8d04f... fix 'FIXME'
-=======
-ActiveRecord::Schema.define(version: 20151029092708) do
->>>>>>> 2832ff4... migration
-=======
-ActiveRecord::Schema.define(version: 20151104032830) do
->>>>>>> d456cfd... back up
-=======
-ActiveRecord::Schema.define(version: 20151105024126) do
->>>>>>> 013bc0b... fix mobile page product show sku app
-=======
-ActiveRecord::Schema.define(version: 20151113084820) do
->>>>>>> 8cb0813... next to test
-=======
 ActiveRecord::Schema.define(version: 20151118094804) do
->>>>>>> 9bd521d... 记录退款申请状态的最新切换时间
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -109,10 +41,7 @@ ActiveRecord::Schema.define(version: 20151118094804) do
     t.datetime "created_at"
     t.string   "alt"
     t.string   "url"
-<<<<<<< HEAD
     t.string   "image_type"
-=======
->>>>>>> 013bc0b... fix mobile page product show sku app
   end
 
   create_table "bank_cards", force: :cascade do |t|
@@ -183,19 +112,6 @@ ActiveRecord::Schema.define(version: 20151118094804) do
     t.integer "region_id"
   end
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-  create_table "districts", force: :cascade do |t|
-    t.string   "name"
-    t.integer  "numcode"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-  
-=======
->>>>>>> 013bc0b... fix mobile page product show sku app
-=======
->>>>>>> 1228deb... basic function finished
   create_table "divide_incomes", force: :cascade do |t|
     t.integer  "user_id"
     t.integer  "order_id"
@@ -248,49 +164,6 @@ ActiveRecord::Schema.define(version: 20151118094804) do
     t.datetime "updated_at", null: false
   end
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-=======
->>>>>>> 8cb0813... next to test
-=======
-  add_index "favour_products", ["product_id", "user_id"], name: "index_favour_products_on_product_id_and_user_id", unique: true, using: :btree
-
-<<<<<<< HEAD
->>>>>>> a98c02d... seller addresses
-  create_table "job_histories", force: :cascade do |t|
-    t.integer  "user_id"
-    t.integer  "status"
-    t.string   "message"
-    t.string   "resource_type"
-    t.string   "resource_id"
-    t.string   "job_class"
-    t.string   "job_method"
-    t.jsonb    "options"
-    t.datetime "created_at",    null: false
-    t.datetime "updated_at",    null: false
-  end
-
-  create_table "json_test", force: :cascade do |t|
-    t.jsonb "data"
-  end
-
-<<<<<<< HEAD
-<<<<<<< HEAD
->>>>>>> 2832ff4... migration
-=======
->>>>>>> f28bcfb... order page style
-=======
->>>>>>> 8cb0813... next to test
-=======
->>>>>>> a98c02d... seller addresses
-=======
->>>>>>> 9bd521d... 记录退款申请状态的最新切换时间
-=======
->>>>>>> 6e41c7d... mobile refund
   create_table "mobile_captchas", force: :cascade do |t|
     t.string   "code"
     t.datetime "expire_at"
@@ -320,61 +193,13 @@ ActiveRecord::Schema.define(version: 20151118094804) do
 
   add_index "order_charges", ["number"], name: "index_order_charges_on_number", using: :btree
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> f28bcfb... order page style
   create_table "order_item_refunds", force: :cascade do |t|
     t.decimal  "money"
     t.integer  "refund_reason_id"
     t.string   "description"
     t.integer  "order_item_id"
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
     t.datetime "created_at",                       null: false
     t.datetime "updated_at",                       null: false
-<<<<<<< HEAD
-=======
-    t.datetime "created_at",                       null: false
-    t.datetime "updated_at",                       null: false
->>>>>>> f28bcfb... order page style
-    t.string   "aasm_state"
-    t.integer  "order_state"
-    t.string   "refund_type"
-    t.integer  "user_id"
-    t.jsonb    "state_at_attributes", default: {}, null: false
-  end
-
-<<<<<<< HEAD
-  create_table "order_item_refunds", force: :cascade do |t|
-    t.decimal  "money"
-    t.integer  "refund_reason_id"
-    t.string   "description"
-    t.integer  "order_item_id"
-<<<<<<< HEAD
-    t.datetime "created_at",          null: false
-    t.datetime "updated_at",          null: false
-=======
->>>>>>> 142b69a... schema
-=======
-    t.datetime "created_at",          null: false
-    t.datetime "updated_at",          null: false
->>>>>>> 12ea2ff... 增加退货说明字段
-=======
-    t.datetime "created_at",                       null: false
-    t.datetime "updated_at",                       null: false
->>>>>>> 7dc4c6c... upload problem
-=======
-    t.datetime "created_at",          null: false
-    t.datetime "updated_at",          null: false
->>>>>>> 9bd521d... 记录退款申请状态的最新切换时间
-=======
-    t.datetime "created_at",                       null: false
-    t.datetime "updated_at",                       null: false
->>>>>>> 6e41c7d... mobile refund
     t.string   "aasm_state"
     t.integer  "order_state"
     t.string   "refund_type"
@@ -385,14 +210,9 @@ ActiveRecord::Schema.define(version: 20151118094804) do
     t.datetime "deal_at"
   end
 
-=======
->>>>>>> 1228deb... basic function finished
-=======
->>>>>>> f28bcfb... order page style
-=======
->>>>>>> 8cb0813... next to test
   create_table "order_items", force: :cascade do |t|
     t.integer  "order_id"
+    t.integer  "product_id"
     t.integer  "user_id"
     t.integer  "amount"
     t.datetime "created_at",                         null: false
@@ -402,62 +222,8 @@ ActiveRecord::Schema.define(version: 20151118094804) do
     t.decimal  "present_price",        default: 0.0
     t.decimal  "privilege_amount",     default: 0.0
     t.integer  "product_inventory_id"
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> d6a5a01... add add_order_item_refund_id to refund_messages
-=======
->>>>>>> 529e607... 拒绝退款/收货原因
-=======
->>>>>>> 9bd521d... 记录退款申请状态的最新切换时间
-    t.integer  "product_id"
     t.integer  "order_item_refund_id"
     t.integer  "refund_state",         default: 0
-=======
-=======
-    t.integer  "product_id"
->>>>>>> 476e348... Fix admin order show error
-    t.string   "aasm_state"
->>>>>>> 3181364... 用户退款
-=======
-=======
->>>>>>> e69ec7a... 退货
-=======
->>>>>>> 142b69a... schema
-=======
-    t.integer  "product_id"
->>>>>>> 12ea2ff... 增加退货说明字段
-    t.integer  "order_item_refund_id"
-<<<<<<< HEAD
->>>>>>> 91dd742... 退款流程
-=======
-    t.integer  "refund_state",         default: 0
->>>>>>> 925fa45... add refund_state to order_items
-=======
->>>>>>> fb8d04f... fix 'FIXME'
-=======
->>>>>>> 1228deb... basic function finished
-=======
-    t.integer  "product_id"
-=======
->>>>>>> a98c02d... seller addresses
-    t.integer  "order_item_refund_id"
-    t.integer  "refund_state",         default: 0
->>>>>>> f28bcfb... order page style
-=======
->>>>>>> 8cb0813... next to test
   end
 
   create_table "orders", force: :cascade do |t|
@@ -508,24 +274,6 @@ ActiveRecord::Schema.define(version: 20151118094804) do
     t.datetime "updated_at",                 null: false
     t.boolean  "actived",    default: false
     t.integer  "seller_id"
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-    t.integer  "product_inventory_id"
->>>>>>> fb8d04f... fix 'FIXME'
-=======
->>>>>>> f28bcfb... order page style
-=======
-    t.integer  "product_inventory_id"
->>>>>>> 8cb0813... next to test
-=======
-    t.integer  "product_inventory_id"
->>>>>>> a98c02d... seller addresses
-=======
->>>>>>> 9bd521d... 记录退款申请状态的最新切换时间
   end
 
   create_table "product_classes", force: :cascade do |t|
@@ -631,11 +379,6 @@ ActiveRecord::Schema.define(version: 20151118094804) do
   add_index "redactor_assets", ["assetable_type", "assetable_id"], name: "idx_redactor_assetable", using: :btree
   add_index "redactor_assets", ["assetable_type", "type", "assetable_id"], name: "idx_redactor_assetable_type", using: :btree
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> f28bcfb... order page style
   create_table "refund_messages", force: :cascade do |t|
     t.string   "message"
     t.decimal  "money"
@@ -643,56 +386,18 @@ ActiveRecord::Schema.define(version: 20151118094804) do
     t.integer  "user_id"
     t.string   "money_to"
     t.string   "explain"
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> f28bcfb... order page style
     t.datetime "created_at",           null: false
     t.datetime "updated_at",           null: false
     t.integer  "refund_reason_id"
     t.string   "action"
     t.integer  "order_item_refund_id"
-<<<<<<< HEAD
-=======
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
->>>>>>> 3181364... 用户退款
-=======
-    t.datetime "created_at",       null: false
-    t.datetime "updated_at",       null: false
-    t.integer  "refund_reason_id"
-    t.string   "action"
->>>>>>> 44f6327... 协商退款
-=======
-    t.datetime "created_at",           null: false
-    t.datetime "updated_at",           null: false
-    t.integer  "refund_reason_id"
-    t.string   "action"
-    t.integer  "order_item_refund_id"
->>>>>>> d6a5a01... add add_order_item_refund_id to refund_messages
-=======
->>>>>>> f28bcfb... order page style
   end
 
   create_table "refund_reasons", force: :cascade do |t|
     t.string   "reason"
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
     t.string   "reason_type"
-=======
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
->>>>>>> 3181364... 用户退款
-=======
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
-    t.string   "reason_type"
->>>>>>> abab8ef... 退款理由改成rake文件
   end
 
   create_table "refund_records", force: :cascade do |t|
@@ -715,42 +420,12 @@ ActiveRecord::Schema.define(version: 20151118094804) do
 
   add_index "refund_records", ["order_item_refund_id"], name: "index_refund_records_on_order_item_refund_id", using: :btree
 
-=======
->>>>>>> 1228deb... basic function finished
-=======
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
-    t.string   "reason_type"
-  end
-
->>>>>>> f28bcfb... order page style
-=======
->>>>>>> 8cb0813... next to test
   create_table "regions", force: :cascade do |t|
     t.string  "name"
     t.string  "numcode"
     t.integer "parent_id"
   end
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-  create_table "return_goods", force: :cascade do |t|
-    t.string   "logistics_company"
-    t.string   "ship_number"
-    t.string   "description"
-    t.datetime "created_at",        null: false
-    t.datetime "updated_at",        null: false
-  end
-
->>>>>>> e69ec7a... 退货
-=======
->>>>>>> 529e607... 拒绝退款/收货原因
-=======
->>>>>>> f28bcfb... order page style
   create_table "sales_returns", force: :cascade do |t|
     t.string   "logistics_company"
     t.string   "ship_number"
@@ -760,13 +435,6 @@ ActiveRecord::Schema.define(version: 20151118094804) do
     t.integer  "order_item_refund_id"
   end
 
-<<<<<<< HEAD
-=======
->>>>>>> 1228deb... basic function finished
-=======
->>>>>>> f28bcfb... order page style
-=======
->>>>>>> 8cb0813... next to test
   create_table "selling_incomes", force: :cascade do |t|
     t.datetime "created_at",               null: false
     t.datetime "updated_at",               null: false
@@ -962,21 +630,8 @@ ActiveRecord::Schema.define(version: 20151118094804) do
   add_foreign_key "orders", "users"
   add_foreign_key "orders", "users", column: "seller_id", name: "fk_order_seller_foreign_key"
   add_foreign_key "privilege_cards", "users"
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
   add_foreign_key "refund_messages", "order_item_refunds"
   add_foreign_key "refund_records", "order_item_refunds"
-=======
->>>>>>> 013bc0b... fix mobile page product show sku app
-=======
->>>>>>> 1228deb... basic function finished
-=======
-  add_foreign_key "refund_messages", "order_item_refunds"
->>>>>>> f28bcfb... order page style
-=======
->>>>>>> 8cb0813... next to test
   add_foreign_key "selling_incomes", "orders"
   add_foreign_key "selling_incomes", "users"
   add_foreign_key "sharing_incomes", "order_items"
