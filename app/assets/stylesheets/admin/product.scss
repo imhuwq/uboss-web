@@ -260,6 +260,8 @@
 
     #product_full_cut_number {
       height: 30px;
+      padding-bottom: 1px;
+      padding-top: 1px;
     }
 
     #product_full_cut_unit_chosen {
@@ -278,7 +280,7 @@
     width: 72px;
     background-color: #FFFFFF;
     cursor: default;
-    padding: 4px;
+    padding: 6px;
     font-size: 12px;
     font-family: sans-serif;
     line-height: 1;
@@ -294,7 +296,7 @@
     display: inline-block;
     width: 72px;
     cursor: default;
-    padding: 4px;
+    padding: 6px;
     font-size: 12px;
     font-family: sans-serif;
     line-height: 1;
