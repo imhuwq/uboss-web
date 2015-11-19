@@ -66,7 +66,7 @@
   </div>
 </div>
 
-<% if ['completed_express_number', 'pending'].include?(@refund.aasm_state) %>
+<% if ['completed_express_number', 'pending'].include?(@refund.aasm_state) || (@refund.refund_type_include_goods? && ['approved'].include?(@refund.aasm_state)) %>
 <script>
 function TimeTo(t){
 	var e_time='<%= countdown_time(@refund.created_at + Rails.application.secrets.refund_timeout['days_10'].days) %>';
