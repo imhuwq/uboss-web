@@ -7,6 +7,7 @@ class Admin::OrderItemRefundsController < AdminController
     @order_item = OrderItem.find(params[:order_item_id])
     @order_item_refund = @order_item.last_refund
     @refund_message = RefundMessage.new
+    @order_item_refund.deal_with_timeout_refund
   end
 
   # 同意退款（待发货时买家申请退款/待收货状态时买家申请退款）
