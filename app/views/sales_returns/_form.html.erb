@@ -22,9 +22,6 @@
             <%= f.input_field :avatar, value: @refund.image_files, type: :hidden, as: :file, class: 'refund_avatar' %>
             <p class="fileinput-button">
               <%= image_tag("admin/no-img.png") %>
-              <% @refund.asset_imgs.each do |img| %>
-                  <%= image_tag(img.image_url(:thumb))%>
-              <% end %>
               <%= file_field_tag "image", class: "upyun_file" %>
               <b class="loading"><i class="fa fa-spinner"></i></b>
             </p>
