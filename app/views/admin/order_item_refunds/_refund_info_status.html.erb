@@ -12,10 +12,10 @@
     <br />
     <div class='evaluate'>
       <%= link_to '同意退款申请', 'javascripts:;', class: 'btn btn-large btn-noraidus', onclick: '$("#refund_approve_refund").modal("show")' %>
-      <span>您还可以：<%= link_to '发货', 'javascripts:;', class: 'btn-link', onclick: '$("#refund_ship_express").modal("show")' %></span>
+      <span>您还可以：<%= link_to '发货', [:set_express, :admin, @order_item.order], class: 'btn-link express-order-btn', onclick: '$("#ship-express-modal").modal("show")' %></span>
     </div>
     <%= render 'refund_modal', page: 'approve_refund', title: '同意退款申请' %>
-    <%= render 'refund_modal', page: 'ship_express', title: '快递信息' %>
+    <%= render 'admin/orders/ship_express' %>
 
   <% elsif type == 'receipted_refund' %><!-- 已收到货 仅退款 -->
     <div class="bottom_line">

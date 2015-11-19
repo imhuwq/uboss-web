@@ -4,5 +4,5 @@
 <%= hidden_field_tag 'request_path', "orders/index",id:"request_path" %>
 <br />
 <div id="address-list-box" class="hidden">
-  <%= render partial: "/admin/user_addresses/seller_address_list", locals: { user_addresses: @user_addresses } %>
+  <%= render partial: "/admin/user_addresses/seller_address_list", locals: { user_addresses: current_user.user_addresses.where(seller_address: true) } %>
 </div><!-- title -->
