@@ -4,7 +4,7 @@
   <% if type == 'refund' %><!-- 退款 -->
     <div class="bottom_line">
       <h3 class='refund_info_title'>请处理退款申请</h3>
-      <div class="countdown-box"><p id="clock_refund" data-endtime="<%= @order_item_refund.created_at + refund_timeout(@order_item_refund).days %>"></span></p>
+      <div class="countdown-box"><p id="clock_refund" data-endtime="<%= @order_item_refund.deal_at + refund_timeout(@order_item_refund).days %>"></span></p>
       <p>* 如果未发货，请点击同意退款给买家</p>
       <p>* 如果实际已发货，请主动与买家联系</p>
       <p>* 如果您逾期未响应，视作同意买家申请，系统将自动退款给买家</p>
@@ -20,7 +20,7 @@
   <% elsif type == 'receipted_refund' %><!-- 已收到货 仅退款 -->
     <div class="bottom_line">
       <h3 class='refund_info_title'>请处理退款申请（已收到货 仅退款）</h3>
-      <div class="countdown-box"><p id="clock_refund" data-endtime=<%= @order_item_refund.created_at + refund_timeout(@order_item_refund).days %>></p></div><br/>
+      <div class="countdown-box"><p id="clock_refund" data-endtime=<%= @order_item_refund.deal_at + refund_timeout(@order_item_refund).days %>></p></div><br/>
       <p>* 如果您同意，将直接退款给买家</p>
       <p>* 如果您拒绝，买家可以要求UBOSS平台介入处理</p>
       <p>* 如果您逾期未响应，视作同意买家申请，系统将自动退款给买家</p>
@@ -36,7 +36,7 @@
   <% elsif type == 'unreceipt_refund' %><!-- 未收到货 仅退款 -->
     <div class="bottom_line">
       <h3 class='refund_info_title'>请处理退款申请（未收到货 仅退款）</h3>
-      <div class="countdown-box"><p id="clock_refund" data-endtime=<%= @order_item_refund.created_at + refund_timeout(@order_item_refund).days %>></p></div><br/>
+      <div class="countdown-box"><p id="clock_refund" data-endtime=<%= @order_item_refund.deal_at + refund_timeout(@order_item_refund).days %>></p></div><br/>
       <p>* 如果您同意，将直接退款给买家</p>
       <p>* 如果您拒绝，买家可以要求UBOSS平台介入处理</p>
       <p>* 如果您逾期未响应，视作同意买家申请，系统将自动退款给买家</p>
@@ -52,7 +52,7 @@
   <% elsif type == 'return_goods_and_refund' %><!-- 退款退货 -->
     <div class="bottom_line">
       <h3 class='refund_info_title'>请处理退货申请（已收到货--退货）</h3>
-      <div class="countdown-box"><p id="clock_refund" data-endtime=<%= @order_item_refund.created_at + refund_timeout(@order_item_refund).days %>></p></div><br/>
+      <div class="countdown-box"><p id="clock_refund" data-endtime=<%= @order_item_refund.deal_at + refund_timeout(@order_item_refund).days %>></p></div><br/>
       <p>* 如果同意申请，请发送正确退货地址给买家</p>
       <p>* 如果您拒绝，买家可以要求UBOSS平台介入处理</p>
       <p>* 如果您逾期未响应，视作同意买家申请，系统将自动发送您的默认退货地址给买家</p>
@@ -68,7 +68,7 @@
   <% elsif type == 'after_sale_only_refund' %><!-- 售后 仅退款 -->
     <div class="bottom_line">
       <h3 class='refund_info_title'>请处理退款申请（售后--仅退款）</h3>
-      <div class="countdown-box"><p id="clock_refund" data-endtime=<%= @order_item_refund.created_at + refund_timeout(@order_item_refund).days %>></p></div><br/>
+      <div class="countdown-box"><p id="clock_refund" data-endtime=<%= @order_item_refund.deal_at + refund_timeout(@order_item_refund).days %>></p></div><br/>
       <p>* 如果您同意，将直接退款给买家</p>
       <p>* 如果您拒绝，买家可以要求UBOSS平台介入处理</p>
       <p>* 如果您逾期未响应，视作同意买家申请，系统将自动退款给买家</p>
@@ -84,7 +84,7 @@
   <% elsif type == 'after_sale_return_goods_and_refund' %><!-- 售后 退货 -->
     <div class="bottom_line">
       <h3 class='refund_info_title'>请处理退货申请（售后--退货）</h3>
-      <div class="countdown-box"><p id="clock_refund" data-endtime=<%= @order_item_refund.created_at + refund_timeout(@order_item_refund).days %>></p></div><br/>
+      <div class="countdown-box"><p id="clock_refund" data-endtime=<%= @order_item_refund.deal_at + refund_timeout(@order_item_refund).days %>></p></div><br/>
       <p>* 如果同意申请，请发送正确退货地址给买家</p>
       <p>* 如果您拒绝，买家可以要求UBOSS平台介入处理</p>
       <p>* 如果您逾期未响应，视作同意买家申请，系统将自动发送您的默认退货地址给买家</p>
@@ -102,7 +102,7 @@
   <% if @order_item_refund.refund_type_include_goods? %>
     <div>
       <h3 class='refund_info_title'>请等待买家退货</h3>
-      <div class="countdown-box"><p id="clock_refund" data-endtime=<%= @order_item_refund.created_at + refund_timeout(@order_item_refund).days %>></p></div><br/>
+      <div class="countdown-box"><p id="clock_refund" data-endtime=<%= @order_item_refund.deal_at + refund_timeout(@order_item_refund).days %>></p></div><br/>
       <p>* 收到买家退货，请及时验货</p>
       <p>* 如果买家超时未退货，退货申请将自动关闭</p>
     </div>
@@ -118,7 +118,7 @@
   <% if @order_item_refund.refund_type_include_goods? %>
     <div class="bottom_line">
       <h3 class='refund_info_title'>请等待买家回应</h3>
-      <div class="countdown-box"><p id="clock_refund" data-endtime=<%= @order_item_refund.created_at + refund_timeout(@order_item_refund).days %>></p></div><br/>
+      <div class="countdown-box"><p id="clock_refund" data-endtime=<%= @order_item_refund.deal_at + refund_timeout(@order_item_refund).days %>></p></div><br/>
       <p>* 买家修改退货申请后，需要您重新处理</p>
       <p>* 买家超时未处理，退货申请将自动关闭</p>
     </div>
@@ -130,7 +130,7 @@
   <% else %>
     <div class="bottom_line">
       <h3 class='refund_info_title'>请等待买家回应</h3>
-      <div class="countdown-box"><p id="clock_refund" data-endtime=<%= @order_item_refund.created_at + refund_timeout(@order_item_refund).days %>></p></div><br/>
+      <div class="countdown-box"><p id="clock_refund" data-endtime=<%= @order_item_refund.deal_at + refund_timeout(@order_item_refund).days %>></p></div><br/>
       <p>* 买家修改退款申请后，需要您重新处理</p>
       <p>* 买家超时未处理，退款申请将自动关闭</p>
     </div>
@@ -151,7 +151,7 @@
 <% when 'decline_received' %>
   <div class="bottom_line">
     <h3 class='refund_info_title'>请等待买家回应</h3>
-    <div class="countdown-box"><p id="clock_refund" data-endtime="<%= @order_item_refund.created_at + refund_timeout(@order_item_refund).days %>"></span></p>
+    <div class="countdown-box"><p id="clock_refund" data-endtime="<%= @order_item_refund.deal_at + refund_timeout(@order_item_refund).days %>"></span></p>
     <p>* 买家修改退货申请后，需要您重新处理</p>
     <p>* 买家超时未处理，退货申请将自动关闭</p>
   </div>
@@ -167,7 +167,7 @@
 <% when 'completed_express_number' %>
   <div class="bottom_line">
     <h3 class='refund_info_title'>请收货并退款</h3>
-    <div class="countdown-box"><p id="clock_refund" data-endtime=<%= @order_item_refund.created_at + refund_timeout(@order_item_refund).days %>></p></div><br/>
+    <div class="countdown-box"><p id="clock_refund" data-endtime=<%= @order_item_refund.deal_at + refund_timeout(@order_item_refund).days %>></p></div><br/>
     <p>* 买家已退货</p>
     <p>* 收到买家退货，请及时验货</p>
     <p>* 如果拒绝退款，买家可以要求UBOSS介入处理</p>
@@ -180,8 +180,8 @@
   </div>
   <br />
   <div class="bottom_line">
-    <p>* 物流公司：XXX</p>     <%#TODO%>
-    <p>* 运单号：XXXXXXX</p>   <%#TODO%>
+    <p>* 物流公司：<%= @order_item_refund.logistics_company %></p>
+    <p>* 运单号：<%= @order_item_refund.ship_number %></p>
     <p>* 退货时间：<%= @order_item_refund.state_at_attributes['退货时间'] %></p>
   </div>
   <%= render 'refund_modal', page: 'confirm_receive', title: '退款给买家' %>
