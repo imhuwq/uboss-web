@@ -48,13 +48,16 @@
     <p><span class="gray-color">退款金额</span> ： <%= @refund.money %>元</p>
     <p><span class="gray-color">退款原因</span> ： <%= @refund.refund_reason.try(:reason) %></p>
     <p><span class="gray-color">退款说明</span> ： <%= @refund.description %></p>
-    <div class="box-w100">
+	  <br />
+	  <div class="box upload-box nogap">
 	    <% @refund.asset_imgs.each do |img| %>
-	      <div class="box-w33">
-	        <%= image_tag img.image_url(:thumb), class: 'order-box-img'%>
+	      <div class="upload-image-box">
+	      	<a href='<%=img.image_url()%>' style='background-image:url("<%=img.image_url(:thumb)%>")'
+	        	<%= image_tag img.image_url(:thumb)%>
+	        </a>
 	      </div>
 	    <% end %>
-    </div><!-- box-w100 -->
+	  </div><!-- box -->
   </div><!-- refund-info -->
 
   <br />
