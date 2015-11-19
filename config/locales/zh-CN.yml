@@ -91,8 +91,8 @@ zh-CN:
         property_value:  属性值
         property:        属性名
         full_cut: 满足条件包邮
-        full_cut_number: 数量
-        full_cut_unit: 单位
+        full_cut_number: 满足条件包邮数量
+        full_cut_unit: 满足条件包邮单位
       mobile_auth_code:
         mobile: 手机号码
       order_form:
