@@ -230,9 +230,10 @@ class Order < ActiveRecord::Base
   end
 
   def can_be_ship?
-    if !User.find(self.user_id).default_get_address.present?
+    if !self.seller.default_get_address.present?
       errors[:base] << "请设置默认退货地址"
-      return false
+    else
+      true
     end
   end
 

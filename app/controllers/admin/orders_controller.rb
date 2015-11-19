@@ -53,7 +53,6 @@ class Admin::OrdersController < AdminController
     @today_selled_amount = @orders.today.selled.total_count
     @shiped_amount = @orders.shiped.total_count
     @orders = @orders.where(state: Order.states[@type.to_sym]) if @type != 'all'
-    @user_addresses = current_user.user_addresses.where(seller_address: true)
   end
 
   def show
@@ -105,11 +104,12 @@ class Admin::OrdersController < AdminController
     @order.order_items.each do |item|
       if refund = item.last_refund
         refund.may_close? && refund.close!
-        refund.refund_messages.create(user_type: 'seller',
-                                      user_id: refund.order_item.order.seller_id,
-                                      message: '商家选择发货，退款申请关闭',
-                                      action: '退款关闭'
-                                     )
+        refund.refund_messages.create(
+          user_type: '卖家',
+          user_id: refund.order_item.order.seller_id,
+          message: '商家选择发货，退款申请关闭',
+          action: '退款关闭'
+        )
       end
     end
   end
