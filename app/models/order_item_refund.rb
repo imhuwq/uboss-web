@@ -183,7 +183,7 @@ class OrderItemRefund < ActiveRecord::Base
   def wx_order_refund
     if self.approved? && !refund_type_include_goods?    # 如果只退款不退货, 同意退款申请后就直接进入退款流程
       WxRefundJob.perform_later(self)
-    elsif self.confirm_received                         # 卖家确认收货
+    elsif self.confirm_received?                         # 卖家确认收货
       WxRefundJob.perform_later(self)
     end
   end
