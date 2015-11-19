@@ -33,6 +33,7 @@ class Product < ActiveRecord::Base
   validates_presence_of :user_id, :name, :short_description
   validate :must_has_one_product_inventory
   validates :full_cut_number, :full_cut_unit, presence: true, if: "full_cut"
+  validates_numericality_of :full_cut_number, greater_than: 0, if "full_cut"
 
   before_create :generate_code
 
