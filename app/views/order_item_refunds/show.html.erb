@@ -7,6 +7,7 @@
 		<div class="bg-white">
 	    <%= render partial: 'refund_info_status', locals: { refund: @refund } %>
 		    <div class="gap-lr">
+		    	<br />
 		    	<%= link_to '查看协商详情', new_order_item_order_item_refund_refund_message_path(order_item_id: @order_item.id, order_item_refund_id: @refund.id),class:'btn btn-block btn-black-border' %>
 		    	<br />
 		    </div>

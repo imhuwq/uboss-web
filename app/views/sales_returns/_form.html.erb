@@ -2,36 +2,33 @@
   <%= simple_form_for [@order_item, @refund, @sales_return] do |f| %>
     <%= upyun_meta_tags prefix: 'asset_img/avatar' %>
 
-    <table>
-      <tr class='refund-box'>
+    <table class="refund-table">
+      <tr>
         <td>物流公司</td>
         <td><%= f.input_field :logistics_company, class: 'input-block' %></td>
       </tr>
-      <tr class='refund-box'>
+      <tr>
         <td>物流单号</td>
         <td><%= f.input_field :ship_number, class: 'input-block' %></td>
-      </tr>
-      <tr class='refund-box'>
-        <td>退货说明</td>
-        <td><%= f.text_area :description, class: 'input-block' %></td>
-      </tr>
-
-      <tr>
-        <td>
-          <%= f.input :asset_imgs, hint:"上传凭证(最多三张)"  do %>
-            <%= f.input_field :avatar, value: @refund.image_files, type: :hidden, as: :file, class: 'refund_avatar' %>
-            <p class="fileinput-button">
-              <%= image_tag("admin/no-img.png") %>
-              <% @refund.asset_imgs.each do |img| %>
-                  <%= image_tag(img.image_url(:thumb))%>
-              <% end %>
-              <%= file_field_tag "image", class: "upyun_file" %>
-              <b class="loading"><i class="fa fa-spinner"></i></b>
-            </p>
-          <% end %>
-        </td>
-      </tr>
+      </tr>      
     </table>
-    <%= f.submit "提交申请", class: "btn btn-large btn-block use-new-addr-btn" %>
+     
+		<div class="bg-white gap">				
+      <%= f.text_area :description, class: 'input-block',placeholder:'退货说明',rows:'6' %>
+		</div>
+    <br />
+    <div class='form-group string optional order_item_refund_asset_imgs'>
+      <%= f.input_field :avatar, type: :hidden, as: :file, class: 'refund_avatar' %>
+      <div id="upload-box" class="upload-box box gap">
+		      <div class="fileinput-button text-center">
+		      	<p class="plus">+</p>
+		      	<p class="text">上传凭证</p>
+		      	<p><small>(最多三张)</small></p>      	
+		        <%= file_field_tag "file", class: "upyun_file" %>
+		        <div class="loading"><%= image_tag "mobile/loading.png" %></div>
+		      </div>
+      </div><!-- upload-box -->
+    </div>
+    <div class="gap"><%= f.submit "提交申请", class: "btn btn-large btn-block use-new-addr-btn" %></div>
   <% end %>
 </div>
