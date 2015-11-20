@@ -408,11 +408,7 @@ class User < ActiveRecord::Base
 
   def set_service_rate
     if self.agent_id_changed?
-      if self.agent.is_super_admin?
-        self.user_info.service_rate = 6
-      else
-        self.user_info.service_rate = 5
-      end
+      self.user_info.service_rate = 5
     end
   end
 end
