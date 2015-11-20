@@ -125,7 +125,7 @@ class OrdersController < ApplicationController
       render json: { status: 'ok', ship_price: ship_prices, invalid_items: json_of(invalid_items), valid_item_ids: session[:valid_items_ids] }
     elsif !params[:count].blank?
       product = Product.find(params[:product_id])
-      ship_price = product.calculate_ship_price(params[:count].to_i, user_address)
+      ship_price = product.calculate_ship_price(params[:count].to_i, user_address, params[:product_inventory_id])
       invalid_items = !Order.valid_to_sales?(product, ChinaCity.get(user_address.province)) ?
         [CartItem.new(product_inventory_id: params[:product_inventory_id], seller_id: product.user_id, count: params[:count])] : []
       render json: { status: 'ok', ship_price: [[product.user_id, ship_price.to_s]], invalid_items: json_of(invalid_items) }

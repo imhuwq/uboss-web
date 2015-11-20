@@ -9,6 +9,7 @@ class Product < ActiveRecord::Base
   # FIXME: @dalezhang 请使用helper or i18n 做view的数值显示
   DataCalculateWay = { 0 => '按金额', 1 => '按售价比例' }
   DataBuyerPay = { 0 => '包邮', 1 => '统一邮费', 2 => '运费模板' }
+  FullCut = { 0 => '件', 1 => '元' }
 
   has_one_image autosave: true
   #has_many_images name: :figure_images, accepts_nested: true
@@ -31,6 +32,8 @@ class Product < ActiveRecord::Base
 
   validates_presence_of :user_id, :name, :short_description
   validate :must_has_one_product_inventory
+  validates :full_cut_number, :full_cut_unit, presence: true, if: "full_cut"
+  validates_numericality_of :full_cut_number, greater_than: 0, if: "full_cut"
 
   before_create :generate_code
 
@@ -138,7 +141,8 @@ class Product < ActiveRecord::Base
     order_items.joins(:order).where('orders.state > 2 AND orders.state <> 5').sum(:amount)
   end
 
-  def calculate_ship_price(count, user_address)
+  def calculate_ship_price(count, user_address, product_inventory_id=nil)
+    return 0.0 if meet_full_cut?(count, product_inventory_id)
     if transportation_way == 1
       traffic_expense.to_f
     elsif transportation_way == 2 && user_address.try(:province)
@@ -148,6 +152,21 @@ class Product < ActiveRecord::Base
     else
       0.0
     end
+  end
+
+  def meet_full_cut?(count, product_inventory_id)
+    if self.full_cut
+      Product::FullCut[self.full_cut_unit] == '件' ? check_full_cut_piece(count) : check_full_cut_yuan(count, product_inventory_id)
+    end
+  end
+
+  def check_full_cut_piece(count)
+    count >= full_cut_number
+  end
+
+  def check_full_cut_yuan(count, product_inventory_id)
+    product_inventory = ProductInventory.find(product_inventory_id) if product_inventory_id
+    ( count * product_inventory.price ) >= full_cut_number
   end
 
   def sku_hash

@@ -15,7 +15,7 @@ class ProductInventory < ActiveRecord::Base
   scope :saling, -> { where(saling: true) }
   scope :not_saling, -> { where(saling: false) }
 
-  delegate :image_url, :status, :traffic_expense, :carriage_template, :carriage_template_id, :transportation_way, :is_official_agent?, to: :product
+  delegate :image_url, :status, :traffic_expense, :carriage_template, :carriage_template_id, :transportation_way, :full_cut, :full_cut_number, :full_cut_unit, :is_official_agent?, to: :product
 
   # TODO custom properties
   # after_create :create_product_properties
