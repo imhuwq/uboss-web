@@ -70,6 +70,8 @@ class Ability
     can :read,   WithdrawRecord, user_id: user.id
     can :create, WithdrawRecord, user_id: user.id
     can :manage, BankCard, user_id: user.id
+
+    can :read, Product, user_id: user.id
   end
 
 end
