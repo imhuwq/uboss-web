@@ -73,7 +73,7 @@ class Ability
     can :read, :sellers
     can :manage, BankCard, user_id: user.id
 
-    can :manage, Product, user_id: user.id
+    can :read, Product, user_id: user.id
   end
 
 end

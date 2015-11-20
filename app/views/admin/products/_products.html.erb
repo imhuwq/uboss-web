@@ -35,14 +35,9 @@
 					<% if can? :update, product %>
 						<% if product.status == 'unpublish' %>
 				      <p>
-              <% if current_user.is_seller? %>
-                <%= link_to("上架", change_status_admin_product_path(product, status: 'published'),
-                remote: true, method: :patch, data: { disable_with: '<i class="fa fa-spinner"></i>' },
-                class: "btn btn-mid btn-block yellow-btn change-status-btn") %>
-              <% else %>
-                <%= link_to("上架", merchant_confirm_account_path, data: { disable_with: '<i class="fa fa-spinner"></i>' },
-                class: "btn btn-mid btn-block yellow-btn change-status-btn") %>
-              <% end %>
+              <%= link_to("上架", change_status_admin_product_path(product, status: 'published'),
+              remote: true, method: :patch, data: { disable_with: '<i class="fa fa-spinner"></i>' },
+              class: "btn btn-mid btn-block yellow-btn change-status-btn") %>
 							</p>
 				    <% else %>
 				    	<p>

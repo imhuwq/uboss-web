@@ -57,9 +57,9 @@ class AccountsController < ApplicationController
     if current_user.is_seller?
       flash[:notice] = '您已经是UBOSS商家'
     else
-      current_user.bind_agent(nil)
+      flash[:error] = current_user.errors.full_messages.join('<br/>') unless current_user.bind_agent(nil)
     end
-    redirect_to admin_products_path
+    redirect_to (current_user.is_seller? ? new_admin_product_path : admin_products_path)
   end
 
   def password
