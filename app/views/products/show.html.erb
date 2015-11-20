@@ -136,20 +136,15 @@
 
   <% if @sharing_node.blank? %>
     <div class="share_buy">
-
-      <% unless @product.product_inventories.collect(&:count).inject(:+) >= 0 %>
-        <% if current_user %>
-          <%= link_to '加入购物车', 'javascript:;', class: 'btn_add_to_cart', id: 'show_inventory_cart'%>
-        <% else %>
-          <%= link_to '加入购物车', "/cart_items?product_id=#{@product.id}", class: 'btn_add_to_cart', method: 'post'%>
-        <% end %>
-        <%= link_to '立即购买', 'javascript:;', class: 'btn_buy_now', id:"show_inventory", style: 'float:right;' %>
-
-        <input type="hidden" name="product[id]" value="<%= @product.id %>" />
-        <input type="hidden" name="product[count]" value="<%= 1 %>" />
+      <% if current_user %>
+        <%= link_to '加入购物车', 'javascript:;', class: 'btn_add_to_cart', id: 'show_inventory_cart'%>
       <% else %>
-      <span class="btn btn-block btn-large btn-gray">没有库存了</span>
+        <%= link_to '加入购物车', "/cart_items?product_id=#{@product.id}", class: 'btn_add_to_cart', method: 'post'%>
       <% end %>
+      <%= link_to '立即购买', 'javascript:;', class: 'btn_buy_now', id:"show_inventory", style: 'float:right;' %>
+
+      <input type="hidden" name="product[id]" value="<%= @product.id %>" />
+      <input type="hidden" name="product[count]" value="<%= 1 %>" />
     </div>
   <% else %>
     <div class="share_buy">
@@ -161,16 +156,12 @@
 		    </dl>
 		  </div>
 		  <div class="half_right">
-        <% if @product.product_inventories.collect(&:count).inject(:+) >= 0 %>
-  	      <% if current_user %>
-  	        <%= link_to '加入购物车', 'javascript:;', class: 'btn_add_to_cart', id: 'show_inventory_cart'%>
-  	      <% else %>
-  	        <%= link_to '加入购物车', '/cart_items', class: 'btn_add_to_cart', method: 'post'%>
-  	      <% end %>
-  	      <%= link_to '立即购买', 'javascript:;', class: 'btn_buy_now', id:"show_inventory", style: 'float:right;' %>
-        <% else %>
-          <span class="btn btn-block btn-large btn-gray">没有库存了</span>
-        <% end %>
+	      <% if current_user %>
+	        <%= link_to '加入购物车', 'javascript:;', class: 'btn_add_to_cart', id: 'show_inventory_cart'%>
+	      <% else %>
+	        <%= link_to '加入购物车', '/cart_items', class: 'btn_add_to_cart', method: 'post'%>
+	      <% end %>
+	      <%= link_to '立即购买', 'javascript:;', class: 'btn_buy_now', id:"show_inventory", style: 'float:right;' %>
 		  </div>
     </div>
   <% end %>
