@@ -110,6 +110,13 @@ Rails.application.routes.draw do
 
   namespace :api do
     namespace :v1 do
+      namespace :admin do
+        resources :products, only: [:index, :show, :create] do
+          member do
+            get :inventories, :detail
+          end
+        end
+      end
       post 'login', to: 'sessions#create'
       resources :mobile_captchas, only: [:create]
       resource :account, only: [] do

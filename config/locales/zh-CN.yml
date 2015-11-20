@@ -9,6 +9,7 @@ zh-CN:
         after_sale_only_refund: '售后—仅退款'
         after_sale_return_goods_and_refund: '售后—退款退货'
   attributes: &attributes
+    sku_attributes: 规格属性
     express_name: 快递公司
     store_cover: 店铺封面背景
     store_short_description: 店铺简介
