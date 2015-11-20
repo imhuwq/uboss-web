@@ -94,8 +94,6 @@ class ApplicationController < ActionController::Base
   def after_sign_in_path_for(resource, opts = {need_new_passowrd: true})
     if params[:redirect] == 'discourse'
       params[:redirectUrl]
-    elsif desktop_request? && !current_user.admin?
-      merchant_confirm_account_path
     elsif current_user.need_reset_password? && opts[:need_new_passowrd]
       flash[:new_password_enabled] = true
       set_password_path

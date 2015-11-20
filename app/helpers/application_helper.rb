@@ -12,6 +12,10 @@ module ApplicationHelper
     image_tag request_qrcode_url(opts), html_opts
   end
 
+  def has_flash
+    [:alert, :success, :notice, :info,:error].any? { |key| flash.key?(key) }
+  end
+
   def horizon_form_for(record, options = {}, &block)
     options = options.merge(
       html: { class: 'form-horizontal' },

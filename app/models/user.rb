@@ -70,7 +70,7 @@ class User < ActiveRecord::Base
     end
   end
   before_validation :ensure_authentication_token, :ensure_privilege_rate
-  before_create :set_mobile
+  before_create :set_mobile, :set_default_role
   before_create :build_user_info, if: -> { user_info.blank? }
   before_save   :set_service_rate
 
@@ -399,13 +399,16 @@ class User < ActiveRecord::Base
     end
   end
 
+  def set_default_role
+    if !self.is_agent?
+      self.admin = true
+      self.user_roles << UserRole.agent
+    end
+  end
+
   def set_service_rate
     if self.agent_id_changed?
-      if self.agent.is_super_admin?
-        self.user_info.service_rate = 6
-      else
-        self.user_info.service_rate = 5
-      end
+      self.user_info.service_rate = 5
     end
   end
 end
