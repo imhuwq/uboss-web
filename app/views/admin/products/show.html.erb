@@ -77,12 +77,14 @@
           <span><%= Product::DataBuyerPay[@product.transportation_way] %></span>
         </div>
     </div>
-    <div class="form-group">
-        <label class="control-label">运费</label>
-        <div class="control-input">
-          <div class="control-txt"><%= @product.traffic_expense %></div>
-        </div>
-    </div>
+    <% if Product::DataBuyerPay[@product.transportation_way] == '统一邮费' %>
+      <div class="form-group">
+          <label class="control-label">运费</label>
+          <div class="control-input">
+            <div class="control-txt"><%= @product.traffic_expense %></div>
+          </div>
+      </div>
+    <% end %>
   </div>
   <br />
   <div class="admin-box beige-bg-color">
