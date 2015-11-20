@@ -8,7 +8,7 @@
 <br />
 <div class="container nogap admin-order-index-wrapper">
 	<div class="box-w25">
-		<div class="admin-box red-bg-color">
+		<div class="admin-box main-bg-color">
 			<h4>等待发货</h4>
 			<h1 class="num"><%= @unship_amount %></h1>
 		</div>
@@ -28,35 +28,4 @@
 
 <br />
 
-<div class="modal fade" id="ship-express-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span class='close' aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">快递信息</h4>
-      </div>
-
-      <%= simple_form_for :order, method: :patch do |f| %>
-        <div class="modal-body">
-          <%= f.input :express_name, hint: '您可在 (订单 -> 快递管理) 中设置您的常用发货快递公司' do %>
-            <%= text_field_tag 'express_name', '', class: 'form-control input-lg js-select2-express-tags' %>
-          <% end %>
-          <%= f.input :ship_number, required: true %>
-        </div>
-
-        <div class="modal-footer">
-          <%= f.submit '确定', class: 'btn btn-info' %>
-          <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-        </div>
-      <% end %>
-    </div>
-  </div>
-</div>
-
-<script>
-  $(".js-select2-express-tags").select2({
-    tags: <%== current_user.expresses.pluck(:name) %>,
-    maximumSelectionSize: 1,
-    placeholder: "可输入其他快递公司名称, 按回车结束"
-  })
-</script>
+<%= render 'ship_express' %>

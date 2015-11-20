@@ -46,6 +46,17 @@ Rails.application.routes.draw do
     post 'change_address', on: :collection
     #resource :charge, only: [:create]
   end
+
+  resources :order_items, only: [] do
+    resources :order_item_refunds do
+      get  :apply_uboss, on: :member
+      get  :close, on: :member
+      get  :service_select,   on: :collection
+      resources :sales_returns, only:[:new, :create, :edit, :update]
+      resources :refund_messages, only: [:new, :create]
+    end
+  end
+
   resources :charges, only: [:show] do
     get 'payments',     on: :collection
     get 'pay_complete', on: :member
@@ -138,6 +149,18 @@ Rails.application.routes.draw do
         post :batch_shipments, on: :collection
         post :select_orders, on: :collection
       end
+      resources :order_items, only: [] do
+        resources :order_item_refunds, only: [:index] do
+          get  :approved_refund,  on: :member
+          get  :confirm_received, on: :member
+          post :approved_return,  on: :member
+          post :declined_refund,  on: :member
+          post :declined_return,  on: :member
+          post :declined_receive, on: :member
+          post :refund_message,   on: :member
+        end
+        resources :refund_messages, only: [:create]
+      end
       resources :sharing_incomes, only: [:index, :show, :update]
       resources :withdraw_records, only: [:index, :show, :new, :create] do
         get :generate_excel, on: :collection
@@ -169,6 +192,9 @@ Rails.application.routes.draw do
       end
       resources :transactions, only: [:index]
       resources :bank_cards, only: [:index, :new, :edit, :create, :update, :destroy]
+      resources :user_addresses do
+        get :change_default_address, on: :collection
+      end
 
       get '/data', to: 'data#index'
       get '/backend_status', to: 'dashboard#backend_status'

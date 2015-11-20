@@ -1,0 +1,27 @@
+<div class="admin-box beige-bg-color">
+  <h4 class="edit-title">新增地址</h4>
+  <%= f.input :username, hint: false %>
+  <%= f.input :mobile %>
+  <%= render 'admin/user_addresses/user_address', f: f  %>
+  <%= f.input :building %>
+  <%= f.input :post_code, required: true %>
+  <%= f.input :note, as: :text %>
+  <%= hidden_field_tag 'user_address[usage][default_get_address]', @user_address.usage['default_get_address'] || 'false', id: "user_address_usage_default_get_address" %>
+  <%= hidden_field_tag 'user_address[usage][default_post_address]', @user_address.usage['default_post_address'] || 'false', id: "user_address_usage_default_post_address" %>
+  <% if action_name == 'new' %>
+  <div class="form-group">
+    <label class="control-label">默认地址设置</label>
+    <div class='control-input' id='user_address_usage'>
+
+    </div>
+  </div>
+  <%= javascript_include_tag 'admin/user_address_app/main' %>
+  <% end %>
+
+
+</div>
+<br />
+
+<div class="form-actions text-right">
+  <%= f.submit "保存", class: "btn btn-large" %>
+</div>

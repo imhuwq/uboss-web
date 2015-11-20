@@ -1,0 +1,8 @@
+<h4>确认发货/退货信息</h4>
+<span class="pull-right address-alert" title="发货地址">修改发货地址</span><p class="text-cut">我的发货信息 : <%= current_user.default_post_address %> </p>
+<span class="pull-right address-alert" title="退货地址">修改退货地址</span><p class="text-cut">我的退货信息 : <%= current_user.default_get_address %> </p>
+<%= hidden_field_tag 'request_path', "orders/index",id:"request_path" %>
+<br />
+<div id="address-list-box" class="hidden">
+  <%= render partial: "/admin/user_addresses/seller_address_list", locals: { user_addresses: current_user.user_addresses.where(seller_address: true) } %>
+</div><!-- title -->

@@ -7,6 +7,7 @@ class OrderItem < ActiveRecord::Base
   belongs_to :sharing_node
   has_many   :evaluations
   has_many   :sharing_incomes
+  has_many   :order_item_refunds
 
   validates :user, :product_inventory, :amount, :present_price, :pay_amount, presence: true
 
@@ -14,9 +15,13 @@ class OrderItem < ActiveRecord::Base
   delegate :product_name, :price, :sku_attributes, :sku_attributes_str, to: :product_inventory
   delegate :privilege_card, to: :sharing_node, allow_nil: true
 
+  # 1 退款, 2 退款不退货, 3 退款退货, 4 退款中, 5 退款成功, 6 退款关闭, 7 UBOSS介入
+  enum refund_state: { nothing: 0, refund: 1, unreturn_good: 2, return_good: 3, refunding: 4, refunded: 5, refund_close: 6, uboss_deal: 7 }
+
   before_validation :set_product_id
   before_save  :reset_payment_info, if: -> { order.paid_at.blank? }
   after_create :decrease_product_stock
+
   after_commit :update_order_pay_amount, if: -> {
     previous_changes.include?(:pay_amount) &&
     previous_changes[:pay_amount].first != previous_changes[:pay_amount].last
@@ -24,6 +29,18 @@ class OrderItem < ActiveRecord::Base
 
   def deal_price
     present_price - privilege_amount
+  end
+
+  def refund_money
+    if order_item_refund_id.present?
+      OrderItemRefund.find(order_item_refund_id).money
+    else
+      '0.0'
+    end
+  end
+
+  def last_refund
+    order_item_refunds.reorder("created_at desc").first
   end
 
   def count

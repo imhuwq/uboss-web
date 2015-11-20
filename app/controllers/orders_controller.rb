@@ -109,7 +109,7 @@ class OrdersController < ApplicationController
   end
 
   def change_address
-    user_address = UserAddress.find_by(id: params[:user_address_id]) || UserAddress.new(province: params[:province])
+    user_address = UserAddress.where(seller_address: false).find_by(id: params[:user_address_id]) || UserAddress.new(province: params[:province])
 
     if params[:product_id].blank?
       cart_items = current_cart.cart_items
@@ -174,3 +174,4 @@ class OrdersController < ApplicationController
       @order_form.amount.present?
   end
 end
+

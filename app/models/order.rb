@@ -57,6 +57,10 @@ class Order < ActiveRecord::Base
     end
   end
 
+  def has_payed?
+    Order.states[self.state] >= 1
+  end
+
   class << self
     def valid_items(cart_items, province)
       if province.present?
@@ -225,6 +229,14 @@ class Order < ActiveRecord::Base
     errors.empty?
   end
 
+  def can_be_ship?
+    if !self.seller.default_get_address.present?
+      errors[:base] << "请设置默认退货地址"
+    else
+      true
+    end
+  end
+
   private
 
   def generate_number
@@ -236,6 +248,8 @@ class Order < ActiveRecord::Base
   def fill_shiped_at
     update_column(:shiped_at, Time.now)
   end
+
+
 
   def fill_signed_at
     update_column(:signed_at, Time.now)

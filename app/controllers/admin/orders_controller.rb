@@ -57,6 +57,7 @@ class Admin::OrdersController < AdminController
 
   def show
     @order_item = @order.order_items.first
+    @user_addresses = current_user.user_addresses.where(seller_address: true)
   end
 
   def update
@@ -66,10 +67,11 @@ class Admin::OrdersController < AdminController
   def set_express
     express = Express.find_by_name(express_params)
     express = Express.create(name: express_params, private_id: current_user.id) if express.blank?
-    if @order.update(order_params.merge(express_id: express.id)) && @order.ship!
+    if @order.update(order_params.merge(express_id: express.id)) && @order.can_be_ship? && @order.may_ship? && @order.ship!
+      close_order_item_refund
       flash[:success] = '发货成功'
     else
-      flash[:error] = '发货失败'
+      flash[:error] = "发货失败,#{@order.errors.full_messages.join('\n')}"
     end
     redirect_to admin_orders_path
   end
@@ -96,6 +98,20 @@ class Admin::OrdersController < AdminController
 
   def express_params
     params[:express_name]
+  end
+
+  def close_order_item_refund
+    @order.order_items.each do |item|
+      if refund = item.last_refund
+        refund.may_close? && refund.close!
+        refund.refund_messages.create(
+          user_type: '卖家',
+          user_id: refund.order_item.order.seller_id,
+          message: '商家选择发货，退款申请关闭',
+          action: '退款关闭'
+        )
+      end
+    end
   end
 
   def record_operation

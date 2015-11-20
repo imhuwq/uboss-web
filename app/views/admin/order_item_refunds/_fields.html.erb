@@ -1,0 +1,36 @@
+<%= upyun_meta_tags prefix: 'asset_img/avatar' %>
+<div class="modal-body" style="color:#000;">
+  <p>拒绝原因</p>
+  <p>
+    <%= text_field_tag 'refund_message[refund_reason]', '', class:'input-block js-select2' %>
+  </p>
+  <br/>
+  <p>拒绝说明</p>
+  <p><%= f.text_area :explain, rows: 4, class: 'input-block' %></p>  
+  <br />
+  <p>上传凭证</p>
+	<%= f.input :asset_img, label: false do %>
+    <%= f.input_field :avatar, type: :hidden, as: :file, class: 'refund_avatar' %>
+    <div class="upload-box" id="upload-box">
+      <div class="fileinput-button image-box">
+        <%= image_tag("admin/no-img.png") %>
+        <%= file_field_tag "image", class: "multi_upyun_file" %>
+        <b class="loading"><i class="fa fa-spinner"></i></b>
+      </div>
+    </div>
+    <br />
+    <div>上传凭证(最多三张)</div>
+  <% end %>
+</div>
+
+<div class="modal-footer">
+  <%= f.submit '确定拒绝', class: "btn btn-large btn-info" %>
+  <button type="button" class="btn btn-large gray-btn" data-dismiss="modal">取消</button>
+</div>
+<script>
+ $(".js-select2").select2({
+    tags: <%== reasons %>,
+    maximumSelectionSize: 1,
+    placeholder: "拒绝退款申请原因"
+  })
+</script>

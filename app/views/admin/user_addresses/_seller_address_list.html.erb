@@ -1,0 +1,24 @@
+
+<div class="content">
+	<div class="close"><i class="fa fa-times"></i></div>
+	<p class="title">
+		<span class="name"></span>
+		<span><%= link_to '地址管理', url_for(controller: 'admin/user_addresses', action: :index), target: '_blank' %></span>
+	</p>
+	<table class="address-table">
+    <% (user_addresses || []).each do |obj| %>
+  		<tr>
+  			<td><input type="checkbox" class="check_default_address" id="<%= obj.id %>"/></td>
+  			<td><%= obj.username %></td>
+  			<td><%= obj.mobile %></td>
+  			<td><%= obj.to_s %></td>
+  			<td><%= obj.post_code %></td>
+  			<td>
+  				<%= obj.note %>
+  				&nbsp;
+  			</td>
+  		</tr>
+    <% end %>
+	</table>
+</div><!-- content -->
+    

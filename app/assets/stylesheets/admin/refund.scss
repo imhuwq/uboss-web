@@ -1,0 +1,50 @@
+.evaluate{
+  span{
+    margin-left: 40px;
+  }
+  .btn-link,.btn-link:hover{
+    color: #43C3AA;
+  }
+    
+}
+.message-list{
+  color:#aaa;
+  border-bottom: 1px solid #555;
+  padding-bottom: 20px;
+  margin-bottom: 20px;
+  .user-info-box:after{
+    clear:both;content: ".";   display: block;overflow: hidden; visibility: hidden;    font-size: 0;    line-height: 0;    width: 0;    height: 0;
+  }
+  .message-content{
+    padding-left: 70px;
+  }
+  .user-info-box .cover{
+    float: left;
+    width: 60px;
+    height: 60px;
+    overflow: hidden;
+    margin-right: 10px;
+    border-radius:500px ;
+    img{
+      height: 60px;
+      width: 60px;
+    }
+  }
+  .user-info-box .title{
+    padding-top: 5px;
+    color: #fff;
+    font-size: 15px;
+  }
+  .message-image{
+    letter-spacing: 10px;
+    .pop-img{
+      width: 186px;
+      height: 140px;
+    }
+  }
+}
+#order_item_refund_messages_list .message-list:last-child{
+  border-bottom: none;
+  margin-bottom: 0;
+  padding-bottom: 0;
+}

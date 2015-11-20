@@ -16,6 +16,8 @@ class User < ActiveRecord::Base
   has_and_belongs_to_many :expresses, uniq: true
   has_one :user_info, autosave: true
   has_one :cart
+  has_many :refund_messages
+  has_many :order_item_refunds
   has_many :carriage_templates
   has_many :transactions
   has_many :user_role_relations, dependent: :destroy
@@ -269,8 +271,8 @@ class User < ActiveRecord::Base
   end
 
   def default_address
-    @default_address ||= user_addresses.where(default: true).first
-    @default_address ||= user_addresses.first
+    @default_address ||= user_addresses.where(default: true, seller_address: false).first
+    @default_address ||= user_addresses.where(seller_address: false).first
   end
 
   def set_default_address(address = nil)
@@ -370,6 +372,18 @@ class User < ActiveRecord::Base
     self.expresses.exists?(express)
   end
 
+  def seller_addresses
+    user_addresses.where(seller_address: true)
+  end
+
+  def default_post_address
+    seller_addresses.find_by('usage @> ?', {default_post_address: 'true'}.to_json)
+  end
+
+  def default_get_address
+    seller_addresses.find_by('usage @> ?', {default_get_address: 'true'}.to_json)
+  end
+
   private
 
   def ensure_privilege_rate
@@ -408,4 +422,5 @@ class User < ActiveRecord::Base
       end
     end
   end
+
 end

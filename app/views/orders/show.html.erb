@@ -1,7 +1,9 @@
 <%= content_for :page_title do %>
   <%= @order_title || @order.state_i18n %>
 <% end %>
-
+<%= content_for :header_left do %>
+  <a class="back" onclick="history.go(-1)"><%= image_tag 'mobile/right.png' %></a>
+<% end %>
 <%= content_for :extra_meta_tags do %>
   <%= store_sharing_meta_tags(@seller, @sharing_link_node) %>
 <% end %>
@@ -54,6 +56,9 @@
         <div class="price">
         	<p>￥<%= order_item.present_price %></p>
         	<p class="gray-color num">x <%= order_item.amount %></p>
+          <% if @order.has_payed? %>
+            <%= link_to order_item_refund_state(order_item), order_item_refund_url(order_item) %>
+          <% end %>
         </div>
         <p class="name">
         	<%= order_item.product_name %>

@@ -1,0 +1,108 @@
+<%= content_for :page_title do %>
+  <%= @refund.refund_type_text == '退款' ? '退款详情':@refund.refund_type_text %>
+<% end %>
+<%= content_for :header_left do %>
+  <a class="back" onclick="history.go(-1)"><%= image_tag 'mobile/right.png' %></a>
+<% end %>
+<br />
+<div id="order_item_refund_show">
+  <div class='refund-box'>
+		<div class="bg-white">
+	    <%= render partial: 'refund_info_status', locals: { refund: @refund } %>
+		    <div class="gap-lr">
+		    	<br />
+		    	<%= link_to '查看协商详情', new_order_item_order_item_refund_refund_message_path(order_item_id: @order_item.id, order_item_refund_id: @refund.id),class:'btn btn-block btn-black-border' %>
+		    	<br />
+		    </div>
+	 	</div><!-- bg-white -->
+  </div><!-- refund-box -->
+</div><!-- order_item_refund_show -->
+
+  <br />
+  <div class="bg-white">
+  	<br />
+    <div class="seller-box">
+      <div class="text-cut">商家:<%= @order_item.order.seller.store_identify %></div>
+    </div>
+    <div class="order-box">
+      <div class="cover">
+        <%= link_to product_path(@order_item.item_product) do %>
+          <%= image_tag @order_item.image_url(:w120) %>
+        <% end %>
+      </div><!-- cover -->
+
+      <div class="content">
+        <div class="price">
+          <p>￥<%= @order_item.present_price %></p>
+          <p class="gray-color num">x <%= @order_item.amount %></p>
+        </div>
+        <p class="name">
+          <%= @order_item.product_name %>
+        </p>
+        <p class="info">
+          <% @order_item.product_inventory.properties.each do |property| %>
+            <span><%= "#{property.key}：#{property.value}" %></span>
+          <% end %>
+        </p>
+      </div><!-- content -->
+    </div><!-- order-box -->
+  </div><!-- bg-white -->
+  <div class="refund-info-list bg-white gap-lr">
+    <p><span class="gray-color">退款类型</span> ： 填充数据</p>
+    <p><span class="gray-color">退款金额</span> ： <%= @refund.money %>元</p>
+    <p><span class="gray-color">退款原因</span> ： <%= @refund.refund_reason.try(:reason) %></p>
+    <p><span class="gray-color">退款说明</span> ： <%= @refund.description %></p>
+	  <br />
+	  <div class="box upload-box nogap">
+	    <% @refund.asset_imgs.each do |img| %>
+	      <div class="upload-image-box">
+	      	<a href='<%=img.image_url()%>' style='background-image:url("<%=img.image_url(:thumb)%>")'
+	        	<%= image_tag img.image_url(:thumb)%>
+	        </a>
+	      </div>
+	    <% end %>
+	  </div><!-- box -->
+  </div><!-- refund-info -->
+
+  <br />
+  <div class="bg-white gap line-gap">
+    <%= render partial: 'refund_basic_info', locals: { refund: @refund } %>
+  </div>
+</div>
+
+<% if ['completed_express_number', 'pending'].include?(@refund.aasm_state) || (@refund.refund_type_include_goods? && ['approved'].include?(@refund.aasm_state)) %>
+<script>
+function TimeTo(t,n){
+  var c = n - t;
+  if(c<=0){
+    clearInterval(inter);
+    int=window.clearInterval(int)
+    return;
+  }
+  var ds = 60*60*24*1000,
+      d = parseInt(c/ds),
+      h = parseInt((c-d*ds)/(3600*1000)),
+      m = parseInt((c - d*ds - h*3600*1000)/(60*1000)),
+      s = parseInt((c-d*ds-h*3600*1000-m*60*1000)/1000);
+      if(d<10){d='0'+d}
+      if(h<10){h='0'+h}
+      if(m<10){m='0'+m}
+      if(s<10){s='0'+s}
+      document.getElementById('timer').innerHTML ='倒计时 <span> '+d+' </span> 天 <span>'+h+' </span> 时 <span>'+m+' </span> 分 <span>'+s+' </span> 秒';
+}
+var n_time='<%= Time.now %>';
+var e_time='<%= countdown_time(@refund.created_at + refund_timeout(@refund).days) %>';
+var n = new Date(e_time.replace(/-/,"/"));
+var t = new Date(n_time.replace(/-/,"/"));
+
+var inter=self.setInterval(function(){
+	t.setSeconds(t.getSeconds()+1)
+	TimeTo(t,n)
+},1000);
+if(n-t <= 0){
+	$('#timer').remove();
+	inter=window.clearInterval(inter)
+}
+
+</script>
+<% end %>

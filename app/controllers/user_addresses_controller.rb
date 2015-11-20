@@ -3,7 +3,7 @@ class UserAddressesController < ApplicationController
   before_action :find_user_address, only: [:edit, :update, :destroy]
 
   def index
-    @user_addresses = current_user.user_addresses.recent
+    @user_addresses = current_user.user_addresses.where(seller_address: false).recent
     render layout: 'mobile'
   end
 
@@ -30,7 +30,7 @@ class UserAddressesController < ApplicationController
   def update
     if @user_address.update(address_params)
       if @user_address.default == true
-        UserAddress.where(default: true).where('id != ?', @user_address.id).update_all(default: false)
+        UserAddress.where(default: true, seller_address: false).where('id != ?', @user_address.id).update_all(default: false)
       end
       redirect_to account_user_addresses_path
     else
@@ -54,7 +54,7 @@ class UserAddressesController < ApplicationController
   end
 
   def find_user_address
-    @user_address ||= current_user.user_addresses.find(params[:id])
+    @user_address ||= current_user.user_addresses.where(seller_address: false).find(params[:id])
   end
 
 end
