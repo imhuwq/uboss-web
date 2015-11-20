@@ -44,6 +44,7 @@ class SalesReturnsController < ApplicationController
 
   def add_multi_img
     avatars = params.require(:sales_return).permit(:avatar)
+    @sales_return.asset_imgs.clear
     avatars[:avatar].split(',').each do |avatar|
       @sales_return.asset_imgs << AssetImg.find_or_create_by(resource: @sales_return, avatar: avatar)
     end

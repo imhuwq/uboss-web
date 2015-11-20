@@ -20,9 +20,9 @@
 <br />
 
 <div class="tab-nav">
-	<a class="tab active" href="#showlist"><span>我的订单</span></a>
-	<a class="tab" href="#showpcards"><span>我的友情卡</span></a>
-	<a class="tab" href="#showincome"><span>我的收益</span></a>
+	<a class="tab active" title="#showlist"><span>我的订单</span></a>
+	<a class="tab" title="#showpcards"><span>我的友情卡</span></a>
+	<a class="tab" title="#showincome"><span>我的收益</span></a>
 </div><!-- tab-nav  -->
 
 <div class="tab-container">
@@ -106,7 +106,7 @@
 		$('.tab-container .tab-content').hide();
 		$('.tab-nav .tab').removeClass('active');
 		$('.tab-nav .tab').each(function(){
-			if($(this).attr('href')==locationid){
+			if($(this).attr('title')==locationid){
 				$(this).addClass('active');
 			}
 		})

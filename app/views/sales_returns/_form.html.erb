@@ -5,11 +5,11 @@
     <table class="refund-table">
       <tr>
         <td>物流公司</td>
-        <td><%= f.input_field :logistics_company, class: 'input-block' %></td>
+        <td><%= f.input_field :logistics_company, class: 'input-block',placeholder:'物流公司名称，如‘顺丰’' %></td>
       </tr>
       <tr>
         <td>物流单号</td>
-        <td><%= f.input_field :ship_number, class: 'input-block' %></td>
+        <td><%= f.input_field :ship_number, class: 'input-block',placeholder:'快递单号' %></td>
       </tr>
     </table>
 
@@ -18,7 +18,7 @@
 		</div>
     <br />
     <div class='form-group string optional order_item_refund_asset_imgs'>
-      <%= f.input_field :avatar, type: :hidden, as: :file, class: 'refund_avatar' %>
+      <%= f.input_field :avatar, type: :hidden, value: @sales_return.image_files, as: :file, class: 'refund_avatar' %>
       <div id="upload-box" class="upload-box box gap">
 		      <div class="fileinput-button text-center">
 		      	<p class="plus">+</p>
