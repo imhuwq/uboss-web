@@ -13,10 +13,13 @@
 }
 
 #chat-notice {
-  margin: 5px 0 0;
-  padding: 7px;
-  color: $brand-primary;
+  padding: 3px;
+  color: #43c3aa;
   border: 1px solid #eee;
+  position: absolute;
+  width: 100%;
+  box-sizing: border-box;
+  top: 0px;
   &.error {
     background-color: #f2dede;
     color: #a94442;
@@ -25,8 +28,18 @@
 }
 
 #chat-box {
+  .conversation-box {
+    position: fixed;
+    bottom: 0px;
+    overflow: scroll;
+    top: 40px;
+    width: 100%;
+  }
+  #msg-box {
+    padding: 8px 8px 50px;
+  }
   .send-box {
-    position: absolute;
+    position: fixed;
     bottom: 0px;
     width: 100%;
     padding: 8px;

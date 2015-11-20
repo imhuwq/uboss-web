@@ -1,5 +1,11 @@
 class UXin.Services.MessageServices
 
+  renderUnread: ->
+    UXin.totalUnreadCount = RongIMClient.getInstance().getTotalUnreadCount()
+    $("#totalunreadcount").html "(#{UXin.totalUnreadCount})"
+    if UXin.totalUnreadCount is 0
+      $("#totalunreadcount").hide()
+
   processReceive: (message) ->
     window.currentMsg = message
     conversation = RongIMClient.getInstance().getConversation(message.getConversationType(), message.getTargetId())

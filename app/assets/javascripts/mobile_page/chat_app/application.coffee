@@ -21,6 +21,7 @@
     Router: null
     Services: {}
     currentConversationTargetId: null
+    totalUnreadCount: 0
 
   UXin.init = ->
     RongIMClient.init "mgb7ka1nb9jng"

@@ -12,6 +12,7 @@ class UXin.Router extends Backbone.Router
       $('#chat-box').html UXin.Views.chat.el
       @renderChatNav()
     else
+      $('#chat-box').html ""
       UXin.currentConversationTargetId = null
       @listenToOnce UXin.Views.chat, 'syncdone', =>
         $('#chat-box').html UXin.Views.chat.el unless UXin.currentConversationTargetId?
@@ -21,11 +22,13 @@ class UXin.Router extends Backbone.Router
     console.log "openConversation:#{targetId}"
     UXin.currentConversationTargetId = targetId
     UXin.Views.conversation ?= new UXin.Views.Conversation
-    $('#chat-box').html UXin.Views.conversation.el
+    $('#chat-box').html UXin.Views.conversation.render().el
     @renderConversationNav()
 
   renderConversationNav: ->
-    $('header .back').text('返回').attr('href', '#')
+    $('header .back').html("返回 <span id='totalunreadcount'></span>").attr('href', '#')
+    UXin.Services.messageServices.renderUnread()
 
   renderChatNav: ->
-    $('header .back').text('主页').attr('href', '/')
+    $('header .back').html("主页 <span id='totalunreadcount'></span>").attr('href', '/')
+    UXin.Services.messageServices.renderUnread()

@@ -1,6 +1,7 @@
 class UXin.Views.Conversation extends Backbone.View
 
   template: JST["#{UXin.TemplatesPath}/conversation"]
+
   message_template: JST["#{UXin.TemplatesPath}/message"]
 
   className: 'conversation-box'
@@ -9,7 +10,7 @@ class UXin.Views.Conversation extends Backbone.View
     'click #send-msg-btn': 'sendMessage'
 
   initialize: ->
-    @render()
+    @messageCache = {}
 
   sendMessage: ->
     tMsg = $('#send-msg').val()
@@ -31,7 +32,7 @@ class UXin.Views.Conversation extends Backbone.View
       onSuccess: =>
         console.log 'Send successfully'
         $('#send-msg').val('')
-        @addHistoryMessages(content.getMessage())
+        @addMessages(content.getMessage())
         return
       onError: (errorCode) ->
         info = ''
@@ -48,8 +49,8 @@ class UXin.Views.Conversation extends Backbone.View
         UXin.Services.noticeService.flashWarn("发送失败: #{info}")
         return
 
-  addHistoryMessages: (message) ->
-    console.log 'addHistoryMessages'
+  addMessages: (message) ->
+    console.log 'addMessages'
     @$el.find('#msg-box').append @message_template(
       direction: if message.getMessageDirection() == RongIMClient.MessageDirection.RECEIVE then "other_user" else "self"
       avatar: if message.getMessageDirection() == RongIMClient.MessageDirection.SEND then "owner" else "personPhoto"
@@ -59,4 +60,32 @@ class UXin.Views.Conversation extends Backbone.View
 
   render: ->
     @$el.html @template()
+    @getMessages()
     @
+
+  getMessages: (again) ->
+    console.log 'getMessages'
+    conversationType = RongIMClient.ConversationType.PRIVATE.valueOf()
+    @messageCache["#{conversationType}_#{UXin.currentConversationTargetId}"] ?= []
+    @currentHistoryMessages = @messageCache["#{conversationType}_#{UXin.currentConversationTargetId}"]
+    if @currentHistoryMessages.length is 0 && !again
+      UXin.Services.noticeService.note("获取历史消息...")
+      RongIMClient.getInstance().getHistoryMessages RongIMClient.ConversationType.setValue(conversationType), UXin.currentConversationTargetId, 20,
+        onSuccess: (has, list) =>
+          console.log("是否有剩余消息：" + has)
+          @messageCache["#{conversationType}_#{UXin.currentConversationTargetId}"] = list
+          UXin.Services.noticeService.flashNote("获取历史消息成功")
+          @getMessages(true)
+        onError: ->
+          UXin.Services.noticeService.flashWarn("获取历史消息失败")
+          @getMessages(true)
+      return
+
+    console.log 'render messages'
+    console.log @currentHistoryMessages
+    _.each @currentHistoryMessages, @addMessages, @
+
+    @currentConversation = RongIMClient.getInstance().getConversation RongIMClient.ConversationType.setValue(conversationType), UXin.currentConversationTargetId
+    @currentConversation.setUnreadMessageCount(0)
+    RongIMClient.getInstance().clearMessagesUnreadStatus(RongIMClient.ConversationType.setValue(conversationType), UXin.currentConversationTargetId)
+    UXin.Services.messageServices.renderUnread()
