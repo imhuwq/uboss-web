@@ -195,7 +195,7 @@ class Order < ActiveRecord::Base
   end
 
   def sharing_user
-    @sharing_user ||= order_items.first.sharing_node.try(:user)
+    @sharing_user ||= order_items.first.try(:sharing_node).try(:user)
   end
 
   def single_official_agent?
