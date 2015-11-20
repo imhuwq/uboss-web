@@ -38,21 +38,23 @@
       	<div class="main-color"><%= message.user_type %> <%= message.user.nickname %></div>
       	<div class="gray-color"><%= message.created_at %></div>
       </div>
-      <p class="like-color status-title"><%= message.action %></p>
-      <div class="line-gap">
-	      <p><%= sanitize message.message %></p>
-	      <p><%= message.explain %></p>
-      </div>
-      <br />
-	  	<div class="box upload-box nogap">
-        <% message.asset_imgs.each do |img| %>
-        	<div class="upload-image-box">
-          	<a href='<%=img.image_url()%>' style='background-image:url("<%=img.image_url(:thumb)%>")'
-		        	<%= image_tag img.image_url(:thumb)%>
-		        </a>
-          </div>
-        <% end %>
-      </div>
+      <div class="content">
+	      <p class="like-color status-title"><%= message.action %></p>
+	      <div class="line-gap">
+		      <p><%= sanitize message.message %></p>
+		      <p><%= message.explain %></p>
+	      </div>
+	      <br />
+		  	<div class="box upload-box nogap">
+	        <% message.asset_imgs.each do |img| %>
+	        	<div class="upload-image-box">
+	          	<a href='<%=img.image_url()%>' style='background-image:url("<%=img.image_url(:thumb)%>")'
+			        	<%= image_tag img.image_url(:thumb)%>
+			        </a>
+	          </div>
+	        <% end %>
+	      </div>
+      </div><!-- content -->
     </div><!-- message-box -->
     <% end %>
   </div><!-- message-list -->
