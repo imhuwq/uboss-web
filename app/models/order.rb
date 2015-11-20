@@ -58,7 +58,7 @@ class Order < ActiveRecord::Base
   end
 
   def has_payed?
-    Order.states[self.state] >= 1
+    Order.states[self.state] >= 1 && Order.states[self.state] != 5
   end
 
   class << self
