@@ -98,6 +98,7 @@ GEM
       json
     awesome_nested_set (3.0.2)
       activerecord (>= 4.0.0, < 5)
+    awesome_print (1.6.1)
     axlsx (2.0.1)
       htmlentities (~> 4.3.1)
       nokogiri (>= 1.4.1)
@@ -505,6 +506,7 @@ DEPENDENCIES
   airbrake
   amoeba
   awesome_nested_set
+  awesome_print
   axlsx (~> 2.0.1)
   better_errors
   bootstrap-sass

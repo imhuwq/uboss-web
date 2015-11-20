@@ -1,0 +1,22 @@
+<div class="container admin-container">
+  <ul class="breadcrumb">
+    <li><a href="/admin">主页</a></li>
+    <li class="divider"><i class="fa fa-angle-right"></i></li>
+    <li><%= link_to '分组管理', [:admin, :categories] %></li>
+    <li class="divider"><i class="fa fa-caret-right"></i></li>
+    <li class="active">创建分组</li>
+  </ul>
+</div><!-- container -->
+<br />
+<div class="container nogap">
+    <%= horizon_form_for @category, url: {action: :create} do |f| %>
+
+      <%= render 'fields', f: f %>
+      <br />
+      <div class="form-actions text-right">
+        <%= f.submit "创建", class: "btn btn-large" %>
+      </div>
+      </div><!-- box-w50 -->
+    <% end %>
+
+</div>
