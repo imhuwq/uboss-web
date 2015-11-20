@@ -18,7 +18,7 @@
 		</div>
     <br />
     <div class='form-group string optional order_item_refund_asset_imgs'>
-      <%= f.input_field :avatar, type: :hidden, as: :file, class: 'refund_avatar' %>
+      <%= f.input_field :avatar, type: :hidden, value: @sales_return.image_files, as: :file, class: 'refund_avatar' %>
       <div id="upload-box" class="upload-box box gap">
 		      <div class="fileinput-button text-center">
 		      	<p class="plus">+</p>
