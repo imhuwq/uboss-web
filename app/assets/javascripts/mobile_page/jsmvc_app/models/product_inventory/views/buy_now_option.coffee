@@ -31,7 +31,7 @@ class ProductInventory.View.BuyNowOption extends Backbone.View
       type: 'GET'
       data: {product_id: that.product_id}
       success: (res) ->
-        if res['count'] >= 0
+        if res['count'] > 0
           # 获取属性列表 ->>
           that.newProperties(res['skus'])
           # <<= 获取属性列表
