@@ -12,6 +12,11 @@ class UXin.Views.Conversation extends Backbone.View
   initialize: ->
     @messageCache = {}
 
+  render: ->
+    @$el.html @template()
+    @getMessages()
+    @
+
   sendMessage: ->
     tMsg = $('#send-msg').val()
     unless !!tMsg
@@ -58,11 +63,6 @@ class UXin.Views.Conversation extends Backbone.View
       messageId: message.getMessageId()
     )
 
-  render: ->
-    @$el.html @template()
-    @getMessages()
-    @
-
   getMessages: (again) ->
     console.log 'getMessages'
     conversationType = RongIMClient.ConversationType.PRIVATE.valueOf()
@@ -82,7 +82,6 @@ class UXin.Views.Conversation extends Backbone.View
       return
 
     console.log 'render messages'
-    console.log @currentHistoryMessages
     _.each @currentHistoryMessages, @addMessages, @
 
     @currentConversation = RongIMClient.getInstance().getConversation RongIMClient.ConversationType.setValue(conversationType), UXin.currentConversationTargetId
