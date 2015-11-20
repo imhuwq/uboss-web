@@ -1,5 +1,5 @@
 <p>来源订单：<%= @order_item.order.number %> <%= link_to '查看', @order_item.order, target: '_blank' %></p>
 <p>退款编号：810231312</p>
-<% Hash[@refund.state_at_attributes.sort].each do |key, value| %>
+<% Hash[@refund.state_at_attributes.sort_by{|k, v| v}].each do |key, value| %>
   <p><%= key %>：<%= value %></p>
 <% end %>
