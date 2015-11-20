@@ -11,6 +11,7 @@ class OrderCharge < ActiveRecord::Base
   has_many :products, -> { uniq }, through: :order_items
 
   validates_presence_of :user_id
+  validates_uniqueness_of :number, allow_blank: true
 
   enum payment: { alipay: 0, alipay_wap: 1, alipay_qr: 2, wx: 3, wx_pub: 4, wx_pub_qr: 5, yeepay_wap: 6 }
 

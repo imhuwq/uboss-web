@@ -1,4 +1,5 @@
 class CartItem < ActiveRecord::Base
+
   belongs_to :cart
   belongs_to :product_inventory
   belongs_to :seller, class_name: "User"
