@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151118025746) do
+ActiveRecord::Schema.define(version: 20151118094804) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -27,9 +27,6 @@ ActiveRecord::Schema.define(version: 20151118025746) do
     t.string   "invite_code"
     t.datetime "expire_at"
   end
-
-  add_index "agent_invite_seller_histroys", ["invite_code", "agent_id"], name: "index_agent_invite_seller_histroys_on_invite_code_and_agent_id", unique: true, using: :btree
-  add_index "agent_invite_seller_histroys", ["mobile", "agent_id"], name: "index_agent_invite_seller_histroys_on_mobile_and_agent_id", unique: true, using: :btree
 
   create_table "asset_imgs", force: :cascade do |t|
     t.string   "filename"
@@ -73,8 +70,6 @@ ActiveRecord::Schema.define(version: 20151118025746) do
     t.integer  "product_inventory_id"
   end
 
-  add_index "cart_items", ["product_inventory_id", "cart_id"], name: "index_cart_items_on_product_inventory_id_and_cart_id", unique: true, using: :btree
-
   create_table "carts", force: :cascade do |t|
     t.integer  "user_id"
     t.datetime "created_at", null: false
@@ -82,23 +77,6 @@ ActiveRecord::Schema.define(version: 20151118025746) do
   end
 
   add_index "carts", ["user_id"], name: "index_carts_on_user_id", using: :btree
-
-  create_table "categories", force: :cascade do |t|
-    t.string   "name",       null: false
-    t.integer  "user_id",    null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
-  add_index "categories", ["user_id", "name"], name: "index_categories_on_user_id_and_name", unique: true, using: :btree
-
-  create_table "categories_products", id: false, force: :cascade do |t|
-    t.integer "product_id",  null: false
-    t.integer "category_id", null: false
-  end
-
-  add_index "categories_products", ["category_id"], name: "index_categories_products_on_category_id", using: :btree
-  add_index "categories_products", ["product_id"], name: "index_categories_products_on_product_id", using: :btree
 
   create_table "daily_reports", force: :cascade do |t|
     t.date     "day"
@@ -118,8 +96,6 @@ ActiveRecord::Schema.define(version: 20151118025746) do
     t.string  "resource_type"
     t.text    "content"
   end
-
-  add_index "descriptions", ["resource_type", "resource_id"], name: "index_descriptions_on_resource_type_and_resource_id", unique: true, using: :btree
 
   create_table "different_areas", force: :cascade do |t|
     t.integer  "carriage_template_id"
@@ -157,8 +133,6 @@ ActiveRecord::Schema.define(version: 20151118025746) do
     t.datetime "updated_at"
   end
 
-  add_index "enterprise_authentications", ["user_id"], name: "index_enterprise_authentications_on_user_id", unique: true, using: :btree
-
   create_table "evaluations", force: :cascade do |t|
     t.integer  "buyer_id"
     t.integer  "sharer_id"
@@ -178,8 +152,6 @@ ActiveRecord::Schema.define(version: 20151118025746) do
     t.integer  "private_id"
   end
 
-  add_index "expresses", ["name"], name: "index_expresses_on_name", unique: true, using: :btree
-
   create_table "expresses_users", id: false, force: :cascade do |t|
     t.integer "express_id"
     t.integer "user_id"
@@ -192,25 +164,6 @@ ActiveRecord::Schema.define(version: 20151118025746) do
     t.datetime "updated_at", null: false
   end
 
-  add_index "favour_products", ["product_id", "user_id"], name: "index_favour_products_on_product_id_and_user_id", unique: true, using: :btree
-
-  create_table "job_histories", force: :cascade do |t|
-    t.integer  "user_id"
-    t.integer  "status"
-    t.string   "message"
-    t.string   "resource_type"
-    t.string   "resource_id"
-    t.string   "job_class"
-    t.string   "job_method"
-    t.jsonb    "options"
-    t.datetime "created_at",    null: false
-    t.datetime "updated_at",    null: false
-  end
-
-  create_table "json_test", force: :cascade do |t|
-    t.jsonb "data"
-  end
-
   create_table "mobile_captchas", force: :cascade do |t|
     t.string   "code"
     t.datetime "expire_at"
@@ -221,46 +174,6 @@ ActiveRecord::Schema.define(version: 20151118025746) do
   end
 
   add_index "mobile_captchas", ["mobile"], name: "index_mobile_captchas_on_mobile", using: :btree
-
-  create_table "oauth_access_grants", force: :cascade do |t|
-    t.integer  "resource_owner_id", null: false
-    t.integer  "application_id",    null: false
-    t.string   "token",             null: false
-    t.integer  "expires_in",        null: false
-    t.text     "redirect_uri",      null: false
-    t.datetime "created_at",        null: false
-    t.datetime "revoked_at"
-    t.string   "scopes"
-  end
-
-  add_index "oauth_access_grants", ["token"], name: "index_oauth_access_grants_on_token", unique: true, using: :btree
-
-  create_table "oauth_access_tokens", force: :cascade do |t|
-    t.integer  "resource_owner_id"
-    t.integer  "application_id"
-    t.string   "token",             null: false
-    t.string   "refresh_token"
-    t.integer  "expires_in"
-    t.datetime "revoked_at"
-    t.datetime "created_at",        null: false
-    t.string   "scopes"
-  end
-
-  add_index "oauth_access_tokens", ["refresh_token"], name: "index_oauth_access_tokens_on_refresh_token", unique: true, using: :btree
-  add_index "oauth_access_tokens", ["resource_owner_id"], name: "index_oauth_access_tokens_on_resource_owner_id", using: :btree
-  add_index "oauth_access_tokens", ["token"], name: "index_oauth_access_tokens_on_token", unique: true, using: :btree
-
-  create_table "oauth_applications", force: :cascade do |t|
-    t.string   "name",                      null: false
-    t.string   "uid",                       null: false
-    t.string   "secret",                    null: false
-    t.text     "redirect_uri",              null: false
-    t.string   "scopes",       default: "", null: false
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  add_index "oauth_applications", ["uid"], name: "index_oauth_applications_on_uid", unique: true, using: :btree
 
   create_table "order_charges", force: :cascade do |t|
     t.string   "channel"
@@ -355,19 +268,13 @@ ActiveRecord::Schema.define(version: 20151118025746) do
     t.datetime "updated_at"
   end
 
-  add_index "personal_authentications", ["identity_card_code"], name: "index_personal_authentications_on_identity_card_code", unique: true, using: :btree
-  add_index "personal_authentications", ["user_id"], name: "index_personal_authentications_on_user_id", unique: true, using: :btree
-
   create_table "privilege_cards", force: :cascade do |t|
     t.integer  "user_id"
-    t.datetime "created_at",                           null: false
-    t.datetime "updated_at",                           null: false
-    t.boolean  "actived",              default: false
+    t.datetime "created_at",                 null: false
+    t.datetime "updated_at",                 null: false
+    t.boolean  "actived",    default: false
     t.integer  "seller_id"
-    t.integer  "product_inventory_id"
   end
-
-  add_index "privilege_cards", ["user_id", "seller_id"], name: "index_privilege_cards_on_user_id_and_seller_id", unique: true, using: :btree
 
   create_table "product_classes", force: :cascade do |t|
     t.integer  "parent_id"
@@ -654,16 +561,12 @@ ActiveRecord::Schema.define(version: 20151118025746) do
     t.integer "user_role_id"
   end
 
-  add_index "user_role_relations", ["user_id", "user_role_id"], name: "index_user_role_relations_on_user_id_and_user_role_id", unique: true, using: :btree
-
   create_table "user_roles", force: :cascade do |t|
     t.string   "name"
     t.string   "display_name"
     t.datetime "created_at",   null: false
     t.datetime "updated_at",   null: false
   end
-
-  add_index "user_roles", ["name"], name: "index_user_roles_on_name", unique: true, using: :btree
 
   create_table "users", force: :cascade do |t|
     t.string   "login",                  default: "",    null: false
@@ -694,9 +597,7 @@ ActiveRecord::Schema.define(version: 20151118025746) do
     t.decimal  "privilege_rate",         default: 50.0
   end
 
-  add_index "users", ["agent_code"], name: "index_users_on_agent_code", unique: true, using: :btree
   add_index "users", ["authentication_token"], name: "index_users_on_authentication_token", using: :btree
-  add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
   add_index "users", ["login"], name: "index_users_on_login", unique: true, using: :btree
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
 
@@ -723,9 +624,6 @@ ActiveRecord::Schema.define(version: 20151118025746) do
   add_foreign_key "cart_items", "product_inventories"
   add_foreign_key "cart_items", "users", column: "seller_id"
   add_foreign_key "carts", "users"
-  add_foreign_key "categories", "users"
-  add_foreign_key "categories_products", "categories"
-  add_foreign_key "categories_products", "products"
   add_foreign_key "order_items", "orders"
   add_foreign_key "order_items", "products"
   add_foreign_key "order_items", "sharing_nodes"

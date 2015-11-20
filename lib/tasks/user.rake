@@ -3,7 +3,7 @@ namespace :user_db do
   task add_agent_role: :environment do
     puts '开始添加用户角色'
 
-    (User.all - User.agent).each do |user|
+    User.where(id: User.pluck(:id) - User.agent.pluck(:id)).each do |user|
       if !user.is_agent?
         user.admin = true
         user.user_roles << UserRole.agent

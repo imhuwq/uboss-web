@@ -1,4 +1,4 @@
-<% if flash.any? %>
+<% if has_flash %>
   <div class="pop-bg flash_css <%= "auto_close_flash_css" unless flash[:error] || flash[:alert] %>">
     <div class="pop-content" id="flash-messages">
       <% if flash[:success] %>
