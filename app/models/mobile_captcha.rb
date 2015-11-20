@@ -46,7 +46,7 @@ class MobileCaptcha < ActiveRecord::Base
     end
   end
 
-  def send_sms(tpl_id = 1) # 发送短信
+  def send_sms(tpl_id = 1126529) # 发送短信
     PostMan.send_sms(mobile, {code: code}, tpl_id)
   end
 
