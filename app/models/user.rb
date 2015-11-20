@@ -403,7 +403,6 @@ class User < ActiveRecord::Base
     if !self.is_agent?
       self.admin = true
       self.user_roles << UserRole.agent
-      self.save
     end
   end
 

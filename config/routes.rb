@@ -67,9 +67,10 @@ Rails.application.routes.draw do
     get :settings,         :edit_password,     :reset_password,
         :orders,           :binding_agent, :invite_seller,
         :edit_seller_histroy, :edit_seller_note, :seller_agreement,
-        :binding_successed
+        :merchant_confirm,    :binding_successed
     post :send_message
     put :bind_agent, :bind_seller, :update_histroy_note
+    patch :merchant_confirm, to: 'accounts#merchant_confirmed'
     patch :password, to: 'accounts#update_password'
     resources :user_addresses, except: [:show]
   end
