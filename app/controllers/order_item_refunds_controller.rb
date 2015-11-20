@@ -88,6 +88,7 @@ class OrderItemRefundsController < ApplicationController
 
   def add_multi_img
     avatars = params.require(:order_item_refund).permit(:avatar)
+    @refund.asset_imgs.clear
     avatars[:avatar].split(',').each do |avatar|
       @refund.asset_imgs << AssetImg.find_or_create_by(resource: @refund, avatar: avatar)
     end
