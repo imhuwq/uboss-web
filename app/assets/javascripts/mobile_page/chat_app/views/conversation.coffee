@@ -14,7 +14,10 @@ class UXin.Views.Conversation extends Backbone.View
 
   render: ->
     @$el.html @template()
-    @getMessages()
+    if UXin.Services.connectionService.connected()
+      @getMessages()
+    else
+      @listenTo UXin.Services.connectionService, 'success', @getMessages
     @
 
   sendMessage: ->
@@ -61,6 +64,7 @@ class UXin.Views.Conversation extends Backbone.View
       avatar: if message.getMessageDirection() == RongIMClient.MessageDirection.SEND then "owner" else "personPhoto"
       content: message.getContent()
       messageId: message.getMessageId()
+      errorAavatar: "http://ssobu-dev.b0.upaiyun.com/asset_img/avatar/c77c276c3c0182f62e516b2479a14b08.gif"
     )
 
   getMessages: (again) ->
@@ -81,10 +85,11 @@ class UXin.Views.Conversation extends Backbone.View
           @getMessages(true)
       return
 
-    console.log 'render messages'
+    console.log 'render history messages'
     _.each @currentHistoryMessages, @addMessages, @
 
     @currentConversation = RongIMClient.getInstance().getConversation RongIMClient.ConversationType.setValue(conversationType), UXin.currentConversationTargetId
-    @currentConversation.setUnreadMessageCount(0)
+    if @currentConversation?
+      @currentConversation.setUnreadMessageCount(0)
     RongIMClient.getInstance().clearMessagesUnreadStatus(RongIMClient.ConversationType.setValue(conversationType), UXin.currentConversationTargetId)
     UXin.Services.messageServices.renderUnread()

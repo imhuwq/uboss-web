@@ -3,13 +3,6 @@
     padding: 10px;
     border-bottom: 1px solid #eee;
   }
-  .user_img {
-    img {
-      height: 35px;
-      width: 35px;
-      border-radius: 25px;
-    }
-  }
 }
 #chat-notice {
   padding: 3px;
@@ -27,6 +20,13 @@
 }
 
 #chat-box {
+  .user_img {
+    img {
+      height: 35px;
+      width: 35px;
+      border-radius: 25px;
+    }
+  }
   .conversation-box {
     position: fixed;
     bottom: 0px;

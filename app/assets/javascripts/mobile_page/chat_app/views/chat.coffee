@@ -6,13 +6,10 @@ class UXin.Views.Chat extends Backbone.View
 
   initialize: ->
     @hasSync = false
-    if @connection().currentStatus == RongIMClient.ConnectionStatus.CONNECTED
+    if UXin.Services.connectionService.connected()
       @synConversations()
     else
       @listenTo UXin.Services.connectionService, 'success', @synConversations
-
-  connection: ->
-    UXin.Services.connectionService
 
   synConversations: ->
     return true if @hasSync

@@ -11,6 +11,9 @@ class UXin.Services.ConnectionService
     $.getJSON '/chat/token', (data) =>
       RongIMClient.connect data.token, @getIMConnectionCallBack()
 
+  connected: ->
+    @currentStatus == RongIMClient.ConnectionStatus.CONNECTED
+
   processStatus: (status) =>
     info = error = ""
     @currentStatus = status

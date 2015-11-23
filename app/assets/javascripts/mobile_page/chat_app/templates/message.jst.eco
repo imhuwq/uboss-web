@@ -1,6 +1,6 @@
 <li class="xiaoxiti <%= @direction %> user">
   <div class="user_img">
-    <img src="<%= @avatar %>"/>
+    <img src='<%= @avatar %>' onerror='this.src="<%= @errorAavatar %>"' />
   </div>
   <div class="msg">
     <span><%= @content %></span>
