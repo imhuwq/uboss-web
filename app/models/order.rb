@@ -30,13 +30,9 @@ class Order < ActiveRecord::Base
   scope :selled, -> { where("orders.state <> 0") }
 
   before_create :set_info_by_user_address, :set_ship_price
-  before_save :update_pay_amount, if: -> {
+  after_commit :update_pay_amount_and_close_prepay, if: -> {
     previous_changes.include?(:ship_price) &&
     previous_changes[:ship_price].first != previous_changes[:ship_price].last
-  }
-  after_commit :close_prepay, if: -> {
-    previous_changes.include?(:pay_amount) &&
-    previous_changes[:pay_amount].first != previous_changes[:pay_amount].last
   }
 
   aasm column: :state, enum: true, skip_validation_on_save: true, whiny_transitions: false do
@@ -221,8 +217,9 @@ class Order < ActiveRecord::Base
     end
   end
 
-  def update_pay_amount
-    update(pay_amount: (order_items.sum(:pay_amount) + ship_price))
+  def update_pay_amount_and_close_prepay
+    update_column(:pay_amount, (order_items.sum(:pay_amount) + self.ship_price))
+    close_prepay
   end
 
   def sharing_user
@@ -333,9 +330,9 @@ class Order < ActiveRecord::Base
   end
 
   def close_prepay
-    if !order_charge.close_prepay
-      order_charge.reload.orders.update_all order_charge_id: nil
-      order_charge.update_column :prepay_id_expired_at, Time.current - 1.minute
+    if !order_charge.new_record? && !order_charge.close_prepay
+      order_charge.reload.orders.update_all(order_charge_id: nil)
+      order_charge.update_column(:prepay_id_expired_at, Time.current - 1.minute)
     end
   end
 
