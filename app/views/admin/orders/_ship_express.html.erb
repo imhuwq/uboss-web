@@ -34,7 +34,7 @@
 
 <script>
   $(".js-select2-express-tags").select2({
-  tags: <%== current_user.expresses.pluck(:name) %>,
+  tags: <%== Express.where(private_id: [nil, current_user.id]).pluck(:name) %>,
   maximumSelectionSize: 1,
   placeholder: "可输入其他快递公司名称, 按回车结束"
   })

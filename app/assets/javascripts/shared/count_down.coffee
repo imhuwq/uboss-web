@@ -2,10 +2,13 @@ $ ->
 
   if $('#clock_refund')
     $this = $('#clock_refund')
-    html = '<span class="times_day"><span>00</span></span> 天'+
-      '<span class="times_hour"><span>00</span></span> 时' +
-      '<span class="times_minute"><span>00</span></span> 分' +
-      '<span class="times_second"><span>00</span></span> 秒'
+    html =
+      """
+      <span class="times_day"><span>00</span></span> 天
+      <span class="times_hour"><span>00</span></span> 时
+      <span class="times_minute"><span>00</span></span> 分
+      <span class="times_second"><span>00</span></span> 秒
+      """
     $this.html(html)
 
     time_day    = $this.find(".times_day")

@@ -20,7 +20,7 @@ $ ->
   $(document).on 'ajax:error', "#products .change-status-btn, #products .switch-p-hot-btn", ->
     alert('操作失败')
 
-  $('body').delegate '#product_carriage_template_id', 'change', (event) ->
+  $('#product_carriage_template_id').on 'change', (event) ->
     id = this.selectedOptions[0].value
     if id != ''
       $.ajax '/admin/select_carriage_template',

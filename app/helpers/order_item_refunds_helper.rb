@@ -47,6 +47,17 @@ module OrderItemRefundsHelper
     end
   end
 
+  def admin_refund_state(refund)
+    return '退款'       if refund.pending? && refund.refund_type == :refund
+    return '退款不退货' if refund.pending? && !refund.refund_type_include_goods?
+    return '退款退货'   if refund.pending? && refund.refund_type_include_goods?
+    return 'UBOSS介入'  if refund.applied_uboss?
+    return '退款成功'   if refund.finished?
+    return '退款撤销'   if refund.cancelled?
+    return '退款关闭'   if refund.closed?
+    return '退款中'
+  end
+
   def order_item_refund_url(order_item)
     refunds = order_item.order_item_refunds
     last_refund = order_item.last_refund
