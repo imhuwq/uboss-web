@@ -46,8 +46,8 @@
             </td>
             <td class='none-border-left'><%= item.present_price %>(<%= item.amount %>件)</td>
             <td>
-              <% if item.refund_state != 'nothing' && can?(:manage, order) %>
-                <%= link_to item.refund_state_i18n, [:admin, item, :order_item_refunds], class: "main-link-color" %>
+              <% if (refund = item.last_refund) && refund.present? && can?(:manage, order) %>
+                <%= link_to admin_refund_state(refund), [:admin, item, :order_item_refunds], class: "main-link-color" %>
               <% end %>
             </td>
             <% if index == 0 %>

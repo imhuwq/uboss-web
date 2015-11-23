@@ -17,7 +17,6 @@ class OrderItemRefund < ActiveRecord::Base
   end
 
   after_create :save_state_at_attributes
-  after_create  :set_order_item_state
 
   delegate :logistics_company, :ship_number, to: :sales_return, allow_nil: true
 
@@ -32,23 +31,25 @@ class OrderItemRefund < ActiveRecord::Base
     #申请退款
     state :pending, initial: true
     #同意
-    state :approved,                 after_enter: [:update_order_item_state_4, :set_deal_times, :wx_order_refund]
+    state :approved,                 after_enter: [:wx_order_refund]
     #拒绝
-    state :declined,                 after_enter: [:update_order_item_state_4, :set_deal_times]
+    state :declined
     #确认收货
-    state :confirm_received,         after_enter: [:update_order_item_state_4, :set_deal_times, :wx_order_refund]
+    state :confirm_received,         after_enter: [:wx_order_refund]
     #拒绝收货
-    state :decline_received,         after_enter: [:update_order_item_state_4, :set_deal_times]
+    state :decline_received
     #申请uboss介入
-    state :applied_uboss,            after_enter: [:update_order_item_state_7, :set_deal_times]
+    state :applied_uboss
     #买家填写快递单号
-    state :completed_express_number, after_enter: [:update_order_item_state_4, :set_deal_times]
+    state :completed_express_number
     #完成
-    state :finished,                 after_enter: [:update_order_item_state_5, :set_deal_times, :set_order_item]
+    state :finished,                 after_enter: [:set_order_item]
     #撤销（买家）
-    state :cancelled,                after_enter: [:update_order_item_state_6, :set_deal_times]
+    state :cancelled
     #关闭（待发货时申请退款，商家选择发货）
-    state :closed,                   after_enter: [:update_order_item_state_6, :set_deal_times]
+    state :closed
+
+    after_all_transitions :set_deal_times
 
     event :approve do
       transitions from: [:pending, :declined, :applied_uboss], to: :approved
@@ -175,7 +176,7 @@ class OrderItemRefund < ActiveRecord::Base
   end
 
   def check_wx_refund
-    res = WxPay::Service.invoke_refundquery({ out_trade_no: refund_record.out_refund_no })
+    res = WxPay::Service.invoke_refundquery({ out_trade_no: order_charge_number })
 
     if res.success?
       if res['refund_status_0'] == 'SUCCESS'
@@ -208,24 +209,6 @@ class OrderItemRefund < ActiveRecord::Base
   end
 
   private
-
-  (4..7).each do |refund_state|
-    define_method "update_order_item_state_#{refund_state}" do
-      self.order_item.update_attributes!(refund_state: refund_state)
-    end
-  end
-
-  def set_order_item_state
-    if self.order_item.order.payed?
-      self.order_item.update_attributes!(refund_state: 1)
-    else
-      if refund_type_include_goods?
-        self.order_item.update_attributes!(refund_state: 3)
-      else
-        self.order_item.update_attributes!(refund_state: 2)
-      end
-    end
-  end
 
   def set_deal_times
     case aasm_state
