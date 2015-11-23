@@ -44,7 +44,7 @@ class OrderItemRefund < ActiveRecord::Base
     #买家填写快递单号
     state :completed_express_number, after_enter: [:update_order_item_state_4, :set_deal_times]
     #完成
-    state :finished,                 after_enter: [:update_order_item_state_5, :set_deal_times]
+    state :finished,                 after_enter: [:update_order_item_state_5, :set_deal_times, :set_order_item]
     #撤销（买家）
     state :cancelled,                after_enter: [:update_order_item_state_6, :set_deal_times]
     #关闭（待发货时申请退款，商家选择发货）
@@ -105,7 +105,7 @@ class OrderItemRefund < ActiveRecord::Base
       if self.refund_type_include_goods?
         self.address = self.order_item.order.seller.default_post_address.try(:refund_label) && self.save
         action  = "同意退货"
-        message = "退货地址：#{self.address}</br>商家在#{Rails.application.secrets.refund_timeout['days_5']}天内未处理此申请，系统已默认商家同意此次申请"
+        message = "卖家退货地址【#{self.address}】</br>商家在#{Rails.application.secrets.refund_timeout['days_5']}天内未处理此申请，系统已默认商家同意此次申请"
       else
         action  = "同意退款"
         message = "商家在#{Rails.application.secrets.refund_timeout['days_2']}天内未处理此申请，系统已默认商家同意此次申请"
@@ -130,14 +130,13 @@ class OrderItemRefund < ActiveRecord::Base
       timeout_approve if (refund_type == 'refund' && timeout_approve_refund?) || (refund_type != 'refund' && timeout_approve_return?)
     when 'approved'
       timeout_cancel  if refund_type_include_goods? && timeout_cancel?
-      check_wx_refund if !refund_type_include_goods?
+      check_wx_refund if !refund_type_include_goods?   # 判断是否退款成功，然后finish退款申请
     when 'declined'
       timeout_cancel if timeout_cancel?
     when 'confirm_received'
-      check_wx_refund
+      check_wx_refund                                  # 判断是否退款成功，然后finish退款申请
     when 'decline_received'
       timeout_cancel if timeout_cancel?
-    when 'applied_uboss'      # UBOSS 介入
     when 'completed_express_number'
       timeout_confirm_receive if timeout_confirm_receive?
     end
@@ -176,7 +175,16 @@ class OrderItemRefund < ActiveRecord::Base
   end
 
   def check_wx_refund
-    # 判断是否退款成功，然后finish退款申请
+    res = WxPay::Service.invoke_refundquery({ out_trade_no: refund_record.out_refund_no })
+
+    if res.success?
+      if res['refund_status_0'] == 'SUCCESS'
+        may_finish? && finish!
+      elsif res['refund_status_0'] == 'NOTSURE'
+        WxRefundJob.perform_later(self)
+      end
+      refund_record.update_with_refundquery_result(res)
+    end
   end
 
   def order_charge
@@ -236,6 +244,10 @@ class OrderItemRefund < ActiveRecord::Base
     end
     self.deal_at = time_now
     self.save
+  end
+
+  def set_order_item
+    self.order_item.update(order_item_refund_id: self.id)
   end
 
   # 微信退款

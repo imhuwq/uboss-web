@@ -91,7 +91,7 @@
 	            <p>退款金额：<%= message.money %>元</p>
 	          <% end %>
 	          <% if !message.refund_reason_id.blank? %>
-	            <p>退款原因：TODO 卖家缺货</p>
+	            <p>退款原因：<%= message.refund_reason.reason %></p>
 	          <% end %>
 	          <% if !message.explain.blank? %>
 	            <p>退款说明：<%= message.explain %></p>
@@ -111,17 +111,17 @@
     </div><!-- admin-border admin-border-order-info -->
   </div><!-- admin_order_item_refunds_wrapper -->
 </div><!-- admin_orders_show_order_wrapper -->
+
 <script>
 $(window).load(function(){
 	$("body").on('click','.pop-img',function(){
-		$("html").addClass("lock");		
+		$("html").addClass("lock");
 		var pop_html="<div class='pop-bg'><div class='pop-container'>"
 		pop_html=pop_html+"<div class='pop'><div class='pop-content'>";
 		pop_html=pop_html+"<img src='"+$(this).attr("data-src")+"'/>"+"<div class='pop-close'><i class='fa fa-times'></i></div></div></div></div>";
 		$("body").append(pop_html);
-	
-		
 	})
+
 	$("body").on("click",".pop-bg .pop-close",function(){
 		$(".pop-bg").remove();
 		$("html").removeClass("lock");

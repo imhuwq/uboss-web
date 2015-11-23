@@ -28,7 +28,7 @@ class Admin::OrderItemRefundsController < AdminController
       @order_item_refund.return_explain = params[:return_explain]
 
       if @order_item_refund.save && @order_item_refund.may_approve? && @order_item_refund.approve!
-        message = "退货地址：#{@order_item_refund.address}</br>退货说明：#{@order_item_refund.return_explain}"
+        message = "卖家退货地址【#{@order_item_refund.address}】</br>退货说明：#{@order_item_refund.return_explain}"
         create_refund_message({action: '同意退货', message: message})
         flash[:success] = '同意退货申请操作成功'
       else
