@@ -32,17 +32,16 @@
       <%= product_price(@product).join(' - ') %>
     </p>
     <p class="original-price">￥<%= @product.original_price %></p>
-    <div class="border-box">
-    	<br />
+    <div class="border-top">
     	<p class="gray-color">
 	    <% if @product.transportation_way != 0 %>
 	     	 快递：<%= product_traffic(@product) %>
 	    <%else%>
 	     	 包邮
-	    <% end %>
+	    <% end %>　
+	    <%= Evaluation.product_good_reputation_rate(@product.id) %> 好评 (<%= Evaluation.product_good_reputation(@product.id) %>人)
 	    </p>
-	    <p class="gray-color"><%= Evaluation.product_good_reputation_rate(@product.id) %> 好评 (<%= Evaluation.product_good_reputation(@product.id) %>人)</p>
-  	</div><!-- border-box -->
+  	</div><!-- border-top -->
   	<br />
   	<div class="detail text-left">
   		<%= @product.short_description %>
@@ -64,13 +63,7 @@
 	    	<p class="gray-color">帮朋友优惠<%= product_privilege(@product, @privilege_card, :amount).join(' - ') %></p>
         <div class="border-box">
           <% if @privilege_card.present? %>
-            <br />
             <div class="text-center"><a class="btn btn-large btn-longer p-sharing-btn">分享给朋友</a></div>
-            <br/>
-            <div class="text-center">
-              <%= link_to "喜欢", switch_favour_product_path(@product),
-                method: 'PATCH', class: "#{user_favour_product_class(@product)} btn btn-like like-product-btn", remote: true %>
-            </div>
           <% else %>
             <div class="text-center">
               <%= link_to "领取友情卡", get_product_sharing_path, data: { pid: @product.id, uid: current_user.present? },
@@ -113,23 +106,23 @@
   <% end %>
   <!-- end 自己的友情卡 -->
 
-  <div class="product-info-box">
-    <br />
-    <div class="cover">
-      <%= image_tag @seller.avatar_url(:w120) %>
-    </div>
-    <br />
-    <p class="name"><%= @seller.store_name %></p>
-    <p class="gray-color"><%= @seller.store_short_description %></p>
-    <p class="gray-color border-top"><%= number_to_percentage(@seller.good_reputation_rate, precision: 0) %> 好评（<%= @seller.total_reputations %>）</p>
-    <div class="into">
-      <%= link_to  store_path(@seller) do%>
-        <%= image_tag("mobile/into.png") %> 进店逛逛
-      <%end%>
-    </div>
-    <br />
-  </div><!-- product-info-box -->
-
+  <div class="bg-white gap">
+  	<div class="product-store-box">
+	    <div class="cover">
+	      <%= image_tag @seller.avatar_url(:w120) %>
+	    </div>
+			<div class="content">
+				<%= link_to  store_path(@seller),class:'btn btn-main-border pull-right' do%>
+	       	进店逛逛
+	      <%end%>
+		    <h4 class="name text-cut"><%= @seller.store_name %></h4>
+		    <p class="gray-color"><%= number_to_percentage(@seller.good_reputation_rate, precision: 0) %> 好评（<%= @seller.total_reputations %>）</p>		    
+	      <p class="gray-color desc text-cut"><%= @seller.store_short_description %></p>
+	      
+	 		</div><!-- content -->
+    </div><!-- product-store-box -->
+  </div><!-- bg-white gap -->
+	<br />
   <div class="product-info-box">
     <%== @product.content %>
   </div>
