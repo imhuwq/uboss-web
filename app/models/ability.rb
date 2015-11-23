@@ -64,6 +64,7 @@ class Ability
   def grant_permissions_to_agent user
     can :read, User, id: user.id
     can :read, User, agent_id: user.id
+    can :read, :sellers
     can :read, DailyReport, user: { agent_id: user.id }
     can :read, SellingIncome, user: { agent_id: user.id }
     can :read, DivideIncome, user_id: user.id
