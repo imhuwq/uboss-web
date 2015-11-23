@@ -19,7 +19,7 @@ class OrderItem < ActiveRecord::Base
   before_save  :reset_payment_info, if: -> { order.paid_at.blank? }
   after_create :decrease_product_stock
 
-  after_commit :update_order_pay_amount, if: -> {
+  before_save  :update_order_pay_amount, if: -> {
     previous_changes.include?(:pay_amount) &&
     previous_changes[:pay_amount].first != previous_changes[:pay_amount].last
   }
