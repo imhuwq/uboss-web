@@ -50,7 +50,7 @@ PATH
 GEM
   remote: https://ruby.taobao.org/
   specs:
-    aasm (4.1.1)
+    aasm (4.5.0)
     actionmailer (4.2.2)
       actionpack (= 4.2.2)
       actionview (= 4.2.2)
