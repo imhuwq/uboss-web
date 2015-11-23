@@ -2,6 +2,13 @@ class UXin.Services.NoticeService
 
   el: '#chat-notice'
 
+  titleEl: '.header-bar .title'
+
+  newMessage: ->
+    title = $(@titleEl).text()
+    unless title.match(/新信息/)
+      $(@titleEl).prepend('<small class="new-msg-notice">新消息 - </small>')
+
   flashWarn: (msg) ->
     @warn msg
     @hideNote()

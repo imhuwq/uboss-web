@@ -9,8 +9,11 @@ class UXin.Views.Conversation extends Backbone.View
   events:
     'click #send-msg-btn': 'sendMessage'
 
+  messageCache: UXin.Data.messageCache
+
   initialize: ->
-    @messageCache = {}
+    @listenTo UXin.Services.messageServices, 'new', (message)->
+      @addMessages(message) if message.getTargetId() == UXin.currentConversationTargetId
 
   render: ->
     @$el.html @template()
@@ -40,7 +43,12 @@ class UXin.Views.Conversation extends Backbone.View
       onSuccess: =>
         console.log 'Send successfully'
         $('#send-msg').val('')
-        @addMessages(content.getMessage())
+        message = content.getMessage()
+        @addMessages(message)
+        if !@messageCache[message.getConversationType().valueOf() + "_" + message.getTargetId()]
+          @messageCache[message.getConversationType() + "_" + message.getTargetId()] = [message]
+        else
+          @messageCache[message.getConversationType().valueOf() + "_" + message.getTargetId()].push(message)
         return
       onError: (errorCode) ->
         info = ''

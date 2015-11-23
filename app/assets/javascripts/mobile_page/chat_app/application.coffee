@@ -14,7 +14,8 @@
 
   UXin =
     TemplatesPath: 'mobile_page/chat_app/templates'
-    Data: {}
+    Data:
+      messageCache: {}
     Views: {}
     Models: {}
     Collections: {}
