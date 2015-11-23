@@ -30,9 +30,13 @@ class Order < ActiveRecord::Base
   scope :selled, -> { where("orders.state <> 0") }
 
   before_create :set_info_by_user_address, :set_ship_price
-  after_commit :reset_pay_amount_and_close_prepay, if: -> {
+  before_save :update_pay_amount, if: -> {
     previous_changes.include?(:ship_price) &&
     previous_changes[:ship_price].first != previous_changes[:ship_price].last
+  }
+  after_commit :close_prepay, if: -> {
+    previous_changes.include?(:pay_amount) &&
+    previous_changes[:pay_amount].first != previous_changes[:pay_amount].last
   }
 
   aasm column: :state, enum: true, skip_validation_on_save: true, whiny_transitions: false do
@@ -194,11 +198,6 @@ class Order < ActiveRecord::Base
     end
   end
 
-  def reset_pay_amount_and_close_prepay
-    self.update_pay_amount
-    order_charge.delay.close_prepay
-  end
-
   def update_pay_amount
     update(pay_amount: (order_items.sum(:pay_amount) + ship_price))
   end
@@ -296,6 +295,13 @@ class Order < ActiveRecord::Base
   # 在work 中判断订单是否是创客权订单
   def invoke_official_agent_order_process
     OfficialAgentOrderJob.set(wait: 5.seconds).perform_later(self)
+  end
+
+  def close_prepay
+    if !order_charge.close_prepay
+      order_charge.reload.orders.update_all order_charge_id: nil
+      order_charge.update_column :prepay_id_expired_at, Time.current - 1.minute
+    end
   end
 
 end
