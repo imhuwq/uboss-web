@@ -1,9 +1,12 @@
 FactoryGirl.define do
   factory :order_item_refund do
     money "9.99"
-reason_id 1
-description "MyString"
-order_item_id 1
+    refund_reason { create(:refund_reason) }
+    description "MyString"
+    order_item { create(:order_item) }
+    order_state 1
+    refund_type 'refund'
+    user { order_item.user }
   end
 
 end

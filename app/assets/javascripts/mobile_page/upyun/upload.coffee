@@ -10,31 +10,31 @@ $ ->
     $(this).closest('.upload-image-box').remove()
     fvalues =''
     hiddenFile.val(fvalues)
-    formGroup.find('.upload-image-box').each (index)->    
-      [_, ..., fileName]=$(this).find('img').attr('alt').split '/' 
+    formGroup.find('.upload-image-box').each (index)->
+      [_, ..., fileName]=$(this).find('img').attr('alt').split '/'
       console.log(formGroup.find('.upload-image-box').length)
-      if formGroup.find('.upload-image-box').length == index+1     
+      if formGroup.find('.upload-image-box').length == index+1
         fvalues=fvalues+fileName+''
       else
         fvalues=fvalues+fileName+','
     hiddenFile.val(fvalues)
-    
+
   $('.upyun_file').live 'change' , (e) ->
     e.preventDefault()
-    $this=$(e.target)  
-    $('#upload-box .loading').show()
-    $('#upload-box input').css('z-index', '-999')
+    $this=$(e.target)
     formGroup = $this.closest('.form-group')
     if formGroup.find('.upload-image-box').length >= 3
       alert('最多只能上传三张图片')
-      return
+      return false
+    $('#upload-box .loading').show()
+    $('#upload-box input').css('z-index', '-999')
     $.ajaxFileUpload
       fileElementId: 'file'
       url: upyunUrl
       data:
         "policy": upyunPolicy
         "signature": upyunSignature
-      success: (doc, status) ->        
+      success: (doc, status) ->
         returnURL = doc.baseURI
         response = $.parseQueryString(returnURL)
         if (response.code == '200')
@@ -45,9 +45,9 @@ $ ->
           $('#upload-box').append(uimg)
           hiddenFile = formGroup.find('input.file[type=hidden]')
           fvalues =''
-          formGroup.find('.upload-image-box').each (index)->     
-            [_, ..., fileName]=$(this).find('img').attr('alt').split '/' 
-            if formGroup.find('.upload-image-box').length == index+1     
+          formGroup.find('.upload-image-box').each (index)->
+            [_, ..., fileName]=$(this).find('img').attr('alt').split '/'
+            if formGroup.find('.upload-image-box').length == index+1
               fvalues=fvalues+fileName+''
             else
               fvalues=fvalues+fileName+','
