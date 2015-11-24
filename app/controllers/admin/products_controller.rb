@@ -77,7 +77,7 @@ class Admin::ProductsController < AdminController
 
   def pre_view
     @seller = @product.user
-    render layout: 'application'
+    render layout: 'mobile'
   end
 
   private

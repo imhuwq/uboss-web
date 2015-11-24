@@ -1,6 +1,6 @@
 $ ->
 
-  @flashPopContent = (html_str) ->
+  self.flashPopContent = (html_str) ->
     flash_content = $('<div class="pop-alert flash_css text-center"><div class="pop-content"></div>')
     flash_content.appendTo('body')
     flash_content.find('.pop-content').append(html_str)

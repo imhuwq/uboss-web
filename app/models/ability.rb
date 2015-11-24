@@ -73,6 +73,8 @@ class Ability
     # FIXME @dalezhang read sellers == read user，这样定义如何判断只能查看自己的商家？？
     can :read, :sellers
     can :manage, BankCard, user_id: user.id
+
+    can :read, Product, user_id: user.id
   end
 
 end

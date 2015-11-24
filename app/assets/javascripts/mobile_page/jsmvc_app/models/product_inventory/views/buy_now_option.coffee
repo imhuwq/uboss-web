@@ -134,12 +134,13 @@ class ProductInventory.View.BuyNowOption extends Backbone.View
                 init = init.intersect(v)
           if product_inventory_ids.length > 0 && value.attributes.relate_sku.intersect(init).length > 0
             value.attributes.disabled = "false"
-          else
-            if product_inventory_ids.length > 0 && property_model_value_cids.intersect([value.cid]).length == 0
-              value.attributes.disabled = "true"
+          else if product_inventory_ids.length > 0 && property_model_value_cids.intersect([value.cid]).length == 0
+            value.attributes.disabled = "true"
 
         if select_value_cid.length > 0 && select_value_cid == value.cid
-            value.attributes.selected = "true"
+          value.attributes.selected = "true"
+        else if propertyModel.get('property_values').length == 1
+          value.attributes.selected = "true"
         else if property_model_value_cids.intersect([value.cid]).length > 0 || value.attributes.disabled == "true"
           value.attributes.selected = "false"
         parentPorperty.find('ul').append new ProductInventory.View.PropertyValue(model: value).render().el
@@ -238,10 +239,10 @@ class ProductInventory.View.BuyNowOption extends Backbone.View
   calculateTotalPrice: ->
     if @relate_sku_ids.length == 1
       if @single_sku_count >= @count
-        @total_price = @single_price * @count
+        @total_price = floatMul(@single_price, @count)
       else
         @count = @single_sku_count
-        @total_price = @single_price * @count
+        @total_price = floatMul(@single_price, @count)
         flashPopContent('<div class="pop-text">此类型商品最多购买'+"#{@count}"+'件</div>')
       $('.count-box .count_num').val(@count)
       product_inventory_property_price_range.render(@total_price)

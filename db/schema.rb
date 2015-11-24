@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151115185505) do
+ActiveRecord::Schema.define(version: 20151123041849) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -294,6 +294,7 @@ ActiveRecord::Schema.define(version: 20151115185505) do
     t.jsonb    "state_at_attributes", default: {}, null: false
     t.string   "address"
     t.string   "return_explain"
+    t.datetime "deal_at"
   end
 
   create_table "order_items", force: :cascade do |t|
@@ -309,7 +310,6 @@ ActiveRecord::Schema.define(version: 20151115185505) do
     t.decimal  "privilege_amount",     default: 0.0
     t.integer  "product_inventory_id"
     t.integer  "order_item_refund_id"
-    t.integer  "refund_state",         default: 0
   end
 
   create_table "orders", force: :cascade do |t|
@@ -452,6 +452,9 @@ ActiveRecord::Schema.define(version: 20151115185505) do
     t.integer  "best_evaluation"
     t.integer  "better_evaluation"
     t.integer  "worst_evaluation"
+    t.boolean  "full_cut",             default: false
+    t.integer  "full_cut_number"
+    t.integer  "full_cut_unit"
   end
 
   create_table "redactor_assets", force: :cascade do |t|

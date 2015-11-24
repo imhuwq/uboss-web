@@ -10,14 +10,49 @@
           </th>
         <% end %>
         <th>价格</th>
-        <th style='width:100px;'>返利</th>
-        <th>一级</th>
-        <th>二级</th>
-        <th>三级</th>
-        <th>购买</th>
+        <th style='width:100px;'>
+        	<div class='tips-info'>
+        		总返利  <i class='fa fa-info-circle'></i>
+        		<div class='info-hover'>购买者的直接上家获得的返利</div>
+        	</div>
+        </th>
+        <th>
+        	<div class='tips-info'>
+        		一级 <i class='fa fa-info-circle'></i>
+        		<div class='info-hover'>为商品设定总返利金额</div>
+        	</div>
+        </th>
+        <th>
+        	<div class='tips-info'>
+        		二级 <i class='fa fa-info-circle'></i>
+        		<div class='info-hover'>购买者的二级上家获得的返利</div>
+        	</div>
+        </th>
+        <th>
+        	<div class='tips-info'>
+        		三级 <i class='fa fa-info-circle'></i>
+        		<div class='info-hover'>购买者的三级上家获得的返利</div>
+        	</div>
+        </th>
+        <th>
+        	<div class='tips-info'>
+        		购买 <i class='fa fa-info-circle'></i>
+        		<div class='info-hover'>购买者获得的优惠</div>
+        	</div>
+        </th>
       </tr>
     </thead>
     <tbody>
     </tbody>
   </table>
+
+	<script>
+		$(document).ready(function(){
+		  $('.tips-info').hover(function(){
+		  	$(this).find('.info-hover').fadeIn();
+		  },function(){
+		  	$('.info-hover').fadeOut();
+		  })
+		})
+	</script>
 <% end %>
