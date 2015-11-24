@@ -39,4 +39,11 @@ namespace :migrate do
       Express.find_or_create_by(name: express)
     end
   end
+
+  desc "Init User rongclud token"
+  task :init_rongcloud_token do
+    User.where(rongcloud_token: nil).find_each do |user|
+      user.get_rongcloud_token
+    end
+  end
 end
