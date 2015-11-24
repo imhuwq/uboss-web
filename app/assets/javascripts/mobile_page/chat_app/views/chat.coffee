@@ -6,7 +6,6 @@ class UXin.Views.Chat extends Backbone.View
 
   initialize: ->
     @hasSync = false
-    @listenTo UXin.Services.messageServices, 'new', @render
     if UXin.Services.connectionService.connected()
       @synConversations()
     else
@@ -34,12 +33,12 @@ class UXin.Views.Chat extends Backbone.View
                 item.setConversationTitle(namelist[item.getTargetId()] || '未知群组')
               when RongIMClient.ConversationType.PRIVATE
                 item.getConversationTitle() || item.setConversationTitle('陌生人:'+item.getTargetId())
-          @render()
           @trigger('syncdone')
         , 300
       onError: ->
         UXin.Services.noticeService.warn('获取聊天列表失败')
         UXin.ConversationList = RongIMClient.getInstance().getConversationList()
+        @trigger('syncdone')
 
   render: ->
     @$el.html @template(conversations: UXin.ConversationList)
