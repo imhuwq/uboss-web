@@ -17,7 +17,6 @@ class UXin.Router extends Backbone.Router
       UXin.currentConversationTargetId = null
       @listenToOnce UXin.Views.chat, 'syncdone', =>
         $('#chat-box').html UXin.Views.chat.render().el
-        @listenTo UXin.Services.messageServices, 'new', @render
         @renderChatNav()
 
   openConversation: (targetId) ->

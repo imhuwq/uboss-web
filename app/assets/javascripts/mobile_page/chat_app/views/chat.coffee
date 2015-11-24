@@ -10,6 +10,7 @@ class UXin.Views.Chat extends Backbone.View
       @synConversations()
     else
       @listenTo UXin.Services.connectionService, 'success', @synConversations
+    @listenTo UXin.Services.connectionService, 'success', @synConversations
 
   synConversations: ->
     return true if @hasSync
@@ -34,10 +35,12 @@ class UXin.Views.Chat extends Backbone.View
               when RongIMClient.ConversationType.PRIVATE
                 item.getConversationTitle() || item.setConversationTitle('陌生人:'+item.getTargetId())
           @trigger('syncdone')
+          @listenTo UXin.Services.messageServices, 'new', @render
         , 300
-      onError: ->
+      onError: =>
         UXin.Services.noticeService.warn('获取聊天列表失败')
         UXin.ConversationList = RongIMClient.getInstance().getConversationList()
+        @listenTo UXin.Services.messageServices, 'new', @render
         @trigger('syncdone')
 
   render: ->
