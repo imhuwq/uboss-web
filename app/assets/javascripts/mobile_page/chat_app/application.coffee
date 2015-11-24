@@ -25,6 +25,23 @@
     currentConversationTargetId: null
     totalUnreadCount: 0
 
+  UXin.Util =
+    msgTime: (date)->
+      timeStr = "#{@rjust date.getHours()}:#{@rjust date.getMinutes()}:#{@rjust date.getSeconds()}"
+      if date.toDateString() == (new Date()).toDateString()
+        timeStr
+      else
+        "#{date.getMonth() + 1}/#{date.getDate()} #{timeStr}"
+
+    rjust: (string, length = 2, justStr = '0') ->
+      string = string.toString()
+      return string if string.length >= length
+      lackLength = length - string.length
+      tmpStr = ""
+      _.times lackLength, ->
+        tmpStr += justStr
+      "#{tmpStr}#{string}"
+
   UXin.init = ->
     RongIMClient.init "mgb7ka1nb9jng"
 

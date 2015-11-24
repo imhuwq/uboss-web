@@ -106,6 +106,7 @@ class UXin.Views.Conversation extends Backbone.View
       avatar: if message.getMessageDirection() == RongIMClient.MessageDirection.SEND then "owner" else "personPhoto"
       content: message.getContent()
       messageId: message.getMessageId()
+      sentTime: UXin.Util.msgTime(new Date message.getSentTime())
       errorAavatar: "http://ssobu-dev.b0.upaiyun.com/user/avatar/bd2169252c1003113eaabf5484f353d9.jpeg-thumb"
     )
     @freshScroll()
