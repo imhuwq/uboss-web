@@ -8,6 +8,8 @@
 #= require ./collections/properties
 #= require ./models/stock
 #= require ./collections/stocks
+#= require ./models/category_select_option
+#= require ./collections/category_select_options
 #= require_tree ./views
 #= require ./boot
 

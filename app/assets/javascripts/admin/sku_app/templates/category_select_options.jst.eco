@@ -1,0 +1,9 @@
+<ul class="select2-results" role="listbox" id="select2-results-4">
+  <li class="select2-results-dept-0 select2-result select2-result-selectable select2-highlighted" role="presentation">
+    <div class="select2-result-label" id="select2-result-label-19" role="option">
+      color
+    </div>
+  </li>
+  <li class="select2-results-dept-0 select2-result select2-result-selectable" role="presentation"><div class="select2-result-label" id="select2-result-label-20" role="option">
+  </div></li><li class="select2-results-dept-0 select2-result select2-result-selectable" role="presentation"><div class="select2-result-label" id="select2-result-label-21" role="option">颜色</div></li><li class="select2-results-dept-0 select2-result select2-result-selectable" role="presentation"><div class="select2-result-label" id="select2-result-label-22" role="option">尺寸</div></li><li class="select2-results-dept-0 select2-result select2-result-selectable" role="presentation"><div class="select2-result-label" id="select2-result-label-23" role="option">内饰</div></li>
+</ul>

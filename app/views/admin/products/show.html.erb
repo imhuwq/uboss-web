@@ -17,11 +17,29 @@
 <br />
 <div class="container nogap">
   <div class="admin-box beige-bg-color">
+    <h4 class="edit-title">基本信息</h4>
+
+    <div class="form-group">
+      <label class="control-label">商品分组</label>
+      <div class="control-input">
+        <span class="control-input" style="padding:8px">
+          <% @product.categories.each do |category| %>
+            <span class='label label-info'><%= category.name %></span>
+          <% end %>
+        </span>
+      </div>
+    </div>
+  </div><!-- admin-box -->
+  <br />
+
+
+
+  <div class="admin-box beige-bg-color">
     <h4 class="edit-title">商品信息</h4>
     <% if current_user.is_super_admin? %>
       <div class="form-group">
         <label class="control-label">所属商家</label>
-        <div class="control-input">
+        <div class="control-input" style="padding:8px">
           <span><%= link_to @product.user.identify, url_for(controller: 'admin/sellers', action: :show, id: @product.user) %></span>
         </div>
       </div>

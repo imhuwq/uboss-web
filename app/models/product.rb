@@ -179,6 +179,19 @@ class Product < ActiveRecord::Base
     return hash
   end
 
+  def categories=(arr)
+    unless arr.is_a?(Array)
+      arr = arr.split(',')
+    end
+    puts "arr= #{arr}"
+    self.categories.clear
+    arr.each do |item|
+      category = Category.find_or_create_by(name: item, user_id: user_id)
+      self.categories << category
+    end
+    puts "self.categories= #{self.categories}"
+  end
+
   private
 
   def must_has_one_product_inventory
