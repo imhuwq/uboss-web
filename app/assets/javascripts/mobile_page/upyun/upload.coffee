@@ -19,12 +19,16 @@ $ ->
         fvalues=fvalues+fileName+','
     hiddenFile.val(fvalues)
 
+  run = () ->
+      alert("最多只能上传三张图片")
+
   $('.upyun_file').live 'change' , (e) ->
     e.preventDefault()
     $this=$(e.target)
     formGroup = $this.closest('.form-group')
     if formGroup.find('.upload-image-box').length >= 3
-      return confirm('最多只能上传三张图片')
+      window.setTimeout(run, 0)
+      return
     $('#upload-box .loading').show()
     $('#upload-box input').css('z-index', '-999')
     $.ajaxFileUpload
