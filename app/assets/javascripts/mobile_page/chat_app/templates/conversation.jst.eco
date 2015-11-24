@@ -1,5 +1,7 @@
-<ul id='msg-box'>
-</ul>
+<div class='conversation-box'>
+  <ul id='msg-box'>
+  </ul>
+</div>
 
 <div class='send-box'>
   <input type="text" name="" id="send-msg" value="" />

@@ -4,8 +4,6 @@ class UXin.Views.Conversation extends Backbone.View
 
   message_template: JST["#{UXin.TemplatesPath}/message"]
 
-  className: 'conversation-box'
-
   events:
     'click #send-msg-btn': 'sendMessage'
 
@@ -22,6 +20,15 @@ class UXin.Views.Conversation extends Backbone.View
   clearCurrentConversation: ->
     UXin.currentConversationTargetId = null
     @currentConversation = null
+
+  freshScroll: ->
+    @myscroll ?= new IScroll('.conversation-box')
+    setTimeout =>
+      @myscroll.refresh()
+    ,0
+    setTimeout =>
+      @myscroll.scrollTo 0, @myscroll.maxScrollY, 500, IScroll.utils.ease.quadratic
+    ,100
 
   render: ->
     @$el.html @template()
@@ -86,6 +93,7 @@ class UXin.Views.Conversation extends Backbone.View
       messageId: message.getMessageId()
       errorAavatar: "http://ssobu-dev.b0.upaiyun.com/asset_img/avatar/c77c276c3c0182f62e516b2479a14b08.gif"
     )
+    @freshScroll()
 
   getMessages: (again) ->
     console.log 'getMessages'

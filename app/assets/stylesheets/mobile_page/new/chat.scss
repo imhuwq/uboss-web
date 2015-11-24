@@ -40,14 +40,16 @@
     }
   }
   .conversation-box {
-    position: fixed;
-    bottom: 0px;
-    overflow: scroll;
+    position: absolute;
+    z-index: 1;
     top: 40px;
+    bottom: 42px;
+    left: 0;
     width: 100%;
+    overflow: hidden;
   }
   #msg-box {
-    padding: 8px 8px 50px;
+    padding: 8px 8px;
   }
   .send-box {
     position: fixed;
