@@ -124,7 +124,7 @@ class UXin.Views.Conversation extends Backbone.View
           @messageCache["#{conversationType}_#{UXin.currentConversationTargetId}"] = list
           UXin.Services.noticeService.flashNote("获取历史消息成功")
           @getMessages(true)
-        onError: ->
+        onError: =>
           UXin.Services.noticeService.flashWarn("获取历史消息失败")
           @getMessages(true)
       return
