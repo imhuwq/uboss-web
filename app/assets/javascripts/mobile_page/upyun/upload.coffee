@@ -24,8 +24,7 @@ $ ->
     $this=$(e.target)
     formGroup = $this.closest('.form-group')
     if formGroup.find('.upload-image-box').length >= 3
-      alert('最多只能上传三张图片')
-      return false
+      return confirm('最多只能上传三张图片')
     $('#upload-box .loading').show()
     $('#upload-box input').css('z-index', '-999')
     $.ajaxFileUpload
