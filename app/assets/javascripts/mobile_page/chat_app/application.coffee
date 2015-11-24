@@ -43,7 +43,7 @@
       "#{tmpStr}#{string}"
 
   UXin.init = ->
-    RongIMClient.init "mgb7ka1nb9jng"
+    RongIMClient.init window.RONG_CLOUD_APP_ID
 
     UXin.Services.connectionService = new UXin.Services.ConnectionService
     UXin.Services.messageServices   = new UXin.Services.MessageServices

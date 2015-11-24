@@ -7,6 +7,9 @@
 <% end %>
 
 <%= content_for :extra_javascript do %>
+  <%= javascript_tag do %>
+    window.RONG_CLOUD_APP_ID = '<%= Rongcloud.app_key %>';
+  <% end %>
   <script src="http://res.websdk.rongcloud.cn/RongIMClient-0.9.13.min.js"></script>
   <%= javascript_include_tag 'mobile_page/chat_app/boot' %>
 <% end %>
