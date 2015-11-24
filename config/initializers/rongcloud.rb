@@ -1,2 +1,2 @@
-Rongcloud.app_key = 'mgb7ka1nb9jng' #融云APPKEY
-Rongcloud.app_secret = 'KarAKDc2nD' #融云APP_SECRET
+Rongcloud.app_key = Rails.application.secrets.rong_cloud['key'] #融云APPKEY
+Rongcloud.app_secret = Rails.application.secrets.rong_cloud['secret'] #融云APP_SECRET

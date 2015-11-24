@@ -370,6 +370,18 @@ class User < ActiveRecord::Base
     self.expresses.exists?(express)
   end
 
+  def find_or_create_rongcloud_token
+    return rongcloud_token if rongcloud_token.present?
+
+    user = Rongcloud::Service::User.new
+    user.user_id = self.id
+    user.name = self.identify
+    user.portrait_uri = self.avatar.url(:thumb)
+    user.get_token
+    current_user.update_columns(rongcloud_token: user.token)
+    user.token
+  end
+
   private
 
   def ensure_privilege_rate

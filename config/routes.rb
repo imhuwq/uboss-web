@@ -108,6 +108,9 @@ Rails.application.routes.draw do
         patch :update_password
         get :orders, :privilege_cards
       end
+      resource :chat, only: [] do
+        get :token
+      end
     end
   end
 
