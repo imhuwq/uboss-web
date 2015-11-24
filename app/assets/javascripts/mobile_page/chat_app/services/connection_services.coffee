@@ -57,6 +57,6 @@ class UXin.Services.ConnectionService
       when RongIMClient.ConnectErrorStatus.BLOCK                         then info = '被封禁'
       when RongIMClient.ConnectErrorStatus.TOKEN_EXPIRE                  then info = '会话已过期'
       when RongIMClient.ConnectErrorStatus.DEVICE_ERROR                  then info = '设备初始错误'
-    UXin.Services.noticeService.warn error
+    UXin.Services.noticeService.warn info
 
 _.extend(UXin.Services.ConnectionService.prototype, Backbone.Events)
