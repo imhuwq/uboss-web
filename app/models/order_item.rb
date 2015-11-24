@@ -114,7 +114,7 @@ class OrderItem < ActiveRecord::Base
   end
 
   def update_order_pay_amount
-    order.update_pay_amount
+    order.update_pay_amount_and_close_prepay
   end
 
   def set_product_id
