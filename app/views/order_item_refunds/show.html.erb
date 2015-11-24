@@ -92,8 +92,8 @@ function TimeTo(t,n){
 }
 var n_time='<%= Time.now %>';
 var e_time='<%= countdown_time(@refund.created_at + refund_timeout(@refund).days) %>';
-var n = new Date(e_time.replace(/-/,"/"));
-var t = new Date(n_time.replace(/-/,"/"));
+var n = new Date(e_time.replace(/-/g,"/"));
+var t = new Date(n_time.replace(/-/g,"/"));
 
 var inter=self.setInterval(function(){
 	t.setSeconds(t.getSeconds()+1)
