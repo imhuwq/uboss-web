@@ -73,6 +73,7 @@ class User < ActiveRecord::Base
   before_create :set_mobile
   before_create :build_user_info, if: -> { user_info.blank? }
   before_save   :set_service_rate
+  after_commit  :get_rongcloud_token, on: :create
 
   scope :admin, -> { where(admin: true) }
   scope :agent, -> { role('agent') }
@@ -150,6 +151,10 @@ class User < ActiveRecord::Base
       end
     end
 
+  end
+
+  def get_rongcloud_token
+    RongcloudJob.perform_later(self)
   end
 
   # 默认绑定official agent
@@ -378,7 +383,7 @@ class User < ActiveRecord::Base
     user.name = self.identify
     user.portrait_uri = self.avatar.url(:thumb)
     user.get_token
-    current_user.update_columns(rongcloud_token: user.token)
+    self.update_columns(rongcloud_token: user.token)
     user.token
   end
 
