@@ -97,11 +97,6 @@ class AccountsController < ApplicationController
     end
   end
 
-  def reset_password
-    # current_user.update(need_reset_password: true)
-    redirect_to edit_password_account_path
-  end
-
   def invite_seller # 创客通过短信邀请的商家
     @histroys = AgentInviteSellerHistroy.where(agent_id: current_user.id)
     @bind = User.where(agent_id: current_user, authenticated: 1).count
