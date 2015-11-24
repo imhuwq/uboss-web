@@ -4,7 +4,7 @@ class UXin.Services.NoticeService
 
   titleEl: '.header-bar .back'
 
-  newMessage: ->
+  renderUnread: ->
     title = $(@titleEl).text()
     totalUnreadCount = RongIMClient.getInstance().getTotalUnreadCount()
     if totalUnreadCount > 0

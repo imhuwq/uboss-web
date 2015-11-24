@@ -33,7 +33,7 @@ class UXin.Services.MessageServices
   processNewMessage: (message)->
     @trigger('new', message)
     if (UXin.currentConversationTargetId != message.getTargetId())
-      UXin.Services.noticeService.newMessage()
+      UXin.Services.noticeService.renderUnread()
     if !@messageCache[message.getConversationType().valueOf() + "_" + message.getTargetId()]
       @messageCache[message.getConversationType() + "_" + message.getTargetId()] = [message]
     else

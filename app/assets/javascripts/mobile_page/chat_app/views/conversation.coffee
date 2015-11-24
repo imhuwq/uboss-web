@@ -11,11 +11,17 @@ class UXin.Views.Conversation extends Backbone.View
 
   messageCache: UXin.Data.messageCache
 
+  currentConversation: null
+
   initialize: ->
     @listenTo UXin.Services.messageServices, 'new', (message)->
       if message.getTargetId() == UXin.currentConversationTargetId
         @addMessages(message)
         @currentConversation.setUnreadMessageCount(0) if @getCurrentConversation()?
+
+  clearCurrentConversation: ->
+    UXin.currentConversationTargetId = null
+    @currentConversation = null
 
   render: ->
     @$el.html @template()
@@ -105,4 +111,4 @@ class UXin.Views.Conversation extends Backbone.View
     if @getCurrentConversation()?
       @currentConversation.setUnreadMessageCount(0)
     RongIMClient.getInstance().clearMessagesUnreadStatus(RongIMClient.ConversationType.setValue(conversationType), UXin.currentConversationTargetId)
-    UXin.Services.messageServices.renderUnread()
+    UXin.Services.noticeService.renderUnread()
