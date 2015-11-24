@@ -1,7 +1,7 @@
 class ImageUploader < CarrierWave::Uploader::Base
 
   def default_url
-    Rails.application.secrets.blank_image_url
+    Rails.application.secrets.blank_image_url || "/t/question_mark.jpg"
   end
 
   def store_dir
