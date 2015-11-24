@@ -28,6 +28,7 @@
         <%= nav_group :product_manage do %>
           <%= can_li_link(:read, Product, admin_products_path) %>
           <%= can_li_link(:read, CarriageTemplate, admin_carriage_templates_path ) %>
+          <%= can_li_link(:read, Category, admin_categories_path) %>
         <% end %>
         <%= nav_group :order_manage do %>
           <%= can_li_link(:manage, Order, admin_orders_path) %>
