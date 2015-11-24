@@ -1,0 +1,19 @@
+<%= content_for :page_title do %>
+  U信
+<% end %>
+
+<%= content_for :header_left do %>
+  <a class="left-btn back" href="/">主页</a>
+<% end %>
+
+<%= content_for :extra_javascript do %>
+  <script src="http://res.websdk.rongcloud.cn/RongIMClient-0.9.13.min.js"></script>
+  <%= javascript_include_tag 'mobile_page/chat_app/boot' %>
+<% end %>
+
+<div style='position:relative;'>
+  <p id="chat-notice" class="hidden text-center bg-white">连接中...</p>
+</div>
+
+<div id="chat-box">
+</div>

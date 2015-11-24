@@ -401,6 +401,7 @@ GEM
       http-cookie (>= 1.0.2, < 2.0)
       mime-types (>= 1.16, < 3.0)
       netrc (~> 0.7)
+    rongcloud (0.1.4)
     rubyzip (1.0.0)
     safe_yaml (1.0.4)
     sanitize (4.0.0)
@@ -558,6 +559,7 @@ DEPENDENCIES
   redis (~> 3.0)
   redis-namespace
   redis-rails
+  rongcloud
   sanitize
   sass-rails (~> 5.0)
   select2-rails (~> 3.5.9.1)

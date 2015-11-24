@@ -47,6 +47,11 @@ ActiveRecord::Schema.define(version: 20151123041849) do
     t.string   "image_type"
   end
 
+  create_table "attention_associations", force: :cascade do |t|
+    t.integer "user_id"
+    t.integer "following_id"
+  end
+
   create_table "bank_cards", force: :cascade do |t|
     t.integer  "user_id"
     t.string   "number"
@@ -192,6 +197,7 @@ ActiveRecord::Schema.define(version: 20151123041849) do
     t.datetime "updated_at", null: false
   end
 
+<<<<<<< HEAD
   add_index "favour_products", ["product_id", "user_id"], name: "index_favour_products_on_product_id_and_user_id", unique: true, using: :btree
 
   create_table "job_histories", force: :cascade do |t|
@@ -209,6 +215,11 @@ ActiveRecord::Schema.define(version: 20151123041849) do
 
   create_table "json_test", force: :cascade do |t|
     t.jsonb "data"
+  end
+
+  create_table "follower_associations", force: :cascade do |t|
+    t.integer "user_id"
+    t.integer "follower_id"
   end
 
   create_table "mobile_captchas", force: :cascade do |t|
@@ -401,6 +412,7 @@ ActiveRecord::Schema.define(version: 20151123041849) do
     t.integer  "product_class_id"
     t.datetime "created_at",                      null: false
     t.datetime "updated_at",                      null: false
+    t.integer  "user_id"
   end
 
   create_table "product_property_values", force: :cascade do |t|
@@ -409,7 +421,10 @@ ActiveRecord::Schema.define(version: 20151123041849) do
     t.integer  "product_class_id"
     t.datetime "created_at",          null: false
     t.datetime "updated_at",          null: false
+    t.integer  "user_id"
   end
+
+  add_index "product_property_values", ["user_id"], name: "index_product_property_values_on_user_id", using: :btree
 
   create_table "product_property_values_products", id: false, force: :cascade do |t|
     t.integer "product_id",                null: false
@@ -691,6 +706,7 @@ ActiveRecord::Schema.define(version: 20151123041849) do
     t.integer  "agent_code"
     t.string   "authentication_token"
     t.decimal  "privilege_rate",         default: 50.0
+    t.string   "rongcloud_token"
   end
 
   add_index "users", ["agent_code"], name: "index_users_on_agent_code", unique: true, using: :btree
@@ -736,6 +752,8 @@ ActiveRecord::Schema.define(version: 20151123041849) do
   add_foreign_key "privilege_cards", "users"
   add_foreign_key "refund_messages", "order_item_refunds"
   add_foreign_key "refund_records", "order_item_refunds"
+  add_foreign_key "product_properties", "users"
+  add_foreign_key "product_property_values", "users"
   add_foreign_key "selling_incomes", "orders"
   add_foreign_key "selling_incomes", "users"
   add_foreign_key "sharing_incomes", "order_items"

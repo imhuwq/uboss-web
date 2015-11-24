@@ -209,6 +209,7 @@ class AccountsController < ApplicationController
   def binding_successed
     render layout: 'mobile'
   end
+
   private
 
   def account_orders(type)
