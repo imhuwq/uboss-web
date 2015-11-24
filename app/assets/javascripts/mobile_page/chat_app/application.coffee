@@ -1,5 +1,7 @@
 #= require underscore-min
 #= require backbone-min
+#= require iscroll/iscroll-lite
+#= require iscroll/iscroll-infinite
 #= require_self
 #= require_tree ./templates
 #= require_tree ./views
