@@ -98,7 +98,7 @@ class AccountsController < ApplicationController
   end
 
   def reset_password
-    current_user.update(need_reset_password: true)
+    # current_user.update(need_reset_password: true)
     redirect_to edit_password_account_path
   end
 
