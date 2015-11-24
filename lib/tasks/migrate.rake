@@ -41,7 +41,7 @@ namespace :migrate do
   end
 
   desc "Init User rongclud token"
-  task :init_rongcloud_token do
+  task init_rongcloud_token: :environment  do
     User.where(rongcloud_token: nil).find_each do |user|
       user.get_rongcloud_token
     end
