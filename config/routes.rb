@@ -135,6 +135,7 @@ Rails.application.routes.draw do
       end
 
       get '/select_carriage_template', to: 'products#select_carriage_template'
+      get '/refresh_carriage_template', to: 'products#refresh_carriage_template'
 
       resources :expresses do
         member do

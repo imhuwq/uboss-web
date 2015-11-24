@@ -39,7 +39,7 @@ $ ->
       $('#product_traffic_expense').val('0.0')
 
     if $("label[for='product_transportation_way_2']").find('input')[0].checked
-      $('#product_carriage_template_id').trigger('chosen:open');
+      $('#product_carriage_template_id').trigger('chosen:open')
 
     if !$("label[for='product_transportation_way_2']").find('input')[0].checked
       $('.select_carriage_template').remove()
