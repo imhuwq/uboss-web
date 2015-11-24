@@ -33,7 +33,7 @@ class Order < ActiveRecord::Base
 
   aasm column: :state, enum: true, skip_validation_on_save: true, whiny_transitions: false do
     state :unpay
-    state :payed, after_enter: [:create_privilege_card_if_none, :send_payed_sms_to_seller]
+    state :payed, after_enter: [:create_privilege_card_if_none, :send_payed_sms_to_seller, :send_payed_wx_template_msg]
     state :shiped, after_enter: :fill_shiped_at
     state :signed, after_enter: [:fill_signed_at, :active_privilege_card]
     state :completed, after_enter: :fill_completed_at
@@ -169,6 +169,24 @@ class Order < ActiveRecord::Base
       end
       sum
     end
+  end
+
+  def send_payed_wx_template_msg
+    order_seller = self.seller
+    order_buyer  = self.user
+    order_agent  = order_seller.agent
+
+    WxTemplateMsg.order_payed_msg_to_seller(order_seller.weixin_openid, '', self) if order_seller && order_seller.weixin_openid.present?
+    WxTemplateMsg.order_payed_msg_to_buyer(order_buyer.weixin_openid,   '', self) if order_buyer  && order_buyer.weixin_openid.present?
+    WxTemplateMsg.order_payed_msg_to_agent(order_agent.weixin_openid,   '', self) if order_agent  && order_agent.weixin_openid.present?
+  end
+
+  def ship_info
+    "#{address} #{username}(收)"
+  end
+
+  def total_privilege_amount
+    order_items.inject(0){ |sum, oi| sum + oi.privilege_amount*oi.amount}
   end
 
   def order_charge
