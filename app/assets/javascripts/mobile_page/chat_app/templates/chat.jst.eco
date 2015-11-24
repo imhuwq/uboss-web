@@ -5,12 +5,12 @@
       <li targetType="<%= item.getConversationType().valueOf() %>" targetId="<%= item.getTargetId() %>" targetName="<% item.getConversationTitle() %>">
         <span class="user_img">
           <img src='http://ssobu-dev.b0.upaiyun.com/user/avatar/bbc96ef5ed86c4f240dd5f3e4dd0423f.png-thumb'/>
-          <font class="conversation_msg_num"><%= item.getUnreadMessageCount() %></font>
+          <font class="conversation_msg_num <%= 'hidden' unless item.getUnreadMessageCount() > 0 %>"><%= item.getUnreadMessageCount() %></font>
         </span>
         <span class="conversationInfo">
           <font class="user_name"><%= item.getConversationTitle() %></font>
-          <font class="date" ><%= new Date(+item.getLatestTime()).toString().split(" ")[4] %></font>
         </span>
+        <font class="date pull-right" ><%= new Date(+item.getLatestTime()).toString().split(" ")[4] %></font>
       </li>
     </a>
   <% end %>

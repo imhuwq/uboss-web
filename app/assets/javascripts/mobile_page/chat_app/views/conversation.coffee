@@ -13,7 +13,9 @@ class UXin.Views.Conversation extends Backbone.View
 
   initialize: ->
     @listenTo UXin.Services.messageServices, 'new', (message)->
-      @addMessages(message) if message.getTargetId() == UXin.currentConversationTargetId
+      if message.getTargetId() == UXin.currentConversationTargetId
+        @addMessages(message)
+        @currentConversation.setUnreadMessageCount(0) if @getCurrentConversation()?
 
   render: ->
     @$el.html @template()
@@ -22,6 +24,10 @@ class UXin.Views.Conversation extends Backbone.View
     else
       @listenTo UXin.Services.connectionService, 'success', @getMessages
     @
+
+  getCurrentConversation: ->
+    conversationType = RongIMClient.ConversationType.PRIVATE.valueOf()
+    @currentConversation ?= RongIMClient.getInstance().getConversation RongIMClient.ConversationType.setValue(conversationType), UXin.currentConversationTargetId
 
   sendMessage: ->
     tMsg = $('#send-msg').val()
@@ -96,8 +102,7 @@ class UXin.Views.Conversation extends Backbone.View
     console.log 'render history messages'
     _.each @currentHistoryMessages, @addMessages, @
 
-    @currentConversation = RongIMClient.getInstance().getConversation RongIMClient.ConversationType.setValue(conversationType), UXin.currentConversationTargetId
-    if @currentConversation?
+    if @getCurrentConversation()?
       @currentConversation.setUnreadMessageCount(0)
     RongIMClient.getInstance().clearMessagesUnreadStatus(RongIMClient.ConversationType.setValue(conversationType), UXin.currentConversationTargetId)
     UXin.Services.messageServices.renderUnread()

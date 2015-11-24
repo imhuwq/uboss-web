@@ -9,6 +9,7 @@
   color: #43c3aa;
   border: 1px solid #eee;
   position: absolute;
+  z-index: 999;
   width: 100%;
   box-sizing: border-box;
   top: 0px;
@@ -21,10 +22,21 @@
 
 #chat-box {
   .user_img {
+    display: inline-block;
+    position: relative;
     img {
       height: 35px;
       width: 35px;
       border-radius: 25px;
+    }
+    .conversation_msg_num {
+      background-color: red;
+      color: white;
+      padding: 3px 6px;
+      border-radius: 25px;
+      position: absolute;
+      top: -9px;
+      left: 23px;
     }
   }
   .conversation-box {

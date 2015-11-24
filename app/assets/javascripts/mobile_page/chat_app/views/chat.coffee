@@ -6,6 +6,7 @@ class UXin.Views.Chat extends Backbone.View
 
   initialize: ->
     @hasSync = false
+    @listenTo UXin.Services.messageServices, 'new', @render
     if UXin.Services.connectionService.connected()
       @synConversations()
     else

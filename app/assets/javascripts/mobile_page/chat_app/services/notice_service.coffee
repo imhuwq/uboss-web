@@ -2,12 +2,20 @@ class UXin.Services.NoticeService
 
   el: '#chat-notice'
 
-  titleEl: '.header-bar .title'
+  titleEl: '.header-bar .back'
 
   newMessage: ->
     title = $(@titleEl).text()
-    unless title.match(/新信息/)
-      $(@titleEl).prepend('<small class="new-msg-notice">新消息 - </small>')
+    totalUnreadCount = RongIMClient.getInstance().getTotalUnreadCount()
+    if totalUnreadCount > 0
+      if $(@titleEl).find('.new-msg-notice').length > 0
+        $(@titleEl).find('.new-msg-notice').html("(#{RongIMClient.getInstance().getTotalUnreadCount()})")
+      else
+        $(@titleEl).append """
+          <small class="new-msg-notice">(#{RongIMClient.getInstance().getTotalUnreadCount()})</small>
+        """
+    else
+      $(@titleEl).find('.new-msg-notice').html("")
 
   flashWarn: (msg) ->
     @warn msg

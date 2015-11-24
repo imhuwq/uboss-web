@@ -1,7 +1,7 @@
 <li targetType="<%= @targetType %>" targetId="<%= @targetId %>" targetName="<% @targetName %>">
   <span class="user_img">
     <img src='<%= @targetAvatar %>' onerror="this.src=<%= @errorAavatar %>" />
-    <font class="conversation_msg_num #{hideMsgNum}"><%= @unreadMessageCount %></font>
+    <font class="conversation_msg_num <%= @hideMsgNum %>"><%= @unreadMessageCount %></font>
   </span>
   <span class="conversationInfo">
     <font class="user_name"><%= @conversationTitle %></font>
