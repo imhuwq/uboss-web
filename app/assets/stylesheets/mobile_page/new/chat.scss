@@ -37,6 +37,8 @@
       position: absolute;
       top: -9px;
       left: 23px;
+      line-height: 1;
+      font-weight: 100;
     }
   }
   .conversation-box {
@@ -68,8 +70,34 @@
     }
   }
   .xiaoxiti {
+    min-height: 40px;
+    margin: 12px 0;
+    padding: 5px;
+    .msg-content{
+      margin-top: 8px;
+    }
     &.self {
-      text-align: right;
+      .msg-info {
+        text-align: right;
+      }
+      .msg-content{
+        float:right;
+      }
+      .msg {
+        overflow:auto;
+        margin-right: 45px;
+      }
+      .user_img {
+        float: right;
+      }
+    }
+    &.other_user {
+      .msg {
+        margin-left: 45px;
+      }
+      .user_img {
+        float: left;
+      }
     }
   }
 }

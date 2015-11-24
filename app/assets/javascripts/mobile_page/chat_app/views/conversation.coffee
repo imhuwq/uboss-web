@@ -11,6 +11,8 @@ class UXin.Views.Conversation extends Backbone.View
 
   currentConversation: null
 
+  disableScrolling: false
+
   initialize: ->
     @listenTo UXin.Services.messageServices, 'new', (message)->
       if message.getTargetId() == UXin.currentConversationTargetId
@@ -20,22 +22,35 @@ class UXin.Views.Conversation extends Backbone.View
   clearCurrentConversation: ->
     UXin.currentConversationTargetId = null
     @currentConversation = null
+    @myscroll.destroy()
+    @myscroll = null
 
-  freshScroll: ->
-    @myscroll ?= new IScroll('.conversation-box')
+  freshScroll: (anim = true)->
+    return false if @disableScrolling
+    console.log 'flashing'
+    @myscroll ?= new IScroll '.conversation-box',
+      scrollbars: true
+      interactiveScrollbars: true
+      shrinkScrollbars: 'scale'
+      fadeScrollbars: true
     setTimeout =>
       @myscroll.refresh()
     ,0
     setTimeout =>
-      @myscroll.scrollTo 0, @myscroll.maxScrollY, 500, IScroll.utils.ease.quadratic
+      time = if anim then 500 else 0
+      @myscroll.scrollTo 0, @myscroll.maxScrollY, time, IScroll.utils.ease.quadratic
     ,100
 
   render: ->
     @$el.html @template()
     if UXin.Services.connectionService.connected()
+      @disableScrolling = true
       @getMessages()
+      @disableScrolling = false
     else
       @listenTo UXin.Services.connectionService, 'success', @getMessages
+    $('#chat-box').html @el
+    @freshScroll(false)
     @
 
   getCurrentConversation: ->
@@ -91,7 +106,7 @@ class UXin.Views.Conversation extends Backbone.View
       avatar: if message.getMessageDirection() == RongIMClient.MessageDirection.SEND then "owner" else "personPhoto"
       content: message.getContent()
       messageId: message.getMessageId()
-      errorAavatar: "http://ssobu-dev.b0.upaiyun.com/asset_img/avatar/c77c276c3c0182f62e516b2479a14b08.gif"
+      errorAavatar: "http://ssobu-dev.b0.upaiyun.com/user/avatar/bd2169252c1003113eaabf5484f353d9.jpeg-thumb"
     )
     @freshScroll()
 

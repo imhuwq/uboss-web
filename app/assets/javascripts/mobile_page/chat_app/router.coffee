@@ -23,7 +23,7 @@ class UXin.Router extends Backbone.Router
     console.log "openConversation:#{targetId}"
     UXin.currentConversationTargetId = targetId
     UXin.Views.conversation ?= new UXin.Views.Conversation
-    $('#chat-box').html UXin.Views.conversation.render().el
+    UXin.Views.conversation.render()
     @renderConversationNav()
 
   renderConversationNav: ->
