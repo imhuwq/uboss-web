@@ -33,7 +33,7 @@ class Order < ActiveRecord::Base
 
   aasm column: :state, enum: true, skip_validation_on_save: true, whiny_transitions: false do
     state :unpay
-    state :payed, after_enter: [:create_privilege_card_if_none, :send_payed_sms_to_seller]
+    state :payed, after_enter: [:invoke_order_payed_job]
     state :shiped, after_enter: :fill_shiped_at
     state :signed, after_enter: [:fill_signed_at, :active_privilege_card]
     state :completed, after_enter: :fill_completed_at
@@ -190,6 +190,18 @@ class Order < ActiveRecord::Base
     end
   end
 
+  def invoke_order_payed_job
+    OrderPayedJob.perform_later(self)
+  end
+
+  def ship_info
+    "#{address} #{username}(收)"
+  end
+
+  def total_privilege_amount
+    order_items.inject(0){ |sum, oi| sum + oi.privilege_amount*oi.amount}
+  end
+
   def order_charge
     super || build_order_charge
   end
@@ -289,16 +301,6 @@ class Order < ActiveRecord::Base
 
   def recover_product_stock
     order_items.each { |order_item| order_item.recover_product_stock }
-  end
-
-  def create_privilege_card_if_none
-    order_items.each(&:create_privilege_card_if_none)
-  end
-
-  def send_payed_sms_to_seller
-    if seller
-      PostMan.delay.send_sms(seller.login, {name: seller.identify}, 968369)
-    end
   end
 
   def active_privilege_card

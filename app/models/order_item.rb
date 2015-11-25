@@ -34,10 +34,6 @@ class OrderItem < ActiveRecord::Base
     product || product_inventory.product
   end
 
-  def product_name
-    product.try(:name) || product_inventory.product.name
-  end
-
   def image_url(version=nil)
     item_product.image_url(version)
   end
@@ -48,10 +44,6 @@ class OrderItem < ActiveRecord::Base
       product_id: product_id,
       parent_id: sharing_node_id
     )
-  end
-
-  def create_privilege_card_if_none
-    PrivilegeCard.find_or_active_card(user_id, order.seller_id)
   end
 
   def active_privilege_card
