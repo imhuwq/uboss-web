@@ -224,7 +224,7 @@ module WxTemplateMsg extend self
   def income_arrive_notify_msg_to_sharer_data(sharing_income)
     {
       first: {
-        value: "你申请的退款已经有结果了\n",
+        value: "亲，您有一个好友给您带来了新的分享收益哦！\n",
         color: "#173177"
       },
       keyword1: {
