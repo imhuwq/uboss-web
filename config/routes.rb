@@ -64,7 +64,7 @@ Rails.application.routes.draw do
     get :success, on: :member
   end
   resource :chat, only: [:show] do
-    get :token, :user_info
+    get :token, :user_info, :check_user_online
   end
   resource :account, only: [:show, :edit, :update] do
     get :settings,         :edit_password,     :reset_password,
@@ -110,7 +110,7 @@ Rails.application.routes.draw do
         get :orders, :privilege_cards
       end
       resource :chat, only: [] do
-        get :token
+        get :token, :check_user_online
       end
     end
   end
