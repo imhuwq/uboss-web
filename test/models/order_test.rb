@@ -25,31 +25,31 @@ class OrderTest < ActiveSupport::TestCase
     end
   end
 
-  describe '运费计算' do
-    it '单个物品包邮' do
-    end
 
-    it '单个物品统一运费' do
-    end
+  test '多个商品运费满减' do
+    items = []
+    items.push(item1 = create(:order_item))
+    items.push(item2 = create(:order_item))
+    items.push(item3 = create(:order_item))
+    #item1 统一运费, 满20元包邮
+    p1 = item1.product
+    p1.update(full_cut: true, full_cut_number: 20, full_cut_unit: 1)
+    item1.amount = 10
+    item1.save
 
-    it '含有包邮和统一运费' do
-    end
+    #item2 统一运费, 满2件包邮
+    p2 = item2.product
+    p2.update(full_cut: true, full_cut_number: 2, full_cut_unit: 0)
+    item2.amount = 2
+    item2.save
 
-    it '含有包邮和模板' do
-    end
-
-    it '含有统一运费和模板' do
-    end
-
-    it '含有包邮, 统一, 模板' do
-    end
-  end
-
-  describe '单个物品模板' do
-    it '件数大于首费情况' do
-    end
-
-    it '件数小于首费情况' do
-    end
+    #item2 模板
+    p3 = item3.product
+    p3.update(full_cut: true, full_cut_number: 2, full_cut_unit: 0, transportation_way: 2, carriage_template_id: 1)
+    item3.amount = 2
+    item3.save
+    user_address = create(:user_address)
+    price = Order.calculate_ship_price(items, user_address)
+    assert_equal price , 0.0
   end
 end
