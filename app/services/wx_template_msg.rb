@@ -5,7 +5,7 @@ module WxTemplateMsg extend self
 
   # 订单支付成功(消费者）
   def order_payed_msg_to_buyer(touser, order)
-    send_template_msg(touser, 1, '', order_payed_msg_to_buyer_data(order))
+    send_template_msg(touser, 1, 'http://uboss.me/about', order_payed_msg_to_buyer_data(order))
   end
 
   # 新订单通知（商家）

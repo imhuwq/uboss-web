@@ -203,9 +203,9 @@ class Order < ActiveRecord::Base
     order_buyer  = self.user
     order_agent  = order_seller.agent
 
-    WxTemplateMsg.order_payed_msg_to_seller(order_seller.weixin_openid, '', self) if order_seller && order_seller.weixin_openid.present?
-    WxTemplateMsg.order_payed_msg_to_buyer(order_buyer.weixin_openid,   '', self) if order_buyer  && order_buyer.weixin_openid.present?
-    WxTemplateMsg.order_payed_msg_to_agent(order_agent.weixin_openid,   '', self) if order_agent  && order_agent.weixin_openid.present?
+    WxTemplateMsg.delay.order_payed_msg_to_seller(order_seller.weixin_openid, self) if order_seller && order_seller.weixin_openid.present?
+    WxTemplateMsg.delay.order_payed_msg_to_buyer(order_buyer.weixin_openid,   self) if order_buyer  && order_buyer.weixin_openid.present?
+    WxTemplateMsg.delay.order_payed_msg_to_agent(order_agent.weixin_openid,   self) if order_agent  && order_agent.weixin_openid.present?
   end
 
   def ship_info
