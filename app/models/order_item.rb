@@ -47,10 +47,6 @@ class OrderItem < ActiveRecord::Base
     product || product_inventory.product
   end
 
-  def product_name
-    product.try(:name) || product_inventory.product.name
-  end
-
   def image_url(version=nil)
     item_product.image_url(version)
   end
