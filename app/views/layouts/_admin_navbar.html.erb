@@ -13,12 +13,14 @@
         <% if can?(:create, PersonalAuthentication) %>
 				  <li><%= link_to "商家认证", admin_user_personal_authentication_path(user_id: current_user.id) %></li>
         <% end %>
-        <% if current_user.is_seller? %>
-          <li><%= link_to "店铺设置", edit_admin_seller_path(current_user) %></li>
-        <% end %>
 				<li><%= link_to '退出', destroy_user_session_path, method: :delete %></li>
 			</ul>
 		</div>
+    <div id='setting'>
+      <%= link_to edit_admin_account_path do %>
+        <i class="fa fa-cog"></i>
+      <% end %>
+    </div>
 
     <nav>
       <ul>
