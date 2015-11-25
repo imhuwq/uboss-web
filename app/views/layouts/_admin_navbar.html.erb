@@ -23,6 +23,11 @@
 				<li><%= link_to '退出', destroy_user_session_path, method: :delete %></li>
 			</ul>
 		</div>
+    <div id='setting'>
+      <%= link_to edit_admin_account_path do %>
+        <i class="fa fa-cog"></i>
+      <% end %>
+    </div>
 
     <nav>
       <ul>
