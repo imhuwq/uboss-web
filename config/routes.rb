@@ -64,7 +64,7 @@ Rails.application.routes.draw do
     get :success, on: :member
   end
   resource :chat, only: [:show] do
-    get :token
+    get :token, :user_info
   end
   resource :account, only: [:show, :edit, :update] do
     get :settings,         :edit_password,     :reset_password,
@@ -104,6 +104,7 @@ Rails.application.routes.draw do
     namespace :v1 do
       post 'login', to: 'sessions#create'
       resources :mobile_captchas, only: [:create]
+      resources :users, only: [:show]
       resource :account, only: [] do
         patch :update_password
         get :orders, :privilege_cards

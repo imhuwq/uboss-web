@@ -48,6 +48,7 @@
     UXin.Services.connectionService = new UXin.Services.ConnectionService
     UXin.Services.messageServices   = new UXin.Services.MessageServices
     UXin.Services.noticeService     = new UXin.Services.NoticeService
+    UXin.Services.userInfoService   = new UXin.Services.UserInfoServices
 
     RongIMClient.getInstance().setOnReceiveMessageListener
       onReceived: (message) ->
