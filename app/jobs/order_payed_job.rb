@@ -31,9 +31,9 @@ class OrderPayedJob < ActiveJob::Base
   end
 
   def send_payed_wx_template_msg
-    WxTemplateMsg.order_payed_msg_to_seller(seller.weixin_openid, self) if seller && seller.weixin_openid.present?
-    WxTemplateMsg.order_payed_msg_to_buyer(buyer.weixin_openid,   self) if buyer  && buyer.weixin_openid.present?
-    WxTemplateMsg.order_payed_msg_to_agent(agent.weixin_openid,   self) if agent  && agent.weixin_openid.present?
+    WxTemplateMsg.order_payed_msg_to_seller(seller.weixin_openid, order) if seller && seller.weixin_openid.present?
+    WxTemplateMsg.order_payed_msg_to_buyer(buyer.weixin_openid,   order) if buyer  && buyer.weixin_openid.present?
+    WxTemplateMsg.order_payed_msg_to_agent(agent.weixin_openid,   order) if agent  && agent.weixin_openid.present?
   end
 
 end
