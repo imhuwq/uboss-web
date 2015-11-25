@@ -59,10 +59,6 @@ class OrderItem < ActiveRecord::Base
     )
   end
 
-  def create_privilege_card_if_none
-    PrivilegeCard.find_or_active_card(user_id, order.seller_id)
-  end
-
   def active_privilege_card
     if card = PrivilegeCard.find_by(user_id: user_id, seller_id: order.seller_id, actived: false)
       card.update_column(:actived, true)

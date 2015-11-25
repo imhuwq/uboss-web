@@ -21,7 +21,7 @@ class OrderPayedJob < ActiveJob::Base
   private
 
   def create_privilege_card_if_none
-    order.order_items.each(&:create_privilege_card_if_none)
+    PrivilegeCard.find_or_active_card(buyer.id, seller.id)
   end
 
   def send_payed_sms_to_seller
@@ -31,9 +31,9 @@ class OrderPayedJob < ActiveJob::Base
   end
 
   def send_payed_wx_template_msg
-    WxTemplateMsg.order_payed_msg_to_seller(seller.weixin_openid, self) if seller && seller.weixin_openid.present?
-    WxTemplateMsg.order_payed_msg_to_buyer(buyer.weixin_openid,   self) if buyer  && buyer.weixin_openid.present?
-    WxTemplateMsg.order_payed_msg_to_agent(agent.weixin_openid,   self) if agent  && agent.weixin_openid.present?
+    WxTemplateMsg.order_payed_msg_to_seller(seller.weixin_openid, order) if seller && seller.weixin_openid.present?
+    WxTemplateMsg.order_payed_msg_to_buyer(buyer.weixin_openid,   order) if buyer  && buyer.weixin_openid.present?
+    WxTemplateMsg.order_payed_msg_to_agent(agent.weixin_openid,   order) if agent  && agent.weixin_openid.present?
   end
 
 end

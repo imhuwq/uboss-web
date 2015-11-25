@@ -39,11 +39,6 @@ class OrderCharge < ActiveRecord::Base
     self.pay_serial_number = "#{number}-#{Time.current.to_i}"
   end
 
-  def orders_detail
-    count = order_items.count
-    count > 1 ? "#{order_items.first.item_product.name}等#{count}款商品" : "#{order_items.first.item_product.name}"
-  end
-
   def pay_amount
     orders.sum(:pay_amount)
   end

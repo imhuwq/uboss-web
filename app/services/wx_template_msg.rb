@@ -112,7 +112,7 @@ module WxTemplateMsg extend self
         color: "#000"
       },
       remark: {
-        value: "订单状态：已付款\n订单详情：#{order.order_charge.orders_detail}\n\n截止 #{Time.now.strftime('%d日 %H:%M')}，您尚有#{seller_paid_orders_count(order).try(:count)}个订单未处理。",
+        value: "订单状态：已付款\n订单详情：#{order.order_charge.orders_detail.join('、').truncate(25)} #{order.order_items.count}款商品\n\n截止 #{Time.now.strftime('%d日 %H:%M')}，您尚有#{seller_paid_orders_count(order).try(:count)}个订单未处理。",
         color: "#000"
       }
     }
