@@ -40,14 +40,13 @@ $ ->
 
   $("header .menu-btn").on 'click', ->
     $('header .nav-bar').toggle()
-  
+
   $('.container ').on 'click', ->
     $('header .nav-bar').hide();
 
   $(document).on 'click', '.pop-bg', (e) ->
     unless $(e.target).closest('.pop-content').length > 0
       $(this).hide()
-
 
   $('.tab-nav .tab').on 'click', (e)->
     $('.tab-nav .tab').removeClass('active')
@@ -56,3 +55,9 @@ $ ->
     $('.tab-container .tab-content').hide()
     $(tid).show()
 
+  $('.chat-to-btn').each ->
+    element = $(this)
+    $.getJSON "/chat/check_user_online",
+      user_id: $(this).data('uid')
+    , (response) ->
+      element.addClass("online") if response.online

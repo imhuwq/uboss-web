@@ -84,6 +84,15 @@
 
 </div><!-- order-list -->
 
+<br />
+
+<div>
+  <%= link_to chat_path(anchor: "conversations/#{@seller.id}"), class: 'chat-to-btn', data: { uid: @seller.id } do %>
+    <%= image_tag 'radio-check.png' %>
+    <span>联系商家</span>
+  <% end %>
+</div>
+
 <br/>
 
 <div class="bg-white gap gray-color line-gap">
