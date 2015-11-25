@@ -41,10 +41,10 @@ class UXin.Services.MessageServices
     if RongIMClient.getInstance().getConversation(RongIMClient.ConversationType.setValue(conversationtype.valueOf()), message.getTargetId()) is null
       conversation = RongIMClient.getInstance().createConversation(RongIMClient.ConversationType.setValue(conversationtype.valueOf()), message.getTargetId(), '新会话')
       RongIMClient.getInstance().getUserInfo message.getTargetId(),
-        onSuccess: (info) ->
+        onSuccess: (info) =>
           console.log "set cs title: #{info.getUserName()}"
           conversation.setConversationTitle info.getUserName()
-        onError: ->
+        onError: =>
           conversation.setConversationTitle "陌生人Id：#{message.getTargetId()}"
     @trigger('new', message)
 

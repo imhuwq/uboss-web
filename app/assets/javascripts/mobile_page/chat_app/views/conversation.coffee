@@ -101,15 +101,27 @@ class UXin.Views.Conversation extends Backbone.View
 
   addMessages: (message) ->
     console.log 'addMessages'
+    userInfo = @getMessageUserInfo(message)
     @$el.find('#msg-box').append @message_template(
       direction: if message.getMessageDirection() == RongIMClient.MessageDirection.RECEIVE then "other_user" else "self"
-      avatar: if message.getMessageDirection() == RongIMClient.MessageDirection.SEND then "owner" else "personPhoto"
+      avatar: if userInfo.avatar then "#{userInfo.avatar}-thumb" else "/t/noimage.gif"
+      username: userInfo.nickname
       content: message.getContent()
       messageId: message.getMessageId()
       sentTime: UXin.Util.msgTime(new Date message.getSentTime())
-      errorAavatar: "http://ssobu-dev.b0.upaiyun.com/user/avatar/bd2169252c1003113eaabf5484f353d9.jpeg-thumb"
+      sender: message.getSenderUserId()
     )
     @freshScroll()
+
+  getMessageUserInfo: (message) ->
+    userInfo = UXin.Services.userInfoService.getUserInfo message.getSenderUserId(), (userInfo)=>
+      $(".xiaoxiti[data-sender='#{userInfo.id}'] .user_img img").attr('src', "#{userInfo.avatar}-thumb")
+      $(".xiaoxiti[data-sender='#{userInfo.id}'] .u-name").html(userInfo.nickname)
+
+    if userInfo?
+      userInfo
+    else
+      { nickname: 'Loading' }
 
   getMessages: (again) ->
     console.log 'getMessages'

@@ -2,6 +2,8 @@ class UXin.Views.Chat extends Backbone.View
 
   template: JST["#{UXin.TemplatesPath}/chat"]
 
+  conversation_template: JST["#{UXin.TemplatesPath}/conversation_item"]
+
   class: 'con-list-box'
 
   initialize: ->
@@ -44,5 +46,25 @@ class UXin.Views.Chat extends Backbone.View
         @trigger('syncdone')
 
   render: ->
-    @$el.html @template(conversations: UXin.ConversationList)
+    @$el.html @template()
+    for conversation in UXin.ConversationList
+      userInfo = @getConversationUserInfo(conversation)
+      @$el.find('#conversation-list').append @conversation_template(
+        targetId: conversation.getTargetId()
+        conversationType: conversation.getConversationType().valueOf()
+        conversationTitle: userInfo.nickname || conversation.getConversationTitle() || '陌生人'
+        avatar: if userInfo.avatar then "#{userInfo.avatar}-thumb" else "/t/noimage.gif"
+        unreadMessageCount: conversation.getUnreadMessageCount()
+        latestTime: conversation.getLatestTime()
+      )
     @
+
+  getConversationUserInfo: (conversation) ->
+    userInfo = UXin.Services.userInfoService.getUserInfo conversation.getTargetId(), (userInfo)=>
+      $("li[targetid='#{userInfo.id}'] .user_img img").attr('src', "#{userInfo.avatar}-thumb")
+      $("li[targetid='#{userInfo.id}'] .u-name").html(userInfo.nickname)
+
+    if userInfo?
+      userInfo
+    else
+      {}
