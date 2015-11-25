@@ -76,7 +76,7 @@ class User < ActiveRecord::Base
   before_create :set_mobile, :set_default_role
   before_create :build_user_info, if: -> { user_info.blank? }
   before_save   :set_service_rate
-  after_commit  :get_rongcloud_token, on: :create
+  after_commit  :invoke_rongcloud_job, on: [:create, :update]
 
   scope :admin, -> { where(admin: true) }
   scope :agent, -> { role('agent') }
@@ -156,8 +156,10 @@ class User < ActiveRecord::Base
 
   end
 
-  def get_rongcloud_token
-    RongcloudJob.perform_later(self)
+  def invoke_rongcloud_job
+    if rongcloud_token.blank? || [:nickname, :avatar].any? { |key| previous_changes.include?(key) }
+      RongcloudJob.perform_later(self)
+    end
   end
 
   # 默认绑定official agent
@@ -221,11 +223,11 @@ class User < ActiveRecord::Base
   end
 
   def identify
-    nickname || regist_mobile
+    nickname || mobile || regist_mobile
   end
 
   def store_identify
-    store_name || nickname || regist_mobile
+    store_name || nickname || mobile || regist_mobile
   end
 
   def total_income

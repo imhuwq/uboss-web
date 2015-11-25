@@ -23,7 +23,7 @@ gem 'weixin_authorize', github: "lanrion/weixin_authorize"
 gem 'ransack'
 gem 'rails-api'
 gem 'sanitize'
-gem 'rongcloud'
+gem 'rongcloud', github: 'xEasy/rongcloud'
 
 # copying of ActiveRecord objects and their associated children
 gem 'amoeba'
