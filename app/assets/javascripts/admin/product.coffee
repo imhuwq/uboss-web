@@ -43,3 +43,14 @@ $ ->
       $('#product_carriage_template_id_chosen').removeClass('chosen-container-active chosen-with-drop')
       $('#product_carriage_template_id_chosen').find('.chosen-single').find('span').text('请选择运费模板...');
       $('#product_carriage_template_id option:selected').attr('selected', false);
+
+
+  $("label[for='product_full_cut']").click (event)->
+    if $(this).find('input')[0].checked
+      $('.full_cut_params').show()
+      $(this).addClass('checkbox_is_checked')
+      $(this).removeClass('checkbox_no_checked')
+    else
+      $('.full_cut_params').hide()
+      $(this).addClass('checkbox_no_checked')
+      $(this).removeClass('checkbox_is_checked')

@@ -88,6 +88,15 @@
   <span class='link_new_carriage_temp'><%= link_to '新建运费模板', new_admin_carriage_template_path, target: '_blank', class: 'label new_admin_carriage_template' %></span>
   <%= render partial: 'show_carriage_template', locals: {carriage: @product.carriage_template} %>
 
+  <div class='full_cut_wrap'>
+    <label class='optional text-right control-label'>更多设置</label>
+    <%= f.input :full_cut, label_html: { class: @product.full_cut ? 'checkbox_is_checked':'checkbox_no_checked' } %>
+    <div class='full_cut_params' style=<%=@product.full_cut ? '': 'display:none'%>>
+      <%= f.number_field :full_cut_number, placeholder: '输入金额或件数' %>
+      <%= f.select :full_cut_unit, Product::FullCut.invert %>
+    </div>
+  </div>
+
 </div><!-- admin-box -->
 
 <br />

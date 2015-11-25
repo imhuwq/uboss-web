@@ -360,6 +360,9 @@ ActiveRecord::Schema.define(version: 20151118094804) do
     t.integer  "best_evaluation"
     t.integer  "better_evaluation"
     t.integer  "worst_evaluation"
+    t.boolean  "full_cut",             default: false
+    t.integer  "full_cut_number"
+    t.integer  "full_cut_unit"
   end
 
   create_table "redactor_assets", force: :cascade do |t|

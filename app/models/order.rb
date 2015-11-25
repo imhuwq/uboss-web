@@ -76,6 +76,7 @@ class Order < ActiveRecord::Base
       end
     end
 
+    #items1 是统一邮费, items2 是运费模板, user_address: 寄货地址
     def total_ship_price(items1, items2, user_address)
       return 0.0 if items1.blank? && items2.blank?
       begin
@@ -111,7 +112,7 @@ class Order < ActiveRecord::Base
 
     def carriage_way(different_area, count)
       extend_price = count.to_f / different_area.extend_item.to_f
-      different_area.extend_carriage * ( extend_price < 1 ? 1 : extend_price )
+      different_area.extend_carriage * ( extend_price < 1 ? 1 : extend_price.round )
     end
 
     def find_template_by_address(carriage_template, address)
@@ -156,11 +157,29 @@ class Order < ActiveRecord::Base
     end
 
     def calculate_ship_price(cart_items, user_address)
+      cart_items = meet_full_cut?(cart_items)
+
       items1 = cart_items.select{ |item| item.product_inventory.transportation_way == 1 }
       items2 = cart_items.select{ |item| item.product_inventory.transportation_way == 2 }
 
       total_ship_price(items1, items2, user_address)
     end
+
+    #运费满减
+    def meet_full_cut?(cart_items)
+      full_cut_items = cart_items.select{ |item| item.product_inventory.full_cut }
+
+      full_cut_items.each do |item|
+        if Product::FullCut[item.product_inventory.full_cut_unit] == '件'
+          cart_items.delete(item) if item.count >= item.product_inventory.full_cut_number
+        else
+          cart_items.delete(item) if (item.count * item.product_inventory.price) >= item.product_inventory.full_cut_number
+        end
+      end
+
+      return cart_items
+    end
+
 
     def sum_ship_price(cart_items, user_address)
       sum = 0.0
@@ -256,8 +275,10 @@ class Order < ActiveRecord::Base
   end
 
   def calculate_ship_price
-    items1 = order_items.select{ |item| item.product_inventory.transportation_way == 1 }
-    items2 = order_items.select{ |item| item.product_inventory.transportation_way == 2 }
+    cart_items = Order.meet_full_cut?(order_items)
+
+    items1 = cart_items.select{ |item| item.product_inventory.transportation_way == 1 }
+    items2 = cart_items.select{ |item| item.product_inventory.transportation_way == 2 }
 
     Order.total_ship_price(items1, items2, user_address)
   end
