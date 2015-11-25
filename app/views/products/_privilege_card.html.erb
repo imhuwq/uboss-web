@@ -56,7 +56,7 @@
             </div>
           </div><!-- pop-friend -->
           <script>
-            $('.t1,.t2,.t3,.t4,.input-box,.sun-bg,.show-share-btn').hide();
+            $('.t1,.t2,.t3,.t4,.input-box,.sun-bg,.show-share-btn,.pop-friend-close').hide();
             $('.pop-friend').removeClass('hidden');
             $('html,body').addClass('lock');
             window.onload = function(){
@@ -76,6 +76,9 @@
               setTimeout(function(){
                 $('.input-box').show().css('transform-origin','');
               },1600)
+              setTimeout(function(){
+                $('.pop-friend-close').show();
+              },1800)
               //动画结束
               <% if !current_user.try(:mobile).present? %>
               $('.pop-friend input[type="submit"]').on('click',function(){
