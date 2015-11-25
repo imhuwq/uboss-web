@@ -21,7 +21,7 @@ class OrderPayedJob < ActiveJob::Base
   private
 
   def create_privilege_card_if_none
-    order.order_items.each(&:create_privilege_card_if_none)
+    PrivilegeCard.find_or_active_card(buyer.id, seller.id)
   end
 
   def send_payed_sms_to_seller
