@@ -44,6 +44,6 @@ class SharingIncome < ActiveRecord::Base
   end
 
   def send_income_arrive_template_msg
-    WxTemplateMsg.delay.income_arrive_notify_msg_to_buyer(user.weixin_openid, self) if user && user.weixin_openid.present?
+    WxTemplateMsg.income_arrive_notify_msg_to_buyer(user.weixin_openid, self) if user && user.weixin_openid.present?
   end
 end
