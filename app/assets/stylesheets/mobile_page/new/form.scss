@@ -2,11 +2,13 @@ input,input:focus{
   outline:none;
   border:1px solid #ddd;
   display: inline-block;
-  padding: 2px 4px;
+  padding: 4px;
   line-height: 20px;
   color: #999;
   border-radius: 0;
   vertical-align: middle;
+  -webkit-appearance: none;
+  box-shadow: none;
 }
 textarea{
   border: none;
@@ -59,10 +61,7 @@ input:focus{
 .input-radius,.input-radius:focus{
   border-radius: 4px;
 }
-.input-large{
-  padding: 8px;
-}
-.input-large:focus{
+.input-large,.input-large:focus{
   padding: 8px;
 }
 .input-block{
