@@ -39,8 +39,8 @@
     <% if current_user.is_super_admin? %>
       <div class="form-group">
         <label class="control-label">所属商家</label>
-        <div class="control-input" style="padding:8px">
-          <span><%= link_to @product.user.identify, url_for(controller: 'admin/sellers', action: :show, id: @product.user) %></span>
+        <div class="control-input">
+          <span class="text-margin"><%= link_to @product.user.identify, url_for(controller: 'admin/sellers', action: :show, id: @product.user) %></span>
         </div>
       </div>
     <% end %>
@@ -92,7 +92,7 @@
     <div class="form-group">
         <label class="control-label">付款方式</label>
         <div class="control-input">
-          <span><%= Product::DataBuyerPay[@product.transportation_way] %></span>
+          <span class="text-margin"><%= Product::DataBuyerPay[@product.transportation_way] %></span>
         </div>
     </div>
     <% if Product::DataBuyerPay[@product.transportation_way] == '统一邮费' %>
