@@ -5,37 +5,44 @@ module WxTemplateMsg extend self
 
   # 订单支付成功(消费者）
   def order_payed_msg_to_buyer(touser, order)
-    send_template_msg(touser, 1, 'http://uboss.me/about', order_payed_msg_to_buyer_data(order))
+    data = order_payed_msg_to_buyer_data(order)
+    delay.send_template_msg(touser, 1, 'http://uboss.me/about', data)
   end
 
   # 新订单通知（商家）
   def order_payed_msg_to_seller(touser, order)
-    send_template_msg(touser, 2, '', order_payed_msg_to_seller_data(order))
+    data = order_payed_msg_to_seller_data(order)
+    delay.send_template_msg(touser, 2, '', data)
   end
 
   # 新订单通知（创客）
   def order_payed_msg_to_agent(touser, order)
-    send_template_msg(touser, 2, '', order_payed_msg_to_agent_data(order))
+    data = order_payed_msg_to_agent_data(order)
+    delay.send_template_msg(touser, 2, '', data)
   end
 
   # 退款申请通知（商家） TODO 买家申请退款
   def order_refund_msg_to_seller(touser, refund)
-    send_template_msg(touser, 3, '', order_refund_msg_to_seller_data(refund))
+    data = order_refund_msg_to_seller_data(refund)
+    delay.send_template_msg(touser, 3, '', data)
   end
 
   # 退款申请审核结果（消费者）（成功） TODO 微信退款成功
   def order_refund_success_msg_to_buyer(touser, refund)
-    send_template_msg(touser, 4, '', order_refund_success_msg_to_buyer_data(refund))
+    data = order_refund_success_msg_to_buyer_data(refund)
+    delay.send_template_msg(touser, 4, '', data)
   end
 
   # 退款申请审核结果（消费者）（失败） TODO 卖家选择发货、超时填写发货信息、超时处理卖家请求、微信退款失败
   def order_refund_fail_msg_to_buyer(touser, refund)
-    send_template_msg(touser, 4, '', order_refund_fail_msg_to_buyer_data(refund))
+    data = order_refund_fail_msg_to_buyer_data(refund)
+    delay.send_template_msg(touser, 4, '', data)
   end
 
   # 收益到帐提醒 SharingIncome after_create
   def income_arrive_notify_msg_to_buyer(touser, sharing_income)
-    send_template_msg(touser, 5, '', income_arrive_notify_msg_to_sharer_data(sharing_income))
+    data = income_arrive_notify_msg_to_sharer_data(sharing_income)
+    delay.send_template_msg(touser, 5, '', data)
   end
 
   private
