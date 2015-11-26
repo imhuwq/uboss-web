@@ -213,7 +213,7 @@
 <%= hidden_field_tag "submit_way" %>
 
 <% if @privilege_card.blank? && qr_sharing? %>
-  <%= render partial: 'privilege_card_pop', locals: { privilege_card: @privilege_card, product: @product, sharing_node: @sharing_node } %>
+  <%= render partial: 'privilege_card_pop' %>
 <% end %>
 
 <script type="text/javascript">

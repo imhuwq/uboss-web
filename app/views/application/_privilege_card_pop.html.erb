@@ -12,8 +12,13 @@
         <br />
       <% end %>
       <p>
-        <%= link_to "领取友情卡", get_product_sharing_path,
-          class: 'btn btn-block btn-large get-p-card-btn', data: { pid: product.id, uid: current_user.present? } %>
+        <% if @product.present? %>
+          <%= link_to "领取友情卡", get_product_sharing_path,
+            class: 'btn btn-block btn-large get-p-card-btn', data: { pid: @product.id, uid: current_user.present? } %>
+        <% elsif @seller.present? %>
+          <%= link_to "领取友情卡", get_seller_sharing_path,
+            class: 'btn btn-block btn-large get-p-card-btn', data: { sid: @seller.id, uid: current_user.present? } %>
+        <% end %>
       </p>
       <br />
       <p class="white-color">友情卡可以帮好友省钱，帮自己赚钱</p>
@@ -84,7 +89,8 @@
         type: 'GET',
         data: {
           mobile: user_tel,
-          product_id: element.data("pid")
+          product_id: element.data("pid"),
+          seller_id: element.data("sid")
         },
       }).done(function(data) {
         console.log("success");
