@@ -21,6 +21,7 @@ Rails.application.routes.draw do
   get 'sharing/:code', to: 'sharing#show', as: :sharing
   get 'maker_qrcode', to: 'home#maker_qrcode', as: :maker_qrcode
   get 'qrcode', to: 'home#qrcode', as: :request_qrcode
+  get 'ls_game', to: 'home#hongbao_game'
 
   get 'service_centre_consumer', to: 'home#service_centre_consumer'
   get 'service_centre_agent', to: 'home#service_centre_agent'
