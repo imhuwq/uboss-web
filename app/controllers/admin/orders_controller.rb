@@ -57,7 +57,7 @@ class Admin::OrdersController < AdminController
 
   def show
     @order_item = @order.order_items.first
-    @user_addresses = current_user.user_addresses.where(seller_address: true)
+    @user_addresses = current_user.seller_addresses
   end
 
   def update
@@ -67,7 +67,7 @@ class Admin::OrdersController < AdminController
   def set_express
     express = Express.find_by_name(express_params)
     express = Express.create(name: express_params, private_id: current_user.id) if express.blank?
-    if @order.update(order_params.merge(express_id: express.id)) && @order.can_be_ship? && @order.may_ship? && @order.ship!
+    if @order.update(order_params.merge(express_id: express.id)) && @order.ship!
       close_order_item_refund
       flash[:success] = '发货成功'
     else
