@@ -212,7 +212,6 @@ ActiveRecord::Schema.define(version: 20151118094804) do
 
   create_table "order_items", force: :cascade do |t|
     t.integer  "order_id"
-    t.integer  "product_id"
     t.integer  "user_id"
     t.integer  "amount"
     t.datetime "created_at",                         null: false
@@ -222,6 +221,7 @@ ActiveRecord::Schema.define(version: 20151118094804) do
     t.decimal  "present_price",        default: 0.0
     t.decimal  "privilege_amount",     default: 0.0
     t.integer  "product_inventory_id"
+    t.integer  "product_id"
     t.integer  "order_item_refund_id"
     t.integer  "refund_state",         default: 0
   end
