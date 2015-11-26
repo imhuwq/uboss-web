@@ -34,7 +34,7 @@ class Order < ActiveRecord::Base
   aasm column: :state, enum: true, skip_validation_on_save: true, whiny_transitions: false do
     state :unpay
     state :payed, after_enter: [:create_privilege_card_if_none, :send_payed_sms_to_seller]
-    state :shiped, after_enter: :fill_shiped_at
+    state :shiped, after_enter: [:fill_shiped_at, :close_order_item_refund_before_shiping]
     state :signed, after_enter: [:fill_signed_at, :active_privilege_card]
     state :completed, after_enter: :fill_completed_at
     state :closed, after_enter: :recover_product_stock
@@ -306,6 +306,20 @@ class Order < ActiveRecord::Base
   # 在work 中判断订单是否是创客权订单
   def invoke_official_agent_order_process
     OfficialAgentOrderJob.set(wait: 5.seconds).perform_later(self)
+  end
+
+  def close_order_item_refund_before_shiping
+    order_items.joins(:order_item_refunds).uniq.each do |item|
+      refund = item.last_refund
+      if refund.may_close? && refund.close!
+        refund.refund_messages.create(
+          user_type: '卖家',
+          user_id: refund.order_item.order.seller_id,
+          message: '商家选择发货，退款申请关闭',
+          action: '退款关闭'
+        )
+      end
+    end
   end
 
 end
