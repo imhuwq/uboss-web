@@ -31,11 +31,13 @@ class User < ActiveRecord::Base
   has_many :sellers, class_name: 'User', foreign_key: 'agent_id'
   has_many :seller_orders, through: :sellers, source: :sold_orders
   # for buyer
+  has_many :user_addresses, -> { where(seller_address: false) }
   has_many :orders
   has_many :sharing_incomes
   has_many :bank_cards
   has_many :privilege_cards
   # for seller
+  has_many :seller_addresses, -> { where(seller_address: true) }, class_name: 'UserAddress'
   has_many :sold_orders, class_name: 'Order', foreign_key: 'seller_id'
   has_many :products
   has_many :selling_incomes
@@ -86,14 +88,6 @@ class User < ActiveRecord::Base
         @is_#{role} ||= user_roles.exists?(name: '#{role}')
       end
     RUBY
-  end
-
-  def user_addresses
-    UserAddress.where(user_id: self.id, seller_address: false)
-  end
-
-  def seller_addresses
-    UserAddress.where(user_id: self.id, seller_address: true)
   end
 
   def image_url(version = nil)
@@ -380,11 +374,11 @@ class User < ActiveRecord::Base
   end
 
   def default_post_address
-    seller_addresses.find_by('usage @> ?', {default_post_address: 'true'}.to_json)
+    @default_post_address ||= seller_addresses.find_by('usage @> ?', {default_post_address: 'true'}.to_json)
   end
 
   def default_get_address
-    seller_addresses.find_by('usage @> ?', {default_get_address: 'true'}.to_json)
+    @default_get_address ||= seller_addresses.find_by('usage @> ?', {default_get_address: 'true'}.to_json)
   end
 
   private
