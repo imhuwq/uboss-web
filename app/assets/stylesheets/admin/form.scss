@@ -62,8 +62,8 @@ textarea {
    }
    .control-input{
      overflow: hidden;
-     span{
-       /*margin:8px 0px;*/
+     .text-margin{
+       margin:8px 0px;
        display: inline-block;
      }
      .btn{
