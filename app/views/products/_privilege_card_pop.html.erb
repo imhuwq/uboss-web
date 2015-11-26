@@ -1,0 +1,132 @@
+<div class="pop-friend hidden">
+  <div class="close pop-friend-close">跳过</div>
+  <div id="page1">
+    <%= image_tag("mobile/friend/bg.png",class:'sun-bg') %>
+    <div class="t1 text-icon"><%= image_tag("mobile/friend/t1.png") %></div>
+    <div class="t2 text-icon"><%= image_tag("mobile/friend/t2.png") %></div>
+    <div class="t3 text-icon"><%= image_tag("mobile/friend/t3.png") %></div>
+    <div class="t4 text-icon"><%= image_tag("mobile/friend/box.png") %></div>
+    <div class="input-box">
+      <% if current_user.blank? %>
+        <p><input type="tel"  class="input-block input-radius input-large input-tel-value" placeholder="请输入手机号码"/></p>
+        <br />
+      <% end %>
+      <p><input type="submit" class="btn btn-block btn-large" value="领取友情卡" /></p>
+      <br />
+      <p class="white-color">友情卡可以帮好友省钱，帮自己赚钱</p>
+    </div>
+
+    <div class="show-share-btn">
+      <% if @privilege_card.present? %>
+        <p class="white-color">友情卡已放入 <span id="user-tel" class="red-color"><%= current_user.login %></span></p>
+      <% end %>
+      <p><span class="btn btn-block btn-large" id="show-next-page">分享友情卡</span></p>
+      <br />
+      <p class="white-color">友情卡可以帮好友省钱，帮自己赚钱</p>
+    </div>
+  </div><!-- page1 -->
+  <div id="page2" style="display:none">
+    <div class="share-guide">
+      <h4 class="white-color">点击右上角，分享给好友 <%= image_tag("mobile/friend/arrow-up.png",width:'20') %></h4>
+      <br />
+      <% if current_user.blank? %>
+        <p><a href="/sign_in" class="btn btn-block btn-large">验证手机　到账提现</a></p>
+        <br />
+        <p class="text-center white-color"><span class="close">去逛逛</span></p>
+      <% else %>
+        <br />
+        <p class="btn btn-block btn-large"><span class="close">去逛逛</span></p>
+      <% end %>
+    </div>
+  </div>
+</div><!-- pop-friend -->
+<script>
+  $('.t1,.t2,.t3,.t4,.input-box,.sun-bg,.show-share-btn,.pop-friend-close').hide();
+  $('.pop-friend').removeClass('hidden');
+  $('html,body').addClass('lock');
+  window.onload = function(){
+    $('.t4').show().addClass('zoomIn').css('transform-origin','');
+    setTimeout(function(){
+      $('.sun-bg').show().addClass('zoomIn').css('transform-origin','');
+    },600)
+    setTimeout(function(){
+      $('.t3').show().addClass('scalebottomIn').css('transform-origin','');
+    },800)
+    setTimeout(function(){
+      $('.t2').show().addClass('scalebottomIn').css('transform-origin','');
+    },1100)
+    setTimeout(function(){
+      $('.t1').show().addClass('scalebottomIn').css('transform-origin','');
+    },1400)
+    setTimeout(function(){
+      $('.input-box').show().css('transform-origin','');
+    },1600)
+    setTimeout(function(){
+      $('.pop-friend-close').show();
+    },1800)
+    //动画结束
+    <% if current_user.blank? %>
+    $('.pop-friend input[type="submit"]').on('click',function(){
+      var user_tel= $('.input-tel-value').val();
+      var telReg = !!user_tel.match(/^(0|86|17951)?(13[0-9]|15[012356789]|17[678]|18[0-9]|14[57])[0-9]{8}$/);
+      if(!telReg){
+        alert("请输入正确的手机号码")
+      }else{
+        $('#user-tel').text(user_tel)
+        $('.input-box').hide()
+        $('.show-share-btn').show()
+        $.ajax({
+          url: '<%= get_product_sharing_path %>',
+          type: 'GET',
+          data: {
+            mobile: user_tel,
+            product_id: '<%= product.id %>'
+          },
+        })
+        .done(function(data) {
+          console.log("success");
+          $('.show-req-snode-modal').addClass('hidden');
+          $('.p-sharing-btn').removeClass('hidden');
+          $('meta[name=sharing_link]').attr('content', data.sharing_link)
+          UBoss.luffy.resetInvokeSharing()
+        })
+        .fail(function(xhr, textStatus) {
+          alert('发送失败');
+        })
+      }
+    })
+    <% else %>
+    $('.pop-friend input[type="submit"]').on('click',function(){
+      $('.input-box').hide()
+      $('.show-share-btn').show()
+      $.ajax({
+        url: '<%= get_product_sharing_path %>',
+        type: 'GET',
+        data: {
+          product_id: '<%= product.id %>'
+        },
+      })
+      .done(function(data) {
+        console.log("success");
+        $('.show-req-snode-modal').addClass('hidden');
+        $('.p-sharing-btn').removeClass('hidden');
+        $('meta[name=sharing_link]').attr('content', data.sharing_link)
+        UBoss.luffy.resetInvokeSharing()
+      })
+      .fail(function(xhr, textStatus) {
+        alert('发送失败');
+      })
+
+    })
+    <% end %>
+
+    $('#show-next-page').on('click',function(){
+      $('#page1').hide()
+      $('#page2').show()
+    })
+    $('.pop-friend .close').on('click',function(){
+      $('.pop-friend').hide();
+      $('html,body').removeClass('lock');
+    })
+  }
+</script>
