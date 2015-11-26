@@ -8,10 +8,10 @@ class OrderItemRefund < ActiveRecord::Base
   has_many :asset_imgs, class_name: 'AssetImg', autosave: true, as: :resource
 
   validates :order_state, :money, :refund_reason_id, presence: true
-  validates_uniqueness_of :order_state, scope: :order_item_id
+  validates_uniqueness_of :order_state, scope: :order_item_id, message: '不能多次申请'
 
   validate do
-    if money <= 0 || money > self.order_item.pay_amount
+    if money.to_i <= 0 || money.to_i > self.order_item.pay_amount
       self.errors.add(:money, "不能小于等于0或大于#{self.order_item.pay_amount}")
     end
   end
