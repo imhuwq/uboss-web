@@ -1,5 +1,9 @@
 class CarriageTemplate < ActiveRecord::Base
+
+  include Orderable
+
   MIN_SECTION_SIZE = 1
+
   has_many :different_areas
   has_many :products
   belongs_to :user
