@@ -17,6 +17,7 @@
 #= require admin/functions
 #= require admin/order
 #= require admin/product
+#= require admin/account
 #= require admin/redactor-config
 #= require admin/sms
 #= require shared/upyun
@@ -39,5 +40,5 @@ jQuery ($) ->
       tabid = $(this).attr('data-title')
       $(tabid).fadeIn()
     return
-   
+
   $("select").filter(":not([data-manual-chosen])").chosen()

@@ -21,12 +21,37 @@
 <%= horizon_form_for current_user, url: admin_account_path, method: :patch do |f| %>
 
 	<div class="admin-box black-bg-color">
-    <%= f.input :user_role, label: '当前角色' do %>
+	  <%= f.input :avatar, hint: image_tag(current_user.avatar.url(:thumb))  %>
+    <div class="form-group">
+        <label class="control-label">账号</label>
+        <div class="control-input">
+          <span><%= current_user.login %></span>
+        </div>
+    </div>
+	  <%= f.input :nickname %>
+    <div class="form-group">
+        <label class="control-label">密码</label>
+        <div class="control-input">
+          <span><%= link_to '修改密码', show_password_modal_admin_account_path, class: 'account_update_password'%></span>
+        </div>
+    </div>
+    <%= f.input :user_role, label: '角色' do %>
         <% current_user.user_roles.each do |role| %>
           <span class='label label-info'><%= role.display_name %></span>
         <% end %>
+        <span><%= link_to '添加角色', edit_admin_user_path(current_user) %></span>
     <% end %>
+    <div class="box-w10 nogap-right">
+      <%= link_to "登出", destroy_user_session_path, method: :delete, class: 'btn' %>
+    </div>
+  </div>
 
+	<br />
+	<div class="admin-box black-bg-color">
+    <div class="box-w10 nogap-left">
+      <%= qrcode_image_tag store_url(current_user, shared: true) %>
+      <span>店铺二维码</span>
+    </div>
     <%= f.input :agent, label: '绑定创客' do %>
       <% if current_user.agent.present? %>
         <%= current_user.agent.identify %>
@@ -49,29 +74,34 @@
     <%= f.input :service_rate, label: '当前平台费率' do %>
       <span><%= number_to_percentage(f.object.service_rate, precision: 0) %></span>
     <% end %>
-    </div>
+  </div>
+
 	<br />
 	<div class="admin-box black-bg-color">
-	    <%= f.input :avatar, hint: image_tag(current_user.avatar.url(:thumb))  %>
-	    <div class="form-group">
-	      	<label class="control-label">登录手机</label>
-	      	<div class="control-input">
-	      		<span><%= current_user.login %></span>
-	      	</div>
-	    </div>
-	    <%= f.input :nickname %>
-	    <% if current_user.is_agent? %>
-		    <div class="form-group">
-		      	<label class="control-label">创客邀请码</label>
-		      	<div class="control-input">
-		      		<span><%= current_user.agent_code %></span>
-		      	</div>
-		    </div>
-	    <% end %>
+    <div class="box-w10 nogap-left">
+      <%= qrcode_image_tag store_url(current_user, shared: true) %>
+      <span>店铺二维码</span>
     </div>
+    <% if current_user.is_agent? %>
+      <div class="form-group">
+          <label class="control-label">我的邀请码</label>
+          <div class="control-input">
+            <span><%= current_user.agent_code %></span>
+          </div>
+      </div>
+      <div class="form-group">
+          <label class="control-label">我的商家绑定链接:</label>
+          <div class="control-input">
+            <span><%= new_seller_url(agent_code: current_user.agent_code) %></span>
+          </div>
+      </div>
+    <% end %>
+  </div>
 <br />
 <p class="text-center"><%= f.submit '提交', class: 'btn btn-large' %></p>
-
 <% end %>
 </div>
 
+<div class='update_password_modal_wrap'>
+  <%= render 'update_password_modal' %>
+</div>

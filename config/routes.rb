@@ -163,6 +163,7 @@ Rails.application.routes.draw do
       end
       resource :account, only: [:edit, :show, :update] do
         get :password, on: :member
+        get :show_password_modal, on: :member
         get :binding_agent
         patch :binding_agent, to: 'accounts#bind_agent'
         patch :password, to: 'accounts#update_password'
