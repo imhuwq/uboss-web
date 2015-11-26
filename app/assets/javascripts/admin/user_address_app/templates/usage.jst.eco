@@ -1,1 +1,0 @@
-<a href="###" class='btn btn-border <%= @class_name %>' id='<%= @id %>'><%= @name %></a>
