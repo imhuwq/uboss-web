@@ -11,10 +11,10 @@
   <% user_addresses.each do |obj| %>
     <tr>
       <td class="text-left">
-        <% if obj.usage['default_post_address'] == 'true' %>
+        <% if obj.default_post_address == 'true' %>
           <span class='btn red-btn'>发货</span>
         <% end %>
-        <% if obj.usage['default_get_address'] == 'true' %>
+        <% if obj.default_get_address == 'true' %>
           <span class='btn'>收货</span>
         <% end %>
       </td>
@@ -25,7 +25,7 @@
       <td><%= obj.note %></td>
       <td>
         <%= link_to '编辑', url_for(controller: 'admin/user_addresses', action: :edit, id: obj.id) %>
-        <% if obj.usage['default_get_address'] == 'false' && obj.usage['default_post_address'] == 'false' %>
+        <% if obj.usage['default_get_address'] == 'false' && obj.default_post_address == 'false' %>
           <%= link_to '删除', url_for(controller: 'admin/user_addresses', action: :destroy, id: obj.id), method: :delete, data: {confirm: '确认删除么？'} %>
         <% end %>
       </td>

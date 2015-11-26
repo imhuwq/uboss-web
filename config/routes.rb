@@ -209,7 +209,7 @@ Rails.application.routes.draw do
       resources :transactions, only: [:index]
       resources :bank_cards, only: [:index, :new, :edit, :create, :update, :destroy]
       resources :user_addresses do
-        get :change_default_address, on: :collection
+        get :change_default_address, on: :member
       end
 
       get '/data', to: 'data#index'

@@ -20,24 +20,24 @@
         position: absolute;
         float: none;
         right: 10px;
-        top: 0;  
+        top: 0;
         color: #000;
       }
-    }  
-    
+    }
+
 }
 
 .address-alert{
   cursor: pointer;
-  color: #43c3aa;    
-  z-index: 8;  
+  color: #43c3aa;
+  z-index: 8;
 }
 #address-list-box{
     .title .name{color:#999 }
     .title a{
         color: #43c3aa;
     }
-    
+
 }
 .address-table{
     width: 100%;
@@ -45,11 +45,16 @@
       margin-top:10px ;
       width: 100%;
       padding-left: 10px;
-      
+
     }
     td{
       border-top:1px solid #555 ;
-      vertical-align: middle;     
-      padding:10px 10px 10px 0;  
+      vertical-align: middle;
+      padding:10px 10px 10px 0;
     }
+    tr{cursor:pointer}
+    tr:hover td{
+      background: #e3f1eE
+    }
+
 }
