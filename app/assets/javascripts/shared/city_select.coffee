@@ -19,4 +19,4 @@
   $(document).on 'ready page:load', ->
     $('.city-group').china_city()
 
-)(if typeof(jQuery)=="function" then jQuery else Zepto)
+)(Zepto)

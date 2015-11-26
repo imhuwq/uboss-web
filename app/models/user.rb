@@ -31,7 +31,6 @@ class User < ActiveRecord::Base
   has_many :sellers, class_name: 'User', foreign_key: 'agent_id'
   has_many :seller_orders, through: :sellers, source: :sold_orders
   # for buyer
-  has_many :user_addresses
   has_many :orders
   has_many :sharing_incomes
   has_many :bank_cards
@@ -87,6 +86,14 @@ class User < ActiveRecord::Base
         @is_#{role} ||= user_roles.exists?(name: '#{role}')
       end
     RUBY
+  end
+
+  def user_addresses
+    UserAddress.where(user_id: self.id, seller_address: false)
+  end
+
+  def seller_addresses
+    UserAddress.where(user_id: self.id, seller_address: true)
   end
 
   def image_url(version = nil)
@@ -370,10 +377,6 @@ class User < ActiveRecord::Base
 
   def is_comman_express?(express)
     self.expresses.exists?(express)
-  end
-
-  def seller_addresses
-    user_addresses.where(seller_address: true)
   end
 
   def default_post_address

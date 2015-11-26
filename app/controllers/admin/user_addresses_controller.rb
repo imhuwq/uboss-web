@@ -3,18 +3,18 @@ class Admin::UserAddressesController < AdminController
   load_and_authorize_resource
 
   def index
-    @user_addresses = current_user.user_addresses.where(seller_address: true).order('created_at DESC').page(param_page)
+    @user_addresses = current_user.seller_addresses.order('created_at DESC').page(param_page)
   end
 
   def new
   end
 
   def edit
-    @user_address = current_user.user_addresses.where(seller_address: true).find(params[:id])
+    @user_address = current_user.seller_addresses.find(params[:id])
   end
 
   def update
-    @user_address = current_user.user_addresses.where(seller_address: true).find(params[:id])
+    @user_address = current_user.seller_addresses.find(params[:id])
 
     if @user_address.update(user_address_params)
       flash[:success] = "保存成功"
@@ -27,7 +27,7 @@ class Admin::UserAddressesController < AdminController
   end
 
   def destroy
-    user_address = current_user.user_addresses.where(seller_address: true).find(params[:id])
+    user_address = current_user.seller_addresses.find(params[:id])
     if user_address.default_get_address == 'true' || user_address.default_post_address == 'true'
       flash[:error] = "删除失败,不能删除默认地址，请先设置其他默认地址。"
 

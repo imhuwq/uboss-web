@@ -43,7 +43,11 @@ class Order < ActiveRecord::Base
       transitions from: :unpay, to: :payed
     end
     event :ship do
-      transitions from: :payed, to: :shiped
+      transitions from: :payed, to: :shiped do
+        guard do
+          can_be_ship?
+        end
+      end
     end
     event :sign, after_commit: :call_order_complete_handler do
       transitions from: :shiped, to: :signed
