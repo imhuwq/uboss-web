@@ -1,4 +1,99 @@
-<%= javascript_include_tag 'hongbao' %>
-<%= stylesheet_link_tag 'hongbao' %>
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta id='MobileViewport' name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+		<meta name="apple-touch-fullscreen" content="yes">
+		<meta http-equiv="Cache-Control" content="no-cache, must-revalidate">
+    <meta content="telephone=no" name="format-detection" />
+    <meta content="email=no" name="format-detection" />
+    <link href="<%= image_url("favicon-lg.png") %>" type="image/x-icon" rel="shortcut icon">
+    <link rel="apple-touch-icon" href="<%= image_url("favicon-lg.png") %>">
+    <title>与良辰一战！</title>
+		<%= javascript_include_tag 'hongbao' %>
+		<%= stylesheet_link_tag 'hongbao' %>
+  </head>
 
-<h1>LISHI</h1>
+	<body>
+		<div class="wrapper">			
+			<div class="asset">
+				<img data-src="images/bg.jpg"  />
+			</div>
+			
+			<div class="loading">
+				<center><var>0%</var><sub></sub></center>
+			</div>
+		
+		
+			<section class="s1">
+				<h1><img data-src="images/title.png" title="数钱数到手抽筋" /></h1>
+				<div>
+					<h4>游戏规则</h4>
+					<p><em>1.</em>点击“开始”进行游戏；</p>
+					<p><em>2.</em>在16s内，拼命数钱吧；</p>
+					<p><em>3.</em>截止到11月21日12点排行榜第一名将获得3000拿10000购物券一张，该券仅限北京新世界百货崇文店11月21日23点-11月22日凌晨5点使用哦；</p>
+					<p><em>4.</em>晒给好友，看谁最能管得住钱！邀16个好友一起数钱，得哈根达斯代金券哦~每天送出100张，先抢先得哦！</p>
+					<p><em>5.</em>活动时间：有奖活动截止到11月21日中午12:00</p>
+					<figure><img data-src="images/s1-1.png" /></figure>
+				</div>
+				<menu>
+					<a href="javascript:" class="btn1">开始</a>
+					<a href="javascript:" class="btn2">查看代金券</a>
+				</menu>
+				<footer>游戏最终解释权归新世界百货所有</footer>
+			</section>
+			
+			
+			<section class="s2">
+				<h5>
+					<span>倒计时<var>0</var>＂</span>
+					<span><var>000</var> 元</span>
+				</h5>
+				<h6>
+					<sup></sup>
+					<em>向上滑动<br />即可数钱</em>
+				</h6>
+				<dl>
+					<dt><span></span></dt>
+					<dd><q><img data-src="images/s2-4.jpg" /></q></dd>
+				</dl>
+			</section>
+			
+			
+			<section class="s3">
+				<dl>
+					<dt><span>000 元</span><img data-src="images/s3-2.png" /></dt>
+					<dd><span class="ray"><i></i></span></dd>
+				</dl>
+				<h3>你是迅雷不及掩耳之势的<em>数钱高手吗？</em></h3>
+				<menu>
+					<a href="javascript:" class="an1">再玩一次</a>
+					<a href="javascript:" class="an2">查看排名</a>
+					<a href="javascript:" class="an3">分享好友</a>
+				</menu>
+				<h6>
+					<sup><span></span></sup>
+					<a href="javascript:"><img data-src="images/s3-5.png" title="点我看彩蛋"  /></a>
+				</h6>
+			</section>
+			
+			
+			<section class="s4">
+				<h3>你的名次为<var>20</var></h3>
+				<h4><img data-src="images/s5-1.png" /></h4>
+				<dl>
+					<dt><i>名次</i><em>昵称</em><var>得分</var></dt>
+					<dd><i><span>1</span></i><em><img data-src="images/btn2.png" />玩家的昵称</em><var>￥<span>36500</span></var></dd>
+				</dl>
+				<h5><em>排行第一  大奖等你！</em><a href="javascript:">查看详情</a></h5>
+				<menu>
+					<a href="javascript:" class="btn1">再玩一次</a>
+					<a href="javascript:" class="btn2">返回</a>
+				</menu>
+				<label><img data-src="images/s5-5.png" /></label>
+			</section>
+			
+		</div>
+		
+	</body>
+</html>

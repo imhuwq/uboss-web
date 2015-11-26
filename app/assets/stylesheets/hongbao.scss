@@ -1,0 +1,60 @@
+/* 2014 Web De: gongxy */
+html,body{
+    margin: 0;
+    position: relative; 
+    width: 100%; 
+    height: 100%;
+    background: #f8f7f5; 
+    font-size: 12px;
+    vertical-align: middle;
+    line-height: 120%;
+    color: #111;
+}
+a{
+    text-decoration: none;
+    vertical-align: middle;
+    color: #111;
+    
+}
+
+.wrapper { position: relative; overflow: hidden; width: 100%; height: 100%; max-width: 640px; margin: 0 auto;}
+.btn1, .btn2 { display: inline-block; overflow: hidden; width: 117px; height: 30px; line-height: 30px; text-align: center; font-size: 1.4em; color: #0b8; text-shadow:-1px -1px 0px rgba(0,0,0,0.45); background: url(../images/btn1.png) no-repeat; background-size: 100% auto;}
+.btn2 { background-image: url(../images/btn2.png); color: #fff; text-shadow: -1px -1px 0px rgba(0,0,0,0.25);}
+@-webkit-keyframes zindexAN{
+    0% { opacity: 1;}
+}
+
+
+
+/***** game *****/
+.s2 { }
+.s2 h5 { margin: 30px auto 10px; width: 144px; height: 68px; overflow: hidden; background: url(../images/s2-1.png) no-repeat; background-size: 100% auto; text-align: center; color: #fff; font-weight: 100; font-size: 1.5em; line-height: 38px;}
+.s2 h5 span { display: block; margin: -4px 0 4px; padding-left: 30px; white-space: nowrap;}
+.s2 h6 { text-align: center; color: rgba(255,255,255,0.8); font-weight: 100; font-size: 1.4em; line-height: 1.2em;}
+.s2 h6 sup { display: block; overflow: hidden; width: 24px; height: 22px; margin: 0 auto; background: url(../images/s2-2.png) no-repeat center 0; background-size: 100% auto; opacity: 0.6; }
+.s2 dl { position: absolute; z-index: 1; top: 0; left: 0; overflow: hidden; width: 100%; height: 95%; -webkit-animation: zindexAN 1s infinite;}
+.s2 dt, .s2 dd { position: absolute; bottom: 0; left: 0; width: 100%; height: 60%; }
+.s2 dt { z-index: 2; background: url(../images/s2-3.png) no-repeat center bottom; background-size: 100% auto; bottom: -1px;  -webkit-animation: zindexAN 1s infinite;}
+.s2 dd { z-index: 1;}
+.s2 dd q, .s2 dt span { display: block; margin: 0 auto; height: 100%; width: 52.34375%; }
+.s2 dd q { position: absolute; top: 0; left: 23.828125%;  }
+
+.s2 h6 sup { -webkit-animation: arrowAN 0.7s infinite linear;}
+@-webkit-keyframes arrowAN{
+    0%{ -webkit-transform: translateY(8px); opacity: 0;}
+    40%{-webkit-transform: translateY(0px); opacity: 0.6;}
+    80%{-webkit-transform: translateY(-8px); opacity: 0;}
+    100%{-webkit-transform: translateY(-8px); opacity: 0;}
+}
+
+
+.asset, .wrapper section, .cx { display: none;}
+.loading { height: 9999px; background: #d30;}
+.loading center { position: absolute; top: 45%; left: 0; width: 100%;}
+.loading var, .loading sub { display: block; width: 48px; height: 48px; margin: 0 auto; overflow: hidden; color: #fdd; line-height: 48px;}
+.loading sub { -webkit-animation: loadAN 1s infinite linear; margin-top: -48px; background: url(images/loading.png) no-repeat; background-size: 100% auto;}
+@-webkit-keyframes loadAN{
+    0%{ -webkit-transform: rotate(0);}
+    100%{ -webkit-transform: rotate(360deg);}
+}
+
