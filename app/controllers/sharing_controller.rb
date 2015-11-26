@@ -47,15 +47,12 @@ class SharingController < ApplicationController
   end
 
   def set_user
-    puts "params=#{params}"
     @user = if current_user.present?
               current_user
             else
-              puts "mobile= #{ params.fetch(:mobile)}"
               mobile = params.fetch(:mobile)
               User.find_or_create_guest(mobile)
             end
-    puts "@user=#{@user}"
   end
 
   def active_privilege_card
