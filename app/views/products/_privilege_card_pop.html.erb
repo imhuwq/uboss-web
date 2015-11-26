@@ -11,15 +11,17 @@
         <p><input type="tel"  class="input-block input-radius input-large input-tel-value" placeholder="请输入手机号码"/></p>
         <br />
       <% end %>
-      <p><input type="submit" class="btn btn-block btn-large" value="领取友情卡" /></p>
+      <p>
+        <%= link_to "领取友情卡", get_product_sharing_path,
+          class: 'btn btn-block btn-large get-p-card-btn', data: { pid: product.id, uid: current_user.present? } %>
+      </p>
       <br />
       <p class="white-color">友情卡可以帮好友省钱，帮自己赚钱</p>
     </div>
 
     <div class="show-share-btn">
-      <% if @privilege_card.present? %>
-        <p class="white-color">友情卡已放入 <span id="user-tel" class="red-color"><%= current_user.login %></span></p>
-      <% end %>
+      <p class="white-color">友情卡已放入 <span id="user-tel" class="red-color"><%= current_user && current_user.login %></span></p>
+      <br />
       <p><span class="btn btn-block btn-large" id="show-next-page">分享友情卡</span></p>
       <br />
       <p class="white-color">友情卡可以帮好友省钱，帮自己赚钱</p>
@@ -65,60 +67,37 @@
       $('.pop-friend-close').show();
     },1800)
     //动画结束
-    <% if current_user.blank? %>
-    $('.pop-friend input[type="submit"]').on('click',function(){
+    $('.pop-friend .get-p-card-btn').on('click',function(e){
+      e.preventDefault();
+      element = $(this);
       var user_tel= $('.input-tel-value').val();
-      var telReg = !!user_tel.match(/^(0|86|17951)?(13[0-9]|15[012356789]|17[678]|18[0-9]|14[57])[0-9]{8}$/);
-      if(!telReg){
-        alert("请输入正确的手机号码")
-      }else{
+      if (!element.data('uid')) {
+        var telReg = !!user_tel.match(/^(0|86|17951)?(13[0-9]|15[012356789]|17[678]|18[0-9]|14[57])[0-9]{8}$/);
+        if(!telReg){
+          alert("请输入正确的手机号码");
+          return false;
+        }
         $('#user-tel').text(user_tel)
-        $('.input-box').hide()
-        $('.show-share-btn').show()
-        $.ajax({
-          url: '<%= get_product_sharing_path %>',
-          type: 'GET',
-          data: {
-            mobile: user_tel,
-            product_id: '<%= product.id %>'
-          },
-        })
-        .done(function(data) {
-          console.log("success");
-          $('.show-req-snode-modal').addClass('hidden');
-          $('.p-sharing-btn').removeClass('hidden');
-          $('meta[name=sharing_link]').attr('content', data.sharing_link)
-          UBoss.luffy.resetInvokeSharing()
-        })
-        .fail(function(xhr, textStatus) {
-          alert('发送失败');
-        })
       }
-    })
-    <% else %>
-    $('.pop-friend input[type="submit"]').on('click',function(){
-      $('.input-box').hide()
-      $('.show-share-btn').show()
       $.ajax({
-        url: '<%= get_product_sharing_path %>',
+        url: element.attr("href"),
         type: 'GET',
         data: {
-          product_id: '<%= product.id %>'
+          mobile: user_tel,
+          product_id: element.data("pid")
         },
-      })
-      .done(function(data) {
+      }).done(function(data) {
         console.log("success");
         $('.show-req-snode-modal').addClass('hidden');
         $('.p-sharing-btn').removeClass('hidden');
-        $('meta[name=sharing_link]').attr('content', data.sharing_link)
-        UBoss.luffy.resetInvokeSharing()
+        $('meta[name=sharing_link]').attr('content', data.sharing_link);
+        $('.input-box').hide();
+        $('.show-share-btn').show();
+        UBoss.luffy.resetInvokeSharing();
+      }).fail(function(xhr, textStatus) {
+        alert('领取失败，请尝试重新领取');
       })
-      .fail(function(xhr, textStatus) {
-        alert('发送失败');
-      })
-
     })
-    <% end %>
 
     $('#show-next-page').on('click',function(){
       $('#page1').hide()
