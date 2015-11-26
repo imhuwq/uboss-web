@@ -34,6 +34,10 @@ class HomeController < ApplicationController
     end
   end
 
+  def hongbao_game
+    render layout: nil
+  end
+
   private
 
   def detect_layout
