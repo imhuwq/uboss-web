@@ -60,3 +60,5 @@ $ ->
     $('.tab-container .tab-content').hide()
     $(tid).show()
 
+  $('.alert-error .close').on 'click', (e)->
+    $(this).closest('.alert-error').remove()
