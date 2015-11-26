@@ -5,30 +5,18 @@
   <div class="city-group control-input" style="padding-top:7px;">
     <% if @user_address.new_record? %>
       <%= f.select(:province, options_for_select([['--省份--', '']] + ChinaCity.provinces ), {},
-      	class: 'city-select ', id: "province", style:"width:100px;display:inline;" ) %>
+      	class: 'city-select ', id: "province", style:"width:100px;display:inline;", 'data-manual-chosen'=>true ) %>
       <%= f.select :city, options_for_select([['--城市--', '']] ), {},
-       	:class => 'city-select', id: "city", style:"width:100px;display:inline;" %>
+       	:class => 'city-select', id: "city", style:"width:100px;display:inline;", 'data-manual-chosen'=>true %>
       <%= f.select :area, options_for_select([['--地区--', '']]), {},
-       	:class => 'city-select', id: "area", style:"width:100px;display:inline;" %>
+       	:class => 'city-select', id: "area", style:"width:100px;display:inline;", 'data-manual-chosen'=>true %>
     <% else %>
       <%= f.select :province, options_for_select([['--省份--', '']] + ChinaCity.provinces, @user_address.province),
-        {}, class: 'city-select ', id: "province", style:"width:100px;display:inline;" %>
+        {}, class: 'city-select ', id: "province", style:"width:100px;display:inline;", 'data-manual-chosen'=>true %>
       <%= f.select :city, options_for_select([['--城市--', '']] + ChinaCity.list(@user_address.province), @user_address.city),
-        {}, :class => 'city-select', id: "city", style:"width:100px;display:inline;" %>
+        {}, :class => 'city-select', id: "city", style:"width:100px;display:inline;", 'data-manual-chosen'=>true %>
       <%= f.select :area, options_for_select([['--地区--', '']] + ChinaCity.list( @user_address.city), @user_address.area),
-        {}, :class => 'city-select', id: "area", style:"width:100px;display:inline;" %>
+        {}, :class => 'city-select', id: "area", style:"width:100px;display:inline;", 'data-manual-chosen'=>true %>
     <% end %>
   </div>
 </div>
-
-
-
-<script type="text/javascript">
-
-$(document).ready(function()
-{
-	$('.chosen-container.chosen-container-single').remove()
-	$('.city-select').show()
-});
-
-</script>

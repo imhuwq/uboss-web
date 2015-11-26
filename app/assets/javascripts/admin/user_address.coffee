@@ -11,16 +11,18 @@ jQuery ($) ->
     title = $('#address-list-box .name').html()
     request_path = $('#request_path').val()
     $.ajax
-      url: '/admin/user_addresses/change_default_address',
+      url: "/admin/user_addresses/#{address_id}/change_default_address",
       type: 'GET',
       data: {
         title: title
-        address_id: address_id
         request_path: $('#request_path').val()
       },
-    .done ->
+    .done (data) ->
+      console.log data
       $('#address-list-box').slideUp();
       $('html').removeClass('lock');
+      $('#default_get_address').html(data['default_get_address'])
+      $('#default_post_address').html(data['default_post_address'])
     .fail (xhr, textStatus) ->
       if xhr.responseJSON?
         alert(xhr.responseJSON.message)

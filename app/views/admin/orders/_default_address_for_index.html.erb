@@ -1,6 +1,6 @@
 <h4>确认发货/退货信息</h4>
-<span class="pull-right address-alert" title="发货地址">修改发货地址</span><p class="text-cut">我的发货信息 : <%= current_user.default_post_address %> </p>
-<span class="pull-right address-alert" title="退货地址">修改退货地址</span><p class="text-cut">我的退货信息 : <%= current_user.default_get_address %> </p>
+<span class="pull-right address-alert" title="发货地址">修改发货地址</span><p class="text-cut">我的发货信息 :<span id="default_post_address"><%= current_user.default_post_address %></span>  </p>
+<span class="pull-right address-alert" title="退货地址">修改退货地址</span><p class="text-cut">我的退货信息 :<span id="default_get_address"><%= current_user.default_get_address %></span>  </p>
 <%= hidden_field_tag 'request_path', "orders/index",id:"request_path" %>
 <br />
 <div id="address-list-box" class="hidden">

@@ -15,12 +15,8 @@ class Admin::UserAddressesController < AdminController
 
   def update
     @user_address = current_user.user_addresses.where(seller_address: true).find(params[:id])
-    @user_address.update(user_address_params)
-    default_get_address = params[:user_address][:usage][:default_get_address]
-    default_post_address = params[:user_address][:usage][:default_post_address]
-    @user_address.usage['default_get_address'] = "#{default_get_address}" if ['true', 'false'].include?(default_get_address)
-    @user_address.usage['default_post_address'] = "#{default_post_address}" if ['true', 'false'].include?(default_post_address)
-    if @user_address.save
+
+    if @user_address.update(user_address_params)
       flash[:success] = "保存成功"
       redirect_to action: :index
     else
@@ -32,7 +28,7 @@ class Admin::UserAddressesController < AdminController
 
   def destroy
     user_address = current_user.user_addresses.where(seller_address: true).find(params[:id])
-    if user_address.usage['default_get_address'] == 'true' || user_address.usage['default_post_address'] == 'true'
+    if user_address.default_get_address == 'true' || user_address.default_post_address == 'true'
       flash[:error] = "删除失败,不能删除默认地址，请先设置其他默认地址。"
 
     elsif user_address.destroy
@@ -45,10 +41,6 @@ class Admin::UserAddressesController < AdminController
 
   def create
     user_address = UserAddress.new(user_address_params)
-    default_get_address = params[:user_address][:usage][:default_get_address]
-    default_post_address = params[:user_address][:usage][:default_post_address]
-    user_address.usage['default_get_address'] = "#{default_get_address}" if ['true', 'false'].include?(default_get_address)
-    user_address.usage['default_post_address'] = "#{default_post_address}" if ['true', 'false'].include?(default_post_address)
     user_address.user = current_user
     user_address.seller_address = true
     if user_address.save
@@ -62,12 +54,12 @@ class Admin::UserAddressesController < AdminController
   end
 
   def change_default_address
-    user_address = UserAddress.where('seller_address = ?', true).find(params[:address_id])
+    user_address = UserAddress.where('seller_address = ?', true).find(params[:id])
     if params[:title] == '发货地址'
-      user_address.usage['default_post_address'] = 'true'
+      user_address.default_post_address = 'true'
 
     elsif params[:title] == '退货地址'
-      user_address.usage['default_get_address'] = 'true'
+      user_address.default_get_address = 'true'
     end
 
     if user_address.save
@@ -75,24 +67,15 @@ class Admin::UserAddressesController < AdminController
     else
       flash.now[:error] = "#{user_address.errors.full_messages.join('<br/>')}"
     end
-    respond_to do |format|
-      format.js do
-        @user_addresses = current_user.user_addresses
-        case params["request_path"]
-        when "orders/show"
-          render '/admin/orders/change_show_default_address'
-        when "orders/index"
-          render '/admin/orders/change_index_default_address'
-        end
-      end
-    end
-
+    data = {default_post_address: current_user.default_post_address.to_s, default_get_address: current_user.default_get_address.to_s}
+    render json: data
   end
 
   private
   def user_address_params
     params.require(:user_address).permit(
-    :username, :mobile, :province, :city, :area, :building, :post_code, :note
+    :username, :mobile, :province, :city, :area, :building, :post_code, :note,
+    :default_get_address, :default_post_address
     )
   end
 end

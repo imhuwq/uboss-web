@@ -232,6 +232,7 @@ class Order < ActiveRecord::Base
   def can_be_ship?
     if !self.seller.default_get_address.present?
       errors[:base] << "请设置默认退货地址"
+      false
     else
       true
     end
