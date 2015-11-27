@@ -210,22 +210,21 @@ class OrderItemRefund < ActiveRecord::Base
   private
 
   def set_deal_times
-    case aasm_state
-    when 'approved'
+    case aasm.to_state
+    when :approved
       self.state_at_attributes['同意时间'] = time_now
-    when 'completed_express_number'
+    when :completed_express_number
       self.state_at_attributes['退货时间'] = time_now
-    when 'confirm_received'
+    when :confirm_received
       self.state_at_attributes['卖家确认收货时间'] = time_now
-    when 'finished'
+    when :finished
       self.state_at_attributes['退款时间'] = time_now
-    when 'cancelled'
+    when :cancelled
       self.state_at_attributes['关闭时间'] = time_now
-    when 'closed'
+    when :closed
       self.state_at_attributes['关闭时间'] = time_now
     end
     self.deal_at = time_now
-    self.save
   end
 
   def set_order_item
