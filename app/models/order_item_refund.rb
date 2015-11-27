@@ -31,7 +31,7 @@ class OrderItemRefund < ActiveRecord::Base
     #申请退款
     state :pending, initial: true
     #同意
-    state :approved,                 after_enter: [:wx_order_refund]
+    state :approved,                 after_enter: [:check_if_only_refund]
     #拒绝
     state :declined
     #确认收货
@@ -104,7 +104,6 @@ class OrderItemRefund < ActiveRecord::Base
   def create_timeout_message
     if self.approved?
       if self.refund_type_include_goods?
-        self.address = self.order_item.order.seller.default_post_address.try(:refund_label) && self.save
         action  = "同意退货"
         message = "卖家退货地址【#{self.address}】</br>商家在#{Rails.application.secrets.refund_timeout['days_5']}天内未处理此申请，系统已默认商家同意此次申请"
       else
@@ -211,35 +210,39 @@ class OrderItemRefund < ActiveRecord::Base
   private
 
   def set_deal_times
-    case aasm_state
-    when 'approved'
+    case aasm.to_state
+    when :approved
       self.state_at_attributes['同意时间'] = time_now
-    when 'completed_express_number'
+    when :completed_express_number
       self.state_at_attributes['退货时间'] = time_now
-    when 'confirm_received'
+    when :confirm_received
       self.state_at_attributes['卖家确认收货时间'] = time_now
-    when 'finished'
+    when :finished
       self.state_at_attributes['退款时间'] = time_now
-    when 'cancelled'
+    when :cancelled
       self.state_at_attributes['关闭时间'] = time_now
-    when 'closed'
+    when :closed
       self.state_at_attributes['关闭时间'] = time_now
     end
     self.deal_at = time_now
-    self.save
   end
 
   def set_order_item
     self.order_item.update(order_item_refund_id: self.id)
   end
 
+  def check_if_only_refund
+    if !refund_type_include_goods?    # 如果只退款, 同意退款申请后就直接进入退款流程
+      wx_order_refund
+    else
+      self.address = order_item.order.seller.default_post_address.try(:refund_label) ||'商家没有设定默认退货地址，请联系商家获取退货地址'
+      self.save
+    end
+  end
+
   # 微信退款
   def wx_order_refund
-    if self.approved? && !refund_type_include_goods?    # 如果只退款不退货, 同意退款申请后就直接进入退款流程
-      WxRefundJob.perform_later(self)
-    elsif self.confirm_received?                         # 卖家确认收货
-      WxRefundJob.perform_later(self)
-    end
+    WxRefundJob.perform_later(self)
   end
 
 end

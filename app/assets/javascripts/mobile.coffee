@@ -65,3 +65,6 @@ $ ->
       user_id: $(this).data('uid')
     , (response) ->
       element.addClass("online") if response.online
+
+  $('.alert-error .close').on 'click', (e)->
+    $(this).closest('.alert-error').remove()

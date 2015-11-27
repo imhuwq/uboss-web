@@ -1,6 +1,6 @@
 class Admin::OrderItemRefundsController < AdminController
   load_and_authorize_resource
-  before_action :find_order_item_and_refund,    only: [:approved_refund, :approved_return, :confirm_received, :declined_refund, :declined_return, :declined_receive, :refund_message]
+  before_action :find_order_item_and_refund,    only: [:approved_refund, :approved_return, :confirm_received, :declined_refund, :declined_return, :declined_receive, :applied_uboss, :uboss_cancel, :refund_message]
   before_action :refund_reason_must_be_present, only: [:declined_refund, :declined_return, :declined_receive]
 
   def index
@@ -26,16 +26,14 @@ class Admin::OrderItemRefundsController < AdminController
     if address = current_user.seller_addresses.find_by(id: params[:return_address])
       @order_item_refund.address = address.refund_label
       @order_item_refund.return_explain = params[:return_explain]
+    end
 
-      if @order_item_refund.save && @order_item_refund.may_approve? && @order_item_refund.approve!
-        message = "卖家退货地址【#{@order_item_refund.address}】</br>退货说明：#{@order_item_refund.return_explain}"
-        create_refund_message({action: '同意退货', message: message})
-        flash[:success] = '同意退货申请操作成功'
-      else
-        flash[:error] = '同意退货申请操作失败'
-      end
+    if @order_item_refund.save && @order_item_refund.may_approve? && @order_item_refund.approve!
+      message = "卖家退货地址【#{@order_item_refund.address}】</br>退货说明：#{@order_item_refund.return_explain}"
+      create_refund_message({action: '同意退货', message: message})
+      flash[:success] = '同意退货申请操作成功'
     else
-      flash[:error] = '退货地址不能为空'
+      flash[:error] = '同意退货申请操作失败'
     end
     redirect_to admin_order_item_order_item_refunds_path(@order_item)
   end
@@ -84,6 +82,32 @@ class Admin::OrderItemRefundsController < AdminController
     redirect_to admin_order_item_order_item_refunds_path(@order_item)
   end
 
+  def applied_uboss
+    if @order_item_refund.may_apply_uboss? && @order_item_refund.apply_uboss!
+      create_refund_message({action: '卖家申请了UBOSS介入' })
+      flash[:success] = '申请UBOSS介入成功'
+    else
+      flash[:error] = '申请UBOSS介入失败'
+    end
+    redirect_to admin_order_item_order_item_refunds_path(@order_item)
+  end
+
+  # 撤销申请（UBOSS介入）
+  def uboss_cancel
+    if current_user.is_super_admin?
+      if @order_item_refund.may_cancel? && @order_item_refund.cancel!
+        create_refund_message({ action: 'UBOSS介入撤销了申请' })
+        flash[:success] = '退款申请撤销成功'
+      else
+        flash[:error] = '退款申请撤销失败'
+      end
+      redirect_to admin_order_item_order_item_refunds_path(@order_item)
+    else
+      flash[:error] = '没有操作权限'
+      redirect_to admin_root_path
+    end
+  end
+
   def refund_message
     if params[:refund_message][:message].blank?
       flash[:error] = '留言内容不能为空'
@@ -103,7 +127,7 @@ class Admin::OrderItemRefundsController < AdminController
   end
 
   def create_refund_message(options={})
-    options.merge!({order_item_refund: @order_item_refund, user_type: '卖家', user_id: current_user.id})
+    options.merge!({order_item_refund: @order_item_refund, user_type: (current_user.is_super_admin? ? "管理员" : "卖家"), user_id: current_user.id})
     RefundMessage.create options
   end
 

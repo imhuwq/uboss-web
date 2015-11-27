@@ -37,8 +37,8 @@ class Order < ActiveRecord::Base
 
   aasm column: :state, enum: true, skip_validation_on_save: true, whiny_transitions: false do
     state :unpay
-    state :payed, after_enter: [:invoke_order_payed_job]
-    state :shiped, after_enter: :fill_shiped_at
+    state :payed, after_enter: [:create_privilege_card_if_none, :send_payed_sms_to_seller]
+    state :shiped, after_enter: [:fill_shiped_at, :close_order_item_refund_before_shiping]
     state :signed, after_enter: [:fill_signed_at, :active_privilege_card]
     state :completed, after_enter: :fill_completed_at
     state :closed, after_enter: :recover_product_stock
@@ -340,6 +340,20 @@ class Order < ActiveRecord::Base
     if !order_charge.new_record? && !order_charge.close_prepay
       order_charge.reload.orders.update_all(order_charge_id: nil)
       order_charge.update_column(:prepay_id_expired_at, Time.current - 1.minute)
+    end
+  end
+
+  def close_order_item_refund_before_shiping
+    order_items.joins(:order_item_refunds).uniq.each do |item|
+      refund = item.last_refund
+      if refund.may_close? && refund.close!
+        refund.refund_messages.create(
+          user_type: '卖家',
+          user_id: refund.order_item.order.seller_id,
+          message: '商家选择发货，退款申请关闭',
+          action: '退款关闭'
+        )
+      end
     end
   end
 
