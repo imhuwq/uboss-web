@@ -180,16 +180,17 @@ class Order < ActiveRecord::Base
     #运费满减
     def meet_full_cut?(cart_items)
       full_cut_items = cart_items.select{ |item| item.product_inventory.full_cut }
+      cut_items = []
 
       full_cut_items.each do |item|
         if Product::FullCut[item.product_inventory.full_cut_unit] == '件'
-          cart_items.delete(item) if item.count >= item.product_inventory.full_cut_number
+          cut_items.push(item) if item.count >= item.product_inventory.full_cut_number
         else
-          cart_items.delete(item) if (item.count * item.product_inventory.price) >= item.product_inventory.full_cut_number
+          cut_items.push(item) if (item.count * item.product_inventory.price) >= item.product_inventory.full_cut_number
         end
       end
 
-      return cart_items
+      return cart_items - cut_items
     end
 
 
