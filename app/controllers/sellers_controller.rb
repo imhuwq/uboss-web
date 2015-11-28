@@ -51,8 +51,9 @@ class SellersController < AdminController
   end
   def valid_create_params
     @errors = []
+    mobile = current_user ? current_user.login : allow_params[:mobile]
     hash = {
-      '验证码错误或已过期。': MobileCaptcha.auth_code(allow_params[:mobile], allow_params[:mobile_auth_code]),
+      '验证码错误或已过期。': MobileCaptcha.auth_code(mobile, allow_params[:mobile_auth_code]),
       # '创客域名错误。': User.find_by(id: allow_params[:agent_id]),
       '还不允许商家注册,请联系管理员.': @user_role = UserRole.find_by(name: 'seller')
     }
