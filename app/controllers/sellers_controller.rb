@@ -33,13 +33,14 @@ class SellersController < AdminController
     if current_user.can_rebind_agent?
       if @errors.present?
         flash[:error] = @errors.join("\n")
-      else
-        #user = User.find_by(agent_code: params[:agent_code])
-        current_user.update(agent_id: allow_params[:agent_id])
-        #current_user.bind_agent(user.try(:agent_code))
+      elsif user = User.find_by(id: allow_params[:agent_id])
+        #current_user.update(agent_id: allow_params[:agent_id])
+        current_user.bind_agent(user.try(:agent_code))
         flash[:success] = "成功绑定创客#{current_user.agent.identify}！"
         redirect_to admin_root_path
         return
+      else
+        flash[:error] = "找不到创客"
       end
     else
       flash[:error] = model_errors(current_user).join('<br/>')
