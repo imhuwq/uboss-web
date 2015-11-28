@@ -34,8 +34,9 @@ class SellersController < AdminController
       if @errors.present?
         flash[:error] = @errors.join("\n")
       else
+        #user = User.find_by(agent_code: params[:agent_code])
         current_user.update(agent_id: allow_params[:agent_id])
-        current_user.bind_agent(user.agent.try(:agent_code))
+        #current_user.bind_agent(user.try(:agent_code))
         flash[:success] = "成功绑定创客#{current_user.agent.identify}！"
         redirect_to admin_root_path
         return
@@ -45,10 +46,13 @@ class SellersController < AdminController
     end
     redirect_to action: :new, agent_code: User.find_by(id: allow_params[:agent_id]).try(:agent_code)
   end
+
   private
+
   def allow_params
     params.require(:seller).permit(:mobile, :mobile_auth_code, :password, :password_confirmation, :agent_id)
   end
+
   def valid_create_params
     @errors = []
     mobile = current_user ? current_user.login : allow_params[:mobile]
