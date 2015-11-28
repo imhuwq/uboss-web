@@ -85,10 +85,10 @@ class AccountsController < ApplicationController
 
   def update_password
     user_params = params.require(:user).permit(:password, :password_confirmation, :current_password, :code)
-    if current_user.need_reset_password
+    if current_user.need_reset_password || params[:need_reset_password] == 'true'
       user_params.delete(:current_password)
       auth_code = user_params.delete(:code)
-      if MobileCaptcha.auth_code(current_user.login, auth_code)
+      if MobileCaptcha.auth_code(current_user.login, auth_code) 
         current_user.update(user_params.merge(need_reset_password: false))
         MobileCaptcha.where(mobile: current_user.login).delete_all
         sign_in current_user, bypass: true
