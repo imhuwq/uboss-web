@@ -27,7 +27,6 @@ class Admin::ProductsController < AdminController
   end
 
   def update
-    puts params[:categories]
     if @product.update(product_params)
       flash[:success] = '保存成功'
       redirect_to action: :show, id: @product.id
