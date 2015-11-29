@@ -10,6 +10,11 @@ class RefundMessage < ActiveRecord::Base
 
   default_scope {order("updated_at desc")}
 
+  def self.all_messages(order_item)
+    order_item.order_item_refunds.order('created_at DESC')
+      .inject([]){ |messages, refund| messages += refund.refund_messages }
+  end
+
   def image_files
     self.asset_imgs.map{ |img| img.avatar.file.filename }.join(',')
   end

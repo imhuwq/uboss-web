@@ -75,7 +75,7 @@
       </div>
 
       <div id="order_item_refund_messages_list">
-        <% @order_item_refund.refund_messages.each do |message| %>
+        <% RefundMessage.all_messages(@order_item).each do |message| %>
         <div  class="message-list">
         	<div class="user-info-box">
         		<div class="cover">
