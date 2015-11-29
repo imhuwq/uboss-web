@@ -34,21 +34,6 @@ $ ->
       $('html').addClass('lock')
       product_inventory_property_buy_now_option.render('','',$('#submit_way').val(),$('#product_id').val())
 
-  $('.count-box .count_min').on 'click',->
-    num=parseInt($('.count-box .count_num').val())
-    if num < 2
-      alert('数量必须大于1')
-      $('.count-box .count_num').val(1)
-      $('#count_amount').val(1)
-    else
-      $('.count-box .count_num').val(num-1)
-      $('#count_amount').val(num-1)
-
-  $('.count-box .count_plus').on 'click',->
-    num=parseInt($('.count-box .count_num').val())
-    $('.count-box .count_num').val(num+1)
-    $('#count_amount').val(num+1)
-
   $.fn.onlyNum = () ->
     $(this).keyup () ->
       $this = $(this)

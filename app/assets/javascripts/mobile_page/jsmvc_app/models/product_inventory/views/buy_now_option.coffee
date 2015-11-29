@@ -249,4 +249,5 @@ class ProductInventory.View.BuyNowOption extends Backbone.View
         @total_price = floatMul(@single_price, @count)
         flashPopContent('<div class="pop-text">此类型商品最多购买'+"#{@count}"+'件</div>')
       $('.count-box .count_num').val(@count)
+      $('#count_amount').val(@count)
       product_inventory_property_price_range.render(@total_price)
