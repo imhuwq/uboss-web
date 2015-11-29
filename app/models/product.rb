@@ -40,7 +40,7 @@ class Product < ActiveRecord::Base
   validate do
     #统一邮费
     if transportation_way == 1
-      self.errors.add(:traffic_expense, "不能小于或等于0") if traffic_expense <= 0
+      self.errors.add(:traffic_expense, "不能小于或等于0") if traffic_expense.to_i <= 0
     #运费模板
     elsif transportation_way == 2
       self.errors.add(:carriage_template, "不能为空") if carriage_template_id.blank?
