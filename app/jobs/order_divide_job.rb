@@ -13,7 +13,6 @@ class OrderDivideJob < ActiveJob::Base
 
   def perform(order)
     @order = order
-    logger.info "Start divide @order: #{order.number}, total_paid: #{order.paid_amount}"
     if not order.reload.signed?
       logger.error "Break divide order: #{@order.number} as it is not signed!"
       raise OrderNotSigned
@@ -24,6 +23,12 @@ class OrderDivideJob < ActiveJob::Base
     end
 
     @order_income = Rails.env.production? ? @order.paid_amount : @order.pay_amount
+    logger.info "Start divide @order: #{order.number}, total_paid: #{@order_income}"
+
+    refunded_money = @order.order_item_refunds.approved.sum(:money)
+    logger.info "Divide order: #{@order.number}, reduce refund money #{refunded_money}"
+    @order_income -= refunded_money
+
     start_divide_order_paid_amount
 
     logger.info "Done divide order: #{@order.number}"
@@ -100,8 +105,11 @@ class OrderDivideJob < ActiveJob::Base
   end
 
   def reward_sharing_users(order_item, &block)
+    return false if order_item.order_item_refunds.approved.where('money > 0').exists?
+
     sharing_node = order_item.sharing_node
     return false if sharing_node.blank?
+
     product = order_item.product
     product_inventory = order_item.product_inventory
 

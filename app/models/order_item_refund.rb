@@ -1,11 +1,17 @@
 class OrderItemRefund < ActiveRecord::Base
+
+  include AASM
+  extend Enumerize
+
+  belongs_to :user
   belongs_to :order_item
   belongs_to :refund_reason
-  belongs_to :user
   has_one :sales_return
   has_one :refund_record
   has_many :refund_messages
   has_many :asset_imgs, class_name: 'AssetImg', autosave: true, as: :resource
+
+  scope :approved, -> { where(aasm_state: ['approved', 'finished']) }
 
   validates :order_state, :money, :refund_reason_id, presence: true
   validates_uniqueness_of :order_state, scope: :order_item_id, message: '不能多次申请'
@@ -22,11 +28,15 @@ class OrderItemRefund < ActiveRecord::Base
 
   enum order_state: { unpay: 0, payed: 1, shiped: 3, signed: 4, closed: 5, completed: 6 }
 
-  extend Enumerize
+  enumerize :refund_type, in: [
+    :refund,
+    :receipted_refund,
+    :unreceipt_refund,
+    :return_goods_and_refund,
+    :after_sale_only_refund,
+    :after_sale_return_goods_and_refund
+  ]
 
-  enumerize :refund_type, in: [:refund, :receipted_refund, :unreceipt_refund, :return_goods_and_refund, :after_sale_only_refund, :after_sale_return_goods_and_refund]
-
-  include AASM
   aasm do
     #申请退款
     state :pending, initial: true
@@ -46,7 +56,7 @@ class OrderItemRefund < ActiveRecord::Base
     state :finished,                 after_enter: [:set_order_item]
     #撤销（买家）
     state :cancelled
-    #关闭（待发货时申请退款，商家选择发货）
+    #关闭（待发货时申请退款，商家选择发货 or 带确认收货，买家选择收货）
     state :closed
 
     after_all_transitions :set_deal_times
@@ -76,11 +86,23 @@ class OrderItemRefund < ActiveRecord::Base
       transitions from: [:approved, :confirm_receive], to: :finished
     end
     event :cancel do
-      transitions from: [:pending, :approved, :completed_express_number, :decline_received, :applied_uboss], to: :cancelled
+      transitions(
+        from: [:pending, :approved, :completed_express_number, :decline_received, :applied_uboss],
+        to: :cancelled
+      )
     end
     event :close do
       transitions from: [:pending], to: :closed
+      transitions(
+        from: [:pending, :declined, :completed_express_number, :decline_received, :applied_uboss],
+        to: :closed,
+        guards: [:pay_and_not_ship?]
+      )
     end
+  end
+
+  def pay_and_not_ship?
+    order_state == 'shiped'
   end
 
   def refund_type_include_goods?
