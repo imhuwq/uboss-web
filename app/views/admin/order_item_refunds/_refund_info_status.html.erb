@@ -111,6 +111,7 @@
       <h3 class='refund_info_title'>您已同意退款</h3>
       <p>* 退款金额：<%= @order_item_refund.money %>元</p>
       <p>* 同意申请时间：<%= @order_item_refund.state_at_attributes['同意时间'] %></p>
+      <p>* 退款金额将会在5个工作日内退回给买家</p>
     </div>
   <% end %>
 
@@ -125,10 +126,10 @@
     <br />
     <div class='evaluate'>
       您还可以：<%= link_to '同意退货申请', 'javascripts:;', class: 'btn-link', onclick: '$("#refund_approve_return").modal("show")' %> |
-      <%= link_to '要求UBOSS介入', [:applied_uboss, :admin, @order_item, @order_item_refund], class: 'btn-link' %>
-      <!-- TODO 出现“要求UBOSS介入”的条件：1.等待卖家处理,2.拒绝过买家后买家修改申请并提交后 -->
+      <%= link_to '要求UBOSS介入', 'javascripts:;', class: 'btn-link', onclick: '$("#refund_applied_uboss").modal("show")' %>
     </div>
     <%= render 'refund_modal', page: 'approve_return', title: '同意退货申请' %>
+    <%= render 'refund_modal', page: 'applied_uboss',  title: '申请UBOSS介入' %>
   <% else %>
     <div class="bottom_line">
       <h3 class='refund_info_title'>请等待买家回应</h3>
@@ -160,10 +161,10 @@
   <br />
   <div class='evaluate'>
     您还可以：<%= link_to '确认收货并打款', 'javascripts:;', class: 'btn-link', onclick: '$("#refund_confirm_receive").modal("show")' %> |
-    <%= link_to '要求UBOSS介入', [:applied_uboss, :admin, @order_item, @order_item_refund], class: 'btn-link' %>
-    <!-- TODO 出现“要求UBOSS介入”的条件：1.等待卖家处理,2.拒绝过买家后买家修改申请并提交后 -->
+    <%= link_to '要求UBOSS介入', 'javascripts:;', class: 'btn-link', onclick: '$("#refund_applied_uboss").modal("show")' %>
   </div>
   <%= render 'refund_modal', page: 'confirm_receive', title: '退款给买家' %>
+  <%= render 'refund_modal', page: 'applied_uboss',   title: '申请UBOSS介入' %>
 
 <% when 'applied_uboss' %>
   <% if current_user.is_super_admin? %>
@@ -218,8 +219,7 @@
   <div class='evaluate'>
     <%= link_to '确认收货并打款', 'javascripts:;', class: 'btn btn-large btn-noraidus', onclick: '$("#refund_confirm_receive").modal("show")' %>
     <span>您还可以：<%= link_to '拒绝确认收货', 'javascripts:;', class: 'btn-link', onclick: '$("#refund_decline_receive").modal("show")' %> |
-    <%= link_to '要求UBOSS介入', [:applied_uboss, :admin, @order_item, @order_item_refund], class: 'btn-link' %>
-    <!-- TODO 出现“要求UBOSS介入”的条件：1.等待卖家处理,2.拒绝过买家后买家修改申请并提交后 -->
+    <%= link_to '要求UBOSS介入', 'javascripts:;', class: 'btn-link', onclick: '$("#refund_applied_uboss").modal("show")' %>
   </div>
   <br />
   <div class="bottom_line">
@@ -229,6 +229,7 @@
   </div>
   <%= render 'refund_modal', page: 'confirm_receive', title: '退款给买家' %>
   <%= render 'refund_modal', page: 'decline_receive', title: '拒绝确认收货' %>
+  <%= render 'refund_modal', page: 'applied_uboss',   title: '申请UBOSS介入' %>
 
 <% when 'finished' %>
   <% if @order_item_refund.refund_type_include_goods? %>
