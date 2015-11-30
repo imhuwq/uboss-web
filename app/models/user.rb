@@ -38,6 +38,7 @@ class User < ActiveRecord::Base
   has_many :order_item_refunds
   has_many :sales_returns, through: :order_item_refunds
   has_many :carriage_templates
+  has_many :bonus_records
   # for seller
   has_many :seller_addresses, -> { where(seller_address: true) }, class_name: 'UserAddress'
   has_many :sold_orders, class_name: 'Order', foreign_key: 'seller_id'
