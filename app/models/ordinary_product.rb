@@ -1,0 +1,2 @@
+class OrdinaryProduct < Product
+end

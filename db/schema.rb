@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151123041849) do
+ActiveRecord::Schema.define(version: 20151130033840) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -194,23 +194,6 @@ ActiveRecord::Schema.define(version: 20151123041849) do
 
   add_index "favour_products", ["product_id", "user_id"], name: "index_favour_products_on_product_id_and_user_id", unique: true, using: :btree
 
-  create_table "job_histories", force: :cascade do |t|
-    t.integer  "user_id"
-    t.integer  "status"
-    t.string   "message"
-    t.string   "resource_type"
-    t.string   "resource_id"
-    t.string   "job_class"
-    t.string   "job_method"
-    t.jsonb    "options"
-    t.datetime "created_at",    null: false
-    t.datetime "updated_at",    null: false
-  end
-
-  create_table "json_test", force: :cascade do |t|
-    t.jsonb "data"
-  end
-
   create_table "mobile_captchas", force: :cascade do |t|
     t.string   "code"
     t.datetime "expire_at"
@@ -285,13 +268,13 @@ ActiveRecord::Schema.define(version: 20151123041849) do
     t.integer  "refund_reason_id"
     t.string   "description"
     t.integer  "order_item_id"
-    t.datetime "created_at",                       null: false
-    t.datetime "updated_at",                       null: false
+    t.datetime "created_at",          null: false
+    t.datetime "updated_at",          null: false
     t.string   "aasm_state"
     t.integer  "order_state"
     t.string   "refund_type"
     t.integer  "user_id"
-    t.jsonb    "state_at_attributes", default: {}, null: false
+    t.jsonb    "state_at_attributes"
     t.string   "address"
     t.string   "return_explain"
     t.datetime "deal_at"
@@ -299,7 +282,6 @@ ActiveRecord::Schema.define(version: 20151123041849) do
 
   create_table "order_items", force: :cascade do |t|
     t.integer  "order_id"
-    t.integer  "product_id"
     t.integer  "user_id"
     t.integer  "amount"
     t.datetime "created_at",                         null: false
@@ -309,6 +291,7 @@ ActiveRecord::Schema.define(version: 20151123041849) do
     t.decimal  "present_price",        default: 0.0
     t.decimal  "privilege_amount",     default: 0.0
     t.integer  "product_inventory_id"
+    t.integer  "product_id"
     t.integer  "order_item_refund_id"
   end
 
@@ -331,10 +314,10 @@ ActiveRecord::Schema.define(version: 20151123041849) do
     t.datetime "signed_at"
     t.datetime "shiped_at"
     t.datetime "completed_at"
-    t.string   "ship_number"
-    t.integer  "express_id"
     t.string   "to_seller"
     t.decimal  "ship_price",      default: 0.0
+    t.string   "ship_number"
+    t.integer  "express_id"
     t.integer  "order_charge_id"
     t.decimal  "paid_amount",     default: 0.0
   end
@@ -359,14 +342,21 @@ ActiveRecord::Schema.define(version: 20151123041849) do
 
   create_table "privilege_cards", force: :cascade do |t|
     t.integer  "user_id"
-    t.datetime "created_at",                           null: false
-    t.datetime "updated_at",                           null: false
-    t.boolean  "actived",              default: false
+    t.datetime "created_at",                 null: false
+    t.datetime "updated_at",                 null: false
+    t.boolean  "actived",    default: false
     t.integer  "seller_id"
-    t.integer  "product_inventory_id"
   end
 
   add_index "privilege_cards", ["user_id", "seller_id"], name: "index_privilege_cards_on_user_id_and_seller_id", unique: true, using: :btree
+
+  create_table "product_attribute_names", force: :cascade do |t|
+    t.string   "name"
+    t.boolean  "is_key_attr",      default: true
+    t.integer  "product_class_id"
+    t.datetime "created_at",                      null: false
+    t.datetime "updated_at",                      null: false
+  end
 
   create_table "product_classes", force: :cascade do |t|
     t.integer  "parent_id"
@@ -455,7 +445,10 @@ ActiveRecord::Schema.define(version: 20151123041849) do
     t.boolean  "full_cut",             default: false
     t.integer  "full_cut_number"
     t.integer  "full_cut_unit"
+    t.string   "type"
   end
+
+  add_index "products", ["type"], name: "index_products_on_type", using: :btree
 
   create_table "redactor_assets", force: :cascade do |t|
     t.string   "data_file_name",               null: false
