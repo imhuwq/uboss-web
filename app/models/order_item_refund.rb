@@ -56,7 +56,7 @@ class OrderItemRefund < ActiveRecord::Base
     state :finished,                 after_enter: [:set_order_item]
     #撤销（买家）
     state :cancelled
-    #关闭（待发货时申请退款，商家选择发货）
+    #关闭（待发货时申请退款，商家选择发货 or 带确认收货，买家选择收货）
     state :closed
 
     after_all_transitions :set_deal_times
@@ -86,11 +86,23 @@ class OrderItemRefund < ActiveRecord::Base
       transitions from: [:approved, :confirm_receive], to: :finished
     end
     event :cancel do
-      transitions from: [:pending, :approved, :completed_express_number, :decline_received, :applied_uboss], to: :cancelled
+      transitions(
+        from: [:pending, :approved, :completed_express_number, :decline_received, :applied_uboss],
+        to: :cancelled
+      )
     end
     event :close do
       transitions from: [:pending], to: :closed
+      transitions(
+        from: [:pending, :declined, :completed_express_number, :decline_received, :applied_uboss],
+        to: :closed,
+        guards: [:pay_and_not_ship?]
+      )
     end
+  end
+
+  def pay_and_not_ship?
+    order_state == 'shiped'
   end
 
   def refund_type_include_goods?

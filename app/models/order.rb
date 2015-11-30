@@ -36,7 +36,7 @@ class Order < ActiveRecord::Base
     state :unpay
     state :payed, after_enter: [:create_privilege_card_if_none, :send_payed_sms_to_seller]
     state :shiped, after_enter: [:fill_shiped_at, :close_order_item_refund_before_shiping]
-    state :signed, after_enter: [:fill_signed_at, :active_privilege_card]
+    state :signed, after_enter: [:fill_signed_at, :active_privilege_card, :close_refunds_before_signed]
     state :completed, after_enter: :fill_completed_at
     state :closed, after_enter: :recover_product_stock
 
@@ -315,8 +315,22 @@ class Order < ActiveRecord::Base
       if refund.may_close? && refund.close!
         refund.refund_messages.create(
           user_type: '卖家',
-          user_id: refund.order_item.order.seller_id,
+          user_id: seller_id,
           message: '商家选择发货，退款申请关闭',
+          action: '退款关闭'
+        )
+      end
+    end
+  end
+
+  def close_refunds_before_signed
+    order_items.joins(:order_item_refunds).uniq.each do |item|
+      refund = item.last_refund
+      if refund.may_close? && refund.close!
+        refund.refund_messages.create(
+          user_type: '买家',
+          user_id: user_id,
+          message: '买家确认收货，退款申请关闭',
           action: '退款关闭'
         )
       end

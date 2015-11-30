@@ -4,7 +4,7 @@ FactoryGirl.define do
     refund_reason { create(:refund_reason) }
     description "MyString"
     order_item { create(:order_item) }
-    order_state 1
+    order_state { order_item.order.state }
     refund_type 'refund'
     user { order_item.user }
   end
