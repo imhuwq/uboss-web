@@ -1,11 +1,17 @@
 class OrderItemRefund < ActiveRecord::Base
+
+  include AASM
+  extend Enumerize
+
+  belongs_to :user
   belongs_to :order_item
   belongs_to :refund_reason
-  belongs_to :user
   has_one :sales_return
   has_one :refund_record
   has_many :refund_messages
   has_many :asset_imgs, class_name: 'AssetImg', autosave: true, as: :resource
+
+  scope :approved, -> { where(aasm_state: ['approved', 'finished']) }
 
   validates :order_state, :money, :refund_reason_id, presence: true
   validates_uniqueness_of :order_state, scope: :order_item_id, message: '不能多次申请'
@@ -22,11 +28,15 @@ class OrderItemRefund < ActiveRecord::Base
 
   enum order_state: { unpay: 0, payed: 1, shiped: 3, signed: 4, closed: 5, completed: 6 }
 
-  extend Enumerize
+  enumerize :refund_type, in: [
+    :refund,
+    :receipted_refund,
+    :unreceipt_refund,
+    :return_goods_and_refund,
+    :after_sale_only_refund,
+    :after_sale_return_goods_and_refund
+  ]
 
-  enumerize :refund_type, in: [:refund, :receipted_refund, :unreceipt_refund, :return_goods_and_refund, :after_sale_only_refund, :after_sale_return_goods_and_refund]
-
-  include AASM
   aasm do
     #申请退款
     state :pending, initial: true

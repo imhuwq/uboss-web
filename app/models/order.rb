@@ -13,6 +13,7 @@ class Order < ActiveRecord::Base
   has_many   :divide_incomes
   has_many   :selling_incomes
   has_many   :sharing_incomes, through: :order_items
+  has_many   :order_item_refunds, through: :order_items
 
   accepts_nested_attributes_for :order_items
 
