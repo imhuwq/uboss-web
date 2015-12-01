@@ -1,5 +1,6 @@
 zh-CN:
   attributes: &attributes
+    sku_attributes: 规格属性
     express_name: 快递公司
     store_cover: 店铺封面背景
     store_short_description: 店铺简介
