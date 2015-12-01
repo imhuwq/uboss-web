@@ -25,7 +25,7 @@
 	</div>
 <% when 'approved' %>
 
-	
+
   <% if @refund.refund_type_include_goods? %>
     <!-- TODO -->
     <div class="countdown bg-like gap" id="timer">
@@ -54,12 +54,12 @@
 
 <% when 'completed_express_number' %>
     <div class="countdown bg-like gap" id="timer">
-    </div>    
+    </div>
 		<div class="gap-lr line-gap">
 	    <p>卖家确认收货或超时自动确认收货后，将退款回您当时支付的账号或银行卡，请注意查收
 	    如果卖家拒绝退款，需要您修改退货申请</p>
 	    <p>物流公司：<%= @refund.sales_return.logistics_company %></p>
-	    <p>物流单号：<%= @refund.sales_return.ship_number %></p>	    
+	    <p>物流单号：<%= @refund.sales_return.ship_number %></p>
 	  </div>
 	  <div class="gap-lr">
 	  	<br />
@@ -116,14 +116,26 @@
 
 <% when 'closed' %>
 
-  <div class="gap-lr">
-    <p>卖家已发货，此申请被自动撤销</p>
-    <br />
-    <% if can_reapply?(@order_item) %>
-      <p>您可以再次发起申请</p>
+  <% if @refund.pay_and_not_ship? %>
+    <div class="gap-lr">
+      <p>买家已确认收货，此申请被自动撤销</p>
       <br />
-      <%= link_to '再次申请', service_select_order_item_order_item_refunds_path(order_item_id: @order_item.id)  ,class:'btn btn-block btn-black-border'%>
-    <% end %>
-  </div>
+      <% if can_reapply?(@order_item) %>
+        <p>您可以再次发起申请</p>
+        <br />
+        <%= link_to '再次申请', service_select_order_item_order_item_refunds_path(order_item_id: @order_item.id)  ,class:'btn btn-block btn-black-border'%>
+      <% end %>
+    </div>
+  <% else %>
+    <div class="gap-lr">
+      <p>商家已发货，此申请被自动撤销</p>
+      <br />
+      <% if can_reapply?(@order_item) %>
+        <p>您可以再次发起申请</p>
+        <br />
+        <%= link_to '再次申请', service_select_order_item_order_item_refunds_path(order_item_id: @order_item.id)  ,class:'btn btn-block btn-black-border'%>
+      <% end %>
+    </div>
+  <% end %>
 
 <% end %>
