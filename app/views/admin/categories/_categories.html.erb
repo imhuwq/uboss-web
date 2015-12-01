@@ -1,13 +1,36 @@
+<%= form_for :categories, url: url_for(action: :update_categories) do %>
 <div class="index_list">
-<table class="list-table">
+  <table class="list-table">
     <thead>
+      <th><input id="category-checkbox" type="checkbox"></th>
       <th>分组名</th>
+      <th>分组图片</th>
       <th>创建时间</th>
       <th>操作</th>
     </thead>
-    <% categories.each do |category| %>
+    <% categories.each_with_index do |category,i| %>
       <tr>
-        <td><%= category.name  %></td>
+        <%= hidden_field_tag "categories[#{i}][id]", category.id %>
+        <%= hidden_field_tag "categories[#{i}][check]", 'false', class:"form-item-check" %>
+        
+        <td>
+          <input class="checkbox " name="check_item" type="checkbox" data-member="#{i}">
+        </td>
+        <td><%= text_field_tag "categories[#{i}][name]", category.name  %></td>
+        <td>
+          <p class="fileinput-button">
+            <%= hidden_field_tag "categories[#{i}][avatar]" ,'' %>
+            <% if category.image_url.blank? %>
+              <%= image_tag("admin/no-img.png", class:"clean") %>
+            <% else %>
+              <%= image_tag(category.image_url(:thumb), class:"clean")%>
+            <% end %>
+            <%= upyun_meta_tags prefix: "#{i}" %>
+            <%= file_field_tag "image", class: "upyun_file_closest" %>
+            <b class="loading"><i class="fa fa-spinner"></i></b>
+          </p>
+          <p>(点击图片进行替换)</p>
+        </td>
         <td><%= category.created_at %></td>
         <td>
           <% if can? :update, category %>
@@ -23,5 +46,7 @@
         </td>
       </tr>
     <% end %>
-</table>
+  </table>
 </div>
+<%= submit_tag "save"%>
+<% end %>

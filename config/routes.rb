@@ -38,6 +38,7 @@ Rails.application.routes.draw do
 
   resources :stores, only: [:index, :show] do
     get :hots, :favours, on: :member
+    resources :categories, only: [:show]
   end
   resources :orders, only: [:new, :create, :show] do
     get 'received', on: :member
@@ -221,7 +222,9 @@ Rails.application.routes.draw do
 
       root 'dashboard#index'
 
-      resources :categories, except: [:show]
+      resources :categories, except: [:show] do 
+        post :update_categories, on: :collection
+      end
     end
     mount RedactorRails::Engine => '/redactor_rails'
   end

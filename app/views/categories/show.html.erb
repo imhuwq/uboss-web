@@ -1,0 +1,27 @@
+<%= content_for :page_title do %>
+  <% if @category %>
+    <%= @category.name %>
+  <% else %>
+    <div class="log_font"> UBOSS </div>
+  <% end %>
+<% end %>
+
+<div class="container">
+  <div class="list">
+    <ul class="list_ul clearfix">
+      <% if @products.present? %>
+        <%= render partial: 'products/product', collection: @products %>
+      <% end %>
+    </ul>
+  </div>
+</div>
+
+<div class="load-more" data-container='.list_ul' data-ele='.p-item' data-ref='/products'>加载更多</div>
+
+<% if browser.wechat? %>
+  <%= content_for :extra_javascript do %>
+    <script type="text/javascript" charset="utf-8">
+      wx.ready(function(){ UBoss.luffy.invokeSharing(); });
+    </script>
+  <% end %>
+<% end %>
