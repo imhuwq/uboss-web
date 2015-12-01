@@ -3,7 +3,6 @@ class VerifyCode < ActiveRecord::Base
 
   def generate_code
     self.code = SecureRandom.random_number(100000000000)
-    self.save
   end
 
   def verify_code

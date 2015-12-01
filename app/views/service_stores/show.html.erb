@@ -1,0 +1,27 @@
+<%= content_for :page_title do %>
+  我的团购店铺
+<% end %>
+<br />
+<div class='address-box'>
+  <%= link_to '#' do %>
+    <div class="content">
+      <span class='pull-right'>分享</span>
+      <p>
+        <span class='store_name'><%= @service_store.store_name %></span>
+      </p>
+    </div>
+  <% end %>
+</div><!-- address-box -->
+
+<br />
+<div class="order-list valid-order-list valid-list">
+  <div>
+    <%= link_to '验证明细', verify_detail_service_store_path, class: 'pull-right' %>
+  </div>
+  <div class="inline-form text-center">
+    <%= simple_form_for 'verify_code', url: verify_service_store_path do |f| %>
+      <%= number_field_tag 'code', '', placeholder: '请输入验证券密码' %>
+      <span class="text-center"><%= f.submit '验证', class: 'btn btn-large' %></span>
+    <% end %>
+  </div>
+</div>
