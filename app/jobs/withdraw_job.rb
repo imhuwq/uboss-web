@@ -1,4 +1,7 @@
 class WithdrawJob < ActiveJob::Base
+
+  include Loggerable
+
   queue_as :default
 
   def perform(withdraw_record, ip='127.0.0.1')
@@ -31,7 +34,7 @@ class WithdrawJob < ActiveJob::Base
       spbill_create_ip: ip
     )
 
-    Rails.logger.debug("transfer result: #{result}")
+    logger.info "Transfer #{withdraw_record.number} result: #{result}"
 
     if result.success?
       withdraw_record.update(
@@ -40,8 +43,10 @@ class WithdrawJob < ActiveJob::Base
         error_info: nil
       )
       withdraw_record.finish!
+      logger.info "Transfer #{withdraw_record.number} SUCCESS, wx_payment_no: #{result['payment_no']}"
     else
       withdraw_record.update(error_info: {code: result['return_code'], msg: result['return_msg']})
+      logger.error "Transfer #{withdraw_record.number} FAIL, wx_payment_no: #{result['payment_no']}"
     end
   end
 
