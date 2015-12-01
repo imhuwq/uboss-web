@@ -35,7 +35,7 @@
             <td colspan='2' class='text-left none-border-right'>
               <%= image_tag(item.product_inventory.product.avatar.url(:thumb), size: "40x40", alt: "-") %>
               <div>
-                <%= link_to [:admin, item.product_inventory.product], class: 'main-link-color' do %>
+                <%= link_to admin_product_path(item.product_inventory.product), class: 'main-link-color' do %>
                   <%= item.product_inventory.product.name %>
                 <% end %>
                 <% item.product_inventory.properties.each do |property| %>
@@ -48,7 +48,7 @@
               <td rowspan=<%= size %>>
                 <%= link_to order.buyer_identify, nil, class: 'main-link-color' %>
                 <p>联系买家
-                  <%= link_to [:admin, item.product_inventory.product], class: 'buyer_phone' do %>
+                  <%= link_to admin_product_path(item.product_inventory.product), class: 'buyer_phone' do %>
                     <i class="fa fa-phone"></i>
                   <% end %>
                 </p>
@@ -62,7 +62,7 @@
                 <% end %>
               </td>
               <td rowspan=<%= size %>>
-                <%=order.pay_amount%>
+                <%= order.pay_amount %>
                 <p>(含快递:<%= order.ship_price %>)</p>
               </td>
             <% end %>

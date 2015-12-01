@@ -7,7 +7,7 @@ class Admin::ProductsController < AdminController
   end
 
   def index
-    @products = current_user.products.available.order('created_at DESC')
+    @products = current_user.ordinary_products.available.order('created_at DESC')
     @products = @products.includes(:asset_img).page(params[:page] || 1)
     @statistics = {}
     @statistics[:create_today] = @products.where('created_at > ? and created_at < ?', Time.now.beginning_of_day, Time.now.end_of_day).count
