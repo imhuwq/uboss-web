@@ -5,6 +5,12 @@ class WithdrawJob < ActiveJob::Base
     return false if withdraw_valid?(withdraw_record)
 
     invoke_weixin_transfer(withdraw_record, ip)
+
+  rescue => e
+
+    withdraw_record.update(
+      error_info: { code: 'PLATFORM', msg: e.message }
+    )
   end
 
   private
