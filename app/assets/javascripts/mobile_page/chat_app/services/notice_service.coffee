@@ -12,7 +12,7 @@ class UXin.Services.NoticeService
         $(@titleEl).find('.new-msg-notice').html("(#{RongIMClient.getInstance().getTotalUnreadCount()})")
       else
         $(@titleEl).append """
-          <small class="new-msg-notice">(#{RongIMClient.getInstance().getTotalUnreadCount()})</small>
+          <span class="new-msg-notice">(#{RongIMClient.getInstance().getTotalUnreadCount()})</span>
         """
     else
       $(@titleEl).find('.new-msg-notice').html("")
