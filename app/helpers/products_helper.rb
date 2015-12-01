@@ -78,17 +78,12 @@ module ProductsHelper
   end
 
   def product_price(product)
-    product_inventories = product.seling_inventories
-    if product_inventories.size == 1
-      [product_inventories.first.price]
+    max_price = product.max_price
+    min_price = product.min_price
+    if max_price == min_price
+      [max_price]
     else
-      max_inventory = product_inventories.max { |inventory| inventory.price }
-      min_inventory = product_inventories.min { |inventory| inventory.price }
-      if max_inventory.price == min_inventory.price
-        [max_inventory.price]
-      else
-        [min_inventory.price, max_inventory.price]
-      end
+      [min_price, max_price]
     end
   end
 
