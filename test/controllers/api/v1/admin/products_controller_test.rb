@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class Api::V1::CarriageTemplatesControllerTest < ActionController::TestCase
+class Api::V1::Admin::ProductsControllerTest < ActionController::TestCase
   test "should get index" do
     get :index
     assert_response :success
@@ -10,5 +10,4 @@ class Api::V1::CarriageTemplatesControllerTest < ActionController::TestCase
     get :show
     assert_response :success
   end
-
 end
