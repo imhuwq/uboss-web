@@ -25,7 +25,7 @@ class OrderDivideJob < ActiveJob::Base
     @order_income = Rails.env.production? ? @order.paid_amount : @order.pay_amount
     logger.info "Start divide @order: #{order.number}, total_paid: #{@order_income}"
 
-    refunded_money = @order.order_item_refunds.approved.sum(:money)
+    refunded_money = @order.order_item_refunds.successed.sum(:money)
     logger.info "Divide order: #{@order.number}, reduce refund money #{refunded_money}"
     @order_income -= refunded_money
 
@@ -105,7 +105,7 @@ class OrderDivideJob < ActiveJob::Base
   end
 
   def reward_sharing_users(order_item, &block)
-    return false if order_item.order_item_refunds.approved.where('money > 0').exists?
+    return false if order_item.order_item_refunds.successed.where('money > 0').exists?
 
     sharing_node = order_item.sharing_node
     return false if sharing_node.blank?

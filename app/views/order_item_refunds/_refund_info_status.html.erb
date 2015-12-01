@@ -116,7 +116,7 @@
 
 <% when 'closed' %>
 
-  <% if @refund.pay_and_not_ship? %>
+  <% if @refund.order_shiped? %>
     <div class="gap-lr">
       <p>买家已确认收货，此申请被自动撤销</p>
       <br />
