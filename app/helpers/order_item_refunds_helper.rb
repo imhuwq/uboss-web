@@ -1,7 +1,7 @@
 module OrderItemRefundsHelper
 
   def can_reapply?(order_item)
-    OrderItemRefund.where(order_item_id: order_item.id, order_state: Order.states[order_item.order.state]).blank?
+    !OrderItemRefund.where(order_item_id: order_item.id, order_state: Order.states[order_item.order.state]).exists?
   end
 
   def check_refund_and_get_money(order_item, refund)

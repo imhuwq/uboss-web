@@ -11,7 +11,14 @@ class OrderItemRefund < ActiveRecord::Base
   has_many :refund_messages
   has_many :asset_imgs, class_name: 'AssetImg', autosave: true, as: :resource
 
-  scope :approved, -> { where(aasm_state: ['approved', 'finished']) }
+  scope :successed, -> {
+    where(
+      <<-SQL.squish!
+        order_item_refunds.aasm_state IN ('finished', 'confirm_received') OR
+        (order_item_refunds.aasm_state = 'approved' AND order_item_refunds.refund_type NOT LIKE '%goods%')
+      SQL
+    )
+  }
 
   validates :order_state, :money, :refund_reason_id, presence: true
   validates_uniqueness_of :order_state, scope: :order_item_id, message: '不能多次申请'
@@ -96,12 +103,17 @@ class OrderItemRefund < ActiveRecord::Base
       transitions(
         from: [:pending, :declined, :completed_express_number, :decline_received, :applied_uboss],
         to: :closed,
-        guards: [:pay_and_not_ship?]
+        guards: [:order_shiped?]
+      )
+      transitions(
+        from: [:approved],
+        to: :closed,
+        guards: [:order_shiped?, :refund_type_include_goods?]
       )
     end
   end
 
-  def pay_and_not_ship?
+  def order_shiped?
     order_state == 'shiped'
   end
 
@@ -254,11 +266,11 @@ class OrderItemRefund < ActiveRecord::Base
   end
 
   def check_if_only_refund
-    if !refund_type_include_goods?    # 如果只退款, 同意退款申请后就直接进入退款流程
-      wx_order_refund
-    else
+    if refund_type_include_goods?    # 如果只退款, 同意退款申请后就直接进入退款流程
       self.address = order_item.order.seller.default_post_address.try(:refund_label) ||'商家没有设定默认退货地址，请联系商家获取退货地址'
       self.save
+    else
+      wx_order_refund
     end
   end
 
