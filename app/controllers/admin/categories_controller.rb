@@ -31,6 +31,23 @@ class Admin::CategoriesController < AdminController
     redirect_to admin_categories_url, notice: '成功删除分组'
   end
 
+  def update_categories
+    begin
+      params[:categories].each do |i,attributes|
+        Category.find_by(id: attributes[:id]).update(attributes.permit(:name, :avatar))
+      end
+    rescue Exception => ex 
+      @errors << ex.full_message
+    end
+    if @errors
+      flash[:errors] = @errors.join('\n')
+      render action: :new
+    else
+      flash[:success] = "success"
+      redirect_to action: :new
+    end
+  end
+
   private
     # Never trust parameters from the scary internet, only allow the white list through.
     def category_params

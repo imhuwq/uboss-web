@@ -175,7 +175,9 @@ Rails.application.routes.draw do
 
       root 'dashboard#index'
 
-      resources :categories, except: [:show]
+      resources :categories, except: [:show] do 
+        post :update_categories, on: :collection
+      end
     end
     mount RedactorRails::Engine => '/redactor_rails'
   end

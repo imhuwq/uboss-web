@@ -16,7 +16,6 @@ class Admin::ProductsController < AdminController
   end
 
   def create
-    @product.user_id = current_user.id
     if @product.save
       flash[:success] = '产品创建成功'
       redirect_to action: :show, id: @product.id
