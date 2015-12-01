@@ -48,20 +48,18 @@ class Product < ActiveRecord::Base
     end
   end
 
-  def price_range
-    min = product_inventories.map(&:price).min
-    max = product_inventories.map(&:price).max
-    if min == max
-      min
-    else
-      "#{min} - #{max}"
-    end
-  end
-
   def self.official_agent
     official_account = User.official_account
     return nil if official_account.blank?
     @official_agent_product ||= find_by(user_id: official_account.id, name: OFFICIAL_AGENT_NAME)
+  end
+
+  def max_price
+    @max_price ||= seling_inventories.maximum(:price)
+  end
+
+  def min_price
+    @min_price ||= seling_inventories.minimum(:price)
   end
 
   # SKU(product_inventory) 更新保存逻辑
