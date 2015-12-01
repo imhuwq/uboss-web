@@ -53,6 +53,14 @@ class Product < ActiveRecord::Base
     @official_agent_product ||= find_by(user_id: official_account.id, name: OFFICIAL_AGENT_NAME)
   end
 
+  def max_price
+    @max_price ||= seling_inventories.maximum(:price)
+  end
+
+  def min_price
+    @min_price ||= seling_inventories.minimum(:price)
+  end
+
   # SKU(product_inventory) 更新保存逻辑
   # 1. 更新OR创建新传入的SKU
   # 2. 正在销售的SKU，如果没有在传入的SKU规格参数中，这些SKU记录将会被Flag: saling -> false
