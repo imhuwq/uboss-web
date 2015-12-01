@@ -38,6 +38,7 @@ Rails.application.routes.draw do
 
   resources :stores, only: [:index, :show] do
     get :hots, :favours, on: :member
+    resources :categories, only: [:show]
   end
   resources :orders, only: [:new, :create, :show] do
     get 'received', on: :member
