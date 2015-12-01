@@ -11,22 +11,25 @@
     <% categories.each_with_index do |category,i| %>
       <tr>
         <%= hidden_field_tag "categories[#{i}][id]", category.id %>
+        <%= hidden_field_tag "categories[#{i}][check]", 'false', class:"form-item-check" %>
+        
         <td>
           <input class="checkbox " name="check_item" type="checkbox" data-member="#{i}">
-          <%= hidden_field_tag "categories[#{i}][check]", 'false', class:"form-item-check" %>
         </td>
         <td><%= text_field_tag "categories[#{i}][name]", category.name  %></td>
         <td>
-          <%= hidden_field_tag "categories[#{i}][avatar]" ,'', id:'category_avata' %>
           <p class="fileinput-button">
+            <%= hidden_field_tag "categories[#{i}][avatar]" ,'' %>
             <% if category.image_url.blank? %>
               <%= image_tag("admin/no-img.png", class:"clean") %>
             <% else %>
               <%= image_tag(category.image_url(:thumb), class:"clean")%>
             <% end %>
-            <%= file_field_tag "image", class: "upyun_file" %>
+            <%= upyun_meta_tags prefix: "#{i}" %>
+            <%= file_field_tag "image", class: "upyun_file_closest" %>
             <b class="loading"><i class="fa fa-spinner"></i></b>
           </p>
+          <p>(点击图片进行替换)</p>
         </td>
         <td><%= category.created_at %></td>
         <td>
