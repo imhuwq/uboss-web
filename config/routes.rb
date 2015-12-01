@@ -63,6 +63,12 @@ Rails.application.routes.draw do
   resource :withdraw_records, only: [:show, :new, :create] do
     get :success, on: :member
   end
+
+  resource :service_store, only: [:show] do
+    get :verify_detail, on: :member
+    post :verify, on: :member
+  end
+
   resource :account, only: [:show, :edit, :update] do
     get :settings,         :edit_password,
         :orders,           :binding_agent, :invite_seller,
@@ -119,6 +125,12 @@ Rails.application.routes.draw do
       get '/select_carriage_template', to: 'products#select_carriage_template'
 
       resources :service_stores, only: [:edit, :update]
+      resources :verify_codes, only: [:index] do
+        collection do
+          get :statistics
+          post :verify
+        end
+      end
 
       resources :expresses do
         member do

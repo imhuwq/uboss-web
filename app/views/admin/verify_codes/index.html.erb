@@ -1,0 +1,36 @@
+<%= render 'public' %>
+<br />
+<div class="container">
+	<div class="header-tab">
+		<div class="tab-title active">验证明细</div>
+		<%= link_to "团购统计", statistics_admin_verify_codes_path, class:"tab-title" %>
+	</div>
+</div>
+<br />
+
+<div class="container">
+	<table class="list-table" id="verify_codes">
+    <thead>
+      <tr>
+        <th>团购名称</th>
+        <th>现价</th>
+        <th>实付款</th>
+        <th>验证券密码</th>
+        <th>是否验证</th>
+        <th>验证时间</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @verify_codes.each do |verify_code| %>
+        <tr>
+          <td class="text-left"></td>
+          <td></td>
+          <td></td>
+          <td><%= verify_code.code %></td>
+          <td><%= verify_code.verified ? '是':'否' %></td>
+          <td><%= verify_code.updated_at.to_date if verify_code.verified %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
