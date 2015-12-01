@@ -9,3 +9,6 @@ every 10.minutes do
   runner "WxRefundQueryJob.perform_later"
 end
 
+every 1.day, at: "12:55am", roles: [:db] do
+  runner "RongcloudJob.make_sync_history_jobs"
+end

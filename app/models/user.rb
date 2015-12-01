@@ -159,7 +159,7 @@ class User < ActiveRecord::Base
 
   def invoke_rongcloud_job
     if rongcloud_token.blank? || [:nickname, :avatar].any? { |key| previous_changes.include?(key) }
-      RongcloudJob.perform_later(self)
+      RongcloudJob.perform_later(user: self, type: 'user_info')
     end
   end
 
