@@ -1,0 +1,42 @@
+<%= content_for :page_title do %>
+  验证明细
+<% end %>
+<br />
+<div id="index_list">
+  <div class="container nogap">
+    <div class="box-w25">
+      <div class="admin-box main-bg-color">
+        <h4>总验证数量</h4>
+        <h1 class="num"><%= @total %></h1>
+      </div>
+    </div>
+    <div class="box-w25">
+      <div class="admin-box red-bg-color">
+        <h4>今日验证数量</h4>
+        <h1 class="num"><%= @today %></h1>
+      </div>
+    </div>
+  </div>
+</div>
+<br />
+<p>今日验证明细</p>
+<div class="container">
+	<table class="list-table" id="verify_codes">
+    <thead>
+      <tr>
+        <th>团购名称</th>
+        <th>验证时间</th>
+        <th>验证券密码</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @verify_codes.each do |verify_code| %>
+        <tr>
+          <td></td>
+          <td><%= verify_code.updated_at.to_date %></td>
+          <td><%= verify_code.code %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
