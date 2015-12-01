@@ -11,4 +11,7 @@ class UserInfo < ActiveRecord::Base
 
   compatible_with_form_api_images :store_banner_one, :store_banner_two, :store_banner_thr, :store_cover
 
+  scope :ordinary_store, -> { where(type: 'OrdinaryStore').first }
+  scope :service_store, -> { where(type: 'ServiceStore').first }
+
 end

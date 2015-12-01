@@ -118,6 +118,8 @@ Rails.application.routes.draw do
 
       get '/select_carriage_template', to: 'products#select_carriage_template'
 
+      resources :service_stores, only: [:edit, :update]
+
       resources :expresses do
         member do
           get :set_common

@@ -39,5 +39,5 @@ jQuery ($) ->
       tabid = $(this).attr('data-title')
       $(tabid).fadeIn()
     return
-   
+
   $("select").filter(":not([data-manual-chosen])").chosen()

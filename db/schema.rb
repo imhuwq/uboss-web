@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151201075620) do
+ActiveRecord::Schema.define(version: 20151130082303) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -204,46 +204,6 @@ ActiveRecord::Schema.define(version: 20151201075620) do
   end
 
   add_index "mobile_captchas", ["mobile"], name: "index_mobile_captchas_on_mobile", using: :btree
-
-  create_table "oauth_access_grants", force: :cascade do |t|
-    t.integer  "resource_owner_id", null: false
-    t.integer  "application_id",    null: false
-    t.string   "token",             null: false
-    t.integer  "expires_in",        null: false
-    t.text     "redirect_uri",      null: false
-    t.datetime "created_at",        null: false
-    t.datetime "revoked_at"
-    t.string   "scopes"
-  end
-
-  add_index "oauth_access_grants", ["token"], name: "index_oauth_access_grants_on_token", unique: true, using: :btree
-
-  create_table "oauth_access_tokens", force: :cascade do |t|
-    t.integer  "resource_owner_id"
-    t.integer  "application_id"
-    t.string   "token",             null: false
-    t.string   "refresh_token"
-    t.integer  "expires_in"
-    t.datetime "revoked_at"
-    t.datetime "created_at",        null: false
-    t.string   "scopes"
-  end
-
-  add_index "oauth_access_tokens", ["refresh_token"], name: "index_oauth_access_tokens_on_refresh_token", unique: true, using: :btree
-  add_index "oauth_access_tokens", ["resource_owner_id"], name: "index_oauth_access_tokens_on_resource_owner_id", using: :btree
-  add_index "oauth_access_tokens", ["token"], name: "index_oauth_access_tokens_on_token", unique: true, using: :btree
-
-  create_table "oauth_applications", force: :cascade do |t|
-    t.string   "name",                      null: false
-    t.string   "uid",                       null: false
-    t.string   "secret",                    null: false
-    t.text     "redirect_uri",              null: false
-    t.string   "scopes",       default: "", null: false
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  add_index "oauth_applications", ["uid"], name: "index_oauth_applications_on_uid", unique: true, using: :btree
 
   create_table "order_charges", force: :cascade do |t|
     t.string   "channel"
@@ -583,6 +543,15 @@ ActiveRecord::Schema.define(version: 20151201075620) do
 
   add_index "simple_captcha_data", ["key"], name: "idx_key", using: :btree
 
+  create_table "store_phones", force: :cascade do |t|
+    t.string   "area_code"
+    t.string   "fixed_line"
+    t.string   "phone_number"
+    t.integer  "service_store_id"
+    t.datetime "created_at",       null: false
+    t.datetime "updated_at",       null: false
+  end
+
   create_table "transactions", force: :cascade do |t|
     t.integer  "user_id"
     t.decimal  "current_amount", default: 0.0
@@ -639,9 +608,14 @@ ActiveRecord::Schema.define(version: 20151201075620) do
     t.integer  "better_evaluation"
     t.integer  "best_evaluation"
     t.string   "store_cover"
+    t.string   "type"
+    t.string   "begin_hour"
+    t.string   "begin_minute"
+    t.string   "end_hour"
+    t.string   "end_minute"
+    t.string   "area"
+    t.string   "street"
   end
-
-  add_index "user_infos", ["user_id"], name: "index_user_infos_on_user_id", unique: true, using: :btree
 
   create_table "user_role_relations", force: :cascade do |t|
     t.integer "user_id"
@@ -686,6 +660,7 @@ ActiveRecord::Schema.define(version: 20151201075620) do
     t.integer  "agent_code"
     t.string   "authentication_token"
     t.decimal  "privilege_rate",         default: 50.0
+    t.string   "rongcloud_token"
   end
 
   add_index "users", ["agent_code"], name: "index_users_on_agent_code", unique: true, using: :btree

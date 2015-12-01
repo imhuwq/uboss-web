@@ -75,7 +75,7 @@ class Admin::SellersController < AdminController
     params.require(:user).permit(
       :store_banner_one,          :store_banner_two,          :store_banner_thr,
       :recommend_resource_one_id, :recommend_resource_two_id, :recommend_resource_thr_id,
-      :store_name, :store_short_description, :store_cover
+      :store_name, :store_short_description, :store_cover,
     )
   end
 end

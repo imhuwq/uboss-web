@@ -1,0 +1,88 @@
+<div class="container admin-container">
+  <ul class="breadcrumb">
+    <li><a href="/admin">主页</a></li>
+    <li class="divider"><i class="fa fa-caret-right"></i></li>
+    <li>团购店铺设置</li>
+  </ul>
+</div>
+<br />
+<div class="container">
+  <h3 cclass="page-title">店铺基本信息</h3>
+
+  <%= render partial: 'shared/form_error_message', locals: { obj: @service_store } %>
+
+  <%= nested_form_for [:admin, @service_store] do |f| %>
+    <div class="admin-box black-bg-color">
+    	<div class="box-w85 nogap-left">
+        <label>店铺名称</label>
+	      <%= f.text_field :store_name %>
+        <label>店铺描述</label>
+	      <%= f.text_field :store_short_description, hint: '请控制在20字以内，以保证显示效果' %>
+      </div>
+      <div class="box-w15 nogap-right">
+        <div class="gap white-bg-color">
+        	<%= qrcode_image_tag store_url(shared: true) %>
+        </div>
+      </div>
+    </div>
+    <br />
+    <div class="admin-box black-bg-color">
+      <div class='form-group file optional user_store_cover'>
+        <label>店铺封面</label>
+        <div class='control-input'>
+          <%= f.text_field :store_cover, type: :hidden, as: :file, class: 'file optional' %>
+          <p><span class="text-margin">建议上传比例为1:1的图片，最佳尺寸为<b style="color: red;">600x600</b>像素</span></p>
+          <p class="fileinput-button">
+            <% if @service_store.store_cover_identifier.blank? %>
+              <%= image_tag("admin/no-img.png") %>
+            <% else %>
+              <%= image_tag(@service_store.store_cover.url(:w320))%>
+            <% end %>
+            <%= upyun_meta_tags prefix: "user_info/store_cover" %>
+            <%= file_field_tag "st_c_image", class: "upyun_file_closest" %>
+            <b class="loading"><i class="fa fa-spinner"></i></b>
+          </p>
+          <p class="help-block">(点击图片进行替换)</p>
+        </div>
+      </div>
+    </div>
+    <br />
+    <div class="admin-box black-bg-color">
+      <label>店铺位置</label>
+      <div class='store_address_warp'>
+        <%= render 'user_addresses/user_address', f: f, locals: { obj: @service_store } %>
+        <%= f.text_field :street, placeholder: '填写详细地址', class: 'input-block' %>
+      </div>
+    </div>
+    <br />
+    <div class="admin-box black-bg-color">
+      <div class='table-wrapper'>
+        <label for='store_phone'>店铺电话</label>
+        <div class='table-body'>
+          <%= f.fields_for :store_phones do |p| %>
+            <span><%= p.text_field :area_code, placeholder: '区号' %></span>
+            <span>--</span>
+            <span><%= p.text_field :fixed_line, placeholder: '固定电话' %></span>
+            <span>或</span>
+            <span><%= p.text_field :phone_number, placeholder: '手机号' %></span>
+            <span><%= p.link_to_remove '删除', class: 'remove', tabIndex: '-1' %></span>
+          <% end %>
+          <div class='add_store_phone'><%= f.link_to_add "新增电话", :store_phones, class: 'fa fa-plus text-center add-chapter'%></div>
+        </div>
+      </div>
+    </div>
+    </br>
+    <div class="admin-box black-bg-color">
+      <label for='store_phone'>营业时间</label>
+      <%= f.text_field :begin_hour, placeholder: '几时' %> <span>:<span>
+      <%= f.text_field :begin_minute, placeholder: '几分' %> <span>至<span>
+      <%= f.text_field :end_hour, placeholder: '几时' %> <span>:<span>
+      <%= f.text_field :end_minute, placeholder: '几分' %>
+      <p>举例: 9 : 00 至 22 : 00</p>
+    </div>
+    <br />
+    <div class="text-center">
+      <%= f.submit '提交', class: 'btn btn-large red-btn' %>
+    </div>
+  <% end %>
+</div>

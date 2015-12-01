@@ -14,8 +14,8 @@ class User < ActiveRecord::Base
   mount_uploader :avatar, ImageUploader
 
   has_and_belongs_to_many :expresses, uniq: true
-  has_one :user_info, autosave: true
   has_one :cart
+  has_many :user_infos, autosave: true
   has_many :carriage_templates
   has_many :transactions
   has_many :user_role_relations, dependent: :destroy
@@ -54,7 +54,7 @@ class User < ActiveRecord::Base
   delegate :sex, :sex=, :province, :province=, :city, :city=, :country, :country=,
     :good_evaluation, :best_evaluation, :better_evaluation, :worst_evaluation, :bad_evaluation,
     :store_name, :store_name=,      :income_level_thr, :frozen_income,
-    :income,     :income_level_one, :income_level_two, :service_rate,
+    :income,     :income_level_one, :income_level_two, :service_rate, :type, :type=,
     :store_banner_one_identifier,  :store_banner_two_identifier,  :store_banner_thr_identifier,
     :store_banner_one,  :store_banner_two,  :store_banner_thr,
     :store_banner_one_url,  :store_banner_two_url,  :store_banner_thr_url,
@@ -62,7 +62,7 @@ class User < ActiveRecord::Base
     :recommend_resource_one_id, :recommend_resource_two_id, :recommend_resource_thr_id,
     :recommend_resource_one_id=, :recommend_resource_two_id=, :recommend_resource_thr_id=,
     :store_short_description, :store_short_description=, :store_cover, :store_cover=,
-    to: :user_info, allow_nil: true
+    to: :ordinary_store, allow_nil: true
 
   enum authenticated: {no: 0, yes: 1}
 
@@ -73,7 +73,8 @@ class User < ActiveRecord::Base
   end
   before_validation :ensure_authentication_token, :ensure_privilege_rate
   before_create :set_mobile, :set_default_role
-  before_create :build_user_info, if: -> { user_info.blank? }
+  before_create :build_ordinary_store, if: -> { ordinary_store.blank? }
+  before_create :build_service_store, if: -> { service_store.blank? }
   before_save   :set_service_rate
 
   scope :admin, -> { where(admin: true) }
@@ -87,6 +88,14 @@ class User < ActiveRecord::Base
         @is_#{role} ||= user_roles.exists?(name: '#{role}')
       end
     RUBY
+  end
+
+  def service_store
+    user_infos.service_store || build_service_store
+  end
+
+  def ordinary_store
+    user_infos.ordinary_store || build_ordinary_store
   end
 
   def image_url(version = nil)
@@ -267,7 +276,7 @@ class User < ActiveRecord::Base
   end
 
   def user_info
-    super || build_user_info
+    ordinary_store
   end
 
   def default_address
