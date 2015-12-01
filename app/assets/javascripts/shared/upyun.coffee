@@ -37,12 +37,17 @@ $ ->
     formGroup = $this.closest(".form-group")
     fileName = data.originalFiles[0].name
     fieldName = $this.prop("name")
+    console.log "button", button
+    console.log "button.hasClass('uploading')", button.hasClass('uploading')
     unless button.hasClass('uploading')
 
       $this.hide()
       button.addClass('uploading')
+      console.log "data", data
       data.submit().done (doc) ->
+        console.log "data.submit()"
         returnUrl = doc[0].location.href
+        console.log "returnUrl", returnUrl
         queryString = returnUrl.split("?")[1]
         qs = $.parseQueryString(queryString)
         if qs.code isnt "200"

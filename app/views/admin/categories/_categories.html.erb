@@ -19,7 +19,7 @@
         <td><%= text_field_tag "categories[#{i}][name]", category.name  %></td>
         <td>
           <p class="fileinput-button form-group">
-            <%= hidden_field_tag "categories[#{i}][avatar]" ,'' %>
+            <%= hidden_field_tag "categories[#{i}][avatar]" ,'', class:'file' %>
             <% if category.image_url.blank? %>
               <%= image_tag("admin/no-img.png", class:"clean") %>
             <% else %>
