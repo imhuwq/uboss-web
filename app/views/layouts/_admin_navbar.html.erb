@@ -33,6 +33,9 @@
           <%= can_li_link(:manage, Order, admin_orders_path) %>
           <%= can_li_link(:read, Express, admin_expresses_path) %>
         <% end %>
+        <%= nav_group :service_manage do %>
+          <%= can_li_link(:manage, ServiceStore, edit_admin_service_store_path(current_user.service_store)) %>
+        <% end %>
         <%= can_li_link(:manage, SharingIncome, admin_sharing_incomes_path) %>
         <%= nav_group :withdraw_records do %>
           <%= can_li_link(:read, WithdrawRecord, admin_withdraw_records_path) %>

@@ -142,11 +142,13 @@ zh-CN:
       default: 验证码错误
   nav_groups:
     order_manage: 订单管理
+    service_manage: 团购管理
     orders: 订单
     product_manage: 商品管理
     withdraw_records: 提现
   li_link:
     dashboard: 主页
+    service_stores: 团购店铺
     carriage_templates: 运费模板
     expresses: 快递管理
     data: 数据
@@ -175,6 +177,14 @@ zh-CN:
       product_inventories:
         product_id: SKU产品
         share_amount_total: 总返利
+      service_store:
+        store_phones: 店铺电话
+        begin_hour: 开始时
+        begin_minute: 开始分
+        end_hour: 结束时
+        end_minute: 结束分
+      store_phones:
+        fixed_line_or_phone_number: 固定电话或手机号
       carriage_template:
         name: 模板名称
       different_area:
@@ -289,6 +299,8 @@ zh-CN:
   errors:
     messages:
       already_has_role: 已经拥有该角色
+      only_ordinary_store: 只能创建一个电商店铺
+      only_service_store: 只能创建一个团购店铺
   api_errors:
     unauthorized: 没通过用户认证
     forbidden: 权限不够
