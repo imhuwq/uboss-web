@@ -1,7 +1,7 @@
 <%= content_for :page_specific_javascript do %>
   <script type="text/javascript" charset="utf-8">
-    propertyData = <%== ProductProperty.includes(:product_property_values).all.to_json(only: [:name], include: {product_property_values: {only: [:value]}}) %>
-    stockData = <%== get_product_seling_inventories_json f.object %>
+    propertyData = <%== ProductProperty.includes(:product_property_values).all.to_json(only: [:name], include: {product_property_values: {only: [:value]}}) %>;
+    stockData = <%== get_product_seling_inventories_json f.object %>;
   </script>
   <%= javascript_include_tag 'admin/sku_app/application' %>
 <% end %>
@@ -59,8 +59,8 @@
   <div class="form-group sku-privilege-lvs-group">
     <label class="control-label">返利方案</label>
     <div class='sku-plvs-btns control-input'>
-      <a href="#" class='btn btn-link btn-border' data-level='3'>三级返利</a>
-      <a href="#" class='btn btn-link btn-border' data-level='2'>二级返利</a>
+      <!-- <a href="#" class='btn btn&#45;link btn&#45;border' data&#45;level='3'>三级返利</a> -->
+      <!-- <a href="#" class='btn btn&#45;link btn&#45;border' data&#45;level='2'>二级返利</a> -->
       <a href="#" class='btn btn-link btn-border' data-level='1'>一级返利</a>
     </div>
   </div>
