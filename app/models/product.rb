@@ -6,11 +6,6 @@ class Product < ActiveRecord::Base
 
   OFFICIAL_AGENT_NAME = 'UBOSS创客权'.freeze
 
-  # FIXME: @dalezhang 请使用helper or i18n 做view的数值显示
-  DataCalculateWay = { 0 => '按金额', 1 => '按售价比例' }
-  DataBuyerPay = { 0 => '包邮', 1 => '统一邮费', 2 => '运费模板' }
-  FullCut = { 0 => '件', 1 => '元' }
-
   has_one_image autosave: true
   #has_many_images name: :figure_images, accepts_nested: true
 
@@ -27,24 +22,12 @@ class Product < ActiveRecord::Base
 
   enum status: { unpublish: 0, published: 1, closed: 2 }
 
-  scope :hots, -> { where(hot: true) }
   scope :available, -> { where.not(status: 2) }
 
+  validate :must_has_one_product_inventory
   validates_presence_of :user_id, :name, :short_description
-  validates :full_cut_number, :full_cut_unit, presence: true, if: "full_cut"
-  validates_numericality_of :full_cut_number, greater_than: 0, if: "full_cut"
 
   before_create :generate_code
-
-  validate do
-    #统一邮费
-    if transportation_way == 1
-      self.errors.add(:traffic_expense, "不能小于或等于0") if traffic_expense.to_i <= 0
-    #运费模板
-    elsif transportation_way == 2
-      self.errors.add(:carriage_template, "不能为空") if carriage_template_id.blank?
-    end
-  end
 
   def self.official_agent
     official_account = User.official_account
@@ -165,7 +148,7 @@ class Product < ActiveRecord::Base
 
   def meet_full_cut?(count, product_inventory_id)
     if self.full_cut
-      Product::FullCut[self.full_cut_unit] == '件' ? check_full_cut_piece(count) : check_full_cut_yuan(count, product_inventory_id)
+      OrdinaryProduct::FullCut[self.full_cut_unit] == '件' ? check_full_cut_piece(count) : check_full_cut_yuan(count, product_inventory_id)
     end
   end
 
@@ -204,6 +187,12 @@ class Product < ActiveRecord::Base
     hash[:skus] = skus
     hash[:sku_details] = sku_details
     return hash
+  end
+
+  private
+
+  def must_has_one_product_inventory
+    errors.add(:product_inventories, '至少添加一个产品规格属性') unless product_inventories.size > 0
   end
 
 end

@@ -16,7 +16,7 @@
 		<% products.each do |product| %>
 			<tr class="product" id='product_<%= product.id %>'>
 				<td class="text-left">
-					<%= link_to admin_product_path(product) do %>
+					<%= link_to admin_service_product_path(product) do %>
 						<%= image_tag(product.image_url(:thumb), size: "80x80", alt: "-") %>　
 						<%= product.name %>
 					<% end %>
@@ -35,23 +35,17 @@
 					<% if can? :update, product %>
 						<% if product.status == 'unpublish' %>
 				      <p>
-              <%= link_to("上架", change_status_admin_product_path(product, status: 'published'),
+              <%= link_to("上架", change_status_admin_service_product_path(product, status: 'published'),
               remote: true, method: :patch, data: { disable_with: '<i class="fa fa-spinner"></i>' },
               class: "btn btn-mid btn-block yellow-btn change-status-btn") %>
 							</p>
 				    <% else %>
 				    	<p>
-				      <%= link_to("下架", change_status_admin_product_path(product, status: 'unpublish'),
+				      <%= link_to("下架", change_status_admin_service_product_path(product, status: 'unpublish'),
 				      remote: true, method: :patch, data: { disable_with: '<i class="fa fa-spinner"></i>' },
 				      class: "btn btn-mid btn-block change-status-btn") %>
 				      </p>
 				    <% end %>
-
-            <%= link_to switch_hot_flag_admin_product_path(product),
-				      remote: true, method: :patch,
-              class:" edit-icon switch-p-hot-btn " ,title:'是否为热销商品' do %>
-              <i class="fa fachange <%=product.hot? ? 'fa-heart red-color' : 'fa-heart-o'%>">  </i>
-            <% end %>
 
             <%= link_to url_for(action: :edit, id: product.id), class:'edit-icon', title: '编辑' do %>
               <i class="fa fa-pencil-square-o"></i>

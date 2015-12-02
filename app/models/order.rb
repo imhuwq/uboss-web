@@ -171,7 +171,7 @@ class Order < ActiveRecord::Base
       cut_items = []
 
       full_cut_items.each do |item|
-        if Product::FullCut[item.product_inventory.full_cut_unit] == '件'
+        if OrdinaryProduct::FullCut[item.product_inventory.full_cut_unit] == '件'
           cut_items.push(item) if item.count >= item.product_inventory.full_cut_number
         else
           cut_items.push(item) if (item.count * item.product_inventory.price) >= item.product_inventory.full_cut_number

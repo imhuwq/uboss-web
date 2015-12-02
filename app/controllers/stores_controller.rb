@@ -12,12 +12,12 @@ class StoresController < ApplicationController
 
   def show
     @products = append_default_filter @seller.products.published, order_column: :updated_at
-    @hots = @seller.products.hots.recent.limit(3)
+    @hots = @seller.ordinary_products.hots.recent.limit(3)
     render_product_partial_or_page
   end
 
   def hots
-    @products = append_default_filter @seller.products.hots, order_column: :updated_at
+    @products = append_default_filter @seller.ordinary_products.hots, order_column: :updated_at
     render_product_partial_or_page
   end
 

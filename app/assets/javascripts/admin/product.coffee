@@ -45,7 +45,7 @@ $ ->
       $('#product_carriage_template_id option:selected').attr('selected', false);
 
 
-  $("label[for='product_full_cut']").click (event)->
+  $("label[for='product_full_cut'], label[for='ordinary_product_full_cut']").click (event)->
     if $(this).find('input')[0].checked
       $('.full_cut_params').show()
       $(this).addClass('checkbox_is_checked')

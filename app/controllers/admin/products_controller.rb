@@ -16,12 +16,14 @@ class Admin::ProductsController < AdminController
   end
 
   def create
+    @product = OrdinaryProduct.new product_params
     @product.user_id = current_user.id
     if @product.save
       flash[:success] = '产品创建成功'
       redirect_to action: :show, id: @product.id
     else
       flash[:error] = "#{@product.errors.full_messages.join('<br/>')}"
+      @product = Product.new product_params
       render :new
     end
   end

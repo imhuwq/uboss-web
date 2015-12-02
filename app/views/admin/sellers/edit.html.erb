@@ -60,7 +60,7 @@
             </span>
           <% end %>
 
-          <%= f.input_field source, as: :select, collection: @seller.products.published.hots, prompt: '请选择一个热销商品' %>
+          <%= f.input_field source, as: :select, collection: @seller.ordinary_products.published.hots, prompt: '请选择一个热销商品' %>
         </div>
       <% end %>
     </div>

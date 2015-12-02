@@ -23,6 +23,14 @@
   <%= f.input :present_price, hint: '仅作显示参考，真实价格请在库存/规格中设置' %>
   <%= f.input :count %>
   <%= f.input :short_description %>
+  <div class="form-group integer required service_product_monthes">
+    <label class="integer required control-label" for="service_product_monthes">
+      <abbr title="必填">*</abbr> 团购有效期
+    </label>
+    <div class="control-input">
+      自发布时间后<%= f.input_field :monthes, type: :text %>个月，有效期至少3个月
+    </div>
+  </div>
   <%= f.input :asset_img, hint:"(点击图片进行替换)"  do %>
     <%= f.input_field :avatar, type: :hidden, as: :file %>
     <p><span class="text-margin">建议上传比例为1:1的图片，最佳尺寸为<b style="color: red;">600x600</b>像素</span></p>
@@ -36,14 +44,6 @@
       <b class="loading"><i class="fa fa-spinner"></i></b>
     </p>
   <% end %>
-  <div class="form-group integer required service_product_monthes">
-    <label class="integer required control-label" for="service_product_monthes">
-      <abbr title="必填">*</abbr> 团购有效期
-    </label>
-    <div class="control-input">
-      自发布时间后<%= f.input_field :monthes, type: :text %>个月，有效期至少3个月
-    </div>
-  </div>
   <div class="form-group ">
     <label class="control-label">图文详情</label>
     <div class="control-input" style='width: 430px;'>
