@@ -23,6 +23,7 @@ class ApplicationController < ActionController::Base
   def login_app
     user = authentication_login && User.find_by(login: authentication_login)
     if user && Devise.secure_compare(user.authentication_token, authentication_token)
+      session[:app_user] = true
       sign_in user
     end
   end
