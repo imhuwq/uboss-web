@@ -8,9 +8,9 @@ class AccountsController < ApplicationController
   before_action :authenticate_agent, only: [:send_message, :invite_seller, :edit_seller_note, :update_histroy_note]
 
   def show
-    @privilege_cards = append_default_filter current_user.privilege_cards, order_column: :updated_at, page_size: 10
+    @privilege_cards = append_default_filter current_user.privilege_cards.includes(:seller), order_column: :updated_at, page_size: 10
     if params[:state] == 'after_sale'
-      @refunds = current_user.order_item_refunds.page(params[:page])
+      @refunds = current_user.order_item_refunds.includes(order_item: [:product, :order]).page(params[:page])
     else
       @orders = append_default_filter account_orders(params[:state]), page_size: 10
     end
@@ -18,8 +18,8 @@ class AccountsController < ApplicationController
   end
 
   def refunds
-      @refunds = append_default_filter current_user.order_item_refunds, page_size: 10
-      render partial: 'accounts/refund', collection: @refunds
+    @refunds = append_default_filter current_user.order_item_refunds, page_size: 10
+    render partial: 'accounts/refund', collection: @refunds
   end
 
   def orders

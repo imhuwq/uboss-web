@@ -11,6 +11,8 @@ class OrderItemRefund < ActiveRecord::Base
   has_many :refund_messages
   has_many :asset_imgs, class_name: 'AssetImg', autosave: true, as: :resource
 
+  scope :with_seller, -> (seller_id) { joins(order_item: :order).where(orders: { seller_id: seller_id }) }
+  scope :wait_seller_processes, -> { where(aasm_state: ['pending', 'completed_express_number']) }
   scope :successed, -> {
     where(
       <<-SQL.squish!
@@ -226,7 +228,7 @@ class OrderItemRefund < ActiveRecord::Base
   end
 
   def order_charge_number
-    order_charge.number
+    order_charge.pay_serial_number
   end
 
   def refund_number

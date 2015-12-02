@@ -39,6 +39,12 @@ class OrderItem < ActiveRecord::Base
     order_item_refunds.reorder("created_at desc").first
   end
 
+  def can_reapply_refund?
+    return @can_reapply_refund if instance_variable_defined? '@can_reapply_refund'
+
+    @can_reapply_refund = !order_item_refunds.where(order_state: Order.states[order.state]).exists?
+  end
+
   def count
     amount
   end
