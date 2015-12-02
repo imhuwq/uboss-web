@@ -33,6 +33,7 @@ class User < ActiveRecord::Base
   # for buyer
   has_many :user_addresses, -> { where(seller_address: false) }
   has_many :orders
+  has_many :order_items
   has_many :sharing_incomes
   has_many :bank_cards
   has_many :privilege_cards
