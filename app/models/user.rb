@@ -38,6 +38,7 @@ class User < ActiveRecord::Base
   has_many :sold_orders, class_name: 'Order', foreign_key: 'seller_id'
   has_many :products
   has_many :ordinary_products, -> { where("type = 'OrdinaryProduct'") }, class_name: 'Product'
+  has_many :service_products, -> { where("type = 'ServiceProduct'") }, class_name: 'Product'
   has_many :selling_incomes
   belongs_to :agent, class_name: 'User'
 

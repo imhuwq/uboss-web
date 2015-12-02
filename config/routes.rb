@@ -132,6 +132,12 @@ Rails.application.routes.draw do
           patch :switch_hot_flag
         end
       end
+      resources :service_products, except: [:destroy] do
+        member do
+          patch :change_status
+          get :pre_view
+        end
+      end
       resources :orders, except: [:destroy] do
         patch :set_express, on: :member
         get :close, on: :member

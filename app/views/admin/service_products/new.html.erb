@@ -1,0 +1,22 @@
+<div class="container admin-container">
+	<ul class="breadcrumb">
+		<li><a href="/admin">主页</a></li>
+		<li class="divider"><i class="fa fa-angle-right"></i></li>
+		<li><%= link_to '团购店铺', '#' %></li>
+		<li class="divider"><i class="fa fa-angle-right"></i></li>
+		<li><%= link_to '团购管理', [:admin, :service_products] %></li>
+		<li class="divider"><i class="fa fa-caret-right"></i></li>
+		<li class="active">发布团购信息</li>
+	</ul>
+</div><!-- container -->
+
+<br />
+
+<div class="container nogap">
+    <%= horizon_form_for [:admin, @service_product] do |f| %>
+
+      <%= render 'fields', f: f %>
+
+    <% end %>
+
+</div>

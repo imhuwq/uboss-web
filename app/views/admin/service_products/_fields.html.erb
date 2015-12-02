@@ -1,0 +1,58 @@
+<%= content_for :page_specific_javascript do %>
+  <script type="text/javascript" charset="utf-8">
+    propertyData = <%== ProductProperty.includes(:product_property_values).all.to_json(only: [:name], include: {product_property_values: {only: [:value]}}) %>
+    stockData = <%== get_product_seling_inventories_json f.object %>
+  </script>
+  <%= javascript_include_tag 'admin/sku_app/application' %>
+<% end %>
+
+<%= upyun_meta_tags prefix: 'asset_img/avatar' %>
+
+<div class="admin-box beige-bg-color">
+  <h4 class="edit-title">团购信息</h4>
+  <%= f.input :name %>
+  <div class="form-group string required service_product_service_type">
+    <label class="string required control-label" for="service_product_service_type">
+      <abbr title="必填">*</abbr> 团购类型
+    </label>
+    <div class="control-input" style="margin-top:5px;">
+      <%= f.collection_radio_buttons :service_type, ServiceProduct::DataServiceType.invert, :last, :first %>
+    </div>
+  </div>
+  <%= f.input :original_price, hint: '仅作页面显示参考' %>
+  <%= f.input :present_price, hint: '仅作显示参考，真实价格请在库存/规格中设置' %>
+  <%= f.input :count %>
+  <%= f.input :short_description %>
+  <%= f.input :asset_img, hint:"(点击图片进行替换)"  do %>
+    <%= f.input_field :avatar, type: :hidden, as: :file %>
+    <p><span class="text-margin">建议上传比例为1:1的图片，最佳尺寸为<b style="color: red;">600x600</b>像素</span></p>
+    <p class="fileinput-button">
+        <% if @service_product.image_url.blank? %>
+          <%= image_tag("admin/no-img.png") %>
+        <% else %>
+          <%= image_tag(@service_product.image_url(:thumb))%>
+        <% end %>
+      <%= file_field_tag "image", class: "upyun_file" %>
+      <b class="loading"><i class="fa fa-spinner"></i></b>
+    </p>
+  <% end %>
+  <div class="form-group integer required service_product_monthes">
+    <label class="integer required control-label" for="service_product_monthes">
+      <abbr title="必填">*</abbr> 团购有效期
+    </label>
+    <div class="control-input">
+      自发布时间后<%= f.input_field :avatar, type: :text %>个月，有效期至少3个月
+    </div>
+  </div>
+  <div class="form-group ">
+    <label class="control-label">图文详情</label>
+    <div class="control-input" style='width: 430px;'>
+      <%= f.input_field :content, as: :text, class: "redactor" %>
+    </div>
+  </div>
+</div>
+<br />
+
+<div class="form-actions text-right">
+  <%= f.submit "保存", class: "btn btn-large" %>
+</div>

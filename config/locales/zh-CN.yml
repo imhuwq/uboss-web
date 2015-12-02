@@ -95,6 +95,11 @@ zh-CN:
         full_cut: 满足条件包邮
         full_cut_number: 满足条件包邮数量
         full_cut_unit: 满足条件包邮单位
+      service_product:
+        name: 团购名称
+        service_type: 团购类型
+        monthes: 团购有效期
+        content: 图文详情
       mobile_auth_code:
         mobile: 手机号码
       order_form:

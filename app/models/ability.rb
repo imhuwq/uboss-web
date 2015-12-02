@@ -44,6 +44,7 @@ class Ability
     can :read, User, id: user.id
     can :manage, Order, seller_id: user.id
     can :manage, Product, user_id: user.id
+    can :manage, ServiceProduct, user_id: user.id
     #
     # FIXME manage 已经代表可以做任何操作，重新定义change_status是毫无意义的
     # can :change_status, Product, user_id: user.id
