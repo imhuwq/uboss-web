@@ -4,6 +4,10 @@ module ApplicationHelper
     controller_name == 'products' && action_name == 'show'
   end
 
+  def countdown_time(time)
+    time.strftime('%Y/%m/%d %H:%M:%S')
+  end
+
   def qrcode_image_tag(text, opts = {})
     html_opts = opts.delete(:html) || {}
     opts = {

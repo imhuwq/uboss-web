@@ -13,6 +13,7 @@ class Order < ActiveRecord::Base
   has_many   :divide_incomes
   has_many   :selling_incomes
   has_many   :sharing_incomes, through: :order_items
+  has_many   :order_item_refunds, through: :order_items
 
   accepts_nested_attributes_for :order_items
 
@@ -28,14 +29,17 @@ class Order < ActiveRecord::Base
   enum state: { unpay: 0, payed: 1, shiped: 3, signed: 4, closed: 5, completed: 6 }
 
   scope :selled, -> { where("orders.state <> 0") }
+  scope :with_refunds, -> {
+    joins(order_items: :order_item_refunds).where("order_item_refunds.id IS NOT NULL").uniq
+  }
 
   before_create :set_info_by_user_address, :set_ship_price
 
   aasm column: :state, enum: true, skip_validation_on_save: true, whiny_transitions: false do
     state :unpay
     state :payed, after_enter: [:invoke_order_payed_job]
-    state :shiped, after_enter: :fill_shiped_at
-    state :signed, after_enter: [:fill_signed_at, :active_privilege_card]
+    state :shiped, after_enter: [:fill_shiped_at, :close_order_item_refund_before_shiping]
+    state :signed, after_enter: [:fill_signed_at, :active_privilege_card, :close_refunds_before_signed]
     state :completed, after_enter: :fill_completed_at
     state :closed, after_enter: :recover_product_stock
 
@@ -43,7 +47,11 @@ class Order < ActiveRecord::Base
       transitions from: :unpay, to: :payed
     end
     event :ship do
-      transitions from: :payed, to: :shiped
+      transitions from: :payed, to: :shiped do
+        guard do
+          can_be_ship?
+        end
+      end
     end
     event :sign, after_commit: :call_order_complete_handler do
       transitions from: :shiped, to: :signed
@@ -55,6 +63,10 @@ class Order < ActiveRecord::Base
     event :complete do
       transitions from: :signed, to: :completed
     end
+  end
+
+  def has_payed?
+    Order.states[self.state] >= 1 && Order.states[self.state] != 5
   end
 
   class << self
@@ -257,6 +269,15 @@ class Order < ActiveRecord::Base
     errors.empty?
   end
 
+  def can_be_ship?
+    if !self.seller.default_get_address.present?
+      errors[:base] << "请设置默认退货地址"
+      false
+    else
+      true
+    end
+  end
+
   private
 
   def generate_number
@@ -268,6 +289,8 @@ class Order < ActiveRecord::Base
   def fill_shiped_at
     update_column(:shiped_at, Time.now)
   end
+
+
 
   def fill_signed_at
     update_column(:signed_at, Time.now)
@@ -311,6 +334,34 @@ class Order < ActiveRecord::Base
   # 在work 中判断订单是否是创客权订单
   def invoke_official_agent_order_process
     OfficialAgentOrderJob.set(wait: 5.seconds).perform_later(self)
+  end
+
+  def close_order_item_refund_before_shiping
+    order_items.joins(:order_item_refunds).uniq.each do |item|
+      refund = item.last_refund
+      if refund.may_close? && refund.close!
+        refund.refund_messages.create(
+          user_type: '卖家',
+          user_id: seller_id,
+          message: '商家选择发货，退款申请关闭',
+          action: '退款关闭'
+        )
+      end
+    end
+  end
+
+  def close_refunds_before_signed
+    order_items.joins(:order_item_refunds).uniq.each do |item|
+      refund = item.last_refund
+      if refund.may_close? && refund.close!
+        refund.refund_messages.create(
+          user_type: '买家',
+          user_id: user_id,
+          message: '买家确认收货，退款申请关闭',
+          action: '退款关闭'
+        )
+      end
+    end
   end
 
 end

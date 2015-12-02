@@ -7,6 +7,8 @@ class OrderItem < ActiveRecord::Base
   belongs_to :sharing_node
   has_many   :evaluations
   has_many   :sharing_incomes
+  has_many   :order_item_refunds
+  has_many   :refund_messages, through: :order_item_refunds
 
   validates :user, :product_inventory, :amount, :present_price, :pay_amount, presence: true
 
@@ -17,6 +19,7 @@ class OrderItem < ActiveRecord::Base
   before_validation :set_product_id
   before_save  :reset_payment_info, if: -> { order.paid_at.blank? }
   after_create :decrease_product_stock
+
   after_commit :update_order_pay_amount, if: -> {
     previous_changes.include?(:pay_amount) &&
     previous_changes[:pay_amount].first != previous_changes[:pay_amount].last
@@ -24,6 +27,24 @@ class OrderItem < ActiveRecord::Base
 
   def deal_price
     present_price - privilege_amount
+  end
+
+  def refund_money
+    if order_item_refund_id.present?
+      OrderItemRefund.find(order_item_refund_id).money
+    else
+      '0.0'
+    end
+  end
+
+  def last_refund
+    order_item_refunds.reorder("created_at desc").first
+  end
+
+  def can_reapply_refund?
+    return @can_reapply_refund if instance_variable_defined? '@can_reapply_refund'
+
+    @can_reapply_refund = !order_item_refunds.where(order_state: Order.states[order.state]).exists?
   end
 
   def count

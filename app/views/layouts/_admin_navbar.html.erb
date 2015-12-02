@@ -10,9 +10,13 @@
 			<% end %>
 			<ul class="dropdown-menu">
 				<li><%= link_to "修改密码", password_admin_account_path %></li>
-        <% if can?(:create, PersonalAuthentication) %>
-				  <li><%= link_to "商家认证", admin_user_personal_authentication_path(user_id: current_user.id) %></li>
-        <% end %>
+				<li>
+          <% if can?(:manage,PersonalAuthentication) %>
+          <%= link_to "商家认证", admin_user_personal_authentication_path(user_id: current_user.id) %>
+          <% elsif can?(:manage,EnterpriseAuthentication) %>
+          <%= link_to "商家认证", admin_user_enterprise_authentication_path(user_id: current_user.id) %>
+          <% end %>
+        </li>
         <% if current_user.is_seller? %>
           <li><%= link_to "店铺设置", edit_admin_seller_path(current_user) %></li>
         <% end %>
@@ -32,6 +36,7 @@
         <%= nav_group :order_manage do %>
           <%= can_li_link(:manage, Order, admin_orders_path) %>
           <%= can_li_link(:read, Express, admin_expresses_path) %>
+          <%= can_li_link(:manage, UserAddress, admin_user_addresses_path) %>
         <% end %>
         <%= can_li_link(:manage, SharingIncome, admin_sharing_incomes_path) %>
         <%= nav_group :withdraw_records do %>

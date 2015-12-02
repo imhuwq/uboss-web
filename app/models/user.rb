@@ -15,8 +15,6 @@ class User < ActiveRecord::Base
 
   has_and_belongs_to_many :expresses, uniq: true
   has_one :user_info, autosave: true
-  has_one :cart
-  has_many :carriage_templates
   has_many :transactions
   has_many :user_role_relations, dependent: :destroy
   has_many :user_roles, through: :user_role_relations
@@ -29,13 +27,21 @@ class User < ActiveRecord::Base
   has_many :sellers, class_name: 'User', foreign_key: 'agent_id'
   has_many :seller_orders, through: :sellers, source: :sold_orders
   # for buyer
-  has_many :user_addresses
+  has_one :cart
+  has_many :user_addresses, -> { where(seller_address: false) }
   has_many :orders
+  has_many :order_items
   has_many :sharing_incomes
   has_many :bank_cards
   has_many :privilege_cards
+  has_many :refund_messages
+  has_many :order_item_refunds
+  has_many :sales_returns, through: :order_item_refunds
+  has_many :carriage_templates
   # for seller
+  has_many :seller_addresses, -> { where(seller_address: true) }, class_name: 'UserAddress'
   has_many :sold_orders, class_name: 'Order', foreign_key: 'seller_id'
+  has_many :sold_order_items, through: :sold_orders, source: :order_items
   has_many :products
   has_many :selling_incomes
   belongs_to :agent, class_name: 'User'
@@ -269,8 +275,8 @@ class User < ActiveRecord::Base
   end
 
   def default_address
-    @default_address ||= user_addresses.where(default: true).first
-    @default_address ||= user_addresses.first
+    @default_address ||= user_addresses.where(default: true, seller_address: false).first
+    @default_address ||= user_addresses.where(seller_address: false).first
   end
 
   def set_default_address(address = nil)
@@ -336,7 +342,7 @@ class User < ActiveRecord::Base
     self.country        ||= data['country']
     self.weixin_unionid   = data['unionid']
     self.weixin_openid    = data['openid']
-    self.remote_avatar_url = data['headimgurl'] if self.avatar.blank?
+    self.remote_avatar_url = data['headimgurl'] if self.avatar_identifier.blank?
   end
 
   def good_reputation_rate
@@ -368,6 +374,14 @@ class User < ActiveRecord::Base
 
   def is_comman_express?(express)
     self.expresses.exists?(express)
+  end
+
+  def default_post_address
+    @default_post_address ||= seller_addresses.find_by('usage @> ?', {default_post_address: 'true'}.to_json)
+  end
+
+  def default_get_address
+    @default_get_address ||= seller_addresses.find_by('usage @> ?', {default_get_address: 'true'}.to_json)
   end
 
   private
@@ -411,4 +425,5 @@ class User < ActiveRecord::Base
       self.user_info.service_rate = 5
     end
   end
+
 end

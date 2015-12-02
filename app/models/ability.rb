@@ -44,10 +44,6 @@ class Ability
     can :read, User, id: user.id
     can :manage, Order, seller_id: user.id
     can :manage, Product, user_id: user.id
-    #
-    # FIXME manage 已经代表可以做任何操作，重新定义change_status是毫无意义的
-    # can :change_status, Product, user_id: user.id
-    #
     can :manage, PersonalAuthentication, user_id: user.id
     can :manage, EnterpriseAuthentication, user_id: user.id
     can :read,   WithdrawRecord, user_id: user.id
@@ -60,17 +56,19 @@ class Ability
     can :manage, CarriageTemplate
     can :read, Express
     can :set_common, Express
+    can :manage, OrderItemRefund, order_item: { order: { seller_id: user.id } }
+    can :manage, UserAddress, user_id: user.id
   end
 
   def grant_permissions_to_agent user
+    can :read, User, id: user.id
     can :read, User, agent_id: user.id
+    can :read, :sellers
     can :read, DailyReport, user: { agent_id: user.id }
     can :read, SellingIncome, user: { agent_id: user.id }
     can :read, DivideIncome, user_id: user.id
     can :read,   WithdrawRecord, user_id: user.id
     can :create, WithdrawRecord, user_id: user.id
-    # FIXME @dalezhang read sellers == read user，这样定义如何判断只能查看自己的商家？？
-    can :read, :sellers
     can :manage, BankCard, user_id: user.id
 
     can :read, Product, user_id: user.id

@@ -6,6 +6,10 @@ class Admin::ProductsController < AdminController
     @carriage = CarriageTemplate.find(params[:tpl_id]) if params[:tpl_id].present?
   end
 
+  def refresh_carriage_template
+    @carriages = current_user.carriage_templates
+  end
+
   def index
     @products = current_user.products.available.order('created_at DESC')
     @products = @products.includes(:asset_img).page(params[:page] || 1)

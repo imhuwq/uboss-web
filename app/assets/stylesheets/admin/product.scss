@@ -18,8 +18,8 @@
   }
 
   #product_traffic_expense {
-    margin-top: 23px;
-    margin-bottom: 7px;
+    margin-top: 26px;
+    margin-bottom: 11px;
     height: 30px;
 
     &:focus {
@@ -34,6 +34,10 @@
   }
   .price_label, .link_new_carriage_temp {
     padding-left: 5px;
+  }
+
+  .link_refresh {
+    color: #43C3AA;
   }
 
   .chosen-container.chosen-container-single {
@@ -102,8 +106,8 @@
     width: 72px;
     background-color: #FFFFFF;
     cursor: default;
-    padding: 4px;
-    font-size: 12px;
+    padding: 5px;
+    font-size: 14px;
     font-family: sans-serif;
     line-height: 1;
     color: #333;
@@ -118,8 +122,8 @@
     display: inline-block;
     width: 72px;
     cursor: default;
-    padding: 4px;
-    font-size: 12px;
+    padding: 5px;
+    font-size: 14px;
     font-family: sans-serif;
     line-height: 1;
     color: #fff;

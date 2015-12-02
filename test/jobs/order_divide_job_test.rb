@@ -72,6 +72,40 @@ class OrderDivideJobTest < ActiveJob::TestCase
       assert_equal sharing_reward_lv1 * buy_amount, level2_node.user.reload.income
     end
 
+    it 'should not reward user if money refund approved' do
+      product = create :product_with_1sharing
+      product_inventory = product.seling_inventories.first
+      product_inventory.update(price: 100)
+      sharing_reward_lv1 = product_inventory.share_amount_lv_1
+
+      assert sharing_reward_lv1 > 0
+
+      level1_node = create(:sharing_node, product: product)
+      level2_node = create(:sharing_node, product: product, parent: level1_node)
+
+      buyer = create(:user)
+
+      @order = create(:order,
+                      user: buyer,
+                      order_items_attributes: [{
+                        product: product,
+                        product_inventory: product_inventory,
+                        user: buyer,
+                        amount: buy_amount,
+                        sharing_node: level2_node
+                      }],
+                      state: 'signed'
+                     )
+
+      refund = create(:order_item_refund, money: 10, order_item: @order.order_items.first)
+      refund.approve!
+      OrderDivideJob.perform_now(@order.reload)
+
+      assert_equal 0, @order.sharing_incomes.count
+      assert_equal 9.5, @order.divide_incomes.sum(:amount)
+      assert_equal 180.5, @order.reload.income
+    end
+
     it 'should reward sharing user success' do
       agent = create(:agent_user)
       seller = create(:seller_user, agent: agent)

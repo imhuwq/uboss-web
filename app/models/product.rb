@@ -190,28 +190,30 @@ class Product < ActiveRecord::Base
   def sku_hash
     skus = {}
     sku_details = {}
-    # FIXME 不要使用毫无意义的变量名 obj, k , v ~
-    self.seling_inventories.where("count > 0").each do |obj|
-      obj.sku_attributes.each do |k,v|
-        if !skus[k].present?
-          skus[k] = {}
+    count = 0
+    self.seling_inventories.where("count > 0").each do |seling_invertory|
+      seling_invertory.sku_attributes.each do |property_name,property_value|
+        if !skus[property_name].present?
+          skus[property_name] = {}
         end
-        if !skus[k][v].present?
-          skus[k][v] = []
+        if !skus[property_name][property_value].present?
+          skus[property_name][property_value] = []
         end
-        skus[k][v] << obj.id
+        skus[property_name][property_value] << seling_invertory.id
       end
 
-      if !sku_details[obj.id].present?
-        sku_details[obj.id] = {}
+      if !sku_details[seling_invertory.id].present?
+        sku_details[seling_invertory.id] = {}
       end
-      sku_details[obj.id][:count] = obj.count
-      sku_details[obj.id][:sku_attributes] = obj.sku_attributes
-      sku_details[obj.id][:price] = obj.price
+      sku_details[seling_invertory.id][:count] = seling_invertory.count
+      sku_details[seling_invertory.id][:sku_attributes] = seling_invertory.sku_attributes
+      sku_details[seling_invertory.id][:price] = seling_invertory.price
+      count += seling_invertory.count
     end
     hash = {}
     hash[:skus] = skus
     hash[:sku_details] = sku_details
+    hash[:count] = count
     return hash
   end
 
