@@ -1,5 +1,10 @@
 class Api::V1::AccountsController < ApiBaseController
 
+  def show
+    @user = current_user
+    render 'api/v1/sessions/create'
+  end
+
   def update_password
     params.require(:password_confirmation)
     if current_user.update_with_password(password_params)
@@ -34,7 +39,4 @@ class Api::V1::AccountsController < ApiBaseController
   def password_params
     params.permit(:current_password, :password, :password_confirmation)
   end
-
-
-
 end

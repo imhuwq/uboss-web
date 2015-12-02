@@ -126,7 +126,7 @@ Rails.application.routes.draw do
       post 'login', to: 'sessions#create'
       resources :mobile_captchas, only: [:create]
       resources :users, only: [:show]
-      resource :account, only: [] do
+      resource :account, only: [:show] do
         patch :update_password, :become_seller
         get :orders, :privilege_cards
       end
@@ -222,7 +222,7 @@ Rails.application.routes.draw do
 
       root 'dashboard#index'
 
-      resources :categories, except: [:show] do 
+      resources :categories, except: [:show] do
         post :update_categories, on: :collection
       end
     end
