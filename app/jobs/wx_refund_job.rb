@@ -1,4 +1,9 @@
 class WxRefundJob < ActiveJob::Base
+
+  class InvokeRefundFail < StandardError; ;end
+
+  include Loggerable
+
   queue_as :default
 
   def perform(order_item_refund)
@@ -24,20 +29,27 @@ class WxRefundJob < ActiveJob::Base
   def invoke_weixin_refund(refund)
     tries ||= 3
 
-    res = WxPay::Service.invoke_refund({
+    request_params = {
       out_trade_no:  refund.order_charge_number,
-      total_fee:     refund.total_fee,
-      refund_fee:    refund.money * 100,
+      total_fee:     Rails.env.production? ? refund.total_fee : 1,
+      refund_fee:    Rails.env.production? ? refund.money * 100 : 1,
       out_refund_no: refund.refund_number
-    })
+    }
+    logger.info "Refund #{refund.id} Request: #{request_params} "
+    res = WxPay::Service.invoke_refund request_params
 
     unless res.success?
-      raise
+      raise InvokeRefundFail, "InvokeRefundFail: response: #{res}"
     end
+    logger.info "Refund #{refund.id} WX Response: #{res}"
+
     find_or_create_refund_record(refund, res)
-  rescue
-    tries -= 1
-    tries > 0 ? retry : logger.info(res)
+
+  rescue => e
+    logger.error "Refund #{refund.id} FAIL, Retry counting: #{tries}, message: #{e.message}"
+    retry unless (tries -= 1).zero?
+  else
+    logger.info "Refund #{refund.id} SUCCESSED"
   end
 
 
