@@ -19,14 +19,12 @@
         <td><%= text_field_tag "categories[#{i}][name]", category.name  %></td>
         <td class="form-group">
           <p class="fileinput-button">
-            <%= hidden_field_tag "categories[#{i}][avatar]" ,'', class:'file' %>
             <% if category.image_url.blank? %>
               <%= image_tag("admin/no-img.png", class:"clean",style:"height: 80px;") %>
             <% else %>
               <%= image_tag(category.image_url(:thumb), class:"clean", style:"height: 80px;")%>
             <% end %>
-            <%= upyun_meta_tags prefix: "categories/#{category.id}/avatar" %>
-            <%= file_field_tag "image", class: "upyun_file_list" %>
+            <%= file_field_tag "image", class: "upyun_file_json" ,  data: {to: "/admin/categories/#{category.id}/updata_categories_img", id: category.id} %>
             <b class="loading"><i class="fa fa-spinner"></i></b>
           </p>
           <div style="font-size:10px;">(点击图片进行替换)</div>
@@ -37,7 +35,6 @@
             <%= link_to url_for(action: :edit, id: category.id), class:'edit-icon', title: '编辑' do %>
               <i class="fa fa-pencil-square-o"></i>
             <% end %>
-
             <%= link_to admin_category_path(category),
               method: :delete, class:'change-status-btn edit-icon', data: { confirm: '确认删除？' } do %>
               <i class="fa fa-trash-o"></i>
@@ -50,3 +47,4 @@
 </div>
 <%= submit_tag "save"%>
 <% end %>
+ 
