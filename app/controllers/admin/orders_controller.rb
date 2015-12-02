@@ -52,7 +52,13 @@ class Admin::OrdersController < AdminController
     @unship_amount = @orders.payed.total_count
     @today_selled_amount = @orders.today.selled.total_count
     @shiped_amount = @orders.shiped.total_count
-    @orders = @orders.where(state: Order.states[@type.to_sym]) if @type != 'all'
+    @unprocess_refunds_amount = OrderItemRefund.with_seller(current_user.id).wait_seller_processes.count
+    case @type
+    when 'refunding'
+      @orders = @orders.joins(order_items: :order_item_refunds).where("order_item_refunds.id IS NOT NULL").uniq
+    else
+      @orders = @orders.where(state: Order.states[@type.to_sym]) if @type != 'all'
+    end
   end
 
   def show
