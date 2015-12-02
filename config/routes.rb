@@ -111,7 +111,7 @@ Rails.application.routes.draw do
       post 'login', to: 'sessions#create'
       resources :mobile_captchas, only: [:create]
       resource :account, only: [] do
-        patch :update_password
+        patch :update_password, :become_seller
         get :orders, :privilege_cards
       end
     end

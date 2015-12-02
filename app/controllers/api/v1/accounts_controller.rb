@@ -17,6 +17,18 @@ class Api::V1::AccountsController < ApiBaseController
     @privilege_cards = append_default_filter current_user.privilege_cards.includes(:product)
   end
 
+  def become_seller
+    if current_user.is_seller?
+      head(200)
+    else
+      if current_user.bind_agent(nil)
+        head(200)
+      else
+        render_model_errors current_user
+      end
+    end
+  end
+
   private
 
   def password_params
