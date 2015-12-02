@@ -66,6 +66,7 @@ Rails.application.routes.draw do
 
   resource :service_store, only: [:show] do
     get :verify_detail, on: :member
+    get :share, on: :member
     post :verify, on: :member
   end
 
@@ -125,6 +126,7 @@ Rails.application.routes.draw do
       get '/select_carriage_template', to: 'products#select_carriage_template'
 
       resources :service_stores, only: [:edit, :update]
+
       resources :verify_codes, only: [:index] do
         collection do
           get :statistics

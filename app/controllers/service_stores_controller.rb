@@ -1,14 +1,17 @@
 class ServiceStoresController < ApplicationController
   layout 'mobile'
 
+  def share
+  end
+
   def show
     @service_store = current_user.service_store
   end
 
   def verify_detail
-    @verify_codes = VerifyCode.all.where(verified: true)
-    @today = @verify_codes.where('updated_at BETWEEN ? AND ?', Time.now.beginning_of_day, DateTime.now.end_of_day).size
-    @total = @verify_codes.size
+    @verify_codes = VerifyCode.total
+    @total = VerifyCode.total.size
+    @today = VerifyCode.today.size
   end
 
   def verify

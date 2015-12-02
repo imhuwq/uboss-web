@@ -18,6 +18,7 @@
 	      <%= f.text_field :store_name %>
         <label>店铺描述</label>
 	      <%= f.text_field :store_short_description, hint: '请控制在20字以内，以保证显示效果' %>
+        <label>店铺链接: <%= "#{request.protocol}#{request.host_with_port}#{edit_admin_service_store_path(current_user.service_store)}" %></label>
       </div>
       <div class="box-w15 nogap-right">
         <div class="gap white-bg-color">
@@ -78,7 +79,7 @@
       <%= f.text_field :begin_minute, placeholder: '几分' %> <span>至<span>
       <%= f.text_field :end_hour, placeholder: '几时' %> <span>:<span>
       <%= f.text_field :end_minute, placeholder: '几分' %>
-      <p>举例: 9 : 00 至 22 : 00</p>
+      <p><small>举例: 9 : 00 至 22 : 00</small></p>
     </div>
     <br />
     <div class="text-center">

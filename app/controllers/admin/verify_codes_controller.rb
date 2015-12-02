@@ -4,15 +4,15 @@ class Admin::VerifyCodesController < AdminController
   def index
     #TODO
     #@verify_codes = current_user.service_store
-    @verify_codes = VerifyCode.where(verified: true)
-    @today = @verify_codes.where('updated_at BETWEEN ? AND ?', Time.now.beginning_of_day, DateTime.now.end_of_day).size
-    @total = @verify_codes.size
+    @verify_codes = VerifyCode.all
+    @total = VerifyCode.total.size
+    @today = VerifyCode.today.size
   end
 
   def statistics
     @verify_codes = VerifyCode.where(verified: true)
-    @today = @verify_codes.where('updated_at BETWEEN ? AND ?', Time.now.beginning_of_day, DateTime.now.end_of_day).size
-    @total = @verify_codes.size
+    @total = VerifyCode.total.size
+    @today = VerifyCode.today.size
   end
 
   def verify
