@@ -12,6 +12,22 @@ class ApplicationController < ActionController::Base
 
   protected
 
+  def authentication_token
+    request.headers["User-Token"] || params[:accesstoken]
+  end
+
+  def authentication_login
+    request.headers["User-Login"] || params[:login]
+  end
+
+  def login_app
+    user = authentication_login && User.find_by(login: authentication_login)
+    if user && Devise.secure_compare(user.authentication_token, authentication_token)
+      session[:app_user] = true
+      sign_in user
+    end
+  end
+
   def model_errors(model)
     model.errors.full_messages
   end
