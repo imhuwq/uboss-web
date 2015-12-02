@@ -31,7 +31,6 @@ class Product < ActiveRecord::Base
   scope :available, -> { where.not(status: 2) }
 
   validates_presence_of :user_id, :name, :short_description
-  validate :must_has_one_product_inventory
   validates :full_cut_number, :full_cut_unit, presence: true, if: "full_cut"
   validates_numericality_of :full_cut_number, greater_than: 0, if: "full_cut"
 
@@ -205,12 +204,6 @@ class Product < ActiveRecord::Base
     hash[:skus] = skus
     hash[:sku_details] = sku_details
     return hash
-  end
-
-  private
-
-  def must_has_one_product_inventory
-    errors.add(:product_inventories, '至少添加一个产品规格属性') unless product_inventories.size > 0
   end
 
 end

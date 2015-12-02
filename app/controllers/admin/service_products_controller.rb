@@ -12,7 +12,6 @@ class Admin::ServiceProductsController < AdminController
   end
 
   def create
-    binding.pry
     @service_product.user_id = current_user.id
     if @service_product.save
       flash[:success] = '产品创建成功'
