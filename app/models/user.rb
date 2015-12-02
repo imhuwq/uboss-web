@@ -339,7 +339,7 @@ class User < ActiveRecord::Base
     self.country        ||= data['country']
     self.weixin_unionid   = data['unionid']
     self.weixin_openid    = data['openid']
-    self.remote_avatar_url = data['headimgurl'] if self.avatar.blank?
+    self.remote_avatar_url = data['headimgurl'] if self.avatar_identifier.blank?
   end
 
   def good_reputation_rate
