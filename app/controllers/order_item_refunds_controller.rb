@@ -75,9 +75,11 @@ class OrderItemRefundsController < ApplicationController
                                         order_item_refund_id: @refund.id,
                                         )
     @refund.asset_imgs.each do |img|
-     @refund_message.asset_imgs << AssetImg.find_or_create_by(resource: @refund_message, avatar: img.avatar.file.filename)
+      @refund_message.asset_imgs << AssetImg.create(
+        resource: @refund_message,
+        avatar: img.avatar.file.filename
+      )
     end
-
   end
 
   def find_order_item_refund

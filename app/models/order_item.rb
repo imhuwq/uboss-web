@@ -8,6 +8,7 @@ class OrderItem < ActiveRecord::Base
   has_many   :evaluations
   has_many   :sharing_incomes
   has_many   :order_item_refunds
+  has_many   :refund_messages, through: :order_item_refunds
 
   validates :user, :product_inventory, :amount, :present_price, :pay_amount, presence: true
 
