@@ -23,8 +23,13 @@
     <tbody>
       <% @verify_codes.each do |verify_code| %>
         <tr>
-          <td class="text-left"></td>
-          <td></td>
+          <td class="text-left">
+            <%= link_to '#' do %>
+              <%= image_tag(verify_code.service_product.image_url(:thumb), size: "80x80", alt: "-") %>　
+              <%= verify_code.service_product.name %>
+            <% end %>
+          </td>
+          <td><%= verify_code.service_product.present_price%></td>
           <td></td>
           <td><%= verify_code.code %></td>
           <td><%= verify_code.verified ? '是':'否' %></td>

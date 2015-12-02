@@ -1,4 +1,7 @@
 class ServiceProduct < Product
+  belongs_to :service_store
+  has_many :verify_codes, autosave: true
+
   validates :service_type, :monthes, presence: true
   validates :service_type, inclusion: { in: [0, 1] }
   validates :monthes, numericality: { greater_than_or_equal_to: 3 }

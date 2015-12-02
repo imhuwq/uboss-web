@@ -1,4 +1,6 @@
 class VerifyCode < ActiveRecord::Base
+  belongs_to :service_product
+
   validates_uniqueness_of :code
 
   default_scope {order("updated_at desc")}
