@@ -75,8 +75,6 @@ $ ->
     $this = $(e.target)
     ajax_to = $this.attr('data-to')
     button = $this.closest('.fileinput-button')
-    form = $this.closest("form")
-    formGroup = $this.closest(".form-group")
     fileName = data.originalFiles[0].name
     unless button.hasClass('uploading')
 
@@ -92,11 +90,9 @@ $ ->
           alert('图片上传失败')
         else
           [_, ..., fileName] = qs.url.split '/'
-          formGroup.find('.fileinput-button img').attr('src', "#{ upyunBucketDomain }/#{ qs.url }-w320")
-          form.data("waiting-upload", false)
+          button.find('img').attr('src', "#{ upyunBucketDomain }/#{ qs.url }-w320")
           button.removeClass('uploading')
           $this.show()
-          console.log " $.ajax"
           $.ajax
             url:  ajax_to
             type: 'POST'

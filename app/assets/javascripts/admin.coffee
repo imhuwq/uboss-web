@@ -19,6 +19,7 @@
 #= require admin/product
 #= require admin/redactor-config
 #= require admin/sms
+#= require admin/category
 #= require shared/upyun
 #= require_self
 
