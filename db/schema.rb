@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151201041517) do
+ActiveRecord::Schema.define(version: 20151202074415) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -228,13 +228,13 @@ ActiveRecord::Schema.define(version: 20151201041517) do
     t.integer  "refund_reason_id"
     t.string   "description"
     t.integer  "order_item_id"
-    t.datetime "created_at",          null: false
-    t.datetime "updated_at",          null: false
+    t.datetime "created_at",                       null: false
+    t.datetime "updated_at",                       null: false
     t.string   "aasm_state"
     t.integer  "order_state"
     t.string   "refund_type"
     t.integer  "user_id"
-    t.jsonb    "state_at_attributes"
+    t.jsonb    "state_at_attributes", default: {}, null: false
     t.string   "address"
     t.string   "return_explain"
     t.datetime "deal_at"
@@ -242,6 +242,7 @@ ActiveRecord::Schema.define(version: 20151201041517) do
 
   create_table "order_items", force: :cascade do |t|
     t.integer  "order_id"
+    t.integer  "product_id"
     t.integer  "user_id"
     t.integer  "amount"
     t.datetime "created_at",                         null: false
@@ -251,7 +252,6 @@ ActiveRecord::Schema.define(version: 20151201041517) do
     t.decimal  "present_price",        default: 0.0
     t.decimal  "privilege_amount",     default: 0.0
     t.integer  "product_inventory_id"
-    t.integer  "product_id"
     t.integer  "order_item_refund_id"
   end
 
@@ -274,10 +274,10 @@ ActiveRecord::Schema.define(version: 20151201041517) do
     t.datetime "signed_at"
     t.datetime "shiped_at"
     t.datetime "completed_at"
-    t.string   "to_seller"
-    t.decimal  "ship_price",      default: 0.0
     t.string   "ship_number"
     t.integer  "express_id"
+    t.string   "to_seller"
+    t.decimal  "ship_price",      default: 0.0
     t.integer  "order_charge_id"
     t.decimal  "paid_amount",     default: 0.0
   end
@@ -309,14 +309,6 @@ ActiveRecord::Schema.define(version: 20151201041517) do
   end
 
   add_index "privilege_cards", ["user_id", "seller_id"], name: "index_privilege_cards_on_user_id_and_seller_id", unique: true, using: :btree
-
-  create_table "product_attribute_names", force: :cascade do |t|
-    t.string   "name"
-    t.boolean  "is_key_attr",      default: true
-    t.integer  "product_class_id"
-    t.datetime "created_at",                      null: false
-    t.datetime "updated_at",                      null: false
-  end
 
   create_table "product_classes", force: :cascade do |t|
     t.integer  "parent_id"
@@ -408,6 +400,7 @@ ActiveRecord::Schema.define(version: 20151201041517) do
     t.string   "type"
     t.integer  "service_type"
     t.integer  "monthes"
+    t.integer  "service_store_id"
   end
 
   add_index "products", ["type"], name: "index_products_on_type", using: :btree
@@ -671,9 +664,10 @@ ActiveRecord::Schema.define(version: 20151201041517) do
 
   create_table "verify_codes", force: :cascade do |t|
     t.string   "code"
-    t.boolean  "verified",   default: false
-    t.datetime "created_at",                 null: false
-    t.datetime "updated_at",                 null: false
+    t.boolean  "verified",           default: false
+    t.datetime "created_at",                         null: false
+    t.datetime "updated_at",                         null: false
+    t.integer  "service_product_id"
   end
 
   create_table "withdraw_records", force: :cascade do |t|

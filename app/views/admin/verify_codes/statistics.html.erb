@@ -22,14 +22,20 @@
       </tr>
     </thead>
     <tbody>
-      <tr>
-        <td class="text-left"></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-      </tr>
+      <% @service_products.each do |product| %>
+        <tr>
+          <td class="text-left">
+            <%= link_to '#' do %>
+              <%= image_tag(product.image_url(:thumb), size: "80x80", alt: "-") %>　
+              <%= product.name %>
+            <% end %>
+          </td>
+          <td><%= product.present_price%></td>
+          <td></td>
+          <td><%= product.verify_codes.total %></td>
+          <td>截止至<%= (product.created_at + product.monthes.to_i.months).to_date %></td>
+        </tr>
+      <% end %>
     </tbody>
   </table>
 </div>

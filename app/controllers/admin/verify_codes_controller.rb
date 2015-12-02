@@ -10,7 +10,7 @@ class Admin::VerifyCodesController < AdminController
   end
 
   def statistics
-    @verify_codes = VerifyCode.where(verified: true)
+    @service_products = current_user.service_store.service_products
     @total = VerifyCode.total.size
     @today = VerifyCode.today.size
   end
