@@ -34,6 +34,12 @@ GIT
       sprockets-rails
 
 GIT
+  remote: git://github.com/xEasy/rongcloud.git
+  revision: d38aa6bb0a8057fef2573df2cfce6b092a61d9b9
+  specs:
+    rongcloud (0.1.4)
+
+GIT
   remote: git://github.com/xEasy/wx_pay.git
   revision: cd0a652fb04c1cd314675a6d4f3e505d4120351b
   specs:
@@ -556,6 +562,7 @@ DEPENDENCIES
   redis (~> 3.0)
   redis-namespace
   redis-rails
+  rongcloud!
   sanitize
   sass-rails (~> 5.0)
   select2-rails (~> 3.5.9.1)

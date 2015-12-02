@@ -1,1 +1,1 @@
-json.extract! @user, :id, :identify, :avatar_url
+json.partial! 'api/v1/shared/user', locals: { user: @user }

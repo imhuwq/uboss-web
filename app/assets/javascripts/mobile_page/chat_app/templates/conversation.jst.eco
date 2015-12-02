@@ -1,0 +1,11 @@
+<div class='conversation-box'>
+  <ul id='msg-box'>
+  </ul>
+</div>
+
+<div class='send-box'>
+  <a class="btn btn-large pull-right" id="send-msg-btn" ref="#">发消息</a>
+  <div class='send-msg-box'>
+    <input type="text" name="" id="send-msg" value="" />
+  </div>
+</div>

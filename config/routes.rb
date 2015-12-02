@@ -74,6 +74,9 @@ Rails.application.routes.draw do
   resource :withdraw_records, only: [:show, :new, :create] do
     get :success, on: :member
   end
+  resource :chat, only: [:show] do
+    get :token, :user_info, :check_user_online
+  end
   resource :account, only: [:show, :edit, :update] do
     get :settings,         :edit_password,
         :orders,           :binding_agent, :invite_seller,
@@ -121,9 +124,13 @@ Rails.application.routes.draw do
       end
       post 'login', to: 'sessions#create'
       resources :mobile_captchas, only: [:create]
+      resources :users, only: [:show]
       resource :account, only: [:show] do
         patch :update_password, :become_seller
         get :orders, :privilege_cards
+      end
+      resource :chat, only: [] do
+        get :token, :check_user_online
       end
     end
   end

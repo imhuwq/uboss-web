@@ -79,6 +79,7 @@ class User < ActiveRecord::Base
   before_create :set_mobile, :set_default_role
   before_create :build_user_info, if: -> { user_info.blank? }
   before_save   :set_service_rate
+  after_commit  :invoke_rongcloud_job, on: [:create, :update]
 
   scope :admin, -> { where(admin: true) }
   scope :agent, -> { role('agent') }
@@ -158,6 +159,12 @@ class User < ActiveRecord::Base
 
   end
 
+  def invoke_rongcloud_job
+    if rongcloud_token.blank? || [:nickname, :avatar].any? { |key| previous_changes.include?(key) }
+      RongcloudJob.perform_later(user: self, type: 'user_info')
+    end
+  end
+
   # 默认绑定official agent
   def bind_agent(binding_code = nil)
     agent_user = if binding_code.present?
@@ -219,11 +226,11 @@ class User < ActiveRecord::Base
   end
 
   def identify
-    nickname || regist_mobile
+    nickname || mobile || regist_mobile
   end
 
   def store_identify
-    store_name || nickname || regist_mobile
+    store_name || nickname || mobile || regist_mobile
   end
 
   def total_income
@@ -382,6 +389,18 @@ class User < ActiveRecord::Base
 
   def default_get_address
     @default_get_address ||= seller_addresses.find_by('usage @> ?', {default_get_address: 'true'}.to_json)
+  end
+
+  def find_or_create_rongcloud_token
+    return rongcloud_token if rongcloud_token.present?
+
+    user = Rongcloud::Service::User.new
+    user.user_id = self.id
+    user.name = self.identify
+    user.portrait_uri = self.avatar.url(:thumb)
+    user.get_token
+    self.update_columns(rongcloud_token: user.token)
+    user.token
   end
 
   private
