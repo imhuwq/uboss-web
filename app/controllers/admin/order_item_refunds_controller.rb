@@ -1,6 +1,10 @@
 class Admin::OrderItemRefundsController < AdminController
+
   load_and_authorize_resource
-  before_action :find_order_item_and_refund,    only: [:approved_refund, :approved_return, :confirm_received, :declined_refund, :declined_return, :declined_receive, :applied_uboss, :uboss_cancel, :refund_message]
+
+  before_action :find_order_item_and_refund,    only: [:approved_refund, :approved_return, :confirm_received,
+                                                       :declined_refund, :declined_return, :declined_receive,
+                                                       :applied_uboss, :uboss_cancel, :refund_message]
   before_action :refund_reason_must_be_present, only: [:declined_refund, :declined_return, :declined_receive]
 
   def index
