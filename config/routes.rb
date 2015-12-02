@@ -224,6 +224,7 @@ Rails.application.routes.draw do
 
       resources :categories, except: [:show] do
         post :update_categories, on: :collection
+        post :updata_category_img, :update_category_name,  on: :member
       end
     end
     mount RedactorRails::Engine => '/redactor_rails'

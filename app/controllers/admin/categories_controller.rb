@@ -2,6 +2,7 @@ class Admin::CategoriesController < AdminController
   load_and_authorize_resource
 
   def index
+    @categories = current_user.products.available.order('updated_at DESC')
   end
 
   def new
@@ -41,11 +42,32 @@ class Admin::CategoriesController < AdminController
     end
     if @errors
       flash[:errors] = @errors.join('\n')
-      render action: :new
+      render action: :index
     else
       flash[:success] = "success"
-      redirect_to action: :new
+      redirect_to action: :index
     end
+  end
+
+  def updata_category_img
+    # binding.pry
+    category = Category.find(params[:id])
+    if category.update(avatar: params[:avatar])
+      @message = {message: "上传成功！"}
+    else
+      @message = {message:"上传失败"}
+    end
+    render json:  @message
+  end
+
+  def update_category_name
+    category = Category.find(params[:id])
+    if category.update(name: params[:name])
+      @message = {message: "修改成功！"}
+    else
+      @message = {message:"修改失败"}
+    end
+    render json:  @message
   end
 
   private
