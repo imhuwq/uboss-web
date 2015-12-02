@@ -34,6 +34,7 @@ class Admin::CategoriesController < AdminController
   def update_categories
     begin
       params[:categories].each do |i,attributes|
+        binding.pry
         Category.find_by(id: attributes[:id]).update(attributes.permit(:name, :avatar))
       end
     rescue Exception => ex 
@@ -41,11 +42,22 @@ class Admin::CategoriesController < AdminController
     end
     if @errors
       flash[:errors] = @errors.join('\n')
-      render action: :new
+      render action: :index
     else
       flash[:success] = "success"
-      redirect_to action: :new
+      redirect_to action: :index
     end
+  end
+
+  def updata_categories_img
+    category = Category.find(params[:id])
+    if category.update(params[:avatar])
+      @message = {message: "上传成功！"}
+    else
+      @message = {message:"上传失败"}
+    end
+    render json: @message
+  end
   end
 
   private

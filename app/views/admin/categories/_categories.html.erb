@@ -17,19 +17,19 @@
           <input class="checkbox " name="check_item" type="checkbox" data-member="#{i}">
         </td>
         <td><%= text_field_tag "categories[#{i}][name]", category.name  %></td>
-        <td>
-          <p class="fileinput-button form-group">
+        <td class="form-group">
+          <p class="fileinput-button">
             <%= hidden_field_tag "categories[#{i}][avatar]" ,'', class:'file' %>
             <% if category.image_url.blank? %>
-              <%= image_tag("admin/no-img.png", class:"clean") %>
+              <%= image_tag("admin/no-img.png", class:"clean",style:"height: 80px;") %>
             <% else %>
-              <%= image_tag(category.image_url(:thumb), class:"clean")%>
+              <%= image_tag(category.image_url(:thumb), class:"clean", style:"height: 80px;")%>
             <% end %>
-            <%= upyun_meta_tags prefix: "#{i}" %>
-            <%= file_field_tag "image", class: "upyun_file_closest" %>
+            <%= upyun_meta_tags prefix: "categories/#{category.id}/avatar" %>
+            <%= file_field_tag "image", class: "upyun_file_list" %>
             <b class="loading"><i class="fa fa-spinner"></i></b>
           </p>
-          <p>(点击图片进行替换)</p>
+          <div style="font-size:10px;">(点击图片进行替换)</div>
         </td>
         <td><%= category.created_at %></td>
         <td>
