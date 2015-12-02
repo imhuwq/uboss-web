@@ -1,5 +1,5 @@
 class ServiceProduct < Product
-  validates :original_price, :present_price, :count, :service_type, :monthes, presence: true
+  validates :original_price, :present_price, :service_type, :monthes, presence: true
   validates :service_type, inclusion: { in: [0, 1] }
   validates :monthes, numericality: { greater_than_or_equal_to: 3 }
 
