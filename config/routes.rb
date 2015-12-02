@@ -127,7 +127,7 @@ Rails.application.routes.draw do
       resources :mobile_captchas, only: [:create]
       resources :users, only: [:show]
       resource :account, only: [] do
-        patch :update_password
+        patch :update_password, :become_seller
         get :orders, :privilege_cards
       end
       resource :chat, only: [] do
