@@ -34,12 +34,8 @@ class Admin::ServiceProductsController < AdminController
 
   def change_status
     if params[:status] == 'published'
-      # if @product.user.authenticated?
         @service_product.status = 'published'
-        @service_notice = '上架成功'
-      # else
-      #   @error = '该帐号还未通过身份验证，请先验证:点击右上角用户名，进入“个人/企业认证”'
-      # end
+        @notice = '上架成功'
     elsif params[:status] == 'unpublish'
       @service_product.status = 'unpublish'
       @notice = '取消上架成功'
@@ -48,7 +44,7 @@ class Admin::ServiceProductsController < AdminController
       @notice = '删除成功'
     end
 
-    if not @service_product.save
+    unless @service_product.save
       @error = model_errors(@service_product).join('<br/>')
     end
 

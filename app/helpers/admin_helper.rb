@@ -54,4 +54,8 @@ module AdminHelper
     end
     @store_banner_data
   end
+
+  def strftime(time)
+    time.strftime("%Y-%m-%d")
+  end
 end
