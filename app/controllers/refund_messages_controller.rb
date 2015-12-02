@@ -41,7 +41,7 @@ class RefundMessagesController < ApplicationController
   def add_multi_img
     avatars = params.require(:refund_message).permit(:avatar)
     avatars[:avatar].split(',').each do |avatar|
-      @refund_message.asset_imgs << AssetImg.find_or_create_by(resource: @refund_message, avatar: avatar)
+      @refund_message.asset_imgs << AssetImg.create(resource: @refund_message, avatar: avatar)
     end
   end
 
