@@ -7,4 +7,8 @@ class ServiceProduct < Product
   validates :monthes, numericality: { greater_than_or_equal_to: 3 }
 
   DataServiceType = { 0 => '代金券', 1 => '团购' }
+
+  def total_income
+    present_price * verify_codes.size
+  end
 end
