@@ -1,8 +1,10 @@
 class OrderItemRefundsController < ApplicationController
+
+  layout 'mobile'
+
   before_action :authenticate_user!
   before_action :find_order_item
   before_action :find_order_item_refund, only: [:show, :edit, :update, :close, :apply_uboss]
-  layout 'mobile'
 
   def new
     @refund = OrderItemRefund.new(refund_type: params[:refund_type])
@@ -79,11 +81,11 @@ class OrderItemRefundsController < ApplicationController
   end
 
   def find_order_item_refund
-    @refund = OrderItemRefund.find(params[:id])
+    @refund = current_user.order_item_refunds.find(params[:id])
   end
 
   def find_order_item
-    @order_item = OrderItem.find(params[:order_item_id])
+    @order_item = current_user.order_items.find(params[:order_item_id])
   end
 
   def add_multi_img

@@ -57,7 +57,7 @@ class Ability
     can :manage, CarriageTemplate
     can :read, Express
     can :set_common, Express
-    can :manage, OrderItemRefund
+    can :manage, OrderItemRefund, order_item: { order: { seller_id: user.id } }
     can :manage, UserAddress, user_id: user.id
     can :manage, Category, user_id: user.id
   end

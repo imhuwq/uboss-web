@@ -1,6 +1,8 @@
 class SalesReturnsController < ApplicationController
+
   before_action :authenticate_user!
   before_action :find_order_item, :find_order_item_refund
+
   layout 'mobile'
 
   def new
@@ -19,27 +21,27 @@ class SalesReturnsController < ApplicationController
   end
 
   def edit
-    @sales_return = SalesReturn.find(params[:id])
+    @sales_return = current_user.sales_returns.find(params[:id])
   end
 
   def update
-    @sales_return = SalesReturn.find(params[:id])
+    @sales_return = current_user.sales_returns.find(params[:id])
     add_multi_img
     if @sales_return.update(sales_return_params)
       flash[:success] = '退货信息更新成功'
     else
       flash[:error] = '退款信息更新失败'
     end
-      redirect_to order_item_order_item_refund_path(order_item_id: @order_item.id, id: @refund.id)
+    redirect_to order_item_order_item_refund_path(order_item_id: @order_item.id, id: @refund.id)
   end
 
   private
   def find_order_item_refund
-    @refund = OrderItemRefund.find(params[:order_item_refund_id])
+    @refund = current_user.order_item_refunds.find(params[:order_item_refund_id])
   end
 
   def find_order_item
-    @order_item = OrderItem.find(params[:order_item_id])
+    @order_item = current_user.order_items.find(params[:order_item_id])
   end
 
   def add_multi_img
@@ -51,6 +53,8 @@ class SalesReturnsController < ApplicationController
   end
 
   def sales_return_params
-    params.require(:sales_return).permit(:logistics_company, :ship_number, :description).merge(order_item_refund_id: @refund.id)
+    params.require(:sales_return).
+      permit(:logistics_company, :ship_number, :description).
+      merge(order_item_refund_id: @refund.id)
   end
 end

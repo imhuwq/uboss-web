@@ -15,10 +15,6 @@ class User < ActiveRecord::Base
 
   has_and_belongs_to_many :expresses, uniq: true
   has_one :user_info, autosave: true
-  has_one :cart
-  has_many :refund_messages
-  has_many :order_item_refunds
-  has_many :carriage_templates
   has_many :transactions
   has_many :user_role_relations, dependent: :destroy
   has_many :user_roles, through: :user_role_relations
@@ -31,14 +27,21 @@ class User < ActiveRecord::Base
   has_many :sellers, class_name: 'User', foreign_key: 'agent_id'
   has_many :seller_orders, through: :sellers, source: :sold_orders
   # for buyer
+  has_one :cart
   has_many :user_addresses, -> { where(seller_address: false) }
   has_many :orders
+  has_many :order_items
   has_many :sharing_incomes
   has_many :bank_cards
   has_many :privilege_cards
+  has_many :refund_messages
+  has_many :order_item_refunds
+  has_many :sales_returns, through: :order_item_refunds
+  has_many :carriage_templates
   # for seller
   has_many :seller_addresses, -> { where(seller_address: true) }, class_name: 'UserAddress'
   has_many :sold_orders, class_name: 'Order', foreign_key: 'seller_id'
+  has_many :sold_order_items, through: :sold_orders, source: :order_items
   has_many :products
   has_many :categories
   has_many :selling_incomes

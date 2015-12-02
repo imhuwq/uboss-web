@@ -1,7 +1,9 @@
 class RefundMessagesController < ApplicationController
+
   before_action :authenticate_user!
   before_action :find_order_item
   before_action :find_order_item_refund, only: [:new, :create]
+
   layout 'mobile'
 
   def new
@@ -44,11 +46,11 @@ class RefundMessagesController < ApplicationController
   end
 
   def find_order_item_refund
-    @refund = OrderItemRefund.find(params[:order_item_refund_id])
+    @refund = current_user.order_item_refunds.find(params[:order_item_refund_id])
   end
 
   def find_order_item
-    @order_item = OrderItem.find(params[:order_item_id])
+    @order_item = current_user.order_items.find(params[:order_item_id])
   end
 
 end

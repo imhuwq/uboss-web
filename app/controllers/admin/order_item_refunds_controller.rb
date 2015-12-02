@@ -8,7 +8,7 @@ class Admin::OrderItemRefundsController < AdminController
   before_action :refund_reason_must_be_present, only: [:declined_refund, :declined_return, :declined_receive]
 
   def index
-    @order_item = OrderItem.find(params[:order_item_id])
+    @order_item = current_user.sold_order_items.find(params[:order_item_id])
     @order_item_refund = @order_item.last_refund
     @refund_message = RefundMessage.new
     @order_item_refund.deal_with_timeout_refund
@@ -126,7 +126,7 @@ class Admin::OrderItemRefundsController < AdminController
   private
 
   def find_order_item_and_refund
-    @order_item = OrderItem.find(params[:order_item_id])
+    @order_item = current_user.sold_order_items.find(params[:order_item_id])
     @order_item_refund = @order_item.order_item_refunds.find(params[:id])
   end
 
