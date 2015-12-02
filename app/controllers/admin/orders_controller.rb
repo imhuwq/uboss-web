@@ -47,12 +47,17 @@ class Admin::OrdersController < AdminController
 
   def index
     @type = params[:type] || 'all'
+
     @orders = append_default_filter @orders.recent.includes(:user, order_items: [:product, :product_inventory])
     @counting_orders = @orders
+
     @unship_amount = @orders.payed.total_count
     @today_selled_amount = @orders.today.selled.total_count
     @shiped_amount = @orders.shiped.total_count
+
+    @refunds_amount = OrderItemRefund.with_seller(current_user.id).count
     @unprocess_refunds_amount = OrderItemRefund.with_seller(current_user.id).wait_seller_processes.count
+
     case @type
     when 'refunding'
       @orders = @orders.joins(order_items: :order_item_refunds).where("order_item_refunds.id IS NOT NULL").uniq
