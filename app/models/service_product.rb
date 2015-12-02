@@ -22,4 +22,7 @@ class ServiceProduct < Product
     end
   end
 
+  def total_income
+    present_price * verify_codes.size
+  end
 end

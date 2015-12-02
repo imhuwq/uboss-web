@@ -1,24 +1,23 @@
 <%= render 'public' %>
-
 <br />
 <div class="container">
 	<div class="header-tab">
-		<%= link_to "验证明细", admin_verify_codes_path, class:"tab-title" %>
+		<%= link_to "收益明细", income_detail_admin_service_stores_path, class:"tab-title" %>
 		<div class="tab-title active">团购统计</div>
 	</div>
 </div>
 <br />
 
 <div class="container">
-  <table class="list-table" id="statistics">
+	<table class="list-table" id="verify_codes">
     <thead>
       <tr>
         <th>团购名称</th>
         <th>现价</th>
         <th>实付款</th>
-        <th>今日验证数量</th>
-        <th>总验证数量</th>
-        <th>团购有效期</th>
+        <th>总销量</th>
+        <th>累计算收益</th>
+        <th>发布时间</th>
       </tr>
     </thead>
     <tbody>
@@ -32,9 +31,9 @@
           </td>
           <td><%= product.present_price %></td>
           <td></td>
-          <td><%= product.verify_codes.today.size %></td>
-          <td><%= product.verify_codes.total.size %></td>
-          <td>截止至<%= (product.created_at + product.monthes.to_i.months).to_date %></td>
+          <td><%= product.verify_codes.size %></td>
+          <td><%= product.total_income %></td>
+          <td><%= product.created_at.to_date %></td>
         </tr>
       <% end %>
     </tbody>

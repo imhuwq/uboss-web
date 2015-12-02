@@ -125,7 +125,12 @@ Rails.application.routes.draw do
 
       get '/select_carriage_template', to: 'products#select_carriage_template'
 
-      resources :service_stores, only: [:edit, :update]
+      resources :service_stores, only: [:edit, :update] do
+        collection do
+          get :income_detail
+          get :statistics
+        end
+      end
 
       resources :verify_codes, only: [:index] do
         collection do

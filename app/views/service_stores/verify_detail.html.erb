@@ -32,7 +32,12 @@
     <tbody>
       <% @verify_codes.each do |verify_code| %>
         <tr>
-          <td></td>
+          <td class="text-left">
+            <%= link_to '#' do %>
+              <%= image_tag(verify_code.service_product.image_url(:thumb), size: "80x80", alt: "-") %>　
+              <%= verify_code.service_product.name %>
+            <% end %>
+          </td>
           <td><%= verify_code.updated_at.to_date %></td>
           <td><%= verify_code.code %></td>
         </tr>

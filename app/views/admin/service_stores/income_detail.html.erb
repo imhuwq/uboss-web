@@ -1,0 +1,30 @@
+<%= render 'public' %>
+<br />
+<div class="container">
+	<div class="header-tab">
+		<div class="tab-title active">收益明细</div>
+		<%= link_to "团购统计", statistics_admin_service_stores_path, class:"tab-title" %>
+	</div>
+</div>
+<br />
+
+<div class="container">
+	<table class="list-table" id="verify_codes">
+    <thead>
+      <tr>
+        <th>日期</th>
+        <th>总销量</th>
+        <th>累计收益</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @income_by_date.each do |date, array| %>
+        <tr>
+          <td><%= date %></td>
+          <td><%= array.first %></td>
+          <td><%= array.last %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
