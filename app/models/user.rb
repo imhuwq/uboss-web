@@ -217,13 +217,13 @@ class User < ActiveRecord::Base
   end
 
   def store_title
-    res = store_name.clone
-    if store_name.present? && store_short_description.present?
-      res.concat(" | ").concat(store_short_description)
+    if store_name.blank? && store_short_description.blank?
+      nil
+    else
+      [store_name, store_short_description].join(" | ")
     end
-    return res
   end
-        
+
   def store_identify
     store_name || nickname || regist_mobile
   end
