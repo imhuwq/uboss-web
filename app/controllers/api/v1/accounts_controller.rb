@@ -34,7 +34,4 @@ class Api::V1::AccountsController < ApiBaseController
   def password_params
     params.permit(:current_password, :password, :password_confirmation)
   end
-
-
-
 end
