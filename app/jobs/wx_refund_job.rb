@@ -67,7 +67,7 @@ class WxRefundJob < ActiveJob::Base
       }.merge(options)
     end
     options.merge({applied_at: Time.current, applied_content: res})
-    record.update_attribute(options)
+    record.update(options)
   end
 
   def test_wx_refund_query

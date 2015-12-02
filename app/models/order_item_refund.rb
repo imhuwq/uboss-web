@@ -226,7 +226,7 @@ class OrderItemRefund < ActiveRecord::Base
   end
 
   def order_charge_number
-    order_charge.number
+    order_charge.pay_serial_number
   end
 
   def refund_number
