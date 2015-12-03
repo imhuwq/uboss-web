@@ -47,14 +47,14 @@
         <div class="box-w30">
 
           <%= f.input image, label: false do %>
-            <%= f.input_field image, type: :hidden, as: :file %>
+            <%= f.input_field image, value: @seller.ordinary_store.store_banner(image),type: :hidden, as: :file %>
             <span class="fileinput-button">
               <% if f.object.__send__("#{image}_identifier").blank? %>
                 <%= image_tag("admin/no-img.png") %>
               <% else %>
                 <%= image_tag(f.object.__send__("#{image}_url", :w320)) %>
               <% end %>
-              <%= upyun_meta_tags prefix: "user_info/#{image}" %>
+              <%= upyun_meta_tags prefix: "ordinary_store/#{image}" %>
               <%= file_field_tag "business_license_img", class: "upyun_file_closest" %>
               <b class="loading"><i class="fa fa-spinner"></i></b>
             </span>

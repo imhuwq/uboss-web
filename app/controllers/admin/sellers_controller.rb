@@ -33,7 +33,7 @@ class Admin::SellersController < AdminController
 
   def update
     authorize! :update, @seller
-    if @seller.update(seller_params)
+    if @seller.ordinary_store.update(seller_params)
       flash[:notice] = '更新成功'
       redirect_to action: :edit
     else
