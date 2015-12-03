@@ -1,8 +1,4 @@
-#= require zepto/zepto.min
-#= require zepto/plugins/selector
-#= require zepto/plugins/fx
-#= require zepto/plugins/fx_methods
-#= require zepto/plugins/detect
+#= require hongbao/zepto.1.1.4.min.custom
 #= require zepto/plugins/callbacks
 #= require zepto/plugins/deferred
 #= require hongbao/createjs
