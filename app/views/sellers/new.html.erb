@@ -42,10 +42,13 @@
     <% end %>
 
   <% elsif current_user.present? %>
-      <% if @agent.present? %>
-        <h6>您将与<%= @agent.try(:identify) %>创客进行绑定</h6>
-      <% end %>
-      <div class="orm-inputs text-center" style="margin: 70px 0 180px 0">
+      <div class="orm-inputs text-center" style="margin: 50px 0 0 0">
+        <% if @agent.present? %>
+          您将与<%= @agent.try(:identify) %>创客进行绑定
+        <% end %>
+      </div>
+      
+      <div class="orm-inputs text-center" style="margin: 20px 0 180px 0">
         <% if current_user.agent.present? %>
         您已经绑定创客，不允许更换绑定。
         <% elsif current_user.authenticated? %>
