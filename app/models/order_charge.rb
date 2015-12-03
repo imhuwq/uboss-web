@@ -46,12 +46,14 @@ class OrderCharge < ActiveRecord::Base
     return true if paid_at.present?
 
     if $wechat_env.test?
-      update_with_wx_pay_result(
-        "total_fee" => pay_amount * 100,
-        "payment" => 'wx',
-        "time_end" => Time.now
+      ChargeService.process_paid_result(
+        result: {
+          "total_fee" => pay_amount * 100,
+          "payment" => 'wx',
+          "time_end" => Time.now
+        },
+        order_charge: self
       )
-      true
     else
       invoke_wx_pay_cheking
     end
