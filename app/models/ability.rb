@@ -45,7 +45,7 @@ class Ability
     can :manage, Order, seller_id: user.id
     can :manage, Product, user_id: user.id
     can :manage, ServiceProduct, user_id: user.id
-    can :manage, SeriveStore, user_id: user.id
+    can :manage, ServiceStore, user_id: user.id
     #
     # FIXME manage 已经代表可以做任何操作，重新定义change_status是毫无意义的
     # can :change_status, Product, user_id: user.id
@@ -76,7 +76,7 @@ class Ability
     can :manage, BankCard, user_id: user.id
 
     can :read, Product, user_id: user.id
-    can :read, SeriveStore, user_id: user.id
+    can :read, ServiceStore, user_id: user.id
   end
 
 end

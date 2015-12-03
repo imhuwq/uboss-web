@@ -90,6 +90,14 @@ class User < ActiveRecord::Base
     RUBY
   end
 
+  def build_service_store
+    user_infos.build(type: 'ServiceStore')
+  end
+
+  def build_ordinary_store
+    user_infos.build(type: 'OrdinaryStore')
+  end
+
   def service_store
     user_infos.service_store || build_service_store
   end
