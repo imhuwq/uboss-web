@@ -99,6 +99,7 @@ class OrderDivideJobTest < ActiveJob::TestCase
 
       refund = create(:order_item_refund, money: 10, order_item: @order.order_items.first)
       refund.approve!
+      @order.update_column(:pay_amount, 200)
       OrderDivideJob.perform_now(@order.reload)
 
       assert_equal 0, @order.sharing_incomes.count

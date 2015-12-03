@@ -30,7 +30,8 @@ class UserAddressesController < ApplicationController
   def update
     if @user_address.update(address_params)
       if @user_address.default == true
-        UserAddress.where(default: true, seller_address: false).where('id != ?', @user_address.id).update_all(default: false)
+        current_user.user_addresses.where(default: true).
+          where('id != ?', @user_address.id).update_all(default: false)
       end
       redirect_to account_user_addresses_path
     else

@@ -230,6 +230,14 @@ class User < ActiveRecord::Base
     nickname || mobile || regist_mobile
   end
 
+  def store_title
+    if store_name.blank?
+      nil
+    else
+      [store_name, store_short_description].join(" | ")
+    end
+  end
+
   def store_identify
     store_name || nickname || mobile || regist_mobile
   end

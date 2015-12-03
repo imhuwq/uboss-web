@@ -8,7 +8,7 @@ class RefundMessagesController < ApplicationController
 
   def new
     @refund_message = RefundMessage.new
-    @refund_messages = RefundMessage.where(order_item_refund_id: @order_item.order_item_refund_ids).order('created_at desc')
+    @refund_messages = @order_item.refund_messages.order('created_at DESC')
   end
 
   def create
@@ -41,7 +41,7 @@ class RefundMessagesController < ApplicationController
   def add_multi_img
     avatars = params.require(:refund_message).permit(:avatar)
     avatars[:avatar].split(',').each do |avatar|
-      @refund_message.asset_imgs << AssetImg.find_or_create_by(resource: @refund_message, avatar: avatar)
+      @refund_message.asset_imgs << AssetImg.create(resource: @refund_message, avatar: avatar)
     end
   end
 
