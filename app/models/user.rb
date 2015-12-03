@@ -230,7 +230,7 @@ class User < ActiveRecord::Base
   end
 
   def store_title
-    if store_name.blank? && store_short_description.blank?
+    if store_name.blank?
       nil
     else
       [store_name, store_short_description].join(" | ")
