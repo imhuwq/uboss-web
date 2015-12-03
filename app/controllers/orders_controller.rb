@@ -104,8 +104,10 @@ class OrdersController < ApplicationController
   def received
     if @order.sign!
       flash[:success] = '已确认收货'
-      redirect_to account_path
+    else
+      flash[:error] = '确认收货失败'
     end
+    redirect_to order_path(@order)
   end
 
   def change_address

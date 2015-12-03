@@ -12,3 +12,7 @@ end
 every 1.day, at: "12:55am", roles: [:db] do
   runner "RongcloudJob.make_sync_history_jobs"
 end
+
+every 2.hours, roles: [:db] do
+  runner "AutoSignOrderJob.perform_later"
+end
