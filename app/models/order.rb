@@ -73,6 +73,10 @@ class Order < ActiveRecord::Base
     Order.states[self.state] >= 1 && Order.states[self.state] != 5
   end
 
+  def has_refund?
+    order_items.joins(:order_item_refunds).exists?
+  end
+
   class << self
     def valid_items(cart_items, province)
       if province.present?
