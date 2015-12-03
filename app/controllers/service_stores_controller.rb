@@ -9,7 +9,7 @@ class ServiceStoresController < ApplicationController
   end
 
   def verify_detail
-    @verify_codes = VerifyCode.total
+    @verify_codes = VerifyCode.today
     @total = VerifyCode.total.size
     @today = VerifyCode.today.size
   end

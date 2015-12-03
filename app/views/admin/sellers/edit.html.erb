@@ -32,7 +32,7 @@
           <% else %>
             <%= image_tag(@seller.store_cover.url(:w320))%>
           <% end %>
-          <%= upyun_meta_tags prefix: "user_info/store_cover" %>
+          <%= upyun_meta_tags prefix: "ordinary_store/store_cover" %>
           <%= file_field_tag "st_c_image", class: "upyun_file_closest" %>
           <b class="loading"><i class="fa fa-spinner"></i></b>
         </p>
