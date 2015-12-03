@@ -10,6 +10,10 @@ class ServiceProduct < Product
 
   before_validation :set_default_product_inventory
 
+  def total_income
+    present_price * verify_codes.size
+  end
+
   private
 
   def set_default_product_inventory
@@ -20,9 +24,5 @@ class ServiceProduct < Product
         sku_attributes: { '其它' => '默认' }
       )
     end
-  end
-
-  def total_income
-    present_price * verify_codes.size
   end
 end
