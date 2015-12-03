@@ -34,6 +34,7 @@ class User < ActiveRecord::Base
   has_many :sharing_incomes
   has_many :bank_cards
   has_many :privilege_cards
+  has_many :bonus_records
   # for seller
   has_many :sold_orders, class_name: 'Order', foreign_key: 'seller_id'
   has_many :products
@@ -59,7 +60,7 @@ class User < ActiveRecord::Base
     :store_banner_one=, :store_banner_two=, :store_banner_thr=,
     :recommend_resource_one_id, :recommend_resource_two_id, :recommend_resource_thr_id,
     :recommend_resource_one_id=, :recommend_resource_two_id=, :recommend_resource_thr_id=,
-    :store_short_description, :store_short_description=, :store_cover, :store_cover=,
+    :store_short_description, :store_short_description=, :store_cover, :store_cover=, :bonus_benefit,
     to: :user_info, allow_nil: true
 
   enum authenticated: {no: 0, yes: 1}
