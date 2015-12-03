@@ -1,5 +1,10 @@
 class SellersController < AdminController
-  layout 'login'
+  # layout 'application'
+
+  detect_device only: [:new]
+
+  layout :detect_layout, only: [:new]
+
   def new
     @agent = User.find_by(agent_code: params[:agent_code]) if params[:agent_code].present?
   end
@@ -66,4 +71,13 @@ class SellersController < AdminController
       @errors << k unless v.present?
     end
   end
+
+   def detect_layout
+    if not desktop_request?
+      'application'
+    else
+      'login'
+    end
+  end
+
 end
