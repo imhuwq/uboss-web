@@ -13,6 +13,7 @@ class Admin::ServiceProductsController < AdminController
 
   def create
     @service_product.user_id = current_user.id
+    @service_product.service_store = current_user.service_store
     if @service_product.save
       flash[:success] = '产品创建成功'
       redirect_to action: :show, id: @service_product.id

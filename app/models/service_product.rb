@@ -9,6 +9,7 @@ class ServiceProduct < Product
   DataServiceType = { 0 => '代金券', 1 => '团购' }
 
   before_validation :set_default_product_inventory
+  before_save :check_service_store_user
 
   def total_income
     present_price * verify_codes.size
@@ -24,5 +25,9 @@ class ServiceProduct < Product
         sku_attributes: { '其它' => '默认' }
       )
     end
+  end
+
+  def check_service_store_user
+    self.service_store.user_id == self.user_id
   end
 end

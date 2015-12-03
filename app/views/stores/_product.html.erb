@@ -2,7 +2,7 @@
   <div class="box-w50 p-item" timestamp="<%= product.updated_at %>">
     <div class="product-box">
       <div class="cover">
-        <%= link_to '', product, style: "background-image:url(#{product.image_url(:w320)})",class:'img',title:"#{product.name}" %>
+        <%= link_to '', product_path(product), style: "background-image:url(#{product.image_url(:w320)})",class:'img',title:"#{product.name}" %>
         <%= image_tag("mobile/img.jpg") %>
       </div>
       <div class="title"><%= product.name %></div>
