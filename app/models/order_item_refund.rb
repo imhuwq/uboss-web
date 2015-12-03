@@ -3,6 +3,8 @@ class OrderItemRefund < ActiveRecord::Base
   include AASM
   extend Enumerize
 
+  WAIT_SELLER_PROCESS_STATES = %w(pending completed_express_number applied_uboss)
+
   belongs_to :user
   belongs_to :order_item
   belongs_to :refund_reason
@@ -12,7 +14,7 @@ class OrderItemRefund < ActiveRecord::Base
   has_many :asset_imgs, class_name: 'AssetImg', autosave: true, as: :resource
 
   scope :with_seller, -> (seller_id) { joins(order_item: :order).where(orders: { seller_id: seller_id }) }
-  scope :wait_seller_processes, -> { where(aasm_state: ['pending', 'completed_express_number']) }
+  scope :wait_seller_processes, -> { where(aasm_state: WAIT_SELLER_PROCESS_STATES) }
   scope :successed, -> {
     where(
       <<-SQL.squish!
@@ -117,6 +119,10 @@ class OrderItemRefund < ActiveRecord::Base
 
   def order_shiped?
     order_state == 'shiped'
+  end
+
+  def wait_seller?
+    WAIT_SELLER_PROCESS_STATES.include?(aasm_state)
   end
 
   def refund_type_include_goods?
