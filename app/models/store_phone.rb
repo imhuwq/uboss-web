@@ -7,4 +7,7 @@ class StorePhone < ActiveRecord::Base
     end
   end
 
+  def fixed_phone
+    "#{area_code}-#{fixed_line}"
+  end
 end

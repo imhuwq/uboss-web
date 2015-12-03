@@ -31,7 +31,7 @@
       <div class='form-group file optional user_store_cover'>
         <label>店铺封面</label>
         <div class='control-input'>
-          <%= f.text_field :store_cover, type: :hidden, as: :file, class: 'file optional' %>
+          <%= f.text_field :store_cover, value: @service_store.store_cover_name, type: :hidden, as: :file, class: 'file optional' %>
           <p><span class="text-margin">建议上传比例为1:1的图片，最佳尺寸为<b style="color: red;">600x600</b>像素</span></p>
           <p class="fileinput-button">
             <% if @service_store.store_cover_identifier.blank? %>

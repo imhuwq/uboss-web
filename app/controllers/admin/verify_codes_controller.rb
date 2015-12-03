@@ -2,7 +2,7 @@ class Admin::VerifyCodesController < AdminController
   load_and_authorize_resource
 
   def index
-    @verify_codes = VerifyCode.all
+    @verify_codes = VerifyCode.all.reorder(verified: 'desc').order(updated_at: 'desc')
     @total = VerifyCode.total.size
     @today = VerifyCode.today.size
   end

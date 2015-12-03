@@ -12,5 +12,25 @@ class ServiceStore < UserInfo
     if self.store_phones.size < MIN_SECTION_SIZE
       self.errors.add(:store_phones, "至少包含一条信息")
     end
+
+    if (begin_hour.to_i > end_hour.to_i) || (begin_hour.to_i == end_hour.to_i && begin_minute.to_i >= end_minute.to_i)
+      self.errors.add(:begin_time, '不能大于或等于结束时间')
+    end
+  end
+
+  def store_cover_name
+    store_cover.try(:file).try(:filename)
+  end
+
+  def address
+    "#{ChinaCity.get(province)}#{ChinaCity.get(city)}#{ChinaCity.get(area)}#{street}"
+  end
+
+  def begin_time
+    "#{begin_hour}:#{begin_minute}"
+  end
+
+  def end_time
+    "#{end_hour}:#{end_minute}"
   end
 end

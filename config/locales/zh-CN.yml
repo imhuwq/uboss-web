@@ -182,6 +182,7 @@ zh-CN:
       service_store:
         store_phones: 店铺电话
         begin_hour: 开始时
+        begin_time: 营业开始时间
         begin_minute: 开始分
         end_hour: 结束时
         end_minute: 结束分
