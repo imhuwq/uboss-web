@@ -4,6 +4,7 @@ class OrderItemRefund < ActiveRecord::Base
   extend Enumerize
 
   WAIT_SELLER_PROCESS_STATES = %w(pending completed_express_number applied_uboss)
+  DONE_PROCESS_STATES = %w(finished cancelled closed)
 
   belongs_to :user
   belongs_to :order_item

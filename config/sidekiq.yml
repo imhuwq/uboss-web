@@ -9,3 +9,4 @@ production:
   - default
   - [orders, 2]
   - [agent_orders, 9]
+  - [auto_sign_order, 5]
