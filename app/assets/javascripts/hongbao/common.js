@@ -53,6 +53,11 @@ $(function(){
 			})
 		}
 	})
+	$(window).load(function(){
+		$(".loading").fadeOut(200,function(){
+			$(".page1").fadeIn(200);
+		})
+	})
 	/* 跳转到游戏规则  */
 	$('.page1-btn1').on(Edown,function(){
 		$('section:visible').fadeOut(100,function(){
