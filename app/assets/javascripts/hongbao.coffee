@@ -3,4 +3,3 @@
 #= require hongbao/common
 #= require_self
 
- console.log('asd')

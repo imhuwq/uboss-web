@@ -175,6 +175,23 @@ footer{
     height: 100%;
     vertical-align: middle;
 }
+.share-box{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,.8);
+    z-index: 99;
+    color: #fff;
+}
+.share-text{
+    position: fixed;
+    z-index: 100;
+    width: 100%;
+    bottom: 40px;
+    left: 0;
+}
 .btn{
     background: image-url('game/black-btn-bg.png') no-repeat;
     background-size:100% 100%;
