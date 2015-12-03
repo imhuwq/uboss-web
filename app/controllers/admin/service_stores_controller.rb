@@ -6,7 +6,7 @@ class Admin::ServiceStoresController < AdminController
     @total_income = get_total_income
     @income_by_date = {}
 
-    service_product_ids = current_user.service_store.service_product_ids
+    service_product_ids = current_user.service_product_ids
     group_date = VerifyCode.where(service_product_id: service_product_ids).group_by{ |code| code.created_at.to_date }.sort_by{|key, values| key}.reverse
 
     group_date.each do |key, array|
@@ -19,7 +19,7 @@ class Admin::ServiceStoresController < AdminController
   def statistics
     @total_income = get_total_income
 
-    @service_products = current_user.service_store.service_products
+    @service_products = current_user.service_products
   end
 
   def edit
@@ -38,7 +38,7 @@ class Admin::ServiceStoresController < AdminController
 
   private
   def get_total_income
-    current_user.service_store.service_products.map do |product|
+    current_user.service_products.map do |product|
       product.present_price * product.verify_codes.size
     end.sum
   end

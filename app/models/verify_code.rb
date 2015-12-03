@@ -5,9 +5,9 @@ class VerifyCode < ActiveRecord::Base
 
   default_scope {order("updated_at desc")}
 
-  scope :today, ->(user) { where(verified: true, service_product_id: user.service_store.service_product_ids).where('updated_at BETWEEN ? AND ?', Time.now.beginning_of_day, Time.now.end_of_day) }
+  scope :today, ->(user) { where(verified: true, service_product_id: user.service_product_ids).where('updated_at BETWEEN ? AND ?', Time.now.beginning_of_day, Time.now.end_of_day) }
 
-  scope :total, ->(user) { where(verified: true, service_product_id: user.service_store.service_product_ids) }
+  scope :total, ->(user) { where(verified: true, service_product_id: user.service_product_ids) }
 
   def generate_code
     self.code = SecureRandom.random_number(100000000000)
