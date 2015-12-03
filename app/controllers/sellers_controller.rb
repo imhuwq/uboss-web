@@ -42,7 +42,7 @@ class SellersController < AdminController
         #current_user.update(agent_id: allow_params[:agent_id])
         current_user.bind_agent(user.try(:agent_code))
         flash[:success] = "成功绑定创客#{current_user.agent.identify}！"
-        redirect_to admin_root_path
+        redirect_to root_path
         return
       else
         flash[:error] = "找不到创客"
