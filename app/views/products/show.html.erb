@@ -14,7 +14,7 @@
 <div class="fixed-container">
   <div class="product-box product-page">
     <div class="cover">
-      <div class="img" style="background-image:url('<%=@product.image_url()%>')"></div>
+      <div class="img" style="background-image:url('<%=@product.image_url(:w640)%>')"></div>
       <%= image_tag("mobile/img.jpg") %>
       <% if current_user && current_user.has_seller_privilege_card?(@seller) %>
         <div class="like-box">
@@ -129,6 +129,9 @@
 
   <% if @sharing_node.blank? %>
     <div class="share_buy">
+      <%= link_to chat_path(anchor: "conversations/#{@seller.id}"), class: 'chat-btn' do %>
+        <%= image_tag 'mobile/chat.png' %>
+      <% end %>
       <% if current_user %>
         <%= link_to '加入购物车', 'javascript:;', class: 'btn_add_to_cart', id: 'show_inventory_cart'%>
       <% else %>
