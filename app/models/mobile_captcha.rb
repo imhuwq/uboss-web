@@ -58,6 +58,7 @@ class MobileCaptcha < ActiveRecord::Base
 
   private
   def rand_code
+    put '1'
     rand(999..10_000).to_s.ljust(4,'0')
   end
 end
