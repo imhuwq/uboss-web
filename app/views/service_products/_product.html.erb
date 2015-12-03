@@ -1,0 +1,17 @@
+<% cache ['mlist', product], expires_in: 1.day do %>
+  <%= link_to product_path(product), class: 'p-item', timestamp: product.updated_at do %>
+  <li class="list_li">
+    <div class="li_image">
+      <%= image_tag(product.image_url(:w320),  alt: "-") %>
+      </div>
+      <div class="li_content">
+        <div class="li_contentinteo">
+          <div class="con_title"><%= product.name %></div>
+          <div class="intrdu"><%= product.short_description %></div>
+          <div class="baoyou">邮费：<%= OrdinaryProduct::DataBuyerPay[product.transportation_way] %></div>
+          <div class="pric"><strong>￥<%= product.present_price %></strong></div>
+        </div>
+     </div>
+  </li>
+  <% end %>
+<% end %>

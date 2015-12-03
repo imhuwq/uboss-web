@@ -57,6 +57,11 @@ Rails.application.routes.draw do
     get :get_sku, on: :collection
     post :democontent,  on: :collection
   end
+  resources :service_products, only: [:index, :show] do
+    member do
+      patch :switch_favour
+    end
+  end
   resources :evaluations do
     get :append, on: :member
   end

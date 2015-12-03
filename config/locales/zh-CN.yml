@@ -149,6 +149,7 @@ zh-CN:
   li_link:
     dashboard: 主页
     service_stores: 团购店铺
+    service_products: 团购商品
     verify_codes: 验证管理
     income: 收益管理
     carriage_templates: 运费模板

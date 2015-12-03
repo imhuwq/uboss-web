@@ -37,7 +37,7 @@
     <div class="border-box">
     	<br />
 	    </p>
-	    <p class="gray-color"><%= Evaluation.product_good_reputation_rate(@service_product.id) %> 好评 (<%= Evaluation.product_good_reputation(@service_product.id).try(:to_i) %>人)</p>
+	    <p class="gray-color"><%= Evaluation.product_good_reputation_rate(@service_product.id) %> 好评 (<%= Evaluation.product_good_reputation(@service_product.id) %>人)</p>
   	</div><!-- border-box -->
   	<br />
   	<div class="detail text-left">
@@ -131,11 +131,6 @@
 
   <% if @sharing_node.blank? %>
     <div class="share_buy">
-      <% if current_user %>
-        <%= link_to '加入购物车', 'javascript:;', class: 'btn_add_to_cart', id: 'show_inventory_cart'%>
-      <% else %>
-        <%= link_to '加入购物车', "/cart_items?product_id=#{@service_product.id}", class: 'btn_add_to_cart', method: 'post'%>
-      <% end %>
       <%= link_to '立即购买', 'javascript:;', class: 'btn_buy_now', id:"show_inventory", style: 'float:right;' %>
 
       <input type="hidden" name="product[id]" value="<%= @service_product.id %>" />
@@ -151,11 +146,6 @@
 		    </dl>
 		  </div>
 		  <div class="half_right">
-	      <% if current_user %>
-	        <%= link_to '加入购物车', 'javascript:;', class: 'btn_add_to_cart', id: 'show_inventory_cart'%>
-	      <% else %>
-	        <%= link_to '加入购物车', '/cart_items', class: 'btn_add_to_cart', method: 'post'%>
-	      <% end %>
 	      <%= link_to '立即购买', 'javascript:;', class: 'btn_buy_now', id:"show_inventory", style: 'float:right;' %>
 		  </div>
     </div>

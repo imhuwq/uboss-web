@@ -1,7 +1,7 @@
 module ApplicationHelper
 
   def product_show?
-    controller_name == 'products' && action_name == 'show'
+    (controller_name == 'products' || controller_name == 'service_products') && action_name == 'show'
   end
 
   def qrcode_image_tag(text, opts = {})

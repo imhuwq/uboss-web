@@ -13,5 +13,4 @@ class OrdinaryProduct < Product
     end
   end
 
-  scope :hots, -> { where(hot: true) }
 end

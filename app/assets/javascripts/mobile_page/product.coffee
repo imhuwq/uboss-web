@@ -62,3 +62,15 @@ $ ->
       $('#count_amount').val(1)
 
   $(".count-box .count_num").onlyNum()
+
+  self.setTab = (m, n) ->
+    tlis = $(".product-menu"+m).find('li')
+    mlis = $("#product-main"+m).find('ul')
+    for tli, i in tlis
+      if i == n
+        tli.className = "hover"
+        mlis[i].style.display = "block"
+      else
+        tli.className = ""
+        mlis[i].style.display = "none"
+
