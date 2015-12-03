@@ -3,6 +3,8 @@ class BonusRecord < ActiveRecord::Base
   belongs_to :user
 
   validates :amount, money: true
+  validates_numericality_of :amount, less_than_or_equal_to: 10, message: '金额非法'
+  validates_presence_of :user
   validate :limit_rate
 
   after_create :increase_user_bonus_benefit
