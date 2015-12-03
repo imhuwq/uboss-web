@@ -13,7 +13,7 @@ class AutoSignOrderJob < ActiveJob::Base
   private
 
   def sign_order_if_no_refunds(order)
-    return false if order.order_items.joins(:order_item_refunds).exists?
+    return false if order.has_refund?
 
     if order.may_sign?
       logger.info "Auto Sign Order SUCCESS, number: #{order.number}"
