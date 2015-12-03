@@ -74,7 +74,7 @@ class SellersController < AdminController
 
    def detect_layout
     if not desktop_request?
-      'application'
+      'mobile'
     else
       'login'
     end
