@@ -10,6 +10,22 @@
     td{ border: none; padding-bottom: 0;}
     .edit-icon{ border-bottom: 1px solid #eee;}
 }
+.hongbao{
+    background: image-url('mobile/account/hongbao-icon.png') #fff no-repeat;
+    padding: 15px 10px 15px 30px;
+    background-position:10px center;
+    background-size:auto 18px ;
+    position: relative;
+    .newyear{
+        background: image-url('mobile/account/newyear.png') rgba(0,0,0,.8) center center no-repeat;
+        background-size: auto 30px;
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 100%;
+        width: 100%;
+    }
+}
 .avatar{
     display: table;
     width: 100%;
