@@ -173,7 +173,7 @@ $(function(){
       $.ajax({
         url: '/bonus',
         type: 'POST',
-        data: {mobile: user_tel, amount: (vv.gamePoint*0.1*10000).toFixed(1)},
+        data: {mobile: user_tel, amount: (vv.gamePoint*0.1).toFixed(1)},
       }).done(function(){
         $('.mobile-number').text(user_tel);
         $('.page3 .pop-container').removeClass('hidden');
