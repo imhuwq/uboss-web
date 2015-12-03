@@ -13,11 +13,10 @@
   <% if current_user.present? and current_user.can_rebind_agent? and @agent.present? %>
 
     <%= horizon_form_for(:seller, url: seller_path(current_user), method: 'PUT') do |f| %>
-
-      <h3></h3>
       <div class="orm-inputs text-center" style="margin: 20px 0">
         您将与<%= @agent.try(:identify) %>创客进行绑定
       </div>
+
       <hr />
       <%= hidden_field_tag "seller[agent_id]", @agent.try(:id) %>
       <%= f.input :mobile do %>
@@ -66,11 +65,12 @@
   <% else %>
     <%= horizon_form_for(:seller, url: url_for(controller: :sellers, action: :create), method: 'POST') do |f| %>
       <% if @agent.present? %>
-        <h6>您将与<%= @agent.try(:identify) %>创客进行绑定</h6>
+        <div class="orm-inputs text-center" style="margin: 20px 0">
+          您将与<%= @agent.try(:identify) %>创客进行绑定
+        </div>
       <% end %>
       <hr />
       <%= hidden_field_tag "seller[agent_id]", @agent.try(:id) %>
-      <%#= f.input :mobile, as: :tel,  input_html: {id: 'new_mobile'} %>
       <%= f.input :mobile do %>
         <%= f.input_field :mobile, class: 'form-control', id: 'new_mobile' %>
         <a class="send_mobile"  id="send_mobile" href="#">发送验证码</a>
