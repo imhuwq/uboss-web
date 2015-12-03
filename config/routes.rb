@@ -21,6 +21,7 @@ Rails.application.routes.draw do
   get 'sharing/:code', to: 'sharing#show', as: :sharing
   get 'maker_qrcode', to: 'home#maker_qrcode', as: :maker_qrcode
   get 'qrcode', to: 'home#qrcode', as: :request_qrcode
+  get 'ls_game', to: 'home#hongbao_game'
 
   get 'service_centre_consumer', to: 'home#service_centre_consumer'
   get 'service_centre_agent', to: 'home#service_centre_agent'
@@ -36,6 +37,7 @@ Rails.application.routes.draw do
   post 'mobile_captchas/create', to: 'mobile_captchas#create'
   get  'mobile_captchas/send_with_captcha', to: 'mobile_captchas#send_with_captcha'
 
+  resources :bonus, only: [:create]
   resources :stores, only: [:index, :show] do
     get :hots, :favours, on: :member
     resources :categories, only: [:show]
