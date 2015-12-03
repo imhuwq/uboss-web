@@ -47,12 +47,11 @@ $ ->
   $(document).on 'click', '.pop-bg', (e) ->
     unless $(e.target).closest('.pop-content').length > 0
       $(this).hide()
-
-
+  
   $('.tab-nav .tab').on 'click', (e)->
     $('.tab-nav .tab').removeClass('active')
     $(this).addClass('active')
-    tid=$(this).attr('href')
+    tid=$(this).attr('title')
     $('.tab-container .tab-content').hide()
     $(tid).show()
 

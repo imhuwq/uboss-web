@@ -20,9 +20,10 @@
 <br />
 
 <div class="tab-nav">
-	<a class="tab active" href="#showlist"><span>我的订单</span></a>
-	<a class="tab" href="#showpcards"><span>我的友情卡</span></a>
-	<a class="tab" href="#showincome"><span>我的收益</span></a>
+	<a class="tab active" title="#showlist"><span>我的订单</span></a>
+	<a class="tab" title="#showpcards"><span>友情卡</span></a>
+	<a class="tab" title="#hongbao"><span>我的红包</span></a>
+	<a class="tab" title="#showincome"><span>我的收益</span></a>
 </div><!-- tab-nav  -->
 
 <div class="tab-container">
@@ -66,6 +67,18 @@
 	  <div class="load-more" data-container='#pcards-list' data-ele='.share-card' data-ref='/privilege_cards'>加载更多</div>
 	  <br />
 	</div><!-- tab-content showpcards -->
+	<div class="tab-content" id="hongbao">
+		<div class="line-gap">
+			<p><a href="/ls_game"><%= image_tag 'mobile/account/ad.png'%></a></p>
+			<div class="hongbao gray-color">
+				<span class="pull-right red-color">￥ 填充数字</span>红包余额
+				<div class="newyear"></div>
+			</div>
+			<div class="bg-white gray-color gap">
+				红包说明：红包直接用于UBOSS购物，提交订单进行随机立减
+			</div>
+		</div>
+	</div>
 	<div class="tab-content" id="showincome">
 		<div class="bg-white gap">
 			<br />
