@@ -37,6 +37,7 @@ Rails.application.routes.draw do
   post 'mobile_captchas/create', to: 'mobile_captchas#create'
   get  'mobile_captchas/send_with_captcha', to: 'mobile_captchas#send_with_captcha'
 
+  resources :bonus, only: [:create]
   resources :stores, only: [:index, :show] do
     get :hots, :favours, on: :member
   end

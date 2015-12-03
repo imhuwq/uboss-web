@@ -1,11 +1,12 @@
 $(function(){
-	
+
 	window.vv={};
 	vv.gamePoint=1;
 	vv.gameTime=8;
 	vv.gameCTime=0;
 	vv.gameTimer=false;
-	
+  vv.geting=false;
+
 	var Edown, Eup, Emove;
 	if($.os.phone){
 		Edown='touchstart';
@@ -15,13 +16,13 @@ $(function(){
 		Edown='mousedown';
 		Eup='mouseup';
 		Emove='mousemove';
-	}	
-	
+	}
+
 	window.touchX=undefined;
 	window.touchY=undefined;
 	window.touchMX=undefined;
 	window.touchMY=undefined;
-	$(document).on(Edown,function(e){ 
+	$(document).on(Edown,function(e){
 		if($.os.phone){
 			touchX = e.targetTouches[0].pageX;
 			touchY = e.targetTouches[0].pageY;
@@ -30,7 +31,7 @@ $(function(){
 			touchY = e.pageY;
 		}
 	})
-	$(document).on(Emove,function(e){ 
+	$(document).on(Emove,function(e){
 		if($.os.phone){
 			touchMX = e.targetTouches[0].pageX-touchX;
 			touchMY = e.targetTouches[0].pageY-touchY;
@@ -39,13 +40,13 @@ $(function(){
 			touchMY = e.pageY-touchY;
 		}
 	});
-	
+
 	/***** onload *****/
 	var progress=0;
 	$("img").on('load',function(){
 		$(this).addClass('loaded');
 		progress=parseInt($(".loaded").size()/$("img").size()*100);
-		$(".loading var").text(progress+'%');	
+		$(".loading var").text(progress+'%');
 		if(progress == 100){
 			$(".loading").fadeOut(200,function(){
 				$(".page1").fadeIn(200);
@@ -69,16 +70,16 @@ $(function(){
 			$('.page2').fadeIn(200);
 		})
 	})
-	
+
 	//开始游戏
-	$('.page2-btn').on(Edown,function(){ 
-		$('.page2 .pop-container').fadeOut(100,function(){			
-			vv.gamePoint=0;		
+	$('.page2-btn').on(Edown,function(){
+		$('.page2 .pop-container').fadeOut(100,function(){
+			vv.gamePoint=0;
 			$('.page2').fadeIn(200);
 			sqBegin();
 		})
-	})	
-	
+	})
+
 	/***** game *****/
 	function sqBegin(){
 		if(vv.gameTimer){ return;}
@@ -89,23 +90,23 @@ $(function(){
 		vv.gameTimer=window.setInterval(function(){
 			currentTime = vv.gameTime * 1000 - (Date.now() - startTime);
 			second = (currentTime / 1000).toFixed(0);
-			millionSecond = ((currentTime % 1000) / 10).toFixed(0);				
-			if(millionSecond<10){ 
+			millionSecond = ((currentTime % 1000) / 10).toFixed(0);
+			if(millionSecond<10){
 				$(".game-info .game-time var").text(second+"'0"+millionSecond);
 		  }else{
 		  	$(".game-info .game-time var").text(second+"'"+millionSecond);
-		  }			
+		  }
 			if(currentTime<0){
 				window.clearInterval(vv.gameTimer);
 				vv.gameTimer=false;
 				touchMY=0;
-				$(".game-info .game-time var").text("0'00");				
-				goResult();					
-				
+				$(".game-info .game-time var").text("0'00");
+				goResult();
+
 			}
 		},10)
 	}
-	
+
 	/* 游戏结果计算 */
 	function goResult(){
 		$('.page3 .game-result-number').text((vv.gamePoint*0.1).toFixed(1)+'元');
@@ -125,8 +126,8 @@ $(function(){
 		$('section:visible').fadeOut(100,function(){
 			$('.page3').fadeIn(200);
 		})
-	}	
-	
+	}
+
 	$(".game-main-icon span").on(Edown,function(){
 		if(vv.gameCTime==vv.gameTime){ sqBegin(); }
 		$(".game-main-icon .qq").size()==0 && $(".game-main-icon span").append($(".game-main-icon span img").eq(0).clone().attr('class','qq'));
@@ -148,62 +149,56 @@ $(function(){
 			$(".game-main-icon .qq").animate({translateY:'0px'}, 100);
 		}
 	})
-	
-	
+
 	/* end game */
 	/* 再玩一次  */
-	$('.page3-btn').on(Edown,function(){		
+	$('.page3-btn').on(Edown,function(){
 		$('section:visible').fadeOut(100,function(){
-			vv.gamePoint=0;		
+			vv.gamePoint=0;
 			$('.game-info .game-count').text('0');
-			$(".game-info .game-time var").text("0'00");	
-			$('.page3 .pop-container').addClass('hidden');				
-			$('.page3 .share-box').addClass('hidden');	
+			$(".game-info .game-time var").text("0'00");
+			$('.page3 .pop-container').addClass('hidden');
+			$('.page3 .share-box').addClass('hidden');
 			$('.page2 .pop-container').fadeIn();
 			$('.page2').fadeIn(200);
 		})
 	})
-	
+
 	/* page3 弹出框 */
-	$('.page3-btn3').on(Edown,function(){
+	$('.page3-btn3').on('click',function(){
 		var user_tel = $('#mobile-input').val();
 		var Is_mobile = !!user_tel.match(/^(0|86|17951)?(13[0-9]|15[012356789]|17[678]|18[0-9]|14[57])[0-9]{8}$/);
 		if(!Is_mobile){
 			alert('请输入正确的手机号码');
 		}else{
-			$('.page3 .pop-container').removeClass('hidden');
+      if (vv.geting) {
+        return false;
+      }
+      vv.geting = true;
+      $.ajax({
+        url: '/bonus',
+        type: 'POST',
+        data: {mobile: user_tel, amount: (vv.gamePoint*0.1).toFixed(1)},
+      }).done(function(){
+        $('.mobile-number').text(user_tel);
+        $('.page3 .pop-container').removeClass('hidden');
+        vv.geting = false;
+      }).fail(function(xhr, status){
+        vv.geting = false;
+        try {
+          alert(JSON.parse(xhr.responseText).message);
+        } catch (e) {
+          alert('领取失败');
+        }
+      })
 		}
-	})
+	});
+
 	$('.page3-btn2').on('click',function(){
 		$('.page3 .share-box').removeClass('hidden');
-	})
+	});
+
 	$('.page3 .share-box').on('click',function(){
 		$(this).addClass('hidden');
 	})
-	//ajax兑换代金券
-	function getChit(){
-		$.ajax({
-			type:"post",
-			url:"your.php",
-			async:false,
-			data:{user:'微信账号', userName:'用户昵称', userIP:'ip地址', chitCode:$('.s7 input').val() },
-			dataType:'json',
-			complete: function(data){ //开发时请将此处回调改为success；参考下面的data格式传递数据
-				data.chitOK=1; //1:兑换成功， 0:兑换失败
-				if(data.chitOK){
-					alert('您的哈根达斯30元代金券兑换成功！')
-					$(".s7 input").val('');
-				}else{
-					alert('兑换失败：请检查您的兑换码！')
-				}
-			},
-			error: function(){
-				//开发时可以启用下面的代码
-				//alert('通信错误，请检查网络！')
-				//return false;
-			}
-		});
-	}
-	
-
 })

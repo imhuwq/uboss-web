@@ -10,6 +10,7 @@
     <link href="<%= image_url("favicon-lg.png") %>" type="image/x-icon" rel="shortcut icon">
     <link rel="apple-touch-icon" href="<%= image_url("favicon-lg.png") %>">
     <title>与良辰一战！</title>
+    <%= csrf_meta_tags %>
 		<%= javascript_include_tag 'hongbao' %>
 		<%= stylesheet_link_tag 'hongbao' %>
 		<style>
@@ -24,25 +25,26 @@
 			}
 		</style>
 	</head>
-	
-	<body>		
+
+	<body>
 		<div class="wrapper">
-			
+
 			<div class="loading">
 				<center><var>0%</var><sub></sub></center>
-			</div>		
-		
+			</div>
+
 			<section class="page1 text-center">
 				<br />
 				<p><span class="img-text t1"></span></p>
-				<p class="gap-lr"><%= image_tag "game/p1.png", class:'mobile' %></p>					
+				<p class="gap-lr"><%= image_tag "game/p1.png", class:'mobile' %></p>
 				<div class="gap-lr tip-btn-box">
 					<p class="btn page1-btn"><span class="img-text t2 "></span></p>
 				</div><!-- tip-btn-box -->
 				<div class="gap-lr">
 					<div class="btn btn-white page1-btn1"><span class="img-text t3"></span></div>
-				</div>		
+				</div>
 			</section><!-- page1 -->
+
 			<section class="game-rule text-center">
 				<br />
 				<div><p class="btn btn-white"><span class="img-text t3"></span></p></div>
@@ -66,9 +68,9 @@
 					<p class="btn page1-btn"><span class="img-text t2 "></span></p>
 				</div><!-- tip-btn-box -->
 			</section>
-			
+
 			<section class="page2 text-center">
-				<div class="pop-container">	
+				<div class="pop-container">
 					<div class="pop-content">
 						<p><span class="img-text t4"></span></p>
 						<br/>
@@ -78,7 +80,7 @@
 							<br />
 							<div class="btn btn-white page2-btn"><span class="img-text t5"></span></div>
 						</div>
-					</div>					
+					</div>
 				</div>
 				<div class="game-info">
 					<div class="game-time"><var>8'00</var>"</div>
@@ -88,8 +90,7 @@
 					<div class="game-main-icon"><span><%= image_tag "game/game-icon.png" %></span></div>
 				</div>
 			</section>
-			
-			
+
 			<section class="page3 text-center">
 				<div class="page3-text"><span class="img-text t6"></span></div>
 				<div class="game-result">
@@ -97,15 +98,13 @@
 					<p><span class="game-result-number"></span> RMB</p>
 					<div>手速快过<span class="game-exceed"></span>%的人</div>
 				</div>
-				<br />				
+				<br />
 				<div class="text-center">
-					<div class="btn btn-white page3-btn"><span class="img-text t7"></span></div>　<div class="btn btn-white page3-btn2"><span class="img-text t8"></span></div>				
+					<div class="btn btn-white page3-btn"><span class="img-text t7"></span></div>　<div class="btn btn-white page3-btn2"><span class="img-text t8"></span></div>
 				</div>
 				<br />
 				<p><span class="img-text t9"></span></p>
-				<form>
-					<input type="tel" class="mobile-input" id="mobile-input" placeholder="请在此输入手机号领取红包" />
-				</form>
+        <input type="tel" class="mobile-input" id="mobile-input" value="<%= current_user && current_user.login %>" placeholder="请在此输入手机号领取红包" />
 				<div class="line-box"><span></span></div>
 				<div class="gap-lr tip-btn-box">
 					<p class="btn page3-btn3"><span class="img-text t10 "></span></p>
@@ -116,7 +115,7 @@
 						<div class="text-center">
 							<div class="get-red">
 								<div><span class="img-text t11"></span></div>
-								<div class="bg-white">元旦去UBOSS随便花</div>							
+								<div class="bg-white">元旦去UBOSS随便花</div>
 							</div><!-- get-red -->
 						</div>
 						<br />
@@ -130,10 +129,10 @@
 						</p>
 						<br />
 						<p class="tip-btn-box tip-white">
-							<a href="http://www.uboss.cn/sign_in" class="btn btn-white"><span class="img-text t12 "></a></p>
-						</p>											
+							<a href="/account#hongbao" class="btn btn-white"><span class="img-text t12 "></a></p>
+						</p>
 						<div class="text-center">
-							<div class="btn btn-white page3-btn"><span class="img-text t7"></span></div>　<div class="btn btn-white page3-btn2"><span class="img-text t8"></span></div>				
+							<div class="btn btn-white page3-btn"><span class="img-text t7"></span></div>　<div class="btn btn-white page3-btn2"><span class="img-text t8"></span></div>
 						</div>
 						<br />
 						<div><small>UBOSS拥有活动最终解释权</small></div>
@@ -143,11 +142,26 @@
 					<div class="share-text">点击右上角，分享给好友<%= image_tag 'game/arrow-up.png' %></div>
 				</div><!-- share-box -->
 			</section>
-			
+
 			<footer>
 				<a href="http://uboss.cn">UBOSS.CN</a>
 			</footer>
 		</div>
-		
-	</body>	
+
+<% if browser.wechat? %>
+  <%= render "weixin_js" %>
+  <script type="text/javascript" charset="utf-8">
+wx.ready(function(){
+  UBoss.luffy.resetInvokeSharing({
+    title: '良辰邀你一战！不玩别的就玩抢钱！',
+    desc: '别说良辰欺负人，抢了多少都归你！',
+    link: '<%= ls_game_url %>',
+    imgurl: '<%= asset_url("game/p1.png") %>',
+  });
+});
+  </script>
+<% end %>
+
+	</body>
 </html>
+
