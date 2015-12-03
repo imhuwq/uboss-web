@@ -20,15 +20,17 @@ module ChargeService extend self
 
   def process_paid_result(options = {})
     result = options.fetch :result
-    return false unless WxPay::Sign.verify?(result)
-    return false unless result.success?
+    if !$wechat_env.test?
+      return false unless WxPay::Sign.verify?(result)
+      return false unless result.success?
+    end
 
     order_charge = options.fetch :order_charge do
       pay_serial_number = result["out_trade_no"]
       OrderCharge.find_by(pay_serial_number: pay_serial_number)
     end
 
-    return false if order_charge.paid_at.present?
+    return true if order_charge.paid_at.present?
 
     order_charge.transaction do
       order_charge.update_with_wx_pay_result(result)

@@ -26,14 +26,14 @@ class Order < ActiveRecord::Base
     :pay_serial_number, :pay_serial_number=, :payment, :payment_i18n, :paid_at,
     to: :order_charge, allow_nil: true
 
-  enum state: { unpay: 0, payed: 1, shiped: 3, signed: 4, closed: 5, completed: 6 }
-
   scope :selled, -> { where("orders.state <> 0") }
   scope :with_refunds, -> {
-    joins(order_items: :order_item_refunds).where("order_item_refunds.id IS NOT NULL").uniq
+    joins(order_items: :order_item_refunds).uniq
   }
 
   before_create :set_info_by_user_address, :set_ship_price
+
+  enum state: { unpay: 0, payed: 1, shiped: 3, signed: 4, closed: 5, completed: 6 }
 
   aasm column: :state, enum: true, skip_validation_on_save: true, whiny_transitions: false do
     state :unpay
@@ -67,6 +67,10 @@ class Order < ActiveRecord::Base
 
   def has_payed?
     Order.states[self.state] >= 1 && Order.states[self.state] != 5
+  end
+
+  def has_refund?
+    order_items.joins(:order_item_refunds).exists?
   end
 
   class << self

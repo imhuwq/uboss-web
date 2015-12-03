@@ -1,5 +1,9 @@
 module OrderItemRefundsHelper
 
+  def refund_text_color(refund)
+    'red-color' if refund.wait_seller?
+  end
+
   def check_refund_and_get_money(order_item, refund)
     order = order_item.order
     return [false, order_item.pay_amount] if order.state == 'payed'
