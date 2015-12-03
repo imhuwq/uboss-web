@@ -2,15 +2,15 @@ class Admin::VerifyCodesController < AdminController
   load_and_authorize_resource
 
   def index
-    @verify_codes = VerifyCode.all.reorder(verified: 'desc').order(updated_at: 'desc')
-    @total = VerifyCode.total.size
-    @today = VerifyCode.today.size
+    @verify_codes = VerifyCode.where(service_product_id: current_user.service_store.service_product_ids).reorder(verified: 'desc').order(updated_at: 'desc')
+    @total = VerifyCode.total(current_user).size
+    @today = VerifyCode.today(current_user).size
   end
 
   def statistics
     @service_products = current_user.service_store.service_products
-    @total = VerifyCode.total.size
-    @today = VerifyCode.today.size
+    @total = VerifyCode.total(current_user).size
+    @today = VerifyCode.today(current_user).size
   end
 
   def verify
