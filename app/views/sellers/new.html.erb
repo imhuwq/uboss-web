@@ -1,76 +1,95 @@
-<div class="row" style="width: 380px;
-    margin: 50px auto;">
+<% if params[:redirect] == 'discourse' %>
+  <%= content_for :title do %>
+    <%= Rails.application.secrets.metas["discourse_title"] %>
+  <% end %>
+<% end %>
 
+<%= content_for :page_title do %>
+    UBOSS
+<% end %>
+
+<div class='login-container' style="min-height:600px;">
+  <h2>注册绑定UBOSS</h2>
   <% if current_user.present? and current_user.can_rebind_agent? and @agent.present? %>
+
     <%= horizon_form_for(:seller, url: seller_path(current_user), method: 'PUT') do |f| %>
-    <div class="well" >
-      <h4>注册绑定UBOSS</h4>
-      <h6>您将与<%= @agent.try(:identify) %>创客进行绑定</h6>
+
+      <h3></h3>
+      <div class="orm-inputs text-center" style="margin: 20px 0">
+        您将与<%= @agent.try(:identify) %>创客进行绑定
+      </div>
       <hr />
       <%= hidden_field_tag "seller[agent_id]", @agent.try(:id) %>
-      <div class="form-group string required enterprise_authentication_mobile" style="position:relative;">
-        <%= f.label :mobile, class:"string required control-label" %>
-        <div class="clearfix">
-          <div style="float:left;width:100%;padding-right:145px;"><%= f.input_field :mobile , value: current_user.login, disabled: :disabled, as: :tel, id:"new_mobile",class:"form-control", style:"width:100%;" %></div>
-          <%= link_to '发送手机验证码', '###',class: "btn btn-danger ",id:"send_mobile", style:"position:absolute;right:0;width:140px;" %>
-        </div>
-      </div>
+      <%= f.input :mobile do %>
+        <%= f.input_field :mobile, value: current_user.login, disabled: :disabled, class: 'form-control', id: 'new_mobile' %>
+        <a class="send_mobile"  id="send_mobile" href="#">发送验证码</a>
+      <% end %>
       <%= f.input :mobile_auth_code, as: :tel, :input_html=>{:id=>"mobile_auth_code"}, hint:'请输入4位验证码' %>
-    </div>
 
-    <div class="button_div col-xs-12"  style="margin-top:30px;">
-      <%= f.submit "绑定",class: "btn btn-large btn-primary col-xs-12", id:"submit_bottom" %>
-    </div>
-    <div class="button_div col-xs-12"  style="margin-top:10px;padding-bottom:30px;">
-      <%= link_to "返回主页", root_path, class: "btn btn-large btn-default col-xs-12"%>
-    </div>
+      <div class="button_div">
+        <%= f.submit "确认", class: 'btn btn-primary col-md-12' %>
+      </div>
+      <% if !browser.wechat? %>
+        <div class="button_div  col-xs-12"  style="margin: 10px 0 10px 0;">
+          <% if params[:redirect] == 'discourse' %>
+            <%= link_to "返回主页", Rails.application.secrets.discourse['url'], class: "btn btn-large btn-link col-xs-12"%>
+          <% else %>
+            <%= link_to "返回主页", root_path, class: "btn btn-large btn-link col-xs-12"%>
+          <% end %>
+        </div>
+       <% end %>
+
     <% end %>
+
   <% elsif current_user.present? %>
-    <div class="well">
-      <h4>注册绑定UBOSS</h4>
       <% if @agent.present? %>
         <h6>您将与<%= @agent.try(:identify) %>创客进行绑定</h6>
       <% end %>
-      <div class="text-center" style="margin-top:30px;margin-bottom:10px;">
+      <div class="orm-inputs text-center" style="margin: 70px 0 180px 0">
         <% if current_user.agent.present? %>
         您已经绑定创客，不允许更换绑定。
         <% elsif current_user.authenticated? %>
         您已经通过身份验证，不允许更换绑定。
         <% end %>
       </div>
+      <div class="button_div  col-xs-12"  style="margin: 10px 0 30px 0;">
+        <% if params[:redirect] == 'discourse' %>
+          <%= link_to "返回主页", Rails.application.secrets.discourse['url'], class: "btn btn-large btn-link col-xs-12"%>
+        <% else %>
+          <%= link_to "返回主页", root_path, class: "btn btn-large btn-link col-xs-12"%>
+        <% end %>
+      </div>
 
-    </div>
-    <div class="button_div  col-xs-12"  style="margin-top:10px;padding-bottom:30px;">
-      <%= link_to "返回主页", root_path, class: "btn btn-large btn-default col-xs-12"%>
-    </div>
   <% else %>
     <%= horizon_form_for(:seller, url: url_for(controller: :sellers, action: :create), method: 'POST') do |f| %>
-      <div class="well">
-        <h4>注册绑定UBOSS</h4>
-        <% if @agent.present? %>
-          <h6>您将与<%= @agent.try(:identify) %>创客进行绑定</h6>
-        <% end %>
-        <hr />
-        <%= hidden_field_tag "seller[agent_id]", @agent.try(:id) %>
-        <div class="form-group string required enterprise_authentication_mobile" style="position:relative;">
-          <%= f.label :mobile, class:"string required control-label" %>
-          <div class="clearfix">
-            <div style="float:left;width:100%;padding-right:145px;"><%= f.input_field :mobile , as: :tel, id:"new_mobile",class:"form-control", style:"width:100%;" %></div>
-            <%= link_to '发送手机验证码', '###',class: "btn btn-danger",id:"send_mobile", style:"position:absolute;right:0;width:140px;font-size:smaller;" %>
-          </div>
+      <% if @agent.present? %>
+        <h6>您将与<%= @agent.try(:identify) %>创客进行绑定</h6>
+      <% end %>
+      <hr />
+      <%= hidden_field_tag "seller[agent_id]", @agent.try(:id) %>
+      <%#= f.input :mobile, as: :tel,  input_html: {id: 'new_mobile'} %>
+      <%= f.input :mobile do %>
+        <%= f.input_field :mobile, class: 'form-control', id: 'new_mobile' %>
+        <a class="send_mobile"  id="send_mobile" href="#">发送验证码</a>
+      <% end %>
 
+      <%= f.input :mobile_auth_code, as: :tel, :input_html=>{:id=>"mobile_auth_code"}, hint:'请输入4位验证码' %>
+      <%= f.input :password, required: true, hint: "至少六位以上的字母数字组合",:label_html=>{:class=>"text-right"}  %>
+      <%= f.input :password_confirmation, required: true,:label_html=>{:class=>"text-right"}  %>
+
+
+      <div class="button_div">
+        <%= f.submit "确认", class: 'btn btn-primary col-md-12' %>
+      </div>
+       <% if !browser.wechat? %>
+        <div class="button_div  col-xs-12"  style="margin: 10px 0 10px 0;">
+          <% if params[:redirect] == 'discourse' %>
+            <%= link_to "返回主页", Rails.application.secrets.discourse['url'], class: "btn btn-large btn-link col-xs-12"%>
+          <% else %>
+            <%= link_to "返回主页", root_path, class: "btn btn-large btn-link col-xs-12"%>
+          <% end %>
         </div>
-        <%= f.input :mobile_auth_code, as: :tel, :input_html=>{:id=>"mobile_auth_code"}, hint:'请输入4位验证码' %>
-        <%= f.input :password, required: true, hint: "至少六位以上的字母数字组合",:label_html=>{:class=>"text-right"}  %>
-        <%= f.input :password_confirmation, required: true,:label_html=>{:class=>"text-right"}  %>
-      </div>
-
-      <div class="button_div col-xs-12"  style="margin-top:30px;">
-        <%= f.submit "创建",class: "btn btn-large btn-primary col-xs-12", id:"submit_bottom" %>
-      </div>
-      <div class="button_div col-xs-12"  style="margin-top:10px;padding-bottom:30px;">
-        <%= link_to "返回主页", root_path, class: "btn btn-large btn-default col-xs-12"%>
-      </div>
+       <% end %>
     <% end %>
   <% end %>
 </div>

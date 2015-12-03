@@ -16,13 +16,13 @@ module DetectDevise
 
   def detect_device_layout
     if desktop_request?
-      'desktop'
+        'desktop'
     end
   end
 
   def detect_device_type
     if desktop_request?
-      prepend_view_path Rails.root + 'app/views' + 'desktop'
+        prepend_view_path Rails.root + 'app/views' + 'desktop'
     end
   end
 
