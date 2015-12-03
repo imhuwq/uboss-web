@@ -23,37 +23,10 @@
 				100%{ -webkit-transform: rotate(360deg);}
 			}
 		</style>
-		<script>
-			/*loading*/
-			$(function(){
-				var progress=0;
-				$(".asset img").on('load',function(){
-					$(this).addClass('loaded');
-					progress=parseInt($(".asset .loaded").size()/$(".asset img").size()*100);
-					$(".loading var").text(progress+'%');
-					if(progress==100){
-						$("img").each(function(id, el){ $(el).attr('src')})						
-					}
-				})
-				$(".asset img").each(function(id, el){ $(el).attr('src') })
-				
-			})
-		</script>
 	</head>
 	
 	<body>		
 		<div class="wrapper">
-			<div class="asset">
-				<%= image_tag "game/all-text.png" %>
-				<%= image_tag "game/black-btn-bg.png" %>
-				<%= image_tag "game/black-tip.png" %>
-				<%= image_tag "game/white-tip.png" %>
-				<%= image_tag "game/game-p.png" %>
-				<%= image_tag "game/game-icon.png" %>
-				<%= image_tag "game/btn-bg.png" %>
-				<%= image_tag "game/p1.png" %>
-				<%= image_tag "game/t-come.png" %>
-			</div>
 			
 			<div class="loading">
 				<center><var>0%</var><sub></sub></center>
@@ -139,7 +112,7 @@
 				</div><!-- tip-btn-box -->
 				<div class="pop-container hidden">
 					<div class="pop-content">
-						<div class="pop-game-p"><img src="img/game-p.png"/></div>
+						<div class="pop-game-p"><%= image_tag "game/game-p.png" %></div>
 						<div class="text-center">
 							<div class="get-red">
 								<div><span class="img-text t11"></span></div>
@@ -166,8 +139,8 @@
 						<div><small>UBOSS拥有活动最终解释权</small></div>
 					</div><!-- pop-content-->
 				</div><!-- pop-container-->
-				<div class="share-box">
-					
+				<div class="share-box hidden">
+					<div class="share-text">点击右上角，分享给好友<%= image_tag 'game/arrow-up.png' %></div>
 				</div><!-- share-box -->
 			</section>
 			

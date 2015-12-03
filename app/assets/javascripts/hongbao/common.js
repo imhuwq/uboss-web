@@ -41,11 +41,17 @@ $(function(){
 	});
 	
 	/***** onload *****/
-	window.setTimeout(function(){
-		$(".loading").fadeOut(200,function(){
-			$(".page1").fadeIn(200);
-		})
-	},200)
+	var progress=0;
+	$("img").on('load',function(){
+		$(this).addClass('loaded');
+		progress=parseInt($(".loaded").size()/$("img").size()*100);
+		$(".loading var").text(progress+'%');	
+		if(progress == 100){
+			$(".loading").fadeOut(200,function(){
+				$(".page1").fadeIn(200);
+			})
+		}
+	})
 	/* 跳转到游戏规则  */
 	$('.page1-btn1').on(Edown,function(){
 		$('section:visible').fadeOut(100,function(){
@@ -146,7 +152,8 @@ $(function(){
 			vv.gamePoint=0;		
 			$('.game-info .game-count').text('0');
 			$(".game-info .game-time var").text("0'00");	
-			$('.page3 .pop-container').addClass('hidden');	
+			$('.page3 .pop-container').addClass('hidden');				
+			$('.page3 .share-box').addClass('hidden');	
 			$('.page2 .pop-container').fadeIn();
 			$('.page2').fadeIn(200);
 		})
@@ -154,9 +161,20 @@ $(function(){
 	
 	/* page3 弹出框 */
 	$('.page3-btn3').on(Edown,function(){
-		$('.page3 .pop-container').removeClass('hidden');
-	})	
-	
+		var user_tel = $('#mobile-input').val();
+		var Is_mobile = !!user_tel.match(/^(0|86|17951)?(13[0-9]|15[012356789]|17[678]|18[0-9]|14[57])[0-9]{8}$/);
+		if(!Is_mobile){
+			alert('请输入正确的手机号码');
+		}else{
+			$('.page3 .pop-container').removeClass('hidden');
+		}
+	})
+	$('.page3-btn2').on('click',function(){
+		$('.page3 .share-box').removeClass('hidden');
+	})
+	$('.page3 .share-box').on('click',function(){
+		$(this).addClass('hidden');
+	})
 	//ajax兑换代金券
 	function getChit(){
 		$.ajax({
