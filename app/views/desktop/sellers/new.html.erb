@@ -3,27 +3,23 @@
 
   <% if current_user.present? and current_user.can_rebind_agent? and @agent.present? %>
     <%= horizon_form_for(:seller, url: seller_path(current_user), method: 'PUT') do |f| %>
-    <div class="well" >
       <h4>注册绑定UBOSS</h4>
       <h6>您将与<%= @agent.try(:identify) %>创客进行绑定</h6>
-			<br />
+      <br />
       <%= hidden_field_tag "seller[agent_id]", @agent.try(:id) %>
-      <div class="form-group string required enterprise_authentication_mobile" style="position:relative;">
-        <%= f.label :mobile, class:"string required control-label" %>
-        <div class="clearfix">
-          <div style="float:left;width:100%;padding-right:145px;"><%= f.input_field :mobile , value: current_user.login, disabled: :disabled, as: :tel, id:"new_mobile",class:"form-control", style:"width:100%;" %></div>
-          <%= link_to '发送手机验证码', '###',class: "btn btn-danger ",id:"send_mobile", style:"position:absolute;right:0;width:140px;" %>
-        </div>
+      <%= f.input_field :mobile, value: current_user.login, disabled: true,
+        as: :tel, id:"new_mobile", class:"input-block" %>
+      <br />
+      <div class="box-w100 nogap">
+        <div class="box-w50 nogap"><%= f.input_field :mobile_auth_code, as: :tel, :input_html=>{:id=>"mobile_auth_code"}, placeholder:'请输入4位验证码',class:'input-block' %></div>
+        <div class="box-w50 nogap-right"><%= link_to '发送手机验证码', '###',class: "btn btn-block btn-mid gray-btn",id:"send_mobile"%></div>
       </div>
-      <%= f.input :mobile_auth_code, as: :tel, :input_html=>{:id=>"mobile_auth_code"}, hint:'请输入4位验证码' %>
-    </div>
-
-    <div class="button_div col-xs-12"  style="margin-top:30px;">
-      <%= f.submit "绑定",class: "btn btn-large btn-primary col-xs-12", id:"submit_bottom" %>
-    </div>
-    <div class="button_div col-xs-12"  style="margin-top:10px;padding-bottom:30px;">
-      <%= link_to "返回主页", root_path, class: "btn btn-large btn-default col-xs-12"%>
-    </div>
+      <br />
+      <p> <%= f.submit "绑定",class: "btn btn-large btn-block", id:"submit_bottom" %> </p>
+      <br />
+      <div>
+        <%= link_to "返回主页", root_path, class: "btn btn-large btn-link"%>
+      </div>
     <% end %>
   <% elsif current_user.present? %>
   	<br />
@@ -38,6 +34,8 @@
         您已经绑定创客，不允许更换绑定。
       <% elsif current_user.authenticated? %>
         您已经通过身份验证，不允许更换绑定。
+      <% else %>
+        请输入正确的创客绑定链接。
       <% end %>
     </div>
     <br />
