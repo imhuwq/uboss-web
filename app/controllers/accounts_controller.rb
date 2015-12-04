@@ -42,11 +42,11 @@ class AccountsController < ApplicationController
   end
 
   def new_password
-    if flash[:new_password_enabled] != true
-      redirect_to after_sign_in_path_for(current_user, need_new_passowrd: false)
-    else
+    #if flash[:new_password_enabled] != true
+      #redirect_to after_sign_in_path_for(current_user, need_new_passowrd: false)
+    #else
       render layout: new_login_layout
-    end
+    #end
   end
 
   def set_password
@@ -88,7 +88,7 @@ class AccountsController < ApplicationController
     if current_user.need_reset_password || params[:need_reset_password] == 'true'
       user_params.delete(:current_password)
       auth_code = user_params.delete(:code)
-      if MobileCaptcha.auth_code(current_user.login, auth_code) 
+      if MobileCaptcha.auth_code(current_user.login, auth_code)
         current_user.update(user_params.merge(need_reset_password: false))
         MobileCaptcha.where(mobile: current_user.login).delete_all
         sign_in current_user, bypass: true
