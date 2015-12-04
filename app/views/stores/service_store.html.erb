@@ -1,0 +1,122 @@
+<%= content_for :page_title do %>
+  <%= @service_store.store_name %>
+<% end %>
+
+<%= content_for :extra_meta_tags do %>
+  <% if @seller %>
+    <%= store_sharing_meta_tags(@seller, @sharing_link_node) %>
+  <% end %>
+<% end %>
+
+<% if browser.wechat? %>
+  <%= content_for :extra_javascript do %>
+    <script type="text/javascript" charset="utf-8">
+      wx.ready(function(){ UBoss.luffy.invokeSharing(); });
+    </script>
+  <% end %>
+<% end %>
+
+<div class="store-cover text-center" style="<%= "background-image:url('#{@service_store.store_cover.url(:w640)}')" if @service_store.store_cover_identifier.present? %>">
+  <div class="content">
+    <h2 class="name"><%= @service_store.store_name %></h2>
+
+    <% if @service_store.store_short_description.present?  %>
+      <p class="gray-color"><%= @service_store.store_short_description %></p>
+    <% end %>
+
+    <p>
+      <span class="like-color"><%= number_to_percentage(@service_store.good_reputation_rate, precision: 0) %></span> 好评（<%= @service_store.total_reputations %>）
+    </p>
+
+    <% if qr_sharing? %>
+      <p class="text-center border-top nogap">
+        <br />
+        <% if current_user && current_user.has_seller_privilege_card?(@seller) %>
+          <a class="btn btn-large p-sharing-btn cover-share-btn">分享给朋友</a>
+        <% else %>
+          <%= link_to "领取友情卡", get_seller_sharing_path,
+            data: { sid: @seller.id, uid: current_user.present? },
+            class: "btn btn-large show-req-snode-modal cover-share-btn"
+          %>
+          <a class="btn btn-large hidden p-sharing-btn cover-share-btn">分享给朋友</a>
+        <% end %>
+      </p>
+      <div><a href="/about">查看说明</a></div>
+    <% end %>
+
+    <% if @sharing_node %>
+      <div class="share-box border-top nogap">
+        <br />
+        <p class="cover"><%= image_tag @sharing_node.user.avatar_url(:w120) %></p>
+        <p class="name"><%= @sharing_node.user.identify %> 分享</p>
+      </div>
+    <% end %>
+  </div>
+</div><!-- store-cover -->
+
+<div class="bg-white">
+  <div class="box store-list">
+    <div class="box-w100">
+      <div class="page-title"><%= @service_store.address %></div>
+      <div class="page-title">营业时间：<%= @service_store.business_hours %></div>
+      <div class="page-title">电话：<%= @service_store.mobile_phone %></div>
+    </div>
+  </div>
+</div>
+
+<br />
+
+<div class="bg-white">
+  <div class="box store-list">
+    <div class="box-w100">
+      <div class="page-title">代金券</div>
+    </div>
+
+    <% if @voucher_products.present? %>
+      <%= render partial: 'service_product', collection: @voucher_products %>
+    <% else %>
+      <h2 class="page-title text-center">店家正在准备好货，敬请期待</h2>
+    <% end %>
+  </div>
+</div>
+
+<div class="bg-white">
+  <div class="box store-list">
+    <div class="box-w100">
+      <div class="page-title">团购</div>
+    </div>
+
+    <% if @group_products.present? %>
+      <%= render partial: 'service_product', collection: @group_products %>
+    <% else %>
+      <h2 class="page-title text-center">店家正在准备好货，敬请期待</h2>
+    <% end %>
+  </div>
+</div>
+
+<%= render partial: 'new_share' %>
+
+<div class="req-snode-modal pop-bg hidden">
+  <div class="pop-content">
+    <div class="alert">
+      <div class="req-snode-group">
+        <div class="page-title">留下手机号，现金礼品拿不停！</div>
+        <p><input type="tel" name="mobile" placeholder='输入手机号，获得分享收益' class='input-block' /></p>
+        <br />
+        <p>
+        <%= link_to "领取友情卡", get_seller_sharing_path, data: { sid: @seller.id },
+          class: "btn btn-large btn-block req-pro-snode-btn" %>
+        </p>
+      </div>
+      <div class="hidden">
+        <p>您已成功领取，赶紧分享给朋友吧</p>
+        <br />
+        <a class="btn btn-large btn-block pro-snode-success-btn">确定</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<% if qr_sharing? && (current_user.blank? || (current_user && !current_user.has_seller_privilege_card?(@seller)) ) %>
+  <%= render partial: 'privilege_card_pop' %>
+<% end %>

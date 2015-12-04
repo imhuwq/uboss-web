@@ -14,4 +14,17 @@ class UserInfo < ActiveRecord::Base
   scope :ordinary_store, -> { where(type: 'OrdinaryStore').first }
   scope :service_store, -> { where(type: 'ServiceStore').first }
 
+  def good_reputation_rate
+    return @sharer_good_reputation_rate if @sharer_good_reputation_rate
+    good = best_evaluation.to_i + better_evaluation.to_i + good_evaluation.to_i
+    @sharer_good_reputation_rate = if total_reputations > 0
+                                     good * 100 / total_reputations
+                                   else
+                                     100
+                                   end
+  end
+
+  def total_reputations
+    @total_reputations ||= (good_evaluation.to_i + bad_evaluation.to_i + better_evaluation.to_i + best_evaluation.to_i + worst_evaluation.to_i)
+  end
 end

@@ -20,12 +20,21 @@ class ServiceStore < UserInfo
     end
   end
 
+  def mobile_phone
+    store_phone = store_phones.first
+    store_phone.phone_number.blank? ? "#{store_phone.area_code}-#{store_phone.fixed_line}" : store_phone.phone_number
+  end
+
   def store_cover_name
     store_cover.try(:file).try(:filename)
   end
 
   def address
     "#{ChinaCity.get(province)}#{ChinaCity.get(city)}#{ChinaCity.get(area)}#{street}"
+  end
+
+  def business_hours
+    "#{begin_time}--#{end_time}"
   end
 
   def begin_time

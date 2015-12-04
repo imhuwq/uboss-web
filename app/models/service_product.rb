@@ -11,6 +11,9 @@ class ServiceProduct < Product
   before_validation :set_default_product_inventory
   before_save :check_service_store_user
 
+  scope :vouchers, -> { where(service_type: 0) }
+  scope :groups, -> { where(service_type: 1) }
+
   def total_income
     present_price * verify_codes.size
   end

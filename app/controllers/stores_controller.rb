@@ -11,9 +11,16 @@ class StoresController < ApplicationController
   end
 
   def show
-    @products = append_default_filter @seller.ordinary_products.published, order_column: :updated_at
-    @hots = @seller.ordinary_products.hots.recent.limit(3)
-    render_product_partial_or_page
+    if params[:type] == 'service'
+      @service_store = @seller.service_store
+      @voucher_products = append_default_filter @service_store.service_products.vouchers.published, order_column: :updated_at
+      @group_products = append_default_filter @service_store.service_products.groups.published, order_column: :updated_at
+      render :service_store
+    else
+      @products = append_default_filter @seller.ordinary_products.published, order_column: :updated_at
+      @hots = @seller.ordinary_products.hots.recent.limit(3)
+      render_product_partial_or_page
+    end
   end
 
   def hots

@@ -108,7 +108,7 @@
 	      <%= image_tag @seller.avatar_url(:w120) %>
 	    </div>
 			<div class="content">
-				<%= link_to  store_path(@seller),class:'btn btn-main-border pull-right' do%>
+				<%= link_to  store_path(@seller, type: 'service'),class:'btn btn-main-border pull-right' do%>
 	       	进店逛逛
 	      <%end%>
 		    <h4 class="name text-cut"><%= @seller.store_name %></h4>

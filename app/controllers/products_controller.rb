@@ -4,7 +4,7 @@ class ProductsController < ApplicationController
   before_action :set_product, only: [:switch_favour]
 
   def index
-    @products = append_default_filter Product.published.includes(:asset_img), order_column: :updated_at
+    @products = append_default_filter OrdinaryProduct.published.includes(:asset_img), order_column: :updated_at
     render partial: 'products/product', collection: @products if request.xhr?
   end
 
