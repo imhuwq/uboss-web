@@ -37,6 +37,7 @@
           <%= can_li_link(:manage, ServiceProduct, admin_service_products_path) %>
           <%= can_li_link(:manage, ServiceStore, edit_admin_service_store_path(current_user.service_store)) %>
           <%= can_li_link(:manage, VerifyCode, admin_verify_codes_path) %>
+          <%= can_li_link(:manage, Evaluation, admin_evaluations_path) %>
           <%= can_li_link(:manage, :income, income_detail_admin_service_stores_path) %>
         <% end %>
         <%= can_li_link(:manage, SharingIncome, admin_sharing_incomes_path) %>

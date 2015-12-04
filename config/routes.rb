@@ -144,6 +144,12 @@ Rails.application.routes.draw do
         end
       end
 
+      resources :evaluations, only: [:index, :destroy] do
+        collection do
+          get :statistics
+        end
+      end
+
       resources :expresses do
         member do
           get :set_common

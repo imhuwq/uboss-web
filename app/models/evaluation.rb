@@ -58,6 +58,11 @@ class Evaluation < ActiveRecord::Base
     (product.good_evaluation.to_f + product.best_evaluation.to_f + product.better_evaluation.to_f).try(:to_i)
   end
 
+  def self.product_bad_reputation(product_id)
+    product = Product.find_by_id(product_id)
+    (product.bad_evaluation.to_f + product.worst_evaluation.to_f).try(:to_i)
+  end
+
   def self.product_good_reputation_rate(product_id) # 商品好评率
     product = Product.find_by_id(product_id)
     total_evalution = product.good_evaluation.to_f + product.bad_evaluation.to_f + product.worst_evaluation.to_f + product.best_evaluation.to_f + product.better_evaluation.to_f

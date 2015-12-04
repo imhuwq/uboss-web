@@ -1,0 +1,52 @@
+<%= render 'public' %>
+<br />
+<div class="container">
+	<div class="header-tab">
+		<div class="tab-title active">评价详情</div>
+		<%= link_to "团购统计", statistics_admin_evaluations_path, class:"tab-title" %>
+	</div>
+</div>
+<br />
+
+<div class="container">
+	<table class="list-table" id="verify_codes">
+    <thead>
+      <tr>
+        <th>团购名称</th>
+        <th colspan='2'>评价内容</th>
+        <th>操作</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @order_items.each do |item| %>
+        <tr>
+          <td rowspan=<%= item.evaluations.size %> class="text-left">
+            <%= link_to '#' do %>
+              <%= image_tag(item.product.image_url(:thumb), size: "80x80", alt: "-") %>　
+              <%= item.product.name %>
+            <% end %>
+          </td>
+          <% if item.evaluations.size == 0 %>
+            <td colspan='2'></td>
+            <td></td>
+          <% end %>
+          <% item.evaluations.each_with_index do |evaluat, index| %>
+            <% if index == 0 %>
+              <td colspan='2'>
+                <%= evaluat.content %>
+              </td>
+              <td><%= link_to '删除评价', admin_evaluation_path(evaluat), method: 'DELETE', data: {confirm: "确定删除?"} %></td>
+            <% else %>
+              <tr>
+                <td colspan='2'>
+                  <%= evaluat.content %>
+                </td>
+                <td><%= link_to '删除评价', admin_evaluation_path(evaluat), method: 'DELETE', data: {confirm: "确定删除?"} %></td>
+              </tr>
+            <% end %>
+          <% end %>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
