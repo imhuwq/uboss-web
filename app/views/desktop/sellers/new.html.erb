@@ -35,35 +35,28 @@
     <% end %>
     <div class="text-center">
       <% if current_user.agent.present? %>
-      您已经绑定创客，不允许更换绑定。
+        您已经绑定创客，不允许更换绑定。
       <% elsif current_user.authenticated? %>
-      您已经通过身份验证，不允许更换绑定。
+        您已经通过身份验证，不允许更换绑定。
       <% end %>
     </div>
     <br />
-    <% if !browser.wechat? %>      
-    	<br />
-      <% if params[:redirect] == 'discourse' %>
-        <p><%= link_to "返回主页", Rails.application.secrets.discourse['url'], class: "btn btn-large btn-block "%></p>
-      <% else %>
-        <p><%= link_to "返回主页", root_path, class: "btn btn-large btn-block"%></p>
-      <% end %>
-     <% end %>
+    <p><%= link_to "返回主页", root_path, class: "btn btn-large btn-block"%></p>
   <% else %>
     <%= horizon_form_for(:seller, url: url_for(controller: :sellers, action: :create), method: 'POST') do |f| %>
         <h4>注册绑定UBOSS</h4>
         <% if @agent.present? %>
-          <h3>您将与<%= @agent.try(:identify) %>创客进行绑定</h3>
+          <p>您将与<%= @agent.try(:identify) %>创客进行绑定</p>
         <% end %>
-        <%= hidden_field_tag "seller[agent_id]", @agent.try(:id) %> 
+        <%= hidden_field_tag "seller[agent_id]", @agent.try(:id) %>
         <%= f.input_field :mobile , as: :tel, id:"new_mobile",class:"input-block",placeholder:'手机号码'%>
-        <br />     
+        <br />
         <div class="box-w100 nogap">
           <div class="box-w50 nogap"><%= f.input_field :mobile_auth_code, as: :tel, :input_html=>{:id=>"mobile_auth_code"}, placeholder:'请输入4位验证码',class:'input-block' %></div>
           <div class="box-w50 nogap-right"><%= link_to '发送手机验证码', '###',class: "btn btn-block btn-mid gray-btn",id:"send_mobile"%></div>
-        </div> 
+        </div>
        	<br />
-        <p>       
+        <p>
         	<%= f.input_field :password, required: true, placeholder: "请输入密码",class:'input-block'  %>
         </p>
        	<div class="text-left">至少六位以上的字母数字组合</div>
