@@ -7,6 +7,7 @@ class Evaluation < ActiveRecord::Base
 
   before_save :relate_attrs
   after_create :count_evaluation, :create_or_attach_sharing_node
+  before_destroy :update_count_evaluation
 
   validates :order_item_id, :status, presence: true
 
@@ -17,6 +18,18 @@ class Evaluation < ActiveRecord::Base
       self.buyer_id = order_item.user_id
       self.sharer_id = order_item.sharing_node.try(:user_id)
       self.product_id = order_item.product_id
+    end
+  end
+
+  def update_count_evaluation
+    seller_user_info_id = Product.find(self.product_id).user.user_info.id
+    evaluation_column = "#{self.status}_evaluation"
+
+    UserInfo.update_counters(seller_user_info_id, evaluation_column => -1)
+    Product.update_counters(self.product_id, evaluation_column => -1)
+    if sharer_id.present? && sharer_user = User.find_by(id: self.sharer_id)
+      sharer_user_info_id = sharer_user.user_info.id
+      UserInfo.update_counters(sharer_user_info_id, evaluation_column => -1)
     end
   end
 

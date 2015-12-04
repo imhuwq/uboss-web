@@ -21,18 +21,18 @@
       </tr>
     </thead>
     <tbody>
-      <% @order_items.each do |item| %>
+      <% @service_products.each do |product| %>
         <tr>
           <td class="text-left">
             <%= link_to '#' do %>
-              <%= image_tag(item.product.image_url(:thumb), size: "80x80", alt: "-") %>　
-              <%= item.product.name %>
+              <%= image_tag(product.image_url(:thumb), size: "80x80", alt: "-") %>　
+              <%= product.name %>
             <% end %>
           </td>
-          <td><%= Evaluation.product_good_reputation_rate(item.product_id) %></td>
-          <td><%= Evaluation.product_good_reputation(item.product_id) %></td>
-          <td><%= Evaluation.product_bad_reputation(item.product_id) %></td>
-          <td><%= item.product.created_at.to_date %></td>
+          <td><%= Evaluation.product_good_reputation_rate(product.id) %></td>
+          <td><%= Evaluation.product_good_reputation(product.id) %></td>
+          <td><%= Evaluation.product_bad_reputation(product.id) %></td>
+          <td><%= product.created_at.to_date %></td>
         </tr>
       <% end %>
     </tbody>

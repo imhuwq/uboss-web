@@ -5,7 +5,7 @@ class Admin::EvaluationsController < AdminController
   end
 
   def statistics
-    @order_items = OrderItem.where(product_id: current_user.service_product_ids, user: current_user)
+    @service_products = current_user.service_products
     total
   end
 
@@ -24,8 +24,7 @@ class Admin::EvaluationsController < AdminController
     total_evalution = 0.0
     @total_good_reputation = 0.0
     @total_bad_reputation = 0.0
-    @order_items.each do |item|
-      product = item.product
+    current_user.service_products.each do |product|
       total_evalution += product.good_evaluation.to_f + product.bad_evaluation.to_f + product.worst_evaluation.to_f + product.best_evaluation.to_f + product.better_evaluation.to_f
       @total_good_reputation += product.good_evaluation.to_i + product.best_evaluation.to_i + product.better_evaluation.to_i
       @total_bad_reputation += product.bad_evaluation.to_i + product.worst_evaluation.to_i
