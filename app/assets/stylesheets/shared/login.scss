@@ -6,9 +6,11 @@ html{
   border:2px solid rgba(255,255,255,.5);
   border-radius: 10px;
   padding: 40px 60px;
-  height: 300px;
+  min-height: 300px;
   width: 320px;
   color: #aaa;
+  box-shadow: 0 0 20px rgba(255,255,255,.5);
+  margin-bottom: 40px;
 }
 .using-pwd {
   .lcap-box {display: none;}
@@ -35,7 +37,7 @@ html{
 .using-pwd .lpwd-btn, .using-cap .lcap-btn {  
   border-bottom: 1px solid $brand-primary;
 }
-#request_mobile_captcha{
+#request_mobile_captcha,#send_mobile{
   padding: 10px;
 }
 .captcha-box{
