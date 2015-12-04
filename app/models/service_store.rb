@@ -5,6 +5,8 @@ class ServiceStore < UserInfo
 
   validates_uniqueness_of :user_id, message: :only_ordinary_store
   validates :begin_hour, :begin_minute, :end_hour, :end_minute, :province, :city, :area, :store_name, presence: true
+  validates :begin_hour, :end_hour, inclusion: { in: '1'..'24', message: "必须在1-24小时之间" }
+  validates :begin_minute, :end_minute, inclusion: { in: '00'..'60', message: "必须在00-60分钟之间" }
 
   accepts_nested_attributes_for :store_phones, allow_destroy: true
 
