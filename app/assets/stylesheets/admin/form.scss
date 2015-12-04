@@ -25,6 +25,10 @@ textarea {
   line-height: 20px;
   background: #fff;
   color: #999;
+  &.input-block{
+    display: block;
+    width: 100%;
+  }
 }
 input[type="text"]:focus,
 input[type="password"]:focus,
@@ -42,10 +46,7 @@ input[type="tel"]:focus,
 input[type="color"]:focus,
 select:focus,
 textarea:focus{ color:#1a1a1a; }
-.input-block{
-  display: block;
-  width: 100%;
-}
+
  .form-group{
    margin-bottom: 20px;
    padding-right:13px;

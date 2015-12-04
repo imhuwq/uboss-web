@@ -1,22 +1,5 @@
-@import "bootstrap-sprockets";
-@import 'shared/variables';
-@import "bootstrap";
-@import 'shared/bootswatch';
+@import "shared/application_variables";
+@import "shared/reset";
+@import "shared/base";
+@import 'admin/form';
 @import 'shared/login';
-
-.container-sm {
-  width: 380px;
-  margin: 50px auto;
-}
-
-.simple_form {
-  &.new_user, &.edit_user {
-    @extend .container-sm
-  }
-}
-.simple_captcha_image img{
-  height: 39px;
-}
-.simple_captcha_field {
-  margin-left: 110px;
-}
