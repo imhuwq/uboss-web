@@ -1,5 +1,10 @@
 class SellersController < AdminController
-  layout 'login'
+  # layout 'application'
+
+  detect_device only: [:new]
+
+  layout :detect_layout, only: [:new]
+
   def new
     @agent = User.find_by(agent_code: params[:agent_code]) if params[:agent_code].present?
   end
@@ -37,7 +42,7 @@ class SellersController < AdminController
         #current_user.update(agent_id: allow_params[:agent_id])
         current_user.bind_agent(user.try(:agent_code))
         flash[:success] = "成功绑定创客#{current_user.agent.identify}！"
-        redirect_to admin_root_path
+        redirect_to root_path
         return
       else
         flash[:error] = "找不到创客"
@@ -66,4 +71,13 @@ class SellersController < AdminController
       @errors << k unless v.present?
     end
   end
+
+   def detect_layout
+    if not desktop_request?
+      'mobile'
+    else
+      'login'
+    end
+  end
+
 end
