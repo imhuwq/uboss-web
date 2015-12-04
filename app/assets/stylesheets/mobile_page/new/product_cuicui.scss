@@ -36,12 +36,22 @@
   .btn_add_to_cart ,.btn_buy_now {
     height: 50px;
     line-height: 50px;  
-    width: 50%;
+    width: 40%;
     height: 100%;
     float: left;
     background: #f9ba10;
     border: none;
     font-size: 15px;
+  }
+  .chat-btn{
+    float: left;
+    width: 20%;
+    height: 100%;
+    line-height: 50px;
+    img {
+      height: 40px;
+      width: 40px;
+    }
   }
   .btn_buy_now {
       background:$brand-primary ;
@@ -56,6 +66,7 @@
       font-size: 12px;
       height: 60px;
       line-height: 60px;
+      width: 50%;
     }
 
   }

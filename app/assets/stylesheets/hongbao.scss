@@ -7,7 +7,7 @@ b, i,
 dl, dt, dd, ol, ul, li,
 fieldset, form, label, legend,
 table, caption, tbody, tfoot, thead, tr, th, td,
-article, aside, canvas, details, figcaption, figure, 
+article, aside, canvas, details, figcaption, figure,
 footer, header, hgroup, menu, nav, section, summary,
 time, mark, audio, video {
     margin:0;
@@ -28,7 +28,7 @@ body {
 }
 
 article,aside,canvas,details,figcaption,figure,
-footer,header,hgroup,menu,nav,section,summary { 
+footer,header,hgroup,menu,nav,section,summary {
     display:block;
 }
 
@@ -67,7 +67,7 @@ em, i, var {
 
 mark {
     background-color:#ff9;
-    color:#000; 
+    color:#000;
     font-style:italic;
     font-weight:bold;
 }
@@ -89,7 +89,7 @@ table {
 hr {
     display:block;
     height:1px;
-    border:0;   
+    border:0;
     border-top:1px solid #cccccc;
     margin:1em 0;
     padding:0;
@@ -105,11 +105,11 @@ a{
 p{
     margin-bottom: 10px;
 }
-html, body { 
-    position: relative; 
-    width: 100%; 
-    height: 100%; 
-    background: #f8f7f5; 
+html, body {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    background: #f8f7f5;
     font-size: 14px;
     line-height: 20px;
     font-family: "微软雅黑","microsoft yahei";
@@ -123,15 +123,15 @@ img{
     vertical-align: mmiddle
 }
 footer a{
-    color: #888;    
+    color: #888;
     font-size: 12px;
 }
-.wrapper { 
-    overflow:hidden; 
-    width: 100%; 
-    height: 100%; 
-    max-width: 768px; 
-    margin: 0 auto; 
+.wrapper {
+    overflow:hidden;
+    width: 100%;
+    height: 100%;
+    max-width: 768px;
+    margin: 0 auto;
     box-sizing: border-box;
     padding-bottom: 30px;
 }
@@ -162,7 +162,7 @@ footer{
     left: 0;
     width: 100%;
     height: 100%;
-    display: table; 
+    display: table;
     color: #fff;
 }
 .pop-content{
@@ -226,10 +226,10 @@ footer{
     top: 0px;
 }
 .tip-white .btn:after,.tip-white .btn:before{
-    background-image: image-url('game/white-tip.png') ;   
+    background-image: image-url('game/white-tip.png') ;
 }
-.img-text{ 
-    background: image-url('game/all-text.png') no-repeat; 
+.img-text{
+    background: image-url('game/all-text.png') no-repeat;
     background-size: 335px auto;
     display: inline-block;
 }
@@ -237,7 +237,7 @@ footer{
     background-position:0 0 ;
     width: 300px;
     height: 116px;
-    
+
 }
 .t2{
     background-position:-190px  -268px;
@@ -313,7 +313,7 @@ footer{
 }
 .game-time{
     font-size: 30px;
-    padding: 20px 0 0;  
+    padding: 20px 0 0;
     line-height: 1;
 }
 .game-count{
@@ -326,7 +326,7 @@ footer{
     top: 0;
     left: 0;
     width: 100%;
-    height: 90%;
+    height: 95%;
 }
 .game-main-icon{
     position: absolute;
@@ -335,12 +335,13 @@ footer{
     width: 70%;
     height: 100%;
     overflow: hidden;
-    z-index: 2; 
+    z-index: 2;
     border-bottom: 10px solid #000;
 }
 .game-main-icon span{
+    padding-top: 200px;
     width: 200px;
-    height: 100px;  
+    height: 100px;
     position: absolute;
     bottom: 0px;
     left: 50%;
@@ -356,8 +357,8 @@ footer{
     height: 86px;
     display: block;
     background: image-url('game/t-come.png') no-repeat center center;
-    background-size: 100% auto; 
-    
+    background-size: 100% auto;
+
 }
 /* page3 */
 .page3-text{
@@ -365,9 +366,9 @@ footer{
     background-size: auto 80px;
     padding-left: 85px;
     height: 80px;
-    margin: 20px 20px 0; 
+    margin: 20px 20px 0;
     text-align: left;
-    
+
 }
 .game-result{
     background: #000;
@@ -404,7 +405,7 @@ footer{
     display: inline-block;
     width: 1px;
     background: #333;
-    
+
 }
 /*page3 pop */
 .pop-game-p img{
@@ -413,7 +414,7 @@ footer{
 .get-red{
     border: 2px solid #fff;
     display: inline-block;
-    
+
 }
 .bg-white{
     background: #fff;
@@ -444,7 +445,7 @@ footer{
     }
     .wrapper{
         padding-bottom: 20px;
-    }   
+    }
     .mobile{
         width: 80%;
     }
@@ -465,7 +466,7 @@ footer{
     width: 78px;
     height: 17px;
     }
-        
+
     .t4{
         background-position: 0 -141px;
       width: 185px;
@@ -515,9 +516,9 @@ footer{
         background-size: auto 60px;
         padding-left: 65px;
         height: 60px;
-        margin: 15px 20px 0; 
+        margin: 15px 20px 0;
         text-align: left;
-        
+
     }
     .game-result{
         font-size: 20px;
@@ -538,7 +539,7 @@ footer{
     .pop-game-p img{
         width: 100px;
     }
-    
+
 }
 @media (max-device-height:480px){/* 兼容iphone4/4s */
     .mobile{
@@ -567,7 +568,7 @@ footer{
         position: relative;
         bottom: 0;
     }
-    
+
 }
 
 .hidden{
