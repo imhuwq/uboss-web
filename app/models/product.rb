@@ -47,14 +47,8 @@ class Product < ActiveRecord::Base
     end
   end
 
-  def price_range
+  def price_min
     min = product_inventories.map(&:price).min
-    max = product_inventories.map(&:price).max
-    if min == max
-      min
-    else
-      "#{min} - #{max}"
-    end
   end
 
   def self.official_agent
