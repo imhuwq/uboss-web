@@ -1,25 +1,23 @@
 header {
   position: relative;
   .header-bar {
-    text-align: center;
+
     overflow: hidden;
     line-height: 20px;
     background: #fff;
     a{display: inline-block;}
-    .logo{height: 20px; margin-left: 5px;padding:10px 0;}
+    .logo{height: 20px; padding:10px 0;}
     .title{
-      display: inline-block;
-      margin:10px 0;
+      margin:12px 0 12px 10px;
       font-size: 20px;
       color:$brand-primary;
       line-height: 20px;
-      max-width: 190px;
       text-overflow:ellipsis;
       white-space:nowrap;
       overflow: hidden;
     }
     &.title-gap .title{      
-      margin:10px 0 10px 22px;
+      margin:10px 0 10px 0;
     }
     .menu-btn,.submit{
       float: right;
@@ -38,7 +36,7 @@ header {
     }
   }
   .cart-icon{
-    float: left;    
+    float: right;    
     padding: 10px;
     img{
         height: 16px;
