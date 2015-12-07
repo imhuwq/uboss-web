@@ -1,0 +1,2 @@
+class OrdinaryOrder < Order
+end

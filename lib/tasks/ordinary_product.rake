@@ -1,5 +1,5 @@
 namespace :product_db do
-  desc 'add agent role to all user'
+  desc 'init products type'
   task init_product_type: :environment do
     puts '开始初始化商品类型'
 
