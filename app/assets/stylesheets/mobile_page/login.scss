@@ -1,4 +1,33 @@
-@import 'shared/login';
+.using-pwd {
+  .cap-inputs {display: none;}
+  .pwd-inputs {display: block;}
+}
+.using-cap {
+  .cap-inputs {display: block;}
+  .pwd-inputs {display: none;}
+}
+
+.login-type-acs {
+  text-align: center;
+  margin: 15px 0;
+  border-bottom: 1px solid $brand-primary;
+  a {
+    color: $brand-primary;
+    width: 48%;
+    box-sizing: border-box;
+    display: inline-block;
+    padding: 10px 0;
+  }
+  .lpwd-btn {float: right}
+  .lcap-btn {float: left}
+}
+.using-pwd .lpwd-btn, .using-cap .lcap-btn {
+  background-color: $brand-primary;
+  color: white;
+}
+.cap-inputs {
+  position: relative;
+}
 
 .login-container{
   width: 250px;
