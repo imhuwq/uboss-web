@@ -17,93 +17,88 @@
       </div>
   	</div><!-- avatar -->
 </div>
-<br />
-
-<div class="tab-nav">
-	<a class="tab active" href="#showlist"><span>我的订单</span></a>
-	<a class="tab" href="#showpcards"><span>我的友情卡</span></a>
-	<a class="tab" href="#showincome"><span>我的收益</span></a>
+<div class="link-tab">
+  <a href="<%= service_orders_account_path %>"><span>团购券<p>1</p></span></a>
+	<a href="javascript:;"><span>我的红包<p>100</p></span></a>
+  <a href="<%= income_account_path %>"><span>我的收益<p>200</p></span></a>
 </div><!-- tab-nav  -->
+<br />
 
 <div class="tab-container">
 	<div class="tab-content" id="showlist" style="display: block;">
-		<ul class="order-sort">
-			<li class="active"><a href="<%= account_path %>">全部</a></li>
-			<li><a href="<%= account_path(state: 'unpay') %>">未付款</a></li>
-			<li><a href="<%= account_path(state: 'payed') %>">未发货</a></li>
-			<li><a href="<%= account_path(state: 'shiped') %>">未收货</a></li>
-      <li><a href="<%= account_path(state: 'completed') %>">已完成</a></li>
-		</ul>
 		<div id="u-order-list">
-	    <%= render partial: 'order', collection: @orders %>
-   	</div>
-    <% if @orders.blank? %>
-      <div class="bg-white text-center gap">
-      	<br/>
-      	<p><%= image_tag 'mobile/cart-big.png' %></p>
-      	<br />
-      	<p class="gray-color">您还没有相关的订单</p>
-      	<br />
-      	<p><a href="/" class="btn btn-longer">去逛逛</a></p>
-      	<br />
+      <div class="order-list">
+        <div class="seller-box">
+          <span class="pull-right like-color">
+            全部验证券
+          </span>
+          <div class="text-cut">我的验证券</div>
+        </div>
+        <div class="link-tab">
+          <a href="javacript:;"><span>待付款</span></a>
+          <a href="javacript:;"><span>待消费</span></a>
+          <a href="javacript:;"><span>待评价</span></a>
+        </div>
       </div>
-    <% else %>
-    	<br />
-      <div class="load-more" data-container='#u-order-list' data-ele='.order-list' data-ref='/account/orders'>加载更多</div>
-    <% end %>
-  	<br />
-	</div><!-- tab-content showlist -->
-	<div class="tab-content" id="showpcards">
-		<div class="privilege-rate">
-		<%= link_to edit_rate_privilege_cards_path do %>
-    	友情卡贡献值比率：<span class="like-color"><%= current_user.privilege_rate.to_i %>%</span>
-  	<% end %>
-  	</div>
-	  <div id="pcards-list">
-	    <%= render partial: 'privilege_cards/privilege_card', collection: @privilege_cards %>
-	  </div>
-	  <br />
-	  <div class="load-more" data-container='#pcards-list' data-ele='.share-card' data-ref='/privilege_cards'>加载更多</div>
-	  <br />
-	</div><!-- tab-content showpcards -->
-	<div class="tab-content" id="showincome">
-		<div class="bg-white gap">
-			<br />
-	    <p class="gray-color">总收益</p>
-	    <h2 class="main-color"><%= number_to_currency(current_user.income.to_f + current_user.frozen_income.to_f) %> <small>元</small></h2>
-		  <hr />
-		  <br />
-	    <p class="gray-color">可提现</p>
-	    <h2 class="main-color"><%= number_to_currency(current_user.income.to_f) %><small>元</small></h2>
-	    <br />
-		  <%= link_to("提现", new_withdraw_records_path , class:"accunt_adilbtn btn btn-large btn-block") %>
-		  <br />
-	 </div><!-- bg-white -->
-	</div><!-- tab-content showincome -->
+    </div>
+
+		<div id="u-order-list">
+      <div class="order-list">
+        <div class="seller-box">
+          <span class="pull-right like-color">
+            <%= link_to '全部订单', orders_account_path %>
+          </span>
+          <div class="text-cut">我的订单</div>
+        </div>
+        <div class="link-tab">
+          <a href="<%= orders_account_path(state: 'unpay') %>"><span>未付款</span></a>
+          <a href="<%= orders_account_path(state: 'payed') %>"><span>未发货</span></a>
+          <a href="<%= orders_account_path(state: 'shiped') %>"><span>未收货</span></a>
+        </div>
+      </div>
+    </div>
+
+		<div id="u-order-list">
+      <div class="order-list">
+        <div class="seller-box">
+          <div class="text-cut">我的友情卡</div>
+        </div>
+        <div id="showpcards">
+          <div class="privilege-rate">
+            <%= link_to edit_rate_privilege_cards_path do %>
+              友情卡贡献值比率：<span class="like-color"><%= current_user.privilege_rate.to_i %>%</span>
+            <% end %>
+          </div>
+          <div id="pcards-list">
+            <%= render partial: 'privilege_cards/privilege_card', collection: @privilege_cards %>
+          </div>
+          <br />
+          <div class="load-more" data-container='#pcards-list' data-ele='.share-card' data-ref='/privilege_cards'>加载更多</div>
+          <br />
+        </div><!-- tab-content showpcards -->
+      </div>
+    </div>
+
+  </div><!-- tab-content showlist -->
 </div><!-- tab-container  -->
 
 <%= render partial: 'new_share' %>
 
-<script>
-	var locationid=document.location.href.substr(document.location.href.indexOf('#'),document.location.href.length);
-	if($(locationid).length>0){
-		$('.tab-container .tab-content').hide();
-		$('.tab-nav .tab').removeClass('active');
-		$('.tab-nav .tab').each(function(){
-			if($(this).attr('href')==locationid){
-				$(this).addClass('active');
-			}
-		})
-		$(locationid).show();
-	}
-
-  $(document).ready(function(){
-    $.each($('.order-sort li'), function(){
-    if($(this).find('a').attr("href")==(location.pathname+location.search)){
-      $(this).addClass('active')
-    }else{
-      $(this).removeClass('active')
-    }
-    })
-  });
-</script>
+<style type="text/css" media="all">
+  .link-tab{
+    display: table;
+    background-color: #fff;
+    width: 100%;
+    margin-bottom: 8px;
+    font-size: 15px;
+    line-height: 20px;
+  }
+  .link-tab a{
+    width: 1%;
+    vertical-align: middle;
+    padding: 10px;
+    display: table-cell;
+    text-align: center;
+    color: #999;
+  }
+</style>

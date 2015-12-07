@@ -1,0 +1,19 @@
+<%= content_for :page_title do %>
+  我的UBOSS
+<% end %>
+<br />
+<div class="tab-content" id="showincome">
+  <div class="bg-white gap">
+    <br />
+    <p class="gray-color">总收益</p>
+    <h2 class="main-color"><%= number_to_currency(current_user.income.to_f + current_user.frozen_income.to_f) %> <small>元</small></h2>
+    <hr />
+    <br />
+    <p class="gray-color">可提现</p>
+    <h2 class="main-color"><%= number_to_currency(current_user.income.to_f) %><small>元</small></h2>
+    <br />
+    <%= link_to("提现", new_withdraw_records_path , class:"accunt_adilbtn btn btn-large btn-block") %>
+    <br />
+  </div><!-- bg-white -->
+</div><!-- tab-content showincome -->
+
