@@ -1,0 +1,6 @@
+$('#product_carriage_template_id').empty();
+$('#product_carriage_template_id').append($('<option value="">请选择运费模板...</option>'));
+<% @carriages.each do |tpl| %>
+  $('#product_carriage_template_id').append($("<option value=<%= tpl.id %>><%= tpl.name %></option>"));
+<% end %>
+$('#product_carriage_template_id').trigger("chosen:updated");

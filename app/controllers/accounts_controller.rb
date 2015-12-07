@@ -8,9 +8,18 @@ class AccountsController < ApplicationController
   before_action :authenticate_agent, only: [:send_message, :invite_seller, :edit_seller_note, :update_histroy_note]
 
   def show
-    @orders = append_default_filter account_orders(params[:state]), page_size: 10
-    @privilege_cards = append_default_filter current_user.privilege_cards, order_column: :updated_at, page_size: 10
+    @privilege_cards = append_default_filter current_user.privilege_cards.includes(:seller), order_column: :updated_at, page_size: 10
+    if params[:state] == 'after_sale'
+      @refunds = current_user.order_item_refunds.includes(order_item: [:product, :order]).page(params[:page])
+    else
+      @orders = append_default_filter account_orders(params[:state]), page_size: 10
+    end
     render layout: 'mobile'
+  end
+
+  def refunds
+    @refunds = append_default_filter current_user.order_item_refunds, page_size: 10
+    render partial: 'accounts/refund', collection: @refunds
   end
 
   def orders
@@ -76,10 +85,10 @@ class AccountsController < ApplicationController
 
   def update_password
     user_params = params.require(:user).permit(:password, :password_confirmation, :current_password, :code)
-    if current_user.need_reset_password
+    if current_user.need_reset_password || params[:need_reset_password] == 'true'
       user_params.delete(:current_password)
       auth_code = user_params.delete(:code)
-      if MobileCaptcha.auth_code(current_user.login, auth_code)
+      if MobileCaptcha.auth_code(current_user.login, auth_code) 
         current_user.update(user_params.merge(need_reset_password: false))
         MobileCaptcha.where(mobile: current_user.login).delete_all
         sign_in current_user, bypass: true
@@ -95,11 +104,6 @@ class AccountsController < ApplicationController
       flash.now[:error] = current_user.errors.full_messages.join('<br/>')
       render :edit_password,layout:'mobile'
     end
-  end
-
-  def reset_password
-    current_user.update(need_reset_password: true)
-    redirect_to edit_password_account_path
   end
 
   def invite_seller # 创客通过短信邀请的商家
@@ -205,6 +209,7 @@ class AccountsController < ApplicationController
   def binding_successed
     render layout: 'mobile'
   end
+
   private
 
   def account_orders(type)

@@ -1,0 +1,74 @@
+<div id="order_item_refund">
+  <%= simple_form_for [@order_item, @refund] do |f| %>
+    <%= upyun_meta_tags prefix: 'asset_img/avatar' %>
+
+    <%= render partial: 'shared/mobile_form_error_message', locals: { obj: @refund } %>
+
+    <%= f.hidden_field :refund_type %>
+
+    <table class="refund-table">
+      <tr>
+        <td width='80'>退款金额</td>
+        <td class="like-color">
+          <% flag, money = check_refund_and_get_money(@order_item, @refund) %>
+          <span class="pull-left">￥</span>
+          <div class="money">
+            <%= f.number_field :money, value: money, min: 0, max: money, class: 'input-block', readonly: !flag %>
+          </div>
+        </td>
+      </tr>
+      <% if !flag %>
+        <tr>
+          <td colspan="2" class="info">退款金额不可修改</td>
+        </tr>
+      <% else %>
+        <tr>
+          <td colspan="2" class="info">(最多<%= money %>元)</td>
+        </tr>
+      <% end %>
+      <tr>
+        <td>退款原因</td>
+        <td>
+          <%= f.select :refund_reason_id,
+            RefundReason.reason_type(@refund.refund_type).collect { |r| [ r.reason, r.id ] },
+            { include_blank: true },
+            class: 'input-block' %>
+        </td>
+      </tr>
+    </table>
+
+    <div class="bg-white gap">
+    	<%= f.text_area :description, class: 'input-block', placeholder:'退款说明', rows:'6' %>
+    </div>
+
+    <br />
+
+    <div class='form-group string optional order_item_refund_asset_imgs'>
+
+      <%= f.input_field :avatar, type: :hidden, value: @refund.image_files, as: :file, class: 'refund_avatar' %>
+
+      <div id="upload-box" class="upload-box box gap">
+	      <div class="fileinput-button text-center">
+	      	<p class="plus">+</p>
+	      	<p class="text">上传凭证</p>
+	      	<p><small>(最多三张)</small></p>
+	        <%= file_field_tag "file", class: "upyun_file" %>
+	        <div class="loading"><%= image_tag "mobile/loading.png" %></div>
+	      </div>
+
+	      <% @refund.asset_imgs.each do |img| %>
+          <div class="upload-image-box">
+          	<a href="<%= img.image_url() %>" style="background-image:url('<%= img.image_url() %>') ;">
+          		<%= image_tag img.image_url() %>
+          	</a>
+          	<div class="close"></div>
+          </div>
+        <% end %>
+      </div><!-- upload-box -->
+    </div>
+
+	  <div class="gap">
+    	<%= f.submit "提交申请", class: "btn btn-large btn-block use-new-addr-btn" %>
+    </div>
+  <% end %>
+</div>

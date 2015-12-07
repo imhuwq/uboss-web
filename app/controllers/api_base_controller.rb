@@ -2,7 +2,11 @@ class ApiBaseController < ActionController::API
 
   # modules we may need outside ActionController::API
   include AbstractController::Translation
+  include ActionController::Helpers
+  include ActionController::Caching
   include ActionController::ImplicitRender
+
+  include CanCan::ControllerAdditions
 
   include FilterLogic
 
@@ -26,6 +30,14 @@ class ApiBaseController < ActionController::API
       errmsg: errmsg || err.msg
     }
     render json: error_detail, status: (status_code || err.status_code)
+  end
+
+  def render_model_id(model)
+    render json: { id: model.id }
+  end
+
+  def render_model_errors(model)
+    render_error :validation_failed, model_errors(model)
   end
 
   def model_errors(model)

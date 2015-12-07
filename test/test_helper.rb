@@ -30,6 +30,7 @@ class ActiveSupport::TestCase
   before :each do
     DatabaseCleaner.start
     Sidekiq::Worker.clear_all
+    create_or_find_agent_role
   end
 
   after :each do

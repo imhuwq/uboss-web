@@ -20,9 +20,9 @@
 <br />
 
 <div class="tab-nav">
-	<a class="tab active" href="#showlist"><span>我的订单</span></a>
-	<a class="tab" href="#showpcards"><span>我的友情卡</span></a>
-	<a class="tab" href="#showincome"><span>我的收益</span></a>
+	<a class="tab active" title="#showlist"><span>我的订单</span></a>
+	<a class="tab" title="#showpcards"><span>我的友情卡</span></a>
+	<a class="tab" title="#showincome"><span>我的收益</span></a>
 </div><!-- tab-nav  -->
 
 <div class="tab-container">
@@ -32,24 +32,40 @@
 			<li><a href="<%= account_path(state: 'unpay') %>">未付款</a></li>
 			<li><a href="<%= account_path(state: 'payed') %>">未发货</a></li>
 			<li><a href="<%= account_path(state: 'shiped') %>">未收货</a></li>
-      <li><a href="<%= account_path(state: 'completed') %>">已完成</a></li>
+      <!-- <li><a href="<%= account_path(state: 'completed') %>">已完成</a></li> -->
+			<li><a href="<%= account_path(state: 'after_sale') %>">售后</a></li>
 		</ul>
 		<div id="u-order-list">
-	    <%= render partial: 'order', collection: @orders %>
+      <% if params[:state] == 'after_sale' %>
+        <%= render partial: 'refund', collection: @refunds %>
+      <% else %>
+        <%= render partial: 'order', collection: @orders %>
+      <% end %>
    	</div>
-    <% if @orders.blank? %>
-      <div class="bg-white text-center gap">
-      	<br/>
-      	<p><%= image_tag 'mobile/cart-big.png' %></p>
-      	<br />
-      	<p class="gray-color">您还没有相关的订单</p>
-      	<br />
-      	<p><a href="/" class="btn btn-longer">去逛逛</a></p>
-      	<br />
-      </div>
+
+    <% if params[:state] == 'after_sale' %>
+      <% if @refunds.blank? %>
+        <div class="bg-white text-center gap">
+          <br />
+          <p class="gray-color">您还没有相关信息</p>
+          <br />
+        </div>
+      <% else %>
+        <div class="load-more" data-container='#u-order-list' data-ele='.order-list' data-ref='/account/orders'>加载更多</div>
+      <% end %>
     <% else %>
-    	<br />
-      <div class="load-more" data-container='#u-order-list' data-ele='.order-list' data-ref='/account/orders'>加载更多</div>
+      <% if @orders.blank? %>
+        <div class="bg-white text-center gap">
+          <br/>
+          <p><%= image_tag 'mobile/cart-big.png' %></p>
+          <br />
+          <p class="gray-color">您还没有相关的订单</p>
+          <br />
+        </div>
+      <% else %>
+        <br />
+        <div class="load-more" data-container='#u-order-list' data-ele='.order-list' data-ref='/account/orders'>加载更多</div>
+      <% end %>
     <% end %>
   	<br />
 	</div><!-- tab-content showlist -->
@@ -90,7 +106,7 @@
 		$('.tab-container .tab-content').hide();
 		$('.tab-nav .tab').removeClass('active');
 		$('.tab-nav .tab').each(function(){
-			if($(this).attr('href')==locationid){
+			if($(this).attr('title')==locationid){
 				$(this).addClass('active');
 			}
 		})

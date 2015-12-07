@@ -6,6 +6,10 @@ class Admin::ProductsController < AdminController
     @carriage = CarriageTemplate.find(params[:tpl_id]) if params[:tpl_id].present?
   end
 
+  def refresh_carriage_template
+    @carriages = current_user.carriage_templates
+  end
+
   def index
     @products = current_user.products.available.order('created_at DESC')
     @products = @products.includes(:asset_img).page(params[:page] || 1)
@@ -90,6 +94,7 @@ class Admin::ProductsController < AdminController
       :content,   :has_share_lv,    :calculate_way,     :avatar,
       :traffic_expense, :short_description, :transportation_way,
       :carriage_template_id, :categories,
+      :full_cut, :full_cut_number, :full_cut_unit,
       product_inventories_attributes: [
         :id, :price, :count, :share_amount_total, :privilege_amount,
         :share_amount_lv_1, :share_amount_lv_2, :share_amount_lv_3,

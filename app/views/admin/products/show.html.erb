@@ -39,8 +39,8 @@
     <% if current_user.is_super_admin? %>
       <div class="form-group">
         <label class="control-label">所属商家</label>
-        <div class="control-input" style="padding:8px">
-          <span><%= link_to @product.user.identify, url_for(controller: 'admin/sellers', action: :show, id: @product.user) %></span>
+        <div class="control-input">
+          <span class="text-margin"><%= link_to @product.user.identify, url_for(controller: 'admin/sellers', action: :show, id: @product.user) %></span>
         </div>
       </div>
     <% end %>
@@ -92,15 +92,17 @@
     <div class="form-group">
         <label class="control-label">付款方式</label>
         <div class="control-input">
-          <span><%= Product::DataBuyerPay[@product.transportation_way] %></span>
+          <span class="text-margin"><%= Product::DataBuyerPay[@product.transportation_way] %></span>
         </div>
     </div>
-    <div class="form-group">
-        <label class="control-label">运费</label>
-        <div class="control-input">
-          <div class="control-txt"><%= @product.traffic_expense %></div>
-        </div>
-    </div>
+    <% if Product::DataBuyerPay[@product.transportation_way] == '统一邮费' %>
+      <div class="form-group">
+          <label class="control-label">运费</label>
+          <div class="control-input">
+            <div class="control-txt"><%= @product.traffic_expense %></div>
+          </div>
+      </div>
+    <% end %>
   </div>
   <br />
   <div class="admin-box beige-bg-color">
@@ -122,7 +124,7 @@
     <% if can? :edit, @product %>
       <%= link_to("编辑", url_for(:action=>:edit,:id=>@product.id), :class=>"btn btn-large blue-btn",:role=>"button") %>
     <% end %>　
-    <%= link_to("预览", url_for(:action=>:pre_view,:id=>@product.id), :class=>"btn btn-large yellow-btn",:role=>"button",:target=>"_blank") %>　
+    <%= link_to("手机效果", url_for(:action=>:pre_view,:id=>@product.id), :class=>"btn btn-large yellow-btn",:role=>"button",:target=>"_blank") %>　
     <% if can? :update, @product %>
       <% if @product.status == 'unpublish' %>
         <%= link_to("上架", url_for(action: :change_status, id: @product.id, status: :published), method: :patch, class: "btn btn-large red-btn", role: "button") %>

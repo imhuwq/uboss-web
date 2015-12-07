@@ -1,0 +1,129 @@
+<div class="container admin-container">
+  <ul class="breadcrumb">
+    <li><a href="/admin">主页</a></li>
+    <li class="divider"><i class="fa fa-angle-right"></i></li>
+    <li><%= link_to '订单', [:admin, :orders] %></li>
+    <li class="divider"><i class="fa fa-caret-right"></i></li>
+    <li><%= link_to '订单详情', [:admin, @order_item.order] %></li>
+    <li class="divider"><i class="fa fa-caret-right"></i></li>
+    <li class="active">退款详情</li>
+  </ul>
+</div><!-- container -->
+<br />
+<div class="container admin_orders_show_order_wrapper">
+  <div class="admin_order_item_refunds_wrapper">
+
+    <div class="admin-border admin-border-order-info">
+      <%= render "refund_info_status" %>
+    </div>
+
+    <div class="admin-border admin-border-order-info">
+      <div class="index_list">
+        <table class="list-table order_info_tables">
+          <thead>
+            <tr>
+              <th>商品</th>
+              <th>商品属性</th>
+              <th>申请时间</th>
+              <th>退款金额</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class='table-content'>
+              <td class='text-left'>
+                <%= link_to [:admin, @order_item.product], class: 'main-link-color' do %>
+                  <%= image_tag(@order_item.product.avatar.url(:thumb), size: "40x40", alt: "-") %>
+                  <%= @order_item.product.name %>
+                <% end %>
+              </td>
+              <td>
+                <% @order_item.product_inventory.properties.each do |property| %>
+                  <p class='attribute'><%= property.key %> : <%= property.value %></p>
+                <% end %>
+              </td>
+              <td><%= Time.now  %></td>
+              <td><%= @order_item.present_price %></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="admin-border admin-border-order-info">
+      <p class='number'>留言板</p>
+
+      <div id="order_item_refund_message">
+        <%= horizon_form_for @refund_message, url: [:refund_message, :admin, @order_item, @order_item_refund] do |f| %>
+          <%= upyun_meta_tags prefix: 'asset_img/avatar' %>
+          <%= f.text_area :message, class: 'required control-input input-block', cols: 105, rows: 8 ,placeholder:'请输入说明文字'%>
+          <br />
+          <%= f.input :asset_imgs, label: false do %>
+            <%= f.input_field :avatar, type: :hidden, as: :file, class: 'refund_avatar' %>
+            <div class="upload-box" id="upload-box">
+              <div class="fileinput-button image-box">
+                <%= image_tag("admin/no-img.png") %>
+                <%= file_field_tag "image", class: "multi_upyun_file" %>
+                <b class="loading"><i class="fa fa-spinner"></i></b>
+              </div>
+            </div>
+            <br />
+            <div>上传凭证(最多三张)</div>
+          <% end %>
+          <p class="text-center"><%= f.submit "发表留言", class: "btn btn-large btn-noraidus" %></p>
+          <br />
+        <% end %>
+      </div>
+
+      <div id="order_item_refund_messages_list">
+        <% RefundMessage.all_messages(@order_item).each do |message| %>
+        <div  class="message-list">
+        	<div class="user-info-box">
+        		<div class="cover">
+              <img src="<%= message.user.avatar_url(:thumb) %>" alt="" />
+            </div>
+            <p class="title"><span><%= message.user_type %></span> <%= message.user.identify %></p>
+            <p><%= message.created_at %></p>
+        	</div><!-- user-info-box -->
+          <div class="message-content">
+	          <p><%= message.action %></p>
+	          <% if !message.money.blank? %>
+	            <p>退款金额：<%= message.money %>元</p>
+	          <% end %>
+	          <% if !message.refund_reason_id.blank? %>
+	            <p>退款原因：<%= message.refund_reason.reason %></p>
+	          <% end %>
+	          <% if !message.explain.blank? %>
+	            <p>退款说明：<%= message.explain %></p>
+	          <% end %>
+	          <% if !message.message.blank? %>
+	            <p><%= message.user_type %>留言：<%= raw message.message %></p>
+	          <% end %>
+	          <div class="message-image">
+	          <% message.asset_imgs.each do |img| %>
+	            <a class="pop-img" data-src="<%= img.avatar_url() %>" style="background-image:url('<%= img.avatar_url() %>');"><img src="<%= img.avatar_url(:thumb) %>" alt="" /></a>
+	          <% end %>
+	          </div>
+          </div><!-- message-content -->
+      	</div><!-- message-list -->
+        <% end %>
+			</div><!-- order_item_refun_messages_list -->
+    </div><!-- admin-border admin-border-order-info -->
+  </div><!-- admin_order_item_refunds_wrapper -->
+</div><!-- admin_orders_show_order_wrapper -->
+
+<script>
+$(window).load(function(){
+	$("body").on('click','.pop-img',function(){
+		$("html").addClass("lock");
+		var pop_html="<div class='pop-bg'><div class='pop-container'>"
+		pop_html=pop_html+"<div class='pop'><div class='pop-content'>";
+		pop_html=pop_html+"<img src='"+$(this).attr("data-src")+"'/>"+"<div class='pop-close'><i class='fa fa-times'></i></div></div></div></div>";
+		$("body").append(pop_html);
+	})
+
+	$("body").on("click",".pop-bg .pop-close",function(){
+		$(".pop-bg").remove();
+		$("html").removeClass("lock");
+	})
+})
+</script>

@@ -47,6 +47,17 @@ Rails.application.routes.draw do
     post 'change_address', on: :collection
     #resource :charge, only: [:create]
   end
+
+  resources :order_items, only: [] do
+    resources :order_item_refunds do
+      get  :apply_uboss, on: :member
+      get  :close, on: :member
+      get  :service_select,   on: :collection
+      resources :sales_returns, only:[:new, :create, :edit, :update]
+      resources :refund_messages, only: [:new, :create]
+    end
+  end
+
   resources :charges, only: [:show] do
     get 'payments',     on: :collection
     get 'pay_complete', on: :member
@@ -64,8 +75,11 @@ Rails.application.routes.draw do
   resource :withdraw_records, only: [:show, :new, :create] do
     get :success, on: :member
   end
+  resource :chat, only: [:show] do
+    get :token, :user_info, :check_user_online
+  end
   resource :account, only: [:show, :edit, :update] do
-    get :settings,         :edit_password,     :reset_password,
+    get :settings,         :edit_password,
         :orders,           :binding_agent, :invite_seller,
         :edit_seller_histroy, :edit_seller_note, :seller_agreement,
         :merchant_confirm,    :binding_successed
@@ -100,11 +114,24 @@ Rails.application.routes.draw do
 
   namespace :api do
     namespace :v1 do
+      resources :users, only: [:show]
+      namespace :admin do
+        resources :carriage_templates, only: [:index, :show]
+        resources :products, only: [:index, :show, :create] do
+          member do
+            get :inventories, :detail
+          end
+        end
+      end
       post 'login', to: 'sessions#create'
       resources :mobile_captchas, only: [:create]
-      resource :account, only: [] do
-        patch :update_password
+      resources :users, only: [:show]
+      resource :account, only: [:show] do
+        patch :update_password, :become_seller
         get :orders, :privilege_cards
+      end
+      resource :chat, only: [] do
+        get :token, :check_user_online
       end
     end
   end
@@ -118,6 +145,7 @@ Rails.application.routes.draw do
       end
 
       get '/select_carriage_template', to: 'products#select_carriage_template'
+      get '/refresh_carriage_template', to: 'products#refresh_carriage_template'
 
       resources :expresses do
         member do
@@ -138,6 +166,20 @@ Rails.application.routes.draw do
         get :close, on: :member
         post :batch_shipments, on: :collection
         post :select_orders, on: :collection
+      end
+      resources :order_items, only: [] do
+        resources :order_item_refunds, only: [:index] do
+          get  :approved_refund,  on: :member
+          get  :confirm_received, on: :member
+          get  :uboss_cancel,     on: :member
+          get  :applied_uboss,    on: :member
+          post :approved_return,  on: :member
+          post :declined_refund,  on: :member
+          post :declined_return,  on: :member
+          post :declined_receive, on: :member
+          post :refund_message,   on: :member
+        end
+        resources :refund_messages, only: [:create]
       end
       resources :sharing_incomes, only: [:index, :show, :update]
       resources :withdraw_records, only: [:index, :show, :new, :create] do
@@ -170,6 +212,9 @@ Rails.application.routes.draw do
       end
       resources :transactions, only: [:index]
       resources :bank_cards, only: [:index, :new, :edit, :create, :update, :destroy]
+      resources :user_addresses do
+        get :change_default_address, on: :member
+      end
 
       get '/data', to: 'data#index'
       get '/backend_status', to: 'dashboard#backend_status'

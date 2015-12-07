@@ -10,7 +10,7 @@ class StockSku.Views.Privilege extends Backbone.View
   initialize: ->
     @listenTo @collection, 'skuchange', @render
     @listenTo @, 'initShow', @render
-    @currentLevel = 3
+    @currentLevel = 1
     @setLevel()
 
   propertyCollection: ->
@@ -45,6 +45,7 @@ class StockSku.Views.Privilege extends Backbone.View
       @currentLevel = Number($(event.currentTarget).data('level'))
       @collection.each (privilegeItem) =>
         privilegeItem.set('share_level', @currentLevel)
+        privilegeItem.calculateSharingAmount()
     @$('.sku-plvs-btns .btn').each (_, btn) =>
       btn = $(btn)
       if btn.data('level') == @currentLevel

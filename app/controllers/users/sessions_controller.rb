@@ -20,7 +20,7 @@ class Users::SessionsController < Devise::SessionsController
          if resource.persisted?
            sign_in(resource)
            MobileCaptcha.clear_captcha(sign_in_params[:login])
-           respond_with resource, location: after_sign_in_path_for(resource)
+           redirect_to after_sign_in_path_for(resource)
          else
            flash.now[:error] = resource.errors.full_messages.join('<br/>')
            render :new

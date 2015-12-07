@@ -8,22 +8,18 @@ class ProductInventory < ActiveRecord::Base
   has_many   :order_items
   has_many   :orders, through: :order_items
 
-  validates_presence_of :product
+  validates_presence_of :product, :sku_attributes, if: -> { self.saling }
+  validates_numericality_of :price, :count, greater_than_or_equal_to: 0
   validate :share_amount_total_must_lt_price
-  validate :price_can_not_less_than_zero
 
   scope :saling, -> { where(saling: true) }
   scope :not_saling, -> { where(saling: false) }
 
-  delegate :image_url, :status, :traffic_expense, :carriage_template, :carriage_template_id, :transportation_way, :is_official_agent?, to: :product
+  delegate :image_url, :status, :traffic_expense, :carriage_template, :carriage_template_id, :transportation_way, :full_cut, :full_cut_number, :full_cut_unit, :is_official_agent?, to: :product
 
   # TODO custom properties
   # after_create :create_product_properties
   after_commit :update_unpay_order_items, on: :update, if: -> { price_or_share_amount_changes }
-
-  def price_can_not_less_than_zero
-    errors.add(:price,'价格不能小于0') if price < 0
-  end
 
   def saling?
     status == 'published' && saling && count > 0

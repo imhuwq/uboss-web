@@ -13,13 +13,13 @@
 
     span {
       display: block;
-      margin-bottom: 16px;
+      margin:8px 0 16px;
     }
   }
 
   #product_traffic_expense {
-    margin-top: 21px;
-    margin-bottom: 7px;
+    margin-top: 26px;
+    margin-bottom: 11px;
     height: 30px;
 
     &:focus {
@@ -34,6 +34,10 @@
   }
   .price_label, .link_new_carriage_temp {
     padding-left: 5px;
+  }
+
+  .link_refresh {
+    color: #43C3AA;
   }
 
   .chosen-container.chosen-container-single {
@@ -102,8 +106,8 @@
     width: 72px;
     background-color: #FFFFFF;
     cursor: default;
-    padding: 4px;
-    font-size: 12px;
+    padding: 5px;
+    font-size: 14px;
     font-family: sans-serif;
     line-height: 1;
     color: #333;
@@ -118,8 +122,8 @@
     display: inline-block;
     width: 72px;
     cursor: default;
-    padding: 4px;
-    font-size: 12px;
+    padding: 5px;
+    font-size: 14px;
     font-family: sans-serif;
     line-height: 1;
     color: #fff;
@@ -244,5 +248,66 @@
   &:hover{
     color: white;
     background-color: black;
+  }
+}
+
+.full_cut_wrap {
+  margin-top: 26px;
+
+  .product_full_cut {
+    display: inline-block;
+    padding-left: 11px;
+  }
+
+  .full_cut_params {
+    display: inline-block;
+
+    #product_full_cut_number {
+      height: 30px;
+      padding-bottom: 1px;
+      padding-top: 1px;
+    }
+
+    #product_full_cut_unit_chosen {
+      a {
+        padding: 7px 4px 4px 8px;
+      }
+    }
+  }
+
+  input[type="checkbox"] {
+    display:none;
+  }
+
+  .checkbox_no_checked {
+    display: inline-block;
+    width: 72px;
+    background-color: #FFFFFF;
+    cursor: default;
+    padding: 6px;
+    font-size: 12px;
+    font-family: sans-serif;
+    line-height: 1;
+    color: #333;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: baseline;
+    border-radius: 2px;
+  }
+
+  .checkbox_is_checked {
+    background-color: #43C3AA;
+    display: inline-block;
+    width: 72px;
+    cursor: default;
+    padding: 6px;
+    font-size: 12px;
+    font-family: sans-serif;
+    line-height: 1;
+    color: #fff;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: baseline;
+    border-radius: 2px;
   }
 }

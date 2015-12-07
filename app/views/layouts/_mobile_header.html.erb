@@ -20,6 +20,9 @@
         <% if current_user && current_user.is_agent? %>
           <li><%= link_to '邀请商家', invite_seller_account_path %></li>
         <% end %>
+        <% if current_user.present? %>
+          <li><%= link_to "U信", chat_path %></li>
+        <% end %>
         <li>
           <%= link_to '关于', about_path %>
         </li>

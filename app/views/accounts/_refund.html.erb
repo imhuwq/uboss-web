@@ -1,0 +1,38 @@
+<div class="order-list" timestamp='<%= refund.created_at %>'>
+  <% order_item = refund.order_item %>
+  <div class="seller-box">
+    <span class="pull-right like-color">
+      <%= refund.aasm.human_state %>
+    </span>
+    <div class="text-cut">商家：<%= order_item.order.seller.identify %></div>
+  </div>
+
+  <div class="order-box">
+    <%= link_to order_item_order_item_refund_path(order_item_id: order_item.id, id: refund.id ) do %>
+      <div class="cover">
+        <%= image_tag order_item.item_product.image_url('w120') %>
+      </div><!-- order-cover -->
+    <% end %>
+    <div class="content">
+      <div class="price text-right gray-color">
+        <p>￥<%= order_item.present_price %></p>
+        <p class="number gray-color">
+          x<%= order_item.try(:amount) %>
+        </p>
+      </div><!-- price -->
+      <div class="name">
+        <%= order_item.product_name %>
+      </div><!-- name -->
+      <div class="info">
+        <% order_item.product_inventory.properties.each do |property| %>
+          <span><%= "#{property.key}：#{property.value}" %></span>
+        <% end %>
+      </div>
+    </div><!-- content -->
+    <div>
+      <p>交易金额: ￥<%= order_item.pay_amount %></p>
+      <p>退款金额: ￥<%= refund.money %></p>
+    </div>
+  </div><!-- order-box -->
+
+</div>

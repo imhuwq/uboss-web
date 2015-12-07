@@ -15,7 +15,7 @@ class StockSku.Models.Stock extends Backbone.Model
     share_amount_lv_1: 0
     share_amount_lv_2: 0
     share_amount_lv_3: 0
-    share_level: 3
+    share_level: 1
     privilege_amount: 0
 
   validate: (attrs, options) ->

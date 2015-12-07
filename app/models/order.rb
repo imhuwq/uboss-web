@@ -13,6 +13,7 @@ class Order < ActiveRecord::Base
   has_many   :divide_incomes
   has_many   :selling_incomes
   has_many   :sharing_incomes, through: :order_items
+  has_many   :order_item_refunds, through: :order_items
 
   accepts_nested_attributes_for :order_items
 
@@ -25,17 +26,20 @@ class Order < ActiveRecord::Base
     :pay_serial_number, :pay_serial_number=, :payment, :payment_i18n, :paid_at,
     to: :order_charge, allow_nil: true
 
-  enum state: { unpay: 0, payed: 1, shiped: 3, signed: 4, closed: 5, completed: 6 }
-
   scope :selled, -> { where("orders.state <> 0") }
+  scope :with_refunds, -> {
+    joins(order_items: :order_item_refunds).uniq
+  }
 
   before_create :set_info_by_user_address, :set_ship_price
 
+  enum state: { unpay: 0, payed: 1, shiped: 3, signed: 4, closed: 5, completed: 6 }
+
   aasm column: :state, enum: true, skip_validation_on_save: true, whiny_transitions: false do
     state :unpay
-    state :payed, after_enter: [:create_privilege_card_if_none, :send_payed_sms_to_seller]
-    state :shiped, after_enter: :fill_shiped_at
-    state :signed, after_enter: [:fill_signed_at, :active_privilege_card]
+    state :payed, after_enter: [:invoke_order_payed_job]
+    state :shiped, after_enter: [:fill_shiped_at, :close_order_item_refund_before_shiping]
+    state :signed, after_enter: [:fill_signed_at, :active_privilege_card, :close_refunds_before_signed]
     state :completed, after_enter: :fill_completed_at
     state :closed, after_enter: :recover_product_stock
 
@@ -43,7 +47,11 @@ class Order < ActiveRecord::Base
       transitions from: :unpay, to: :payed
     end
     event :ship do
-      transitions from: :payed, to: :shiped
+      transitions from: :payed, to: :shiped do
+        guard do
+          can_be_ship?
+        end
+      end
     end
     event :sign, after_commit: :call_order_complete_handler do
       transitions from: :shiped, to: :signed
@@ -55,6 +63,14 @@ class Order < ActiveRecord::Base
     event :complete do
       transitions from: :signed, to: :completed
     end
+  end
+
+  def has_payed?
+    Order.states[self.state] >= 1 && Order.states[self.state] != 5
+  end
+
+  def has_refund?
+    order_items.joins(:order_item_refunds).exists?
   end
 
   class << self
@@ -76,6 +92,7 @@ class Order < ActiveRecord::Base
       end
     end
 
+    #items1 是统一邮费, items2 是运费模板, user_address: 寄货地址
     def total_ship_price(items1, items2, user_address)
       return 0.0 if items1.blank? && items2.blank?
       begin
@@ -111,7 +128,7 @@ class Order < ActiveRecord::Base
 
     def carriage_way(different_area, count)
       extend_price = count.to_f / different_area.extend_item.to_f
-      different_area.extend_carriage * ( extend_price < 1 ? 1 : extend_price )
+      different_area.extend_carriage * ( extend_price < 1 ? 1 : extend_price.round )
     end
 
     def find_template_by_address(carriage_template, address)
@@ -156,11 +173,30 @@ class Order < ActiveRecord::Base
     end
 
     def calculate_ship_price(cart_items, user_address)
+      cart_items = meet_full_cut?(cart_items)
+
       items1 = cart_items.select{ |item| item.product_inventory.transportation_way == 1 }
       items2 = cart_items.select{ |item| item.product_inventory.transportation_way == 2 }
 
       total_ship_price(items1, items2, user_address)
     end
+
+    #运费满减
+    def meet_full_cut?(cart_items)
+      full_cut_items = cart_items.select{ |item| item.product_inventory.full_cut }
+      cut_items = []
+
+      full_cut_items.each do |item|
+        if Product::FullCut[item.product_inventory.full_cut_unit] == '件'
+          cut_items.push(item) if item.count >= item.product_inventory.full_cut_number
+        else
+          cut_items.push(item) if (item.count * item.product_inventory.price) >= item.product_inventory.full_cut_number
+        end
+      end
+
+      return cart_items - cut_items
+    end
+
 
     def sum_ship_price(cart_items, user_address)
       sum = 0.0
@@ -169,6 +205,18 @@ class Order < ActiveRecord::Base
       end
       sum
     end
+  end
+
+  def invoke_order_payed_job
+    OrderPayedJob.perform_later(self)
+  end
+
+  def ship_info
+    "#{address} #{username}(收)"
+  end
+
+  def total_privilege_amount
+    order_items.inject(0){ |sum, oi| sum + oi.privilege_amount*oi.amount}
   end
 
   def order_charge
@@ -225,6 +273,15 @@ class Order < ActiveRecord::Base
     errors.empty?
   end
 
+  def can_be_ship?
+    if !self.seller.default_get_address.present?
+      errors[:base] << "请设置默认退货地址"
+      false
+    else
+      true
+    end
+  end
+
   private
 
   def generate_number
@@ -236,6 +293,8 @@ class Order < ActiveRecord::Base
   def fill_shiped_at
     update_column(:shiped_at, Time.now)
   end
+
+
 
   def fill_signed_at
     update_column(:signed_at, Time.now)
@@ -256,8 +315,10 @@ class Order < ActiveRecord::Base
   end
 
   def calculate_ship_price
-    items1 = order_items.select{ |item| item.product_inventory.transportation_way == 1 }
-    items2 = order_items.select{ |item| item.product_inventory.transportation_way == 2 }
+    cart_items = Order.meet_full_cut?(order_items)
+
+    items1 = cart_items.select{ |item| item.product_inventory.transportation_way == 1 }
+    items2 = cart_items.select{ |item| item.product_inventory.transportation_way == 2 }
 
     Order.total_ship_price(items1, items2, user_address)
   end
@@ -270,16 +331,6 @@ class Order < ActiveRecord::Base
     order_items.each { |order_item| order_item.recover_product_stock }
   end
 
-  def create_privilege_card_if_none
-    order_items.each(&:create_privilege_card_if_none)
-  end
-
-  def send_payed_sms_to_seller
-    if seller
-      PostMan.delay.send_sms(seller.login, {name: seller.identify}, 968369)
-    end
-  end
-
   def active_privilege_card
     order_items.each(&:active_privilege_card)
   end
@@ -287,6 +338,34 @@ class Order < ActiveRecord::Base
   # 在work 中判断订单是否是创客权订单
   def invoke_official_agent_order_process
     OfficialAgentOrderJob.set(wait: 5.seconds).perform_later(self)
+  end
+
+  def close_order_item_refund_before_shiping
+    order_items.joins(:order_item_refunds).uniq.each do |item|
+      refund = item.last_refund
+      if refund.may_close? && refund.close!
+        refund.refund_messages.create(
+          user_type: '卖家',
+          user_id: seller_id,
+          message: '商家选择发货，退款申请关闭',
+          action: '退款关闭'
+        )
+      end
+    end
+  end
+
+  def close_refunds_before_signed
+    order_items.joins(:order_item_refunds).uniq.each do |item|
+      refund = item.last_refund
+      if refund.may_close? && refund.close!
+        refund.refund_messages.create(
+          user_type: '买家',
+          user_id: user_id,
+          message: '买家确认收货，退款申请关闭',
+          action: '退款关闭'
+        )
+      end
+    end
   end
 
 end

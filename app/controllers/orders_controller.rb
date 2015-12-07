@@ -104,12 +104,14 @@ class OrdersController < ApplicationController
   def received
     if @order.sign!
       flash[:success] = '已确认收货'
-      redirect_to account_path
+    else
+      flash[:error] = '确认收货失败'
     end
+    redirect_to order_path(@order)
   end
 
   def change_address
-    user_address = UserAddress.find_by(id: params[:user_address_id]) || UserAddress.new(province: params[:province])
+    user_address = UserAddress.where(seller_address: false).find_by(id: params[:user_address_id]) || UserAddress.new(province: params[:province])
 
     if params[:product_id].blank?
       cart_items = current_cart.cart_items
@@ -125,7 +127,7 @@ class OrdersController < ApplicationController
       render json: { status: 'ok', ship_price: ship_prices, invalid_items: json_of(invalid_items), valid_item_ids: session[:valid_items_ids] }
     elsif !params[:count].blank?
       product = Product.find(params[:product_id])
-      ship_price = product.calculate_ship_price(params[:count].to_i, user_address)
+      ship_price = product.calculate_ship_price(params[:count].to_i, user_address, params[:product_inventory_id])
       invalid_items = !Order.valid_to_sales?(product, ChinaCity.get(user_address.province)) ?
         [CartItem.new(product_inventory_id: params[:product_inventory_id], seller_id: product.user_id, count: params[:count])] : []
       render json: { status: 'ok', ship_price: [[product.user_id, ship_price.to_s]], invalid_items: json_of(invalid_items) }
@@ -174,3 +176,4 @@ class OrdersController < ApplicationController
       @order_form.amount.present?
   end
 end
+

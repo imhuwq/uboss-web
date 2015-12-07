@@ -9,6 +9,7 @@ class Product < ActiveRecord::Base
   # FIXME: @dalezhang 请使用helper or i18n 做view的数值显示
   DataCalculateWay = { 0 => '按金额', 1 => '按售价比例' }
   DataBuyerPay = { 0 => '包邮', 1 => '统一邮费', 2 => '运费模板' }
+  FullCut = { 0 => '件', 1 => '元' }
 
   has_one_image autosave: true
   #has_many_images name: :figure_images, accepts_nested: true
@@ -45,14 +46,34 @@ class Product < ActiveRecord::Base
 
   validates_presence_of :user_id, :name, :short_description
   validate :must_has_one_product_inventory
+  validates :full_cut_number, :full_cut_unit, presence: true, if: "full_cut"
+  validates_numericality_of :full_cut_number, greater_than: 0, if: "full_cut"
 
   before_create :generate_code
   after_create :add_categories_after_create
+
+  validate do
+    #统一邮费
+    if transportation_way == 1
+      self.errors.add(:traffic_expense, "不能小于或等于0") if traffic_expense.to_i <= 0
+    #运费模板
+    elsif transportation_way == 2
+      self.errors.add(:carriage_template, "不能为空") if carriage_template_id.blank?
+    end
+  end
 
   def self.official_agent
     official_account = User.official_account
     return nil if official_account.blank?
     @official_agent_product ||= find_by(user_id: official_account.id, name: OFFICIAL_AGENT_NAME)
+  end
+
+  def max_price
+    @max_price ||= seling_inventories.maximum(:price)
+  end
+
+  def min_price
+    @min_price ||= seling_inventories.minimum(:price)
   end
 
   # SKU(product_inventory) 更新保存逻辑
@@ -153,7 +174,8 @@ class Product < ActiveRecord::Base
     order_items.joins(:order).where('orders.state > 2 AND orders.state <> 5').sum(:amount)
   end
 
-  def calculate_ship_price(count, user_address)
+  def calculate_ship_price(count, user_address, product_inventory_id=nil)
+    return 0.0 if meet_full_cut?(count, product_inventory_id)
     if transportation_way == 1
       traffic_expense.to_f
     elsif transportation_way == 2 && user_address.try(:province)
@@ -165,31 +187,48 @@ class Product < ActiveRecord::Base
     end
   end
 
+  def meet_full_cut?(count, product_inventory_id)
+    if self.full_cut
+      Product::FullCut[self.full_cut_unit] == '件' ? check_full_cut_piece(count) : check_full_cut_yuan(count, product_inventory_id)
+    end
+  end
+
+  def check_full_cut_piece(count)
+    count >= full_cut_number
+  end
+
+  def check_full_cut_yuan(count, product_inventory_id)
+    product_inventory = ProductInventory.find(product_inventory_id) if product_inventory_id
+    ( count * product_inventory.price ) >= full_cut_number
+  end
+
   def sku_hash
     skus = {}
     sku_details = {}
-    # FIXME 不要使用毫无意义的变量名 obj, k , v ~
-    self.seling_inventories.where("count > 0").each do |obj|
-      obj.sku_attributes.each do |k,v|
-        if !skus[k].present?
-          skus[k] = {}
+    count = 0
+    self.seling_inventories.where("count > 0").each do |seling_invertory|
+      seling_invertory.sku_attributes.each do |property_name,property_value|
+        if !skus[property_name].present?
+          skus[property_name] = {}
         end
-        if !skus[k][v].present?
-          skus[k][v] = []
+        if !skus[property_name][property_value].present?
+          skus[property_name][property_value] = []
         end
-        skus[k][v] << obj.id
+        skus[property_name][property_value] << seling_invertory.id
       end
 
-      if !sku_details[obj.id].present?
-        sku_details[obj.id] = {}
+      if !sku_details[seling_invertory.id].present?
+        sku_details[seling_invertory.id] = {}
       end
-      sku_details[obj.id][:count] = obj.count
-      sku_details[obj.id][:sku_attributes] = obj.sku_attributes
-      sku_details[obj.id][:price] = obj.price
+      sku_details[seling_invertory.id][:count] = seling_invertory.count
+      sku_details[seling_invertory.id][:sku_attributes] = seling_invertory.sku_attributes
+      sku_details[seling_invertory.id][:price] = seling_invertory.price
+      count += seling_invertory.count
     end
     hash = {}
     hash[:skus] = skus
     hash[:sku_details] = sku_details
+    hash[:count] = count
     return hash
   end
 
