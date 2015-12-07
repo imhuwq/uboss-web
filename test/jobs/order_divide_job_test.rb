@@ -9,13 +9,11 @@ class OrderDivideJobTest < ActiveJob::TestCase
   describe 'Order pay' do
     let(:order) { create(:order_with_item) }
     it 'should enqueued this job' do
-      assert_enqueued_jobs 0
       User.stubs(:official_account).returns(User.new)
       order.update(state: 'shiped')
       assert_enqueued_with(job: OrderDivideJob, args: [order]) do
         assert_equal true, order.sign!
       end
-      assert_enqueued_jobs 1
     end
   end
 
