@@ -25,6 +25,14 @@ class OrderItem < ActiveRecord::Base
     previous_changes[:pay_amount].first != previous_changes[:pay_amount].last
   }
 
+  def nestest_version_inventory
+    @nestest_version_inventory ||= if self.updated_at >= product_inventory.updated_at
+                                     product_inventory
+                                   else
+                                     product_inventory.versions.  where("created_at >= ?", self.order.paid_at).  order('created_at ASC').  first.reify(dup: true)
+                                   end
+  end
+
   def deal_price
     present_price - privilege_amount
   end

@@ -160,6 +160,56 @@ class OrderDivideJobTest < ActiveJob::TestCase
       )
     end
 
+    it 'reward user using nestest inventory version' do
+      seller = create(:seller_user)
+
+      product = create :product_with_3sharing, user: seller
+      product_inventory = product.seling_inventories.first
+
+      sharing_reward_lv1 = product_inventory.share_amount_lv_1
+      sharing_reward_lv2 = product_inventory.share_amount_lv_2
+      sharing_reward_lv3 = product_inventory.share_amount_lv_3
+
+      assert sharing_reward_lv1 > 0
+      assert sharing_reward_lv2 > 0
+      assert sharing_reward_lv3 > 0
+
+      level1_node = create(:sharing_node, product: product)
+      level2_node = create(:sharing_node, product: product, parent: level1_node)
+
+      assert level2_node.user.income == 0
+      assert seller.income == 0
+
+      buyer = create(:user)
+      @order = create(:order,
+                      user: buyer,
+                      seller: seller,
+                      order_items_attributes: [{
+                        product: product,
+                        product_inventory: product_inventory,
+                        user: buyer,
+                        amount: buy_amount,
+                        sharing_node: level2_node
+                      }],
+                      state: 'shiped'
+                     )
+      create(:paid_order_charge, orders: [@order])
+      @order.update(paid_amount: @order.reload.pay_amount)
+      product_inventory.update( price: 20000, share_amount_total: 1000, share_amount_lv_1: 800, privilege_amount: 200)
+      product_inventory.update( price: 30000, share_amount_total: 2000, share_amount_lv_1: 1600, privilege_amount: 400)
+      product_inventory.update( price: 40000, share_amount_total: 3000, share_amount_lv_1: 2400, privilege_amount: 600)
+      @order.update_columns(state: 4)
+      OrderDivideJob.perform_now(@order.reload)
+
+      assert_equal sharing_reward_lv2 * buy_amount, level1_node.user.reload.income.to_f
+      assert_equal sharing_reward_lv1 * buy_amount, level2_node.user.reload.income
+      assert seller.reload.income > 0, 'Seller get selling income'
+      assert_equal(
+        @order.paid_amount,
+        level1_node.user.income + level2_node.user.income + seller.income + User.official_account.reload.income
+      )
+    end
+
     it 'divide amount should only be take 2 decimal' do
       official_account = create_or_find_official_account
       agent = create(:agent_user)
