@@ -2,6 +2,7 @@ class Admin::OrdersController < AdminController
   load_and_authorize_resource
 
   before_filter :validate_express_params, only: :set_express
+  before_filter :set_ordinary_order, only: [:close, :show, :update, :set_express]
 
   # TODO record use operations
   after_action :record_operation, only: [:update]
@@ -11,7 +12,6 @@ class Admin::OrdersController < AdminController
   end
 
   def close
-    @order = Order.find(params[:id])
     if @order.may_close? && @order.close!
       flash[:success] = '订单关闭成功'
     else
@@ -46,6 +46,7 @@ class Admin::OrdersController < AdminController
   end
 
   def index
+    @orders = OrdinaryOrder.all
     @type = params[:type] || 'all'
     @orders = append_default_filter @orders.recent.includes(:user, order_items: [:product, :product_inventory])
     @counting_orders = @orders
@@ -75,6 +76,10 @@ class Admin::OrdersController < AdminController
   end
 
   private
+
+  def set_ordinary_order
+    @order = OrdinaryOrder.find(params[:id])
+  end
 
   def validate_batch_shipment_params(param)
     param[:express_name].present? && param[:ship_number].present?

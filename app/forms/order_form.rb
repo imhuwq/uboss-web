@@ -114,6 +114,7 @@ class OrderForm
           to_seller: to_seller["#{product.user_id}"],
           user_address: self.user_address,
           order_items_attributes: order_items_attributes,
+          type: (product.type == 'ServiceProduct' ? 'ServiceOrder' : 'OrdinaryOrder')
         }])
       elsif seller_ids
         Order.create!(

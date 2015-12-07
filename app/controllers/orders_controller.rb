@@ -154,7 +154,7 @@ class OrdersController < ApplicationController
   end
 
   def find_order
-    @order = current_user.orders.find(params[:id])
+    @order = current_user.ordinary_orders.find(params[:id])
   end
 
   def clean_current_cart

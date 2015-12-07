@@ -278,7 +278,7 @@ zh-CN:
         l1: 一级分成
         l2: 二级分成
         l3: 三级分成
-    order:
+    ordinary_order:
       state:
         unpay: 未付款
         payed: 已付款

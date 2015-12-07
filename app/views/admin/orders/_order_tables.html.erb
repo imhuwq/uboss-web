@@ -56,9 +56,9 @@
               </td>
               <td rowspan=<%= size %>>
                 <%= order.state_i18n %>
-                <%= link_to '详情', [:admin, order], class: 'main-link-color' %>
+                <%= link_to '详情', admin_order_path(order), class: 'main-link-color' %>
                 <% if order.payed? && can?(:manage, order) %>
-                  <%= link_to '发货', [:set_express, :admin, order], class: 'btn express-order-btn' %>
+                  <%= link_to '发货', set_express_admin_order_path(order), class: 'btn express-order-btn' %>
                 <% end %>
               </td>
               <td rowspan=<%= size %>>

@@ -31,11 +31,14 @@ class User < ActiveRecord::Base
   # for buyer
   has_many :user_addresses
   has_many :orders
+  has_many :ordinary_orders, -> { where("type = 'OrdinaryOrder'") }, class_name: 'Order'
+  has_many :service_orders,  -> { where("type = 'ServiceOrder'") },  class_name: 'Order'
   has_many :sharing_incomes
   has_many :bank_cards
   has_many :privilege_cards
   # for seller
   has_many :sold_orders, class_name: 'Order', foreign_key: 'seller_id'
+  has_many :sold_ordinary_orders, -> { where("type = 'OrdinaryOrder'") }, class_name: 'Order', foreign_key: 'seller_id'
   has_many :products
   has_many :ordinary_products, -> { where("type = 'OrdinaryProduct'") }, class_name: 'Product'
   has_many :service_products, -> { where("type = 'ServiceProduct'") }, class_name: 'Product'

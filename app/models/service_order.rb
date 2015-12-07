@@ -1,0 +1,2 @@
+class ServiceOrder < Order
+end

@@ -9,7 +9,6 @@ class AccountsController < ApplicationController
   before_action :authenticate_agent, only: [:send_message, :invite_seller, :edit_seller_note, :update_histroy_note]
 
   def show
-    @orders = append_default_filter account_orders(params[:state]), page_size: 10
     @privilege_cards = append_default_filter current_user.privilege_cards, order_column: :updated_at, page_size: 10
   end
 
@@ -184,7 +183,7 @@ class AccountsController < ApplicationController
   def account_orders(type)
     type ||= 'all'
     if ["unpay", "payed", "shiped", "signed", "completed", "all"].include?(type)
-      current_user.orders.try(type).includes(order_items: { product_inventory: { product: :asset_img } })
+      current_user.ordinary_orders.try(type).includes(order_items: { product_inventory: { product: :asset_img } })
     else
       raise "invalid orders state"
     end
