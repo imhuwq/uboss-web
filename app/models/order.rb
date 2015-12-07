@@ -32,6 +32,7 @@ class Order < ActiveRecord::Base
   }
 
   before_create :set_info_by_user_address, :set_ship_price
+  after_create :invoke_privielge_calculator
 
   enum state: { unpay: 0, payed: 1, shiped: 3, signed: 4, closed: 5, completed: 6 }
 
@@ -279,6 +280,11 @@ class Order < ActiveRecord::Base
   end
 
   private
+
+  def invoke_privielge_calculator
+    @preferential_calculator ||= PreferentialCalculator.new(order: self)
+    @preferential_calculator.calculate_preferential_info
+  end
 
   def generate_number
     time_stamp = (Time.now - Time.parse('2014-12-12')).to_i

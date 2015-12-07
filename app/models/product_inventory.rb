@@ -75,6 +75,10 @@ class ProductInventory < ActiveRecord::Base
     end
   end
 
+  def share_and_privilege_amount_total
+    share_amount_lv_3 + share_amount_lv_2 + share_amount_lv_1 + privilege_amount
+  end
+
   private
 
   def update_unpay_order_items
@@ -99,7 +103,7 @@ class ProductInventory < ActiveRecord::Base
   end
 
   def share_amount_total_must_lt_price
-    if (share_amount_lv_3 + share_amount_lv_2 + share_amount_lv_1 + privilege_amount) > price
+    if share_and_privilege_amount_total > price
       errors.add(:share_amount_total, '必须小于对应（商品/规格）的价格')
     end
   end
