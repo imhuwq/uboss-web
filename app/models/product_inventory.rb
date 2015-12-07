@@ -1,5 +1,14 @@
 class ProductInventory < ActiveRecord::Base
 
+  has_paper_trail on: [:update],
+    if: Proc.new { |inventory| inventory.orders.where(state: [1, 3]).exists? },
+    only: [ :price,
+            :share_amount_total,
+            :share_amount_lv_1,
+            :share_amount_lv_2,
+            :share_amount_lv_3,
+            :privilege_amount ]
+
   SkuProperty = Struct.new(:key, :value)
 
   belongs_to :product
