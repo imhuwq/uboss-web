@@ -22,8 +22,8 @@ class Admin::EvaluationsController < AdminController
   private
   def total
     total_evalution = 0.0
-    @total_good_reputation = 0.0
-    @total_bad_reputation = 0.0
+    @total_good_reputation = 0
+    @total_bad_reputation = 0
     current_user.service_products.each do |product|
       total_evalution += product.good_evaluation.to_f + product.bad_evaluation.to_f + product.worst_evaluation.to_f + product.best_evaluation.to_f + product.better_evaluation.to_f
       @total_good_reputation += product.good_evaluation.to_i + product.best_evaluation.to_i + product.better_evaluation.to_i
