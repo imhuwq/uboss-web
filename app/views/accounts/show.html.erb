@@ -20,10 +20,10 @@
 <br />
 
 <div class="tab-nav">
-	<a class="tab active" title="#showlist"><span>我的订单</span></a>
+	<a class="tab active" title="#showlist"><span>订单</span></a>
 	<a class="tab" title="#showpcards"><span>友情卡</span></a>
-	<a class="tab" title="#hongbao"><span>我的红包</span></a>
-	<a class="tab" title="#showincome"><span>我的收益</span></a>
+	<a class="tab" title="#hongbao"><span>红包</span></a>
+	<a class="tab" title="#showincome"><span>收益</span></a>
 </div><!-- tab-nav  -->
 
 <div class="tab-container">
@@ -85,7 +85,17 @@
 	</div><!-- tab-content showpcards -->
 	<div class="tab-content" id="hongbao">
 		<div class="line-gap">
-			<p><a href="/ls_game"><%= image_tag 'mobile/account/ad.png'%></a></p>
+      <p>
+        <div class="hidden sharing-meta-container">
+          <%= luffy_meta_tags(
+            title: '良辰邀你一战！不玩别的就玩抢钱！',
+            desc: '别说良辰欺负人，抢了多少都归你！',
+            imgurl: asset_url("game/p1.png"),
+            link: ls_game_url
+          ) %>
+        </div>
+        <a class="p-sharing-btn" href="#"><%= image_tag 'mobile/account/ad.png'%></a>
+      </p>
 			<div class="hongbao gray-color">
 				<span class="pull-right red-color">￥ <%= current_user.bonus_benefit %></span>红包余额
 				<div class="newyear"></div>
