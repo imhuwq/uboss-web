@@ -108,6 +108,18 @@ module ApplicationHelper
     end.join.html_safe
   end
 
+  def luffy_meta_tags(opts={})
+    meta_tags = {
+      sharing_title:  opts[:title] || 'UBOSS商城 | 基于人，超乎想象',
+      sharing_desc:   opts[:desc],
+      sharing_imgurl: opts[:imgurl] || image_url('favicon-lg.png'),
+      sharing_link:  opts[:link] || root_url
+    }
+    meta_tags.collect do |key, value|
+      content_tag :meta, '', name: key, content: value
+    end.join.html_safe
+  end
+
   def displayable_class(boolean_value)
     boolean_value ? '' : 'hidden'
   end
