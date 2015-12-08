@@ -11,7 +11,7 @@ class OrderPayedJob < ActiveJob::Base
     @seller = order.seller
     @buyer = order.user
     @agent = @seller && @seller.agent
-    raise OrderNotPayed, order if !order.payed?
+    raise OrderNotPayed, order.attributes if !order.payed?
 
     create_privilege_card_if_none
     send_payed_sms_to_seller
