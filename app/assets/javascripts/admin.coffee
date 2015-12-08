@@ -20,6 +20,7 @@
 #= require admin/redactor-config
 #= require admin/sms
 #= require admin/category
+#= require admin/store
 #= require admin/user_address
 #= require admin/refund
 #= require shared/upyun

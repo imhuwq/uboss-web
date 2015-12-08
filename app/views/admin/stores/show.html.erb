@@ -14,9 +14,45 @@
 		<% else %>
 			<%= image_tag(current_user.store_logo_url(:thumb), class:"clean", style:"height: 80px;")%>
 		<% end %>
-			<%= file_field_tag "image", class: "upyun_file_json" ,  data: {to: "/admin/stores/#{current_user.id}/updata_store_logo"} %>
+			<%= file_field_tag "image", class: "upyun_file_json" ,  data: {to: "/admin/stores/#{current_user.id}/update_store_logo"} %>
 		<b class="loading"><i class="fa fa-spinner"></i></b>
 	</p>
 	<div style="font-size:10px;">(点击图片进行替换)</div>
+
+	<h4>store_url:</h4>
+	<div class="text"><%= store_url(@user.id) %></div>
+	<img src="http://qr.liantu.com/api.php?&amp;text=<%= store_url(@user.id) %>"/>
+</div>
+<div>
+	<%= @user.categories.where(use_in_store: true).each do |category| %>
+		<%= image_tag(category.image_url(:thumb), class:"clean", style:"height: 80px;")%>
+		<p><%= category.name %></p>
+	<% end %>
+</div>
+<div>
+	<div id="add_category">add category</div>
+	<div id="adding_category_window">
+		<div>
+			<%= select_tag :category_tages, options_for_select([['--', '']] + current_user.categories.map{|obj| [obj.name,obj.id]}) %>
+		</div>
+		<p class="fileinput-button hidden" id="add_category_img">
+			<%= image_tag("admin/no-img.png", class:"clean",style:"height: 80px;") %>
+			<%= file_field_tag "image", class: "upyun_file_json" ,  data: {to: ""} %>
+			<b class="loading"><i class="fa fa-spinner"></i></b>
+		</p>
+		<div style="font-size:10px;">(点击图片进行替换)</div>
+	</div>
+</div>
+<div>
+	<div id="adding_product_window">
+		<div>add_product</div>
+		<div><%= select_tag 'category_tages', options_for_select([['--', '']] + current_user.products.map{|obj| [obj.name,obj.id]}) %></div>
+		<p class="fileinput-button hidden" id="show_product_advertisement_img">
+			<%= image_tag("admin/no-img.png", class:"clean",style:"height: 80px;") %>
+			<%= file_field_tag "image", class: "upyun_file_json" ,  data: {to: "update_product_advertisement_img"} %>
+			<b class="loading"><i class="fa fa-spinner"></i></b>
+		</p>
+		<div style="font-size:10px;">(点击图片进行替换)</div>
+	</div>
 </div>
 

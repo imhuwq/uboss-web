@@ -101,5 +101,6 @@ $ ->
               console.log "res", res
               alert(res['message'])
             error: (data, status, e) ->
+              console.log 'data, status, e', data, status, e
               alert("操作错误")
 

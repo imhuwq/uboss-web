@@ -50,7 +50,6 @@ class Admin::CategoriesController < AdminController
   end
 
   def updata_category_img
-    binding.pry
     category = Category.find(params[:id])
     if category.update(avatar: params[:avatar])
       @message = {message: "上传成功！"}
@@ -69,6 +68,16 @@ class Admin::CategoriesController < AdminController
       @message = {message:"修改失败"}
     end
     render json:  @message
+  end
+
+  def change_category_img
+    category = Category.find(params[:id])
+    if category.image_url
+      render json:  {url: category.image_url}.to_json
+    else
+      render json: {}.to_json
+    end
+    
   end
 
   private

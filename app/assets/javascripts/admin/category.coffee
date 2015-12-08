@@ -11,14 +11,15 @@ $(document).on 'change', '.category-name', ->
 	$this = $(this)
 	resource_id = $this.attr('data-id')
 	category_name = $this.val()
-	console.log  'resource_id', resource_id
-	console.log 'category_name', category_name
+
 	$.ajax
-	  url:  "/admin/categories/#{resource_id}/update_category_name"
-	  type: 'POST'
-	  data: {name:  category_name}
-	  success: (res) ->
-	    console.log "res", res
-	    alert(res['message'])
-	  error: (data, status, e) ->
-	    alert("操作错误")
+		url:  "/admin/categories/#{resource_id}/update_category_name"
+		type: 'POST'
+		data: {name:  category_name}
+		success: (res) ->
+			console.log "res", res
+			alert(res['message'])
+		error: (data, status, e) ->
+			console.log data, status, e
+			alert("操作错误")
+

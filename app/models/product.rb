@@ -37,6 +37,10 @@ class Product < ActiveRecord::Base
   def advertisement_img=(file)
     advertisement_img.avatar=(file)
   end
+
+  def advertisement_img
+    super || build_advertisement_img
+  end
   # <-店铺轮播图片
 
   enum status: { unpublish: 0, published: 1, closed: 2 }
