@@ -38,6 +38,7 @@ class User < ActiveRecord::Base
   has_many :order_item_refunds
   has_many :sales_returns, through: :order_item_refunds
   has_many :carriage_templates
+  has_many :bonus_records
   # for seller
   has_many :seller_addresses, -> { where(seller_address: true) }, class_name: 'UserAddress'
   has_many :sold_orders, class_name: 'Order', foreign_key: 'seller_id'
@@ -65,7 +66,7 @@ class User < ActiveRecord::Base
     :store_banner_one=, :store_banner_two=, :store_banner_thr=,
     :recommend_resource_one_id, :recommend_resource_two_id, :recommend_resource_thr_id,
     :recommend_resource_one_id=, :recommend_resource_two_id=, :recommend_resource_thr_id=,
-    :store_short_description, :store_short_description=, :store_cover, :store_cover=,
+    :store_short_description, :store_short_description=, :store_cover, :store_cover=, :bonus_benefit,
     to: :user_info, allow_nil: true
 
   enum authenticated: {no: 0, yes: 1}

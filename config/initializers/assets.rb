@@ -13,4 +13,5 @@ Rails.application.config.assets.precompile += %w(
 desktop.css desktop.js admin.js admin.css login.js login.css mobile.css mobile.js
 marketing.css redactor-rails/* marketing.js
 admin/sku_app/application.js mobile_page/chat_app/boot.js
+hongbao.js hongbao.css
 )
