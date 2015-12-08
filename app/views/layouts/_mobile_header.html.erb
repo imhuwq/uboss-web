@@ -10,18 +10,22 @@
     
   <% else %>
     <div class="menu-btn <%= 'white-icon' if product_show? %>"><%= image_tag 'mobile/navbar.png' %></div>
-		<%= link_to carts_path, class: "cart-icon #{'white-icon' if product_show?}" do %>
+		
+  	<% if product_show? || controller_name == 'stores' %>
+			<%= link_to chat_path(), class: "cart-icon #{'white-icon' if product_show?}" do %>
+	      <%= image_tag 'mobile/chat-icon.png' %>
+	    <% end %>
+		<% end %>
+  	<%= link_to carts_path, class: "cart-icon #{'white-icon' if product_show?}" do %>
       <%= image_tag 'mobile/cart.png' %>
     <% end %>
+		
     <div class="nav-bar">
       <ul>
         <li><%= link_to '首页', root_path %></li>
         <li><%= link_to '我的UBOSS', account_path %></li>
         <% if current_user && current_user.is_agent? %>
           <li><%= link_to '邀请商家', invite_seller_account_path %></li>
-        <% end %>
-        <% if current_user.present? %>
-          <li><%= link_to "U信", chat_path %></li>
         <% end %>
         <li>
           <%= link_to '关于', about_path %>

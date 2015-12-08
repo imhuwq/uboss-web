@@ -19,45 +19,7 @@
     </script>
   <% end %>
 <% end %>
-
 <%= render partial: 'banner_slider', locals: { seller: @seller } %>
-
-<% if params[:action] == 'show' && @hots.present? %>
-  <div class="bg-white">
-    <div class="store-like">
-      <div class="box">
-        <div class="box-w100">
-          <div class="page-title like-color">
-            <%= link_to hots_store_path(@seller), class: 'more-bar' do %>
-              more <%= image_tag 'mobile/arrow-right.png' %>
-          <% end %>
-          热销商品
-          </div>
-        </div>
-        <%= render partial: 'hot_product', collection: @hots, as: :product %>
-      </div>
-    </div>
-  </div>
-  <br />
-<% end %>
-<div class="bg-white">
-  <div class="store-like">
-    <div class="box">
-      <div class="box-w100">
-        <div class="page-title like-color">
-          <%= link_to hots_store_path(@seller), class: 'more-bar' do %>
-            more <%= image_tag 'mobile/arrow-right.png' %>
-        <% end %>
-        categories
-        </div>
-      </div>
-      <%= render partial: 'categories', collection:  @seller.categories, as: :category %>
-    </div>
-  </div>
-</div>
-<br />
-
-
 <div class="store-cover text-center" style="<%= "background-image:url('#{@seller.store_cover.url(:w640)}')" if @seller.user_info.store_cover_identifier.present? %>">
   <div class="content">
     <h2 class="name"><%= @seller.store_name %></h2>
@@ -99,30 +61,38 @@
 <br />
 
 <div class="bg-white">
-  <div class="box store-list">
-    <div class="box-w100">
-      <% if params[:action] == 'hots' %>
-        <div class="page-title like-color">热销商品</div>
-      <% elsif params[:action] == 'favours' %>
-        <div class="page-title like-color">我喜欢的</div>
-      <% else %>
-        <div class="page-title">全部商品</div>
-      <% end %>
-    </div>
+	<div class="tab-nav category-nav">
+		<div class="tab active" title="#category-container"><span>分类</span></div>
+		<div class="tab" title="#product-container"><span>全部商品</span></div>
+	</div>
+	<div class="tab-container">
+		<div class="tab-content category-list" id="category-container" style="display: block;">
+			<div class="box">
+	      <%= render partial: 'categories', collection:  @seller.categories, as: :category %>
+	    </div>
+		</div><!-- #category-container -->
+		<div class="tab-content" id="product-container" style="display: none;">
+		  <div class="box store-list">
+		    <% if @products.present? %>
+		      <%= render partial: 'product', collection: @products %>
+		    <% else %>
+		      <h2 class="page-title text-center">店家正在准备好货，敬请期待</h2>
+		    <% end %>		
+		  </div><!-- box -->
+			<% if @products.size > 6 %>
+			  <br />
+			  <div class="load-more" data-container='.store-list' data-ele='.p-item' data-ref='<%= request.path %>'>加载更多</div>
+			<% end %>
+	  </div><!-- #product-container -->
+	</div><!-- tab-container -->  
+</div><!-- bg-white -->
 
-    <% if @products.present? %>
-      <%= render partial: 'product', collection: @products %>
-    <% else %>
-      <h2 class="page-title text-center">店家正在准备好货，敬请期待</h2>
-    <% end %>
+<%= render partial: 'banner_slider', locals: { seller: @seller } %>
 
-  </div>
-</div>
 
-<% if @products.size > 6 %>
-  <br />
-  <div class="load-more" data-container='.store-list' data-ele='.p-item' data-ref='<%= request.path %>'>加载更多</div>
-<% end %>
+
+
+
 
 <%= render partial: 'new_share' %>
 

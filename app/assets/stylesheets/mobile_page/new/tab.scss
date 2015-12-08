@@ -26,6 +26,21 @@
     }
     
 }
+.category-nav{
+    display: block;
+    margin: 0;
+    padding: 0;
+    .tab,.tab.active{
+        display: inline-block;
+        width: auto;
+        margin: 0;
+        padding: 0 0 0 10px;
+        span{
+            display: block;
+            padding: 10px 20px;
+        }
+    }
+}
 .login-style{
     .tab{color: $brand-primary;}
     .tab:first-child{

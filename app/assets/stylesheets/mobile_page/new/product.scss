@@ -21,55 +21,6 @@
       line-height: 20px;
     }
 }
-.product-box{
-    .cover { position: relative;}
-    .cover img{ width: 100%;}
-    .img{
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        z-index: 2;
-        background-size:cover;
-        background-position:center center;
-        background-color: #fff;
-        background-repeat: no-repeat;
-    }
-    .title{
-      font-size: 13px;
-      padding:2px 0;
-      text-overflow:ellipsis;
-      white-space:nowrap;
-      overflow:hidden;
-      a{
-          color: #414141;
-      }
-    }
-    .price{
-      font-size: 11px;
-      color: $brand-primary;
-      text-overflow:ellipsis;
-      white-space:nowrap;
-      overflow:hidden;
-      span{
-          text-decoration:line-through;
-          color: #b6b6b6;
-          font-size: 9px;
-          display: inline-block;
-
-      }
-    }
-    .like-box{
-        position: absolute;
-        right: 10px;
-        z-index: 3;
-        bottom: 0px;
-        background: rgba(255,255,255,0.8);
-        padding: 5px 10px 3px;
-        border-radius: 4px 4px 0 0;
-    }
-}
 .product-info-box{
     background:#fff;
     margin-bottom: 15px;
