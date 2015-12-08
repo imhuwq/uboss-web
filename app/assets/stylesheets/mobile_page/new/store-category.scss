@@ -1,3 +1,30 @@
+.store-category-cover{
+    margin-bottom: 10px;
+    .cover{
+        float: left;
+        margin-right: 10px;
+        border-radius: 6px;
+        overflow: hidden;
+        img{
+            height: 60px;
+            width: 60px;
+        }
+    }
+    .content{
+        overflow: hidden;
+        height: 60px;
+    }
+}
+.share-category-box{
+    img{
+        height: 35px;
+        width: 35px;
+        margin-right: 5px;
+        border-radius: 500px;
+        vertical-align: middle;
+        overflow: hidden;
+    }
+}
 .product-box{
     position: relative;
     margin:10px 0 ;
@@ -32,7 +59,6 @@
         width: 100%;
         padding: 0 5px;
         text-align: center;
-        color: #888;
         box-sizing: border-box;
         background: rgba(255,255,255,.8);
         text-overflow:ellipsis;
