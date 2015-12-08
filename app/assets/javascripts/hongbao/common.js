@@ -201,4 +201,9 @@ $(function(){
 	$('.page3 .share-box').on('click',function(){
 		$(this).addClass('hidden');
 	})
+
+  function preventDefault(ev) {
+    ev.preventDefault()
+  }
+  document.addEventListener('touchmove', preventDefault, false)
 })
