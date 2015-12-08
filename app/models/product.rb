@@ -134,34 +134,6 @@ class Product < ActiveRecord::Base
     order_items.joins(:order).where('orders.state > 2 AND orders.state <> 5').sum(:amount)
   end
 
-  def calculate_ship_price(count, user_address, product_inventory_id=nil)
-    return 0.0 if meet_full_cut?(count, product_inventory_id)
-    if transportation_way == 1
-      traffic_expense.to_f
-    elsif transportation_way == 2 && user_address.try(:province)
-      province = ChinaCity.get(user_address.province)
-      carriage_template = CarriageTemplate.find(carriage_template_id)
-      carriage_template.total_carriage(count, province)
-    else
-      0.0
-    end
-  end
-
-  def meet_full_cut?(count, product_inventory_id)
-    if self.full_cut
-      OrdinaryProduct::FullCut[self.full_cut_unit] == '件' ? check_full_cut_piece(count) : check_full_cut_yuan(count, product_inventory_id)
-    end
-  end
-
-  def check_full_cut_piece(count)
-    count >= full_cut_number
-  end
-
-  def check_full_cut_yuan(count, product_inventory_id)
-    product_inventory = ProductInventory.find(product_inventory_id) if product_inventory_id
-    ( count * product_inventory.price ) >= full_cut_number
-  end
-
   def sku_hash
     skus = {}
     sku_details = {}

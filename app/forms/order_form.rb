@@ -163,7 +163,7 @@ class OrderForm
     if product_id.present?
       if !product_inventory.saling?
         errors.add(:base, "该商品不可售")
-      elsif !Order.valid_to_sales?(product, ChinaCity.get(user_address.try(:province) || province))
+      elsif !OrdinaryOrder.valid_to_sales?(product, ChinaCity.get(user_address.try(:province) || province))
         errors.add(:base, "该商品在收货地址内不可售，请重新选择收货地址")
       elsif amount.to_i > product_inventory.reload.count
         self.amount = product_inventory.count
@@ -176,7 +176,7 @@ class OrderForm
       cart_items.each do |cart_item|
         if !cart_item.product_inventory.saling?
           errors.add(:base, "#{cart_item.product_name}[#{cart_item.sku_attributes_str}] 不可售")
-        elsif !Order.valid_to_sales?(cart_item.product, ChinaCity.get(user_address.try(:province) || province))
+        elsif !OrdinaryOrder.valid_to_sales?(cart_item.product, ChinaCity.get(user_address.try(:province) || province))
           errors.add(:base, "#{cart_item.product_name} 在收货地址内不可售，请重新选择收货地址") && return
         elsif cart_item.count > cart_item.product_inventory.reload.count
           cart_item.update_attribute(:count, cart_item.product_amount)
