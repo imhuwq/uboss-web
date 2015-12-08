@@ -339,14 +339,14 @@ footer{
     border-bottom: 10px solid #000;
 }
 .game-main-icon span{
-    padding-top: 200px;
-    width: 200px;
-    height: 100px;
-    position: absolute;
-    bottom: 0px;
-    left: 50%;
-    margin-left: -100px;
-    z-index: 1;
+  width: 200px;
+  padding: 800px 300px 0;
+  height: 100px;
+  position: absolute;
+  bottom: 0px;
+  left: 50%;
+  margin-left: -400px;
+  z-index: 1;
 }
 .game-area:after{
     position: absolute;
