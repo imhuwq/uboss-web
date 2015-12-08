@@ -41,13 +41,13 @@ class Order < ActiveRecord::Base
 
   aasm column: :state, enum: true, skip_validation_on_save: true, whiny_transitions: false do
     state :unpay
-    state :payed, after_enter: [:invoke_order_payed_job]
+    state :payed
     state :shiped, after_enter: [:fill_shiped_at, :close_order_item_refund_before_shiping]
     state :signed, after_enter: [:fill_signed_at, :active_privilege_card, :close_refunds_before_signed]
     state :completed, after_enter: :fill_completed_at
     state :closed, after_enter: :recover_product_stock
 
-    event :pay, after_commit: :invoke_official_agent_order_process do
+    event :pay, after_commit: :invoke_order_payed_processes do
       transitions from: :unpay, to: :payed
     end
     event :ship do
@@ -211,10 +211,6 @@ class Order < ActiveRecord::Base
     end
   end
 
-  def invoke_order_payed_job
-    OrderPayedJob.perform_later(self)
-  end
-
   def ship_info
     "#{address} #{username}(收)"
   end
@@ -340,9 +336,10 @@ class Order < ActiveRecord::Base
     order_items.each(&:active_privilege_card)
   end
 
-  # 在work 中判断订单是否是创客权订单
-  def invoke_official_agent_order_process
+  def invoke_order_payed_processes
+    # 在work 中判断订单是否是创客权订单
     OfficialAgentOrderJob.set(wait: 5.seconds).perform_later(self)
+    OrderPayedJob.set(wait: 2.seconds).perform_later(self)
   end
 
   def close_prepay
