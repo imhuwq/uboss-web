@@ -166,7 +166,7 @@ class OrdinaryOrder < Order
   end
 
   def calculate_ship_price
-    cart_items = Order.meet_full_cut?(order_items)
+    cart_items = OrdinaryOrder.meet_full_cut?(order_items)
 
     items1 = cart_items.select{ |item| item.product_inventory.transportation_way == 1 }
     items2 = cart_items.select{ |item| item.product_inventory.transportation_way == 2 }
