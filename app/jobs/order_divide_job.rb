@@ -111,7 +111,7 @@ class OrderDivideJob < ActiveJob::Base
     return false if sharing_node.blank?
 
     product = order_item.product
-    product_inventory = order_item.product_inventory
+    product_inventory = order_item.nestest_version_inventory
 
     LEVEL_AMOUNT_FIELDS.each_with_index do |key, index|
       reward_amount = get_reward_amount_by_product_level_and_order_item(product_inventory, key, order_item)
