@@ -60,7 +60,6 @@ class Admin::CategoriesController < AdminController
   end
 
   def update_category_name
-    binding.pry
     category = current_user.categories.find(params[:id])
     if category.update(name: params[:name])
       @message = {message: "修改成功！"}
