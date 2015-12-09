@@ -95,32 +95,22 @@
 	<%= render partial: 'ad_banner_slider', locals: { seller: @seller } %>
 </div>
 <div class="bg-white m-bottom10">
-	<div class="tab-nav sort-nav">
-		<div class="tab active" title="#sort-container1"><span>综合排序</span></div>
-		<div class="tab" title="#sort-container2"><span>新品上架</span></div>
-	</div>
-	<div class="tab-container">
-		<div class="tab-content sort-list" id="sort-container1" style="display: block;">
-			<% if @products.present? %>
-	      <%= render partial: 'product', collection: @products %>
-	    <% else %>
-	      <h2 class="page-title text-center">店家正在准备好货，敬请期待</h2>
-	    <% end %>		
-		</div><!-- #category-container -->
-		<div class="tab-content" id="sort-container2">
-		  <div class="box store-list">
-		    <% if @products.present? %>
+	<ul class="sort-nav">
+		<li class="sort-tab active"><a href="#sort-container">综合排序</a></li>
+		<li class="sort-tab"><a href="#sort-container">新品上架</a></li>
+		<li class="sort-tab"><a href="#sort-container">人气热销</a></li>
+	</ul>
+	<div class="sort-container" id="sort-container">
+		<div class="sort-list">
+			<div class="box">
+				<% if @products.present? %>
 		      <%= render partial: 'product', collection: @products %>
 		    <% else %>
 		      <h2 class="page-title text-center">店家正在准备好货，敬请期待</h2>
-		    <% end %>		
-		  </div><!-- box -->
-			<% if @products.size > 6 %>
-			  <br />
-			  <div class="load-more" data-container='.store-list' data-ele='.p-item' data-ref='<%= request.path %>'>加载更多</div>
-			<% end %>
-	  </div><!-- #product-container -->
-	</div><!-- tab-container -->  
+		    <% end %>	
+	    </div>	
+  	</div><!-- sort-list -->
+	</div><!-- #sort-container -->
 </div>
 
 
