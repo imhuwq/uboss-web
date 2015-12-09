@@ -206,11 +206,6 @@ ActiveRecord::Schema.define(version: 20151207120912) do
 
   add_index "favour_products", ["product_id", "user_id"], name: "index_favour_products_on_product_id_and_user_id", unique: true, using: :btree
 
-  create_table "follower_associations", force: :cascade do |t|
-    t.integer "user_id"
-    t.integer "follower_id"
-  end
-
   create_table "mobile_captchas", force: :cascade do |t|
     t.string   "code"
     t.datetime "expire_at"
@@ -285,13 +280,13 @@ ActiveRecord::Schema.define(version: 20151207120912) do
     t.integer  "refund_reason_id"
     t.string   "description"
     t.integer  "order_item_id"
-    t.datetime "created_at",                       null: false
-    t.datetime "updated_at",                       null: false
+    t.datetime "created_at",          null: false
+    t.datetime "updated_at",          null: false
     t.string   "aasm_state"
     t.integer  "order_state"
     t.string   "refund_type"
     t.integer  "user_id"
-    t.jsonb    "state_at_attributes", default: {}, null: false
+    t.jsonb    "state_at_attributes"
     t.string   "address"
     t.string   "return_explain"
     t.datetime "deal_at"
@@ -299,7 +294,6 @@ ActiveRecord::Schema.define(version: 20151207120912) do
 
   create_table "order_items", force: :cascade do |t|
     t.integer  "order_id"
-    t.integer  "product_id"
     t.integer  "user_id"
     t.integer  "amount"
     t.datetime "created_at",                         null: false
@@ -309,6 +303,7 @@ ActiveRecord::Schema.define(version: 20151207120912) do
     t.decimal  "present_price",        default: 0.0
     t.decimal  "privilege_amount",     default: 0.0
     t.integer  "product_inventory_id"
+    t.integer  "product_id"
     t.integer  "order_item_refund_id"
   end
 
@@ -331,10 +326,10 @@ ActiveRecord::Schema.define(version: 20151207120912) do
     t.datetime "signed_at"
     t.datetime "shiped_at"
     t.datetime "completed_at"
-    t.string   "ship_number"
-    t.integer  "express_id"
     t.string   "to_seller"
     t.decimal  "ship_price",      default: 0.0
+    t.string   "ship_number"
+    t.integer  "express_id"
     t.integer  "order_charge_id"
     t.decimal  "paid_amount",     default: 0.0
     t.string   "type"
@@ -460,6 +455,8 @@ ActiveRecord::Schema.define(version: 20151207120912) do
     t.integer  "full_cut_number"
     t.integer  "full_cut_unit"
   end
+
+  add_index "products", ["type"], name: "index_products_on_type", using: :btree
 
   create_table "redactor_assets", force: :cascade do |t|
     t.string   "data_file_name",               null: false

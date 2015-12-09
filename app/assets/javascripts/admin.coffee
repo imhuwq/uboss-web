@@ -21,6 +21,7 @@
 #= require admin/sms
 #= require admin/user_address
 #= require admin/refund
+#= require admin/category
 #= require shared/upyun
 #= require shared/multi_upyun_admin
 #= require shared/count_down

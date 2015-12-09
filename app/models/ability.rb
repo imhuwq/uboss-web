@@ -52,6 +52,7 @@ class Ability
     can :read, DivideIncome, user_id: user.id
     can :read, DivideIncome, order: { seller_id: user.id }
     can :read, SellingIncome, user_id: user.id
+    can :manage, Category, user_id: user.id
     can :manage, BankCard, user_id: user.id
     can :manage, CarriageTemplate
     can :read, Express

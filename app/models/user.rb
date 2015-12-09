@@ -44,6 +44,7 @@ class User < ActiveRecord::Base
   has_many :sold_orders, class_name: 'Order', foreign_key: 'seller_id'
   has_many :sold_order_items, through: :sold_orders, source: :order_items
   has_many :products
+  has_many :categories
   has_many :selling_incomes
   belongs_to :agent, class_name: 'User'
 

@@ -1,0 +1,9 @@
+<div class="form-group string required product_name">
+  <label class="string required control-label" for="product_name">
+    产品分组
+  </label>
+  <div class="control-input">
+    <input class="string required form-control" type="text" id="category-option" name="product[categories]">
+    <option></option>
+  </div>
+</div>

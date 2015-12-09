@@ -20,7 +20,6 @@ class Admin::ProductsController < AdminController
   end
 
   def create
-    @product.user_id = current_user.id
     if @product.save
       flash[:success] = '产品创建成功'
       redirect_to action: :show, id: @product.id
@@ -94,7 +93,7 @@ class Admin::ProductsController < AdminController
       :name,      :original_price,  :present_price,     :count,
       :content,   :has_share_lv,    :calculate_way,     :avatar,
       :traffic_expense, :short_description, :transportation_way,
-      :carriage_template_id,
+      :carriage_template_id, :categories,
       :full_cut, :full_cut_number, :full_cut_unit,
       product_inventories_attributes: [
         :id, :price, :count, :share_amount_total, :privilege_amount,

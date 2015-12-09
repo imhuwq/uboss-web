@@ -7,7 +7,15 @@
 <% end %>
 
 <%= upyun_meta_tags prefix: 'asset_img/avatar' %>
+<div class="admin-box beige-bg-color">
+  <h4 class="edit-title">基本信息</h4>
+  <%= hidden_field_tag :pre_load_tages, @product.categories.collect(&:name).join(',') %>
+  <%= hidden_field_tag :tages, current_user.categories.collect(&:name).join(',') %>
+  <div id="category">
 
+  </div>
+</div>
+<br />
 <div class="admin-box beige-bg-color">
   <h4 class="edit-title">商品信息</h4>
   <%= f.input :name %>

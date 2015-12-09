@@ -18,6 +18,7 @@ class Product < ActiveRecord::Base
   belongs_to :carriage_template
   has_many :different_areas, through: :carriage_template
   has_many :order_items
+  has_and_belongs_to_many :categories, -> { uniq } ,autosave: true
   has_many :product_inventories, autosave: true, dependent: :destroy
   has_many :cart_items,  through: :product_inventories
   has_many :seling_inventories, -> { where(saling: true) }, class_name: 'ProductInventory', autosave: true
@@ -36,6 +37,7 @@ class Product < ActiveRecord::Base
   validates_numericality_of :full_cut_number, greater_than: 0, if: "full_cut"
 
   before_create :generate_code
+  after_create :add_categories_after_create
 
   validate do
     #统一邮费
@@ -215,6 +217,32 @@ class Product < ActiveRecord::Base
     hash[:sku_details] = sku_details
     hash[:count] = count
     return hash
+  end
+
+  def categories=(category_names)
+    unless category_names.is_a?(Array)
+      category_names = category_names.split(',')
+    end
+    if self.new_record?
+      @category_names = category_names
+    else
+      self.categories.clear
+      category_names.each do |item|
+        category = Category.find_or_create_by(name: item, user_id: self.user_id)
+        self.categories << category
+      end
+    end
+  end
+
+  def add_categories_after_create
+    if @category_names && @category_names.any?
+      @category_names.each do |item|
+        category = Category.find_or_create_by(name: item, user_id: self.user_id)
+        category.user_id = self.user_id
+        categories << category
+      end
+      save
+    end
   end
 
   private

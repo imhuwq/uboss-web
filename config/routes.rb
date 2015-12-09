@@ -40,6 +40,7 @@ Rails.application.routes.draw do
   resources :bonus, only: [:create]
   resources :stores, only: [:index, :show] do
     get :hots, :favours, on: :member
+    resources :categories, only: [:show]
   end
   resources :orders, only: [:new, :create, :show] do
     get 'received', on: :member
@@ -221,6 +222,11 @@ Rails.application.routes.draw do
       get '/backend_status', to: 'dashboard#backend_status'
 
       root 'dashboard#index'
+
+      resources :categories, except: [:show] do 
+        post :update_categories, on: :collection
+        post :updata_category_img, :update_category_name,  on: :member
+      end
     end
     mount RedactorRails::Engine => '/redactor_rails'
   end

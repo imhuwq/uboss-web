@@ -1,0 +1,54 @@
+<%= content_for :page_title do %>
+  <% if @category %>
+    <%= @category.name %>
+  <% else %>
+    <div class="log_font"> UBOSS </div>
+  <% end %>
+<% end %>
+
+<%= render partial: 'stores/banner_slider', locals: { seller: @store } %>
+
+<br />
+
+<div class="store-cover text-center" style="<%= "background-image:url('#{@store.store_cover.url(:w640)}')" if @store.user_info.store_cover_identifier.present? %>">
+  <div class="content">
+    <h2 class="name"><%= @store.store_name %></h2>
+
+    <% if @store.store_short_description.present?  %>
+      <p class="gray-color"><%= @store.store_short_description %></p>
+    <% end %>
+
+    <p>
+      <span class="like-color"><%= number_to_percentage(@store.good_reputation_rate, precision: 0) %></span> 好评（<%= @store.total_reputations %>）
+    </p>
+
+  </div>
+</div><!-- store-cover -->
+
+<div class="bg-white">
+  <div class="box store-list">
+    <div class="box-w100">
+      <div class="page-title"><%= @category.name %></div>
+    </div>
+
+    <% if @products.present? %>
+      <%= render partial: 'stores/product', collection: @products %>
+    <% else %>
+      <h2 class="page-title text-center">正在准备好货，敬请期待</h2>
+    <% end %>
+
+  </div>
+</div>
+
+<% if true#@products.size > 6 %>
+  <br />
+  <div class="load-more" data-container='.store-list' data-ele='.p-item' data-ref='<%= request.path %>'>加载更多</div>
+<% end %>
+
+<% if browser.wechat? %>
+  <%= content_for :extra_javascript do %>
+    <script type="text/javascript" charset="utf-8">
+      wx.ready(function(){ UBoss.luffy.invokeSharing(); });
+    </script>
+  <% end %>
+<% end %>
