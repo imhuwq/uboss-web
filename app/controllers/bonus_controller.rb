@@ -19,7 +19,8 @@ class BonusController < ApplicationController
       inviter_uid: params[:inviter_uid]
     )
     if @bonus_record.save
-      head(200)
+      session[Ubonus::Invite::RAND_BONUS_SESSIONS_KEY] = nil
+      render json: { amount: @bonus_record.amount }
     else
       render json: { message: model_errors(@bonus_record) }, status: 422
     end
