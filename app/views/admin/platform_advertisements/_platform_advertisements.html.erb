@@ -1,0 +1,37 @@
+<div class="index_list">
+  <table class="list-table">
+    <thead>
+      <th>图片</th>
+      <th>链接</th>
+      <th>操作</th>
+    </thead>
+    <% platform_advertisements.each_with_index do |platform_advertisement,i| %>
+      <tr>
+        <td>
+          <p class="fileinput-button">
+            <% if platform_advertisement.image_url.blank? %>
+              <%= image_tag("admin/no-img.png", class:"clean",style:"height: 80px;") %>
+            <% else %>
+              <%= image_tag(platform_advertisement.image_url(:thumb), class:"clean", style:"height: 80px;")%>
+            <% end %>
+          </p>
+          <div style="font-size:10px;">(点击图片进行替换)</div>
+        </td>
+        <td><%= platform_advertisement.advertisement_url %></td>
+        <td>
+          <% if can? :update, platform_advertisement %>
+            <%= link_to url_for(action: :edit, id: platform_advertisement.id), class:'edit-icon', title: '编辑' do %>
+              <i class="fa fa-pencil-square-o"></i>
+            <% end %>
+            <%= link_to admin_platform_advertisement_path(platform_advertisement),
+              method: :delete, class:'change-status-btn edit-icon', data: { confirm: '确认删除？' } do %>
+              <i class="fa fa-trash-o"></i>
+            <% end %>
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+  </table>
+</div>
+
+ 

@@ -231,6 +231,7 @@ Rails.application.routes.draw do
         post :update_store_logo, :updata_product_advertisement_img, on: :member
         get  :show_product_advertisement_img, on: :member
       end
+      resources :platform_advertisements
     end
     mount RedactorRails::Engine => '/redactor_rails'
   end

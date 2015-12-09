@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151203192551) do
+ActiveRecord::Schema.define(version: 20151208054709) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -301,6 +301,13 @@ ActiveRecord::Schema.define(version: 20151203192551) do
 
   add_index "personal_authentications", ["identity_card_code"], name: "index_personal_authentications_on_identity_card_code", unique: true, using: :btree
   add_index "personal_authentications", ["user_id"], name: "index_personal_authentications_on_user_id", unique: true, using: :btree
+
+  create_table "platform_advertisements", force: :cascade do |t|
+    t.string   "advertisement_url"
+    t.integer  "status",            default: 0
+    t.datetime "created_at",                    null: false
+    t.datetime "updated_at",                    null: false
+  end
 
   create_table "privilege_cards", force: :cascade do |t|
     t.integer  "user_id"
