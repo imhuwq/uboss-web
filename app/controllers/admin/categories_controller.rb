@@ -37,7 +37,7 @@ class Admin::CategoriesController < AdminController
       params[:categories].each do |i,attributes|
         Category.find_by(id: attributes[:id]).update(attributes.permit(:name, :avatar))
       end
-    rescue Exception => ex 
+    rescue Exception => ex
       @errors << ex.full_message
     end
     if @errors
@@ -50,7 +50,6 @@ class Admin::CategoriesController < AdminController
   end
 
   def updata_category_img
-    binding.pry
     category = Category.find(params[:id])
     if category.update(avatar: params[:avatar])
       @message = {message: "上传成功！"}

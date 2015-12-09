@@ -36,6 +36,7 @@
   </div>
   <br />
 <% end %>
+
 <div class="bg-white">
   <div class="store-like">
     <div class="box">
@@ -44,7 +45,7 @@
           <%= link_to hots_store_path(@seller), class: 'more-bar' do %>
             more <%= image_tag 'mobile/arrow-right.png' %>
         <% end %>
-        categories
+        商品分类
         </div>
       </div>
       <%= render partial: 'categories', collection:  @seller.categories, as: :category %>
