@@ -52,13 +52,15 @@ $ ->
       requesting = false
     .fail (xhr, textStatus) ->
       requesting = false
-      message = (
+      errorInfo = (
         try
-          JSON.parse(xhr.responseText).message
+          JSON.parse(xhr.responseText)
         catch error
           '领取失败'
       )
-      if message == 'received'
+      if errorInfo.message == 'received'
+        wxSharingOpts.link = errorInfo.invite_url
+        UBoss.luffy.resetInvokeSharing(wxSharingOpts)
         $('.received-page').removeClass('hidden')
         $('.receiving-page').addClass('hidden')
       else
