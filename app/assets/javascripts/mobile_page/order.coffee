@@ -257,5 +257,5 @@ $ ->
         '</p><p class="like-color text-break"><small>抱歉，该商品在收货地址内不可售，请重新选择收货地址</small></p></div></div>'
     $(".dead-items").empty().append(html)
 
-  if $('#total_price').length != 0
+  if $('#total_price').length != 0 && location.pathname == '/orders/new'
     setOrderRelativeData()

@@ -1,0 +1,45 @@
+<%= content_for :page_title do %>
+  支付结果
+<% end %>
+
+<% if @order.unpay? %>
+
+  <div class='pay-result'>
+    <p>暂未收到订单支付结果</p>
+  </div>
+  <div class='unpay-result'>
+    <p>
+      <span>订单编号：</span>
+      <span class="unpay-info"><%= @order.number %></span>
+    </p>
+    <p>
+      <span>商品名称：</span>
+      <span class="unpay-info"><%= @product.name %></span>
+    </p>
+  </div>
+  <p class="pay-comment">支付结果可能会有几分钟延迟，您可以刷新结果或稍晚查看我的订单。</p>
+
+<% else %>
+
+  <div class="pay_box1">
+    <div class="pay_sucss">
+      <%= image_tag 'img/pay_sucsss.png' %>
+      <span>支付成功</span>
+    </div>
+    <p>您已通过微信支付成功支付￥<%= @order_charge.paid_amount %>元</p>
+    <p>订单编号 ：<%= @order.number %></p>
+    <% if @product.is_official_agent? %>
+      <p>恭喜您成功购买UBOSS创客权，订单已提交后台自动处理。</p>
+      <p>订单处理完成后，您将成为UBOSS创客，请到个人设置设置您的密码(如果您还没有设置过密码)。</p>
+    <% end %>
+  </div>
+
+  <% if @privilege_card.present? %>
+    <div class="pay_sidba">您获得本商品的友情卡，确认收货后生效</div>
+    <br />
+    <%= render partial: 'privilege_card', locals: { privilege_card: @privilege_card, product: @product } %>
+  <% end %>
+
+  <%= link_to "查看订单", order_path(@order), class: "pay-bottom" %>
+
+<% end %>

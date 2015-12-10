@@ -1,0 +1,82 @@
+<%= content_for :page_title do %>
+  提交订单
+<% end %>
+
+<%= simple_form_for @order_form, url: service_orders_path, method: 'POST', wrapper: :default do |f| %>
+	<br />
+  <div class="cart-list">
+    <%= f.hidden_field :product_id %>
+    <%= f.hidden_field :product_inventory_id %>
+    <%= f.hidden_field :amount %>
+    <%= f.hidden_field :sharing_code %>
+
+    <% privilege_amount = @order_form.privilege_amount %>
+    <div class="order-list valid-order-list valid-list">
+      <div class="seller-box"><div class="text-cut">商家：<%= @seller.store_identify %></div></div>
+
+      <div class="order-box valid-box">
+        <div class="cover"><%= image_tag(url_for(@product.image_url(:w120)),  alt: "-") %></div>
+        <div class="content">
+          <div class="price">
+            <p>￥<span class="product-price"><%= @product.present_price %></span></p>
+            <p class="gray-color num" data-num="<%= @order_form.amount %>">x <%= @order_form.amount %></p>
+          </div>
+          <p class="name"><%= @product.name %></p>
+        </div><!-- content -->
+      </div><!-- order-box -->
+
+
+      <% sharing_user = @order_form.sharing_node.try(:user) %>
+      <% if sharing_user.present? %>
+        <div class="friend-info">
+          <div class="cover">
+            <%= image_tag sharing_user.avatar_url(:thumb) %>
+          </div>
+          <div class="content">
+            <span class="pull-right red-color order-privilege-amount"><%= privilege_amount*@order_form.amount.to_i %></span><span class="main-color"><%= sharing_user.identify %></span> 帮你优惠
+          </div>
+        </div><!-- friend-info -->
+      <% end %>
+
+      <div class="price-box">
+        合计
+        <span>￥ <%= @product.present_price*@order_form.amount.to_i %></span>
+      </div><!-- price-box -->
+      <div class="message-box">
+        <%= f.input_field :to_seller, type: "text", placeholder: "给卖家留言", class: "input-block" %>
+      </div><!-- message-box -->
+    </div><!-- order-list -->
+
+
+    <% if current_user.blank? || (current_user && current_user.need_set_login?) %>
+      <div class="no-login">
+        <div class="mobile">
+          <a href='#' class="btn pull-right" id="send_mobile"><small>发送验证码</small></a>
+          <div class="content"><%= f.input_field :mobile, type: :tel, placeholder: '输入手机号', class:"input-block",id:'new_mobile' %></div>
+        </div>
+        <div class="gap">
+          <%= f.input_field :captcha, type: :tel, placeholder: '填写短信验证码', class: "input-block"  %>
+        </div>
+      </div><!-- no-login -->
+    <% end %>
+  </div><!--cart-list -->
+
+  <div class="order-price">
+    <%= submit_tag '提交订单', class: "accunt_adilbtn cart-btn btn", data: { disable_with: '提交订单中...' } %>
+    <div class="content">
+      <p>应付款：<span id="total_price"><%= @product.present_price*@order_form.amount.to_i %></span></p>
+      <p class="gray-color"><small>共优惠<%= privilege_amount*@order_form.amount %>元</small></p>
+    </div>
+  </div><!-- order-price -->
+
+<% end %>
+
+<% if browser.wechat? %>
+  <%= content_for :extra_javascript do %>
+    <script type="text/javascript" charset="utf-8">
+      wx.ready(function(){
+        wx.hideOptionMenu();
+      });
+    </script>
+  <% end %>
+<% end %>

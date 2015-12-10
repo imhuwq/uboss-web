@@ -22,6 +22,16 @@ class AccountsController < ApplicationController
     end
   end
 
+  def service_orders
+    @orders = append_default_filter account_service_orders(params[:state]), page_size: 10
+
+    if request.xhr?
+      render partial: 'accounts/service_order', collection: @orders
+    else
+      render :service_orders, layout: 'mobile'
+    end
+  end
+
   def update
     user_params = params.require(:user).permit(:nickname)
     if current_user.update(user_params)
@@ -183,7 +193,16 @@ class AccountsController < ApplicationController
   def account_orders(type)
     type ||= 'all'
     if ["unpay", "payed", "shiped", "signed", "completed", "all"].include?(type)
-      current_user.ordinary_orders.try(type).includes(order_items: { product_inventory: { product: :asset_img } })
+      OrdinaryOrder.where(user: current_user).try(type).includes(order_items: { product_inventory: { product: :asset_img } })
+    else
+      raise "invalid orders state"
+    end
+  end
+
+  def account_service_orders(type)
+    type ||= 'all'
+    if ["unpay", "payed", "expensed", "completed", "all"].include?(type)
+      ServiceOrder.where(user: current_user).try(type).includes(order_items: { product_inventory: { product: :asset_img } })
     else
       raise "invalid orders state"
     end

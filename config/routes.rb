@@ -46,6 +46,7 @@ Rails.application.routes.draw do
     post 'change_address', on: :collection
     #resource :charge, only: [:create]
   end
+  resources :service_orders, only: [:new, :create, :show]
   resources :charges, only: [:show] do
     get 'payments',     on: :collection
     get 'pay_complete', on: :member
@@ -76,8 +77,8 @@ Rails.application.routes.draw do
   end
 
   resource :account, only: [:show, :edit, :update] do
-    get :settings,         :edit_password,
-        :orders,           :binding_agent, :invite_seller,
+    get :settings, :edit_password, :orders,
+        :service_orders, :binding_agent, :invite_seller,
         :edit_seller_histroy, :edit_seller_note, :seller_agreement,
         :merchant_confirm,    :binding_successed,
         :income, :service_orders

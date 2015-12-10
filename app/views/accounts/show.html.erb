@@ -30,14 +30,14 @@
       <div class="order-list">
         <div class="seller-box">
           <span class="pull-right like-color">
-            <%= link_to '全部验证券', 'javascript:;', class: 'like-color' %>
+            <%= link_to '全部验证券', service_orders_account_path, class: 'like-color' %>
           </span>
           <div class="text-cut">我的验证券</div>
         </div>
         <div class="link-tab">
-          <a href="javacript:;"><span>待付款</span></a>
-          <a href="javacript:;"><span>待消费</span></a>
-          <a href="javacript:;"><span>待评价</span></a>
+          <a href="<%= service_orders_account_path(state: 'unpay') %>"><span>待付款</span></a>
+          <a href="<%= service_orders_account_path(state: 'payed') %>"><span>待消费</span></a>
+          <a href="<%= service_orders_account_path(state: 'expensed') %>"><span>待评价</span></a>
         </div>
       </div>
     </div>
