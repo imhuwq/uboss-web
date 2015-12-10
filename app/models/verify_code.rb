@@ -1,6 +1,7 @@
 class VerifyCode < ActiveRecord::Base
   belongs_to :service_product
 
+  before_create :generate_code
   validates_uniqueness_of :code
 
   default_scope {order("updated_at desc")}
@@ -9,11 +10,12 @@ class VerifyCode < ActiveRecord::Base
 
   scope :total, ->(user) { where(verified: true, service_product_id: user.service_product_ids) }
 
-  def generate_code
-    self.code = SecureRandom.random_number(100000000000)
-  end
-
   def verify_code
     update(verified: true) if !verified
+  end
+
+  private
+  def generate_code
+    self.code = SecureRandom.random_number(100000000000)
   end
 end
