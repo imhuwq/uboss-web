@@ -1,6 +1,5 @@
 class ServiceProduct < Product
   belongs_to :service_store
-  has_many :verify_codes, autosave: true
 
   validates :original_price, :present_price, :service_type, :monthes, presence: true
   validates :service_type, inclusion: { in: [0, 1] }
@@ -14,8 +13,12 @@ class ServiceProduct < Product
   scope :vouchers, -> { where(service_type: 0) }
   scope :groups, -> { where(service_type: 1) }
 
+  def total_sales_volume
+    order_items.map(&:amount).sum
+  end
+
   def total_income
-    present_price * verify_codes.size
+    present_price * total_sales_volume
   end
 
   private

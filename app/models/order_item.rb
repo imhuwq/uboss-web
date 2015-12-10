@@ -7,6 +7,7 @@ class OrderItem < ActiveRecord::Base
   belongs_to :sharing_node
   has_many   :evaluations
   has_many   :sharing_incomes
+  has_many   :verify_codes, autosave: true
 
   validates :user, :product_inventory, :amount, :present_price, :pay_amount, presence: true
 

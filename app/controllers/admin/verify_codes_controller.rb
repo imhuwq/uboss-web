@@ -2,19 +2,21 @@ class Admin::VerifyCodesController < AdminController
   load_and_authorize_resource
 
   def index
-    @verify_codes = VerifyCode.where(service_product_id: current_user.service_product_ids).reorder(verified: 'desc').order(updated_at: 'desc')
+    order_item_ids = OrderItem.where(product_id: current_user.service_product_ids)
+    @verify_codes = VerifyCode.where(order_item_id: order_item_ids).reorder(verified: 'desc').order(updated_at: 'desc')
     @total = VerifyCode.total(current_user).size
     @today = VerifyCode.today(current_user).size
   end
 
   def statistics
-    @service_products = current_user.service_products
+    @order_items = OrderItem.where(product_id: current_user.service_product_ids)
     @total = VerifyCode.total(current_user).size
     @today = VerifyCode.today(current_user).size
   end
 
   def verify
-    @verify_code = VerifyCode.where(code: params[:code], service_product_id: current_user.service_product_ids).first
+    order_item_ids = OrderItem.where(product_id: current_user.service_product_ids)
+    @verify_code = VerifyCode.where(code: params[:code], order_item_id: order_item_ids).first
 
     if @verify_code.present? && @verify_code.verify_code
       flash[:success] = '验证成功'
