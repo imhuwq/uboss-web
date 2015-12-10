@@ -8,7 +8,19 @@
 #= reuqire_self
 
 $ ->
-
+  $('.share-btn').on 'click',(e) ->
+    e.preventDefault()
+    $('.page1').addClass('hidden')
+    $('.page2').removeClass('hidden')
+  
+  $('.has-revived-btn').on 'click',(e)->
+    e.preventDefault()
+    $('.pop-container.nobg').removeClass('hidden');
+  
+  $('.pop-container.nobg').on 'click',(e)->
+    e.preventDefault()
+    $(this).addClass('hidden')
+  
   $('.receive-bonus-btn').on 'click', (e) ->
     e.preventDefault()
     mobile = $('#u_mobile').val()
@@ -17,6 +29,8 @@ $ ->
       console.log mobile
       alert "手机格式错误"
       return false
+    else
+      $('.pop-container').removeClass('hidden')  
 
     inviter_uid = $('#inviter_uid').val()
     $.ajax
