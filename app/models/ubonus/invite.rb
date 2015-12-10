@@ -17,7 +17,9 @@ class Ubonus::Invite < BonusRecord
   end
 
   def inviter_uid= crypt_id
-    self.inviter_id = CryptService.decrypt crypt_id
+    if crypt_id.present?
+      self.inviter_id = CryptService.decrypt crypt_id
+    end
   end
 
   def active!
