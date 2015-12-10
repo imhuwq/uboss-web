@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>领取红包</title>
+    <link href="<%= image_url("favicon-lg.png") %>" type="image/x-icon" rel="shortcut icon">
+    <link rel="apple-touch-icon" href="<%= image_url("favicon-lg.png") %>">
+    <%= csrf_meta_tags %>
+		<%= javascript_include_tag 'pages/bonus_invite' %>
+		<%= stylesheet_link_tag 'pages/bonus_invite' %>
+  </head>
+  <body>
+
+  <div class="container">
+    <div class='received-page <%= 'hidden' unless current_user && current_user.received_invite_bonus? %>'>
+      <br />
+      <div class="hongbao-content">
+        <div class="page-title has-recived">你已经领取过了</div>
+        <div><span class="yellow-btn has-revived-btn">拯救身边剁手维纳斯</span></div>
+      </div><!-- hongbao-content -->
+      <div class="text-img"></div><!-- text-image-->
+      <div class="pop-container nobg hidden">
+        <div class="page-title">右上角分享至朋友圈</div>
+        <div><small>朋友收到基金你再获得同等基金哦</small></div>
+      </div>
+    </div>
+    <div class='receiving-page <%= 'hidden' if current_user && current_user.received_invite_bonus? %>'>
+      <br />
+      <div class="hongbao-content">
+        <div class="page-title">恭喜获得剁手基金</div>
+        <div class="big-num" data-bonus='<%= session[:rand_bonus_benefit] %>'>?</div>
+        <%= hidden_field_tag :inviter_uid, params[:inviter_uid], id: 'inviter_uid' %>
+        <div>
+          <input type="text" name="u_mobile" id="u_mobile" value="<%= current_user && current_user.login %>" placeholder='请输入手机号' />
+        </div>
+        <div><span class="receive-bonus-btn yellow-btn">输入手机号码，查看剁手基金</span></div>
+      </div><!-- hongbao-content -->
+      <div class="text-img"></div><!-- text-image-->
+      <div class="pop-container hidden">
+        <br />
+        <div class="pop-hongbao">
+          <br />
+          <div class="big-num"><%= session[:rand_bonus_benefit] %>元</div>
+          <br />
+          <div>剁手基金已经发放到手机号码</div>
+          <br />
+          <div id="user-tel"></div>
+          <br />
+        </div><!-- pop-hongbao -->
+        <br />
+        <div class="page1">
+          <div>
+            <a href="/account#hongbao" class="btn">注册UBOSS查看红包</a>
+          </div>
+          <br />
+          <div>
+            <a href="/account#hongbao" class="btn share-btn">给好友发放剁手基金</a>
+          </div>
+          <div><small>朋友收到基金你再获得同等基金哦</small></div>
+        </div><!-- page1 -->
+        <div class="page2 hidden">
+          <div class="page-title">右上角分享至朋友圈</div>
+          <div><small>朋友收到基金你再获得同等基金哦</small></div>
+        </div><!-- page2 -->
+      </div><!-- pop-container -->
+    </div>
+  </div><!-- container -->
+
+<script type="text/javascript" charset="utf-8">
+  wxSharingOpts = {
+    title: '我宁愿当白富美而流泪，也不要当女汉子而流血！',
+    desc: '双十二送6.4亿大狂欢，流血的女汉子快来摇身一变白富美吧！',
+    link: '<%= bonus_invite_pages_url(inviter_uid: current_user && CryptService.encrypt(current_user.id)) %>',
+    imgurl: '<%= asset_url("game/honbao_invite_avatar.jpg") %>',
+  };
+</script>
+<% if browser.wechat? %>
+  <%= render "weixin_js" %>
+  <script type="text/javascript" charset="utf-8">
+wx.ready(function(){
+  UBoss.luffy.resetInvokeSharing(wxSharingOpts);
+});
+  </script>
+<% end %>
+
+<%= render partial: 'baidu_tongji' %>
+  </body>
+</html>

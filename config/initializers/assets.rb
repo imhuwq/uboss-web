@@ -18,4 +18,6 @@ admin/sku_app/application.js
 admin/sku_app/application.js mobile_page/chat_app/boot.js
 >>>>>>> feature/game
 hongbao.js hongbao.css
+pages/bonus_invite.js
+pages/bonus_invite.css
 )

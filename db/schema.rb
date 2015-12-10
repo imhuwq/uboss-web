@@ -63,9 +63,14 @@ ActiveRecord::Schema.define(version: 20151130063351) do
 
   create_table "bonus_records", force: :cascade do |t|
     t.decimal  "amount"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at",          null: false
+    t.datetime "updated_at",          null: false
     t.integer  "user_id"
+    t.string   "type"
+    t.integer  "inviter_id"
+    t.boolean  "actived"
+    t.integer  "bonus_resource_id"
+    t.string   "bonus_resource_type"
   end
 
   create_table "carriage_templates", force: :cascade do |t|
@@ -357,6 +362,19 @@ ActiveRecord::Schema.define(version: 20151130063351) do
 
   add_index "personal_authentications", ["identity_card_code"], name: "index_personal_authentications_on_identity_card_code", unique: true, using: :btree
   add_index "personal_authentications", ["user_id"], name: "index_personal_authentications_on_user_id", unique: true, using: :btree
+
+  create_table "preferential_measures", force: :cascade do |t|
+    t.decimal  "amount"
+    t.decimal  "discount"
+    t.decimal  "total_amount"
+    t.string   "type"
+    t.integer  "preferential_item_id"
+    t.string   "preferential_item_type"
+    t.integer  "preferential_source_id"
+    t.string   "preferential_source_type"
+    t.datetime "created_at",               null: false
+    t.datetime "updated_at",               null: false
+  end
 
   create_table "privilege_cards", force: :cascade do |t|
     t.integer  "user_id"
