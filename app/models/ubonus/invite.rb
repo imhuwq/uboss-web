@@ -5,8 +5,21 @@ class Ubonus::Invite < BonusRecord
 
   belongs_to :inviter, class_name: 'User'
 
+  validates_uniqueness_of :user_id
+
   def self.rand_benefit_for_inviting
     RAND_BONUS.sample
+  end
+
+  def self.active_by_user user
+    if user.sign_in_count <= 1
+      delay.active_by_user_id user.id
+    end
+  end
+
+  def self.active_by_user_id uid
+    record = find_by(user_id: uid)
+    record && record.active!
   end
 
   def inviter_uid= crypt_id
