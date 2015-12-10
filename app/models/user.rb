@@ -99,6 +99,10 @@ class User < ActiveRecord::Base
     avatar.url(version)
   end
 
+  def crypt_id
+    self.id && CryptService.encrypt(self.id)
+  end
+
   class << self
     def official_account
       @official_account ||= find_by(login: OFFICIAL_ACCOUNT_LOGIN)

@@ -9,9 +9,8 @@ class Ubonus::Invite < BonusRecord
     RAND_BONUS.sample
   end
 
-  private
-  def parse_invi
-
+  def inviter_uid= crypt_id
+    self.inviter_id = CryptService.decrypt crypt_id
   end
 
 end
