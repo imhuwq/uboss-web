@@ -43,7 +43,7 @@ Rails.application.routes.draw do
     end
   end
   resources :bonus, only: [:create] do
-    post :invited, as: :collection
+    post :invited, on: :collection
   end
   resources :stores, only: [:index, :show] do
     get :hots, :favours, on: :member

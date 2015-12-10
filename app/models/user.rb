@@ -99,6 +99,14 @@ class User < ActiveRecord::Base
     avatar.url(version)
   end
 
+  def crypt_id
+    self.id && CryptService.encrypt(self.id)
+  end
+
+  def received_invite_bonus?
+    bonus_records.where(type: 'Ubonus::Invite').exists?
+  end
+
   class << self
     def official_account
       @official_account ||= find_by(login: OFFICIAL_ACCOUNT_LOGIN)
