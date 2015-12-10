@@ -13,4 +13,17 @@ class Ubonus::Invite < BonusRecord
     self.inviter_id = CryptService.decrypt crypt_id
   end
 
+  def active
+    return false if self.actived
+    transaction do
+      update(actived: true)
+      if inviter.present?
+        Ubonus::InviteReward.create(
+          user: inviter,
+          bonus_resource: self
+        )
+      end
+    end
+  end
+
 end

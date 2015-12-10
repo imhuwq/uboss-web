@@ -1,6 +1,7 @@
 class BonusRecord < ActiveRecord::Base
 
   belongs_to :user
+  belongs_to :bonus_resource, polymorphic: true
 
   validates :amount, money: true
   validates_presence_of :user, :type
