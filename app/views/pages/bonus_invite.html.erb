@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <title>领取红包</title>
     <link href="<%= image_url("favicon-lg.png") %>" type="image/x-icon" rel="shortcut icon">
     <link rel="apple-touch-icon" href="<%= image_url("favicon-lg.png") %>">
@@ -11,12 +11,26 @@
 		<%= stylesheet_link_tag 'pages/bonus_invite' %>
   </head>
   <body>
-
-    <h1>捡到<%= session[:rand_bonus_benefit] %></h1>
-
-    <%= hidden_field_tag :inviter_uid, params[:inviter] %>
-    <input type="text" name="u_mobile" id="u_mobile" value="" placeholder='请输入手机号' />
-    <a class="receive-bonus-btn" href="#">领取</a>
+		<div class="container">
+			<br />
+			<div class="hongbao-content">
+				<div class="page-title">恭喜获得剁手基金</div>
+				<div class="big-num">?</div>
+		    <div><input type="text" name="u_mobile" id="u_mobile" value="" placeholder='输入手机号码' /></div>
+		    <%= hidden_field_tag :inviter_uid, params[:inviter] %>
+		    <div><span class="receive-bonus-btn">输入手机号码，查看剁手基金</span></div>
+			</div><!-- hongbao-content -->
+			
+	    <div class="text-img"></div><!-- text-image-->
+			<div class="pop-container hidden">
+				<br />
+				<div class="pop-hongbao">
+					<div class="big-num"><%= session[:rand_bonus_benefit] %></div>
+					
+				</div>
+			</div>
+		</div>
+    
 
 
 <% if browser.wechat? %>
