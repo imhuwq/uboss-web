@@ -1,7 +1,7 @@
 class ServiceOrdersController < ApplicationController
-  before_action :authenticate_user!, except: [:new, :create, :ship_price, :change_address]
-  before_action :find_order, only: [:cancel, :show, :pay, :pay_complete, :received]
   before_action :authenticate_user_if_browser_wechat, only: [:new]
+  before_action :authenticate_user!
+  before_action :find_order, only: [:cancel, :show, :pay, :pay_complete, :received]
 
   def new
     if browser.wechat? && session['devise.wechat_data'].blank?
