@@ -26,8 +26,8 @@ $ ->
         mobile: mobile
         inviter_uid: inviter_uid
       }
-    .done ->
-      alert 'success'
+    .done (data)->
+      alert "success: #{data.amount}"
     .fail (xhr, textStatus) ->
       message = (
         try
