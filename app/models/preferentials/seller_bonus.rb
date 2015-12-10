@@ -1,4 +1,4 @@
-class Preferentials::Bonus < PreferentialMeasure
+class Preferentials::SellerBonus < PreferentialMeasure
 
   validates :discount, presence: true, numericality: { less_than_or_equal_to: 0.02 }
 
