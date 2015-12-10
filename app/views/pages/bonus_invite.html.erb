@@ -12,12 +12,15 @@
   </head>
   <body>
 
-    <h1>捡到<%= session[:rand_bonus_benefit] %></h1>
+    <% if current_user && current_user.received_invite_bonus? %>
+      已领取红包
+    <% else %>
+      <h1>捡到<%= session[:rand_bonus_benefit] %></h1>
 
-    <%= hidden_field_tag :inviter_uid, params[:inviter] %>
-    <input type="text" name="u_mobile" id="u_mobile" value="" placeholder='请输入手机号' />
-    <a class="receive-bonus-btn" href="#">领取</a>
-
+      <%= hidden_field_tag :inviter_uid, params[:inviter_uid], id: 'inviter_uid' %>
+      <input type="text" name="u_mobile" id="u_mobile" value="<%= current_user && current_user.login %>" placeholder='请输入手机号' />
+      <a class="receive-bonus-btn" href="#">领取</a>
+    <% end %>
 
 <% if browser.wechat? %>
   <%= render "weixin_js" %>

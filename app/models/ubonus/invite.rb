@@ -5,7 +5,7 @@ class Ubonus::Invite < BonusRecord
 
   belongs_to :inviter, class_name: 'User'
 
-  validates_uniqueness_of :user_id
+  validates_uniqueness_of :user_id, message: '您已领取此红包'
 
   def self.rand_benefit_for_inviting
     RAND_BONUS.sample

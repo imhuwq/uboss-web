@@ -18,6 +18,7 @@ $ ->
       alert "手机格式错误"
       return false
 
+    inviter_uid = $('#inviter_uid').val()
     $.ajax
       url: '/bonus/invited',
       type: 'POST',
@@ -26,11 +27,15 @@ $ ->
         inviter_uid: inviter_uid
       }
     .done ->
-      alert ''
+      alert 'success'
     .fail (xhr, textStatus) ->
-      alert(
+      message = (
         try
           JSON.parse(xhr.responseText).message
         catch error
           '领取失败'
       )
+      if message == 'received'
+        alert('已领取')
+      else
+        alert(message)

@@ -13,6 +13,9 @@ class BonusController < ApplicationController
   end
 
   def invited
+    if @user.received_invite_bonus?
+      return render json: { message: 'received' }, status: 422
+    end
     @bonus_record = Ubonus::Invite.new(
       amount: session[Ubonus::Invite::RAND_BONUS_SESSIONS_KEY],
       user: @user,

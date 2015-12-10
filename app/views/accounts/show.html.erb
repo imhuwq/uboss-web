@@ -91,7 +91,7 @@
             title: '良辰邀你一战！不玩别的就玩抢钱！',
             desc: '别说良辰欺负人，抢了多少都归你！',
             imgurl: asset_url("game/p1.png"),
-            link: ls_game_url
+            link: bonus_invite_pages_url(inviter_uid: CryptService.encrypt(current_user.id))
           ) %>
         </div>
         <a class="p-sharing-btn" href="#"><%= image_tag 'mobile/account/ad.png'%></a>
