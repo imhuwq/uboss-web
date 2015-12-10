@@ -5,6 +5,7 @@
 #= require zepto/plugins/deferred
 #= require rails-behaviors/index
 #= require fastclick
+#= require mobile_page/going_merry
 #= reuqire_self
 
 $ ->
@@ -45,6 +46,8 @@ $ ->
         inviter_uid: inviter_uid
       }
     .done (data)->
+      wxSharingOpts.link = data.invite_url
+      UBoss.luffy.resetInvokeSharing(wxSharingOpts)
       $('.pop-container').removeClass('hidden')
       requesting = false
     .fail (xhr, textStatus) ->

@@ -67,15 +67,17 @@
     </div>
   </div><!-- container -->
 
+<script type="text/javascript" charset="utf-8">
+  wxSharingOpts = {
+    title: '我宁愿当白富美而流泪，也不要当女汉子而流血！',
+    desc: '双十二送6.4亿大狂欢，流血的女汉子快来摇身一变白富美吧！',
+    link: '<%= bonus_invite_pages_url(inviter_uid: current_user && CryptService.encrypt(current_user.id)) %>',
+    imgurl: '<%= asset_url("game/honbao_invite_avatar.jpg") %>',
+  };
+</script>
 <% if browser.wechat? %>
   <%= render "weixin_js" %>
   <script type="text/javascript" charset="utf-8">
-wxSharingOpts = {
-  title: '注册领红包',
-  desc: '领利是',
-  link: '<%= bonus_invite_pages_url %>',
-  imgurl: '<%= asset_url("game/p1.png") %>',
-};
 wx.ready(function(){
   UBoss.luffy.resetInvokeSharing(wxSharingOpts);
 });

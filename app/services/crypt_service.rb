@@ -27,5 +27,11 @@ module CryptService extend self
     c = cipher.encrypt
     c.key = Digest::SHA256.digest(cipher_key)
     Base64.encode64(c.update(value.to_s) + c.final).chomp
+  rescue => e
+    raise e if Rails.env.development?
+    Airbrake.notify_or_ignore(e,
+                              parameters: {value: value},
+                              cgi_data: ENV.to_hash)
+    nil
   end
 end

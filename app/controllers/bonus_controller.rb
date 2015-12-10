@@ -23,7 +23,10 @@ class BonusController < ApplicationController
     )
     if @bonus_record.save
       session[Ubonus::Invite::RAND_BONUS_SESSIONS_KEY] = nil
-      render json: { amount: @bonus_record.amount }
+      render json: {
+        amount: @bonus_record.amount,
+        invite_url: bonus_invite_pages_url(inviter_uid: CryptService.encrypt(@user.id))
+      }
     else
       render json: { message: model_errors(@bonus_record) }, status: 422
     end
