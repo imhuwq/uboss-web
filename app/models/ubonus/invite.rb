@@ -7,6 +7,8 @@ class Ubonus::Invite < BonusRecord
 
   validates_uniqueness_of :user_id, message: '您已领取此红包'
 
+  after_create :active_if_old_user
+
   def self.rand_benefit_for_inviting
     RAND_BONUS.sample
   end
@@ -33,6 +35,14 @@ class Ubonus::Invite < BonusRecord
           bonus_resource: self
         )
       end
+    end
+  end
+
+  private
+
+  def active_if_old_user
+    if user.sign_in_count.to_i > 0
+      self.class.delay.active_by_user_id(user_id)
     end
   end
 
