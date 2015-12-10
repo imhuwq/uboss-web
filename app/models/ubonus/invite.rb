@@ -11,12 +11,6 @@ class Ubonus::Invite < BonusRecord
     RAND_BONUS.sample
   end
 
-  def self.active_by_user user
-    if user.sign_in_count <= 1
-      delay.active_by_user_id user.id
-    end
-  end
-
   def self.active_by_user_id uid
     record = find_by(user_id: uid)
     record && record.active!
