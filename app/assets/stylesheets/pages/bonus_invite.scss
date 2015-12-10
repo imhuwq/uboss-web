@@ -1,20 +1,20 @@
 @import 'shared/application_variables';
 @import "mobile_page/reset";
-html,body{    
-    height: 100%;  
+html,body{
+    height: 100%;
     width: 100%;
     background: #fff;
     margin: 0;
     padding: 0;
     overflow: hidden;
     font-size: 14px;
-    line-height: 20px;        
+    line-height: 20px;
     color: #7e4801;
     text-align: center;
 }
 .container{
-    max-width: 600px;   
-    margin: 0 auto;   
+    max-width: 600px;
+    margin: 0 auto;
     background: image-url('bonus/bg.jpg') no-repeat top center;
     background-size:100% auto;
     width: 100%;
@@ -32,7 +32,7 @@ html,body{
     height: 210px;
     margin: 0 auto;
     position: relative;
-    
+
 }
 .hongbao-content:after{
     position: absolute;
@@ -45,7 +45,7 @@ html,body{
     background: image-url('bonus/price-icon.png') no-repeat center  center;
     background-size:100% 100% ;
 }
-.page-title{       
+.page-title{
     font-size: 15px;
     font-weight: bold;
     &.has-recived{
@@ -68,8 +68,8 @@ html,body{
     font-size: 15px;
     font-weight: bold;
     margin-top:10px;
-    
-    
+
+
 }
 #u_mobile,#u_mobile:focus{
     border: 1px solid #7e4801;
@@ -98,7 +98,7 @@ html,body{
     height: 100%;
     z-index: 3;
     background: image-url('bonus/pop-bg.png') no-repeat top center  rgba(0,0,0,.8);
-    background-size: 100% auto; 
+    background-size: 100% auto;
     box-sizing: border-box;
     padding-top: 20px;
     color: #fff;
@@ -119,7 +119,7 @@ html,body{
     height: 102px;
     margin: 0 auto ;
     background-size:100% auto ;
-    
+
 }
 .pop-hongbao{
     background: #df3121;
@@ -148,5 +148,5 @@ html,body{
 @media  screen and (min-device-height:570px){
   .text-img{
       height: 55%;
-  }  
+  }
 }

@@ -12,15 +12,16 @@ $ ->
     e.preventDefault()
     $('.page1').addClass('hidden')
     $('.page2').removeClass('hidden')
-  
+
   $('.has-revived-btn').on 'click',(e)->
     e.preventDefault()
-    $('.pop-container.nobg').removeClass('hidden');
-  
+    $('.pop-container.nobg').removeClass('hidden')
+
   $('.pop-container.nobg').on 'click',(e)->
     e.preventDefault()
     $(this).addClass('hidden')
-  
+
+  requesting = false
   $('.receive-bonus-btn').on 'click', (e) ->
     e.preventDefault()
     mobile = $('#u_mobile').val()
@@ -29,10 +30,13 @@ $ ->
       console.log mobile
       alert "手机格式错误"
       return false
-    else
-      $('.pop-container').removeClass('hidden')  
 
     inviter_uid = $('#inviter_uid').val()
+    $('#user-tel').text(mobile)
+    if requesting
+      return false
+
+    requesting = true
     $.ajax
       url: '/bonus/invited',
       type: 'POST',
@@ -41,8 +45,10 @@ $ ->
         inviter_uid: inviter_uid
       }
     .done (data)->
-      alert "success: #{data.amount}"
+      $('.pop-container').removeClass('hidden')
+      requesting = false
     .fail (xhr, textStatus) ->
+      requesting = false
       message = (
         try
           JSON.parse(xhr.responseText).message
@@ -50,6 +56,7 @@ $ ->
           '领取失败'
       )
       if message == 'received'
-        alert('已领取')
+        $('.received-page').removeClass('hidden')
+        $('.receiving-page').addClass('hidden')
       else
         alert(message)
