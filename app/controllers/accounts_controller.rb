@@ -201,7 +201,7 @@ class AccountsController < ApplicationController
 
   def account_service_orders(type)
     type ||= 'all'
-    if ["unpay", "payed", "expensed", "completed", "all"].include?(type)
+    if ["unpay", "payed", "completed", "all"].include?(type)
       ServiceOrder.where(user: current_user).try(type).includes(order_items: { product_inventory: { product: :asset_img } })
     else
       raise "invalid orders state"

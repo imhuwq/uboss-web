@@ -46,7 +46,9 @@ Rails.application.routes.draw do
     post 'change_address', on: :collection
     #resource :charge, only: [:create]
   end
-  resources :service_orders, only: [:new, :create, :show]
+  resources :service_orders, only: [:new, :create, :show] do
+    get 'cancel', on: :member
+  end
   resources :charges, only: [:show] do
     get 'payments',     on: :collection
     get 'pay_complete', on: :member

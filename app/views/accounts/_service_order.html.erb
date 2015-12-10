@@ -20,7 +20,7 @@
             x<%= order_item.try(:amount) %>
           </p>
           <p>
-		      <% if service_order.expensed? || service_order.completed? %>
+		      <% if service_order.completed? %>
             <% if order_item.evaluations.size > 0 %>
 		          <%= link_to "追评", append_evaluation_path(id: order_item.id), class: 'btn btn-mid btn-orange' %>
 		        <% else %>
