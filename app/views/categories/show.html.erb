@@ -40,7 +40,7 @@
   </div>
 </div>
 
-<% if true#@products.size > 6 %>
+<% if @products.size > 6 %>
   <br />
   <div class="load-more" data-container='.store-list' data-ele='.p-item' data-ref='<%= request.path %>'>加载更多</div>
 <% end %>
