@@ -1,5 +1,7 @@
 class StoresController < ApplicationController
 
+  include SharingResource
+
   layout 'mobile'
 
   before_action :login_app, only: [:show]
@@ -34,19 +36,6 @@ class StoresController < ApplicationController
       render partial: 'product', collection: @products
     else
       render :show
-    end
-  end
-
-  def get_sharing_node
-    if @store_scode = get_seller_sharing_code(@seller.id)
-      @sharing_node = SharingNode.find_by(code: @store_scode)
-    end
-  end
-
-  def set_sharing_link_node
-    if current_user.present?
-      @sharing_link_node ||=
-        SharingNode.find_or_create_by_resource_and_parent(current_user, @seller)
     end
   end
 
