@@ -6,6 +6,16 @@
   <% end %>
 <% end %>
 
+<%= content_for :extra_meta_tags do %>
+  <% if @seller %>
+    <%= store_sharing_meta_tags(
+      @seller,
+      @sharing_link_node,
+      store_category_path(store_id: @seller.id, id: @category.id)
+    ) %>
+  <% end %>
+<% end %>
+
 <%= render partial: 'stores/banner_slider', locals: { seller: @store } %>
 
 <br />
@@ -21,6 +31,30 @@
     <p>
       <span class="like-color"><%= number_to_percentage(@store.good_reputation_rate, precision: 0) %></span> 好评（<%= @store.total_reputations %>）
     </p>
+
+    <% if qr_sharing? %>
+      <p class="text-center border-top nogap">
+        <br />
+        <% if current_user && current_user.has_seller_privilege_card?(@seller) %>
+          <a class="btn btn-large p-sharing-btn cover-share-btn">分享给朋友</a>
+        <% else %>
+          <%= link_to "领取友情卡", get_seller_sharing_path,
+            data: { sid: @seller.id, uid: current_user.present? },
+            class: "btn btn-large show-req-snode-modal cover-share-btn"
+          %>
+          <a class="btn btn-large hidden p-sharing-btn cover-share-btn">分享给朋友</a>
+        <% end %>
+      </p>
+      <div><a href="/about">查看说明</a></div>
+    <% end %>
+
+    <% if @sharing_node %>
+      <div class="share-box border-top nogap">
+        <br />
+        <p class="cover"><%= image_tag @sharing_node.user.avatar_url(:w120) %></p>
+        <p class="name"><%= @sharing_node.user.identify %> 分享</p>
+      </div>
+    <% end %>
 
   </div>
 </div><!-- store-cover -->
@@ -40,9 +74,15 @@
   </div>
 </div>
 
-<% if true#@products.size > 6 %>
+<% if @products.size > 6 %>
   <br />
   <div class="load-more" data-container='.store-list' data-ele='.p-item' data-ref='<%= request.path %>'>加载更多</div>
+<% end %>
+
+<%= render partial: 'new_share' %>
+
+<% if qr_sharing? && (current_user.blank? || (current_user && !current_user.has_seller_privilege_card?(@seller)) ) %>
+  <%= render partial: 'privilege_card_pop' %>
 <% end %>
 
 <% if browser.wechat? %>

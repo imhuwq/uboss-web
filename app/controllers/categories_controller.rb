@@ -1,8 +1,10 @@
 class CategoriesController < ApplicationController
 
+  include SharingResource
+
 	layout 'mobile'
 
-  before_action :set_store, only: [:show]
+  before_action :set_store, :get_sharing_node, :set_sharing_link_node, only: [:show]
 
   def show
   	@categories = @store.categories
@@ -19,6 +21,7 @@ class CategoriesController < ApplicationController
 
   def set_store
   	@store = User.find(params[:store_id])
+    @seller = @store
   end
 
 end
