@@ -21,10 +21,31 @@
         <div><span class="yellow-btn has-revived-btn">拯救身边剁手维纳斯</span></div>
       </div><!-- hongbao-content -->
       <div class="text-img"></div><!-- text-image-->
-      <div class="pop-container nobg hidden">
-        <div class="page-title">右上角分享至朋友圈</div>
-        <div><small>朋友收到基金你再获得同等基金哦</small></div>
-      </div>
+      <div class="pop-container">
+        <br />
+        <div class="pop-hongbao">          
+          <br />
+          <br />
+          <div class="page-title">你已经领取过了</div>
+          <br />
+          <br />
+        </div><!-- pop-hongbao -->
+        <br />
+        <div class="page1">
+          <div>
+            <a href="/account#hongbao" class="btn">注册UBOSS查看红包</a>
+          </div>
+          <br />
+          <div>
+            <a href="/account#hongbao" class="btn share-btn">给好友发放剁手基金</a>
+          </div>
+          <div><small>朋友收到基金你再获得同等基金哦</small></div>
+        </div><!-- page1 -->
+        <div class="page2 hidden">
+          <div class="page-title">右上角分享至朋友圈</div>
+          <div><small>朋友收到基金你再获得同等基金哦</small></div>
+        </div><!-- page2 -->
+      </div><!-- pop-container -->
     </div>
     <div class='receiving-page <%= 'hidden' if current_user && current_user.received_invite_bonus? %>'>
       <br />
