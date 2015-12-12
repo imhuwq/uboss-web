@@ -20,6 +20,7 @@ class Users::SessionsController < Devise::SessionsController
          if resource.persisted?
            sign_in(resource)
            MobileCaptcha.clear_captcha(sign_in_params[:login])
+           Ubonus::Invite.delay.active_by_user_id(resource.id)
            redirect_to after_sign_in_path_for(resource)
          else
            flash.now[:error] = resource.errors.full_messages.join('<br/>')
@@ -33,6 +34,7 @@ class Users::SessionsController < Devise::SessionsController
      else
        wechat_omniauth_data = { "devise.wechat_data" => session["devise.wechat_data"] }
        super do |user|
+         Ubonus::Invite.delay.active_by_user_id(resource.id)
          user.update_with_oauth_session(wechat_omniauth_data) if wechat_omniauth_data.present?
        end
      end

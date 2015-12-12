@@ -88,13 +88,13 @@
       <p>
         <div class="hidden sharing-meta-container">
           <%= luffy_meta_tags(
-            title: '良辰邀你一战！不玩别的就玩抢钱！',
-            desc: '别说良辰欺负人，抢了多少都归你！',
-            imgurl: asset_url("game/p1.png"),
-            link: ls_game_url
+            title: '双十二送6.4亿大狂欢，流血的女汉子快来摇身一变白富美吧！',
+            desc: '我宁愿当白富美而流泪，也不要当女汉子而流血！',
+            imgurl: asset_url("game/honbao_invite_avatar.jpg"),
+            link: bonus_invite_pages_url(inviter_uid: CryptService.encrypt(current_user.id))
           ) %>
         </div>
-        <a class="p-sharing-btn" href="#"><%= image_tag 'mobile/account/ad.png'%></a>
+        <a class="p-sharing-btn" href="#"><%= image_tag 'mobile/account/hongbao2.jpg'%></a>
       </p>
 			<div class="hongbao gray-color">
 				<span class="pull-right red-color">￥ <%= current_user.bonus_benefit %></span>红包余额

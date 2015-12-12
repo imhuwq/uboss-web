@@ -1,7 +1,7 @@
 .invite-title{
     font-size: 18px;
     padding:20px 4px;
-    border-bottom: 1px solid #eee; 
+    border-bottom: 1px solid #eee;
 }
 #invite_seller_histroy{font-size: 14px;color: #777;padding: 0 10px;}
 #invite_seller_histroy .edit-icon a{display: inline-block;width:19px;padding:9px;}
@@ -17,7 +17,7 @@
     background-size:auto 18px ;
     position: relative;
     .newyear{
-        background: image-url('mobile/account/newyear.png') rgba(0,0,0,.8) center center no-repeat;
+        background: image-url('mobile/account/newyear.png') rgba(0,0,0,.7) center center no-repeat;
         background-size: auto 30px;
         position: absolute;
         top: 0;
@@ -42,7 +42,7 @@
         height: 80px;
         border-radius:100px ;
         overflow: hidden;
-        
+
     }
     .name{
         text-align: left;
@@ -55,7 +55,7 @@
             display: block;
             width: 20px;
         }
-        
+
     }
 }
 .privilege-rate{
@@ -71,17 +71,17 @@
         color: #333;
         line-height: 20px;
     }
-    
+
 }
 .privilege-form{
     .form-input{text-align: right;}
     input{ border: none; text-align: right;color:#f9ba10;}
-    
+
 }
 .share-card {
     background: #fff;
     overflow: hidden;
-    margin-bottom: 8px;    
+    margin-bottom: 8px;
     line-height: 20px;
     .cover{
         float: right;
