@@ -5,6 +5,7 @@
 <!--       <th><input id="category-checkbox" type="checkbox"></th> -->
       <th>分组名</th>
       <th>分组图片</th>
+      <th>分享二维码</th>
       <th>修改时间</th>
       <th>操作</th>
     </thead>
@@ -12,7 +13,7 @@
       <tr>
         <%= hidden_field_tag "categories[#{i}][id]", category.id %>
         <%= hidden_field_tag "categories[#{i}][check]", 'false', class:"form-item-check" %>
-        
+
 <!--         <td>
           <input class="checkbox " name="check_item" type="checkbox" data-member="#{i}">
         </td> -->
@@ -29,6 +30,7 @@
           </p>
           <div style="font-size:10px;">(点击图片进行替换)</div>
         </td>
+        <td><%= qrcode_image_tag(store_category_url(category.user_id, category.id, shared: true), html: { width: 100 }) %></td>
         <td><%= category.updated_at %></td>
         <td>
           <% if can? :update, category %>
@@ -46,4 +48,4 @@
   </table>
 </div>
 
- 
+
