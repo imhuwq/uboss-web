@@ -86,6 +86,7 @@ Rails.application.routes.draw do
   end
   resource :chat, only: [:show] do
     get :token, :user_info, :check_user_online
+    get 'conversations/:conversation_id', to: 'chats#conversion'
   end
   resource :account, only: [:show, :edit, :update] do
     get :settings,         :edit_password,
@@ -230,7 +231,7 @@ Rails.application.routes.draw do
 
       root 'dashboard#index'
 
-      resources :categories, except: [:show] do 
+      resources :categories, except: [:show] do
         post :update_categories, on: :collection
         post :updata_category_img, :update_category_name,  on: :member
       end
