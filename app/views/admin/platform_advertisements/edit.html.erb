@@ -4,17 +4,17 @@
     <li class="divider"><i class="fa fa-angle-right"></i></li>
     <li><%= link_to '平台广告管理', [:admin, :platform_advertisements] %></li>
     <li class="divider"><i class="fa fa-caret-right"></i></li>
-    <li class="active">创建平台广告</li>
+    <li class="active">编辑平台广告</li>
  </ul>
 </div><!-- container -->
 <br />
 <div class="container nogap">
-    <%= horizon_form_for @platform_advertisement, url: {action: :create} do |f| %>
+    <%= horizon_form_for @platform_advertisement, url: {action: :update} do |f| %>
 
       <%= render 'fields', f: f %>
       <br />
       <div class="form-actions text-right">
-        <%= f.submit "创建", class: "btn btn-large" %>
+        <%= f.submit "保存", class: "btn btn-large" %>
       </div>
       </div><!-- box-w50 -->
     <% end %>

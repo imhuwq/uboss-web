@@ -47,12 +47,18 @@
 	<div id="adding_product_window">
 		<div>add_product</div>
 		<div><%= select_tag 'category_tages', options_for_select([['--', '']] + current_user.products.map{|obj| [obj.name,obj.id]}) %></div>
-		<p class="fileinput-button hidden" id="show_product_advertisement_img">
+		<div class="fileinput-button hidden" id="show_product_advertisement_img">
 			<%= image_tag("admin/no-img.png", class:"clean",style:"height: 80px;") %>
-			<%= file_field_tag "image", class: "upyun_file_json" ,  data: {to: "update_product_advertisement_img"} %>
+			<%= file_field_tag "image", class: "upyun_file_json" ,  data: {to: ""} %>
 			<b class="loading"><i class="fa fa-spinner"></i></b>
-		</p>
-		<div style="font-size:10px;">(点击图片进行替换)</div>
+			<div style="font-size:10px;">(点击图片进行替换)</div>
+		</div>
+		<div>
+			<a href="###" class='btn btn-border btn-link hidden' id='add_to_advertisement'>
+				加入店铺广告
+			</a>
+		</div>
 	</div>
+	
 </div>
 

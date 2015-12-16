@@ -49,8 +49,8 @@ class Admin::CategoriesController < AdminController
     end
   end
 
-  def updata_category_img
-    category = Category.find(params[:id])
+  def update_category_img
+    category = Category.find(params[:resource_id])
     if category.update(avatar: params[:avatar])
       @message = {message: "上传成功！"}
     else
@@ -60,7 +60,6 @@ class Admin::CategoriesController < AdminController
   end
 
   def update_category_name
-    binding.pry
     category = current_user.categories.find(params[:id])
     if category.update(name: params[:name])
       @message = {message: "修改成功！"}

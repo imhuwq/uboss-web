@@ -94,24 +94,6 @@
 <div class="gap-lr m-bottom10">	
 	<%= render partial: 'ad_banner_slider', locals: { seller: @seller } %>
 </div>
-<div class="bg-white m-bottom10">
-	<ul class="sort-nav">
-		<li class="sort-tab active"><a href="#sort-container">综合排序</a></li>
-		<li class="sort-tab"><a href="#sort-container">新品上架</a></li>
-		<li class="sort-tab"><a href="#sort-container">人气热销</a></li>
-	</ul>
-	<div class="sort-container" id="sort-container">
-		<div class="sort-list">
-			<div class="box">
-				<% if @products.present? %>
-		      <%= render partial: 'product', collection: @products %>
-		    <% else %>
-		      <h2 class="page-title text-center">店家正在准备好货，敬请期待</h2>
-		    <% end %>	
-	    </div>	
-  	</div><!-- sort-list -->
-	</div><!-- #sort-container -->
-</div>
 
 
 

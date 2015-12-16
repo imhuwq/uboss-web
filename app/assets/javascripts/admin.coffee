@@ -23,6 +23,7 @@
 #= require admin/store
 #= require admin/user_address
 #= require admin/refund
+#= require admin/platform_advertisement
 #= require shared/upyun
 #= require shared/multi_upyun_admin
 #= require shared/count_down

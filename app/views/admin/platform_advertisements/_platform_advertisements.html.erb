@@ -1,4 +1,4 @@
-<div class="index_list">
+<div class="index_list" id="platform_advertisements">
   <table class="list-table">
     <thead>
       <th>图片</th>
@@ -19,7 +19,21 @@
         </td>
         <td><%= platform_advertisement.advertisement_url %></td>
         <td>
+
           <% if can? :update, platform_advertisement %>
+            <% if platform_advertisement.status == 'hide' %>
+              <p>
+              <%= link_to("上架", change_status_admin_platform_advertisement_path(platform_advertisement, status: 'show'),
+              remote: true, method: :patch, data: { disable_with: '<i class="fa fa-spinner"></i>' },
+              class: "btn btn-mid btn-block yellow-btn change-status-btn") %>
+              </p>
+            <% else %>
+              <p>
+              <%= link_to("下架", change_status_admin_platform_advertisement_path(platform_advertisement, status: 'hide'),
+              remote: true, method: :patch, data: { disable_with: '<i class="fa fa-spinner"></i>' },
+              class: "btn btn-mid btn-block change-status-btn") %>
+              </p>
+            <% end %>
             <%= link_to url_for(action: :edit, id: platform_advertisement.id), class:'edit-icon', title: '编辑' do %>
               <i class="fa fa-pencil-square-o"></i>
             <% end %>
