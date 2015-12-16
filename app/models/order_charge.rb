@@ -14,10 +14,6 @@ class OrderCharge < ActiveRecord::Base
 
   enum payment: { alipay: 0, alipay_wap: 1, alipay_qr: 2, wx: 3, wx_pub: 4, wx_pub_qr: 5, yeepay_wap: 6 }
 
-  def self.unpay?(orders)
-    orders.pluck(:state).any? { |order_state| order_state == Order.states[:unpay] }
-  end
-
   def self.check_and_close_prepay(opts = {})
     order_charges = opts[:order_charges]
     order_charges ||= where(id: opts[:ids])
@@ -27,6 +23,10 @@ class OrderCharge < ActiveRecord::Base
         order_charge.close_prepay
       end
     end
+  end
+
+  def unpay?
+    orders.any? { |order| order.state == 'unpay' }
   end
 
   def orders_detail
@@ -51,6 +51,8 @@ class OrderCharge < ActiveRecord::Base
         "payment" => 'wx',
         "time_end" => Time.now
       )
+      assign_paid_amount_to_order
+      orders.each { |order| order.pay! }
       true
     else
       invoke_wx_pay_cheking

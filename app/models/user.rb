@@ -33,6 +33,7 @@ class User < ActiveRecord::Base
   has_many :orders
   has_many :ordinary_orders, -> { where("type = 'OrdinaryOrder'") }, class_name: 'Order'
   has_many :service_orders,  -> { where("type = 'ServiceOrder'") },  class_name: 'Order'
+  has_many :order_charges
   has_many :sharing_incomes
   has_many :bank_cards
   has_many :privilege_cards
