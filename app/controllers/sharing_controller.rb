@@ -6,8 +6,9 @@ class SharingController < ApplicationController
 	def show
 		@sharing_node = SharingNode.find_by!(code: params[:code])
     set_sharing_code(@sharing_node)
-    path = params[:redirect]
-    path ||= if @sharing_node.product_id.present?
+    path = if params[:redirect].present?
+             params[:redirect]
+           elsif @sharing_node.product_id.present?
              product_path(@sharing_node.product_id)
            else
              store_path(@sharing_node.seller_id)

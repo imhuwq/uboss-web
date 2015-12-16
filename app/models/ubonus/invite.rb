@@ -28,7 +28,7 @@ class Ubonus::Invite < BonusRecord
     return false if self.actived
     transaction do
       update(actived: true)
-      if inviter.present?
+      if inviter.present? && inviter_id != user_id
         Ubonus::InviteReward.create(
           amount: amount,
           user: inviter,

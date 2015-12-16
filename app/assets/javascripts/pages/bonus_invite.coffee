@@ -56,7 +56,7 @@ $ ->
         try
           JSON.parse(xhr.responseText)
         catch error
-          '领取失败'
+          { message: '领取失败' }
       )
       if errorInfo.message == 'received'
         wxSharingOpts.link = errorInfo.invite_url
@@ -64,4 +64,4 @@ $ ->
         $('.received-page').removeClass('hidden')
         $('.receiving-page').addClass('hidden')
       else
-        alert(message)
+        alert(errorInfo.message)

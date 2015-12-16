@@ -296,19 +296,6 @@ ActiveRecord::Schema.define(version: 20151207120912) do
     t.datetime "updated_at"
   end
 
-  create_table "preferential_measures", force: :cascade do |t|
-    t.decimal  "amount"
-    t.decimal  "discount"
-    t.decimal  "total_amount"
-    t.string   "type"
-    t.integer  "preferential_item_id"
-    t.string   "preferential_item_type"
-    t.integer  "preferential_source_id"
-    t.string   "preferential_source_type"
-    t.datetime "created_at",               null: false
-    t.datetime "updated_at",               null: false
-  end
-
   create_table "privilege_cards", force: :cascade do |t|
     t.integer  "user_id"
     t.datetime "created_at",                 null: false
