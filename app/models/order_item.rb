@@ -10,7 +10,7 @@ class OrderItem < ActiveRecord::Base
   has_many   :order_item_refunds
   has_many   :refund_messages, through: :order_item_refunds
   has_many   :preferential_measures, as: :preferential_item
-  has_many   :preferentials_bonuses, as: :preferential_item, class_name: 'Preferentials::Bonus'
+  has_many   :preferentials_bonuses, as: :preferential_item, class_name: 'Preferentials::SellerBonus'
   has_many   :preferentials_privileges, as: :preferential_item, class_name: 'Preferentials::Privilege'
 
   validates :user, :product_inventory, :amount, :present_price, :pay_amount, presence: true
