@@ -21,6 +21,10 @@ class ServiceProduct < Product
     present_price * total_sales_volume
   end
 
+  def deadline
+    created_at + monthes.months
+  end
+
   private
 
   def set_default_product_inventory

@@ -32,7 +32,7 @@
 				<td><%= Evaluation.product_good_reputation_rate(product.id) %></td>
 				<td><%= product.total_sells %></td>
 				<td><%= strftime(product.created_at) %></td>
-				<td>截止至 <%= strftime(product.created_at + product.monthes.months) %></td>
+				<td>截止至 <%= strftime(product.deadline) %></td>
 				<td>
 					<% if can? :update, product %>
 						<% if product.status == 'unpublish' %>

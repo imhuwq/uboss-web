@@ -63,6 +63,29 @@
     <%= link_to "立即付款", payments_charges_path(order_ids: @order.id, showwxpaytitle: 1), id: 'wx-pay-btn', class: 'btn', style: 'width:90%;text-align:center;margin:auto 5%;font-size:20px;line-height:25px;background:#f9ba10;' %>
   </div><!-- bg-white -->
   <br/>
+
+<% else %>
+
+  <div class="order-list">
+    <div class="seller-box">
+      <div class="pull-right">有效期至：<%= strftime(@order_item.product.deadline) %></div>
+      <div class="content"><div class="text-cut">验证券</div></div>
+    </div>
+    <table>
+      <% @order_item.verify_codes.each do |verify_code| %>
+        <tr>
+          <td><%= verify_code.code %></td>
+          <% if verify_code.verified %>
+            <td>已消费</td>
+          <% else %>
+            <td style="color:#ff0000;">待消费</td>
+          <% end %>
+        </tr>
+      <% end %>
+    </table>
+  </div>
+  <br/>
+
 <% end %>
 
 <div class="bg-white gap gray-color line-gap">
