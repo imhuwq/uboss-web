@@ -27,22 +27,24 @@ class User < ActiveRecord::Base
   # for agent
   has_many :divide_incomes
   has_many :sellers, class_name: 'User', foreign_key: 'agent_id'
-  has_many :seller_orders, through: :sellers, source: :sold_orders
+  has_many :seller_ordinary_orders, through: :sellers, source: :sold_ordinary_orders
+  has_many :seller_service_orders,  through: :sellers, source: :sold_service_orders
   # for buyer
   has_many :user_addresses
   has_many :orders
-  has_many :ordinary_orders, -> { where("type = 'OrdinaryOrder'") }, class_name: 'Order'
-  has_many :service_orders,  -> { where("type = 'ServiceOrder'") },  class_name: 'Order'
+  has_many :ordinary_orders, class_name: 'OrdinaryOrder'
+  has_many :service_orders,  class_name: 'ServiceOrder'
   has_many :order_charges
   has_many :sharing_incomes
   has_many :bank_cards
   has_many :privilege_cards
   # for seller
   has_many :sold_orders, class_name: 'Order', foreign_key: 'seller_id'
-  has_many :sold_ordinary_orders, -> { where("type = 'OrdinaryOrder'") }, class_name: 'Order', foreign_key: 'seller_id'
+  has_many :sold_ordinary_orders, class_name: 'OrdinaryOrder', foreign_key: 'seller_id'
+  has_many :sold_service_orders,  class_name: 'ServiceOrder',  foreign_key: 'seller_id'
   has_many :products
-  has_many :ordinary_products, -> { where("type = 'OrdinaryProduct'") }, class_name: 'Product'
-  has_many :service_products, -> { where("type = 'ServiceProduct'") }, class_name: 'Product'
+  has_many :ordinary_products, class_name: 'OrdinaryProduct'
+  has_many :service_products,  class_name: 'ServiceProduct'
   has_many :selling_incomes
   belongs_to :agent, class_name: 'User'
 
@@ -277,7 +279,7 @@ class User < ActiveRecord::Base
   end
 
   def today_expect_divide_income
-    seller_orders.today.shiped.sum(:pay_amount) * 0.05
+    seller_ordinary_orders.today.shiped.sum(:pay_amount) * 0.05
   end
 
   def current_month_divide_income
