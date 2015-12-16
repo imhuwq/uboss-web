@@ -7,7 +7,7 @@ class Admin::ServiceStoresController < AdminController
     @income_by_date = {}
 
     service_product_ids = current_user.service_product_ids
-    order_item_ids = OrderItem.where(product_id: current_user.service_product_ids)
+    order_item_ids = OrderItem.where(product_id: current_user.service_product_ids).ids
     group_date = VerifyCode.where(order_item_id: order_item_ids).group_by{ |code| code.created_at.to_date }.sort_by{|key, values| key}.reverse
 
     group_date.each do |key, array|
