@@ -1,4 +1,6 @@
 class ServiceOrder < Order
+  has_many :verify_codes, through: :order_items
+
   enum state: { unpay: 0, payed: 1, closed: 2, completed: 3 }
 
   aasm column: :state, enum: true, skip_validation_on_save: true, whiny_transitions: false do
@@ -15,6 +17,13 @@ class ServiceOrder < Order
     end
     event :complete do
       transitions from: :payed, to: :completed
+    end
+  end
+
+  def check_completed
+    unless verify_codes.any? { |verify_code| verify_code.verified == false }
+      binding.pry
+      may_complete? && completed!
     end
   end
 

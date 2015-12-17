@@ -12,6 +12,7 @@ class VerifyCode < ActiveRecord::Base
 
   def verify_code
     update(verified: true) if !verified
+    order_item.order.try(:check_completed)
   end
 
   private
