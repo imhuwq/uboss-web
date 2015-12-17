@@ -39,19 +39,45 @@ module AdminHelper
     ]
   end
 
+  # def store_banner_data(seller)
+  #   return @store_banner_data if @store_banner_data.present?
+
+  #   @store_banner_data = []
+  #   store_banner_sets.each do |image_method, resource_method|
+  #     if seller.__send__("#{image_method}_identifier").present?
+  #       product_id = seller.__send__(resource_method)
+  #       @store_banner_data << [
+  #         seller.__send__("#{image_method}"),
+  #         product_id && Product.find_by(id: product_id)
+  #       ]
+  #     end
+  #   end
+  #   @store_banner_data
+  # end
+
   def store_banner_data(seller)
     return @store_banner_data if @store_banner_data.present?
 
     @store_banner_data = []
-    store_banner_sets.each do |image_method, resource_method|
-      if seller.__send__("#{image_method}_identifier").present?
-        product_id = seller.__send__(resource_method)
+    seller.products.where(show_advertisement: true).published.each do |product|
         @store_banner_data << [
-          seller.__send__("#{image_method}"),
-          product_id && Product.find_by(id: product_id)
+          product.advertisement_img ,
+          product
         ]
-      end
     end
     @store_banner_data
+  end
+
+  def platform_banner_data
+    return @platform_banner_data if @platform_banner_data.present?
+
+    @platform_banner_data = []
+    PlatformAdvertisement.where(status: 1).each do |platform_advertisement|
+        @platform_banner_data << [
+          platform_advertisement.asset_img ,
+          platform_advertisement
+        ]
+    end
+    @platform_banner_data
   end
 end

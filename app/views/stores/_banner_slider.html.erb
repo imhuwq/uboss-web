@@ -1,15 +1,15 @@
 <% if store_banner_data(seller).size > 0 %>
-  <div class="banner-slider">
+  <div class="banner-slider m-bottom10">
     <div id='slider' class='swipe'>
       <div class='swipe-wrap'>
         <% store_banner_data(seller).each do |image, product| %>
           <div>
             <% if product.present? %>
               <%= link_to product do %>
-                <%= image_tag image.url(:'640x320') %>
+                <%= image_tag image.image_url(:'640x320') %>
               <% end %>
             <% else %>
-              <%= image_tag image.url(:'640x320') %>
+              <%= image_tag image.image_url(:'640x320') %>
             <% end %>
           </div>
         <% end %>

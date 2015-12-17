@@ -29,6 +29,23 @@ class Product < ActiveRecord::Base
   delegate :image_url, to: :asset_img, allow_nil: true
   delegate :avatar=, :avatar, to: :asset_img
 
+
+  # 店铺轮播图片 =>
+  has_one_image name: :advertisement_img, autosave: true
+  
+  def  advertisement_img_url
+    advertisement_img.try(:image_url)
+  end
+
+  def advertisement_img=(file)
+    advertisement_img.avatar=(file)
+  end
+
+  def advertisement_img
+    super || build_advertisement_img
+  end
+  # <-店铺轮播图片
+
   enum status: { unpublish: 0, published: 1, closed: 2 }
 
   scope :hots, -> { where(hot: true) }

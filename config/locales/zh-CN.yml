@@ -139,6 +139,9 @@ zh-CN:
         express_name: 快递公司
       seller:
         <<: *attributes
+      platform_advertisement:
+        advertisement_url: 广告链接
+        asset_img: 广告图片
   simple_captcha:
     label: 验证码
     placeholder: 请输入验证码
@@ -169,8 +172,8 @@ zh-CN:
     banking:  提现
     daily_reports: 收益
     authentications: 认证
-    user_addresses: 地址库
     categories: 商品分组
+    user_addresses: 地址库
   activerecord:
     models:
       withdraw_record: 提现记录

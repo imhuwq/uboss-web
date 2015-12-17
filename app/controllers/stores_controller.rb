@@ -11,6 +11,13 @@ class StoresController < ApplicationController
 
   def index
     @products = append_default_filter Product.published.includes(:asset_img), order_column: :updated_at
+    @hot_products = []
+    @products.each do |product|
+      if @hot_products.empty?
+        @hot_products << product
+      end
+      product.total_sells
+    end
   end
 
   def show

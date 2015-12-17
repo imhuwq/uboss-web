@@ -1,0 +1,47 @@
+.store-category-cover{
+    margin-bottom: 10px;
+    .cover{
+        float: left;
+        margin-right: 10px;
+        border-radius: 6px;
+        overflow: hidden;
+        img{
+            height: 60px;
+            width: 60px;
+        }
+    }
+    .content{
+        overflow: hidden;
+        height: 60px;
+    }
+}
+.share-category-box{
+    img{
+        height: 35px;
+        width: 35px;
+        margin-right: 5px;
+        border-radius: 500px;
+        vertical-align: middle;
+        overflow: hidden;
+    }
+}
+
+.category-list{
+    padding: 0 5px;
+    .product-box{
+      .title{
+        position: absolute;
+        bottom: 0px;
+        left: 0px;
+        width: 100%;
+        padding: 0 5px;
+        text-align: center;
+        box-sizing: border-box;
+        background: rgba(255,255,255,.8);
+        text-overflow:ellipsis;
+        white-space:nowrap;
+        overflow: hidden;
+        z-index: 3;
+      }
+    }    
+}

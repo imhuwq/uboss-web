@@ -1,0 +1,19 @@
+<% if platform_banner_data.size > 0 %>
+  <div class="ad-banner-slider">
+    <div id='ad-slider' class='swipe'>
+      <div class='swipe-wrap'>
+        <% platform_banner_data.each do |image, platform_advertisement| %>
+          <div>
+            <% if platform_advertisement.present? %>
+              <%= link_to platform_advertisement.advertisement_url do %>
+                <%= image_tag image.image_url(:w640) %>
+              <% end %>
+            <% else %>
+              <%= image_tag image.image_url(:w640) %>
+            <% end %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+<% end %>

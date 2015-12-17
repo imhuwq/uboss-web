@@ -69,6 +69,16 @@ class Admin::CategoriesController < AdminController
     render json:  @message
   end
 
+  def change_category_img
+    category = Category.find(params[:id])
+    if category.image_url
+      render json:  {url: category.image_url}.to_json
+    else
+      render json: {}.to_json
+    end
+    
+  end
+
   private
     # Never trust parameters from the scary internet, only allow the white list through.
     def category_params

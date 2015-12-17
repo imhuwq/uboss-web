@@ -1,4 +1,4 @@
-small{font-size: 70%;}
+small{font-size: 80%;}
 .gap{padding:10px}
 .gap-lr{padding: 0 10px;}
 .nogap{ padding:0;}
@@ -12,6 +12,9 @@ small{font-size: 70%;}
         margin: 0;
     }
 }
+.m-bottom10{
+    margin-bottom: 10px;
+}
 .text-center{ text-align: center;}
 .text-left{ text-align: left;}
 .text-right{ text-align: right;}
@@ -24,9 +27,12 @@ small{font-size: 70%;}
 
 .border-box { border-bottom: 1px solid #dcdcdc; padding-bottom: 5px;}
 .fixed-container{ padding-bottom: 60px;}
-h2{font-size: 21px; line-height: 30px;}
-h3{font-size: 18px;margin:20px 0; line-height: 25px;}
-h4{font-size: 15px; line-height: 25px; font-weight: normal;}
+h1{font-size: 18px;}
+h2{font-size: 16px;}
+h3{font-size: 15px;}
+h4{font-size: 13px;}
+h5{font-size: 10px;}
+h6{font-size: 8px;}
 
 
 .bg-white{ background:#fff;}
@@ -36,7 +42,7 @@ h4{font-size: 15px; line-height: 25px; font-weight: normal;}
 .page-title{
     color: $brand-primary;
     padding: 10px 0;
-    font-size: 14px;
+    font-size: 15px;
 }
 .page-title .more-bar {
   color: #b6b6b6;

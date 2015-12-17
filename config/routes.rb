@@ -233,7 +233,18 @@ Rails.application.routes.draw do
 
       resources :categories, except: [:show] do
         post :update_categories, on: :collection
-        post :updata_category_img, :update_category_name,  on: :member
+        post :update_category_name,  on: :member
+        post :update_category_img, on: :collection
+        get   :change_category_img, :updata_category_img,  on: :member
+      end
+
+      resources :stores, only: [:show] do
+        post :update_store_logo, :add_to_advertisement, :update_store_name, :update_store_short_description, :update_store_cover, on: :member
+        post :update_product_advertisement_img, on: :collection
+        get  :show_product_advertisement_img, on: :member
+      end
+      resources :platform_advertisements do 
+        patch :change_status, on: :member
       end
     end
     mount RedactorRails::Engine => '/redactor_rails'

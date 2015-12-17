@@ -18,7 +18,7 @@
           <% end %>
         </li>
         <% if current_user.is_seller? %>
-          <li><%= link_to "店铺设置", edit_admin_seller_path(current_user) %></li>
+          <li><%= link_to "店铺设置", admin_store_path(current_user) %></li>
         <% end %>
 				<li><%= link_to '退出', destroy_user_session_path, method: :delete %></li>
 			</ul>

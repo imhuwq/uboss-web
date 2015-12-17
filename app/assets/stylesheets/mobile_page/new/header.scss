@@ -1,47 +1,45 @@
 header {
   position: relative;
   .header-bar {
-    text-align: center;
+
     overflow: hidden;
     line-height: 20px;
     background: #fff;
     a{display: inline-block;}
-    .logo{height: 20px; margin-left: 5px;padding:12px 0;}
+    .logo{height: 18px; padding:13px 0 13px 10px;}
     .title{
-      display: inline-block;
-      margin:12px 0;
+      margin:12px 0 12px 10px;
       font-size: 18px;
       color:$brand-primary;
       line-height: 20px;
-      max-width: 190px;
       text-overflow:ellipsis;
       white-space:nowrap;
       overflow: hidden;
     }
     &.title-gap .title{      
-      margin:12px 0 12px 22px;
+      margin:12px 0 12px 0;
     }
     .menu-btn,.submit{
       float: right;
-      padding: 12px;
+      padding: 12px 10px;
       font-size: 14px;
-      img{ width: 21px;}
+      img{ height:18px;}
     }
     .back{
         float: left;
-        padding: 12px;
+        padding: 12px 10px;
         img{ 
-          height: 14px;
+          height: 18px;
           -webkit-transform: rotate(180deg);
           transform: rotate(180deg);
         }
     }
   }
   .cart-icon{
-    float: left;    
-    padding: 10px;
+    float: right;    
+    padding: 12px 10px;
     img{
-        height: 16px;
+        height: 18px;
     }
   }
   .nav-bar{
@@ -101,8 +99,8 @@ header {
         margin: 10px;
         display: inline-block;
         z-index: 50; 
+        float: right;
       }
-      
       .nav-bar{
         text-align: left;      
         right: 10px;

@@ -1,17 +1,17 @@
-.tab-nav{
+.tab-nav,.sort-nav{
     display: table;
     width: 100%;
     background: #fff;
     margin-bottom: 8px;
     font-size: 15px;
     line-height: 20px;
-    .tab{
+    .tab,.sort-tab{
         width: 1%;
         vertical-align: middle;
         padding:10px 5px;
         display: table-cell;
         text-align: center;
-        color: #999;
+        color: #888;
         span{
             display: inline-block;
             padding: 10px 0;
@@ -25,6 +25,21 @@
         }
     }
     
+}
+.category-nav{
+    display: block;
+    margin: 0;
+    padding: 0;
+    .tab,.tab.active{
+        display: inline-block;
+        width: auto;
+        margin: 0;
+        padding: 0 0 0 10px;
+        span{
+            display: block;
+            padding: 10px 20px;
+        }
+    }
 }
 .login-style{
     .tab{color: $brand-primary;}
@@ -42,5 +57,23 @@
 }
 .tab-container .tab-content{
     display: none;
+}
+.sort-nav{
+    margin-bottom: 0;
+    a{
+        color: #444;
+        display: block;
+        border-right: 1px solid #ddd;
+        padding: 0px 10px;
+    }
+   .sort-tab{
+      padding: 10px 0 0;
+   }
+   .sort-tab:last-child a{
+       border-right: none;
+   }
+   .sort-tab.active a{
+       color: $brand-primary;;
+   }
 }
 

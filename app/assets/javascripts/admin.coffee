@@ -19,9 +19,11 @@
 #= require admin/product
 #= require admin/redactor-config
 #= require admin/sms
+#= require admin/category
+#= require admin/store
 #= require admin/user_address
 #= require admin/refund
-#= require admin/category
+#= require admin/platform_advertisement
 #= require shared/upyun
 #= require shared/multi_upyun_admin
 #= require shared/count_down

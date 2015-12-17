@@ -41,6 +41,13 @@ $ ->
     transitionEnd: (index, elem) ->
       $('#slider-points span').removeClass('active')
       $('#slider-points span').eq(index).addClass('active')
+  
+  new Swipe document.getElementById('ad-slider'),
+    speed: 300
+    auto: 5000
+    continuous: true
+    disableScroll: false
+    stopPropagation: true
 
   $("header .menu-btn").on 'click', ->
     $('header .nav-bar').toggle()
