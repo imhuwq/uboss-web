@@ -3,12 +3,12 @@
 </div><!--page-title -->
 
 <div class="bg-white">
-  <div class="box nogap ucategory-list" style="height: 209px;">
+  <div class="box nogap ucategory-list" style="max-height: 209px;">
     <% @seller.categories.in_groups_of(2, false) do |categories| %>
     	<div class="box-w100 nogap border-bottom">
         <% categories.each do |category| %>
           <div class="box-w50 nogap">
-            <%= link_to  store_category_path(store_id: @seller.id, id: category.id),
+            <%= link_to store_category_path(store_id: @seller.id, id: category.id),
               class:'ucategory-box' do %>
               <div class="cover">
                 <div class="img" style="background-image:url('<%= category.image_url(:w120)%>')" title="<%= category.name %>"></div>
@@ -23,7 +23,9 @@
   </div><!--box -->
 </div><!-- bg-white -->
 
-<div id="ucategory-more" class="gap text-center"><%= image_tag("mobile/arrow-down.png",width:'15') %></div>
+<% if @seller.categories.size > 6 %>
+  <div id="ucategory-more" class="gap text-center"><%= image_tag("mobile/arrow-down.png",width:'15') %></div>
+<% end %>
 
 <div class="store-cover text-center" style="<%= "background-image:url('#{@seller.store_cover.url(:w640)}')" if @seller.user_info.store_cover_identifier.present? %>">
   <div class="content">
