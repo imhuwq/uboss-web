@@ -31,13 +31,13 @@ module AdminHelper
     record.wechat_available? ? "btn-success" : "btn-primary"
   end
 
-  # def store_banner_sets
-  #   [
-  #     [:store_banner_one, :recommend_resource_one_id],
-  #     [:store_banner_two, :recommend_resource_two_id],
-  #     [:store_banner_thr, :recommend_resource_thr_id]
-  #   ]
-  # end
+  def store_banner_sets
+    [
+      [:store_banner_one, :recommend_resource_one_id],
+      [:store_banner_two, :recommend_resource_two_id],
+      [:store_banner_thr, :recommend_resource_thr_id]
+    ]
+  end
 
   # def store_banner_data(seller)
   #   return @store_banner_data if @store_banner_data.present?

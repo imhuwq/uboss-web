@@ -59,3 +59,37 @@ $(document).on 'click','#adding_product_window #add_to_advertisement', (e)->
 				$('#adding_product_window #add_to_advertisement').html('加入店铺广告')
 		error: (data, status, e) ->
 			alert("操作错误")
+
+
+
+$(document).on 'change', '#store_name', ->
+	$this = $(this)
+	resource_id = $this.attr('data-id')
+	store_name = $this.val()
+
+	$.ajax
+		url:  "/admin/stores/#{resource_id}/update_store_name"
+		type: 'POST'
+		data: {store_name:  store_name}
+		success: (res) ->
+			console.log "res", res
+		error: (data, status, e) ->
+			console.log data, status, e
+			alert("操作错误")
+
+
+$(document).on 'change', '#store_short_description', ->
+	$this = $(this)
+	resource_id = $this.attr('data-id')
+	store_short_description = $this.val()
+
+	$.ajax
+		url:  "/admin/stores/#{resource_id}/update_store_short_description"
+		type: 'POST'
+		data: {store_short_description:  store_short_description}
+		success: (res) ->
+			console.log "res", res
+		error: (data, status, e) ->
+			console.log data, status, e
+			alert("操作错误")
+

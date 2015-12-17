@@ -46,4 +46,23 @@ class Admin::StoresController < AdminController
 		render json:  hash.to_json
 	end
 
+	def update_store_name
+		if current_user.update(store_name: params[:store_name])
+			@message = {message: "修改成功！"}
+		else
+			@message = {message:"修改失败"}
+		end
+		render json:  @message
+	end
+
+	def update_store_short_description
+		if current_user.update(store_short_description: params[:store_short_description])
+			@message = {message: "修改成功！"}
+		else
+			@message = {message:"修改失败"}
+		end
+		render json:  @message
+	end
+
 end
+
