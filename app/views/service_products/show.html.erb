@@ -29,7 +29,7 @@
     <p class="title"><%= @product.name %></p>
     <p class="price">
       <small>￥</small>
-      <%= product_price(@product).join(' - ') %>
+      <%= @product.present_price %>
     </p>
     <p class="original-price">原价：<%= @product.original_price %></p>
     <div class="border-top">
@@ -37,8 +37,7 @@
 	    <%= Evaluation.product_good_reputation_rate(@product.id) %> 好评 (<%= Evaluation.product_good_reputation(@product.id) %>人)
 	    </p>
   	</div><!-- border-top -->
-  	<br />
-  	<div class="detail text-left">
+  	<div class="detail text-center">
   		<%= @product.short_description %>
   	</div><!-- detail -->
   	<br />
@@ -100,6 +99,14 @@
     </div><!-- product-info-box -->
   <% end %>
   <!-- end 自己的友情卡 -->
+
+  <!-- 店铺信息-->
+  <div class="bg-white gap">
+    <div class="page-title"><%= @service_store.address %></div>
+    <div class="page-title">营业时间：<%= @service_store.business_hours %></div>
+    <div class="page-title">电话：<%= @service_store.mobile_phone %></div>
+  </div>
+	<br />
 
 
   <div class="bg-white gap">
@@ -199,9 +206,7 @@
         <dl class="buy_now_goods_dl">
           <dt><p><%= @product.name %></p></dt>
           <dd>
-            <p>¥
-              <span id="price_range"> <%= product_price(@product).join(' - ') %> </span>
-            </p>
+            <p>¥ <span id="price_range"><%= product_price(@product).join(' - ') %></span> </p>
           </dd>
         </dl>
       </div>

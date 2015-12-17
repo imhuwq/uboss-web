@@ -7,10 +7,11 @@ class ServiceProductsController < ApplicationController
   end
 
   def show
-    @product = ServiceProduct.published.find_by_id(params[:id])
+    @product = ServiceProduct.published.find_by(id: params[:id])
     return render_product_invalid if @product.blank?
 
     @seller = @product.user
+    @service_store = @seller.service_store
     if qr_sharing?
       current_user && @privilege_card = current_user.privilege_cards.find_by(seller_id: @product.user_id)
     elsif @store_scode = get_seller_sharing_code(@seller.id)

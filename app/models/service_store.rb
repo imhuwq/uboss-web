@@ -22,7 +22,7 @@ class ServiceStore < UserInfo
 
   def mobile_phone
     store_phone = store_phones.first
-    store_phone.phone_number.blank? ? "#{store_phone.area_code}-#{store_phone.fixed_line}" : store_phone.phone_number
+    store_phone.phone_number.blank? ? "#{store_phone.area_code}#{store_phone.fixed_line}" : store_phone.phone_number
   end
 
   def store_cover_name
