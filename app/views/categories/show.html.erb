@@ -5,18 +5,22 @@
     <div class="log_font"> UBOSS </div>
   <% end %>
 <% end %>
+<%= content_for :header_left do %>
+  <a class="back" onclick="history.go(-1)"><%= image_tag 'mobile/right.png' %></a>
+<% end %>
 
 <div class="container">
-  <div class="list">
-    <ul class="list_ul clearfix">
-      <% if @products.present? %>
-        <%= render partial: 'products/product', collection: @products %>
-      <% end %>
-    </ul>
-  </div>
+	<h3 class="main-color gap"><%= @category.name %></h3>
+	<div class="bg-white m-bottom10">
+	  <div class="box store-list">
+	    <% if @products.present? %>
+	      <%= render partial: 'stores/product', collection: @products %>
+	    <% end %>
+	  </div><!-- box -->
+ </div><!-- bg-white -->
 </div>
 
-<div class="load-more" data-container='.list_ul' data-ele='.p-item' data-ref='/products'>加载更多</div>
+<div class="load-more" data-container='.store-list' data-ele='.p-item' data-ref='/products'>加载更多</div>
 
 <% if browser.wechat? %>
   <%= content_for :extra_javascript do %>
