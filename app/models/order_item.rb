@@ -10,7 +10,7 @@ class OrderItem < ActiveRecord::Base
   has_many   :order_item_refunds
   has_many   :refund_messages, through: :order_item_refunds
   has_many   :preferential_measures, as: :preferential_item
-  has_many   :preferentials_bonuses, as: :preferential_item, class_name: 'Preferentials::SellerBonus'
+  has_many   :preferentials_seller_bonuses, as: :preferential_item, class_name: 'Preferentials::SellerBonus'
   has_many   :preferentials_privileges, as: :preferential_item, class_name: 'Preferentials::Privilege'
 
   validates :user, :product_inventory, :amount, :present_price, :pay_amount, presence: true
@@ -41,10 +41,6 @@ class OrderItem < ActiveRecord::Base
 
   def deal_price
     present_price - privilege_amount
-  end
-
-  def privilege_amount
-    @privilege_amount ||= preferential_measures.sum(:amount)
   end
 
   def refund_money
@@ -100,12 +96,13 @@ class OrderItem < ActiveRecord::Base
   end
 
   def reset_payment_info
+    set_privilege_amount
     set_present_price
     set_pay_amount
   end
 
   def total_preferential_amount
-    product_inventory.price - product_inventory.share_and_privilege_amount_total
+    product_inventory.privilege_amount
   end
 
   def total_preferential_count
@@ -120,6 +117,10 @@ class OrderItem < ActiveRecord::Base
     else
       raise 'Accept value is -1 or 1'
     end
+  end
+
+  def set_privilege_amount
+    self.privilege_amount = preferential_measures.sum(:amount)
   end
 
   def set_present_price
