@@ -1,29 +1,23 @@
 <div class="page-title gap">
 	入驻商家
 </div><!--page-title -->
-<div class="bg-white">	
-  <div class="box nogap ucategory-list" style="height: 209px;">        
-  	<% csize=0 %>
-    <% 
-    	@seller.categories.each do |category|    	 
-    		csize=csize+1;
-				if(csize%2 == 1)
-    %>
-    	<div class="box-w100 nogap border-bottom">	      
-      <% end %>
-      <div class="box-w50 nogap">
-	    	<%= link_to  store_category_path(store_id: @seller.id, id: category.id),
-	    			class:'ucategory-box' do %>
-	        <div class="cover">
-	          <div class="img" style="background-image:url('<%= category.image_url(:w120)%>')" title="<%= category.name %>"></div>
-	          <%= image_tag("mobile/img.jpg") %>
-	        </div>
-	        <div class="title"><%= category.name %></div>        
-	    	<% end %>
-      </div><!-- box-w50 -->
-      <% if(csize%2 == 0 || @seller.categories.size == csize) %>
-      	</div><!-- border-bottom -->
-      <% end %>
+<div class="bg-white">
+  <div class="box nogap ucategory-list" style="height: 209px;">
+    <% @seller.categories.in_groups_of(2, false) do |categories| %>
+    	<div class="box-w100 nogap border-bottom">
+        <% categories.each do |category| %>
+          <div class="box-w50 nogap">
+            <%= link_to  store_category_path(store_id: @seller.id, id: category.id),
+              class:'ucategory-box' do %>
+              <div class="cover">
+                <div class="img" style="background-image:url('<%= category.image_url(:w120)%>')" title="<%= category.name %>"></div>
+                <%= image_tag("mobile/img.jpg") %>
+              </div>
+              <div class="title"><%= category.name %></div>
+            <% end %>
+          </div><!-- box-w50 -->
+        <% end %>
+      </div><!-- border-bottom -->
     <% end %>
   </div><!--box -->
 </div><!-- bg-white -->
