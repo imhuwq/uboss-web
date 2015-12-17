@@ -25,6 +25,8 @@
 
 <% if @seller.categories.size > 6 %>
   <div id="ucategory-more" class="gap text-center"><%= image_tag("mobile/arrow-down.png",width:'15') %></div>
+<% else %>
+  <br />
 <% end %>
 
 <div class="store-cover text-center" style="<%= "background-image:url('#{@seller.store_cover.url(:w640)}')" if @seller.user_info.store_cover_identifier.present? %>">
