@@ -1,17 +1,4 @@
 small{font-size: 70%;}
-.gap{padding:10px}
-.gap-lr{padding: 0 10px;}
-.nogap{ padding:0;}
-.line-gap{
-    p{
-        line-height: 120%;
-        font-size: 110%;
-        margin-bottom: 8px;
-    }
-    p:last-child{
-        margin: 0;
-    }
-}
 .text-center{ text-align: center;}
 .text-left{ text-align: left;}
 .text-right{ text-align: right;}
@@ -102,4 +89,17 @@ h4{font-size: 15px; line-height: 25px; font-weight: normal;}
   display: none;
 }
 
+.gap{padding:10px}
+.gap-lr{padding: 0 10px;}
+.nogap{ padding:0;}
+.line-gap{
+    p{
+        line-height: 120%;
+        font-size: 110%;
+        margin-bottom: 8px;
+    }
+    p:last-child{
+        margin: 0;
+    }
+}
 
