@@ -47,16 +47,17 @@ class Admin::StoresController < AdminController
 	end
 
 	def update_store_name
-		if current_user.update(store_name: params[:store_name])
-			@message = {message: "修改成功！"}
+    duplication_name = UserInfo.find_by(store_name: params[:resource_val]) if params[:resource_val] != ''
+    if (!duplication_name.present? || duplication_name.try(:user_id) == current_user.id) && current_user.update(store_name: params[:resource_val])
+			@message = {success: "修改成功！"}
 		else
-			@message = {message:"修改失败"}
+      @message = {error:"修改失败#{duplication_name.present? ? ',此名称已经有人使用。' : ''}"}
 		end
 		render json:  @message
 	end
 
 	def update_store_short_description
-		if current_user.update(store_short_description: params[:store_short_description])
+		if current_user.update(store_short_description: params[:resource_val])
 			@message = {message: "修改成功！"}
 		else
 			@message = {message:"修改失败"}

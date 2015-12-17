@@ -61,12 +61,13 @@ class Admin::CategoriesController < AdminController
 
   def update_category_name
     category = current_user.categories.find(params[:id])
-    if category.update(name: params[:name])
-      @message = {message: "修改成功！"}
+    duplication_name =  current_user.categories.find_by(name: params[:resource_val])
+    if duplication_name.try(:id) != category.id && category.update(name: params[:resource_val])
+      @message = {success: "修改成功！"}
     else
-      @message = {message:"修改失败"}
+      @message = {error:"修改失败#{duplication_name.present? ? ',分类名重复。' : ''}"}
     end
-    render json:  @message
+    render json:  @message.to_json
   end
 
   def change_category_img

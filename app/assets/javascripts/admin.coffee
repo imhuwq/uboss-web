@@ -48,3 +48,21 @@ jQuery ($) ->
     return
 
   $("select").filter(":not([data-manual-chosen])").chosen()
+
+
+  $(document).on 'change', '.update_item', ->
+    $this = $(this)
+    resource_val = $this.val()
+    resource_path = $this.attr('data-url')
+    $.ajax
+      url: resource_path
+      type: 'POST'
+      data: {resource_val:  resource_val}
+      success: (res) ->
+        console.log "res", res
+        if res['error']
+          alert(res['error'])
+          $this.val('')
+      error: (data, status, e) ->
+        console.log data, status, e
+        alert("操作错误")

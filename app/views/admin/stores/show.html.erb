@@ -27,11 +27,11 @@
 <div>
   <div>
     <label>店铺名</label>
-    <%= text_field_tag :store_name , current_user.store_name ,data:{id: current_user.id} %>
+    <%= text_field_tag :store_name , current_user.store_name , class: 'update_item', data:{url: "/admin/stores/#{current_user.id}/update_store_name" } %>
   </div>
   <div>
     <label>店铺简介</label>
-    <%= text_field_tag :store_short_description, current_user.store_short_description , data:{id: current_user.id}, placeholder: '请控制在20字以内，以保证显示效果' %>
+    <%= text_field_tag :store_short_description, current_user.store_short_description , class: 'update_item', data:{ url: "/admin/stores/#{current_user.id}/update_store_descirption" } , placeholder: '请控制在20字以内，以保证显示效果' %>
   </div>
 </div>
 <div>
