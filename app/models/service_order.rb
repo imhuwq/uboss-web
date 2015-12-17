@@ -22,7 +22,6 @@ class ServiceOrder < Order
 
   def check_completed
     unless verify_codes.any? { |verify_code| verify_code.verified == false }
-      binding.pry
       may_complete? && completed!
     end
   end

@@ -12,7 +12,7 @@ class Admin::ServiceStoresController < AdminController
 
     group_date.each do |key, array|
       @income_by_date[key] = [ array.size, array.map do |code|
-        code.service_product.present_price
+        code.order_item.product.present_price
       end.sum ]
     end
   end

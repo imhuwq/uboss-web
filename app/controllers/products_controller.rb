@@ -33,7 +33,6 @@ class ProductsController < ApplicationController
 
   def get_sku
     # FIXME 不要大片的注释代码，遇到已经不用的代码直接删除
-    # binding.pry
     product = Product.find(params[:product_id])
     # skus = {}
     # sku_details = {}
@@ -65,7 +64,6 @@ class ProductsController < ApplicationController
 
   # FIXME 这个action没有被用到
   def get_sku_detail
-    # binding.pry
     product = Product.find(params[:product_id])
     hash = {}
     product.product_inventories.where("count > 0").each do |obj|

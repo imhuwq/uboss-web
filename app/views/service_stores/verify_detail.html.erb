@@ -34,8 +34,8 @@
         <tr>
           <td class="text-left">
             <%= link_to '#' do %>
-              <%= image_tag(verify_code.service_product.image_url(:thumb), size: "80x80", alt: "-") %>　
-              <%= verify_code.service_product.name %>
+              <%= image_tag(verify_code.order_item.product.image_url(:thumb), size: "80x80", alt: "-") %>　
+              <%= verify_code.order_item.product.name %>
             <% end %>
           </td>
           <td><%= verify_code.updated_at.to_date %></td>
