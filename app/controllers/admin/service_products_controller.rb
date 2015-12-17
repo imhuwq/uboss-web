@@ -2,6 +2,10 @@ class Admin::ServiceProductsController < AdminController
 
   load_and_authorize_resource
 
+  def new
+    @service_product = ServiceProduct.new
+  end
+
   def index
     @service_products = current_user.service_products.available.order('created_at DESC')
     @service_products = @service_products.includes(:asset_img).page(params[:page] || 1)
@@ -12,6 +16,7 @@ class Admin::ServiceProductsController < AdminController
   end
 
   def create
+    @service_product = ServiceProduct.new(service_product_params)
     @service_product.user_id = current_user.id
     @service_product.service_store = current_user.service_store
     if @service_product.save
@@ -67,11 +72,20 @@ class Admin::ServiceProductsController < AdminController
   end
 
   private
+  def product_propertys_params
+    params.permit(product_propertys_names: [])
+  end
 
   def service_product_params
     params.require(:service_product).permit(
       :name,  :service_type, :original_price, :present_price,
-      :count, :avatar, :content, :monthes,    :short_description
-    )
+      :count, :avatar, :content, :monthes,    :short_description,
+    ).merge(params.require(:product).permit(
+      product_inventories_attributes: [
+        :id, :price, :count,
+        :share_amount_total, :privilege_amount, :share_amount_lv_1,
+        sku_attributes: product_propertys_params[:product_propertys_names],
+      ]
+    ))
   end
 end

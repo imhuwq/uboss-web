@@ -319,3 +319,9 @@
     border-radius: 2px;
   }
 }
+
+.service_products {
+  .th-tips-info-pri-lv2, .th-tips-info-pri-lv3, .td-pri-lv2, .td-pri-lv3{
+    display: none;
+  }
+}

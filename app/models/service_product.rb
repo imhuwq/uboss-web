@@ -7,7 +7,7 @@ class ServiceProduct < Product
 
   DataServiceType = { 0 => '代金券', 1 => '团购' }
 
-  before_validation :set_default_product_inventory
+  after_initialize  :initialize_product_inventory
   before_save :check_service_store_user
 
   scope :vouchers, -> { where(service_type: 0) }
@@ -27,7 +27,7 @@ class ServiceProduct < Product
 
   private
 
-  def set_default_product_inventory
+  def initialize_product_inventory
     if self.new_record?
       self.product_inventories.new(
         price: self.present_price,
