@@ -1,5 +1,9 @@
 module ApplicationHelper
 
+  def uboss_mall?(seller)
+    seller.id == 1
+  end
+
   def product_show?
     controller_name == 'products' && action_name == 'show'
   end

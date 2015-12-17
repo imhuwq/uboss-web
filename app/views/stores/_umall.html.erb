@@ -1,0 +1,16 @@
+<div class="bg-white">
+  <div class="store-like">
+    <div class="box">
+      <div class="box-w100">
+        <div class="page-title like-color">
+          <%= link_to hots_store_path(@seller), class: 'more-bar' do %>
+            more <%= image_tag 'mobile/arrow-right.png' %>
+        <% end %>
+        入驻商家
+        </div>
+      </div>
+      <%= render partial: 'categories', collection:  @seller.categories, as: :category %>
+    </div>
+  </div>
+</div>
+<br />
