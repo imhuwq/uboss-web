@@ -225,7 +225,7 @@ Rails.application.routes.draw do
         post :update_categories, on: :collection
         post :update_category_name,  on: :member
         post :update_category_img, on: :collection
-        get   :change_category_img, :updata_category_img,  on: :member
+        get   :show_category, :updata_category_img,  on: :member
       end
 
       resources :stores, only: [:show] do

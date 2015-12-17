@@ -32,23 +32,6 @@ class Admin::CategoriesController < AdminController
     redirect_to admin_categories_url, notice: '成功删除分组'
   end
 
-  def update_categories
-    begin
-      params[:categories].each do |i,attributes|
-        Category.find_by(id: attributes[:id]).update(attributes.permit(:name, :avatar))
-      end
-    rescue Exception => ex 
-      @errors << ex.full_message
-    end
-    if @errors
-      flash[:errors] = @errors.join('\n')
-      render action: :index
-    else
-      flash[:success] = "success"
-      redirect_to action: :index
-    end
-  end
-
   def update_category_img
     category = Category.find(params[:resource_id])
     if category.update(avatar: params[:avatar])
@@ -70,8 +53,9 @@ class Admin::CategoriesController < AdminController
     render json:  @message.to_json
   end
 
-  def change_category_img
+  def show_category
     category = Category.find(params[:id])
+    category.update(use_in_store: true)
     if category.image_url
       render json:  {url: category.image_url}.to_json
     else

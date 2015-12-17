@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151209035249) do
+ActiveRecord::Schema.define(version: 20151217084940) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -56,6 +56,18 @@ ActiveRecord::Schema.define(version: 20151209035249) do
     t.string   "bankname"
   end
 
+  create_table "bonus_records", force: :cascade do |t|
+    t.decimal  "amount"
+    t.datetime "created_at",          null: false
+    t.datetime "updated_at",          null: false
+    t.integer  "user_id"
+    t.string   "type"
+    t.integer  "inviter_id"
+    t.boolean  "actived"
+    t.integer  "bonus_resource_id"
+    t.string   "bonus_resource_type"
+  end
+
   create_table "carriage_templates", force: :cascade do |t|
     t.string   "name"
     t.datetime "created_at", null: false
@@ -84,12 +96,14 @@ ActiveRecord::Schema.define(version: 20151209035249) do
   add_index "carts", ["user_id"], name: "index_carts_on_user_id", using: :btree
 
   create_table "categories", force: :cascade do |t|
-    t.string   "name",                           null: false
-    t.integer  "user_id",                        null: false
-    t.datetime "created_at",                     null: false
-    t.datetime "updated_at",                     null: false
-    t.boolean  "use_in_store",    default: true
+    t.string   "name",                                 null: false
+    t.integer  "user_id",                              null: false
+    t.datetime "created_at",                           null: false
+    t.datetime "updated_at",                           null: false
+    t.boolean  "use_in_store",          default: true
     t.datetime "use_in_store_at"
+    t.boolean  "show_advertisement",    default: true
+    t.datetime "show_advertisement_at"
   end
 
   add_index "categories", ["user_id", "name"], name: "index_categories_on_user_id_and_name", unique: true, using: :btree
@@ -434,37 +448,38 @@ ActiveRecord::Schema.define(version: 20151209035249) do
     t.integer  "user_id"
     t.string   "name"
     t.string   "code"
-    t.decimal  "original_price",       default: 0.0
-    t.decimal  "present_price",        default: 0.0
-    t.integer  "count",                default: 0
-    t.decimal  "traffic_expense",      default: 0.0
+    t.decimal  "original_price",        default: 0.0
+    t.decimal  "present_price",         default: 0.0
+    t.integer  "count",                 default: 0
+    t.decimal  "traffic_expense",       default: 0.0
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "has_share_lv",         default: 3
-    t.decimal  "share_amount_total",   default: 0.0
-    t.decimal  "share_amount_lv_1",    default: 0.0
-    t.decimal  "share_amount_lv_2",    default: 0.0
-    t.decimal  "share_amount_lv_3",    default: 0.0
-    t.decimal  "share_rate_lv_1",      default: 0.0
-    t.decimal  "share_rate_lv_2",      default: 0.0
-    t.decimal  "share_rate_lv_3",      default: 0.0
-    t.decimal  "share_rate_total",     default: 0.0
-    t.integer  "calculate_way",        default: 0
-    t.integer  "status",               default: 0
-    t.integer  "good_evaluation",      default: 0
-    t.integer  "bad_evaluation",       default: 0
-    t.decimal  "privilege_amount",     default: 0.0
+    t.integer  "has_share_lv",          default: 3
+    t.decimal  "share_amount_total",    default: 0.0
+    t.decimal  "share_amount_lv_1",     default: 0.0
+    t.decimal  "share_amount_lv_2",     default: 0.0
+    t.decimal  "share_amount_lv_3",     default: 0.0
+    t.decimal  "share_rate_lv_1",       default: 0.0
+    t.decimal  "share_rate_lv_2",       default: 0.0
+    t.decimal  "share_rate_lv_3",       default: 0.0
+    t.decimal  "share_rate_total",      default: 0.0
+    t.integer  "calculate_way",         default: 0
+    t.integer  "status",                default: 0
+    t.integer  "good_evaluation",       default: 0
+    t.integer  "bad_evaluation",        default: 0
+    t.decimal  "privilege_amount",      default: 0.0
     t.string   "short_description"
-    t.boolean  "hot",                  default: false
+    t.boolean  "hot",                   default: false
     t.integer  "carriage_template_id"
-    t.integer  "transportation_way",   default: 0
+    t.integer  "transportation_way",    default: 0
     t.integer  "best_evaluation"
     t.integer  "better_evaluation"
     t.integer  "worst_evaluation"
-    t.boolean  "full_cut",             default: false
+    t.boolean  "full_cut",              default: false
     t.integer  "full_cut_number"
     t.integer  "full_cut_unit"
-    t.boolean  "show_advertisement",   default: false
+    t.boolean  "show_advertisement",    default: false
+    t.datetime "show_advertisement_at"
   end
 
   create_table "redactor_assets", force: :cascade do |t|
@@ -654,6 +669,7 @@ ActiveRecord::Schema.define(version: 20151209035249) do
     t.integer  "better_evaluation"
     t.integer  "best_evaluation"
     t.string   "store_cover"
+    t.decimal  "bonus_benefit",             default: 0.0
   end
 
   add_index "user_infos", ["user_id"], name: "index_user_infos_on_user_id", unique: true, using: :btree
@@ -710,6 +726,17 @@ ActiveRecord::Schema.define(version: 20151209035249) do
   add_index "users", ["login"], name: "index_users_on_login", unique: true, using: :btree
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
 
+  create_table "versions", force: :cascade do |t|
+    t.string   "item_type",  null: false
+    t.integer  "item_id",    null: false
+    t.string   "event",      null: false
+    t.string   "whodunnit"
+    t.text     "object"
+    t.datetime "created_at"
+  end
+
+  add_index "versions", ["item_type", "item_id"], name: "index_versions_on_item_type_and_item_id", using: :btree
+
   create_table "withdraw_records", force: :cascade do |t|
     t.integer  "user_id"
     t.integer  "state",           default: 0
@@ -729,6 +756,7 @@ ActiveRecord::Schema.define(version: 20151209035249) do
   add_index "withdraw_records", ["number"], name: "index_withdraw_records_on_number", unique: true, using: :btree
 
   add_foreign_key "bank_cards", "users"
+  add_foreign_key "bonus_records", "users"
   add_foreign_key "cart_items", "carts"
   add_foreign_key "cart_items", "product_inventories"
   add_foreign_key "cart_items", "users", column: "seller_id"

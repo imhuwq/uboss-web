@@ -6,7 +6,7 @@ $(document).on 'change',  '#adding_category_window #category_tages', (e)->
 		$('#adding_category_window .upyun_file_json').attr('data-to',"")
 	else
 		$.ajax
-		  url:  "/admin/categories/#{resource_id}/change_category_img"
+		  url:  "/admin/categories/#{resource_id}/show_category"
 		  type: 'GET'
 		  data: {resource_id:  resource_id}
 		  success: (res) ->
