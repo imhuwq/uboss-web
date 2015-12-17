@@ -246,11 +246,10 @@ zh-CN:
     completed: 交易完成
     closed: 订单关闭
   service_order_status_bar:
-    unpay: 等待买家付款
-    payed: 等待买家消费
-    expensed: 买家已消费
+    unpay: 待付款
+    payed: 待消费
     completed: 交易完成
-    closed: 交易关闭
+    closed: 订单关闭
   enums:
     evaluation:
       status:

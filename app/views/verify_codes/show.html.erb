@@ -1,0 +1,11 @@
+<%= content_for :page_title do %>
+  验证券
+<% end %>
+<br />
+
+<div class="order-list">
+  <span>验证券密码：</span>
+  <% @verify_codes.each do |verify_code| %>
+    <p><%= verify_code.code %></p>
+  <% end %>
+</div>

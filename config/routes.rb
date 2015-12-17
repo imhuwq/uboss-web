@@ -89,6 +89,7 @@ Rails.application.routes.draw do
     patch :merchant_confirm, to: 'accounts#merchant_confirmed'
     patch :password, to: 'accounts#update_password'
     resources :user_addresses, except: [:show]
+    resources :verify_codes, only: [:index, :show]
   end
   resource :pay_notify, only: [] do
     collection do

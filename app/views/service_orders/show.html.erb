@@ -26,7 +26,7 @@
 
   <div class="order-box">
     <div class="cover">
-      <%= link_to product_path(@order_item.item_product) do %>
+      <%= link_to service_product_path(@order_item.item_product) do %>
         <%= image_tag @order_item.image_url(:w120) %>
       <% end %>
     </div><!-- cover -->
