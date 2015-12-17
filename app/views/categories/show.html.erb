@@ -8,9 +8,14 @@
 <%= content_for :header_left do %>
   <a class="back" onclick="history.go(-1)"><%= image_tag 'mobile/right.png' %></a>
 <% end %>
-
+<div>
+  <span><%= @category.name %></span>
+  <% @categories.each do |category| %>
+    <%= link_to category.name, store_category_path(store_id:params[:store_id], id: category.id) %>
+  <% end %>
+</div>
 <div class="container">
-	<h3 class="main-color gap"><%= @category.name %></h3>
+	
 	<div class="bg-white m-bottom10">
 	  <div class="box store-list" id="category-list">
 	    <% if @products.present? %>
