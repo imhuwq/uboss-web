@@ -21,7 +21,7 @@ class ServiceOrder < Order
   end
 
   def check_completed
-    unless verify_codes.any? { |verify_code| verify_code.verified == false }
+    if VerifyCode.where(order_item_id: self.order_item_ids).blank?
       may_complete? && completed!
     end
   end

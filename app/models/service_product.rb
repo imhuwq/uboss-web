@@ -8,6 +8,7 @@ class ServiceProduct < Product
   DataServiceType = { 0 => '代金券', 1 => '团购' }
 
   after_initialize  :initialize_product_inventory
+  before_update :check_product_inventory_count
   before_save :check_service_store_user
 
   scope :vouchers, -> { where(service_type: 0) }
@@ -27,11 +28,18 @@ class ServiceProduct < Product
 
   private
 
+  def check_product_inventory_count
+    if self.product_inventories && self.product_inventories.first.count < 1000
+      inventory = self.product_inventories.first
+      inventory.update(count: 9*10000)
+    end
+  end
+
   def initialize_product_inventory
-    if self.new_record?
+    if self.new_record? && self.product_inventories.blank?
       self.product_inventories.new(
         price: self.present_price,
-        count: self.count,
+        count: 9*10000,
         sku_attributes: { '其它' => '默认' }
       )
     end

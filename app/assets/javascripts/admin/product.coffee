@@ -54,3 +54,6 @@ $ ->
       $('.full_cut_params').hide()
       $(this).addClass('checkbox_no_checked')
       $(this).removeClass('checkbox_is_checked')
+
+  $(document).on "focusout", '#service_product_present_price', (event) ->
+    $('input.sku-price').val($(this).val()).focusout()

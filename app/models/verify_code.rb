@@ -11,8 +11,10 @@ class VerifyCode < ActiveRecord::Base
   scope :total, ->(user) { where(verified: true, order_item_id: OrderItem.where(product_id: user.product_ids).ids) }
 
   def verify_code
-    update(verified: true) if !verified
-    order_item.order.try(:check_completed)
+    if !verified && update(verified: true)
+      order_item.order.try(:check_completed)
+      true
+    end
   end
 
   private
