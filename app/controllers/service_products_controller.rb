@@ -30,7 +30,7 @@ class ServiceProductsController < ApplicationController
   end
 
   def switch_favour
-    @product ||= Product.published.find(params[:id])
+    @product ||= ServiceProduct.published.find(params[:id])
 
     if current_user.favour_products.exists?(product_id: @product.id)
       current_user.unfavour_product(@product)

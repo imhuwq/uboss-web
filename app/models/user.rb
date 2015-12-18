@@ -32,8 +32,8 @@ class User < ActiveRecord::Base
   # for buyer
   has_many :user_addresses
   has_many :orders
-  has_many :ordinary_orders, class_name: 'OrdinaryOrder'
-  has_many :service_orders,  class_name: 'ServiceOrder'
+  has_many :ordinary_orders
+  has_many :service_orders
   has_many :order_charges
   has_many :sharing_incomes
   has_many :bank_cards
@@ -43,8 +43,8 @@ class User < ActiveRecord::Base
   has_many :sold_ordinary_orders, class_name: 'OrdinaryOrder', foreign_key: 'seller_id'
   has_many :sold_service_orders,  class_name: 'ServiceOrder',  foreign_key: 'seller_id'
   has_many :products
-  has_many :ordinary_products, class_name: 'OrdinaryProduct'
-  has_many :service_products,  class_name: 'ServiceProduct'
+  has_many :ordinary_products
+  has_many :service_products
   has_many :selling_incomes
   belongs_to :agent, class_name: 'User'
 

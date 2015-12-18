@@ -42,7 +42,7 @@ class OrderForm
   end
 
   def product
-    @product ||= Product.find(self.product_id)
+    @product ||= OrdinaryProduct.find(self.product_id)
   end
 
   def product_inventory
@@ -116,7 +116,7 @@ class OrderForm
           order_items_attributes: order_items_attributes
         }])
       elsif seller_ids
-        Order.create!(
+        OrdinaryOrder.create!(
           orders_split_by_seller
         )
       end

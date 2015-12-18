@@ -19,7 +19,7 @@ class ServiceOrderForm
   validate  :product_must_be_valid
 
   def product
-    @product ||= Product.find(self.product_id)
+    @product ||= ServiceProduct.find(self.product_id)
   end
 
   def product_inventory

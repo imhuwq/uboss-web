@@ -8,7 +8,7 @@ class Admin::OrdersController < AdminController
   after_action :record_operation, only: [:update]
 
   def select_orders
-    @orders = Order.where(id: params[:ids])
+    @orders = OrdinaryOrder.where(id: params[:ids])
   end
 
   def close
@@ -24,7 +24,7 @@ class Admin::OrdersController < AdminController
     success, errors = 0, 0
     if params[:order].present?
       params[:order].each do |order_id, param|
-        order = Order.find(order_id)
+        order = OrdinaryOrder.find(order_id)
         express = Express.find_by_name(param[:express_name])
         express = Express.create(name: param[:express_name], private_id: current_user.id) if express.blank?
         if validate_batch_shipment_params(param) \

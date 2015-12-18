@@ -140,7 +140,7 @@ module WxTemplateMsg extend self
   end
 
   def seller_paid_orders_count(order)
-    Order.where(seller_id: order.seller_id, state: 1)
+    OrdinaryOrder.where(seller_id: order.seller_id, state: 1)
   end
 
   def order_refund_msg_to_seller_data(refund)
