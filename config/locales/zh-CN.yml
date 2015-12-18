@@ -135,6 +135,19 @@ zh-CN:
         address:                                 地址
         mobile:                                  手机号码
         mobile_auth_code:                        验证码
+      certification:
+        status:                                   状态
+        name:                                     姓名
+        enterprise_name:                          公司名
+        id_num:                                   身份证号码
+        address:                                  地址
+        mobile:                                   手机号
+        business_license_img:                     营业执照
+        legal_person_identity_card_front_img:     法人身份证正面
+        legal_person_identity_card_end_img:       法人身份证反面
+        identity_card_code:                       身份证号码
+        face_with_identity_card_img:              手持身份证图片
+        identity_card_front_img:                  身份证正面
       order:
         ship_number: 运单号
         express_name: 快递公司
@@ -281,6 +294,9 @@ zh-CN:
         pass:  已通过
         no_pass:  未通过
     enterprise_authentication:
+      status:
+        <<: *status
+    certification:
       status:
         <<: *status
     withdraw_record:
