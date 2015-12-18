@@ -138,8 +138,9 @@ class OrderDivideJob < ActiveJob::Base
 
   def get_reward_amount_by_product_level_and_order_item(product_inventory, level, order_item)
     reward_amount = product_inventory.read_attribute(level)
-    if level == :share_amount_lv_1 && (order_item.privilege_amount > product_inventory.privilege_amount)
-      reward_amount -= (order_item.privilege_amount - product_inventory.privilege_amount)
+    # 减去友情卡贡献的优惠
+    if level == :share_amount_lv_1 && (order_item.total_sharer_privilege_amount > 0)
+      reward_amount -= order_item.total_sharer_privilege_amount
     end
     reward_amount
   end

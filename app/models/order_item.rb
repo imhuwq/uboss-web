@@ -110,6 +110,10 @@ class OrderItem < ActiveRecord::Base
     amount
   end
 
+  def total_sharer_privilege_amount
+    @total_privilege_amount ||= preferentials_privileges.sum(:total_amount)
+  end
+
   private
 
   def adjust_product_stock(type)
