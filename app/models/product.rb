@@ -55,12 +55,20 @@ class Product < ActiveRecord::Base
     @official_agent_product ||= find_by(user_id: official_account.id, name: OFFICIAL_AGENT_NAME)
   end
 
+  def max_price_inventory
+    @max_price_inventory ||= seling_inventories.order('price DESC').first
+  end
+
+  def min_price_inventory
+    @min_price_inventory ||= seling_inventories.order('price DESC').last
+  end
+
   def max_price
-    @max_price ||= seling_inventories.maximum(:price)
+    @max_price ||= max_price_inventory.price
   end
 
   def min_price
-    @min_price ||= seling_inventories.minimum(:price)
+    @min_price ||= min_price_inventory.price
   end
 
   # SKU(product_inventory) 更新保存逻辑
