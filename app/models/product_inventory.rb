@@ -21,6 +21,15 @@ class ProductInventory < ActiveRecord::Base
   # after_create :create_product_properties
   after_commit :update_unpay_order_items, on: :update, if: -> { price_or_share_amount_changes }
 
+  has_paper_trail on: [:update],
+    if: Proc.new { |inventory| inventory.orders.where(state: [1, 3]).exists? },
+    only: [ :price,
+            :share_amount_total,
+            :share_amount_lv_1,
+            :share_amount_lv_2,
+            :share_amount_lv_3,
+            :privilege_amount ]
+
   def saling?
     status == 'published' && saling && count > 0
   end

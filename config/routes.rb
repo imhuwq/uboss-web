@@ -21,6 +21,7 @@ Rails.application.routes.draw do
   get 'sharing/:code', to: 'sharing#show', as: :sharing
   get 'maker_qrcode', to: 'home#maker_qrcode', as: :maker_qrcode
   get 'qrcode', to: 'home#qrcode', as: :request_qrcode
+  get 'ls_game', to: 'home#hongbao_game'
 
   get 'service_centre_consumer', to: 'home#service_centre_consumer'
   get 'service_centre_agent', to: 'home#service_centre_agent'
@@ -36,6 +37,14 @@ Rails.application.routes.draw do
   post 'mobile_captchas/create', to: 'mobile_captchas#create'
   get  'mobile_captchas/send_with_captcha', to: 'mobile_captchas#send_with_captcha'
 
+  resources :pages, only: [] do
+    collection do
+      get :bonus_invite
+    end
+  end
+  resources :bonus, only: [:create] do
+    post :invited, on: :collection
+  end
   resources :stores, only: [:index, :show] do
     get :hots, :favours, on: :member
     resources :categories, only: [:show]
@@ -77,6 +86,7 @@ Rails.application.routes.draw do
   end
   resource :chat, only: [:show] do
     get :token, :user_info, :check_user_online
+    get 'conversations/:conversation_id', to: 'chats#conversion'
   end
   resource :account, only: [:show, :edit, :update] do
     get :settings,         :edit_password,
@@ -221,7 +231,7 @@ Rails.application.routes.draw do
 
       root 'dashboard#index'
 
-      resources :categories, except: [:show] do 
+      resources :categories, except: [:show] do
         post :update_categories, on: :collection
         post :update_category_name,  on: :member
         post :update_category_img, on: :collection

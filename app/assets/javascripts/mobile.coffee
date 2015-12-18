@@ -79,3 +79,12 @@ $ ->
   $('.category-more-btn').on 'click',->
     $('.category-more-box').toggleClass('hidden')
     $(this).toggleClass('up')
+
+  $('#ucategory-more').on 'click' , ->
+    if $(this).hasClass('arrow-top')
+      $(this).removeClass('arrow-top')
+      $('.ucategory-list').attr('style','max-height:209px')
+    else
+      $(this).addClass('arrow-top')
+      $('.ucategory-list').attr('style','')
+

@@ -1,0 +1,75 @@
+<div class="gap bg-white m-bottom10 m-top10">
+  <div class="store-category-cover">
+    <div class="cover"><img src='<%= @seller.avatar_url(:w120) %>' /></div>   
+    <div class="content">
+  
+      <h3 class="name"><%= @seller.store_name %></h3>
+  
+      <p>
+        <small>
+          <span class="main-color"><%= number_to_percentage(@seller.good_reputation_rate, precision: 0) %></span> 好评（<%= @seller.total_reputations %>）
+        </small>
+      </p>    
+  
+      <% if @seller.store_short_description.present?  %>
+        <p class="gray-color text-cut"><%= @seller.store_short_description %></p>
+      <% end %>    
+    </div>
+  </div><!-- store-category-cover -->
+  
+    <% if qr_sharing? %>
+      <div class="border-top text-center m-top10">
+        <p>
+          <% if current_user && current_user.has_seller_privilege_card?(@seller) %>
+            <a class="btn btn-large p-sharing-btn">分享给朋友</a>
+          <% else %>
+            <%= link_to "领取友情卡", get_seller_sharing_path,
+              data: { sid: @seller.id, uid: current_user.present? },
+              class: "btn btn-large show-req-snode-modal"
+            %>
+            <a class="btn btn-large hidden p-sharing-btn">分享给朋友</a>
+          <% end %>
+        </p>
+        <div><small><a class="gray-color" href="/about">查看说明</a></small></div>
+      </div>
+    <% end %>
+  
+    <% if @sharing_node %>
+      <div class="share-category-box border-top text-center m-top10">
+        <h3 class="text-cut">
+          <%= image_tag @sharing_node.user.avatar_url(:w120) %>
+          <%= @sharing_node.user.identify %> 推荐
+        </h3>
+      </div>    
+    <% end %>
+</div><!-- bg-white -->
+<div class="bg-white m-bottom10">
+  <div class="tab-nav category-nav">
+    <div class="tab active" title="#category-container"><span>分类</span></div>
+    <div class="tab" title="#product-container"><span>全部商品</span></div>
+  </div>
+  <div class="tab-container">
+    <div class="tab-content category-list" id="category-container" style="display: block;">
+      <div class="box">
+        <%= render partial: 'categories', collection:  @seller.categories, as: :category %>
+      </div>
+    </div><!-- #category-container -->
+    <div class="tab-content" id="product-container">
+      <div class="box store-list">
+        <% if @products.present? %>
+          <%= render partial: 'product', collection: @products %>
+        <% else %>
+          <h2 class="page-title text-center">店家正在准备好货，敬请期待</h2>
+        <% end %>   
+      </div><!-- box -->
+      <% if @products.size > 6 %>
+        <br />
+        <div class="load-more" data-container='.store-list' data-ele='.p-item' data-ref='<%= request.path %>'>加载更多</div>
+      <% end %>
+    </div><!-- #product-container -->
+  </div><!-- tab-container -->  
+</div><!-- bg-white -->
+<div class="gap-lr m-bottom10"> 
+  <%= render partial: 'ad_banner_slider', locals: { seller: @seller } %>
+</div>
+

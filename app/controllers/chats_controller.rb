@@ -23,4 +23,8 @@ class ChatsController < ApplicationController
     render json: { online: result[:code] == 200 && result[:status] == '1' }
   end
 
+  def conversion
+    redirect_to chat_path(anchor: "conversations/#{params[:conversation_id]}")
+  end
+
 end

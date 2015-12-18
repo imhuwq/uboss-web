@@ -31,7 +31,7 @@ class Admin::CategoriesController < AdminController
     @category.destroy
     redirect_to admin_categories_url, notice: '成功删除分组'
   end
-
+  
   def update_category_img
     category = Category.find(params[:resource_id])
     if category.update(avatar: params[:avatar])

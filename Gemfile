@@ -24,6 +24,7 @@ gem 'ransack'
 gem 'rails-api'
 gem 'sanitize'
 gem 'rongcloud', github: 'xEasy/rongcloud'
+gem "paper_trail", "~> 4.0.0" # modal versioning
 
 # copying of ActiveRecord objects and their associated children
 gem 'amoeba'

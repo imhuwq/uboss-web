@@ -5,6 +5,7 @@
     <div class="log_font"> UBOSS </div>
   <% end %>
 <% end %>
+
 <%= content_for :header_left do %>
   <a class="back" onclick="history.go(-1)"><%= image_tag 'mobile/right.png' %></a>
 <% end %>
@@ -65,6 +66,12 @@
   <br />
   <div class="load-more" data-container='.store-list' data-ele='.p-item' data-ref='<%= request.path %>'>加载更多</div>
   <br />
+<% end %>
+
+<%= render partial: 'new_share' %>
+
+<% if qr_sharing? && (current_user.blank? || (current_user && !current_user.has_seller_privilege_card?(@seller)) ) %>
+  <%= render partial: 'privilege_card_pop' %>
 <% end %>
 
 <% if browser.wechat? %>

@@ -1,5 +1,9 @@
 module ApplicationHelper
 
+  def uboss_mall?(seller)
+    %w(19800000888).include? seller.login.to_s
+  end
+
   def product_show?
     controller_name == 'products' && action_name == 'show'
   end
@@ -96,12 +100,24 @@ module ApplicationHelper
     end.join.html_safe
   end
 
-  def store_sharing_meta_tags(seller, sharing_link_node = nil)
+  def store_sharing_meta_tags(seller, sharing_link_node = nil, redirect = nil)
     meta_tags = {
       sharing_title:  "【#{seller.store_identify}】好货不断，通过分享购买更有优惠惊喜！",
       sharing_desc:   "在我这儿，谁还会用市场价购买啊？",
       sharing_imgurl: seller.avatar_url(:thumb),
-      sharing_link:  store_sharing_link(seller, sharing_link_node)
+      sharing_link:  store_sharing_link(seller, sharing_link_node, redirect),
+    }
+    meta_tags.collect do |key, value|
+      content_tag :meta, '', name: key, content: value
+    end.join.html_safe
+  end
+
+  def luffy_meta_tags(opts={})
+    meta_tags = {
+      sharing_title:  opts[:title] || 'UBOSS商城 | 基于人，超乎想象',
+      sharing_desc:   opts[:desc],
+      sharing_imgurl: opts[:imgurl] || image_url('favicon-lg.png'),
+      sharing_link:  opts[:link] || root_url
     }
     meta_tags.collect do |key, value|
       content_tag :meta, '', name: key, content: value

@@ -38,6 +38,7 @@ class User < ActiveRecord::Base
   has_many :order_item_refunds
   has_many :sales_returns, through: :order_item_refunds
   has_many :carriage_templates
+  has_many :bonus_records
   # for seller
   has_many :seller_addresses, -> { where(seller_address: true) }, class_name: 'UserAddress'
   has_many :sold_orders, class_name: 'Order', foreign_key: 'seller_id'
@@ -66,7 +67,7 @@ class User < ActiveRecord::Base
     :store_banner_one=, :store_banner_two=, :store_banner_thr=,
     :recommend_resource_one_id, :recommend_resource_two_id, :recommend_resource_thr_id,
     :recommend_resource_one_id=, :recommend_resource_two_id=, :recommend_resource_thr_id=,
-    :store_short_description, :store_short_description=, :store_cover, :store_cover=,
+    :store_short_description, :store_short_description=, :store_cover, :store_cover=, :bonus_benefit,
     :store_logo_url, :store_logo=, :store_logo,
     to: :user_info, allow_nil: true
 
@@ -98,6 +99,14 @@ class User < ActiveRecord::Base
 
   def image_url(version = nil)
     avatar.url(version)
+  end
+
+  def crypt_id
+    self.id && CryptService.encrypt(self.id)
+  end
+
+  def received_invite_bonus?
+    bonus_records.where(type: 'Ubonus::Invite').exists?
   end
 
   class << self
@@ -235,7 +244,8 @@ class User < ActiveRecord::Base
     if store_name.blank?
       nil
     else
-      [store_name, store_short_description].join(" | ")
+      short_desc = store_short_description.blank? ? nil : store_short_description
+      [store_name, short_desc].compact.join(" | ")
     end
   end
 

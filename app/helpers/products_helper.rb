@@ -4,11 +4,11 @@ module ProductsHelper
     'active' if current_user.favour_products.exists?(product_id: product.id)
   end
 
-  def store_sharing_link(seller, sharing_node = nil)
+  def store_sharing_link(seller, sharing_node = nil, redirect = nil)
     if sharing_node.blank?
       store_url(seller)
     else
-      sharing_url(sharing_node)
+      sharing_url(sharing_node, redirect: redirect)
     end
   end
 
@@ -52,8 +52,8 @@ module ProductsHelper
     if product.seling_inventories.size == 1
       [__send__(privilege_method, product.seling_inventories.first, privilege_card)]
     else
-      max_inventory = product.seling_inventories.max { |inventory| inventory.price }
-      min_inventory = product.seling_inventories.min { |inventory| inventory.price }
+      max_inventory = product.max_price_inventory
+      min_inventory = product.min_price_inventory
       if max_inventory.price == min_inventory.price
         [ __send__(privilege_method, max_inventory, privilege_card) ]
       else

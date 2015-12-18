@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta id='MobileViewport' name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+		<meta name="apple-touch-fullscreen" content="yes">
+		<meta http-equiv="Cache-Control" content="no-cache, must-revalidate">
+    <meta content="telephone=no" name="format-detection" />
+    <meta content="email=no" name="format-detection" />
+    <link href="<%= image_url("favicon-lg.png") %>" type="image/x-icon" rel="shortcut icon">
+    <link rel="apple-touch-icon" href="<%= image_url("favicon-lg.png") %>">
+    <title>与良辰一战！</title>
+    <%= csrf_meta_tags %>
+		<%= javascript_include_tag 'hongbao' %>
+		<%= stylesheet_link_tag 'hongbao' %>
+		<style>
+			/*loading*/
+			.loading { height: 9999px; background: #000;}
+			.loading center { position: absolute; top: 45%; left: 0; width: 100%;}
+			.loading var, .loading sub { display: block; width: 48px; height: 48px; margin: 0 auto; overflow: hidden; color: #fdd; line-height: 48px;}
+			.loading sub { -webkit-animation: loadAN 1s infinite linear; margin-top: -48px; }
+			@-webkit-keyframes loadAN{
+				0%{ -webkit-transform: rotate(0);}
+				100%{ -webkit-transform: rotate(360deg);}
+			}
+		</style>
+	</head>
+
+	<body>
+		<div class="wrapper">
+
+			<div class="loading">
+				<center><var>0%</var><sub></sub></center>
+			</div>
+
+			<section class="page1 text-center">
+				<br />
+				<p><span class="img-text t1"></span></p>
+				<p class="gap-lr"><%= image_tag "game/p1.png", class:'mobile' %></p>
+				<div class="gap-lr tip-btn-box">
+					<p class="btn page1-btn"><span class="img-text t2 "></span></p>
+				</div><!-- tip-btn-box -->
+				<div class="gap-lr">
+					<div class="btn btn-white page1-btn1"><span class="img-text t3"></span></div>
+				</div>
+			</section><!-- page1 -->
+
+			<section class="game-rule text-center">
+				<br />
+				<div><p class="btn btn-white"><span class="img-text t3"></span></p></div>
+				<br />
+				<p>良辰邀你一战！</p>
+				<p>不玩别的就玩抢钱！</p>
+				<p>通过手指快速向上滑动硬币</p>
+				<p>数量多者取胜！</p>
+				<p>别说良辰欺负人</p>
+				<p>抢了多少都归你！</p>
+				<p>因为良辰最喜欢对自以为有实力的人出手，</p>
+				<p>若阁下认为自己有实力，</p>
+				<p>良辰不介意奉陪到底！</p>
+				<br />
+				<p>掐指一算，</p>
+				<p>红包要等到2016年元旦才可以启封，</p>
+				<p>别问为什么，</p>
+				<p>因为这是天！机！</p>
+				<br />
+				<div class="gap-lr tip-btn-box">
+					<p class="btn page1-btn"><span class="img-text t2 "></span></p>
+				</div><!-- tip-btn-box -->
+			</section>
+
+			<section class="page2 text-center">
+				<div class="pop-container">
+					<div class="pop-content">
+						<p><span class="img-text t4"></span></p>
+						<br/>
+						<p class="big-num">1 <%= image_tag "game/game-icon.png", class:'litte-game-icon' %> = 0.1 <small>RMB</small></p>
+						<br/>
+						<div class="gap-lr">
+							<br />
+							<div class="btn btn-white page2-btn"><span class="img-text t5"></span></div>
+						</div>
+					</div>
+				</div>
+				<div class="game-info">
+					<div class="game-time"><var>8'00</var>"</div>
+					<p class="game-count">0</p>
+				</div><!-- game-info -->
+				<div class="game-area">
+					<div class="game-main-icon"><span><%= image_tag "game/game-icon.png" %></span></div>
+				</div>
+			</section>
+
+			<section class="page3 text-center">
+				<div class="page3-text"><span class="img-text t6"></span></div>
+				<div class="game-result">
+					<p>8秒内共得</p>
+					<p><span class="game-result-number"></span> RMB</p>
+					<div>手速快过<span class="game-exceed"></span>%的人</div>
+				</div>
+				<br />
+				<div class="text-center">
+					<div class="btn btn-white page3-btn"><span class="img-text t7"></span></div>　<div class="btn btn-white page3-btn2"><span class="img-text t8"></span></div>
+				</div>
+				<br />
+				<p><span class="img-text t9"></span></p>
+        <input type="tel" class="mobile-input" id="mobile-input" value="<%= current_user && current_user.login %>" placeholder="请在此输入手机号领取红包" />
+				<div class="line-box"><span></span></div>
+				<div class="gap-lr tip-btn-box">
+					<p class="btn page3-btn3"><span class="img-text t10 "></span></p>
+				</div><!-- tip-btn-box -->
+				<div class="pop-container hidden">
+					<div class="pop-content">
+						<div class="pop-game-p"><%= image_tag "game/game-p.png" %></div>
+						<div class="text-center">
+							<div class="get-red">
+								<div><span class="img-text t11"></span></div>
+								<div class="bg-white">元旦去UBOSS随便花</div>
+							</div><!-- get-red -->
+						</div>
+						<br />
+						<p>
+							红包已经注入手机里
+						<p>
+							继续玩红包可以不断累积，一天三次游戏机会。
+						</p>
+						<p>
+							于元旦在UBOSS商城中购物使用。
+						</p>
+						<br />
+						<p class="tip-btn-box tip-white">
+							<a href="/account#hongbao" class="btn btn-white"><span class="img-text t12 "></a></p>
+						</p>
+						<div class="text-center">
+							<div class="btn btn-white page3-btn"><span class="img-text t7"></span></div>　<div class="btn btn-white page3-btn2"><span class="img-text t8"></span></div>
+						</div>
+						<br />
+						<div><small>UBOSS拥有活动最终解释权</small></div>
+					</div><!-- pop-content-->
+				</div><!-- pop-container-->
+				<div class="share-box hidden">
+					<div class="share-text">点击右上角，分享给好友<%= image_tag 'game/arrow-up.png' %></div>
+				</div><!-- share-box -->
+			</section>
+
+			<footer>
+				<a href="http://uboss.cn">UBOSS.CN</a>
+			</footer>
+		</div>
+
+<% if browser.wechat? %>
+  <%= render "weixin_js" %>
+  <script type="text/javascript" charset="utf-8">
+wx.ready(function(){
+  UBoss.luffy.resetInvokeSharing({
+    title: '良辰邀你一战！不玩别的就玩抢钱！',
+    desc: '别说良辰欺负人，抢了多少都归你！',
+    link: '<%= ls_game_url %>',
+    imgurl: '<%= asset_url("game/p1.png") %>',
+  });
+});
+  </script>
+<% end %>
+
+<%= render partial: 'baidu_tongji' %>
+
+	</body>
+</html>
+
