@@ -9,6 +9,9 @@ class Order < ActiveRecord::Base
   belongs_to :seller, class_name: "User"
   belongs_to :user_address
   has_many   :order_items
+  has_many   :preferential_measures, through: :order_items
+  has_many   :preferentials_seller_bonuses, through: :order_items
+  has_many   :preferentials_privileges, through: :order_items
   belongs_to :order_charge, autosave: true
   has_many   :divide_incomes
   has_many   :selling_incomes
@@ -213,7 +216,11 @@ class Order < ActiveRecord::Base
   end
 
   def total_privilege_amount
-    order_items.inject(0){ |sum, oi| sum + oi.privilege_amount*oi.amount}
+    @total_privilege_amount ||= preferentials_privileges.sum(:total_amount)
+  end
+
+  def seller_bonus
+    @seller_bonus ||= preferentials_seller_bonuses.sum(:total_amount)
   end
 
   def order_charge
