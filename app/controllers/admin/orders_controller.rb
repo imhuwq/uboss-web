@@ -53,7 +53,7 @@ class Admin::OrdersController < AdminController
     @unship_amount = @orders.payed.total_count
     @today_selled_amount = @orders.today.selled.total_count
     @shiped_amount = @orders.shiped.total_count
-    @orders = @orders.where(state: Order.states[@type.to_sym]) if @type != 'all'
+    @orders = @orders.where(state: OrdinaryOrder.states[@type.to_sym]) if @type != 'all'
   end
 
   def show

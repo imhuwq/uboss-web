@@ -112,15 +112,15 @@
   <div class="bg-white gap">
   	<div class="product-store-box">
 	    <div class="cover">
-	      <%= image_tag @seller.avatar_url(:w120) %>
+	      <%= image_tag @service_store.store_cover_url(:w120) %>
 	    </div>
 			<div class="content">
 				<%= link_to  store_path(@seller, type: 'service'),class:'btn btn-main-border pull-right' do%>
 	       	进店逛逛
 	      <%end%>
-		    <h4 class="name text-cut"><%= @seller.store_name %></h4>
-		    <p class="gray-color"><%= number_to_percentage(@seller.good_reputation_rate, precision: 0) %> 好评（<%= @seller.total_reputations %>）</p>
-	      <p class="gray-color desc text-cut"><%= @seller.store_short_description %></p>
+		    <h4 class="name text-cut"><%= @service_store.store_name %></h4>
+		    <p class="gray-color"><%= number_to_percentage(@service_store.good_reputation_rate, precision: 0) %> 好评（<%= @service_store.total_reputations %>人）</p>
+	      <p class="gray-color desc text-cut"><%= @service_store.store_short_description %></p>
 
 	 		</div><!-- content -->
     </div><!-- product-store-box -->

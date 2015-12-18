@@ -7,12 +7,12 @@ class Admin::ServiceProductsController < AdminController
   end
 
   def index
-    @service_products = current_user.service_products.available.order('created_at DESC')
+    @service_products = account_service_products(params[:type]).available.order('created_at DESC')
     @service_products = @service_products.includes(:asset_img).page(params[:page] || 1)
     @statistics = {}
-    @statistics[:create_today] = @service_products.where('created_at > ? and created_at < ?', Time.now.beginning_of_day, Time.now.end_of_day).count
     @statistics[:count] = @service_products.count
-    @statistics[:not_enough] = @service_products.where('count < ?', 10).count
+    @statistics[:published] = @service_products.where(status: 1).count
+    @statistics[:unpublish] = @service_products.where(status: 0).count
   end
 
   def create
@@ -72,6 +72,16 @@ class Admin::ServiceProductsController < AdminController
   end
 
   private
+
+  def account_service_products(type)
+    type ||= 'all'
+    if ['published', 'unpublish', 'all'].include?(type)
+      current_user.service_products.try(type)
+    else
+      raise "invalid service product type"
+    end
+  end
+
   def product_propertys_params
     params.permit(product_propertys_names: [])
   end
