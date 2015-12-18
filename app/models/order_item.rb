@@ -67,6 +67,10 @@ class OrderItem < ActiveRecord::Base
     set_pay_amount
   end
 
+  def verified_time
+    verify_codes.where(verified: true).first.try(:updated_at)
+  end
+
   private
 
   def adjust_product_stock(type)

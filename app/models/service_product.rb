@@ -15,13 +15,27 @@ class ServiceProduct < Product
 
   scope :vouchers, -> { where(service_type: 0) }
   scope :groups, -> { where(service_type: 1) }
+  scope :published, -> { where(status: 1) }
+
 
   def total_sales_volume
-    order_items.map(&:amount).sum
+    order_ids = ServiceOrder.where(id: order_items.map(&:order_id)).payed.ids
+    order_items.where(order_id: order_ids).map(&:amount).sum
   end
 
   def total_income
-    present_price * total_sales_volume
+    orders = ServiceOrder.where(id: order_items.map(&:order_id)).payed
+    orders.map do |order|
+      order.paid_amount
+    end.sum
+  end
+
+  def today_verify_code
+    VerifyCode.where(order_item_id: self.order_item_ids, verified: true).where('updated_at BETWEEN ? AND ?', Time.now.beginning_of_day, Time.now.end_of_day)
+  end
+
+  def total_verify_code
+    VerifyCode.where(order_item_id: self.order_item_ids, verified: true)
   end
 
   def deadline
@@ -31,7 +45,7 @@ class ServiceProduct < Product
   private
 
   def check_product_inventory_count
-    if self.product_inventories && self.product_inventories.first.count < 1000
+    if self.product_inventories.present? && self.product_inventories.first.count < 1000
       inventory = self.product_inventories.first
       inventory.update(count: 9*10000)
     end

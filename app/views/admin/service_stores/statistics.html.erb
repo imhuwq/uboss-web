@@ -13,8 +13,6 @@
     <thead>
       <tr>
         <th>团购名称</th>
-        <th>现价</th>
-        <th>实付款</th>
         <th>总销量</th>
         <th>累计算收益</th>
         <th>发布时间</th>
@@ -24,13 +22,11 @@
       <% @service_products.each do |product| %>
         <tr>
           <td class="text-left">
-            <%= link_to '#' do %>
+					  <%= link_to admin_service_product_path(product) do %>
               <%= image_tag(product.image_url(:thumb), size: "80x80", alt: "-") %>　
               <%= product.name %>
             <% end %>
           </td>
-          <td><%= product.present_price %></td>
-          <td></td>
           <td><%= product.total_sales_volume %></td>
           <td><%= product.total_income %></td>
           <td><%= product.created_at.to_date %></td>

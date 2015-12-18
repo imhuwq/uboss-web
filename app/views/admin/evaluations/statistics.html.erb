@@ -24,7 +24,7 @@
       <% @service_products.each do |product| %>
         <tr>
           <td class="text-left">
-            <%= link_to '#' do %>
+					  <%= link_to admin_service_product_path(product) do %>
               <%= image_tag(product.image_url(:thumb), size: "80x80", alt: "-") %>　
               <%= product.name %>
             <% end %>

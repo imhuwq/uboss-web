@@ -3,13 +3,13 @@ class Admin::VerifyCodesController < AdminController
 
   def index
     order_item_ids = OrderItem.where(product_id: current_user.service_product_ids)
-    @verify_codes = VerifyCode.where(order_item_id: order_item_ids).reorder(verified: 'desc').order(updated_at: 'desc')
+    @verify_codes = VerifyCode.total(current_user)
     @total = VerifyCode.total(current_user).size
     @today = VerifyCode.today(current_user).size
   end
 
   def statistics
-    @order_items = OrderItem.where(product_id: current_user.service_product_ids)
+    @service_products = current_user.service_products.published
     @total = VerifyCode.total(current_user).size
     @today = VerifyCode.today(current_user).size
   end

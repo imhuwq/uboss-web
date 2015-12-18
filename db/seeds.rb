@@ -10,7 +10,6 @@ u1 = User.create(
   mobile: '13800000000',
   password: '111111',
   nickname: "UBOSS",
-  store_name: "UBOSS官方",
   authenticated: 'yes',
   admin: true
 )

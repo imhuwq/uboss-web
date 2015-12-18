@@ -15,26 +15,24 @@
       <tr>
         <th>团购名称</th>
         <th>现价</th>
-        <th>实付款</th>
         <th>今日验证数量</th>
         <th>总验证数量</th>
         <th>团购有效期</th>
       </tr>
     </thead>
     <tbody>
-      <% @order_items.each do |item| %>
+      <% @service_products.each do |product| %>
         <tr>
           <td class="text-left">
-            <%= link_to '#' do %>
-              <%= image_tag(item.product.image_url(:thumb), size: "80x80", alt: "-") %>　
-              <%= item.product.name %>
+					  <%= link_to admin_service_product_path(product) do %>
+              <%= image_tag(product.image_url(:thumb), size: "80x80", alt: "-") %>　
+              <%= product.name %>
             <% end %>
           </td>
-          <td><%= item.product.present_price %></td>
-          <td></td>
-          <td><%= item.verify_codes.today(current_user).size %></td>
-          <td><%= item.verify_codes.total(current_user).size %></td>
-          <td>截止至<%= (item.product.created_at + item.product.monthes.to_i.months).to_date %></td>
+          <td><%= product.present_price %></td>
+          <td><%= product.today_verify_code.size %></td>
+          <td><%= product.total_verify_code.size %></td>
+          <td>截止至<%= (product.created_at + product.monthes.to_i.months).to_date %></td>
         </tr>
       <% end %>
     </tbody>
