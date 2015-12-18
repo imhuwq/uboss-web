@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151225094731) do
+ActiveRecord::Schema.define(version: 20151218070737) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -41,8 +41,18 @@ ActiveRecord::Schema.define(version: 20151225094731) do
     t.datetime "expire_at"
   end
 
-  add_index "agent_invite_seller_histroys", ["invite_code", "agent_id"], name: "index_agent_invite_seller_histroys_on_invite_code_and_agent_id", unique: true, using: :btree
-  add_index "agent_invite_seller_histroys", ["mobile", "agent_id"], name: "index_agent_invite_seller_histroys_on_mobile_and_agent_id", unique: true, using: :btree
+  create_table "area_operator_authentications", force: :cascade do |t|
+    t.integer  "user_id"
+    t.integer  "status",                               default: 0
+    t.string   "enterprise_name"
+    t.string   "business_license_img"
+    t.string   "legal_person_identity_card_front_img"
+    t.string   "legal_person_identity_card_end_img"
+    t.string   "address"
+    t.string   "mobile"
+    t.datetime "created_at",                                       null: false
+    t.datetime "updated_at",                                       null: false
+  end
 
   create_table "asset_imgs", force: :cascade do |t|
     t.string   "filename"
@@ -126,6 +136,22 @@ ActiveRecord::Schema.define(version: 20151225094731) do
 
   add_index "categories_products", ["category_id"], name: "index_categories_products_on_category_id", using: :btree
   add_index "categories_products", ["product_id"], name: "index_categories_products_on_product_id", using: :btree
+
+  create_table "certifications", force: :cascade do |t|
+    t.integer  "user_id"
+    t.integer  "status"
+    t.string   "name"
+    t.string   "enterprise_name"
+    t.string   "id_num"
+    t.string   "address"
+    t.string   "mobile"
+    t.string   "attachment_1"
+    t.string   "attachment_2"
+    t.string   "attachment_3"
+    t.string   "type"
+    t.datetime "created_at",      null: false
+    t.datetime "updated_at",      null: false
+  end
 
   create_table "daily_reports", force: :cascade do |t|
     t.date     "day"
