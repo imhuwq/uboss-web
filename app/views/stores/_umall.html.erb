@@ -7,16 +7,18 @@
     <% @seller.categories.in_groups_of(2, false) do |categories| %>
     	<div class="box-w100 nogap border-bottom">
         <% categories.each do |category| %>
-          <div class="box-w50 nogap">
-            <%= link_to store_category_path(store_id: @seller.id, id: category.id),
-              class:'ucategory-box' do %>
-              <div class="cover">
-                <div class="img" style="background-image:url('<%= category.image_url(:w120)%>')" title="<%= category.name %>"></div>
-                <%= image_tag("mobile/img.jpg") %>
-              </div>
-              <div class="title"><%= category.name %></div>
-            <% end %>
-          </div><!-- box-w50 -->
+          <% cache ['umall-categories', category] do %>
+            <div class="box-w50 nogap">
+              <%= link_to store_category_path(store_id: @seller.id, id: category.id),
+                class:'ucategory-box' do %>
+                <div class="cover">
+                  <div class="img" style="background-image:url('<%= category.image_url(:w120)%>')" title="<%= category.name %>"></div>
+                  <%= image_tag("mobile/img.jpg") %>
+                </div>
+                <div class="title"><%= category.name %></div>
+              <% end %>
+            </div><!-- box-w50 -->
+          <% end %>
         <% end %>
       </div><!-- border-bottom -->
     <% end %>
