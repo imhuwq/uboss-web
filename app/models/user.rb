@@ -382,8 +382,9 @@ class User < ActiveRecord::Base
   end
 
   def total_reputations
-    @total_reputations ||= UserInfo.where(user_id: id).
-      sum("good_evaluation + bad_evaluation + better_evaluation + best_evaluation + worst_evaluation")
+    @total_reputations ||= Evaluation.statuses.keys.inject(0) do |sum, statue|
+      sum + user_info["#{statue}_evaluation"].to_i
+    end
   end
 
   def has_seller_privilege_card?(seller)
