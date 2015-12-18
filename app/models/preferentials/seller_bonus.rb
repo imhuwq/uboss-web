@@ -9,10 +9,14 @@ class Preferentials::SellerBonus < PreferentialMeasure
 
   delegate :bonus_benefit, to: :preferential_source
 
+  def available_bonus_benefit
+    @available_bonus_benefit ||= preferential_source.bonus_benefit
+  end
+
   private
 
   def benefit_must_enough
-    if amount > preferential_source.reload.bonus_benefit
+    if amount > available_bonus_benefit
       errors.add(:amount, :invalid)
     end
   end
@@ -26,6 +30,9 @@ class Preferentials::SellerBonus < PreferentialMeasure
 
   def set_amount
     self.amount ||= self.preferential_item.total_preferential_amount
+    if self.amount > available_bonus_benefit
+      self.amount = available_bonus_benefit
+    end
   end
 
   def set_total_amount
