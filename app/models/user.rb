@@ -243,7 +243,8 @@ class User < ActiveRecord::Base
     if store_name.blank?
       nil
     else
-      [store_name, store_short_description].join(" | ")
+      short_desc = store_short_description.blank? ? nil : store_short_description
+      [store_name, short_desc].compact.join(" | ")
     end
   end
 
