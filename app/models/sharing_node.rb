@@ -35,10 +35,10 @@ class SharingNode < ActiveRecord::Base
       params = { user_id: user.id }
       params.merge!(parent_id: parent.id) if parent.present? && resource.is_a?(Product)
 
-      case resource.class.name
-      when 'User'
+      name = resource.class.name
+      if name == 'User'
         params.merge!(seller_id: resource.id)
-      when 'Product'
+      elsif name.match('Product')
         params.merge!(product_id: resource.id)
       end
 
