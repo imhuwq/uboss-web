@@ -83,6 +83,15 @@
     </div><!-- friend-info -->
   <% end %>
 
+  <% if @order.seller_bonus > 0 %>
+    <div class="friend-info">
+      <div class="content">
+        <span class="pull-right red-color">-<%= @order.seller_bonus %></span>
+        红包优惠
+      </div>
+    </div><!-- friend-info -->
+  <% end %>
+
 	<div class="price-box">
     <div class="pull-left">
       <%= link_to chat_path(anchor: "conversations/#{@seller.id}"), class: 'chat-to-btn', data: { uid: @seller.id } do %>
