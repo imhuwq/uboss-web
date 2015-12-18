@@ -33,7 +33,12 @@ class OrdersController < ApplicationController
     if check_buy_now?  # 直接购买
       product = @order_form.product
       @order_form.sharing_code = get_product_or_store_sharing_code(product)
-      @products_group_by_seller =  @order_form.product_inventory.convert_into_cart_item(@order_form.amount, @order_form.sharing_code)
+      cart_item = @order_form.product_inventory.convert_into_cart_item(@order_form.amount, @order_form.sharing_code)
+      @products_group_by_seller =  { product.user => [ cart_item ] }
+      @preferential_calculator ||= PreferentialCalculator.new(
+        buyer: current_user,
+        preferential_items: [cart_item]
+      ).calculate_preferential_info
 
       province = @order_form.user_address.province
       @invalid_items = province.present? && !Order.valid_to_sales?(product, ChinaCity.get(province)) ?
@@ -55,6 +60,10 @@ class OrdersController < ApplicationController
       @invalid_items = cart_items - valid_items
       @order_form.cart_id = current_cart.id
       @products_group_by_seller = CartItem.group_by_seller(cart_items)
+      @preferential_calculator ||= PreferentialCalculator.new(
+        buyer: current_user,
+        preferential_items: cart_items
+      ).calculate_preferential_info
 
       render layout: 'mobile'
     else

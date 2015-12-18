@@ -57,16 +57,12 @@ class ProductInventory < ActiveRecord::Base
   end
 
   def convert_into_cart_item(buy_count, sharing_code)
-    {
-      seller => [
-        CartItem.new(
-          product_inventory_id: id,
-          seller_id: user_id,
-          count: buy_count,
-          sharing_node: SharingNode.find_by(code: sharing_code)
-        )
-      ]
-    }
+    CartItem.new(
+      product_inventory_id: id,
+      seller_id: user_id,
+      count: buy_count,
+      sharing_node: SharingNode.find_by(code: sharing_code)
+    )
   end
 
   def properties

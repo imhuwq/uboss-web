@@ -9,6 +9,7 @@ class OrderItem < ActiveRecord::Base
   has_many   :sharing_incomes
   has_many   :order_item_refunds
   has_many   :refund_messages, through: :order_item_refunds
+  # act as preferential_item
   has_many   :preferential_measures, as: :preferential_item
   has_many   :preferentials_seller_bonuses, as: :preferential_item, class_name: 'Preferentials::SellerBonus'
   has_many   :preferentials_privileges, as: :preferential_item, class_name: 'Preferentials::Privilege'

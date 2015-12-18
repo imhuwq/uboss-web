@@ -1,6 +1,6 @@
 class Preferentials::SellerBonus < PreferentialMeasure
 
-  before_validation :set_amount
+  after_initialize :set_amount
 
   validates_presence_of :preferential_source
   validate :benefit_must_enough

@@ -282,8 +282,15 @@ class Order < ActiveRecord::Base
   private
 
   def invoke_privielge_calculator
-    @preferential_calculator ||= PreferentialCalculator.new(order: self)
+    @preferential_calculator ||= PreferentialCalculator.new(
+      buyer: user,
+      preferential_items: order_items
+    )
     @preferential_calculator.calculate_preferential_info
+    @preferential_calculator.save_preferentials do |order_item|
+      order_item.reset_payment_info
+      order_item.changed? && order_item.save
+    end
   end
 
   def generate_number
