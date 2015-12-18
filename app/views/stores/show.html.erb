@@ -41,23 +41,24 @@
   <br />
 <% end %>
 
-<div class="bg-white">
-  <div class="store-like">
-    <div class="box">
-      <div class="box-w100">
-        <div class="page-title like-color">
-          <%= link_to hots_store_path(@seller), class: 'more-bar' do %>
-            more <%= image_tag 'mobile/arrow-right.png' %>
-        <% end %>
-        商品分类
+<% if @seller.categories.size > 0 %>
+  <div class="bg-white">
+    <div class="store-like">
+      <div class="box">
+        <div class="box-w100">
+          <div class="page-title like-color">
+            <%= link_to hots_store_path(@seller), class: 'more-bar' do %>
+              more <%= image_tag 'mobile/arrow-right.png' %>
+          <% end %>
+          商品分类
+          </div>
         </div>
+        <%= render partial: 'categories', collection:  @seller.categories, as: :category %>
       </div>
-      <%= render partial: 'categories', collection:  @seller.categories, as: :category %>
     </div>
   </div>
-</div>
-<br />
-
+  <br />
+<% end %>
 
 <div class="store-cover text-center" style="<%= "background-image:url('#{@seller.store_cover.url(:w640)}')" if @seller.user_info.store_cover_identifier.present? %>">
   <div class="content">
