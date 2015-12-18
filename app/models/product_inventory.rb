@@ -30,7 +30,6 @@ class ProductInventory < ActiveRecord::Base
             :share_amount_lv_3,
             :privilege_amount ]
 
-
   def saling?
     status == 'published' && saling && count > 0
   end
