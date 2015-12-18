@@ -132,6 +132,22 @@ ActiveRecord::Schema.define(version: 20151222135339) do
   add_index "categories_products", ["category_id"], name: "index_categories_products_on_category_id", using: :btree
   add_index "categories_products", ["product_id"], name: "index_categories_products_on_product_id", using: :btree
 
+  create_table "certifications", force: :cascade do |t|
+    t.integer  "user_id"
+    t.integer  "status"
+    t.string   "name"
+    t.string   "enterprise_name"
+    t.string   "id_num"
+    t.string   "address"
+    t.string   "mobile"
+    t.string   "attachment_1"
+    t.string   "attachment_2"
+    t.string   "attachment_3"
+    t.string   "type"
+    t.datetime "created_at",      null: false
+    t.datetime "updated_at",      null: false
+  end
+
   create_table "daily_reports", force: :cascade do |t|
     t.date     "day"
     t.decimal  "amount"
