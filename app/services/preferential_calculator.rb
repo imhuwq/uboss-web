@@ -14,13 +14,13 @@ class PreferentialCalculator
   end
 
   def save_preferentials
-    return true unless block_given?
-
     ActiveRecord::Base.transaction do
       preferential_measures.each(&:save)
 
-      preferential_items.each do |preferential_item|
-        yield(preferential_item)
+      if block_given?
+        preferential_items.each do |preferential_item|
+          yield(preferential_item)
+        end
       end
     end
   end
