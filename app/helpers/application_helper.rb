@@ -1,7 +1,7 @@
 module ApplicationHelper
 
   def uboss_mall?(seller)
-    seller.id == 1
+    %w(19800000888).include? seller.login.to_s
   end
 
   def product_show?
