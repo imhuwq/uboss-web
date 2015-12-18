@@ -1,5 +1,9 @@
 module ApplicationHelper
 
+  def uboss_mall?(seller)
+    %w(19800000888).include? seller.login.to_s
+  end
+
   def product_show?
     controller_name == 'products' && action_name == 'show'
   end
