@@ -20,7 +20,7 @@
   <% end %>
 <% end %>
 <%= render partial: 'banner_slider', locals: { seller: @seller } %>
-<div class="gap bg-white m-bottom10">
+<div class="gap bg-white m-bottom10 m-top10">
 	<div class="store-category-cover">
 		<div class="cover"><img src='<%= @seller.avatar_url(:w120) %>' /></div>  	
 	  <div class="content">
@@ -40,7 +40,7 @@
 	</div><!-- store-category-cover -->
 	
 	  <% if qr_sharing? %>
-	    <div class="border-top text-center">
+	    <div class="border-top text-center m-top10">
 	      <p>
 		      <% if current_user && current_user.has_seller_privilege_card?(@seller) %>
 		        <a class="btn btn-large p-sharing-btn">分享给朋友</a>
@@ -57,7 +57,7 @@
 	  <% end %>
 	
 	  <% if @sharing_node %>
-	    <div class="share-category-box border-top text-center">
+	    <div class="share-category-box border-top text-center m-top10">
 	      <h3 class="text-cut">
 	      	<%= image_tag @sharing_node.user.avatar_url(:w120) %>
 	      	<%= @sharing_node.user.identify %> 推荐
