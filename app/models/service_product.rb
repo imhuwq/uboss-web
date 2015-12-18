@@ -10,6 +10,8 @@ class ServiceProduct < Product
   after_initialize  :initialize_product_inventory
   before_update :check_product_inventory_count
   before_save :check_service_store_user
+  after_commit :update_product_inventory_price, on: :update,
+    if: -> { previous_changes.include?(:present_price) && previous_changes[:present_price].first != previous_changes[:present_price].last }
 
   scope :vouchers, -> { where(service_type: 0) }
   scope :groups, -> { where(service_type: 1) }
@@ -47,5 +49,9 @@ class ServiceProduct < Product
 
   def check_service_store_user
     self.service_store.user_id == self.user_id
+  end
+
+  def update_product_inventory_price
+    product_inventories.each { |inventory| inventory.update(price: present_price) }
   end
 end
