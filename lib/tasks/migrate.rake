@@ -1,4 +1,21 @@
 namespace :migrate do
+
+  desc 'Migrate order_item privilege_info to preferentials_privileges'
+  task order_item_preferentials: :environment do
+    order_items = OrderItem.where('privilege_amount > 0 AND sharing_node_id IS NOT NULL AND created_at < ?',
+                                  PreferentialMeasure.first.try(:created_at) || Time.now)
+
+    order_items.each do |order_item|
+      if order_item.privilege_amount > 0
+        order_item.preferentials_privileges.create!(
+          amount: order_item.privilege_amount,
+          preferential_item: order_item,
+          preferential_source: order_item.privilege_card
+        )
+      end
+    end
+  end
+
   desc 'Migrate none inventory product to get one'
   task :product_inventories do
     Product.where(share_rate_total: nil).update_all(share_rate_total: 0)
