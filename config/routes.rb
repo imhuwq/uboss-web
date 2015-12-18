@@ -229,9 +229,9 @@ Rails.application.routes.draw do
       end
 
       resources :stores, only: [:show] do
-        post :update_store_logo, :add_to_advertisement, :update_store_name, :update_store_short_description, :update_store_cover, on: :member
-        post :update_product_advertisement_img, on: :collection
-        get  :show_product_advertisement_img, on: :member
+        post :update_store_logo, :add_to_advertisement, :update_store_name, :update_store_short_description, 
+          :update_store_cover, :update_product_advertisement_img, on: :member
+        get :new_advertisement, :remove_advertisement, :show_category,  on: :collection
       end
       resources :platform_advertisements do 
         patch :change_status, on: :member

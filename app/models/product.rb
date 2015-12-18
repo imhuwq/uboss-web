@@ -30,8 +30,8 @@ class Product < ActiveRecord::Base
   # 店铺轮播图片 =>
   has_one_image name: :advertisement_img, autosave: true
   
-  def  advertisement_img_url
-    advertisement_img.try(:image_url)
+  def  advertisement_img_url(option='')
+    advertisement_img.try(:image_url,option)
   end
 
   def advertisement_img=(file)

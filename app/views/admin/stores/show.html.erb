@@ -35,41 +35,49 @@
   </div>
 </div>
 <div>
-	<% @user.categories.where(use_in_store: true).each do |category| %>
-		<%= image_tag(category.image_url(:thumb), class:"clean", style:"height: 80px;")%>
-		<p><%= category.name %></p>
-	<% end %>
+
+
 </div>
+
 <div>
-	<div id="add_category">添加分类</div>
-	<div id="adding_category_window">
-		<div>
-			<%= select_tag :category_tages, options_for_select([['--', '']] + current_user.categories.map{|obj| [obj.name,obj.id]}) %>
-		</div>
-		<p class="fileinput-button hidden" id="add_category_img">
-			<%= image_tag("admin/no-img.png", class:"clean",style:"height: 80px;") %>
-			<%= file_field_tag "image", class: "upyun_file_json" ,  data: {to: ""} %>
-			<b class="loading"><i class="fa fa-spinner"></i></b>
-		  <div style="font-size:10px;">(点击图片进行替换)</div>
-		</p>
-	</div>
-</div>
-<div>
-	<div id="adding_product_window">
+	<div id="adding_advertisement">
 		<div>添加轮播商品</div>
-		<div><%= select_tag 'category_tages', options_for_select([['--', '']] + current_user.products.map{|obj| [obj.name,obj.id]}) %></div>
-		<div class="fileinput-button hidden" id="show_product_advertisement_img">
-			<%= image_tag("admin/no-img.png", class:"clean",style:"height: 80px;") %>
-			<%= file_field_tag "image", class: "upyun_file_json" ,  data: {to: ""} %>
-			<b class="loading"><i class="fa fa-spinner"></i></b>
-			<div style="font-size:10px;">(点击图片进行替换)</div>
-		</div>
+		<div><%= select_tag 'product_tages', options_for_select([['--', '']] + current_user.products.map{|obj| [obj.name,obj.id]}) %></div>
+		
 		<div>
 			<a href="###" class='btn btn-border btn-link hidden' id='add_to_advertisement'>
 				加入店铺广告
 			</a>
 		</div>
+    <%= @advertisement_products.collect(&:name) %>
+    <% @advertisement_products.each do |a_p| %>
+      <div class="new_advertisement">
+        <p class="close" data-id="<%= a_p.id %>" data-type="product">关闭</p>
+        <p><%= "商品:#{a_p.name}" %></p>
+        <div class="fileinput-button">
+          <%= image_tag(a_p.advertisement_img_url(:thumb), class:"clean", style:"height: 80px;")%>
+          <%= file_field_tag "image", class: "upyun_file_json" ,  data: {to: "#{@update_image_url}"} %>
+          <b class="loading"><i class="fa fa-spinner"></i></b>
+          <div style="font-size:10px;">(点击图片进行替换)</div>
+        </div>
+      </div>
+    <% end %>
 	</div>
+
 	
+</div>
+<div>
+  <% @user.categories.where(use_in_store: true).each do |category| %>
+    <%= image_tag(category.image_url(:thumb), class:"clean", style:"height: 80px;")%>
+    <p><%= category.name %></p>
+  <% end %>
+</div>
+<div>
+  <div id="add_category">添加分类</div>
+  <div id="adding_category_window">
+    <div>
+      <%= select_tag :category_tages, options_for_select([['--', '']] + current_user.categories.map{|obj| [obj.name,obj.id]}) %>
+    </div>
+  </div>
 </div>
 
