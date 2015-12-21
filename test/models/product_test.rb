@@ -9,7 +9,7 @@ class ProductTest < ActiveSupport::TestCase
     level1_node = create(:sharing_node, product: product)
     level2_node = create(:sharing_node, product: product, parent: level1_node)
     10.times do
-      create(:order,
+      create(:ordinary_order,
              user: buyer,
              order_items_attributes: [{
                product: product,
@@ -31,7 +31,7 @@ class ProductTest < ActiveSupport::TestCase
       '2' => { price: 100, count: 100, sku_attributes: { size: 'l', color: 'red' } },
     }
 
-    product = create(:product, product_inventories_attributes: product_inventories_attributes)
+    product = create(:ordinary_product, product_inventories_attributes: product_inventories_attributes)
 
     assert_equal 3, product.product_inventories.count
 

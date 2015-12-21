@@ -9,7 +9,7 @@ class CarriageTemplateTest < ActiveSupport::TestCase
   test '已用模板不能删除' do
     different_area = create(:different_area, regions: [create(:region)])
     tpl = create(:carriage_template, different_areas: [different_area])
-    product = create(:product, carriage_template: tpl)
+    product = create(:ordinary_product, carriage_template: tpl)
     assert_not tpl.destroy
   end
 

@@ -1,5 +1,5 @@
 FactoryGirl.define do
-  factory :order do
+  factory :ordinary_order do
     user
     seller { create(:user) }
     user_address { create(:user_address, user: user) }
