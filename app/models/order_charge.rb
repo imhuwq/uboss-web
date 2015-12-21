@@ -8,6 +8,7 @@ class OrderCharge < ActiveRecord::Base
   belongs_to :user
   has_many :orders
   has_many :order_items, through: :orders
+  has_many :preferential_measures, through: :order_items
   has_many :products, -> { uniq }, through: :order_items
 
   validates_presence_of :user_id
@@ -28,6 +29,10 @@ class OrderCharge < ActiveRecord::Base
         order_charge.close_prepay
       end
     end
+  end
+
+  def total_privilege_amount
+    @total_privilege_amount ||= preferential_measures.sum(:total_amount)
   end
 
   def orders_detail

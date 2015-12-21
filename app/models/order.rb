@@ -9,6 +9,9 @@ class Order < ActiveRecord::Base
   belongs_to :seller, class_name: "User"
   belongs_to :user_address
   has_many   :order_items
+  has_many   :preferential_measures, through: :order_items
+  has_many   :preferentials_seller_bonuses, through: :order_items
+  has_many   :preferentials_privileges, through: :order_items
   belongs_to :order_charge, autosave: true
   has_many   :divide_incomes
   has_many   :selling_incomes
@@ -32,6 +35,7 @@ class Order < ActiveRecord::Base
   }
 
   before_create :set_info_by_user_address, :set_ship_price
+  after_create :invoke_privielge_calculator
   after_commit :update_pay_amount_and_close_prepay, if: -> {
     previous_changes.include?(:ship_price) &&
     previous_changes[:ship_price].first != previous_changes[:ship_price].last
@@ -216,7 +220,11 @@ class Order < ActiveRecord::Base
   end
 
   def total_privilege_amount
-    order_items.inject(0){ |sum, oi| sum + oi.privilege_amount*oi.amount}
+    @total_privilege_amount ||= preferentials_privileges.sum(:total_amount)
+  end
+
+  def seller_bonus
+    @seller_bonus ||= preferentials_seller_bonuses.sum(:total_amount)
   end
 
   def order_charge
@@ -284,6 +292,18 @@ class Order < ActiveRecord::Base
   end
 
   private
+
+  def invoke_privielge_calculator
+    @preferential_calculator ||= PreferentialCalculator.new(
+      buyer: user,
+      preferential_items: order_items
+    )
+    @preferential_calculator.calculate_preferential_info
+    @preferential_calculator.save_preferentials do |order_item|
+      order_item.reset_payment_info
+      order_item.changed? && order_item.save
+    end
+  end
 
   def generate_number
     time_stamp = (Time.now - Time.parse('2014-12-12')).to_i

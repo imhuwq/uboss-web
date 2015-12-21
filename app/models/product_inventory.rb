@@ -57,22 +57,22 @@ class ProductInventory < ActiveRecord::Base
   end
 
   def convert_into_cart_item(buy_count, sharing_code)
-    {
-      seller => [
-        CartItem.new(
-          product_inventory_id: id,
-          seller_id: user_id,
-          count: buy_count,
-          sharing_node: SharingNode.find_by(code: sharing_code)
-        )
-      ]
-    }
+    CartItem.new(
+      product_inventory_id: id,
+      seller_id: user_id,
+      count: buy_count,
+      sharing_node: SharingNode.find_by(code: sharing_code)
+    )
   end
 
   def properties
     @properties ||= sku_attributes.collect do |key, value|
       SkuProperty.new(key, value)
     end
+  end
+
+  def share_and_privilege_amount_total
+    share_amount_lv_3 + share_amount_lv_2 + share_amount_lv_1 + privilege_amount
   end
 
   private
@@ -99,7 +99,7 @@ class ProductInventory < ActiveRecord::Base
   end
 
   def share_amount_total_must_lt_price
-    if (share_amount_lv_3 + share_amount_lv_2 + share_amount_lv_1 + privilege_amount) > price
+    if share_and_privilege_amount_total > price
       errors.add(:share_amount_total, '必须小于对应（商品/规格）的价格')
     end
   end
