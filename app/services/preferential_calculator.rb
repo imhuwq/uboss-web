@@ -28,6 +28,8 @@ class PreferentialCalculator
   private
 
   def calculate_bonus_preferential
+    return false if buyer.blank?
+
     bonus_benefit = buyer.bonus_benefit
     return false if bonus_benefit <= 0
 
