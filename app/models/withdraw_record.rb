@@ -22,6 +22,7 @@ class WithdrawRecord < ActiveRecord::Base
     less_than_or_equal_to: ->(record) { record.user.income.to_f },
     if: :new_record?
   validates :bank_card_id, presence: true, if: -> { user.weixin_openid.blank? }
+  validate  :seller_must_be_authenticated, if: -> { user.is_seller? }
 
   delegate :identify, :total_income, to: :user, prefix: true
 
@@ -68,6 +69,10 @@ class WithdrawRecord < ActiveRecord::Base
   end
 
   private
+
+  def seller_must_be_authenticated
+    errors.add(:base, '您还未认证您的商家身份') if user.authenticated == 'no'
+  end
 
   def delay_transfer_money
     if wechat_available?
