@@ -49,7 +49,7 @@
           <%= can_li_link(:read, WithdrawRecord, admin_withdraw_records_path) %>
           <%= can_li_link(:manage, BankCard, admin_bank_cards_path ) %>
         <% end %>
-        <%= can_li_link(:manage, :authentications, admin_personal_authentications_path,
+        <%= can_li_link(:manage, :authentications, persons_admin_certifications_path,
                         another_active_name: 'personal_authentications') %>
         <%= nav_group :uboss do %>
           <%= can_li_link(:handle, User, admin_users_path) %>

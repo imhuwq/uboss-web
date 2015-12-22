@@ -2,17 +2,14 @@
   <ul class="breadcrumb">
     <li><a href="/admin">主页</a></li>>
     <li class="divider"><i class="fa fa-caret-right"></i></li>
-    <li>创建企业信息认证</li>
+    <li>创建城市运营商认证</li>
   </ul>
 </div>
 <br />
 <div class="container">
-  <div class="header-tab">
-    <%= link_to "个人认证", url_for(controller: :personal_authentications, action: :new, user_id: current_user), class:"tab-title" %>
-    <div class="tab-title active">企业认证</div>
-  </div>
+<%= render "admin/certifications/tabs" %>
   <br />
-  <h3 class="page-title">创建企业信息认证</h3>
+  <h3 class="page-title">城市运营商认证</h3>
   <%= horizon_form_for @certification,url: {:action=>:create} do |f| %>
     <%= render 'fields', f: f %>
     <br />

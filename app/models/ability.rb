@@ -69,6 +69,8 @@ class Ability
     can :manage, Product, user_id: user.id
     can :manage, PersonalAuthentication, user_id: user.id
     can :manage, EnterpriseAuthentication, user_id: user.id
+    can :manage, CityManagerAuthentication, user_id: user.id
+    cannot :change_status, Certification
     can :read,   WithdrawRecord, user_id: user.id
     can :create, WithdrawRecord, user_id: user.id
     can :read, SharingIncome, seller_id: user.id

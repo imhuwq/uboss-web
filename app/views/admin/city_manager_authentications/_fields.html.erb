@@ -1,0 +1,51 @@
+<div class="admin-box black-bg-color">
+  <%= f.input :enterprise_name %>
+  <%= f.input :business_license_img, hint:"(点击图片进行替换)" do %>
+    <%= f.input_field :business_license_img, type: :hidden, as: :file %>
+    <span class="fileinput-button">
+      <% if f.object.new_record? || f.object.attributes['business_license_img'].blank? %>
+        <%= image_tag("admin/no-img.png") %>
+      <% else %>
+        <%= image_tag(f.object.business_license_img_url(:w320)) %>
+      <% end %>
+      <%= upyun_meta_tags prefix: 'enterprise_authentication/business_license_img' %>
+      <%= file_field_tag "business_license_img", class: "upyun_file_closest" %>
+      <b class="loading"><i class="fa fa-spinner"></i></b>
+    </span>
+  <% end %>
+  <%= f.input :legal_person_identity_card_front_img, hint:"(点击图片进行替换)" do %>
+    <%= f.input_field :legal_person_identity_card_front_img, type: :hidden, as: :file %>
+    <span class="fileinput-button">
+      <% if f.object.new_record? || f.object.attributes['legal_person_identity_card_front_img'].blank? %>
+        <%= image_tag("admin/no-img.png") %>
+      <% else %>
+        <%= image_tag(f.object.legal_person_identity_card_front_img_url(:w320)) %>
+      <% end %>
+      <%= upyun_meta_tags prefix: 'enterprise_authentication/legal_person_identity_card_front_img' %>
+      <%= file_field_tag "legal_person_identity_card_front_img", class: "upyun_file_closest" %>
+      <b class="loading"><i class="fa fa-spinner"></i></b>
+    </span>
+  <% end %>
+  <%= f.input :legal_person_identity_card_end_img, hint:"(点击图片进行替换)" do %>
+    <%= f.input_field :legal_person_identity_card_end_img, type: :hidden, as: :file %>
+    <span class="fileinput-button">
+      <% if f.object.new_record? || f.object.attributes['legal_person_identity_card_end_img'].blank? %>
+        <%= image_tag("admin/no-img.png") %>
+      <% else %>
+        <%= image_tag(f.object.legal_person_identity_card_end_img_url(:w320)) %>
+      <% end %>
+      <%= upyun_meta_tags prefix: 'enterprise_authentication/legal_person_identity_card_end_img' %>
+      <%= file_field_tag "legal_person_identity_card_end_img", class: "upyun_file_closest" %>
+      <b class="loading"><i class="fa fa-spinner"></i></b>
+    </span>
+  <% end %>
+  <%= f.input :address %>
+  <div class="form-group string required enterprise_authentication_mobile">
+    <%= f.label :mobile, class:"string required control-label" %>
+    <%= link_to '发送', '###',class: "btn btn-large pull-right",id:"send_mobile",style:"border-radius:0 4px 4px 0;" %>
+    <div class="control-input">
+    	<%= f.input_field :mobile , as: :tel, id:"new_mobile", style:"border-radius:4px 0 0 4px;" %>
+    </div>
+  </div>
+  <%= f.input :mobile_auth_code %>
+</div>
