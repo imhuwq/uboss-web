@@ -15,7 +15,8 @@
         <th>团购有效期</th>
         <th>操作</th>
       </thead>
-      <% @service_products.each do |product| %>
+      <% products = products || @service_products %>
+      <% products.each do |product| %>
         <tr class="product" id='product_<%= product.id %>'>
           <td class="text-left">
             <%= link_to admin_service_product_path(product) do %>
