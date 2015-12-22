@@ -3,14 +3,21 @@ class Users::ConfirmationsController < Devise::ConfirmationsController
   layout :new_login_layout
 
   # GET /resource/confirmation/new
-  # def new
-  #   super
-  # end
+   def new
+     super
+   end
 
   # POST /resource/confirmation
-  # def create
-  #   super
-  # end
+  def create
+    if params[:type] == 'regist'
+      email = params.require(:user).fetch(:email)
+      UserMailer.delay.confirmation_email_instructions(email)
+      flash[:notice] = '邮件确认注册链接已发送'
+      redirect_to new_session_path(:user)
+    else
+      super
+    end
+  end
 
   # GET /resource/confirmation?confirmation_token=abcdef
   # def show

@@ -82,7 +82,7 @@ class User < ActiveRecord::Base
   before_validation :ensure_authentication_token, :ensure_privilege_rate
   before_create :set_mobile, :set_default_role
   before_create :build_user_info, if: -> { user_info.blank? }
-  before_create :skip_confirmation!, if: -> { login.present? }
+  before_create :skip_confirmation!
   before_save   :set_service_rate
   after_commit  :invoke_rongcloud_job, on: [:create, :update]
 

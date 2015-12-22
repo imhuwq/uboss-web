@@ -1,0 +1,13 @@
+<h2>注册</h2>
+<h3><%= @email %></h3>
+
+<%= form_tag user_registration_path do %>
+
+  <%= hidden_field_tag :regist_type, 'email' %>
+  <%= hidden_field_tag :confirmation_token, params[:confirmation_token] %>
+
+  <input type="password" name="password" id="password" placeholder='请输入密码' value="" />
+
+  <%= submit_tag '确认' %>
+
+<% end %>
