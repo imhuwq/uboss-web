@@ -7,6 +7,7 @@ Rails.application.routes.draw do
   mount ChinaCity::Engine => '/china_city'
 
   devise_for :user, path: '/', controllers: {
+    confirmations: "users/confirmations",
     registrations: "users/registrations",
     sessions: "users/sessions",
     passwords: "users/passwords",

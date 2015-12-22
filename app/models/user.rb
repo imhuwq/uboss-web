@@ -8,7 +8,7 @@ class User < ActiveRecord::Base
   attr_accessor :code, :mobile_auth_code
   OFFICIAL_ACCOUNT_LOGIN = '13800000000'.freeze
 
-  devise :database_authenticatable, :rememberable, :trackable, :validatable, :confirmable,
+  devise :database_authenticatable, :rememberable, :trackable, :recoverable, :validatable, :confirmable,
     :async, :omniauthable, :registerable, authentication_keys: [:login_identifier]
 
   mount_uploader :avatar, ImageUploader

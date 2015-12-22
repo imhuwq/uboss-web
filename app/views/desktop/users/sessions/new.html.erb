@@ -50,7 +50,8 @@
 				<br />
    			<p><%= f.submit "登录/注册", class: 'btn btn-block btn-large' %></p>
    			<p>
-   				<small>未开通UBOSS账号的用户，点击确认表明您已同意<a class="main-color" href="<%= agreements_register_path %>" target='_blank'>《UBOSS用户注册协议》</a>，自动为您开通UBOSS账号</small>
+          <input type="checkbox" checked disabled />
+          <small>同意<a class="main-color" href="<%= agreements_register_path %>" target='_blank'>《UBOSS用户注册协议》</a></small>
    			</p>
 		  </div>
     </div><!--lcap-box -->
