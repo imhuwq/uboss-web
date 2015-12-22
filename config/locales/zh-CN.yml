@@ -194,6 +194,7 @@ zh-CN:
     authentications: 认证
     user_addresses: 地址库
     categories: 商品分组
+    city_managers: 城市运营商管理
   activerecord:
     models:
       withdraw_record: 提现记录
@@ -284,6 +285,13 @@ zh-CN:
     completed: 交易完成
     closed: 订单关闭
   enums:
+    city_manager:
+      category:
+        firstline: 一类城市
+        secondline: 二类城市
+        thirdline: 三类城市
+        fourthline: 四类城市
+        fifthline: 五类城市
     evaluation:
       status:
         good:   满意

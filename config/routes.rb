@@ -217,6 +217,7 @@ Rails.application.routes.draw do
       end
       resources :agents, except: [:new, :edit, :update, :destroy] do
       end
+      resources :city_managers, only: [:index]
       resources :sellers, only: [:index, :show, :edit, :update] do
         post :update_service_rate, on: :collection
       end

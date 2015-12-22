@@ -133,6 +133,15 @@ ActiveRecord::Schema.define(version: 20151222135339) do
     t.datetime "updated_at",      null: false
   end
 
+  create_table "city_managers", force: :cascade do |t|
+    t.integer  "user_id"
+    t.integer  "category"
+    t.string   "city"
+    t.decimal  "rate",       precision: 2, scale: 2
+    t.datetime "created_at",                         null: false
+    t.datetime "updated_at",                         null: false
+  end
+
   create_table "daily_reports", force: :cascade do |t|
     t.date     "day"
     t.decimal  "amount"
