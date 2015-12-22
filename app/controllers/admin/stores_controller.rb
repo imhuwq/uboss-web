@@ -1,7 +1,7 @@
 class Admin::StoresController < AdminController
 	def show
 		@user = current_user
-    @advertisement_products = @user.products.where(show_advertisement: true).order('show_advertisement_at DESC')
+    @advertisement_products = @user.products
 	end
 
 	def update_store_logo

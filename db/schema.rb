@@ -11,10 +11,23 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151217084940) do
+ActiveRecord::Schema.define(version: 20151221015956) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "advertisements", force: :cascade do |t|
+    t.string   "advertisement_url"
+    t.integer  "status",                 default: 0
+    t.datetime "created_at",                             null: false
+    t.datetime "updated_at",                             null: false
+    t.integer  "order_number"
+    t.integer  "user_id"
+    t.integer  "zone"
+    t.integer  "product_id"
+    t.integer  "category_id"
+    t.boolean  "platform_advertisement", default: false
+  end
 
   create_table "agent_invite_seller_histroys", force: :cascade do |t|
     t.string   "mobile"
@@ -96,14 +109,10 @@ ActiveRecord::Schema.define(version: 20151217084940) do
   add_index "carts", ["user_id"], name: "index_carts_on_user_id", using: :btree
 
   create_table "categories", force: :cascade do |t|
-    t.string   "name",                                 null: false
-    t.integer  "user_id",                              null: false
-    t.datetime "created_at",                           null: false
-    t.datetime "updated_at",                           null: false
-    t.boolean  "use_in_store",          default: true
-    t.datetime "use_in_store_at"
-    t.boolean  "show_advertisement",    default: true
-    t.datetime "show_advertisement_at"
+    t.string   "name",       null: false
+    t.integer  "user_id",    null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   add_index "categories", ["user_id", "name"], name: "index_categories_on_user_id_and_name", unique: true, using: :btree
@@ -373,13 +382,6 @@ ActiveRecord::Schema.define(version: 20151217084940) do
   add_index "personal_authentications", ["identity_card_code"], name: "index_personal_authentications_on_identity_card_code", unique: true, using: :btree
   add_index "personal_authentications", ["user_id"], name: "index_personal_authentications_on_user_id", unique: true, using: :btree
 
-  create_table "platform_advertisements", force: :cascade do |t|
-    t.string   "advertisement_url"
-    t.integer  "status",            default: 0
-    t.datetime "created_at",                    null: false
-    t.datetime "updated_at",                    null: false
-  end
-
   create_table "privilege_cards", force: :cascade do |t|
     t.integer  "user_id"
     t.datetime "created_at",                           null: false
@@ -448,38 +450,36 @@ ActiveRecord::Schema.define(version: 20151217084940) do
     t.integer  "user_id"
     t.string   "name"
     t.string   "code"
-    t.decimal  "original_price",        default: 0.0
-    t.decimal  "present_price",         default: 0.0
-    t.integer  "count",                 default: 0
-    t.decimal  "traffic_expense",       default: 0.0
+    t.decimal  "original_price",       default: 0.0
+    t.decimal  "present_price",        default: 0.0
+    t.integer  "count",                default: 0
+    t.decimal  "traffic_expense",      default: 0.0
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "has_share_lv",          default: 3
-    t.decimal  "share_amount_total",    default: 0.0
-    t.decimal  "share_amount_lv_1",     default: 0.0
-    t.decimal  "share_amount_lv_2",     default: 0.0
-    t.decimal  "share_amount_lv_3",     default: 0.0
-    t.decimal  "share_rate_lv_1",       default: 0.0
-    t.decimal  "share_rate_lv_2",       default: 0.0
-    t.decimal  "share_rate_lv_3",       default: 0.0
-    t.decimal  "share_rate_total",      default: 0.0
-    t.integer  "calculate_way",         default: 0
-    t.integer  "status",                default: 0
-    t.integer  "good_evaluation",       default: 0
-    t.integer  "bad_evaluation",        default: 0
-    t.decimal  "privilege_amount",      default: 0.0
+    t.integer  "has_share_lv",         default: 3
+    t.decimal  "share_amount_total",   default: 0.0
+    t.decimal  "share_amount_lv_1",    default: 0.0
+    t.decimal  "share_amount_lv_2",    default: 0.0
+    t.decimal  "share_amount_lv_3",    default: 0.0
+    t.decimal  "share_rate_lv_1",      default: 0.0
+    t.decimal  "share_rate_lv_2",      default: 0.0
+    t.decimal  "share_rate_lv_3",      default: 0.0
+    t.decimal  "share_rate_total",     default: 0.0
+    t.integer  "calculate_way",        default: 0
+    t.integer  "status",               default: 0
+    t.integer  "good_evaluation",      default: 0
+    t.integer  "bad_evaluation",       default: 0
+    t.decimal  "privilege_amount",     default: 0.0
     t.string   "short_description"
-    t.boolean  "hot",                   default: false
+    t.boolean  "hot",                  default: false
     t.integer  "carriage_template_id"
-    t.integer  "transportation_way",    default: 0
+    t.integer  "transportation_way",   default: 0
     t.integer  "best_evaluation"
     t.integer  "better_evaluation"
     t.integer  "worst_evaluation"
-    t.boolean  "full_cut",              default: false
+    t.boolean  "full_cut",             default: false
     t.integer  "full_cut_number"
     t.integer  "full_cut_unit"
-    t.boolean  "show_advertisement",    default: false
-    t.datetime "show_advertisement_at"
   end
 
   create_table "redactor_assets", force: :cascade do |t|

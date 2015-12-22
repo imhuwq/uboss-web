@@ -128,13 +128,12 @@
 	<div id="adding_advertisement">
 		<div>添加轮播商品</div>
 		<div><%= select_tag 'product_tages', options_for_select([['--', '']] + current_user.products.map{|obj| [obj.name,obj.id]}) %></div>
-		
+
 		<div>
 			<a href="###" class='btn btn-border btn-link hidden' id='add_to_advertisement'>
 				加入店铺广告
 			</a>
 		</div>
-    <%= @advertisement_products.collect(&:name) %>
     <% @advertisement_products.each do |a_p| %>
       <div class="new_advertisement">
         <p class="close" data-id="<%= a_p.id %>" data-type="product">关闭</p>
@@ -149,10 +148,10 @@
     <% end %>
 	</div>
 
-	
+
 </div>
 <div>
-  <% @user.categories.where(use_in_store: true).each do |category| %>
+  <% @user.categories.each do |category| %>
     <%= image_tag(category.image_url(:thumb), class:"clean", style:"height: 80px;")%>
     <p><%= category.name %></p>
   <% end %>
