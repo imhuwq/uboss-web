@@ -65,6 +65,8 @@ class Ability
     can :edit, EnterpriseAuthentication, { user_id: user.id, status: %w(posted no_pass) }
     can :update, EnterpriseAuthentication, { user_id: user.id, status: %w(posted no_pass) }
     can :create, EnterpriseAuthentication, user_id: user.id
+    can :manage, CityManagerAuthentication, user_id: user.id
+    cannot :change_status, Certification
     can :read,   WithdrawRecord, user_id: user.id
     can :create, WithdrawRecord, user_id: user.id
     can :read, SharingIncome, seller_id: user.id
