@@ -2,7 +2,7 @@ class Users::SessionsController < Devise::SessionsController
 
   detect_device only: [:new, :create]
 
-  layout :login_layout
+  layout :new_login_layout
 
   before_filter :configure_sign_in_params, only: [:create]
 

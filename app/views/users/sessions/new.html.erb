@@ -21,15 +21,14 @@
     <% else %>
       <h2>UBOSS</h2>
     <% end %>
-    <hr />
 
     <div class='login-type-acs clearfix'>
-      <a class="lpwd-btn" href="#">已有账户</a>
+      <a class="lpwd-btn" href="#">密码登陆</a>
       <a class="lcap-btn" href="#">验证码登陆/注册</a>
     </div>
 
     <div class="form-inputs">
-      <%= f.input :login_identifier, required: false, input_html: {id: 'new_mobile'} %>
+      <%= f.input :login_identifier, required: false, label: '账号', input_html: {id: 'new_mobile'} %>
 
       <div class="cap-inputs">
         <%= f.input :image_captcha do %>
@@ -56,21 +55,28 @@
 
       <div class='pwd-inputs'>
         <%= f.input :password, required: false %>
-        <%= f.input :remember_me, as: :boolean, label_html: {class:''}, label: '下次自动登录' if devise_mapping.rememberable? %>
+        <% if devise_mapping.rememberable? %>
+          <div class="remember-me-cont">
+            <%= f.input_field :remember_me, as: :boolean, class: 'checkbox' %>
+            <%= f.label :remember_me, '下次自动登陆', style: 'margin-left:0px;' %>
+          </div>
+        <% end %>
       </div>
 
     </div>
 
     <div class="button_div">
-      <%= f.button :submit, "确认", class: "btn btn-large btn-primary col-xs-12" %>
+      <%= f.button :submit, "确认", class: "btn btn-large btn-block" %>
     </div>
 
     <% if !browser.wechat? %>
       <div class="button_div  col-xs-12"  style="margin: 10px 0 10px 0;">
         <% if params[:redirect] == 'discourse' %>
-          <%= link_to "返回主页", Rails.application.secrets.discourse['url'], class: "btn btn-large btn-link col-xs-12"%>
+          <%= link_to "返回主页", Rails.application.secrets.discourse['url'],
+            class: "action-link-btn btn btn-large btn-block btn-black-border"%>
         <% else %>
-          <%= link_to "返回主页", root_path, class: "btn btn-large btn-link col-xs-12"%>
+          <%= link_to "返回主页", root_path,
+            class: "action-link-btn btn btn-large btn-block btn-black-border"%>
         <% end %>
       </div>
     <% end %>

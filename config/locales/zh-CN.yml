@@ -49,6 +49,7 @@ zh-CN:
     updated_at: 更新时间
     mobile: 手机
     login: 帐号
+    login_identifier: 账号
     email: 邮箱
     nickname: 昵称
     avatar:  头像
@@ -241,6 +242,7 @@ zh-CN:
         level: 分成类型
       user:
         login: 登录手机
+        login_identifier: 账号
         password: 密码
       order:
         express_name: 快递公司
