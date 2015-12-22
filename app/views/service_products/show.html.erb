@@ -102,12 +102,17 @@
 
   <!-- 店铺信息-->
   <div class="bg-white gap">
-    <div class="page-title"><%= @service_store.address %></div>
-    <div class="page-title">营业时间：<%= @service_store.business_hours %></div>
-    <div class="page-title">电话：<%= @service_store.mobile_phone %></div>
+    <div class="product-store-box">
+			<div class="content">
+        <%= link_to  "tel:#{@service_store.mobile_phone}", class:'store-mobile pull-right' do %>
+          <i class="store-mobile-img"></i>
+        <%end%>
+        <p class="store-address-img gray-color text-cut"><%= @service_store.address %></p>
+        <h4 class="store-clock-img name text-cut">营业时间：<%= @service_store.business_hours %></h4>
+      </div>
+    </div>
   </div>
 	<br />
-
 
   <div class="bg-white gap">
   	<div class="product-store-box">
