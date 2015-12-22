@@ -50,14 +50,15 @@
 
       </div>
       <div class="cap-inputs form-group">
-        <small>未开通UBOSS账号的用户，点击确认表明您已同意<a href="<%= agreements_register_path %>">《UBOSS用户注册协议》</a>，自动为您开通UBOSS账号</small>
+        <input type="checkbox" checked disabled name='aggress_regis' style='-webkit-appearance:checkbox;' />
+        <small>同意<a href="<%= agreements_register_path %>">《UBOSS用户注册协议》</a></small>
       </div>
 
       <div class='pwd-inputs'>
         <%= f.input :password, required: false %>
         <% if devise_mapping.rememberable? %>
           <div class="remember-me-cont">
-            <%= f.input_field :remember_me, as: :boolean, class: 'checkbox' %>
+            <%= f.input_field :remember_me, as: :boolean, style: '-webkit-appearance:checkbox;' %>
             <%= f.label :remember_me, '下次自动登陆', style: 'margin-left:0px;' %>
           </div>
         <% end %>
