@@ -34,6 +34,7 @@
         <%= li_link(:dashboard, admin_root_path, action_check: false) %>
         <%= can_li_link(:read, :sellers, admin_sellers_path) %>
         <%= can_li_link(:manage, :agents, admin_agents_path) %>
+        <%= can_li_link(:manage, :city_managers, admin_city_managers_path) %>
         <%= nav_group :product_manage do %>
           <%= can_li_link(:read, Product, admin_products_path) %>
           <%= can_li_link(:read, CarriageTemplate, admin_carriage_templates_path ) %>

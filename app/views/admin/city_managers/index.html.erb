@@ -1,0 +1,61 @@
+<div class="container  admin-container">
+	<ul class="breadcrumb">
+		<li><a href="/admin">主页</a></li>
+		<li class="divider"><i class="fa fa-caret-right"></i></li>
+		<li>城市运营商</li>
+	</ul>
+</div>
+<br />
+<div class="container nogap">
+	<div class="box-w100 nogap">
+    <% cache(['city_managers/index:box', CityManager.maximum(:updated_at).utc.to_i]) do  %>
+      <% CityManager::CATEGORIES.each do |key, value| %>
+      <%= link_to admin_city_managers_path(category: value) do %>
+        <div class="box-w20">  
+    	  	<div class="admin-box <%= cycle(%w(main-bg-color yellow-bg-color red-bg-color)) %>">
+    				<h4><%= EnumHelp::Helper.translate_enum_label CityManager, :category, key %></h4>
+    				<h1 class="num"><%= CityManager.contracted.send(key).count %></h1>
+    			</div>
+    			<br />
+    	  </div><!-- box-w25 -->
+        <% end %>
+      <% end %>
+    <% end %>
+			<br />
+	  </div><!-- box-w25 -->
+	</div> <!-- box-w80 -->
+</div>
+
+<div class="container">
+	<table class="list-table">
+		<thead>
+			<th>城市名称</th>
+			<th>运营商名称</th>
+			<th>入驻时间</th>
+			<th>联系方式</th>
+			<th>总签约商家</th>
+			<th>操作</th>
+		</thead>
+		<% @city_managers.each do |city_manager| %>
+		<tr class="<%= 'red-bg' if city_manager.user_id.present? %>">
+			<td><%= city_manager.city_name %></td>
+			<td class="text-left">
+				<%= link_to url_for(controller: 'admin/sellers', action: :show, id: city_manager.user) do %>
+					<%= image_tag(city_manager.user_avatar, size: "60x60", alt: "-") %>　
+					<%= city_manager.user_identify %>
+				<% end if city_manager.user %>
+			</td>
+			<td><%= city_manager.settled_at %></td>
+			<td><%= city_manager.user_mobile %></td>
+			<td><%= 0 %></td>
+			<td>
+        <%= link_to_if city_manager.user.present?, '解除账号', '#' do %>
+          <%= link_to "添加账号", '#' %>
+        <% end %>
+      </td>
+		</tr>
+		<% end %>
+
+	</table>
+    <%= paginate @city_managers %>
+</div>
