@@ -9,12 +9,7 @@
 </div>
 <br />
 <% unless current_user.is_super_admin? %>
-<div class="container">
-	<div class="header-tab">
-		<div class="tab-title active">个人认证</div>
-		<%= link_to "企业认证", url_for(controller: :enterprise_authentications, action: :show), class:"tab-title" %>
-	</div>
-</div>
+  <%= render "admin/certifications/tabs" %>
 <br />
 <% end %>
 <div class="container">
@@ -22,34 +17,34 @@
 	<div class="form-group clear">
 		<label class="string required control-label" for="product_name"><abbr title="必填">*</abbr>状态</label>
 		<div class="control-input">
-		  <span><%= @personal_authentication.status_i18n %></span>
+		  <span><%= @certification.status_i18n %></span>
 		</div>
 	</div>
 	<div class="form-group clear">
 		<label class="string required control-label" for="product_name"><abbr title="必填">*</abbr>姓名</label>
 		<div class="control-input">
-		<span><%= @personal_authentication.name %></span>
+		<span><%= @certification.name %></span>
 		</div>
 	</div>
   <div class="form-group clear">
 		<label class="string required control-label" for="product_name"><abbr title="必填">*</abbr>身份证号码</label>
 		<div class="control-input">
-		  <span><%= @personal_authentication.identity_card_code %></span>
+		  <span><%= @certification.identity_card_code %></span>
 		</div>
   </div>
 	<div class="form-group clear">
 		<label class="string required control-label" for="product_name"><abbr title="必填">*</abbr>手持身份证图片</label>
 		<div class="control-input">
-		  <span><%= link_to(@personal_authentication.face_with_identity_card_img.to_s, target:'_blank') do %>
-				<%= image_tag(@personal_authentication.face_with_identity_card_img.url(:w320), width: "200", alt: "-", title:"点击查看原图") %>
+		  <span><%= link_to(@certification.face_with_identity_card_img.to_s, target:'_blank') do %>
+				<%= image_tag(@certification.face_with_identity_card_img.url(:w320), width: "200", alt: "-", title:"点击查看原图") %>
 		  <% end %></span>
 		</div>
 	</div>
   <div class="form-group clear">
 		<label class="string required control-label" for="product_name"><abbr title="必填">*</abbr>身份证正面</label>
 		<div class="control-input">
-		  <span><%= link_to(@personal_authentication.identity_card_front_img.to_s, target:'_blank') do %>
-				<%= image_tag(@personal_authentication.identity_card_front_img.url(:w320), width: "200", alt: "-", title:"点击查看原图") %>
+		  <span><%= link_to(@certification.identity_card_front_img.to_s, target:'_blank') do %>
+				<%= image_tag(@certification.identity_card_front_img.url(:w320), width: "200", alt: "-", title:"点击查看原图") %>
 		  <% end %></span>
 		</div>
 	</div>
@@ -57,37 +52,37 @@
   <div class="form-group clear">
 		<label class="string required control-label" for="product_name"><abbr title="必填">*</abbr>地址</label>
 		<div class="control-input">
-		  <span><%= @personal_authentication.address %></span>
+		  <span><%= @certification.address %></span>
 		</div>
   </div>
   <div class="form-group clear">
 		<label class="string required control-label" for="product_name"><abbr title="必填">*</abbr>手机号码</label>
 		<div class="control-input">
-		  <span><%= @personal_authentication.mobile %></span>
+		  <span><%= @certification.mobile %></span>
 		</div>
   </div>
 
   <% if current_user.is_super_admin? %>
 	  	<p class="text-center">
-	    <% case @personal_authentication.status %>
+	    <% case @certification.status %>
       <% when 'posted' %>
-        <%= link_to '锁定资料', url_for(action: :change_status, id:  @personal_authentication.id, status: 'review'), :class=>"btn btn-large yellow-btn",:role=>"button" %>
-        <%= link_to '通过', url_for(action: :change_status, id:  @personal_authentication.id, status: 'pass'), :class=>"btn btn-large",:role=>"button" %>
-        <%= link_to '不通过', url_for(action: :change_status, id:  @personal_authentication.id, status: 'no_pass'), :class=>"btn btn-large  red-btn",:role=>"button" %>
+        <%= link_to '锁定资料', url_for(action: :change_status, id:  @certification.id, status: 'review'), :class=>"btn btn-large yellow-btn",:role=>"button" %>
+        <%= link_to '通过', url_for(action: :change_status, id:  @certification.id, status: 'pass'), :class=>"btn btn-large",:role=>"button" %>
+        <%= link_to '不通过', url_for(action: :change_status, id:  @certification.id, status: 'no_pass'), :class=>"btn btn-large  red-btn",:role=>"button" %>
       <% when 'review' %>
-        <%= link_to '通过', url_for(action: :change_status, id:  @personal_authentication.id, status: 'pass'), :class=>"btn btn-large",:role=>"button" %>
-        <%= link_to '不通过', url_for(action: :change_status, id:  @personal_authentication.id, status: 'no_pass'), :class=>"btn btn-large red-btn",:role=>"button" %>
+        <%= link_to '通过', url_for(action: :change_status, id:  @certification.id, status: 'pass'), :class=>"btn btn-large",:role=>"button" %>
+        <%= link_to '不通过', url_for(action: :change_status, id:  @certification.id, status: 'no_pass'), :class=>"btn btn-large red-btn",:role=>"button" %>
       <% when 'pass' %>
-        <%= link_to '不通过', url_for(action: :change_status, id:  @personal_authentication.id, status: 'no_pass'), :class=>"btn btn-large red-btn",:role=>"button" %>
+        <%= link_to '不通过', url_for(action: :change_status, id:  @certification.id, status: 'no_pass'), :class=>"btn btn-large red-btn",:role=>"button" %>
       <% when 'no_pass' %>
-        <%= link_to '通过', url_for(action: :change_status, id:  @personal_authentication.id, status: 'pass'), :class=>"btn btn-large",:role=>"button" %>
+        <%= link_to '通过', url_for(action: :change_status, id:  @certification.id, status: 'pass'), :class=>"btn btn-large",:role=>"button" %>
       <% end %>
 	    </p>
   	</div>
   	<br />
     <p class="text-center"><%= link_to "返回",  url_for(controller: :personal_authentications, action: :index), class:"btn btn-large blue-btn",:role=>"button" %></p>
 
-  <% elsif ['posted','no_pass'].include?(@personal_authentication.status) %>
+  <% elsif ['posted','no_pass'].include?(@certification.status) %>
     <p class="text-center"><%= link_to("编辑", url_for(:action=>:edit), :class=>"btn btn-large",:role=>"button") %></p>
   <% end %>
 </div>

@@ -135,6 +135,15 @@ zh-CN:
         address:                                 地址
         mobile:                                  手机号码
         mobile_auth_code:                        验证码
+      city_manager_authentication:
+        status:                                  状态
+        enterprise_name:                         公司名
+        business_license_img:                    营业执照
+        legal_person_identity_card_front_img:    法人身份证正面
+        legal_person_identity_card_end_img:      法人身份证反面
+        address:                                 地址
+        mobile:                                  手机号码
+        mobile_auth_code:                        验证码
       certification:
         status:                                   状态
         name:                                     姓名
@@ -297,6 +306,9 @@ zh-CN:
       status:
         <<: *status
     certification:
+      status:
+        <<: *status
+    city_manager_authentication:
       status:
         <<: *status
     withdraw_record:

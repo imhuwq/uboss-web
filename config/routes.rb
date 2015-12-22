@@ -202,13 +202,18 @@ Rails.application.routes.draw do
       end
       resources :personal_authentications, only: [:index]
       resources :enterprise_authentications, only: [:index]
+      resources :certifications, only: [:index] do
+        collection do
+          get :persons
+          get :enterprises
+          get :city_managers
+        end
+        put :change_status, on: :member
+      end
       resources :users, except: [:destroy] do
-        resource :personal_authentication do
-          get :change_status, on: :member
-        end
-        resource :enterprise_authentication do
-          get :change_status, on: :member
-        end
+        resource :personal_authentication
+        resource :enterprise_authentication
+        resource :city_manager_authentication
       end
       resources :agents, except: [:new, :edit, :update, :destroy] do
       end

@@ -4,6 +4,7 @@ class EnterpriseAuthentication < Certification
   alias_attribute :business_license_img                 , :attachment_1
   alias_attribute :legal_person_identity_card_end_img   , :attachment_2
   alias_attribute :legal_person_identity_card_front_img , :attachment_3
+  attr_accessor :mobile_auth_code
 
   mount_uploader :attachment_1, ImageUploader
   mount_uploader :attachment_2, ImageUploader

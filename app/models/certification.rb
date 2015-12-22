@@ -1,6 +1,6 @@
 class Certification < ActiveRecord::Base
   include AASM
-  validates :user_id, :mobile, :presence => true, :uniqueness => true
+  validates :user_id, :mobile, :presence => true
   validates :mobile, mobile: true
   validates :address,:presence => true
   belongs_to :user
@@ -12,6 +12,17 @@ class Certification < ActiveRecord::Base
     state :review
     state :pass   , after_enter: :check_and_set_user_authenticated_to_yes
     state :no_pass, after_enter: :check_and_set_user_authenticated_to_no
+    event :pass do
+      transitions from: %i(posted review no_pass), to: :pass
+    end
+
+    event :reject do
+      transitions from: %i(posted review pass), to: :no_pass
+    end
+
+    event :review do
+      transitions from: :posted, to: :review
+    end
   end
 
   def check_and_set_user_authenticated_to_yes
@@ -25,7 +36,7 @@ class Certification < ActiveRecord::Base
 
   def check_and_set_user_authenticated_to_no # 检查企业信息验证情况,若已经通过,则保存用户验证状态为通过;反之则设为未验证
     user = User.find_by(id: self.user_id)
-    if Certification.pass.where(user_id: self.user_id).exists?
+    if Certification.where(user_id: self.user_id).pass.where("type != ?", self.class.name).exists?
       #DO_NOTHING
     else
       user.authenticated = 'no'
