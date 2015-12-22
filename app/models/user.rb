@@ -9,7 +9,7 @@ class User < ActiveRecord::Base
   OFFICIAL_ACCOUNT_LOGIN = '13800000000'.freeze
 
   devise :database_authenticatable, :rememberable, :trackable, :validatable, :confirmable,
-    :omniauthable, :registerable, authentication_keys: [:login_identifier]
+    :async, :omniauthable, :registerable, authentication_keys: [:login_identifier]
 
   mount_uploader :avatar, ImageUploader
 
