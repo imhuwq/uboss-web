@@ -1,0 +1,49 @@
+<div class="modal fade" id="add-banner" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span class='close' aria-hidden="true">&times;</span></button>
+        <h5 class="modal-title text-center" id="myModalLabel">添加轮播图</h5>
+      </div>
+			<div class="modal-body" style="color:#333;">
+				<table width="100%">
+					<tr>
+						<td>
+							<select data-manual-chosen='t'>
+								<option>商品</option>
+								<option>分组</option>
+							</select>
+						</td>
+						<td width="420"><input class="input-block js-select2" date-id="1"  type="text"  /></td>
+						<td><input type="number"  placeholder="排序" class="input-block" min="0" class="banner-sequence" /></td>
+					</tr>
+					<tr>
+						<td colspan="3">
+							<div class="gray-color gap text-right"><small>提示：若不填排序默认为0，按创建时间优先显示</small></div>
+							<div class="text-center">
+								<div class="fileinput-button">
+					          <%= image_tag("admin/no-img-640x320.png", class:"clean",style:"max-width:640px;width:100%;height:auto")%>
+					          <%= file_field_tag "image", class: "upyun_file_json" ,  data: {to: "#{@update_image_url}"} %>
+					          <b class="loading"><i class="fa fa-spinner"></i></b>
+					          <span class="tips-text">点击上传图片</span>
+					        </div>
+					      </div>
+				      </div>
+						</td>
+					</tr>						
+				</table>
+			</div><!-- modal-body -->
+			<div class="modal-footer">
+			  <button type="button" class="btn btn-large btn-info">添加</button>
+			  <button type="button" class="btn btn-large gray-btn" data-dismiss="modal">取消</button>
+			</div>
+    </div>
+  </div>
+</div>
+<script>
+ $(".js-select2").select2({
+ 		tags:['3333'],
+    maximumSelectionSize: 1,
+    placeholder: "请输入名称"
+  })
+</script>

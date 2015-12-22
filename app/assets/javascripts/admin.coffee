@@ -21,8 +21,10 @@
 #= require admin/sms
 #= require admin/category
 #= require admin/store
+#= require admin/setting
 #= require admin/user_address
 #= require admin/refund
+#= require admin/jquery.bxslider
 #= require admin/platform_advertisement
 #= require shared/upyun
 #= require shared/multi_upyun_admin

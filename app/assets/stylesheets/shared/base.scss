@@ -56,6 +56,12 @@ html, body {min-width:1220px;}
     color: #1a1a1a;
   }
 }
+.white-btn{ 
+  background: #fff;color:#333;
+  &:hover{
+    color: #43C3AA;
+  }
+}
 .black-btn{background: #383736;}
 .btn-link{
   color: inherit; background: none;

@@ -5,6 +5,7 @@
 @import 'redactor-rails';
 @import 'select2';
 @import "chosen.min";
+@import "admin/jquery.bxslider";
 
 @import "admin/form";
 @import "admin/table";
@@ -15,6 +16,7 @@
 @import "admin/address";
 @import "admin/refund";
 @import "admin/cuntdown";
+@import "admin/setting";
 @import "admin/upload";
 @import "shared/base";
 
@@ -198,6 +200,7 @@ a.admin-box:hover,a.admin-box:focus{opacity: 0.9;  filter: alpha(opacity=90);col
     -o-animation: loading 3s linear  infinite ;
 }
 .red-color{color:#E74C3C;}
+.gray-color{color: #888;}
 
 /*label*/
 .label-info, .label.state-shiped {
