@@ -21,11 +21,11 @@
     <% end %>
 
     <div class='login-type-acs'>
-      <a class="lpwd-btn" href="#">密码登录</a>
       <a class="lcap-btn" href="#">验证码登录/注册</a>
+      <a class="lpwd-btn" href="#">密码登录</a>
     </div>
     <br />
-    <%= f.input_field :login, class:'input-block', required: false, autofocus: true, id: 'new_mobile',placeholder:'请输入手机号码' %>
+    <%= f.input_field :login_identifier, class:'input-block', required: false, autofocus: true, id: 'new_mobile',placeholder:'请输入手机号码' %>
 	  <br />
     <div class="lcap-box">
 	    <div class="box-w100 nogap captcha-box">
