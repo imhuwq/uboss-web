@@ -88,7 +88,7 @@ class WithdrawJob < ActiveJob::Base
       )
     # 正在提现的资金存入的是frozen_income
     elsif withdraw_record.amount > withdraw_record.user.frozen_income
-      withdraw_record.update(
+      withdraw_record.update_error_info(
         code: 'USER', msg: '非法的提现金额'
       )
     end
