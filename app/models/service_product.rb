@@ -9,7 +9,7 @@ class ServiceProduct < Product
 
   after_initialize  :initialize_product_inventory
   before_update :check_product_inventory_count
-  before_save :check_service_store_user
+  before_save :check_service_store_user, :sanitize_purchase_note
   after_commit :update_product_inventory_price, on: :update,
     if: -> { previous_changes.include?(:present_price) && previous_changes[:present_price].first != previous_changes[:present_price].last }
 
@@ -49,6 +49,10 @@ class ServiceProduct < Product
       inventory = self.product_inventories.first
       inventory.update(count: 9*10000)
     end
+  end
+
+  def sanitize_purchase_note
+    self.purchase_note = Sanitize.fragment(purchase_note, WHITE_LIST_CONPONER)
   end
 
   def initialize_product_inventory

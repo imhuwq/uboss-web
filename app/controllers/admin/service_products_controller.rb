@@ -89,7 +89,8 @@ class Admin::ServiceProductsController < AdminController
   def service_product_params
     params.require(:service_product).permit(
       :name,  :service_type, :original_price, :present_price,
-      :count, :avatar, :content, :monthes,    :short_description,
+      :count, :avatar, :content, :monthes,
+      :short_description, :purchase_note,
     ).merge(params.require(:product).permit(
       product_inventories_attributes: [
         :id, :price, :count,

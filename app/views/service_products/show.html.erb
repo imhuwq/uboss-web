@@ -102,12 +102,17 @@
 
   <!-- 店铺信息-->
   <div class="bg-white gap">
-    <div class="page-title"><%= @service_store.address %></div>
-    <div class="page-title">营业时间：<%= @service_store.business_hours %></div>
-    <div class="page-title">电话：<%= @service_store.mobile_phone %></div>
+    <div class="product-store-box">
+			<div class="content">
+        <%= link_to  "tel:#{@service_store.mobile_phone}", class:'store-mobile pull-right' do %>
+          <i class="store-mobile-img"></i>
+        <%end%>
+        <p class="store-address-img gray-color text-cut"><%= @service_store.address %></p>
+        <h4 class="store-clock-img name text-cut">营业时间：<%= @service_store.business_hours %></h4>
+      </div>
+    </div>
   </div>
 	<br />
-
 
   <div class="bg-white gap">
   	<div class="product-store-box">
@@ -127,28 +132,38 @@
   </div><!-- bg-white gap -->
 	<br />
 
-  <div id="product-tabs0">
-    <ul class="product-menu0" id="product-menu0">
-      <li onclick="setTab(0,0)">用户评价</li>
-      <li onclick="setTab(0,1)" class="hover">团购详情</li>
-      <li onclick="setTab(0,2)">购买须知</li>
-    </ul>
-    <div class="product-main" id="product-main0">
-      <ul>
-        <li>用户评价</li>
-      </ul>
-      <ul class="block">
-        <li>
-          <div class="product-info-box">
-            <%== @product.content %>
-          </div>
-        </li>
-      </ul>
-      <ul>
-        <li>购买须知</li>
-      </ul>
+
+  <div class="tab-nav">
+    <a class="tab" href="#showevaluate">
+      <span>用户评价</span>
+    </a>
+    <a class="tab active" href="#showdescription">
+      <span>团购详情</span>
+    </a>
+    <a class="tab" href="#showpurchasenote">
+      <span>购买须知</span>
+    </a>
+  </div>
+
+  <div class="tab-container">
+    <div class="tab-content" id="showevaluate">
+      <div class="bg-white gap">
+        <p>用户评价</p>
+      </div>
+    </div>
+    <div class="tab-content" id="showdescription" style="display: block;">
+      <div class="bg-white gap">
+        <%== @product.content %>
+      </div>
+    </div>
+    <div class="tab-content" id="showpurchasenote">
+      <div class="bg-white gap">
+        <%== @product.purchase_note %>
+      </div>
     </div>
   </div>
+	<br />
+
 
   <% if @sharing_node.blank? %>
     <div class="share_buy">

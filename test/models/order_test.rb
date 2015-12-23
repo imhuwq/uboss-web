@@ -4,10 +4,10 @@ class OrderTest < ActiveSupport::TestCase
   describe 'order closed' do
     it 'should recover sku strock' do
       buy_amount = 10
-      product_inventory = create(:product_inventory, product: create(:product))
+      product_inventory = create(:product_inventory, product: create(:ordinary_product))
       buyer = create(:user)
 
-      order = create(:order,
+      order = create(:ordinary_order,
                       user: buyer,
                       order_items_attributes: [{
                         product: product_inventory.product,
@@ -49,7 +49,7 @@ class OrderTest < ActiveSupport::TestCase
     item3.amount = 2
     item3.save
     user_address = create(:user_address)
-    price = Order.calculate_ship_price(items, user_address)
+    price = OrdinaryOrder.calculate_ship_price(items, user_address)
     assert_equal price , 0.0
   end
 end

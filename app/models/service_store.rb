@@ -23,7 +23,7 @@ class ServiceStore < UserInfo
   def mobile_phone
     store_phone = store_phones.first
     if store_phone
-      store_phone.phone_number.blank? ? "#{store_phone.area_code}#{store_phone.fixed_line}" : store_phone.phone_number
+      store_phone.phone_number.blank? ? "#{store_phone.area_code}-#{store_phone.fixed_line}" : store_phone.phone_number
     end
   end
 
@@ -36,7 +36,7 @@ class ServiceStore < UserInfo
   end
 
   def business_hours
-    "#{begin_time}--#{end_time}"
+    "#{begin_time}一#{end_time}"
   end
 
   def begin_time

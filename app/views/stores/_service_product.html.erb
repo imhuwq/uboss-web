@@ -1,12 +1,11 @@
 <% cache ['store-product', service_product], expires_in: 1.day do %>
-  <div class="box-w50 p-item" timestamp="<%= service_product.updated_at %>">
-    <div class="product-box">
+  <div class="service-product">
+    <%= link_to service_product_path(service_product) do %>
       <div class="cover">
-        <%= link_to '', service_product_path(service_product), style: "background-image:url(#{service_product.image_url(:w320)})",class:'img',title:"#{service_product.name}" %>
-        <%= image_tag("mobile/img.jpg") %>
+        <%= image_tag(service_product.image_url(:w320)) %>
       </div>
-      <div class="title"><%= service_product.name %></div>
-      <div class="price">￥<%= service_product.present_price %> </div>
-    </div><!-- product-box -->
-  </div><!-- box-w50 -->
+    <% end %>
+    <div class="text"><%= service_product.name %></div>
+    <div class="text blue-color">￥<span class="price"><%= service_product.present_price %></span></div>
+  </div>
 <% end %>
