@@ -25,7 +25,7 @@
     </div>
   </div><!-- product-box -->
 
-  <div class="product-info-box">
+  <div class="product-info-box different-product-info-box">
     <p class="title"><%= @product.name %></p>
     <p class="price">
       <small>￥</small>
@@ -42,6 +42,20 @@
   	</div><!-- detail -->
   	<br />
   </div><!-- product-info-box -->
+
+  <!-- 店铺信息-->
+  <div class="bg-white gap">
+    <div class="product-store-box">
+			<div class="content">
+        <%= link_to  "tel:#{@service_store.mobile_phone}", class:'store-mobile pull-right' do %>
+          <i class="store-mobile-img"></i>
+        <%end%>
+        <p class="store-address-img gray-color text-cut"><%= @service_store.address %></p>
+        <h4 class="store-clock-img name text-cut">营业时间：<%= @service_store.business_hours %></h4>
+      </div>
+    </div>
+  </div>
+	<br />
 
   <!-- 自己的友情卡  -->
   <% if self_privilege_card?(@privilege_card) || qr_sharing? %>
@@ -99,20 +113,6 @@
     </div><!-- product-info-box -->
   <% end %>
   <!-- end 自己的友情卡 -->
-
-  <!-- 店铺信息-->
-  <div class="bg-white gap">
-    <div class="product-store-box">
-			<div class="content">
-        <%= link_to  "tel:#{@service_store.mobile_phone}", class:'store-mobile pull-right' do %>
-          <i class="store-mobile-img"></i>
-        <%end%>
-        <p class="store-address-img gray-color text-cut"><%= @service_store.address %></p>
-        <h4 class="store-clock-img name text-cut">营业时间：<%= @service_store.business_hours %></h4>
-      </div>
-    </div>
-  </div>
-	<br />
 
   <div class="bg-white gap">
   	<div class="product-store-box">

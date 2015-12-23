@@ -11,7 +11,6 @@
     <%= f.hidden_field :sharing_code %>
     <%= f.hidden_field :bind_mobile %>
 
-    <% privilege_amount = @order_form.privilege_amount %>
     <div class="order-list valid-order-list valid-list">
       <div class="seller-box"><div class="text-cut">商家：<%= @seller.store_identify %></div></div>
 
@@ -34,14 +33,14 @@
             <%= image_tag sharing_user.avatar_url(:thumb) %>
           </div>
           <div class="content">
-            <span class="pull-right red-color order-privilege-amount"><%= privilege_amount*@order_form.amount.to_i %></span><span class="main-color"><%= sharing_user.identify %></span> 帮你优惠
+            <span class="pull-right red-color order-privilege-amount"><%= @order_form.total_privilege_amount %></span><span class="main-color"><%= sharing_user.identify %></span> 帮你优惠
           </div>
         </div><!-- friend-info -->
       <% end %>
 
       <div class="price-box">
         合计
-        <span>￥ <%= @product.present_price*@order_form.amount.to_i %></span>
+        <span>￥ <%= @order_form.total_price %></span>
       </div><!-- price-box -->
     </div><!-- order-list -->
 
@@ -63,8 +62,8 @@
   <div class="order-price">
     <%= submit_tag '提交订单', class: "accunt_adilbtn cart-btn btn", data: { disable_with: '提交订单中...' } %>
     <div class="content">
-      <p>应付款：<span id="total_price"><%= @product.present_price*@order_form.amount.to_i %></span></p>
-      <p class="gray-color"><small>共优惠<%= privilege_amount*@order_form.amount.to_i %>元</small></p>
+      <p>应付款：<span id="total_price"><%= @order_form.total_price %></span></p>
+      <p class="gray-color"><small>共优惠<%= @order_form.total_privilege_amount %>元</small></p>
     </div>
   </div><!-- order-price -->
 

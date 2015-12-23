@@ -10,7 +10,7 @@ class ServiceOrderForm
     attr_accessor order_attr
   end
 
-  attr_accessor :session, :sharing_node, :product, :product_inventory, :buyer, :order, :privilege_amount
+  attr_accessor :session, :sharing_node, :product, :product_inventory, :buyer, :order
 
   #validates :amount, presence: true, if: -> { self.product_id }
   validates :mobile, presence: true, mobile: true, if: -> { self.buyer.blank? }
@@ -36,7 +36,15 @@ class ServiceOrderForm
   end
 
   def privilege_amount
-    sharing_node.present? ? sharing_node.privilege_amount(@order_form.product_inventory) : 0.0
+    sharing_node.present? ? sharing_node.privilege_amount(self.product_inventory) : 0.0
+  end
+
+  def total_privilege_amount
+    privilege_amount*amount.to_i
+  end
+
+  def total_price
+    product.present_price*amount.to_i - total_privilege_amount
   end
 
   def save

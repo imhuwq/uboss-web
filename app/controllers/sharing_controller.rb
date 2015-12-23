@@ -7,7 +7,9 @@ class SharingController < ApplicationController
 		@sharing_node = SharingNode.find_by!(code: params[:code])
     set_sharing_code(@sharing_node)
     path = if @sharing_node.product_id.present?
-             product_path(@sharing_node.product_id)
+             @sharing_node.product.type == 'ServiceProduct' ?
+               service_product_path(@sharing_node.product_id) :
+               product_path(@sharing_node.product_id)
            else
              store_path(@sharing_node.seller_id)
            end
