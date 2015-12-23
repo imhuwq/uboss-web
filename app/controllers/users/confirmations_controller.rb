@@ -15,7 +15,9 @@ class Users::ConfirmationsController < Devise::ConfirmationsController
       flash[:notice] = '邮件确认注册链接已发送'
       redirect_to new_session_path(:user)
     else
-      super
+      super do |user|
+        flash[:error] = model_errors(user).join('<br/>') if user.errors.any?
+      end
     end
   end
 
