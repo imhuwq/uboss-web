@@ -22,19 +22,19 @@
     <tbody>
       <% @order_items.each do |item| %>
         <tr>
-          <td>
+          <td class='none-border-bottom'>
 					  <%= link_to admin_service_product_path(item.product) do %>
               <%= image_tag(item.product.image_url(:thumb), size: "80x80", alt: "-") %>
             <% end %>
           </td>
-          <td class="text-left">
+          <td class="text-left none-border-bottom">
             <%= link_to '#' do %>
               <%= item.product.name %>
             <% end %>
           </td>
-          <td><%= item.verified_time %></td>
-          <td><%= item.evaluations.try(:first).try(:created_at) %></td>
-          <td></td>
+          <td class='none-border-bottom'><%= item.verified_time %></td>
+          <td class='none-border-bottom'><%= item.evaluations.try(:first).try(:created_at) %></td>
+          <td class='none-border-bottom'></td>
         </tr>
         <% if item.evaluations.size == 0 %>
           <tr>
@@ -46,16 +46,19 @@
             <td colspan='2'></td>
           </tr>
         <% else %>
-          <% item.evaluations.each do |evaluat| %>
+          <% size = item.evaluations.size %>
+          <% item.evaluations.each_with_index do |evaluat, index| %>
             <tr>
-              <td>
-                <p><%= evaluat.user.mobile %></p>
-                <p><%= Evaluation.statuses[evaluat.status] %>分</p>
-              </td>
-              <td colspan='2' class="text-left">
+              <% if index == 0 %>
+                <td rowspan=<%= size %>>
+                  <p><%= evaluat.user.mobile %></p>
+                  <p><%= Evaluation.statuses[evaluat.status] %>分</p>
+                </td>
+              <% end %>
+              <td colspan='2' class="text-left <%= ((size != 1) && (index != size-1))? 'none-border-bottom':''%>">
                 <%= evaluat.content %>
               </td>
-              <td colspan='2' class="text-left"></td>
+              <td colspan='2' class="text-left <%= ((size != 1) && (index != size-1) )? 'none-border-bottom':''%>"></td>
             </tr>
           <% end %>
         <% end %>
