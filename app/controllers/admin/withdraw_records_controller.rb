@@ -36,6 +36,21 @@ class Admin::WithdrawRecordsController < AdminController
     change_record_state(:close!)
   end
 
+  def finish
+    if @withdraw_record.bank_processing?
+      change_record_state(:finish!)
+    else
+      flash[:error] = '手动确认交易完成仅支持银行打款'
+      redirect_to :back
+    end
+  end
+
+  def query_wx
+    @withdraw_record.delay_query_wx_transfer
+    flash[:notice] = '后台查询中，请稍后刷新查看结果'
+    redirect_to :back
+  end
+
   def generate_excel
     excel = Axlsx::Package.new
     excel.workbook.add_worksheet(:name => "Basic Worksheet") do |sheet|

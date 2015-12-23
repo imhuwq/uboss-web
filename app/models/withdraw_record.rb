@@ -26,7 +26,7 @@ class WithdrawRecord < ActiveRecord::Base
 
   delegate :identify, :total_income, to: :user, prefix: true
 
-  enum state: { unprocess: 0, processed: 1, done: 2, closed: 3 }
+  enum state: { unprocess: 0, processed: 1, done: 2, closed: 3, failure: 4 }
 
   before_save :set_bank_info
   after_create :decrease_user_income
@@ -35,10 +35,16 @@ class WithdrawRecord < ActiveRecord::Base
     state :unprocess
     state :processed, before_enter: :set_processed_info
     state :done, before_enter: :set_done_at, after_enter: [:remove_user_frozen_income, :record_trade]
+    state :failure
     state :closed, after_enter: :recover_user_income
 
     event :process, after_commit: :delay_transfer_money do
       transitions from: :unprocess, to: :processed
+      transitions from: :failure, to: :processed
+    end
+
+    event :fail do
+      transitions from: :processed, to: :failure
     end
 
     event :finish do
@@ -60,12 +66,26 @@ class WithdrawRecord < ActiveRecord::Base
     bank_info.blank? && user.weixin_openid.present?
   end
 
+  def bank_processing?
+    bank_info.present?
+  end
+
   def target_title
     wechat_available? ? "微信" : card_bankname
   end
 
   def target_content
     wechat_available? ? user.weixin_openid : card_number
+  end
+
+  def delay_query_wx_transfer
+    self.update_error_info(requerying_at: Time.now, requerying_done_at: nil)
+    WithdrawJob.perform_later(self, type: 'query')
+  end
+
+  def update_error_info(info)
+    info = (error_info || {}).merge(info)
+    update(error_info: info.merge(msg_updated_at: Time.now))
   end
 
   private
@@ -76,7 +96,7 @@ class WithdrawRecord < ActiveRecord::Base
 
   def delay_transfer_money
     if wechat_available?
-      WithdrawJob.perform_later(self, self.transfer_remote_ip)
+      WithdrawJob.perform_later(self, ip: self.transfer_remote_ip)
     end
   end
 
