@@ -49,6 +49,7 @@ class WithdrawRecord < ActiveRecord::Base
 
     event :finish do
       transitions from: :processed, to: :done
+      transitions from: :failure, to: :done
     end
 
     event :close do
