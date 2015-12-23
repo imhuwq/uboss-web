@@ -39,3 +39,117 @@
     }
   }
 }
+
+.share_service_store, .verify_detail_link {
+  padding: 16px;
+  background-color: #fff;
+  font-size: 13px;
+
+  a {
+    display: block;
+    background: image-url('mobile/gray-arrow-right.png') no-repeat right center;
+    background-size:10px;
+    font-size: 15px;
+    color: #333;
+    line-height: 20px;
+  }
+
+  .share_link, .verify_detail {
+    padding-right: 13px;
+  }
+}
+.verify_detail_link {
+  padding: 0;
+  padding-bottom: 31px;
+  border-bottom: 1px solid #ddd;
+}
+
+.verify_detail_link_warp {
+  margin-right: 15px;
+}
+
+.valid-order-list {
+  .inline-form {
+    padding: 13px;
+
+    .verify_code_input{
+      width: 76%;
+      height: 30px;
+      border-radius: 4px;
+      background-color: #43C3AA;
+      color: #fff;
+    }
+  }
+
+  ::-webkit-input-placeholder {
+    color: #D8D8D8;
+  }
+  :-moz-placeholder { /* older Firefox*/
+    color: #D8D8D8;
+  }
+  ::-moz-placeholder { /* Firefox 19+ */
+    color: #D8D8D8;
+  }
+  :-ms-input-placeholder {
+    color: #D8D8D8;
+  }
+}
+
+.service_store_share {
+  .text-center {
+    background-color: #E8E8E8;
+    .evaluat_info {
+      padding: 8px;
+      color: #ABA9A9;
+    }
+    .text-info {
+      color: #ABA9A9;
+    }
+  }
+
+  .share-title {
+    font-size: 20px;
+    padding: 20px 0 14px 0;
+  }
+
+  .qrcode_wrap {
+    .qrcode-title {
+      background-color: #fff;
+      padding: 5px;
+      p {
+        color:#f9ba10;
+        background: image-url('mobile/share-icon.png') no-repeat right;
+        background-size: 15px;
+        padding: 10px;
+        margin-right: 10px;
+
+        span {
+          font-size: 16px;
+          color: #8A8787;
+        }
+      }
+    }
+  }
+
+  .service_store_link {
+    .link-title {
+      p {
+        color:#f9ba10;
+        background: image-url('mobile/share-icon.png') no-repeat right;
+        background-size: 15px;
+        padding: 10px;
+        margin-right: 10px;
+      }
+      span {
+        font-size: 16px;
+        color: #8A8787;
+      }
+    }
+    .url {
+      padding: 17px 0 17px 10px;
+      background-color: #fff;
+      font-size: 15px;
+      color: #8A8787;
+    }
+  }
+}

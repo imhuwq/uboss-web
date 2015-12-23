@@ -20,6 +20,25 @@ class ServiceStore < UserInfo
     end
   end
 
+  def total_evaluat_people
+    service_products.map do |product|
+      product.worst_evaluation.to_i + product.good_evaluation.to_i +
+        product.bad_evaluation.to_i + product.better_evaluation.to_i +
+        product.best_evaluation.to_i
+    end.sum
+  end
+
+  def total_good_reputation
+    total_evalution = 0.0
+    good_reputation = 0
+    service_products.each do |product|
+      total_evalution += product.good_evaluation.to_f + product.bad_evaluation.to_f + product.worst_evaluation.to_f + product.best_evaluation.to_f + product.better_evaluation.to_f
+      good_reputation += product.good_evaluation.to_i + product.best_evaluation.to_i + product.better_evaluation.to_i
+    end
+    rate = total_evalution > 0 ? good_reputation/total_evalution.to_f : 1
+    "#{'%.2f' % (rate*100)}%"
+  end
+
   def mobile_phone
     store_phone = store_phones.first
     if store_phone

@@ -1,18 +1,27 @@
-<div>
-  <p>拥有你好</p>
-  <p>好的东西值得分享, 当你需要的时候</p>
-</div>
-<br />
-<div>
-  <p>店铺二维码</p>
-  <div class="box-w15 nogap-right">
-    <div class="gap white-bg-color">
-      <%= qrcode_image_tag service_store_url(shared: true) %>
+<div class='service_store_share'>
+  <div class='text-center'>
+    <p class='share-title'>拥有你好</p>
+    <p class='text-info'>好的东西值得分享, 当你需要的时候</p>
+    <p class='evaluat_info'><span><%= current_user.service_store.total_good_reputation %></span> 好评(<%= current_user.service_store.total_evaluat_people %>)人</p>
+  </div>
+  <br />
+  <div class='qrcode_wrap'>
+    <div class='qrcode-title'>
+      <p><span>店铺二维码<span></p>
+    </div>
+    <div class="box-w15 nogap-right">
+      <div class="gap white-bg-color text-center">
+        <%= qrcode_image_tag service_store_url(shared: true) %>
+      </div>
     </div>
   </div>
-</div>
-<br />
-<div>
-  <p>店铺链接</p>
-  <p><label><%= "#{request.protocol}#{request.host_with_port}#{service_store_path}" %></label></p>
+  <br />
+  <div class='service_store_link'>
+    <div class='link-title'>
+      <p><span>店铺链接</span></p>
+    </div>
+    <div class='url'>
+      <label><%= "#{request.protocol}#{request.host_with_port}#{service_store_path}" %></label>
+    </div>
+  </div>
 </div>
