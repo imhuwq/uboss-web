@@ -56,4 +56,5 @@ $ ->
       $(this).removeClass('checkbox_is_checked')
 
   $(document).on "focusout", '#service_product_present_price', (event) ->
+    $("a[data-level='1']").click()
     $('input.sku-price').val($(this).val()).focusout()
