@@ -1,13 +1,14 @@
 class EvaluationsController < ApplicationController
+  before_action :check_current_user
 
   def new
-    @order_item = OrderItem.find(params[:id])
+    @order_item = OrderItem.where(id: params[:id], user_id: current_user.id).first
     @evaluation = Evaluation.new(order_item: @order_item)
     render layout: 'mobile'
   end
 
   def append
-    @order_item = OrderItem.find(params[:id])
+    @order_item = OrderItem.where(id: params[:id], user_id: current_user.id).first
     @evaluations = @order_item.evaluations.where(buyer_id: current_user.id)
     @evaluation = @evaluations.first.dup
     render layout: 'mobile'
@@ -32,6 +33,12 @@ class EvaluationsController < ApplicationController
   end
 
   private
+  def check_current_user
+    if current_user.blank?
+      flash[:error] = '操作前请先登录'
+      redirect_to root_path
+    end
+  end
 
   def validate_attrs
     if params[:evaluation].present?
