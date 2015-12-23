@@ -23,6 +23,10 @@ class VerifyCode < ActiveRecord::Base
     order_item.order
   end
 
+  def verify_time
+    updated_at.strftime("%H : %M")
+  end
+
   private
 
   def generate_code
