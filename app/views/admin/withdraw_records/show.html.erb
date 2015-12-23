@@ -38,21 +38,45 @@
 			<p><%= WithdrawRecord.human_attribute_name(:wx_payment_no) %> : <%= @withdraw_record.wx_payment_no %></p>
 			<p><%= WithdrawRecord.human_attribute_name(:wx_payment_time) %> : <%= @withdraw_record.wx_payment_time %></p>
 			<p><%= WithdrawRecord.human_attribute_name(:done_at) %> : <%= @withdraw_record.done_at %></p>
-			<% if @withdraw_record.error_info && can?(:manage, WithdrawRecord) %>
-				<p><%= WithdrawRecord.human_attribute_name(:error_info) %> : <%= @withdraw_record.error_info %></p>
+			<% if @withdraw_record.error_info.present? && can?(:manage, WithdrawRecord) %>
+				<p>后台处理信息 : </p>
+        <table class="border-table">
+          <tbody>
+            <% @withdraw_record.error_info.each do |key, value| %>
+              <tr>
+                <td><%= key %></td>
+                <td><%= value %></td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
 			<% end %>
 	</div>
 	<br />
-	<% if @withdraw_record.unprocess? && can?(:manage, WithdrawRecord) %>
-		<p class="text-center">
-			<%= link_to withdraw_process_txt(@withdraw_record),
-	      processed_admin_withdraw_record_path(@withdraw_record),
-	      method: :PATCH, data: {confirm: '确认打款？'},
-	      class: "btn btn-large orange-btn #{withdraw_process_class(@withdraw_record)}" %>
-
-	    <%= link_to '拒绝', close_admin_withdraw_record_path(@withdraw_record),
-	      method: :PATCH, data: {confirm: '确认拒绝，并关闭此提现申请？'},
-	      class: 'btn btn-large red-btn' %>
-		</p>
-	<% end %>
+  <% if can?(:manage, WithdrawRecord) %>
+    <p class="text-center">
+    <% if @withdraw_record.unprocess? || @withdraw_record.failure? %>
+      <%= link_to withdraw_process_txt(@withdraw_record),
+        processed_admin_withdraw_record_path(@withdraw_record),
+        method: :PATCH, data: {confirm: '确认打款？'},
+        class: "btn btn-large orange-btn #{withdraw_process_class(@withdraw_record)}" %>
+    <% end %>
+    <% if @withdraw_record.failure? && @withdraw_record.wechat_available? %>
+      <%= link_to '重新查询微信企业付款',
+        query_wx_admin_withdraw_record_path(@withdraw_record),
+        method: :PATCH, class: "btn btn-large btn-primary" %>
+    <% end %>
+    <% if @withdraw_record.processed? && @withdraw_record.bank_processing? %>
+      <%= link_to '交易完成',
+        finish_admin_withdraw_record_path(@withdraw_record),
+        data: { confirm: '确认完成' },
+        method: :PATCH, class: "btn btn-large btn-dange" %>
+    <% end %>
+    <% if @withdraw_record.unprocess? %>
+      <%= link_to '拒绝', close_admin_withdraw_record_path(@withdraw_record),
+        method: :PATCH, data: {confirm: '确认拒绝，并关闭此提现申请？'},
+        class: 'btn btn-large red-btn' %>
+    <% end %>
+    </p>
+  <% end %>
 </div>

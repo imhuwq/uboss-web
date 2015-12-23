@@ -196,8 +196,7 @@ Rails.application.routes.draw do
       resources :withdraw_records, only: [:index, :show, :new, :create] do
         get :generate_excel, on: :collection
         member do
-          patch :processed
-          patch :close
+          patch :processed, :finish, :close, :query_wx
         end
       end
       resources :personal_authentications, only: [:index]
