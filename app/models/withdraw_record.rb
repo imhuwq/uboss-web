@@ -50,6 +50,7 @@ class WithdrawRecord < ActiveRecord::Base
 
     event :finish do
       transitions from: :processed, to: :done
+      transitions from: :failure, to: :done
     end
 
     event :close do
@@ -86,7 +87,7 @@ class WithdrawRecord < ActiveRecord::Base
 
   def update_error_info(info)
     info = (error_info || {}).merge(info)
-    update(error_info: info.merge(msg_updated_at: Time.now))
+    update_columns(error_info: info.merge(msg_updated_at: Time.now))
   end
 
   private

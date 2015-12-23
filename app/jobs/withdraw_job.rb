@@ -30,7 +30,25 @@ class WithdrawJob < ActiveJob::Base
   def query
     return false if withdraw_record.bank_processing?
     @result = WxPay::Service.invoke_transferquery(partner_trade_no: withdraw_record.number)
-    process_result
+    logger.info "Transfer QUERY #{withdraw_record.number} result: #{result}"
+
+    process_result do
+      if result['status'] == WxPay::Result::SUCCESS_FLAG
+        withdraw_record.update(
+          wx_payment_no: result['detail_id'],
+          wx_payment_time: result['transfer_time'] || Time.now
+        )
+        withdraw_record.finish!
+        logger.info "Transfer QUERY #{withdraw_record.number} SUCCESS, wx_payment_no: #{result['detail_id']}"
+      else
+        withdraw_record.update_error_info(
+          status: result['status'],
+          reason: result['reason']
+        )
+        withdraw_record.fail! if withdraw_record.may_fail?
+        logger.error "Transfer QUERY #{withdraw_record.number} FAIL, wx_payment_no: #{result['detail_id']}"
+      end
+    end
     withdraw_record.update_error_info(requerying_done_at: Time.now)
   rescue => e
     withdraw_record.update_error_info(
@@ -56,17 +74,19 @@ class WithdrawJob < ActiveJob::Base
 
     logger.info "Transfer #{withdraw_record.number} result: #{result}"
 
-    process_result
+    process_result do
+      withdraw_record.update(
+        wx_payment_no: result['payment_no'],
+        wx_payment_time: result['payment_time']
+      )
+      withdraw_record.finish!
+      logger.info "Transfer #{withdraw_record.number} SUCCESS, wx_payment_no: #{result['payment_no']}"
+    end
   end
 
   def process_result
     if result.success?
-      withdraw_record.update(
-        wx_payment_no: result['payment_no'],
-        wx_payment_time: result['payment_time'],
-      )
-      withdraw_record.finish!
-      logger.info "Transfer #{withdraw_record.number} SUCCESS, wx_payment_no: #{result['payment_no']}"
+      yield
     else
       withdraw_record.update_error_info(
         code: result['return_code'],
@@ -88,7 +108,7 @@ class WithdrawJob < ActiveJob::Base
       )
     # 正在提现的资金存入的是frozen_income
     elsif withdraw_record.amount > withdraw_record.user.frozen_income
-      withdraw_record.update(
+      withdraw_record.update_error_info(
         code: 'USER', msg: '非法的提现金额'
       )
     end
