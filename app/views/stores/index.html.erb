@@ -2,18 +2,39 @@
   <div class="log_font"> UBOSS </div>
 <% end %>
 
-<%= render partial: 'stores/banner_slider', locals: { seller: @uboss_seller } %>
+<div class="banner-slider">
+  <div id='slider' class='swipe'>
+    <div class='swipe-wrap'>
+        <div>
+          <a href="http://uboss.me/pages/bonus_invite"><%= image_tag 'mobile/slideshow/4.jpg' %></a>
+        </div>
+        <div>
+          <a href="http://uboss.me/products/632"><%= image_tag 'mobile/slideshow/5.jpg' %></a>
+        </div>
+    </div>
+  </div>
+  <div id='slider-points'>
+    <span class="active">*</span>
+    <span>*</span>
+  </div>
+</div>
 
 <br />
 
-<div class="bg-white gap">
-  请创业 & 入驻UBOSS
+<div class="bg-white text-center">
+  <a class="box-w50 nogap index-icon-box border-right" href="/stores/550">
+  	<div class="index-icon icon1"></div>
+  	<div><b>丽江生活馆</b></div>
+  </a>
+  <a class="box-w50 nogap index-icon-box" href="http://a.app.qq.com/o/simple.jsp?pkgname=com.ulaiber.ubossmerchant&g_f=1104978924" target="_blank">
+	  <div class="index-icon icon2"></div>
+	  <div><b>入驻UBOSS</b></div>
+	</a>
 </div>
-
-<div class="gap">
+<div class="gap page-title black-color">
 	推荐店铺
 </div>
-<% stores_id=[504,496,197,49,9,278,134,326,117,338,246,255,310,214,229,194,213,329,8,183] %>
+<% stores_id=[504,49,496,197,315,9,233,278,134,326,117,338,246,255,310,214,229,194,213,329,8,183,725] %>
 <% @stores.each do |store| %>
   <div class="bg-white gap border-box">
   	<div class="product-store-box">
@@ -49,3 +70,40 @@
   </div>
   <br />
 <% end %>
+
+<% if browser.wechat? %>
+  <div class="pop-bg hidden">
+		<div class="pop-content text-center">
+			<h2 class="white-color">
+				请点击右上角<%= image_tag 'mobile/friend/arrow-up.png',height:'25' %>
+				<br/>
+				用Safari浏览器打开
+			</h2>
+		</div><!-- pop-content -->
+	</div><!-- pop-bg -->
+<% end %>
+
+<script>
+	$(document).ready(function(){
+		function isFrom( platform ){
+			var ua = navigator.userAgent.toLowerCase();
+			return ua.indexOf( platform ) != -1 ? 1 : 0;
+		}
+		var isAndroid = isFrom('android');
+		var isIOS = isFrom('iphone') || isFrom('ipad') || isFrom('ipod');
+		if ( isAndroid ){
+			$('.index-icon.icon2').closest('.index-icon-box').attr("href","http://a.app.qq.com/o/simple.jsp?pkgname=com.ulaiber.ubossmerchant&g_f=1104978924");
+			return
+		}
+		if ( isIOS ){
+			$('.index-icon.icon2').closest('.index-icon-box').attr("href","https://appsto.re/cn/kAMA_.i");
+			<% if browser.wechat? %>
+				$('.index-icon.icon2').closest('.index-icon-box').click(function(){
+					$('.pop-bg').show()
+				})
+			<% end %>
+			return
+		}
+		
+	})
+</script>
