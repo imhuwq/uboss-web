@@ -1,7 +1,7 @@
 class Admin::StoresController < AdminController
 	def show
 		@user = current_user
-    @advertisement_products = @user.products
+    @advertisements = Advertisement.where(user_id: @user.id, platform_advertisement: false)
 	end
 
 	def update_store_logo
@@ -14,9 +14,9 @@ class Admin::StoresController < AdminController
 	end
 
 
-	def update_product_advertisement_img
-		product = Product.find(params[:resource_id])
-		if product.update(advertisement_img: params[:avatar])
+	def update_advertisement_img
+		adv = Advertisement.find_by(id: params[:resource_id], user_id: current_user.id)
+		if adv.update(avatar: params[:avatar])
 			@message = {message: "上传成功！"}
 		else
 			@message = {message:"上传失败"}
@@ -24,19 +24,53 @@ class Admin::StoresController < AdminController
 		render json:  @message
 	end
 
+  def get_advertisement_items
+    if params[:type] == 'product'
+      arr = []
+      current_user.products.each do |p|
+        arr += [{id: p.id, text: p.name}]
+      end
+      render json: {products: arr}
+    elsif params[:type] == 'category'
+      arr = []
+      current_user.categories.each do |c|
+        arr += [{id: c.id, text: c.name}]
+      end
+      render json: {categories: arr}
+    end
+  end
 
-	# def add_to_advertisement
-	# 	product = Product.find(params[:id])
-	# 	hash= {}
-	# 	if product.show_advertisement
-	# 		product.update(show_advertisement: false)
-	# 		hash[:show_advertisement] = false
-	# 	else
-	# 		product.update(show_advertisement: true)
-	# 		hash[:show_advertisement] = true
-	# 	end
-	# 	render json:  hash.to_json
-	# end
+  def create_advertisement
+    if params[:advertisement]
+      @adv = Advertisement.new(params.require(:advertisement).permit(:avatar, :order_number))
+      @adv.platform_advertisement = false
+      @adv.user_id = current_user.id
+      if params[:advertisement][:type] == 'product' && product = current_user.products.find(params[:advertisement][:id])
+        @adv.product_id = product.id
+      elsif params[:advertisement][:type] == 'category' && category = current_user.categories.find(params[:advertisement][:id])
+        @adv.category_id = category.id
+      end
+      if (@adv.product_id || @adv.category_id) && @adv.save
+        flash.now[:success] = '创建成功'
+      else
+        @adv.valid?
+        flash.now[:error] = "#{@adv.errors.full_messages.join('<br/>')}"
+      end
+    end
+    @advertisements = Advertisement.where(user_id: current_user.id, platform_advertisement: false)
+  end
+
+  def remove_advertisement_item
+    adv = Advertisement.find_by(id: params[:id], user_id: current_user.id)
+    if adv.destroy
+      flash.now[:success] = '删除成功'
+    else
+      flash.now[:error] = '删除失败'
+    end
+    @advertisements = Advertisement.where(user_id: current_user.id, platform_advertisement: false)
+    render 'create_advertisement'
+  end
+
 
 	def update_store_name
     duplication_name = UserInfo.find_by(store_name: params[:resource_val]) if params[:resource_val] != ''

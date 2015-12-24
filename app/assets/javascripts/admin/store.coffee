@@ -31,17 +31,7 @@ $(document).on 'change',  '#adding_advertisement #product_tages', (e)->
       data: {resource_id: resource_id, resource_type: 'product'}
       success: (res) ->
         console.log 'success',res
-        # $('#show_product_advertisement_img').removeClass('hidden')
-        # $('#add_to_advertisement').removeClass('hidden')
-        # $('#show_product_advertisement_img img').attr('src', "#{res['url']}-w320")
-        # $('#adding_product_window .upyun_file_json').attr('data-id',resource_id)
-        # $('#adding_product_window .upyun_file_json').attr('data-to',"/admin/stores/update_product_advertisement_img?resource_id=#{resource_id}")
-        # if res['show_advertisement'] == true
-        # 	$('#adding_product_window #add_to_advertisement').removeClass('btn-link')
-        # 	$('#adding_product_window #add_to_advertisement').html('移出店铺广告')
-        # else
-        # 	$('#adding_product_window #add_to_advertisement').addClass('btn-link')
-        # 	$('#adding_product_window #add_to_advertisement').html('加入店铺广告')
+
       error: (data, status, e) ->
         console.log 'error', data, status, e
         alert("操作错误")

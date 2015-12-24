@@ -6,7 +6,7 @@
 	</ul>
 </div><!-- container -->
 <br />
-<div class="container">	
+<div class="container">
 	<div class="header-tab">
 		<a class="tab-title active" href="#info">店铺基本信息</a>
 		<a class="tab-title" href="#slider">轮播展示</a>
@@ -20,13 +20,13 @@
   			店铺头像　
 	  		<p class="fileinput-button">
 					<%= upyun_meta_tags prefix: "asset_img/avatar" %>
-					
+
 					<% if  current_user.store_logo.avatar_identifier.blank? %>
 						<%= image_tag("admin/no-img-160x160.png", class:"clean") %>
 					<% else %>
-						<%= image_tag("current_user.store_logo_url(:thumb)", class:"clean", style:"height: 160px;width:160px")%>
+						<%= image_tag(current_user.store_logo_url(:thumb), class:"clean", style:"height: 160px;width:160px")%>
 					<% end %>
-						<%= file_field_tag "image", class: "upyun_file_json" ,  data: {to: "/admin/stores/#{current_user.id}/update_store_logo"} %>
+					<%= file_field_tag "image", class: "upyun_file_json" ,  data: {to: "/admin/stores/#{current_user.id}/update_store_logo"} %>
 					<b class="loading"><i class="fa fa-spinner"></i></b>
 					<span class="tips-text">编辑logo</span>
 				</p>
@@ -37,54 +37,29 @@
 			</p>
 			<p>
 				店铺简介　
-				<%= text_field_tag :store_short_description, current_user.store_short_description , class: 'update_item border-bottom-input', data:{ url: "/admin/stores/#{current_user.id}/update_store_descirption" } , placeholder: '店铺简介',style:'width:160px' %> 
-			</p>			
+				<%= text_field_tag :store_short_description, current_user.store_short_description , class: 'update_item border-bottom-input', data:{ url: "/admin/stores/#{current_user.id}/update_store_short_description" } , placeholder: '店铺简介',style:'width:160px' %>
+			</p>
   	</div>
   	<div class="box-w60 info-right-box">
   		<br />
 			<p><img src="http://qr.liantu.com/api.php?&amp;text=<%= store_url(@user.id) %>" width='160'/></p>
 			<p class="gap white-bg-color">店铺链接：<%= store_url(@user.id) %></p>
   		<br />
-  	</div>		
+  	</div>
   </div><!-- #info -->
   <br />
-  <div id="slider" class="beige-bg-color admin-box">
-  	<div class="box-w40 text-center">
-  		<br />
-  		<%# 无轮播图 %>
-  		<p><%= image_tag("admin/no-img-640x320.png") %></p>
-  		<%# else %>
-  		<ul class="setting-slider">
-			  <li><%= image_tag("admin/no-img-640x320.png") %></li>
-			  <li><%= image_tag("admin/no-img-640x320.png") %></li>
-			  <li><%= image_tag("admin/no-img-640x320.png") %></li>
-			</ul><!-- setting-slider -->
-  		<p class="gray-color"><small>请上传规格为640*320px的图片</small></p>
-  	</div>
-  	<div class="box-w60">
-  		<br />
-  		<%= render "add_banner" %>
-  		<div class="setting-list">
-  			<%# 循环部分 %>
-  			<div class="setting-banner-box">
-  				<span class="close"><i class="fa fa-times"></i></span>
-					<p>商品：<span class="main-color">商品名称</span></p>
-  				<p class="text-center"><%= image_tag("admin/no-img-640x320.png") %></p>
-  				<div>排序：<input type="number" min="0" value="0" class="banner-sequence" style="width: 100px;"/></div>
-  			</div><!-- setting-banner-box -->		
-  			<%# 循环部分结束 %>
-  			<a class="btn white-btn btn-large btn-block show-add-banner" >+ 轮播图</a>
-  			
-  		</div><!-- setting-list -->
-  		<br />
-  	</div>
-  </div><!-- #slider -->
+  <div id="advertisements">
+    <%= render "advertisements" %>
+  </div>
+  <%= render "add_banner" %>
+  
+  
   <br />
   <div id="category" class="beige-bg-color admin-box">
   	<div class="box-w40">
   		<br/>
   		<div class="product-category-list">
-  			<% @user.categories.where(use_in_store: true).each do |category| %>
+  			<% @user.categories.each do |category| %>
 				<% if (@user.categories.size%3 == 1) %>
 				<div class="box-w50">
 				<% else %>
@@ -96,7 +71,7 @@
 			        <%= image_tag("mobile/img.jpg") %>
 			      </div>
 			      <div class="title"><%= category.name %></div>
-			    </div><!-- product-box -->				  
+			    </div><!-- product-box -->
   			</div>
   			<% end %>
   		</div>
@@ -110,10 +85,10 @@
   				<span class="close"><i class="fa fa-times"></i></span>
 					<p>分组：<span class="main-color">分组名称</span></p>
   				<p class="text-center"><%= image_tag("admin/no-img-400x400.png",style:'width:200px;height:200px') %></p>
-  			</div><!-- setting-banner-box -->		
+  			</div><!-- setting-banner-box -->
   			<%# 循环部分结束 %>
   			<a class="btn white-btn btn-large btn-block show-add-category" onclick="$('#add-category').modal('show')">+ 添加列表</a>
-  			
+
   		</div><!-- setting-list -->
   		<br />
   	</div>
@@ -134,12 +109,12 @@
 				加入店铺广告
 			</a>
 		</div>
-    <% @advertisement_products.each do |a_p| %>
+    <% @advertisements.where('product_id is not null').each do |a_p| %>
       <div class="new_advertisement">
         <p class="close" data-id="<%= a_p.id %>" data-type="product">关闭</p>
-        <p><%= "商品:#{a_p.name}" %></p>
+        <p><%= "商品:#{a_p.product.name}" %></p>
         <div class="fileinput-button">
-          <%= image_tag(a_p.advertisement_img_url(:thumb), class:"clean", style:"height: 80px;")%>
+          <%= image_tag(a_p.image_url(:thumb), class:"clean", style:"height: 80px;")%>
           <%= file_field_tag "image", class: "upyun_file_json" ,  data: {to: "#{@update_image_url}"} %>
           <b class="loading"><i class="fa fa-spinner"></i></b>
           <div style="font-size:10px;">(点击图片进行替换)</div>
@@ -164,12 +139,5 @@
     </div>
   </div>
 </div>
-<%# 有轮播图 %>
-<script>
-	$(document).ready(function(){
-		$('.setting-slider').bxSlider({
-			controls :false
-		});
-	})
-</script>
+
 

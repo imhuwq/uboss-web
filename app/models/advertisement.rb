@@ -3,8 +3,8 @@ class Advertisement < ActiveRecord::Base
 	include Imagable
 	include AASM
 
-  has_one :product
-  has_one :category
+  belongs_to :product
+  belongs_to :category
 	has_one_image autosave: true
 	delegate :image_url, to: :asset_img, allow_nil: true
 	delegate :avatar=, :avatar, to: :asset_img
