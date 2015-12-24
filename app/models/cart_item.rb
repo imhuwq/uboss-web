@@ -1,8 +1,13 @@
 class CartItem < ActiveRecord::Base
+
   belongs_to :cart
   belongs_to :product_inventory
   belongs_to :seller, class_name: "User"
   belongs_to :sharing_node
+  # act as preferential_item
+  has_many   :preferential_measures, as: :preferential_item
+  has_many   :preferentials_seller_bonuses, as: :preferential_item, class_name: 'Preferentials::SellerBonus'
+  has_many   :preferentials_privileges, as: :preferential_item, class_name: 'Preferentials::Privilege'
 
   validates_presence_of   :cart_id, :product_inventory_id, :seller_id
   validates_uniqueness_of :product_inventory_id, scope: :cart_id
@@ -50,7 +55,18 @@ class CartItem < ActiveRecord::Base
   end
 
   def privilege_amount
-    @privilege_amount ||= privilege_card.present? ? privilege_card.privilege_amount(product_inventory) : 0
+    return @privilege_amount if instance_variable_defined? '@privilege_amount'
+
+    @privilege_amount = preferentials_seller_bonuses.to_a.sum(&:amount)
+    @privilege_amount += preferentials_privileges.to_a.sum(&:amount)
+  end
+
+  def total_preferential_amount
+    product_inventory.privilege_amount
+  end
+
+  def total_preferential_count
+    count
   end
 
   def sharing_user

@@ -7,7 +7,7 @@ class Ability
     roles = user.user_roles
     if user.admin? && roles.present?
       begin
-        roles.each do |role|
+        roles.order("id ASC").each do |role|
           grant_method = "grant_permissions_to_#{role.name}"
           __send__ grant_method, user
         end

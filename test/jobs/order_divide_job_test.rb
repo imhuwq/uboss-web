@@ -124,6 +124,9 @@ class OrderDivideJobTest < ActiveJob::TestCase
       level2_node = create(:sharing_node, product: product, parent: level1_node)
       level3_node = create(:sharing_node, product: product, parent: level2_node)
       level4_node = create(:sharing_node, product: product, parent: level3_node)
+      level4_node_user = level4_node.user
+      create(:privilege_card, user: level4_node_user, seller: product.user)
+      level4_node_user.update privilege_rate: 50
 
       assert level2_node.user.income == 0
       assert level3_node.user.income == 0
@@ -151,7 +154,7 @@ class OrderDivideJobTest < ActiveJob::TestCase
       assert_equal 0, level1_node.user.reload.income.to_f
       assert_equal sharing_reward_lv3 * buy_amount, level2_node.user.reload.income
       assert_equal sharing_reward_lv2 * buy_amount, level3_node.user.reload.income
-      assert_equal sharing_reward_lv1 * buy_amount, level4_node.user.reload.income
+      assert_equal sharing_reward_lv1 * buy_amount * 0.5, level4_node.user.reload.income
       assert seller.reload.income > 0, 'Seller get selling income'
       assert agent.reload.income > 0, 'Agent get deviding income'
       assert_equal(

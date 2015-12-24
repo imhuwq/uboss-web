@@ -23,7 +23,7 @@
   <% end %>
   <div class="content">
     <p>应付款：￥<span id="payment_total_price"><%= @order_charge.pay_amount %></span></p>
-    <p class="gray-color"><small>已优惠了<%= total_privilege_amount(@order_charge.order_items) %>元</small></p>
+    <p class="gray-color"><small>已优惠了<%= @order_charge.total_privilege_amount %>元</small></p>
   </div>
 </div><!-- order-price -->
 
