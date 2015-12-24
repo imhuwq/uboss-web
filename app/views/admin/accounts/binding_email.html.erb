@@ -11,14 +11,14 @@
     <h3 class="page-title">绑定邮箱</h3>
     <br />
     <%= simple_form_for(current_user, url: bind_email_admin_account_path, method: :patch) do |f| %>
-      <div class="box-w100">
-        <%= f.input_field :email, class: "input-block", required: true,
-          autofocus: true, placeholder: '邮箱地址' %>
-    </div>
+      <%= f.input_field :email, class: "input-block", required: true,
+        autofocus: true, placeholder: '邮箱地址' %>
+      <br />
+      <%= f.input_field :current_password, class: "input-block", required: true, placeholder: '当前密码' %>
+      <br />
+      <p class="text-center"><%= f.submit '确认', class: 'btn btn-large' %></p>
+    <% end %>
     <br />
-    <p class="text-center"><%= f.submit '确认', class: 'btn btn-large' %></p>
-  <% end %>
-  <br />
-  <%= link_to "没有收到邮箱确认邮件?", new_confirmation_path(:user), class: 'btn btn-block btn-link' %><br />
+    <%= link_to "没有收到邮箱确认邮件?", new_confirmation_path(:user), class: 'btn btn-block btn-link' %><br />
   </div>
 </div>

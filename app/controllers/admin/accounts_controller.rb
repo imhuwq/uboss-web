@@ -49,8 +49,8 @@ class Admin::AccountsController < AdminController
   end
 
   def bind_email
-    user_params = params.require(:user).permit(:email)
-    if current_user.update(user_params)
+    user_params = params.require(:user).permit(:email, :current_password)
+    if current_user.update_with_password(user_params)
       current_user.send_confirmation_instructions
       flash[:notice] = '请查看您的邮箱，几分钟后，您将收到确认邮箱地址的电子邮件。'
       redirect_to edit_admin_account_path
@@ -61,7 +61,7 @@ class Admin::AccountsController < AdminController
   end
 
   def bind_mobile
-    user_params = params.require(:user).permit(:login, :code)
+    user_params = params.require(:user).permit(:login, :code, :current_password)
     mobile = user_params[:login]
     if User.where(login: mobile).exists?
       flash[:error] = '该手机已注册'
@@ -70,7 +70,7 @@ class Admin::AccountsController < AdminController
     mobile_captcha = user_params.delete(:code)
     current_user.code = mobile_captcha
     MobileCaptcha.verify(mobile, mobile_captcha).if_success {
-      if current_user.update(user_params)
+      if current_user.update_with_password(user_params)
         MobileCaptcha.where(mobile: mobile).delete_all
         redirect_to edit_admin_account_path, notice: "绑定手机 #{mobile} 成功"
       else
