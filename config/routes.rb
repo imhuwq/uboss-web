@@ -173,6 +173,12 @@ Rails.application.routes.draw do
         end
       end
 
+      get '/new_supplier', to: 'accounts#new_supplier'
+
+      post '/be_supplier', to: 'accounts#be_supplier'
+
+      delete '/be_not_supplier', to: 'accounts#be_not_supplier'
+
       get '/select_carriage_template', to: 'products#select_carriage_template'
       get '/refresh_carriage_template', to: 'products#refresh_carriage_template'
 
