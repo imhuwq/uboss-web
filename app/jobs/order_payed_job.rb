@@ -25,7 +25,7 @@ class OrderPayedJob < ActiveJob::Base
   end
 
   def send_payed_sms_to_seller
-    if seller
+    if seller && seller.login.present?
       PostMan.send_sms(seller.login, {name: seller.identify}, 968369)
     end
   end
