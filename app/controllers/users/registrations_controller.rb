@@ -24,7 +24,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
         sign_in(resource)
         redirect_to after_sign_up_path_for(resource)
       else
-        flash[:error] = model_errors(resource).join("<br/>")
+        flash[:error] = model_errors(resource).join("<br/>") if resource.errors.any?
         render :new_with_email
       end
     else

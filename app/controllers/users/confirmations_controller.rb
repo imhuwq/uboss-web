@@ -16,15 +16,17 @@ class Users::ConfirmationsController < Devise::ConfirmationsController
       redirect_to new_session_path(:user)
     else
       super do |user|
-        flash[:error] = model_errors(user).join('<br/>') if user.errors.any?
+        flash.now[:error] = model_errors(user).join('<br/>') if user.errors.any?
       end
     end
   end
 
   # GET /resource/confirmation?confirmation_token=abcdef
-  # def show
-  #   super
-  # end
+  def show
+    super do |user|
+      flash.now[:error] = model_errors(user).join('<br/>') if user.errors.any?
+    end
+  end
 
   # protected
 

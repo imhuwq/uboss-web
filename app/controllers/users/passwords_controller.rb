@@ -10,7 +10,7 @@ class Users::PasswordsController < Devise::PasswordsController
   # POST /resource/password
   def create
     super do |user|
-      flash[:error] = model_errors(user).join('<br/>')
+      flash.now[:error] = model_errors(user).join('<br/>') if user.errors.any?
       @sending_mail = true
     end
   end
@@ -39,7 +39,7 @@ class Users::PasswordsController < Devise::PasswordsController
           sign_in resource
           redirect_to after_sign_in_path_for(resource), notice: '修改密码成功'
         else
-          flash[:error] = model_errors(resource).join('<br/>')
+          flash.now[:error] = model_errors(resource).join('<br/>') if resource.errors.any?
           render :new
         end
       else
@@ -48,7 +48,7 @@ class Users::PasswordsController < Devise::PasswordsController
       end
     else
       super do |user|
-        flash[:error] = model_errors(user).join('<br/>')
+        flash.now[:error] = model_errors(user).join('<br/>') if user.errors.any?
       end
     end
   end
