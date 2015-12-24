@@ -52,10 +52,10 @@ class Admin::AccountsController < AdminController
     user_params = params.require(:user).permit(:email, :current_password)
     if current_user.update_with_password(user_params)
       current_user.send_confirmation_instructions
-      flash[:notice] = '请查看您的邮箱，几分钟后，您将收到确认邮箱地址的电子邮件。'
+      flash.now[:notice] = '请查看您的邮箱，几分钟后，您将收到确认邮箱地址的电子邮件。'
       redirect_to edit_admin_account_path
     else
-      flash[:error] = model_errors(current_user).join("<br/>")
+      flash.now[:error] = model_errors(current_user).join("<br/>")
       render :binding_email
     end
   end
@@ -64,7 +64,7 @@ class Admin::AccountsController < AdminController
     user_params = params.require(:user).permit(:login, :code, :current_password)
     mobile = user_params[:login]
     if User.where(login: mobile).exists?
-      flash[:error] = '该手机已注册'
+      flash.now[:error] = '该手机已注册'
       return render :binding_mobile
     end
     mobile_captcha = user_params.delete(:code)
@@ -77,8 +77,7 @@ class Admin::AccountsController < AdminController
         flash.now[:error] = model_errors(resource).join('<br/>') if resource.errors.any?
         render :binding_mobile
       end
-    }.
-    if_failure {
+    }.if_failure {
       flash.now[:error] = '手机验证码错误'
       render :binding_mobile
     }

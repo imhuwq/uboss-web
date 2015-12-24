@@ -42,8 +42,7 @@ class Users::PasswordsController < Devise::PasswordsController
           flash.now[:error] = model_errors(resource).join('<br/>') if resource.errors.any?
           render :new
         end
-      }.
-      if_failure {
+      }.if_failure {
         flash.now[:error] = '手机验证码错误'
         render :new
       }
