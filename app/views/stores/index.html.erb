@@ -2,22 +2,30 @@
   <div class="log_font"> UBOSS </div>
 <% end %>
 
-<div class="banner-slider">
-  <div id='slider' class='swipe'>
-    <div class='swipe-wrap'>
-        <div>
-          <a href="http://uboss.me/pages/bonus_invite"><%= image_tag 'mobile/slideshow/4.jpg' %></a>
-        </div>
-        <div>
-          <a href="http://uboss.me/products/632"><%= image_tag 'mobile/slideshow/5.jpg' %></a>
-        </div>
+<% if store_banner_data(@uboss_seller).size > 0 %>
+  <div class="banner-slider">
+    <div id='slider' class='swipe'>
+      <div class='swipe-wrap'>
+        <% store_banner_data(@uboss_seller).each do |image, product| %>
+          <div>
+            <% if product.present? %>
+              <%= link_to product.short_description do %>
+                <%= image_tag image.url(:'640x320') %>
+              <% end %>
+            <% else %>
+              <%= image_tag image.url(:'640x320') %>
+            <% end %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+    <div id='slider-points'>
+      <% store_banner_data(@uboss_seller).size.times do |index| %>
+        <span class="<%= 'active' if index == 0 %>">*</span>
+      <% end %>
     </div>
   </div>
-  <div id='slider-points'>
-    <span class="active">*</span>
-    <span>*</span>
-  </div>
-</div>
+<% end %>
 
 <br />
 
@@ -34,7 +42,6 @@
 <div class="gap page-title black-color">
 	推荐店铺
 </div>
-<% stores_id=[504,49,496,197,315,9,233,278,134,326,117,338,246,255,310,214,229,194,213,329,8,183,725] %>
 <% @stores.each do |store| %>
   <div class="bg-white gap border-box">
   	<div class="product-store-box">
@@ -104,6 +111,5 @@
 			<% end %>
 			return
 		}
-		
 	})
 </script>
