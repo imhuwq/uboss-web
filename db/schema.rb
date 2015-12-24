@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151210032819) do
+ActiveRecord::Schema.define(version: 20151224031640) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -106,6 +106,16 @@ ActiveRecord::Schema.define(version: 20151210032819) do
 
   add_index "categories_products", ["category_id"], name: "index_categories_products_on_category_id", using: :btree
   add_index "categories_products", ["product_id"], name: "index_categories_products_on_product_id", using: :btree
+
+  create_table "cooperations", force: :cascade do |t|
+    t.integer  "supplier_id"
+    t.integer  "seller_id"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+  end
+
+  add_index "cooperations", ["seller_id"], name: "index_cooperations_on_seller_id", using: :btree
+  add_index "cooperations", ["supplier_id"], name: "index_cooperations_on_supplier_id", using: :btree
 
   create_table "daily_reports", force: :cascade do |t|
     t.date     "day"
@@ -466,6 +476,16 @@ ActiveRecord::Schema.define(version: 20151210032819) do
     t.integer  "order_item_refund_id"
   end
 
+  create_table "seller_businesses", force: :cascade do |t|
+    t.integer  "business_type"
+    t.integer  "business_status"
+    t.integer  "seller_id"
+    t.datetime "created_at",      null: false
+    t.datetime "updated_at",      null: false
+  end
+
+  add_index "seller_businesses", ["seller_id"], name: "index_seller_businesses_on_seller_id", using: :btree
+
   create_table "selling_incomes", force: :cascade do |t|
     t.datetime "created_at",               null: false
     t.datetime "updated_at",               null: false
@@ -625,11 +645,13 @@ ActiveRecord::Schema.define(version: 20151210032819) do
     t.string   "authentication_token"
     t.decimal  "privilege_rate",         default: 50.0
     t.string   "rongcloud_token"
+    t.integer  "supplier_id"
   end
 
   add_index "users", ["authentication_token"], name: "index_users_on_authentication_token", using: :btree
   add_index "users", ["login"], name: "index_users_on_login", unique: true, using: :btree
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
+  add_index "users", ["supplier_id"], name: "index_users_on_supplier_id", using: :btree
 
   create_table "versions", force: :cascade do |t|
     t.string   "item_type",  null: false

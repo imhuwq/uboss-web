@@ -1,6 +1,6 @@
 class UserRole < ActiveRecord::Base
 
-  ROLE_NAMES = %w(super_admin seller agent)
+  ROLE_NAMES = %w(super_admin seller agent supplier)
 
   belongs_to :user
   has_many :user_role_relations, dependent: :destroy
