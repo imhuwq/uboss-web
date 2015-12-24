@@ -287,6 +287,7 @@ zh-CN:
         processed: 交易中
         done: 交易完成
         closed: 拒绝
+        failure: 交易失败
     sharing_income:
       level:
         l1: 一级分成
