@@ -20,6 +20,10 @@ class UserRole < ActiveRecord::Base
     def seller
       find_by(name: 'seller')
     end
+
+    def supplier
+      find_by(name: 'supplier')
+    end
   end
 
 end
