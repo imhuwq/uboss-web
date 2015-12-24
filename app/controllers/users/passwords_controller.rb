@@ -33,7 +33,7 @@ class Users::PasswordsController < Devise::PasswordsController
       end
       auth_code = user_params.delete(:code)
       resource.code = auth_code
-      if MobileCaptcha.auth_code(resource.login, auth_code)
+      MobileCaptcha.verify(resource.login, auth_code).if_success {
         if resource.update(user_params.merge(need_reset_password: false))
           MobileCaptcha.where(mobile: resource.login).delete_all
           sign_in resource
@@ -42,10 +42,11 @@ class Users::PasswordsController < Devise::PasswordsController
           flash.now[:error] = model_errors(resource).join('<br/>') if resource.errors.any?
           render :new
         end
-      else
+      }.
+      if_failure {
         flash.now[:error] = '手机验证码错误'
         render :new
-      end
+      }
     else
       super do |user|
         flash.now[:error] = model_errors(user).join('<br/>') if user.errors.any?

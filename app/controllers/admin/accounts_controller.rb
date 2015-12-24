@@ -69,7 +69,7 @@ class Admin::AccountsController < AdminController
     end
     mobile_captcha = user_params.delete(:code)
     current_user.code = mobile_captcha
-    if MobileCaptcha.auth_code(mobile, mobile_captcha)
+    MobileCaptcha.verify(mobile, mobile_captcha).if_success {
       if current_user.update(user_params)
         MobileCaptcha.where(mobile: mobile).delete_all
         redirect_to edit_admin_account_path, notice: "绑定手机 #{mobile} 成功"
@@ -77,10 +77,11 @@ class Admin::AccountsController < AdminController
         flash.now[:error] = model_errors(resource).join('<br/>') if resource.errors.any?
         render :binding_mobile
       end
-    else
+    }.
+    if_failure {
       flash.now[:error] = '手机验证码错误'
       render :binding_mobile
-    end
+    }
   end
 
   private
