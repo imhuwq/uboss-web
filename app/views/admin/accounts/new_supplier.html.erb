@@ -1,0 +1,11 @@
+<div class='new_supplier'>
+  <% if current_user.is_supplier? %>
+    <h3>你已经是供应商了</h3>
+    <p><%= link_to '解除供应商身份', admin_be_not_supplier_path, method: :delete %></p>
+  <% else %>
+    <%= form_tag admin_be_supplier_path do %>
+      <%= text_field_tag :store_name %>
+      <%= submit_tag "创建店铺" %>
+    <% end %>
+  <% end %>
+</div>

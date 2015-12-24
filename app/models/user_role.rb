@@ -28,6 +28,10 @@ class UserRole < ActiveRecord::Base
       user_roles = self.where(name: roles)
       user_roles.present? ? user_roles : user.user_roles
     end
+
+    def supplier
+      find_by(name: 'supplier')
+    end
   end
 
 end
