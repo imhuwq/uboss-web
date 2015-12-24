@@ -1,13 +1,17 @@
-<h2>注册</h2>
-<h3><%= @email %></h3>
+<div class='login-container'>
 
-<%= form_tag user_registration_path do %>
+  <h3><%= @email %></h3>
+  <h3><small>验证成功</small></h3>
 
-  <%= hidden_field_tag :regist_type, 'email' %>
-  <%= hidden_field_tag :confirmation_token, params[:confirmation_token] %>
+  <%= form_tag user_registration_path do %>
 
-  <input type="password" name="password" id="password" placeholder='请输入密码' value="" />
+    <%= hidden_field_tag :regist_type, 'email' %>
+    <%= hidden_field_tag :confirmation_token, params[:confirmation_token] %>
 
-  <%= submit_tag '确认' %>
-
-<% end %>
+    <input class="input-block" type="password" name="password" id="password" placeholder='请输入密码' value="" />
+    <br />
+    <%= submit_tag '登陆', class: 'btn btn-large btn-block' %>
+    <br />
+    <%= link_to "取消", root_path, class: 'btn btn-block btn-link' %>
+  <% end %>
+</div>

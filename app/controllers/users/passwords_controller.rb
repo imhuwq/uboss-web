@@ -8,9 +8,12 @@ class Users::PasswordsController < Devise::PasswordsController
   # end
 
   # POST /resource/password
-  # def create
-  #   super
-  # end
+  def create
+    super do |user|
+      flash[:error] = model_errors(user).join('<br/>')
+      @sending_mail = true
+    end
+  end
 
   # GET /resource/password/edit?reset_password_token=abcdef
   # def edit
@@ -18,9 +21,37 @@ class Users::PasswordsController < Devise::PasswordsController
   # end
 
   # PUT /resource/password
-  # def update
-  #   super
-  # end
+  def update
+    if params[:patch_type] == 'mobile'
+      @sending_captcha = true
+      user_params = params.require(:user).permit(:login, :password, :password_confirmation, :code)
+      self.resource = User.find_by(login: user_params.delete(:login))
+      if resource.blank?
+        flash.now[:error] = '验证失败，请确认您的手机账户'
+        self.resource = User.new
+        return render :new
+      end
+      auth_code = user_params.delete(:code)
+      resource.code = auth_code
+      if MobileCaptcha.auth_code(resource.login, auth_code)
+        if resource.update(user_params.merge(need_reset_password: false))
+          MobileCaptcha.where(mobile: resource.login).delete_all
+          sign_in resource
+          redirect_to after_sign_in_path_for(resource), notice: '修改密码成功'
+        else
+          flash[:error] = model_errors(resource).join('<br/>')
+          render :new
+        end
+      else
+        flash.now[:error] = '手机验证码错误'
+        render :new
+      end
+    else
+      super do |user|
+        flash[:error] = model_errors(user).join('<br/>')
+      end
+    end
+  end
 
   # protected
 
