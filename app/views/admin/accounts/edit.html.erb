@@ -43,12 +43,26 @@
 	<br />
 	<div class="admin-box black-bg-color">
 	    <%= f.input :avatar, hint: image_tag(current_user.avatar.url(:thumb))  %>
-	    <div class="form-group">
-	      	<label class="control-label">登录手机</label>
-	      	<div class="control-input">
-	      		<span><%= current_user.login %></span>
-	      	</div>
-	    </div>
+      <div class="form-group">
+        <label class="control-label">登录邮箱</label>
+        <div class="control-input">
+          <% if current_user.email.blank? %>
+            <%= link_to "绑定邮箱", binding_email_admin_account_path, class: "btn" %>
+          <% else %>
+            <span><%= current_user.email %></span>
+          <% end %>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="control-label">登录手机</label>
+        <div class="control-input">
+          <% if current_user.login.blank? %>
+            <%= link_to "绑定手机", binding_mobile_admin_account_path, class: "btn" %>
+          <% else %>
+            <span><%= current_user.login %></span>
+          <% end %>
+        </div>
+      </div>
 	    <%= f.input :nickname %>
 	    <% if current_user.is_agent? %>
 		    <div class="form-group">

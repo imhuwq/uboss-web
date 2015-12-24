@@ -217,9 +217,10 @@ Rails.application.routes.draw do
       end
       resource :account, only: [:edit, :show, :update] do
         get :password, on: :member
-        get :binding_agent
+        get :binding_agent, :binding_email, :binding_mobile
         patch :binding_agent, to: 'accounts#bind_agent'
         patch :password, to: 'accounts#update_password'
+        patch :bind_email, :bind_mobile
       end
       resources :transactions, only: [:index]
       resources :bank_cards, only: [:index, :new, :edit, :create, :update, :destroy]
