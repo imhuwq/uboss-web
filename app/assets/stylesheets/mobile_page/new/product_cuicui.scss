@@ -9,8 +9,8 @@
   box-sizing: border-box;
 
   .half_left {
-    height: 60px;
-    width: 50%;
+    height: 50px;
+    width: 40%;
     float: left;
     overflow: hidden;
 
@@ -18,57 +18,67 @@
       width: 40px;
       height: 40px;
       border-radius: 20px;
-      /*background: orangered;*/
-
       vertical-align: middle;
-      margin: 10px;
-      left: 10px;
+      margin: 5px 0 5px 5px;
       float: left;
     }
 
     .share_content {
-      left: 30px;
-      margin-top: 15px;
-      margin-bottom: 15px;
-      /*width: 200px;*/
+      padding: 10px 5px;
+      overflow: hidden;
+      color: #888;
+      text-align: center;
     }
-  }
-  .btn_add_to_cart ,.btn_buy_now {
+  }  
+  .btn_buy_now {
     height: 50px;
     line-height: 50px;  
     width: 40%;
     height: 100%;
-    float: left;
-    background: #f9ba10;
+    float: right;
+    background: $brand-primary;
+    color: #fff;
     border: none;
     font-size: 15px;
   }
   .chat-btn{
-    float: left;
-    width: 20%;
-    height: 100%;
-    line-height: 50px;
-    img {
-      height: 40px;
-      width: 40px;
-    }
   }
-  .btn_buy_now {
-      background:$brand-primary ;
-  }
-  a{color: #fff;}
   .half_right {
     float: left;
-    width: 50%;
+    width: 60%;
     overflow: hidden;
     color: #fff;
-    .btn_add_to_cart ,.btn_buy_now {
-      font-size: 12px;
-      height: 60px;
-      line-height: 60px;
-      width: 50%;
+    .buy-nav{
+      width: 30%;
     }
-
+    .buy-nav:first-child{
+      border-left:1px solid #ddd ;
+    }
+  }  
+  .buy-nav {
+    float: left;
+    width: 20%;
+    box-sizing:border-box ;
+    height: 100%;   
+    margin-top: 5px;
+    text-align: center;
+    color: #aaa;
+    border-left:1px solid #ddd ;
+    .buy-icon{
+      height: 25px;
+      background: image-url('mobile/buy-nav-icon.png') no-repeat;
+      background-size:22px auto ;
+      background-position:center 0;
+    }
+    .buy-chat-icon{
+      background-position-y: -63px
+    }
+    .buy-cart-icon{
+      background-position-y: -31px
+    }
+  }
+  .buy-nav:first-child{
+    border: none;
   }
 }
 

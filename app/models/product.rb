@@ -50,6 +50,7 @@ class Product < ActiveRecord::Base
 
   scope :hots, -> { where(hot: true) }
   scope :available, -> { where.not(status: 2) }
+  scope :hot_ordering, -> { order('products.hot DESC, products.id DESC') }
 
   validates_presence_of :user_id, :name, :short_description
   validate :must_has_one_product_inventory
