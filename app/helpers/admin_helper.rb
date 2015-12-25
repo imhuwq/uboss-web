@@ -70,7 +70,7 @@ module AdminHelper
       if advertisement.product_id
         url = url_for(controller: :products, action: :show, id: advertisement.product_id)
       elsif advertisement.category_id
-        url = url_for(controller: :categories, action: :show, id: advertisement.category_id)
+        url = store_category_path(store_id: advertisement.user_id, id:advertisement.category_id)
       else
         url = '###'
       end
