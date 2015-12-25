@@ -1,5 +1,5 @@
 class EvaluationsController < ApplicationController
-  before_action :check_current_user
+  before_action :authenticate_user!
 
   def new
     @order_item = OrderItem.where(id: params[:id], user_id: current_user.id).first
@@ -33,13 +33,6 @@ class EvaluationsController < ApplicationController
   end
 
   private
-  def check_current_user
-    if current_user.blank?
-      flash[:error] = '操作前请先登录'
-      redirect_to root_path
-    end
-  end
-
   def validate_attrs
     if params[:evaluation].present?
       params.require(:evaluation).permit(:content, :status, :order_item_id)
