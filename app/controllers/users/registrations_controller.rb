@@ -19,7 +19,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
   # POST /resource
   def create
     if params[:regist_type] == 'email'
-      self.resource = User.new(email: @email, password: params[:password])
+      self.resource = User.new(email: @email, password: params[:password], need_set_login: true)
       if resource.save
         sign_in(resource)
         redirect_to after_sign_up_path_for(resource)
