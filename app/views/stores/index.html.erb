@@ -34,7 +34,7 @@
   	<div class="index-icon icon1"></div>
   	<div><b>丽江生活馆</b></div>
   </a>
-  <a class="box-w50 nogap index-icon-box" href="http://a.app.qq.com/o/simple.jsp?pkgname=com.ulaiber.ubossmerchant&g_f=1104978924" target="_blank">
+  <a class="box-w50 nogap index-icon-box" href="/sellers/new">
 	  <div class="index-icon icon2"></div>
 	  <div><b>入驻UBOSS</b></div>
 	</a>
@@ -77,39 +77,3 @@
   </div>
   <br />
 <% end %>
-
-<% if browser.wechat? %>
-  <div class="pop-bg hidden">
-		<div class="pop-content text-center">
-			<h2 class="white-color">
-				请点击右上角<%= image_tag 'mobile/friend/arrow-up.png',height:'25' %>
-				<br/>
-				用Safari浏览器打开
-			</h2>
-		</div><!-- pop-content -->
-	</div><!-- pop-bg -->
-<% end %>
-
-<script>
-	$(document).ready(function(){
-		function isFrom( platform ){
-			var ua = navigator.userAgent.toLowerCase();
-			return ua.indexOf( platform ) != -1 ? 1 : 0;
-		}
-		var isAndroid = isFrom('android');
-		var isIOS = isFrom('iphone') || isFrom('ipad') || isFrom('ipod');
-		if ( isAndroid ){
-			$('.index-icon.icon2').closest('.index-icon-box').attr("href","http://a.app.qq.com/o/simple.jsp?pkgname=com.ulaiber.ubossmerchant&g_f=1104978924");
-			return
-		}
-		if ( isIOS ){
-			$('.index-icon.icon2').closest('.index-icon-box').attr("href","https://appsto.re/cn/kAMA_.i");
-			<% if browser.wechat? %>
-				$('.index-icon.icon2').closest('.index-icon-box').click(function(){
-					$('.pop-bg').show()
-				})
-			<% end %>
-			return
-		}
-	})
-</script>
