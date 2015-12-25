@@ -133,7 +133,7 @@
     		<div class="buy-icon buy-enter-icon"></div>
     		<div>店铺</div>
     	<% end %>
-      <%= link_to  chat_path(anchor: "conversations/#{@seller.id}"), class: 'buy-nav chat-btn' do%>
+      <%= link_to conversation_chat_path(conversation_id: @seller.id), class: 'buy-nav chat-btn' do%>
     		<div class="buy-icon buy-chat-icon"></div>
     		<div>客服</div>
     	<% end %>
@@ -174,7 +174,7 @@
 		    		<div>添加</div>
 		    	<% end %>
 	      <% end %>
-	      <%= link_to  chat_path(anchor: "conversations/#{@seller.id}"), class: 'buy-nav chat-btn' do%>
+	      <%= link_to conversation_chat_path(conversation_id: @seller.id), class: 'buy-nav chat-btn' do%>
 	    		<div class="buy-icon buy-chat-icon"></div>
 	    		<div>客服</div>
 	    	<% end %>
