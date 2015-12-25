@@ -30,7 +30,7 @@ class PersonalAuthentication < ActiveRecord::Base
     if user.authenticated == 'no'
       user.authenticated = 'yes'
       user.save
-      PostMan.send_sms(user.login, {name: user.identify}, 968403) if user.login.present?
+      PostMan.send_sms(user.login, {name: user.identify}, 968403)
       aish = AgentInviteSellerHistroy.find_by(mobile: user.login)
       aish.update(status: 2) if aish.present? && user.agent_id == aish.agent_id
     end
@@ -43,7 +43,7 @@ class PersonalAuthentication < ActiveRecord::Base
     else
       user.authenticated = 'no'
       user.save
-      PostMan.send_sms(user.login, {name: user.identify}, 968413) if user.login.present?
+      PostMan.send_sms(user.login, {name: user.identify}, 968413)
       aish = AgentInviteSellerHistroy.find_by(mobile: user.login)
       if aish.present? && user.agent_id == aish.agent_id
         aish.update(status: 1)
