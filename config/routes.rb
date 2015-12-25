@@ -28,6 +28,7 @@ Rails.application.routes.draw do
   get 'service_centre_tutorial', to: 'home#service_centre_tutorial'
   get 'about', to: 'home#about_us'
   get 'lady', to: 'home#lady'
+  get 'city', to: 'home#city'
   get 'maca', to: 'home#maca'
   get 'snacks', to: 'home#snacks'
   get 'agreements/seller'
@@ -195,8 +196,7 @@ Rails.application.routes.draw do
       resources :withdraw_records, only: [:index, :show, :new, :create] do
         get :generate_excel, on: :collection
         member do
-          patch :processed
-          patch :close
+          patch :processed, :finish, :close, :query_wx
         end
       end
       resources :personal_authentications, only: [:index]

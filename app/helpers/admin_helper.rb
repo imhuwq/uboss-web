@@ -24,7 +24,13 @@ module AdminHelper
   end
 
   def withdraw_process_txt(record)
-    record.wechat_available? ? "微信打款" : "银行打款"
+    pre_text = record.failure? ? '重新' : ''
+    text = if record.wechat_available?
+             "微信打款"
+           else
+             "银行打款"
+           end
+    pre_text + text
   end
 
   def withdraw_process_class(record)

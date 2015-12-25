@@ -2,9 +2,12 @@ class HomeController < ApplicationController
 
   detect_device only: [:index, :service_centre_consumer, :service_centre_agent, :service_centre_tutorial]
 
-  layout :detect_layout, only: [:index, :service_centre_tutorial, :service_centre_agent, :service_centre_consumer, :lady, :maca, :snacks]
+  layout :detect_layout, only: [:index, :service_centre_tutorial, :service_centre_agent, :service_centre_consumer, :lady, :maca, :snacks,:city]
 
   def index
+    if !desktop_request?
+      redirect_to stores_path
+    end
   end
 
   def service_centre_consumer

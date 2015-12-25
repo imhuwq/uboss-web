@@ -4,7 +4,6 @@ class WithdrawRecordsController < ApplicationController
   end
 
   def new
-    @income = current_user.user_info.income
     @withdraw_record = WithdrawRecord.new(amount: nil)
   end
 
@@ -15,9 +14,8 @@ class WithdrawRecordsController < ApplicationController
     if @withdraw_record.save
       redirect_to action: :success, id: @withdraw_record.id
     else
-      puts @withdraw_record.errors.full_messages.join('<br/>')
-      flash[:error] = @withdraw_record.errors.full_messages.join('<br/>')
-      redirect_to 'new'
+      flash[:error] = model_errors(@withdraw_record).join('<br/>')
+      render :new
     end
   end
 

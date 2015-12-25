@@ -22,6 +22,7 @@ class Admin::WithdrawRecordsController < AdminController
     if @withdraw_record.save
       redirect_to [:admin, @withdraw_record]
     else
+      flash[:error] = model_errors(@withdraw_record).join('<br/>')
       render :new
     end
   end
@@ -33,6 +34,21 @@ class Admin::WithdrawRecordsController < AdminController
 
   def close
     change_record_state(:close!)
+  end
+
+  def finish
+    if @withdraw_record.bank_processing?
+      change_record_state(:finish!)
+    else
+      flash[:error] = '手动确认交易完成仅支持银行打款'
+      redirect_to :back
+    end
+  end
+
+  def query_wx
+    @withdraw_record.delay_query_wx_transfer
+    flash[:notice] = '后台查询中，请稍后刷新查看结果'
+    redirect_to :back
   end
 
   def generate_excel
