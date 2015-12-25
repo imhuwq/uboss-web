@@ -1,6 +1,6 @@
 class MobileCaptcha < ActiveRecord::Base
 
-  CAPTCHA_TYPES = %w(invite_seller)
+  CAPTCHA_TYPES = %w(invite_seller invite_agency)
 
   validates :mobile, presence: true, uniqueness: { scope: :captcha_type }, mobile: true
   validates :code, :expire_at, presence: true
