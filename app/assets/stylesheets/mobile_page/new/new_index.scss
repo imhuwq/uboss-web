@@ -1,3 +1,20 @@
+.border-right{
+    border-right: 1px solid #eee;
+}
+.index-icon-box{
+    font-size: 14px;
+    margin: 10px 0;
+}
+.index-icon{
+    background: image-url('mobile/new_index/icon.png') no-repeat top center;
+    background-size:40px auto ;
+    height: 45px;
+    &.icon2{
+        background-position-y: -61px;
+    }    
+}
+
+
 body,html,.new-index{
     height: 100%;
     min-height: 100%;

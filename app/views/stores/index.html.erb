@@ -1,175 +1,115 @@
-<%= content_for :extra_meta_tags do %>
-  <% if Rails.env.production? %>
-    <%= seo_meta_tag %>
-  <% end %>
+<%= content_for :page_title do %>
+  <div class="log_font"> UBOSS </div>
 <% end %>
 
-<div class="banner-slider">
-  <div id='slider' class='swipe'>
-    <div class='swipe-wrap'>
-      <div>
-      	<a href="/lady" class="text-center"> <%= image_tag 'mobile/slideshow/1.jpg' %></a>
-        <!--<a href="/" class="img-100-200" style="background-image:url('<%= asset_path("mobile/slideshow/1.jpg") %>') ;"></a> -->
-      </div>
-      <div>
-        <a href="/maca" class="text-center"> <%= image_tag 'mobile/slideshow/2.jpg' %></a>
-      </div>
-      <div>
-        <a href="/snacks" class="text-center"> <%= image_tag 'mobile/slideshow/3.jpg' %></a>
+<% if store_banner_data(@uboss_seller).size > 0 %>
+  <div class="banner-slider">
+    <div id='slider' class='swipe'>
+      <div class='swipe-wrap'>
+        <% store_banner_data(@uboss_seller).each do |image, product| %>
+          <div>
+            <% if product.present? %>
+              <%= link_to product.short_description do %>
+                <%= image_tag image.url(:'640x320') %>
+              <% end %>
+            <% else %>
+              <%= image_tag image.url(:'640x320') %>
+            <% end %>
+          </div>
+        <% end %>
       </div>
     </div>
-  </div>
-  <div id='slider-points'>
-    <span class='active'>*</span>
-    <span>*</span>
-    <span>*</span>
-  </div>
-</div>
-
-<div class="box border-box">
-	<div class="box-w100">
-		<div class="page-title like-color">
-      <%= link_to store_path(User.official_account), class: 'more-bar' do %>
-        more <%= image_tag 'mobile/arrow-right.png' %>
+    <div id='slider-points'>
+      <% store_banner_data(@uboss_seller).size.times do |index| %>
+        <span class="<%= 'active' if index == 0 %>">*</span>
       <% end %>
-			猜你喜欢
-		</div>
-	</div>
-	<div class="box-w33">
-		<div class="product-box">
-			<div class="cover"><a href="/products/21"><%= image_tag 'mobile/product/1.jpg' %></a></div>
-			<div class="title"><a href="/products/21">黑玛卡干果丽江黑玛咖干片黄紫黑玛卡种子马卡男性补肾端端牌100g</a></div>
-			<div class="price">￥70.0 <span>￥185.0</span></div>
-		</div>
-	</div>
-	<div class="box-w33">
-		<div class="product-box">
-			<div class="cover"><a href="/products/16"><%= image_tag 'mobile/product/3.jpg' %></a></div>
-			<div class="title"><a href="/products/16">那曲虫草专柜正品青海冬虫夏草同仁堂品质保真3条/克新草礼盒送人</a></div>
-			<div class="price">￥225.0 <span>￥311.0</span></div>
-		</div>
-	</div>
-	<div class="box-w33">
-		<div class="product-box">
-			<div class="cover"><a href="/products/12"><%= image_tag 'mobile/product/2.jpg' %></a></div>
-			<div class="title"><a href="/products/12">Clinie 可莱丝NMF针剂水库补水睡眠面膜贴</a></div>
-			<div class="price">￥70.0 <span>￥96.0</span></div>
-		</div>
-	</div>
-</div><!-- box -->
-<div class="box border-box">
-	<div class="box-w100">
-		<div class="page-title">
-			<a href="/stores/6" class="more-bar">more <%= image_tag 'mobile/arrow-right.png' %></a>
-			零食天地
-		</div>
-	</div>
-	<div class="box-w33">
-		<div class="product-box">
-			<div class="cover"><a href="/products/11"><%= image_tag 'mobile/product/4.jpg' %></a></div>
-			<div class="title"><a href="/products/11">马来西亚 小熊饼干500g</a></div>
-			<div class="price">￥70.0 <span>￥185.0</span></div>
-		</div>
-	</div>
-	<div class="box-w33">
-		<div class="product-box">
-			<div class="cover"><a href="/products/13"><%= image_tag 'mobile/product/5.jpg' %></a></div>
-			<div class="title"><a href="/products/13">越南 TIPO白巧克力面包干/克新草礼盒送人</a></div>
-			<div class="price">￥13.8 <span>￥17.9</span></div>
-		</div>
-	</div>
-	<div class="box-w33">
-		<div class="product-box">
-			<div class="cover"><a href="/products/10"><%= image_tag 'mobile/product/6.jpg' %></a></div>
-			<div class="title"><a href="/products/10">【鲜花饼】云南嘉华饼屋500g</a></div>
-			<div class="price">￥39.0 <span>￥51.8</span></div>
-		</div>
-	</div>
-</div><!-- box -->
-<div class="box border-box">
-	<div class="box-w100">
-		<div class="page-title">
-			<a href="/stores/14" class="more-bar">more <%= image_tag 'mobile/arrow-right.png' %></a>
-			女士最爱
-		</div>
-	</div>
-	<div class="box-w33">
-		<div class="product-box">
-			<div class="cover"><a href="/products/29"><%= image_tag 'mobile/product/7.jpg' %></a></div>
-			<div class="title"><a href="/products/29">【正品】兰芝气垫BB霜#13</a></div>
-			<div class="price">￥241.0 <span>￥299.0</span></div>
-		</div>
-	</div>
-	<div class="box-w33">
-		<div class="product-box">
-			<div class="cover"><a href="/products/30"><%= image_tag 'mobile/product/8.jpg' %></a></div>
-			<div class="title"><a href="/products/30">菲诗小铺黑杆睫毛膏 2只装</a></div>
-			<div class="price">￥48.0 <span>￥57.0</span></div>
-		</div>
-	</div>
-	<div class="box-w33">
-		<div class="product-box">
-			<div class="cover"><a href="/products/30"><%= image_tag 'mobile/product/9.jpg' %></a></div>
-			<div class="title"><a href="/products/30">laura mercier透明定妆蜜粉饼</a></div>
-			<div class="price">￥347.0 <span>￥399.0</span></div>
-		</div>
-	</div>
-</div><!-- box -->
-<div class="box border-box">
-	<div class="box-w100">
-		<div class="page-title">
-			<a href="/stores/5" class="more-bar">more <%= image_tag 'mobile/arrow-right.png' %></a>
-			男士专区
-		</div>
-	</div>
-	<div class="box-w33">
-		<div class="product-box">
-			<div class="cover"><a href="/products/18"><%= image_tag 'mobile/product/10.jpg' %></a></div>
-			<div class="title"><a href="/products/18">马七匹狼钱包男短款真皮软</a></div>
-			<div class="price">￥99.0 <span>￥129.0</span></div>
-		</div>
-	</div>
-	<div class="box-w33">
-		<div class="product-box">
-			<div class="cover"><a href="/products/19"><%= image_tag 'mobile/product/11.jpg' %></a></div>
-			<div class="title"><a href="/products/19">男士皮带 双面头层牛皮 休闲自动扣腰带</a></div>
-			<div class="price">￥159.0 <span>￥199.0</span></div>
-		</div>
-	</div>
-	<div class="box-w33">
-		<div class="product-box">
-			<div class="cover"><a href="/products/20"><%= image_tag 'mobile/product/12.jpg' %></a></div>
-			<div class="title"><a href="/products/20">［韩国 ］YGESHOP BIGBANG 袜子套装</a></div>
-			<div class="price">￥176.0 <span>￥199.0</span></div>
-		</div>
-	</div>
-</div><!-- box -->
-<div class="box border-box">
-	<div class="box-w100">
-		<div class="page-title">
-			<a href="stores/2" class="more-bar">more <%= image_tag 'mobile/arrow-right.png' %></a>
-			日用超商
-		</div>
-	</div>
-	<div class="box-w33">
-		<div class="product-box">
-			<div class="cover"><a href="/products/23"><%= image_tag 'mobile/product/13.jpg' %></a></div>
-			<div class="title"><a href="/products/23">Amore爱茉莉 麦迪安 86%美白牙膏</a></div>
-			<div class="price">￥38.0 <span>￥57.0</span></div>
-		</div>
-	</div>
-	<div class="box-w33">
-		<div class="product-box">
-			<div class="cover"><a href="/products/24"><%= image_tag 'mobile/product/14.jpg' %></a></div>
-			<div class="title"><a href="/products/24">ibling电动牙刷超声波防水</a></div>
-			<div class="price">￥148.0 <span>￥199.0</span></div>
-		</div>
-	</div>
-	<div class="box-w33">
-		<div class="product-box">
-			<div class="cover"><a href="/products/25"><%= image_tag 'mobile/product/15.jpg' %></a></div>
-			<div class="title"><a href="/products/25">【正品】韩国 RYOE吕洗发水400g</a></div>
-			<div class="price">￥79.0 <span>￥127.0</span></div>
-		</div>
-	</div>
-</div><!-- box -->
+    </div>
+  </div>
+<% end %>
+
+<br />
+
+<div class="bg-white text-center">
+  <a class="box-w50 nogap index-icon-box border-right" href="/stores/550">
+  	<div class="index-icon icon1"></div>
+  	<div><b>丽江生活馆</b></div>
+  </a>
+  <a class="box-w50 nogap index-icon-box" href="http://a.app.qq.com/o/simple.jsp?pkgname=com.ulaiber.ubossmerchant&g_f=1104978924" target="_blank">
+	  <div class="index-icon icon2"></div>
+	  <div><b>入驻UBOSS</b></div>
+	</a>
+</div>
+<div class="gap page-title black-color">
+	推荐店铺
+</div>
+<% @stores.each do |store| %>
+  <div class="bg-white gap border-box">
+  	<div class="product-store-box">
+	    <div class="cover">
+	      <%= image_tag store.avatar_url(:w120) %>
+	    </div>
+			<div class="content">
+				<%= link_to  store_path(store),class:'btn btn-main-border pull-right' do%>
+	       	进店逛逛
+	      <%end%>
+		    <h4 class="name text-cut"><%= store.store_name || 'UBOSS商家' %></h4>
+		    <p class="gray-color"><%= number_to_percentage(store.good_reputation_rate, precision: 0) %> 好评（<%= store.total_reputations %>）</p>
+	      <p class="gray-color desc text-cut"><%= store.store_short_description || "UBOSS 推荐店铺" %></p>
+	 		</div><!-- content -->
+    </div><!-- product-store-box -->
+  </div><!-- bg-white gap -->
+  <div class="bg-white index-product-list">
+    <div class="box">
+      <% store.products.hot_ordering.limit(3).each do |product| %>
+        <div class="box-w33">
+          <div class="product-box">
+            <div class="cover">
+              <%= link_to '', product,
+                style: "background-image:url(#{product.image_url(:w320)})",
+                class: 'img',
+                title: "#{product.name}" %>
+              <%= image_tag("mobile/img.jpg") %>
+            </div>
+          </div><!-- product-box -->
+        </div><!-- box-w33 -->
+      <% end %>
+    </div>
+  </div>
+  <br />
+<% end %>
+
+<% if browser.wechat? %>
+  <div class="pop-bg hidden">
+		<div class="pop-content text-center">
+			<h2 class="white-color">
+				请点击右上角<%= image_tag 'mobile/friend/arrow-up.png',height:'25' %>
+				<br/>
+				用Safari浏览器打开
+			</h2>
+		</div><!-- pop-content -->
+	</div><!-- pop-bg -->
+<% end %>
+
+<script>
+	$(document).ready(function(){
+		function isFrom( platform ){
+			var ua = navigator.userAgent.toLowerCase();
+			return ua.indexOf( platform ) != -1 ? 1 : 0;
+		}
+		var isAndroid = isFrom('android');
+		var isIOS = isFrom('iphone') || isFrom('ipad') || isFrom('ipod');
+		if ( isAndroid ){
+			$('.index-icon.icon2').closest('.index-icon-box').attr("href","http://a.app.qq.com/o/simple.jsp?pkgname=com.ulaiber.ubossmerchant&g_f=1104978924");
+			return
+		}
+		if ( isIOS ){
+			$('.index-icon.icon2').closest('.index-icon-box').attr("href","https://appsto.re/cn/kAMA_.i");
+			<% if browser.wechat? %>
+				$('.index-icon.icon2').closest('.index-icon-box').click(function(){
+					$('.pop-bg').show()
+				})
+			<% end %>
+			return
+		}
+	})
+</script>
