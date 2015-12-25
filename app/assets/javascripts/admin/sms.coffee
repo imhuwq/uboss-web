@@ -19,7 +19,11 @@ $ ->
         type: 'POST',
         data: {mobile: mobile},
       .done ->
-        timedown $('#send_mobile')
+        if sendBtn.data 'invite-agency'
+          $('.invite-agency-success .modal-content span').text(mobile)
+          $('.invite-agency-success').modal()
+        else
+          timedown $('#send_mobile')
       .fail ->
         mobile_submit_time = 0
         sendBtn.removeClass("disabled")
