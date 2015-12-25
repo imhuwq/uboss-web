@@ -258,7 +258,7 @@ class User < ActiveRecord::Base
   end
 
   def identify
-    nickname || mobile || regist_mobile
+    nickname || mobile || 'UBOSS用户'
   end
 
   def store_title
@@ -271,7 +271,7 @@ class User < ActiveRecord::Base
   end
 
   def store_identify
-    store_name || nickname || mobile || regist_mobile
+    store_name || nickname || mobile || 'UBOSS商家'
   end
 
   def total_income
