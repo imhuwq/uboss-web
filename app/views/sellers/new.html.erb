@@ -4,7 +4,7 @@
 <br />
 <div class="address-new">
   <div class="box-m10">
-    
+
   <% if current_user.present? and current_user.can_rebind_agent? and @agent.present? %>
 
     <%= horizon_form_for(:seller, url: seller_path(current_user), method: 'PUT') do |f| %>
