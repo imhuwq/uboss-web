@@ -109,10 +109,12 @@ ActiveRecord::Schema.define(version: 20151221015956) do
   add_index "carts", ["user_id"], name: "index_carts_on_user_id", using: :btree
 
   create_table "categories", force: :cascade do |t|
-    t.string   "name",       null: false
-    t.integer  "user_id",    null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.string   "name",                           null: false
+    t.integer  "user_id",                        null: false
+    t.datetime "created_at",                     null: false
+    t.datetime "updated_at",                     null: false
+    t.datetime "use_in_store_at"
+    t.boolean  "use_in_store",    default: true
   end
 
   add_index "categories", ["user_id", "name"], name: "index_categories_on_user_id_and_name", unique: true, using: :btree

@@ -235,15 +235,14 @@ Rails.application.routes.draw do
         post :update_categories, on: :collection
         post :update_category_name,  on: :member
         post :update_category_img, on: :collection
-        get   :show_category, :updata_category_img,  on: :member
       end
 
       resources :stores, only: [:show] do
-        post :update_store_logo, :add_to_advertisement, :update_store_name, :update_store_short_description,
+        post :update_store_logo, :update_store_name, :update_store_short_description,
           :update_store_cover, on: :member
         post :update_advertisement_img, on: :collection
-        get :create_advertisement, on: :collection
-        get :new_advertisement, :remove_advertisement, :show_category, :get_advertisement_items, :remove_advertisement_item, on: :collection
+        get :create_advertisement, :add_category, :get_category_img, on: :collection
+        get :new_advertisement, :remove_advertisement, :show_category, :get_advertisement_items, :remove_advertisement_item, :remove_category_item, on: :collection
       end
       resources :platform_advertisements do
         patch :change_status, on: :member

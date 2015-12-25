@@ -5,44 +5,51 @@
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span class='close' aria-hidden="true">&times;</span></button>
         <h5 class="modal-title text-center" id="myModalLabel">添加轮播图</h5>
       </div>
-			<div class="modal-body" style="color:#333;">
-				<table width="100%">
-					<tr>
-						<td>
-							<select data-manual-chosen='t'>
-								<option>商品</option>
-								<option>分组</option>
-							</select>
-						</td>
-						<td width="420"><input class="input-block js-select2" date-id="1"  type="text"  /></td>
-					</tr>
-					<tr>
-						<td colspan="2">
-							<div class="gray-color gap text-right"><small>提示：若不填排序默认为0，按创建时间优先显示</small></div>
-							<div class="text-center">
-								<div class="fileinput-button">
-					          <%= image_tag("admin/no-img-400x400.png", class:"clean",style:"max-width:400px;width:100%;height:400px")%>
-					          <%= file_field_tag "image", class: "upyun_file_json" ,  data: {to: "#{@update_image_url}"} %>
-					          <b class="loading"><i class="fa fa-spinner"></i></b>
-					          <span class="tips-text">点击上传图片</span>
-					        </div>
-					      </div>
-				      </div>
-						</td>
-					</tr>						
-				</table>
-			</div><!-- modal-body -->
-			<div class="modal-footer">
-			  <button type="button" class="btn btn-large btn-info">添加</button>
-			  <button type="button" class="btn btn-large gray-btn" data-dismiss="modal">取消</button>
-			</div>
-    </div>
+      <%= simple_form_for 'category', url: {action: :add_category}, remote: true, method: 'GET' do |f| %>
+  			<div class="modal-body" style="color:#333;">
+  				<table width="100%">
+  					<tr>
+  						<td>
+                <p style="padding:10px;">分组</p>
+    						
+  						</td>
+  						<td width="420"><input class="input-block js-select2 select-category-item" date-id="1"  type="text" name="category[id]" /></td>
+  					</tr>
+  					<tr>
+              <td>&nbsp;</td>
+  						<td>
+  							<div class="gray-color gap text-right"><small>提示：若不填排序默认为0，按创建时间优先显示</small></div>
+  							<div class="text-center">
+                    <%= f.input :asset_img, type: :hidden, label: false, hint:"(点击图片进行替换)"  do %>
+                      <%= f.input_field :avatar, type: :hidden, as: :file %>
+                      <p class="fileinput-button">
+                        <%= image_tag("admin/no-img-400x400.png", class:"clean",style:"max-width:640px;width:100%;height:auto")%>
+                        <%= file_field_tag "image", class: "upyun_file" %>
+                        <b class="loading"><i class="fa fa-spinner"></i></b>
+                        <span class="tips-text">点击上传图片1</span>
+                      </p>
+                    <% end %>
+                    <%= upyun_meta_tags prefix: 'asset_img/avatar' %>
+                </div>
+  						</td>
+  					</tr>						
+  				</table>
+  			</div><!-- modal-body -->
+  			<div class="modal-footer">
+          <%= f.submit '添加',  class:"btn btn-large btn-info" %>
+          <button type="button" class="btn btn-large gray-btn" data-dismiss="modal">取消</button>
+        </div>
+      <% end %>
   </div>
 </div>
+
 <script>
- // $(".js-select2").select2({
- // 		tags:['3333'],
- //    maximumSelectionSize: 1,
- //    placeholder: "请输入名称"
- //  })
+  var data = []
+  <%  @select_categories.each do |c| %>
+  data = data.concat([{id: <%= c.id %>, text: '<%= c.name %>'}])
+  <% end %>
+  $(".js-select2.select-category-item").select2({
+    data: data,
+    placeholder: "请输入名称"
+  })
 </script>

@@ -18,6 +18,8 @@ class Product < ActiveRecord::Base
   belongs_to :carriage_template
   has_many :different_areas, through: :carriage_template
   has_many :order_items
+  has_many :advertisements
+  has_many :categories
   has_and_belongs_to_many :categories, -> { uniq } ,autosave: true
   has_many :product_inventories, autosave: true, dependent: :destroy
   has_many :cart_items,  through: :product_inventories

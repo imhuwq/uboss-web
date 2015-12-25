@@ -7,7 +7,7 @@
 			<% else %>
 			<ul class="setting-slider">
 		    <% @advertisements.each do |adv| %>
-				  <li id="slider_<%= adv.id %>"><%= image_tag(adv.image_url(:thumb)) %></li>
+				  <li id="slider_<%= adv.id %>"><%= image_tag(adv.image_url('640x320')) %></li>
 		    <% end %>
 		  <% end %>
 			</ul><!-- setting-slider -->
@@ -23,9 +23,10 @@
 						<span class="close" data-id="<%= adv.id %>"><i class="fa fa-times"></i></span>
 						<p>商品：<span class="main-color"><%= adv.product.name %></span></p>
 						<p class="text-center fileinput-button">
-							<%= image_tag(adv.image_url, class:'clean') %>
+							<%= image_tag(adv.image_url('640x320'), class:'clean') %>
 							<%= file_field_tag "image", class: "upyun_file_json" ,  data: {to: "/admin/stores/update_advertisement_img?resource_id=#{adv.id}"} %>
 							<b class="loading"><i class="fa fa-spinner"></i></b>
+							<span class="tips-text">点击替换</span>
 						</p>
 						<div>排序：<input type="number" min="0" value="<%= adv.order_number %>" class="banner-sequence" style="width: 100px;"/></div>
 					</div><!-- setting-banner-box -->
@@ -34,9 +35,10 @@
 						<span class="close" data-id="<%= adv.id %>"><i class="fa fa-times"></i></span>
 						<p>分类：<span class="main-color"><%= adv.category.name %></span></p>
 						<p class="text-center fileinput-button">
-							<%= image_tag(adv.image_url, class:'clean') %>
+							<%= image_tag(adv.image_url('640x320'), class:'clean') %>
 							<%= file_field_tag "image", class: "upyun_file_json" ,  data: {to: "/admin/stores/update_advertisement_img?resource_id=#{adv.id}"} %>
 							<b class="loading"><i class="fa fa-spinner"></i></b>
+							<span class="tips-text">点击替换</span>
 						</p>
 						<div>排序：<input type="number" min="0" value="<%= adv.order_number %>" class="banner-sequence" style="width: 100px;"/></div>
 					</div><!-- setting-banner-box -->

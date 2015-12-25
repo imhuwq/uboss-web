@@ -1,7 +1,4 @@
 
 $('#add-banner').modal('hide');
-$('#add-category').modal('hide');
 $('#advertisements').html('<%= escape_javascript render 'advertisements'  %>');
-$("#advertisements").prepend('<%= escape_javascript render 'layouts/flash_alert' %>');
-
-// console.log('123');
+$(".content").prepend('<%= escape_javascript render 'layouts/flash_alert' %>');

@@ -21,7 +21,6 @@
 #= require admin/sms
 #= require admin/category
 #= require admin/store
-#= require admin/setting
 #= require admin/user_address
 #= require admin/refund
 #= require admin/jquery.bxslider

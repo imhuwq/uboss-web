@@ -23,7 +23,6 @@
   						<td colspan="3">
   							<div class="gray-color gap text-right"><small>提示：若不填排序默认为0，按创建时间优先显示</small></div>
   							<div class="text-center">
-  								<div class="fileinput-button">
                     <%= f.input :asset_img, type: :hidden, label: false, hint:"(点击图片进行替换)"  do %>
                       <%= f.input_field :avatar, type: :hidden, as: :file %>
                       <p class="fileinput-button">
@@ -47,10 +46,3 @@
     </div>
   </div>
 </div>
-<script>
- // $(".js-select2.select-adv-item").select2({
- // 		tags:['222'],
- //    maximumSelectionSize: 1,
- //    placeholder: "请输入名称"
- //  })
-</script>
