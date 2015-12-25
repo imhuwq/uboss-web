@@ -1,6 +1,8 @@
 class EnterpriseAuthentication < Certification
   include Imagable
 
+  has_many :orders, foreign_key: :seller_id, primary_key: :user_id
+
   alias_attribute :business_license_img                 , :attachment_1
   alias_attribute :legal_person_identity_card_end_img   , :attachment_2
   alias_attribute :legal_person_identity_card_front_img , :attachment_3
@@ -13,4 +15,18 @@ class EnterpriseAuthentication < Certification
   compatible_with_form_api_images :attachment_1, :attachment_2, :attachment_3
 
   validates_presence_of :enterprise_name
+
+  def check_and_set_user_authenticated_to_yes
+    transaction do
+      super
+      user.add_role :city_manager
+    end
+  end
+
+  def check_and_set_user_authenticated_to_no
+    transaction do
+      super
+      user.remove_role :city_manager
+    end
+  end
 end

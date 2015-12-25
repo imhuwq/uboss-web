@@ -34,6 +34,11 @@ class Order < ActiveRecord::Base
     joins(order_items: :order_item_refunds).uniq
   }
 
+  scope :have_paid, -> { where(state: [1, 3, 4, 6]) }
+  scope :today, -> (date=Date.today) { have_paid.where(['DATE(orders.created_at) = ?', date]) }
+  scope :week, -> (time=Time.now) { have_paid.where(created_at: time.beginning_of_week..time.end_of_week) }
+  scope :month, -> (time=Time.now) { have_paid.where(created_at: time.beginning_of_month..time.end_of_month) }
+
   before_create :set_info_by_user_address, :set_ship_price
   after_create :invoke_privielge_calculator
   after_commit :update_pay_amount_and_close_prepay, if: -> {

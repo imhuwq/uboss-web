@@ -100,6 +100,11 @@ class Ability
     can :read, Product, user_id: user.id
   end
 
+  def grant_permissions_to_city_manager user
+    can :added, CityManager, user_id: user.id
+    can :revenues, CityManager, user_id: user.id
+  end
+
   private
 
   def senior_permissions

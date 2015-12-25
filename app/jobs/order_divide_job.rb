@@ -63,6 +63,10 @@ class OrderDivideJob < ActiveJob::Base
           @order_income -= divide_amount
         end
 
+        devide_income_for_city_manager do |divide_amount|
+          @order_income -= divide_amount
+        end
+
         SellingIncome.create!(user: @order.seller, amount: order_income, order: @order)
         @order.update_columns(income: order_income, sharing_rewared: true)
         @order.complete!
@@ -98,6 +102,26 @@ class OrderDivideJob < ActiveJob::Base
       )
       logger.info(
         "Divide order: #{@order.number}, [OAgent id: #{divide_record.id}, amount: #{official_divide_income} ]")
+
+      yield divide_income
+
+    end
+  end
+
+  def devide_income_for_city_manager
+    seller = @order.seller
+    enterprise = EnterpriseAuthentication.find_first(user_id: seller.id)
+    city_manager = CityManager.where(city: enterprise.city_code).first if enterprise
+
+    if city_manager && order_income > 0
+      divide_income = (order_income * city_manager.rate).truncate(2)
+      divide_record = DivideIncome.create!(
+        order: @order,
+        amount: divide_income,
+        user: User.official_account
+      )
+      logger.info(
+        "Divide order: #{@order.number}, [OAgent id: #{divide_record.id}, amount: #{divide_income} ]")
 
       yield divide_income
 

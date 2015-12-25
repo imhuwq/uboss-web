@@ -34,7 +34,12 @@
         <%= li_link(:dashboard, admin_root_path, action_check: false) %>
         <%= can_li_link(:read, :sellers, admin_sellers_path) %>
         <%= can_li_link(:manage, :agents, admin_agents_path) %>
-        <%= can_li_link(:manage, :city_managers, admin_city_managers_path) %>
+        <%= nav_group :city_manager do %>
+          <%= can_li_link(:manage, :city_manager, admin_city_managers_path) %>
+          <%= can_li_link(:revenues, CityManager, revenues_admin_city_managers_path, i18n_key: :revenues) %>
+          <%= can_li_link(:added, CityManager, added_admin_city_managers_path, i18n_key: :added) %>
+        <% end %>
+
         <%= nav_group :product_manage do %>
           <%= can_li_link(:read, Product, admin_products_path) %>
           <%= can_li_link(:read, CarriageTemplate, admin_carriage_templates_path ) %>

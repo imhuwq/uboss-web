@@ -10,7 +10,7 @@ class Admin::PersonalAuthenticationsController < AdminController
   def resource_params
     params.require(:personal_authentication).permit(:mobile, :address, :name,
                   :identity_card_code, :mobile_auth_code, :face_with_identity_card_img,
-                  :identity_card_front_img
+                  :identity_card_front_img, :province_code, :city_code, :district_code
                   )
   end
   alias :create_params :resource_params

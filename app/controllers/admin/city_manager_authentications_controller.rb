@@ -12,7 +12,7 @@ class Admin::CityManagerAuthenticationsController < AdminController
     params.require(:city_manager_authentication).permit(:mobile, :address, :enterprise_name,
                     :business_license_img, :legal_person_identity_card_front_img,
                     :legal_person_identity_card_end_img,
-                    :mobile_auth_code)
+                    :mobile_auth_code, :province_code, :city_code, :district_code)
   end
 
   def valid_create_params

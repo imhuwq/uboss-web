@@ -4,6 +4,7 @@ class User < ActiveRecord::Base
   DATA_AUTHENTICATED = {'no'=> '未认证', 'yes'=> '已认证'}
 
   include Orderable
+  include Sellerable
 
   attr_accessor :code, :mobile_auth_code
   OFFICIAL_ACCOUNT_LOGIN = '13800000000'.freeze
@@ -119,6 +120,22 @@ class User < ActiveRecord::Base
 
   def received_invite_bonus?
     bonus_records.where(type: 'Ubonus::Invite').exists?
+  end
+
+  def has_role?(role_name)
+    user_roles.any? { |role| role.name == role_name.to_s }
+  end
+
+  def remove_role(role_name)
+    user_roles.delete UserRole.find_by_name!(role_name)
+  end
+
+  def add_role(role_name)
+    user_roles << UserRole.find_by_name!(role_name) if not have_role?(role_name)
+  end
+
+  def have_role?(role_name)
+    user_roles.exists?(name: role_name)
   end
 
   class << self

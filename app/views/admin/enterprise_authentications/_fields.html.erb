@@ -39,6 +39,17 @@
       <b class="loading"><i class="fa fa-spinner"></i></b>
     </span>
   <% end %>
+  <div class="form-group string required user_address_mobile">
+    <label class="string required control-label"><abbr title="必填">*</abbr>所在地区</label>
+    <div class="city-group control-input" style="padding-top:7px;">
+        <%= f.select(:province_code, options_for_select([['--省份--', '']] + ChinaCity.provinces, selected: f.object.province_code ), {},
+        	class: 'city-select ', id: "province", style:"width:100px;display:inline;", 'data-manual-chosen'=>true ) %>
+        <%= f.select :city_code, options_for_select([['--城市--', '']] + ChinaCity.list(f.object.province_code), selected: f.object.city_code ), {},
+         	:class => 'city-select', id: "city", style:"width:100px;display:inline;", 'data-manual-chosen'=>true %>
+        <%= f.select :district_code, options_for_select([['--地区--', '']] + ChinaCity.list(f.object.city_code), selected: f.object.district_code), {},
+         	:class => 'city-select', id: "area", style:"width:100px;display:inline;", 'data-manual-chosen'=>true %>
+    </div>
+  </div>
   <%= f.input :address %>
   <div class="form-group string required enterprise_authentication_mobile">
     <%= f.label :mobile, class:"string required control-label" %>

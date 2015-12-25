@@ -1,0 +1,29 @@
+<div class="container">
+  <table class="list-table" id="personal_authentications">
+    <thead>
+      <th>商家名称</th>
+      <th>入驻时间</th>
+      <th>联系方式</th>
+      <th>好评率</th>
+      <th>总销量</th>
+      <th>总营业额</th>
+    </thead>
+    <% @certifications.each do |obj| %>
+      <tr id="personal_authentication_<%= obj.user_id%>">
+        <td class="text-left">
+          <%= link_to url_for(controller: 'admin/city_manager_authentications', action: :show, user_id: obj.user_id) do %>
+            <%= image_tag(obj.user_avatar.url(:thumb), size: "80x80", alt: "-") %>
+            <%= obj.user_identify %>
+          <% end %>
+        </td>
+        <td><%= obj.created_at %></td>
+        <td><%= obj.user_mobile %></td>
+        <td><%= Evaluation.sharer_good_reputation_rate(obj.user) %></td>
+        <td><%= obj.user_sales %></td>
+        <td><%= obj.user_turnovers %></td>
+      </tr>
+    <% end %>
+  </table>
+  <br />	
+  <%= paginate @certifications %>
+</div>
