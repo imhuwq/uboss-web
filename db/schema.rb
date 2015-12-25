@@ -11,10 +11,23 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151210032819) do
+ActiveRecord::Schema.define(version: 20151221015956) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "advertisements", force: :cascade do |t|
+    t.string   "advertisement_url"
+    t.integer  "status",                 default: 0
+    t.datetime "created_at",                             null: false
+    t.datetime "updated_at",                             null: false
+    t.integer  "order_number"
+    t.integer  "user_id"
+    t.integer  "zone"
+    t.integer  "product_id"
+    t.integer  "category_id"
+    t.boolean  "platform_advertisement", default: false
+  end
 
   create_table "agent_invite_seller_histroys", force: :cascade do |t|
     t.string   "mobile"
@@ -100,8 +113,8 @@ ActiveRecord::Schema.define(version: 20151210032819) do
     t.integer  "user_id",                        null: false
     t.datetime "created_at",                     null: false
     t.datetime "updated_at",                     null: false
-    t.boolean  "use_in_store",    default: true
     t.datetime "use_in_store_at"
+    t.boolean  "use_in_store",    default: true
   end
 
   add_index "categories", ["user_id", "name"], name: "index_categories_on_user_id_and_name", unique: true, using: :btree
@@ -371,13 +384,6 @@ ActiveRecord::Schema.define(version: 20151210032819) do
   add_index "personal_authentications", ["identity_card_code"], name: "index_personal_authentications_on_identity_card_code", unique: true, using: :btree
   add_index "personal_authentications", ["user_id"], name: "index_personal_authentications_on_user_id", unique: true, using: :btree
 
-  create_table "platform_advertisements", force: :cascade do |t|
-    t.string   "advertisement_url"
-    t.integer  "status",            default: 0
-    t.datetime "created_at",                    null: false
-    t.datetime "updated_at",                    null: false
-  end
-
   create_table "preferential_measures", force: :cascade do |t|
     t.decimal  "amount"
     t.decimal  "discount"
@@ -489,7 +495,6 @@ ActiveRecord::Schema.define(version: 20151210032819) do
     t.boolean  "full_cut",             default: false
     t.integer  "full_cut_number"
     t.integer  "full_cut_unit"
-    t.boolean  "show_advertisement",   default: false
   end
 
   create_table "redactor_assets", force: :cascade do |t|

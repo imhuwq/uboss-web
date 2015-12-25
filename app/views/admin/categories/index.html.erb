@@ -9,9 +9,15 @@
 <br />
 
 <div class="container  mod-inner">
+  <div class="header-tab">
+    <%= link_to '店铺基本信息', admin_store_path(current_user), class: 'tab-title' %>
+    <%= link_to '轮播展示', "#{admin_store_path(current_user)}#slider", class: 'tab-title' %>
+    <%= link_to '分组设置', admin_categories_path, class: 'tab-title active' %>
+  </div>
+  <br />
 
   <div class="list-search-bar">
-    <%= link_to("+ 添加分类", url_for(:action=>:new), :class=>"btn btn-large",:role=>"button") %>
+    <%= link_to("+ 添加分组", url_for(:action=>:new), :class=>"btn btn-large",:role=>"button") %>
   </div>
 
   <br />

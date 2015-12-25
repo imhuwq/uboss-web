@@ -17,7 +17,7 @@
 <!--         <td>
           <input class="checkbox " name="check_item" type="checkbox" data-member="#{i}">
         </td> -->
-        <td><%= text_field_tag "categories[#{i}][name]", category.name, class:"category-name", data: { id: category.id }  %></td>
+        <td><%= text_field_tag "categories[#{i}][name]", category.name, class:"update_item", data: { url:  "/admin/categories/#{category.id}/update_category_name"}  %></td>
         <td>
           <p class="fileinput-button">
             <% if category.image_url.blank? %>

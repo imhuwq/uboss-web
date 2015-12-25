@@ -1,20 +1,21 @@
 header {
   position: relative;
   .header-bar {
-
     overflow: hidden;
     line-height: 20px;
     background: #fff;
     a{display: inline-block;}
-    .logo{height: 18px; padding:13px 0 13px 10px;}
+    img{vertical-align: text-top;}
+    .logo{height: 16px; padding:14px 0 14px 10px;}
     .title{
-      margin:12px 0 12px 10px;
+      padding:13px 0 13px 10px;
       font-size: 18px;
       color:$brand-primary;
-      line-height: 20px;
+      line-height: 1;
       text-overflow:ellipsis;
       white-space:nowrap;
       overflow: hidden;
+      vertical-align: bottom;
     }
     &.title-gap .title{      
       margin:12px 0 12px 0;
@@ -23,15 +24,15 @@ header {
       float: right;
       padding: 12px 10px;
       font-size: 14px;
-      img{ height:18px;}
+      img{ height:16px;}
     }
     .back{
         float: left;
-        padding: 12px 10px;
+        padding: 12px 10px;        
         img{ 
-          height: 18px;
+          height: 16px;
           -webkit-transform: rotate(180deg);
-          transform: rotate(180deg);
+          transform: rotate(180deg);          
         }
     }
   }
@@ -39,7 +40,7 @@ header {
     float: right;    
     padding: 12px 10px;
     img{
-        height: 18px;
+        height: 16px;
     }
   }
   .nav-bar{

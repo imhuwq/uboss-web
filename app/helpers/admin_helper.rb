@@ -65,11 +65,19 @@ module AdminHelper
     return @store_banner_data if @store_banner_data.present?
 
     @store_banner_data = []
-    seller.products.where(show_advertisement: true).published.each do |product|
-        @store_banner_data << [
-          product.advertisement_img ,
-          product
-        ]
+    advertisements = Advertisement.joins('left join products on (products.id = advertisements.product_id)').where('(product_id is not null AND products.status = 1) OR product_id is null').where(user_id: current_user.id, platform_advertisement: false).order('order_number')
+    advertisements.each do |advertisement|
+      if advertisement.product_id
+        url = url_for(controller: :products, action: :show, id: advertisement.product_id)
+      elsif advertisement.category_id
+        url = url_for(controller: :categories, action: :show, id: advertisement.category_id)
+      else
+        url = '###'
+      end
+      @store_banner_data << [
+        advertisement.asset_img ,
+        url
+      ]
     end
     @store_banner_data
   end
@@ -78,10 +86,10 @@ module AdminHelper
     return @platform_banner_data if @platform_banner_data.present?
 
     @platform_banner_data = []
-    PlatformAdvertisement.where(status: 1).each do |platform_advertisement|
+    Advertisement.where(platform_advertisement: true, status: 1).order('order_number').each do |platform_advertisement|
         @platform_banner_data << [
           platform_advertisement.asset_img ,
-          platform_advertisement
+          platform_advertisement.advertisement_url
         ]
     end
     @platform_banner_data

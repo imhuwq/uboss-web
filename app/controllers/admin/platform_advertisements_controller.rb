@@ -29,7 +29,6 @@ class Admin::PlatformAdvertisementsController < AdminController
 	end
 
 	def change_status
-		# binding.pry
 		if params[:status] == 'show'
 			@platform_advertisement.status = 'show'
 			@notice = '上架成功'

@@ -18,7 +18,8 @@ class Product < ActiveRecord::Base
   belongs_to :carriage_template
   has_many :different_areas, through: :carriage_template
   has_many :order_items
-
+  has_many :advertisements
+  has_many :categories
   has_and_belongs_to_many :categories, -> { uniq } ,autosave: true
 
   has_many :product_inventories, autosave: true, dependent: :destroy
@@ -33,8 +34,8 @@ class Product < ActiveRecord::Base
   # 店铺轮播图片 =>
   has_one_image name: :advertisement_img, autosave: true
   
-  def  advertisement_img_url
-    advertisement_img.try(:image_url)
+  def  advertisement_img_url(option='')
+    advertisement_img.try(:image_url,option)
   end
 
   def advertisement_img=(file)

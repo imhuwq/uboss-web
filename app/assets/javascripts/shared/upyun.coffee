@@ -14,7 +14,7 @@ $ ->
     add: (e, data) ->
       updateFile(e,data,upyunBucketDomain)
 
-  $("input.upyun_file_closest").click ->
+  $(document).on 'click', "input.upyun_file_closest", ->
     upyunPolicy = $(this).siblings("meta[name='upyun-policy']").attr("content")
     upyunSignature = $(this).siblings("meta[name='upyun-signature']").attr("content")
     $(this).fileupload
@@ -65,7 +65,7 @@ $ ->
           button.removeClass('uploading')
           $this.show()
 
-  $("input.upyun_file_json").click ->
+  $(document).on 'click', "input.upyun_file_json", ->
     $(this).fileupload
       paramName: "file"
       url: upyunUrl

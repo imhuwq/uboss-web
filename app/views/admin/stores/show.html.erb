@@ -6,70 +6,62 @@
 	</ul>
 </div><!-- container -->
 <br />
-<div class="container nogap">
-  <div>店铺标志</div> 
-  <p class="fileinput-button">
-		<%= upyun_meta_tags prefix: "asset_img/avatar" %>
-		<% if current_user.store_logo_url.blank? %>
-			<%= image_tag("admin/no-img.png", class:"clean",style:"height: 80px;") %>
-		<% else %>
-			<%= image_tag(current_user.store_logo_url(:thumb), class:"clean", style:"height: 80px;")%>
-		<% end %>
-			<%= file_field_tag "image", class: "upyun_file_json" ,  data: {to: "/admin/stores/#{current_user.id}/update_store_logo"} %>
-		<b class="loading"><i class="fa fa-spinner"></i></b>
-	</p>
-	<div style="font-size:10px;">(点击图片进行替换)</div>
+<div class="container">
+	<div class="header-tab">
+		<a class="tab-title active" href="#info">店铺基本信息</a>
+		<a class="tab-title" href="#slider">轮播展示</a>
+    <%= link_to '分组设置', admin_categories_path, class: 'tab-title' %>
+	</div>
+	<br />
+  <div id="info" class="beige-bg-color admin-box">
+  	<div class="box-w40">
+  		<br />
+  		<div>
+  			店铺头像　
+	  		<p class="fileinput-button">
+					<%= upyun_meta_tags prefix: "asset_img/avatar" %>
 
-	<h4>store_url:</h4>
-	<div class="text"><%= store_url(@user.id) %></div>
-	<img src="http://qr.liantu.com/api.php?&amp;text=<%= store_url(@user.id) %>"/>
-</div>
-<div>
-  <div>
-    <label>店铺名</label>
-    <%= text_field_tag :store_name , current_user.store_name ,data:{id: current_user.id} %>
+					<% if  current_user.store_logo.avatar_identifier.blank? %>
+						<%= image_tag("admin/no-img-160x160.png", class:"clean") %>
+					<% else %>
+						<%= image_tag(current_user.store_logo_url(:thumb), class:"clean", style:"height: 160px;width:160px")%>
+					<% end %>
+					<%= file_field_tag "image", class: "upyun_file_json" ,  data: {to: "/admin/stores/#{current_user.id}/update_store_logo"} %>
+					<b class="loading"><i class="fa fa-spinner"></i></b>
+					<span class="tips-text">点击替换</span>
+				</p>
+			</div>
+			<p>
+				店铺名称　
+				<%= text_field_tag :store_name , current_user.store_name , class: 'update_item border-bottom-input main-color', data:{url: "/admin/stores/#{current_user.id}/update_store_name" }, placeholder: '店铺名称',style:'width:160px' %>
+			</p>
+			<p>
+				店铺简介　
+				<%= text_field_tag :store_short_description, current_user.store_short_description , class: 'update_item border-bottom-input', data:{ url: "/admin/stores/#{current_user.id}/update_store_short_description" } , placeholder: '店铺简介',style:'width:160px' %>
+			</p>
+  	</div>
+  	<div class="box-w60 info-right-box">
+  		<br />
+			<p><img src="http://qr.liantu.com/api.php?&amp;text=<%= store_url(current_user.id) %>" width='160'/></p>
+			<p class="gap white-bg-color">店铺链接：<%= store_url(current_user.id) %></p>
+  		<br />
+  	</div>
+  </div><!-- #info -->
+  <br />
+  <div id="advertisements">
+    <%= render "advertisements" %>
   </div>
-  <div>
-    <label>店铺简介</label>
-    <%= text_field_tag :store_short_description, current_user.store_short_description , data:{id: current_user.id}, placeholder: '请控制在20字以内，以保证显示效果' %>
+  <%= render "add_banner" %>
+  
+  
+  <br />
+  <div id="categories">
+    <%= render 'categories' %>
   </div>
-</div>
-<div>
-	<% @user.categories.where(use_in_store: true).each do |category| %>
-		<%= image_tag(category.image_url(:thumb), class:"clean", style:"height: 80px;")%>
-		<p><%= category.name %></p>
-	<% end %>
-</div>
-<div>
-	<div id="add_category">添加分类</div>
-	<div id="adding_category_window">
-		<div>
-			<%= select_tag :category_tages, options_for_select([['--', '']] + current_user.categories.map{|obj| [obj.name,obj.id]}) %>
-		</div>
-		<p class="fileinput-button hidden" id="add_category_img">
-			<%= image_tag("admin/no-img.png", class:"clean",style:"height: 80px;") %>
-			<%= file_field_tag "image", class: "upyun_file_json" ,  data: {to: ""} %>
-			<b class="loading"><i class="fa fa-spinner"></i></b>
-		  <div style="font-size:10px;">(点击图片进行替换)</div>
-		</p>
-	</div>
-</div>
-<div>
-	<div id="adding_product_window">
-		<div>添加轮播商品</div>
-		<div><%= select_tag 'category_tages', options_for_select([['--', '']] + current_user.products.map{|obj| [obj.name,obj.id]}) %></div>
-		<div class="fileinput-button hidden" id="show_product_advertisement_img">
-			<%= image_tag("admin/no-img.png", class:"clean",style:"height: 80px;") %>
-			<%= file_field_tag "image", class: "upyun_file_json" ,  data: {to: ""} %>
-			<b class="loading"><i class="fa fa-spinner"></i></b>
-			<div style="font-size:10px;">(点击图片进行替换)</div>
-		</div>
-		<div>
-			<a href="###" class='btn btn-border btn-link hidden' id='add_to_advertisement'>
-				加入店铺广告
-			</a>
-		</div>
-	</div>
-	
-</div>
+  <%= render "add_category" %>
+  <br/>
+</div><!-- container -->
+
+
+
 

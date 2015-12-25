@@ -59,7 +59,7 @@ $ ->
   $(document).on 'click', '.pro-snode-success-btn', (e) ->
     e.preventDefault()
     $('.req-snode-modal').hide()
-    $('.show-req-snode-modal').hide().next().show()
+    $('.show-req-snode-modal').hide().next().removeClass('hidden')
     if window.wx?
       UBoss.luffy.showWxPopTip()
     else

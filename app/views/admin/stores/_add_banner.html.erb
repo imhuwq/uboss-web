@@ -1,0 +1,48 @@
+<div class="modal fade" id="add-banner" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span class='close' aria-hidden="true">&times;</span></button>
+        <h5 class="modal-title text-center" id="myModalLabel">添加轮播图</h5>
+      </div>
+      <%= simple_form_for 'advertisement', url: {action: :create_advertisement}, remote: true, method: 'GET' do |f| %>
+  			<div class="modal-body" style="color:#333;">
+  				<table width="100%">
+  					<tr>
+  						<td>
+  							<select class="select-adv-type" data-manual-chosen='t' name="advertisement[type]">
+                  <option>-请选择-</option>
+  								<option value="product">商品</option>
+  								<option value="category">分组</option>
+  							</select>
+  						</td>
+  						<td width="420"><input class="input-block js-select2 select-adv-item" date-id="1"  type="text" name="advertisement[id]"/></td>
+  						<td><input type="number"  placeholder="排序" class="input-block" min="0" class="banner-sequence" name="advertisement[order_number]"/></td>
+  					</tr>
+  					<tr>
+  						<td colspan="3">
+  							<div class="gray-color gap text-right"><small>提示：若不填排序默认为0，按创建时间优先显示</small></div>
+  							<div class="text-center">
+                    <%= f.input :asset_img, type: :hidden, label: false, hint:"(点击图片进行替换)"  do %>
+                      <%= f.input_field :avatar, type: :hidden, as: :file %>
+                      <p class="fileinput-button">
+                        <%= image_tag("admin/no-img-640x320.png", class:"clean",style:"max-width:640px;width:100%;height:auto")%>
+                        <%= file_field_tag "image", class: "upyun_file" %>
+                        <b class="loading"><i class="fa fa-spinner"></i></b>
+                        <span class="tips-text">点击上传图片</span>
+                      </p>
+                    <% end %>
+                    <%= upyun_meta_tags prefix: 'asset_img/avatar' %>
+  				      </div>
+  						</td>
+  					</tr>						
+  				</table>
+  			</div><!-- modal-body -->
+  			<div class="modal-footer">
+          <%= f.submit '添加',  class:"btn btn-large btn-info" %>
+  			  <button type="button" class="btn btn-large gray-btn" data-dismiss="modal">取消</button>
+  			</div>
+      <% end %>
+    </div>
+  </div>
+</div>

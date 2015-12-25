@@ -1,5 +1,4 @@
-.store-category-cover{
-    margin-bottom: 10px;
+.store-category-cover{    
     .cover{
         float: left;
         margin-right: 10px;
@@ -45,3 +44,39 @@
       }
     }    
 }
+.all-category-list{
+    padding: 0 5px 10px;
+    a{
+        color: #444;
+    }
+    .all-category-tab{
+        background: #fff;
+        margin: 10px 0 0;
+        padding: 4px;
+        text-align: center;
+        overflow: hidden; 
+        text-overflow: ellipsis; 
+        white-space: nowrap;
+        &.active{
+            color: $brand-primary;
+        }
+    }
+}
+.category-more-btn {
+    color: #999;
+    img{
+        height: 12px;
+        -webkit-transform: rotate(90deg);
+        transform: rotate(90deg);
+    }
+    .up-text{display: none;}
+    &.up{
+       img{
+           -webkit-transform: rotate(-90deg);
+            transform: rotate(-90deg);
+       }
+       .down-text{display: none;}
+       .up-text{display: inline;} 
+    }
+}
+    

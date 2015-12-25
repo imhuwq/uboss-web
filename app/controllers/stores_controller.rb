@@ -10,6 +10,15 @@ class StoresController < ApplicationController
   before_action :get_sharing_node, :set_sharing_link_node, only: [:show, :hots]
 
   def index
+
+    @products = append_default_filter Product.published.includes(:asset_img), order_column: :updated_at
+    @hot_products = []
+    @products.each do |product|
+      if @hot_products.empty?
+        @hot_products << product
+      end
+      product.total_sells
+    end
     @uboss_seller = User.find_by(login: '19812345678')
     @recommend_ids = @uboss_seller.store_short_description.split(',')
     @stores = User.where(id: @recommend_ids)
