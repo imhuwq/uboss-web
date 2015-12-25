@@ -64,7 +64,7 @@
       </div><!-- bg-white gap -->
       <div class="bg-white index-product-list">
         <div class="box">
-          <% store.products.hot_ordering.limit(3).each do |product| %>
+          <% store.products.available.hot_ordering.limit(3).each do |product| %>
             <div class="box-w33">
               <div class="product-box">
                 <div class="cover">
