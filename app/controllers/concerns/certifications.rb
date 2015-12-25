@@ -36,7 +36,7 @@ module Certifications
       authorize! :edit, @certification
       if !@certification.present?
         redirect_to action: :new
-      elsif [:review, :pass].include?(@certification.status)
+      elsif [:review, :pass].include?(@certification.status.to_sym)
         flash[:alert] = '当前状态不允许修改。'
         redirect_to action: :show
       end

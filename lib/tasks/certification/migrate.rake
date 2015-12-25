@@ -20,29 +20,42 @@ namespace :certification do
     TmpPersonalAuthentication.find_each do |personal|
       attrs = {
         type:     "PersonalAuthentication",
+        user_id:  personal.user_id,
         status:   personal.status,
         name:     personal.name,
         address:  personal.address,
         mobile:   personal.mobile,
         id_num:   personal.identity_card_code,
-        face_with_identity_card_img: File.open(personal.face_with_identity_card_img.path)
+        attachment_2: personal.face_with_identity_card_img_identifier,
+        attachment_3: personal.identity_card_front_img_identifier
       }
-      Certification.create(attrs)
+      Certification.new(attrs).save(validate: false)
     end
 
     TmpEnterpriseAuthentication.find_each do |enterprise|
       attrs = {
         type:                 "EnterpriseAuthentication",
+        user_id:              enterprise.user_id,
         status:               enterprise.status,
         enterprise_name:      enterprise.enterprise_name,
         address:              enterprise.address,
         mobile:               enterprise.mobile,
-        id_num:               enterprise.identity_card_code,
-        business_license_img: File.open(enterprise.business_license_img.path),
-        legal_person_identity_card_front_img: File.open(enterprise.legal_person_identity_card_front_img.path),
-        legal_person_identity_card_end_img: File.open(enterprise.legal_person_identity_card_end_img.path),
+        # id_num:               enterprise.identity_card_code,
+        attachment_1: enterprise.business_license_img_identifier,
+        attachment_2: enterprise.legal_person_identity_card_front_img_identifier,
+        attachment_3: enterprise.legal_person_identity_card_end_img_identifier,
       }
-      Certification.create(attrs)
+      Certification.new(attrs).save(validate: false)
+    end
+
+    ChinaCity.provinces.each do |province_name, province_code|
+      ChinaCity.list(province_code).each do |city_name, city_code|
+        certification = Certification.ransack(address_cont: city_name.gsub(/市/,'')).result.first
+        if certification
+          certification.update(province_code: province_code, city_code: city_code)
+          print '.'
+        end
+      end
     end
   end
 end

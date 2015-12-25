@@ -146,6 +146,10 @@ ActiveRecord::Schema.define(version: 20151222135339) do
     t.string   "type"
     t.datetime "created_at",      null: false
     t.datetime "updated_at",      null: false
+    t.datetime "verified_at"
+    t.string   "province_code"
+    t.string   "city_code"
+    t.string   "district_code"
   end
 
   create_table "city_managers", force: :cascade do |t|
@@ -153,8 +157,16 @@ ActiveRecord::Schema.define(version: 20151222135339) do
     t.integer  "category"
     t.string   "city"
     t.decimal  "rate",       precision: 2, scale: 2
+    t.datetime "settled_at"
     t.datetime "created_at",                         null: false
     t.datetime "updated_at",                         null: false
+  end
+
+  create_table "city_managers_sellers", force: :cascade do |t|
+    t.integer  "seller_id"
+    t.integer  "city_manager_id"
+    t.datetime "created_at",      null: false
+    t.datetime "updated_at",      null: false
   end
 
   create_table "daily_reports", force: :cascade do |t|

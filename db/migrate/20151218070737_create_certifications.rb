@@ -12,9 +12,11 @@ class CreateCertifications < ActiveRecord::Migration
       t.string      :attachment_2     # 图片2
       t.string      :attachment_3     # 图片3
       t.string      :type
+      t.datetime    :verified_at      # 审核时间
 
       t.timestamps null: false
     end
 
     add_index :certifications, :user_id
+  end
 end

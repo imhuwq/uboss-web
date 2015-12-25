@@ -176,6 +176,7 @@ zh-CN:
     orders: 订单
     product_manage: 商品管理
     withdraw_records: 提现
+    city_manager: 城市运营商
   li_link:
     dashboard: 主页
     carriage_templates: 运费模板
@@ -198,7 +199,10 @@ zh-CN:
     user_addresses: 地址库
     categories: 商品分组
     platform_advertisements: 平台广告
-    city_managers: 城市运营商管理
+    city_managers: 城市运营商
+    cities: 权限管理
+    revenues: 商家营收
+    added: 新增商家
   activerecord:
     models:
       withdraw_record: 提现记录

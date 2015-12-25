@@ -8,8 +8,7 @@
 <br />
 <div class="container">
   <div class="header-tab">
-    <%= link_to "个人认证", url_for(controller: :personal_authentications, action: :new, user_id: current_user), class:"tab-title" %>
-    <div class="tab-title active">企业认证</div>
+    <%= link_to_certification_tabs %>
   </div>
   <br />
   <h3 class="page-title">创建企业信息认证</h3>

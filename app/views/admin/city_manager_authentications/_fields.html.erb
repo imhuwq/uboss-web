@@ -8,7 +8,7 @@
       <% else %>
         <%= image_tag(f.object.business_license_img_url(:w320)) %>
       <% end %>
-      <%= upyun_meta_tags prefix: 'enterprise_authentication/business_license_img' %>
+      <%= upyun_meta_tags prefix: 'city_manager_authentication/business_license_img' %>
       <%= file_field_tag "business_license_img", class: "upyun_file_closest" %>
       <b class="loading"><i class="fa fa-spinner"></i></b>
     </span>
@@ -21,7 +21,7 @@
       <% else %>
         <%= image_tag(f.object.legal_person_identity_card_front_img_url(:w320)) %>
       <% end %>
-      <%= upyun_meta_tags prefix: 'enterprise_authentication/legal_person_identity_card_front_img' %>
+      <%= upyun_meta_tags prefix: 'city_manager_authentication/legal_person_identity_card_front_img' %>
       <%= file_field_tag "legal_person_identity_card_front_img", class: "upyun_file_closest" %>
       <b class="loading"><i class="fa fa-spinner"></i></b>
     </span>
@@ -34,13 +34,29 @@
       <% else %>
         <%= image_tag(f.object.legal_person_identity_card_end_img_url(:w320)) %>
       <% end %>
-      <%= upyun_meta_tags prefix: 'enterprise_authentication/legal_person_identity_card_end_img' %>
+      <%= upyun_meta_tags prefix: 'city_manager_authentication/legal_person_identity_card_end_img' %>
       <%= file_field_tag "legal_person_identity_card_end_img", class: "upyun_file_closest" %>
       <b class="loading"><i class="fa fa-spinner"></i></b>
     </span>
   <% end %>
+  <%#= f.input :province, as: :select, collection: ChinaCity.provinces, prompt: "--省份--", selected: f.object.province_name, input_html: { class: 'city-select'} %>
+
+
+  <div class="form-group string required user_address_mobile">
+    <label class="string required control-label"><abbr title="必填">*</abbr>所在地区</label>
+    <div class="city-group control-input" style="padding-top:7px;">
+        <%= f.select(:province_code, options_for_select([['--省份--', '']] + ChinaCity.provinces, selected: f.object.province_code ), {},
+        	class: 'city-select ', id: "province", style:"width:100px;display:inline;", 'data-manual-chosen'=>true ) %>
+        <%= f.select :city_code, options_for_select([['--城市--', '']] + ChinaCity.list(f.object.province_code), selected: f.object.city_code ), {},
+         	:class => 'city-select', id: "city", style:"width:100px;display:inline;", 'data-manual-chosen'=>true %>
+        <%= f.select :district_code, options_for_select([['--地区--', '']] + ChinaCity.list(f.object.city_code), selected: f.object.district_code), {},
+         	:class => 'city-select', id: "area", style:"width:100px;display:inline;", 'data-manual-chosen'=>true %>
+    </div>
+  </div>
+
+
   <%= f.input :address %>
-  <div class="form-group string required enterprise_authentication_mobile">
+  <div class="form-group string required city_manager_authentication_mobile">
     <%= f.label :mobile, class:"string required control-label" %>
     <%= link_to '发送', '###',class: "btn btn-large pull-right",id:"send_mobile",style:"border-radius:0 4px 4px 0;" %>
     <div class="control-input">

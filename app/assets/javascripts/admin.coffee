@@ -28,7 +28,13 @@
 #= require shared/upyun
 #= require shared/multi_upyun_admin
 #= require shared/count_down
+#= require admin/certification
 #= require_self
+
+App = window.App = {};
+$ ->
+  App.params = jQuery.parseJSON($('body').attr('data-params'));
+
 
 jQuery ($) ->
 

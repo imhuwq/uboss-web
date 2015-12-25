@@ -43,6 +43,7 @@ class OrderDivideJob < ActiveJob::Base
   # 1. 商家营收收入
   # 2. 用户分享收入
   # 3. 平台|创客收入
+  # 4. 城市运营商收入
   #
   def start_divide_order_paid_amount
     # NOTE
@@ -60,6 +61,10 @@ class OrderDivideJob < ActiveJob::Base
         end
 
         divide_income_for_official_or_agent do |divide_amount|
+          @order_income -= divide_amount
+        end
+
+        devide_income_for_city_manager do |divide_amount|
           @order_income -= divide_amount
         end
 
@@ -98,6 +103,25 @@ class OrderDivideJob < ActiveJob::Base
       )
       logger.info(
         "Divide order: #{@order.number}, [OAgent id: #{divide_record.id}, amount: #{official_divide_income} ]")
+
+      yield divide_income
+
+    end
+  end
+
+  def devide_income_for_city_manager
+    enterprise = EnterpriseAuthentication.where(user_id: @order.seller_id).first
+    city_manager = CityManager.where(city: enterprise.city_code).first if enterprise
+
+    if city_manager && city_manager.user && order_income > 0
+      divide_income = (order_income * city_manager.rate / 100).truncate(2)
+      divide_record = DivideIncome.create!(
+        order: @order,
+        amount: divide_income,
+        user: city_manager.user
+      )
+      logger.info(
+        "Divide order: #{@order.number}, [OAgent id: #{divide_record.id}, amount: #{divide_income} ]")
 
       yield divide_income
 
