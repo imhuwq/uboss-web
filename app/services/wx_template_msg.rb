@@ -45,6 +45,12 @@ module WxTemplateMsg extend self
     delay.send_template_msg(touser, 5, '', data)
   end
 
+  # 消费券购买成功通知
+  def service_order_payed_msg_to_buyer(touser, order)
+    data = service_order_payed_msg_to_buyer_data(order)
+    delay.send_template_msg(touser, 6, 'uboss.cn', data)
+  end
+
   private
 
   def send_template_msg(touser, template_id, url, data)
@@ -59,6 +65,7 @@ module WxTemplateMsg extend self
       when 3 then "DbSc6uRm0_Nx4dr57_Wtl2xSBM3q93WjGFwDkt4tBs0"  # 退款申请通知
       when 4 then "oAsNI8sdRQHfXdCsuV8pebfvFcNHKcm9ty30UJUNqpQ"  # 退款申请审核结果
       when 5 then "wg-qHiJ7H95svioAmrvpJgx-6IP2u5FK-_frEANFeLo"  # 收益发放通知
+      when 6 then "UXBLfx1tlRCZKr7w602YFjHQYYZAdtt_i0NcHi3vDFI"  # 消费券购买成功通知
       end
     else
       case id
@@ -67,6 +74,7 @@ module WxTemplateMsg extend self
       when 3 then "F0YVHZRcB0IlJL8Fm8cjhJIdnh1FXUER5peJ03i4-_s"
       when 4 then "cMVdx_bBZAEnXoRwTZAHcCf7ZXaGGIes1OAp0NeYxhQ"
       when 5 then "uR5MyG4QNYrwGHCtQcfgDpA3JkmHqLt2JIC5OwkAT-M"
+      when 6 then "fU5ZnPjmcgKzybIIYH3kHMYtObPQQxjkLbYSevo2-b0"
       end
     end
   end
@@ -242,8 +250,33 @@ module WxTemplateMsg extend self
     }
   end
 
+  def service_order_payed_msg_to_buyer_data(order)
+    {
+      first: {
+        value: "您已功购买“#{order.order_item.product_name}”\n",
+        color: "#173177"
+      },
+      keyword1: {
+        value: order.verify_codes.map(&:code).join('，'),
+        color: "#000"
+      },
+      keyword2: {
+        value: order.pay_amount,
+        color: "#000"
+      },
+      keyword3: {
+        value: date_format(order.paid_at),
+        color: "#000"
+      },
+      remark: {
+        value: "\n【分享友情卡，帮朋友打折，给自己收益】UBOSS，一个边买边赚的商城！详情请电脑登录 uboss.cn 查看。",
+        color: "#000"
+      }
+    }
+  end
+
   def date_format(date)
-    date.try(:strftime, '%Y%m%d %H:%M:%S')
+    date.try(:strftime, '%Y-%m-%d %H:%M:%S')
   end
 
 end

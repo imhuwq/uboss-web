@@ -5,7 +5,7 @@ class ServiceOrder < Order
 
   aasm column: :state, enum: true, skip_validation_on_save: true, whiny_transitions: false do
     state :unpay
-    state :payed,     after_enter: [:invoke_service_order_payed_job, :create_verify_code]
+    state :payed,     after_enter: :invoke_service_order_payed_job
     state :completed, after_enter: :fill_completed_at
     state :closed,    after_enter: :recover_product_stock
 
@@ -33,16 +33,12 @@ class ServiceOrder < Order
   private
 
   def invoke_service_order_payed_job
-    #ServiceOrderPayedJob.perform_later(self)
-    create_privilege_card_if_none
+    order_item.amount.times { order_item.verify_codes.create!() }
+    ServiceOrderPayedJob.perform_later(self)
   end
 
   def create_privilege_card_if_none
     PrivilegeCard.find_or_active_card(user_id, seller.id)
-  end
-
-  def create_verify_code
-    order_items.each { |order_item| order_item.amount.times { order_item.verify_codes.create!() } }
   end
 
 end
