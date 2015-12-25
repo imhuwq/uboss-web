@@ -9,6 +9,8 @@ class AccountsController < ApplicationController
   before_action :authenticate_agent, only: [:send_message, :invite_seller, :edit_seller_note, :update_histroy_note]
 
   def show
+    @verify_codes_count = current_user.service_orders.payed.count
+    #@verify_codes_count = current_user.service_orders.payed.inject([]){ |verify_codes, order| verify_codes << order.verify_codes }.count
     @privilege_cards = append_default_filter current_user.privilege_cards, order_column: :updated_at, page_size: 10
   end
 

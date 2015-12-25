@@ -27,32 +27,3 @@
 
 }
 
-.store-list{
-  .service-product{
-    padding: 0 10px 10px;
-    margin-top: 10px;
-    border-bottom: 1px solid #f6f6f6;
-    overflow: hidden;
-    .cover {
-      float: left;
-      margin-right: 10px;
-      width: 60px;
-
-      img {
-        width: 60px;
-        height: 60px;
-      }
-    }
-    .blue-color{
-      color: #43C3AF;
-    }
-    .text{
-      margin-top: 10px;
-    }
-    .price{
-      font-size: 16px;
-      font-weight: bold;
-      font-size: 16px;
-    }
-  }
-}

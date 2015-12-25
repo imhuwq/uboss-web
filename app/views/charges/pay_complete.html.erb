@@ -65,13 +65,61 @@
           <br />
         </div>
       </div><!-- bg-white -->
+      <br  />
+    <% end %>
+
+    <% if @product.type == 'ServiceProduct' %>
+      <% order_item = @order_charge.orders.first.order_item %>
+      <div class="bg-white gap">
+        <%= link_to service_product_path(order_item.product) do%>
+          <div class="service-order-box">
+            <div class="cover">
+              <%= image_tag order_item.product.image_url(:w120) %>
+            </div>
+            <div class="content">
+              <h4 class="gray-color text-cut"><%= order_item.product.name %></h4>
+              <h4 class="name">有效期至：<%= strftime(order_item.product.deadline) %></h4>
+              <h4 class="gray-color">数量：<%= order_item.amount %></h4>
+            </div>
+          </div>
+        <%end%>
+      </div>
+      <br />
+      <div class="bg-white gap">
+        <table>
+          <% size = order_item.verify_codes.size %>
+          <% order_item.verify_codes.each_with_index do |verify_code, index| %>
+            <tr>
+              <% if index == 0 %>
+                <td rowspan=<%= size %> style="width:100px;font-size:15px;color:#A2A5A5;">
+                  <span>验证券密码：</span>
+                </td>
+              <% end %>
+              <td>
+                <span style="font-size:15px;color:#43C3AA;"><%= verify_code.code %></span>
+              </td>
+              <td><%= verify_code.verified ? '已消费' : '未使用' %></td>
+            </tr>
+          <% end %>
+        </table>
+      </div>
+      <br />
+      <span style="display:block;text-align:center;color:#A2A5AA;">
+        短信发送至手机号码：<%= @order_charge.orders.first.mobile %>
+      </span>
+
+      <br />
+      <div class="gap">
+        <p><a href="<%= store_path(id: @product.user_id, type: 'service') %>" class="btn btn-block btn-large btn-black-border">返回店铺首页</a></p>
+      </div>
+    <% else %>
+      <br />
+      <div class="gap">
+        <p><a href="/account/orders" class="btn btn-block btn-large btn-black-border">查看订单</a></p>
+        <br />
+        <p><a href="/" class="btn btn-block btn-large btn-black-border">返回首页</a></p>
+      </div>
     <% end %>
 
   <% end %>
 </div><!-- box -->
-<br />
-<div class="gap">
-	<p><a href="/account#showlist" class="btn btn-block btn-large btn-black-border">查看订单</a></p>
-	<br />
-	<p><a href="/" class="btn btn-block btn-large btn-black-border">返回首页</a></p>
-</div>

@@ -66,14 +66,10 @@
     </div>
   </div>
 </div>
-<br />
 
+<h4 class="type-title">代金券</h4>
 <div class="bg-white">
   <div class="box store-list">
-    <div class="box-w100">
-      <div class="page-title">代金券</div>
-    </div>
-
     <% if @voucher_products.present? %>
       <%= render partial: 'service_product', collection: @voucher_products %>
     <% else %>
@@ -81,14 +77,10 @@
     <% end %>
   </div>
 </div>
-<br />
 
+<h4 class="type-title">团购</h4>
 <div class="bg-white">
   <div class="box store-list">
-    <div class="box-w100">
-      <div class="page-title">团购</div>
-    </div>
-
     <% if @group_products.present? %>
       <%= render partial: 'service_product', collection: @group_products %>
     <% else %>
