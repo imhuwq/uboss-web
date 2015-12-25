@@ -11,7 +11,8 @@ class StoresController < ApplicationController
 
   def index
     @uboss_seller = User.find_by(login: '19812345678')
-    @stores = User.where(id: @uboss_seller.store_short_description.split(','))
+    @recommend_ids = @uboss_seller.store_short_description.split(',')
+    @stores = User.where(id: @recommend_ids)
   end
 
   def show
