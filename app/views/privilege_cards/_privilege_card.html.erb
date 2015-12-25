@@ -1,11 +1,32 @@
 <a href="/privilege_cards/<%= privilege_card.id %>">
   <div class="share-card gap" timestamp='<%= privilege_card.updated_at %>'>
     <div class="cover">
-      <%= image_tag privilege_card.seller.avatar_url(:w120) %>
+      <%= image_tag privilege_card.seller.ordinary_store.store_cover_url(:w120) %>
     </div>
     <div class="info">
-      <p class="title"><%= privilege_card.seller.store_identify %></p>
-      <p class="gray-color">商品共 <%= privilege_card.seller.products.published.count %> 件</p>
+      <p class="title"><%= privilege_card.seller.ordinary_store.store_name %></p>
+      <p class="gray-color">商品共 <%= privilege_card.seller.ordinary_products.published.count %> 件</p>
+      <div>
+        <div class="hidden sharing-meta-container">
+          <%= store_sharing_meta_tags(privilege_card.seller) %>
+        </div>
+        <%= link_to "分享", get_seller_sharing_path(seller_id: privilege_card.seller_id), remote: true,
+          class: 'btn share-btn req-favour-p-snode' %>
+        <a href="#" class="btn share-btn p-sharing-btn hidden">分享</a>
+      </div>
+    </div>
+  </div><!-- share-card -->
+</a>
+
+<!-- 团购店铺 -->
+<a href="/privilege_cards/<%= privilege_card.id %>">
+  <div class="share-card gap" timestamp='<%= privilege_card.updated_at %>'>
+    <div class="cover">
+      <%= image_tag privilege_card.seller.service_store.store_cover_url(:w120) %>
+    </div>
+    <div class="info">
+      <p class="title"><%= privilege_card.seller.service_store.store_name %></p>
+      <p class="gray-color">商品共 <%= privilege_card.seller.service_products.published.count %> 件</p>
       <div>
         <div class="hidden sharing-meta-container">
           <%= store_sharing_meta_tags(privilege_card.seller) %>

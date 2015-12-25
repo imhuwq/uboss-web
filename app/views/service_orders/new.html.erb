@@ -9,7 +9,6 @@
     <%= f.hidden_field :product_inventory_id %>
     <%= f.hidden_field :amount %>
     <%= f.hidden_field :sharing_code %>
-    <%= f.hidden_field :bind_mobile %>
 
     <div class="order-list valid-order-list valid-list">
       <div class="seller-box"><div class="text-cut">商家：<%= @seller.store_identify %></div></div>
@@ -43,25 +42,6 @@
         <span>￥ <%= @order_form.total_price %></span>
       </div><!-- price-box -->
     </div><!-- order-list -->
-
-    <div class="bg-white">
-      <h4 class="gray-color pt5 pb5 pl10 borderBottom">短信发送至已绑定手机号码：</h4>
-      <h4 class="gray-color pt5 pb5 pl10"><%= @order_form.bind_mobile %>
-        <a href="javascript:;" class="pull-right pr10">修改</a>
-      </h4>
-    </div>
-
-    <% if current_user.blank? || (current_user && current_user.need_set_login?) %>
-      <div class="no-login">
-        <div class="mobile">
-          <a href='#' class="btn pull-right" id="send_mobile"><small>发送验证码</small></a>
-          <div class="content"><%= f.input_field :mobile, type: :tel, placeholder: '输入手机号', class:"input-block",id:'new_mobile' %></div>
-        </div>
-        <div class="gap">
-          <%= f.input_field :captcha, type: :tel, placeholder: '填写短信验证码', class: "input-block"  %>
-        </div>
-      </div><!-- no-login -->
-    <% end %>
   </div><!--cart-list -->
 
   <div class="order-price">

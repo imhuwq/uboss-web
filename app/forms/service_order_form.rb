@@ -4,7 +4,7 @@ class ServiceOrderForm
   include ActiveModel::Validations
   include ActiveModel::Model
 
-  ATTRIBUTES = [:mobile, :captcha, :product_id, :product_inventory_id, :amount, :bind_mobile, :sharing_code]
+  ATTRIBUTES = [:mobile, :captcha, :product_id, :product_inventory_id, :amount, :sharing_code]
 
   ATTRIBUTES.each do |order_attr|
     attr_accessor order_attr
@@ -87,7 +87,7 @@ class ServiceOrderForm
       ServiceOrder.create!([{
         user: buyer,
         seller: product.user,
-        mobile: bind_mobile,
+        mobile: buyer.login,
         order_items_attributes: order_items_attributes
     }])
   end

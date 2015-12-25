@@ -19,7 +19,7 @@
 </div>
 <div class="link-tab">
   <a href="<%= account_verify_codes_path %>"><span>验证券<p><%= @verify_codes_count %></p></span></a>
-	<a href="javascript:;"><span>我的红包<p>100</p></span></a>
+	<a href="javascript:;" class="borderLeft borderRight"><span>我的红包<p>100</p></span></a>
   <a href="<%= income_account_path %>"><span>我的收益<p><%= current_user.income.to_f + current_user.frozen_income.to_f %></p></span></a>
 </div><!-- tab-nav  -->
 <br />

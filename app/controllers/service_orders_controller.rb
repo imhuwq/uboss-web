@@ -9,7 +9,6 @@ class ServiceOrdersController < ApplicationController
     end
     @order_form = ServiceOrderForm.new(
       buyer: current_user,
-      bind_mobile: current_user.login,
       amount: params[:amount] || 1,
       product_id: params[:product_id],
       product_inventory_id: params[:product_inventory_id],
