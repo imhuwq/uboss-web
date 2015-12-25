@@ -31,49 +31,53 @@
 
 <div class="bg-white text-center">
   <a class="box-w50 nogap index-icon-box border-right" href="/stores/550">
-  	<div class="index-icon icon1"></div>
-  	<div><b>丽江生活馆</b></div>
+    <div class="index-icon icon1"></div>
+    <div><b>丽江生活馆</b></div>
   </a>
   <a class="box-w50 nogap index-icon-box" href="/sellers/new">
-	  <div class="index-icon icon2"></div>
-	  <div><b>入驻UBOSS</b></div>
-	</a>
+    <div class="index-icon icon2"></div>
+    <div><b>入驻UBOSS</b></div>
+  </a>
 </div>
 <div class="gap page-title black-color">
-	推荐店铺
+  推荐店铺
 </div>
-<% @stores.each do |store| %>
-  <div class="bg-white gap border-box">
-  	<div class="product-store-box">
-	    <div class="cover">
-	      <%= image_tag store.avatar_url(:w120) %>
-	    </div>
-			<div class="content">
-				<%= link_to  store_path(store),class:'btn btn-main-border pull-right' do%>
-	       	进店逛逛
-	      <%end%>
-		    <h4 class="name text-cut"><%= store.store_name || 'UBOSS商家' %></h4>
-		    <p class="gray-color"><%= number_to_percentage(store.good_reputation_rate, precision: 0) %> 好评（<%= store.total_reputations %>）</p>
-	      <p class="gray-color desc text-cut"><%= store.store_short_description || "UBOSS 推荐店铺" %></p>
-	 		</div><!-- content -->
-    </div><!-- product-store-box -->
-  </div><!-- bg-white gap -->
-  <div class="bg-white index-product-list">
-    <div class="box">
-      <% store.products.hot_ordering.limit(3).each do |product| %>
-        <div class="box-w33">
-          <div class="product-box">
-            <div class="cover">
-              <%= link_to '', product,
-                style: "background-image:url(#{product.image_url(:w320)})",
-                class: 'img',
-                title: "#{product.name}" %>
-              <%= image_tag("mobile/img.jpg") %>
-            </div>
-          </div><!-- product-box -->
-        </div><!-- box-w33 -->
-      <% end %>
+
+<% @recommend_ids.each do |store_id| %>
+  <% store = @stores.select { |store| store.id == store_id.to_i }.first %>
+  <% if store.present? %>
+    <div class="bg-white gap border-box">
+      <div class="product-store-box">
+        <div class="cover">
+          <%= image_tag store.avatar_url(:w120) %>
+        </div>
+        <div class="content">
+          <%= link_to  store_path(store),class:'btn btn-main-border pull-right' do%>
+            进店逛逛
+          <%end%>
+          <h4 class="name text-cut"><%= store.store_name || 'UBOSS商家' %></h4>
+          <p class="gray-color"><%= number_to_percentage(store.good_reputation_rate, precision: 0) %> 好评（<%= store.total_reputations %>）</p>
+          <p class="gray-color desc text-cut"><%= store.store_short_description || "UBOSS 推荐店铺" %></p>
+        </div><!-- content -->
+      </div><!-- product-store-box -->
+    </div><!-- bg-white gap -->
+    <div class="bg-white index-product-list">
+      <div class="box">
+        <% store.products.hot_ordering.limit(3).each do |product| %>
+          <div class="box-w33">
+            <div class="product-box">
+              <div class="cover">
+                <%= link_to '', product,
+                  style: "background-image:url(#{product.image_url(:w320)})",
+                  class: 'img',
+                  title: "#{product.name}" %>
+                <%= image_tag("mobile/img.jpg") %>
+              </div>
+            </div><!-- product-box -->
+          </div><!-- box-w33 -->
+        <% end %>
+      </div>
     </div>
-  </div>
-  <br />
+    <br />
+  <% end %>
 <% end %>
