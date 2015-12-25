@@ -15,19 +15,22 @@ class CreateCityManagers < ActiveRecord::Migration
 
       t.timestamps null: false
     end
-
-    ChinaCity.provinces.each do |province_name, province_code|
-      ChinaCity.list(province_code).each do |city_name, city_code|
-        scope = case
-        when match?(FIRST_LINE_CITYS, city_name)  then CityManager.firstline
-        when match?(SECOND_LINE_CITYS, city_name) then CityManager.secondline
-        when match?(THIRD_LINE_CITYS, city_name)  then CityManager.thirdline
-        when match?(FOURTH_LINE_CITYS, city_name) then CityManager.fourthline
-        when match?(FIFTH_LINE_CITYS, city_name)  then CityManager.fifthline
+    say_with_time "Initializing data ..." do
+      ChinaCity.provinces.each do |province_name, province_code|
+        ChinaCity.list(province_code).each do |city_name, city_code|
+          scope = case
+          when match?(FIRST_LINE_CITYS, city_name)  then CityManager.firstline
+          when match?(SECOND_LINE_CITYS, city_name) then CityManager.secondline
+          when match?(THIRD_LINE_CITYS, city_name)  then CityManager.thirdline
+          when match?(FOURTH_LINE_CITYS, city_name) then CityManager.fourthline
+          when match?(FIFTH_LINE_CITYS, city_name)  then CityManager.fifthline
+          end
+          scope.create(city: city_code, rate: 0.5) if scope
         end
-        scope.create(city: city_code, rate: 0.5) if scope
       end
     end
+    say "Create CityManager Role"
+    UserRole.find_or_create_by(name: 'city_manager', display_name: '城市运营商')
   end
 
   def match?(resource, target)

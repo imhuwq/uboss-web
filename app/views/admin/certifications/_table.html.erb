@@ -38,7 +38,7 @@
 		<% @certifications.each do |obj| %>
 		<tr id="personal_authentication_<%= obj.user_id%>">
 			<td class="text-left">
-				 <%= link_to url_for(controller: 'admin/personal_authentications', action: :show, user_id: obj.user_id) do %>			    
+				 <%= link_to url_for(controller: "admin/#{obj.class.name.tableize}", action: :show, user_id: obj.user_id) do %>			    
 			      <%= image_tag(obj.user.avatar.url(:thumb), size: "80x80", alt: "-") %>　		    
 			      <%= obj.user.identify %>
 			    </div>
@@ -63,11 +63,7 @@
 			  </span>
 			</td>
 			<td>
-        <% if can?(:change_status, Certification) %>
-          <%= link_to '锁定资料', '#', data: { behavior: 'changeStatus', to: 'review', id: obj.id }, class:"btn yellow-btn" if obj.may_review? %>
-  	      <%= link_to '通过', '#', data: { behavior: 'changeStatus', to: 'pass', id: obj.id }, class:'btn' if obj.may_pass?  %>
-  	      <%= link_to '不通过', '#', data: { behavior: 'changeStatus', to: 'no_pass', id: obj.id }, class:'btn red-btn' if obj.may_reject? %>
-        <% end %>
+        <%= render partial: 'admin/certifications/actions', locals: { obj: obj } %>
 			</td>
 		</tr>
 		<% end %>

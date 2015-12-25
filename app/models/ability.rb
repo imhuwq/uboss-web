@@ -47,6 +47,8 @@ class Ability
     cannot :manage, Order
     cannot :manage, PersonalAuthentication
     cannot :manage, EnterpriseAuthentication
+    cannot :added, CityManager
+    cannot :revenues, CityManager
   end
 
   def grant_permissions_to_offical_senior(user)
@@ -97,6 +99,13 @@ class Ability
     can :create, WithdrawRecord, user_id: user.id
     can :manage, BankCard, user_id: user.id
     can :read, Product, user_id: user.id
+  end
+
+  def grant_permissions_to_city_manager user
+    can :manage, CityManagerAuthentication, user_id: user.id
+    can :added, CityManager, user_id: user.id
+    can :revenues, CityManager, user_id: user.id
+    cannot :change_status, Certification
   end
 
   private
