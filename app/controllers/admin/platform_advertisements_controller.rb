@@ -1,6 +1,7 @@
 class Admin::PlatformAdvertisementsController < AdminController
 
 	authorize_resource
+  before_filter :get_platform_advertisement, only: [:show, :edit, :change_status, :update]
 
 	def index
 		 @platform_advertisements = Advertisement.where(platform_advertisement: true).order("updated_at DESC").page(params[:page] || 1)
@@ -26,11 +27,9 @@ class Admin::PlatformAdvertisementsController < AdminController
 	end
 
 	def edit
-    @platform_advertisement = Advertisement.where(platform_advertisement: true).find(params[:id])
 	end
 
 	def update
-    @platform_advertisement = Advertisement.where(platform_advertisement: true).find(params[:id])
     if @platform_advertisement.update(platform_advertisement_params)
       flash[:success] = '修改成功'
     else
@@ -53,7 +52,7 @@ class Admin::PlatformAdvertisementsController < AdminController
 		if request.xhr?
 			flash.now[:success] = @notice
 			flash.now[:error] = @error
-			render(partial: 'platform_advertisements', locals: { platform_advertisements: PlatformAdvertisement.all })
+			render(partial: 'platform_advertisements', locals: { platform_advertisements: Advertisement.where(platform_advertisement: true).order("updated_at DESC").page(params[:page] || 1) })
 		else
 			flash[:success] = @notice
 			flash[:error] = @error
@@ -66,5 +65,9 @@ class Admin::PlatformAdvertisementsController < AdminController
 	def platform_advertisement_params
 		params.require(:advertisement).permit(:advertisement_url,:avatar, :status)
 	end
+
+  def get_platform_advertisement
+    @platform_advertisement = Advertisement.where(platform_advertisement: true).find(params[:id])
+  end
 
 end
