@@ -59,11 +59,7 @@
 	  </div>
 	<% end %>
 </div>
-<% unless action_name == 'hots' %>
-<div class="gap-lr m-bottom10"> 
-  <%= render partial: 'ad_banner_slider', locals: { seller: @seller } %>
-</div>
-<% end %>
+
 
 
 <div class="bg-white m-bottom10">
@@ -81,11 +77,8 @@
       </div>
     </div><!-- #category-container -->
     <% end %>
-    <div class="tab-content" id="product-container" 
-    <% unless action_name == 'hots' %> 
-    style="display: block;"
-    <% end %>
-     >
+    <% if action_name == 'hots' %> 
+    <div class="tab-content" id="product-container" style="display: block;">
       <div class="box store-list">
         <% if @products.present? %>
           <%= render partial: 'product', collection: @products %>
@@ -98,9 +91,29 @@
         <div class="load-more" data-container='.store-list' data-ele='.p-item' data-ref='<%= request.path %>'>加载更多</div>
       <% end %>
     </div><!-- #product-container -->
+    <% else %>
+    <div class="tab-content" id="product-container"  >
+      <div class="box store-list">
+        <% if @products.present? %>
+          <%= render partial: 'product', collection: @products %>
+        <% else %>
+          <h2 class="page-title text-center">店家正在准备好货，敬请期待</h2>
+        <% end %>   
+      </div><!-- box -->
+      <% if @products.size > 6 %>
+        <br />
+        <div class="load-more" data-container='.store-list' data-ele='.p-item' data-ref='<%= request.path %>'>加载更多</div>
+      <% end %>
+    </div><!-- #product-container -->
+    <% end %>
+      
   </div><!-- tab-container -->  
 </div><!-- bg-white -->
-
+<% unless action_name == 'hots' %>
+<div class="gap-lr m-bottom10"> 
+  <%= render partial: 'ad_banner_slider', locals: { seller: @seller } %>
+</div>
+<% end %>
 
 
 
