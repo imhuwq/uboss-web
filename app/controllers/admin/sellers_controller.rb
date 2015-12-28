@@ -5,7 +5,9 @@ class Admin::SellersController < AdminController
   def index
     authorize! :read, :sellers
     @sellers = User.role('seller')
-    @sellers = @sellers.where(agent_id: current_user.id) if !current_user.is_super_admin?
+    if cannot?(:handle, :sellers)
+      @sellers = @sellers.where(agent_id: current_user.id)
+    end
     @sellers = @sellers.page(params[:page] || 1).per(15)
   end
 
@@ -43,6 +45,7 @@ class Admin::SellersController < AdminController
   end
 
   def update_service_rate
+    authorize! :update_service_rate, :uboss_seller
     user_info = UserInfo.find_by(user_id: params['seller']['id'])
     to_service_rate = params['seller']['service_rate']
     if to_service_rate.present? && user_info.present?

@@ -1,8 +1,11 @@
 class Admin::UsersController < AdminController
-  load_and_authorize_resource
+
+  before_action :authorize_user_managing_permissions, only: [:show, :new, :create, :edit, :update]
+  before_action :set_user, only: [:show, :edit, :update]
 
   def index
-    @users = append_default_filter @users.admin
+    authorize! :handle, User
+    @users = append_default_filter User.accessible_by(current_ability)
   end
 
   def show
@@ -35,6 +38,14 @@ class Admin::UsersController < AdminController
   end
 
   private
+
+  def authorize_user_managing_permissions
+    authorize! :manage, User
+  end
+
+  def set_user
+    @user = User.find(params[:id])
+  end
 
   def resource_params
     permit_keys = [:password, :password_confirmation, :email, :mobile, :nickname, user_role_ids: []]

@@ -2,8 +2,10 @@ class Ability
 
   include CanCan::Ability
 
+  attr_reader :user
+
   def initialize(user)
-    user ||= User.new # for guest user (not logged in)
+    @user ||= User.new # for guest user (not logged in)
     roles = user.user_roles
     if user.admin? && roles.present?
       begin
@@ -37,7 +39,28 @@ class Ability
     cannot :create, Product
     cannot :update, Product
     cannot :change_status, Product
+    cannot :manage, Product
+    cannot :manage, :authentications
     cannot :manage, BankCard
+    cannot :manage, WithdrawRecord
+    cannot :manage, Order
+    cannot :manage, User
+    cannot :manage, PersonalAuthentication
+    cannot :manage, EnterpriseAuthentication
+  end
+
+  def grant_permissions_to_offical_senior(user)
+    senior_permissions
+    financial_permissions
+    can :update_service_rate, :uboss_seller
+  end
+
+  def grant_permissions_to_offical_financial(user)
+    financial_permissions
+  end
+
+  def grant_permissions_to_offical_operating(user)
+    operating_permissions
   end
 
   def grant_permissions_to_seller user
@@ -71,8 +94,35 @@ class Ability
     can :read,   WithdrawRecord, user_id: user.id
     can :create, WithdrawRecord, user_id: user.id
     can :manage, BankCard, user_id: user.id
-
     can :read, Product, user_id: user.id
+  end
+
+  private
+
+  def senior_permissions
+    can :manage, User
+  end
+
+  def financial_permissions
+    can :manage, WithdrawRecord
+    can :manage, SharingIncome
+    can :manage, DivideIncome
+    can :manage, DivideIncome
+    can :manage, SellingIncome
+    can :manage, Transaction
+  end
+
+  def operating_permissions
+    can :manage, :agents
+    can :read, :sellers
+    can :handle, :sellers
+    can :read, Order
+    can :read, Product
+    can :handle, User
+    can :read, User
+    can :manage, PersonalAuthentication
+    can :manage, EnterpriseAuthentication
+    can :manage, :authentications
   end
 
 end

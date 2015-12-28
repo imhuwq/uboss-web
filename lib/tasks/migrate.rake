@@ -1,5 +1,12 @@
 namespace :migrate do
 
+  desc 'Migrate new roles'
+  task user_roles: :environment do
+    UserRole.create(name: 'offical_senior',    display_name: 'UBOSS高级管理员')
+    UserRole.create(name: 'offical_financial', display_name: 'UBOSS财务')
+    UserRole.create(name: 'offical_operating', display_name: 'UBOSS运营')
+  end
+
   desc 'Migrate order_item privilege_info to preferentials_privileges'
   task order_item_preferentials: :environment do
     order_items = OrderItem.where('privilege_amount > 0 AND sharing_node_id IS NOT NULL AND created_at < ?',

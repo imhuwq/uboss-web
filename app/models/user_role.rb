@@ -1,6 +1,6 @@
 class UserRole < ActiveRecord::Base
 
-  ROLE_NAMES = %w(super_admin seller agent)
+  ROLE_NAMES = %w(super_admin seller agent offical_senior offical_financial offical_operating)
 
   belongs_to :user
   has_many :user_role_relations, dependent: :destroy
@@ -9,16 +9,12 @@ class UserRole < ActiveRecord::Base
   validates :name, uniqueness: true, inclusion: { in: ROLE_NAMES }
 
   class << self
-    def agent
-      find_by(name: 'agent')
-    end
-
-    def super_admin
-      find_by(name: 'super_admin')
-    end
-
-    def seller
-      find_by(name: 'seller')
+    ROLE_NAMES.each do |role|
+      class_eval <<-RUBY, __FILE__, __LINE__+1
+        def #{role}
+          @#{role} ||= find_by(name: '#{role}')
+        end
+      RUBY
     end
   end
 
