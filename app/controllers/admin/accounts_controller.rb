@@ -52,7 +52,7 @@ class Admin::AccountsController < AdminController
     user_params = params.require(:user).permit(:email, :current_password)
     if current_user.update_with_password(user_params)
       current_user.send_confirmation_instructions
-      flash.now[:notice] = '请查看您的邮箱，几分钟后，您将收到确认邮箱地址的电子邮件。'
+      flash[:notice] = '请查看您的邮箱，几分钟后，您将收到确认邮箱地址的电子邮件。'
       redirect_to edit_admin_account_path
     else
       flash.now[:error] = model_errors(current_user).join("<br/>")
