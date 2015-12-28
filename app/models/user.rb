@@ -75,9 +75,10 @@ class User < ActiveRecord::Base
   enum authenticated: {no: 0, yes: 1}
 
   before_destroy do # prevent destroy official account
-    if login == OFFICIAL_ACCOUNT_LOGIN
-      false
-    end
+    false if login == OFFICIAL_ACCOUNT_LOGIN
+  end
+  before_update do
+    false if login == OFFICIAL_ACCOUNT_LOGIN && changes.include?(:login)
   end
   before_validation :ensure_authentication_token, :ensure_privilege_rate
   before_create :set_mobile, :set_default_role
