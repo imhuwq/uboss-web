@@ -5,7 +5,8 @@ module ApplicationHelper
   end
 
   def product_show?
-    (controller_name == 'products' || controller_name == 'service_products') && action_name == 'show'
+    ((controller_name == 'products' || controller_name == 'service_products') && action_name == 'show') ||
+      (controller_name == 'stores' && params[:type] == "service")
   end
 
   def countdown_time(time)
