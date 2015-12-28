@@ -139,7 +139,7 @@ zh-CN:
         express_name: 快递公司
       seller:
         <<: *attributes
-      platform_advertisement:
+      advertisement:
         advertisement_url: 广告链接
         asset_img: 广告图片
   simple_captcha:

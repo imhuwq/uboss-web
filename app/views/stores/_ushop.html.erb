@@ -16,37 +16,64 @@
   </div>
   <br />
 <% end %>
+<div class="store-category-cover">
+  <div class="cover"><img src='<%= @seller.avatar_url(:w120) %>' /></div>   
+  <div class="content">
 
-<% if @seller.categories.size > 0 %>
-  <div class="bg-white">
-    <div class="store-like">
+    <h3 class="name"><%= @seller.store_name %></h3>
+
+    <p>
+      <small>
+        <span class="main-color"><%= number_to_percentage(@seller.good_reputation_rate, precision: 0) %></span> 好评（<%= @seller.total_reputations %>）
+      </small>
+    </p>    
+
+    <% if @seller.store_short_description.present?  %>
+      <p class="gray-color text-cut"><%= @seller.store_short_description %></p>
+    <% end %>    
+  </div>
+</div><!-- store-category-cover -->
+
+
+<div class="gap-lr m-bottom10"> 
+  <%= render partial: 'ad_banner_slider', locals: { seller: @seller } %>
+</div>
+
+
+
+
+
+
+
+  <div class="bg-white m-bottom10">
+  <div class="tab-nav category-nav">
+    <div class="tab active" title="#category-container"><span>分类</span></div>
+    <div class="tab" title="#product-container"><span>全部商品</span></div>
+  </div>
+  <div class="tab-container">
+    <div class="tab-content category-list" id="category-container" style="display: block;">
       <div class="box">
-        <div class="box-w100">
-          <div class="page-title like-color">
-            <%= link_to hots_store_path(@seller), class: 'more-bar' do %>
-              more <%= image_tag 'mobile/arrow-right.png' %>
-          <% end %>
-          商品分类
-          </div>
-        </div>
         <%= render partial: 'categories', collection:  @seller.categories, as: :category %>
       </div>
-    </div>
-  </div>
-  <br />
-<% end %>
+    </div><!-- #category-container -->
+    <div class="tab-content" id="product-container">
+      <div class="box store-list">
+        <% if @products.present? %>
+          <%= render partial: 'product', collection: @products %>
+        <% else %>
+          <h2 class="page-title text-center">店家正在准备好货，敬请期待</h2>
+        <% end %>   
+      </div><!-- box -->
+      <% if @products.size > 6 %>
+        <br />
+        <div class="load-more" data-container='.store-list' data-ele='.p-item' data-ref='<%= request.path %>'>加载更多</div>
+      <% end %>
+    </div><!-- #product-container -->
+  </div><!-- tab-container -->  
+</div><!-- bg-white -->
 
 <div class="store-cover text-center" style="<%= "background-image:url('#{@seller.store_cover.url(:w640)}')" if @seller.user_info.store_cover_identifier.present? %>">
   <div class="content">
-    <h2 class="name"><%= @seller.store_name %></h2>
-
-    <% if @seller.store_short_description.present?  %>
-      <p class="gray-color"><%= @seller.store_short_description %></p>
-    <% end %>
-
-    <p>
-      <span class="like-color"><%= number_to_percentage(@seller.good_reputation_rate, precision: 0) %></span> 好评（<%= @seller.total_reputations %>）
-    </p>
 
     <% if qr_sharing? %>
       <p class="text-center border-top nogap">
@@ -74,30 +101,5 @@
   </div>
 </div><!-- store-cover -->
 
-<br />
 
-<div class="bg-white">
-  <div class="box store-list">
-    <div class="box-w100">
-      <% if params[:action] == 'hots' %>
-        <div class="page-title like-color">热销商品</div>
-      <% elsif params[:action] == 'favours' %>
-        <div class="page-title like-color">我喜欢的</div>
-      <% else %>
-        <div class="page-title">全部商品</div>
-      <% end %>
-    </div>
 
-    <% if @products.present? %>
-      <%= render partial: 'product', collection: @products %>
-    <% else %>
-      <h2 class="page-title text-center">店家正在准备好货，敬请期待</h2>
-    <% end %>
-
-  </div>
-</div>
-
-<% if @products.size > 6 %>
-  <br />
-  <div class="load-more" data-container='.store-list' data-ele='.p-item' data-ref='<%= request.path %>'>加载更多</div>
-<% end %>
