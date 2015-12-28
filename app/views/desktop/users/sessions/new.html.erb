@@ -27,6 +27,10 @@
 
   <div class="lcap-box">
     <%= simple_form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
+      <% if params[:redirect] == 'discourse' %>
+        <%= hidden_field_tag 'redirect', params[:redirect] %>
+        <%= hidden_field_tag 'redirectUrl', params[:redirectUrl] %>
+      <% end %>
       <%= f.input_field :login, class:'input-block', required: false, autofocus: true,
         id: 'new_mobile', placeholder: '登陆手机' %>
       <br />
@@ -62,6 +66,10 @@
   </div><!--lcap-box -->
   <div class='lpwd-box'>
     <%= simple_form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
+      <% if params[:redirect] == 'discourse' %>
+        <%= hidden_field_tag 'redirect', params[:redirect] %>
+        <%= hidden_field_tag 'redirectUrl', params[:redirectUrl] %>
+      <% end %>
       <%= f.input_field :login_identifier, class:'input-block', required: false, autofocus: true,
         id: 'new_mobile', placeholder: '手机/邮箱' %>
       <br />
