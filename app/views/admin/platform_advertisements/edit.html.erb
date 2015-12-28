@@ -9,7 +9,7 @@
 </div><!-- container -->
 <br />
 <div class="container nogap">
-    <%= horizon_form_for @platform_advertisement, url: {action: :update} do |f| %>
+    <%= horizon_form_for @platform_advertisement, url: {controller: 'admin/platform_advertisements', action: :update} do |f| %>
 
       <%= render 'fields', f: f %>
       <br />

@@ -140,7 +140,7 @@ zh-CN:
         express_name: 快递公司
       seller:
         <<: *attributes
-      platform_advertisement:
+      advertisement:
         advertisement_url: 广告链接
         asset_img: 广告图片
   simple_captcha:
@@ -175,6 +175,7 @@ zh-CN:
     authentications: 认证
     user_addresses: 地址库
     categories: 商品分组
+    platform_advertisements: 平台广告
   activerecord:
     models:
       withdraw_record: 提现记录

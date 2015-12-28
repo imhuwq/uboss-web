@@ -1,18 +1,22 @@
 class Admin::PlatformAdvertisementsController < AdminController
 
-	load_and_authorize_resource
+	authorize_resource
+  before_filter :get_platform_advertisement, only: [:show, :edit, :change_status, :update]
 
 	def index
-		 PlatformAdvertisement.accessible_by(current_ability).order("updated_at DESC").page(params[:page] || 1)
+		 @platform_advertisements = Advertisement.where(platform_advertisement: true).order("updated_at DESC").page(params[:page] || 1)
 	end
 
 	def show
 	end
 
 	def new
+    @platform_advertisement = Advertisement.new
 	end
 
 	def create
+    @platform_advertisement = Advertisement.new(platform_advertisement_params)
+    @platform_advertisement.platform_advertisement = true
 		if @platform_advertisement.save
 			flash[:success] = "创建成功"
 			redirect_to action: :index
@@ -26,6 +30,12 @@ class Admin::PlatformAdvertisementsController < AdminController
 	end
 
 	def update
+    if @platform_advertisement.update(platform_advertisement_params)
+      flash[:success] = '修改成功'
+    else
+      flash[:error] = '修改失败'
+    end
+    redirect_to action: :index
 	end
 
 	def change_status
@@ -42,7 +52,7 @@ class Admin::PlatformAdvertisementsController < AdminController
 		if request.xhr?
 			flash.now[:success] = @notice
 			flash.now[:error] = @error
-			render(partial: 'platform_advertisements', locals: { platform_advertisements: PlatformAdvertisement.all })
+			render(partial: 'platform_advertisements', locals: { platform_advertisements: Advertisement.where(platform_advertisement: true).order("updated_at DESC").page(params[:page] || 1) })
 		else
 			flash[:success] = @notice
 			flash[:error] = @error
@@ -53,7 +63,11 @@ class Admin::PlatformAdvertisementsController < AdminController
 	private
 	# Never trust parameters from the scary internet, only allow the white list through.
 	def platform_advertisement_params
-		params.require(:platform_advertisement).permit(:advertisement_url,:avatar, :status)
+		params.require(:advertisement).permit(:advertisement_url,:avatar, :status)
 	end
+
+  def get_platform_advertisement
+    @platform_advertisement = Advertisement.where(platform_advertisement: true).find(params[:id])
+  end
 
 end
