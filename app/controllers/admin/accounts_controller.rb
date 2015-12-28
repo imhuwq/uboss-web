@@ -74,7 +74,7 @@ class Admin::AccountsController < AdminController
         MobileCaptcha.where(mobile: mobile).delete_all
         redirect_to edit_admin_account_path, notice: "绑定手机 #{mobile} 成功"
       else
-        flash.now[:error] = model_errors(resource).join('<br/>') if resource.errors.any?
+        flash.now[:error] = model_errors(current_user).join('<br/>') if current_user.errors.any?
         render :binding_mobile
       end
     }.if_failure {
