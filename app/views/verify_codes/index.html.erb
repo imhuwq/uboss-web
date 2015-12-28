@@ -11,26 +11,22 @@
 <% @service_orders.each do |order| %>
   <div class="order-list" timestamp='<%= order.created_at %>'>
     <div class="seller-box">
-      <div class="text-cut">商家：<%= order.seller.identify %></div>
+      <div class="text-cut gray-color">商家：<%= order.seller.identify %></div>
     </div>
 
     <% order.order_items.each do |order_item| %>
-      <div class="order-box">
-        <%= link_to account_verify_code_path(id: order_item.id) do %>
+      <%= link_to account_verify_code_path(id: order_item.id) do %>
+        <div class="order-box">
           <div class="cover">
             <%= image_tag order_item.item_product.image_url('w120') %>
           </div><!-- order-cover -->
-        <% end %>
-        <div class="content">
-          <div class="price text-right gray-color">
-            <p class="number gray-color">
-              x<%= order_item.try(:amount) %>
-            </p>
-          </div><!-- price -->
-          <div class="name"><%= order_item.product_name %></div>
-          <div>有效期至：<%= strftime(order_item.product.deadline) %></div>
-        </div><!-- content -->
-      </div><!-- order-box -->
+          <div class="content">
+            <div class="text-cut gray-color f14"><%= order_item.product_name %></div>
+            <div class="f14 pt5" style="color:#43c3aa;">有效期至：<%= strftime(order_item.product.deadline) %></div>
+            <div class="gray-color f14 pt5">数量：<%= order_item.amount %></div>
+          </div><!-- content -->
+        </div><!-- order-box -->
+      <% end %>
     <% end %>
   </div>
 <% end %>

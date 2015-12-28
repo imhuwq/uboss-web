@@ -48,7 +48,7 @@
   <% end %>
 
   <div class="price-box <%= 'gray-color' if service_order.state == 'closed' %> ">
-    合计：￥<%= service_order.pay_amount %><small class="gray-color">（包含运费：￥<%= service_order.ship_price %>）</small>
+    合计：￥<%= service_order.pay_amount %><small class="gray-color"></small>
   </div><!-- price-box -->
 
   <% if service_order.state == 'unpay' %>

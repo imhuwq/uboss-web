@@ -30,8 +30,8 @@ h4{font-size: 15px; line-height: 25px; font-weight: normal;}
 .bg-white{ background:#fff;}
 .bg-main{ background: $brand-primary;color: #fff;}
 
-.page-title{ 
-    color: $brand-primary; 
+.page-title{
+    color: $brand-primary;
     padding: 10px 0;
     font-size: 14px;
 }
@@ -41,7 +41,7 @@ h4{font-size: 15px; line-height: 25px; font-weight: normal;}
   float: right;
   img{ height: 15px; margin-left: 5px;}
  }
-.lock{ 
+.lock{
     height: 100%; overflow: hidden;
 }
 .main-color{ color: $brand-primary; }
@@ -72,11 +72,14 @@ h4{font-size: 15px; line-height: 25px; font-weight: normal;}
 
 .main-color{ color: $brand-primary; }
 .like-color{ color: #f9ba10;}
-.gray-color{ color:#999}
+.gray-color{ color:#999;}
+.mint-color{ color:#43c3aa;}
 
 .hidden {
   display: none;
 }
+
+.f14{ font-size: 14px; }
 
 .pt5 { padding-top: 5px; }
 .pt10{ padding-top: 10px; }
@@ -90,5 +93,3 @@ h4{font-size: 15px; line-height: 25px; font-weight: normal;}
 .borderLeft  { border-left:1px solid #f6f6f6; }
 .borderRight { border-right:1px solid #f6f6f6; }
 .borderBottom{ border-bottom:1px solid #f6f6f6; }
-
-

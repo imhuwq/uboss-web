@@ -78,11 +78,11 @@
     <table>
       <% @order_item.verify_codes.each do |verify_code| %>
         <tr>
-          <td><%= verify_code.code %></td>
+          <td class="pl10 f14 mint-color"><%= verify_code.code %></td>
           <% if verify_code.verified %>
-            <td>已消费</td>
+            <td class="pull-right pr10">已消费</td>
           <% else %>
-            <td style="color:#ff0000;">待消费</td>
+            <td class="pull-right pr10" style="color:#ff0000;">待消费</td>
           <% end %>
         </tr>
       <% end %>

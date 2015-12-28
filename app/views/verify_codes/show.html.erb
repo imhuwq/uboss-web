@@ -5,12 +5,32 @@
 <%= content_for :header_left do %>
   <a class="back" onclick="history.go(-1)"><%= image_tag 'mobile/right.png' %></a>
 <% end %>
-
 <br />
 
-<div class="order-list">
-  <span>验证券密码：</span>
-  <% @verify_codes.each do |verify_code| %>
-    <p><%= verify_code.code %></p>
-  <% end %>
+<!--
+<% @verify_codes.each do |verify_code| %>
+  <div class="order-list">
+    <span class="pl10 page-title">验证券密码：</span>
+    <span class="pl10 page-title"><%= verify_code.code %></span>
+    <span class="pull-right pr10"><%= verify_code.verified ? '已消费' : '未使用' %></span>
+  </div>
+<% end %>
+-->
+
+<div class="bg-white gap">
+  <table>
+    <% @verify_codes.each_with_index do |verify_code, index| %>
+      <tr>
+        <% if index == 0 %>
+          <td rowspan=<%= @verify_codes.size %> style="width:100px;font-size:15px;color:#A2A5A5;">
+            <span>验证券密码：</span>
+          </td>
+        <% end %>
+        <td>
+          <span style="font-size:15px;color:#43C3AA;"><%= verify_code.code %></span>
+        </td>
+        <td><%= verify_code.verified ? '已消费' : '未使用' %></td>
+      </tr>
+    <% end %>
+  </table>
 </div>
