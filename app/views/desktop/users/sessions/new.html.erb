@@ -15,8 +15,6 @@
 <div class='login-container <%= @using_captcha ? 'using-cap' : 'using-pwd' %>'>
   <% if params[:redirect] == 'discourse' %>
     <h2><%= Rails.application.secrets.metas["discourse_title"] %></h2>
-    <%= hidden_field_tag 'redirect', params[:redirect] %>
-    <%= hidden_field_tag 'redirectUrl', params[:redirectUrl] %>
   <% end %>
 
   <div class='login-type-acs'>
