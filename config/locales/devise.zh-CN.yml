@@ -45,6 +45,7 @@ zh-CN:
     sessions:
       signed_in: "登录成功."
       signed_out: "退出成功."
+      already_signed_out: "已经退出成功."
       user:
         invalid_captcha: 验证码错误
     unlocks:
