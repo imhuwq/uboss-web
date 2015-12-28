@@ -1,0 +1,9 @@
+<p>Welcome <%= @email %>!</p>
+
+<p>您可以通过下面的链接确认你的邮箱:</p>
+
+<p><%= link_to '去确认我的邮箱地址', confirmation_url(@resource, confirmation_token: @token) %></p>
+
+<p>如果您未在UBOSS提交邮箱修改，请忽略此邮件。</p>
+
+<p>如果您未打开此确认链接，我们将不会为此邮箱关联任何UBOSS账户。</p>

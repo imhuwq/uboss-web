@@ -1,0 +1,13 @@
+<h2>Welcome <%= @email %></h2>
+
+<h2>欢迎您注册UBOSS</h2>
+
+<p> 您在UBOSS提交此邮箱的注册申请, 点击下面的注册链接以完成注册。</p>
+
+<p><%= link_to '去注册UBOSS账户', @confirm_url  %> </p>
+
+<p>如果链接失效，您可在UBOSS邮件注册页面<%= link_to "重新发送确认邮件", new_user_confirmation_url(type: 'regist') %>。</p>
+
+<p>如果您未在UBOSS提交注册申请，请忽略此邮件。</p>
+
+<p>如果您未打开注册链接，并设置密码，UBOSS将不会为你创建此邮箱的任何账户。</p>

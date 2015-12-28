@@ -1,19 +1,22 @@
-<h2>Change your password</h2>
+<div class='login-container'>
 
-<%= simple_form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :put }) do |f| %>
-  <%= f.error_notification %>
+  <h3>设置密码</h3>
 
-  <%= f.input :reset_password_token, as: :hidden %>
-  <%= f.full_error :reset_password_token %>
+  <%= simple_form_for(resource, as: resource_name, url: user_password_path, html: { method: :put }) do |f| %>
 
-  <div class="form-inputs">
-    <%= f.input :password, label: "New password", required: true, autofocus: true, hint: ("#{@minimum_password_length} characters minimum" if @minimum_password_length) %>
-    <%= f.input :password_confirmation, label: "Confirm your new password", required: true %>
-  </div>
+    <%= f.input :reset_password_token, as: :hidden %>
 
-  <div class="form-actions">
-    <%= f.button :submit, "Change my password" %>
-  </div>
-<% end %>
+    <%= f.input :password, label: false, required: true, autofocus: true,
+      input_html: { placeholder: '密码' },
+      hint: ("至少#{@minimum_password_length}位数字或字母组合" if @minimum_password_length) %>
+    <%= f.input :password_confirmation, label: false, required: true,
+      input_html: { placeholder: '确认密码' } %>
 
-<%= render "users/shared/links" %>
+    <%= f.button :submit, "修改密码", class: 'btn btn-block btn-large' %>
+  <% end %>
+  <br />
+  <%= link_to "登录", new_session_path(resource_name), class: 'btn btn-block btn-link' %>
+  <br />
+  <%= link_to "没有收到邮箱确认邮件?", new_password_path(resource_name), class: 'btn btn-block btn-link' %><br />
+
+</div>

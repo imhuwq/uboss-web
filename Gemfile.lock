@@ -201,6 +201,8 @@ GEM
       responders
       thread_safe (~> 0.1)
       warden (~> 1.2.3)
+    devise-async (0.10.1)
+      devise (~> 3.2)
     domain_name (0.5.25)
       unf (>= 0.0.5, < 1.0.0)
     eco (1.0.0)
@@ -538,6 +540,7 @@ DEPENDENCIES
   dalli
   database_cleaner
   devise
+  devise-async
   eco
   enum_help
   enumerize

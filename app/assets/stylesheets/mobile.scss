@@ -43,3 +43,13 @@
     background-color: lighten(#43c3aa, 10%);
   }
 }
+.clearfix:before, .clearfix:after {
+  content: " ";
+  display: table;
+}
+.clearfix:after {
+  clear: both;
+}
+.clear {
+  clear: both;
+}

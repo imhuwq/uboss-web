@@ -9,6 +9,7 @@ gem "pg"
 
 # Reusable logic
 gem 'devise'
+gem "devise-async"
 gem 'china_sms'
 gem "cancancan", "~> 1.10"
 gem "kaminari"

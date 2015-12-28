@@ -34,4 +34,18 @@ module CryptService extend self
                               cgi_data: ENV.to_hash)
     nil
   end
+
+  def message_verifier
+    @verifier ||= ActiveSupport::MessageVerifier.new(Rails.application.secrets.crypt_key)
+  end
+
+  def generate_message(message)
+    message_verifier.generate(message)
+  end
+
+  def verify_message(message)
+    message_verifier.verify(message)
+  rescue ActiveSupport::MessageVerifier::InvalidSignature
+    nil
+  end
 end
