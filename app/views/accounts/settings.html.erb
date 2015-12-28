@@ -25,7 +25,12 @@
 
   <a href="#">
     绑定手机
-    <span class="pull-right  main-color"><%= current_user.login %></span>
+    <span class="pull-right  main-color"><%= current_user.login || '未绑定' %></span>
+  </a>
+
+  <a href="#">
+    绑定邮箱
+    <span class="pull-right  main-color"><%= current_user.email || '未绑定' %></span>
   </a>
 
   </div><!-- setting-list -->
