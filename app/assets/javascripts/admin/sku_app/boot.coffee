@@ -43,3 +43,8 @@ jQuery ($) ->
       StockSku.privilege_view = new StockSku.Views.Privilege(collection: StockSku.Collections.stock_collection)
       StockSku.stock_view.trigger('initShow')
       StockSku.privilege_view.trigger('initShow')
+
+
+  if $('#category').length > 0
+    category = new StockSku.Views.Category
+    category.render()

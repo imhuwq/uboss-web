@@ -34,6 +34,12 @@ GIT
       sprockets-rails
 
 GIT
+  remote: git://github.com/xEasy/rongcloud.git
+  revision: d38aa6bb0a8057fef2573df2cfce6b092a61d9b9
+  specs:
+    rongcloud (0.1.4)
+
+GIT
   remote: git://github.com/xEasy/wx_pay.git
   revision: cd0a652fb04c1cd314675a6d4f3e505d4120351b
   specs:
@@ -50,7 +56,7 @@ PATH
 GEM
   remote: https://ruby.taobao.org/
   specs:
-    aasm (4.1.1)
+    aasm (4.5.0)
     actionmailer (4.2.2)
       actionpack (= 4.2.2)
       actionview (= 4.2.2)
@@ -98,6 +104,7 @@ GEM
       json
     awesome_nested_set (3.0.2)
       activerecord (>= 4.0.0, < 5)
+    awesome_print (1.6.1)
     axlsx (2.0.1)
       htmlentities (~> 4.3.1)
       nokogiri (>= 1.4.1)
@@ -202,6 +209,8 @@ GEM
       execjs
     eco-source (1.1.0.rc.1)
     enum_help (0.0.14)
+    enumerize (1.0.0)
+      activesupport (>= 3.2)
     erubis (2.7.0)
     eventmachine (1.0.7)
     execjs (2.5.2)
@@ -304,6 +313,10 @@ GEM
       omniauth (~> 1.0)
       omniauth-oauth2 (~> 1.0)
     orm_adapter (0.5.0)
+    paper_trail (4.0.0)
+      activerecord (>= 3.0, < 6.0)
+      activesupport (>= 3.0, < 6.0)
+      request_store (~> 1.1)
     pg (0.18.2)
     polyamorous (1.2.0)
       activerecord (>= 3.0)
@@ -392,6 +405,7 @@ GEM
     redis-store (1.1.5)
       redis (>= 2.2)
     ref (1.0.5)
+    request_store (1.2.1)
     responders (2.1.0)
       railties (>= 4.2.0, < 5)
     rest-client (1.8.0)
@@ -503,6 +517,7 @@ DEPENDENCIES
   airbrake
   amoeba
   awesome_nested_set
+  awesome_print
   axlsx (~> 2.0.1)
   better_errors
   bootstrap-sass
@@ -525,6 +540,7 @@ DEPENDENCIES
   devise
   eco
   enum_help
+  enumerize
   factory_girl_rails
   font-awesome-sass (~> 4.4.0)
   hiredis
@@ -539,6 +555,7 @@ DEPENDENCIES
   mock_redis
   nested_form
   omniauth-wechat-oauth2
+  paper_trail (~> 4.0.0)
   pg
   pry-byebug
   pry-rails
@@ -553,6 +570,7 @@ DEPENDENCIES
   redis (~> 3.0)
   redis-namespace
   redis-rails
+  rongcloud!
   sanitize
   sass-rails (~> 5.0)
   select2-rails (~> 3.5.9.1)

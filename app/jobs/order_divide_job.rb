@@ -13,7 +13,6 @@ class OrderDivideJob < ActiveJob::Base
 
   def perform(order)
     @order = order
-    logger.info "Start divide @order: #{order.number}, total_paid: #{order.paid_amount}"
     if not order.reload.signed?
       logger.error "Break divide order: #{@order.number} as it is not signed!"
       raise OrderNotSigned
@@ -24,6 +23,12 @@ class OrderDivideJob < ActiveJob::Base
     end
 
     @order_income = Rails.env.production? ? @order.paid_amount : @order.pay_amount
+    logger.info "Start divide @order: #{order.number}, total_paid: #{@order_income}"
+
+    refunded_money = @order.order_item_refunds.successed.sum(:money)
+    logger.info "Divide order: #{@order.number}, reduce refund money #{refunded_money}"
+    @order_income -= refunded_money
+
     start_divide_order_paid_amount
 
     logger.info "Done divide order: #{@order.number}"
@@ -100,10 +105,13 @@ class OrderDivideJob < ActiveJob::Base
   end
 
   def reward_sharing_users(order_item, &block)
+    return false if order_item.order_item_refunds.successed.where('money > 0').exists?
+
     sharing_node = order_item.sharing_node
     return false if sharing_node.blank?
+
     product = order_item.product
-    product_inventory = order_item.product_inventory
+    product_inventory = order_item.nestest_version_inventory
 
     LEVEL_AMOUNT_FIELDS.each_with_index do |key, index|
       reward_amount = get_reward_amount_by_product_level_and_order_item(product_inventory, key, order_item)
@@ -130,8 +138,14 @@ class OrderDivideJob < ActiveJob::Base
 
   def get_reward_amount_by_product_level_and_order_item(product_inventory, level, order_item)
     reward_amount = product_inventory.read_attribute(level)
-    if level == :share_amount_lv_1 && (order_item.privilege_amount > product_inventory.privilege_amount)
-      reward_amount -= (order_item.privilege_amount - product_inventory.privilege_amount)
+    # 减去友情卡贡献的优惠
+    if level == :share_amount_lv_1
+      if order_item.sharer_privilege_amount > 0 && order_item.sharer_privilege_amount <= reward_amount
+        reward_amount -= order_item.sharer_privilege_amount
+      # 兼容处理旧的订单优惠
+      elsif order_item.privilege_amount > product_inventory.privilege_amount
+        reward_amount -= (order_item.privilege_amount - product_inventory.privilege_amount)
+      end
     end
     reward_amount
   end

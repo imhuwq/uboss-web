@@ -2,12 +2,15 @@
     overflow: hidden;
     background: #fff;
     border-bottom: 1px solid #f6f6f6;
+    display: table;
     li{
-        float:left;
+        display: table-cell;
+        width: 1%;
         a{
             display: block; 
             border-right:1px solid #ddd ;
             padding: 10px;
+            text-align: center;
             color: #888;
             font-size: 13px;
         }
@@ -211,7 +214,7 @@
     }
 }
 .cart-list{
-    margin-bottom: 45px;
+    padding-bottom: 60px;
 }
 .failed-list{
     overflow: hidden;

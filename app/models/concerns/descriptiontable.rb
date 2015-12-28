@@ -24,6 +24,13 @@ module Descriptiontable
     description.content
   end
 
+  def content_images=(images)
+    text = images.map { |image|
+      "<p><img src='#{image}-w640'></p>"
+    }.join('')
+    self.content = text
+  end
+
   def content=(text)
     description.content = Sanitize.fragment(text, WHITE_LIST_CONPONER)
     text

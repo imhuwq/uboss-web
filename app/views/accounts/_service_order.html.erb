@@ -42,7 +42,8 @@
         <%= image_tag service_order.sharing_user.avatar_url(:thumb) %>
       </div>
       <div class="content">
-        <span class="pull-right red-color">-<%= total_privilege_amount(service_order.order_items) %></span><span class="main-color"><%= service_order.sharing_user.identify %></span> 帮你优惠
+        <span class="pull-right red-color">-<%= service_order.total_privilege_amount %></span>
+        <span class="main-color"><%= service_order.sharing_user.identify %></span> 帮你优惠
       </div>
     </div><!-- friend-info -->
   <% end %>

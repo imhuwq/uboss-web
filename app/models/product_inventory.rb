@@ -8,9 +8,9 @@ class ProductInventory < ActiveRecord::Base
   has_many   :order_items
   has_many   :orders, through: :order_items
 
-  validates_presence_of :product
+  validates_presence_of :product, :sku_attributes, if: -> { self.saling }
+  validates_numericality_of :price, :count, greater_than_or_equal_to: 0
   validate :share_amount_total_must_lt_price
-  validate :price_can_not_less_than_zero
 
   scope :saling, -> { where(saling: true) }
   scope :not_saling, -> { where(saling: false) }
@@ -21,9 +21,14 @@ class ProductInventory < ActiveRecord::Base
   # after_create :create_product_properties
   after_commit :update_unpay_order_items, on: :update, if: -> { price_or_share_amount_changes }
 
-  def price_can_not_less_than_zero
-    errors.add(:price,'价格不能小于0') if price < 0
-  end
+  has_paper_trail on: [:update],
+    if: Proc.new { |inventory| inventory.orders.where(state: [1, 3]).exists? },
+    only: [ :price,
+            :share_amount_total,
+            :share_amount_lv_1,
+            :share_amount_lv_2,
+            :share_amount_lv_3,
+            :privilege_amount ]
 
   def saling?
     status == 'published' && saling && count > 0
@@ -52,22 +57,22 @@ class ProductInventory < ActiveRecord::Base
   end
 
   def convert_into_cart_item(buy_count, sharing_code)
-    {
-      seller => [
-        CartItem.new(
-          product_inventory_id: id,
-          seller_id: user_id,
-          count: buy_count,
-          sharing_node: SharingNode.find_by(code: sharing_code)
-        )
-      ]
-    }
+    CartItem.new(
+      product_inventory_id: id,
+      seller_id: user_id,
+      count: buy_count,
+      sharing_node: SharingNode.find_by(code: sharing_code)
+    )
   end
 
   def properties
     @properties ||= sku_attributes.collect do |key, value|
       SkuProperty.new(key, value)
     end
+  end
+
+  def share_and_privilege_amount_total
+    share_amount_lv_3 + share_amount_lv_2 + share_amount_lv_1 + privilege_amount
   end
 
   private
@@ -94,7 +99,7 @@ class ProductInventory < ActiveRecord::Base
   end
 
   def share_amount_total_must_lt_price
-    if (share_amount_lv_3 + share_amount_lv_2 + share_amount_lv_1 + privilege_amount) > price
+    if share_and_privilege_amount_total > price
       errors.add(:share_amount_total, '必须小于对应（商品/规格）的价格')
     end
   end

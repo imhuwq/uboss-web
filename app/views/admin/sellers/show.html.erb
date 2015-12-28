@@ -264,13 +264,18 @@
 
 <script>
 $(window).load(function(){
-	$(".pop-img").click(function(){
-		$("body").append("<div class='pop-bg'><div class='pop-container' style='margin-top:-"+($(this).children("img").height()+20)/2+"px;margin-left:-"+($(this).children("img").width()+20)/2+"px'><div class='pop-content'><img src='"+$(this).attr("data-src")+"'/><div class='pop-close'><i class='fa fa-times'></i></div></div></div></div>");
-		$("html").addClass("pop-html");
+	$("body").on('click','.pop-img',function(){
+		$("html").addClass("lock");		
+		var pop_html="<div class='pop-bg'><div class='pop-container'>"
+		pop_html=pop_html+"<div class='pop'><div class='pop-content'>";
+		pop_html=pop_html+"<img src='"+$(this).attr("data-src")+"'/>"+"<div class='pop-close'><i class='fa fa-times'></i></div></div></div></div>";
+		$("body").append(pop_html)
+	
+		
 	})
 	$("body").on("click",".pop-bg .pop-close",function(){
 		$(".pop-bg").remove();
-		$("html").removeClass("pop-html");
+		$("html").removeClass("lock");
 	})
 })
 $(document).ready(function(){

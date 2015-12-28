@@ -1,6 +1,12 @@
+<%= render 'layouts/flash_alert' if request.xhr? %>
 <div class="box-w70">
   <div class="admin-border admin-border-order-info">
-    <p class='number'>订单编号 : <%= order.number %><!--small class="pull-right"><%= order.username %> 促成的 二级订单</small--!></p>
+    <p class='number'><span class='btn red-btn' style="margin-right:10px;">第一步</span>订单编号 : <%= order.number %>
+    	<!--
+    		<small class="pull-right"><%= order.username %> 促成的 二级订单</small>
+    	-->
+
+    </p>
     <div class="index_list">
       <table class="list-table order_info_tables">
         <thead>
@@ -33,7 +39,7 @@
               <td><%= item.amount %></td>
               <td><%= item.privilege_amount * item.amount %></td>
               <td>
-                <%=item.pay_amount%>
+                <%= item.pay_amount %>
               </td>
             </tr>
           <% end %>
@@ -43,14 +49,19 @@
     <p class="date_time"> <span class="pull-right">快递：<%= order.ship_price %></span> </p>
     <p class='date_time'>下单时间 : <%= order.created_at %><span class="pull-right">实收款： <span class='main-color font-size-max'><%= order.pay_amount %></span>元</span></p>
   </div>
-
   <div class="admin-border admin-border-order-info">
-    <div class='bottom_line'>
-      <p class='logistics_info'>收货及物流信息</p>
-      <p>收货地址 : <%= order.username %>, <%= order.mobile %>, <%= order.address %></p>
-      <p>运送方式 : 快递</p>
-      <p>买家留言 : <%= order.to_seller %></p>
+    <p class='logistics_info'>收货及物流信息</p>
+    <p>收货地址 : <%= order.username %>, <%= order.mobile %>, <%= order.address %></p>
+    <p>运送方式 : 快递</p>
+    <p>买家留言 : <%= order.to_seller %></p>
+  </div>
+
+  <div class="admin-border admin-border-order-info address-list-box">
+    <div id="default_addresses">
+      <%= render partial: 'default_address_for_show' %>
     </div>
+
+
     <div class='evaluate'>
       <p>发货时间 : <%= order.shiped_at || '未发货' %></p>
       <p>快递公司 : <%= order.express.try(:name) %></p>
@@ -65,7 +76,7 @@
 <div class="box-w30">
   <div class="admin-border admin-border-order-info">
     <p class='pay_number'>支付流水号 : <%= order.order_charge.pay_serial_number%></p>
-    <p>付款方式 : <%= order.order_charge.payment %></p>
+    <p>付款方式 : <%= order.order_charge.payment_i18n %></p>
     <p>付款时间 : <%= order.order_charge.paid_at %></p>
     <p>付款金额 : <%= order.paid_amount %></p>
   </div>

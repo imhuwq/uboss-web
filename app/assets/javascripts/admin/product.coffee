@@ -22,11 +22,14 @@ $ ->
 
   $('#ordinary_product_carriage_template_id').change (event) ->
     id = this.selectedOptions[0].value
-    $.ajax '/admin/select_carriage_template',
-      type: 'GET'
-      data: { tpl_id: id}
+    if id != ''
+      $.ajax '/admin/select_carriage_template',
+        type: 'GET'
+        data: { tpl_id: id}
+        false
       false
-    false
+    else
+      $('.select_carriage_template').remove()
 
   $('.product_transportation_way').find('input').change (event)->
     if $("label[for='ordinary_product_transportation_way_1']").find('input')[0].checked
@@ -43,7 +46,6 @@ $ ->
       $('#ordinary_product_carriage_template_id_chosen').removeClass('chosen-container-active chosen-with-drop')
       $('#ordinary_product_carriage_template_id_chosen').find('.chosen-single').find('span').text('请选择运费模板...')
       $('#ordinary_product_carriage_template_id option:selected').attr('selected', false)
-
 
   $("label[for='ordinary_product_full_cut']").click (event)->
     if $(this).find('input')[0].checked

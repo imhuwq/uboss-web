@@ -1,13 +1,18 @@
 class StoresController < ApplicationController
 
+  include SharingResource
+
   layout 'mobile'
 
+  before_action :login_app, only: [:show]
   before_action :authenticate_user!, only: [:favours]
   before_action :set_seller, only: [:show, :hots, :favours]
   before_action :get_sharing_node, :set_sharing_link_node, only: [:show, :hots]
 
   def index
-    @products = append_default_filter Product.published.includes(:asset_img), order_column: :updated_at
+    @uboss_seller = User.find_by(login: '19812345678')
+    @recommend_ids = @uboss_seller.store_short_description.split(',')
+    @stores = User.where(id: @recommend_ids)
   end
 
   def show
@@ -40,19 +45,6 @@ class StoresController < ApplicationController
       render partial: 'product', collection: @products
     else
       render :show
-    end
-  end
-
-  def get_sharing_node
-    if @store_scode = get_seller_sharing_code(@seller.id)
-      @sharing_node = SharingNode.find_by(code: @store_scode)
-    end
-  end
-
-  def set_sharing_link_node
-    if current_user.present?
-      @sharing_link_node ||=
-        SharingNode.find_or_create_by_resource_and_parent(current_user, @seller)
     end
   end
 

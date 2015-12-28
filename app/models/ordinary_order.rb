@@ -4,22 +4,29 @@ class OrdinaryOrder < Order
   enum state: { unpay: 0, payed: 1, shiped: 3, signed: 4, closed: 5, completed: 6 }
 
   scope :selled, -> { where("orders.state <> 0") }
+  scope :with_refunds, -> {
+    joins(order_items: :order_item_refunds).uniq
+  }
 
   before_create :set_info_by_user_address, :set_ship_price
 
   aasm column: :state, enum: true, skip_validation_on_save: true, whiny_transitions: false do
     state :unpay
-    state :payed, after_enter: [:invoke_order_payed_job]
-    state :shiped, after_enter: :fill_shiped_at
-    state :signed, after_enter: [:fill_signed_at, :active_privilege_card]
+    state :payed
+    state :shiped, after_enter: [:fill_shiped_at, :close_order_item_refund_before_shiping]
+    state :signed, after_enter: [:fill_signed_at, :active_privilege_card, :close_refunds_before_signed]
     state :completed, after_enter: :fill_completed_at
-    state :closed, after_enter: :recover_product_stock
+    state :closed,    after_enter: :recover_product_stock
 
-    event :pay, after_commit: :invoke_official_agent_order_process do
+    event :pay, after_commit: :invoke_order_payed_processes do
       transitions from: :unpay, to: :payed
     end
     event :ship do
-      transitions from: :payed, to: :shiped
+      transitions from: :payed, to: :shiped do
+        guard do
+          can_be_ship?
+        end
+      end
     end
     event :sign, after_commit: :call_order_complete_handler do
       transitions from: :shiped, to: :signed
@@ -153,6 +160,15 @@ class OrdinaryOrder < Order
     "#{address} #{username}(收)"
   end
 
+  def can_be_ship?
+    if !self.seller.default_get_address.present?
+      errors[:base] << "请设置默认退货地址"
+      false
+    else
+      true
+    end
+  end
+
   private
 
   def set_info_by_user_address
@@ -172,10 +188,6 @@ class OrdinaryOrder < Order
     items2 = cart_items.select{ |item| item.product_inventory.transportation_way == 2 }
 
     OrdinaryOrder.total_ship_price(items1, items2, user_address)
-  end
-
-  def invoke_order_payed_job
-    OrderPayedJob.perform_later(self)
   end
 
   def fill_shiped_at
@@ -198,9 +210,10 @@ class OrdinaryOrder < Order
     order_items.each { |order_item| order_item.recover_product_stock }
   end
 
-  # 在work 中判断订单是否是创客权订单
-  def invoke_official_agent_order_process
+  def invoke_order_payed_processes
+    # 在work 中判断订单是否是创客权订单
     OfficialAgentOrderJob.set(wait: 5.seconds).perform_later(self)
+    OrderPayedJob.set(wait: 2.seconds).perform_later(self)
   end
 
   def call_order_complete_handler
@@ -209,6 +222,34 @@ class OrdinaryOrder < Order
 
   def single_official_agent?
     order_items.size == 1 && official_agent?
+  end
+
+  def close_order_item_refund_before_shiping
+    order_items.joins(:order_item_refunds).uniq.each do |item|
+      refund = item.last_refund
+      if refund.may_close? && refund.close!
+        refund.refund_messages.create(
+          user_type: '卖家',
+          user_id: seller_id,
+          message: '商家选择发货，退款申请关闭',
+          action: '退款关闭'
+        )
+      end
+    end
+  end
+
+  def close_refunds_before_signed
+    order_items.joins(:order_item_refunds).uniq.each do |item|
+      refund = item.last_refund
+      if refund.may_close? && refund.close!
+        refund.refund_messages.create(
+          user_type: '买家',
+          user_id: user_id,
+          message: '买家确认收货，退款申请关闭',
+          action: '退款关闭'
+        )
+      end
+    end
   end
 
 end

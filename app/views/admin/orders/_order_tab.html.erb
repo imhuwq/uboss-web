@@ -4,4 +4,5 @@
   <li class="<%= active_for(:payed, obj) %>"><%= link_to "待发货(#{@counting_orders.payed.total_count})", admin_orders_path(type: 'payed'), remote: true %></li>
   <li class="<%= active_for(:shiped, obj) %>"><%= link_to "物流中(#{@counting_orders.shiped.total_count})", admin_orders_path(type: 'shiped'), remote: true %></li>
   <li class="<%= active_for(:completed, obj) %>"><%= link_to "已完成(#{@counting_orders.completed.total_count})", admin_orders_path(type: 'completed'), remote: true %></li>
+  <li class="<%= active_for(:refunding, obj) %>"><%= link_to "售后(#{@refunds_amount })", admin_orders_path(type: 'refunding'), remote: true %></li>
 </ul>

@@ -1,59 +1,4 @@
 $ ->
-  sharing_lv1_amount = Number($('.sharing_lv1_amount').text())
-  privilege_amount = Number($('#pay_text').val())
-  present_price = Number($('#privilege_card_present_price').val())
-  origin_privilege_amount = Number($('#origin_privilege_amount').val())
-  origin_sharing_amount = Number($('#origin_sharing_amount').val())
-  maxPrivilegeAmount = origin_sharing_amount + origin_privilege_amount
-  set_privilege_card_info = ->
-    discount = (present_price - privilege_amount) * 10 / present_price
-    $('.pay_line1 > strong').text(discount.toFixed(2))
-    $('.sharing_lv1_amount').text(sharing_lv1_amount)
-    $('#pay_text').val(privilege_amount)
-
-  $('#pay_text').on 'blur', (e)->
-    if this.value > maxPrivilegeAmount
-      alert "亲，最高优惠#{maxPrivilegeAmount}"
-      privilege_amount = maxPrivilegeAmount
-      sharing_lv1_amount = 0
-    else if this.value < privilege_amount
-      alert '亲，给朋友留点折扣吧'
-      privilege_amount = origin_privilege_amount
-      sharing_lv1_amount = origin_sharing_amount
-    else
-      privilege_amount = this.value
-      sharing_lv1_amount = maxPrivilegeAmount - privilege_amount
-    set_privilege_card_info()
-
-  $('.edit_privilege_card .jia').on 'click', (e)->
-    e.preventDefault()
-    if sharing_lv1_amount >= 1
-      sharing_lv1_amount -= 1
-      privilege_amount += 1
-      set_privilege_card_info()
-
-  $('.edit_privilege_card .jian').on 'click', (e)->
-    e.preventDefault()
-    if privilege_amount >= origin_privilege_amount + 1
-      sharing_lv1_amount += 1
-      privilege_amount -= 1
-      set_privilege_card_info()
-    else
-      alert '亲，给朋友留点折扣吧'
-
-  $('.edit_privilege_card').on 'ajaxSuccess', (e, data)->
-    if data.actived
-      want_sharing = confirm 'BOSS，您的友情卡已激活，收货后分享给朋友打折吧！'
-      if want_sharing
-        window.location = $('.pay-complete-actions a').attr('href')
-      else
-        $('.pay-complete-actions').addClass('sharing-active')
-    else
-      alert '恭喜您获得本商品的友情卡，收货后激活可以给朋友打折哦！'
-      window.location = $('.pay-complete-actions a').attr('href')
-
-  $('.edit_privilege_card').on 'ajaxError', (event, xhr, status, error) ->
-    alert xhr.responseText
 
   $('#address').on 'click', ->
     $('#address-list-box').removeClass('hidden')
@@ -160,13 +105,23 @@ $ ->
     $('.valid-order-list.valid-list').each ->
       $this = $(this)
       privilege_amount = 0.0
+      seller_bonus = 0.0
       $this.find('.order-box.valid-box').each ->
-        amount = parseFloat($(this).data('privilege-amount'))
+        amount = parseFloat($(this).find('meta[itemprop="privilege_bonus"]').attr('content'))
+        seller_amount = parseFloat($(this).find('meta[itemprop="seller_bonus"]').attr('content'))
         num   = parseInt($(this).find('.num').data('num'))
         privilege_amount = floatAdd(privilege_amount, floatMul(amount, num))
+        seller_bonus = floatAdd(seller_bonus, floatMul(seller_amount, num))
       $privilege_amount = $this.find('.order-privilege-amount')
       $friend_info = $privilege_amount.closest('.friend-info')
       $privilege_amount.text(privilege_amount)
+      $seller_bonus_amount = $this.find('.order-seller-bonus')
+      $seller_bonus_amount.text(seller_bonus)
+      $seller_bonus_info = $seller_bonus_amount.closest('.friend-info')
+      if seller_bonus == 0
+        $seller_bonus_info.removeClass('hidden').addClass('hidden')
+      else
+        $seller_bonus_info.removeClass('hidden')
       if parseFloat($privilege_amount.text()) == 0
         $friend_info.removeClass('hidden').addClass('hidden')
         $friend_info.next().css('border-top', '0px')
@@ -185,7 +140,9 @@ $ ->
         total_price = floatAdd(total_price, floatMul(price, num))
       ship_price = parseFloat($this.find('.freight-box>span').data('ship-price'))
       privilege_amount = parseFloat($this.find('.order-privilege-amount').text()) || 0.0
+      seller_bonus = parseFloat($this.find('.order-seller-bonus').text()) || 0.0
       total_price = floatAdd(total_price, floatSub(ship_price, privilege_amount))
+      total_price = floatSub(total_price, seller_bonus)
       $this.find('.price-box>span').data('total-price', total_price)
       $this.find('.price-box>span').text('￥ ' + total_price)
 
@@ -196,6 +153,7 @@ $ ->
     $('.valid-order-list.valid-list').find('.price-box').each ->
       total_price = floatAdd(total_price, parseFloat($(this).find('span').data('total-price')))
       privelege_price = floatAdd(privelege_price, (parseFloat($(this).parent().find('.order-privilege-amount').text()) || 0.0))
+      privelege_price = floatAdd(privelege_price, (parseFloat($(this).parent().find('.order-seller-bonus').text()) || 0.0))
     $('#total_price').text(total_price)
     $('.order-price').find('small').text('共优惠'+privelege_price+'元')
 

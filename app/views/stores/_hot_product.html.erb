@@ -2,11 +2,14 @@
   <div class="box-w33">
     <div class="product-box">
       <div class="cover">
-        <%= link_to '', product_path(product), style: "background-image:url(#{product.image_url(:w120)})",class:'img' ,title:"#{product.name}" %>
+        <%= link_to '', product_path(product),
+          style: "background-image:url(#{product.image_url(:w320)})",
+          class: 'img',
+          title: "#{product.name}" %>
         <%= image_tag("mobile/img.jpg") %>
       </div>
       <div class="title"><%= product.name %></div>
-      <div class="price">￥<%= product.present_price %></div>
+      <div class="price">￥<%= product.min_price %></div>
     </div><!-- product-box -->
   </div><!-- box-w33 -->
 <% end %>

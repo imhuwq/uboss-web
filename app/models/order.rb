@@ -9,10 +9,14 @@ class Order < ActiveRecord::Base
   belongs_to :seller, class_name: "User"
   belongs_to :user_address
   has_many   :order_items
+  has_many   :preferential_measures, through: :order_items
+  has_many   :preferentials_seller_bonuses, through: :order_items
+  has_many   :preferentials_privileges, through: :order_items
   belongs_to :order_charge, autosave: true
   has_many   :divide_incomes
   has_many   :selling_incomes
   has_many   :sharing_incomes, through: :order_items
+  has_many   :order_item_refunds, through: :order_items
 
   accepts_nested_attributes_for :order_items
 
@@ -25,8 +29,22 @@ class Order < ActiveRecord::Base
     :pay_serial_number, :pay_serial_number=, :payment, :payment_i18n, :paid_at,
     to: :order_charge, allow_nil: true
 
+  after_create :invoke_privielge_calculator
+
+  def has_payed?
+    Order.states[self.state] >= 1 && Order.states[self.state] != 5
+  end
+
+  def has_refund?
+    order_items.joins(:order_item_refunds).exists?
+  end
+
   def total_privilege_amount
-    order_items.inject(0){ |sum, oi| sum + oi.privilege_amount*oi.amount}
+    @total_privilege_amount ||= preferentials_privileges.sum(:total_amount)
+  end
+
+  def seller_bonus
+    @seller_bonus ||= preferentials_seller_bonuses.sum(:total_amount)
   end
 
   def order_charge
@@ -77,6 +95,26 @@ class Order < ActiveRecord::Base
     errors.add(:base, '已支付') unless unpay?
     errors.add(:base, '重复购买创客权') if official_agent? && user.is_agent?
     errors.empty?
+  end
+
+  private
+
+  def invoke_privielge_calculator
+    @preferential_calculator ||= PreferentialCalculator.new(
+      buyer: user,
+      preferential_items: order_items
+    )
+    @preferential_calculator.calculate_preferential_info
+    @preferential_calculator.save_preferentials do |order_item|
+      order_item.reset_payment_info
+      order_item.changed? && order_item.save
+    end
+  end
+
+  def generate_number
+    time_stamp = (Time.now - Time.parse('2014-12-12')).to_i
+    rand_num = ((self.user_id + rand(10000)) % 100000).to_s.rjust(5, '0')
+    "#{time_stamp}#{rand_num}#{SecureRandom.hex(3).upcase}"
   end
 
 end

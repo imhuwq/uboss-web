@@ -98,7 +98,7 @@ module WxTemplateMsg extend self
         color: "#000"
       },
       remark: {
-        value: "友情卡抵扣：#{order.total_privilege_amount}元\n收货信息：#{order.ship_info}\n\n客官，确认收货后获得该商品的友情卡，给好友打折，给自己返现！",
+        value: "优惠抵扣：#{order.total_privilege_amount}元\n收货信息：#{order.ship_info}\n\n客官，确认收货后获得该商品的友情卡，给好友打折，给自己返现！",
         color: "#000"
       }
     }

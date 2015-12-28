@@ -21,8 +21,10 @@
       </div>
 		</div>
   </div>
+	<div id="order_info_partial">
+		<%= render partial: 'order_info', locals: { obj: @type, order: @order } %>
+	</div>
 
-  <%= render partial: 'order_info', locals: { obj: @type, order: @order } %>
 
 </div>
 

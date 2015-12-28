@@ -8,6 +8,7 @@ class OrderCharge < ActiveRecord::Base
   belongs_to :user
   has_many :orders
   has_many :order_items, through: :orders
+  has_many :preferential_measures, through: :order_items
   has_many :products, -> { uniq }, through: :order_items
 
   validates_presence_of :user_id
@@ -29,6 +30,10 @@ class OrderCharge < ActiveRecord::Base
     orders.any? { |order| order.state == 'unpay' }
   end
 
+  def total_privilege_amount
+    @total_privilege_amount ||= preferential_measures.sum(:total_amount)
+  end
+
   def orders_detail
     @orders_detail ||= products.limit(10).pluck(:name)
   end
@@ -46,11 +51,15 @@ class OrderCharge < ActiveRecord::Base
     return true if paid_at.present?
 
     if $wechat_env.test?
-      update_with_wx_pay_result(
-        "total_fee" => pay_amount * 100,
-        "payment" => 'wx',
-        "time_end" => Time.now
+      ChargeService.process_paid_result(
+        result: {
+          "total_fee" => pay_amount * 100,
+          "payment" => 'wx',
+          "time_end" => Time.now
+        },
+        order_charge: self
       )
+      #TODO
       assign_paid_amount_to_order
       orders.each { |order| order.pay! }
       true

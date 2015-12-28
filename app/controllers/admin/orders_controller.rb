@@ -48,16 +48,28 @@ class Admin::OrdersController < AdminController
   def index
     @orders = OrdinaryOrder.where(seller_id: current_user.id)
     @type = params[:type] || 'all'
-    @orders = append_default_filter @orders.recent.includes(:user, order_items: [:product, :product_inventory])
+
+    @orders = append_default_filter current_user.sold_orders.recent.
+      includes(:user, order_items: [:product, :product_inventory])
     @counting_orders = @orders
+
     @unship_amount = @orders.payed.total_count
     @today_selled_amount = @orders.today.selled.total_count
     @shiped_amount = @orders.shiped.total_count
-    @orders = @orders.where(state: OrdinaryOrder.states[@type.to_sym]) if @type != 'all'
+    @refunds_amount = current_user.sold_ordinary_orders.with_refunds.count
+    @unprocess_refunds_amount = OrderItemRefund.with_seller(current_user.id).wait_seller_processes.count
+
+    case @type
+    when 'refunding'
+      @orders = @orders.with_refunds
+    else
+      @orders = @orders.where(state: OrdinaryOrder.states[@type.to_sym]) if @type != 'all'
+    end
   end
 
   def show
     @order_item = @order.order_items.first
+    @user_addresses = current_user.seller_addresses
   end
 
   def update
@@ -70,7 +82,7 @@ class Admin::OrdersController < AdminController
     if @order.update(order_params.merge(express_id: express.id)) && @order.ship!
       flash[:success] = '发货成功'
     else
-      flash[:error] = '发货失败'
+      flash[:error] = "发货失败,#{@order.errors.full_messages.join('\n')}"
     end
     redirect_to admin_orders_path
   end

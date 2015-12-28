@@ -3,15 +3,25 @@ class AccountsController < ApplicationController
   detect_device only: [:new_password, :set_password]
 
   layout :login_layout, only: [:merchant_confirm]
-  layout 'mobile', only: [:show, :income, :edit, :password, :edit_password, :invite_seller, :edit_seller_note, :settings, :seller_agreement, :binding_successed]
+  layout 'mobile', only: [:show, :income, :bonus_benefit, :edit, :password, :edit_password, :invite_seller, :edit_seller_note, :settings, :seller_agreement, :binding_successed]
 
   before_action :authenticate_user!
   before_action :authenticate_agent, only: [:send_message, :invite_seller, :edit_seller_note, :update_histroy_note]
 
   def show
     @verify_codes_count = current_user.service_orders.payed.count
-    #@verify_codes_count = current_user.service_orders.payed.inject([]){ |verify_codes, order| verify_codes << order.verify_codes }.count
-    @privilege_cards = append_default_filter current_user.privilege_cards, order_column: :updated_at, page_size: 10
+    @privilege_cards = append_default_filter current_user.privilege_cards.includes(:seller), order_column: :updated_at, page_size: 10
+    if params[:state] == 'after_sale'
+      @refunds = current_user.order_item_refunds.includes(order_item: [:product, :order]).page(params[:page])
+    else
+      @orders = append_default_filter account_orders(params[:state]), page_size: 10
+    end
+    render layout: 'mobile'
+  end
+
+  def refunds
+    @refunds = append_default_filter current_user.order_item_refunds, page_size: 10
+    render partial: 'accounts/refund', collection: @refunds
   end
 
   def orders
@@ -82,7 +92,7 @@ class AccountsController < ApplicationController
     if current_user.need_reset_password || params[:need_reset_password] == 'true'
       user_params.delete(:current_password)
       auth_code = user_params.delete(:code)
-      if MobileCaptcha.auth_code(current_user.login, auth_code) 
+      if MobileCaptcha.auth_code(current_user.login, auth_code)
         current_user.update(user_params.merge(need_reset_password: false))
         MobileCaptcha.where(mobile: current_user.login).delete_all
         sign_in current_user, bypass: true

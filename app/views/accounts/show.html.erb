@@ -17,16 +17,17 @@
       </div>
   	</div><!-- avatar -->
 </div>
+
 <div class="link-tab">
   <a href="<%= account_verify_codes_path %>"><span>验证券<p><%= @verify_codes_count %></p></span></a>
-	<a href="javascript:;" class="borderLeft borderRight"><span>我的红包<p>100</p></span></a>
+	<a href="<%= bonus_benefit_account_path %>" class="borderLeft borderRight"><span>我的红包<p><%= current_user.bonus_benefit %></p></span></a>
   <a href="<%= income_account_path %>"><span>我的收益<p><%= current_user.income.to_f + current_user.frozen_income.to_f %></p></span></a>
 </div><!-- tab-nav  -->
 <br />
 
 <div class="tab-container">
 	<div class="tab-content" id="showlist" style="display: block;">
-		<div id="u-order-list">
+    <div id="u-order-list">
       <div class="order-list">
         <div class="seller-box">
           <span class="pull-right like-color">
@@ -42,7 +43,7 @@
       </div>
     </div>
 
-		<div id="u-order-list">
+    <div id="u-order-list">
       <div class="order-list">
         <div class="seller-box">
           <span class="pull-right like-color">
@@ -58,7 +59,7 @@
       </div>
     </div>
 
-		<div id="u-order-list">
+    <div id="u-order-list">
       <div class="order-list">
         <div class="seller-box">
           <div class="text-cut">我的友情卡</div>
@@ -80,6 +81,7 @@
     </div>
 
   </div><!-- tab-content showlist -->
+
 </div><!-- tab-container  -->
 
 <%= render partial: 'new_share' %>

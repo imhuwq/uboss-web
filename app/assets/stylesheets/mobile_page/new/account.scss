@@ -1,7 +1,7 @@
 .invite-title{
     font-size: 18px;
     padding:20px 4px;
-    border-bottom: 1px solid #eee; 
+    border-bottom: 1px solid #eee;
 }
 #invite_seller_histroy{font-size: 14px;color: #777;padding: 0 10px;}
 #invite_seller_histroy .edit-icon a{display: inline-block;width:19px;padding:9px;}
@@ -9,6 +9,22 @@
 #invite_seller_histroy .note-box{
     td{ border: none; padding-bottom: 0;}
     .edit-icon{ border-bottom: 1px solid #eee;}
+}
+.hongbao{
+    background: image-url('mobile/account/hongbao-icon.png') #fff no-repeat;
+    padding: 15px 10px 15px 30px;
+    background-position:10px center;
+    background-size:auto 18px ;
+    position: relative;
+    .newyear{
+        background: image-url('mobile/account/newyear.png') rgba(0,0,0,.7) center center no-repeat;
+        background-size: auto 30px;
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 100%;
+        width: 100%;
+    }
 }
 .avatar{
     display: table;
@@ -26,7 +42,7 @@
         height: 80px;
         border-radius:100px ;
         overflow: hidden;
-        
+
     }
     .name{
         text-align: left;
@@ -39,7 +55,7 @@
             display: block;
             width: 20px;
         }
-        
+
     }
 }
 .privilege-rate{
@@ -55,17 +71,17 @@
         color: #333;
         line-height: 20px;
     }
-    
+
 }
 .privilege-form{
     .form-input{text-align: right;}
     input{ border: none; text-align: right;color:#f9ba10;}
-    
+
 }
 .share-card {
     background: #fff;
     overflow: hidden;
-    margin-bottom: 8px;    
+    margin-bottom: 8px;
     line-height: 20px;
     .cover{
         float: right;

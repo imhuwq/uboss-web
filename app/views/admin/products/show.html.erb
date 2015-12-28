@@ -17,6 +17,24 @@
 <br />
 <div class="container nogap">
   <div class="admin-box beige-bg-color">
+    <h4 class="edit-title">基本信息</h4>
+
+    <div class="form-group">
+      <label class="control-label">商品分组</label>
+      <div class="control-input">
+        <span class="control-input" style="padding:8px">
+          <% @product.categories.each do |category| %>
+            <span class='label label-info'><%= category.name %></span>
+          <% end %>
+        </span>
+      </div>
+    </div>
+  </div><!-- admin-box -->
+  <br />
+
+
+
+  <div class="admin-box beige-bg-color">
     <h4 class="edit-title">商品信息</h4>
     <% if current_user.is_super_admin? %>
       <div class="form-group">
@@ -106,7 +124,7 @@
     <% if can? :edit, @product %>
       <%= link_to("编辑", url_for(:action=>:edit,:id=>@product.id), :class=>"btn btn-large blue-btn",:role=>"button") %>
     <% end %>　
-    <%= link_to("预览", url_for(:action=>:pre_view,:id=>@product.id), :class=>"btn btn-large yellow-btn",:role=>"button",:target=>"_blank") %>　
+    <%= link_to("手机效果", url_for(:action=>:pre_view,:id=>@product.id), :class=>"btn btn-large yellow-btn",:role=>"button",:target=>"_blank") %>　
     <% if can? :update, @product %>
       <% if @product.status == 'unpublish' %>
         <%= link_to("上架", url_for(action: :change_status, id: @product.id, status: :published), method: :patch, class: "btn btn-large red-btn", role: "button") %>

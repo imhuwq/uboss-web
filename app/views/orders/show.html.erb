@@ -1,11 +1,9 @@
 <%= content_for :page_title do %>
   <%= @order_title || @order.state_i18n %>
 <% end %>
-
 <%= content_for :header_left do %>
   <a class="back" onclick="history.go(-1)"><%= image_tag 'mobile/right.png' %></a>
 <% end %>
-
 <%= content_for :extra_meta_tags do %>
   <%= store_sharing_meta_tags(@seller, @sharing_link_node) %>
 <% end %>
@@ -58,6 +56,9 @@
         <div class="price">
         	<p>￥<%= order_item.present_price %></p>
         	<p class="gray-color num">x <%= order_item.amount %></p>
+          <% if @order.has_payed? %>
+            <%= link_to order_item_refund_state(order_item), order_item_refund_url(order_item) %>
+          <% end %>
         </div>
         <p class="name">
         	<%= order_item.product_name %>
@@ -77,12 +78,27 @@
         <%= image_tag @order.sharing_user.avatar_url(:thumb) %>
       </div>
       <div class="content">
-        <span class="pull-right red-color"><%= total_privilege_amount(@order.order_items) %></span><span class="main-color"><%= @order.sharing_user.identify %></span> 帮你优惠
+        <span class="pull-right red-color"><%= @order.total_privilege_amount %></span><span class="main-color"><%= @order.sharing_user.identify %></span> 帮你优惠
+      </div>
+    </div><!-- friend-info -->
+  <% end %>
+
+  <% if @order.seller_bonus > 0 %>
+    <div class="friend-info">
+      <div class="content">
+        <span class="pull-right red-color">-<%= @order.seller_bonus %></span>
+        红包优惠
       </div>
     </div><!-- friend-info -->
   <% end %>
 
 	<div class="price-box">
+    <div class="pull-left">
+      <%= link_to conversation_chat_path(conversation_id: @seller.id), class: 'chat-to-btn', data: { uid: @seller.id } do %>
+        <%= image_tag 'radio-check.png' %>
+        <span>联系商家</span>
+      <% end %>
+    </div>
 	  合计￥<%= @order.pay_amount %><small class="gray-color">（含运费￥<%= @order.ship_price %>）	  </small>
 	</div><!-- price-box -->
 
@@ -104,6 +120,21 @@
   <% end %>
 </div>
 
+<% if @order.shiped_at.present? %>
+  <br />
+  <div class="bg-white gap gray-color line-gap">
+    <p> 物流信息 </p>
+    <hr />
+    <p>快递公司：<%= @order.express.try(:name) %></p>
+    <p>快递单号：<%= @order.ship_number %></p>
+    <% if @order.shiped? && !@order.has_refund? %>
+      <p>
+      <small>您还有 <span style="color:#43c3aa;"><%= time_ago_in_words(@order.shiped_at + 9.days) %></span>
+        时间确认收货，到期后若您没有任何售后申请，系统将自动确认收货，祝你购物愉快 ^_^ 。</small>
+      </p>
+    <% end %>
+  </div>
+<% end %>
 
 <% if @order.payed? && @order.official_agent? %>
   <br />

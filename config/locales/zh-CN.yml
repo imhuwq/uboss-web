@@ -1,5 +1,15 @@
 zh-CN:
+  enumerize:
+    order_item_refund:
+      refund_type:
+        refund: '退款'
+        receipted_refund: '已收到货 仅退款'
+        unreceipt_refund: '未收到货 退款'
+        return_goods_and_refund: '退款退货'
+        after_sale_only_refund: '售后—仅退款'
+        after_sale_return_goods_and_refund: '售后—退款退货'
   attributes: &attributes
+    sku_attributes: 规格属性
     express_name: 快递公司
     store_cover: 店铺封面背景
     store_short_description: 店铺简介
@@ -155,6 +165,7 @@ zh-CN:
     income: 收益管理
     carriage_templates: 运费模板
     expresses: 快递管理
+    refund_reasons: 退款理由
     data: 数据
     orders: 订单
     sharing_incomes: 分成
@@ -169,6 +180,8 @@ zh-CN:
     banking:  提现
     daily_reports: 收益
     authentications: 认证
+    user_addresses: 地址库
+    categories: 商品分组
   activerecord:
     models:
       withdraw_record: 提现记录
@@ -178,6 +191,24 @@ zh-CN:
       bank_card: 银行卡
       product_inventory: 库存/规格
     attributes:
+      order_item_refund:
+        money: 金额
+        order_state: 订单退款
+        refund_reason_id: 退款理由
+        refund_type: 退款类型
+        aasm_state:
+          pending: '卖家处理中'
+          approved: '卖家同意退款'
+          declined: '卖家拒绝退款'
+          completed_express_number: '等待卖家确认收货'
+          confirm_received: '卖家确认收货'
+          decline_received: '卖家拒绝收货'
+          applied_uboss: '等待UBOSS处理'
+          finished: '退款成功'
+          cancelled: '退款撤销'
+          closed: '退款关闭'
+      refund_reason:
+        reason: 理由
       product_inventories:
         product_id: SKU产品
         share_amount_total: 总返利
@@ -208,6 +239,8 @@ zh-CN:
         code: 手机验证码
       user_address:
         username: 收件人
+        post_code: 邮政编码
+        note: 备注
       evaluation:
         status: 评价
       bank_card:
@@ -238,6 +271,8 @@ zh-CN:
         created_at: 创建时间
       product:
         <<: *product
+      category:
+        name: 分组名
   order_status_bar:
     unpay: 等待买家付款
     payed: 等待卖家发货
@@ -278,6 +313,7 @@ zh-CN:
         processed: 交易中
         done: 交易完成
         closed: 拒绝
+        failure: 交易失败
     sharing_income:
       level:
         l1: 一级分成
@@ -319,6 +355,7 @@ zh-CN:
       already_has_role: 已经拥有该角色
       only_ordinary_store: 只能创建一个电商店铺
       only_service_store: 只能创建一个团购店铺
+      exists: 已存在
   api_errors:
     unauthorized: 没通过用户认证
     forbidden: 权限不够

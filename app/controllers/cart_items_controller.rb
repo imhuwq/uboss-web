@@ -1,5 +1,7 @@
 class CartItemsController < ApplicationController
   before_action :authenticate_user!
+  skip_before_filter :verify_authenticity_token, only: [:create]
+
   def index
     redirect_to (params[:product_id].present? ? product_path(params[:product_id]) : root_path)
   end

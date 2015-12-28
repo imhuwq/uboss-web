@@ -6,6 +6,9 @@
 #= require rails-behaviors/index
 #= require fastclick
 #= require swipe
+#= require querystring
+#= require mobile_page/upyun/zepto-iframe-fileupload
+#= require mobile_page/upyun/upload
 #= require mobile_page/sms
 #= require mobile_page/going_merry
 #= require mobile_page/utilities
@@ -15,6 +18,7 @@
 #= require mobile_page/order
 #= require mobile_page/pay
 #= require mobile_page/evaluations
+#= require shared/count_down
 #= require shared/city_select
 #= reuqire_self
 
@@ -40,7 +44,7 @@ $ ->
 
   $("header .menu-btn").on 'click', ->
     $('header .nav-bar').toggle()
-  
+
   $('.container ').on 'click', ->
     $('header .nav-bar').hide();
 
@@ -48,11 +52,27 @@ $ ->
     unless $(e.target).closest('.pop-content').length > 0
       $(this).hide()
 
-
   $('.tab-nav .tab').on 'click', (e)->
     $('.tab-nav .tab').removeClass('active')
     $(this).addClass('active')
-    tid=$(this).attr('href')
+    tid=$(this).attr('title')
     $('.tab-container .tab-content').hide()
     $(tid).show()
 
+  $('.alert-error .close').on 'click', (e)->
+    $(this).closest('.alert-error').remove()
+
+  $('.chat-to-btn').each ->
+    element = $(this)
+    $.getJSON "/chat/check_user_online",
+      user_id: $(this).data('uid')
+    , (response) ->
+      element.addClass("online") if response.online
+
+  $('#ucategory-more').on 'click' , ->
+    if $(this).hasClass('arrow-top')
+      $(this).removeClass('arrow-top')
+      $('.ucategory-list').attr('style','max-height:209px')
+    else
+      $(this).addClass('arrow-top')
+      $('.ucategory-list').attr('style','')

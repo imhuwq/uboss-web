@@ -33,7 +33,12 @@ class OrdersController < ApplicationController
     if check_buy_now?  # 直接购买
       product = @order_form.product
       @order_form.sharing_code = get_product_or_store_sharing_code(product)
-      @products_group_by_seller =  @order_form.product_inventory.convert_into_cart_item(@order_form.amount, @order_form.sharing_code)
+      cart_item = @order_form.product_inventory.convert_into_cart_item(@order_form.amount, @order_form.sharing_code)
+      @products_group_by_seller =  { product.user => [ cart_item ] }
+      @preferential_calculator ||= PreferentialCalculator.new(
+        buyer: current_user,
+        preferential_items: [cart_item]
+      ).calculate_preferential_info
 
       province = @order_form.user_address.province
       @invalid_items = province.present? && !OrdinaryOrder.valid_to_sales?(product, ChinaCity.get(province)) ?
@@ -55,6 +60,10 @@ class OrdersController < ApplicationController
       @invalid_items = cart_items - valid_items
       @order_form.cart_id = current_cart.id
       @products_group_by_seller = CartItem.group_by_seller(cart_items)
+      @preferential_calculator ||= PreferentialCalculator.new(
+        buyer: current_user,
+        preferential_items: cart_items
+      ).calculate_preferential_info
 
       render layout: 'mobile'
     else
@@ -104,12 +113,15 @@ class OrdersController < ApplicationController
   def received
     if @order.sign!
       flash[:success] = '已确认收货'
-      redirect_to account_path
+    else
+      flash[:error] = '确认收货失败'
     end
+    redirect_to order_path(@order)
   end
 
   def change_address
-    user_address = UserAddress.find_by(id: params[:user_address_id]) || UserAddress.new(province: params[:province])
+    user_address = UserAddress.where(seller_address: false).find_by(id: params[:user_address_id])
+    user_address ||= UserAddress.new(province: params[:province])
 
     if params[:product_id].blank?
       cart_items = current_cart.cart_items
@@ -174,3 +186,4 @@ class OrdersController < ApplicationController
       @order_form.amount.present?
   end
 end
+

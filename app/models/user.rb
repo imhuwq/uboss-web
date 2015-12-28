@@ -30,21 +30,31 @@ class User < ActiveRecord::Base
   has_many :seller_ordinary_orders, through: :sellers, source: :sold_ordinary_orders
   has_many :seller_service_orders,  through: :sellers, source: :sold_service_orders
   # for buyer
-  has_many :user_addresses
+  has_one :cart
+  has_many :user_addresses, -> { where(seller_address: false) }
   has_many :orders
   has_many :ordinary_orders
   has_many :service_orders
   has_many :order_charges
+  has_many :order_items
   has_many :sharing_incomes
   has_many :bank_cards
   has_many :privilege_cards
+  has_many :refund_messages
+  has_many :order_item_refunds
+  has_many :sales_returns, through: :order_item_refunds
+  has_many :carriage_templates
+  has_many :bonus_records
   # for seller
+  has_many :seller_addresses, -> { where(seller_address: true) }, class_name: 'UserAddress'
   has_many :sold_orders, class_name: 'Order', foreign_key: 'seller_id'
   has_many :sold_ordinary_orders, class_name: 'OrdinaryOrder', foreign_key: 'seller_id'
   has_many :sold_service_orders,  class_name: 'ServiceOrder',  foreign_key: 'seller_id'
   has_many :products
   has_many :ordinary_products
   has_many :service_products
+  has_many :sold_order_items, through: :sold_orders, source: :order_items
+  has_many :categories
   has_many :selling_incomes
   belongs_to :agent, class_name: 'User'
 
@@ -67,9 +77,11 @@ class User < ActiveRecord::Base
     :store_banner_one=, :store_banner_two=, :store_banner_thr=,
     :recommend_resource_one_id, :recommend_resource_two_id, :recommend_resource_thr_id,
     :recommend_resource_one_id=, :recommend_resource_two_id=, :recommend_resource_thr_id=,
-    :store_short_description, :store_short_description=, :store_cover, :store_cover=,
+    :store_short_description, :store_short_description=, :store_cover, :store_cover=, :bonus_benefit,
     :good_reputation_rate, :total_reputations,
     to: :ordinary_store, allow_nil: true
+    #TODO bonus_benefit
+    #:store_short_description, :store_short_description=, :store_cover, :store_cover=, :bonus_benefit, to: :user_info, allow_nil: true
 
   enum authenticated: {no: 0, yes: 1}
 
@@ -83,6 +95,7 @@ class User < ActiveRecord::Base
   before_create :build_ordinary_store, if: -> { ordinary_store.blank? }
   before_create :build_service_store, if: -> { service_store.blank? }
   before_save   :set_service_rate
+  after_commit  :invoke_rongcloud_job, on: [:create, :update]
 
   scope :admin, -> { where(admin: true) }
   scope :agent, -> { role('agent') }
@@ -115,6 +128,14 @@ class User < ActiveRecord::Base
 
   def image_url(version = nil)
     avatar.url(version)
+  end
+
+  def crypt_id
+    self.id && CryptService.encrypt(self.id)
+  end
+
+  def received_invite_bonus?
+    bonus_records.where(type: 'Ubonus::Invite').exists?
   end
 
   class << self
@@ -178,6 +199,12 @@ class User < ActiveRecord::Base
 
   end
 
+  def invoke_rongcloud_job
+    if rongcloud_token.blank? || [:nickname, :avatar].any? { |key| previous_changes.include?(key) }
+      RongcloudJob.perform_later(user: self, type: 'user_info')
+    end
+  end
+
   # 默认绑定official agent
   def bind_agent(binding_code = nil)
     agent_user = if binding_code.present?
@@ -239,11 +266,20 @@ class User < ActiveRecord::Base
   end
 
   def identify
-    nickname || regist_mobile
+    nickname || mobile || regist_mobile
+  end
+
+  def store_title
+    if store_name.blank?
+      nil
+    else
+      short_desc = store_short_description.blank? ? nil : store_short_description
+      [store_name, short_desc].compact.join(" | ")
+    end
   end
 
   def store_identify
-    store_name || nickname || regist_mobile
+    store_name || nickname || mobile || regist_mobile
   end
 
   def total_income
@@ -295,8 +331,8 @@ class User < ActiveRecord::Base
   end
 
   def default_address
-    @default_address ||= user_addresses.where(default: true).first
-    @default_address ||= user_addresses.first
+    @default_address ||= user_addresses.where(default: true, seller_address: false).first
+    @default_address ||= user_addresses.where(seller_address: false).first
   end
 
   def set_default_address(address = nil)
@@ -362,7 +398,7 @@ class User < ActiveRecord::Base
     self.country        ||= data['country']
     self.weixin_unionid   = data['unionid']
     self.weixin_openid    = data['openid']
-    self.remote_avatar_url = data['headimgurl'] if self.avatar.blank?
+    self.remote_avatar_url = data['headimgurl'] if self.avatar_identifier.blank?
   end
 
   def has_seller_privilege_card?(seller)
@@ -379,6 +415,26 @@ class User < ActiveRecord::Base
 
   def is_comman_express?(express)
     self.expresses.exists?(express)
+  end
+
+  def default_post_address
+    @default_post_address ||= seller_addresses.find_by('usage @> ?', {default_post_address: 'true'}.to_json)
+  end
+
+  def default_get_address
+    @default_get_address ||= seller_addresses.find_by('usage @> ?', {default_get_address: 'true'}.to_json)
+  end
+
+  def find_or_create_rongcloud_token
+    return rongcloud_token if rongcloud_token.present?
+
+    user = Rongcloud::Service::User.new
+    user.user_id = self.id
+    user.name = self.identify
+    user.portrait_uri = self.avatar.url(:thumb)
+    user.get_token
+    self.update_columns(rongcloud_token: user.token)
+    user.token
   end
 
   private
@@ -422,4 +478,5 @@ class User < ActiveRecord::Base
       self.user_info.service_rate = 5
     end
   end
+
 end

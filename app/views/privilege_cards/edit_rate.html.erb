@@ -15,7 +15,7 @@
 <div class="gap">
 	<div class="bg-white gap text-center">
 		<br />
-	  <h4 class="gray-color">朋友为我直接带来的每笔收益中，<br/> 我获得40%，用 60% 帮TA打折.　</h4>
+	  <h4 class="gray-color">朋友为我直接带来的每笔收益中，<br/> 我获得<%= 100 - current_user.privilege_rate.to_i %>%，用 <%= current_user.privilege_rate.to_i %>% 帮TA打折.　</h4>
 	  <br />
     <div> <a href="/about" class="gray-color"><small>解释说明?</small></a></div>
 	  <br />

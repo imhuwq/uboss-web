@@ -23,6 +23,8 @@ gem 'weixin_authorize', github: "lanrion/weixin_authorize"
 gem 'ransack'
 gem 'rails-api'
 gem 'sanitize'
+gem 'rongcloud', github: 'xEasy/rongcloud'
+gem "paper_trail", "~> 4.0.0" # modal versioning
 
 # copying of ActiveRecord objects and their associated children
 gem 'amoeba'
@@ -41,6 +43,9 @@ gem "jquery-fileupload-rails"
 gem 'font-awesome-sass', '~> 4.4.0'
 gem 'eco'
 gem "select2-rails", '~> 3.5.9.1'
+
+# enum i18n
+gem 'enumerize'
 
 # See https://github.com/rails/execjs#readme for more supported runtimes
 gem 'therubyracer', '~> 0.12.2', platforms: :ruby
@@ -100,6 +105,7 @@ group :development do
   gem "better_errors"
   gem "quiet_assets"
   gem 'rack-mini-profiler', require: false
+  gem 'awesome_print'
 end
 
 group :staging, :development do

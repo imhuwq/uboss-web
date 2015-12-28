@@ -5,7 +5,12 @@ class ProductsController < ApplicationController
 
   def index
     @products = append_default_filter OrdinaryProduct.published.includes(:asset_img), order_column: :updated_at
-    render partial: 'products/product', collection: @products if request.xhr?
+
+    if request.xhr?
+      render partial: 'products/product', collection: @products
+    else
+      render layout: 'mobile'
+    end
   end
 
   def show
@@ -32,50 +37,8 @@ class ProductsController < ApplicationController
   end
 
   def get_sku
-    # FIXME 不要大片的注释代码，遇到已经不用的代码直接删除
     product = Product.find(params[:product_id])
-    # skus = {}
-    # sku_details = {}
-    # product.product_inventories.where("count > 0").each do |obj|
-    #   obj.sku_attributes.each do |k,v|
-    #     if !skus[k].present?
-    #       skus[k] = {}
-    #     end
-    #     if !skus[k][v].present?
-    #       skus[k][v] = []
-    #     end
-    #     skus[k][v] << obj.id
-    #   end
-    #
-    #   if !sku_details[obj.id].present?
-    #     sku_details[obj.id] = {}
-    #   end
-    #   sku_details[obj.id][:count] = obj.count
-    #   sku_details[obj.id][:sku_attributes] = obj.sku_attributes
-    #   sku_details[obj.id][:price] = obj.price
-    # end
-    # hash = {}
-    # hash[:skus] = skus
-    # hash[:sku_details] = sku_details
-
     render json: product.sku_hash
-    # render json: {'颜色':{'红': [1,2],'白': [3,4],'黄': [3]},'尺寸':{'L':[1,3],'XL':[2,4]}}
-  end
-
-  # FIXME 这个action没有被用到
-  def get_sku_detail
-    product = Product.find(params[:product_id])
-    hash = {}
-    product.product_inventories.where("count > 0").each do |obj|
-      if !hash[obj.id].present?
-        hash[obj.id] = {}
-      end
-      hash[obj.id][:count] = obj.count
-      hash[obj.id][:sku_attributes] = obj.sku_attributes
-      hash[obj.id][:price] = obj.price
-    end
-    render json: hash
-    # render json: { '1': {count: 100, sku_attributes: {'颜色': '红', '尺寸': 'XL'},price: "1111"}, '2': {count: 50, sku_attributes: {'颜色': '白', '尺寸': 'L'},price: "1111"} }
   end
 
   def switch_favour

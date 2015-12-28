@@ -14,7 +14,7 @@
 <div class="fixed-container">
   <div class="product-box product-page">
     <div class="cover">
-      <div class="img" style="background-image:url('<%=@product.image_url()%>')"></div>
+      <div class="img" style="background-image:url('<%=@product.image_url(:w640)%>')"></div>
       <%= image_tag("mobile/img.jpg") %>
       <% if current_user && current_user.has_seller_privilege_card?(@seller) %>
         <div class="like-box">
@@ -129,12 +129,26 @@
 
   <% if @sharing_node.blank? %>
     <div class="share_buy">
+    	<%= link_to  store_path(@seller), class: 'buy-nav' do%>
+    		<div class="buy-icon buy-enter-icon"></div>
+    		<div>店铺</div>
+    	<% end %>
+      <%= link_to conversation_chat_path(conversation_id: @seller.id), class: 'buy-nav chat-btn' do%>
+    		<div class="buy-icon buy-chat-icon"></div>
+    		<div>客服</div>
+    	<% end %>
       <% if current_user %>
-        <%= link_to '加入购物车', 'javascript:;', class: 'btn_add_to_cart', id: 'show_inventory_cart'%>
+        <%= link_to  'javascript:;', class: 'buy-nav btn_add_to_cart', id: 'show_inventory_cart' do%>
+	    		<div class="buy-icon buy-cart-icon"></div>
+	    		<div>添加</div>
+	    	<% end %>
       <% else %>
-        <%= link_to '加入购物车', cart_items_path(product_id: @product.id), class: 'btn_add_to_cart' %>
+        <%= link_to cart_items_path(product_id: @product.id), class: 'buy-nav btn_add_to_cart' do%>
+	    		<div class="buy-icon buy-cart-icon"></div>
+	    		<div>添加</div>
+	    	<% end %>
       <% end %>
-      <%= link_to '立即购买', 'javascript:;', class: 'btn_buy_now', id:"show_inventory", style: 'float:right;' %>
+      <%= link_to '购买', 'javascript:;', class: 'btn_buy_now', id:"show_inventory" %>
 
       <input type="hidden" name="product[id]" value="<%= @product.id %>" />
       <input type="hidden" name="product[count]" value="<%= 1 %>" />
@@ -143,18 +157,28 @@
     <div class="share_buy">
     	<div class="half_left">
     		<%= image_tag @sharing_node.user.avatar_url(:thumb), class: 'share_portrait' %>
-		    <dl class="share_content">
-		      <dt><p><%= @sharing_node.user.identify %></p></dt>
-		      <dd><%= Evaluation.sharer_good_reputation_rate(@sharing_node.user) %>好评率</dd>
-		    </dl>
+		    <div class="share_content">
+		      <div class="text-cut"><%= @sharing_node.user.identify %></div>
+		      <div><small><%= Evaluation.sharer_good_reputation_rate(@sharing_node.user) %>好评率</small></div>
+		    </div>
 		  </div>
 		  <div class="half_right">
 	      <% if current_user %>
-	        <%= link_to '加入购物车', 'javascript:;', class: 'btn_add_to_cart', id: 'show_inventory_cart'%>
+	        <%= link_to  'javascript:;', class: 'buy-nav btn_add_to_cart', id: 'show_inventory_cart' do%>
+		    		<div class="buy-icon buy-cart-icon"></div>
+		    		<div>添加</div>
+		    	<% end %>
 	      <% else %>
-	        <%= link_to '加入购物车', '/cart_items', class: 'btn_add_to_cart', method: 'post'%>
+	        <%= link_to '/cart_items', class:'buy-nav btn_add_to_cart', method: 'post' do%>
+		    		<div class="buy-icon buy-cart-icon"></div>
+		    		<div>添加</div>
+		    	<% end %>
 	      <% end %>
-	      <%= link_to '立即购买', 'javascript:;', class: 'btn_buy_now', id:"show_inventory", style: 'float:right;' %>
+	      <%= link_to conversation_chat_path(conversation_id: @seller.id), class: 'buy-nav chat-btn' do%>
+	    		<div class="buy-icon buy-chat-icon"></div>
+	    		<div>客服</div>
+	    	<% end %>
+	      <%= link_to '购买', 'javascript:;', class: 'btn_buy_now', id:"show_inventory" %>
 		  </div>
     </div>
   <% end %>

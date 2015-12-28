@@ -43,7 +43,9 @@
 		  <div class="box-w33">
 		  	<div class="product-box">
 		  		<div class="cover">
-	          <%= link_to '', product_path(product), style: "background-image:url(#{product.image_url(:w120)})",class:'img' %>
+            <%= link_to '', product_path(product),
+              style: "background-image:url(#{product.image_url(:w320)})",
+              class:'img' %>
 	          <%= image_tag("mobile/img.jpg") %>
 	        </div>
 	        <div class="share">
@@ -63,21 +65,23 @@
 
 <%= render partial: 'stores/banner_slider', locals: { seller: @seller } %>
 
-<div class="bg-white">
-	<div class="box store-list">
-		<div class="box-w100">
-			<div class="page-title like-color">
-	      <%= link_to hots_store_path(@seller), class: 'more-bar' do %>
-	        more <%= image_tag 'mobile/arrow-right.png' %>
-	      <% end %>
-	      热销商品
-			</div>
-		</div>
+<% if @hots.present? %>
+  <div class="bg-white">
+    <div class="box store-list">
+      <div class="box-w100">
+        <div class="page-title like-color">
+          <%= link_to hots_store_path(@seller), class: 'more-bar' do %>
+            more <%= image_tag 'mobile/arrow-right.png' %>
+          <% end %>
+          热销商品
+        </div>
+      </div>
 
-    <%= render partial: 'stores/hot_product', collection: @hots, as: :product %>
+      <%= render partial: 'stores/hot_product', collection: @hots, as: :product %>
 
-	</div>
-</div>
+    </div>
+  </div>
+<% end %>
 
 <br />
 

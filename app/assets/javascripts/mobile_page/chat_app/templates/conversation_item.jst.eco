@@ -1,0 +1,12 @@
+<a href="#conversations/<%= @targetId %>">
+  <li targetType="<%= @conversationType %>" targetId="<%= @targetId %>" targetName="<%= @conversationTitle %>">
+    <span class="user_img">
+      <img src='<%= @avatar %>'/>
+      <font class="conversation_msg_num <%= 'hidden' unless @unreadMessageCount > 0 %>"><%= @unreadMessageCount %></font>
+    </span>
+    <span class="conversationInfo">
+      <font class="u-name"><%= @conversationTitle %></font>
+    </span>
+    <font class="date pull-right" ><%= new Date(+@latestTime).toString().split(" ")[4] %></font>
+  </li>
+</a>

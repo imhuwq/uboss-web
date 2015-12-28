@@ -13,6 +13,7 @@ class Product < ActiveRecord::Base
   belongs_to :carriage_template
   has_many :different_areas, through: :carriage_template
   has_many :order_items
+  has_and_belongs_to_many :categories, -> { uniq } ,autosave: true
   has_many :product_inventories, autosave: true, dependent: :destroy
   has_many :cart_items,  through: :product_inventories
   has_many :seling_inventories, -> { where(saling: true) }, class_name: 'ProductInventory', autosave: true
@@ -24,16 +25,34 @@ class Product < ActiveRecord::Base
 
   scope :hots, -> { where(hot: true) }
   scope :available, -> { where.not(status: 2) }
+  scope :hot_ordering, -> { order('products.hot DESC, products.id DESC') }
 
   validate :must_has_one_product_inventory
   validates_presence_of :user_id, :name, :short_description
 
   before_create :generate_code
+  after_create :add_categories_after_create
 
   def self.official_agent
     official_account = User.official_account
     return nil if official_account.blank?
     @official_agent_product ||= find_by(user_id: official_account.id, name: OFFICIAL_AGENT_NAME)
+  end
+
+  def max_price_inventory
+    @max_price_inventory ||= seling_inventories.order('price DESC').first
+  end
+
+  def min_price_inventory
+    @min_price_inventory ||= seling_inventories.order('price DESC').last
+  end
+
+  def max_price
+    @max_price ||= max_price_inventory.price
+  end
+
+  def min_price
+    @min_price ||= min_price_inventory.price
   end
 
   # SKU(product_inventory) 更新保存逻辑
@@ -137,29 +156,57 @@ class Product < ActiveRecord::Base
   def sku_hash
     skus = {}
     sku_details = {}
-    # FIXME 不要使用毫无意义的变量名 obj, k , v ~
-    self.seling_inventories.where("count > 0").each do |obj|
-      obj.sku_attributes.each do |k,v|
-        if !skus[k].present?
-          skus[k] = {}
+    count = 0
+    self.seling_inventories.where("count > 0").each do |seling_invertory|
+      seling_invertory.sku_attributes.each do |property_name,property_value|
+        if !skus[property_name].present?
+          skus[property_name] = {}
         end
-        if !skus[k][v].present?
-          skus[k][v] = []
+        if !skus[property_name][property_value].present?
+          skus[property_name][property_value] = []
         end
-        skus[k][v] << obj.id
+        skus[property_name][property_value] << seling_invertory.id
       end
 
-      if !sku_details[obj.id].present?
-        sku_details[obj.id] = {}
+      if !sku_details[seling_invertory.id].present?
+        sku_details[seling_invertory.id] = {}
       end
-      sku_details[obj.id][:count] = obj.count
-      sku_details[obj.id][:sku_attributes] = obj.sku_attributes
-      sku_details[obj.id][:price] = obj.price
+      sku_details[seling_invertory.id][:count] = seling_invertory.count
+      sku_details[seling_invertory.id][:sku_attributes] = seling_invertory.sku_attributes
+      sku_details[seling_invertory.id][:price] = seling_invertory.price
+      count += seling_invertory.count
     end
     hash = {}
     hash[:skus] = skus
     hash[:sku_details] = sku_details
+    hash[:count] = count
     return hash
+  end
+
+  def categories=(category_names)
+    unless category_names.is_a?(Array)
+      category_names = category_names.split(',')
+    end
+    if self.new_record?
+      @category_names = category_names
+    else
+      self.categories.clear
+      category_names.each do |item|
+        category = Category.find_or_create_by(name: item, user_id: self.user_id)
+        self.categories << category
+      end
+    end
+  end
+
+  def add_categories_after_create
+    if @category_names && @category_names.any?
+      @category_names.each do |item|
+        category = Category.find_or_create_by(name: item, user_id: self.user_id)
+        category.user_id = self.user_id
+        categories << category
+      end
+      save
+    end
   end
 
   private
