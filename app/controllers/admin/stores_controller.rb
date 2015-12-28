@@ -49,9 +49,9 @@ class Admin::StoresController < AdminController
       @adv = Advertisement.new(params.require(:advertisement).permit(:avatar, :order_number))
       @adv.platform_advertisement = false
       @adv.user_id = current_user.id
-      if params[:advertisement][:type] == 'product' && product = current_user.products.find(params[:advertisement][:id])
+      if params[:advertisement][:type] == 'product' && product = current_user.products.find_by_id(params[:advertisement][:id])
         @adv.product_id = product.id
-      elsif params[:advertisement][:type] == 'category' && category = current_user.categories.find(params[:advertisement][:id])
+      elsif params[:advertisement][:type] == 'category' && category = current_user.categories.find_by_id(params[:advertisement][:id])
         @adv.category_id = category.id
       end
       if (@adv.product_id || @adv.category_id) && @adv.save
@@ -65,7 +65,7 @@ class Admin::StoresController < AdminController
   end
 
   def add_category
-    category = Category.where(use_in_store: false).find_by(id: params[:category][:id], user_id: current_user.id)
+    category = Category.where(use_in_store: false).find_by!(id: params[:category][:id], user_id: current_user.id)
     if params[:category][:avatar] == ''
       category.update(use_in_store: true, use_in_store_at: Time.now)
     else
@@ -93,11 +93,9 @@ class Admin::StoresController < AdminController
     else
       flash.now[:error] = '移除失败'
     end
-
     @categories = Category.where(use_in_store: true, user_id: current_user.id).order('use_in_store_at')
     @select_categories = Category.where(use_in_store: false, user_id: current_user.id)
     render 'add_category'
-
   end
 
 
@@ -150,8 +148,6 @@ class Admin::StoresController < AdminController
         avatar_identifier = ''
         image_url= '/assets/admin/no-img-400x400.png'
       end
-      puts "image_url"
-      puts image_url
       @message = {message: "获取成功！", image_url: image_url, avatar_identifier: avatar_identifier}
     else
       @message = {message:"获取失败"}
@@ -162,7 +158,8 @@ class Admin::StoresController < AdminController
   private
 
   def get_advertisements
-    Advertisement.joins('left join products on (products.id = advertisements.product_id)').where('(product_id is not null AND products.status = 1) OR product_id is null').where(user_id: current_user.id, platform_advertisement: false).order('order_number')
+    Advertisement.joins('left join products on (products.id = advertisements.product_id)').where('(product_id is not null AND products.status = 1) OR product_id is null')
+                .where(user_id: current_user.id, platform_advertisement: false).order('order_number')
   end
   
 

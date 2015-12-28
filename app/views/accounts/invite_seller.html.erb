@@ -19,7 +19,9 @@
   <br />
   <div class="bg-white">
     <div class="box-m40">
+    	<br />
       <h3 class="main-color text-center">邀请商家</h3>
+    	<br />
       <p><%= text_field_tag 'send_message[mobile]', '',type: :tel, placeholder: '填入商家注册手机号',
         class:"add_text input-radius input-large input-block", id:"new_mobile"  %></p>
       <br />
@@ -33,7 +35,9 @@
   <div class="bg-white">
     <div class="box-m40">
       <%= simple_form_for 'bind_seller', url: bind_seller_account_path, method: :put do |f| %>
+    		<br />
         <h3 class="main-color text-center">绑定验证</h3>
+    		<br />
         <p><%= f.input_field :invite_code, type: :tel, placeholder: '填入从商家获取绑定验证码',
           class:"add_text input-radius input-large input-block" %></p>
         <br />

@@ -56,7 +56,7 @@ class Admin::PlatformAdvertisementsController < AdminController
 		else
 			flash[:success] = @notice
 			flash[:error] = @error
-			redirect_to action: :show, id: @platform_advertisement.id
+			redirect_to action: :index
 		end
 	end
 
