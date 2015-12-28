@@ -10,8 +10,12 @@
 
     <input class="input-block" type="password" name="password" id="password" placeholder='请输入密码' value="" />
     <br />
-    <%= submit_tag '登陆', class: 'btn btn-large btn-block' %>
+    <%= submit_tag '确定', class: 'btn btn-large btn-block' %>
     <br />
+    <p>
+    <input type="checkbox" checked disabled />
+    <small>同意<a class="main-color" href="<%= agreements_register_path %>" target='_blank'>《UBOSS用户注册协议》</a></small>
+    </p>
     <%= link_to "取消", root_path, class: 'btn btn-block btn-link' %>
   <% end %>
 </div>
