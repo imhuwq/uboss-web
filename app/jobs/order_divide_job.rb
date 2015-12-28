@@ -109,9 +109,7 @@ class OrderDivideJob < ActiveJob::Base
   end
 
   def devide_income_for_city_manager
-    seller = @order.seller
-    enterprise = EnterpriseAuthentication.find_first(user_id: seller.id)
-    city_manager = CityManager.where(city: enterprise.city_code).first if enterprise
+    city_manager = CityManager.where(user_id: @order.seller_id).first
 
     if city_manager && order_income > 0
       divide_income = (order_income * city_manager.rate).truncate(2)

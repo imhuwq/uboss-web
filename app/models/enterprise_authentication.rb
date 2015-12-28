@@ -15,18 +15,4 @@ class EnterpriseAuthentication < Certification
   compatible_with_form_api_images :attachment_1, :attachment_2, :attachment_3
 
   validates_presence_of :enterprise_name
-
-  def check_and_set_user_authenticated_to_yes
-    transaction do
-      super
-      user.add_role :city_manager
-    end
-  end
-
-  def check_and_set_user_authenticated_to_no
-    transaction do
-      super
-      user.remove_role :city_manager
-    end
-  end
 end

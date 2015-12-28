@@ -1,0 +1,6 @@
+$("#index_list").prepend('<%= escape_javascript render 'layouts/flash_alert' %>');
+var tbody = $("#city-"+ <%= @city_manager.id %>);
+<% if !@city_manager.changed? %>
+  tbody.next().remove();
+  tbody.replaceWith("<%= j render(partial: 'city', locals: {city_manager: @city_manager}) %>");
+<% end %>

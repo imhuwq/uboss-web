@@ -201,8 +201,9 @@ zh-CN:
     platform_advertisements: 平台广告
     city_managers: 城市运营商管理
     city_manager: 城市运营商
-    revenues: 销量
-    added: 新增
+    cities: 权限管理
+    revenues: 商家营收
+    added: 新增商家
   activerecord:
     models:
       withdraw_record: 提现记录

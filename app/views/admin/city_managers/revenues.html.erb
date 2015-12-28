@@ -26,7 +26,7 @@
 	<div class="box-w25">
 		<div class="admin-box yellow-bg-color">
 	    <h4>今日营业额</h4>
-	    <h1 class="num"><%= @today_turnovers %></h1>
+	    <h1 class="num"><%= number_to_currency @today_turnovers %></h1>
 		</div>
 	</div>
 	<div class="box-w25">
@@ -38,7 +38,7 @@
   <div class="box-w25">
   	<div class="admin-box red-bg-color">
 	    <h4>总营业额</h4>
-	    <h1 class="num"><%= @total_turnovers %></h1>
+	    <h1 class="num"><%= number_to_currency @total_turnovers %></h1>
 	  </div>
   </div>
 </div>

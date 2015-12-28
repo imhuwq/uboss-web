@@ -222,6 +222,11 @@ Rails.application.routes.draw do
         collection do
           get :added
           get :revenues
+          get :cities
+        end
+        member do
+          put :bind
+          put :unbind
         end
       end
       resources :sellers, only: [:index, :show, :edit, :update] do

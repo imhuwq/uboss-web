@@ -25,7 +25,7 @@ namespace :certification do
         address:  personal.address,
         mobile:   personal.mobile,
         id_num:   personal.identity_card_code,
-        face_with_identity_card_img: File.open(personal.face_with_identity_card_img.path)
+        face_with_identity_card_img: personal.face_with_identity_card_img
       }
       Certification.create(attrs)
     end

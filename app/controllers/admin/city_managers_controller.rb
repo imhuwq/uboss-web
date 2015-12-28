@@ -1,6 +1,18 @@
 class Admin::CityManagersController < AdminController
   before_action :set_city_manager, only: [:revenues, :added]
   def index
+    conditions = case params[:category]
+    when 'today' then ['DATE(certifications.verified_at) = ?', Date.today]
+    when 'month' then { certifications: { verified_at: Time.now.beginning_of_month..Time.now.end_of_month } }
+    end
+
+    @city_managers = CityManager.joins(:enterprise_authentications).
+    where(certifications: { status: 2}).where(conditions).
+    distinct("enterprise_authentications.city_code").
+    preload(:user).page(params[:page])
+  end
+
+  def cities
     @q = CityManager.search(search_params)
     @city_managers = @q.result.preload(:user).page(params[:page])
   end
@@ -24,7 +36,46 @@ class Admin::CityManagersController < AdminController
   end
 
   def added
-    @certifications = certifications.page(params[:page])
+    scope = %w(today week month).include?(params[:time]) ? params[:time] : 'today'
+    @certifications = certifications.send(scope).page(params[:page])
+  end
+
+  def bind
+    @city_manager = CityManager.find params[:id]
+    @city_manager.user_id_will_change!
+    if @city_manager.user_id.present?
+      flash[:error] = "该地区已绑定城市运营商, 请解绑后重试"
+    else
+      user = User.find_or_create_guest_with_session(params[:mobile], {})
+      if user.new_record?
+        flash[:error] = "绑定失败: #{user.errors.full_messages.join(',')}"
+      else
+        if user.previous_changes.present?
+          Ubonus::Invite.delay.active_by_user_id(user.id)
+        end
+        if @city_manager.update(user_id: user.id, rate: params[:rate])
+          flash[:notice] = "绑定成功"
+        else
+          flash[:error] = "绑定失败: #{@city_manager.errors.full_messages.join(',')}"
+        end
+      end
+    end
+    respond_to do |format|
+      format.js { render template: 'admin/city_managers/binding' }
+    end
+  end
+
+  def unbind
+    @city_manager = CityManager.find params[:id]
+    @city_manager.user_id_will_change!
+    if @city_manager.update(user_id: nil)
+      flash[:notice] = "解绑成功"
+    else
+      flash[:error] = '解绑失败'
+    end
+    respond_to do |format|
+      format.js { render template: 'admin/city_managers/binding' }
+    end
   end
 
   private
