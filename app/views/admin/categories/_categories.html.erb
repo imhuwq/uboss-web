@@ -25,7 +25,7 @@
             <% else %>
               <%= image_tag(category.image_url(:thumb), class:"clean", style:"height: 80px;")%>
             <% end %>
-            <%= file_field_tag "image", class: "upyun_file_json" ,  data: {to: "/admin/categories/#{category.id}/updata_category_img"} %>
+            <%= file_field_tag "image", class: "upyun_file_json" ,  data: {to: "/admin/categories/update_category_img?resource_id=#{category.id}"} %>
             <b class="loading"><i class="fa fa-spinner"></i></b>
           </p>
           <div style="font-size:10px;">(点击图片进行替换)</div>
