@@ -25,6 +25,10 @@
     .price{
         color: $brand-primary;
     }
+    &.product-page{
+      margin:0;
+    }
+
 }
 .product-store-box{
     .cover{
