@@ -14,6 +14,7 @@
     </div><!-- box -->
   </div><!-- bg-white -->
 <% end %>
+
 <div class="bg-white gap  m-top10 m-bottom10">
 	<div class="store-category-cover">
 	  <div class="cover"><img src='<%= @seller.avatar_url(:w120) %>' /></div>   
@@ -58,24 +59,33 @@
 	  </div>
 	<% end %>
 </div>
-
+<% unless action_name == 'hots' %>
 <div class="gap-lr m-bottom10"> 
   <%= render partial: 'ad_banner_slider', locals: { seller: @seller } %>
 </div>
+<% end %>
 
 
 <div class="bg-white m-bottom10">
+  <% unless action_name == 'hots' %>
   <div class="tab-nav category-nav">
     <div class="tab active" title="#category-container"><span>分类</span></div>
     <div class="tab" title="#product-container"><span>全部商品</span></div>
   </div>
+  <% end %>
   <div class="tab-container">
+    <% unless action_name == 'hots' %>
     <div class="tab-content category-list" id="category-container" style="display: block;">
       <div class="box">
         <%= render partial: 'categories', collection:  @seller.categories, as: :category %>
       </div>
     </div><!-- #category-container -->
-    <div class="tab-content" id="product-container">
+    <% end %>
+    <div class="tab-content" id="product-container" 
+    <% unless action_name == 'hots' %> 
+    style="display: block;"
+    <% end %>
+     >
       <div class="box store-list">
         <% if @products.present? %>
           <%= render partial: 'product', collection: @products %>
