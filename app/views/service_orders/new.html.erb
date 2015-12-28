@@ -2,6 +2,10 @@
   提交订单
 <% end %>
 
+<%= content_for :header_left do %>
+  <a class="back" onclick="history.go(-1)"><%= image_tag 'mobile/right.png' %></a>
+<% end %>
+
 <%= simple_form_for @order_form, url: service_orders_path, method: 'POST', wrapper: :default do |f| %>
 	<br />
   <div class="cart-list">
