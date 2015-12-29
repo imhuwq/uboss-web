@@ -21,9 +21,9 @@ class UserRole < ActiveRecord::Base
       if user.is_offical_senior?
         self.all
       elsif user.is_offical_operating?
-        self.where(name: %w(seller agent))
-      elsif user.is_super_admin?
         self.where(name: %w(seller agent offical_operating))
+      elsif user.is_super_admin?
+        self.where(name: %w(super_admin seller agent offical_operating))
       else
         user.user_roles
       end
