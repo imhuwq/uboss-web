@@ -15,4 +15,12 @@ class Category < ActiveRecord::Base
     super || build_asset_img
   end
 
+  def self.find_or_new_by(*args)
+    category = Category.find_by(*args)
+    unless category
+      category = Category.new(*args)
+    end
+    category
+  end
+
 end
