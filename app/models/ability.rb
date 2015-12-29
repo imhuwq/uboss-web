@@ -41,6 +41,7 @@ class Ability
     cannot :change_status, Product
     cannot :manage, Product
     cannot :manage, :authentications
+    cannot :update_service_rate, :uboss_seller
     cannot :manage, BankCard
     cannot :manage, WithdrawRecord
     cannot :manage, Order

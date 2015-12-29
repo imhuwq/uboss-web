@@ -101,7 +101,7 @@
 		<br />
       <% end %>
 		<div class="pull-right">
-		<% if current_user.is_super_admin? %>
+		<% if can?(:update_service_rate, :uboss_seller) %>
 			<%= form_for 'seller', url: url_for(controller: :sellers, action: :update_service_rate), method: :post do |f| %>
 				<%= hidden_field_tag 'seller[id]', @seller.id %>
 				<%= text_field_tag 'seller[service_rate]', @seller.try(:user_info).try(:service_rate), type: :tel %> %
@@ -265,13 +265,11 @@
 <script>
 $(window).load(function(){
 	$("body").on('click','.pop-img',function(){
-		$("html").addClass("lock");		
+		$("html").addClass("lock");
 		var pop_html="<div class='pop-bg'><div class='pop-container'>"
 		pop_html=pop_html+"<div class='pop'><div class='pop-content'>";
 		pop_html=pop_html+"<img src='"+$(this).attr("data-src")+"'/>"+"<div class='pop-close'><i class='fa fa-times'></i></div></div></div></div>";
 		$("body").append(pop_html)
-	
-		
 	})
 	$("body").on("click",".pop-bg .pop-close",function(){
 		$(".pop-bg").remove();
