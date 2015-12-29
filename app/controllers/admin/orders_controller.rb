@@ -48,7 +48,7 @@ class Admin::OrdersController < AdminController
   def index
     @type = params[:type] || 'all'
 
-    @orders = append_default_filter current_user.sold_orders.recent.
+    @orders = append_default_filter @orders.recent.
       includes(:user, order_items: [:product, :product_inventory])
     @counting_orders = @orders
 
