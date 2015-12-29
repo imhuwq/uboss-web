@@ -59,7 +59,12 @@ class Admin::UsersController < AdminController
       permit_keys.delete(:password)
       permit_keys.delete(:password_confirmation)
     end
-    params.require(:user).permit(permit_keys)
+    @resource_params = params.require(:user).permit(permit_keys)
+    allow_role_ids = UserRole.roles_can_manage_by_user(current_user).pluck(:id)
+    @resource_params[:user_role_ids].each do |role_id|
+      @resource_params[:user_role_ids].delete(role_id) unless allow_role_ids.include?(role_id.to_i)
+    end
+    @resource_params
   end
 
 end

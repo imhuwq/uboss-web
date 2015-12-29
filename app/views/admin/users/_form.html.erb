@@ -2,12 +2,13 @@
 <div class="inline-form text-center">
   <%= simple_form_for [:admin, @user] do |f| %>
     <%= f.input :login, disabled: !@user.new_record? %>
+    <%= f.input :email, disabled: !@user.new_record? %>
     <%= f.input :nickname %>
-    <% if current_user.is_role?(:super_admin) %>
+    <% if can?(:manage, User) %>
       <%= f.input :password %>
       <%= f.input :password_confirmation %>
-      <%= f.association :user_roles, label_method: :display_name, value_method: :id, include_blank: false %>
     <% end %>
+    <%= f.association :user_roles, collection: UserRole.roles_can_manage_by_user(current_user), label_method: :display_name, value_method: :id, include_blank: false %>
 
     <p class="text-center"><%= f.submit class: 'btn btn-large' %></p>
   <% end %>

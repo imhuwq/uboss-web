@@ -45,7 +45,6 @@ class Ability
     cannot :manage, BankCard
     cannot :manage, WithdrawRecord
     cannot :manage, Order
-    cannot :manage, User
     cannot :manage, PersonalAuthentication
     cannot :manage, EnterpriseAuthentication
   end
@@ -119,7 +118,7 @@ class Ability
     can :handle, :sellers
     can :read, Order
     can :read, Product
-    can :handle, User
+    can :manage, User
     can :read, User
     can :manage, PersonalAuthentication
     can :manage, EnterpriseAuthentication
