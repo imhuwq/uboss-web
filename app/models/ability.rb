@@ -47,6 +47,8 @@ class Ability
     cannot :manage, Order
     cannot :manage, PersonalAuthentication
     cannot :manage, EnterpriseAuthentication
+    cannot :added, CityManager
+    cannot :revenues, CityManager
   end
 
   def grant_permissions_to_offical_senior(user)

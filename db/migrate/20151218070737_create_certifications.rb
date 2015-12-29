@@ -18,4 +18,5 @@ class CreateCertifications < ActiveRecord::Migration
     end
 
     add_index :certifications, :user_id
+  end
 end
