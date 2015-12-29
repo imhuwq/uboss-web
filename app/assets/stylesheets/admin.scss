@@ -33,9 +33,7 @@ hr {
 .lock{
   height: 100%; overflow: hidden;
 }
-.hidden{
-  display: none;
-}
+
 .container { overflow: inherit;}
 .alert{padding:15px;margin-bottom:21px;border:1px solid transparent;border-radius:0}
 .alert h4{margin-top:0;color:inherit}
@@ -375,4 +373,7 @@ a.admin-box:hover,a.admin-box:focus{opacity: 0.9;  filter: alpha(opacity=90);col
 	top: 50%;
 	transform: translateY(-50%);
 	-webkit-transform: translateY(-50%);
+}
+.hidden{
+  display: none;
 }
