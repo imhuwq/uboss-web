@@ -1,18 +1,18 @@
 <div class='new_agency'>
-  <%= form_tag admin_build_cooperation_path do %>
-    <%= text_field_tag :mobile, '', id: 'new_mobile' %>
-    <a style='color:#fff;' href='#' class="btn pull-right" data-invite-agency='true' id='send_mobile'>邀请代销商</a>
-    <div class="modal fade invite-agency-success" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
-      <div class="modal-dialog modal-sm">
-        <div class="modal-content">
-          <div class="modal-body">
-            已成功发送邀请码到手机号<span></span>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-default" data-dismiss="modal">确定</button>
-          </div>
+  <%= text_field_tag :mobile, '', id: 'new_mobile' %>
+  <a style='color:#fff;' href='#' class="btn pull-right" data-invite-agency='true' id='send_mobile'>邀请代销商</a>
+  <%= text_field_tag :mobile_auth_code %>
+  <a style='color:#fff;' href='#' class="btn pull-right" id='authorize_agency'>授权代销</a>
+  <div class="modal fade invite-agency-success" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+    <div class="modal-dialog modal-sm">
+      <div class="modal-content">
+        <div class="modal-body">
+          已成功发送邀请码到手机号<span></span>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">确定</button>
         </div>
       </div>
     </div>
-  <% end %>
+  </div>
 </div>

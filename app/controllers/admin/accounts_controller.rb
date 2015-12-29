@@ -89,23 +89,21 @@ class Admin::AccountsController < AdminController
   def be_supplier
     user_info = current_user.user_info
     user_info.store_name = params[:store_name]
-    if user_info.save! and current_user.user_roles.create(name: 'supplier', display_name: '供应商')
+    if user_info.save! and current_user.user_roles.create!(name: 'supplier', display_name: '供应商')
       flash[:success] = '创建成功！'
-      redirect_to :back
     else
       flash[:error] = '创建失败！'
-      redirect_to :back
     end
+    redirect_to :back
   end
 
   def be_not_supplier
-    if current_user.user_roles.find_by(name: 'supplier', display_name: '供应商').destroy
+    if current_user.user_roles.find_by(name: 'supplier', display_name: '供应商').destroy!
       flash[:success] = '成功解除供应商身份！'
-      redirect_to :back
     else
       flash[:error] = '解除供应商身份失败！'
-      redirect_to :back
     end
+    redirect_to :back
   end
 
   private
