@@ -54,6 +54,8 @@ jQuery ($) ->
         error: (data, status, e) ->
           console.log 'error', data, status, e
           alert("操作错误")
+    else
+      $(".js-select2.select-adv-item").select2({data: {}})
   $(document).on 'click', '.setting-banner-box .close', ->
     $this = $(this)
     $.ajax
@@ -141,3 +143,7 @@ jQuery ($) ->
             error: (data, status, e) ->
               console.log 'data, status, e', data, status, e
               alert("操作错误")
+
+
+  $(document).on 'change', '.order_number', ->
+
