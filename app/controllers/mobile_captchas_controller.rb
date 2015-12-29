@@ -15,7 +15,12 @@ class MobileCaptchasController < ApplicationController
   private
 
   def invoke_captcha_sending
-    result = MobileCaptcha.send_captcha_with_mobile(params[:mobile])
+    if params[:captcha_type]
+      result = MobileCaptcha.send_captcha_with_mobile(params[:mobile], params[:captcha_type], current_user.id)
+    else
+      result = MobileCaptcha.send_captcha_with_mobile(params[:mobile])
+    end
+
     status = result[:success] ? :ok : :bad_request
 
     render json: {
