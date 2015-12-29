@@ -14,10 +14,11 @@ $ ->
       return false if mobile_submit_time != 0
       mobile_submit_time = 60
       sendBtn.addClass("disabled")
+      data = if sendBtn.data 'invite-agency' then {mobile: mobile, captcha_type: 'invite_agency'} else {mobile: mobile}
       $.ajax
         url: '/mobile_captchas/create',
         type: 'POST',
-        data: {mobile: mobile},
+        data: data
       .done ->
         if sendBtn.data 'invite-agency'
           $('.invite-agency-success .modal-content span').text(mobile)
@@ -80,3 +81,24 @@ $ ->
         alert(xhr.responseJSON.message)
       else
         alert('发送失败')
+
+  $('#authorize_agency').on 'click', ->
+    mobile_auth_code = $('#mobile_auth_code').val()
+    checkNum = /^[0-9]{5}$/
+    if not checkNum.test(mobile_auth_code)
+      alert "验证码格式错误"
+      return false
+    else
+      $.ajax
+        url: '/admin/build_cooperation',
+        type: 'POST',
+        data: {
+          mobile_auth_code: mobile_auth_code
+        },
+      .done ->
+        alert '您已成功授权'
+      .fail (xhr, textStatus) ->
+        if xhr.responseJSON?
+          alert(xhr.responseJSON.message)
+        else
+          alert '授权失败'

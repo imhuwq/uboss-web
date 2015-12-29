@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151224031640) do
+ActiveRecord::Schema.define(version: 20151229063056) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -210,6 +210,7 @@ ActiveRecord::Schema.define(version: 20151224031640) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "captcha_type"
+    t.integer  "sender_id"
   end
 
   add_index "mobile_captchas", ["mobile"], name: "index_mobile_captchas_on_mobile", using: :btree
