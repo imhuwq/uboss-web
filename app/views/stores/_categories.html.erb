@@ -1,9 +1,6 @@
+<% class_name = @categories.size%3 == 1 ? 'box-w50' : 'box-w33' %>
 <% cache ['categories', category] do %>
-	<% if (@categories.size%3 == 1) %>
-	<div class="box-w50">
-	<% else %>
-  <div class="box-w33">
-  <% end %>
+	<div class="<%= class_name %>">
   	<div class="product-box">
       <div class="cover">
         <%= link_to '', store_category_path(store_id: @seller.id, id: category.id), style: "background-image:url(#{category.image_url(:w120)})",class:'img' ,title:"#{category.name}" %>
