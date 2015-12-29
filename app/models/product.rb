@@ -258,7 +258,11 @@ class Product < ActiveRecord::Base
     else
       self.categories.clear
       category_names.each do |item|
-        category = Category.find_or_create_by(name: item, user_id: self.user_id)
+        category = Category.find_or_new_by(name: item, user_id: self.user_id)
+        if category.new_record?
+          category.use_in_store = false
+        end
+        category.save
         self.categories << category
       end
     end
@@ -267,8 +271,9 @@ class Product < ActiveRecord::Base
   def add_categories_after_create
     if @category_names && @category_names.any?
       @category_names.each do |item|
-        category = Category.find_or_create_by(name: item, user_id: self.user_id)
-        category.user_id = self.user_id
+        category = Category.find_or_new_by(name: item, user_id: self.user_id)
+        category.use_in_store = false
+        category.save
         categories << category
       end
       save
