@@ -257,6 +257,7 @@ ActiveRecord::Schema.define(version: 20160113024643) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "captcha_type"
+    t.integer  "sender_id"
   end
 
   add_index "mobile_captchas", ["mobile"], name: "index_mobile_captchas_on_mobile", using: :btree

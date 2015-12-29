@@ -9,6 +9,8 @@ class MobileCaptcha < ActiveRecord::Base
   before_validation :generate_code, :set_expire_time
   before_save :send_code
 
+  belongs_to :sender, class: 'User'
+
   class Verfier
     attr_reader :result
 
@@ -40,10 +42,11 @@ class MobileCaptcha < ActiveRecord::Base
     Verfier.new(auth_mobile, auth_code, type)
   end
 
-  def self.send_captcha_with_mobile(auth_mobile, type = nil)
+  def self.send_captcha_with_mobile(auth_mobile, type = nil, sender_id = nil)
     auth_code = MobileCaptcha.find_or_initialize_by(
       mobile: auth_mobile,
-      captcha_type: type
+      captcha_type: type,
+      sender_id: sender_id
     )
     auth_code.regenerate_code unless auth_code.new_record?
     { success: auth_code.save, mobile_auth_code: auth_code }
