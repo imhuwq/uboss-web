@@ -1,4 +1,23 @@
-small{font-size: 70%;}
+ssmall{font-size: 80%; line-height: 1;}
+.gap{padding:10px}
+.gap-lr{padding: 0 10px;}
+.nogap{ padding:0;}
+.line-gap{
+    p{
+        line-height: 120%;
+        font-size: 110%;
+        margin-bottom: 8px;
+    }
+    p:last-child{
+        margin: 0;
+    }
+}
+.m-bottom10{
+    margin-bottom: 10px;
+}
+.m-top10{
+    margin-top: 10px;
+}
 .text-center{ text-align: center;}
 .text-left{ text-align: left;}
 .text-right{ text-align: right;}
@@ -11,19 +30,23 @@ small{font-size: 70%;}
 
 .border-box { border-bottom: 1px solid #eee; padding-bottom: 5px;}
 .fixed-container{ padding-bottom: 60px;}
-h2{font-size: 21px; line-height: 30px;}
-h3{font-size: 18px;margin:20px 0; line-height: 25px;}
-h4{font-size: 15px; line-height: 25px; font-weight: normal;}
+h1{font-size: 18px;}
+h2{font-size: 16px;}
+h3{font-size: 15px;}
+h4{font-size: 13px;}
+h5{font-size: 10px;}
+h6{font-size: 8px;}
 
 
 .bg-white{ background:#fff;}
 .bg-main{ background: $brand-primary;color: #fff;}
 .bg-like{ background: #f9ba10;}
+.nobg{background: none;}
 
 .page-title{
     color: $brand-primary;
     padding: 10px 0;
-    font-size: 14px;
+    font-size: 15px;
 }
 .page-title .more-bar {
   color: #b6b6b6;
@@ -80,30 +103,15 @@ h4{font-size: 15px; line-height: 25px; font-weight: normal;}
   }
 }
 
+
 .main-color{ color: $brand-primary; }
 .like-color{ color: #f9ba10;}
-.gray-color{ color:#999;}
-.mint-color{ color:#43c3aa;}
+.gray-color{ color:#999}
 .red-color{ color: #f91d36;}
 
 .hidden {
   display: none;
 }
-
-.f14{ font-size: 14px; }
-
-.pt5 { padding-top: 5px; }
-.pt10{ padding-top: 10px; }
-.pl5 { padding-left: 5px; }
-.pl10{ padding-left: 10px; }
-.pr5 { padding-right: 5px; }
-.pr10{ padding-right: 10px; }
-.pb5 { padding-bottom: 5px; }
-.pb10{ padding-bottom: 10px; }
-
-.borderLeft  { border-left:1px solid #f6f6f6; }
-.borderRight { border-right:1px solid #f6f6f6; }
-.borderBottom{ border-bottom:1px solid #f6f6f6; }
 
 .gap{padding:10px}
 .gap-lr{padding: 0 10px;}
@@ -118,3 +126,7 @@ h4{font-size: 15px; line-height: 25px; font-weight: normal;}
         margin: 0;
     }
 }
+.borderLeft  { border-left:1px solid #f6f6f6; }
+.borderRight { border-right:1px solid #f6f6f6; }
+.borderBottom{ border-bottom:1px solid #f6f6f6; }
+

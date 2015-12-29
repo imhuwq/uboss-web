@@ -5,7 +5,7 @@
   background: $brand-primary;
   color: #fff;
   border-radius: 4px;
-  line-height: 15px;
+  line-height: 20px;
   outline: none;
   border: none;
 }
@@ -16,7 +16,10 @@
 .btn-orange{
   background: #f9ba10;
   color: #fff;
-
+}
+.btn-white{
+  background: #fff;
+  color: $brand-primary;
 }
 .btn-orange-border{
   background: none;

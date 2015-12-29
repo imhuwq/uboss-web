@@ -1,5 +1,4 @@
 <%= content_for :page_title do %>
-  <%= @service_store.store_name %>
 <% end %>
 
 <%= content_for :extra_meta_tags do %>
@@ -16,8 +15,9 @@
   <% end %>
 <% end %>
 
-<div class="store-cover text-center" style="<%= "background-image:url('#{@service_store.store_cover_url(:w640)}')" if @service_store.store_cover_identifier.present? %>">
+<div class="store-cover text-center" style="<%#= "background-image:url('#{@service_store.store_cover_url(:w640)}')" if @service_store.store_cover_identifier.present? %>">
   <div class="content">
+  	<br />
     <h2 class="name"><%= @service_store.store_name %></h2>
 
     <% if @service_store.store_short_description.present?  %>
@@ -56,37 +56,41 @@
 
 <!-- 店铺信息-->
 <div class="bg-white gap">
-  <div class="product-store-box">
-    <div class="content">
-      <%= link_to  "tel:#{@service_store.mobile_phone}", class:'store-mobile pull-right' do %>
-        <i class="store-mobile-img"></i>
-      <%end%>
-      <p class="store-address-img gray-color text-cut"><%= @service_store.address %></p>
-      <h4 class="store-clock-img name text-cut">营业时间：<%= @service_store.business_hours %></h4>
+  <div class="service-store-info">  	
+    <%= image_tag('mobile/mobile.png',class:'pull-right store-tel') %>    
+    <div class="content">      
+      <div class="address text-cut m-bottom10"><%= @service_store.address %></div>
+      <div class="open-time">营业时间：<%= @service_store.business_hours %></div>
     </div>
   </div>
 </div>
-
-<h4 class="type-title">代金券</h4>
-<div class="bg-white">
-  <div class="box store-list">
-    <% if @voucher_products.present? %>
-      <%= render partial: 'service_product', collection: @voucher_products %>
-    <% else %>
-      <h2 class="page-title text-center">店家正在准备好货，敬请期待</h2>
-    <% end %>
-  </div>
+<div class="pop-bg phone-list hidden ">
+	<div class="pop-bottom">
+		<div class="bg-white m-bottom10  borde-radius">
+			<% @service_store.mobile_phone.each do |phone| %>			  
+			  <%= link_to  phone ,"tel:#{phone}" %>			  
+			<% end %>
+		</div><!-- bg-white -->	
+		<div class="btn btn-block btn-large btn-white ">取消</div>
+	</div><!-- pop-bottom -->
 </div>
 
-<h4 class="type-title">团购</h4>
-<div class="bg-white">
-  <div class="box store-list">
-    <% if @group_products.present? %>
-      <%= render partial: 'service_product', collection: @group_products %>
-    <% else %>
-      <h2 class="page-title text-center">店家正在准备好货，敬请期待</h2>
-    <% end %>
-  </div>
+<div class="page-title black-color gap">代金券</div>
+<div class="bg-white service-product-list">
+  <% if @voucher_products.present? %>
+    <%= render partial: 'service_product', collection: @voucher_products %>
+  <% else %>
+    <div class="main-color gap text-center">店家正在准备好货，敬请期待</div>
+  <% end %>
+</div>
+
+<div class="page-title black-color gap">团购</div>
+<div class="bg-white service-product-list">  
+  <% if @group_products.present? %>
+    <%= render partial: 'service_product', collection: @group_products %>
+  <% else %>
+    <div class="main-color gap text-center">店家正在准备好货，敬请期待</div>
+  <% end %>
 </div>
 
 <%= render partial: 'new_share' %>

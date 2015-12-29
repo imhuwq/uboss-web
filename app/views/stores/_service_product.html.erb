@@ -1,11 +1,9 @@
 <% cache ['store-product', service_product], expires_in: 1.day do %>
-  <div class="service-store-product">
-    <%= link_to service_product_path(service_product) do %>
-      <div class="cover">
-        <%= image_tag(service_product.image_url(:w320)) %>
-      </div>
-    <% end %>
-    <div class="text gray-color"><%= service_product.name %></div>
-    <div class="text blue-color">￥<span class="price"><%= service_product.present_price %></span></div>
-  </div>
+  <%= link_to service_product_path(service_product),class:'service-store-product' do %>
+    <div class="cover" style="background-image:url('<%= service_product.image_url(:w320)%>') ;">
+      <%= image_tag(service_product.image_url(:w320)) %>
+    </div>
+    <div class="title gray-color tex-cut"><%= service_product.name %></div>
+  	<h2 class="main-color"><small>￥</small><b><%= service_product.present_price %></b></h2>
+  <% end %>
 <% end %>

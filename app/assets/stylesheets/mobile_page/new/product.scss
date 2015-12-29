@@ -1,3 +1,34 @@
+.product-box{
+    position: relative;
+    margin:10px 0 ;
+    .cover { position: relative;margin-bottom: 2px;}
+    .cover img{ width: 100%;}
+    .img{
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 2;
+        background-size:cover;
+        background-position:center center;
+        background-color: #fff;
+        background-repeat: no-repeat;
+    }
+    .title{
+        box-sizing: border-box;
+        text-overflow:ellipsis;
+        white-space:nowrap;
+        overflow: hidden;
+        font-size: 14px;
+    }
+    .price{
+        color: $brand-primary;
+    }
+    &.product-page{
+        margin: 0;
+    }
+}
 .product-store-box{
     .cover{
         float: left;
@@ -21,57 +52,9 @@
       line-height: 20px;
     }
 }
-.product-box{
-    .cover { position: relative;}
-    .cover img{ width: 100%;}
-    .img{
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        z-index: 2;
-        background-size:cover;
-        background-position:center center;
-        background-color: #fff;
-        background-repeat: no-repeat;
-    }
-    .title{
-      font-size: 13px;
-      padding:2px 0;
-      text-overflow:ellipsis;
-      white-space:nowrap;
-      overflow:hidden;
-      a{
-          color: #414141;
-      }
-    }
-    .price{
-      font-size: 11px;
-      color: $brand-primary;
-      text-overflow:ellipsis;
-      white-space:nowrap;
-      overflow:hidden;
-      span{
-          text-decoration:line-through;
-          color: #b6b6b6;
-          font-size: 9px;
-          display: inline-block;
-      }
-    }
-    .like-box{
-        position: absolute;
-        right: 10px;
-        z-index: 3;
-        bottom: 0px;
-        background: rgba(255,255,255,0.8);
-        padding: 5px 10px 3px;
-        border-radius: 4px 4px 0 0;
-    }
-}
 .product-info-box{
     background:#fff;
-    margin-bottom: 15px;
+    margin-bottom: 10px;
     padding:10px;
     text-align: center;
     overflow: hidden;
@@ -124,7 +107,6 @@
     }
 
 }
-
 .store-list{
     padding:0 5px 0;
     .product-box{
@@ -157,9 +139,8 @@
     }
 }
 .border-top{
-    padding-top: 20px;
+    padding-top: 10px;
     border-top: 1px dashed #ddd;
-    margin:10px 20px 0;
 }
 .into{
     font-size: 18px;
@@ -193,7 +174,7 @@
         background: #fff;
     }
     .btn{
-        font-size: 15px;
+        font-size: 16px;
         line-height: 20px;
         padding: 10px 15px;
     }
@@ -225,39 +206,3 @@
     }
 }
 #share_buttoms img{ height: 40px;}
-
-/*begin 团购*/
-.different-product-info-box{
-  background:#F6F6F6;
-  margin-bottom: 0px;
-}
-
-.store-address-img{
-  padding: 6px 0px 10px 25px;
-  background: url(/assets/mobile/local.png) #fff no-repeat;
-  background-position: 5px 5.5px;
-  background-size: 10px;
-}
-
-.store-clock-img{
-  padding: 6px 0px 0px 25px;
-  background: url(/assets/mobile/clock.png) #fff no-repeat;
-  background-position: 0px 8.5px;
-  background-size: 20px;
-}
-
-.store-mobile{
-  display: block;
-  width: 45px;
-  padding-left: 15px;
-  border-left: 1px solid #C2C2C2;
-
-  .store-mobile-img{
-    display: block;
-    padding: 0px 0px 50px 40px;
-    background: url(/assets/mobile/mobile.png) #fff no-repeat;
-    background-size: 40px;
-    margin-top: 10px;
-  }
-}
-/*end 团购*/

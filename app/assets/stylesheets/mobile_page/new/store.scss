@@ -7,7 +7,7 @@
     }
     .name{margin: 0 0 10px 0;}
     .content{
-        padding: 20px 10px 10px;
+        padding: 40px 10px 10px;
         background: rgba(255,255,255,0.5);
         border-radius: 4px;
     }
@@ -25,9 +25,10 @@
         }
       }
     }
-
 }
-
+.sort-list{
+    padding: 0 5px;
+}
 .index-product-list{
     padding: 5px;
 }

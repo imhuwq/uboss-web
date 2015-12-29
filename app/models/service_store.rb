@@ -40,10 +40,12 @@ class ServiceStore < UserInfo
   end
 
   def mobile_phone
-    store_phone = store_phones.first
-    if store_phone
-      store_phone.phone_number.blank? ? "#{store_phone.area_code}-#{store_phone.fixed_line}" : store_phone.phone_number
+    phones = []
+    store_phones.each do |phone|
+      phones << phone.phone_number if phone.phone_number.present?
+      phones << phone.fixed_phone  if phone.fixed_line.present?
     end
+    phones
   end
 
   def store_cover_name

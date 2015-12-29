@@ -49,7 +49,7 @@ class Admin::OrdersController < AdminController
     @orders = OrdinaryOrder.where(seller_id: current_user.id)
     @type = params[:type] || 'all'
 
-    @orders = append_default_filter current_user.sold_orders.recent.
+    @orders = append_default_filter current_user.sold_ordinary_orders.recent.
       includes(:user, order_items: [:product, :product_inventory])
     @counting_orders = @orders
 

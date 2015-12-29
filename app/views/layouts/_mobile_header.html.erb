@@ -2,17 +2,24 @@
 
   <% if content_for?(:header_left) %>
     <%= yield :header_left %>
-  <% else %>
-    <%= link_to carts_path, class: "cart-icon #{'white-icon' if product_show?}" do %>
-      <%= image_tag 'mobile/cart.png' %>
-    <% end %>
+    
   <% end %>
 
   <% if content_for? :header_right %>
     <%= yield :header_right %>
+    
   <% else %>
     <div class="menu-btn <%= 'white-icon' if product_show? %>"><%= image_tag 'mobile/navbar.png' %></div>
-
+		
+  	<% if product_show? || controller_name == 'stores' %>
+			<%= link_to chat_path(), class: "cart-icon #{'white-icon' if product_show?}" do %>
+	      <%= image_tag 'mobile/chat-icon.png' %>
+	    <% end %>
+		<% end %>
+  	<%= link_to carts_path, class: "cart-icon #{'white-icon' if product_show?}" do %>
+      <%= image_tag 'mobile/cart.png' %>
+    <% end %>
+		
     <div class="nav-bar">
       <ul>
         <li><%= link_to '首页', root_path %></li>
@@ -32,9 +39,10 @@
   <% end %>
 
   <% if content_for?(:page_title) %>
-    <span class="title"><%= yield(:page_title) %></span>
+    <div class="title"><%= yield(:page_title) %></div>
   <% elsif !product_show? %>
     <%= image_tag 'mobile/logo.png', class: 'logo' %>
   <% end %>
 
 </div>
+

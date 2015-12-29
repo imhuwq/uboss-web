@@ -1,3 +1,63 @@
+.service-store-info{
+  .store-tel{
+    height: 30px;
+    padding: 10px 10px 10px 20px;
+    border-left:1px solid #eee ;    
+  }
+  .address{
+    background: image-url('mobile/local.png') no-repeat left center;
+    background-size:auto 16px; 
+    padding-left: 30px;
+  }
+  .open-time{
+    background: image-url('mobile/clock.png') no-repeat left center;
+    background-size:auto 16px; 
+    padding-left: 30px;
+  }
+}
+.phone-list{
+  a{
+    display: block;
+    color: #333;
+    border-bottom: 1px solid #eee;
+    padding: 10px;
+    text-align: center;
+  }
+  a:last-child{
+    border: none;
+  }
+  
+}
+
+.service-product-list{
+  .service-store-product:last-child{
+    border-bottom: none;
+  }
+}
+
+.service-store-product{
+  position: relative;
+  padding:10px;
+  border-bottom: 1px solid #eee;
+  display: block;
+  overflow: hidden;
+  .cover {
+    float: left;
+    margin-right: 10px;
+    position: relative;
+    width: 60px;
+    height: 60px;
+    background-size:cover;
+    background-position:center center;
+    background-color: #fff;
+    background-repeat: no-repeat;
+    img{display: none;}
+  }  
+  .title{
+    margin: 5px 0;
+  }
+}
+
 #service_stores_verify_detail {
   .box-w49{
     width: 49%;
@@ -49,7 +109,7 @@
     display: block;
     background: image-url('mobile/gray-arrow-right.png') no-repeat right center;
     background-size:10px;
-    font-size: 15px;
+    font-size: 16px;
     color: #333;
     line-height: 20px;
   }
@@ -151,40 +211,14 @@
     .url {
       padding: 17px 0 17px 10px;
       background-color: #fff;
-      font-size: 15px;
+      font-size: 16px;
       color: #8A8787;
     }
   }
 }
 
 
-.service-store-product{
-  padding: 0 10px 10px;
-  margin-top: 10px;
-  border-bottom: 1px solid #f6f6f6;
-  overflow: hidden;
-  .cover {
-    float: left;
-    margin-right: 10px;
-    width: 60px;
 
-    img {
-      width: 60px;
-      height: 60px;
-    }
-  }
-  .blue-color{
-    color: #43C3AF;
-  }
-  .text{
-    margin-top: 10px;
-  }
-  .price{
-    font-size: 16px;
-    font-weight: bold;
-    font-size: 16px;
-  }
-}
 
 .type-title{
   margin-left: 15px;

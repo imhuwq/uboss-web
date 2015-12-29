@@ -3,7 +3,6 @@
     width: 100%;
     background: #fff;
     margin-bottom: 8px;
-    font-size: 15px;
     line-height: 20px;
     .tab{
         width: 1%;
@@ -19,12 +18,37 @@
     }
     .tab.active{
         span{
-            padding: 10px 0 9px;
-            border-bottom: 1px solid $brand-primary;
+            padding-bottom:8px;
+            border-bottom: 2px solid $brand-primary;
             color: $brand-primary;
         }
     }
     
+}
+.category-nav{
+    display: block;
+    margin: 0;
+    padding: 0;
+    .tab,.tab.active{
+        display: inline-block;
+        width: auto;
+        margin: 0;
+        padding: 0 0 0 10px;
+        span{
+            display: block;
+            padding: 10px 20px;
+        }
+    }
+}
+.service-store-nav{
+    background: none;
+    margin: 0;
+    .tab{
+        padding: 0;
+        span{
+            padding: 10px 10px;
+        }
+    }
 }
 .login-style{
     .tab{color: $brand-primary;}
