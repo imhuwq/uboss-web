@@ -18,15 +18,18 @@ class UserRole < ActiveRecord::Base
     end
 
     def roles_can_manage_by_user user
+      roles = []
       if user.is_offical_senior?
-        self.all
-      elsif user.is_offical_operating?
-        self.where(name: %w(seller agent offical_operating))
-      elsif user.is_super_admin?
-        self.where(name: %w(super_admin seller agent offical_operating))
-      else
-        user.user_roles
+        roles |= %w(super_admin seller agent offical_operating offical_financial)
       end
+      if user.is_offical_operating?
+        roles |= %w(seller agent offical_operating)
+      end
+      if user.is_super_admin?
+        roles |= %w(super_admin seller agent offical_operating)
+      end
+      user_roles = self.where(name: roles)
+      user_roles.present? ? user_roles : user.user_roles
     end
   end
 
