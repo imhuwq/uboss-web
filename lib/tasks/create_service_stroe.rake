@@ -6,7 +6,7 @@ namespace :user_db do
     User.all.each do |user|
       if user.service_store.blank?
         user.build_service_store
-        user.save(validate: false)
+        puts user.save(validate: false)
       end
     end
 

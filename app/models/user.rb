@@ -119,11 +119,11 @@ class User < ActiveRecord::Base
   end
 
   def service_store
-    user_infos.service_store || build_service_store
+    user_infos.service_store.first
   end
 
   def ordinary_store
-    user_infos.ordinary_store || build_ordinary_store
+    user_infos.ordinary_store.first
   end
 
   def image_url(version = nil)
