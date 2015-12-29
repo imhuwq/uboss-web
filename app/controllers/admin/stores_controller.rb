@@ -24,7 +24,16 @@ class Admin::StoresController < AdminController
       @message = {message:"上传失败"}
     end
     render json:  @message
-    # render 'create_advertisement'
+  end
+
+  def update_advertisement_order
+    adv = Advertisement.find_by(id: params[:resource_id], user_id: current_user.id)
+    if adv.update(order_number: params[:resource_val])
+      @message = {message: "上传成功！"}
+    else
+      @message = {message:"上传失败"}
+    end
+    render json:  @message
   end
 
 

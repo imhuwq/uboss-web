@@ -256,6 +256,7 @@ zh-CN:
         <<: *product
       category:
         name: 分组名
+        asset_img: 展示图
   order_status_bar:
     unpay: 等待买家付款
     payed: 等待卖家发货
