@@ -1,7 +1,7 @@
 class Admin::PlatformAdvertisementsController < AdminController
 
 	authorize_resource
-  before_filter :get_platform_advertisement, only: [:show, :edit, :change_status, :update]
+  before_filter :get_platform_advertisement, only: [:show, :edit, :change_status, :update, :destroy]
 
 	def index
 		 @platform_advertisements = Advertisement.where(platform_advertisement: true).order("updated_at DESC").page(params[:page] || 1)
@@ -59,6 +59,15 @@ class Admin::PlatformAdvertisementsController < AdminController
 			redirect_to action: :index
 		end
 	end
+
+  def destroy
+    if @platform_advertisement.destroy
+      flash[:success] = '删除成功'
+    else
+      flash[:error] = '删除失败'
+    end
+    redirect_to action: :index
+  end
 
 	private
 	# Never trust parameters from the scary internet, only allow the white list through.

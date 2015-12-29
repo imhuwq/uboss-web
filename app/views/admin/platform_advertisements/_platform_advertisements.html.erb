@@ -17,19 +17,19 @@
           </p>
           <div style="font-size:10px;">(点击图片进行替换)</div>
         </td>
-        <td><%= platform_advertisement.advertisement_url %></td>
+        <td width="600" ><%= platform_advertisement.advertisement_url %></td>
         <td>
 
           <% if can? :update, platform_advertisement %>
             <% if platform_advertisement.status == 'hide' %>
               <p>
-              <%= link_to("上架", change_status_admin_platform_advertisement_path(platform_advertisement, status: 'show'),
+              <%= link_to("显示", change_status_admin_platform_advertisement_path(platform_advertisement, status: 'show'),
               remote: true, method: :patch, data: { disable_with: '<i class="fa fa-spinner"></i>' },
               class: "btn btn-mid btn-block yellow-btn change-status-btn") %>
               </p>
             <% else %>
               <p>
-              <%= link_to("下架", change_status_admin_platform_advertisement_path(platform_advertisement, status: 'hide'),
+              <%= link_to("隐藏", change_status_admin_platform_advertisement_path(platform_advertisement, status: 'hide'),
               remote: true, method: :patch, data: { disable_with: '<i class="fa fa-spinner"></i>' },
               class: "btn btn-mid btn-block change-status-btn") %>
               </p>
