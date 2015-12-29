@@ -27,6 +27,7 @@ class User < ActiveRecord::Base
   has_many :favour_products
   has_many :favoured_products, through: :favour_products, source: :product
   has_many :withdraw_records
+  has_many :sended_mobile_captchas, class_name: 'MobileCaptcha', foreign_key: 'sender_id'
   # for agent
   has_many :divide_incomes
   has_many :sellers, class_name: 'User', foreign_key: 'agent_id'
