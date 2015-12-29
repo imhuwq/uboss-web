@@ -17,9 +17,13 @@ class Admin::PlatformAdvertisementsController < AdminController
 	def create
     @platform_advertisement = Advertisement.new(platform_advertisement_params)
     @platform_advertisement.platform_advertisement = true
-		if @platform_advertisement.save
+    @platform_advertisement.status = 'hide'
+		if platform_advertisement_params[:advertisement_url].present? && platform_advertisement_params[:avatar].present? && @platform_advertisement.save
 			flash[:success] = "创建成功"
 			redirect_to action: :index
+    elsif !platform_advertisement_params[:advertisement_url].present? || !platform_advertisement_params[:avatar].present?
+      flash[:error] = '请填写链接并上传图片'
+      render :new
 		else
 			flash[:error] = "#{@platform_advertisement.errors.full_messages.join('<br/>')}"
 			render :new
@@ -30,8 +34,12 @@ class Admin::PlatformAdvertisementsController < AdminController
 	end
 
 	def update
-    if @platform_advertisement.update(platform_advertisement_params)
+    if platform_advertisement_params[:advertisement_url].present? && @platform_advertisement.update(platform_advertisement_params)
       flash[:success] = '修改成功'
+    elsif !platform_advertisement_params[:advertisement_url].present?
+      flash[:error] = '请填写链接并上传图片'
+      render :edit
+      return
     else
       flash[:error] = '修改失败'
     end
