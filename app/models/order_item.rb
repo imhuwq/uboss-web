@@ -60,7 +60,7 @@ class OrderItem < ActiveRecord::Base
   def can_reapply_refund?
     return @can_reapply_refund if instance_variable_defined? '@can_reapply_refund'
 
-    @can_reapply_refund = !order_item_refunds.where(order_state: Order.states[order.state]).exists?
+    @can_reapply_refund = !order_item_refunds.where(order_state: OrdinaryOrder.states[order.state]).exists?
   end
 
   def count

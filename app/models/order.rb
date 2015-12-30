@@ -31,14 +31,6 @@ class Order < ActiveRecord::Base
 
   after_create :invoke_privielge_calculator
 
-  def has_payed?
-    Order.states[self.state] >= 1 && Order.states[self.state] != 5
-  end
-
-  def has_refund?
-    order_items.joins(:order_item_refunds).exists?
-  end
-
   def total_privilege_amount
     @total_privilege_amount ||= preferentials_privileges.sum(:total_amount)
   end

@@ -4,17 +4,15 @@ class OrdinaryOrder < Order
   enum state: { unpay: 0, payed: 1, shiped: 3, signed: 4, closed: 5, completed: 6 }
 
   scope :selled, -> { where("orders.state <> 0") }
-  scope :with_refunds, -> {
-    joins(order_items: :order_item_refunds).uniq
-  }
+  scope :with_refunds, -> { joins(order_items: :order_item_refunds).uniq }
 
   before_create :set_info_by_user_address, :set_ship_price
 
   aasm column: :state, enum: true, skip_validation_on_save: true, whiny_transitions: false do
     state :unpay
     state :payed
-    state :shiped, after_enter: [:fill_shiped_at, :close_order_item_refund_before_shiping]
-    state :signed, after_enter: [:fill_signed_at, :active_privilege_card, :close_refunds_before_signed]
+    state :shiped,    after_enter: [:fill_shiped_at, :close_order_item_refund_before_shiping]
+    state :signed,    after_enter: [:fill_signed_at, :active_privilege_card, :close_refunds_before_signed]
     state :completed, after_enter: :fill_completed_at
     state :closed,    after_enter: :recover_product_stock
 
@@ -167,6 +165,14 @@ class OrdinaryOrder < Order
     else
       true
     end
+  end
+
+  def has_payed?
+    OrdinaryOrder.states[self.state] >= 1 && OrdinaryOrder.states[self.state] != 5
+  end
+
+  def has_refund?
+    order_items.joins(:order_item_refunds).exists?
   end
 
   private

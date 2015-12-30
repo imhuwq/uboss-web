@@ -5,25 +5,25 @@ class AutoSignOrderJob < ActiveJob::Base
   include Loggerable
 
   def perform
-    Order.shiped.where("orders.shiped_at <= ?", Time.now - 9.days).find_each do |order|
-      sign_order_if_no_refunds(order)
+    OrdinaryOrder.shiped.where("orders.shiped_at <= ?", Time.now - 9.days).find_each do |ordinary_order|
+      sign_order_if_no_refunds(ordinary_order)
     end
   end
 
   private
 
-  def sign_order_if_no_refunds(order)
-    return false if order.has_refund?
+  def sign_order_if_no_refunds(ordinary_order)
+    return false if ordinary_order.has_refund?
 
-    if order.may_sign?
-      logger.info "Auto Sign Order SUCCESS, number: #{order.number}"
-      order.sign!
+    if ordinary_order.may_sign?
+      logger.info "Auto Sign Order SUCCESS, number: #{ordinary_order.number}"
+      ordinary_order.sign!
     end
   rescue => e
-    logger.error "Auto Sign Order FAIL, number: #{order.number}, ERROR: #{e.message}"
+    logger.error "Auto Sign Order FAIL, number: #{ordinary_order.number}, ERROR: #{e.message}"
     Airbrake.notify_or_ignore(
       e,
-      parameters: {order_number: order.number},
+      parameters: {order_number: ordinary_order.number},
       cgi_data: ENV.to_hash
     )
   end
