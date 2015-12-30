@@ -1,4 +1,8 @@
 class Admin::AgenciesController < AdminController
+
+  def my_agencies
+    @agencies = 
+  end
   
   def new_agency
   end
@@ -16,7 +20,7 @@ class Admin::AgenciesController < AdminController
           user
         end
 
-        if current_user.cooperations.create!(seller_id: user.id)
+        if current_user.cooperations.create!(agency_id: user.id)
           captcha.destroy!
           render json: nil, status: :created
         else

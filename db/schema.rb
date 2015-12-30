@@ -156,12 +156,12 @@ ActiveRecord::Schema.define(version: 20160113024643) do
 
   create_table "cooperations", force: :cascade do |t|
     t.integer  "supplier_id"
-    t.integer  "seller_id"
+    t.integer  "agency_id"
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
   end
 
-  add_index "cooperations", ["seller_id"], name: "index_cooperations_on_seller_id", using: :btree
+  add_index "cooperations", ["agency_id"], name: "index_cooperations_on_agency_id", using: :btree
   add_index "cooperations", ["supplier_id"], name: "index_cooperations_on_supplier_id", using: :btree
 
   create_table "daily_reports", force: :cascade do |t|
