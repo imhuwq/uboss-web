@@ -26,6 +26,7 @@ class Product < ActiveRecord::Base
   scope :hots, -> { where(hot: true) }
   scope :available, -> { where.not(status: 2) }
   scope :hot_ordering, -> { order('products.hot DESC, products.id DESC') }
+  scope :create_today, -> { where('created_at > ? and created_at < ?', Time.now.beginning_of_day, Time.now.end_of_day) }
 
   validate :must_has_one_product_inventory
   validates_presence_of :user_id, :name, :short_description

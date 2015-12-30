@@ -16,7 +16,7 @@
       <abbr title="必填">*</abbr> 团购类型
     </label>
     <div class="control-input" style="margin-top:5px;">
-      <%= f.collection_radio_buttons :service_type, ServiceProduct::DataServiceType.invert, :last, :first %>
+      <%= f.collection_radio_buttons :service_type, ServiceProduct::DataServiceType.invert, :last, :first, checked: ServiceProduct::DataServiceType.invert.first %>
     </div>
   </div>
   <%= f.input :original_price, hint: '仅作页面显示参考' %>
@@ -27,7 +27,11 @@
       <abbr title="必填">*</abbr> 团购有效期
     </label>
     <div class="control-input">
-      自发布时间后<%= f.input_field :monthes, type: :text %>个月，有效期至少3个月
+      <span style="font-size:15px;line-height:36px;">自发布时间后
+        <input name="service_product[monthes]" id="service_product_monthes" value="" style="padding:5px;width:50px;text-align:center;line-height:20px;border-radius:4px;border:none;" />
+        个月
+      </span>
+      <span style="font-size:smaller;margin-left:20px;">有效期至少3个月</span>
     </div>
   </div>
   <%= f.input :asset_img, hint:"(点击图片进行替换)"  do %>

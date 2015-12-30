@@ -14,13 +14,17 @@ class Admin::ProductsController < AdminController
     @products = current_user.ordinary_products.available.order('created_at DESC')
     @products = @products.includes(:asset_img).page(params[:page] || 1)
     @statistics = {}
-    @statistics[:create_today] = @products.where('created_at > ? and created_at < ?', Time.now.beginning_of_day, Time.now.end_of_day).count
+    @statistics[:create_today] = @products.create_today.count
     @statistics[:count] = @products.count
     @statistics[:not_enough] = @products.where('count < ?', 10).count
   end
 
+  def new
+    @product = OrdinaryProduct.new()
+  end
+
   def create
-    @product = OrdinaryProduct.new product_params
+    @product = OrdinaryProduct.new(product_params)
     @product.user_id = current_user.id
 
     if @product.save
@@ -28,13 +32,12 @@ class Admin::ProductsController < AdminController
       redirect_to action: :show, id: @product.id
     else
       flash[:error] = "#{@product.errors.full_messages.join('<br/>')}"
-      @product = Product.new product_params
       render :new
     end
   end
 
   def update
-    if @product.update(ordinary_product_params)
+    if @product.update(product_params)
       flash[:success] = '保存成功'
       redirect_to action: :show, id: @product.id
     else
@@ -92,29 +95,28 @@ class Admin::ProductsController < AdminController
     params.permit(product_propertys_names: [])
   end
 
-  def product_params
-    params.require(:product).permit(
-      :name,      :original_price,  :present_price,     :count,
-      :content,   :has_share_lv,    :calculate_way,     :avatar,
-      :traffic_expense, :short_description, :transportation_way,
-      :carriage_template_id, :categories,
-      :full_cut, :full_cut_number, :full_cut_unit,
-      product_inventories_attributes: [
-        :id, :price, :count, :share_amount_total, :privilege_amount,
-        :share_amount_lv_1, :share_amount_lv_2, :share_amount_lv_3,
-        sku_attributes: product_propertys_params[:product_propertys_names],
-      ]
-    )
+  def product_inventories_params
+    if params[:product]
+      params.require(:product).permit(
+        product_inventories_attributes: [
+          :id, :price, :count, :share_amount_total, :privilege_amount,
+          :share_amount_lv_1, :share_amount_lv_2, :share_amount_lv_3,
+          sku_attributes: product_propertys_params[:product_propertys_names],
+        ]
+      )
+    else
+      { product_inventories_attributes: [] }
+    end
   end
 
-  def ordinary_product_params
+  def product_params
     params.require(:ordinary_product).permit(
       :name,      :original_price,  :present_price,     :count,
       :content,   :has_share_lv,    :calculate_way,     :avatar,
       :traffic_expense, :short_description, :transportation_way,
-      :carriage_template_id,
+      :carriage_template_id, :categories,
       :full_cut, :full_cut_number, :full_cut_unit
-    ).merge(product_params)
+    ).merge(product_inventories_params)
   end
 
 end
