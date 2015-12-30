@@ -28,7 +28,7 @@
     </label>
     <div class="control-input">
       <span style="font-size:15px;line-height:36px;">自发布时间后
-        <input name="service_product[monthes]" id="service_product_monthes" value="" style="padding:5px;width:50px;text-align:center;line-height:20px;border-radius:4px;border:none;" />
+        <input name="service_product[monthes]" id="service_product_monthes" value="<%= @service_product.monthes %>" style="padding:5px;width:50px;text-align:center;line-height:20px;border-radius:4px;border:none;" />
         个月
       </span>
       <span style="font-size:smaller;margin-left:20px;">有效期至少3个月</span>
@@ -48,13 +48,13 @@
     </p>
   <% end %>
   <div class="form-group ">
-    <label class="control-label">购买须知</label>
+    <label class="control-label">购买须知<abbr title="必填">*</abbr></label>
     <div class="control-input" style='width: 430px;'>
       <%= f.input_field :purchase_note, as: :text, class: "redactor" %>
     </div>
   </div>
   <div class="form-group ">
-    <label class="control-label">图文详情</label>
+    <label class="control-label">图文详情<abbr title="必填">*</abbr></label>
     <div class="control-input" style='width: 430px;'>
       <%= f.input_field :content, as: :text, class: "redactor" %>
     </div>

@@ -6,7 +6,7 @@ module ProductsHelper
 
   def store_sharing_link(seller, sharing_node = nil, redirect = nil)
     if sharing_node.blank?
-      redirect.present? ? store_url(seller, type: 'service') : store_url(seller)
+      store_url(seller, redirect: redirect)
     else
       sharing_url(sharing_node, redirect: redirect)
     end

@@ -53,7 +53,7 @@ class User < ActiveRecord::Base
   has_many :products
   has_many :ordinary_products
   has_many :service_products
-  has_many :sold_order_items, through: :sold_orders, source: :order_items
+  has_many :sold_ordinary_order_items, through: :sold_ordinary_orders, source: :order_items
   has_many :categories
   has_many :selling_incomes
   belongs_to :agent, class_name: 'User'

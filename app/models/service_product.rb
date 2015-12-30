@@ -1,7 +1,7 @@
 class ServiceProduct < Product
   belongs_to :service_store
 
-  validates :original_price, :present_price, :service_type, :monthes, presence: true
+  validates :service_type, :original_price, :present_price, :monthes, :purchase_note, presence: true
   validates :service_type, inclusion: { in: [0, 1] }
   validates :monthes, numericality: { greater_than_or_equal_to: 3 }
 

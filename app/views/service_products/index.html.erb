@@ -8,7 +8,7 @@
 
 <%= content_for :extra_meta_tags do %>
   <% if @seller %>
-    <%= store_sharing_meta_tags(@seller) %>
+    <%= store_sharing_meta_tags(@seller, nil, store_path(@seller, type: 'service')) %>
   <% end %>
 <% end %>
 

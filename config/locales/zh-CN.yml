@@ -107,6 +107,7 @@ zh-CN:
         full_cut_unit: 满足条件包邮单位
         service_type: 团购类型
         monthes: 团购有效期
+        purchase_note: 团购须知
       service_product:
         name: 团购名称
         service_type: 团购类型

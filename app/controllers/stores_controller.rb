@@ -16,7 +16,7 @@ class StoresController < ApplicationController
   end
 
   def show
-    if params[:type] == 'service'
+    if params[:redirect].present? || params[:type] == 'service'
       @service_store = @seller.service_store
       @voucher_products = append_default_filter @service_store.service_products.vouchers.published, order_column: :updated_at
       @group_products = append_default_filter @service_store.service_products.groups.published, order_column: :updated_at

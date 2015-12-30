@@ -3,7 +3,7 @@
 
 <%= content_for :extra_meta_tags do %>
   <% if @seller %>
-    <%= store_sharing_meta_tags(@seller, @sharing_link_node) %>
+    <%= store_sharing_meta_tags(@seller, @sharing_link_node, store_path(@seller, type: 'service')) %>
   <% end %>
 <% end %>
 
