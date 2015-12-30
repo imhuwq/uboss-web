@@ -62,7 +62,7 @@ class Admin::UsersController < AdminController
     end
     @resource_params = params.require(:user).permit(permit_keys)
     allow_role_ids = UserRole.roles_can_manage_by_user(current_user).pluck(:id)
-    existing_role_ids = @user.user_role_ids
+    existing_role_ids = @user.try(:user_role_ids) || []
     over_premission_role_ids = existing_role_ids - allow_role_ids
     @resource_params[:user_role_ids].each do |role_id|
       @resource_params[:user_role_ids].delete(role_id) unless allow_role_ids.include?(role_id.to_i)
