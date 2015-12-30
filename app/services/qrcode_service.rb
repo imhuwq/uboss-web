@@ -35,7 +35,7 @@ class QrcodeService
 
     if result['status'] == 1
       url = result['data']['qr_filepath']
-      Rails.cache.write cache_key_value, url
+      Rails.cache.write cache_key_value, url, expires_in: 7.days
       url
     else
       nil
