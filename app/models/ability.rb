@@ -118,8 +118,7 @@ class Ability
     can :handle, :sellers
     can :read, Order
     can :read, Product
-    can :manage, User
-    can :read, User
+    can :manage, User, { user_roles: { name: %w(seller agent offical_operating) } }
     can :manage, PersonalAuthentication
     can :manage, EnterpriseAuthentication
     can :manage, :authentications
