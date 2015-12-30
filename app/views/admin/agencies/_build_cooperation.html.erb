@@ -1,0 +1,4 @@
+<%= form_for(current_user.cooperations.build(agency_id: agency.id), url: admin_build_cooperation_path, remote: true) do |f| %>
+  <%= f.hidden_field :agency_id %>
+  <div class="actions"><%= f.submit '授权代销' %></div>
+<% end %>
