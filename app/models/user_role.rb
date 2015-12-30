@@ -20,7 +20,7 @@ class UserRole < ActiveRecord::Base
     def roles_can_manage_by_user user
       roles = []
       if user.is_offical_senior?
-        roles |= ROLE_NAMES
+        roles |= %w(super_admin seller agent offical_operating offical_financial)
       end
       if user.is_offical_operating? || user.is_super_admin?
         roles |= %w(seller agent offical_operating)
