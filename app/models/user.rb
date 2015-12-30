@@ -48,12 +48,14 @@ class User < ActiveRecord::Base
   has_many :categories
   has_many :selling_incomes
   belongs_to :agent, class_name: 'User'
-  has_many :reverse_cooperations, foreign_key: 'seller_id', class_name: 'Cooperation', dependent: :destroy
-  has_many :suppliers, through: :cooperations, source: :seller
+
+  #for agencies
+  has_many :cooperations, foreign_key: 'agency_id', dependent: :destroy
+  has_many :suppliers, through: :cooperations, source: :supplier
   
   #for supplier
-  has_many :cooperations, foreign_key: 'supplier_id', dependent: :destroy
-  has_many :sellers, through: :cooperations, source: :supplier
+  has_many :reverse_cooperations, foreign_key: 'supplier_id', class_name: 'Cooperation', dependent: :destroy
+  has_many :agencies, through: :reverse_cooperations, source: :agency
 
   validates :login, uniqueness: true, mobile: true, presence: true, if: -> { !need_set_login? }
   validates :mobile, allow_nil: true, mobile: true
