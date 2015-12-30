@@ -477,6 +477,14 @@ class User < ActiveRecord::Base
     user.token
   end
 
+  def has_cooperation_with_agency?(user)
+    cooperations.find_by_agency_id(user.id)
+  end
+
+  def has_cooperation_with_supplier?(user)
+    cooperations.find_by_supplier_id(user.id)
+  end
+
   private
 
   def ensure_privilege_rate
