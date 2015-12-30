@@ -195,7 +195,7 @@ textarea:focus{
  }
 
 
- .fileinput-button{ display: inline-block; position: relative;}
+ .fileinput-button{ display: inline-block; position: relative;max-width:100%}
  .fileinput-button input{
    opacity: 0;
    filter: alpha(opacity=0);
