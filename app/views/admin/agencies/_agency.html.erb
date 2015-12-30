@@ -1,0 +1,7 @@
+<div class="agency">
+  <div class="name">
+    <%= current_user.nickname %>
+    <%#<%= agency.nickname %>
+  </div>
+	<%= image_tag(current_user.avatar.url(:thumb)) %>
+</div>

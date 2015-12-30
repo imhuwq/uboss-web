@@ -1,7 +1,7 @@
 class Admin::AgenciesController < AdminController
 
   def my_agencies
-    @agencies = 
+    @agencies = current_user.agencies
   end
   
   def new_agency
