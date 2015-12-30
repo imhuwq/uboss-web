@@ -16,6 +16,7 @@ class Admin::UsersController < AdminController
   end
 
   def create
+    @user = User.new(resource_params)
     @user.admin = true
     if @user.save
       redirect_to admin_user_path(@user)
