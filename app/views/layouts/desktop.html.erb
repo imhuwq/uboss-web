@@ -40,6 +40,10 @@
 				</div><!-- box-w70 -->
 		</div><!-- container -->
 	</header>
+  <!-- dirty hack for flash message rerending -->
+  <div style='display:none;'>
+		<%= render 'layouts/flash_alert' %>
+  </div>
 	<%= yield %>
   <footer class="text-center">
 		<h2>FIND US</h2>

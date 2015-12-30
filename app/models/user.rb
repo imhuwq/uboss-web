@@ -8,8 +8,8 @@ class User < ActiveRecord::Base
   attr_accessor :code, :mobile_auth_code
   OFFICIAL_ACCOUNT_LOGIN = '13800000000'.freeze
 
-  devise :database_authenticatable, :rememberable, :trackable, :validatable,
-    :omniauthable, :registerable
+  devise :database_authenticatable, :rememberable, :trackable, :recoverable, :validatable, :confirmable,
+    :async, :omniauthable, :registerable, authentication_keys: [:login_identifier]
 
   mount_uploader :avatar, ImageUploader
 
@@ -48,7 +48,9 @@ class User < ActiveRecord::Base
   has_many :selling_incomes
   belongs_to :agent, class_name: 'User'
 
-  validates :login, uniqueness: true, mobile: true, presence: true, if: -> { !need_set_login? }
+  validates :login, uniqueness: true, mobile: true, allow_blank: true
+  validates_presence_of :login, presence: true, if: -> { email.blank? }
+  validates_presence_of :email, presence: true, if: -> { login.blank? }
   validates :mobile, allow_nil: true, mobile: true
   validates :agent_code, uniqueness: true, allow_nil: true
   validates :authentication_token, uniqueness: true, presence: true
@@ -73,13 +75,15 @@ class User < ActiveRecord::Base
   enum authenticated: {no: 0, yes: 1}
 
   before_destroy do # prevent destroy official account
-    if login == OFFICIAL_ACCOUNT_LOGIN
-      false
-    end
+    false if login == OFFICIAL_ACCOUNT_LOGIN
+  end
+  before_update do
+    false if login == OFFICIAL_ACCOUNT_LOGIN && changes.include?(:login)
   end
   before_validation :ensure_authentication_token, :ensure_privilege_rate
   before_create :set_mobile, :set_default_role
   before_create :build_user_info, if: -> { user_info.blank? }
+  before_create :skip_confirmation!
   before_save   :set_service_rate
   after_commit  :invoke_rongcloud_job, on: [:create, :update]
 
@@ -96,6 +100,14 @@ class User < ActiveRecord::Base
     RUBY
   end
 
+  def login_identifier=(login_identifier)
+    @login_identifier = login_identifier
+  end
+
+  def login_identifier
+    @login_identifier || self.login || self.email
+  end
+
   def image_url(version = nil)
     avatar.url(version)
   end
@@ -109,6 +121,17 @@ class User < ActiveRecord::Base
   end
 
   class << self
+
+    def find_for_database_authentication(warden_conditions)
+      conditions = warden_conditions.dup
+      if login_identifier = conditions.delete(:login_identifier)
+        where(conditions.to_h).
+          where(["lower(login) = :value OR lower(email) = :value", { value: login_identifier.downcase }]).first
+      else
+        where(conditions.to_h).first
+      end
+    end
+
     def official_account
       @official_account ||= find_by(login: OFFICIAL_ACCOUNT_LOGIN)
     end
@@ -236,7 +259,7 @@ class User < ActiveRecord::Base
   end
 
   def identify
-    nickname || mobile || regist_mobile
+    nickname || mobile || 'UBOSS用户'
   end
 
   def store_title
@@ -249,7 +272,7 @@ class User < ActiveRecord::Base
   end
 
   def store_identify
-    store_name || nickname || mobile || regist_mobile
+    store_name || nickname || mobile || 'UBOSS商家'
   end
 
   def total_income

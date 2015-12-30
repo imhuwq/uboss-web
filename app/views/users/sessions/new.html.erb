@@ -13,25 +13,26 @@
 <% end %>
 
 <div class='login-container <%= @using_captcha ? 'using-cap' : 'using-pwd' %>'>
-  <%= simple_form_for(resource, as: resource_name, url: session_path(resource_name, redirect: params[:redirect])) do |f| %>
-    <% if params[:redirect] == 'discourse' %>
-      <h2><%= Rails.application.secrets.metas["discourse_head"] %></h2>
-      <%= hidden_field_tag 'redirect', params[:redirect] %>
-      <%= hidden_field_tag 'redirectUrl', params[:redirectUrl] %>
-    <% else %>
-      <h2>UBOSS</h2>
-    <% end %>
-    <hr />
+  <% if params[:redirect] == 'discourse' %>
+    <h2><%= Rails.application.secrets.metas["discourse_head"] %></h2>
+  <% else %>
+    <h2>UBOSS</h2>
+  <% end %>
 
-    <div class='login-type-acs clearfix'>
-      <a class="lpwd-btn" href="#">已有账户</a>
-      <a class="lcap-btn" href="#">验证码登陆/注册</a>
-    </div>
+  <div class='login-type-acs clearfix'>
+    <a class="lpwd-btn" href="#">密码登陆</a>
+    <a class="lcap-btn" href="#">验证码登陆/注册</a>
+  </div>
 
-    <div class="form-inputs">
-      <%= f.input :login, required: false, input_html: {id: 'new_mobile'} %>
+  <div class="cap-inputs">
+    <%= simple_form_for(resource, as: resource_name, url: session_path(resource_name, redirect: params[:redirect])) do |f| %>
+      <% if params[:redirect] == 'discourse' %>
+        <%= hidden_field_tag 'redirect', params[:redirect] %>
+        <%= hidden_field_tag 'redirectUrl', params[:redirectUrl] %>
+      <% end %>
+      <div class="form-inputs">
+        <%= f.input :login, required: false, label: '账号', input_html: {id: 'new_mobile', placeholder: '手机'} %>
 
-      <div class="cap-inputs">
         <%= f.input :image_captcha do %>
           <div class='simple-captcha'>
             <div class="simple-captcha-img">
@@ -49,30 +50,62 @@
           <a id="request_mobile_captcha" class="send_mobile" href="#">发送验证码</a>
         <% end %>
 
-      </div>
-      <div class="cap-inputs form-group">
-        <small>未开通UBOSS账号的用户，点击确认表明您已同意<a href="<%= agreements_register_path %>">《UBOSS用户注册协议》</a>，自动为您开通UBOSS账号</small>
-      </div>
+        <input type="checkbox" checked disabled name='aggress_regis' style='-webkit-appearance:checkbox;' />
+        <small>同意<a href="<%= agreements_register_path %>">《UBOSS用户注册协议》</a></small>
 
-      <div class='pwd-inputs'>
-        <%= f.input :password, required: false %>
-        <%= f.input :remember_me, as: :boolean, label_html: {class:''}, label: '下次自动登录' if devise_mapping.rememberable? %>
       </div>
 
-    </div>
-
-    <div class="button_div">
-      <%= f.button :submit, "确认", class: "btn btn-large btn-primary col-xs-12" %>
-    </div>
-
-    <% if !browser.wechat? %>
-      <div class="button_div  col-xs-12"  style="margin: 10px 0 10px 0;">
-        <% if params[:redirect] == 'discourse' %>
-          <%= link_to "返回主页", Rails.application.secrets.discourse['url'], class: "btn btn-large btn-link col-xs-12"%>
-        <% else %>
-          <%= link_to "返回主页", root_path, class: "btn btn-large btn-link col-xs-12"%>
-        <% end %>
+      <div class="button_div">
+        <%= f.button :submit, "确认", class: "btn btn-large btn-block" %>
       </div>
+
+      <% if !browser.wechat? %>
+        <div class="button_div  col-xs-12"  style="margin: 10px 0 10px 0;">
+          <% if params[:redirect] == 'discourse' %>
+            <%= link_to "返回主页", Rails.application.secrets.discourse['url'],
+              class: "action-link-btn btn btn-large btn-block btn-black-border"%>
+          <% else %>
+            <%= link_to "返回主页", root_path,
+              class: "action-link-btn btn btn-large btn-block btn-black-border"%>
+          <% end %>
+        </div>
+      <% end %>
     <% end %>
-  <% end %>
+  </div>
+  <div class='pwd-inputs'>
+    <%= simple_form_for(resource, as: resource_name, url: session_path(resource_name, redirect: params[:redirect])) do |f| %>
+      <% if params[:redirect] == 'discourse' %>
+        <%= hidden_field_tag 'redirect', params[:redirect] %>
+        <%= hidden_field_tag 'redirectUrl', params[:redirectUrl] %>
+      <% end %>
+      <div class="form-inputs">
+        <%= f.input :login_identifier, required: false, label: '账号', input_html: {id: 'new_mobile', placeholder: '手机/邮箱'} %>
+
+        <%= f.input :password, required: false %>
+        <% if devise_mapping.rememberable? %>
+          <div class="remember-me-cont">
+            <%= f.input_field :remember_me, as: :boolean, style: '-webkit-appearance:checkbox;' %>
+            <%= f.label :remember_me, '下次自动登陆', style: 'margin-left:0px;' %>
+          </div>
+        <% end %>
+
+      </div>
+
+      <div class="button_div">
+        <%= f.button :submit, "确认", class: "btn btn-large btn-block" %>
+      </div>
+
+      <% if !browser.wechat? %>
+        <div class="button_div  col-xs-12"  style="margin: 10px 0 10px 0;">
+          <% if params[:redirect] == 'discourse' %>
+            <%= link_to "返回主页", Rails.application.secrets.discourse['url'],
+              class: "action-link-btn btn btn-large btn-block btn-black-border"%>
+          <% else %>
+            <%= link_to "返回主页", root_path,
+              class: "action-link-btn btn btn-large btn-block btn-black-border"%>
+          <% end %>
+        </div>
+      <% end %>
+    <% end %>
+  </div>
 </div>

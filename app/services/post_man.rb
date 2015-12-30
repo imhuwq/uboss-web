@@ -16,7 +16,7 @@ module PostMan extend self
     return result_message('内容不能为空',     false) if message_params.blank?
     message_params.merge!(company: '优巭UBOSS') if TPL_WITH_COMPLAY.include?(tpl_id.to_s)
 
-    result = if ENV['SMS_ENV'] == 'test' || Rails.env.test?
+    result = if disable_send?(mobile)
                { 'code' => 0 }
              else
                ChinaSMS.to(mobile, message_params, tpl_id: tpl_id)
@@ -52,6 +52,12 @@ module PostMan extend self
   def validate_mobile(mobile)
     mobile =~
       /\A(\s*)(?:\(?[0\+]?\d{1,3}\)?)[\s-]?(?:0|\d{1,4})[\s-]?(?:(?:13\d{9})|(?:\d{7,8}))(\s*)\Z|\A[569][0-9]{7}\Z/
+  end
+
+  def disable_send?(mobile)
+    return true if %w(13800000000).include?(mobile.to_s)
+    return true if mobile.to_s[0..2] == '198'
+    ENV['SMS_ENV'] == 'test' || Rails.env.test?
   end
 
 end
