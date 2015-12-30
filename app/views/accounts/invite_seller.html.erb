@@ -2,9 +2,8 @@
   我是创客
 <% end %>
 
-<div class="box">
-  <br  />
-  <div class="bg-white">
+
+  <div class="bg-white m-bottom10 m-top10">
     <div class="box-m40">
       <br />
       <%= link_to '进入我的专属推广页', maker_qrcode_url(uid: current_user.id), class: 'btn btn-large btn-block' %>
@@ -14,10 +13,11 @@
       <br />
     </div>
   </div>
-  <br />
-  <div class="bg-white">
+  <div class="bg-white m-bottom10">
     <div class="box-m40">
+    	<br />
       <h3 class="main-color text-center">邀请商家</h3>
+    	<br />
       <p><%= text_field_tag 'send_message[mobile]', '',type: :tel, placeholder: '填入商家注册手机号',
         class:"add_text input-radius input-large input-block", id:"new_mobile"  %></p>
       <br />
@@ -27,11 +27,12 @@
       <br />
     </div>
   </div><!--bg-white -->
-  <br  />
-  <div class="bg-white">
+  <div class="bg-white m-bottom10">
     <div class="box-m40">
       <%= simple_form_for 'bind_seller', url: bind_seller_account_path, method: :put do |f| %>
+    		<br />
         <h3 class="main-color text-center">绑定验证</h3>
+    		<br />
         <p><%= f.input_field :invite_code, type: :tel, placeholder: '填入从商家获取绑定验证码',
           class:"add_text input-radius input-large input-block" %></p>
         <br />
@@ -40,8 +41,7 @@
       <% end %>
     </div>
   </div><!--bg-white -->
-  <br  />
-  <div class="bg-white">
+  <div class="bg-white m-bottom10">
     <div id="invite_seller_histroy">
       <div class="invite-title text-center like-color">
         总绑定 <%= @bind %>
@@ -51,4 +51,4 @@
     </table>
     </div>
   </div><!-- bg-white -->
-</div><!-- box -->
+

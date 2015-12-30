@@ -50,6 +50,19 @@
         }
     }
 }
+.link-tab{
+    text-align: center;    
+    a{
+        display: block;
+        padding: 0 10px;
+        margin: 10px 0;
+        border-right:1px solid #eee ;
+    }
+    a:last-child{
+        border: none;
+    }
+    
+}
 .login-style{
     .tab{color: $brand-primary;}
     .tab:first-child{

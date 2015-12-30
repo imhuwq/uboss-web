@@ -35,7 +35,7 @@
   }
 }
 
-.service-store-product{
+.service-store-product,.service-order-box{
   position: relative;
   padding:10px;
   border-bottom: 1px solid #eee;
@@ -52,11 +52,27 @@
     background-color: #fff;
     background-repeat: no-repeat;
     img{display: none;}
-  }  
+  } 
+  .content{
+    overflow: hidden;
+  } 
   .title{
-    margin: 5px 0;
+    padding: 5px;
   }
 }
+
+.service-order-box{
+  .line-gap p,.line-gap p:last-child{    
+    margin-top: 5px;
+    margin-bottom: 0;
+  }
+  .cover{
+    width: 80px;
+    height: 80px;
+  }
+}
+
+
 
 #service_stores_verify_detail {
   .box-w49{
@@ -226,20 +242,3 @@
   color: #999;
 }
 
-.service-order-box{
-  .cover{
-    float: left;
-    margin-right: 10px;
-    width: 70px;
-    height: 70px;
-    padding: 3px 0;
-    overflow: hidden;
-    img{
-      width: 70px;
-      height: 70px;
-      }
-  }
-  .content{
-    overflow: hidden;
-  }
-}

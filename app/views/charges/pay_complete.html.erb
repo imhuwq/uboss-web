@@ -8,8 +8,6 @@
 
 <div class="box">
   <% if @order_charge.unpay? %>
-
-    <br  />
     <div class="bg-white">
       <div class="box-m40 text-center">
         <br />
@@ -21,7 +19,6 @@
     </div><!-- bg-white -->
 
   <% else %>
-
     <br  />
     <div class="bg-white">
       <div class="box-m40 text-center">
@@ -32,8 +29,8 @@
         <br />
       </div>
     </div><!-- bg-white -->
-    <br  />
     <% if @product.is_official_agent? %>
+    	<br  />
       <div class="bg-white">
         <div class="box-m40 text-center">
           <br />
@@ -58,8 +55,8 @@
         <br />
       </div>
     </div><!-- bg-white -->
-    <br  />
     <% if @product.is_official_agent? %>
+    	<br  />
       <div class="bg-white">
         <div class="box-m40 text-center">
           <br />
@@ -69,49 +66,40 @@
           <br />
         </div>
       </div><!-- bg-white -->
-      <br  />
     <% end %>
 
     <% if @product.type == 'ServiceProduct' %>
       <% order_item = @order_charge.orders.first.order_item %>
-      <div class="bg-white gap">
+      <br  />
+      <div class="bg-white">
         <%= link_to service_product_path(order_item.product) do%>
           <div class="service-order-box">
-            <div class="cover">
+            <div class="cover" style="background:url('<%= order_item.product.image_url(:w120) %>');">
               <%= image_tag order_item.product.image_url(:w120) %>
             </div>
-            <div class="content">
-              <h4 class="gray-color text-cut"><%= order_item.product.name %></h4>
-              <h4 class="name">有效期至：<%= strftime(order_item.product.deadline) %></h4>
-              <h4 class="gray-color">数量：<%= order_item.amount %></h4>
+            <div class="content line-gap">
+              <p class="gray-color text-cut"><%= order_item.product.name %></p>
+              <p class="main-color">有效期至：<%= strftime(order_item.product.deadline) %></p>
+              <p class="gray-color">数量：<%= order_item.amount %></h4>
             </div>
           </div>
         <%end%>
       </div>
       <br />
       <div class="bg-white gap">
-        <table>
           <% size = order_item.verify_codes.size %>
           <% order_item.verify_codes.each_with_index do |verify_code, index| %>
-            <tr>
-              <% if index == 0 %>
-                <td rowspan=<%= size %> style="width:100px;font-size:15px;color:#A2A5A5;">
-                  <span>验证券密码：</span>
-                </td>
-              <% end %>
-              <td>
-                <span style="font-size:15px;color:#43C3AA;"><%= verify_code.code %></span>
-              </td>
-              <td><%= verify_code.verified ? '已消费' : '未使用' %></td>
-            </tr>
+            <div>验证券密码：</div> 
+            <div><%= verify_code.code %></div>
+            <div><%= verify_code.verified ? '已消费' : '未使用' %></div>
           <% end %>
-        </table>
       </div>
 
       <br />
       <div class="gap">
         <p><a href="<%= store_path(id: @product.user_id, type: 'service') %>" class="btn btn-block btn-large btn-black-border">返回店铺首页</a></p>
       </div>
+      <br />
     <% else %>
       <br />
       <div class="gap">
@@ -119,6 +107,7 @@
         <br />
         <p><a href="/" class="btn btn-block btn-large btn-black-border">返回首页</a></p>
       </div>
+      <br />
     <% end %>
 
   <% end %>

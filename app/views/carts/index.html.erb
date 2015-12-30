@@ -1,9 +1,8 @@
 <%= content_for :page_title do %>
   我的购物车
 <% end %>
-<br/>
 
-<div class="bg-white text-center empty-cart <%= 'hidden' unless @cart.empty? %>">
+<div class="bg-white text-center m-top10 empty-cart <%= 'hidden' unless @cart.empty? %>">
   <div class="box-m40">
     <br/>
     <p class="gray-color">购物车空空的~，去看看心仪的商品吧~</p>
@@ -14,7 +13,7 @@
 </div>
 
 <% unless @cart.empty? %>
-  <div class="cart-list">
+  <div class="cart-list m-top10">
     <!-- 购物车有效商品按不同的商家分开 -->
     <% CartItem.group_by_seller(@valid_items).each do |seller, cart_items| %>
       <div class="order-list">
