@@ -10,12 +10,14 @@ class Admin::AgenciesController < AdminController
         if user = User.find_by(login: mobile)
           user
         else
-          user = User.create!(login: mobile, password: '88888888', password_confirmation: '88888888')
+          user = User.new(login: mobile)
+          user.save(validate: false)
           user.user_roles << UserRole.find_by(name: 'seller')
           user
         end
 
         if current_user.cooperations.create!(seller_id: user.id)
+          captcha.destroy!
           render json: nil, status: :created
         else
           render json: { message: '授权失败' }, status: :failure
