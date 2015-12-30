@@ -10,7 +10,7 @@
 	<h3 class="page-title">后台账户 <small><%= link_to '新增', new_admin_user_path, class: 'btn pull-right' %></small></h3>
 	<table class="list-table">
 		<thead>
-			<th>登录手机</th>
+			<th>账号</th>
 			<th>手机</th>
 			<th>昵称</th>
 			<th>角色</th>
@@ -18,7 +18,7 @@
 		</thead>
 		<% @users.each do |user| %>
 		<tr>
-			<td><%= link_to user.login, [:admin, user] %></td>
+			<td><%= link_to user.login || user.email, [:admin, user] %></td>
 			<td><%= user.mobile %></td>
 			<td><%= user.nickname %></td>
 			<td>
