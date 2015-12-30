@@ -1,0 +1,6 @@
+<%= form_for(current_user.cooperations.find_by_agency_id(agency.id),
+             url: admin_end_cooperation_path,
+             :html => { :method => :delete },
+             :remote => true) do |f| %>
+  <div class="actions"><%= f.submit "取消授权" %></div>
+<% end %>
