@@ -1,7 +1,7 @@
 module ApplicationHelper
 
   def uboss_mall?(seller)
-    %w(19800000888).include? seller.login.to_s
+    %w(19800000888 19800051140).include? seller.login.to_s
   end
 
   def product_show?
