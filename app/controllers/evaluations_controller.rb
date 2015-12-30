@@ -2,13 +2,13 @@ class EvaluationsController < ApplicationController
   before_action :authenticate_user!
 
   def new
-    @order_item = OrderItem.where(id: params[:id], user_id: current_user.id).first
+    @order_item = current_user.order_items.find(params[:id])
     @evaluation = Evaluation.new(order_item: @order_item)
     render layout: 'mobile'
   end
 
   def append
-    @order_item = OrderItem.where(id: params[:id], user_id: current_user.id).first
+    @order_item = current_user.order_items.find(params[:id])
     @evaluations = @order_item.evaluations.where(buyer_id: current_user.id)
     @evaluation = @evaluations.first.dup
     render layout: 'mobile'
