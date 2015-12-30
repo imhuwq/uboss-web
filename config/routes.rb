@@ -193,6 +193,8 @@ Rails.application.routes.draw do
 
       delete '/be_not_supplier', to: 'accounts#be_not_supplier'
 
+      get '/my_agencies', to: 'agencies#my_agencies'
+
       get '/new_agency', to: 'agencies#new_agency'
 
       post '/build_cooperation', to: 'agencies#build_cooperation'
