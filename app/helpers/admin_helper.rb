@@ -65,7 +65,10 @@ module AdminHelper
     return @store_banner_data if @store_banner_data.present?
 
     @store_banner_data = []
-    advertisements = Advertisement.joins('left join products on (products.id = advertisements.product_id)').where('(product_id is not null AND products.status = 1) OR product_id is null').where(user_id: seller.id, platform_advertisement: false).order('order_number')
+    advertisements = Advertisement.joins('left join products on (products.id = advertisements.product_id)').
+      where('(product_id is not null AND products.status = 1) OR product_id is null').
+      where(user_id: seller.id, platform_advertisement: false).
+      order('order_number')
     advertisements.each do |advertisement|
       if advertisement.product_id
         url = url_for(controller: :products, action: :show, id: advertisement.product_id)
