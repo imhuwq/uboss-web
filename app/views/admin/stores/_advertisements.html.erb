@@ -8,13 +8,13 @@
         <% @advertisements.each do |adv| %>
           <li id="slider_<%= adv.id %>"><%= image_tag(adv.image_url('640x320')) %></li>
         <% end %>
-      <% end %>
       </ul><!-- setting-slider -->
-      <p class="gray-color"><small>请上传规格为640*320px的图片</small></p>
+    <% end %>
+    <p class="gray-color"><small>请上传规格为640*320px的图片</small></p>
   </div>
+
   <div class="box-w60">
     <br />
-
     <div class="setting-list">
       <% @advertisements.each do |adv| %>
         <% if adv.product_id %>
@@ -54,6 +54,7 @@
           </div><!-- setting-banner-box -->
         <% end %>
       <% end %>
+
       <a class="btn white-btn btn-large btn-block show-add-banner" >+ 轮播图</a>
 
     </div><!-- setting-list -->
