@@ -4,4 +4,11 @@
     <%#<%= agency.nickname %>
   </div>
 	<%= image_tag(current_user.avatar.url(:thumb)) %>
+  <div id="cooperation_form_<%=agency.id%>">
+    <% if current_user.has_cooperation_with_agency?(agency) %>
+      <%= render 'end_cooperation', agency: agency %>
+    <% else %>
+      <%= render 'build_cooperation', agency: agency %>
+    <% end %>
+  </div>
 </div>
