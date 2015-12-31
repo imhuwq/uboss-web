@@ -70,6 +70,7 @@ class User < ActiveRecord::Base
     :recommend_resource_one_id, :recommend_resource_two_id, :recommend_resource_thr_id,
     :recommend_resource_one_id=, :recommend_resource_two_id=, :recommend_resource_thr_id=,
     :store_short_description, :store_short_description=, :store_cover, :store_cover=, :bonus_benefit,
+    :store_logo_url, :store_logo=, :store_logo,
     to: :user_info, allow_nil: true
 
   enum authenticated: {no: 0, yes: 1}

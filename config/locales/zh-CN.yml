@@ -140,6 +140,9 @@ zh-CN:
         express_name: 快递公司
       seller:
         <<: *attributes
+      advertisement:
+        advertisement_url: 广告链接
+        asset_img: 广告图片
   simple_captcha:
     label: 验证码
     placeholder: 请输入验证码
@@ -172,6 +175,7 @@ zh-CN:
     authentications: 认证
     user_addresses: 地址库
     categories: 商品分组
+    platform_advertisements: 平台广告
   activerecord:
     models:
       withdraw_record: 提现记录
@@ -254,6 +258,7 @@ zh-CN:
         <<: *product
       category:
         name: 分组名
+        asset_img: 展示图
   order_status_bar:
     unpay: 等待买家付款
     payed: 等待卖家发货

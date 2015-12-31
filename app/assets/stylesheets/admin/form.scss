@@ -29,7 +29,14 @@ textarea {
     display: block;
     width: 100%;
   }
+  &.border-bottom-input{ 
+    padding: 0 4px 8px;
+    border-bottom: 1px solid #ddd;
+    background: none; 
+  }
+  &.main-color { color:#43C3AA}
 }
+
 input[type="text"]:focus,
 input[type="password"]:focus,
 input[type="email"]:focus,
@@ -45,7 +52,12 @@ input[type="search"]:focus,
 input[type="tel"]:focus,
 input[type="color"]:focus,
 select:focus,
-textarea:focus{ color:#1a1a1a; }
+textarea:focus{ 
+  color:#1a1a1a; 
+  outline: none;
+  &.main-color { color:#43C3AA}
+  
+}
 
  .form-group{
    margin-bottom: 20px;
@@ -118,11 +130,7 @@ textarea:focus{ color:#1a1a1a; }
  }
 
 
- .has-error{
 
-
-
- }
  p.help-block {
    font-size: smaller;
  }
@@ -187,7 +195,7 @@ textarea:focus{ color:#1a1a1a; }
  }
 
 
- .fileinput-button{ display: inline-block; position: relative;}
+ .fileinput-button{ display: inline-block; position: relative;max-width:100%}
  .fileinput-button input{
    opacity: 0;
    filter: alpha(opacity=0);
@@ -199,8 +207,11 @@ textarea:focus{ color:#1a1a1a; }
    direction: ltr;
    cursor: pointer;
  }
+ .fileinput-button .tips-text{display: none;position: absolute;left: 0; bottom: 0;width: 100%;padding:5px 0;text-align:center;background: rgba(0,0,0,.8);background: #333\9;color:#fff;z-index: 5;}
+ 
  .fileinput-button .loading{ display: none; position: absolute; height: 40px; width: 40px; line-height: 40px; text-align: center; font-size: 18px; z-index: 5; top:50%;margin-top:-20px;left:50%;margin-left: -20px; background: #333;color: #fff; border-radius: 4px;}
  .fileinput-button.uploading .loading { display: block;}
+ .fileinput-button:hover .tips-text { display: block;}
  .redactor-box{ border: 1px solid #43C3AA; margin-bottom: 0;}
  .redactor-box .redactor-toolbar{ box-shadow: none; background: #43C3AA; color: #fff;}
  .redactor-box .redactor-toolbar li a { color: #fff; font-size: 15px;}

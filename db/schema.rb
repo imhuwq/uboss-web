@@ -16,6 +16,19 @@ ActiveRecord::Schema.define(version: 20151222135339) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
+  create_table "advertisements", force: :cascade do |t|
+    t.string   "advertisement_url"
+    t.integer  "status",                 default: 0
+    t.datetime "created_at",                             null: false
+    t.datetime "updated_at",                             null: false
+    t.integer  "order_number"
+    t.integer  "user_id"
+    t.integer  "zone"
+    t.integer  "product_id"
+    t.integer  "category_id"
+    t.boolean  "platform_advertisement", default: false
+  end
+
   create_table "agent_invite_seller_histroys", force: :cascade do |t|
     t.string   "mobile"
     t.integer  "agent_id"
@@ -101,10 +114,12 @@ ActiveRecord::Schema.define(version: 20151222135339) do
   add_index "carts", ["user_id"], name: "index_carts_on_user_id", using: :btree
 
   create_table "categories", force: :cascade do |t|
-    t.string   "name",       null: false
-    t.integer  "user_id",    null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.string   "name",                           null: false
+    t.integer  "user_id",                        null: false
+    t.datetime "created_at",                     null: false
+    t.datetime "updated_at",                     null: false
+    t.datetime "use_in_store_at"
+    t.boolean  "use_in_store",    default: true
   end
 
   add_index "categories", ["user_id", "name"], name: "index_categories_on_user_id_and_name", unique: true, using: :btree
@@ -210,11 +225,6 @@ ActiveRecord::Schema.define(version: 20151222135339) do
   end
 
   add_index "favour_products", ["product_id", "user_id"], name: "index_favour_products_on_product_id_and_user_id", unique: true, using: :btree
-
-  create_table "follower_associations", force: :cascade do |t|
-    t.integer "user_id"
-    t.integer "follower_id"
-  end
 
   create_table "mobile_captchas", force: :cascade do |t|
     t.string   "code"
@@ -360,6 +370,9 @@ ActiveRecord::Schema.define(version: 20151222135339) do
     t.datetime "updated_at"
   end
 
+  add_index "personal_authentications", ["identity_card_code"], name: "index_personal_authentications_on_identity_card_code", unique: true, using: :btree
+  add_index "personal_authentications", ["user_id"], name: "index_personal_authentications_on_user_id", unique: true, using: :btree
+
   create_table "preferential_measures", force: :cascade do |t|
     t.decimal  "amount"
     t.decimal  "discount"
@@ -375,10 +388,11 @@ ActiveRecord::Schema.define(version: 20151222135339) do
 
   create_table "privilege_cards", force: :cascade do |t|
     t.integer  "user_id"
-    t.datetime "created_at",                 null: false
-    t.datetime "updated_at",                 null: false
-    t.boolean  "actived",    default: false
+    t.datetime "created_at",                           null: false
+    t.datetime "updated_at",                           null: false
+    t.boolean  "actived",              default: false
     t.integer  "seller_id"
+    t.integer  "product_inventory_id"
   end
 
   add_index "privilege_cards", ["user_id", "seller_id"], name: "index_privilege_cards_on_user_id_and_seller_id", unique: true, using: :btree

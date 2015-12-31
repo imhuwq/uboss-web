@@ -18,7 +18,7 @@
           <% end %>
         </li>
         <% if current_user.is_seller? %>
-          <li><%= link_to "店铺设置", edit_admin_seller_path(current_user) %></li>
+          <li><%= link_to "店铺设置", admin_store_path(current_user) %></li>
         <% end %>
 				<li><%= link_to '退出', destroy_user_session_path, method: :delete %></li>
 			</ul>
@@ -48,6 +48,7 @@
                         another_active_name: 'personal_authentications') %>
         <%= nav_group :uboss do %>
           <%= can_li_link(:handle, User, admin_users_path) %>
+          <%= can_li_link(:manage, :platform_advertisements, admin_platform_advertisements_path) %>
           <%= can_li_link(:manage, Transaction, admin_transactions_path) %>
           <%= can_li_link(:manage, :backend_status, admin_backend_status_path,
                           another_active_name: 'backend_status') %>

@@ -5,6 +5,7 @@
 @import 'redactor-rails';
 @import 'select2';
 @import "chosen.min";
+@import "jquery.bxslider";
 
 @import "admin/form";
 @import "admin/table";
@@ -15,6 +16,7 @@
 @import "admin/address";
 @import "admin/refund";
 @import "admin/cuntdown";
+@import "admin/setting";
 @import "admin/upload";
 @import "shared/base";
 @import 'admin/login';
@@ -31,9 +33,7 @@ hr {
 .lock{
   height: 100%; overflow: hidden;
 }
-.hidden{
-  display: none;
-}
+
 .container { overflow: inherit;}
 .alert{padding:15px;margin-bottom:21px;border:1px solid transparent;border-radius:0}
 .alert h4{margin-top:0;color:inherit}
@@ -177,6 +177,18 @@ a.admin-box:hover,a.admin-box:focus{opacity: 0.9;  filter: alpha(opacity=90);col
 .page-title .btn{margin:0 0 0 10px;vertical-align: top;}
 
 
+.imgsize{
+  display:inline-block;
+  background-size: cover;
+  background-position: center center;
+  background-color: #fff;
+  background-repeat: no-repeat;
+}
+.img-200-200{
+  width:200px;
+  height:200px;
+}
+
 .beige-bg-color {background: #ECE9E2;}
 .main-bg-color{ background: #43C3AA;color:#fff;}
 .blue-bg-color{ background: #3498DB;color:#fff;}
@@ -199,6 +211,7 @@ a.admin-box:hover,a.admin-box:focus{opacity: 0.9;  filter: alpha(opacity=90);col
     -o-animation: loading 3s linear  infinite ;
 }
 .red-color{color:#E74C3C;}
+.gray-color{color: #888;}
 
 /*label*/
 .label-info, .label.state-shiped {
@@ -359,4 +372,7 @@ a.admin-box:hover,a.admin-box:focus{opacity: 0.9;  filter: alpha(opacity=90);col
 	top: 50%;
 	transform: translateY(-50%);
 	-webkit-transform: translateY(-50%);
+}
+.hidden{
+  display: none;
 }

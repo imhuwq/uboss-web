@@ -283,6 +283,27 @@ li {
     width: 800px !important;
   }
 }
+.select2-container.input-block{
+  width: 100% !important;
+  .select2-search-field{max-width: 92%;}
+  input[type="text"]:focus{
+    border: none;
+    outline: none;
+    width: 100%;
+  }
+  
+}
+.select2-container.select2-container-active{
+  border: none;
+  outline: none;
+  .select2-choices{
+    border-color: #ddd;    
+    box-shadow: none;
+  }
+}
+.select2-drop-active{
+  border-color:#ddd ;
+}
 
 
 // show css

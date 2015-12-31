@@ -31,28 +31,11 @@ class Admin::CategoriesController < AdminController
     @category.destroy
     redirect_to admin_categories_url, notice: '成功删除分组'
   end
-
-  def update_categories
-    begin
-      params[:categories].each do |i,attributes|
-        Category.find_by(id: attributes[:id]).update(attributes.permit(:name, :avatar))
-      end
-    rescue Exception => ex
-      @errors << ex.full_message
-    end
-    if @errors
-      flash[:errors] = @errors.join('\n')
-      render action: :index
-    else
-      flash[:success] = "success"
-      redirect_to action: :index
-    end
-  end
-
-  def updata_category_img
-    category = Category.find(params[:id])
+  
+  def update_category_img
+    category = Category.find(params[:resource_id])
     if category.update(avatar: params[:avatar])
-      @message = {message: "上传成功！"}
+      @message = {message: "上传成功！", id: category.id}
     else
       @message = {message:"上传失败"}
     end
@@ -61,13 +44,15 @@ class Admin::CategoriesController < AdminController
 
   def update_category_name
     category = current_user.categories.find(params[:id])
-    if category.update(name: params[:name])
-      @message = {message: "修改成功！"}
+
+    if category.update(name: params[:resource_val])
+      @message = {success: "修改成功！"}
     else
-      @message = {message:"修改失败"}
+      @message = {error:"修改失败: #{category.errors.full_messages.join('<br/>')}"}
     end
-    render json:  @message
+    render json:  @message.to_json
   end
+
 
   private
     # Never trust parameters from the scary internet, only allow the white list through.

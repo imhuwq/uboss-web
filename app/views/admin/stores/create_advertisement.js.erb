@@ -1,0 +1,4 @@
+
+$('#add-banner').modal('hide');
+$('#advertisements').html('<%= escape_javascript render 'advertisements'  %>');
+$(".content").prepend('<%= escape_javascript render 'layouts/flash_alert' %>');
