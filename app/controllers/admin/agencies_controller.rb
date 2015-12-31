@@ -7,7 +7,7 @@ class Admin::AgenciesController < AdminController
   def new_agency
   end
 
-  def build_cooperation
+  def build_cooperation_with_auth_code
     if captcha = MobileCaptcha.find_by(code: params[:mobile_auth_code], captcha_type: 'invite_agency', sender_id: current_user.id)
       mobile = captcha.mobile
       if MobileCaptcha.auth_code(mobile, params[:mobile_auth_code], 'invite_agency')
@@ -31,6 +31,26 @@ class Admin::AgenciesController < AdminController
       end
     else
       render json: { message: '验证码错误' }, status: :failure
+    end
+  end
+
+  def build_cooperation_with_agency_id
+    @agency = User.find_by(id: params[:cooperation][:agency_id])
+    unless current_user.has_cooperation_with_agency?(@agency)
+      current_user.cooperations.create!(agency_id: @agency.id)
+    end
+    respond_to do |format|
+      format.js { render 'build_cooperation' }
+    end
+  end
+
+  def end_cooperation
+    @agency = User.find_by(id: params[:id])
+    if current_user.has_cooperation_with_agency?(@agency)
+      current_user.cooperations.find_by(agency_id: params[:id]).destroy
+    end
+    respond_to do |format|
+      format.js
     end
   end
 
