@@ -11,6 +11,7 @@
 #= require select2
 #= require select2_locale_zh-CN
 #= require jquery-fileupload/basic
+#= require jquery.bxslider
 #= require querystring
 #= require admin/carriage_template
 #= require admin/dashboard
@@ -23,7 +24,6 @@
 #= require admin/store
 #= require admin/user_address
 #= require admin/refund
-#= require admin/jquery.bxslider
 #= require admin/platform_advertisement
 #= require shared/upyun
 #= require shared/multi_upyun_admin
