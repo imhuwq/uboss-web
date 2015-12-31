@@ -43,9 +43,7 @@ class Admin::CategoriesController < AdminController
   end
 
   def update_category_name
-    category = current_user.categories.find(params[:id])
-    duplication_name =  current_user.categories.find_by(name: params[:resource_val])
-    if duplication_name.try(:id) != category.id && category.update(name: params[:resource_val])
+    if current_user.categories.find(params[:id]).update(name: params[:resource_val])
       @message = {success: "修改成功！"}
     else
       @message = {error:"修改失败#{duplication_name.present? ? ',分类名重复。' : ''}"}
