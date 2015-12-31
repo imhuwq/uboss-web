@@ -2,18 +2,14 @@
   <div class="log_font"> UBOSS </div>
 <% end %>
 
-<% if store_banner_data(@uboss_seller).size > 0 %>
+<% if recommend_store_banner_data(@uboss_seller).size > 0 %>
   <div class="banner-slider">
     <div id='slider' class='swipe'>
       <div class='swipe-wrap'>
-        <% store_banner_data(@uboss_seller).each do |image, product| %>
+        <% recommend_store_banner_data(@uboss_seller).each do |image, url| %>
           <div>
-            <% if product.present? %>
-              <%= link_to product.short_description do %>
-                <%= image_tag image.url(:'640x320') %>
-              <% end %>
-            <% else %>
-              <%= image_tag image.url(:'640x320') %>
+            <%= link_to url do %>
+              <%= image_tag image.avatar_url(:'640x320') %>
             <% end %>
           </div>
         <% end %>

@@ -143,4 +143,28 @@ module ApplicationHelper
     ].join.html_safe
   end
 
+  def recommend_store_banner_data(seller)
+    return @recommend_store_banner_data if @recommend_store_banner_data.present?
+
+    @recommend_store_banner_data = []
+    advertisements = Advertisement.joins('left join products on (products.id = advertisements.product_id)').
+      where('(product_id is not null AND products.status = 1) OR product_id is null').
+      where(user_id: seller.id, platform_advertisement: false).
+      order('order_number')
+    advertisements.each do |advertisement|
+      if advertisement.product_id
+        url = advertisement.product.short_description
+      elsif advertisement.category_id
+        url = store_category_path(store_id: advertisement.user_id, id:advertisement.category_id)
+      else
+        url = '###'
+      end
+      @recommend_store_banner_data << [
+        advertisement.asset_img ,
+        url
+      ]
+    end
+    @recommend_store_banner_data
+  end
+
 end
