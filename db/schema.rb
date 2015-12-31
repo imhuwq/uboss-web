@@ -612,13 +612,13 @@ ActiveRecord::Schema.define(version: 20151221071024) do
     t.integer  "best_evaluation"
     t.string   "store_cover"
     t.string   "type"
+    t.decimal  "bonus_benefit",             default: 0.0
     t.string   "begin_hour"
     t.string   "begin_minute"
     t.string   "end_hour"
     t.string   "end_minute"
     t.string   "area"
     t.string   "street"
-    t.decimal  "bonus_benefit",             default: 0.0
   end
 
   create_table "user_role_relations", force: :cascade do |t|

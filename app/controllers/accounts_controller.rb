@@ -15,11 +15,11 @@ class AccountsController < ApplicationController
     @statistics = {}
     @statistics[:so_unpay]      = @service_orders.unpay.count
     @statistics[:so_payed]      = @service_orders.payed.count
-    @statistics[:so_unevaluate] = @service_orders.completed.count
+    @statistics[:so_unevaluate] = so_unevaluate.count
 
     @statistics[:oo_unpay]      = @ordinary_orders.unpay.count
     @statistics[:oo_shiped]     = @ordinary_orders.shiped.count
-    @statistics[:oo_unevaluate] = @ordinary_orders.completed.count
+    @statistics[:oo_unevaluate] = oo_unevaluate.count
     @statistics[:oo_after_sale] = @ordinary_orders.completed.count
 
     @privilege_cards = append_default_filter current_user.privilege_cards.includes(:seller), order_column: :updated_at, page_size: 10
@@ -219,6 +219,15 @@ class AccountsController < ApplicationController
   end
 
   private
+  def so_unevaluate
+    order_item_ids = OrderItem.where(order_id: @service_orders.ids).ids
+    @service_orders - @service_orders.includes(order_items: [:evaluations]).where(evaluations: {order_item_id: order_item_ids})
+  end
+
+  def oo_unevaluate
+    order_item_ids = OrderItem.where(order_id: @ordinary_orders.ids).ids
+    @ordinary_orders - @ordinary_orders.includes(order_items: [:evaluations]).where(evaluations: {order_item_id: order_item_ids})
+  end
 
   def account_orders(type)
     type ||= 'all'
