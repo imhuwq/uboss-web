@@ -164,7 +164,11 @@ Rails.application.routes.draw do
 
       get '/new_agency', to: 'agencies#new_agency'
 
-      post '/build_cooperation', to: 'agencies#build_cooperation'
+      post '/build_cooperation_with_auth_code', to: 'agencies#build_cooperation_with_auth_code'
+
+      post '/build_cooperation_with_agency_id', to: 'agencies#build_cooperation_with_agency_id'
+
+      delete '/end_cooperation/:id', to: 'agencies#end_cooperation', as: :end_cooperation
 
       get '/select_carriage_template', to: 'products#select_carriage_template'
       get '/refresh_carriage_template', to: 'products#refresh_carriage_template'
