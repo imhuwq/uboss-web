@@ -15,11 +15,11 @@ class AccountsController < ApplicationController
     @statistics = {}
     @statistics[:so_unpay]      = @service_orders.unpay.count
     @statistics[:so_payed]      = @service_orders.payed.count
-    @statistics[:so_unevaluate] = so_unevaluate.count
+    @statistics[:so_unevaluate] = so_unevaluate(@service_orders).count
 
     @statistics[:oo_unpay]      = @ordinary_orders.unpay.count
     @statistics[:oo_shiped]     = @ordinary_orders.shiped.count
-    @statistics[:oo_unevaluate] = oo_unevaluate.count
+    @statistics[:oo_unevaluate] = oo_unevaluate(@ordinary_orders).count
     @statistics[:oo_after_sale] = @ordinary_orders.completed.count
 
     @privilege_cards = append_default_filter current_user.privilege_cards.includes(:seller), order_column: :updated_at, page_size: 10
@@ -219,14 +219,14 @@ class AccountsController < ApplicationController
   end
 
   private
-  def so_unevaluate
-    order_item_ids = OrderItem.where(order_id: @service_orders.ids).ids
-    @service_orders - @service_orders.includes(order_items: [:evaluations]).where(evaluations: {order_item_id: order_item_ids})
+  def so_unevaluate(service_orders)
+    order_item_ids = OrderItem.where(order_id: service_orders.ids).ids
+    service_orders.completed.where.not(id: service_orders.includes(order_items: [:evaluations]).where(evaluations: {order_item_id: order_item_ids}).ids)
   end
 
-  def oo_unevaluate
-    order_item_ids = OrderItem.where(order_id: @ordinary_orders.ids).ids
-    @ordinary_orders - @ordinary_orders.includes(order_items: [:evaluations]).where(evaluations: {order_item_id: order_item_ids})
+  def oo_unevaluate(ordinary_orders)
+    order_item_ids = OrderItem.where(order_id: ordinary_orders.ids).ids
+    ordinary_orders.completed.where.not(id: ordinary_orders.includes(order_items: [:evaluations]).where(evaluations: {order_item_id: order_item_ids}).ids)
   end
 
   def account_orders(type)
@@ -242,6 +242,8 @@ class AccountsController < ApplicationController
     type ||= 'all'
     if ["unpay", "payed", "completed", "all"].include?(type)
       current_user.service_orders.try(type).includes(order_items: { product_inventory: { product: :asset_img } })
+    elsif type == 'unevaluate'
+      so_unevaluate(current_user.service_orders).includes(order_items: { product_inventory:{ product: :asset_img } })
     else
       raise "invalid orders state"
     end
