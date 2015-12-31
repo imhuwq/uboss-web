@@ -20,8 +20,10 @@
 	      <span class='label label-info'><%= role.display_name %></span>
 	    <% end %>
 	  </p>
-	</div>	
+	</div>
 	<br />
-	<p class="text-center"><%= link_to '编辑', edit_admin_user_path(@user), class: 'btn btn-large' %></p>
+  <% if can?(:manage, User) %>
+	  <p class="text-center"><%= link_to '编辑', edit_admin_user_path(@user), class: 'btn btn-large' %></p>
+  <% end %>
 </div>
 

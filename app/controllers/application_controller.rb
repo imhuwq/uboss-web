@@ -97,13 +97,13 @@ class ApplicationController < ActionController::Base
 
   def configure_permitted_parameters
     devise_parameter_sanitizer.for(:sign_up) { |u|
-      u.permit(:login, :captcha, :password, :password_confirmation, :remember_me)
+      u.permit(:login, :email, :login_identifier, :captcha, :password, :password_confirmation, :remember_me)
     }
     devise_parameter_sanitizer.for(:sign_in) { |u|
-      u.permit(:login, :password, :remember_me, :mobile_auth_code, :captcha, :captcha_key)
+      u.permit(:login, :email, :login_identifier, :password, :remember_me, :mobile_auth_code, :captcha, :captcha_key)
     }
     devise_parameter_sanitizer.for(:account_update) { |u|
-      u.permit(:login, :password, :password_confirmation, :current_password)
+      u.permit(:login, :email, :login_identifier, :password, :password_confirmation, :current_password)
     }
   end
 

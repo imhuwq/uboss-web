@@ -17,11 +17,11 @@ class OrderForm
     :sharing_node, :product, :product_inventory, :buyer, :user_address, :order
 
   #validates :amount, presence: true, if: -> { self.product_id }
-  validates :mobile, presence: true, mobile: true, if: -> { self.buyer.blank? }
+  validates :mobile, presence: true, mobile: true, if: :need_bind_mobile
   validates :deliver_mobile, :deliver_username, :province, :city, :area, presence: true, if: -> { self.user_address_id.blank? }
   validates :deliver_mobile, mobile: true, allow_blank: true
   validates :seller_ids, :cart_item_ids, presence: true, if: -> { self.product_id.blank? }
-  validate  :captcha_must_be_valid, :mobile_blank_with_oauth, if: -> { self.buyer.blank? }
+  validate  :captcha_must_be_valid, :mobile_blank_with_oauth_or_binding, if: :need_bind_mobile
   validate  :product_must_be_valid
 
   def user_address
@@ -81,7 +81,11 @@ class OrderForm
     self.buyer ||= User.find_by(login: mobile)
     if need_update_oauth_info?
       buyer.update_with_wechat_oauth(session['devise.wechat_data'].extra['raw_info'])
-    elsif buyer.blank?
+    end
+    if buyer.present?
+      buyer.update_columns(login: mobile, need_set_login: false) if need_bind_mobile
+    end
+    if buyer.blank?
       self.buyer = User.new_with_session(
         {
           login: mobile,
@@ -194,12 +198,20 @@ class OrderForm
     end
   end
 
-  def mobile_blank_with_oauth
+  def mobile_blank_with_oauth_or_binding
     user = User.find_by(login: mobile)
-    if user.present? && user.weixin_openid.present? && session['devise.wechat_data'] &&
+    return true if user.blank?
+    if self.buyer.present? && need_bind_mobile
+      errors.add(:mobile, '已注册UBOSS账户')
+    end
+    if user.weixin_openid.present? && session['devise.wechat_data'] &&
         session['devise.wechat_data'].extra['raw_info']['weixin_openid'] != user.weixin_openid
       errors.add(:mobile, '已绑定微信账号')
     end
+  end
+
+  def need_bind_mobile
+    self.buyer.blank? || (self.buyer.present? && self.buyer.need_set_login && self.buyer.login.blank?)
   end
 
 end

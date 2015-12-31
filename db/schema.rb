@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151221015956) do
+ActiveRecord::Schema.define(version: 20151222135339) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -58,6 +58,11 @@ ActiveRecord::Schema.define(version: 20151221015956) do
     t.string   "alt"
     t.string   "url"
     t.string   "image_type"
+  end
+
+  create_table "attention_associations", force: :cascade do |t|
+    t.integer "user_id"
+    t.integer "following_id"
   end
 
   create_table "bank_cards", force: :cascade do |t|
@@ -221,23 +226,6 @@ ActiveRecord::Schema.define(version: 20151221015956) do
 
   add_index "favour_products", ["product_id", "user_id"], name: "index_favour_products_on_product_id_and_user_id", unique: true, using: :btree
 
-  create_table "job_histories", force: :cascade do |t|
-    t.integer  "user_id"
-    t.integer  "status"
-    t.string   "message"
-    t.string   "resource_type"
-    t.string   "resource_id"
-    t.string   "job_class"
-    t.string   "job_method"
-    t.jsonb    "options"
-    t.datetime "created_at",    null: false
-    t.datetime "updated_at",    null: false
-  end
-
-  create_table "json_test", force: :cascade do |t|
-    t.jsonb "data"
-  end
-
   create_table "mobile_captchas", force: :cascade do |t|
     t.string   "code"
     t.datetime "expire_at"
@@ -364,6 +352,7 @@ ActiveRecord::Schema.define(version: 20151221015956) do
     t.decimal  "ship_price",      default: 0.0
     t.integer  "order_charge_id"
     t.decimal  "paid_amount",     default: 0.0
+    t.string   "type"
   end
 
   add_index "orders", ["number"], name: "index_orders_on_number", unique: true, using: :btree
@@ -441,6 +430,7 @@ ActiveRecord::Schema.define(version: 20151221015956) do
     t.integer  "product_class_id"
     t.datetime "created_at",                      null: false
     t.datetime "updated_at",                      null: false
+    t.integer  "user_id"
   end
 
   create_table "product_property_values", force: :cascade do |t|
@@ -449,7 +439,10 @@ ActiveRecord::Schema.define(version: 20151221015956) do
     t.integer  "product_class_id"
     t.datetime "created_at",          null: false
     t.datetime "updated_at",          null: false
+    t.integer  "user_id"
   end
+
+  add_index "product_property_values", ["user_id"], name: "index_product_property_values_on_user_id", using: :btree
 
   create_table "product_property_values_products", id: false, force: :cascade do |t|
     t.integer "product_id",                null: false
@@ -706,7 +699,7 @@ ActiveRecord::Schema.define(version: 20151221015956) do
   add_index "user_roles", ["name"], name: "index_user_roles_on_name", unique: true, using: :btree
 
   create_table "users", force: :cascade do |t|
-    t.string   "login",                  default: "",    null: false
+    t.string   "login"
     t.string   "email"
     t.string   "encrypted_password",     default: "",    null: false
     t.string   "reset_password_token"
@@ -733,10 +726,15 @@ ActiveRecord::Schema.define(version: 20151221015956) do
     t.string   "authentication_token"
     t.decimal  "privilege_rate",         default: 50.0
     t.string   "rongcloud_token"
+    t.string   "confirmation_token"
+    t.datetime "confirmed_at"
+    t.datetime "confirmation_sent_at"
+    t.string   "unconfirmed_email"
   end
 
   add_index "users", ["agent_code"], name: "index_users_on_agent_code", unique: true, using: :btree
   add_index "users", ["authentication_token"], name: "index_users_on_authentication_token", using: :btree
+  add_index "users", ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true, using: :btree
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
   add_index "users", ["login"], name: "index_users_on_login", unique: true, using: :btree
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
@@ -788,6 +786,8 @@ ActiveRecord::Schema.define(version: 20151221015956) do
   add_foreign_key "orders", "users"
   add_foreign_key "orders", "users", column: "seller_id", name: "fk_order_seller_foreign_key"
   add_foreign_key "privilege_cards", "users"
+  add_foreign_key "product_properties", "users"
+  add_foreign_key "product_property_values", "users"
   add_foreign_key "refund_messages", "order_item_refunds"
   add_foreign_key "refund_records", "order_item_refunds"
   add_foreign_key "selling_incomes", "orders"

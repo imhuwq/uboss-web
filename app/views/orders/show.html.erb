@@ -94,7 +94,7 @@
 
 	<div class="price-box">
     <div class="pull-left">
-      <%= link_to chat_path(anchor: "conversations/#{@seller.id}"), class: 'chat-to-btn', data: { uid: @seller.id } do %>
+      <%= link_to conversation_chat_path(conversation_id: @seller.id), class: 'chat-to-btn', data: { uid: @seller.id } do %>
         <%= image_tag 'radio-check.png' %>
         <span>联系商家</span>
       <% end %>

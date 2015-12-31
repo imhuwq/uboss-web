@@ -34,7 +34,7 @@
     <div class="index-icon icon1"></div>
     <div><b>丽江生活馆</b></div>
   </a>
-  <a class="box-w50 nogap index-icon-box" href="/sellers/new">
+  <a class="box-w50 nogap index-icon-box" href="<%= current_user && current_user.is_seller? ? 'http://a.app.qq.com/o/simple.jsp?pkgname=com.ulaiber.ubossmerchant' : '/sellers/new' %>">
     <div class="index-icon icon2"></div>
     <div><b>入驻UBOSS</b></div>
   </a>
@@ -64,7 +64,7 @@
       </div><!-- bg-white gap -->
       <div class="bg-white index-product-list">
         <div class="box">
-          <% store.products.hot_ordering.limit(3).each do |product| %>
+          <% store.products.available.hot_ordering.limit(3).each do |product| %>
             <div class="box-w33">
               <div class="product-box">
                 <div class="cover">

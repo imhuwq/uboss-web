@@ -3,25 +3,25 @@
 	<div class="box-w25">
 		<div class="admin-box main-bg-color">
 	    <h4>已提交</h4>
-	    <h1 class="num"><%= PersonalAuthentication.posted.count %></h1>
+	    <h1 class="num"><%= @personal_authentications.posted.total_count %></h1>
 	  </div>
 	</div>
 	<div class="box-w25">
 		<div class="admin-box yellow-bg-color">
 	    <h4>审核中</h4>
-	    <h1 class="num"><%= PersonalAuthentication.review.count %></h1>
+	    <h1 class="num"><%= @personal_authentications.review.total_count %></h1>
 		</div>
 	</div>
 	<div class="box-w25">
 		<div class="admin-box blue-bg-color">
 	    <h4>已通过</h4>
-	    <h1 class="num"><%= PersonalAuthentication.pass.count %></h1>
+	    <h1 class="num"><%= @personal_authentications.pass.total_count %></h1>
 		</div>
 	</div>
   <div class="box-w25">
   	<div class="admin-box red-bg-color">
 	    <h4>未通过</h4>
-	    <h1 class="num"><%= PersonalAuthentication.no_pass.count %></h1>
+	    <h1 class="num"><%= @personal_authentications.no_pass.total_count %></h1>
 	  </div>
   </div>
 </div>
@@ -38,8 +38,8 @@
 		<% @personal_authentications.each do |obj| %>
 		<tr id="personal_authentication_<%= obj.user_id%>">
 			<td class="text-left">
-				 <%= link_to url_for(controller: 'admin/personal_authentications', action: :show, user_id: obj.user_id) do %>			    
-			      <%= image_tag(obj.user.avatar.url(:thumb), size: "80x80", alt: "-") %>　		    
+				 <%= link_to url_for(controller: 'admin/personal_authentications', action: :show, user_id: obj.user_id) do %>
+			      <%= image_tag(obj.user.avatar.url(:thumb), size: "80x80", alt: "-") %>　
 			      <%= obj.user.identify %>
 			    </div>
 			    <% end %>
@@ -80,7 +80,7 @@
 		</tr>
 		<% end %>
 	</table>
-	<br />	
+	<br />
 	<%= paginate @personal_authentications %>
 </div>
 </div>
