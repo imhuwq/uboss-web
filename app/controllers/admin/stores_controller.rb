@@ -163,14 +163,16 @@ class Admin::StoresController < AdminController
     end
     render json:  @message
   end
-    
+
   private
 
   def get_advertisements
-    Advertisement.joins('left join products on (products.id = advertisements.product_id)').where('(product_id is not null AND products.status = 1) OR product_id is null')
-                .where(user_id: current_user.id, platform_advertisement: false).order('order_number')
+    Advertisement.joins('left join products on (products.id = advertisements.product_id)').
+      where('(product_id is not null AND products.status = 1) OR product_id is null').
+      where(user_id: current_user.id, platform_advertisement: false).
+      order('order_number')
   end
-  
+
 
 end
 
