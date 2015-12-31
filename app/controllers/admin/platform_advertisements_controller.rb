@@ -60,7 +60,7 @@ class Admin::PlatformAdvertisementsController < AdminController
 		if request.xhr?
 			flash.now[:success] = @notice
 			flash.now[:error] = @error
-			render(partial: 'platform_advertisements', locals: { platform_advertisements: Advertisement.where(platform_advertisement: true).order("updated_at DESC").page(params[:page] || 1) })
+			render(partial: 'platform_advertisements', locals: { platform_advertisements: [@platform_advertisement] })
 		else
 			flash[:success] = @notice
 			flash[:error] = @error

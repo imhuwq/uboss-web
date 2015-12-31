@@ -5,10 +5,8 @@
     html = $("<div>#{data}</div>")
     window.html = html
     $('.admin-container').prepend(html.find('.alert'))
-    if html.find('#platform_advertisements').length > 0
-      $(this).closest('#platform_advertisements').html(html.find('#platform_advertisements').html())
-    else
-      $(this).closest('#platform_advertisements').remove()
+    if html.find('tbody .platform_advertisement').length > 0
+      $(this).closest('.platform_advertisement').html(html.find('tbody .platform_advertisement').html())
 
   $(document).on 'ajax:error', "#platform_advertisements .change-status-btn", ->
     alert('操作失败')
