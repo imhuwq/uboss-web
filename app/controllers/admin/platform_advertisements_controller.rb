@@ -1,9 +1,14 @@
 class Admin::PlatformAdvertisementsController < AdminController
 
+  before_filter do
+    authorize!(:manage, :platform_advertisements)
+  end
   before_filter :get_platform_advertisement, only: [:show, :edit, :change_status, :update, :destroy]
 
   def index
-    @platform_advertisements = append_default_filter Advertisement.where(platform_advertisement: true) , order_column: :updated_at , order_type: 'DESC' #.order('updated_at DESC').page(params[:page] || 1)
+    @platform_advertisements = append_default_filter(
+      Advertisement.where(platform_advertisement: true),
+      order_column: :updated_at)
   end
 
   def show

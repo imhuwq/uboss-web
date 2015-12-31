@@ -34,19 +34,9 @@ class Ability
   end
 
   def grant_permissions_to_super_admin user
-    can :manage, :all
-    cannot :edit, Product
-    cannot :create, Product
-    cannot :update, Product
-    cannot :change_status, Product
-    cannot :manage, Product
-    cannot :manage, :authentications
-    cannot :update_service_rate, :uboss_seller
-    cannot :manage, BankCard
-    cannot :manage, WithdrawRecord
-    cannot :manage, Order
-    cannot :manage, PersonalAuthentication
-    cannot :manage, EnterpriseAuthentication
+    can :manage, User
+    can :manage, Transaction
+    can :manage, :backend_status
   end
 
   def grant_permissions_to_offical_senior(user)
@@ -77,7 +67,7 @@ class Ability
     can :read, SellingIncome, user_id: user.id
     can :manage, Category, user_id: user.id
     can :manage, BankCard, user_id: user.id
-    can :manage, CarriageTemplate
+    can :manage, CarriageTemplate, user_id: user.id
     can :read, Express
     can :set_common, Express
     can :manage, OrderItemRefund, order_item: { order: { seller_id: user.id } }
@@ -122,6 +112,7 @@ class Ability
     can :manage, PersonalAuthentication
     can :manage, EnterpriseAuthentication
     can :manage, :authentications
+    can :manage, :platform_advertisements
   end
 
 end
