@@ -65,12 +65,12 @@ class User < ActiveRecord::Base
   belongs_to :agent, class_name: 'User'
 
   #for agencies
-  has_many :cooperations, foreign_key: 'agency_id', dependent: :destroy
-  has_many :suppliers, through: :cooperations, source: :supplier
+  has_many :reverse_cooperations, foreign_key: 'agency_id', class_name: 'Cooperation', dependent: :destroy
+  has_many :suppliers, through: :reverse_cooperations, source: :supplier
   
   #for supplier
-  has_many :reverse_cooperations, foreign_key: 'supplier_id', class_name: 'Cooperation', dependent: :destroy
-  has_many :agencies, through: :reverse_cooperations, source: :agency
+  has_many :cooperations, foreign_key: 'supplier_id', dependent: :destroy
+  has_many :agencies, through: :cooperations, source: :agency
 
   validates :login, uniqueness: true, mobile: true, allow_blank: true
   validates_presence_of :login, presence: true, if: -> { email.blank? }
@@ -482,7 +482,7 @@ class User < ActiveRecord::Base
   end
 
   def has_cooperation_with_supplier?(user)
-    cooperations.find_by_supplier_id(user.id)
+    reverse_cooperations.find_by_supplier_id(user.id)
   end
 
   private

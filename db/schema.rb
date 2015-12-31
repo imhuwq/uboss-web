@@ -162,6 +162,7 @@ ActiveRecord::Schema.define(version: 20160113024643) do
   end
 
   add_index "cooperations", ["agency_id"], name: "index_cooperations_on_agency_id", using: :btree
+  add_index "cooperations", ["supplier_id", "agency_id"], name: "index_cooperations_on_supplier_id_and_agency_id", unique: true, using: :btree
   add_index "cooperations", ["supplier_id"], name: "index_cooperations_on_supplier_id", using: :btree
 
   create_table "daily_reports", force: :cascade do |t|
