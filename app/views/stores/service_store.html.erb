@@ -25,7 +25,7 @@
     <% end %>
 
     <p>
-      <span class="like-color"><%= number_to_percentage(@service_store.good_reputation_rate, precision: 0) %></span> 好评（<%= @service_store.total_reputations %>）
+      <span class="main-color"><%= number_to_percentage(@service_store.good_reputation_rate, precision: 0) %></span> 好评（<%= @service_store.total_reputations %>）
     </p>
 
     <% if qr_sharing? %>

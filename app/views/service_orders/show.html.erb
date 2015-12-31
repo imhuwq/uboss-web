@@ -18,9 +18,7 @@
   <% end %>
 <% end %>
 
-<br />
-
-<div class="order-list">
+<div class="order-list m-top10">
 	<div class="seller-box">
 	  <div class="cover"><%= image_tag @service_store.store_cover.url(:w640) %></div>
 		<div class="content">
@@ -60,49 +58,53 @@
 	</div><!-- price-box -->
 
 </div><!-- order-list -->
-<br/>
 
 <% if @order.available_pay? %>
-  <div class="bg-white gap text-right">
-    <%= link_to "立即付款", payments_charges_path(order_ids: @order.id, showwxpaytitle: 1), id: 'wx-pay-btn', class: 'btn', style: 'width:90%;text-align:center;margin:auto 5%;font-size:20px;line-height:25px;background:#f9ba10;' %>
+  <div class="bg-white gap m-bottom10">
+    <%= link_to "立即付款", payments_charges_path(order_ids: @order.id, showwxpaytitle: 1), id: 'wx-pay-btn', class: 'btn btn-block btn-lagre' %>
   </div><!-- bg-white -->
-  <br/>
 
 <% else %>
 
-  <div class="order-list">
-    <div class="seller-box">
+  <div class="bg-white m-bottom10">
+    <div class="gap border-box">
       <div class="pull-right">有效期至：<%= strftime(@order_item.product.deadline) %></div>
-      <div class="content"><div class="text-cut">验证券</div></div>
+      <div class="text-cut">验证券</div>
     </div>
-    <table>
-      <% @order_item.verify_codes.each do |verify_code| %>
-        <tr>
-          <td class="pl10 f14 mint-color"><%= verify_code.code %></td>
-          <% if verify_code.verified %>
-            <td class="pull-right pr10">已消费</td>
-          <% else %>
-            <td class="pull-right pr10" style="color:#ff0000;">待消费</td>
-          <% end %>
-        </tr>
-      <% end %>
-    </table>
-  </div>
-  <br/>
-
+    <% @order_item.verify_codes.each do |verify_code| %>
+    	<div class="service-code gap border-box">
+    		<div class="pull-right">
+    		<% if verify_code.verified %>       
+      		<span class="red-color">已消费</span>      		
+      	<% else %>
+      		<span class="like-color">待消费</span>
+      	<% end %>        
+      	</div>
+      	<span class="main-color"><%= verify_code.code %></span>
+    	</div>
+    <% end %>
+	</div>
 <% end %>
 
 <!-- 店铺信息-->
 <div class="bg-white gap">
-  <div class="product-store-box">
-    <div class="content">
-      <%= link_to  "tel:#{@service_store.mobile_phone}", class:'store-mobile pull-right' do %>
-        <i class="store-mobile-img"></i>
-      <%end%>
-      <p class="store-address-img gray-color text-cut"><%= @service_store.address %></p>
-      <h4 class="store-clock-img name text-cut">营业时间：<%= @service_store.business_hours %></h4>
+  <div class="service-store-info">  	
+    <%= image_tag('mobile/mobile.png',class:'pull-right store-tel') %>    
+    <div class="content">      
+      <div class="address text-cut m-bottom10"><%= @service_store.address %></div>
+      <div class="open-time">营业时间：<%= @service_store.business_hours %></div>
     </div>
   </div>
+</div>
+<div class="pop-bg phone-list hidden ">
+	<div class="pop-bottom">
+		<div class="bg-white m-bottom10  border-radius">
+			<% @service_store.mobile_phone.each do |phone| %>			  
+			  <%= link_to  phone ,"tel:#{phone}" %>			  
+			<% end %>
+		</div><!-- bg-white -->	
+		<div class="btn btn-block btn-large btn-white ">取消</div>
+	</div><!-- pop-bottom -->
 </div>
 
 <br />

@@ -7,6 +7,10 @@ table{
 .border-table{
     td{border-bottom: 1px solid #eee;}
 }
+.list-table{
+    th{border-bottom: 1px solid #eee;}
+    td,th{padding: 10px;}
+}
 .v-top{
     vertical-align: top;    
     img{ vertical-align:bottom;}

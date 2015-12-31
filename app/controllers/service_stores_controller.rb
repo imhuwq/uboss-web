@@ -2,6 +2,7 @@ class ServiceStoresController < ApplicationController
   layout 'mobile'
 
   def share
+    @service_store = current_user.service_store
   end
 
   def show

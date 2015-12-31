@@ -6,29 +6,27 @@
   <a class="back" onclick="history.go(-1)"><%= image_tag 'mobile/right.png' %></a>
 <% end %>
 
-<br />
-<div class='share_service_store'>
-  <%= link_to share_service_store_path do %>
-    <div class="content">
-      <span class='pull-right share_link'>分享</span>
-      <p>
-        <span class='store_name'><%= @service_store.store_name %></span>
-      </p>
-    </div>
+<div class="privilege-rate m-top10 m-bottom10">
+  <%= link_to share_service_store_path,class:'gap bg-white ' do %>
+    <span class='pull-right'>分享</span>
+    <span class='gray-color'><%= @service_store.store_name %></span>
   <% end %>
-</div><!-- address-box -->
+</div><!-- privilege-rate -->
 
-<br />
-<div class="order-list valid-order-list valid-list">
-  <div class='verify_detail_link'>
-    <div class='verify_detail_link_warp'>
-      <%= link_to '验证明细', verify_detail_service_store_path, class: 'pull-right verify_detail' %>
-    </div>
-  </div>
-  <div class="inline-form text-center">
-    <%= simple_form_for 'verify_code', url: verify_service_store_path do |f| %>
-      <%= number_field_tag 'code', '', placeholder: '请输入验证券密码', class: 'verify_code_input' %>
-      <span class="text-center"><%= f.submit '验证', class: 'btn btn-large' %></span>
-    <% end %>
-  </div>
+<div class="privilege-rate border-box">
+	<%= link_to '验证明细', verify_detail_service_store_path, class: 'gap bg-white text-right' %>
+</div>  
+<div class="bg-white m-bottom10">
+<%= form_for 'verify_code', url: verify_service_store_path  do |f| %>
+	<br />
+  <div class="box-w100">
+  	<div class="box-w80 nogap-right">
+  		<%= number_field_tag 'code', '', placeholder: '请输入验证券密码', class: 'input-large input-block' %>
+  	</div>
+  	<div class="box-w20 nogap-left">
+  		<%= f.submit '验证', class: 'btn btn-large btn-block noradius' %>
+  	</div>
+  </div><!-- box-w100 -->
+	<br /> 
+<% end %>
 </div>

@@ -6,26 +6,22 @@
   <a class="back" onclick="history.go(-1)"><%= image_tag 'mobile/right.png' %></a>
 <% end %>
 
-<br />
-
 <% @service_orders.each do |order| %>
-  <div class="order-list" timestamp='<%= order.created_at %>'>
-    <div class="seller-box">
-      <div class="text-cut gray-color">商家：<%= order.seller.identify %></div>
-    </div>
-
+	
+  <div class="service-order-list m-bottom10"  timestamp='<%= order.created_at %>'>
+		<div class="text-cut page-title gray-color gap">商家：<%= order.seller.identify %></div>
     <% order.order_items.each do |order_item| %>
       <%= link_to account_verify_code_path(id: order_item.id) do %>
-        <div class="order-box">
-          <div class="cover">
+        <div class="service-order-box bg-white">
+        	<div class="cover" style="background:url('<%= order_item.item_product.image_url('w120') %>');">
             <%= image_tag order_item.item_product.image_url('w120') %>
-          </div><!-- order-cover -->
-          <div class="content">
-            <div class="text-cut gray-color f14"><%= order_item.product_name %></div>
-            <div class="f14 pt5" style="color:#43c3aa;">有效期至：<%= strftime(order_item.product.deadline) %></div>
-            <div class="gray-color f14 pt5">数量：<%= order_item.amount %></div>
-          </div><!-- content -->
-        </div><!-- order-box -->
+          </div>
+          <div class="content line-gap">
+            <p class="gray-color text-cut"><%= order_item.product_name %></p>
+            <p class="main-color">有效期至：<%= strftime(order_item.product.deadline) %></p>
+            <p class="gray-color">数量：<%= order_item.amount %></h4>
+          </div>
+        </div><!-- service-order-box -->
       <% end %>
     <% end %>
   </div>

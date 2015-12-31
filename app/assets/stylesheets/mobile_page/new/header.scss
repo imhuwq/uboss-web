@@ -5,7 +5,6 @@ header {
     line-height: 20px;
     background: #fff;
     a{display: inline-block;}
-    img{vertical-align: text-top;}
     .logo{height: 16px; padding:14px 0 14px 10px;}
     .title{
       padding:13px 0 13px 10px;
@@ -32,7 +31,8 @@ header {
         img{ 
           height: 16px;
           -webkit-transform: rotate(180deg);
-          transform: rotate(180deg);          
+          transform: rotate(180deg);  
+          vertical-align: text-top;        
         }
     }
   }

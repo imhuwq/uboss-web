@@ -73,6 +73,22 @@
 }
 
 
+.service-code{
+  position: relative;
+  overflow: hidden;
+  .status-icon{
+    display: block;
+    position: absolute;
+    right: -30px;
+    top: -8px;
+    padding: 16px 24px 0 16px;
+    font-size: 8px;
+    color: #fff;
+    background: #f9ba10;
+    transform: rotate(45deg);
+    -webkit-transform: rotate(45deg);
+  }
+}
 
 #service_stores_verify_detail {
   .box-w49{

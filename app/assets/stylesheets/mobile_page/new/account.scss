@@ -101,10 +101,15 @@
         display: block;
         background: image-url('mobile/gray-arrow-right.png') no-repeat right center #f6f6f6;
         background-position-x: 97%;
-        background-size:10px;
+        background-size:8px auto;
+        padding-right: 30px;
         color: #555;
         line-height: 20px;
+        &.bg-white{
+            background-color: #fff;
+        }
     }
+    
 
 }
 .privilege-form{
