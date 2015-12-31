@@ -1,15 +1,17 @@
 class Advertisement < ActiveRecord::Base
+
   include Imagable
   include AASM
   include Orderable
-
 
   belongs_to :product
   belongs_to :category
 
   has_one_image autosave: true
+
   delegate :image_url, to: :asset_img, allow_nil: true
   delegate :avatar=, :avatar, to: :asset_img
+
   enum status: { hide: 0, show: 1 }
   enum zone: { top: 0, central: 1 }
 
