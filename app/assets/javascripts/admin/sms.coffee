@@ -90,7 +90,7 @@ $ ->
       return false
     else
       $.ajax
-        url: '/admin/build_cooperation',
+        url: '/admin/build_cooperation_with_auth_code',
         type: 'POST',
         data: {
           mobile_auth_code: mobile_auth_code
