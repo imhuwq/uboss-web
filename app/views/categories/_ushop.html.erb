@@ -5,45 +5,46 @@
 <%= content_for :header_left do %>
   <a class="back" onclick="history.go(-1)"><%= image_tag 'mobile/right.png' %></a>
 <% end %>
+
 <div class="all-category-list box">
   <div class="box-w33">
   	<div class="all-category-tab active"><%= @category.name %></div>
   </div>
-  <% 
+  <%
   	csize=0
-  	@categories.each do |category|  	
+  	@categories.each do |category|
   	csize=csize+1
   %>
-  	<% if @categories.size >= 9  %> 
-  		
+  	<% if @categories.size >= 9  %>
+
   		<% if csize >= 8 %>
 		    <div class="box-w33 hidden category-more-box">
 		    	<div class="all-category-tab">
 		    		<%= link_to category.name, store_category_path(store_id:params[:store_id], id: category.id) %>
 		    	</div><!-- all-category-tab -->
-		    </div><!-- box-w33 -->	
+		    </div><!-- box-w33 -->
 		  <% else %>
 		  	<div class="box-w33">
 		    	<div class="all-category-tab">
 		    		<%= link_to category.name, store_category_path(store_id:params[:store_id], id: category.id) %>
 		    	</div><!-- all-category-tab -->
-		    </div><!-- box-w33 -->	
+		    </div><!-- box-w33 -->
 		  <% end %>
-  		
+
     	<% if csize == @categories.size %>
     		<div class="box-w33 category-more-btn">
 		    	<div class="all-category-tab">
 		    		<span class="down-text">更多</span> <span class="up-text">收起</span> <%= image_tag 'mobile/gray-arrow-right.png' %>
 		    	</div><!-- all-category-tab -->
-		    </div><!-- box-w33 -->	    		
+		    </div><!-- box-w33 -->
 	    <% end %>
 
     <% else %>
     	<div class="box-w33">
 	    	<div class="all-category-tab">
-	    		<%= link_to category.name, store_category_path(store_id:params[:store_id], id: category.id) %>	    		
+	    		<%= link_to category.name, store_category_path(store_id:params[:store_id], id: category.id) %>
 	    	</div><!-- all-category-tab -->
-	    </div><!-- box-w33 -->	
+	    </div><!-- box-w33 -->
     <% end %>
   <% end %>
 </div><!-- all-category-list -->
@@ -55,9 +56,10 @@
 	      <%= render partial: 'stores/product', collection: @products %>
 	  <% else %>
 	    <h2 class="page-title text-center">店家正在准备好货，敬请期待</h2>
-	  <% end %>		
+	  <% end %>
 	</div><!-- box -->
 </div><!-- bg-white -->
+
 <% if @products.size > 6 %>
   <br />
   <div class="load-more" data-container='.store-list' data-ele='.p-item' data-ref='<%= request.path %>'>加载更多</div>
