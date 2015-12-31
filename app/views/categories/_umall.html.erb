@@ -6,13 +6,9 @@
   <% end %>
 <% end %>
 
-<%= content_for :extra_meta_tags do %>
-  <% if @seller %>
-    <%= store_sharing_meta_tags(
-      @seller,
-      @sharing_link_node,
-      store_category_path(store_id: @seller.id, id: @category.id)
-    ) %>
+<%= content_for :header_left do %>
+  <%= link_to store_path(@seller), class: 'back' do %>
+    <%= image_tag 'mobile/right.png' %>
   <% end %>
 <% end %>
 
