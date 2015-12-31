@@ -3,7 +3,7 @@ class Admin::ServiceProductsController < AdminController
   load_and_authorize_resource
 
   def new
-    @service_product = ServiceProduct.new
+    @service_product = ServiceProduct.new(service_type: 0)
   end
 
   def index

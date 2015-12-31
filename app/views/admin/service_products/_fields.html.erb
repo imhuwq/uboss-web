@@ -16,7 +16,7 @@
       <abbr title="必填">*</abbr> 团购类型
     </label>
     <div class="control-input" style="margin-top:5px;">
-      <%= f.collection_radio_buttons :service_type, ServiceProduct::DataServiceType.invert, :last, :first, checked: ServiceProduct::DataServiceType.invert.first %>
+      <%= f.collection_radio_buttons :service_type, ServiceProduct::DataServiceType.invert, :last, :first %>
     </div>
   </div>
   <%= f.input :original_price, hint: '仅作页面显示参考' %>
