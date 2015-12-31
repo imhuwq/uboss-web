@@ -113,6 +113,7 @@ class Ability
     can :manage, EnterpriseAuthentication
     can :manage, :authentications
     can :manage, :platform_advertisements
+    can :manage, Advertisement
   end
 
 end
