@@ -15,7 +15,7 @@
 	</div>
 	<div class="box-w60">
 		<br />
-		
+
 		<div class="setting-list">
 			<% @advertisements.each do |adv| %>
 				<% if adv.product_id %>
@@ -34,6 +34,17 @@
 					<div class="setting-banner-box">
 						<span class="close" data-id="<%= adv.id %>"><i class="fa fa-times"></i></span>
 						<p>分组：<span class="main-color"><%= adv.category.name %></span></p>
+						<p class="text-center fileinput-button">
+							<%= image_tag(adv.image_url('640x320'), class:'clean') %>
+							<%= file_field_tag "image", class: "upyun_file_json" ,  data: {to: "/admin/stores/update_advertisement_img?resource_id=#{adv.id}"} %>
+							<b class="loading"><i class="fa fa-spinner"></i></b>
+							<span class="tips-text">点击替换</span>
+						</p>
+						<div>排序：<input type="number" min="0" value="<%= adv.order_number %>" class="banner-sequence update_item" style="width: 100px;" data-url="/admin/stores/update_advertisement_order?resource_id=<%= adv.id %>"/></div>
+					</div><!-- setting-banner-box -->
+        <% else %>
+					<div class="setting-banner-box">
+						<span class="close" data-id="<%= adv.id %>"><i class="fa fa-times"></i></span>
 						<p class="text-center fileinput-button">
 							<%= image_tag(adv.image_url('640x320'), class:'clean') %>
 							<%= file_field_tag "image", class: "upyun_file_json" ,  data: {to: "/admin/stores/update_advertisement_img?resource_id=#{adv.id}"} %>

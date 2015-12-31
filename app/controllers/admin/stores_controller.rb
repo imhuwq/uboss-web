@@ -63,7 +63,7 @@ class Admin::StoresController < AdminController
       elsif params[:advertisement][:type] == 'category' && category = current_user.categories.find_by_id(params[:advertisement][:id])
         @adv.category_id = category.id
       end
-      if (@adv.product_id || @adv.category_id) && @adv.save
+      if @adv.save
         flash.now[:success] = '创建成功'
       else
         @adv.valid?
