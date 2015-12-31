@@ -1,5 +1,4 @@
 class Admin::StoresController < AdminController
-
   def show
     @advertisements = get_advertisements
     @categories = Category.where(use_in_store: true, user_id: current_user.id).order('use_in_store_at')
@@ -8,20 +7,19 @@ class Admin::StoresController < AdminController
 
   def update_store_logo
     if current_user.update(store_logo: params[:avatar])
-      @message = {message: "上传成功！"}
+      @message = { message: '上传成功！' }
     else
-      @message = {message:"上传失败"}
+      @message = { message: '上传失败' }
     end
     render json:  @message
   end
 
-
   def update_advertisement_img
     adv = Advertisement.find_by(id: params[:resource_id], user_id: current_user.id)
     if adv.update(avatar: params[:avatar])
-      @message = {message: "上传成功！"}
+      @message = { message: '上传成功！' }
     else
-      @message = {message:"上传失败"}
+      @message = { message: '上传失败' }
     end
     render json:  @message
   end
@@ -29,27 +27,26 @@ class Admin::StoresController < AdminController
   def update_advertisement_order
     adv = Advertisement.find_by(id: params[:resource_id], user_id: current_user.id)
     if adv.update(order_number: params[:resource_val])
-      @message = {message: "上传成功！"}
+      @message = { message: '上传成功！' }
     else
-      @message = {message:"上传失败"}
+      @message = { message: '上传失败' }
     end
     render json:  @message
   end
 
-
   def get_advertisement_items
     if params[:type] == 'product'
       arr = []
-      (current_user.products.published.select(:name,:id).all - current_user.products.published.joins(:advertisements).select(:name,:id)).each do |p|
-        arr += [{id: p.id, text: p.name}]
+      (current_user.products.published.select(:name, :id).all - current_user.products.published.joins(:advertisements).select(:name, :id)).each do |p|
+        arr += [{ id: p.id, text: p.name }]
       end
-      render json: {products: arr}
+      render json: { products: arr }
     elsif params[:type] == 'category'
       arr = []
-      (current_user.categories.select(:name,:id).all - current_user.categories.joins(:advertisements).select(:name,:id)).each do |c|
-        arr += [{id: c.id, text: c.name}]
+      (current_user.categories.select(:name, :id).all - current_user.categories.joins(:advertisements).select(:name, :id)).each do |c|
+        arr += [{ id: c.id, text: c.name }]
       end
-      render json: {categories: arr}
+      render json: { categories: arr }
     end
   end
 
@@ -107,22 +104,21 @@ class Admin::StoresController < AdminController
     render 'add_category'
   end
 
-
   def update_store_name
     duplication_name = UserInfo.find_by(store_name: params[:resource_val]) if params[:resource_val] != ''
     if (!duplication_name.present? || duplication_name.try(:user_id) == current_user.id) && current_user.update(store_name: params[:resource_val])
-      @message = {success: "修改成功！"}
+      @message = { success: '修改成功！' }
     else
-      @message = {error:"修改失败#{duplication_name.present? ? ',此名称已经有人使用。' : ''}"}
+      @message = { error: "修改失败#{duplication_name.present? ? ',此名称已经有人使用。' : ''}" }
     end
     render json:  @message
   end
 
   def update_store_short_description
     if current_user.update(store_short_description: params[:resource_val])
-      @message = {message: "修改成功！"}
+      @message = { message: '修改成功！' }
     else
-      @message = {message:"修改失败"}
+      @message = { message: '修改失败' }
     end
     render json:  @message
   end
@@ -132,16 +128,16 @@ class Admin::StoresController < AdminController
     when 'product'
       product = current_user.products.find(params[:resource_id])
       if product.update(show_advertisement: false)
-        @message = {success:"修改成功"}
+        @message = { success: '修改成功' }
       else
-        @message = {error:"修改失败"}
+        @message = { error: '修改失败' }
       end
     when 'category'
       category = current_user.categories.find(params[:resource_id])
       if category.update(show_advertisement: false)
-        @message = {success:"修改成功"}
+        @message = { success: '修改成功' }
       else
-        @message = {error:"修改失败"}
+        @message = { error: '修改失败' }
       end
     end
     render json: @message.to_json
@@ -155,11 +151,11 @@ class Admin::StoresController < AdminController
         image_url = @category.image_url
       else
         avatar_identifier = ''
-        image_url= '/assets/admin/no-img-400x400.png'
+        image_url = '/assets/admin/no-img-400x400.png'
       end
-      @message = {message: "获取成功！", image_url: image_url, avatar_identifier: avatar_identifier}
+      @message = { message: '获取成功！', image_url: image_url, avatar_identifier: avatar_identifier }
     else
-      @message = {message:"获取失败"}
+      @message = { message: '获取失败' }
     end
     render json:  @message
   end
@@ -167,13 +163,9 @@ class Admin::StoresController < AdminController
   private
 
   def get_advertisements
-    Advertisement.joins('left join products on (products.id = advertisements.product_id)').
-      where('(product_id is not null AND products.status = 1) OR product_id is null').
-      where(user_id: current_user.id, platform_advertisement: false).
-      order('order_number')
+    Advertisement.joins('left join products on (products.id = advertisements.product_id)')
+      .where('(product_id is not null AND products.status = 1) OR product_id is null')
+      .where(user_id: current_user.id, platform_advertisement: false)
+      .order('order_number')
   end
-
-
 end
-
-
