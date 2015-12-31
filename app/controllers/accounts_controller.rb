@@ -9,13 +9,21 @@ class AccountsController < ApplicationController
   before_action :authenticate_agent, only: [:send_message, :invite_seller, :edit_seller_note, :update_histroy_note]
 
   def show
-    @verify_codes_count = current_user.service_orders.payed.count
+    @service_orders  = current_user.service_orders
+    @ordinary_orders = current_user.ordinary_orders
+
+    @statistics = {}
+    @statistics[:so_unpay]      = @service_orders.unpay.count
+    @statistics[:so_payed]      = @service_orders.payed.count
+    @statistics[:so_unevaluate] = @service_orders.completed.count
+
+    @statistics[:oo_unpay]      = @ordinary_orders.unpay.count
+    @statistics[:oo_shiped]     = @ordinary_orders.shiped.count
+    @statistics[:oo_unevaluate] = @ordinary_orders.completed.count
+    @statistics[:oo_after_sale] = @ordinary_orders.completed.count
+
     @privilege_cards = append_default_filter current_user.privilege_cards.includes(:seller), order_column: :updated_at, page_size: 10
-    if params[:state] == 'after_sale'
-      @refunds = current_user.order_item_refunds.includes(order_item: [:product, :order]).page(params[:page])
-    else
-      @orders = append_default_filter account_orders(params[:state]), page_size: 10
-    end
+
     render layout: 'mobile'
   end
 
@@ -25,10 +33,20 @@ class AccountsController < ApplicationController
   end
 
   def orders
-    @orders = append_default_filter account_orders(params[:state]), page_size: 10
+    if params[:state] == 'after_sale'
+      @refunds = current_user.order_item_refunds.includes(order_item: [:product, :order]).page(params[:page])
+    elsif params[:state] == 'unevaluate'
+      @orders = []
+    else
+      @orders = append_default_filter account_orders(params[:state]), page_size: 10
+    end
 
     if request.xhr?
-      render partial: 'accounts/order', collection: @orders
+      if params[:state] == 'after_sale'
+        render partial: 'accounts/refund', collection: @refunds
+      else
+        render partial: 'accounts/order', collection: @orders
+      end
     else
       render :orders, layout: 'mobile'
     end

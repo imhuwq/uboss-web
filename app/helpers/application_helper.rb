@@ -144,4 +144,8 @@ module ApplicationHelper
     ].join.html_safe
   end
 
+  def zero_to_nil(num)
+    num == 0 ? nil : num
+  end
+
 end

@@ -13,8 +13,8 @@
 			<li><a href="<%= orders_account_path(state: 'unpay') %>">未付款</a></li>
 			<li><a href="<%= orders_account_path(state: 'payed') %>">未发货</a></li>
 			<li><a href="<%= orders_account_path(state: 'shiped') %>">未收货</a></li>
-      <!--<li><a href="<%= orders_account_path(state: 'completed') %>">已完成</a></li>-->
-      <li><a href="<%= orders_account_path(state: 'after_sale') %>">售后</a></li>
+      <li><a href="<%= orders_account_path(state: 'unevaluate') %>">未评价</a></li>
+      <!--<li><a href="<%= orders_account_path(state: 'after_sale') %>">售后</a></li>-->
 		</ul>
 		<div id="u-order-list">
       <% if params[:state] == 'after_sale' %>
