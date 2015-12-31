@@ -15,8 +15,8 @@ class Admin::StoresController < AdminController
   end
 
   def update_advertisement_img
-    adv = Advertisement.find_by(id: params[:resource_id], user_id: current_user.id)
-    if adv.update(avatar: params[:avatar])
+    adv = Advertisement.find_by!(id: params[:resource_id], user_id: current_user.id)
+    if adv && adv.update(avatar: params[:avatar])
       @message = { message: '上传成功！' }
     else
       @message = { message: '上传失败' }
@@ -25,8 +25,8 @@ class Admin::StoresController < AdminController
   end
 
   def update_advertisement_order
-    adv = Advertisement.find_by(id: params[:resource_id], user_id: current_user.id)
-    if adv.update(order_number: params[:resource_val])
+    adv = Advertisement.find_by!(id: params[:resource_id], user_id: current_user.id)
+    if adv && adv.update(order_number: params[:resource_val])
       @message = { message: '上传成功！' }
     else
       @message = { message: '上传失败' }
@@ -72,9 +72,9 @@ class Admin::StoresController < AdminController
 
   def add_category
     category = Category.where(use_in_store: false).find_by!(id: params[:category][:id], user_id: current_user.id)
-    if params[:category][:avatar] == ''
+    if category && params[:category][:avatar] == ''
       category.update(use_in_store: true, use_in_store_at: Time.now)
-    else
+    elsif category 
       category.update(use_in_store: true, use_in_store_at: Time.now, avatar: params.require(:category).permit(:avatar, :order_number)[:avatar])
     end
     @categories = Category.where(use_in_store: true, user_id: current_user.id).order('use_in_store_at')
@@ -82,8 +82,8 @@ class Admin::StoresController < AdminController
   end
 
   def remove_advertisement_item
-    adv = Advertisement.find_by(id: params[:id], user_id: current_user.id)
-    if adv.destroy
+    adv = Advertisement.find_by!(id: params[:id], user_id: current_user.id)
+    if adv && adv.destroy
       flash.now[:success] = '删除成功'
     else
       flash.now[:error] = '删除失败'
@@ -93,8 +93,8 @@ class Admin::StoresController < AdminController
   end
 
   def remove_category_item
-    category = Category.find_by(id: params[:id], user_id: current_user.id)
-    if category.update(use_in_store: false)
+    category = Category.find_by!(id: params[:id], user_id: current_user.id)
+    if category && category.update(use_in_store: false)
       flash.now[:success] = '移除成功'
     else
       flash.now[:error] = '移除失败'

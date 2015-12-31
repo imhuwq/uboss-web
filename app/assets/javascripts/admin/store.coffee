@@ -134,16 +134,8 @@ jQuery ($) ->
             type: 'POST'
             data: {avatar: fileName}
             success: (res) ->
-              console.log "res", res
-              console.log $("#product-category-list-#{res['id']}")
               $("#product-category-list-#{res['id']}").attr('style', "background-image:url(#{ upyunBucketDomain }/#{ qs.url })")
-
               alert(res['message'])
-
             error: (data, status, e) ->
               console.log 'data, status, e', data, status, e
               alert("操作错误")
-
-
-  $(document).on 'change', '.order_number', ->
-
