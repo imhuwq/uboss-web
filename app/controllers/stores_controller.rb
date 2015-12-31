@@ -1,5 +1,4 @@
 class StoresController < ApplicationController
-
   include SharingResource
 
   layout 'mobile'
@@ -10,13 +9,10 @@ class StoresController < ApplicationController
   before_action :get_sharing_node, :set_sharing_link_node, only: [:show, :hots]
 
   def index
-
     @products = append_default_filter Product.published.includes(:asset_img), order_column: :updated_at
     @hot_products = []
     @products.each do |product|
-      if @hot_products.empty?
-        @hot_products << product
-      end
+      @hot_products << product if @hot_products.empty?
       product.total_sells
     end
 
@@ -55,5 +51,4 @@ class StoresController < ApplicationController
   def set_seller
     @seller = User.find(params[:id])
   end
-
 end

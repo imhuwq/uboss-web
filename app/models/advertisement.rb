@@ -17,10 +17,6 @@ class Advertisement < ActiveRecord::Base
 
   DATA_STATUS = { hide: '隐藏', show: '显示' }
 
-  module PlatformAdvertisement
-    DATA_ZONE = { top: '顶部', central: '中部' }
-  end
-
   def asset_img
     super || build_asset_img
   end
