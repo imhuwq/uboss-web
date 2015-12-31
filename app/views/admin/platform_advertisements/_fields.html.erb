@@ -5,7 +5,7 @@
 	<div class="form-group url optional platform_advertisement_status">
 		<label class="url optional control-label" for="platform_advertisement_status">状态</label>
 		<div class="control-input" style="padding: 8px;">
-			<%= f.collection_radio_buttons :status, Advertisement::PlatformAdvertisement::DATA_STATUS.invert, :last, :first %>
+			<%= f.collection_radio_buttons :status, Advertisement::DATA_STATUS.invert, :last, :first %>
 		</div>
 	</div>
 
