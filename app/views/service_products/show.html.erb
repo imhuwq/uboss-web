@@ -168,7 +168,7 @@
       <div class="half_left">
         <%= image_tag @sharing_node.user.avatar_url(:thumb), class: 'share_portrait' %>
         <div class="share_content">
-          <div class="tex-cut"><%= @sharing_node.user.identify %></div>
+          <div class="text-cut"><%= @sharing_node.user.identify %></div>
           <div><small><%= Evaluation.sharer_good_reputation_rate(@sharing_node.user) %>好评率</small></div>
         </div>
       </div>
