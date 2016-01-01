@@ -2,11 +2,11 @@
 <div class="modal-body" style="color:#000;">
   <p>拒绝原因</p>
   <p>
-    <%= text_field_tag 'refund_message[refund_reason]', '', class:'input-block js-select2' %>
+  <%= text_field_tag 'refund_message[refund_reason]', '', class:'input-block js-select2' %>
   </p>
   <br/>
   <p>拒绝说明</p>
-  <p><%= f.text_area :explain, rows: 4, class: 'input-block' %></p>  
+  <p><%= f.text_area :explain, rows: 4, class: 'input-block' %></p>
   <br />
   <p>上传凭证</p>
 	<%= f.input :asset_img, label: false do %>
@@ -34,3 +34,6 @@
     placeholder: "拒绝退款申请原因"
   })
 </script>
+<style type="text/css" media="all">
+  .select2-container{width:100%;}
+</style>
