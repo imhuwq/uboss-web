@@ -1,8 +1,8 @@
 <%= render 'layouts/flash_alert' if request.xhr? %>
 <div class="index_list">
 <table class="list-table" id="products">
-		<thead>
-			<th>商品</th>
+		<thead>			
+			<th colspan="2">商品</th>
 			<th>价格</th>
 			<% if current_user.is_super_admin? %>
 				<th>商家</th>
@@ -15,9 +15,13 @@
 		</thead>
 		<% products.each do |product| %>
 			<tr class="product" id='product_<%= product.id %>'>
-				<td class="text-left">
+				<td>
 					<%= link_to admin_product_path(product) do %>
 						<%= image_tag(product.image_url(:thumb), size: "80x80", alt: "-") %>　
+					<% end %>
+				</td>
+				<td class="text-left" style="max-width: 400px;">
+					<%= link_to admin_product_path(product) do %>
 						<%= product.name %>
 					<% end %>
 				</td>

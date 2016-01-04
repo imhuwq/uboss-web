@@ -1,14 +1,18 @@
-.store_address_warp {
-  .chosen-container {
-    display: none !important;
+.service-store-address{
+  .city-group{
+      display: inline-block;
   }
+  .chosen-container {
+    display: none !important;  }
 
-  .city-select {
+  .city-select, {
     display: inline-block !important;
     color: #0C0C0C;
   }
 }
-
+.service-store-tel .fields{
+  margin-bottom: 10px;
+}
 td.none-border-bottom {
   border: none;
 }
