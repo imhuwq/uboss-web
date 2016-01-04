@@ -1,15 +1,19 @@
 class CityManager < ActiveRecord::Base
+
   include Userdelegator
+  include Orderable
+
   CATEGORIES = {firstline: 1, secondline: 2, thirdline: 3, fourthline: 4, fifthline: 5}
+
   belongs_to :user
   has_many :enterprise_authentications, foreign_key: :city_code, primary_key: :city
+
   validates_numericality_of :rate, greater_than: 0, less_than: 1
   validates :category, presence: true
   validates_uniqueness_of :user_id, message: "该用户以绑定其他城市", allow_nil: true
+  validates :city, presence: true, uniqueness: true
 
   enum category: CATEGORIES
-
-  validates :city, :presence => true, :uniqueness => true
 
   scope :contracted, -> { where("user_id > 0") }
 

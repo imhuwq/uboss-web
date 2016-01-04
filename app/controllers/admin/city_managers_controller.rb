@@ -15,7 +15,7 @@ class Admin::CityManagersController < AdminController
 
   def cities
     @q = CityManager.search(search_params)
-    @city_managers = @q.result.preload(:user).page(params[:page])
+    @city_managers = append_default_filter @q.result.preload(:user), order_column: :updated_at
   end
 
   def revenues
