@@ -90,6 +90,8 @@ class Ability
   end
 
   def grant_permissions_to_city_manager user
+    can :read,   WithdrawRecord, user_id: user.id
+    can :create, WithdrawRecord, user_id: user.id
     can [:read, :create], CityManagerAuthentication, user_id: user.id
     can [:edit, :update], CityManagerAuthentication, { user_id: user.id, status: %w(posted no_pass) }
     can :added, CityManager, user_id: user.id
