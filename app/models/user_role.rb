@@ -23,7 +23,7 @@ class UserRole < ActiveRecord::Base
         roles |= %w(super_admin seller agent offical_operating offical_financial)
       end
       if user.is_offical_operating? || user.is_super_admin?
-        roles |= %w(seller agent offical_operating)
+        roles |= %w(seller agent offical_operating city_manager)
       end
       user_roles = self.where(name: roles)
       user_roles.present? ? user_roles : user.user_roles
