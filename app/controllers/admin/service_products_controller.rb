@@ -1,4 +1,5 @@
 class Admin::ServiceProductsController < AdminController
+  before_action :validate_service_store_info, only: :new
 
   load_and_authorize_resource
 
@@ -98,5 +99,12 @@ class Admin::ServiceProductsController < AdminController
         sku_attributes: product_propertys_params[:product_propertys_names],
       ]
     ))
+  end
+
+  def validate_service_store_info
+    unless current_user.service_store && current_user.service_store.try(:valid?)
+      flash[:alert] = '请先完善团购店铺基本信息'
+      redirect_to edit_admin_service_store_path(current_user.service_store)
+    end
   end
 end
