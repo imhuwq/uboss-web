@@ -94,7 +94,6 @@ class Ability
     can [:edit, :update], CityManagerAuthentication, { user_id: user.id, status: %w(posted no_pass) }
     can :added, CityManager, user_id: user.id
     can :revenues, CityManager, user_id: user.id
-    cannot :change_status, Certification
   end
 
   private
@@ -122,6 +121,7 @@ class Ability
     can :manage, PersonalAuthentication
     can :manage, EnterpriseAuthentication
     can :manage, CityManagerAuthentication
+    can :manage, Certification
     can :manage, :authentications
     can :manage, :platform_advertisements
     can :manage, Advertisement
