@@ -17,6 +17,7 @@ class Admin::CertificationsController < AdminController
     @certifications = append_default_filter CityManagerAuthentication
     render "index"
   end
+
   def change_status
     @certification = Certification.find(params[:id])
     @certifications = @certification.class.page(params[:page])

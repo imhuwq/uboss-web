@@ -1,7 +1,5 @@
 class Admin::PersonalAuthenticationsController < AdminController
 
-  #load_and_authorize_resource
-
   include Certifications
 
   def klass

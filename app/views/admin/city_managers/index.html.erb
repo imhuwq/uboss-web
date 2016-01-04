@@ -8,7 +8,7 @@
 <br />
 <div class="container nogap">
   <div class="box-w100 nogap">
-    <% cache(['city_managers/index:box', EnterpriseAuthentication.pass.maximum(:updated_at).utc.to_i]) do  %>
+    <% cache(['city_managers/index:box', (EnterpriseAuthentication.pass.maximum(:updated_at)||Time.now).utc.to_i]) do  %>
       <% CityManagersHelper::INDEX_BOXES.each do |key, name| %>
         <%= link_to admin_city_managers_path(category: key) do %>
           <div class="box-w20">

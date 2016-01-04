@@ -8,6 +8,7 @@ module Certifications
     end
 
     def index
+      authorize! :read, klass
       @certifications = append_default_filter klass, order_column: :updated_at, order_type: 'DESC'
     end
 
@@ -17,6 +18,7 @@ module Certifications
         redirect_to action: :show
       end
       @certification = klass.new
+      authorize! :new, klass
     end
 
     def show
@@ -28,29 +30,33 @@ module Certifications
       unless @certification.present?
         flash[:notice] = '您还没有认证'
         redirect_to action: :new
+      else
+        authorize! :read, @certification
       end
     end
 
     def edit
       @certification = klass.find_by(user_id: current_user)
-      authorize! :edit, @certification
       if !@certification.present?
         redirect_to action: :new
       elsif [:review, :pass].include?(@certification.status.to_sym)
         flash[:alert] = '当前状态不允许修改。'
         redirect_to action: :show
+      else
+        authorize! :edit, @certification
       end
     end
 
     def create
       valid_create_params
       @certification = klass.new(resource_params)
+      @certification.user_id = current_user.id
+      authorize! :create, @certification
       if @errors.present?
         flash[:error] = @errors.join("\n")
         render 'new'
         return
       else
-        @certification.user_id = current_user.id
         if @certification.save
           MobileCaptcha.find_by(code: resource_params[:mobile_auth_code]).try(:destroy)
           flash[:success] = '保存成功'
@@ -70,6 +76,7 @@ module Certifications
         return
       else
         @certification = klass.find_by!(user_id: current_user)
+        authorize! :update, @certification
         hash = resource_params.merge({status: 'posted'})
         if @certification.update(hash)
           MobileCaptcha.find_by(code: resource_params[:mobile_auth_code]).try(:destroy)
