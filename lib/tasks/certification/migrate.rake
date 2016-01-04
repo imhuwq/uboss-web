@@ -26,6 +26,8 @@ namespace :certification do
         address:  personal.address,
         mobile:   personal.mobile,
         id_num:   personal.identity_card_code,
+        created_at: personal.created_at,
+        updated_at: personal.updated_at,
         attachment_2: personal.face_with_identity_card_img_identifier,
         attachment_3: personal.identity_card_front_img_identifier
       }
@@ -44,6 +46,8 @@ namespace :certification do
         attachment_1: enterprise.business_license_img_identifier,
         attachment_2: enterprise.legal_person_identity_card_front_img_identifier,
         attachment_3: enterprise.legal_person_identity_card_end_img_identifier,
+        created_at: enterprise.created_at,
+        updated_at: enterprise.updated_at,
       }
       Certification.new(attrs).save(validate: false)
     end
