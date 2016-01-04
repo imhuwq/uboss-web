@@ -69,7 +69,7 @@ class OrderTest < ActiveSupport::TestCase
 
     [:declined, :completed_express_number, :decline_received, :applied_uboss].each do |state|
       # reset situation
-      order.update_column(:state, Order.states[:shiped])
+      order.update_column(:state, OrdinaryOrder.states[:shiped])
       refund.update_column(:aasm_state, state.to_s)
 
       assert_equal state.to_s, refund.aasm_state

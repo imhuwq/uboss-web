@@ -83,7 +83,7 @@ class OrderDivideJobTest < ActiveJob::TestCase
 
       buyer = create(:user)
 
-      @order = create(:order,
+      @order = create(:ordinary_order,
                       user: buyer,
                       order_items_attributes: [{
                         product: product,
@@ -184,7 +184,7 @@ class OrderDivideJobTest < ActiveJob::TestCase
       assert seller.income == 0
 
       buyer = create(:user)
-      @order = create(:order,
+      @order = create(:ordinary_order,
                       user: buyer,
                       seller: seller,
                       order_items_attributes: [{

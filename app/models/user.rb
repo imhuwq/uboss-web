@@ -475,7 +475,9 @@ class User < ActiveRecord::Base
 
   def set_service_rate
     if self.agent_id_changed?
-      self.user_info.service_rate = 5
+      if user_info
+        user_info.service_rate = 5
+      end
     end
   end
 
