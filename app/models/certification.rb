@@ -1,7 +1,11 @@
 class Certification < ActiveRecord::Base
+
   include AASM
   include Userdelegator
+  include Orderable
+
   belongs_to :user
+
   validates :user_id, :mobile, :presence => true
   validates :mobile, mobile: true
   validates :address,:presence => true

@@ -4,17 +4,17 @@ class Admin::CertificationsController < AdminController
   end
 
   def persons
-    @certifications = PersonalAuthentication.page(params[:page])
+    @certifications = append_default_filter PersonalAuthentication
     render "index"
   end
 
   def enterprises
-    @certifications = EnterpriseAuthentication.page(params[:page])
+    @certifications = append_default_filter EnterpriseAuthentication
     render "index"
   end
 
   def city_managers
-    @certifications = CityManagerAuthentication.page(params[:page])
+    @certifications = append_default_filter CityManagerAuthentication
     render "index"
   end
   def change_status

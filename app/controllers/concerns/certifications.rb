@@ -8,7 +8,7 @@ module Certifications
     end
 
     def index
-      @certifications = klass.order("updated_at DESC").page(params[:page] || 1)
+      @certifications = append_default_filter klass, order_column: :updated_at, order_type: 'DESC'
     end
 
     def new
