@@ -57,8 +57,14 @@ class Ability
     can :read, User, id: user.id
     can :manage, Order, seller_id: user.id
     can :manage, Product, user_id: user.id
-    can :manage, PersonalAuthentication, user_id: user.id
-    can :manage, EnterpriseAuthentication, user_id: user.id
+    can :read, PersonalAuthentication, user_id: user.id
+    can :edit, PersonalAuthentication, { user_id: user.id, status: %w(posted no_pass) }
+    can :update, PersonalAuthentication, { user_id: user.id, status: %w(posted no_pass) }
+    can :create, PersonalAuthentication, user_id: user.id
+    can :read, EnterpriseAuthentication, user_id: user.id
+    can :edit, EnterpriseAuthentication, { user_id: user.id, status: %w(posted no_pass) }
+    can :update, EnterpriseAuthentication, { user_id: user.id, status: %w(posted no_pass) }
+    can :create, EnterpriseAuthentication, user_id: user.id
     can :read,   WithdrawRecord, user_id: user.id
     can :create, WithdrawRecord, user_id: user.id
     can :read, SharingIncome, seller_id: user.id
