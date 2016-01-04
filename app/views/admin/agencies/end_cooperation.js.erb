@@ -1,2 +1,2 @@
-$("end_cooperation_<%=@agency.id%>").modal('hide')
 $("#cooperation_form_<%=@agency.id%>").html("<%= j render('admin/agencies/build_cooperation', agency: @agency) %>")
+$(".modal-backdrop").remove()
