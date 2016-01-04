@@ -11,9 +11,9 @@
 			<ul class="dropdown-menu">
 				<li><%= link_to "修改密码", password_admin_account_path %></li>
 				<li>
-          <% if can?(:manage,PersonalAuthentication) %>
+          <% if can?(:create,PersonalAuthentication) %>
           <%= link_to "商家认证", admin_user_personal_authentication_path(user_id: current_user.id) %>
-          <% elsif can?(:manage,EnterpriseAuthentication) %>
+          <% elsif can?(:create,EnterpriseAuthentication) %>
           <%= link_to "商家认证", admin_user_enterprise_authentication_path(user_id: current_user.id) %>
           <% end %>
         </li>
