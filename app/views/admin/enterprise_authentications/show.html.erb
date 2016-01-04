@@ -2,13 +2,13 @@
 	<ul class="breadcrumb">
 		<li><a href="/admin">主页</a></li>
 		<li class="divider"><i class="fa fa-angle-right"></i></li>
-		<li><a href="/admin/enterprise_authentications">企业认证</a></li>
+		<li><a href="/admin/certifications/enterprises">企业认证</a></li>
 		<li class="divider"><i class="fa fa-caret-right"></i></li>
 		<li>企业信息认证</li>
 	</ul>
 </div>
 <br />
-<% if cannot?(:manage, @enterprise_authentication) %>
+<% if cannot?(:manage, @certification) %>
   <%= render "admin/certifications/tabs" %>
   <br />
 <% end %>
@@ -81,7 +81,7 @@
         </label>
         <div class="control-input"><span><%= @certification.mobile %></span></div>
       </div>
-  <% if can?(:manage, @enterprise_authentication) %>
+  <% if can?(:manage, @certification) %>
     <%= render partial: 'admin/certifications/actions', locals: { obj: @certification } %>
     <br />
     <p class='text-center'>

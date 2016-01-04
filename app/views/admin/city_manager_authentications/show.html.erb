@@ -2,13 +2,13 @@
 	<ul class="breadcrumb">
 		<li><a href="/admin">主页</a></li>
 		<li class="divider"><i class="fa fa-angle-right"></i></li>
-		<li><a href="/admin/city_manager_authentications">城市运营商认证</a></li>
+		<li><a href="/admin/certifications/city_managers">城市运营商认证</a></li>
 		<li class="divider"><i class="fa fa-caret-right"></i></li>
 		<li>城市运营商认证信息</li>
 	</ul>
 </div>
 <br />
-<% unless current_user.is_super_admin? %>
+<% if cannot?(:manage, @certification) %>
   <%= render "admin/certifications/tabs" %>
 <br />
 <% end %>
@@ -81,7 +81,7 @@
         </label>
         <div class="control-input"><span><%= @certification.mobile %></span></div>
       </div>
-  <% if is_super_admin? %>
+  <% if can?(:manage, @certification) %>
       <%= render partial: 'admin/certifications/actions', locals: { obj: @certification } %>
 		</div>
 	</div>

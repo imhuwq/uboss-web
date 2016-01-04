@@ -1,14 +1,14 @@
 module Admin::CertificationsHelper
   CERTIFICATIONS_TABS = {
-    "个人认证"    => { action: "persons" },
-    "企业认证"    => { action: "enterprises" },
-    "城市运营商"  => { action: "city_managers"}
+    "个人认证"    => { action: "persons", resource: PersonalAuthentication },
+    "企业认证"    => { action: "enterprises", resource: EnterpriseAuthentication },
+    "城市运营商"  => { action: "city_managers", resource: CityManagerAuthentication }
   }
 
-  CERTIFICATION_TABS =     {
-    "个人认证" => { controller: 'admin/personal_authentications' },
-    "企业认证" => { controller: 'admin/enterprise_authentications' },
-    "城市运营商认证" => { controller: "admin/city_manager_authentications"}
+  CERTIFICATION_TABS =  {
+    "个人认证" => { controller: 'admin/personal_authentications', resource: PersonalAuthentication },
+    "企业认证" => { controller: 'admin/enterprise_authentications', resource: EnterpriseAuthentication },
+    "城市运营商认证" => { controller: "admin/city_manager_authentications", resource: CityManagerAuthentication }
   }
 
   def link_to_certifications_tabs
@@ -40,7 +40,9 @@ module Admin::CertificationsHelper
 
   def link_to_tabs(options)
     options.reduce("") do |str, (name, option)|
-      str << yield(name, option)
+      if can?(:create, option[:resource])
+        str << yield(name, option.slice(:controller, :action))
+      end
       raw(str)
     end
   end

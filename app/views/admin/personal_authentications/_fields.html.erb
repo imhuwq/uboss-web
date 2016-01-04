@@ -4,7 +4,7 @@
   <%= f.input :face_with_identity_card_img, hint:"(点击图片进行替换)" do %>
     <%= f.input_field :face_with_identity_card_img, type: :hidden, as: :file %>
     <span class="fileinput-button">
-      <% if f.object.new_record? || f.object.attributes['face_with_identity_card_img'].blank? %>
+      <% if f.object.new_record? || f.object.face_with_identity_card_img_identifier.blank? %>
         <%= image_tag("admin/no-img.png") %>
       <% else %>
         <%= image_tag(f.object.face_with_identity_card_img_url(:w320)) %>
@@ -17,7 +17,7 @@
   <%= f.input :identity_card_front_img, hint:"(点击图片进行替换)" do %>
     <%= f.input_field :identity_card_front_img, type: :hidden, as: :file %>
     <span class="fileinput-button">
-      <% if f.object.new_record? || f.object.attributes['identity_card_front_img'].blank? %>
+      <% if f.object.new_record? || f.object.identity_card_front_img_identifier.blank? %>
         <%= image_tag("admin/no-img.png") %>
       <% else %>
         <%= image_tag(f.object.identity_card_front_img_url(:w320)) %>

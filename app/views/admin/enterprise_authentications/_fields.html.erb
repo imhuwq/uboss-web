@@ -3,7 +3,7 @@
   <%= f.input :business_license_img, hint:"(点击图片进行替换)" do %>
     <%= f.input_field :business_license_img, type: :hidden, as: :file %>
     <span class="fileinput-button">
-      <% if f.object.new_record? || f.object.attributes['business_license_img'].blank? %>
+      <% if f.object.new_record? || f.object.business_license_img_identifier.blank? %>
         <%= image_tag("admin/no-img.png") %>
       <% else %>
         <%= image_tag(f.object.business_license_img_url(:w320)) %>
@@ -16,7 +16,7 @@
   <%= f.input :legal_person_identity_card_front_img, hint:"(点击图片进行替换)" do %>
     <%= f.input_field :legal_person_identity_card_front_img, type: :hidden, as: :file %>
     <span class="fileinput-button">
-      <% if f.object.new_record? || f.object.attributes['legal_person_identity_card_front_img'].blank? %>
+      <% if f.object.new_record? || f.object.legal_person_identity_card_front_img_identifier.blank? %>
         <%= image_tag("admin/no-img.png") %>
       <% else %>
         <%= image_tag(f.object.legal_person_identity_card_front_img_url(:w320)) %>
@@ -29,7 +29,7 @@
   <%= f.input :legal_person_identity_card_end_img, hint:"(点击图片进行替换)" do %>
     <%= f.input_field :legal_person_identity_card_end_img, type: :hidden, as: :file %>
     <span class="fileinput-button">
-      <% if f.object.new_record? || f.object.attributes['legal_person_identity_card_end_img'].blank? %>
+      <% if f.object.new_record? || f.object.legal_person_identity_card_end_img_identifier.blank? %>
         <%= image_tag("admin/no-img.png") %>
       <% else %>
         <%= image_tag(f.object.legal_person_identity_card_end_img_url(:w320)) %>
