@@ -33,12 +33,12 @@
 				 -->
 				<div>
 					店铺名称　
-					<%= text_field_tag :store_name , nil,  placeholder: '店铺名称',style:'width:400px' %>
+					<%= text_field_tag :store_name , @service_store.store_name,  placeholder: '店铺名称',style:'width:400px' %>
 				</div>
 				<br />
 				<div>
 					店铺简介　
-					<%= f.text_field_tag :store_short_description, nil, placeholder: '请控制在20字以内，以保证显示效果',style:'width:400px' %>					
+					<%= f.text_field_tag :store_short_description, @service_store.store_short_description, placeholder: '请控制在20字以内，以保证显示效果',style:'width:400px' %>					
 				</div>
 				<br />
 				<div>
@@ -49,7 +49,7 @@
      	</div><!-- box-w85 -->
       <div class="box-w15 text-right info-right-box">
 	  		<br />
-				<p><%= qrcode_image_tag service_store_url(shared: true), html:{class:'gap white-bg-color',width:'160'} %></p>				
+				<p><%= qrcode_image_tag service_store_url(shared: true), html:{class:'gap white-bg-color',width:'160'} %></p>
 	  		<br />
 	  	</div><!-- box-w15 -->
     </div><!-- beige-bg-color -->
@@ -60,10 +60,10 @@
     		<div class="service-store-address">
 	      	店铺位置　
 		      <%= render 'user_addresses/user_address', f: f, locals: { obj: @service_store } %>
-		      <%= f.text_field_tag :street,nil, placeholder: '填写详细地址',style:'width:400px' %>
-	      </div>  
-    	</div><!-- box-w100--> 
-	    <br />   
+		      <%= f.text_field_tag :street, @service_store.street, placeholder: '填写详细地址',style:'width:400px' %>
+	      </div>
+    	</div><!-- box-w100-->
+	    <br />
       <div class="box-w100">
       	<span class="pull-left">店铺电话　</span>
       	<div class="pull-left service-store-tel">
@@ -75,10 +75,10 @@
             <span><%= p.text_field :phone_number, placeholder: '手机号' %></span>
             <span><%= p.link_to_remove '删除', class: 'remove', tabIndex: '-1' %></span>
           <% end %>
-          <div class="table-body">          
+          <div class="table-body">
 	          <div class="add_store_phone"><%= f.link_to_add "　新增电话", :store_phones, class: 'fa fa-plus text-center add-chapter'%></div>
 	        </div>
-      	</div>      	
+      	</div>
       </div><!-- box-w100--> 
       <br />
       <div class="box-w100">
