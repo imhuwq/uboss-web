@@ -22,6 +22,11 @@
   <%= f.input :original_price, hint: '仅作页面显示参考' %>
   <%= f.input :present_price, hint: '仅作显示参考，真实价格请在库存/规格中设置' %>
   <%= f.input :count %>
+  <%= f.fields_for :supplier_product_info do |spi| %>
+    <%= spi.input_field :cost_price %>
+    <%= spi.input_field :suggest_price_lower %>
+    <%= spi.input_field :suggest_price_upper %>
+  <% end %>
   <%= f.input :short_description %>
   <%= f.input :asset_img, hint:"(点击图片进行替换)"  do %>
     <%= f.input_field :avatar, type: :hidden, as: :file %>
@@ -39,7 +44,10 @@
   <div class="form-group ">
     <label class="control-label">图文详情</label>
     <div class="control-input" style='width: 430px;'>
-      <%= f.input_field :content, as: :text, class: "redactor" %>
+      <%= f.fields_for :supplier_product_info do |spi| %>
+        <%= spi.input_field :content, as: :text, class: "redactor", placeholder: '在此添加代销说明' %>
+      <% end %>
+      <%= f.input_field :content, as: :text, class: "redactor", placeholder: '在此添加商品详情' %>
     </div>
   </div>
 </div>
