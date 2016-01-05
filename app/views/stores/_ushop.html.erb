@@ -85,23 +85,56 @@
 </div>
 <% end %>
 
-<div class="bg-white" id="product-container" >
+<!-- <div class="bg-white" id="product-container" >
   <div class="box store-list">
     <div class="box-w100">
         <div class="page-title">全部商品</div>
     </div>
 
-    <% if @products.present? %>
-      <%= render partial: 'product', collection: @products %>
-    <% else %>
+    <%# if @products.present? %>
+      <%#= render partial: 'product', collection: @products %>
+    <%# else %>
       <h2 class="page-title text-center">店家正在准备好货，敬请期待</h2>
-    <% end %>
+    <%# end %>
 
   </div>
+</div> -->
+<div class="bg-white m-bottom10" id="product-container">
+  <div class="tab-nav sort-nav">
+    <div class="tab active" title="#sort-container1"><span>新品上架</span></div>
+    <div class="tab" title="#sort-container2"><span>人气热销</span></div>
+  </div>
+  <div class="tab-container">
+    <div class="tab-content sort-list" id="sort-container1" style="display: block;">
+      <% if @products.present? %>
+      <%= render partial: 'product', collection: @products %>
+      <% else %>
+      <h2 class="page-title text-center">店家正在准备好货，敬请期待</h2>
+      <% end %>           
+    </div><!-- #category-container -->
+    <% if @products.size > 6 %>
+    <br />
+    <div class="load-more" data-container='.store-list' data-ele='.p-item' data-ref='<%= request.path %>'>加载更多</div>
+    <% end %>
+    <div class="tab-content" id="sort-container2">
+      <div class="box store-list">
+        <% if @products_order_with_sales.present? %>
+        <%= render partial: 'product', collection: @products_order_with_sales %>
+        <% else %>
+        <h2 class="page-title text-center">店家正在准备好货，敬请期待</h2>
+        <% end %>           
+      </div><!-- box -->
+      <% if @products_order_with_sales.size > 6 %>
+      <br />
+      <div class="load-more" data-container='.store-list' data-ele='.p-item' data-ref='<%= request.path %>'>加载更多</div>
+      <% end %>
+    </div><!-- #product-container -->
+  </div><!-- tab-container -->  
 </div>
 
-<% if @products.size > 6 %>
-  <br />
-  <div class="load-more" data-container='.store-list' data-ele='.p-item' data-ref='<%= request.path %>'>加载更多</div>
-<% end %>
+
+<%# if @products.size > 6 %>
+<!--   <br />
+  <div class="load-more" data-container='.store-list' data-ele='.p-item' data-ref='<%#= request.path %>'>加载更多</div> -->
+<%# end %>
 

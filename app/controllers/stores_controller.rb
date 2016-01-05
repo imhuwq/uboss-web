@@ -9,6 +9,12 @@ class StoresController < ApplicationController
   before_action :get_sharing_node, :set_sharing_link_node, only: [:show, :hots]
 
   def index
+    @products = append_default_filter Product.published.includes(:asset_img), order_column: :updated_at
+    @hot_products = []
+    @products.each do |product|
+      @hot_products << product if @hot_products.empty?
+      product.total_sells
+    end
     @uboss_seller = User.find_by(login: '19812345678')
     @recommend_ids = @uboss_seller.store_short_description.split(',')
     @stores = User.where(id: @recommend_ids)
@@ -16,6 +22,7 @@ class StoresController < ApplicationController
 
   def show
     @products = append_default_filter @seller.products.published, order_column: :updated_at
+    @products_order_with_sales = Product.published.includes(:asset_img).where(id: Statistic.where(resource_type: 'product').order('integer_count').page(params[:page] || 1).collect(&:resource_id))
     @hots = @seller.products.hots.recent.limit(3)
     @categories = Category.where(use_in_store: true, user_id: @seller.id).order('use_in_store_at')
     render_product_partial_or_page

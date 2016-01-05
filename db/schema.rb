@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151222135339) do
+ActiveRecord::Schema.define(version: 20160104033347) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -58,11 +58,6 @@ ActiveRecord::Schema.define(version: 20151222135339) do
     t.string   "alt"
     t.string   "url"
     t.string   "image_type"
-  end
-
-  create_table "attention_associations", force: :cascade do |t|
-    t.integer "user_id"
-    t.integer "following_id"
   end
 
   create_table "bank_cards", force: :cascade do |t|
@@ -131,6 +126,38 @@ ActiveRecord::Schema.define(version: 20151222135339) do
 
   add_index "categories_products", ["category_id"], name: "index_categories_products_on_category_id", using: :btree
   add_index "categories_products", ["product_id"], name: "index_categories_products_on_product_id", using: :btree
+
+  create_table "certifications", force: :cascade do |t|
+    t.integer  "user_id"
+    t.integer  "status"
+    t.string   "name"
+    t.string   "enterprise_name"
+    t.string   "id_num"
+    t.string   "address"
+    t.string   "mobile"
+    t.string   "attachment_1"
+    t.string   "attachment_2"
+    t.string   "attachment_3"
+    t.string   "type"
+    t.datetime "verified_at"
+    t.datetime "created_at",      null: false
+    t.datetime "updated_at",      null: false
+    t.string   "province_code"
+    t.string   "city_code"
+    t.string   "district_code"
+  end
+
+  add_index "certifications", ["user_id"], name: "index_certifications_on_user_id", using: :btree
+
+  create_table "city_managers", force: :cascade do |t|
+    t.integer  "user_id"
+    t.integer  "category"
+    t.string   "city"
+    t.decimal  "rate",       precision: 2, scale: 2
+    t.datetime "settled_at"
+    t.datetime "created_at",                         null: false
+    t.datetime "updated_at",                         null: false
+  end
 
   create_table "daily_reports", force: :cascade do |t|
     t.date     "day"
@@ -225,6 +252,23 @@ ActiveRecord::Schema.define(version: 20151222135339) do
   end
 
   add_index "favour_products", ["product_id", "user_id"], name: "index_favour_products_on_product_id_and_user_id", unique: true, using: :btree
+
+  create_table "job_histories", force: :cascade do |t|
+    t.integer  "user_id"
+    t.integer  "status"
+    t.string   "message"
+    t.string   "resource_type"
+    t.string   "resource_id"
+    t.string   "job_class"
+    t.string   "job_method"
+    t.jsonb    "options"
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
+  end
+
+  create_table "json_test", force: :cascade do |t|
+    t.jsonb "data"
+  end
 
   create_table "mobile_captchas", force: :cascade do |t|
     t.string   "code"
@@ -352,7 +396,6 @@ ActiveRecord::Schema.define(version: 20151222135339) do
     t.decimal  "ship_price",      default: 0.0
     t.integer  "order_charge_id"
     t.decimal  "paid_amount",     default: 0.0
-    t.string   "type"
   end
 
   add_index "orders", ["number"], name: "index_orders_on_number", unique: true, using: :btree
@@ -430,7 +473,6 @@ ActiveRecord::Schema.define(version: 20151222135339) do
     t.integer  "product_class_id"
     t.datetime "created_at",                      null: false
     t.datetime "updated_at",                      null: false
-    t.integer  "user_id"
   end
 
   create_table "product_property_values", force: :cascade do |t|
@@ -439,10 +481,7 @@ ActiveRecord::Schema.define(version: 20151222135339) do
     t.integer  "product_class_id"
     t.datetime "created_at",          null: false
     t.datetime "updated_at",          null: false
-    t.integer  "user_id"
   end
-
-  add_index "product_property_values", ["user_id"], name: "index_product_property_values_on_user_id", using: :btree
 
   create_table "product_property_values_products", id: false, force: :cascade do |t|
     t.integer "product_id",                null: false
@@ -621,6 +660,15 @@ ActiveRecord::Schema.define(version: 20151222135339) do
 
   add_index "simple_captcha_data", ["key"], name: "idx_key", using: :btree
 
+  create_table "statistics", force: :cascade do |t|
+    t.string  "content_type"
+    t.string  "resource_type",    limit: 50
+    t.integer "resource_id"
+    t.integer "integer_count"
+    t.decimal "decimal_count"
+    t.jsonb   "resource_message"
+  end
+
   create_table "transactions", force: :cascade do |t|
     t.integer  "user_id"
     t.decimal  "current_amount", default: 0.0
@@ -786,8 +834,6 @@ ActiveRecord::Schema.define(version: 20151222135339) do
   add_foreign_key "orders", "users"
   add_foreign_key "orders", "users", column: "seller_id", name: "fk_order_seller_foreign_key"
   add_foreign_key "privilege_cards", "users"
-  add_foreign_key "product_properties", "users"
-  add_foreign_key "product_property_values", "users"
   add_foreign_key "refund_messages", "order_item_refunds"
   add_foreign_key "refund_records", "order_item_refunds"
   add_foreign_key "selling_incomes", "orders"
