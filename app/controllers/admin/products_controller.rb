@@ -43,6 +43,7 @@ class Admin::ProductsController < AdminController
     if params[:status] == 'published'
       # if @product.user.authenticated?
         @product.status = 'published'
+        @product.published_at = Time.now
         @notice = '上架成功'
       # else
       #   @error = '该帐号还未通过身份验证，请先验证:点击右上角用户名，进入“个人/企业认证”'

@@ -21,8 +21,13 @@ class StoresController < ApplicationController
   end
 
   def show
-    @products = append_default_filter @seller.products.published, order_column: :updated_at
-    @products_order_with_sales = Product.published.includes(:asset_img).where(id: Statistic.where(resource_type: 'product').order('integer_count').page(params[:page] || 1).collect(&:resource_id))
+    if params[:order] == 'published_at'
+      @products = append_default_filter @seller.products.published, order_column: :published_at_order
+    elsif  params[:order] == 'sales_amount'
+      @products = append_default_filter @seller.products.published, order_column: :sales_amount_order
+    else
+      @products = append_default_filter @seller.products.published, order_column: :comprehensive_order
+    end
     @hots = @seller.products.hots.recent.limit(3)
     @categories = Category.where(use_in_store: true, user_id: @seller.id).order('use_in_store_at')
     render_product_partial_or_page
