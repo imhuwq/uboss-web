@@ -1,15 +1,62 @@
-<h2>Forgot your password?</h2>
+<div class='login-container'>
 
-<%= simple_form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :post }) do |f| %>
-  <%= f.error_notification %>
+  <section class="pn-select <%= 'hidden' if @sending_mail || @sending_captcha %>">
+    <h3>忘记登陆密码？</h3>
+    <br />
+    <a class="btn btn-block btn-large gray-btn" onclick="$('.pn-select').hide();$('.with-mcaptcha').show();">通过手机验证码</a>
+    <br />
+    <a class="btn btn-block btn-large gray-btn" onclick="$('.pn-select').hide();$('.with-email').show();">通过邮箱验证</a>
+  </section>
 
-  <div class="form-inputs">
-    <%= f.input :email, required: true, autofocus: true %>
-  </div>
+  <section class="with-email <%= 'hidden' unless @sending_mail %>">
+    <h2>发送邮箱验证邮件</h2>
 
-  <div class="form-actions">
-    <%= f.button :submit, "Send me reset password instructions" %>
-  </div>
-<% end %>
+    <%= simple_form_for(resource, as: resource_name, url: user_password_path, html: { method: :post }) do |f| %>
+      <%= f.input_field :email, required: true, autofocus: true,
+        class: 'input-block', placeholder: '邮箱' %>
+      <br />
+      <%= f.button :submit, "发送验证邮件", class: 'btn btn-block btn-large' %>
+      <br />
+      <a class="btn btn-block btn-link" onclick="$('.pn-select').show();$('.with-email').hide()">返回</a>
+    <% end %>
+  </section>
 
-<%= render "users/shared/links" %>
+  <section class="with-mcaptcha <%= 'hidden' unless @sending_captcha %>">
+    <%= simple_form_for(resource, as: resource_name, url: user_password_path, html:{ method: :put }) do |f| %>
+      <h2>手机验证码找回密码</h2>
+      <%= hidden_field_tag :patch_type, 'mobile' %>
+
+      <%= f.input_field :login, class:'input-block', required: true, autofocus: true,
+        id: 'new_mobile', placeholder: '手机' %>
+      <br />
+      <div class="box-w100 nogap captcha-box">
+        <div class='captcha-image pull-right'>
+          <%= login_simple_captcha_components[:image] %>
+          <%= login_simple_captcha_components[:refresh_button] %>
+        </div><!-- captcha-image -->
+        <div class='captcha_field'>
+          <%= login_simple_captcha_components[:field] %>
+        </div>
+      </div><!-- captcha-box -->
+      <div class="box-w100 nogap">
+        <br/>
+        <div class="box-w50 nogap">
+          <%= f.input_field :code, class:'input-block',placeholder:'动态密码' %>
+        </div>
+        <div class="box-w50 nogap-right">
+          <span id="request_mobile_captcha" class="btn btn-block btn-mid gray-btn" >获取手机验证码</span>
+        </div>
+      </div>
+      <br />
+      <%= f.input_field :password, class:'input-block', required: true, autofocus: true, placeholder: '新密码' %>
+      <br />
+      <%= f.input_field :password_confirmation, class:'input-block', required: true, autofocus: true, placeholder: '确认密码' %>
+      <div class="box-w100 nogap">
+        <br />
+        <p><%= f.submit "确认", class: 'btn btn-block btn-large' %></p>
+        <br />
+        <a class="btn btn-block btn-link" onclick="$('.pn-select').show();$('.with-mcaptcha').hide()">返回</a>
+      </div>
+    <% end %>
+  </section>
+</div>

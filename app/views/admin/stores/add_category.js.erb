@@ -1,0 +1,11 @@
+$('#add-category').modal('hide');
+$('#categories').html('<%= escape_javascript render 'categories'  %>');
+$(".content").prepend('<%= escape_javascript render 'layouts/flash_alert' %>');
+var data = []
+<%  @select_categories.each do |c| %>
+data = data.concat([{id: <%= c.id %>, text: '<%= c.name %>'}])
+<% end %>
+$(".js-select2.select-category-item").select2({
+	data: data,
+	placeholder: "请输入名称"
+})

@@ -14,7 +14,7 @@ class Admin::EnterpriseAuthenticationsController < AdminController
   end
 
   def show
-    if current_user.is_super_admin?
+    if can?(:manage, EnterpriseAuthentication)
       @enterprise_authentication = EnterpriseAuthentication.find_by(user_id:( params[:user_id] || current_user))
     else
       @enterprise_authentication = EnterpriseAuthentication.find_by(user_id: current_user)
@@ -26,14 +26,13 @@ class Admin::EnterpriseAuthenticationsController < AdminController
   end
 
   def edit
-    enterprise_authentication = EnterpriseAuthentication.find_by(user_id: current_user)
-    if !enterprise_authentication.present?
+    @enterprise_authentication = EnterpriseAuthentication.find_by(user_id: current_user)
+    authorize! :edit, @enterprise_authentication
+    if !@enterprise_authentication.present?
       redirect_to action: :new
-    elsif [:review, :pass].include?(enterprise_authentication.status)
+    elsif [:review, :pass].include?(@enterprise_authentication.status)
       flash[:alert] = '当前状态不允许修改。'
       redirect_to action: :show
-    else
-      @enterprise_authentication = enterprise_authentication
     end
   end
 

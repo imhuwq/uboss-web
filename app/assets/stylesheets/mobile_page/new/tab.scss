@@ -1,16 +1,16 @@
-.tab-nav{
+.tab-nav,.sort-nav{
     display: table;
     width: 100%;
     background: #fff;
     margin-bottom: 8px;
     line-height: 20px;
-    .tab{
+    .tab,.sort-tab{
         width: 1%;
         vertical-align: middle;
         padding:10px 5px;
         display: table-cell;
         text-align: center;
-        color: #999;
+        color: #888;
         span{
             display: inline-block;
             padding: 10px 0;
@@ -79,5 +79,23 @@
 }
 .tab-container .tab-content{
     display: none;
+}
+.sort-nav{
+    margin-bottom: 0;
+    a{
+        color: #444;
+        display: block;
+        border-right: 1px solid #ddd;
+        padding: 0px 10px;
+    }
+   .sort-tab{
+      padding: 10px 0 0;
+   }
+   .sort-tab:last-child a{
+       border-right: none;
+   }
+   .sort-tab.active a{
+       color: $brand-primary;;
+   }
 }
 

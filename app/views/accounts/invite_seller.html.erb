@@ -1,9 +1,12 @@
 <%= content_for :page_title do %>
   我是创客
 <% end %>
-
-
-  <div class="bg-white m-bottom10 m-top10">
+<%= content_for :header_left do %>
+  <a class="back" onclick="history.go(-1)"><%= image_tag 'mobile/right.png' %></a>
+<% end %>
+<div class="box">
+  <br  />
+  <div class="bg-white">
     <div class="box-m40">
       <br />
       <%= link_to '进入我的专属推广页', maker_qrcode_url(uid: current_user.id), class: 'btn btn-large btn-block' %>
@@ -15,40 +18,41 @@
   </div>
   <div class="bg-white m-bottom10">
     <div class="box-m40">
-    	<br />
+      <br />
       <h3 class="main-color text-center">邀请商家</h3>
-    	<br />
+      <br />
       <p><%= text_field_tag 'send_message[mobile]', '',type: :tel, placeholder: '填入商家注册手机号',
         class:"add_text input-radius input-large input-block", id:"new_mobile"  %></p>
-      <br />
-      <div class="accunt_adilbtn btn btn-large btn-block" id="timedown">短信发送绑定验证码给商家</div>
-      <br />
-      <p class="gray-color">未注册商家自动为其创建账户</p>
-      <br />
-    </div>
-  </div><!--bg-white -->
-  <div class="bg-white m-bottom10">
-    <div class="box-m40">
-      <%= simple_form_for 'bind_seller', url: bind_seller_account_path, method: :put do |f| %>
-    		<br />
-        <h3 class="main-color text-center">绑定验证</h3>
-    		<br />
-        <p><%= f.input_field :invite_code, type: :tel, placeholder: '填入从商家获取绑定验证码',
-          class:"add_text input-radius input-large input-block" %></p>
         <br />
-        <div><%= f.submit '绑定商家', class:"accunt_adilbtn btn btn-large btn-block" %>    </div>
+        <div class="accunt_adilbtn btn btn-large btn-block" id="timedown">短信发送绑定验证码给商家</div>
         <br />
-      <% end %>
+        <p class="gray-color">未注册商家自动为其创建账户</p>
+        <br />
+      </div>
+    </div><!--bg-white -->
+    <div class="bg-white m-bottom10">
+      <div class="box-m40">
+        <%= simple_form_for 'bind_seller', url: bind_seller_account_path, method: :put do |f| %>
+          <br />
+          <h3 class="main-color text-center">绑定验证</h3>
+          <br />
+          <p><%= f.input_field :invite_code, type: :tel, placeholder: '填入从商家获取绑定验证码',
+            class:"add_text input-radius input-large input-block" %></p>
+            <br />
+            <div><%= f.submit '绑定商家', class:"accunt_adilbtn btn btn-large btn-block" %>    </div>
+            <br />
+          <% end %>
     </div>
   </div><!--bg-white -->
   <div class="bg-white m-bottom10">
     <div id="invite_seller_histroy">
       <div class="invite-title text-center like-color">
         总绑定 <%= @bind %>
-    </div>
-    <table class="list-table border-table">
-      <%= render partial: "invite_seller_new_histroy" %>
-    </table>
+      </div>
+      <table class="list-table border-table">
+        <%= render partial: "invite_seller_new_histroy" %>
+      </table>
     </div>
   </div><!-- bg-white -->
+</div>
 

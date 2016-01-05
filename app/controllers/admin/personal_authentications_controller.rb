@@ -14,7 +14,7 @@ class Admin::PersonalAuthenticationsController < AdminController
   end
 
   def show
-    if current_user.is_super_admin?
+    if can?(:manage, PersonalAuthentication)
       @personal_authentication = PersonalAuthentication.find_by(user_id:( params[:user_id] || current_user))
       unless @personal_authentication.present?
         flash[:notice] = '您还没有认证/您查找的用户不存在'
@@ -30,14 +30,13 @@ class Admin::PersonalAuthenticationsController < AdminController
   end
 
   def edit
-    personal_authentication = PersonalAuthentication.find_by(user_id: current_user)
-    if !personal_authentication.present?
+    @personal_authentication = PersonalAuthentication.find_by(user_id: current_user)
+    authorize! :edit, @personal_authentication
+    if !@personal_authentication.present?
       redirect_to action: :new
-    elsif [:review, :pass].include?(personal_authentication.status)
+    elsif [:review, :pass].include?(@personal_authentication.status)
       flash[:alert] = '当前状态不允许修改。'
       redirect_to action: :show
-    else
-      @personal_authentication = personal_authentication
     end
   end
 

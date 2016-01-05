@@ -1,11 +1,11 @@
 <div class="page-title gap">
-	入驻商家
+  入驻商家
 </div><!--page-title -->
 
 <div class="bg-white">
   <div class="box nogap ucategory-list" style="max-height: 209px;">
     <% @seller.categories.in_groups_of(2, false) do |categories| %>
-    	<div class="box-w100 nogap border-bottom">
+      <div class="box-w100 nogap border-bottom">
         <% categories.each do |category| %>
           <% cache ['umall-categories', category] do %>
             <div class="box-w50 nogap">

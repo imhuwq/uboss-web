@@ -27,7 +27,7 @@
 	<% end %>
 	<%= link_to income_account_path,class:'box-w33' do %>
 		<div class="black-color">我的收益</div>
-		<div class="gray-color"><%= current_user.income.to_f + current_user.frozen_income.to_f %></div>
+		<div class="gray-color"><%= current_user.total_income %></div>
 	<% end %>
 </div>
 
@@ -118,6 +118,4 @@
 <div class="load-more" data-container='#pcards-list' data-ele='.share-card' data-ref='/privilege_cards'>加载更多</div>
 <br />
 
-
 <%= render partial: 'new_share' %>
-

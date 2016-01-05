@@ -18,12 +18,13 @@
 @import 'mobile_page/new/login';
 @import 'mobile_page/new/store';
 @import 'mobile_page/new/service_store';
+@import 'mobile_page/new/store-category';
 @import 'mobile_page/new/new_index';
 @import 'mobile_page/new/pop-friend';
 @import 'mobile_page/new/refund';
 @import 'mobile_page/new/umall';
-@import 'mobile_page/new/main';
 @import 'mobile_page/new/chat';
+@import 'mobile_page/new/main';
 
 #load-more {
   color: #fff;
@@ -41,4 +42,14 @@
     background-size: 16px;
     background-color: lighten(#43c3aa, 10%);
   }
+}
+.clearfix:before, .clearfix:after {
+  content: " ";
+  display: table;
+}
+.clearfix:after {
+  clear: both;
+}
+.clear {
+  clear: both;
 }

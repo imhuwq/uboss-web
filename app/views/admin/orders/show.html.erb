@@ -12,7 +12,7 @@
 	<div class="admin-border no-border">
 		<div class="box-w100">
       <span class="order-info-state label label-default"><%= @order.state_i18n %></span>
-      <% if @order.may_close? %>
+      <% if @order.may_close? && can?(:close, @order) %>
         <a class="btn btn-sm" href="#" data-toggle="modal" data-target="#close_admin_order_modal">关闭交易</a>
       <% end %>
       <div class='buyer-info'>

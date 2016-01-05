@@ -2,8 +2,10 @@ class Ability
 
   include CanCan::Ability
 
+  attr_reader :user
+
   def initialize(user)
-    user ||= User.new # for guest user (not logged in)
+    @user ||= User.new # for guest user (not logged in)
     roles = user.user_roles
     if user.admin? && roles.present?
       begin
@@ -32,12 +34,23 @@ class Ability
   end
 
   def grant_permissions_to_super_admin user
-    can :manage, :all
-    cannot :edit, Product
-    cannot :create, Product
-    cannot :update, Product
-    cannot :change_status, Product
-    cannot :manage, BankCard
+    can :manage, User
+    can :manage, Transaction
+    can :manage, :backend_status
+  end
+
+  def grant_permissions_to_offical_senior(user)
+    senior_permissions
+    financial_permissions
+    can :update_service_rate, :uboss_seller
+  end
+
+  def grant_permissions_to_offical_financial(user)
+    financial_permissions
+  end
+
+  def grant_permissions_to_offical_operating(user)
+    operating_permissions
   end
 
   def grant_permissions_to_seller user
@@ -48,12 +61,16 @@ class Ability
     can :manage, ServiceStore, user_id: user.id
     can :manage, VerifyCode, user_id: user.id
     can :manage, :income
-    #
-    # FIXME manage 已经代表可以做任何操作，重新定义change_status是毫无意义的
-    # can :change_status, Product, user_id: user.id
-    #
     can :manage, PersonalAuthentication, user_id: user.id
     can :manage, EnterpriseAuthentication, user_id: user.id
+    can :read, PersonalAuthentication, user_id: user.id
+    can :edit, PersonalAuthentication, { user_id: user.id, status: %w(posted no_pass) }
+    can :update, PersonalAuthentication, { user_id: user.id, status: %w(posted no_pass) }
+    can :create, PersonalAuthentication, user_id: user.id
+    can :read, EnterpriseAuthentication, user_id: user.id
+    can :edit, EnterpriseAuthentication, { user_id: user.id, status: %w(posted no_pass) }
+    can :update, EnterpriseAuthentication, { user_id: user.id, status: %w(posted no_pass) }
+    can :create, EnterpriseAuthentication, user_id: user.id
     can :read,   WithdrawRecord, user_id: user.id
     can :create, WithdrawRecord, user_id: user.id
     can :read, SharingIncome, seller_id: user.id
@@ -62,7 +79,7 @@ class Ability
     can :read, SellingIncome, user_id: user.id
     can :manage, Category, user_id: user.id
     can :manage, BankCard, user_id: user.id
-    can :manage, CarriageTemplate
+    can :manage, CarriageTemplate, user_id: user.id
     can :read, Express
     can :set_common, Express
     can :manage, OrderItemRefund, order_item: { order: { seller_id: user.id } }
@@ -79,10 +96,38 @@ class Ability
     can :read,   WithdrawRecord, user_id: user.id
     can :create, WithdrawRecord, user_id: user.id
     can :manage, BankCard, user_id: user.id
-
     can :read, Product, user_id: user.id
     can :read, ServiceStore, user_id: user.id
     can :read, VerifyCode, user_id: user.id
+  end
+
+  private
+
+  def senior_permissions
+    can :manage, User
+  end
+
+  def financial_permissions
+    can :manage, WithdrawRecord
+    can :manage, SharingIncome
+    can :manage, DivideIncome
+    can :manage, DivideIncome
+    can :manage, SellingIncome
+    can :manage, Transaction
+  end
+
+  def operating_permissions
+    can :manage, :agents
+    can :read, :sellers
+    can :handle, :sellers
+    can :read, Order
+    can :read, Product
+    can :manage, User, { user_roles: { name: %w(seller agent offical_operating) } }
+    can :manage, PersonalAuthentication
+    can :manage, EnterpriseAuthentication
+    can :manage, :authentications
+    can :manage, :platform_advertisements
+    can :manage, Advertisement
   end
 
 end

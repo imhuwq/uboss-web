@@ -3,25 +3,25 @@
 	<div class="box-w25">
 		<div class="admin-box main-bg-color">
 	    <h4>已提交</h4>
-	    <h1 class="num"><%= EnterpriseAuthentication.posted.count %></h1>
+	    <h1 class="num"><%= @enterprise_authentications.posted.total_count %></h1>
 	  </div>
 	</div>
 	<div class="box-w25">
 		<div class="admin-box yellow-bg-color">
 	    <h4>审核中</h4>
-	    <h1 class="num"><%= EnterpriseAuthentication.review.count %></h1>
+	    <h1 class="num"><%= @enterprise_authentications.review.total_count %></h1>
 		</div>
 	</div>
 	<div class="box-w25">
 		<div class="admin-box blue-bg-color">
 	    <h4>已通过</h4>
-	    <h1 class="num"><%= EnterpriseAuthentication.pass.count %></h1>
+	    <h1 class="num"><%= @enterprise_authentications.pass.total_count %></h1>
 		</div>
 	</div>
   <div class="box-w25">
   	<div class="admin-box red-bg-color">
 	    <h4>未通过</h4>
-	    <h1 class="num"><%= EnterpriseAuthentication.no_pass.count %></h1>
+	    <h1 class="num"><%= @enterprise_authentications.no_pass.total_count %></h1>
 	  </div>
   </div>
 </div>

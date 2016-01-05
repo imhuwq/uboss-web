@@ -8,7 +8,7 @@
 	</ul>
 </div>
 <br />
-<% unless current_user.is_super_admin? %>
+<% if cannot?(:manage, @personal_authentication) %>
 <div class="container">
 	<div class="header-tab">
 		<div class="tab-title active">个人认证</div>
@@ -67,7 +67,7 @@
 		</div>
   </div>
 
-  <% if current_user.is_super_admin? %>
+  <% if can?(:manage, @personal_authentication) %>
 	  	<p class="text-center">
 	    <% case @personal_authentication.status %>
       <% when 'posted' %>

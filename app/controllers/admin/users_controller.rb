@@ -1,8 +1,11 @@
 class Admin::UsersController < AdminController
-  load_and_authorize_resource
+
+  before_action :authorize_user_managing_permissions, only: [:show, :new, :create, :edit, :update]
+  before_action :set_user, only: [:show, :edit, :update]
 
   def index
-    @users = append_default_filter @users.admin
+    authorize! :handle, User
+    @users = append_default_filter User.accessible_by(current_ability)
   end
 
   def show
@@ -13,6 +16,7 @@ class Admin::UsersController < AdminController
   end
 
   def create
+    @user = User.new(resource_params)
     @user.admin = true
     if @user.save
       redirect_to admin_user_path(@user)
@@ -36,6 +40,14 @@ class Admin::UsersController < AdminController
 
   private
 
+  def authorize_user_managing_permissions
+    authorize! :manage, User
+  end
+
+  def set_user
+    @user = User.find(params[:id])
+  end
+
   def resource_params
     permit_keys = [:password, :password_confirmation, :email, :mobile, :nickname, user_role_ids: []]
     if params[:action] == "create"
@@ -48,7 +60,15 @@ class Admin::UsersController < AdminController
       permit_keys.delete(:password)
       permit_keys.delete(:password_confirmation)
     end
-    params.require(:user).permit(permit_keys)
+    @resource_params = params.require(:user).permit(permit_keys)
+    allow_role_ids = UserRole.roles_can_manage_by_user(current_user).pluck(:id)
+    existing_role_ids = @user.try(:user_role_ids) || []
+    over_premission_role_ids = existing_role_ids - allow_role_ids
+    @resource_params[:user_role_ids].each do |role_id|
+      @resource_params[:user_role_ids].delete(role_id) unless allow_role_ids.include?(role_id.to_i)
+    end
+    @resource_params[:user_role_ids] |= over_premission_role_ids
+    @resource_params
   end
 
 end

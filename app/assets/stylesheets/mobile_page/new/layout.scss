@@ -1,3 +1,4 @@
+.box{padding:0}
 .box:after ,.bg-white:after,.bg-white:before,.star-box:after,.box-w100:after,.box-w100:before{ clear:both;content: ".";   display: block;overflow: hidden; visibility: hidden;    font-size: 0;    line-height: 0;    width: 0;    height: 0;}
 .box-w10,.box-w20,.box-w25,.box-w30,.box-w33,.box-w40,.box-w50,.box-w60,.box-w80,.box-w100{ box-sizing:border-box;padding:0 5px;float:left; }
 .box-w10{ width: 10%;}

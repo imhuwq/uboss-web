@@ -1,5 +1,6 @@
 class AdminController < ApplicationController
 
+  include OperationLoggable
   include SessionsHelper
 
   layout 'admin'

@@ -1,5 +1,4 @@
 class StoresController < ApplicationController
-
   include SharingResource
 
   layout 'mobile'
@@ -24,6 +23,7 @@ class StoresController < ApplicationController
     else
       @products = append_default_filter @seller.ordinary_products.published, order_column: :updated_at
       @hots = @seller.ordinary_products.hots.recent.limit(3)
+      @categories = Category.where(use_in_store: true, user_id: @seller.id).order('use_in_store_at')
       render_product_partial_or_page
     end
   end
@@ -51,5 +51,4 @@ class StoresController < ApplicationController
   def set_seller
     @seller = User.find(params[:id])
   end
-
 end

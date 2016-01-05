@@ -13,6 +13,8 @@ class Product < ActiveRecord::Base
   belongs_to :carriage_template
   has_many :different_areas, through: :carriage_template
   has_many :order_items
+  has_many :advertisements
+  has_many :categories
   has_and_belongs_to_many :categories, -> { uniq } ,autosave: true
   has_many :product_inventories, autosave: true, dependent: :destroy
   has_many :cart_items,  through: :product_inventories
@@ -193,7 +195,11 @@ class Product < ActiveRecord::Base
     else
       self.categories.clear
       category_names.each do |item|
-        category = Category.find_or_create_by(name: item, user_id: self.user_id)
+        category = Category.find_or_new_by(name: item, user_id: self.user_id)
+        if category.new_record?
+          category.use_in_store = false
+        end
+        category.save
         self.categories << category
       end
     end
@@ -202,8 +208,9 @@ class Product < ActiveRecord::Base
   def add_categories_after_create
     if @category_names && @category_names.any?
       @category_names.each do |item|
-        category = Category.find_or_create_by(name: item, user_id: self.user_id)
-        category.user_id = self.user_id
+        category = Category.find_or_new_by(name: item, user_id: self.user_id)
+        category.use_in_store = false
+        category.save
         categories << category
       end
       save

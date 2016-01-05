@@ -1,6 +1,9 @@
 <%= content_for :page_title do %>
   编辑用户
 <% end %>
+<%= content_for :header_left do %>
+  <a class="back" onclick="history.go(-1)"><%= image_tag 'mobile/right.png' %></a>
+<% end %>
 <br />
 <%= simple_form_for current_user, url: account_path, method: :PUT do |f| %>  
 	<div class="address-new">

@@ -33,6 +33,5 @@
   </div>
   <br />
   <%= render partial: 'products', locals: { products: @products } %>
+  <%= paginate @products %>
 </div>
-
-<%= paginate @products %>

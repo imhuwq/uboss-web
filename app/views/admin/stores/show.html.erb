@@ -1,0 +1,67 @@
+<div class="container admin-container">
+	<ul class="breadcrumb">
+		<li><a href="/admin">主页</a></li>
+		<li class="divider"><i class="fa fa-caret-right"></i></li>
+		<li class="active">商品&店铺</li>
+	</ul>
+</div><!-- container -->
+<br />
+<div class="container">
+	<div class="header-tab">
+		<a class="tab-title active" href="#info">店铺基本信息</a>
+		<a class="tab-title" href="#slider">轮播展示</a>
+    <a class="tab-title" href="#categories">分组设置</a>
+	</div>
+	<br />
+  <div id="info" class="beige-bg-color admin-box">
+  	<div class="box-w40">
+  		<br />
+  		<div>
+  			店铺头像　
+	  		<p class="fileinput-button">
+					<%= upyun_meta_tags prefix: "asset_img/avatar" %>
+
+					<% if  current_user.store_logo.avatar_identifier.blank? %>
+						<%= image_tag("admin/no-img-160x160.png", class:"clean") %>
+					<% else %>
+						<%= image_tag(current_user.store_logo_url(:thumb), class:"clean", style:"height: 160px;width:160px")%>
+					<% end %>
+					<%= file_field_tag "image", class: "upyun_file_json" ,  data: {to: "/admin/stores/#{current_user.id}/update_store_logo"} %>
+					<b class="loading"><i class="fa fa-spinner"></i></b>
+					<span class="tips-text">点击替换</span>
+				</p>
+			</div>
+			<p>
+				店铺名称　
+				<%= text_field_tag :store_name , current_user.store_name , class: 'update_item border-bottom-input main-color', data:{url: "/admin/stores/#{current_user.id}/update_store_name" }, placeholder: '店铺名称',style:'width:160px' %>
+			</p>
+			<p>
+				店铺简介　
+				<%= text_field_tag :store_short_description, current_user.store_short_description , class: 'update_item border-bottom-input', data:{ url: "/admin/stores/#{current_user.id}/update_store_short_description" } , placeholder: '店铺简介',style:'width:160px' %>
+			</p>
+  	</div>
+  	<div class="box-w60 info-right-box">
+  		<br />
+			<p><img src="http://qr.liantu.com/api.php?&amp;text=<%= store_url(current_user.id) %>" width='160'/></p>
+			<p class="gap white-bg-color">店铺链接：<%= store_url(current_user.id) %></p>
+  		<br />
+  	</div>
+  </div><!-- #info -->
+  <br />
+  <div id="advertisements">
+    <%= render "advertisements" %>
+  </div>
+  <%= render "add_banner" %>
+  
+  
+  <br />
+  <div id="categories">
+    <%= render 'categories' %>
+  </div>
+  <%= render "add_category" %>
+  <br/>
+</div><!-- container -->
+
+
+
+

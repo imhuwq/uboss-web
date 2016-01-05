@@ -1,12 +1,14 @@
-<% if !is_super_admin? %>
 <div class="container  admin-container">
 	<ul class="breadcrumb">
 		<li><a href="/admin">主页</a></li>
+		<li class="divider"><i class="fa fa-angle-right"></i></li>
+		<li><a href="/admin/enterprise_authentications">企业认证</a></li>
 		<li class="divider"><i class="fa fa-caret-right"></i></li>
 		<li>企业信息认证</li>
 	</ul>
 </div>
 <br />
+<% if cannot?(:manage, @enterprise_authentication) %>
 <div class="container">
 	<div class="header-tab">
 		<%= link_to "个人认证", url_for(controller: :personal_authentications, action: :show, user_id: current_user), class:"tab-title" %>
@@ -85,7 +87,7 @@
         </label>
         <div class="control-input"><span><%= @enterprise_authentication.mobile %></span></div>
       </div>
-  <% if is_super_admin? %>
+  <% if can?(:manage, @enterprise_authentication) %>
   	<p class="text-center">
     <% case @enterprise_authentication.status %>
     <% when 'posted' %>

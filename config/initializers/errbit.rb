@@ -1,6 +1,7 @@
 require "rake"
 require "airbrake/rake_handler"
 require 'active_support/concern'
+require 'airbrake/sidekiq'
 
 Airbrake.configure do |config|
   api_key        = Rails.env.production? ? '3b73c8421cf90fccd9b574d237caf97d' : '53ba15ae15505882c00122b48f307dac'

@@ -17,7 +17,9 @@
   </p>
   <div class="hongbao gray-color">
     <span class="pull-right red-color">￥ <%= current_user.bonus_benefit %></span>红包余额
-    <div class="newyear"></div>
+    <% if Time.now < Time.parse('2016-1-1') %>
+      <div class="newyear"></div>
+    <% end %>
   </div>
   <div class="bg-white gray-color gap">
     红包说明：红包直接用于UBOSS购物，提交订单进行随机立减

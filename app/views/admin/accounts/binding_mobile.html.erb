@@ -1,0 +1,45 @@
+<div class="container admin-container">
+  <ul class="breadcrumb">
+    <li><a href="/admin">主页</a></li>
+    <li class="divider"><i class="fa fa-caret-right"></i></li>
+    <li class="active">绑定手机</li>
+  </ul>
+</div><!-- container -->
+
+<br />
+
+<div class="text-center">
+  <div class="login-container">
+    <h3>绑定手机</h3>
+    <br />
+    <%= simple_form_for(current_user, url: bind_mobile_admin_account_path, method: :patch) do |f| %>
+
+      <%= f.input_field :login, class:'input-block', required: true, autofocus: true,
+        id: 'new_mobile', placeholder: '手机' %>
+      <br />
+      <div class="box-w100 nogap captcha-box">
+        <div class='captcha-image pull-right'>
+          <%= login_simple_captcha_components[:image] %>
+          <%= login_simple_captcha_components[:refresh_button] %>
+        </div><!-- captcha-image -->
+        <div class='captcha_field'>
+          <%= login_simple_captcha_components[:field] %>
+        </div>
+      </div><!-- captcha-box -->
+      <div class="box-w100 nogap">
+        <br/>
+        <div class="box-w50 nogap">
+          <%= f.input_field :code, class:'input-block',placeholder:'动态密码' %>
+        </div>
+        <div class="box-w50 nogap-right">
+          <span id="request_mobile_captcha" class="btn btn-block btn-mid gray-btn" >获取手机验证码</span>
+        </div>
+      </div>
+      <br />
+      <%= f.input_field :current_password, class: "input-block", required: true, placeholder: '当前密码' %>
+      <br />
+      <p class="text-center"><%= f.submit '确认', class: 'btn btn-large' %></p>
+
+    <% end %>
+  </div>
+</div>

@@ -7,6 +7,7 @@ Rails.application.routes.draw do
   mount ChinaCity::Engine => '/china_city'
 
   devise_for :user, path: '/', controllers: {
+    confirmations: "users/confirmations",
     registrations: "users/registrations",
     sessions: "users/sessions",
     passwords: "users/passwords",
@@ -258,9 +259,10 @@ Rails.application.routes.draw do
       end
       resource :account, only: [:edit, :show, :update] do
         get :password, on: :member
-        get :binding_agent
+        get :binding_agent, :binding_email, :binding_mobile
         patch :binding_agent, to: 'accounts#bind_agent'
         patch :password, to: 'accounts#update_password'
+        patch :bind_email, :bind_mobile
       end
       resources :transactions, only: [:index]
       resources :bank_cards, only: [:index, :new, :edit, :create, :update, :destroy]
@@ -275,7 +277,19 @@ Rails.application.routes.draw do
 
       resources :categories, except: [:show] do
         post :update_categories, on: :collection
-        post :updata_category_img, :update_category_name,  on: :member
+        post :update_category_name,  on: :member
+        post :update_category_img, on: :collection
+      end
+
+      resources :stores, only: [:show] do
+        post :update_store_logo, :update_store_name, :update_store_short_description,
+          :update_store_cover, on: :member
+        post :update_advertisement_img, :update_advertisement_order, on: :collection
+        get :create_advertisement, :add_category, :get_category_img, on: :collection
+        get :new_advertisement, :remove_advertisement, :show_category, :get_advertisement_items, :remove_advertisement_item, :remove_category_item, on: :collection
+      end
+      resources :platform_advertisements do
+        patch :change_status, on: :member
       end
     end
     mount RedactorRails::Engine => '/redactor_rails'
