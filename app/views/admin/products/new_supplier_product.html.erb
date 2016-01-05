@@ -1,0 +1,20 @@
+<div class="container admin-container">
+	<ul class="breadcrumb">
+		<li><a href="/admin">主页</a></li>
+		<li class="divider"><i class="fa fa-angle-right"></i></li>
+		<li><%= link_to '商品管理', [:admin, :products] %></li>
+		<li class="divider"><i class="fa fa-caret-right"></i></li>
+		<li class="active">创建商品信息</li>
+	</ul>
+</div><!-- container -->
+
+<br />
+
+<div class="container nogap">
+    <%= horizon_form_for [:admin, @product] do |f| %>
+
+      <%= render 'fields', f: f, supplier: true %>
+
+    <% end %>
+
+</div>
