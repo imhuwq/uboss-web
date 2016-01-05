@@ -86,6 +86,10 @@ class Admin::ProductsController < AdminController
     render layout: 'mobile'
   end
 
+  def new_supplier_product
+    @product = Product.new
+  end
+
   private
 
   def product_propertys_params
