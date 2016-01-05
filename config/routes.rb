@@ -170,6 +170,8 @@ Rails.application.routes.draw do
 
       delete '/end_cooperation/:id', to: 'agencies#end_cooperation', as: :end_cooperation
 
+      get '/supplier/products/new', to: 'products#new_supplier_product'
+
       get '/select_carriage_template', to: 'products#select_carriage_template'
       get '/refresh_carriage_template', to: 'products#refresh_carriage_template'
 

@@ -82,6 +82,10 @@ class Admin::ProductsController < AdminController
     render layout: 'mobile'
   end
 
+  def new_supplier_product
+    @product = Product.new
+  end
+
   private
 
   def product_propertys_params
@@ -99,6 +103,9 @@ class Admin::ProductsController < AdminController
         :id, :price, :count, :share_amount_total, :privilege_amount,
         :share_amount_lv_1, :share_amount_lv_2, :share_amount_lv_3,
         sku_attributes: product_propertys_params[:product_propertys_names],
+      ],
+      supplier_product_info_attributes: [
+        :content, :cost_price, :suggest_price
       ]
     )
   end
