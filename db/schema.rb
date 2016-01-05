@@ -626,11 +626,12 @@ ActiveRecord::Schema.define(version: 20160113024643) do
 
   create_table "supplier_product_infos", force: :cascade do |t|
     t.decimal  "cost_price"
-    t.decimal  "suggest_price"
+    t.decimal  "suggest_price_lower"
     t.integer  "product_id"
     t.integer  "supplier_id"
-    t.datetime "created_at",    null: false
-    t.datetime "updated_at",    null: false
+    t.datetime "created_at",          null: false
+    t.datetime "updated_at",          null: false
+    t.decimal  "suggest_price_upper"
   end
 
   add_index "supplier_product_infos", ["product_id", "supplier_id"], name: "index_supplier_product_infos_on_product_id_and_supplier_id", unique: true, using: :btree

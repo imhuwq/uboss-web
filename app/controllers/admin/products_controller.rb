@@ -88,6 +88,7 @@ class Admin::ProductsController < AdminController
 
   def new_supplier_product
     @product = Product.new
+    @product.build_supplier_product_info
   end
 
   private
