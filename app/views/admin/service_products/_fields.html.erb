@@ -13,7 +13,7 @@
   <%= f.input :name %>
   <div class="form-group string required service_product_service_type">
     <label class="string required control-label" for="service_product_service_type">
-      <abbr title="必填">*</abbr> 团购类型
+      团购类型
     </label>
     <div class="control-input" style="margin-top:5px;">
       <%= f.collection_radio_buttons :service_type, ServiceProduct::DataServiceType.invert, :last, :first %>
@@ -48,13 +48,13 @@
     </p>
   <% end %>
   <div class="form-group ">
-    <label class="control-label">购买须知<abbr title="必填">*</abbr></label>
+    <label class="control-label">购买须知</label>
     <div class="control-input" style='width: 430px;'>
       <%= f.input_field :purchase_note, as: :text, class: "redactor" %>
     </div>
   </div>
   <div class="form-group ">
-    <label class="control-label">图文详情<abbr title="必填">*</abbr></label>
+    <label class="control-label">图文详情</label>
     <div class="control-input" style='width: 430px;'>
       <%= f.input_field :content, as: :text, class: "redactor" %>
     </div>
