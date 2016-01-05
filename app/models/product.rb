@@ -20,6 +20,14 @@ class Product < ActiveRecord::Base
   has_many :product_inventories, autosave: true, dependent: :destroy
   has_many :cart_items,  through: :product_inventories
   has_many :seling_inventories, -> { where(saling: true) }, class_name: 'ProductInventory', autosave: true
+  has_one :supplier_product_info
+  has_one :supplier, through: :supplier_product_info
+
+  accepts_nested_attributes_for :supplier_product_info
+
+  amoeba do
+    include_association :categories
+  end
 
   delegate :image_url, to: :asset_img, allow_nil: true
   delegate :avatar=, :avatar, to: :asset_img

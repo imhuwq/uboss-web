@@ -64,13 +64,15 @@ class User < ActiveRecord::Base
   has_many :selling_incomes
   belongs_to :agent, class_name: 'User'
 
-  #for agencies
-  has_many :reverse_cooperations, foreign_key: 'agency_id', class_name: 'Cooperation', dependent: :destroy
-  has_many :suppliers, through: :reverse_cooperations, source: :supplier
-  
   #for supplier
   has_many :cooperations, foreign_key: 'supplier_id', dependent: :destroy
   has_many :agencies, through: :cooperations, source: :agency
+  has_many :supplier_product_infos, foreign_key: 'supplier_id'
+  has_many :supplied_products, through: :supplier_product_infos, source: :product
+
+  #for agencies
+  has_many :reverse_cooperations, foreign_key: 'agency_id', class_name: 'Cooperation', dependent: :destroy
+  has_many :suppliers, through: :reverse_cooperations, source: :supplier
 
   validates :login, uniqueness: true, mobile: true, allow_blank: true
   validates_presence_of :login, presence: true, if: -> { email.blank? }
