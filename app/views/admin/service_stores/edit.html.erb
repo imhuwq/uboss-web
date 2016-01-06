@@ -6,7 +6,7 @@
   </ul>
 </div>
 <br />
-<div class="container">
+<div class="container service_store_edit">
 
   <%= render partial: 'shared/form_error_message', locals: { obj: @service_store } %>
 
@@ -43,7 +43,7 @@
 				<br />
 				<div>
           店铺链接<span class='service_store_no_required'></span>
-					<span class="control-txt" style="width:384px"><%= "#{request.protocol}#{request.host_with_port}#{edit_admin_service_store_path(current_user.service_store)}" %></span>
+					<span class="control-txt store_link" style="width:384px"><%= "#{request.protocol}#{request.host_with_port}#{edit_admin_service_store_path(current_user.service_store)}" %></span>
 				</div>
 				<br />
      	</div><!-- box-w85 -->
@@ -78,7 +78,7 @@
             <span><%= p.link_to_remove '删除', class: 'remove', tabIndex: '-1' %></span>
           <% end %>
           <div class="table-body">
-	          <div class="add_store_phone"><%= f.link_to_add "　新增电话", :store_phones, class: 'fa fa-plus text-center add-chapter'%></div>
+	          <div class="add_store_phone"><%= f.link_to_add "　新增电话", :store_phones, class: 'fa fa-plus text-center add-chapter main-color'%></div>
 	        </div>
       	</div>
       </div><!-- box-w100-->

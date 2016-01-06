@@ -1,34 +1,44 @@
-.service-store-address{
-  .city-group{
+.service_store_edit {
+  .service-store-address{
+    .city-group{
       display: inline-block;
-  }
-  .chosen-container {
+    }
+    .chosen-container {
     display: none !important;  }
 
-  .city-select, {
-    display: inline-block !important;
-    color: #0C0C0C;
+    .city-select, {
+      display: inline-block !important;
+      color: #0C0C0C;
+    }
   }
-}
-.field_with_errors{
-  display: inline-block;
+  .field_with_errors{
+    display: inline-block;
 
-}
-.service-store-tel .fields{
-  margin-bottom: 10px;
-}
-td.none-border-bottom {
-  border: none;
-}
-.service_store_required {
-  padding: 0 5px 0 18px;
-  color: red;
-}
-.service_store_required_1 {
-  padding: 0px 7px 0px 15px;
-  color: red;
-}
+  }
+  .service-store-tel .fields{
+    margin-bottom: 10px;
+  }
+  td.none-border-bottom {
+    border: none;
+  }
+  .service_store_required {
+    padding: 0 5px 0 18px;
+    color: red;
+  }
+  .service_store_required_1 {
+    padding: 0px 7px 0px 15px;
+    color: red;
+  }
+  .store_link {
+    background: #ECE9E2;
+    color: #1F1E1E;
+  }
+  .service_store_no_required {
+    padding: 0 5px 0 22px;
+  }
 
-.service_store_no_required {
-  padding: 0 5px 0 22px;
+  .city-select {
+    width: auto !important;
+    height: 37px;
+  }
 }
