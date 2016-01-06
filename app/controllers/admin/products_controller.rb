@@ -35,6 +35,17 @@ class Admin::ProductsController < AdminController
     end
   end
 
+  def create_supplier_product
+    @product = current_user.products.new(product_params)
+    if @product.save
+      flash[:success] = '产品创建成功'
+      redirect_to action: :show_supplier_product, id: @product.id
+    else
+      flash[:error] = "#{@product.errors.full_messages.join('<br/>')}"
+      render :new_supplier_product
+    end
+  end
+
   def update
     if @product.update(product_params)
       flash[:success] = '保存成功'

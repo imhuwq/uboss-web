@@ -31,6 +31,9 @@ class Product < ActiveRecord::Base
 
   delegate :image_url, to: :asset_img, allow_nil: true
   delegate :avatar=, :avatar, to: :asset_img
+  delegate :cost_price, to: :supplier_product_info, allow_nil: true
+  delegate :suggest_price_lower, to: :supplier_product_info, allow_nil: true
+  delegate :suggest_price_upper, to: :supplier_product_info, allow_nil: true
 
   enum status: { unpublish: 0, published: 1, closed: 2 }
 
