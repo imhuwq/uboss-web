@@ -7,12 +7,12 @@
 </div>
 <br />
 <div class="inline-form text-center">
+	<br />
   <%= simple_form_for 'verify_code', url: verify_admin_verify_codes_path do |f| %>
-    <%= number_field_tag 'code', '', type: :tel, placeholder: '请输入验证券密码',style:'vertical-align: top;' %>
-    <%= f.submit '验证', class: 'btn btn-large' %>
+    <%= number_field_tag 'code', '', type: :tel, placeholder: '请输入验证券密码',style:'vertical-align: top;width:600px;border-radius:0;height:40px' %><%= f.submit '验证', class: 'btn btn-large',style:'border-radius:0;height:40px' %>
   <% end %>
 </div>
-
+<br/>
 <br/>
 
 <div id="index_list">
