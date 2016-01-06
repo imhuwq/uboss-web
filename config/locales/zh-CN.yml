@@ -117,6 +117,10 @@ zh-CN:
         service_type: 商品类型
         monthes: 商品有效期
         purchase_note: 商品须知
+        supplier_product_info:
+          cost_price: 成本价
+          suggest_price_lower: 建议价下限
+          suggest_price_upper: 建议价上限
       service_product:
         name: 商品名称
         service_type: 商品类型

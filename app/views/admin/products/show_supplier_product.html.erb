@@ -1,0 +1,137 @@
+<%= content_for :page_specific_javascript do %>
+  <script type="text/javascript" charset="utf-8">
+    stockData = <%== get_product_seling_inventories_json @product %>
+  </script>
+  <%= javascript_include_tag 'admin/sku_app/application' %>
+<% end %>
+
+<div class="container admin-container">
+	<ul class="breadcrumb">
+		<li><a href="/admin">主页</a></li>
+		<li class="divider"><i class="fa fa-angle-right"></i></li>
+		<li><%= link_to '商品管理', [:admin, :products] %></li>
+		<li class="divider"><i class="fa fa-caret-right"></i></li>
+		<li class="active">查看商品信息</li>
+	</ul>
+</div><!-- container -->
+<br />
+<div class="container nogap">
+  <div class="admin-box beige-bg-color">
+    <h4 class="edit-title">基本信息</h4>
+
+    <div class="form-group">
+      <label class="control-label">商品分组</label>
+      <div class="control-input">
+        <span class="control-input" style="padding:8px">
+          <% @product.categories.each do |category| %>
+            <span class='label label-info'><%= category.name %></span>
+          <% end %>
+        </span>
+      </div>
+    </div>
+  </div><!-- admin-box -->
+  <br />
+
+
+
+  <div class="admin-box beige-bg-color">
+    <h4 class="edit-title">商品信息</h4>
+    <% if current_user.is_super_admin? %>
+      <div class="form-group">
+        <label class="control-label">所属商家</label>
+        <div class="control-input">
+          <span class="text-margin"><%= link_to @product.user.identify, url_for(controller: 'admin/sellers', action: :show, id: @product.user) %></span>
+        </div>
+      </div>
+    <% end %>
+    <div class="form-group">
+      <label class="control-label">产品名</label>
+      <div class="control-input">
+        <span class="control-txt"><%= @product.name %></span>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="control-label"> 描述 </label>
+      <div class="control-input">
+        <span class="control-txt"><%= @product.short_description %></span>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="control-label"> 商品主图 </label>
+      <div class="control-input">
+        <span><%= image_tag(@product.image_url(:w120)) %></span>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="control-label"> 图文详情 </label>
+      <div class="control-input">
+        <div style='width:350px;' class="control-txt"><%= raw @product.content %>　</div>
+      </div>
+    </div>
+  </div><!-- admin-box -->
+  <br />
+  <div id="product-stock" class="admin-box beige-bg-color">
+    <h4 class="edit-title">库存/规格</h4>
+    <div class="form-group">
+      <label class="control-label">库存</label>
+      <div  class="stock-list control-input">
+      </div>
+    </div>
+  </div>
+  <br />
+  <div id="sku-privelege-group" class="admin-box beige-bg-color">
+    <h4 class="edit-title">返利详情</h4>
+    <div class="form-group sku-privilege-list-group">
+      <label class="control-label">返利金额</label>
+      <div class='sku-privilege-list control-input'></div>
+    </div>
+  </div><!-- admin-box -->
+  <br />
+  <div class="admin-box beige-bg-color">
+    <h4 class="edit-title">物流及其他</h4>
+    <div class="form-group">
+        <label class="control-label">付款方式</label>
+        <div class="control-input">
+          <span class="text-margin"><%= Product::DataBuyerPay[@product.transportation_way] %></span>
+        </div>
+    </div>
+    <% if Product::DataBuyerPay[@product.transportation_way] == '统一邮费' %>
+      <div class="form-group">
+          <label class="control-label">运费</label>
+          <div class="control-input">
+            <div class="control-txt"><%= @product.traffic_expense %></div>
+          </div>
+      </div>
+    <% end %>
+  </div>
+  <br />
+  <div class="admin-box beige-bg-color">
+    <h4 class="edit-title">二维码</h4>
+    <div class="box-w100">
+      <div class="box-w70">
+        <br />
+        <p>复制右边专属二维码</p>
+        <p>即可在各大社交平台</p>
+        <p>传播你的商品</p>
+      </div>
+      <div class="box-w20">
+        <img src="http://qr.liantu.com/api.php?&text=<%= "http://#{request.env["HTTP_HOST"]}/products/#{@product.id}?shared=true" %>"/>
+      </div>
+    </div>
+  </div><!-- admin-box -->
+  <br />
+  <div class="text-center">
+    <% if can? :edit, @product %>
+      <%= link_to("编辑", url_for(:action=>:edit,:id=>@product.id), :class=>"btn btn-large blue-btn",:role=>"button") %>
+    <% end %>　
+    <%= link_to("手机效果", url_for(:action=>:pre_view,:id=>@product.id), :class=>"btn btn-large yellow-btn",:role=>"button",:target=>"_blank") %>　
+    <% if can? :update, @product %>
+      <% if @product.status == 'unpublish' %>
+        <%= link_to("上架", url_for(action: :change_status, id: @product.id, status: :published), method: :patch, class: "btn btn-large red-btn", role: "button") %>
+     <% else %>
+       <%= link_to("取消上架", url_for(action: :change_status,id: @product.id, status: :unpublish),
+                   method: :patch, class: "btn btn-large ",:role=>"button") %>
+      <% end %>
+    <% end %>
+  </div>
+</div><!-- container -->
