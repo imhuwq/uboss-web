@@ -42,8 +42,10 @@ class WxApiJob < ActiveJob::Base
   def handle_scan_scene_qrcode
     wx_scene = options[:wx_scene].reload
     scan_weixin_openid = options[:scan_weixin_openid]
+    user_response = $weixin_client.user(scan_weixin_openid)
+    scan_user_name = user_response.is_ok? ? user_response.result['nickname'] : '微信用户'
     message = <<-MSG
-【#{scan_weixin_openid}】扫了您的二维码，余额增加0.11元，当前余额：0.11元，满1元即可点击<a href='http://uboss.me'>【我的收益】</a>提现
+【#{scan_user_name}】扫了您的二维码，余额增加0.11元，当前余额：0.11元，满1元即可点击<a href='http://uboss.me'>【我的收益】</a>提现
     MSG
     $weixin_client.send_text_custom(wx_scene.properties['weixin_openid'], message)
   end
