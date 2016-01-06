@@ -52,12 +52,14 @@
         <span class="control-txt"><%= @service_product.present_price %></span>
       </div>
     </div>
+    <% if (!@service_product.short_description.blank?) %>
     <div class="form-group">
       <label class="control-label"> 简介 </label>
       <div class="control-input">
         <span class="control-txt"><%= @service_product.short_description %></span>
       </div>
     </div>
+    <% end %>
     <div class="form-group">
       <label class="control-label"> 团购有效期 </label>
       <div class="control-input">
