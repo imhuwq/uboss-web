@@ -9,6 +9,14 @@ class WxScene < ActiveRecord::Base
     WxApiJob.perform_later(job_type: 'scene_qrcode', wx_scene: self)
   end
 
+  def invoke_scan_success(options)
+    WxApiJob.new.perform(
+      job_type: 'scan_scene_qrcode',
+      wx_scene: self,
+      scan_weixin_openid: options[:weixin_openid]
+    )
+  end
+
   def update_properties(ext_properties)
     update(properties: properties.merge(ext_properties))
   end

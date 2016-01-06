@@ -5,20 +5,6 @@
 #
 WeixinRailsMiddleware::WeixinController.class_eval do
 
-  CUSTOMER_MESSAGE = <<-MSG
-如需人工服务，请选择“UBOSS+”的“<a href="http://mp.weixin.qq.com/s?__biz=MzIwMTUwNzU4MA==&mid=400624022&idx=1&sn=268c41d3d21a4729628a5ee8d17f2612&scene=18#rd">联系我们</a>“。
-
-6.4亿红包疯狂抢>><a href="http://uboss.me/ls_game">开始抢钱</a>
-
-双十二，神秘活动即将开始！
-  MSG
-
-  SUBSCRIBE_MESSAGE = <<-MSG
-UBOSS，一个边买边赚的商城！引领行业的分享新玩法，旨在重构中国商业信用体系，让好商品引爆销量。
-更重要的是，商家入驻UBOSS完全免费！
-如需人工服务，请选择“UBOSS+”的“<a href="http://mp.weixin.qq.com/s?__biz=MzIwMTUwNzU4MA==&mid=400624022&idx=1&sn=268c41d3d21a4729628a5ee8d17f2612&scene=18#rd">联系我们</a>“。
-  MSG
-
   def reply
     p @weixin_message
     render xml: send("response_#{@weixin_message.MsgType}_message", {})
@@ -27,7 +13,7 @@ UBOSS，一个边买边赚的商城！引领行业的分享新玩法，旨在重
   private
 
     def response_text_message(options={})
-      reply_text_message CUSTOMER_MESSAGE#("Your Message: #{@keyword}")
+      reply_text_message WxApiService::CUSTOMER_MESSAGE#("Your Message: #{@keyword}")
     end
 
     # <Location_X>23.134521</Location_X>
@@ -39,7 +25,8 @@ UBOSS，一个边买边赚的商城！引领行业的分享新玩法，旨在重
       @ly    = @weixin_message.Location_Y
       @scale = @weixin_message.Scale
       @label = @weixin_message.Label
-      reply_text_message("Your Location: #{@lx}, #{@ly}, #{@scale}, #{@label}")
+      #reply_text_message("Your Location: #{@lx}, #{@ly}, #{@scale}, #{@label}")
+      ""
     end
 
     # <PicUrl><![CDATA[this is a url]]></PicUrl>
@@ -47,7 +34,7 @@ UBOSS，一个边买边赚的商城！引领行业的分享新玩法，旨在重
     def response_image_message(options={})
       @media_id = @weixin_message.MediaId # 可以调用多媒体文件下载接口拉取数据。
       @pic_url  = @weixin_message.PicUrl  # 也可以直接通过此链接下载图片, 建议使用carrierwave.
-      reply_image_message CUSTOMER_MESSAGE#(generate_image(@media_id))
+      reply_image_message WxApiService::CUSTOMER_MESSAGE#(generate_image(@media_id))
     end
 
     # <Title><![CDATA[公众平台官网链接]]></Title>
@@ -57,7 +44,7 @@ UBOSS，一个边买边赚的商城！引领行业的分享新玩法，旨在重
       @title = @weixin_message.Title
       @desc  = @weixin_message.Description
       @url   = @weixin_message.Url
-      reply_text_message CUSTOMER_MESSAGE#("回复链接信息")
+      reply_text_message WxApiService::CUSTOMER_MESSAGE#("回复链接信息")
     end
 
     # <MediaId><![CDATA[media_id]]></MediaId>
@@ -67,7 +54,7 @@ UBOSS，一个边买边赚的商城！引领行业的分享新玩法，旨在重
       @format   = @weixin_message.Format
       # 如果开启了语音翻译功能，@keyword则为翻译的结果
       # reply_text_message("回复语音信息: #{@keyword}")
-      reply_voice_message CUSTOMER_MESSAGE#(generate_voice(@media_id))
+      reply_voice_message WxApiService::CUSTOMER_MESSAGE#(generate_voice(@media_id))
     end
 
     # <MediaId><![CDATA[media_id]]></MediaId>
@@ -76,7 +63,7 @@ UBOSS，一个边买边赚的商城！引领行业的分享新玩法，旨在重
       @media_id = @weixin_message.MediaId # 可以调用多媒体文件下载接口拉取数据。
       # 视频消息缩略图的媒体id，可以调用多媒体文件下载接口拉取数据。
       @thumb_media_id = @weixin_message.ThumbMediaId
-      reply_text_message CUSTOMER_MESSAGE#("回复视频信息")
+      reply_text_message WxApiService::CUSTOMER_MESSAGE#("回复视频信息")
     end
 
     def response_event_message(options={})
@@ -93,27 +80,33 @@ UBOSS，一个边买边赚的商城！引领行业的分享新玩法，旨在重
     def handle_subscribe_event
       if @keyword.present?
         # 扫描带参数二维码事件: 1. 用户未关注时，进行关注后的事件推送
-        return reply_text_message ("扫描带参数二维码事件: 1. 用户未关注时，进行关注后的事件推送, keyword: #{@keyword}")
+        Rails.logger.info("扫描带参数二维码事件: 1. 用户未关注时，进行关注后的事件推送, keyword: #{@keyword}")
+        WxApiService.handle_subscribe_scan_keyword(
+          keyword: @keyword,
+          weixin_openid: @weixin_message.FromUserName
+        )
       end
-      reply_text_message SUBSCRIBE_MESSAGE#("关注公众账号")
+      reply_text_message WxApiService::SUBSCRIBE_MESSAGE#("关注公众账号")
     end
 
     # 取消关注
     def handle_unsubscribe_event
       Rails.logger.info("取消关注")
-      'OK'
+      ""
     end
 
     # 扫描带参数二维码事件: 2. 用户已关注时的事件推送
     def handle_scan_event
-      reply_text_message("扫描带参数二维码事件: 2. 用户已关注时的事件推送, keyword: #{@keyword}")
+      Rails.logger.info("扫描带参数二维码事件: 2. 用户已关注时的事件推送, keyword: #{@keyword}")
+      ""
     end
 
     def handle_location_event # 上报地理位置事件
       @lat = @weixin_message.Latitude
       @lgt = @weixin_message.Longitude
       @precision = @weixin_message.Precision
-      reply_text_message("Your Location: #{@lat}, #{@lgt}, #{@precision}")
+      #reply_text_message("Your Location: #{@lat}, #{@lgt}, #{@precision}")
+      ""
     end
 
     # 点击菜单拉取消息时的事件推送
@@ -127,14 +120,14 @@ UBOSS，一个边买边赚的商城！引领行业的分享新玩法，旨在重
 分享给好友或者发到朋友圈，好友扫描后您将获得0.05元-1元随即红包，满1元即可申请提现。点击【我的收益】即可提现入账。
         MSG
       else
-        reply_text_message CUSTOMER_MESSAGE
+        reply_text_message WxApiService::CUSTOMER_MESSAGE
       end
     end
 
     # 点击菜单跳转链接时的事件推送
     def handle_view_event
       Rails.logger.info("你点击了: #{@keyword}")
-      'OK'
+      ""
     end
 
     # 帮助文档: https://github.com/lanrion/weixin_authorize/issues/22
@@ -158,7 +151,7 @@ UBOSS，一个边买边赚的商城！引领行业的分享新玩法，旨在重
     # </xml>
     def handle_masssendjobfinish_event
       Rails.logger.info("回调事件处理")
-      'OK'
+      ""
     end
 
     # <xml>
@@ -173,7 +166,7 @@ UBOSS，一个边买边赚的商城！引领行业的分享新玩法，旨在重
     # 推送模板信息回调，通知服务器是否成功推送
     def handle_templatesendjobfinish_event
       Rails.logger.info("回调事件处理")
-      'OK'
+      ""
     end
 
     # <xml>
