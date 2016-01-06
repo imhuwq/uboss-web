@@ -8,7 +8,7 @@
 <br />
 <div class="inline-form text-center">
   <%= simple_form_for 'verify_code', url: verify_admin_verify_codes_path do |f| %>
-    <%= number_field_tag 'code', '', placeholder: '请输入验证券密码',style:'vertical-align: top;' %>
+    <%= number_field_tag 'code', '', type: :tel, placeholder: '请输入验证券密码',style:'vertical-align: top;' %>
     <%= f.submit '验证', class: 'btn btn-large' %>
   <% end %>
 </div>

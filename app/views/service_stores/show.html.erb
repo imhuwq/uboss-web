@@ -15,18 +15,18 @@
 
 <div class="privilege-rate border-box">
 	<%= link_to '验证明细', verify_detail_service_store_path, class: 'gap bg-white text-right' %>
-</div>  
+</div>
 <div class="bg-white m-bottom10">
 <%= form_for 'verify_code', url: verify_service_store_path  do |f| %>
 	<br />
   <div class="box-w100">
   	<div class="box-w80 nogap-right">
-  		<%= number_field_tag 'code', '', placeholder: '请输入验证券密码', class: 'input-large input-block' %>
+  		<%= text_field_tag 'code', '', type: :tel, placeholder: '请输入验证券密码', class: 'input-large input-block' %>
   	</div>
   	<div class="box-w20 nogap-left">
   		<%= f.submit '验证', class: 'btn btn-large btn-block noradius' %>
   	</div>
   </div><!-- box-w100 -->
-	<br /> 
+	<br />
 <% end %>
 </div>
