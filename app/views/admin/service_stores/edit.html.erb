@@ -32,17 +32,17 @@
 				</div>
 				 -->
 				<div>
-					店铺名称　
+          店铺名称<span class='service_store_required'>*</span>
 					<%= f.text_field :store_name , value: @service_store.store_name,  placeholder: '店铺名称',style:'width:400px' %>
 				</div>
 				<br />
 				<div>
-					店铺简介　
+          店铺简介<span class='service_store_no_required'></span>
 					<%= f.text_field :store_short_description, value: @service_store.store_short_description, placeholder: '请控制在20字以内，以保证显示效果',style:'width:400px' %>
 				</div>
 				<br />
 				<div>
-					店铺链接　
+          店铺链接<span class='service_store_no_required'></span>
 					<span class="control-txt" style="width:384px"><%= "#{request.protocol}#{request.host_with_port}#{edit_admin_service_store_path(current_user.service_store)}" %></span>
 				</div>
 				<br />
@@ -58,14 +58,16 @@
     	<br />
     	<div class="box-w100">
     		<div class="service-store-address">
-	      	店铺位置　
+          店铺位置<span class='service_store_required'>*</span>
 		      <%= render 'user_addresses/user_address', f: f, locals: { obj: @service_store } %>
 		      <%= f.text_field :street, value: @service_store.street, placeholder: '填写详细地址',style:'width:400px' %>
 	      </div>
     	</div><!-- box-w100-->
 	    <br />
       <div class="box-w100">
-      	<span class="pull-left">店铺电话　</span>
+        <span class="pull-left">店铺电话
+          <span class='service_store_required'>*</span>
+        </span>
       	<div class="pull-left service-store-tel">
       		<%= f.fields_for :store_phones do |p| %>
             <span><%= p.text_field :area_code, placeholder: '区号' %></span>
@@ -82,7 +84,9 @@
       </div><!-- box-w100-->
       <br />
       <div class="box-w100">
-      	<span class="pull-left">营业时间　</span>
+        <span class="pull-left">营业时间
+          <span class='service_store_required'>*</span>
+        </span>
       	<div class="pull-left">
       		<%= f.text_field :begin_hour, placeholder: '几时, 如: 9' %> <span>:<span>
 	      	<%= f.text_field :begin_minute, placeholder: '几分, 如: 00' %> <span>至<span>

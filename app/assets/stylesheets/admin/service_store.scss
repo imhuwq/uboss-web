@@ -12,11 +12,18 @@
 }
 .field_with_errors{
   display: inline-block;
-  
+
 }
 .service-store-tel .fields{
   margin-bottom: 10px;
 }
 td.none-border-bottom {
   border: none;
+}
+.service_store_required {
+  padding: 0 5px 0 18px;
+  color: red;
+}
+.service_store_no_required {
+  padding: 0 5px 0 22px;
 }
