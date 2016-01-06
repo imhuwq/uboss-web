@@ -3,7 +3,7 @@ namespace :statistics do
   task product_order: :environment do
     puts '开始统计'
     User.joins(:user_roles).where('user_roles.name = ?','seller').each do |user|
-        user.products.published.all.each do |p|
+        user.products.published.each do |p|
             count = 0
             p.order_items.each do |order_item|
                 if order_item.order.try(:state) == 'completed'
@@ -20,14 +20,12 @@ namespace :statistics do
             p.update(sales_amount_order: i)
             i += 1
         end
-
-        published_at_order_ids = user.products.published.all.order('published_at DESC').collect(&:id)
-        Product.where(id: published_at_order_ids).each_with_index do |p,i|
+        user.products.published.order('published_at DESC').each_with_index do |p,i|
             p.update(published_at_order: i)
         end
     end
-    Product.all.each do |p|
-        order_number = p.sales_amount_order + p.published_at_order
+    Product.published.each do |p|
+        order_number = p.sales_amount_order + p.published_at_order 
         p.update(comprehensive_order: order_number)
     end
 
