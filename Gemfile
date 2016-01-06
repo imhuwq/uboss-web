@@ -21,6 +21,7 @@ gem 'dalli' # memcache client
 gem "browser", github: 'xEasy/browser'
 gem 'wx_pay', github: 'xEasy/wx_pay'
 gem 'weixin_authorize', github: "lanrion/weixin_authorize"
+gem 'weixin_rails_middleware'
 gem 'ransack'
 gem 'rails-api'
 gem 'sanitize'

@@ -3,6 +3,7 @@ require 'okay_responder'
 
 Rails.application.routes.draw do
 
+  mount WeixinRailsMiddleware::Engine, at: "/wx_api"
   mount OkayResponder.new, at: "__upyun_uploaded"
   mount ChinaCity::Engine => '/china_city'
 
