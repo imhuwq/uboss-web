@@ -60,6 +60,7 @@ class Ability
     can :manage, ServiceProduct, user_id: user.id
     can :manage, ServiceStore, user_id: user.id
     can :manage, VerifyCode, user_id: user.id
+    can :manage, Evaluation, user_id: user.id
     can :manage, :income
     can :manage, PersonalAuthentication, user_id: user.id
     can :manage, EnterpriseAuthentication, user_id: user.id
@@ -99,6 +100,7 @@ class Ability
     can :read, Product, user_id: user.id
     can :read, ServiceStore, user_id: user.id
     can :read, VerifyCode, user_id: user.id
+    can :read, Evaluation, user_id: user.id
   end
 
   private
