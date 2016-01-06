@@ -202,7 +202,7 @@ class OrderForm
     user = User.find_by(login: mobile)
     return true if user.blank?
     if self.buyer.present? && need_bind_mobile
-      errors.add(:mobile, '已注册UBOSS账户')
+      errors.add(:mobile, '已注册UBOSS账户，您可以用此手机号登录购买')
     end
     if user.weixin_openid.present? && session['devise.wechat_data'] &&
         session['devise.wechat_data'].extra['raw_info']['weixin_openid'] != user.weixin_openid

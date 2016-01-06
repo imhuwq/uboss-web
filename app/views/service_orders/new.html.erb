@@ -46,6 +46,19 @@
         <span>￥ <%= @order_form.total_price %></span>
       </div><!-- price-box -->
     </div><!-- order-list -->
+
+    <% if current_user.blank? || (current_user && current_user.need_set_login?) %>
+      <div class="no-login">
+        <div class="mobile">
+          <a href='#' class="btn pull-right" id="send_mobile"><small>发送验证码</small></a>
+          <div class="content"><%= f.input_field :mobile, type: :tel, placeholder: '输入手机号', class:"input-block",id:'new_mobile' %></div>
+        </div>
+        <div class="gap">
+          <%= f.input_field :captcha, type: :tel, placeholder: '填写短信验证码', class: "input-block"  %>
+        </div>
+      </div><!-- no-login -->
+    <% end %>
+
   </div><!--cart-list -->
 
   <div class="order-price">
