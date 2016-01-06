@@ -37,7 +37,7 @@ class Admin::CityManagersController < AdminController
   end
 
   def added
-    scope = %w(today week month).include?(params[:time]) ? params[:time] : 'today'
+    scope = %w(today week month).include?(params[:segment]) ? params[:segment] : 'today'
     @total = certifications
     @certifications = @total.send(scope).page(params[:page])
   end
