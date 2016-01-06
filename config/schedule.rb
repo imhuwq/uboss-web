@@ -15,3 +15,7 @@ end
 every 2.hours, roles: [:db] do
   runner "AutoSignOrderJob.perform_later"
 end
+
+every 1.day, at: "1:50am", roles: [:db] do
+  rake "statistics:product_order"
+end
