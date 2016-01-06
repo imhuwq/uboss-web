@@ -6,10 +6,10 @@ class Api::V1::SessionsController < ApiBaseController
     login = params.fetch(:login)
 
     if params[:mobile_captcha].present?
-      if MobileAuthCode.auth_code(login, params[:mobile_captcha])
+      if MobileCaptcha.auth_code(login, params[:mobile_captcha])
         @user = User.find_or_create_guest(login)
         if @user.persisted?
-          MobileAuthCode.clear_captcha(login)
+          MobileCaptcha.clear_captcha(login)
         else
           render_error :wrong_username_or_password, model_errors(@user)
         end
