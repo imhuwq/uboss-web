@@ -1,6 +1,7 @@
 class Admin::EvaluationsController < AdminController
   def index
     @order_items = OrderItem.where(product_id: current_user.service_product_ids, user: current_user)
+    filter_type_by_params
     total
   end
 
@@ -20,6 +21,17 @@ class Admin::EvaluationsController < AdminController
   end
 
   private
+  def filter_type_by_params
+    if params[:type] == 'good'
+      @order_items = @order_items.includes(:evaluations).where(evaluations: {status: [
+        Evaluation.statuses[:good], Evaluation.statuses[:better], Evaluation.statuses[:best]]})
+    elsif params[:type] == 'bad'
+      @order_items = @order_items.includes(:evaluations).where(evaluations: {status: [
+        Evaluation.statuses[:worst], Evaluation.statuses[:bad]
+      ]})
+    end
+  end
+
   def total
     total_evalution = 0.0
     @total_good_reputation = 0

@@ -2,8 +2,11 @@ class Admin::VerifyCodesController < AdminController
   load_and_authorize_resource
 
   def index
-    order_item_ids = OrderItem.where(product_id: current_user.service_product_ids)
-    @verify_codes = VerifyCode.total(current_user)
+    if params[:type] == 'today'
+      @verify_codes = VerifyCode.today(current_user)
+    else
+      @verify_codes = VerifyCode.total(current_user)
+    end
     @total = VerifyCode.total(current_user).size
     @today = VerifyCode.today(current_user).size
   end

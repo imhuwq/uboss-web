@@ -19,14 +19,18 @@
 <div class="container nogap">
 	<div class="box-w25">
 		<div class="admin-box main-bg-color">
-	    <h4>总验证数量</h4>
-      <h1 class="num"><%= @total %></h1>
+      <a href="<%= admin_verify_codes_path %>" data-remote='true'>
+        <h4>总验证数量</h4>
+        <h1 class="num"><%= @total %></h1>
+      </a>
 	  </div>
 	</div>
   <div class="box-w25">
   	<div class="admin-box red-bg-color">
-	    <h4>今日验证数量</h4>
-      <h1 class="num"><%= @today %></h1>
+      <a href="<%= admin_verify_codes_path(type: 'today') %>" data-remote="true">
+        <h4>今日验证数量</h4>
+        <h1 class="num"><%= @today %></h1>
+      </a>
 	  </div>
   </div>
 </div>
