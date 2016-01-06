@@ -29,6 +29,17 @@ class Admin::ProductsController < AdminController
     end
   end
 
+  def create_supplier_product
+    @product = current_user.products.new(product_params)
+    if @product.save
+      flash[:success] = '产品创建成功'
+      redirect_to action: :show_supplier_product, id: @product.id
+    else
+      flash[:error] = "#{@product.errors.full_messages.join('<br/>')}"
+      render :new_supplier_product
+    end
+  end
+
   def update
     if @product.update(product_params)
       flash[:success] = '保存成功'
@@ -94,6 +105,7 @@ class Admin::ProductsController < AdminController
   end
 
   def product_params
+    params["product"]["supplier_product_info_attributes"]["supplier_id"] = current_user.id if params["product"]["supplier_product_info_attributes"].present?
     params.require(:product).permit(
       :name,      :original_price,  :present_price,     :count,
       :content,   :has_share_lv,    :calculate_way,     :avatar,
@@ -106,7 +118,7 @@ class Admin::ProductsController < AdminController
         sku_attributes: product_propertys_params[:product_propertys_names],
       ],
       supplier_product_info_attributes: [
-        :content, :cost_price, :suggest_price
+        :content, :cost_price, :suggest_price_lower, :suggest_price_upper, :supplier_id
       ]
     )
   end

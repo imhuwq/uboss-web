@@ -172,6 +172,9 @@ Rails.application.routes.draw do
 
       get '/supplier/products/new', to: 'products#new_supplier_product'
 
+      post '/supplier/products/create', to: 'products#create_supplier_product'
+      get '/supplier/products/:id', to: 'products#show_supplier_product'
+
       get '/select_carriage_template', to: 'products#select_carriage_template'
       get '/refresh_carriage_template', to: 'products#refresh_carriage_template'
 

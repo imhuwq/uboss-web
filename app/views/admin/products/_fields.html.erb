@@ -19,14 +19,27 @@
 <div class="admin-box beige-bg-color">
   <h4 class="edit-title">商品信息</h4>
   <%= f.input :name %>
-  <%= f.input :original_price, hint: '仅作页面显示参考' %>
-  <%= f.input :present_price, hint: '仅作显示参考，真实价格请在库存/规格中设置' %>
-  <%= f.input :count %>
-  <%= f.fields_for :supplier_product_info do |spi| %>
-    <%= spi.input_field :cost_price %>
-    <%= spi.input_field :suggest_price_lower %>
-    <%= spi.input_field :suggest_price_upper %>
+  
+  <% if supplier %>
+    <%= f.simple_fields_for :supplier_product_info do |spi| %>
+      <%= spi.input :cost_price %>
+      <div class='form-group'>
+        <label class='integer optional control-label'>
+          <abbr title="必填">*</abbr>
+          建议价
+        </label>
+        <div class='control-input'>
+          <%= spi.input_field :suggest_price_lower %>
+          至
+          <%= spi.input_field :suggest_price_upper %>
+        </div>
+      </div>
+    <% end %>
+  <% else %>
+    <%= f.input :original_price, hint: '仅作页面显示参考' %>
+    <%= f.input :present_price, hint: '仅作显示参考，真实价格请在库存/规格中设置' %>
   <% end %>
+  <%= f.input :count %>
   <%= f.input :short_description %>
   <%= f.input :asset_img, hint:"(点击图片进行替换)"  do %>
     <%= f.input_field :avatar, type: :hidden, as: :file %>
@@ -70,23 +83,25 @@
   </div>
 </div>
 <br />
-<div id="sku-privelege-group" class="admin-box beige-bg-color">
-  <h4 class="edit-title">分成设置</h4>
-  <div class="form-group sku-privilege-lvs-group">
-    <label class="control-label">返利方案</label>
-    <div class='sku-plvs-btns control-input'>
-      <!-- <a href="#" class='btn btn&#45;link btn&#45;border' data&#45;level='3'>三级返利</a> -->
-      <!-- <a href="#" class='btn btn&#45;link btn&#45;border' data&#45;level='2'>二级返利</a> -->
-      <a href="#" class='btn btn-link btn-border' data-level='1'>一级返利</a>
+<% unless supplier %>
+  <div id="sku-privelege-group" class="admin-box beige-bg-color">
+    <h4 class="edit-title">分成设置</h4>
+    <div class="form-group sku-privilege-lvs-group">
+      <label class="control-label">返利方案</label>
+      <div class='sku-plvs-btns control-input'>
+        <!-- <a href="#" class='btn btn&#45;link btn&#45;border' data&#45;level='3'>三级返利</a> -->
+        <!-- <a href="#" class='btn btn&#45;link btn&#45;border' data&#45;level='2'>二级返利</a> -->
+        <a href="#" class='btn btn-link btn-border' data-level='1'>一级返利</a>
+      </div>
     </div>
-  </div>
-  <div class="form-group sku-privilege-list-group">
-    <label class="control-label">返利金额</label>
-    <div class='sku-privilege-list control-input'>
-    	<p><span>请添加产品规格属性</span></p>
+    <div class="form-group sku-privilege-list-group">
+      <label class="control-label">返利金额</label>
+      <div class='sku-privilege-list control-input'>
+        <p><span>请添加产品规格属性</span></p>
+      </div>
     </div>
-  </div>
-</div><!-- admin-box -->
+  </div><!-- admin-box -->
+<% end %>
 <br  />
 <div class="admin-box beige-bg-color logistics_and_other">
   <h4 class="edit-title">物流及其他</h4>
