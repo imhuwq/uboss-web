@@ -27,5 +27,14 @@ module Orderable
         _scope.where! ["#{column_name} > ?", after_ts] if after_ts
       end
     end
+
+    # def paginate_by_column_name before_column_name, after_column_name, column_name = nil
+    #   column_name ||= "created_at"
+    #   column_name = "#{ table_name }.#{ column_name }" unless column_name.to_s.include?(".")
+    #   all.tap do |_scope|
+    #     _scope.where! ["#{column_name} < ?", before_column_name] if before_column_name
+    #     _scope.where! ["#{column_name} > ?", after_column_name] if after_column_name
+    #   end
+    # end
   end
 end

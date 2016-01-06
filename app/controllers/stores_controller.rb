@@ -16,11 +16,11 @@ class StoresController < ApplicationController
 
   def show
     if params[:order] == 'published_at'
-      @products = append_default_filter @seller.products.published, order_column: :published_at_order
+      @products = append_default_filter @seller.products.published, order_column: :published_at_order, order_type: '', page_size: 6
     elsif  params[:order] == 'sales_amount'
-      @products = append_default_filter @seller.products.published, order_column: :sales_amount_order
+      @products = append_default_filter @seller.products.published, order_column: :sales_amount_order, order_type: '', page_size: 6
     else
-      @products = append_default_filter @seller.products.published, order_column: :comprehensive_order
+      @products = append_default_filter @seller.products.published, order_column: :comprehensive_order, order_type: '', page_size: 6
     end
     @hots = @seller.products.hots.recent.limit(3)
     @categories = Category.where(use_in_store: true, user_id: @seller.id).order('use_in_store_at')

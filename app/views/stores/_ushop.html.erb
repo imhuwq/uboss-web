@@ -92,18 +92,21 @@
     <a class="tab <%= params[:order] == 'sales_amount' ? '' : 'active' %>" href="/stores/<%= params[:id] %>?order=sales_amount#product-container"><span>人气热销</span></a>
   </div>
   <div class="tab-container">
-    <div class="tab-content sort-list" id="sort-container1" style="display: block;">
+    <div class="tab-content sort-list container" id="sort-container1" style="display: block;">
       <% if @products.present? %>
       <%= render partial: 'product', collection: @products %>
       <% else %>
       <h2 class="page-title text-center">店家正在准备好货，敬请期待</h2>
       <% end %>           
     </div><!-- #category-container -->
-    <% if @products.size > 6 %>
-    <br />
-    <div class="load-more" data-container='.store-list' data-ele='.p-item' data-ref='<%= request.path %>'>加载更多</div>
-    <% end %>
+
   </div><!-- tab-container -->  
 </div>
 
-
+<% if @products.size > 3 %>
+ 
+<br />
+ 
+<div class="load-more" data-container='.store-list' data-ele='.p-item' data-ref='<%= request.path %>'>加载更多</div>
+  
+-<% end %>

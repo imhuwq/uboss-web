@@ -532,6 +532,14 @@ ActiveRecord::Schema.define(version: 20160105081350) do
     t.integer  "published_at_order"
     t.integer  "comprehensive_order"
     t.datetime "published_at"
+<<<<<<< HEAD
+=======
+    t.string   "type"
+    t.integer  "service_type"
+    t.integer  "monthes"
+    t.integer  "service_store_id"
+    t.text     "purchase_note"
+>>>>>>> ca17e20... fix store page
   end
 
   create_table "redactor_assets", force: :cascade do |t|
@@ -672,6 +680,18 @@ ActiveRecord::Schema.define(version: 20160105081350) do
     t.integer "integer_count"
     t.decimal "decimal_count"
     t.jsonb   "resource_message"
+<<<<<<< HEAD
+=======
+  end
+
+  create_table "store_phones", force: :cascade do |t|
+    t.string   "area_code"
+    t.string   "fixed_line"
+    t.string   "phone_number"
+    t.integer  "service_store_id"
+    t.datetime "created_at",       null: false
+    t.datetime "updated_at",       null: false
+>>>>>>> ca17e20... fix store page
   end
 
   create_table "transactions", force: :cascade do |t|
@@ -731,6 +751,16 @@ ActiveRecord::Schema.define(version: 20160105081350) do
     t.integer  "best_evaluation"
     t.string   "store_cover"
     t.decimal  "bonus_benefit",             default: 0.0
+<<<<<<< HEAD
+=======
+    t.string   "type"
+    t.string   "begin_hour"
+    t.string   "begin_minute"
+    t.string   "end_hour"
+    t.string   "end_minute"
+    t.string   "area"
+    t.string   "street"
+>>>>>>> ca17e20... fix store page
   end
 
   add_index "user_infos", ["user_id"], name: "index_user_infos_on_user_id", unique: true, using: :btree

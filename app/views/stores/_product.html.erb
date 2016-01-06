@@ -1,5 +1,5 @@
 <% cache ['store-product', product], expires_in: 1.day do %>
-  <div class="box-w50 p-item" timestamp="<%= product.updated_at %>">
+  <div class="box-w50 p-item" timestamp="<%= product.try(@order_column_name.to_sym) %>">
     <div class="product-box">
       <div class="cover">
         <%= link_to '', product,

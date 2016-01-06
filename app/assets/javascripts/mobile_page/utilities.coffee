@@ -26,13 +26,14 @@ $ ->
     e.preventDefault()
     element = $(this)
     if not element.hasClass('loading')
-      if $(element.data('ele')).length > 6 # nothing but set it anyway
+      if $(element.data('ele')).length > 4 # nothing but set it anyway
         element.addClass('loading')
         element.text('加载中...')
         params = { before_published_at: $(element.data('ele')).last().attr('timestamp') }
         $.get element.data('ref'), params, (data) ->
           if $.trim(data).length
-            $(element.data('container')).append(data)
+            # $(element.data('container')).append(data)
+            $('.container').last().append(data)
             element.removeClass('loading')
             element.text('加载更多')
           else

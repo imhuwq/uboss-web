@@ -17,6 +17,29 @@ module FilterLogic
     .page(page_param).per(opts[:page_size] || page_size)
   end
 
+  def append_default_filter_notimestamp scope, opts = {}
+    if opts[:order_type] == 'DESC'
+      scope.recent(opts[:order_column], opts[:order_type])
+      .paginate_by_timestamp(before_column ,after_column, opts[:order_column])
+      .page(page_param).per(opts[:page_size] || page_size)
+    else
+      scope.recent(opts[:order_column], '')
+      .paginate_by_timestamp(after_column,before_column, opts[:order_column])
+      .page(page_param).per(opts[:page_size] || page_size)
+    end
+  end
+
+
+  def before_column
+    return before_ts_param.to_i if before_ts_param
+    nil
+  end
+
+  def after_column
+    return after_ts_param.to_i if after_ts_param
+    nil
+  end
+
   def before_ts
     return Time.zone.parse(before_ts_param) if before_ts_param
     nil
