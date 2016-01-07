@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151222135339) do
+ActiveRecord::Schema.define(version: 20151225094731) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -118,8 +118,8 @@ ActiveRecord::Schema.define(version: 20151222135339) do
     t.integer  "user_id",                        null: false
     t.datetime "created_at",                     null: false
     t.datetime "updated_at",                     null: false
-    t.datetime "use_in_store_at"
     t.boolean  "use_in_store",    default: true
+    t.datetime "use_in_store_at"
   end
 
   add_index "categories", ["user_id", "name"], name: "index_categories_on_user_id_and_name", unique: true, using: :btree
@@ -131,6 +131,38 @@ ActiveRecord::Schema.define(version: 20151222135339) do
 
   add_index "categories_products", ["category_id"], name: "index_categories_products_on_category_id", using: :btree
   add_index "categories_products", ["product_id"], name: "index_categories_products_on_product_id", using: :btree
+
+  create_table "certifications", force: :cascade do |t|
+    t.integer  "user_id"
+    t.integer  "status"
+    t.string   "name"
+    t.string   "enterprise_name"
+    t.string   "id_num"
+    t.string   "address"
+    t.string   "mobile"
+    t.string   "attachment_1"
+    t.string   "attachment_2"
+    t.string   "attachment_3"
+    t.string   "type"
+    t.datetime "verified_at"
+    t.datetime "created_at",      null: false
+    t.datetime "updated_at",      null: false
+    t.string   "province_code"
+    t.string   "city_code"
+    t.string   "district_code"
+  end
+
+  add_index "certifications", ["user_id"], name: "index_certifications_on_user_id", using: :btree
+
+  create_table "city_managers", force: :cascade do |t|
+    t.integer  "user_id"
+    t.integer  "category"
+    t.string   "city"
+    t.decimal  "rate",       precision: 2, scale: 2
+    t.datetime "settled_at"
+    t.datetime "created_at",                         null: false
+    t.datetime "updated_at",                         null: false
+  end
 
   create_table "daily_reports", force: :cascade do |t|
     t.date     "day"
@@ -225,6 +257,11 @@ ActiveRecord::Schema.define(version: 20151222135339) do
   end
 
   add_index "favour_products", ["product_id", "user_id"], name: "index_favour_products_on_product_id_and_user_id", unique: true, using: :btree
+
+  create_table "follower_associations", force: :cascade do |t|
+    t.integer "user_id"
+    t.integer "follower_id"
+  end
 
   create_table "mobile_captchas", force: :cascade do |t|
     t.string   "code"
@@ -388,11 +425,10 @@ ActiveRecord::Schema.define(version: 20151222135339) do
 
   create_table "privilege_cards", force: :cascade do |t|
     t.integer  "user_id"
-    t.datetime "created_at",                           null: false
-    t.datetime "updated_at",                           null: false
-    t.boolean  "actived",              default: false
+    t.datetime "created_at",                 null: false
+    t.datetime "updated_at",                 null: false
+    t.boolean  "actived",    default: false
     t.integer  "seller_id"
-    t.integer  "product_inventory_id"
   end
 
   add_index "privilege_cards", ["user_id", "seller_id"], name: "index_privilege_cards_on_user_id_and_seller_id", unique: true, using: :btree

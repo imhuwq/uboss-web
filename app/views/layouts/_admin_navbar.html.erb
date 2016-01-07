@@ -12,9 +12,9 @@
 				<li><%= link_to "修改密码", password_admin_account_path %></li>
 				<li>
           <% if can?(:create,PersonalAuthentication) %>
-          <%= link_to "商家认证", admin_user_personal_authentication_path(user_id: current_user.id) %>
-          <% elsif can?(:create,EnterpriseAuthentication) %>
-          <%= link_to "商家认证", admin_user_enterprise_authentication_path(user_id: current_user.id) %>
+          <%= link_to "认证", admin_user_personal_authentication_path(user_id: current_user.id) %>
+          <% elsif can?(:create,CityManagerAuthentication) %>
+          <%= link_to "认证", admin_user_city_manager_authentication_path(user_id: current_user.id) %>
           <% end %>
         </li>
         <% if current_user.is_seller? %>
@@ -29,6 +29,13 @@
         <%= li_link(:dashboard, admin_root_path, action_check: false) %>
         <%= can_li_link(:read, :sellers, admin_sellers_path) %>
         <%= can_li_link(:manage, :agents, admin_agents_path) %>
+        <%= nav_group :city_manager do %>
+          <%= can_li_link(:manage, CityManager, admin_city_managers_path) %>
+          <%= can_li_link(:manage, CityManager, cities_admin_city_managers_path, i18n_key: :cities) %>
+          <%= can_li_link(:revenues, CityManager, revenues_admin_city_managers_path, i18n_key: :revenues) %>
+          <%= can_li_link(:added, CityManager, added_admin_city_managers_path, i18n_key: :added) %>
+        <% end %>
+
         <%= nav_group :product_manage do %>
           <%= can_li_link(:read, Product, admin_products_path) %>
           <%= can_li_link(:read, CarriageTemplate, admin_carriage_templates_path ) %>
@@ -44,7 +51,7 @@
           <%= can_li_link(:read, WithdrawRecord, admin_withdraw_records_path) %>
           <%= can_li_link(:manage, BankCard, admin_bank_cards_path ) %>
         <% end %>
-        <%= can_li_link(:manage, :authentications, admin_personal_authentications_path,
+        <%= can_li_link(:manage, :authentications, persons_admin_certifications_path,
                         another_active_name: 'personal_authentications') %>
         <%= nav_group :uboss do %>
           <%= can_li_link(:handle, User, admin_users_path) %>

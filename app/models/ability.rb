@@ -57,14 +57,10 @@ class Ability
     can :read, User, id: user.id
     can :manage, Order, seller_id: user.id
     can :manage, Product, user_id: user.id
-    can :read, PersonalAuthentication, user_id: user.id
-    can :edit, PersonalAuthentication, { user_id: user.id, status: %w(posted no_pass) }
-    can :update, PersonalAuthentication, { user_id: user.id, status: %w(posted no_pass) }
-    can :create, PersonalAuthentication, user_id: user.id
-    can :read, EnterpriseAuthentication, user_id: user.id
-    can :edit, EnterpriseAuthentication, { user_id: user.id, status: %w(posted no_pass) }
-    can :update, EnterpriseAuthentication, { user_id: user.id, status: %w(posted no_pass) }
-    can :create, EnterpriseAuthentication, user_id: user.id
+    can [:read, :create], PersonalAuthentication, user_id: user.id
+    can [:edit, :update], PersonalAuthentication, { user_id: user.id, status: %w(posted no_pass) }
+    can [:read, :create], EnterpriseAuthentication, user_id: user.id
+    can [:edit, :update], EnterpriseAuthentication, { user_id: user.id, status: %w(posted no_pass) }
     can :read,   WithdrawRecord, user_id: user.id
     can :create, WithdrawRecord, user_id: user.id
     can :read, SharingIncome, seller_id: user.id
@@ -93,6 +89,15 @@ class Ability
     can :read, Product, user_id: user.id
   end
 
+  def grant_permissions_to_city_manager user
+    can :read,   WithdrawRecord, user_id: user.id
+    can :create, WithdrawRecord, user_id: user.id
+    can [:read, :create], CityManagerAuthentication, user_id: user.id
+    can [:edit, :update], CityManagerAuthentication, { user_id: user.id, status: %w(posted no_pass) }
+    can :added, CityManager, user_id: user.id
+    can :revenues, CityManager, user_id: user.id
+  end
+
   private
 
   def senior_permissions
@@ -117,9 +122,12 @@ class Ability
     can :manage, User, { user_roles: { name: %w(seller agent offical_operating) } }
     can :manage, PersonalAuthentication
     can :manage, EnterpriseAuthentication
+    can :manage, CityManagerAuthentication
+    can :manage, Certification
     can :manage, :authentications
     can :manage, :platform_advertisements
     can :manage, Advertisement
+    can :manage, CityManager
   end
 
 end

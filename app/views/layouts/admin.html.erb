@@ -9,7 +9,7 @@
 	  <%= javascript_include_tag 'admin' %>
 	  <%= csrf_meta_tags %>
 	</head>
-	<body class="<%= controller_name %> <%= action_name %>">
+	<body class="<%= controller_name %> <%= action_name %>" data-params="<%= request.get? ? params.to_json : {} %>">
 	  <%= render 'layouts/admin_navbar' %>
 		<%= render 'layouts/flash_alert' %>
     <div class='modal'></div>
