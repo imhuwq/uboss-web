@@ -24,6 +24,8 @@ class Order < ActiveRecord::Base
   validates :user_id, :seller_id, presence: true
   validates_uniqueness_of :number, allow_blank: true
 
+  scope :selled, -> { where("orders.state <> 0") }
+
   delegate :mobile, :regist_mobile, :identify, to: :user, prefix: :buyer
   delegate :prepay_id, :prepay_id=, :prepay_id_expired_at, :prepay_id_expired_at=,
     :pay_serial_number, :pay_serial_number=, :payment, :payment_i18n, :paid_at,

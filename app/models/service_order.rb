@@ -1,7 +1,7 @@
 class ServiceOrder < Order
   has_many :verify_codes, through: :order_items
 
-  enum state: { unpay: 0, payed: 1, closed: 2, completed: 3 }
+  enum state: { unpay: 0, payed: 1, closed: 5, completed: 6 }
 
   aasm column: :state, enum: true, skip_validation_on_save: true, whiny_transitions: false do
     state :unpay

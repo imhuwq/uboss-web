@@ -3,7 +3,6 @@ class OrdinaryOrder < Order
 
   enum state: { unpay: 0, payed: 1, shiped: 3, signed: 4, closed: 5, completed: 6 }
 
-  scope :selled, -> { where("orders.state <> 0") }
   scope :with_refunds, -> { joins(order_items: :order_item_refunds).uniq }
 
   before_create :set_info_by_user_address, :set_ship_price
