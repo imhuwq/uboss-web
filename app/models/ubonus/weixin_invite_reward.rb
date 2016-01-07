@@ -12,7 +12,7 @@ class Ubonus::WeixinInviteReward < BonusRecord
     return true if reload.actived
     return false if self.user.blank?
     transaction do
-      update(actived: true)
+      update_columns(actived: true)
       UserInfo.update_counters(user.user_info.id, income: amount)
       record_trade
     end
@@ -50,7 +50,8 @@ class Ubonus::WeixinInviteReward < BonusRecord
   end
 
   def uniq_with_form_and_to_weixin_openid
-    if self.class.with_properties(from_wx_user_id: from_wx_user_id, to_wx_user_id: to_wx_user_id).exists?
+    if self.class.where.not(id: self.id).
+        with_properties(from_wx_user_id: from_wx_user_id, to_wx_user_id: to_wx_user_id).exists?
       errors.add(:base, '已邀请')
     end
   end

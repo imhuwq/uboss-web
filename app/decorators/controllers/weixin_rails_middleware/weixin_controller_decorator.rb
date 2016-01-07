@@ -6,7 +6,6 @@
 WeixinRailsMiddleware::WeixinController.class_eval do
 
   def reply
-    p @weixin_message
     render xml: send("response_#{@weixin_message.MsgType}_message", {})
   end
 
