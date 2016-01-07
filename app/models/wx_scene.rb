@@ -49,15 +49,25 @@ class WxScene < ActiveRecord::Base
   def upload_wx_qrcode
     return false if properties['scene_ticket'].blank?
 
-    qrcode_url = $weixin_client.qr_code_url(properties['scene_ticket'])
-    media_response = $weixin_client.upload_media(qrcode_url, 'image')
+    user_response = $weixin_client.user(properties['weixin_openid'])
+    nickname = user_response.is_ok? ? user_response.result['nickname'] : '微信用户'
+
+    request_image_query_param = {
+      qrcode_content: properties['scene_url'],
+      username: nickname,
+      num: Ubonus::WeixinInviteReward.with_properties(to_wx_user_id: properties['weixin_openid']).count,
+      exp_time: expire_at.strftime('%Y-%m-%d'),
+      mode: 0
+    }.to_param
+
+    media_response = $weixin_client.upload_media("http://imager.ulaiber.com/req/0?#{request_image_query_param}", 'image')
     if media_response.is_ok?
       update_properties(
         qrcode_media_id: media_response.result['media_id']
       )
       true
     else
-      Rails.logger.info("上传邀请二维码失败 #{job_type}")
+      Rails.logger.info("上传邀请二维码失败, response: #{media_response}")
       false
     end
   end
