@@ -1,9 +1,14 @@
+<%= content_for :title do %>
+  <%= @service_store.store_title || Rails.application.secrets.metas["title"] %>
+<% end %>
+
 <%= content_for :page_title do %>
+  <%= @service_store.store_identify %>
 <% end %>
 
 <%= content_for :extra_meta_tags do %>
   <% if @seller %>
-    <%= store_sharing_meta_tags(@seller, @sharing_link_node, store_path(@seller, type: 'service')) %>
+    <%= store_sharing_meta_tags(@seller, @sharing_link_node, service_store_path(@seller.service_store)) %>
   <% end %>
 <% end %>
 
@@ -56,9 +61,9 @@
 
 <!-- 店铺信息-->
 <div class="bg-white gap">
-  <div class="service-store-info">  	
-    <%= image_tag('mobile/mobile.png',class:'pull-right store-tel') %>    
-    <div class="content">      
+  <div class="service-store-info">
+    <%= image_tag('mobile/mobile.png',class:'pull-right store-tel') %>
+    <div class="content">
       <div class="address text-cut m-bottom10"><%= @service_store.address %></div>
       <div class="open-time">营业时间：<%= @service_store.business_hours %></div>
     </div>
@@ -67,10 +72,10 @@
 <div class="pop-bg phone-list hidden ">
 	<div class="pop-bottom">
 		<div class="bg-white m-bottom10  border-radius">
-			<% @service_store.mobile_phone.each do |phone| %>			  
-			  <%= link_to  phone ,"tel:#{phone}" %>			  
+			<% @service_store.mobile_phone.each do |phone| %>
+			  <%= link_to  phone ,"tel:#{phone}" %>
 			<% end %>
-		</div><!-- bg-white -->	
+		</div><!-- bg-white -->
 		<div class="btn btn-block btn-large btn-white ">取消</div>
 	</div><!-- pop-bottom -->
 </div>
@@ -85,7 +90,7 @@
 </div>
 
 <div class="page-title black-color gap">团购</div>
-<div class="bg-white service-product-list">  
+<div class="bg-white service-product-list">
   <% if @group_products.present? %>
     <%= render partial: 'service_product', collection: @group_products %>
   <% else %>

@@ -30,7 +30,7 @@
       <p class="gray-color">商品共 <%= privilege_card.seller.service_products.published.count %> 件</p>
       <div>
         <div class="hidden sharing-meta-container">
-          <%= store_sharing_meta_tags(seller, nil, store_path(seller, type: 'service')) %>
+          <%= store_sharing_meta_tags(seller, nil, service_store_path(seller.service_store)) %>
         </div>
         <%= link_to "分享", get_seller_sharing_path(seller_id: privilege_card.seller_id), remote: true,
           class: 'btn share-btn req-favour-p-snode' %>

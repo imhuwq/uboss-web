@@ -95,7 +95,7 @@ Rails.application.routes.draw do
     get :success, on: :member
   end
 
-  resources :service_stores do
+  resources :service_stores, only: [:index, :show] do
     get :verify_detail, on: :member
     get :share, on: :member
     post :verify, on: :member
