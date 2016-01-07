@@ -6,7 +6,7 @@ class Admin::ServiceStoresController < AdminController
     @total_income = get_total_income
     @income_by_date = {}
 
-    service_orders = ServiceOrder.where(user_id: current_user.id).has_payed.group_by{ |order| order.created_at.to_date }.sort_by{ |key, values| key }.reverse
+    service_orders = ServiceOrder.includes(:order_items).where(order_items: {product_id: current_user.service_products}).has_payed.group_by{ |order| order.created_at.to_date }.sort_by{ |key, values| key }.reverse
     service_orders.each do |date, orders|
       size = OrderItem.where(order_id: orders.map(&:id)).map(&:amount).sum
       @income_by_date[date] = [size, orders.map(&:paid_amount).sum ]
@@ -35,7 +35,7 @@ class Admin::ServiceStoresController < AdminController
 
   private
   def get_total_income
-    ServiceOrder.where(user_id: current_user.id).has_payed.map do |order|
+    ServiceOrder.includes(:order_items).where(order_items: {product_id: current_user.service_products}).has_payed.map do |order|
       order.paid_amount
     end.sum
   end
