@@ -29,9 +29,17 @@ class WxApiJob < ActiveJob::Base
     end
 
     if wx_scene.properties['qrcode_media_id'].present?
+      $weixin_client.send_text_custom(
+        wx_scene.properties['weixin_openid'],
+        "获取二维码成功，将在#{wx_scene.expire_at.strftime('%Y-%m-%d')}失效，邀请好友一起来UBOSS吧"
+      )
       wx_scene.send_qrcode_image_message
     else
       if wx_scene.upload_wx_qrcode
+        $weixin_client.send_text_custom(
+          wx_scene.properties['weixin_openid'],
+          "二维码生成成功，将在#{wx_scene.expire_at.strftime('%Y-%m-%d')}失效，邀请好友一起来UBOSS吧"
+        )
         wx_scene.send_qrcode_image_message
       else
         $weixin_client.send_text_custom(wx_scene.properties['weixin_openid'], '二维码发送失败，请稍后重试')

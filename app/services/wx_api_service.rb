@@ -21,7 +21,7 @@ UBOSS，一个边买边赚的商城！引领行业的分享新玩法，旨在重
       wx_scene.request_wx_sence_and_send_message
     else
       WxScene.create(
-        expire_at: Time.now + 8.days,
+        expire_at: Time.now + 30.days,
         properties: {
           weixin_openid: weixin_openid
         }
