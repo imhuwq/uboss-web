@@ -6,7 +6,7 @@
     <li>企业认证</li>
   </ul>
 </div>
-<br /> 
+<br />
 -->
 <div class="container">
 	<div class="header-tab">
@@ -62,7 +62,7 @@
         <tbody class="item">
           <tr id="personal_authentication_<%= obj.user_id%>">
             <td class="text-left">
-              <%= link_to url_for(controller: 'admin/city_manager_authentications', action: :show, user_id: obj.user_id) do %>
+              <%= link_to_if can?(:manage, Certification), url_for(controller: 'admin/city_manager_authentications', action: :show, user_id: obj.user_id) do %>
                 <%= image_tag(obj.user_avatar.url(:thumb), size: "80x80", alt: "-") %>
                 <%= obj.user_identify %>
               <% end %>
