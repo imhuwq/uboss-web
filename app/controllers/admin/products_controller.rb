@@ -1,6 +1,6 @@
 class Admin::ProductsController < AdminController
 
-  load_and_authorize_resource
+  load_and_authorize_resource except: [:new_supplier_product, :create_supplier_product, :show_supplier_product]
 
   def select_carriage_template
     @carriage = CarriageTemplate.find(params[:tpl_id]) if params[:tpl_id].present?
@@ -29,8 +29,15 @@ class Admin::ProductsController < AdminController
     end
   end
 
+  def new_supplier_product
+    @product = Product.new
+    @product.build_supplier_product_info
+    authorize! :new_supplier_product, @product
+  end
+
   def create_supplier_product
     @product = current_user.products.new(product_params)
+    authorize! :create_supplier_product, @product
     if @product.save
       flash[:success] = '产品创建成功'
       redirect_to action: :show_supplier_product, id: @product.id
@@ -38,6 +45,11 @@ class Admin::ProductsController < AdminController
       flash[:error] = "#{@product.errors.full_messages.join('<br/>')}"
       render :new_supplier_product
     end
+  end
+
+  def show_supplier_product
+    @product = Product.find_by(id: params[:id])
+    authorize! :show_supplier_product, @product
   end
 
   def update
@@ -93,10 +105,7 @@ class Admin::ProductsController < AdminController
     render layout: 'mobile'
   end
 
-  def new_supplier_product
-    @product = Product.new
-    @product.build_supplier_product_info
-  end
+  
 
   private
 
