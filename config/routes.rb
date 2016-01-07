@@ -94,7 +94,8 @@ Rails.application.routes.draw do
   resource :withdraw_records, only: [:show, :new, :create] do
     get :success, on: :member
   end
-  resource :service_store, only: [:show] do
+
+  resources :service_stores do
     get :verify_detail, on: :member
     get :share, on: :member
     post :verify, on: :member

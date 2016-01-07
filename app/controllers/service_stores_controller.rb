@@ -1,11 +1,11 @@
 class ServiceStoresController < ApplicationController
   layout 'mobile'
 
-  def share
+  def index
     @service_store = current_user.service_store
   end
 
-  def show
+  def share
     @service_store = current_user.service_store
   end
 
@@ -24,6 +24,6 @@ class ServiceStoresController < ApplicationController
     else
       flash[:error] = '验证失败'
     end
-    redirect_to service_store_path
+    redirect_to service_stores_path
   end
 end
