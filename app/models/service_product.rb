@@ -23,7 +23,7 @@ class ServiceProduct < Product
   end
 
   def total_income
-    orders = ServiceOrder.where(id: order_items.map(&:order_id)).payed
+    orders = ServiceOrder.where(id: order_items.map(&:order_id)).has_payed
     orders.map do |order|
       order.paid_amount
     end.sum
