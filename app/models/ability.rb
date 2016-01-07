@@ -140,10 +140,18 @@ class Ability
     can :read, User, id: user.id
     can :read, User, cooperation: { supplier_id: user.id }
     can :read, :sellers
-    can :new_supplier_product, Product if user.is_supplier?
-    can :create_supplier_product, Product if user.is_supplier?
-    can :show_supplier_product, Product do |product|
-      user.is_supplier? and product.supplier_product_info.supplier_id == user.id
+    if user.is_supplier?
+      can :new_supplier_product, Product
+      can :create_supplier_product, Product
+      can :show_supplier_product, Product do |product|
+        product.supplier_product_info.supplier_id == user.id
+      end
+      can :edit_supplier_product, Product do |product|
+        product.supplier_product_info.supplier_id == user.id
+      end
+      can :update_supplier_product, Product do |product|
+        product.supplier_product_info.supplier_id == user.id
+      end
     end
   end
 

@@ -231,6 +231,14 @@ class Product < ActiveRecord::Base
     end
   end
 
+  def product_type
+    if supplier_product_info
+      'supplied'
+    else
+      'normal'
+    end
+  end
+
   private
 
   def must_has_one_product_inventory

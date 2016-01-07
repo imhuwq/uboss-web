@@ -209,6 +209,12 @@ Rails.application.routes.draw do
 
       get '/supplier/products/:id', to: 'products#show_supplier_product'
 
+      get '/supplier/products/:id/edit', to: 'products#edit_supplier_product'
+
+      put '/supplier/products/:id/update', to: 'products#update_supplier_product'
+
+      patch '/supplier/products/:id/update', to: 'products#update_supplier_product'
+
       get '/select_carriage_template', to: 'products#select_carriage_template'
 
       get '/refresh_carriage_template', to: 'products#refresh_carriage_template'
