@@ -3,6 +3,8 @@ class ServiceOrder < Order
 
   enum state: { unpay: 0, payed: 1, closed: 5, completed: 6 }
 
+  scope :has_payed, -> { where(state: [1, 6]) }
+
   aasm column: :state, enum: true, skip_validation_on_save: true, whiny_transitions: false do
     state :unpay
     state :payed,     after_enter: :invoke_service_order_payed_job
