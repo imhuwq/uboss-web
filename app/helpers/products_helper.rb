@@ -14,10 +14,14 @@ module ProductsHelper
 
   def product_sharing_link(product, sharing_node = nil)
     if sharing_node.blank?
-      product_url(product)
+      url_of(product)
     else
       sharing_url(sharing_node)
     end
+  end
+
+  def url_of(product)
+    product.type == "OrdinaryProduct" ? product_url(product) : service_product_url(product)
   end
 
   def product_traffic(product)

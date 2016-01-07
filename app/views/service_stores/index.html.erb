@@ -7,17 +7,17 @@
 <% end %>
 
 <div class="privilege-rate m-top10 m-bottom10">
-  <%= link_to share_service_store_path,class:'gap bg-white ' do %>
+  <%= link_to share_service_store_path(current_user.service_store),class:'gap bg-white ' do %>
     <span class='pull-right'>分享</span>
     <span class='gray-color'><%= @service_store.store_name %></span>
   <% end %>
 </div><!-- privilege-rate -->
 
 <div class="privilege-rate border-box">
-	<%= link_to '验证明细', verify_detail_service_store_path, class: 'gap bg-white text-right' %>
+	<%= link_to '验证明细', verify_detail_service_store_path(current_user.service_store), class: 'gap bg-white text-right' %>
 </div>
 <div class="bg-white m-bottom10">
-<%= form_for 'verify_code', url: verify_service_store_path  do |f| %>
+<%= form_for 'verify_code', url: verify_service_store_path(current_user.service_store)  do |f| %>
 	<br />
   <div class="box-w100">
   	<div class="box-w80 nogap-right">
