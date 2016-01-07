@@ -16,7 +16,7 @@ class ServiceStoresController < ApplicationController
   end
 
   def verify
-    order_item_ids = OrderItem.where(product_id: current_user.service_product_ids)
+    order_item_ids = OrderItem.where(product_id: current_user.service_product_ids).ids
     @verify_code = VerifyCode.where(code: params[:code], order_item_id: order_item_ids).first
 
     if @verify_code.present? && @verify_code.verify_code
