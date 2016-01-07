@@ -64,10 +64,6 @@ class OrderDivideJob < ActiveJob::Base
           @order_income -= divide_amount
         end
 
-        devide_income_for_city_manager do |divide_amount|
-          @order_income -= divide_amount
-        end
-
         SellingIncome.create!(user: @order.seller, amount: order_income, order: @order)
         @order.update_columns(income: order_income, sharing_rewared: true)
         @order.complete!
@@ -82,8 +78,9 @@ class OrderDivideJob < ActiveJob::Base
     seller = @order.seller
     if seller.service_rate && order_income > 0
       divide_income = (order_income * seller.service_rate / 100).truncate(2)
-      agent_divide_income = 0
+      agent_divide_income = city_divide_income = 0
 
+      # 商家创客分成
       if agent = seller.agent
         agent_divide_income = (divide_income / 2).truncate(2)
         divide_record = DivideIncome.create!(
@@ -95,7 +92,28 @@ class OrderDivideJob < ActiveJob::Base
           "Divide order: #{@order.number}, [CAgent id: #{divide_record.id}, amount: #{agent_divide_income} ]")
       end
 
-      official_divide_income = divide_income - agent_divide_income
+      # 区域运营商
+      enterprise = Certification.pass.find_by(
+        user_id: @order.seller_id,
+        type: %w(EnterpriseAuthentication PersonalAuthentication))
+      city_manager = if enterprise.present? && enterprise.city_code
+                       CityManager.find_by(city: enterprise.city_code)
+                     else
+                       nil
+                     end
+      if city_manager && city_manager.user
+        city_divide_income = (order_income * city_manager.rate / 100).truncate(2)
+        divide_record = DivideIncome.create!(
+          order: @order,
+          amount: city_divide_income,
+          user: city_manager.user
+        )
+        logger.info(
+          "Divide order: #{@order.number}, [CityManager id: #{divide_record.id}, amount: #{city_divide_income} ]")
+      end
+
+      # UBOSS平台
+      official_divide_income = divide_income - agent_divide_income - city_divide_income
       divide_record = DivideIncome.create!(
         order: @order,
         amount: official_divide_income,
@@ -103,25 +121,6 @@ class OrderDivideJob < ActiveJob::Base
       )
       logger.info(
         "Divide order: #{@order.number}, [OAgent id: #{divide_record.id}, amount: #{official_divide_income} ]")
-
-      yield divide_income
-
-    end
-  end
-
-  def devide_income_for_city_manager
-    enterprise = EnterpriseAuthentication.where(user_id: @order.seller_id).first
-    city_manager = CityManager.where(city: enterprise.city_code).first if enterprise
-
-    if city_manager && city_manager.user && order_income > 0
-      divide_income = (order_income * city_manager.rate / 100).truncate(2)
-      divide_record = DivideIncome.create!(
-        order: @order,
-        amount: divide_income,
-        user: city_manager.user
-      )
-      logger.info(
-        "Divide order: #{@order.number}, [OAgent id: #{divide_record.id}, amount: #{divide_income} ]")
 
       yield divide_income
 
