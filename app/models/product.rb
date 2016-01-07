@@ -34,6 +34,7 @@ class Product < ActiveRecord::Base
   delegate :cost_price, to: :supplier_product_info, allow_nil: true
   delegate :suggest_price_lower, to: :supplier_product_info, allow_nil: true
   delegate :suggest_price_upper, to: :supplier_product_info, allow_nil: true
+  delegate :content, to: 'supplier_product_info.description', prefix: 'supplier_des'
 
   enum status: { unpublish: 0, published: 1, closed: 2 }
 
