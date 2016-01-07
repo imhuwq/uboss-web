@@ -137,8 +137,13 @@ class Ability
 
   def grant_permissions_to_supplier user
     can :read, User, id: user.id
-    can :read, User, supplier_id: user.id
+    can :read, User, cooperation: { supplier_id: user.id }
     can :read, :sellers
+    can :new_supplier_product, Product if user.is_supplier?
+    can :create_supplier_product, Product if user.is_supplier?
+    can :show_supplier_product, Product do |product|
+      user.is_supplier? and product.supplier_product_info.supplier_id == user.id
+    end
   end
 
 end
