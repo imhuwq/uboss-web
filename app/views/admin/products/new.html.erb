@@ -13,7 +13,7 @@
 <div class="container nogap">
     <%= horizon_form_for @product, url: admin_products_path do |f| %>
 
-      <%= render 'fields', f: f %>
+      <%= render 'fields', f: f, supplier: false %>
 
     <% end %>
 
