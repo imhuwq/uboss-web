@@ -66,7 +66,7 @@
       <div class="form-group">
         <label class="control-label">代销说明</label>
         <div class="control-input">
-          <span class="control-txt"><%= raw @product.supplier_des_content%></span>
+          <span class="control-txt"><%= raw @product.supplier_des_content %></span>
         </div>
       </div>
     <% end %>
@@ -144,6 +144,9 @@
     <% if can? :edit, @product %>
       <%= link_to("编辑", url_for(:action=>:edit,:id=>@product.id), :class=>"btn btn-large blue-btn",:role=>"button") %>
     <% end %>　
+    <% if can? :edit_supplier_product, @product %>
+      <%= link_to("编辑", url_for(:action=>:edit_supplier_product,:id=>@product.id), :class=>"btn btn-large blue-btn",:role=>"button") %>
+    <% end %>
     <%= link_to("手机效果", url_for(:action=>:pre_view,:id=>@product.id), :class=>"btn btn-large yellow-btn",:role=>"button",:target=>"_blank") %>　
     <% if can? :update, @product %>
       <% if @product.status == 'unpublish' %>

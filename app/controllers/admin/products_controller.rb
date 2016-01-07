@@ -52,8 +52,18 @@ class Admin::ProductsController < AdminController
   end
 
   def show_supplier_product
-    @product = Product.find_by(id: params[:id])
     authorize! :show_supplier_product, @product
+  end
+
+  def update_supplier_product
+    authorize! :update_supplier_product, @product
+    if @product.update(product_params)
+      flash[:success] = '保存成功'
+      redirect_to action: :show_supplier_product, id: @product.id
+    else
+      flash[:error] = "保存失败。#{@product.errors.full_messages.join('<br/>')}"
+      render :edit_supplier_product
+    end
   end
 
   def update
@@ -64,6 +74,10 @@ class Admin::ProductsController < AdminController
       flash.now[:error] = "保存失败。#{@product.errors.full_messages.join('<br/>')}"
       render :edit
     end
+  end
+
+  def edit_supplier_product
+    authorize! :edit_supplier_product, @product
   end
 
   def change_status
@@ -112,6 +126,10 @@ class Admin::ProductsController < AdminController
   
 
   private
+
+  def set_product
+    @product = Product.find_by(id: params[:id])
+  end
 
   def product_propertys_params
     params.permit(product_propertys_names: [])
