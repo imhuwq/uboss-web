@@ -9,6 +9,9 @@ class BonusRecord < ActiveRecord::Base
 
   after_create :increase_user_bonus_benefit, if: :directly_assign
 
+  scope :actived, -> { where(actived: true) }
+  scope :unactived, -> { where("bonus_records.actived != ? OR bonus_records.actived IS NULL", true) }
+
   private
 
   def user_required

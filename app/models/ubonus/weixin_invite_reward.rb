@@ -8,6 +8,17 @@ class Ubonus::WeixinInviteReward < BonusRecord
 
   scope :with_properties, -> (conditions) { where("properties @> ?", conditions.to_json) }
 
+  def self.active_with_to_wx_user(user_id)
+    user = User.find_by(id: user_id)
+    return false if user.blank?
+
+    with_properties(to_wx_user_id: user.weixin_openid).unactived.each do |wx_reward|
+      wx_reward.user = user
+      wx_reward.save(validate: false)
+      wx_reward.active_with_to_wx_user
+    end
+  end
+
   def active_with_to_wx_user
     return true if reload.actived
     return false if self.user.blank?

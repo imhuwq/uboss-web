@@ -103,6 +103,9 @@ class User < ActiveRecord::Base
   before_create :build_service_store, if: -> { service_store.blank? }
   before_create :skip_confirmation!
   before_save   :set_service_rate
+  after_save    :grant_weixin_invite_reward, if: -> {
+    weixin_openid.present? && changes.include?(:weixin_openid)
+  }
   after_commit  :invoke_rongcloud_job, on: [:create, :update]
 
   scope :admin, -> { where(admin: true) }
@@ -222,7 +225,7 @@ class User < ActiveRecord::Base
 
     def find_or_create_guest_with_session(mobile, session)
       user = find_by(login: mobile)
-      user ||= create_guest(mobile)
+      user ||= new_guest(mobile)
       user.update_with_oauth_session(session)
       user
     end
@@ -508,6 +511,10 @@ class User < ActiveRecord::Base
     if self.agent_id_changed? && user_info.present?
         user_info.service_rate = 5
     end
+  end
+
+  def grant_weixin_invite_reward
+    Ubonus::WeixinInviteReward.delay_for(5.seconds).active_with_to_wx_user(self.id)
   end
 
 end
