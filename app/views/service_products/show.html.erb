@@ -125,7 +125,7 @@
 	      <%= image_tag @service_store.store_cover_url(:w120) %>
 	    </div>
 			<div class="content">
-				<%= link_to  store_path(@seller, type: 'service'),class:'btn btn-main-border pull-right' do%>
+				<%= link_to  service_store_path(@seller.service_store),class:'btn btn-main-border pull-right' do%>
 	       	进店逛逛
 	      <%end%>
 		    <h4 class="name text-cut"><%= @service_store.store_name %></h4>

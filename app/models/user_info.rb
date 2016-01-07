@@ -14,8 +14,22 @@ class UserInfo < ActiveRecord::Base
   def store_logo=(file)
     store_logo.avatar=(file)
   end
+
   def store_logo
     super || build_store_logo
+  end
+
+  def store_title
+    if store_name.blank?
+      nil
+    else
+      short_desc = store_short_description.blank? ? nil : store_short_description
+      [store_name, short_desc].compact.join(" | ")
+    end
+  end
+
+  def store_identify
+    store_name || user.nickname || user.mobile || 'UBOSS商家'
   end
 
   mount_uploader :store_banner_one, ImageUploader

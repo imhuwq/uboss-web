@@ -1,8 +1,21 @@
 class ServiceStoresController < ApplicationController
+  include SharingResource
+
   layout 'mobile'
+
+  before_action :login_app, only: [:show]
 
   def index
     @service_store = current_user.service_store
+  end
+
+  def show
+    @service_store = ServiceStore.find(params[:id])
+    @seller = @service_store.user
+    get_sharing_node
+    set_sharing_link_node
+    @voucher_products = append_default_filter @service_store.service_products.vouchers.published, order_column: :updated_at
+    @group_products = append_default_filter @service_store.service_products.groups.published, order_column: :updated_at
   end
 
   def share

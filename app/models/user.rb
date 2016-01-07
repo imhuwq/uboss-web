@@ -80,7 +80,7 @@ class User < ActiveRecord::Base
     :recommend_resource_one_id, :recommend_resource_two_id, :recommend_resource_thr_id,
     :recommend_resource_one_id=, :recommend_resource_two_id=, :recommend_resource_thr_id=,
     :store_short_description, :store_short_description=, :store_cover, :store_cover=, :bonus_benefit,
-    :store_logo_url, :store_logo=, :store_logo,
+    :store_logo_url, :store_logo=, :store_logo, :store_title, :store_identify,
     :good_reputation_rate, :total_reputations,
     to: :ordinary_store, allow_nil: true
 
@@ -288,19 +288,6 @@ class User < ActiveRecord::Base
 
   def identify
     nickname || mobile || 'UBOSS用户'
-  end
-
-  def store_title
-    if store_name.blank?
-      nil
-    else
-      short_desc = store_short_description.blank? ? nil : store_short_description
-      [store_name, short_desc].compact.join(" | ")
-    end
-  end
-
-  def store_identify
-    store_name || nickname || mobile || 'UBOSS商家'
   end
 
   def total_income

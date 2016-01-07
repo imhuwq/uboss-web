@@ -89,13 +89,13 @@
       <% size = order_item.verify_codes.size %>
       <% order_item.verify_codes.each_with_index do |verify_code, index| %>
         <div class="service-code bg-white gap m-bottom10">
-        	<span class="pull-left gray-color">验证券密码 ：</span> 
-        	<span class="main-color"><%= verify_code.code %></span> 
+        	<span class="pull-left gray-color">验证券密码 ：</span>
+        	<span class="main-color"><%= verify_code.code %></span>
         	<span class="status-icon"><%= verify_code.verified ? '已消费' : '未使用' %></span>
         </div> 
       <% end %>
       <div class="gap">
-        <p><a href="<%= store_path(id: @product.user_id, type: 'service') %>" class="btn btn-block btn-large btn-black-border">返回店铺首页</a></p>
+        <p><a href="<%= service_store_path(@product.service_store) %>" class="btn btn-block btn-large btn-black-border">返回店铺首页</a></p>
       </div>
       <br />
     <% else %>

@@ -98,6 +98,7 @@ class Ability
     can :create, WithdrawRecord, user_id: user.id
     can :manage, BankCard, user_id: user.id
     can :read, Product, user_id: user.id
+    can :read, ServiceProduct, user_id: user.id
     can :read, ServiceStore, user_id: user.id
     can :read, VerifyCode, user_id: user.id
     can :read, Evaluation, user_id: user.id
@@ -124,6 +125,7 @@ class Ability
     can :handle, :sellers
     can :read, Order
     can :read, Product
+    can :read, ServiceProduct
     can :manage, User, { user_roles: { name: %w(seller agent offical_operating) } }
     can :manage, PersonalAuthentication
     can :manage, EnterpriseAuthentication
