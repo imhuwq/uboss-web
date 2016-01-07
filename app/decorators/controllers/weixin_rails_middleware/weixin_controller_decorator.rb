@@ -34,7 +34,7 @@ WeixinRailsMiddleware::WeixinController.class_eval do
     def response_image_message(options={})
       @media_id = @weixin_message.MediaId # 可以调用多媒体文件下载接口拉取数据。
       @pic_url  = @weixin_message.PicUrl  # 也可以直接通过此链接下载图片, 建议使用carrierwave.
-      reply_image_message WxApiService::CUSTOMER_MESSAGE#(generate_image(@media_id))
+      reply_text_message WxApiService::CUSTOMER_MESSAGE#(generate_image(@media_id))
     end
 
     # <Title><![CDATA[公众平台官网链接]]></Title>
@@ -53,8 +53,8 @@ WeixinRailsMiddleware::WeixinController.class_eval do
       @media_id = @weixin_message.MediaId # 可以调用多媒体文件下载接口拉取数据。
       @format   = @weixin_message.Format
       # 如果开启了语音翻译功能，@keyword则为翻译的结果
-      # reply_text_message("回复语音信息: #{@keyword}")
-      reply_voice_message WxApiService::CUSTOMER_MESSAGE#(generate_voice(@media_id))
+      reply_text_message WxApiService::CUSTOMER_MESSAGE#("回复语音信息: #{@keyword}")
+      # reply_voice_message WxApiService::CUSTOMER_MESSAGE#(generate_voice(@media_id))
     end
 
     # <MediaId><![CDATA[media_id]]></MediaId>
