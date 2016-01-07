@@ -7,7 +7,6 @@ set :application, 'ssobu'
 set :hostname,'op.uboss.me'
 set :deploy_user, 'deploy'
 set :deploy_to, "/home/#{fetch(:deploy_user)}/rails/#{fetch(:application)}"
-set :shared_path, "/home/#{fetch(:deploy_user)}/rails/#{fetch(:application)}/shared"
 
 set :scm, :git
 set :repo_url, 'git@gitlab.ulaiber.com:uboss/uboss-web.git'
