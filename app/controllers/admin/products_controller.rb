@@ -31,7 +31,7 @@ class Admin::ProductsController < AdminController
       flash[:success] = '产品创建成功'
       redirect_to action: :show, id: @product.id
     else
-      flash[:error] = "#{@product.errors.full_messages.join('<br/>')}"
+      flash.now[:error] = "#{@product.errors.full_messages.join('<br/>')}"
       render :new
     end
   end
@@ -41,7 +41,7 @@ class Admin::ProductsController < AdminController
       flash[:success] = '保存成功'
       redirect_to action: :show, id: @product.id
     else
-      flash[:error] = "保存失败。#{@product.errors.full_messages.join('<br/>')}"
+      flash.now[:error] = "保存失败。#{@product.errors.full_messages.join('<br/>')}"
       render :edit
     end
   end

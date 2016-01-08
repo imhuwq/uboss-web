@@ -22,7 +22,7 @@ class Admin::WithdrawRecordsController < AdminController
     if @withdraw_record.save
       redirect_to [:admin, @withdraw_record]
     else
-      flash[:error] = model_errors(@withdraw_record).join('<br/>')
+      flash.now[:error] = model_errors(@withdraw_record).join('<br/>')
       render :new
     end
   end

@@ -40,7 +40,7 @@ class Admin::EnterpriseAuthenticationsController < AdminController
     valid_create_params
     @enterprise_authentication = EnterpriseAuthentication.new(enterprise_authentication_params)
     if @errors.present?
-      flash[:error] = @errors.join("\n")
+      flash.now[:error] = @errors.join("\n")
       render 'new'
       return
     else
@@ -50,7 +50,7 @@ class Admin::EnterpriseAuthenticationsController < AdminController
         flash[:success] = '保存成功'
         redirect_to action: :show
       else
-        flash[:error] = "保存失败：#{@enterprise_authentication.errors.full_messages.join('<br/>')}"
+        flash.now[:error] = "保存失败：#{@enterprise_authentication.errors.full_messages.join('<br/>')}"
         render 'new'
       end
     end
