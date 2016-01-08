@@ -59,15 +59,22 @@ class WxScene < ActiveRecord::Base
       exp_time: expire_at.strftime('%Y-%m-%d'),
       mode: 0
     }.to_param
+    image_url = "http://imager.ulaiber.com/req/0?#{request_image_query_param}"
 
-    media_response = $weixin_client.upload_media("http://imager.ulaiber.com/req/0?#{request_image_query_param}", 'image')
-    if media_response.is_ok?
-      update_properties(
-        qrcode_media_id: media_response.result['media_id']
-      )
-      true
-    else
-      Rails.logger.info("上传邀请二维码失败, response: #{media_response}")
+    begin
+      media_response = $weixin_client.upload_media(image_url, 'image')
+      if media_response.is_ok?
+        update_properties(
+          qrcode_media_id: media_response.result['media_id']
+        )
+        true
+      else
+        Rails.logger.info("上传邀请二维码失败, response: #{media_response}")
+        false
+      end
+    rescue => e
+      Rails.logger.info("上传邀请二维码失败, url: #{image_url} error: #{e.message}")
+      Rails.logger.error e.backtrace.inspect
       false
     end
   end
