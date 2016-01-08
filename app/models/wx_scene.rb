@@ -1,3 +1,5 @@
+require 'emoji_cleaner'
+
 class WxScene < ActiveRecord::Base
 
   validates_presence_of :expire_at
@@ -54,7 +56,7 @@ class WxScene < ActiveRecord::Base
 
     request_image_query_param = {
       qrcode_content: properties['scene_url'],
-      username: nickname,
+      username: EmojiCleaner.clear(nickname),
       num: Ubonus::WeixinInviteReward.with_properties(to_wx_user_id: properties['weixin_openid']).count,
       exp_time: expire_at.strftime('%Y-%m-%d'),
       mode: 0
