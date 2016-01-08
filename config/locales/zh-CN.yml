@@ -18,6 +18,7 @@ zh-CN:
     image_captcha: 图片验证码
     mobile_captcha: 手机验证码
     bank_card: 银行卡
+    bank_card_id: 银行卡
     bankname: 银行名称
     user_name: 账户名
     user: 用户
