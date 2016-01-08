@@ -1,10 +1,13 @@
 # 提现
 class WithdrawRecordsController < ApplicationController
-	def show
+    
+  def show
+	render layout: 'mobile'
   end
 
   def new
     @withdraw_record = WithdrawRecord.new(amount: nil)
+    render layout: 'mobile'
   end
 
   def create
@@ -21,5 +24,6 @@ class WithdrawRecordsController < ApplicationController
 
   def success
     @withdraw_record = WithdrawRecord.find(params[:id])
+    render layout: 'mobile'
   end
 end
