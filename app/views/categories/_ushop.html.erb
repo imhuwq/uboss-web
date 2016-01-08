@@ -55,7 +55,7 @@
 <div class="bg-white m-bottom10">
 	<div class="box store-list"  id="category-list">
 	  <% if @products.present? %>
-	      <%= render partial: 'stores/product', collection: @products %>
+	      <%= render partial: 'product', collection: @products %>
 	  <% else %>
 	    <h2 class="page-title text-center">店家正在准备好货，敬请期待</h2>
 	  <% end %>

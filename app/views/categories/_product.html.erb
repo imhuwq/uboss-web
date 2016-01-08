@@ -1,1 +1,15 @@
-_product.html.erb
+<% cache ['store-product', product], expires_in: 1.day do %>
+  <div class="box-w50 p-item" timestamp="<%= product.updated_at %>">
+    <div class="product-box">
+      <div class="cover">
+        <%= link_to '', product,
+          style: "background-image:url(#{product.image_url(:w320)})",
+          class:'img',
+          title:"#{product.name}" %>
+        <%= image_tag("mobile/img.jpg") %>
+      </div>
+      <div class="title"><%= product.name %></div>
+      <div class="price">￥<%= product.min_price %> </div>
+    </div><!-- product-box -->
+  </div><!-- box-w50 -->
+<% end %>
