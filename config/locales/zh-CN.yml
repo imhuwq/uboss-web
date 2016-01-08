@@ -293,6 +293,7 @@ zh-CN:
   service_order_status_bar:
     unpay: 待付款
     payed: 待消费
+    unevaluate: 待评价
     completed: 交易完成
     closed: 订单关闭
   enums:
@@ -342,6 +343,7 @@ zh-CN:
         unpay: 未付款
         payed: 待消费
         expensed: 已消费
+        unevaluate: 待评价
         completed: 已完成
         closed: 关闭
     order_charge:

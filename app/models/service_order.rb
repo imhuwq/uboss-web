@@ -22,6 +22,11 @@ class ServiceOrder < Order
     end
   end
 
+  # 增加未评价状态
+  def state
+    super == "completed" && order_item.evaluations.size == 0 ? "unevaluate" : super
+  end
+
   def order_item
     order_items.first
   end

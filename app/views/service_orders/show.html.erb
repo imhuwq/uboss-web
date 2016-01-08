@@ -52,7 +52,15 @@
 
   <div class="bg-white m-bottom10">
     <div class="gap border-box">
-      <div class="pull-right">有效期至：<%= strftime(@order_item.product.deadline) %></div>
+      <% if !@order.completed? %>
+        <div class="pull-right">有效期至：<%= strftime(@order_item.product.deadline) %></div>
+      <% else %>
+        <% if @order_item.evaluations.size > 0 %>
+          <%= link_to "追评", append_evaluation_path(id: @order_item.id), class: 'btn btn-small btn-orange pull-right' %>
+        <% else %>
+          <%= link_to "评价", new_evaluation_path(id: @order_item.id), class: 'btn btn-small btn-orange pull-right' %>
+        <% end %>
+      <% end %>
       <div class="text-cut">验证券</div>
     </div>
     <% @order_item.verify_codes.each do |verify_code| %>
