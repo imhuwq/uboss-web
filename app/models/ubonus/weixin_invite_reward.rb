@@ -61,9 +61,8 @@ class Ubonus::WeixinInviteReward < BonusRecord
   end
 
   def uniq_with_form_and_to_weixin_openid
-    if self.class.where.not(id: self.id).
-        with_properties(from_wx_user_id: from_wx_user_id, to_wx_user_id: to_wx_user_id).exists?
-      errors.add(:base, '已邀请')
+    if self.class.where.not(id: self.id).with_properties(from_wx_user_id: from_wx_user_id).exists?
+      errors.add(:base, '已被邀请')
     end
   end
 
