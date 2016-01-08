@@ -12,7 +12,7 @@ class Admin::VerifyCodesController < AdminController
   end
 
   def statistics
-    @service_products = current_user.service_products.published
+    @service_products = current_user.service_products
     @total = VerifyCode.total(current_user).size
     @today = VerifyCode.today(current_user).size
   end
