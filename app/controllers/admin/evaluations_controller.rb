@@ -1,6 +1,6 @@
 class Admin::EvaluationsController < AdminController
   def index
-    @order_items = OrderItem.where(user: current_user)
+    @order_items = OrderItem.where(product_id: current_user.service_product_ids, user: current_user)
     filter_type_by_params
     total
   end
