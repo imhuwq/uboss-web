@@ -11,6 +11,9 @@
     </thead>
     <tbody>
       <% @order_items.each do |item| %>
+        <% if item.evaluations.size == 0 %>
+          <% next %>
+        <% end %>
         <tr>
           <td class='none-border-bottom'>
 					  <%= link_to admin_service_product_path(item.product) do %>
