@@ -18,7 +18,7 @@ class ServiceProduct < Product
   scope :published, -> { where(status: 1) }
 
   def total_sales_volume
-    order_ids = ServiceOrder.where(id: order_items.map(&:order_id)).payed.ids
+    order_ids = ServiceOrder.where(id: order_items.map(&:order_id)).has_payed.ids
     order_items.where(order_id: order_ids).map(&:amount).sum
   end
 
