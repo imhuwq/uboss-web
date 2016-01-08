@@ -27,6 +27,10 @@ class ServiceOrder < Order
     super == "completed" && order_item.evaluations.size == 0 ? "unevaluate" : super
   end
 
+  def paid_and_expensed?
+    paid? && verify_codes.any? { |verify_code| verify_code.verified }
+  end
+
   def order_item
     order_items.first
   end
