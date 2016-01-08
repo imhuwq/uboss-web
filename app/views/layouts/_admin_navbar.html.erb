@@ -40,7 +40,7 @@
           <%= can_li_link(:manage, UserAddress, admin_user_addresses_path) %>
         <% end %>
         <%= nav_group :service_manage do %>
-          <%= can_li_link(:manage, ServiceProduct, admin_service_products_path) %>
+          <%= can_li_link(:read, ServiceProduct, admin_service_products_path) %>
           <%= can_li_link(:manage, ServiceStore, edit_admin_service_store_path(current_user.service_store)) %>
           <%= can_li_link(:manage, VerifyCode, admin_verify_codes_path) %>
           <%= can_li_link(:manage, Evaluation, admin_evaluations_path) %>
