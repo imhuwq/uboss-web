@@ -7,7 +7,7 @@
   	<table>
   		<tr>
   			<td> 目前可提现金额 </td>
-  			<td class="text-right"> <%= current_user.income %> 元 </td>
+  			<td class="text-right"> <%= number_to_currency current_user.income %> 元 </td>
   		</tr>
   		<tr>
   			<td class="gray-color"> 最低提现金额 </td>
