@@ -20,7 +20,7 @@ class WxApiJob < ActiveJob::Base
   def handle_scene_qrcode
     wx_scene = options[:wx_scene].reload
 
-    if false#wx_scene.properties['scene_url'].blank? || wx_scene.expired?
+    if true#wx_scene.properties['scene_url'].blank? || wx_scene.expired?
       if wx_scene.request_wx_qrcode
         Rails.logger.info('生成二维码图片成功')
       else
