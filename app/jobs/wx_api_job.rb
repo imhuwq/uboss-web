@@ -1,6 +1,6 @@
 class WxApiJob < ActiveJob::Base
 
-  queue_as :default
+  queue_as :weixin_api
 
   attr_reader :options
 
@@ -20,7 +20,7 @@ class WxApiJob < ActiveJob::Base
   def handle_scene_qrcode
     wx_scene = options[:wx_scene].reload
 
-    if wx_scene.properties['scene_url'].blank? || wx_scene.expired?
+    if false#wx_scene.properties['scene_url'].blank? || wx_scene.expired?
       if wx_scene.request_wx_qrcode
         Rails.logger.info('生成二维码图片成功')
       else
@@ -28,7 +28,7 @@ class WxApiJob < ActiveJob::Base
       end
     end
 
-    if wx_scene.properties['qrcode_media_id'].present?
+    if false#wx_scene.properties['qrcode_media_id'].present?
       $weixin_client.send_text_custom(
         wx_scene.properties['weixin_openid'],
         "获取二维码成功，将在#{wx_scene.expire_at.strftime('%Y-%m-%d')}失效，邀请好友一起来UBOSS吧"

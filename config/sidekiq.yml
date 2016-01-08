@@ -8,6 +8,7 @@ production:
 :queues:
   - default
   - [orders, 2]
-  - [agent_orders, 9]
+  - [agent_orders, 2]
   - [auto_sign_order, 5]
-  - [mailer, 5]
+  - [weixin_api, 7]
+  - [mailer, 8]
