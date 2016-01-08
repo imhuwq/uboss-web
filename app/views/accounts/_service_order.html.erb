@@ -48,6 +48,15 @@
     </div><!-- friend-info -->
   <% end %>
 
+  <% if service_order.seller_bonus > 0 %>
+    <div class="friend-info">
+      <div class="content">
+        <span class="pull-right red-color">-<%= service_order.seller_bonus %></span>
+        红包优惠
+      </div>
+    </div><!-- friend-info -->
+  <% end %>
+
   <div class="price-box <%= 'gray-color' if service_order.state == 'closed' %> ">
     合计：￥<%= service_order.pay_amount %><small class="gray-color"></small>
   </div><!-- price-box -->

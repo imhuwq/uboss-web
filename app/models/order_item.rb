@@ -45,6 +45,10 @@ class OrderItem < ActiveRecord::Base
     present_price - privilege_amount
   end
 
+  def total_price
+    present_price*amount
+  end
+
   def refund_money
     if order_item_refund_id.present?
       OrderItemRefund.find(order_item_refund_id).money

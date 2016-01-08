@@ -41,22 +41,6 @@
     </div><!-- content -->
   </div><!-- order-box -->
 
-  <% if @order.sharing_user.present? %>
-    <div class="friend-info">
-      <div class="cover">
-        <%= image_tag @order.sharing_user.avatar_url(:thumb) %>
-      </div>
-      <div class="content">
-        <span class="pull-right red-color">-<%= @order.total_privilege_amount %></span>
-        <span class="main-color"><%= @order.sharing_user.identify %></span> 帮你优惠
-      </div>
-    </div><!-- friend-info -->
-  <% end %>
-
-	<div class="price-box">
-	  合计￥<%= @order.pay_amount %>
-	</div><!-- price-box -->
-
 </div><!-- order-list -->
 
 <% if @order.available_pay? %>
@@ -74,11 +58,11 @@
     <% @order_item.verify_codes.each do |verify_code| %>
     	<div class="service-code gap border-box">
     		<div class="pull-right">
-    		<% if verify_code.verified %>       
-      		<span class="red-color">已消费</span>      		
+    		<% if verify_code.verified %>
+      		<span class="red-color">已消费</span>
       	<% else %>
       		<span class="like-color">待消费</span>
-      	<% end %>        
+      	<% end %>
       	</div>
       	<span class="main-color"><%= verify_code.code %></span>
     	</div>
@@ -88,9 +72,9 @@
 
 <!-- 店铺信息-->
 <div class="bg-white gap">
-  <div class="service-store-info">  	
-    <%= image_tag('mobile/mobile.png',class:'pull-right store-tel') %>    
-    <div class="content">      
+  <div class="service-store-info">
+    <%= image_tag('mobile/mobile.png', class:'pull-right store-tel') %>
+    <div class="content">
       <div class="address text-cut m-bottom10"><%= @service_store.address %></div>
       <div class="open-time">营业时间：<%= @service_store.business_hours %></div>
     </div>
@@ -99,10 +83,10 @@
 <div class="pop-bg phone-list hidden ">
 	<div class="pop-bottom">
 		<div class="bg-white m-bottom10  border-radius">
-			<% @service_store.mobile_phone.each do |phone| %>			  
-			  <%= link_to  phone ,"tel:#{phone}" %>			  
+			<% @service_store.mobile_phone.each do |phone| %>
+			  <%= link_to  phone ,"tel:#{phone}" %>
 			<% end %>
-		</div><!-- bg-white -->	
+		</div><!-- bg-white -->
 		<div class="btn btn-block btn-large btn-white ">取消</div>
 	</div><!-- pop-bottom -->
 </div>
@@ -114,6 +98,15 @@
   <p>下单时间：<%= @order.created_at %></p>
   <% if @order.paid_at %>
     <p>支付时间：<%= @order.paid_at %> </p>
+    <p>团购总价：<%= @order_item.total_price %> </p>
+    <p>数量：<%= @order_item.amount %> </p>
+    <% if @order.total_privilege_amount != 0 %>
+      <p>友情卡优惠：<%= @order.total_privilege_amount %> </p>
+    <% end %>
+    <% if @order.seller_bonus != 0 %>
+      <p>红包优惠：<%= @order.seller_bonus %> </p>
+    <% end %>
+    <p>实付金额：<%= @order.paid_amount %> </p>
   <% end %>
 </div>
 

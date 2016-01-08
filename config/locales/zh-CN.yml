@@ -75,7 +75,7 @@ zh-CN:
     province:  省
     country: 国家
     city: 城市
-    area: 区/县
+    area: 地区
     building: 详细地址
     product_inventories: 库存/规格
   simple_form:
@@ -122,7 +122,7 @@ zh-CN:
         province:  省
         country: 国家
         city: 城市
-        area: 区/县
+        area: 地区
         street: 街道
         building: 详细地址
       personal_authentication:

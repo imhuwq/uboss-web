@@ -35,16 +35,27 @@ class ServiceOrderForm
     @sharing_node
   end
 
-  def privilege_amount
-    sharing_node.present? ? sharing_node.privilege_amount(self.product_inventory) : 0.0
+  def seller_bonus
+    privilege_bonus = product_inventory.privilege_amount
+    bonus_benefit = buyer.bonus_benefit
+    total_privilege_bonus = privilege_bonus*amount.to_i
+    total_privilege_bonus > bonus_benefit ? bonus_benefit : total_privilege_bonus
+  end
+
+  def privilege_bonus
+    sharing_node.present? ? sharing_node.privilege_card.amount(product_inventory) : 0
+  end
+
+  def total_privilege_bonus
+    privilege_bonus*amount.to_i
   end
 
   def total_privilege_amount
-    privilege_amount*amount.to_i
+    total_privilege_bonus + seller_bonus
   end
 
   def total_price
-    product.present_price*amount.to_i - total_privilege_amount
+    product.present_price*amount.to_i - total_privilege_bonus - seller_bonus
   end
 
   def save
