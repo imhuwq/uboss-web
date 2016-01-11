@@ -1,12 +1,12 @@
 <% if params[:action] == 'show' && @hots.present? %>
-	<div class="page-title like-color gap m-top10 m-bottom10">
+	<div class="page-title like-color gap">
       <%= link_to hots_store_path(@seller), class: 'more-bar' do %>
         more
     	<% end %>
     	热销商品
     </div>
   </div>
-  <div class="bg-white">
+  <div class="bg-white m-bottom10">
     <div class="box">
       <div class="box-w100">          
       <%= render partial: 'hot_product', collection: @hots, as: :product %>
@@ -65,7 +65,7 @@
 <div class="bg-white m-bottom10">
   <% unless action_name == 'hots' %>
   <div class="category-nav">
-    <div class="tab active" ><span>分组</span></div>
+    <a class="tab active" href="#"><span>分组</span></a>
     <a class="tab" href="#product-container"><span>全部商品</span></a>
   </div>
   <% end %>
@@ -86,10 +86,16 @@
 <% end %>
 
 <div class="bg-white m-bottom10" id="product-container">
-  <div class="tab-nav sort-nav">
-    <a class="tab <%= params[:order] == nil ? '' : 'active' %>" href="/stores/<%= params[:id] %>#product-container"><span>综合排序</span></a>
-    <a class="tab <%= params[:order] == 'published_at' ? '' : 'active' %>" href="/stores/<%= params[:id] %>?order=published_at#product-container"><span>新品上架</span></a>
-    <a class="tab <%= params[:order] == 'sales_amount' ? '' : 'active' %>" href="/stores/<%= params[:id] %>?order=sales_amount#product-container"><span>人气热销</span></a>
+  <div class="sort-nav">
+  	<div class="sort-tab <%= params[:order] == nil ? 'active' : '' %>">
+    	<a href="/stores/<%= params[:id] %>#product-container">综合排序</a>
+   	</div>
+   	<div class="sort-tab <%= params[:order] == 'published_at' ? 'active' : '' %>">
+    	<a href="/stores/<%= params[:id] %>?order=published_at#product-container">新品上架</a>
+    </div>
+    <div class="sort-tab <%= params[:order] == 'sales_amount' ? 'active' : '' %>">
+    	<a href="/stores/<%= params[:id] %>?order=sales_amount#product-container">人气热销</a>
+  	</div>
   </div>
   <div class="tab-container">
     <div class="tab-content sort-list container" id="sort-container1" style="display: block;">

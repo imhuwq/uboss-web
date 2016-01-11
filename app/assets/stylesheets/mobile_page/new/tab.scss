@@ -29,16 +29,19 @@
     display: block;
     margin: 0;
     padding: 0;
-    .tab,.tab.active{
+    .tab{
         display: inline-block;
         width: auto;
         margin: 0;
-        padding: 0 0 0 10px;
-        span{
-            display: block;
-            padding: 10px 20px;
-        }
+        padding: 10px 20px;
+        color: #888;
+        margin-left: 10px;
+        
     }
+    .tab.active {
+        color:$brand-primary ;
+        border-bottom: 2px solid $brand-primary;
+    }        
 }
 .service-store-nav{
     background: none;
@@ -83,7 +86,7 @@
 .sort-nav{
     margin-bottom: 0;
     a{
-        color: #444;
+        color: #888;
         display: block;
         border-right: 1px solid #ddd;
         padding: 0px 10px;
