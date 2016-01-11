@@ -638,6 +638,19 @@ ActiveRecord::Schema.define(version: 20160113024643) do
   add_index "supplier_product_infos", ["product_id"], name: "index_supplier_product_infos_on_product_id", using: :btree
   add_index "supplier_product_infos", ["supplier_id"], name: "index_supplier_product_infos_on_supplier_id", using: :btree
 
+  create_table "supplier_product_inventories", force: :cascade do |t|
+    t.decimal  "cost_price"
+    t.decimal  "suggest_price_lower"
+    t.decimal  "suggest_price_upper"
+    t.integer  "quantity"
+    t.boolean  "for_sale",             default: true
+    t.integer  "product_inventory_id"
+    t.datetime "created_at",                          null: false
+    t.datetime "updated_at",                          null: false
+  end
+
+  add_index "supplier_product_inventories", ["product_inventory_id"], name: "index_supplier_product_inventories_on_product_inventory_id", using: :btree
+
   create_table "transactions", force: :cascade do |t|
     t.integer  "user_id"
     t.decimal  "current_amount", default: 0.0
