@@ -19,3 +19,7 @@ end
 every 1.day, at: "1:50am", roles: [:db] do
   rake "statistics:product_order"
 end
+
+every :tuesday, at: "2:50am", roles: [:db] do
+  rake "statistics:count_product_sales_amount"
+end
