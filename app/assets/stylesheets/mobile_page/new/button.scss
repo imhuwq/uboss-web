@@ -50,13 +50,13 @@
 
 .btn-like{
   background: image-url('mobile/like.png') no-repeat;
-  background-position: 0 -18px;
+  background-position: 0 -15px;
   background-size: 20px auto;
   padding-left: 25px;
   color: #aaa;
 }
 .btn-like.active{
-  background-position: 0 5px;
+  background-position: 0 7px;
 }
 .btn-delete{
   background: image-url('mobile/delete.png') no-repeat center right;
