@@ -31,7 +31,7 @@ class VerifyCode < ActiveRecord::Base
 
   def generate_code
     loop do
-      tmp_number = SecureRandom.random_number(100000000000)
+      tmp_number = SecureRandom.random_number(100000000000).to_s.center(10, rand(9).to_s)
       unless VerifyCode.find_by(code: tmp_number)
         self.code = tmp_number and break
       end
