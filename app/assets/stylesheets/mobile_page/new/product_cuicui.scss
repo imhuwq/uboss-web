@@ -24,7 +24,7 @@
     }
 
     .share_content {
-      padding: 10px 5px;
+      padding: 5px;
       overflow: hidden;
       color: #888;
       text-align: center;
@@ -39,7 +39,7 @@
     background: $brand-primary;
     color: #fff;
     border: none;
-    font-size: 15px;
+    font-size: 16px;
   }
   .chat-btn{
   }
@@ -226,7 +226,7 @@
   .count-box {
     background: #f6f6f6;
     input[type="tel"]{
-      height: 19px;
+      height: 20px;
       padding: 2px 5px;
       width: 30px;
       text-align: center;
@@ -237,8 +237,7 @@
     .count_icon{
         display: inline-block;
         background: none;
-        border: 1px solid #43C3AA;
-        padding: 2px 5px;
+        padding: 3px 5px;
         text-align: center;
         span{
             display: inline-block;

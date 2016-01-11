@@ -1,3 +1,40 @@
+.account-icon{
+    background: image-url('mobile/account-icon.png') no-repeat;
+    background-size:30px auto ;
+    margin-top: 10px;
+    width: 30px;
+    height: 26px;
+    display: inline-block;
+    position: relative;
+    text-align: center;
+    &.icon1{
+        background-position:0 0 ;
+    }
+    &.icon2{
+        background-position:0 -47px ;
+    }
+    &.icon3{
+        background-position:0 -94px ;
+    }
+    &.icon4{
+        background-position:0 -141px ;
+    }
+    &.icon5{
+        background-position:0 0 ;
+    }
+    .num{
+        min-width: 16px;
+        line-height: 16px;
+        font-size: 10px;
+        color: #fff;
+        background: $brand-primary;
+        border-radius: 20px;
+        display: block;
+        position: absolute;
+        top: -5px;
+        right: -5px;
+    }
+}
 .invite-title{
     font-size: 18px;
     padding:20px 4px;
@@ -46,7 +83,7 @@
     }
     .name{
         text-align: left;
-        font-size: 15px;
+        font-size: 16px;
     }
     .setting-icon{
         width:30px;
@@ -59,18 +96,20 @@
     }
 }
 .privilege-rate{
-    padding:0 10px;
-    margin-bottom: 8px;
     background: #fff;
     a{
         display: block;
-        padding:10px 0;
-        background: image-url('mobile/gray-arrow-right.png') no-repeat right center;
-        background-size:10px;
-        font-size: 15px;
-        color: #333;
+        background: image-url('mobile/gray-arrow-right.png') no-repeat right center #f6f6f6;
+        background-position-x: 97%;
+        background-size:8px auto;
+        padding-right: 30px;
+        color: #555;
         line-height: 20px;
+        &.bg-white{
+            background-color: #fff;
+        }
     }
+    
 
 }
 .privilege-form{
@@ -81,8 +120,8 @@
 .share-card {
     background: #fff;
     overflow: hidden;
-    margin-bottom: 8px;
     line-height: 20px;
+    border-bottom: 1px solid #eee;
     .cover{
         float: right;
         margin-left: 10px;
@@ -94,7 +133,7 @@
     .info{
         overflow: hidden;
         .title{
-            font-size: 15px;
+            font-size: 16px;
             color: #333;
             text-overflow: ellipsis;
             white-space: nowrap;
