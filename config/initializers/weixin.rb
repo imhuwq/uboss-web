@@ -30,24 +30,29 @@ if false
           {
             name: '创客教程',
             type: 'media_id',
+            #media_id: '9EFRB63AS9XXBIcYwxqvKrFP4t16J2-XsP7WeSYUFeM'
             media_id: '64kPaTt2HyTMsJthw6vPbyAlxhhNbTonWrpLPAk3t_U'
           }, {
             name: '商家教程',
             type: 'media_id',
+            #media_id: 'mInCvKRGKYG7BQ3NwYoGXEEtnzU2ZBiI9nyXKpZTJF8'
             media_id: '64kPaTt2HyTMsJthw6vPbyAlxhhNbTonWrpLPAk3t_U'
           }, {
             name: '免费入驻',
-            type: 'media_id',
-            media_id: '64kPaTt2HyTMsJthw6vPbyAlxhhNbTonWrpLPAk3t_U'
+            type: 'view',
+            #media_id: 'http://uboss.cn/sign_in'
+            media_id: 'http://stage.uboss.me/sign_in'
           }, {
             name: '联系我们',
-            type: 'click',
-            key: 'contact_us'
+            type: 'media_id',
+            #media_id: 'q3Txbg6FYXdnKY7a5cVBzOi9f4-IgzjnKAnKxcoeU1w'
+            media_id: '64kPaTt2HyTMsJthw6vPbyAlxhhNbTonWrpLPAk3t_U'
           }
         ]
       }, {
         name: '我的收益',
         type: 'view',
+        #url: 'http://uboss.cn/account#showincome'
         url: 'http://stage.uboss.me/account#showincome'
       }
     ]
