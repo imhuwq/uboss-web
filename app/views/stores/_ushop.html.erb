@@ -1,5 +1,5 @@
 <% if params[:action] == 'show' && @hots.present? %>
-	<div class="page-title like-color gap">
+	<div class="page-title like-color gap m-top10 m-bottom10">
       <%= link_to hots_store_path(@seller), class: 'more-bar' do %>
         more
     	<% end %>
@@ -15,7 +15,7 @@
   </div><!-- bg-white -->
 <% end %>
 
-<div class="bg-white gap  m-top10 m-bottom10">
+<div class="bg-white gap m-top10 m-bottom10">
 	<div class="store-category-cover">
 	  <div class="cover"><img src='<%= @seller.avatar_url(:w120) %>' /></div>   
 	  <div class="content">
