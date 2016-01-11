@@ -75,6 +75,13 @@ class ProductInventory < ActiveRecord::Base
     share_amount_lv_3 + share_amount_lv_2 + share_amount_lv_1 + privilege_amount
   end
 
+  def adjust_count quantity
+    self.with_lock do
+      self.count = self.count + value
+      self.save!
+    end
+  end
+
   private
 
   def update_unpay_order_items
