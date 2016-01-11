@@ -4,6 +4,8 @@ class OrdinaryOrder < Order
   enum state: { unpay: 0, payed: 1, shiped: 3, signed: 4, closed: 5, completed: 6 }
 
   scope :with_refunds, -> { joins(order_items: :order_item_refunds).uniq }
+  scope :can_evaluate, -> { where(state: [OrdinaryOrder.states[:signed], OrdinaryOrder.states[:completed]]) }
+
 
   before_create :set_info_by_user_address, :set_ship_price
 

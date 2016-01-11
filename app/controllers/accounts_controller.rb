@@ -36,7 +36,7 @@ class AccountsController < ApplicationController
     if params[:state] == 'after_sale'
       @refunds = current_user.order_item_refunds.includes(order_item: [:product, :order]).page(params[:page])
     elsif params[:state] == 'unevaluate'
-      @orders = []
+      @orders = oo_unevaluate(current_user.ordinary_orders).page(params[:page])
     else
       @orders = append_default_filter account_orders(params[:state]), page_size: 10
     end
@@ -226,7 +226,7 @@ class AccountsController < ApplicationController
 
   def oo_unevaluate(ordinary_orders)
     order_item_ids = OrderItem.where(order_id: ordinary_orders.ids).ids
-    ordinary_orders.completed.where.not(id: ordinary_orders.includes(order_items: [:evaluations]).where(evaluations: {order_item_id: order_item_ids}).ids)
+    ordinary_orders.can_evaluate.where.not(id: ordinary_orders.includes(order_items: [:evaluations]).where(evaluations: {order_item_id: order_item_ids}).ids)
   end
 
   def account_orders(type)
