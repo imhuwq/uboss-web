@@ -10,7 +10,7 @@ class WithdrawRecordsController < ApplicationController
   end
 
   def create
-    amount = params.require(:withdraw_record).permit(:amount)
+    amount = params.require(:withdraw_record).permit(:amount, :bank_card_id)
     @withdraw_record = current_user.withdraw_records.new(amount)
     if @withdraw_record.save
       redirect_to action: :success, id: @withdraw_record.id
