@@ -240,6 +240,11 @@ zh-CN:
         cost_price: 成本价
         suggest_price_lower: 建议价下限
         suggest_price_upper: 建议价上限
+      supplier_product_inventory:
+        cost_price: 成本价
+        suggest_price_lower: 建议价下限
+        suggest_price_upper: 建议价上限
+        for_sale: 是否销售
       order_item_refund:
         money: 金额
         order_state: 订单退款

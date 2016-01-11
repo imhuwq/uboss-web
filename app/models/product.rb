@@ -18,6 +18,7 @@ class Product < ActiveRecord::Base
   has_many :categories
   has_and_belongs_to_many :categories, -> { uniq } ,autosave: true
   has_many :product_inventories, autosave: true, dependent: :destroy
+  has_many :supplier_product_inventories, through: :product_inventories
   has_many :cart_items,  through: :product_inventories
   has_many :seling_inventories, -> { where(saling: true) }, class_name: 'ProductInventory', autosave: true
   has_one :supplier_product_info
