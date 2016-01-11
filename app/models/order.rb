@@ -46,7 +46,7 @@ class Order < ActiveRecord::Base
 
   aasm column: :state, enum: true, skip_validation_on_save: true, whiny_transitions: false do
     state :unpay
-    state :payed
+    state :payed, after_enter: :update_stock_item
     state :shiped, after_enter: [:fill_shiped_at, :close_order_item_refund_before_shiping]
     state :signed, after_enter: [:fill_signed_at, :active_privilege_card, :close_refunds_before_signed]
     state :completed, after_enter: :fill_completed_at
@@ -315,7 +315,9 @@ class Order < ActiveRecord::Base
     update_column(:shiped_at, Time.now)
   end
 
-
+  def update_stock_item
+    order_items.each {|item| StockMovement.unstock(item.product_inventory, quantity) }
+  end
 
   def fill_signed_at
     update_column(:signed_at, Time.now)
