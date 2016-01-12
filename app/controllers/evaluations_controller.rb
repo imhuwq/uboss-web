@@ -26,7 +26,8 @@ class EvaluationsController < ApplicationController
   def create
     @evaluation = Evaluation.new(validate_attrs)
     if session[:last_created_at].to_i > params[:timestamp].to_i
-      flash[:error] = '您已经提交, 请刷新页面'
+      flash[:error] = '您已经提交, 不能多次提交'
+      redirect_to service_orders_account_path
     else
       @stale_form_check_timestamp = Time.now.to_i
       session[:last_created_at] = @stale_form_check_timestamp
