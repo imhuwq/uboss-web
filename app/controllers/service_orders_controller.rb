@@ -11,10 +11,10 @@ class ServiceOrdersController < ApplicationController
       buyer: current_user,
       amount: params[:amount] || 1,
       product_id: params[:product_id],
-      product_inventory_id: params[:product_inventory_id],
-      sharing_code: get_product_sharing_code(params[:product_id])
+      product_inventory_id: params[:product_inventory_id]
     )
 
+    @order_form.sharing_code = get_product_or_store_sharing_code(@order_form.product)
     @product = @order_form.product
     @seller = @product.user
 
