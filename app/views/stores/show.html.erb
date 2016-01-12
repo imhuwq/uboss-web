@@ -22,7 +22,7 @@
 
 <%= render partial: 'banner_slider', locals: { seller: @seller } %>
 
-<% if uboss_mall?(@seller) %>
+<% if 'ture' #uboss_mall?(@seller) %>
   <%= render partial: 'umall' %>
 <% else %>
   <%= render partial: 'ushop' %>
