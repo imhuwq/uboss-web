@@ -15,7 +15,7 @@
 <%= simple_form_for @evaluation do |f| %>
   <%= f.input_field :status, selected: 'good', class:'hidden' %>
   <%= f.hidden_field :order_item_id, class:'hidden' %>
-  <%= hidden_field_tag :timestamp, value: @stale_form_check_timestamp, class:'hidden' %>
+  <%= hidden_field_tag :timestamp, @stale_form_check_timestamp %>
   <div class="emoticon-box">
     <div class="emoticon" data-star="1">
     	<p><i class="icon worst-icon"></i></p>
