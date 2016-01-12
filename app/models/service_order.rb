@@ -9,7 +9,7 @@ class ServiceOrder < Order
     state :unpay
     state :payed,     after_enter: :invoke_service_order_payed_job
     state :completed, after_enter: :fill_completed_at
-    state :closed,    after_enter: :recover_product_stock
+    state :closed
 
     event :pay do
       transitions from: :unpay, to: :payed

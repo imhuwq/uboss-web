@@ -79,7 +79,7 @@ class User < ActiveRecord::Base
     :store_banner_one=, :store_banner_two=, :store_banner_thr=,
     :recommend_resource_one_id, :recommend_resource_two_id, :recommend_resource_thr_id,
     :recommend_resource_one_id=, :recommend_resource_two_id=, :recommend_resource_thr_id=,
-    :store_short_description, :store_short_description=, :store_cover, :store_cover=, :bonus_benefit,
+    :store_short_description, :store_short_description=, :store_cover, :store_cover=, :bonus_benefit, :bonus_benefit=,
     :store_logo_url, :store_logo=, :store_logo, :store_title, :store_identify,
     :good_reputation_rate, :total_reputations,
     to: :ordinary_store, allow_nil: true
