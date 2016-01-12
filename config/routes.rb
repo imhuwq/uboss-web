@@ -201,6 +201,10 @@ Rails.application.routes.draw do
 
       patch '/supplier/products/:id/update', to: 'products#update_supplier_product'
 
+      get '/supplier/products', to: 'products#supplier_index'
+
+      patch '/supplier/products/:id/toggle_supply_status', to: 'products#toggle_supply_status', as: :toggle_supply_status
+
       get '/select_carriage_template', to: 'products#select_carriage_template'
 
       get '/refresh_carriage_template', to: 'products#refresh_carriage_template'

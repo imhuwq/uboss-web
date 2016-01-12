@@ -1,12 +1,22 @@
-<div class='new_supplier'>
-  <% if current_user.is_supplier? %>
-    <h3>你已经是供应商了</h3>
-    <p><%= link_to '解除供应商身份', admin_be_not_supplier_path, method: :delete %></p>
-    <%= link_to '发布商品', admin_supplier_products_new_path %>
-  <% else %>
-    <%= form_tag admin_be_supplier_path do %>
-      <%= text_field_tag :store_name %>
-      <%= submit_tag '创建店铺' %>
+<div class="container admin-container">
+	<ul class="breadcrumb">
+		<li><a href="/admin">主页</a></li>
+		<li class="divider"><i class="fa fa-caret-right"></i></li>
+		<li>供应商</li>
+	</ul>
+</div>
+<div class="container  mod-inner">
+  <div class='new_supplier'>
+    <% if current_user.is_supplier? %>
+      <h3>你已经是供应商了</h3>
+      <p><%= link_to '解除供应商身份', admin_be_not_supplier_path, method: :delete %></p>
+      <%= link_to '发布商品', admin_supplier_products_new_path %>
+      <%= link_to '我的供销商品', admin_supplier_products_path %>
+    <% else %>
+      <%= form_tag admin_be_supplier_path do %>
+        <%= text_field_tag :store_name %>
+        <%= submit_tag '创建店铺' %>
+      <% end %>
     <% end %>
-  <% end %>
+  </div>
 </div>
