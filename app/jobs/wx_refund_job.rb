@@ -31,8 +31,8 @@ class WxRefundJob < ActiveJob::Base
 
     request_params = {
       out_trade_no:  refund.order_charge_number,
-      total_fee:     Rails.env.production? ? refund.total_fee : 1,
-      refund_fee:    Rails.env.production? ? refund.money * 100 : 1,
+      total_fee:     Rails.env.production? ? refund.total_fee.to_i : 1,
+      refund_fee:    Rails.env.production? ? (refund.money * 100).to_i : 1,
       out_refund_no: refund.refund_number
     }
     logger.info "Refund #{refund.id} Request: #{request_params} "
