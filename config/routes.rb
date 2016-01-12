@@ -143,7 +143,6 @@ Rails.application.routes.draw do
 
   namespace :api do
     namespace :v1 do
-      resources :users, only: [:show]
       namespace :admin do
         resources :carriage_templates, only: [:index, :show]
         resources :products, only: [:index, :show, :create] do
@@ -155,6 +154,7 @@ Rails.application.routes.draw do
       post 'login', to: 'sessions#create'
       resources :mobile_captchas, only: [:create]
       resources :users, only: [:show]
+      resources :stores, only: [:show]
       resource :account, only: [:show] do
         patch :update_password, :become_seller
         get :orders, :privilege_cards
