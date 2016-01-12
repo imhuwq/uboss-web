@@ -30,6 +30,7 @@ class Product < ActiveRecord::Base
 
   amoeba do
     include_association :categories
+    include_association :supplier_product_info
   end
 
   delegate :image_url, to: :asset_img, allow_nil: true
@@ -43,6 +44,8 @@ class Product < ActiveRecord::Base
 
   scope :hots, -> { where(hot: true) }
   scope :available, -> { where.not(status: 2) }
+  scope :normal, -> { joins(:supplier_product_info).where('supplier_product_infos.id is null') }
+  scope :supplied, -> { joins(:supplier_product_info).where.not('supplier_product_infos.id is null').where.not('supplier_product_infos.supply_status = 2') }
 
   validates_presence_of :user_id, :name, :short_description
   validate :must_has_one_product_inventory
@@ -272,6 +275,14 @@ class Product < ActiveRecord::Base
     else
       'normal'
     end
+  end
+
+  def normal?
+    !!!supplier_product_info
+  end
+
+  def supplied?
+    !!supplier_product_info
   end
 
   private

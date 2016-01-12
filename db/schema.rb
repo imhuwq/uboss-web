@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160108071136) do
+ActiveRecord::Schema.define(version: 20160112085317) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -551,9 +551,10 @@ ActiveRecord::Schema.define(version: 20160108071136) do
     t.decimal  "suggest_price_lower"
     t.integer  "product_id"
     t.integer  "supplier_id"
-    t.datetime "created_at",          null: false
-    t.datetime "updated_at",          null: false
+    t.datetime "created_at",                      null: false
+    t.datetime "updated_at",                      null: false
     t.decimal  "suggest_price_upper"
+    t.integer  "supply_status",       default: 0
   end
 
   add_index "supplier_product_infos", ["product_id", "supplier_id"], name: "index_supplier_product_infos_on_product_id_and_supplier_id", unique: true, using: :btree

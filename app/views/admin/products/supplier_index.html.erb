@@ -2,7 +2,7 @@
 	<ul class="breadcrumb">
 		<li><a href="/admin">主页</a></li>
 		<li class="divider"><i class="fa fa-caret-right"></i></li>
-		<li>商品</li>
+		<li>供销商品</li>
 	</ul>
 </div>
 <br />
@@ -29,10 +29,10 @@
 <br />
 <div class="container  mod-inner">
   <div class="list-search-bar">
-    <%= link_to("+ 发布商品", (current_user.is_seller? ? url_for(action: :new) : merchant_confirm_account_path), class: "btn btn-large", role: "button") %>
+    <%= link_to("+ 发布商品", (current_user.is_supplier? ? url_for(action: :new_supplier_product) : merchant_confirm_account_path), class: "btn btn-large", role: "button") %>
   </div>
   <br />
-  <%= render partial: 'products', locals: { products: @products, supplier: false } %>
+  <%= render partial: 'products', locals: { products: @products, supplier: true } %>
 </div>
 
 <%= paginate @products %>
