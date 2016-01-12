@@ -104,11 +104,42 @@ class Admin::ProductsController < AdminController
       flash.now[:success] = @notice
       flash.now[:error] = @error
       product_collection = @product.closed? ? [] : [@product]
-      render(partial: 'products', locals: { products: product_collection })
+      render(partial: 'products', locals: { products: product_collection, supplier: false })
     else
       flash[:success] = @notice
       flash[:error] = @error
       redirect_to action: :show, id: @product.id
+    end
+  end
+
+  def toggle_supply_status
+    supplier_product_info = @product.supplier_product_info
+    begin
+      if params[:status] == 'store'
+        supplier_product_info.stored!
+        @notice = '下架成功'
+      elsif params[:status] == 'supply'
+        supplier_product_info.supplied!
+        @notice = '上架成功'
+      elsif params[:status] == 'delete'
+        supplier_product_info.deleted!
+        @notice = '删除成功'
+      else
+        @error = '未知操作'
+      end
+    rescue => e
+      logger.error e
+      @error = '操作失败'
+    end
+    if request.xhr?
+      flash.now[:success] = @notice
+      flash.now[:error] = @error
+      product_collection = supplier_product_info.deleted? ? [] : [@product]
+      render(partial: 'products', locals: { products: product_collection, supplier: true })
+    else
+      flash[:success] = @notice
+      flash[:error] = @error
+      redirect_to action: :show_supplier_product, id: @product.id
     end
   end
 
