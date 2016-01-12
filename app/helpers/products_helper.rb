@@ -77,7 +77,8 @@ module ProductsHelper
     if privilege_card.present?
       privilege_card.amount(product_inventory)
     else
-      product_inventory.privilege_amount
+      0
+      #product_inventory.privilege_amount
     end
   end
 

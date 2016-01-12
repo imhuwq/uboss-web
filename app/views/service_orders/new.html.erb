@@ -28,14 +28,13 @@
         </div><!-- content -->
       </div><!-- order-box -->
 
-      <% sharing_user = @order_form.sharing_node.try(:user) %>
-      <% if sharing_user.present? %>
+      <% if @order_form.sharing_user.present? && @order_form.total_privilege_bonus != 0 %>
         <div class="friend-info">
           <div class="cover">
-            <%= image_tag sharing_user.avatar_url(:thumb) %>
+            <%= image_tag @order_form.sharing_user.avatar_url(:thumb) %>
           </div>
           <div class="content">
-            <span class="pull-right red-color order-privilege-amount"><%= @order_form.total_privilege_bonus %></span><span class="main-color"><%= sharing_user.identify %></span> 帮你优惠
+            <span class="pull-right red-color order-privilege-amount"><%= @order_form.total_privilege_bonus %></span><span class="main-color"><%= @order_form.sharing_user.identify %></span> 帮你优惠
           </div>
         </div><!-- friend-info -->
       <% end %>

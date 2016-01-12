@@ -35,6 +35,10 @@ class ServiceOrderForm
     @sharing_node
   end
 
+  def sharing_user
+    @sharing_user ||= sharing_node.try(:user)
+  end
+
   def seller_bonus
     privilege_bonus = product_inventory.privilege_amount
     bonus_benefit = buyer.bonus_benefit

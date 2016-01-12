@@ -74,7 +74,10 @@
           <%= product_privilege(@product, @privilege_card, :price).join(' - ') %>
         </div>
         <br/>
-        <p class="gray-color">帮朋友优惠<%= product_privilege(@product, @privilege_card, :amount).join(' - ') %></p>
+        <% amounts = product_privilege(@product, @privilege_card, :amount) %>
+        <% if amounts[0] != 0 || (amounts[1].present? && amounts[1] != 0) %>
+          <p class="gray-color">帮朋友优惠<%= amounts.join(' - ') %></p>
+        <% end %>
         <div class="border-box">
           <% if @privilege_card.present? %>
             <div class="text-center"><a class="btn btn-large btn-longer p-sharing-btn">分享给朋友</a></div>
@@ -97,9 +100,10 @@
       <div class="friend-card">
         <p class="cover"><%= image_tag @privilege_card.user.avatar_url(:w120) %></p>
         <p class="name"><%= @privilege_card.user.identify %> 分享</p>
-        <div class="gray-color">
-          每件为你多省<span class="like-color"><%= product_privilege(@product, @privilege_card, :amount).join(' - ') %></span>
-        </div>
+        <% amounts = product_privilege(@product, @privilege_card, :amount) %>
+        <% if amounts[0] != 0 || (amounts[1].present? && amounts[1] != 0) %>
+          <div class="gray-color">每件为你多省<span class="like-color"><%= amounts.join(' - ') %></span></div>
+        <% end %>
         <br />
         <div class="border-box">
           <p class="name">友情价</p>
