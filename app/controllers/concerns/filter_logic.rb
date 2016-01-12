@@ -18,7 +18,7 @@ module FilterLogic
   end
 
   def append_default_filter_notimestamp scope, opts = {}
-    if opts[:order_type] == 'DESC'
+    if opts[:order_type].try(:upcase) == 'DESC'
       scope.recent(opts[:order_column], opts[:order_type])
       .paginate_by_timestamp(before_column ,after_column, opts[:order_column])
       .page(page_param).per(opts[:page_size] || page_size)
