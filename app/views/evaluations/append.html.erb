@@ -25,6 +25,7 @@
   <%= simple_form_for @evaluation do |f| %>
     <%= f.input_field :status, class:'hidden' %>
     <%= f.hidden_field :order_item_id, class:'hidden' %>
+    <%= hidden_field_tag :timestamp, value: @stale_form_check_timestamp, class:'hidden' %>
     <%= f.text_area :content, value: '', placeholder: '我还想说...', id:"y_textarea" ,rows:"6",class:"input-block" %>
   <% end %>
   </div>
