@@ -24,9 +24,10 @@ class Api::V1::AccountsController < ApiBaseController
 
   def become_seller
     if current_user.is_seller?
-      head(200)
+      render_error :unprocessable, '已成为商家'
     else
       if current_user.bind_agent(nil)
+        current_user.user_info.update_columns(store_name: params[:store_name]) if params[:store_name].present?
         head(200)
       else
         render_model_errors current_user
