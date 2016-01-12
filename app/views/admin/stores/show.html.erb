@@ -19,14 +19,14 @@
   		<div>
   			店铺头像　
 	  		<p class="fileinput-button">
-					<%= upyun_meta_tags prefix: "asset_img/avatar" %>
+					<%= upyun_meta_tags prefix: "ordinary_store/store_cover" %>
 
-					<% if  current_user.store_logo.avatar_identifier.blank? %>
+					<% if  current_user.ordinary_store.store_cover_identifier.blank? %>
 						<%= image_tag("admin/no-img-160x160.png", class:"clean") %>
 					<% else %>
-						<%= image_tag(current_user.store_logo_url(:thumb), class:"clean", style:"height: 160px;width:160px")%>
+						<%= image_tag(current_user.store_cover.url(:w320), class:"clean", style:"height: 160px;width:160px")%>
 					<% end %>
-					<%= file_field_tag "image", class: "upyun_file_json" ,  data: {to: "/admin/stores/#{current_user.id}/update_store_logo"} %>
+					<%= file_field_tag "image", class: "upyun_file_json" ,  data: {to: "/admin/stores/#{current_user.id}/update_store_cover"} %>
 					<b class="loading"><i class="fa fa-spinner"></i></b>
 					<span class="tips-text">点击替换</span>
 				</p>
@@ -52,8 +52,8 @@
     <%= render "advertisements" %>
   </div>
   <%= render "add_banner" %>
-  
-  
+
+
   <br />
   <div id="categories">
     <%= render 'categories' %>
@@ -61,7 +61,3 @@
   <%= render "add_category" %>
   <br/>
 </div><!-- container -->
-
-
-
-

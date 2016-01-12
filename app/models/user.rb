@@ -80,7 +80,7 @@ class User < ActiveRecord::Base
     :recommend_resource_one_id, :recommend_resource_two_id, :recommend_resource_thr_id,
     :recommend_resource_one_id=, :recommend_resource_two_id=, :recommend_resource_thr_id=,
     :store_short_description, :store_short_description=, :store_cover, :store_cover=, :bonus_benefit, :bonus_benefit=,
-    :store_logo_url, :store_logo=, :store_logo, :store_title, :store_identify,
+    :store_title, :store_identify,
     :good_reputation_rate, :total_reputations,
     to: :ordinary_store, allow_nil: true
 
@@ -121,11 +121,11 @@ class User < ActiveRecord::Base
   end
 
   def service_store
-    user_infos.service_store.first
+    user_infos.find{ |a| a.type == 'ServiceStore' }
   end
 
   def ordinary_store
-    user_infos.ordinary_store.first
+    user_infos.find{ |a| a.type == 'OrdinaryStore' }
   end
 
   def login_identifier=(login_identifier)

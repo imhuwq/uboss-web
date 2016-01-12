@@ -283,7 +283,7 @@ Rails.application.routes.draw do
       end
 
       resources :stores, only: [:show] do
-        post :update_store_logo, :update_store_name, :update_store_short_description,
+        post :update_store_name, :update_store_short_description,
           :update_store_cover, on: :member
         post :update_advertisement_img, :update_advertisement_order, on: :collection
         get :create_advertisement, :add_category, :get_category_img, on: :collection
