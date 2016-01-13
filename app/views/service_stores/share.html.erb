@@ -16,7 +16,7 @@
 </div><!-- store-cover -->
 <div class="gap bg-white border-box">店铺二维码</div>
 <div class="gap text-center">
-	<%= qrcode_image_tag service_store_url(@service_store, shared: true) %>
+	<%= qrcode_image_tag service_store_url(id: @service_store, shared: true) %>
 </div>
 <div class="gap bg-white border-box">店铺链接</div>
 <div class="gap bg-white"><%= "#{request.protocol}#{request.host_with_port}#{service_store_path(@service_store)}" %></div>

@@ -49,7 +49,7 @@
      	</div><!-- box-w85 -->
       <div class="box-w15 text-right info-right-box">
 	  		<br />
-				<p><%= qrcode_image_tag service_store_url(@service_store, shared: true), html:{class:'gap white-bg-color',width:'160'} %></p>
+        <p><%= qrcode_image_tag(service_store_url(id: @service_store, shared: true), html:{class:'gap white-bg-color', width:'160px'}) %></p>
 	  		<br />
 	  	</div><!-- box-w15 -->
     </div><!-- beige-bg-color -->
