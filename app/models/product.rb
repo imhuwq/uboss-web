@@ -45,7 +45,10 @@ class Product < ActiveRecord::Base
   scope :hot_ordering, -> { order('products.hot DESC, products.id DESC') }
   scope :create_today, -> { where('created_at > ? and created_at < ?', Time.now.beginning_of_day, Time.now.end_of_day) }
   scope :normal, -> { joins(:supplier_product_info).where('supplier_product_infos.id is null') }
-  scope :supplied, -> { joins(:supplier_product_info).where.not('supplier_product_infos.id is null').where.not('supplier_product_infos.supply_status = 2') }
+  scope :supply, -> { joins(:supplier_product_info).where.not('supplier_product_infos.id is null') }
+  scope :supply_stored, -> { joins(:supplier_product_info).where('supplier_product_infos.supply_status = 0') }
+  scope :supply_supplied, -> { joins(:supplier_product_info).where('supplier_product_infos.supply_status = 1') }
+  scope :supply_deleted, -> { joins(:supplier_product_info).where('supplier_product_infos.supply_status = 2') }
 
   validate :must_has_one_image
   validate :must_has_one_product_inventory
@@ -237,7 +240,7 @@ class Product < ActiveRecord::Base
 
   def product_type
     if supplier_product_info
-      'supplied'
+      'supply'
     else
       'normal'
     end
@@ -247,7 +250,7 @@ class Product < ActiveRecord::Base
     !!!supplier_product_info
   end
 
-  def supplied?
+  def supply?
     !!supplier_product_info
   end
 
