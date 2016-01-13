@@ -151,9 +151,11 @@
 </div>
 <script>
 	$(document).ready(function(){
-		$(".admin-box .num").each(function(){
+		$(".admin-box h1.num").each(function(){
 			var ls=$(this).html().length;
-			if(ls>9){
+			if(ls>13){
+				$(this).css("font-size","20px")
+			}else if (ls>9){
 				$(this).css("font-size","30px")
 			}
 		})
