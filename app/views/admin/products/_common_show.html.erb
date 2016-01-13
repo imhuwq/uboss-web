@@ -148,12 +148,20 @@
       <%= link_to("编辑", url_for(:action=>:edit_supplier_product,:id=>@product.id), :class=>"btn btn-large blue-btn",:role=>"button") %>
     <% end %>
     <%= link_to("手机效果", url_for(:action=>:pre_view,:id=>@product.id), :class=>"btn btn-large yellow-btn",:role=>"button",:target=>"_blank") %>　
-    <% if can? :update, @product or can? :update_supplier_product, @product %>
+    <% if can? :update, @product %>
       <% if @product.status == 'unpublish' %>
         <%= link_to("上架", url_for(action: :change_status, id: @product.id, status: :published), method: :patch, class: "btn btn-large red-btn", role: "button") %>
      <% else %>
        <%= link_to("取消上架", url_for(action: :change_status,id: @product.id, status: :unpublish),
                    method: :patch, class: "btn btn-large ",:role=>"button") %>
+      <% end %>
+    <% end %>
+    <% if can? :update_supplier_product, @product %>
+      <% supplier_product_info = @product.supplier_product_info %>
+      <% if supplier_product_info.stored? %>
+        <%= link_to("上架", url_for(action: :toggle_supply_status, id: @product.id, status: :supply), method: :patch, class: "btn btn-large red-btn", role: "button") %>
+      <% elsif supplier_product_info.supplied? %>
+        <%= link_to("下架", url_for(action: :toggle_supply_status, id: @product.id, status: :store), method: :patch, class: "btn btn-large red-btn", role: "button") %>
       <% end %>
     <% end %>
   </div>

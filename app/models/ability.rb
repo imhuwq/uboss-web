@@ -44,7 +44,7 @@ class Ability
     can :read, User, id: user.id
     can :manage, Order, seller_id: user.id
     can :manage, Product do |product|
-      product.user_id == user.id and product.product_type == 'normal'
+      product.user_id == user.id and product.produce_type == 'normal'
     end
     can :new, Product
     can :create, Product
@@ -77,7 +77,7 @@ class Ability
     can :manage, BankCard, user_id: user.id
 
     can :read, Product do |product|
-      product.user_id == user.id and product.product_type == 'normal'
+      product.user_id == user.id and product.produce_type == 'normal'
     end
   end
 

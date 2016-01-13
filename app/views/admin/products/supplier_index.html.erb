@@ -8,21 +8,9 @@
 <br />
 <div class="container nogap ">
 	<div class="box-w25">
-		<div class="admin-box main-bg-color">
-			<h4>今日发布</h4>
-    	<h1 class="num"><%= @statistics[:create_today] %></h1>
-		</div>
-	</div>
-	<div class="box-w25">
 		<div class="admin-box blue-bg-color">
-			<h4>总发布商品</h4>
+      <h4><%= params[:status] == 'store' ? '仓库商品数' : '代销商品数' %></h4>
     	<h1 class="num"><%= @statistics[:count] %></h1>
-		</div>
-	</div>
-	<div class="box-w25">
-		<div class="admin-box red-bg-color">
-			<h4>库存紧张</h4>
-    	<h1 class="num"><%= @statistics[:not_enough] %></h1>
 		</div>
 	</div>
 </div>

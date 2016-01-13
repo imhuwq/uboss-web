@@ -11,6 +11,8 @@ class Product < ActiveRecord::Base
   DataBuyerPay = { 0 => '包邮', 1 => '统一邮费', 2 => '运费模板' }
   FullCut = { 0 => '件', 1 => '元' }
 
+  enum produce_type: [:normal, :supply]
+
   has_one_image autosave: true
   #has_many_images name: :figure_images, accepts_nested: true
 
@@ -44,8 +46,8 @@ class Product < ActiveRecord::Base
 
   scope :hots, -> { where(hot: true) }
   scope :available, -> { where.not(status: 2) }
-  scope :normal, -> { joins(:supplier_product_info).where('supplier_product_infos.id is null') }
-  scope :supply, -> { joins(:supplier_product_info).where.not('supplier_product_infos.id is null') }
+  scope :normal, -> { where(produce_type: 0) }
+  scope :supply, -> { where(produce_type: 1) }
   scope :supply_stored, -> { joins(:supplier_product_info).where('supplier_product_infos.supply_status = 0') }
   scope :supply_supplied, -> { joins(:supplier_product_info).where('supplier_product_infos.supply_status = 1') }
   scope :supply_deleted, -> { joins(:supplier_product_info).where('supplier_product_infos.supply_status = 2') }
@@ -270,22 +272,6 @@ class Product < ActiveRecord::Base
       end
       save
     end
-  end
-
-  def product_type
-    if supplier_product_info
-      'supply'
-    else
-      'normal'
-    end
-  end
-
-  def normal?
-    !!!supplier_product_info
-  end
-
-  def supply?
-    !!supplier_product_info
   end
 
   private
