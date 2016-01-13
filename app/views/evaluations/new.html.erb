@@ -12,7 +12,7 @@
 
 <br />
 
-<%= simple_form_for @evaluation do |f| %>
+<%= simple_form_for @evaluation, html: {autocomplete: 'off'} do |f| %>
   <%= f.input_field :status, selected: 'good', class:'hidden' %>
   <%= f.hidden_field :order_item_id, class:'hidden' %>
   <%= hidden_field_tag :timestamp, @stale_form_check_timestamp %>
@@ -45,7 +45,7 @@
   		<div class="star"></div>
   	</div><!-- start-box -->
   	<div class="gap">
-  		<%= f.text_area :content, value: '', placeholder: '写点什么吧...', id:"y_textarea" ,rows:"6",class:"input-block" %>
+  		<%= f.text_area :content, value: '', checked: false, autocomplete: 'off', placeholder: '写点什么吧...', id:"y_textarea" ,rows:"6",class:"input-block" %>
   	</div>
   </div><!-- evaluations-box -->
 <% end %>
