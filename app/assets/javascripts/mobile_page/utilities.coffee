@@ -29,7 +29,13 @@ $ ->
       if $(element.data('ele')).length > 4 # nothing but set it anyway
         element.addClass('loading')
         element.text('加载中...')
-        params = { orderdata: $(element.data('ele')).last().attr('orderdata') }
+        reg = new RegExp("(^|&)order=([^&]*)(&|$)")
+        r = window.location.search.substr(1).match(reg)
+        if (r != null)
+          order = unescape(r[2])
+        else
+          order = ''
+        params = { orderdata: $(element.data('ele')).last().attr('orderdata'), order: order }
         $.get element.data('ref'), params, (data) ->
           if $.trim(data).length
             # $(element.data('container')).append(data)

@@ -39,11 +39,11 @@ module FilterLogic
     column_type = opts[:column_type] || 'datetime'
     case column_type.to_s
     when 'datetime'
-      orderdata = Time.zone.parse(params['orderdata']) rescue nil
+      orderdata = params['orderdata'] ? Time.zone.parse(params['orderdata']) : nil
     when 'integer'
-      orderdata = params['orderdata'].to_i rescue nil
+      orderdata = params['orderdata'] ? params['orderdata'].to_i : nil
     when 'float'
-      orderdata = params['orderdata'].to_f rescue nil
+      orderdata = params['orderdata'] ? params['orderdata'].to_f : nil
     end
     if opts[:order_type].try(:upcase) == 'ASC'
       scope.recent(opts[:order_column], 'ASC')
@@ -55,7 +55,6 @@ module FilterLogic
       .page(page_param).per(opts[:page_size] || page_size)
     end
   end
-
 
   def page_size
     (params['page_size'] && params['page_size'].to_i > 0) ? params['page_size'].to_i : 20
