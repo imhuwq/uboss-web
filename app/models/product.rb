@@ -6,6 +6,16 @@ class Product < ActiveRecord::Base
 
   OFFICIAL_AGENT_NAME = 'UBOSS创客权'.freeze
 
+<<<<<<< HEAD
+=======
+  # FIXME: @dalezhang 请使用helper or i18n 做view的数值显示
+  DataCalculateWay = { 0 => '按金额', 1 => '按售价比例' }
+  DataBuyerPay = { 0 => '包邮', 1 => '统一邮费', 2 => '运费模板' }
+  FullCut = { 0 => '件', 1 => '元' }
+
+  enum produce_type: [:normal, :supply]
+
+>>>>>>> add produce_type to products
   has_one_image autosave: true
   #has_many_images name: :figure_images, accepts_nested: true
   has_one_content name: :purchase_note, type: :purchase_note
@@ -44,8 +54,6 @@ class Product < ActiveRecord::Base
   scope :available, -> { where.not(status: 2) }
   scope :hot_ordering, -> { order('products.hot DESC, products.id DESC') }
   scope :create_today, -> { where('created_at > ? and created_at < ?', Time.now.beginning_of_day, Time.now.end_of_day) }
-  scope :normal, -> { joins(:supplier_product_info).where('supplier_product_infos.id is null') }
-  scope :supply, -> { joins(:supplier_product_info).where.not('supplier_product_infos.id is null') }
   scope :supply_stored, -> { joins(:supplier_product_info).where('supplier_product_infos.supply_status = 0') }
   scope :supply_supplied, -> { joins(:supplier_product_info).where('supplier_product_infos.supply_status = 1') }
   scope :supply_deleted, -> { joins(:supplier_product_info).where('supplier_product_infos.supply_status = 2') }
@@ -236,22 +244,6 @@ class Product < ActiveRecord::Base
       end
       save
     end
-  end
-
-  def product_type
-    if supplier_product_info
-      'supply'
-    else
-      'normal'
-    end
-  end
-
-  def normal?
-    !!!supplier_product_info
-  end
-
-  def supply?
-    !!supplier_product_info
   end
 
   private
