@@ -10,6 +10,7 @@ class Api::V1::SessionsController < ApiBaseController
         @user = User.find_or_create_guest(login)
         if @user.persisted?
           MobileCaptcha.clear_captcha(login)
+          @user.update_tracked_fields!(request)
         else
           render_error :wrong_username_or_password, model_errors(@user)
         end
@@ -19,6 +20,8 @@ class Api::V1::SessionsController < ApiBaseController
     elsif @user = User.find_for_database_authentication(login_identifier: login)
       if not @user.valid_password?(params[:password])
         render_error :wrong_username_or_password, '账号或密码错误'
+      else
+        @user.update_tracked_fields!(request)
       end
     else
       render_error :wrong_username_or_password, '账号或密码错误'
