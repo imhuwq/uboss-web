@@ -93,17 +93,15 @@ class Admin::ProductsController < AdminController
   def supplier_index
     params[:status] ||= 'supply'
     if params[:status] == 'supply'
-      @products = current_user.products.supply_supplied.order('products.created_at DESC')
+      @products = current_user.products.supply.supply_supplied.order('products.created_at DESC')
     elsif params[:status] == 'store'
-      @products = current_user.products.supply_stored.order('products.created_at DESC')
+      @products = current_user.products.supply.supply_stored.order('products.created_at DESC')
     elsif params[:status] == 'delete'
-      @products = current_user.products.supply_deleted.order('products.created_at DESC')
+      @products = current_user.products.supply.supply_deleted.order('products.created_at DESC')
     end
     @products = @products.includes(:asset_img).page(params[:page] || 1)
     @statistics = {}
-    @statistics[:create_today] = @products.where('products.created_at > ? and products.created_at < ?', Time.now.beginning_of_day, Time.now.end_of_day).count
     @statistics[:count] = @products.count
-    @statistics[:not_enough] = @products.where('count < ?', 10).count
   end
   
   def new_supplier_product
@@ -114,6 +112,7 @@ class Admin::ProductsController < AdminController
 
   def create_supplier_product
     @product = current_user.products.new(product_params)
+    @product.produce_type = 'supply'
     authorize! :create_supplier_product, @product
     if @product.save
       flash[:success] = '产品创建成功'
