@@ -33,39 +33,6 @@ class Admin::ProductsController < AdminController
     end
   end
 
-  def new_supplier_product
-    @product = Product.new
-    @product.build_supplier_product_info
-    authorize! :new_supplier_product, @product
-  end
-
-  def create_supplier_product
-    @product = current_user.products.new(product_params)
-    authorize! :create_supplier_product, @product
-    if @product.save
-      flash[:success] = '产品创建成功'
-      redirect_to action: :show_supplier_product, id: @product.id
-    else
-      flash[:error] = "#{@product.errors.full_messages.join('<br/>')}"
-      render :new_supplier_product
-    end
-  end
-
-  def show_supplier_product
-    authorize! :show_supplier_product, @product
-  end
-
-  def update_supplier_product
-    authorize! :update_supplier_product, @product
-    if @product.update(product_params)
-      flash[:success] = '保存成功'
-      redirect_to action: :show_supplier_product, id: @product.id
-    else
-      flash[:error] = "保存失败。#{@product.errors.full_messages.join('<br/>')}"
-      render :edit_supplier_product
-    end
-  end
-
   def update
     if @product.update(product_params)
       flash[:success] = '保存成功'
@@ -74,10 +41,6 @@ class Admin::ProductsController < AdminController
       flash.now[:error] = "保存失败。#{@product.errors.full_messages.join('<br/>')}"
       render :edit
     end
-  end
-
-  def edit_supplier_product
-    authorize! :edit_supplier_product, @product
   end
 
   def change_status
@@ -107,6 +70,71 @@ class Admin::ProductsController < AdminController
       flash[:success] = @notice
       flash[:error] = @error
       redirect_to action: :show, id: @product.id
+    end
+  end
+
+  def switch_hot_flag
+    if @product.update(hot: !@product.hot)
+      render json: { hot: @product.hot }
+    else
+      render json: { message: model_errors(@product) }, status: 422
+    end
+  end
+
+  def pre_view
+    @seller = @product.user
+    render layout: 'mobile'
+  end
+
+  #supplier products
+
+  def supplier_index
+    params[:status] ||= 'supply'
+    if params[:status] == 'supply'
+      @products = current_user.products.supply_supplied.order('products.created_at DESC')
+    elsif params[:status] == 'store'
+      @products = current_user.products.supply_stored.order('products.created_at DESC')
+    elsif params[:status] == 'delete'
+      @products = current_user.products.supply_deleted.order('products.created_at DESC')
+    end
+    @products = @products.includes(:asset_img).page(params[:page] || 1)
+    @statistics = {}
+    @statistics[:create_today] = @products.where('products.created_at > ? and products.created_at < ?', Time.now.beginning_of_day, Time.now.end_of_day).count
+    @statistics[:count] = @products.count
+    @statistics[:not_enough] = @products.where('count < ?', 10).count
+  end
+  
+  def new_supplier_product
+    @product = Product.new
+    @product.build_supplier_product_info
+    authorize! :new_supplier_product, @product
+  end
+
+  def create_supplier_product
+    @product = current_user.products.new(product_params)
+    authorize! :create_supplier_product, @product
+    if @product.save
+      flash[:success] = '产品创建成功'
+      redirect_to action: :show_supplier_product, id: @product.id
+    else
+      flash[:error] = "#{@product.errors.full_messages.join('<br/>')}"
+      render :new_supplier_product
+    end
+  end
+
+  def show_supplier_product
+  end
+
+  def edit_supplier_product
+  end
+
+  def update_supplier_product
+    if @product.update(product_params)
+      flash[:success] = '保存成功'
+      redirect_to action: :show_supplier_product, id: @product.id
+    else
+      flash[:error] = "保存失败。#{@product.errors.full_messages.join('<br/>')}"
+      render :edit_supplier_product
     end
   end
 
@@ -141,26 +169,7 @@ class Admin::ProductsController < AdminController
     end
   end
 
-  def switch_hot_flag
-    if @product.update(hot: !@product.hot)
-      render json: { hot: @product.hot }
-    else
-      render json: { message: model_errors(@product) }, status: 422
-    end
-  end
-
-  def pre_view
-    @seller = @product.user
-    render layout: 'mobile'
-  end
-
-  
-
   private
-
-  def set_product
-    @product = Product.find_by(id: params[:id])
-  end
 
   def product_propertys_params
     params.permit(product_propertys_names: [])
