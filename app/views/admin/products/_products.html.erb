@@ -8,7 +8,6 @@
 				<th>商家</th>
 			<% end %>
 			<th>好评率</th>
-			<th>库存</th>
 			<th>总销量</th>
 			<th>发布时间</th>
 			<th>操作</th>
@@ -28,7 +27,6 @@
 				<td><%= link_to product.user.identify, url_for(controller: 'admin/sellers', action: :show, id: product.user) %></td>
 				<% end %>
 				<td><%= Evaluation.product_good_reputation_rate(product.id) %></td>
-				<td><%= product.count %></td>
 				<td><%= product.total_sells %></td>
 				<td><%= product.created_at %></td>
 				<td>
