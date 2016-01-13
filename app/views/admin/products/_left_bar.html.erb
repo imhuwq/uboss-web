@@ -1,0 +1,4 @@
+<ul class="nav nav-pills nav-stacked nav-supplied-products">
+  <li role="presentation" class="<%= params['status'] == 'supply' ? 'active' : 'inactive' %>"><%= link_to "代销中", admin_supplier_products_path(status: 'supply') %></li>
+  <li role="presentation" class="<%= params['status'] == 'store' ? 'active' : 'inactive' %>"><%= link_to "仓库中", admin_supplier_products_path(status: 'store') %></a></li>
+</ul>

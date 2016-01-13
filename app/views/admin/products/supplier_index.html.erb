@@ -32,6 +32,7 @@
     <%= link_to("+ 发布商品", (current_user.is_supplier? ? url_for(action: :new_supplier_product) : merchant_confirm_account_path), class: "btn btn-large", role: "button") %>
   </div>
   <br />
+  <%= render 'left_bar' %>
   <%= render partial: 'products', locals: { products: @products, supplier: true } %>
 </div>
 
