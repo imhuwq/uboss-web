@@ -7,8 +7,11 @@ class VerifyCode < ActiveRecord::Base
   default_scope {order("updated_at desc")}
 
   scope :today, ->(user) { where(verified: true, order_item_id: OrderItem.where(product_id: user.product_ids).ids).where('updated_at BETWEEN ? AND ?', Time.now.beginning_of_day, Time.now.end_of_day) }
-
   scope :total, ->(user) { where(verified: true, order_item_id: OrderItem.where(product_id: user.product_ids).ids) }
+
+  after_commit :call_verify_code_verified_handler, if: -> {
+    previous_changes.include?(:verified) && previous_changes[:verified].last == true
+  }
 
   def verify_code
     if !verified && update(verified: true)
@@ -36,6 +39,10 @@ class VerifyCode < ActiveRecord::Base
         self.code = tmp_number and break
       end
     end
+  end
+
+  def call_verify_code_verified_handler
+    ServiceOrderDivideJob.set(wait: 5.seconds).perform_later(self)
   end
 
 end
