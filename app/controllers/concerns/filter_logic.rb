@@ -37,24 +37,21 @@ module FilterLogic
 
   def append_default_filter scope, opts = {}
     column_type = opts[:column_type] || 'datetime'
-    case column_type
+    case column_type.to_s
     when 'datetime'
-      before_column = Time.zone.parse(params['before_column']) rescue nil
-      after_column  = Time.zone.parse(params['after_column']) rescue nil
+      orderdata = Time.zone.parse(params['orderdata']) rescue nil
     when 'integer'
-      before_column = params['before_column'].to_i rescue nil
-      after_column  = params['after_column'].to_i rescue nil
+      orderdata = params['orderdata'].to_i rescue nil
     when 'float'
-      before_column = params['before_column'].to_f rescue nil
-      after_column  = params['after_column'].to_f rescue nil
+      orderdata = params['orderdata'].to_f rescue nil
     end
     if opts[:order_type].try(:upcase) == 'ASC'
       scope.recent(opts[:order_column], 'ASC')
-      .paginate_by_timestamp(before_column ,after_column, opts[:order_column])
+      .paginate_by_column_name(nil ,orderdata, opts[:order_column])
       .page(page_param).per(opts[:page_size] || page_size)
     else 
       scope.recent(opts[:order_column], 'DESC')
-      .paginate_by_timestamp(after_column,before_column, opts[:order_column])
+      .paginate_by_column_name(orderdata,nil, opts[:order_column])
       .page(page_param).per(opts[:page_size] || page_size)
     end
   end
