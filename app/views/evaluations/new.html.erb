@@ -16,6 +16,7 @@
   <%= f.input_field :status, selected: 'good', class:'hidden' %>
   <%= f.hidden_field :order_item_id, class:'hidden' %>
   <%= hidden_field_tag :timestamp, @stale_form_check_timestamp %>
+  <%= hidden_field_tag :type, 'new' %>
   <div class="emoticon-box">
     <div class="emoticon" data-star="1">
     	<p><i class="icon worst-icon"></i></p>

@@ -10,6 +10,7 @@ class Evaluation < ActiveRecord::Base
   before_destroy :update_count_evaluation
 
   validates :order_item_id, :status, presence: true
+  scope :has_evaluationed, -> (id) { where(order_item_id: id) }
 
   enum status: { worst: 1, bad: 2, good: 3, better: 4, best: 5 }
 
