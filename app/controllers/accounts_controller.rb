@@ -1,5 +1,4 @@
 class AccountsController < ApplicationController
-
   detect_device only: [:new_password, :set_password]
 
   layout :login_layout, only: [:merchant_confirm]
