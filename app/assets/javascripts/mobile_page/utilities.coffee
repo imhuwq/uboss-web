@@ -29,7 +29,7 @@ $ ->
       if $(element.data('ele')).length > 4 # nothing but set it anyway
         element.addClass('loading')
         element.text('加载中...')
-        params = { before_published_at: $(element.data('ele')).last().attr('timestamp') }
+        params = { before_column: $(element.data('ele')).last().attr('orderdata') }
         $.get element.data('ref'), params, (data) ->
           if $.trim(data).length
             # $(element.data('container')).append(data)

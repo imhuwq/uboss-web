@@ -17,13 +17,13 @@ class StoresController < ApplicationController
   def show
     if params[:order] == 'published_at'
       @order_column_name = 'published_at'
-      @products = append_default_filter @seller.products.published, order_column: :published_at, order_type: 'desc', page_size: 6
+      @products = append_default_filter @seller.products.published, order_column: :published_at, order_type: 'DESC', page_size: 6, column_type: :datetime
     elsif  params[:order] == 'sales_amount'
       @order_column_name = 'sales_amount'
-      @products = append_default_filter_notimestamp @seller.products.published, order_column: :sales_amount, order_type: 'desc', page_size: 6
+      @products = append_default_filter @seller.products.published, order_column: :sales_amount, order_type: 'DESC', page_size: 6, column_type: :integer
     else
       @order_column_name = 'comprehensive_order'
-      @products = append_default_filter_notimestamp @seller.products.published, order_column: :comprehensive_order, order_type: '', page_size: 6
+      @products = append_default_filter @seller.products.published, order_column: :comprehensive_order, order_type: 'ASC', page_size: 6, column_type: :integer
     end
     @hots = @seller.products.hots.recent.limit(3)
     @categories = Category.where(use_in_store: true, user_id: @seller.id).order('use_in_store_at')

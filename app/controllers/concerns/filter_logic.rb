@@ -11,52 +11,54 @@ module FilterLogic
   # default: order by created_at, limit 20, page 1
   # order_column to change order column and page columns
   # page_size to change limit size
-  def append_default_filter scope, opts = {}
-    scope.recent(opts[:order_column], opts[:order_type])
-    .paginate_by_timestamp(before_ts, after_ts, opts[:order_column])
-    .page(page_param).per(opts[:page_size] || page_size)
-  end
+  # def append_default_filter scope, opts = {}
+  #   scope.recent(opts[:order_column], opts[:order_type])
+  #   .paginate_by_timestamp(before_ts, after_ts, opts[:order_column])
+  #   .page(page_param).per(opts[:page_size] || page_size)
+  # end
 
-  def append_default_filter_notimestamp scope, opts = {}
-    if opts[:order_type].try(:upcase) == 'DESC'
-      scope.recent(opts[:order_column], opts[:order_type])
+  # def before_ts
+  #   return Time.zone.parse(before_ts_param) if before_ts_param
+  #   nil
+  # end
+
+  # def after_ts
+  #   return Time.zone.parse(after_ts_param) if after_ts_param
+  #   nil
+  # end
+
+  # def before_ts_param
+  #   params['before_published_at']
+  # end
+
+  # def after_ts_param
+  #   params["after_published_at"]
+  # end
+
+  def append_default_filter scope, opts = {}
+    column_type = opts[:column_type] || 'datetime'
+    case column_type
+    when 'datetime'
+      before_column = Time.zone.parse(params['before_column']) rescue nil
+      after_column  = Time.zone.parse(params['after_column']) rescue nil
+    when 'integer'
+      before_column = params['before_column'].to_i rescue nil
+      after_column  = params['after_column'].to_i rescue nil
+    when 'float'
+      before_column = params['before_column'].to_f rescue nil
+      after_column  = params['after_column'].to_f rescue nil
+    end
+    if opts[:order_type].try(:upcase) == 'ASC'
+      scope.recent(opts[:order_column], 'ASC')
       .paginate_by_timestamp(before_column ,after_column, opts[:order_column])
       .page(page_param).per(opts[:page_size] || page_size)
-    else
-      scope.recent(opts[:order_column], '')
+    else 
+      scope.recent(opts[:order_column], 'DESC')
       .paginate_by_timestamp(after_column,before_column, opts[:order_column])
       .page(page_param).per(opts[:page_size] || page_size)
     end
   end
 
-
-  def before_column
-    return before_ts_param.to_i if before_ts_param
-    nil
-  end
-
-  def after_column
-    return after_ts_param.to_i if after_ts_param
-    nil
-  end
-
-  def before_ts
-    return Time.zone.parse(before_ts_param) if before_ts_param
-    nil
-  end
-
-  def after_ts
-    return Time.zone.parse(after_ts_param) if after_ts_param
-    nil
-  end
-
-  def before_ts_param
-    params['before_published_at']
-  end
-
-  def after_ts_param
-    params["after_published_at"]
-  end
 
   def page_size
     (params['page_size'] && params['page_size'].to_i > 0) ? params['page_size'].to_i : 20
