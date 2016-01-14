@@ -39,8 +39,7 @@ $ ->
         params = { orderdata: orderdata, order: order }
         $.get element.data('ref'), params, (data) ->
           if $.trim(data).length
-            # $(element.data('container')).append(data)
-            $('.container').last().append(data)
+            $(element.data('container')).append(data)
             element.removeClass('loading')
             element.text('加载更多')
           else
