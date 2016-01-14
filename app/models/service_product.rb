@@ -25,7 +25,7 @@ class ServiceProduct < Product
   def total_income
     orders = ServiceOrder.where(id: order_items.map(&:order_id)).has_payed
     orders.map do |order|
-      order.paid_amount
+      order.paid_amount_subtract_platform
     end.sum
   end
 

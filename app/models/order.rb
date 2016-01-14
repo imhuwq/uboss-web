@@ -41,6 +41,11 @@ class Order < ActiveRecord::Base
     @seller_bonus ||= preferentials_seller_bonuses.sum(:total_amount)
   end
 
+  #收益=用户支付-平台收益
+  def paid_amount_subtract_platform
+    paid_amount * 0.05
+  end
+
   def order_charge
     super || build_order_charge
   end
