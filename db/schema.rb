@@ -152,15 +152,13 @@ ActiveRecord::Schema.define(version: 20160222063837) do
     t.string   "attachment_2"
     t.string   "attachment_3"
     t.string   "type"
-    t.datetime "verified_at"
     t.datetime "created_at",      null: false
     t.datetime "updated_at",      null: false
+    t.datetime "verified_at"
     t.string   "province_code"
     t.string   "city_code"
     t.string   "district_code"
   end
-
-  add_index "certifications", ["user_id"], name: "index_certifications_on_user_id", using: :btree
 
   create_table "city_managers", force: :cascade do |t|
     t.integer  "user_id"
@@ -358,7 +356,6 @@ ActiveRecord::Schema.define(version: 20160222063837) do
     t.decimal  "ship_price",      default: 0.0
     t.integer  "order_charge_id"
     t.decimal  "paid_amount",     default: 0.0
-    t.string   "type"
   end
 
   add_index "orders", ["number"], name: "index_orders_on_number", unique: true, using: :btree
