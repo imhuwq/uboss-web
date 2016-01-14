@@ -43,7 +43,7 @@
 
 </div><!-- order-list -->
 
-<% if !@order.paid? %>
+<% if @order.available_pay? %>
   <div class="bg-white gap m-bottom10">
     <%= link_to "立即付款", payments_charges_path(order_ids: @order.id, showwxpaytitle: 1), id: 'wx-pay-btn', class: 'btn btn-block btn-lagre' %>
   </div><!-- bg-white -->
