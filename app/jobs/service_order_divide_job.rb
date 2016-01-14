@@ -21,7 +21,7 @@ class ServiceOrderDivideJob < ActiveJob::Base
     end
 
     @verify_code_income = Rails.env.production? ? @order.paid_amount/verify_code_amount : @order.pay_amount/verify_code_amount
-    logger.info "Start divide @verify_code: #{@verify_code.code}, total_paid: #{@verify_code_income}"
+    logger.info "Start divide @verify_code: #{@verify_code.code}, order total_paid: #{@verify_code_income}, item amount: #{verify_code_amount}"
 
     start_divide_order_paid_amount
 
@@ -55,9 +55,12 @@ class ServiceOrderDivideJob < ActiveJob::Base
           @verify_code_income -= divide_amount
         end
 
-        SellingIncome.create!(user: @order.seller, amount: verify_code_income, order: @order)
-        @verify_code.update!(income: verify_code_income, sharing_rewared: true)
+        divide_seller_record = SellingIncome.create!(user: @order.seller, amount: verify_code_income, order: @order)
 
+        logger.info(
+          "Divide service order: #{@order.number}, [seller id: #{divide_seller_record.user_id}, amount: #{verify_code_income} ]")
+
+        @verify_code.update!(income: verify_code_income, sharing_rewared: true)
         @order.update!(income: @order.verify_codes.where(sharing_rewared: true).sum(:income))
 
         if !@order.verify_codes.any? { |code| !code.sharing_rewared? }
@@ -79,27 +82,25 @@ class ServiceOrderDivideJob < ActiveJob::Base
 
       if agent = seller.agent
         agent_divide_income = (divide_income / 2).truncate(2)
-        divide_agent_record = DivideIncome.find_or_create_by!(
+        divide_agent_record = DivideIncome.create!(
           order: @order,
+          amount: agent_divide_income,
           user: agent
-        ) do |record|
-          record.amount += agent_divide_income
-        end
+        )
 
         logger.info(
-          "Divide service order: #{@order.number}, [CAgent id: #{divide_agent_record.id}, amount: #{agent_divide_income} ]")
+          "Divide service order: #{@order.number}, [Agent id: #{divide_agent_record.user_id}, amount: #{agent_divide_income} ]")
       end
 
       official_divide_income = divide_income - agent_divide_income
-      divide_official_record = DivideIncome.find_or_create_by!(
+      divide_official_record = DivideIncome.create!(
         order: @order,
+        amount: official_divide_income,
         user: User.official_account
-      ) do |record|
-        record.amount += official_divide_income
-      end
+      )
 
       logger.info(
-        "Divide service order: #{@order.number}, [OAgent id: #{divide_official_record.id}, amount: #{official_divide_income} ]")
+        "Divide service order: #{@order.number}, [Official id: #{divide_official_record.user_id}, amount: #{official_divide_income} ]")
 
       yield divide_income
     end
@@ -117,15 +118,14 @@ class ServiceOrderDivideJob < ActiveJob::Base
       reward_amount = parse_divide_amount(reward_amount)
 
       if reward_amount > 0
-        sharing_income = SharingIncome.find_or_create_by!(
+        sharing_income = SharingIncome.create!(
           level: index + 1,
           user_id: sharing_node.user_id,
           seller_id: product.user_id,
           order_item: order_item,
+          amount: reward_amount,
           sharing_node: sharing_node
-        ) do |income|
-          income.amount += reward_amount
-        end
+        )
 
         logger.info "Divide service order: #{@order.number}, [Sharing id: #{sharing_income.id}, amount: #{reward_amount} ]"
         yield reward_amount
