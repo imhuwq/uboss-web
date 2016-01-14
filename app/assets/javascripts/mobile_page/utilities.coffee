@@ -42,16 +42,24 @@ $ ->
 
   # 浮点数运算 加
   self.floatAdd = (arg1, arg2) ->
-    (parseInt(arg1 * 100) + parseInt(arg2 * 100)) / 100
+    (floatMul(arg1, 100) + floatMul(arg2, 100)) / 100
 
   # 减
   self.floatSub = (arg1, arg2) ->
-    (parseInt(arg1 * 100) - parseInt(arg2 * 100)) / 100
+    (floatMul(arg1, 100) - floatMul(arg2, 100)) / 100
 
   # 乘
   self.floatMul = (arg1, arg2) ->
-    parseInt(arg1 * 100) * parseInt(arg2 * 100) / 10000
+    a1 = arg1.toString()
+    a2 = arg2.toString()
+    n1 = if (m = a1.split(".")[1]) then m.length else 0
+    n2 = if (m = a2.split(".")[1]) then m.length else 0
+    Number(a1.replace(".", "")) * Number(a2.replace(".", "")) / Math.pow(10, n1 + n2)
 
   # 除
   self.floatDiv = (arg1, arg2) ->
-    parseInt(arg1 * 100) / parseInt(arg2 * 100)
+    a1 = arg1.toString()
+    a2 = arg2.toString()
+    n1 = if (m = a1.split(".")[1]) then m.length else 0
+    n2 = if (m = a2.split(".")[1]) then m.length else 0
+    floatMul(Number(a1.replace(".", "")) / Number(a2.replace(".", "")), Math.pow(10, n2 - n1))
