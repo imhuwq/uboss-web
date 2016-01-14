@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151225094731) do
+ActiveRecord::Schema.define(version: 20160113061649) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -41,8 +41,18 @@ ActiveRecord::Schema.define(version: 20151225094731) do
     t.datetime "expire_at"
   end
 
-  add_index "agent_invite_seller_histroys", ["invite_code", "agent_id"], name: "index_agent_invite_seller_histroys_on_invite_code_and_agent_id", unique: true, using: :btree
-  add_index "agent_invite_seller_histroys", ["mobile", "agent_id"], name: "index_agent_invite_seller_histroys_on_mobile_and_agent_id", unique: true, using: :btree
+  create_table "area_operator_authentications", force: :cascade do |t|
+    t.integer  "user_id"
+    t.integer  "status",                               default: 0
+    t.string   "enterprise_name"
+    t.string   "business_license_img"
+    t.string   "legal_person_identity_card_front_img"
+    t.string   "legal_person_identity_card_end_img"
+    t.string   "address"
+    t.string   "mobile"
+    t.datetime "created_at",                                       null: false
+    t.datetime "updated_at",                                       null: false
+  end
 
   create_table "asset_imgs", force: :cascade do |t|
     t.string   "filename"
@@ -58,11 +68,6 @@ ActiveRecord::Schema.define(version: 20151225094731) do
     t.string   "alt"
     t.string   "url"
     t.string   "image_type"
-  end
-
-  create_table "attention_associations", force: :cascade do |t|
-    t.integer "user_id"
-    t.integer "following_id"
   end
 
   create_table "bank_cards", force: :cascade do |t|
@@ -103,8 +108,6 @@ ActiveRecord::Schema.define(version: 20151225094731) do
     t.integer  "product_inventory_id"
   end
 
-  add_index "cart_items", ["product_inventory_id", "cart_id"], name: "index_cart_items_on_product_inventory_id_and_cart_id", unique: true, using: :btree
-
   create_table "carts", force: :cascade do |t|
     t.integer  "user_id"
     t.datetime "created_at", null: false
@@ -144,15 +147,13 @@ ActiveRecord::Schema.define(version: 20151225094731) do
     t.string   "attachment_2"
     t.string   "attachment_3"
     t.string   "type"
-    t.datetime "verified_at"
     t.datetime "created_at",      null: false
     t.datetime "updated_at",      null: false
+    t.datetime "verified_at"
     t.string   "province_code"
     t.string   "city_code"
     t.string   "district_code"
   end
-
-  add_index "certifications", ["user_id"], name: "index_certifications_on_user_id", using: :btree
 
   create_table "city_managers", force: :cascade do |t|
     t.integer  "user_id"
@@ -163,6 +164,24 @@ ActiveRecord::Schema.define(version: 20151225094731) do
     t.datetime "created_at",                         null: false
     t.datetime "updated_at",                         null: false
   end
+
+  create_table "city_managers_sellers", force: :cascade do |t|
+    t.integer  "seller_id"
+    t.integer  "city_manager_id"
+    t.datetime "created_at",      null: false
+    t.datetime "updated_at",      null: false
+  end
+
+  create_table "cooperations", force: :cascade do |t|
+    t.integer  "supplier_id"
+    t.integer  "agency_id"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+  end
+
+  add_index "cooperations", ["agency_id"], name: "index_cooperations_on_agency_id", using: :btree
+  add_index "cooperations", ["supplier_id", "agency_id"], name: "index_cooperations_on_supplier_id_and_agency_id", unique: true, using: :btree
+  add_index "cooperations", ["supplier_id"], name: "index_cooperations_on_supplier_id", using: :btree
 
   create_table "daily_reports", force: :cascade do |t|
     t.date     "day"
@@ -182,8 +201,6 @@ ActiveRecord::Schema.define(version: 20151225094731) do
     t.string  "resource_type"
     t.text    "content"
   end
-
-  add_index "descriptions", ["resource_type", "resource_id"], name: "index_descriptions_on_resource_type_and_resource_id", unique: true, using: :btree
 
   create_table "different_areas", force: :cascade do |t|
     t.integer  "carriage_template_id"
@@ -221,8 +238,6 @@ ActiveRecord::Schema.define(version: 20151225094731) do
     t.datetime "updated_at"
   end
 
-  add_index "enterprise_authentications", ["user_id"], name: "index_enterprise_authentications_on_user_id", unique: true, using: :btree
-
   create_table "evaluations", force: :cascade do |t|
     t.integer  "buyer_id"
     t.integer  "sharer_id"
@@ -242,8 +257,6 @@ ActiveRecord::Schema.define(version: 20151225094731) do
     t.integer  "private_id"
   end
 
-  add_index "expresses", ["name"], name: "index_expresses_on_name", unique: true, using: :btree
-
   create_table "expresses_users", id: false, force: :cascade do |t|
     t.integer "express_id"
     t.integer "user_id"
@@ -256,13 +269,6 @@ ActiveRecord::Schema.define(version: 20151225094731) do
     t.datetime "updated_at", null: false
   end
 
-  add_index "favour_products", ["product_id", "user_id"], name: "index_favour_products_on_product_id_and_user_id", unique: true, using: :btree
-
-  create_table "follower_associations", force: :cascade do |t|
-    t.integer "user_id"
-    t.integer "follower_id"
-  end
-
   create_table "mobile_captchas", force: :cascade do |t|
     t.string   "code"
     t.datetime "expire_at"
@@ -270,49 +276,10 @@ ActiveRecord::Schema.define(version: 20151225094731) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "captcha_type"
+    t.integer  "sender_id"
   end
 
   add_index "mobile_captchas", ["mobile"], name: "index_mobile_captchas_on_mobile", using: :btree
-
-  create_table "oauth_access_grants", force: :cascade do |t|
-    t.integer  "resource_owner_id", null: false
-    t.integer  "application_id",    null: false
-    t.string   "token",             null: false
-    t.integer  "expires_in",        null: false
-    t.text     "redirect_uri",      null: false
-    t.datetime "created_at",        null: false
-    t.datetime "revoked_at"
-    t.string   "scopes"
-  end
-
-  add_index "oauth_access_grants", ["token"], name: "index_oauth_access_grants_on_token", unique: true, using: :btree
-
-  create_table "oauth_access_tokens", force: :cascade do |t|
-    t.integer  "resource_owner_id"
-    t.integer  "application_id"
-    t.string   "token",             null: false
-    t.string   "refresh_token"
-    t.integer  "expires_in"
-    t.datetime "revoked_at"
-    t.datetime "created_at",        null: false
-    t.string   "scopes"
-  end
-
-  add_index "oauth_access_tokens", ["refresh_token"], name: "index_oauth_access_tokens_on_refresh_token", unique: true, using: :btree
-  add_index "oauth_access_tokens", ["resource_owner_id"], name: "index_oauth_access_tokens_on_resource_owner_id", using: :btree
-  add_index "oauth_access_tokens", ["token"], name: "index_oauth_access_tokens_on_token", unique: true, using: :btree
-
-  create_table "oauth_applications", force: :cascade do |t|
-    t.string   "name",                      null: false
-    t.string   "uid",                       null: false
-    t.string   "secret",                    null: false
-    t.text     "redirect_uri",              null: false
-    t.string   "scopes",       default: "", null: false
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  add_index "oauth_applications", ["uid"], name: "index_oauth_applications_on_uid", unique: true, using: :btree
 
   create_table "order_charges", force: :cascade do |t|
     t.string   "channel"
@@ -389,7 +356,6 @@ ActiveRecord::Schema.define(version: 20151225094731) do
     t.decimal  "ship_price",      default: 0.0
     t.integer  "order_charge_id"
     t.decimal  "paid_amount",     default: 0.0
-    t.string   "type"
   end
 
   add_index "orders", ["number"], name: "index_orders_on_number", unique: true, using: :btree
@@ -406,9 +372,6 @@ ActiveRecord::Schema.define(version: 20151225094731) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
-
-  add_index "personal_authentications", ["identity_card_code"], name: "index_personal_authentications_on_identity_card_code", unique: true, using: :btree
-  add_index "personal_authentications", ["user_id"], name: "index_personal_authentications_on_user_id", unique: true, using: :btree
 
   create_table "preferential_measures", force: :cascade do |t|
     t.decimal  "amount"
@@ -430,8 +393,6 @@ ActiveRecord::Schema.define(version: 20151225094731) do
     t.boolean  "actived",    default: false
     t.integer  "seller_id"
   end
-
-  add_index "privilege_cards", ["user_id", "seller_id"], name: "index_privilege_cards_on_user_id_and_seller_id", unique: true, using: :btree
 
   create_table "product_classes", force: :cascade do |t|
     t.integer  "parent_id"
@@ -466,7 +427,6 @@ ActiveRecord::Schema.define(version: 20151225094731) do
     t.integer  "product_class_id"
     t.datetime "created_at",                      null: false
     t.datetime "updated_at",                      null: false
-    t.integer  "user_id"
   end
 
   create_table "product_property_values", force: :cascade do |t|
@@ -475,10 +435,7 @@ ActiveRecord::Schema.define(version: 20151225094731) do
     t.integer  "product_class_id"
     t.datetime "created_at",          null: false
     t.datetime "updated_at",          null: false
-    t.integer  "user_id"
   end
-
-  add_index "product_property_values", ["user_id"], name: "index_product_property_values_on_user_id", using: :btree
 
   create_table "product_property_values_products", id: false, force: :cascade do |t|
     t.integer "product_id",                null: false
@@ -525,6 +482,22 @@ ActiveRecord::Schema.define(version: 20151225094731) do
     t.integer  "full_cut_number"
     t.integer  "full_cut_unit"
   end
+
+  create_table "purchase_orders", force: :cascade do |t|
+    t.integer  "seller_id"
+    t.integer  "supplier_id"
+    t.integer  "state"
+    t.string   "number"
+    t.integer  "order_id"
+    t.decimal  "pay_amount",  precision: 10, scale: 2
+    t.datetime "paid_at"
+    t.decimal  "income",      precision: 10, scale: 2
+    t.datetime "created_at",                           null: false
+    t.datetime "updated_at",                           null: false
+  end
+
+  add_index "purchase_orders", ["seller_id"], name: "index_purchase_orders_on_seller_id", using: :btree
+  add_index "purchase_orders", ["supplier_id"], name: "index_purchase_orders_on_supplier_id", using: :btree
 
   create_table "redactor_assets", force: :cascade do |t|
     t.string   "data_file_name",               null: false
@@ -657,6 +630,44 @@ ActiveRecord::Schema.define(version: 20151225094731) do
 
   add_index "simple_captcha_data", ["key"], name: "idx_key", using: :btree
 
+  create_table "stock_movements", force: :cascade do |t|
+    t.integer  "product_inventory_id"
+    t.integer  "originator_id"
+    t.string   "originator_type"
+    t.integer  "quantity"
+    t.integer  "action"
+    t.datetime "created_at",           null: false
+    t.datetime "updated_at",           null: false
+  end
+
+  create_table "supplier_product_infos", force: :cascade do |t|
+    t.decimal  "cost_price"
+    t.decimal  "suggest_price_lower"
+    t.integer  "product_id"
+    t.integer  "supplier_id"
+    t.datetime "created_at",                      null: false
+    t.datetime "updated_at",                      null: false
+    t.decimal  "suggest_price_upper"
+    t.integer  "supply_status",       default: 0
+  end
+
+  add_index "supplier_product_infos", ["product_id", "supplier_id"], name: "index_supplier_product_infos_on_product_id_and_supplier_id", unique: true, using: :btree
+  add_index "supplier_product_infos", ["product_id"], name: "index_supplier_product_infos_on_product_id", using: :btree
+  add_index "supplier_product_infos", ["supplier_id"], name: "index_supplier_product_infos_on_supplier_id", using: :btree
+
+  create_table "supplier_product_inventories", force: :cascade do |t|
+    t.decimal  "cost_price"
+    t.decimal  "suggest_price_lower"
+    t.decimal  "suggest_price_upper"
+    t.integer  "quantity"
+    t.boolean  "for_sale",             default: true
+    t.integer  "product_inventory_id"
+    t.datetime "created_at",                          null: false
+    t.datetime "updated_at",                          null: false
+  end
+
+  add_index "supplier_product_inventories", ["product_inventory_id"], name: "index_supplier_product_inventories_on_product_inventory_id", using: :btree
+
   create_table "transactions", force: :cascade do |t|
     t.integer  "user_id"
     t.decimal  "current_amount", default: 0.0
@@ -723,16 +734,12 @@ ActiveRecord::Schema.define(version: 20151225094731) do
     t.integer "user_role_id"
   end
 
-  add_index "user_role_relations", ["user_id", "user_role_id"], name: "index_user_role_relations_on_user_id_and_user_role_id", unique: true, using: :btree
-
   create_table "user_roles", force: :cascade do |t|
     t.string   "name"
     t.string   "display_name"
     t.datetime "created_at",   null: false
     t.datetime "updated_at",   null: false
   end
-
-  add_index "user_roles", ["name"], name: "index_user_roles_on_name", unique: true, using: :btree
 
   create_table "users", force: :cascade do |t|
     t.string   "login"
@@ -768,10 +775,8 @@ ActiveRecord::Schema.define(version: 20151225094731) do
     t.string   "unconfirmed_email"
   end
 
-  add_index "users", ["agent_code"], name: "index_users_on_agent_code", unique: true, using: :btree
   add_index "users", ["authentication_token"], name: "index_users_on_authentication_token", using: :btree
   add_index "users", ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true, using: :btree
-  add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
   add_index "users", ["login"], name: "index_users_on_login", unique: true, using: :btree
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
 
@@ -822,8 +827,6 @@ ActiveRecord::Schema.define(version: 20151225094731) do
   add_foreign_key "orders", "users"
   add_foreign_key "orders", "users", column: "seller_id", name: "fk_order_seller_foreign_key"
   add_foreign_key "privilege_cards", "users"
-  add_foreign_key "product_properties", "users"
-  add_foreign_key "product_property_values", "users"
   add_foreign_key "refund_messages", "order_item_refunds"
   add_foreign_key "refund_records", "order_item_refunds"
   add_foreign_key "selling_incomes", "orders"
