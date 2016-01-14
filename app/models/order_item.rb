@@ -20,6 +20,7 @@ class OrderItem < ActiveRecord::Base
   delegate :name, :traffic_expense, to: :product, prefix: true
   delegate :product_name, :price, :sku_attributes, :sku_attributes_str, to: :product_inventory
   delegate :privilege_card, to: :sharing_node, allow_nil: true
+  delegate :type, to: :order
 
   before_validation :set_product_id
   before_save  :reset_payment_info, if: -> { order.paid_at.blank? }

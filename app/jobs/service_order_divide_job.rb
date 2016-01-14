@@ -80,6 +80,7 @@ class ServiceOrderDivideJob < ActiveJob::Base
       divide_income = (verify_code_income * seller.service_rate / 100).truncate(2)
       agent_divide_income = 0
 
+      # 商家创客分成
       if agent = seller.agent
         agent_divide_income = (divide_income / 2).truncate(2)
         divide_agent_record = DivideIncome.create!(
@@ -92,7 +93,28 @@ class ServiceOrderDivideJob < ActiveJob::Base
           "Divide service order: #{@order.number}, [Agent id: #{divide_agent_record.user_id}, amount: #{agent_divide_income} ]")
       end
 
-      official_divide_income = divide_income - agent_divide_income
+      # 区域运营商
+      enterprise = Certification.pass.find_by(
+        user_id: @order.seller_id,
+        type: %w(EnterpriseAuthentication PersonalAuthentication))
+      city_manager = if enterprise.present? && enterprise.city_code
+                       CityManager.find_by(city: enterprise.city_code)
+                     else
+                       nil
+                     end
+      if city_manager && city_manager.user
+        city_divide_income = (order_income * city_manager.rate / 100).truncate(2)
+        divide_record = DivideIncome.create!(
+          order: @order,
+          amount: city_divide_income,
+          user: city_manager.user
+        )
+        logger.info(
+          "Divide order: #{@order.number}, [CityManager id: #{divide_record.id}, amount: #{city_divide_income} ]")
+      end
+
+      # UBOSS平台
+      official_divide_income = divide_income - agent_divide_income - city_divide_income
       divide_official_record = DivideIncome.create!(
         order: @order,
         amount: official_divide_income,
