@@ -1,5 +1,6 @@
 class OrderItem < ActiveRecord::Base
 
+  include Fenxiao::OrderItem
   belongs_to :user
   belongs_to :order
   belongs_to :product
