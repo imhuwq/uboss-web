@@ -124,6 +124,7 @@ class Admin::ProductsController < AdminController
   end
 
   def update_supplier_product
+    binding.pry
     if @product.update(product_params)
       flash[:success] = '保存成功'
       redirect_to action: :show_supplier_product, id: @product.id
@@ -181,10 +182,8 @@ class Admin::ProductsController < AdminController
       product_inventories_attributes: [
         :id, :price, :count, :share_amount_total, :privilege_amount,
         :share_amount_lv_1, :share_amount_lv_2, :share_amount_lv_3,
-        sku_attributes: product_propertys_params[:product_propertys_names],
-        supplier_product_inventory_attributes: [
-          :cost_price, :suggest_price_lower, :suggest_price_upper, :for_sale
-        ]
+        :cost_price, :suggest_price_lower, :suggest_price_upper, :for_sale,
+        sku_attributes: product_propertys_params[:product_propertys_names]
       ],
       supplier_product_info_attributes: [
         :content, :cost_price, :suggest_price_lower, :suggest_price_upper, :supplier_id
