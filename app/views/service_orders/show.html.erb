@@ -18,6 +18,14 @@
   <% end %>
 <% end %>
 
+<!--
+<br />
+<div class="bg-main gap line-gap">
+  <p><%= I18n.t("service_order_status_bar.#{@order.state}") %></p>
+</div>
+<br />
+-->
+
 <div class="order-list m-top10">
 	<div class="seller-box">
 	  <div class="cover"><%= image_tag @service_store.store_cover.url(:w640) %></div>
@@ -44,11 +52,12 @@
 </div><!-- order-list -->
 
 <% if @order.available_pay? %>
+
   <div class="bg-white gap m-bottom10">
     <%= link_to "立即付款", payments_charges_path(order_ids: @order.id, showwxpaytitle: 1), id: 'wx-pay-btn', class: 'btn btn-block btn-lagre' %>
   </div><!-- bg-white -->
 
-<% else %>
+<% elsif !@order.closed? %>
 
   <div class="bg-white m-bottom10">
     <div class="gap border-box">
