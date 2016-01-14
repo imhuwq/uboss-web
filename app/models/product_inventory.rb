@@ -7,20 +7,20 @@ class ProductInventory < ActiveRecord::Base
   has_many   :cart_items
   has_many   :order_items
   has_many   :orders, through: :order_items
-  has_one :supplier_product_inventory
+  has_one :supplier_product_inventory, autosave: true, dependent: :destroy
 
   validates_presence_of :product, :sku_attributes, if: -> { self.saling }
   validates_numericality_of :price, :count, greater_than_or_equal_to: 0
   validate :share_amount_total_must_lt_price
 
-  accepts_nested_attributes_for :supplier_product_inventory
-
   scope :saling, -> { where(saling: true) }
   scope :not_saling, -> { where(saling: false) }
 
   delegate :image_url, :status, :traffic_expense, :carriage_template, :carriage_template_id, :transportation_way, :full_cut, :full_cut_number, :full_cut_unit, :is_official_agent?, to: :product
-  delegate :cost_price, to: :supplier_product_inventory, allow_nil: true
-  delegate :suggest_price_upper, to: :supplier_product_inventory, allow_nil: true
+  delegate :cost_price, :cost_price=, to: :supplier_product_inventory, allow_nil: true
+  delegate :suggest_price_lower, :suggest_price_lower=, to: :supplier_product_inventory, allow_nil: true
+  delegate :suggest_price_upper, :suggest_price_upper=, to: :supplier_product_inventory, allow_nil: true
+  delegate :for_sale, :for_sale=, to: :supplier_product_inventory, allow_nil: true
 
   # TODO custom properties
   # after_create :create_product_properties
