@@ -1,4 +1,10 @@
 class Order < ActiveRecord::Base
+  def self.inherited(base)
+    class_eval do
+      define_method(:"is_#{base.name.underscore}?") { type == base.name }
+    end
+    super
+  end
 
   include AASM
   include Orderable
