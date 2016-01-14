@@ -26,7 +26,7 @@ class EvaluationsController < ApplicationController
   def create
     @evaluation = Evaluation.new(validate_attrs)
     if (session[:last_created_at].to_i > params[:timestamp].to_i) ||
-      (params[:type] == 'new' && Evaluation.has_evaluationed(@evaluation.order_item_id))
+      (params[:type] == 'new' && Evaluation.has_evaluationed(@evaluation.order_item_id).present?)
       flash[:error] = '您已经提交, 不能多次提交'
       redirect_to service_orders_account_path
     else
