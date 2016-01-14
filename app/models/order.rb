@@ -43,7 +43,7 @@ class Order < ActiveRecord::Base
 
   #收益=用户支付-平台收益
   def paid_amount_subtract_platform
-    paid_amount * 0.05
+    paid_amount - paid_amount * 0.05
   end
 
   def order_charge
