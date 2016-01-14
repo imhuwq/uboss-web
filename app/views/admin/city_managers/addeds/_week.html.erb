@@ -1,0 +1,41 @@
+<table class="list-table" id="personal_authentications">
+  <thead>
+    <th>商家名称</th>
+    <th>入驻时间</th>
+    <th>联系方式</th>
+    <th>上架商品数量</th>
+  </thead>
+  <% @certifications.each do |obj| %>
+  <tbody class="item">
+    <tr id="personal_authentication_<%= obj.user_id%>">
+      <td class="text-left">
+        <%= link_to url_for(controller: 'admin/city_manager_authentications', action: :show, user_id: obj.user_id) do %>
+        <%= image_tag(obj.user_avatar.url(:thumb), size: "80x80", alt: "-") %>
+        <%= obj.user_identify %>
+        <% end %>
+      </td>
+      <td><%= obj.created_at %></td>
+      <td><%= obj.user_mobile %></td>
+      <td><%= obj.user.products.count if obj.user %></td>
+    </tr>
+  </tbody>
+  <tbody class='hidden'>
+    <tr id="personal_authentication_<%= obj.user_id%>">
+      <% if agent=obj.user.try(:agent) %>
+      <td class="text-left">
+        <%#= link_to url_for(controller: 'admin/city_manager_authentications', action: :show, user_id: obj.user_id) do %>
+        绑定创客
+        <%= image_tag(agent.avatar.url(:thumb), size: "80x80", alt: "-") %>
+        <%= agent.identify %>
+        <%# end %>
+      </td>
+      <td><%= agent.created_at %></td>
+      <td><%= agent.mobile %></td>
+      <td>好评率<%= Evaluation.sharer_good_reputation_rate(agent) %></td>
+      <% else %>
+      <td colspan="6"></td>
+      <% end %>
+    </tr>
+  </tbody>
+  <% end %>
+</table>

@@ -1,0 +1,18 @@
+<div class="container  admin-container">
+	<ul class="breadcrumb">
+		<li><a href="/admin">主页</a></li>
+		<li class="divider"><i class="fa fa-caret-right"></i></li>
+		<li>企业认证</li>
+	</ul>
+</div>
+<br />
+<% if cannot?(:manage, @certification) %>
+  <div class="container">
+    <div class="header-tab">
+      <%= link_to_certifications_tabs %>
+    </div>
+  </div>
+  <br />
+<% end %>
+
+<%= render "table" %>

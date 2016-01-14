@@ -1,0 +1,7 @@
+<p class="actions-<%= obj.id %> text-center">
+  <% if can?(:change_status, Certification) %>
+    <%= link_to '锁定资料', '#', data: { behavior: 'changeStatus', to: 'review', id: obj.id }, class:"btn yellow-btn" if obj.may_review? %>
+    <%= link_to '通过', '#', data: { behavior: 'changeStatus', to: 'pass', id: obj.id }, class:'btn' if obj.may_pass?  %>
+    <%= link_to '不通过', '#', data: { behavior: 'changeStatus', to: 'no_pass', id: obj.id }, class:'btn red-btn' if obj.may_reject? %>
+  <% end %>
+</p>

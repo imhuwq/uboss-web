@@ -1,19 +1,19 @@
 <%= content_for :page_title do %>
-  完成订单
+  申请成功
 <% end %>
-<div class="container">
-	<div class="oder_box">
-		<div class="oder_imgsucess">
-      <!-- <img src="img/sucess.png"> -->
-      <%= image_tag("img/sucess.png") %>
-    </div>
-		<div class="oder_cont">
-			<div class="titsucess">提现成功!</div>
-			<p class="oder_p oder_pcont">您已成功提现￥<%= @withdraw_record.amount %></p>
-			<p><span>资金预计在<%= (@withdraw_record.created_at + 7.days).try(:to_date) %>到账</span></p>
+
+<div class="bg-white m-top10">
+	<div class="box-m40 text-center">
+		<br />
+		<h1 class="main-color">提现成功!</h1>
+		<br />
+		<div class="line-gap">
+			<p><span>您已成功提现￥</span> <span class="main-color"><%= @withdraw_record.amount %></span></p>
+			<p><span>资金预计在</span> <span class="main-color"><%= (@withdraw_record.created_at + 7.days).try(:to_date) %></span> <span>到账</span></p>
 		</div>
-	</div>
-	<div class="oder_anniu">
-    <%= link_to("返回首页", root_path , id: "oder_over") %>
-	</div>
-</div>	
+		<br />
+	</div><!-- box-m40 -->
+</div><!-- bg-white -->
+<div class="gap">
+	<%= link_to("返回", account_path, id: "oder_over",class:'btn btn-large btn-black-border btn-block') %>
+</div>

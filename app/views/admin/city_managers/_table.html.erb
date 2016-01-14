@@ -1,0 +1,70 @@
+<div class="container">
+  <ul class="nav nav-tabs nav-justified">
+    <% if params[:action] == 'added' %>
+      <li class="<%= 'active' if params[:time] == 'today' %>"><%= link_to "今日新增", {time: 'today'} %></li>
+      <li class="<%= 'active' if params[:time] == 'week' %>"><%= link_to "本周新增", {time: 'week'} %></li>
+      <li class="<%= 'active' if params[:time] == 'month' %>"><%= link_to "本月新增", {time: 'month'} %></li>
+    <% else %>
+      <!-- <li class="<#%= 'active' if params[:time] == 'today' %>"><%= link_to "今日排行", {time: 'today'} %></li> -->
+      <!-- <li class="<#%= 'active' if params[:time].nil? %>"><%= link_to "总排行" %></li> -->
+    <% end %>
+  </ul>
+  <table class="list-table" id="personal_authentications">
+    <thead>
+      <th>商家名称</th>
+      <th>入驻时间</th>
+      <th>联系方式</th>
+      <th>好评率</th>
+      <th>总销量</th>
+      <th>总营业额</th>
+    </thead>
+    <% @certifications.each do |obj| %>
+      <tbody class="item">
+        <tr id="personal_authentication_<%= obj.user_id%>">
+          <td class="text-left">
+            <%= link_to url_for(controller: 'admin/city_manager_authentications', action: :show, user_id: obj.user_id) do %>
+              <%= image_tag(obj.user_avatar.url(:thumb), size: "80x80", alt: "-") %>
+              <%= obj.user_identify %>
+            <% end %>
+          </td>
+          <td><%= obj.created_at %></td>
+          <td><%= obj.user_mobile %></td>
+          <td><%= Evaluation.sharer_good_reputation_rate(obj.user) %></td>
+          <td><%= obj.user_sales %></td>
+          <td><%= number_to_currency obj.user_turnovers %></td>
+        </tr>
+      </tbody>
+      <tbody class='hidden'>
+        <tr id="personal_authentication_<%= obj.user_id%>">
+          <% if agent=obj.user.try(:agent) %>
+          <td class="text-left">
+            <%#= link_to url_for(controller: 'admin/city_manager_authentications', action: :show, user_id: obj.user_id) do %>
+            绑定创客
+              <%= image_tag(agent.avatar.url(:thumb), size: "80x80", alt: "-") %>
+              <%= agent.identify %>
+            <%# end %>
+          </td>
+          <td><%= agent.created_at %></td>
+          <td><%= agent.mobile %></td>
+          <td><%= Evaluation.sharer_good_reputation_rate(agent) %></td>
+          <td><%= obj.user_sales %></td>
+          <td><%= number_to_currency obj.user_turnovers %></td>
+          <% else %>
+          <td colspan="6"></td>
+          <% end %>
+        </tr>
+      </tbody>
+    <% end %>
+  </table>
+  <br />	
+  <%= paginate @certifications %>
+</div>
+
+<script type="text/javascript">
+  $(document).ready(function(){
+    $("body").on("click", "tbody.item>tr", function(){
+      var target = $(this).parent().next();
+      target.toggleClass("hidden");
+    })
+  });
+</script>

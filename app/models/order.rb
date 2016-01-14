@@ -31,6 +31,12 @@ class Order < ActiveRecord::Base
     :pay_serial_number, :pay_serial_number=, :payment, :payment_i18n, :paid_at,
     to: :order_charge, allow_nil: true
 
+  scope :selled, -> { where("orders.state <> 0") }
+  scope :have_paid, -> { where(state: [1, 3, 4, 6]) }
+  scope :today, -> (date=Date.today) { have_paid.where(['DATE(orders.created_at) = ?', date]) }
+  scope :week, -> (time=Time.now) { have_paid.where(created_at: time.beginning_of_week..time.end_of_week) }
+  scope :month, -> (time=Time.now) { have_paid.where(created_at: time.beginning_of_month..time.end_of_month) }
+
   after_create :invoke_privielge_calculator
 
   def total_privilege_amount

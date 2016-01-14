@@ -1,0 +1,67 @@
+<div id="index_list">
+<div class="container  admin-container">
+	<ul class="breadcrumb">
+		<li><a href="/admin">主页</a></li>
+		<li class="divider"><i class="fa fa-caret-right"></i></li>
+		<li>城市运营商</li>
+    <li class="divider"><i class="fa fa-caret-right"></i></li>
+    <li>权限管理</li>
+	</ul>
+</div>
+<br />
+<div class="container nogap">
+	<div class="box-w100 nogap">
+    <% cache(['city_managers/cities:box', CityManager.maximum(:updated_at).utc.to_i]) do  %>
+      <% CityManager::CATEGORIES.each do |key, value| %>
+      <%= link_to cities_admin_city_managers_path(category: value) do %>
+        <div class="box-w20">  
+    	  	<div class="admin-box <%= cycle(%w(main-bg-color yellow-bg-color red-bg-color)) %>">
+    				<h4><%= EnumHelp::Helper.translate_enum_label CityManager, :category, key %></h4>
+    				<h1 class="num"><%= CityManager.contracted.send(key).count %></h1>
+    			</div>
+    			<br />
+    	  </div><!-- box-w25 -->
+        <% end %>
+      <% end %>
+    <% end %>
+			<br />
+	  </div><!-- box-w25 -->
+	</div> <!-- box-w80 -->
+</div>
+
+<div class="container">
+	<table class="list-table">
+		<thead>
+			<th>城市名称</th>
+			<th>运营商名称</th>
+			<th>入驻时间</th>
+			<th>联系方式</th>
+			<th>总签约商家</th>
+			<th>操作</th>
+		</thead>
+    <%= render partial: 'city', collection: @city_managers, as: :city_manager %>
+
+	</table>
+    <%= paginate @city_managers %>
+</div>
+
+<script type="text/javascript">
+  var initItemEvent = function(){
+    $("tbody").off('click').on("click", "tr.item,button.cancle", function(event){
+      var target;
+      if(event.target.type == 'button'){
+        target = $(event.target.form).parent();
+      } else {
+        target = $(this).parent().next();
+      }
+      if($(this).hasClass('red-bg')){
+        return;
+      } else {
+        target.toggleClass("hidden"); 
+      }
+    });
+  };
+  $(document).ready(function(){
+    initItemEvent();
+  });
+</script>

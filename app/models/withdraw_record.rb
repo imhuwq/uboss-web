@@ -21,7 +21,7 @@ class WithdrawRecord < ActiveRecord::Base
   validates_numericality_of :amount,
     less_than_or_equal_to: ->(record) { record.user.income.to_f },
     if: :new_record?
-  validates :bank_card_id, presence: true, if: -> { user.weixin_openid.blank? }
+  validates :bank_card_id, presence: { message: '未创建且账号未绑定微信' }, if: -> { user.weixin_openid.blank? }
   validate  :seller_must_be_authenticated, if: -> { user.is_seller? }
 
   delegate :identify, :total_income, to: :user, prefix: true

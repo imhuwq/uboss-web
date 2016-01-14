@@ -206,3 +206,12 @@
     }
 }
 #share_buttoms img{ height: 40px;}
+.like-box {
+  position: absolute;
+  bottom: -2px;
+  z-index: 99;
+  right: 10px;
+  background-color: rgba(255,255,255,0.8);
+  border-radius: 4px 4px 0 0;
+  padding: 3px 10px;
+}

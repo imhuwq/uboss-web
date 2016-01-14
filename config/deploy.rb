@@ -4,6 +4,7 @@ require 'json'
 lock '3.4.0'
 
 set :application, 'ssobu'
+set :hostname,'op.uboss.me'
 set :deploy_user, 'deploy'
 set :deploy_to, "/home/#{fetch(:deploy_user)}/rails/#{fetch(:application)}"
 
@@ -79,4 +80,17 @@ namespace :rakes do
       end
     end
   end
+end
+
+task :ssh do
+  trap("INT") { puts 'Interupted'; exit 0; }
+  exec "ssh -l #{fetch(:deploy_user)} #{fetch(:hostname)} -p 2201"
+end
+
+task :console do
+  exec "ssh -l #{fetch(:deploy_user)} #{fetch(:hostname)} -p 2201 -t 'cd #{current_path}; #{fetch(:rbenv_prefix)} bundle exec rails console #{fetch(:rails_env)}'"
+end
+
+task :dbconsole do
+  exec "ssh -l #{fetch(:deploy_user)} #{fetch(:hostname)} -p 2201 -t 'cd #{current_path}; #{fetch(:rbenv_prefix)} bundle exec rails dbconsole #{fetch(:rails_env)}'"
 end

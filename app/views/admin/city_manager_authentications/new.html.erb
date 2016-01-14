@@ -1,0 +1,21 @@
+<div class="container  admin-container">
+  <ul class="breadcrumb">
+    <li><a href="/admin">主页</a></li>>
+    <li class="divider"><i class="fa fa-caret-right"></i></li>
+    <li>创建城市运营商认证</li>
+  </ul>
+</div>
+<br />
+<div class="container">
+<%= render "admin/certifications/tabs" %>
+  <br />
+  <h3 class="page-title">城市运营商认证</h3>
+  <%= horizon_form_for @certification,url: {:action=>:create} do |f| %>
+    <%= render 'fields', f: f %>
+    <br />
+    <p class="text-center">
+    <%= f.submit '提交', class: 'btn btn-large' %>
+    </p>
+  <% end %>
+</div>
+
