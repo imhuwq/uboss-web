@@ -1,4 +1,5 @@
 class Order < ActiveRecord::Base
+  attr_accessor :type if not instance_method_already_implemented?(:type)  # TODO 暂时添加虚拟字段, 防止和团购代码冲突
 
   include AASM
   include Orderable
@@ -46,7 +47,7 @@ class Order < ActiveRecord::Base
 
   aasm column: :state, enum: true, skip_validation_on_save: true, whiny_transitions: false do
     state :unpay
-    state :payed, after_enter: :update_stock_item
+    state :payed, after_enter: [:update_stock_item, :create_purchase_order]
     state :shiped, after_enter: [:fill_shiped_at, :close_order_item_refund_before_shiping]
     state :signed, after_enter: [:fill_signed_at, :active_privilege_card, :close_refunds_before_signed]
     state :completed, after_enter: :fill_completed_at
@@ -390,6 +391,10 @@ class Order < ActiveRecord::Base
         )
       end
     end
+  end
+
+  def create_purchase_order
+    PurchaseOrder.create(order: self, seller_id: user_id, supplier_id: 1) if order.type == 'FenxiaoOrder' # TODO
   end
 
 end
