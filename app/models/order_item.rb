@@ -122,7 +122,8 @@ class OrderItem < ActiveRecord::Base
 
   def adjust_product_stock(type)
     if [1, -1].include?(type)
-      ProductInventory.update_counters(product_inventory_id, count: amount * type)
+      StockMovement.sale.create!(product_inventory_id: product_inventory_id, quantity: amount * type,originator: self)
+      # ProductInventory.update_counters(product_inventory_id, count: amount * type)
     else
       raise 'Accept value is -1 or 1'
     end
