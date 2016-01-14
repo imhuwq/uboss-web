@@ -35,7 +35,8 @@ $ ->
           order = unescape(r[2])
         else
           order = ''
-        params = { orderdata: $(element.data('ele')).last().attr('orderdata'), order: order }
+        orderdata = $(element.data('ele')).last().attr('timestamp') || $(element.data('ele')).last().attr('orderdata')
+        params = { orderdata: orderdata, order: order }
         $.get element.data('ref'), params, (data) ->
           if $.trim(data).length
             # $(element.data('container')).append(data)
