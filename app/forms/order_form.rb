@@ -147,6 +147,10 @@ class OrderForm
         order_items_attributes: order_items_of_seller(seller_id)
       }
     end
+    orders_split_by_product_type(orders_attributes)
+  end
+  # 根据order_items的商品类型拆分
+  def orders_split_by_product_type(orders_attributes)
     orders_attributes
   end
 
