@@ -10,7 +10,7 @@ class PurchaseOrder < ActiveRecord::Base
   aasm column: :state, enum: true, skip_validation_on_save: true, whiny_transitions: false do
     state :unpay
     state :payed
-    state :shiped
+    state :shiped, before_enter: :update_stock_item
     state :signed
     state :completed
     state :closed
@@ -31,5 +31,8 @@ class PurchaseOrder < ActiveRecord::Base
     event :complete do
       transitions from: :signed, to: :completed
     end
+  end
+
+  def update_stock_item
   end
 end
