@@ -47,7 +47,7 @@
         </div>
       <% else %>
         <br />
-        <div class="load-more" data-container='#u-order-list' data-ele='.order-list' data-ref='/account/orders'>加载更多</div>
+        <div class="load-more" data-container='#u-order-list' data-ele='.order-list' data-ref="/account/orders<%= "?state=#{params[:state]}" if params[:state] %>">加载更多</div>
       <% end %>
     <% end %>
   	<br />

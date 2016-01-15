@@ -1,6 +1,6 @@
 class ServiceOrderPayedJob < ActiveJob::Base
 
-  class OrderNotPayed < StandardError; ;end
+  class ServiceOrderNotPayed < StandardError; ;end
 
   queue_as :default
 
@@ -10,7 +10,7 @@ class ServiceOrderPayedJob < ActiveJob::Base
     @order = order
     @seller = order.seller
     @buyer = order.user
-    raise OrderNotPayed, order if !order.payed?
+    raise ServiceOrderNotPayed, order if !order.payed?
 
     create_privilege_card_if_none
     send_payed_sms_to_buyer

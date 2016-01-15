@@ -29,7 +29,7 @@
       </div>
     <% else %>
     	<br />
-      <div class="load-more" data-container='#u-order-list' data-ele='.order-list' data-ref='/account/service_orders'>加载更多</div>
+      <div class="load-more" data-container='#u-order-list' data-ele='.order-list' data-ref="/account/service_orders<%= "?state=#{params[:state]}" if params[:state] %>">加载更多</div>
     <% end %>
   	<br />
 	</div><!-- tab-content showlist -->
