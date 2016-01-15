@@ -12,13 +12,11 @@
 
   <%= nested_form_for [:admin, @service_store] do |f| %>
     <div class="beige-bg-color admin-box">
-    	<div class="box-w85">
+    	<div class="box-w60">
     		<br />
-    		<!--
-    		<div>
-	  			店铺封面
+    		<div class='form-group file optional user_store_cover'>
+	  			店铺头像
 		  		<%= f.text_field :store_cover, value: @service_store.store_cover_name, type: :hidden, as: :file, class: 'file optional' %>
-          <p><b style="color: red;">600x600</b>像素</p>
           <p class="fileinput-button">
             <% if @service_store.store_cover_identifier.blank? %>
               <%= image_tag("admin/no-img.png") %>
@@ -30,30 +28,27 @@
             <b class="loading"><i class="fa fa-spinner"></i></b>
           </p>
 				</div>
-				 -->
-				<div>
+			  <p>
           店铺名称<span class='service_store_required'>*</span>
 					<%= f.text_field :store_name , value: @service_store.store_name,  placeholder: '店铺名称',style:'width:400px' %>
-				</div>
-				<br />
-				<div>
+				</p>
+			  <p>
           店铺简介<span class='service_store_no_required'></span>
 					<%= f.text_field :store_short_description, value: @service_store.store_short_description, placeholder: '请控制在20字以内，以保证显示效果',style:'width:400px' %>
-				</div>
-				<br />
-				<div>
-          店铺链接<span class='service_store_no_required'></span>
-					<span class="control-txt store_link" style="width:384px"><%= "#{request.protocol}#{request.host_with_port}#{service_store_path(@service_store)}" %></span>
-				</div>
-				<br />
-     	</div><!-- box-w85 -->
-      <div class="box-w15 text-right info-right-box">
-	  		<br />
-        <p><%= qrcode_image_tag(service_store_url(id: @service_store, shared: true), html:{class:'gap white-bg-color', width:'160px'}) %></p>
-	  		<br />
+        </p>
+      </div>
+
+      <div class="box-w40 info-right-box">
+        <br />
+        <p><img src="http://qr.liantu.com/api.php?&amp;text=<%= service_store_url(id: @service_store) %>" width='160'/></p>
+        <p class="gap white-bg-color">店铺链接：<%= service_store_url(id: @service_store) %></p>
+        <br />
 	  	</div><!-- box-w15 -->
     </div><!-- beige-bg-color -->
+
+
     <br />
+
     <div class="beige-bg-color admin-box">
     	<br />
     	<div class="box-w100">
