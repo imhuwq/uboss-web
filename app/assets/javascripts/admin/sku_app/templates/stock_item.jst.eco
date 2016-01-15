@@ -6,12 +6,20 @@
   <input type="hidden" name="product[product_inventories_attributes][<%= @id %>][sku_attributes][<%= pName %>]" value=<%= pValue %> >
   <td rowspan='1'><%= pValue %></td>
 <% end %>
-<td><input class='input-mini sku-cost-price' price <%= 'disabled' if @read_only %> type='number' name="product[product_inventories_attributes][<%= @id %>][cost_price]" value=<%= @cost_price %> ></td>
+<td><input class='input-mini sku-cost-price' price <%= 'disabled' if @read_only %> type='number' name="product[product_inventories_attributes][<%= @id %>][cost_price]" value=<%= @cost_price %> /></td>
 <td>
-  <input class='input-mini sku-suggest-price-lower' price <%= 'disabled' if @read_only %> type='number' name="product[product_inventories_attributes][<%= @id %>][suggest_price_lower]" value=<%= @suggest_price_lower %> >
+  <input class='input-mini sku-suggest-price-lower' price <%= 'disabled' if @read_only %> type='number' name="product[product_inventories_attributes][<%= @id %>][suggest_price_lower]" value=<%= @suggest_price_lower %> />
   至
-  <input class='input-mini sku-suggest-price-upper' price <%= 'disabled' if @read_only %> type='number' name="product[product_inventories_attributes][<%= @id %>][suggest_price_upper]" value=<%= @suggest_price_upper %> >
+  <input class='input-mini sku-suggest-price-upper' price <%= 'disabled' if @read_only %> type='number' name="product[product_inventories_attributes][<%= @id %>][suggest_price_upper]" value=<%= @suggest_price_upper %> />
 </td>
-<td><input class='input-mini sku-for-sale' price <%= 'disabled' if @read_only %> type='checkbox' name="product[product_inventories_attributes][<%= @id %>][for_sale]" <%= @for_sale ? 'checked' : '' %> ></td>
+<td>
+  <input class='input-mini sku-for-sale' type='hidden' name="product[product_inventories_attributes][<%= @id %>][for_sale]" value='false' />
+  <% if @for_sale: %>
+    <input class='input-mini sku-for-sale' <%= 'disabled' if @read_only %> type='checkbox' name="product[product_inventories_attributes][<%= @id %>][for_sale]" value=<%= @for_sale %> checked />
+  <% else: %>
+   <input class='input-mini sku-for-sale' <%= 'disabled' if @read_only %> type='checkbox' name="product[product_inventories_attributes][<%= @id %>][for_sale]" value=<%= @for_sale %> />
+  <% end %>
+</td>
+<td><input class='input-mini sku-quantity' <%= 'disabled' if @read_only %> type='number' name="product[product_inventories_attributes][<%= @id %>][quantity]" value=<%= @quantity %> /></td>
 <td><input class='input-mini sku-price' price <%= 'disabled' if @read_only %> type='number' name="product[product_inventories_attributes][<%= @id %>][price]" value=<%= @price %> ></td>
 <td><input class='input-mini sku-count' <%= 'disabled' if @read_only %> type='number' name="product[product_inventories_attributes][<%= @id %>][count]" value=<%= @count %>></td>

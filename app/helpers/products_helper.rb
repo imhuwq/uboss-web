@@ -87,20 +87,42 @@ module ProductsHelper
     end
   end
 
-  def get_product_seling_inventories_json(product)
-    json_attributes = [
-      :id, :sku_attributes, :price, :count,
-      :share_amount_lv_3, :share_amount_lv_2, :share_amount_lv_1,
-      :privilege_amount, :share_amount_total
-    ]
-    if product.new_record?
-      product.product_inventories.to_json(only: json_attributes)
+  def get_product_seling_inventories_json(product, supplier)
+    json_attributes = if supplier
+      [
+        :id, :sku_attributes, :price, :count,
+        :share_amount_lv_3, :share_amount_lv_2, :share_amount_lv_1,
+        :privilege_amount, :share_amount_total,
+        :cost_price, :suggest_price_lower, :suggest_price_upper,
+        :for_sale, :quantity
+      ]
+    else
+      [
+        :id, :sku_attributes, :price, :count,
+        :share_amount_lv_3, :share_amount_lv_2, :share_amount_lv_1,
+        :privilege_amount, :share_amount_total,
+      ]
+    end
+    inventories = if product.new_record?
+      product.product_inventories
     elsif product.association(:product_inventories).target.present?
       product.association(:product_inventories).target.
-        select { |inventory| inventory.saling }.
-        to_json(only: json_attributes)
+        select { |inventory| inventory.saling }
     else
-      product.seling_inventories.select(json_attributes).to_json
+      product.seling_inventories
     end
+    inventories_json = JSON.parse(inventories.to_json(only: json_attributes))
+    if supplier
+      inventories.each_with_index do |inventory, i|
+        supplier_inventory_json = {}
+        supplier_inventory_json[:cost_price] = inventory.cost_price
+        supplier_inventory_json[:suggest_price_lower] = inventory.suggest_price_lower
+        supplier_inventory_json[:suggest_price_upper] = inventory.suggest_price_upper
+        supplier_inventory_json[:for_sale] = inventory.for_sale
+        supplier_inventory_json[:quantity] = inventory.quantity
+        inventories_json[i].merge!(supplier_inventory_json)
+      end
+    end
+    inventories = inventories_json.to_json
   end
 end
