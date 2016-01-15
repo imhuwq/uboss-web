@@ -47,7 +47,7 @@ class ServiceOrderForm
   end
 
   def privilege_bonus
-    sharing_node.present? ? sharing_node.privilege_card.amount(product_inventory) : 0
+    sharing_node.present? && sharing_node.privilege_card.present? ? sharing_node.privilege_card.amount(product_inventory) : 0
   end
 
   def total_privilege_bonus
