@@ -57,8 +57,10 @@
   <div class="form-group ">
     <label class="control-label">图文详情<abbr title="必填">*</abbr></label>
     <div class="control-input" style='width: 430px;'>
-      <%= f.fields_for :supplier_product_info do |spi| %>
-        <%= spi.input_field :content, as: :text, class: "redactor", placeholder: '在此添加代销说明' %>
+      <% if supplier %>
+        <%= f.fields_for :supplier_product_info do |spi| %>
+          <%= spi.input_field :content, as: :text, class: "redactor", placeholder: '在此添加代销说明' %>
+        <% end %>
       <% end %>
       <%= f.input_field :content, as: :text, class: "redactor", placeholder: '在此添加商品详情' %>
     </div>
@@ -122,7 +124,7 @@
     <i class="fa fa-refresh link_refresh"></i>
   <% end %>
   <span class='link_new_carriage_temp'><%= link_to '新建运费模板', new_admin_carriage_template_path, target: '_blank', class: 'label new_admin_carriage_template' %></span>
-  <%= render partial: 'show_carriage_template', locals: {carriage: @product.carriage_template} %>
+  <%= render partial: 'admin/products/show_carriage_template', locals: {carriage: @product.carriage_template} %>
 
   <div class='full_cut_wrap'>
     <label class='optional text-right control-label'>更多设置</label>

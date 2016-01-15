@@ -17,7 +17,7 @@
 <br />
 <div class="container  mod-inner">
   <div class="list-search-bar">
-    <%= link_to("+ 发布商品", (current_user.is_supplier? ? url_for(action: :new_supplier_product) : merchant_confirm_account_path), class: "btn btn-large", role: "button") %>
+    <%= link_to("+ 发布商品", (current_user.is_supplier? ? url_for(action: :new) : merchant_confirm_account_path), class: "btn btn-large", role: "button") %>
   </div>
   <br />
   <%= render 'left_bar' %>

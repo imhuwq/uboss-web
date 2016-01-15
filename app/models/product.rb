@@ -34,8 +34,6 @@ class Product < ActiveRecord::Base
   has_one :supplier_product_info
   has_one :supplier, through: :supplier_product_info
 
-  accepts_nested_attributes_for :supplier_product_info
-
   amoeba do
     include_association :categories
     include_association :supplier_product_info
@@ -43,9 +41,10 @@ class Product < ActiveRecord::Base
 
   delegate :image_url, to: :asset_img, allow_nil: true
   delegate :avatar=, :avatar, to: :asset_img
-  delegate :cost_price, to: :supplier_product_info, allow_nil: true
-  delegate :suggest_price_lower, to: :supplier_product_info, allow_nil: true
-  delegate :suggest_price_upper, to: :supplier_product_info, allow_nil: true
+  delegate :cost_price, :cost_price=, to: :supplier_product_info, allow_nil: true
+  delegate :suggest_price_lower, :suggest_price_lower=, to: :supplier_product_info, allow_nil: true
+  delegate :suggest_price_upper, :suggest_price_upper=, to: :supplier_product_info, allow_nil: true
+  delegate :supplier_id, :supplier_id=, to: :supplier_product_info, allow_nil: true
   delegate :content, to: 'supplier_product_info.description', prefix: 'supplier_des'
 
   enum status: { unpublish: 0, published: 1, closed: 2 }
