@@ -1,6 +1,10 @@
 class Admin::ProductsController < AdminController
 
+<<<<<<< HEAD
   load_and_authorize_resource class: 'OrdinaryProduct'
+=======
+  load_and_authorize_resource
+>>>>>>> get supplier products controller independent from products controller
 
   def select_carriage_template
     @carriage = CarriageTemplate.find(params[:tpl_id]) if params[:tpl_id].present?
@@ -11,6 +15,7 @@ class Admin::ProductsController < AdminController
   end
 
   def index
+<<<<<<< HEAD
     @products = @products.available.order('created_at DESC')
     @products = @products.includes(:asset_img).page(params[:page] || 1)
     @statistics = {}
@@ -21,9 +26,18 @@ class Admin::ProductsController < AdminController
 
   def new
     @product = OrdinaryProduct.new()
+=======
+    @products = current_user.products.available.order('created_at DESC')
+    @products = @products.includes(:asset_img).page(params[:page] || 1)
+    @statistics = {}
+    @statistics[:create_today] = @products.where('created_at > ? and created_at < ?', Time.now.beginning_of_day, Time.now.end_of_day).count
+    @statistics[:count] = @products.count
+    @statistics[:not_enough] = @products.where('count < ?', 10).count
+>>>>>>> get supplier products controller independent from products controller
   end
 
   def create
+    binding.pry
     if @product.save
       flash[:success] = '产品创建成功'
       redirect_to action: :show, id: @product.id
@@ -65,7 +79,7 @@ class Admin::ProductsController < AdminController
       flash.now[:success] = @notice
       flash.now[:error] = @error
       product_collection = @product.closed? ? [] : [@product]
-      render(partial: 'products', locals: { products: product_collection, supplier: false })
+      render(partial: 'products', locals: { products: product_collection })
     else
       flash[:success] = @notice
       flash[:error] = @error
@@ -84,90 +98,6 @@ class Admin::ProductsController < AdminController
   def pre_view
     @seller = @product.user
     render layout: 'mobile'
-  end
-
-  #supplier products
-
-  def supplier_index
-    params[:status] ||= 'supply'
-    if params[:status] == 'supply'
-      @products = current_user.products.supply.supply_supplied.order('products.created_at DESC')
-    elsif params[:status] == 'store'
-      @products = current_user.products.supply.supply_stored.order('products.created_at DESC')
-    elsif params[:status] == 'delete'
-      @products = current_user.products.supply.supply_deleted.order('products.created_at DESC')
-    end
-    @products = @products.includes(:asset_img).page(params[:page] || 1)
-    @statistics = {}
-    @statistics[:count] = @products.count
-  end
-  
-  def new_supplier_product
-    @product = Product.new
-    @product.build_supplier_product_info
-    @product.product_inventories.new
-    @product.supplier_product_inventories.new
-    authorize! :new_supplier_product, @product
-  end
-
-  def create_supplier_product
-    @product = current_user.products.new(product_params)
-    @product.produce_type = 'supply'
-    authorize! :create_supplier_product, @product
-    if @product.save
-      flash[:success] = '产品创建成功'
-      redirect_to action: :show_supplier_product, id: @product.id
-    else
-      flash[:error] = "#{@product.errors.full_messages.join('<br/>')}"
-      render :new_supplier_product
-    end
-  end
-
-  def show_supplier_product
-  end
-
-  def edit_supplier_product
-  end
-
-  def update_supplier_product
-    if @product.update(product_params)
-      flash[:success] = '保存成功'
-      redirect_to action: :show_supplier_product, id: @product.id
-    else
-      flash[:error] = "保存失败。#{@product.errors.full_messages.join('<br/>')}"
-      render :edit_supplier_product
-    end
-  end
-
-  def toggle_supply_status
-    supplier_product_info = @product.supplier_product_info
-    begin
-      if params[:status] == 'store'
-        supplier_product_info.stored!
-        @notice = '下架成功'
-      elsif params[:status] == 'supply'
-        supplier_product_info.supplied!
-        @notice = '上架成功'
-      elsif params[:status] == 'delete'
-        supplier_product_info.deleted!
-        @notice = '删除成功'
-      else
-        @error = '未知操作'
-      end
-    rescue => e
-      logger.error e
-      @error = '操作失败'
-    end
-    if request.xhr?
-      flash.now[:success] = @notice
-      flash.now[:error] = @error
-      product_collection = supplier_product_info.deleted? ? [] : [@product]
-      render(partial: 'products', locals: { products: product_collection, supplier: true })
-    else
-      flash[:success] = @notice
-      flash[:error] = @error
-      redirect_to action: :show_supplier_product, id: @product.id
-    end
   end
 
   private
