@@ -170,22 +170,6 @@ Rails.application.routes.draw do
 
       delete '/end_cooperation/:id', to: 'agencies#end_cooperation', as: :end_cooperation
 
-      get '/supplier/products/new', to: 'products#new_supplier_product'
-
-      post '/supplier/products/create', to: 'products#create_supplier_product'
-
-      get '/supplier/products/:id', to: 'products#show_supplier_product'
-
-      get '/supplier/products/:id/edit', to: 'products#edit_supplier_product'
-
-      put '/supplier/products/:id/update', to: 'products#update_supplier_product'
-
-      patch '/supplier/products/:id/update', to: 'products#update_supplier_product'
-
-      get '/supplier/products', to: 'products#supplier_index'
-
-      patch '/supplier/products/:id/toggle_supply_status', to: 'products#toggle_supply_status', as: :toggle_supply_status
-
       get '/select_carriage_template', to: 'products#select_carriage_template'
 
       get '/refresh_carriage_template', to: 'products#refresh_carriage_template'
@@ -194,6 +178,14 @@ Rails.application.routes.draw do
         member do
           get :set_common
           get :cancel_common
+        end
+      end
+
+      namespace :supplier do
+        resources :products, except: [:destroy] do
+          member do
+            patch :toggle_supply_status
+          end
         end
       end
 
