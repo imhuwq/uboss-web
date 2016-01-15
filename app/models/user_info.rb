@@ -29,8 +29,8 @@ class UserInfo < ActiveRecord::Base
 
   def good_reputation_rate
     return @sharer_good_reputation_rate if @sharer_good_reputation_rate
-    o_store = ordinary_store.first
-    s_store = service_store.first
+    o_store = self.user.ordinary_store
+    s_store = self.user.service_store
     good = o_store.best_evaluation.to_i + o_store.better_evaluation.to_i + o_store.good_evaluation.to_i + s_store.best_evaluation.to_i + s_store.better_evaluation.to_i + s_store.good_evaluation.to_i
 
     @sharer_good_reputation_rate = if total_reputations > 0
@@ -41,8 +41,8 @@ class UserInfo < ActiveRecord::Base
   end
 
   def total_reputations
-    o_store = ordinary_store.first
-    s_store = service_store.first
+    o_store = self.user.ordinary_store
+    s_store = self.user.service_store
     @total_reputations ||= (o_store.good_evaluation.to_i + o_store.bad_evaluation.to_i + o_store.better_evaluation.to_i + o_store.best_evaluation.to_i + o_store.worst_evaluation.to_i + s_store.good_evaluation.to_i + s_store.bad_evaluation.to_i + s_store.better_evaluation.to_i + s_store.best_evaluation.to_i + s_store.worst_evaluation.to_i)
   end
 end
