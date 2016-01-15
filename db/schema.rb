@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160113024643) do
+ActiveRecord::Schema.define(version: 20160115101747) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -401,6 +401,7 @@ ActiveRecord::Schema.define(version: 20160113024643) do
     t.decimal  "share_amount_lv_3",  default: 0.0
     t.decimal  "privilege_amount",   default: 0.0
     t.boolean  "saling",             default: true
+    t.string   "type"
   end
 
   add_index "product_inventories", ["sku_attributes"], name: "index_product_inventories_on_sku_attributes", using: :gin
@@ -627,30 +628,26 @@ ActiveRecord::Schema.define(version: 20160113024643) do
   create_table "supplier_product_infos", force: :cascade do |t|
     t.decimal  "cost_price"
     t.decimal  "suggest_price_lower"
-    t.integer  "product_id"
     t.integer  "supplier_id"
     t.datetime "created_at",                      null: false
     t.datetime "updated_at",                      null: false
     t.decimal  "suggest_price_upper"
     t.integer  "supply_status",       default: 0
+    t.integer  "supplier_product_id"
   end
 
-  add_index "supplier_product_infos", ["product_id", "supplier_id"], name: "index_supplier_product_infos_on_product_id_and_supplier_id", unique: true, using: :btree
-  add_index "supplier_product_infos", ["product_id"], name: "index_supplier_product_infos_on_product_id", using: :btree
   add_index "supplier_product_infos", ["supplier_id"], name: "index_supplier_product_infos_on_supplier_id", using: :btree
 
-  create_table "supplier_product_inventories", force: :cascade do |t|
+  create_table "supplier_product_inventory_infos", force: :cascade do |t|
     t.decimal  "cost_price"
     t.decimal  "suggest_price_lower"
     t.decimal  "suggest_price_upper"
     t.integer  "quantity"
-    t.boolean  "for_sale",             default: true
-    t.integer  "product_inventory_id"
-    t.datetime "created_at",                          null: false
-    t.datetime "updated_at",                          null: false
+    t.boolean  "for_sale",                      default: true
+    t.datetime "created_at",                                   null: false
+    t.datetime "updated_at",                                   null: false
+    t.integer  "supplier_product_inventory_id"
   end
-
-  add_index "supplier_product_inventories", ["product_inventory_id"], name: "index_supplier_product_inventories_on_product_inventory_id", using: :btree
 
   create_table "transactions", force: :cascade do |t|
     t.integer  "user_id"

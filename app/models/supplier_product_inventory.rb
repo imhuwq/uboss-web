@@ -1,7 +1,11 @@
-class SupplierProductInventory < ActiveRecord::Base
-  belongs_to :product_inventory
-  belongs_to :product
+class SupplierProductInventory < ProductInventory
 
-  validates :cost_price, presence: true, numericality: { greater_than: 0 }
-  #validates :suggest_price_lower, :suggest_price_upper, numericality: { greater_than: 0, allow_nil: true }
+  has_one :supplier_product_inventory_info, foreign_key: 'supplier_product_inventory_id', autosave: true, dependent: :destroy
+
+  delegate :cost_price, :cost_price=, to: :supplier_product_inventory, allow_nil: true
+  delegate :suggest_price_lower, :suggest_price_lower=, to: :supplier_product_inventory, allow_nil: true
+  delegate :suggest_price_upper, :suggest_price_upper=, to: :supplier_product_inventory, allow_nil: true
+  delegate :for_sale, :for_sale=, to: :supplier_product_inventory, allow_nil: true
+  delegate :quantity, :quantity=, to: :supplier_product_inventory, allow_nil: true
+
 end
