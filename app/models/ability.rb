@@ -43,11 +43,7 @@ class Ability
   def grant_permissions_to_seller user
     can :read, User, id: user.id
     can :manage, Order, seller_id: user.id
-    can :manage, Product do |product|
-      product.user_id == user.id and product.produce_type == 'normal'
-    end
-    can :new, Product
-    can :create, Product
+    can :manage, Product, user_id: user.id
     can :manage, PersonalAuthentication, user_id: user.id
     can :manage, EnterpriseAuthentication, user_id: user.id
     can :read,   WithdrawRecord, user_id: user.id
@@ -76,32 +72,7 @@ class Ability
     can :create, WithdrawRecord, user_id: user.id
     can :manage, BankCard, user_id: user.id
 
-    can :read, Product do |product|
-      product.user_id == user.id and product.produce_type == 'normal'
-    end
-  end
-
-  def grant_permissions_to_supplier user
-    can :read, User, id: user.id
-    can :read, User, cooperation: { supplier_id: user.id }
-    can :read, :sellers
-    #can :manage, Product do |product|
-      #product.user_id == user.id and product.produce_type == 'normal'
-    #end
-    #can :new_supplier_product, Product
-    #can :create_supplier_product, Product
-    #can :show_supplier_product, Product do |product|
-      #product.supplier_product_info.supplier_id == user.id
-    #end
-    #can :edit_supplier_product, Product do |product|
-      #product.supplier_product_info.supplier_id == user.id
-    #end
-    #can :update_supplier_product, Product do |product|
-      #product.supplier_product_info.supplier_id == user.id
-    #end
-    #can :toggle_supply_status, Product do |product|
-      #product.supplier_product_info.supplier_id == user.id
-    #end
+    can :read, Product, user_id: user.id
   end
 
 end
