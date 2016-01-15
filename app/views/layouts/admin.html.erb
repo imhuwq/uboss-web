@@ -11,9 +11,12 @@
 	</head>
 	<body class="<%= controller_name %> <%= action_name %>" data-params="<%= request.get? ? params.to_json : {} %>">
 	  <%= render 'layouts/admin_navbar' %>
-		<%= render 'layouts/flash_alert' %>
     <div class='modal'></div>
-    <div class='content'>
+    <div class='container content'>
+    		<nav class="nav-v3">
+   	  		<%= render_navigation(level: 3) %>
+   	  </nav>   	  
+			<%= render 'layouts/flash_alert' %>
       <%= yield %>
     </div>
 		<br />
