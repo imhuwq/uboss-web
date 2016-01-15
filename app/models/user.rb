@@ -68,8 +68,7 @@ class User < ActiveRecord::Base
   #for supplier
   has_many :cooperations, foreign_key: 'supplier_id', dependent: :destroy
   has_many :agencies, through: :cooperations, source: :agency
-  has_many :supplier_product_infos, foreign_key: 'supplier_id'
-  has_many :supplied_products, through: :supplier_product_infos, source: :product
+  has_many :supplier_products, ->{ where(type: 'SupplierProduct') }
 
   #for agencies
   has_many :reverse_cooperations, foreign_key: 'agency_id', class_name: 'Cooperation', dependent: :destroy
