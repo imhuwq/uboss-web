@@ -12,9 +12,9 @@
 
 <div class="container nogap">
 
-    <%= horizon_form_for @product, url: { action: :update_supplier_product } do |f| %>
+    <%= horizon_form_for @product, url: { controller: 'admin/supplier/products', action: :update } do |f| %>
 
-      <%= render 'fields', f: f, supplier: true %>
+      <%= render '/admin/products/fields', f: f, supplier: true %>
 
     <% end %>
 
