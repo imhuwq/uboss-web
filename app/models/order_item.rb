@@ -23,7 +23,6 @@ class OrderItem < ActiveRecord::Base
   delegate :type, to: :order
 
   before_validation :set_product_id
-  before_save  :reset_payment_info, if: -> { order.paid_at.blank? }
   after_create :decrease_product_stock
 
   after_commit :update_order_pay_amount, if: -> {
