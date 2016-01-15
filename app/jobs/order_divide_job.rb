@@ -2,6 +2,7 @@ class OrderDivideJob < ActiveJob::Base
 
   class OrderNotSigned < StandardError; ;end
   class OrderHadDivided < StandardError; ;end
+  class VerifyCodeHadDivided < StandardError; ;end
 
   include Loggerable
 
@@ -11,19 +12,40 @@ class OrderDivideJob < ActiveJob::Base
 
   attr_reader :order_income
 
-  def perform(order)
+  def perform(object)
+    if object.class == OrdinaryOrder
+      perform_order_divide(object)
+    elsif object.class == VerifyCode
+      perform_service_order_divide(object)
+    end
+  end
+
+  private
+
+  #
+  # 订单完成开始分账
+  # 1. 用户分享收入
+  # 2. 创客收入
+  # 3. 城市运营商收入
+  # 4. 平台收入
+  # 5. 商家营收收入
+  #
+  def perform_order_divide(order)
     @order = order
+    @order_items = order.order_items
+
     if not order.reload.signed?
       logger.error "Break divide order: #{@order.number} as it is not signed!"
       raise OrderNotSigned
     end
+
     if order.sharing_rewared?
       logger.error "Break divide order: #{@order.number} as it had divided!"
       raise OrderHadDivided
     end
 
     @order_income = Rails.env.production? ? @order.paid_amount : @order.pay_amount
-    logger.info "Start divide @order: #{order.number}, total_paid: #{@order_income}"
+    logger.info "Start divide @order: #{@order.number}, total_paid: #{@order_income}"
 
     refunded_money = @order.order_item_refunds.successed.sum(:money)
     logger.info "Divide order: #{@order.number}, reduce refund money #{refunded_money}"
@@ -36,15 +58,28 @@ class OrderDivideJob < ActiveJob::Base
     send_exception_message(exception, @order.attributes)
   end
 
-  private
+  def perform_service_order_divide(verify_code)
+    @order = verify_code.order
+    @verify_code = verify_code
+    @order_items = [verify_code.order_item]
 
-  #
-  # 订单完成开始分账
-  # 1. 商家营收收入
-  # 2. 用户分享收入
-  # 3. 平台|创客收入
-  # 4. 城市运营商收入
-  #
+    if verify_code.sharing_rewared?
+      logger.error "Break divide verify code: #{@verify_code.code} as it had divided!"
+      raise VerifyCodeHadDivided
+    end
+
+    order_total_paid = Rails.env.production? ? @order.paid_amount : @order.pay_amount
+    @order_income = order_total_paid/@order_items.first.amount
+
+    logger.info "Start divide @order: #{@order.number}, total_paid: #{order_total_paid}, @verify_code: #{@verify_code.code}, single_verify_code_paid: #{@order_income}"
+
+    start_divide_order_paid_amount
+
+    logger.info "Done divide @order: #{@order.number}, @verify code: #{@verify_code.code}"
+  rescue => exception
+    send_exception_message(exception,  @verify_code.attributes.merge({order: @order.attributes}))
+  end
+
   def start_divide_order_paid_amount
     # NOTE
     # ----------------------
@@ -54,7 +89,7 @@ class OrderDivideJob < ActiveJob::Base
     # ----------------------
     Order.transaction do
       begin
-        @order.order_items.each do |order_item|
+        @order_items.each do |order_item|
           reward_sharing_users order_item do |reward_amount|
             @order_income -= reward_amount
           end
@@ -65,8 +100,18 @@ class OrderDivideJob < ActiveJob::Base
         end
 
         SellingIncome.create!(user: @order.seller, amount: order_income, order: @order)
-        @order.update_columns(income: order_income, sharing_rewared: true)
-        @order.complete!
+
+        if @order.class == OrdinaryOrder
+          @order.update_columns(income: order_income, sharing_rewared: true)
+          @order.complete!
+        elsif @order.class == ServiceOrder
+          @verify_code.update_columns(income: order_income, sharing_rewared: true)
+          @order.update_columns(income: @order.verify_codes.where(sharing_rewared: true).sum(:income))
+
+          if !@order.verify_codes.any? { |code| !code.sharing_rewared? }
+            @order.update_columns(sharing_rewared: true)
+          end
+        end
       rescue => e
         logger.error "!!!Exception raise up! Dividing order: #{@order.number} ! Message: #{e.message} !!!"
         raise e
@@ -76,6 +121,7 @@ class OrderDivideJob < ActiveJob::Base
 
   def divide_income_for_official_or_agent
     seller = @order.seller
+
     if seller.service_rate && order_income > 0
       divide_income = (order_income * seller.service_rate / 100).truncate(2)
       agent_divide_income = city_divide_income = 0
@@ -128,7 +174,7 @@ class OrderDivideJob < ActiveJob::Base
   end
 
   def reward_sharing_users(order_item, &block)
-    return false if order_item.order_item_refunds.successed.where('money > 0').exists?
+    return false if order_item.type == "OrdinaryOrder" && order_item.order_item_refunds.successed.where('money > 0').exists?
 
     sharing_node = order_item.sharing_node
     return false if sharing_node.blank?
@@ -138,7 +184,9 @@ class OrderDivideJob < ActiveJob::Base
 
     LEVEL_AMOUNT_FIELDS.each_with_index do |key, index|
       reward_amount = get_reward_amount_by_product_level_and_order_item(product_inventory, key, order_item)
-      reward_amount = reward_amount * order_item.amount
+      if order_item.type == "OrdinaryOrder"
+        reward_amount = reward_amount * order_item.amount
+      end
       reward_amount = parse_divide_amount(reward_amount)
 
       if reward_amount > 0

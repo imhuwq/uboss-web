@@ -42,7 +42,7 @@ class VerifyCode < ActiveRecord::Base
   end
 
   def call_verify_code_verified_handler
-    ServiceOrderDivideJob.set(wait: 5.seconds).perform_later(self)
+    OrderDivideJob.set(wait: 5.seconds).perform_later(self)
   end
 
 end
