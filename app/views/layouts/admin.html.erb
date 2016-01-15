@@ -12,8 +12,9 @@
 	<body class="<%= controller_name %> <%= action_name %>" data-params="<%= request.get? ? params.to_json : {} %>">
 	  <%= render 'layouts/admin_navbar' %>
     <div class='modal'></div>
-    <div class='container content'>
-      <% thr_navigation = render_navigation(level: 3) %>
+    <% thr_navigation = render_navigation(level: 3) %>
+    <div class='container nogap <% if thr_navigation.present? %>content<% end %>	'>
+      
       <% if thr_navigation.present? %>
         <nav class="nav-v3">
           <%= thr_navigation %>
