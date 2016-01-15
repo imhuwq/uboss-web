@@ -44,9 +44,9 @@
 
   <!-- 店铺信息-->
   <div class="bg-white gap m-bottom10">
-	  <div class="service-store-info">  	
-	    <%= image_tag('mobile/mobile.png',class:'pull-right store-tel') %>    
-	    <div class="content">      
+	  <div class="service-store-info">
+	    <%= image_tag('mobile/mobile.png',class:'pull-right store-tel') %>
+	    <div class="content">
 	      <div class="address text-cut m-bottom10"><%= @service_store.address %></div>
 	      <div class="open-time">营业时间：<%= @service_store.business_hours %></div>
 	    </div>
@@ -55,10 +55,10 @@
 	<div class="pop-bg phone-list hidden ">
 		<div class="pop-bottom">
 			<div class="bg-white m-bottom10  border-radius">
-				<% @service_store.mobile_phone.each do |phone| %>			  
-				  <%= link_to  phone ,"tel:#{phone}" %>			  
+				<% @service_store.mobile_phone.each do |phone| %>
+				  <%= link_to  phone ,"tel:#{phone}" %>
 				<% end %>
-			</div><!-- bg-white -->	
+			</div><!-- bg-white -->
 			<div class="btn btn-block btn-large btn-white ">取消</div>
 		</div><!-- pop-bottom -->
 	</div>
@@ -133,7 +133,7 @@
 	       	进店逛逛
 	      <%end%>
 		    <h4 class="name text-cut"><%= @service_store.store_name %></h4>
-		    <p class="gray-color"><%= number_to_percentage(@service_store.good_reputation_rate, precision: 0) %> 好评（<%= @service_store.total_reputations %>人）</p>
+		    <p class="gray-color"><%= number_to_percentage(@service_store.total_good_reputation, precision: 0) %> 好评（<%= @service_store.total_evaluat_people %>人）</p>
 	      <p class="gray-color desc text-cut"><%= @service_store.store_short_description %></p>
 
 	 		</div><!-- content -->
