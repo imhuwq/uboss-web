@@ -13,9 +13,12 @@
 	  <%= render 'layouts/admin_navbar' %>
     <div class='modal'></div>
     <div class='container content'>
-    		<nav class="nav-v3">
-   	  		<%= render_navigation(level: 3) %>
-   	  </nav>   	  
+      <% thr_navigation = render_navigation(level: 3) %>
+      <% if thr_navigation.present? %>
+        <nav class="nav-v3">
+          <%= thr_navigation %>
+        </nav>
+      <% end %>
 			<%= render 'layouts/flash_alert' %>
       <%= yield %>
     </div>
