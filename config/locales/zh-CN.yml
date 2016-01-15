@@ -126,6 +126,10 @@ zh-CN:
         service_type: 团购类型
         monthes: 团购有效期
         content: 图文详情
+      supplier_product_info:
+        cost_price: 成本价
+        suggest_price_lower: 建议价下限
+        suggest_price_upper: 建议价上限
       mobile_auth_code:
         mobile: 手机号码
       order_form:
