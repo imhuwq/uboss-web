@@ -64,7 +64,7 @@
 <div class="bg-white m-bottom10">
   <% unless action_name == 'hots' %>
   <div class="category-nav">
-    <% unless @categories.empty? %>
+    <% if @categories.try(:any?) %>
       <a class="tab active" href="#"><span>分组</span></a>
     <% end %>
     <a class="tab" href="#product-container"><span>全部商品</span></a>
@@ -87,6 +87,7 @@
 <% end %>
 
 <div class="bg-white m-bottom10" id="product-container">
+  <% if @order_column_name %>
   <div class="sort-nav">
   	<div class="sort-tab <%= params[:order] == nil ? 'active' : '' %>">
     	<a href="/stores/<%= params[:id] %>#product-container">综合排序</a>
@@ -98,6 +99,7 @@
     	<a href="/stores/<%= params[:id] %>?order=sales_amount#product-container">人气热销</a>
   	</div>
   </div>
+  <% end %>
   <div class="tab-container">
     <div class="tab-content store-list" id="sort-container1" style="display: block;">
       <% if @products.present? %>

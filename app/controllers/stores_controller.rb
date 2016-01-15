@@ -36,6 +36,7 @@ class StoresController < ApplicationController
   end
 
   def favours
+    @order_column_name = 'updated_at'
     @products = append_default_filter current_user.favoured_products.where(user_id: @seller.id)
     render_product_partial_or_page
   end
