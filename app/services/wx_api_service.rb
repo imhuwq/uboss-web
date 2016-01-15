@@ -16,13 +16,18 @@ UBOSS，一个边买边赚的商城！引领行业的分享新玩法，旨在重
 
   def invoke_personal_invite_sence(options = {})
     weixin_openid = options[:weixin_openid]
+    wechat_account = options[:wechat_account]
+    wx_scene = WxScene.with_properties(
+      wechat_account: wechat_account,
+      weixin_openid: weixin_openid).first
 
-    if wx_scene = WxScene.with_properties(weixin_openid: weixin_openid).first
+    if wx_scene.present?
       wx_scene.request_wx_sence_and_send_message
     else
       WxScene.create(
         expire_at: Time.now + 30.days,
         properties: {
+          wechat_account: wechat_account,
           weixin_openid: weixin_openid
         }
       )

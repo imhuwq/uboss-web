@@ -17,6 +17,17 @@ $weixin_client ||= WeixinAuthorize::Client.new(
   redis_key: 'ssobu_wxtk'
 )
 
+$weixin_frank_client ||= WeixinAuthorize::Client.new(
+  Rails.application.secrets.weixin_frank["app_id"],
+  Rails.application.secrets.weixin_frank["app_secret"],
+  redis_key: 'ssobu_frank_wxtk'
+)
+
+$weixin_clients = {
+  'gh_86991e4ebd98' => $weixin_client,
+  'gh_7eb3e2137f71' => $weixin_frank_client
+}
+
 if false
 
   medias = if Rails.env.production?

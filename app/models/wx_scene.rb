@@ -21,6 +21,7 @@ class WxScene < ActiveRecord::Base
     WxApiJob.perform_later(
       job_type: 'scan_scene_qrcode',
       wx_scene: self,
+      wechat_account: options[:wechat_account],
       scan_weixin_openid: options[:weixin_openid]
     )
   end
@@ -32,7 +33,7 @@ class WxScene < ActiveRecord::Base
 
   def request_wx_qrcode
     remain_times = expired? ? 30.days : expire_at - Time.now
-    response = $weixin_client.create_qr_scene(scene_id, remain_times)
+    response = weixin_client.create_qr_scene(scene_id, remain_times)
     if response.is_ok?
       self.expire_at = Time.now + remain_times
       update_properties(
@@ -51,7 +52,7 @@ class WxScene < ActiveRecord::Base
   def upload_wx_qrcode
     return false if properties['scene_ticket'].blank?
 
-    user_response = $weixin_client.user(properties['weixin_openid'])
+    user_response = weixin_client.user(properties['weixin_openid'])
     nickname = user_response.is_ok? ? user_response.result['nickname'] : '微信用户'
 
     request_image_query_param = {
@@ -64,7 +65,7 @@ class WxScene < ActiveRecord::Base
     image_url = "http://imager.ulaiber.com/req/0?#{request_image_query_param}"
 
     begin
-      media_response = $weixin_client.upload_media(image_url, 'image')
+      media_response = weixin_client.upload_media(image_url, 'image')
       if media_response.is_ok?
         update_properties(
           qrcode_media_id: media_response.result['media_id']
@@ -82,10 +83,14 @@ class WxScene < ActiveRecord::Base
   end
 
   def send_qrcode_image_message
-    $weixin_client.send_image_custom(properties['weixin_openid'], properties['qrcode_media_id'])
+    weixin_client.send_image_custom(properties['weixin_openid'], properties['qrcode_media_id'])
   end
 
   private
+
+  def weixin_client
+    @weixin_client ||= ($weixin_clients[properties['wechat_account']] || $weixin_client)
+  end
 
   def set_scene_id
     update_columns(scene_id: id)

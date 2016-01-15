@@ -6,6 +6,7 @@
 WeixinRailsMiddleware::WeixinController.class_eval do
 
   def reply
+    p @weixin_message
     render xml: send("response_#{@weixin_message.MsgType}_message", {})
   end
 
@@ -82,6 +83,7 @@ WeixinRailsMiddleware::WeixinController.class_eval do
         Rails.logger.info("扫描带参数二维码事件: 1. 用户未关注时，进行关注后的事件推送, keyword: #{@keyword}")
         WxApiService.handle_subscribe_scan_keyword(
           keyword: @keyword,
+          wechat_account: @weixin_message.ToUserName,
           weixin_openid: @weixin_message.FromUserName
         )
       end
@@ -112,7 +114,10 @@ WeixinRailsMiddleware::WeixinController.class_eval do
     def handle_click_event
       case @keyword
       when 'personal_invite_qrcode'
-        WxApiService.invoke_personal_invite_sence(weixin_openid: @weixin_message.FromUserName)
+        WxApiService.invoke_personal_invite_sence(
+          wechat_account: @weixin_message.ToUserName,
+          weixin_openid: @weixin_message.FromUserName
+        )
         reply_text_message <<-MSG
 【分享获得收益】
 你的专属二维码正在生成中，大概需要5秒......
