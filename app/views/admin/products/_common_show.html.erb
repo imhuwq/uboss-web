@@ -1,6 +1,6 @@
 <%= content_for :page_specific_javascript do %>
   <script type="text/javascript" charset="utf-8">
-    stockData = <%== get_product_seling_inventories_json @product %>
+    stockData = <%== get_product_seling_inventories_json @product, supplier %>
   </script>
   <%= javascript_include_tag 'admin/sku_app/application' %>
 <% end %>
