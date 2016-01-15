@@ -10,7 +10,7 @@
     <% if current_user.is_supplier? %>
       <h3>你已经是供应商了</h3>
       <p><%= link_to '解除供应商身份', admin_be_not_supplier_path, method: :delete %></p>
-      <%= link_to '发布商品', admin_supplier_products_new_path %>
+      <%= link_to '发布商品', new_admin_supplier_product_path %>
       <%= link_to '我的供销商品', admin_supplier_products_path %>
     <% else %>
       <%= form_tag admin_be_supplier_path do %>
