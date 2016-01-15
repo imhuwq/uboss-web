@@ -7,7 +7,7 @@ class SupplierProductInfo < ActiveRecord::Base
   validates :cost_price, presence: true, numericality: { greater_than: 0 }
   validates :suggest_price_lower, :suggest_price_upper, numericality: { greater_than: 0, allow_nil: true }
 
-  belongs_to :product
+  belongs_to :supplier_product
   belongs_to :supplier, class_name: 'User'
 
 end
