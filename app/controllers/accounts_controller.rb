@@ -47,7 +47,11 @@ class AccountsController < ApplicationController
         render partial: 'accounts/order', collection: @orders
       end
     else
-      render :orders, layout: 'mobile'
+      if params[:state] == 'after_sale'
+        render 'accounts/order_after_sale', layout: 'mobile'
+      else
+        render :orders, layout: 'mobile'
+      end
     end
   end
 
