@@ -52,6 +52,7 @@ class User < ActiveRecord::Base
   has_many :sold_orders, class_name: 'Order', foreign_key: 'seller_id'
   has_many :sold_ordinary_orders, class_name: 'OrdinaryOrder', foreign_key: 'seller_id'
   has_many :sold_service_orders,  class_name: 'ServiceOrder',  foreign_key: 'seller_id'
+  has_many :verified_codes, -> { where(verified: true) }, through: :sold_service_orders, source: :verify_codes
   has_many :products
   has_many :ordinary_products
   has_many :service_products

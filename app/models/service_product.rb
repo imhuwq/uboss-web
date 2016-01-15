@@ -1,5 +1,6 @@
 class ServiceProduct < Product
   belongs_to :service_store
+  has_many   :verified_codes, -> { where(verified: true) }, through: :order_items, source: :verify_codes
 
   validates :service_type, :original_price, :present_price, :monthes, presence: true
   validates :service_type, inclusion: { in: [0, 1] }
@@ -16,18 +17,6 @@ class ServiceProduct < Product
   scope :vouchers, -> { where(service_type: 0) }
   scope :groups, -> { where(service_type: 1) }
   scope :published, -> { where(status: 1) }
-
-  def total_sales_volume
-    order_ids = ServiceOrder.where(id: order_items.map(&:order_id)).has_payed.ids
-    order_items.where(order_id: order_ids).map(&:amount).sum
-  end
-
-  def total_income
-    orders = ServiceOrder.where(id: order_items.map(&:order_id)).has_payed
-    orders.map do |order|
-      order.paid_amount_subtract_platform
-    end.sum
-  end
 
   def today_verify_code
     VerifyCode.where(order_item_id: self.order_item_ids, verified: true).where('updated_at BETWEEN ? AND ?', Time.now.beginning_of_day, Time.now.end_of_day)
