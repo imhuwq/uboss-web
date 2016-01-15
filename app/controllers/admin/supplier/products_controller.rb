@@ -18,8 +18,7 @@ class Admin::Supplier::ProductsController < AdminController
   end
   
   def new
-    @product = Product.new
-    @product.build_supplier_product_info
+    @product = SupplierProduct.new
   end
 
   def create
