@@ -6,16 +6,11 @@ class Product < ActiveRecord::Base
 
   OFFICIAL_AGENT_NAME = 'UBOSS创客权'.freeze
 
-<<<<<<< HEAD
-=======
   # FIXME: @dalezhang 请使用helper or i18n 做view的数值显示
   DataCalculateWay = { 0 => '按金额', 1 => '按售价比例' }
   DataBuyerPay = { 0 => '包邮', 1 => '统一邮费', 2 => '运费模板' }
   FullCut = { 0 => '件', 1 => '元' }
 
-  enum produce_type: [:normal, :supply]
-
->>>>>>> add produce_type to products
   has_one_image autosave: true
   #has_many_images name: :figure_images, accepts_nested: true
   has_one_content name: :purchase_note, type: :purchase_note
@@ -28,25 +23,12 @@ class Product < ActiveRecord::Base
   has_many :categories
   has_and_belongs_to_many :categories, -> { uniq } ,autosave: true
   has_many :product_inventories, autosave: true, dependent: :destroy
-  has_many :supplier_product_inventories, through: :product_inventories
   has_many :cart_items,  through: :product_inventories
   has_many :seling_inventories, -> { where(saling: true) }, class_name: 'ProductInventory', autosave: true
-  has_one :supplier_product_info
-  has_one :supplier, through: :supplier_product_info
-
-  amoeba do
-    include_association :categories
-    include_association :supplier_product_info
-  end
 
   delegate :image_url, to: :asset_img, allow_nil: true
   delegate :avatar=, :avatar, to: :asset_img
-  delegate :cost_price, :cost_price=, to: :supplier_product_info, allow_nil: true
-  delegate :suggest_price_lower, :suggest_price_lower=, to: :supplier_product_info, allow_nil: true
-  delegate :suggest_price_upper, :suggest_price_upper=, to: :supplier_product_info, allow_nil: true
-  delegate :supplier_id, :supplier_id=, to: :supplier_product_info, allow_nil: true
-  delegate :content, to: 'supplier_product_info.description', prefix: 'supplier_des'
-
+  
   enum status: { unpublish: 0, published: 1, closed: 2 }
 
   scope :hots, -> { where(hot: true) }

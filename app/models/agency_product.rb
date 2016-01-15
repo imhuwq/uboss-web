@@ -1,0 +1,2 @@
+class AgencyProduct < Product
+end
