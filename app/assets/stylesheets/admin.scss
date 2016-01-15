@@ -59,11 +59,13 @@ hr {
 .close:hover,.close:focus{color:#666;text-decoration:none;cursor:pointer;opacity:0.5;filter:alpha(opacity=50)}
 button.close{padding:0;cursor:pointer;background:transparent;border:0;-webkit-appearance:none}
 
+
+header{ background: #2e2e2e;}
 .logo{float: left; margin-right: 50px;}
 #config{ float: right;margin:10px 0 0 25px; position: relative; display: block;}
 #config img {width: 64px;height:64px; border: 3px solid #994F24; border-radius: 500px; overflow: hidden;}
 
-
+/* 一级导航 */
 .nav > ul { padding: 10px 0 0;margin: 0; list-style: none;}
 .nav > ul > li{display: inline-block;*display: inline;*zoom:1; position: relative;width: 46px; margin: 0 25px;}
 .nav > ul > li > a { font-size: 18px; display: block; text-align: center;}
@@ -83,7 +85,7 @@ button.close{padding:0;cursor:pointer;background:transparent;border:0;-webkit-ap
         background-position-y: -103px;
     }
 }
-
+/* 一级导航图标 */
 #admin-nav-income > a:before{
     background-position-x: -98px;
 }
@@ -118,6 +120,31 @@ button.close{padding:0;cursor:pointer;background:transparent;border:0;-webkit-ap
     }
 }
 
+/* 2级导航 */
+.nav-v2{
+    padding:20px 0 0 160px ;
+    
+    ul{        
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        li{
+            display: inline-block;
+            a{
+                display: block;
+                padding: 10px 40px;
+                font-size: 15px;
+                border-radius: 4px 4px 0 0;
+            }
+            a:hover{
+                color: #43C3AA;
+            }
+        }
+        li.selected a{
+            background: #1a1a1a;
+        }
+    }
+}
         
 
 
