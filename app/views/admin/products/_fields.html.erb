@@ -1,7 +1,7 @@
 <%= content_for :page_specific_javascript do %>
   <script type="text/javascript" charset="utf-8">
     propertyData = <%== ProductProperty.includes(:product_property_values).all.to_json(only: [:name], include: {product_property_values: {only: [:value]}}) %>;
-    stockData = <%== get_product_seling_inventories_json f.object %>;
+    stockData = <%== get_product_seling_inventories_json f.object, supplier %>;
   </script>
   <%= javascript_include_tag 'admin/sku_app/application' %>
 <% end %>

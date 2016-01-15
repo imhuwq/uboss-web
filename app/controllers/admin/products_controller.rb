@@ -105,6 +105,8 @@ class Admin::ProductsController < AdminController
   def new_supplier_product
     @product = Product.new
     @product.build_supplier_product_info
+    @product.product_inventories.new
+    @product.supplier_product_inventories.new
     authorize! :new_supplier_product, @product
   end
 
@@ -128,7 +130,6 @@ class Admin::ProductsController < AdminController
   end
 
   def update_supplier_product
-    binding.pry
     if @product.update(product_params)
       flash[:success] = '保存成功'
       redirect_to action: :show_supplier_product, id: @product.id

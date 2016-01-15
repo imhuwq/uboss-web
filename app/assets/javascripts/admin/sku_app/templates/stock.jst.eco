@@ -13,6 +13,7 @@
         <th>成本价格</th>
         <th>建议价格</th>
         <th>是否销售</th>
+        <th>库存(supplier)</th>
         <th style='width:100px;'>价格</th>
         <th>库存</th>
       </tr>
