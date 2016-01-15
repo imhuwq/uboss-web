@@ -75,4 +75,10 @@ class Ability
     can :read, Product, user_id: user.id
   end
 
+  def grant_permissions_to_supplier user
+    can :read, User, id: user.id
+    can :read, User, agent_id: user.id
+    can :manage, SupplierProduct, user_id: user.id
+  end
+
 end
