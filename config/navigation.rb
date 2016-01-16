@@ -134,7 +134,8 @@ SimpleNavigation::Configuration.run do |navigation|
           highlights_on: :subpath, if: -> { can?(:manage, :agents) }
 
         thr_nav.item :certifications, '认证', persons_admin_certifications_path,
-          highlights_on: %r(certifications|authentication), if: -> { can?(:manage, :authentications) }
+          highlights_on: -> { controller_name.match(/authentications|certifications/).present? },
+          if: -> { can?(:manage, :authentications) }
 
         thr_nav.item :platform_ads, '平台广告', admin_platform_advertisements_path,
           highlights_on: :subpath, if: -> { can?(:manage, :platform_advertisements) }
@@ -146,7 +147,8 @@ SimpleNavigation::Configuration.run do |navigation|
           highlights_on: :subpath, if: -> { can?(:manage, SharingIncome) }
       end
       sub_nav.item :users, '账户管理', admin_users_path,
-        highlights_on: :subpath, if: -> { can?(:handle, User) }
+        highlights_on: -> { controller_name.match(/users/).present? },
+        if: -> { can?(:handle, User) }
 
       sub_nav.item :backend_status, '后台队列', admin_backend_status_path, if: -> { can?(:manage, :backend_status) }
     end
