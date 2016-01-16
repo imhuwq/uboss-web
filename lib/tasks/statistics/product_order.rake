@@ -39,7 +39,7 @@ namespace :statistics do
     task product_order: :environment do
         puts '开始统计顺序'
         User.joins(:user_roles).where('user_roles.name = ?','seller').select(:id).each do |user|
-            result = ActiveRecord::Base.connection.execute <<-SQL.squish!
+            ActiveRecord::Base.connection.execute <<-SQL.squish!
                 DROP TABLE IF EXISTS tb;
                 create table tb (product_id int, 综合排名 int);
                 insert into tb
@@ -63,7 +63,7 @@ namespace :statistics do
     task count_product_sales_amount: :environment do
         puts "开始统计销量"
         User.joins(:user_roles).where('user_roles.name = ?','seller').select(:id).each do |user|
-            result = ActiveRecord::Base.connection.execute <<-SQL.squish!
+            ActiveRecord::Base.connection.execute <<-SQL.squish!
                 DROP TABLE IF EXISTS tb;
                 create table tb (product_id int, sales_amount int);
                 insert into tb
