@@ -58,8 +58,10 @@ SimpleNavigation::Configuration.run do |navigation|
     #
     primary.item :main,   '主页', admin_root_path,             {}
     primary.item :income, '收益', '#' do |sub_nav|
-      sub_nav.item :withdraws, '提现', admin_withdraw_records_path, highlights_on: :subpath
-      sub_nav.item :bank_cards, '银行卡', admin_bank_cards_path, highlights_on: :subpath
+      sub_nav.item :withdraws, '提现', admin_withdraw_records_path, highlights_on: :subpath,
+        if: -> { can?(:read, WithdrawRecord) }
+      sub_nav.item :bank_cards, '银行卡', admin_bank_cards_path, highlights_on: :subpath,
+        if: -> { can?(:read, BankCard) }
     end
     primary.item :agent,  'U客',  admin_sellers_path, if: -> { can?(:read, :sellers) }
     primary.item :city_manager, '城市运营商', '#' do |sub_nav|

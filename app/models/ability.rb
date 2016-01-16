@@ -31,6 +31,7 @@ class Ability
     can :read, User, id: user.id
     can :update, User, id: user.id
     can :manage, BankCard, user_id: user.id
+    can [:read, :create],   WithdrawRecord, user_id: user.id
   end
 
   def grant_permissions_to_super_admin user
@@ -66,8 +67,6 @@ class Ability
     can [:edit, :update], PersonalAuthentication, { user_id: user.id, status: %w(posted no_pass) }
     can [:read, :create], EnterpriseAuthentication, user_id: user.id
     can [:edit, :update], EnterpriseAuthentication, { user_id: user.id, status: %w(posted no_pass) }
-    can :read,   WithdrawRecord, user_id: user.id
-    can :create, WithdrawRecord, user_id: user.id
     can :read, SharingIncome, seller_id: user.id
     can :read, DivideIncome, user_id: user.id
     can :read, DivideIncome, order: { seller_id: user.id }
@@ -88,8 +87,6 @@ class Ability
     can :read, DailyReport, user: { agent_id: user.id }
     can :read, SellingIncome, user: { agent_id: user.id }
     can :read, DivideIncome, user_id: user.id
-    can :read,   WithdrawRecord, user_id: user.id
-    can :create, WithdrawRecord, user_id: user.id
     can :manage, BankCard, user_id: user.id
     can :read, Product, user_id: user.id
     can :read, ServiceProduct, user_id: user.id
@@ -99,8 +96,6 @@ class Ability
   end
 
   def grant_permissions_to_city_manager user
-    can :read,   WithdrawRecord, user_id: user.id
-    can :create, WithdrawRecord, user_id: user.id
     can [:read, :create], CityManagerAuthentication, user_id: user.id
     can [:edit, :update], CityManagerAuthentication, { user_id: user.id, status: %w(posted no_pass) }
     can :added, CityManager, user_id: user.id
