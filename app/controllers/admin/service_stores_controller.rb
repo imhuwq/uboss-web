@@ -1,12 +1,11 @@
 class Admin::ServiceStoresController < AdminController
   load_and_authorize_resource
-  #TODO 替换product.present_price为实付款
 
   def income_detail
     @total_income = get_total_income
     @income_by_date = {}
 
-    verified_codes = current_user.verified_codes.group_by{ |verify_code| verify_code.created_at.to_date }.sort_by{ |key, values| key }.reverse
+    verified_codes = current_user.verified_codes.group_by{ |verify_code| verify_code.updated_at.to_date }.sort_by{ |key, values| key }.reverse
     verified_codes.each do |date, codes|
       size = codes.count
       @income_by_date[date] = [size, codes.sum(&:income) ]
