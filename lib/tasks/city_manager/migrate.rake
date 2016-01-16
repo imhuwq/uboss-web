@@ -1,6 +1,6 @@
 namespace :city_manager do
   desc "初始化/更新 城市运营商列表数据"
-  task :migrate => :environment  do
+  task :migrate => [:environment, :update_settled_at]  do
     FIRST_LINE_CITYS  = %w(广州 上海 深圳 北京  杭州 南京 宁波 无锡 青岛  成都  苏州 武汉 重庆)
     SECOND_LINE_CITYS = %w(常州 天津 大连 长沙 烟台 佛山 沈阳  西安  福州  南通  济南 厦门 泉州 郑州 合肥 东莞  温州 绍兴  潍坊 徐州 镇江 淄博 昆明 金华 嘉兴  唐山 中山  扬州 台州  哈尔滨 威海 珠海 石家庄 长春 呼和浩特  南昌)
     THIRD_LINE_CITYS  = %w(盐城  临沂 惠州  芜湖  南宁   包头  济宁 泰州   洛阳 湖州 宜昌  太原  东营  株洲  江门  襄阳  鄂尔多斯 柳州    淮安  连云港 泰安  吉林  马鞍山  衡阳 大庆 贵阳  岳阳 汕头 保定  漳州 邯郸  湛江 兰州 鞍山  德州 沧州  湘潭  乌鲁木齐 海口  枣庄 郴州  桂林  榆林 菏泽  廊坊 绵阳  宝鸡  镇江 茂名  银川 西宁 拉萨 张家界 丽江 西双版纳 大理 攀枝花)
@@ -57,5 +57,11 @@ namespace :city_manager do
     if missings = (ALL_OF_CITYS - matched.to_a).presence
       puts "Not Match! \e[1;31m" + missings.join(',') + "\e[0m "
     end
+  end
+
+  desc "更新城市运营商绑定时间"
+  task :update_settled_at => :environment do
+    puts "-> Correcting settled_at"
+    CityManager.where.not(user_id: nil).where(settled_at: nil).update_all("settled_at = created_at")
   end
 end
