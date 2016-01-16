@@ -37,7 +37,7 @@
       </div><!-- order-box -->
     <% end %>
 
-    <% if service_order.sharing_user.present? %>
+    <% if service_order.sharing_user.present? && service_order.total_privilege_amount != 0 %>
       <div class="friend-info">
         <div class="cover">
           <%= image_tag service_order.sharing_user.avatar_url(:thumb) %>
