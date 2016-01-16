@@ -25,7 +25,7 @@ class ServiceOrderPayedJob < ActiveJob::Base
 
   def send_payed_sms_to_buyer
     name = order.order_item.product_name
-    codes = order.verify_codes.map(&:code).join('，')
+    codes = order.verify_codes.map(&:code).join(', ')
     time = order.order_item.product.deadline.strftime('%Y-%m-%d')
     if buyer
       PostMan.send_sms(buyer.login, {name: name, codes: codes, time: time}, 1188511)
