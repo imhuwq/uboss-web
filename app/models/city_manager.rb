@@ -34,9 +34,15 @@ class CityManager < ActiveRecord::Base
   end
 
   def update_city_manager_role
-    if user_id_was.present?
-      User.find_by_id(user_id_was).try(:remove_role, :city_manager)
+    if manager=User.find_by_id(user_id_was)
+      manager.remove_role(:city_manager)
     end
-    user.add_role(:city_manager) if user.present?
+
+    if user.present?
+      user.add_role(:city_manager)
+      touch(:settled_at)
+    else
+      update_column(:settled_at, nil)
+    end
   end
 end
