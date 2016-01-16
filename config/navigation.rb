@@ -101,7 +101,7 @@ SimpleNavigation::Configuration.run do |navigation|
         thr_nav.item :orders, '地址库', admin_user_addresses_path,
           highlights_on: :subpath, if: -> { can?(:manage, UserAddress) }
       end
-      sub_nav.item :store,  '店铺', admin_store_path(current_user) do |thr_nav|
+      sub_nav.item :store,  '设置', admin_store_path(current_user) do |thr_nav|
         thr_nav.item :edit_store, '店铺设置', admin_store_path(current_user),
           if: -> { can?(:read, Product) }
       end
@@ -121,7 +121,7 @@ SimpleNavigation::Configuration.run do |navigation|
         highlights_on: %r(admin/service_stores/income_detail|admin/service_stores/statistics),
         if: -> { can?(:manage, :income) }
 
-      sub_nav.item :s_store,   '店铺', edit_admin_service_store_path(current_user.service_store),
+      sub_nav.item :s_store,   '设置', edit_admin_service_store_path(current_user.service_store),
         if: -> { can?(:manage, ServiceStore) }
     end
 
