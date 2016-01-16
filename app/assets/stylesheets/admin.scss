@@ -108,6 +108,9 @@ header{ background: #2e2e2e;}
         background-position-x: -336px;
     }
 }
+#admin-nav-service_seller {
+  width: 60px;
+}
 #admin-nav-tuangou{
     width: 60px;
     > a:before{
@@ -124,8 +127,8 @@ header{ background: #2e2e2e;}
 /* 2级导航 */
 .nav-v2{
     padding:20px 0 0 150px ;
-    
-    ul{        
+
+    ul{
         list-style: none;
         padding: 0;
         margin: 0;
@@ -147,7 +150,7 @@ header{ background: #2e2e2e;}
         }
     }
 }
-/* 3级导航 */   
+/* 3级导航 */
 .nav-v3{
     position: absolute;
     top: 0px;
@@ -167,8 +170,8 @@ header{ background: #2e2e2e;}
         li:last-child a{
             border-bottom: none;
         }
-        li.selected a{ 
-            color: #43C3AA; cursor: pointer;            
+        li.selected a{
+            color: #43C3AA; cursor: pointer;
         }
         li.selected a:before{
             content: "\f0da";
@@ -180,13 +183,9 @@ header{ background: #2e2e2e;}
             -moz-osx-font-smoothing: grayscale;
             margin-right: 10px;
         }
-        
+
     }
-}     
-
-
-
-
+}
 .breadcrumb {padding: 0 0 0 10px;  margin: 0;  list-style: none; border-left:5px solid #43C3AA; font-size: 15px;}
 .breadcrumb > li {  display: inline-block;  *display: inline;  *zoom: 1;}
 .breadcrumb > li.divider {  padding: 0 10px;color:#43C3AA ;}

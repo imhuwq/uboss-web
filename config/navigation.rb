@@ -4,7 +4,7 @@ SimpleNavigation::Configuration.run do |navigation|
   # Specify a custom renderer if needed.
   # The default renderer is SimpleNavigation::Renderer::List which renders HTML lists.
   # The renderer can also be specified as option in the render_navigation call.
-  #navigation.renderer = Your::Custom::Renderer
+  navigation.renderer = UbossNavRenderer
 
   # Specify the class that will be applied to active navigation items. Defaults to 'selected'
   #navigation.selected_class = 'selected'
@@ -57,47 +57,96 @@ SimpleNavigation::Configuration.run do |navigation|
     #                            against the current URI.  You may also use a proc, or the symbol <tt>:subpath</tt>.
     #
     primary.item :main,   '主页', admin_root_path,             {}
-    primary.item :income, '收益', admin_withdraw_records_path do |sub_nav|
+    primary.item :income, '收益', '#' do |sub_nav|
       sub_nav.item :withdraws, '提现', admin_withdraw_records_path, highlights_on: :subpath
       sub_nav.item :bank_cards, '银行卡', admin_bank_cards_path, highlights_on: :subpath
     end
-    primary.item :agent,  'U客',  admin_sellers_path,          {}
-    primary.item :city_manager, '城市运营商', admin_city_managers_path do |sub_nav|
-      sub_nav.item :city_managers,          '城市运营商', admin_city_managers_path
-      sub_nav.item :cities_city_managers,   '权限管理',   cities_admin_city_managers_path
-      sub_nav.item :revenues_city_managers, '商家营收',   revenues_admin_city_managers_path
-      sub_nav.item :added_city_managers,    '新增商家',   added_admin_city_managers_path
+    primary.item :agent,  'U客',  admin_sellers_path, if: -> { can?(:read, :sellers) }
+    primary.item :city_manager, '城市运营商', '#' do |sub_nav|
+      sub_nav.item :city_managers, '城市运营商', admin_city_managers_path,
+        if: -> { can?(:manage, CityManager) }
+
+      sub_nav.item :cities_city_managers, '权限管理', cities_admin_city_managers_path,
+        if: -> { can?(:manage, CityManager) }
+
+      sub_nav.item :revenues_city_managers, '商家营收', revenues_admin_city_managers_path,
+        if: -> { can?(:revenues, CityManager) }
+
+      sub_nav.item :added_city_managers, '新增商家', added_admin_city_managers_path,
+        if: -> { can?(:added, CityManager) }
     end
 
     # Add an item which has a sub navigation (same params, but with block)
-    primary.item :seller, '电商店铺', admin_products_path, {} do |sub_nav|
+    primary.item :seller, '电商店铺', '#', {} do |sub_nav|
       # Add an item to the sub navigation (same params again)
       sub_nav.item :store,  '店铺', admin_store_path(current_user) do |thr_nav|
-        thr_nav.item :edit_store, '店铺设置', admin_store_path(current_user)
+        thr_nav.item :edit_store, '店铺设置', admin_store_path(current_user),
+          if: -> { can?(:read, Product) }
       end
-      sub_nav.item :products, '商品', admin_products_path, {} do |thr_nav|
-        thr_nav.item :new_products, '商品', admin_products_path, highlights_on: :subpath
-        thr_nav.item :new_products, '运费模板', admin_carriage_templates_path, highlights_on: :subpath
-        thr_nav.item :new_products, '商品分组', admin_categories_path, highlights_on: :subpath
+      sub_nav.item :products, '商品', '#', {} do |thr_nav|
+        thr_nav.item :new_products, '商品', admin_products_path,
+          highlights_on: :subpath, if: -> { can?(:read, Product) }
+
+        thr_nav.item :new_products, '运费模板', admin_carriage_templates_path,
+          highlights_on: :subpath, if: -> { can?(:read, CarriageTemplate) }
+
+        thr_nav.item :new_products, '商品分组', admin_categories_path,
+          highlights_on: :subpath, if: -> { can?(:read, Category) }
       end
-      sub_nav.item :orders,  '订单', admin_orders_path, highlights_on: :subpath
+      sub_nav.item :order,  '订单', '#' do |thr_nav|
+        thr_nav.item :orders, '订单', admin_orders_path,
+          highlights_on: :subpath, if: -> { can?(:read, Order) }
+
+        thr_nav.item :orders, '快递', admin_expresses_path,
+          highlights_on: :subpath, if: -> { can?(:read, Express) }
+
+        thr_nav.item :orders, '地址库', admin_user_addresses_path,
+          highlights_on: :subpath, if: -> { can?(:manage, UserAddress) }
+      end
+    end
+
+    primary.item :service_seller, '团购店铺', '#', {} do |sub_nav|
+      sub_nav.item :s_product, '商品', admin_service_products_path,
+        highlights_on: :subpath, if: -> { can?(:read, ServiceProduct) }
+
+      sub_nav.item :s_store,   '店铺', edit_admin_service_store_path(current_user.service_store),
+        if: -> { can?(:manage, ServiceStore) }
+
+      sub_nav.item :s_verify,  '验证', admin_verify_codes_path,
+        highlights_on: :subpath, if: -> { can?(:manage, VerifyCode) }
+
+      sub_nav.item :s_pj,      '评价', admin_evaluations_path,
+        highlights_on: :subpath, if: -> { can?(:manage, Evaluation) }
+
+      sub_nav.item :s_income,  '收益', income_detail_admin_service_stores_path,
+        highlights_on: %r(admin/service_stores/income_detail|admin/service_stores/statistics),
+        if: -> { can?(:manage, :income) }
     end
 
     # You can also specify a condition-proc that needs to be fullfilled to display an item.
     # Conditions are part of the options. They are evaluated in the context of the views,
     # thus you can use all the methods and vars you have available in the views.
-    primary.item :uboss, 'UBOSS', admin_agents_path, class: 'special', if: -> { current_user.is_super_admin? } do |sub_nav|
-      sub_nav.item :uboss_ops, '运营', admin_agents_path do |thr_nav|
-        thr_nav.item :agents,         '创客',     admin_agents_path, highlights_on: :subpath
-        thr_nav.item :certifications, '认证',     persons_admin_certifications_path, highlights_on: %r(certifications|authentication)
-        thr_nav.item :platform_ads,   '平台广告', admin_platform_advertisements_path, highlights_on: :subpath
+    primary.item :uboss, 'UBOSS', '#', class: 'special' do |sub_nav|
+      sub_nav.item :uboss_ops, '运营', admin_agents_path, if: -> { can?(:manage, :agents) } do |thr_nav|
+        thr_nav.item :agents, '创客', admin_agents_path,
+          highlights_on: :subpath, if: -> { can?(:manage, :agents) }
+
+        thr_nav.item :certifications, '认证', persons_admin_certifications_path,
+          highlights_on: %r(certifications|authentication), if: -> { can?(:manage, :authentications) }
+
+        thr_nav.item :platform_ads, '平台广告', admin_platform_advertisements_path,
+          highlights_on: :subpath, if: -> { can?(:manage, :platform_advertisements) }
       end
-      sub_nav.item :financial, '交易明细', admin_transactions_path do |thr_nav|
-        thr_nav.item :sharing_incomes, '分享分成', admin_sharing_incomes_path, highlights_on: :subpath
-        thr_nav.item :transactions, '交易明细', admin_transactions_path, highlights_on: :subpath
+      sub_nav.item :financial, '财务', admin_transactions_path, if: -> { can?(:manage, Transaction) } do |thr_nav|
+        thr_nav.item :transactions, '交易明细', admin_transactions_path,
+          highlights_on: :subpath, if: -> { can?(:manage, Transaction) }
+        thr_nav.item :sharing_incomes, '分享分成', admin_sharing_incomes_path,
+          highlights_on: :subpath, if: -> { can?(:manage, SharingIncome) }
       end
-      sub_nav.item :users, '账户管理', admin_users_path
-      sub_nav.item :backend_status, '后台队列', admin_backend_status_path
+      sub_nav.item :users, '账户管理', admin_users_path,
+        highlights_on: :subpath, if: -> { can?(:handle, User) }
+
+      sub_nav.item :backend_status, '后台队列', admin_backend_status_path, if: -> { can?(:manage, :backend_status) }
     end
 
     # you can also specify html attributes to attach to this particular level
