@@ -71,21 +71,17 @@ SimpleNavigation::Configuration.run do |navigation|
       sub_nav.item :cities_city_managers, '权限管理', cities_admin_city_managers_path,
         if: -> { can?(:manage, CityManager) }
 
-      sub_nav.item :revenues_city_managers, '商家营收', revenues_admin_city_managers_path,
-        if: -> { can?(:revenues, CityManager) }
-
       sub_nav.item :added_city_managers, '新增商家', added_admin_city_managers_path,
         if: -> { can?(:added, CityManager) }
+
+      sub_nav.item :revenues_city_managers, '商家营收', revenues_admin_city_managers_path,
+        if: -> { can?(:revenues, CityManager) }
     end
 
     # Add an item which has a sub navigation (same params, but with block)
     primary.item :seller, '电商店铺', '#', {} do |sub_nav|
       # Add an item to the sub navigation (same params again)
-      sub_nav.item :store,  '店铺', admin_store_path(current_user) do |thr_nav|
-        thr_nav.item :edit_store, '店铺设置', admin_store_path(current_user),
-          if: -> { can?(:read, Product) }
-      end
-      sub_nav.item :products, '商品', '#', {} do |thr_nav|
+      sub_nav.item :products, '商品', admin_products_path, {} do |thr_nav|
         thr_nav.item :new_products, '商品', admin_products_path,
           highlights_on: :subpath, if: -> { can?(:read, Product) }
 
@@ -105,14 +101,15 @@ SimpleNavigation::Configuration.run do |navigation|
         thr_nav.item :orders, '地址库', admin_user_addresses_path,
           highlights_on: :subpath, if: -> { can?(:manage, UserAddress) }
       end
+      sub_nav.item :store,  '店铺', admin_store_path(current_user) do |thr_nav|
+        thr_nav.item :edit_store, '店铺设置', admin_store_path(current_user),
+          if: -> { can?(:read, Product) }
+      end
     end
 
-    primary.item :service_seller, '团购店铺', '#', {} do |sub_nav|
+    primary.item :tuangou, '团购店铺', '#', {} do |sub_nav|
       sub_nav.item :s_product, '商品', admin_service_products_path,
         highlights_on: :subpath, if: -> { can?(:read, ServiceProduct) }
-
-      sub_nav.item :s_store,   '店铺', edit_admin_service_store_path(current_user.service_store),
-        if: -> { can?(:manage, ServiceStore) }
 
       sub_nav.item :s_verify,  '验证', admin_verify_codes_path,
         highlights_on: :subpath, if: -> { can?(:manage, VerifyCode) }
@@ -123,6 +120,9 @@ SimpleNavigation::Configuration.run do |navigation|
       sub_nav.item :s_income,  '收益', income_detail_admin_service_stores_path,
         highlights_on: %r(admin/service_stores/income_detail|admin/service_stores/statistics),
         if: -> { can?(:manage, :income) }
+
+      sub_nav.item :s_store,   '店铺', edit_admin_service_store_path(current_user.service_store),
+        if: -> { can?(:manage, ServiceStore) }
     end
 
     # You can also specify a condition-proc that needs to be fullfilled to display an item.
