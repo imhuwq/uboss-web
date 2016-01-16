@@ -71,7 +71,7 @@ class Product < ActiveRecord::Base
   end
 
   def min_price
-    @min_price ||= min_price_inventory.price
+    @min_price ||= seling_inventories.order('price DESC').last.price
   end
 
   # SKU(product_inventory) 更新保存逻辑

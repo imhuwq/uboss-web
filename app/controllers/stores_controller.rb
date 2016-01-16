@@ -17,13 +17,13 @@ class StoresController < ApplicationController
   def show
     if params[:order] == 'published_at'
       @order_column_name = 'published_at'
-      @products = append_default_filter @seller.products.published, order_column: :published_at, order_type: 'DESC', page_size: 6, column_type: :datetime
+      @products = append_default_filter @seller.products.published.includes(:asset_img), order_column: :published_at, order_type: 'DESC', page_size: 6, column_type: :datetime
     elsif  params[:order] == 'sales_amount'
       @order_column_name = 'sales_amount'
-      @products = append_default_filter @seller.products.published, order_column: :sales_amount, order_type: 'DESC', page_size: 6, column_type: :integer
+      @products = append_default_filter @seller.products.published.includes(:asset_img), order_column: :sales_amount, order_type: 'DESC', page_size: 6, column_type: :integer
     else
       @order_column_name = 'comprehensive_order'
-      @products = append_default_filter @seller.products.published, order_column: :comprehensive_order, order_type: 'ASC', page_size: 6, column_type: :integer
+      @products = append_default_filter @seller.products.published.includes(:asset_img), order_column: :comprehensive_order, order_type: 'ASC', page_size: 6, column_type: :integer
     end
     @hots = @seller.products.hots.recent.limit(3)
     @categories = Category.where(use_in_store: true, user_id: @seller.id).order('use_in_store_at')
@@ -31,13 +31,13 @@ class StoresController < ApplicationController
   end
 
   def hots
-    @products = append_default_filter @seller.products.hots, order_column: :updated_at
+    @products = append_default_filter @seller.products.hots.includes(:asset_img), order_column: :updated_at
     render_product_partial_or_page
   end
 
   def favours
     @order_column_name = 'updated_at'
-    @products = append_default_filter current_user.favoured_products.where(user_id: @seller.id)
+    @products = append_default_filter current_user.favoured_products.where(user_id: @seller.id).includes(:asset_img)
     render_product_partial_or_page
   end
 
