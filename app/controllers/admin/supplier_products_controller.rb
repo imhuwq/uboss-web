@@ -1,7 +1,6 @@
-class Admin::Supplier::ProductsController < AdminController
+class Admin::SupplierProductsController < AdminController
 
-  #load_and_authorize_resource
-  load_resource
+  load_and_authorize_resource except: :create
 
   def index
     params[:status] ||= 'supply'
@@ -18,17 +17,19 @@ class Admin::Supplier::ProductsController < AdminController
   end
   
   def new
-    @product = SupplierProduct.new
   end
 
   def create
-    @product = current_user.products.new(product_params)
-    @product.produce_type = 'supply'
-    if @product.save
+    @supplier_product = SupplierProduct.new(user_id: current_user.id)
+    supplier_product_info = @supplier_product.build_supplier_product_info
+    supplier_product_info.build_description
+    @supplier_product.assign_attributes supplier_product_params
+    authorize! :manage, @supplier_product
+    if @supplier_product.save
       flash[:success] = '产品创建成功'
-      redirect_to action: :show, id: @product.id
+      redirect_to action: :show, id: @supplier_product.id
     else
-      flash[:error] = "#{@product.errors.full_messages.join('<br/>')}"
+      flash[:error] = "#{@supplier_product.errors.full_messages.join('<br/>')}"
       render :new
     end
   end
@@ -86,18 +87,19 @@ class Admin::Supplier::ProductsController < AdminController
     params.permit(product_propertys_names: [])
   end
 
-  def product_params
-    params["product"]["supplier_id"] = current_user.id
-    params.require(:product).permit(
+  def supplier_product_params
+    params['supplier_product'].merge!(params['product'])
+    params['supplier_product']['supplier_product_inventories_attributes'] = params['supplier_product']['product_inventories_attributes']
+    params.require(:supplier_product).permit(
       :name, :content, :has_share_lv, :calculate_way, :avatar,
       :traffic_expense, :short_description, :transportation_way,
       :carriage_template_id, :categories,
       :full_cut, :full_cut_number, :full_cut_unit,
-      :content, :cost_price, :suggest_price_lower, :suggest_price_upper, :supplier_id,
-      product_inventories_attributes: [
+      :supply_content, :cost_price, :suggest_price_lower, :suggest_price_upper,
+      supplier_product_inventories_attributes: [
         :id, :share_amount_total, :privilege_amount,
         :share_amount_lv_1, :share_amount_lv_2, :share_amount_lv_3,
-        :cost_price, :suggest_price_lower, :suggest_price_upper, :for_sale, :quantity,
+        :cost_price, :suggest_price_lower, :suggest_price_upper, :sale_to_agency, :quantity,
         sku_attributes: product_propertys_params[:product_propertys_names]
       ],
     )
