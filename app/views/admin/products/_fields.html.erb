@@ -21,20 +21,18 @@
   <%= f.input :name %>
   
   <% if supplier %>
-    <%= f.simple_fields_for :supplier_product_info do |spi| %>
-      <%= spi.input :cost_price %>
-      <div class='form-group'>
-        <label class='integer optional control-label'>
-          <abbr title="必填">*</abbr>
-          建议价
-        </label>
-        <div class='control-input'>
-          <%= spi.input_field :suggest_price_lower %>
-          至
-          <%= spi.input_field :suggest_price_upper %>
-        </div>
+    <%= f.input :cost_price %>
+    <div class='form-group'>
+      <label class='integer optional control-label'>
+        <abbr title="必填">*</abbr>
+        建议价
+      </label>
+      <div class='control-input'>
+        <%= f.input_field :suggest_price_lower %>
+        至
+        <%= f.input_field :suggest_price_upper %>
       </div>
-    <% end %>
+    </div>
   <% else %>
     <%= f.input :original_price, hint: '仅作页面显示参考' %>
     <%= f.input :present_price, hint: '仅作显示参考，真实价格请在库存/规格中设置' %>
@@ -58,9 +56,7 @@
     <label class="control-label">图文详情<abbr title="必填">*</abbr></label>
     <div class="control-input" style='width: 430px;'>
       <% if supplier %>
-        <%= f.fields_for :supplier_product_info do |spi| %>
-          <%= spi.input_field :content, as: :text, class: "redactor", placeholder: '在此添加代销说明' %>
-        <% end %>
+        <%= f.input_field :supply_content, as: :text, class: "redactor", placeholder: '在此添加代销说明' %>
       <% end %>
       <%= f.input_field :content, as: :text, class: "redactor", placeholder: '在此添加商品详情' %>
     </div>

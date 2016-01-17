@@ -8,8 +8,8 @@ class ProductInventory < ActiveRecord::Base
   has_many   :order_items
   has_many   :orders, through: :order_items
 
-  validates_presence_of :product, :sku_attributes, if: -> { self.saling }
-  validates_numericality_of :price, :count, greater_than_or_equal_to: 0
+  validates_presence_of :sku_attributes, if: -> { self.saling }
+  validates_numericality_of :price, :count, greater_than_or_equal_to: 0, if: -> { self.saling and self.type == nil }
   validate :share_amount_total_must_lt_price
 
   scope :saling, -> { where(saling: true) }

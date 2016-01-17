@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160115151200) do
+ActiveRecord::Schema.define(version: 20160117081343) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -389,19 +389,24 @@ ActiveRecord::Schema.define(version: 20160115151200) do
     t.integer  "product_id"
     t.integer  "product_class_id"
     t.integer  "count"
-    t.jsonb    "sku_attributes",     default: {},   null: false
-    t.datetime "created_at",                        null: false
-    t.datetime "updated_at",                        null: false
+    t.jsonb    "sku_attributes",      default: {},   null: false
+    t.datetime "created_at",                         null: false
+    t.datetime "updated_at",                         null: false
     t.integer  "user_id"
     t.string   "name"
-    t.decimal  "price",              default: 0.0
-    t.decimal  "share_amount_total", default: 0.0
-    t.decimal  "share_amount_lv_1",  default: 0.0
-    t.decimal  "share_amount_lv_2",  default: 0.0
-    t.decimal  "share_amount_lv_3",  default: 0.0
-    t.decimal  "privilege_amount",   default: 0.0
-    t.boolean  "saling",             default: true
+    t.decimal  "price",               default: 0.0
+    t.decimal  "share_amount_total",  default: 0.0
+    t.decimal  "share_amount_lv_1",   default: 0.0
+    t.decimal  "share_amount_lv_2",   default: 0.0
+    t.decimal  "share_amount_lv_3",   default: 0.0
+    t.decimal  "privilege_amount",    default: 0.0
+    t.boolean  "saling",              default: true
     t.string   "type"
+    t.decimal  "cost_price"
+    t.decimal  "suggest_price_lower"
+    t.decimal  "suggest_price_upper"
+    t.integer  "quantity"
+    t.boolean  "sale_to_agency"
   end
 
   add_index "product_inventories", ["sku_attributes"], name: "index_product_inventories_on_sku_attributes", using: :gin
@@ -623,17 +628,6 @@ ActiveRecord::Schema.define(version: 20160115151200) do
     t.decimal  "suggest_price_upper"
     t.integer  "supply_status",       default: 0
     t.integer  "supplier_product_id"
-  end
-
-  create_table "supplier_product_inventory_infos", force: :cascade do |t|
-    t.decimal  "cost_price"
-    t.decimal  "suggest_price_lower"
-    t.decimal  "suggest_price_upper"
-    t.integer  "quantity"
-    t.boolean  "for_sale",                      default: true
-    t.datetime "created_at",                                   null: false
-    t.datetime "updated_at",                                   null: false
-    t.integer  "supplier_product_inventory_id"
   end
 
   create_table "transactions", force: :cascade do |t|
