@@ -181,11 +181,9 @@ Rails.application.routes.draw do
         end
       end
 
-      namespace :supplier do
-        resources :products, except: [:destroy] do
-          member do
-            patch :toggle_supply_status
-          end
+      resources :supplier_products, except: [:destroy] do
+        member do
+          patch :toggle_supply_status
         end
       end
 

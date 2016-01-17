@@ -77,6 +77,7 @@ zh-CN:
     area: 区/县
     building: 详细地址
     product_inventories: 库存/规格
+    supplier_product_inventories: 库存/规格
   simple_form:
     labels:
       express:
@@ -105,10 +106,10 @@ zh-CN:
         full_cut: 满足条件包邮
         full_cut_number: 满足条件包邮数量
         full_cut_unit: 满足条件包邮单位
-      supplier_product_info:
         cost_price: 成本价
         suggest_price_lower: 建议价下限
         suggest_price_upper: 建议价上限
+        supplier_product_inventory: 库存/规格
       mobile_auth_code:
         mobile: 手机号码
       order_form:
@@ -183,16 +184,12 @@ zh-CN:
       divide_income: 分成收入
       bank_card: 银行卡
       product_inventory: 库存/规格
+      supplier_product_inventory: 库存/规格
     attributes:
       supplier_product_info:
         cost_price: 成本价
         suggest_price_lower: 建议价下限
         suggest_price_upper: 建议价上限
-      supplier_product_inventory:
-        cost_price: 成本价
-        suggest_price_lower: 建议价下限
-        suggest_price_upper: 建议价上限
-        for_sale: 是否销售
       order_item_refund:
         money: 金额
         order_state: 订单退款
@@ -212,6 +209,9 @@ zh-CN:
       refund_reason:
         reason: 理由
       product_inventories:
+        product_id: SKU产品
+        share_amount_total: 总返利
+      supplier_product_inventories:
         product_id: SKU产品
         share_amount_total: 总返利
       carriage_template:

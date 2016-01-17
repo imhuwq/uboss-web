@@ -94,7 +94,7 @@ module ProductsHelper
         :share_amount_lv_3, :share_amount_lv_2, :share_amount_lv_1,
         :privilege_amount, :share_amount_total,
         :cost_price, :suggest_price_lower, :suggest_price_upper,
-        :for_sale, :quantity
+        :sale_to_agency, :quantity
       ]
     else
       [
@@ -111,18 +111,6 @@ module ProductsHelper
     else
       product.seling_inventories
     end
-    inventories_json = JSON.parse(inventories.to_json(only: json_attributes))
-    if supplier
-      inventories.each_with_index do |inventory, i|
-        supplier_inventory_json = {}
-        supplier_inventory_json[:cost_price] = inventory.cost_price
-        supplier_inventory_json[:suggest_price_lower] = inventory.suggest_price_lower
-        supplier_inventory_json[:suggest_price_upper] = inventory.suggest_price_upper
-        supplier_inventory_json[:for_sale] = inventory.for_sale
-        supplier_inventory_json[:quantity] = inventory.quantity
-        inventories_json[i].merge!(supplier_inventory_json)
-      end
-    end
-    inventories = inventories_json.to_json
+    inventories = inventories.to_json(only: json_attributes)
   end
 end

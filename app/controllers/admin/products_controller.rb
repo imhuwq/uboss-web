@@ -20,7 +20,6 @@ class Admin::ProductsController < AdminController
   end
 
   def create
-    binding.pry
     if @product.save
       flash[:success] = '产品创建成功'
       redirect_to action: :show, id: @product.id
