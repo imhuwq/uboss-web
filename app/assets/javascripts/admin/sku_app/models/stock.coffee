@@ -14,7 +14,7 @@ class StockSku.Models.Stock extends Backbone.Model
     cost_price: 0
     suggest_price_lower: 0
     suggest_price_upper: 0
-    for_sale: true
+    sale_to_agency: true
     quantity: 0
     share_amount_total: 0
     share_amount_lv_1: 0
