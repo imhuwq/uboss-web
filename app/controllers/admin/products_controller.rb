@@ -1,6 +1,6 @@
 class Admin::ProductsController < AdminController
 
-  load_and_authorize_resource
+  load_and_authorize_resource class: 'OrdinaryProduct'
 
   def select_carriage_template
     @carriage = CarriageTemplate.find(params[:tpl_id]) if params[:tpl_id].present?
@@ -11,7 +11,7 @@ class Admin::ProductsController < AdminController
   end
 
   def index
-    @products = current_user.ordinary_products.available.order('created_at DESC')
+    @products = @products.available.order('created_at DESC')
     @products = @products.includes(:asset_img).page(params[:page] || 1)
     @statistics = {}
     @statistics[:create_today] = @products.create_today.total_count
@@ -24,9 +24,6 @@ class Admin::ProductsController < AdminController
   end
 
   def create
-    @product = OrdinaryProduct.new(product_params)
-    @product.user_id = current_user.id
-
     if @product.save
       flash[:success] = '产品创建成功'
       redirect_to action: :show, id: @product.id
