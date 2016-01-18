@@ -1,4 +1,6 @@
 class Admin::EvaluationsController < AdminController
+  load_and_authorize_resource
+
   def index
     @order_items = OrderItem.joins(:service_product).merge(current_user.service_products)
     filter_type_by_params
