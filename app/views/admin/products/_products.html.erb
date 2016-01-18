@@ -67,28 +67,27 @@
 				    	<i class="fa fa-trash-o"></i>
 				    <% end %>
 			    <% end %>
-          <% if supplier == true and can? :update_supplier_product, product %>
-            <% supplier_product_info = product.supplier_product_info %>
-						<% if supplier_product_info.stored? %>
+          <% if supplier == true and can? :update, product %>
+						<% if product.supply_status == 'stored' %>
 				      <p>
-              <%= link_to("上架", admin_toggle_supply_status_path(product, status: 'supply'),
+              <%= link_to("上架", toggle_supply_status_admin_supplier_product_path(product, status: 'supply'),
               remote: true, method: :patch, data: { disable_with: '<i class="fa fa-spinner"></i>' },
               class: "btn btn-mid btn-block yellow-btn change-status-btn") %>
 							</p>
-            <% elsif supplier_product_info.supplied? %>
+            <% elsif product.supply_status == 'supplied' %>
 				    	<p>
-				      <%= link_to("下架", admin_toggle_supply_status_path(product, status: 'store'),
+				      <%= link_to("下架", toggle_supply_status_admin_supplier_product_path(product, status: 'store'),
 				      remote: true, method: :patch, data: { disable_with: '<i class="fa fa-spinner"></i>' },
 				      class: "btn btn-mid btn-block change-status-btn") %>
 				      </p>
 				    <% end %>
 
-            <%= link_to url_for(action: :edit_supplier_product, id: product.id), class:'edit-icon', title: '编辑' do %>
+            <%= link_to url_for(action: :edit, id: product.id), class:'edit-icon', title: '编辑' do %>
               <i class="fa fa-pencil-square-o"></i>
             <% end %>
 
-            <% unless supplier_product_info.deleted? %>
-              <%= link_to admin_toggle_supply_status_path(product, status: 'delete'),
+            <% unless product.supply_status == 'deleted' %>
+              <%= link_to toggle_supply_status_admin_supplier_product_path(product, status: 'delete'),
                 remote: true, method: :patch, class:'change-status-btn edit-icon',
                 data: { disable_with: '<i class="fa fa-trash-o"></i>' } do %>
                 <i class="fa fa-trash-o"></i>

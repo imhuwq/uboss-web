@@ -21,7 +21,7 @@
   </div>
   <br />
   <%= render 'left_bar' %>
-  <%= render partial: 'products', locals: { products: @products, supplier: true } %>
+  <%= render partial: 'admin/products/products', locals: { products: @supplier_products, supplier: true } %>
 </div>
 
-<%= paginate @products %>
+<%= paginate @supplier_products %>
