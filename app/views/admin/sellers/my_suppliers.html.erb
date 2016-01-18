@@ -1,0 +1,12 @@
+<div class="container nogap ">
+	<div class="box-w25">
+		<div class="admin-box blue-bg-color">
+      <h4>供货商家数</h4>
+    	<h1 class="num"><%= @statistics[:count] %></h1>
+		</div>
+	</div>
+</div>
+<div class='container admin-container'>
+  <%= render 'left_bar', from: 'my_suppliers' %>
+  <%= render partial: 'supplier', collection: @my_suppliers %>
+</div>

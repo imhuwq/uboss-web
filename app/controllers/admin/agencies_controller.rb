@@ -14,7 +14,7 @@ class Admin::AgenciesController < AdminController
         if user = User.find_by(login: mobile)
           user
         else
-          user = User.new(login: mobile)
+          user = User.new(login: mobile, nickname: mobile, mobile: mobile)
           user.save(validate: false)
           user.user_roles << UserRole.find_by(name: 'seller')
           user

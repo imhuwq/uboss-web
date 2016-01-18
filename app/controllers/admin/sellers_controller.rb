@@ -61,6 +61,12 @@ class Admin::SellersController < AdminController
     end
   end
 
+  def my_suppliers
+    @my_suppliers = current_user.suppliers
+    @statistics = {}
+    @statistics[:count] = @my_suppliers.count
+  end
+
   private
 
   def set_seller
