@@ -33,8 +33,8 @@ class User < ActiveRecord::Base
   has_many :seller_service_orders,  through: :sellers, source: :sold_service_orders
   # for buyer
   has_one :cart
-  has_one :ordinary_store, class_name: 'OrdinaryStore'
-  has_one :service_store, class_name: 'ServiceStore'
+  has_one :ordinary_store, class_name: 'OrdinaryStore', autosave: true
+  has_one :service_store, class_name: 'ServiceStore', autosave: true
   has_many :user_addresses, -> { where(seller_address: false) }
   has_many :orders
   has_many :ordinary_orders
