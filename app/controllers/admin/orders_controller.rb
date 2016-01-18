@@ -1,8 +1,8 @@
 class Admin::OrdersController < AdminController
-  load_and_authorize_resource
+
+  load_and_authorize_resource class: 'OrdinaryOrder'
 
   before_filter :validate_express_params, only: :set_express
-  before_filter :set_ordinary_order, only: [:close, :show, :update, :set_express]
 
   # TODO record use operations
   after_action :record_operation, only: [:update]
@@ -46,7 +46,6 @@ class Admin::OrdersController < AdminController
   end
 
   def index
-    @orders = OrdinaryOrder.where(seller_id: current_user.id)
     @type = params[:type] || 'all'
 
     @orders = append_default_filter @orders.recent.
@@ -88,10 +87,6 @@ class Admin::OrdersController < AdminController
   end
 
   private
-
-  def set_ordinary_order
-    @order = OrdinaryOrder.find(params[:id])
-  end
 
   def validate_batch_shipment_params(param)
     param[:express_name].present? && param[:ship_number].present?
