@@ -20,22 +20,21 @@ class ServiceStore < UserInfo
     end
   end
 
-  def total_evaluat_people
-    service_products.map do |product|
-      product.worst_evaluation.to_i + product.good_evaluation.to_i +
-        product.bad_evaluation.to_i + product.better_evaluation.to_i +
-        product.best_evaluation.to_i
-    end.sum
+  def total_good_reputation_number
+    @total_good_reputation_number ||= service_products.sum('COALESCE(good_evaluation,0) + COALESCE(better_evaluation,0) + COALESCE(best_evaluation,0)')
   end
 
+  def total_bad_reputation_number
+    @total_bad_reputation ||= service_products.sum('COALESCE(bad_evaluation,0) + COALESCE(worst_evaluation,0)')
+  end
+
+  def total_reputation_number
+    total_good_reputation_number + total_bad_reputation_number
+  end
+  alias_method :total_evaluat_people, :total_reputation_number
+
   def total_good_reputation
-    total_evalution = 0.0
-    good_reputation = 0
-    service_products.each do |product|
-      total_evalution += product.good_evaluation.to_f + product.bad_evaluation.to_f + product.worst_evaluation.to_f + product.best_evaluation.to_f + product.better_evaluation.to_f
-      good_reputation += product.good_evaluation.to_i + product.best_evaluation.to_i + product.better_evaluation.to_i
-    end
-    rate = total_evalution > 0 ? good_reputation/total_evalution.to_f : 1
+    rate = total_reputation_number > 0 ? total_good_reputation_number/total_reputation_number.to_f : 1
     "#{'%.2f' % (rate*100)}%"
   end
 
