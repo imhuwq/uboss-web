@@ -12,13 +12,14 @@ class Admin::VerifyCodesController < AdminController
   end
 
   def statistics
-    @service_products = current_user.service_products
+    @service_products = ServiceProduct.where(user_id: current_user.id)
     @total = VerifyCode.total(current_user).size
     @today = VerifyCode.today(current_user).size
   end
 
   def verify
-    order_item_ids = OrderItem.where(product_id: current_user.service_product_ids).ids
+    service_product_ids = ServiceProduct.where(user_id: current_user.id).ids
+    order_item_ids = OrderItem.where(product_id: service_product_ids).ids
     @verify_code = VerifyCode.where(code: params[:code], order_item_id: order_item_ids).first
 
     if @verify_code.present? && @verify_code.verify_code

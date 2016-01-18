@@ -5,7 +5,7 @@ class VerifyCodesController < ApplicationController
   before_action :authenticate_user!
 
   def index
-    @service_orders = current_user.service_orders.payed.includes(order_items: { product_inventory: { product: :asset_img } })
+    @service_orders = ServiceOrder.where(user_id: current_user.id).payed.includes(order_items: { product_inventory: { product: :asset_img } })
   end
 
   def show

@@ -77,7 +77,7 @@ class Admin::ServiceProductsController < AdminController
   def account_service_products(type)
     type ||= 'all'
     if ['published', 'unpublish', 'all'].include?(type)
-      current_user.service_products.try(type)
+      ServiceProduct.where(user_id: current_user.id).try(type)
     else
       raise "invalid service product type"
     end

@@ -15,7 +15,7 @@ class Admin::ServiceStoresController < AdminController
   def statistics
     @total_income = get_total_income
 
-    @service_products = current_user.service_products
+    @service_products = ServiceProduct.where(user_id: current_user.id)
   end
 
   def edit

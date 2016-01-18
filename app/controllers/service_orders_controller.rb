@@ -74,6 +74,6 @@ class ServiceOrdersController < ApplicationController
   end
 
   def find_order
-    @order = current_user.service_orders.find(params[:id])
+    @order = ServiceOrder.where(user_id: current_user.id, id: params[:id]).first
   end
 end

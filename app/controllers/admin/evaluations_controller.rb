@@ -1,12 +1,13 @@
 class Admin::EvaluationsController < AdminController
   def index
-    @order_items = OrderItem.where(product_id: current_user.service_product_ids)
+    service_product_ids = ServiceProduct.where(user_id: current_user.id).ids
+    @order_items = OrderItem.where(product_id: service_product_ids)
     filter_type_by_params
     total
   end
 
   def statistics
-    @service_products = current_user.service_products
+    @service_products = ServiceProduct.where(user_id: current_user.id)
     total
   end
 
@@ -36,7 +37,8 @@ class Admin::EvaluationsController < AdminController
     total_evalution = 0.0
     @total_good_reputation = 0
     @total_bad_reputation = 0
-    current_user.service_products.each do |product|
+    service_products = ServiceProduct.where(user_id: current_user.id)
+    service_products.each do |product|
       total_evalution += product.good_evaluation.to_f + product.bad_evaluation.to_f + product.worst_evaluation.to_f + product.best_evaluation.to_f + product.better_evaluation.to_f
       @total_good_reputation += product.good_evaluation.to_i + product.best_evaluation.to_i + product.better_evaluation.to_i
       @total_bad_reputation += product.bad_evaluation.to_i + product.worst_evaluation.to_i

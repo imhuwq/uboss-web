@@ -8,8 +8,8 @@ class AccountsController < ApplicationController
   before_action :authenticate_agent, only: [:send_message, :invite_seller, :edit_seller_note, :update_histroy_note]
 
   def show
-    @service_orders  = current_user.service_orders
-    @ordinary_orders = current_user.ordinary_orders
+    @service_orders  = ServiceOrder.where(user_id: current_user.id)
+    @ordinary_orders = OrdinaryOrder.where(user_id: current_user.id)
 
     @statistics = {}
     @statistics[:so_unpay]      = @service_orders.unpay.count
@@ -246,9 +246,9 @@ class AccountsController < ApplicationController
   def account_service_orders(type)
     type ||= 'all'
     if ["unpay", "payed", "completed", "all"].include?(type)
-      current_user.service_orders.try(type).includes(order_items: { product_inventory: { product: :asset_img } })
+      ServiceOrder.where(user_id: current_user.id).try(type).includes(order_items: { product_inventory: { product: :asset_img } })
     elsif type == 'unevaluate'
-      so_unevaluate(current_user.service_orders).includes(order_items: { product_inventory:{ product: :asset_img } })
+      so_unevaluate(ServiceOrder.where(user_id: current_user.id)).includes(order_items: { product_inventory:{ product: :asset_img } })
     else
       raise "invalid orders state"
     end
