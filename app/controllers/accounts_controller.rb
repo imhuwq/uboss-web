@@ -19,7 +19,7 @@ class AccountsController < ApplicationController
     @statistics[:oo_unpay]      = @ordinary_orders.unpay.count
     @statistics[:oo_shiped]     = @ordinary_orders.shiped.count
     @statistics[:oo_unevaluate] = oo_unevaluate(@ordinary_orders).count
-    @statistics[:oo_after_sale] = @ordinary_orders.completed.count
+    @statistics[:oo_after_sale] = current_user.order_item_refunds.progresses.count
 
     @privilege_cards = append_default_filter current_user.privilege_cards.includes(:seller), order_column: :updated_at, page_size: 10
 
@@ -27,13 +27,13 @@ class AccountsController < ApplicationController
   end
 
   def refunds
-    @refunds = append_default_filter current_user.order_item_refunds, page_size: 10
+    @refunds = append_default_filter current_user.order_item_refunds.progresses, page_size: 10
     render partial: 'accounts/refund', collection: @refunds
   end
 
   def orders
     if params[:state] == 'after_sale'
-      @refunds = current_user.order_item_refunds.includes(order_item: [:product, :order]).page(params[:page])
+      @refunds = current_user.order_item_refunds.includes(order_item: [:product, :order]).progresses.page(params[:page])
     elsif params[:state] == 'unevaluate'
       @orders = oo_unevaluate(current_user.ordinary_orders).page(params[:page])
     else

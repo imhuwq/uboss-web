@@ -24,6 +24,7 @@ class OrderItemRefund < ActiveRecord::Base
       SQL
     )
   }
+  scope :progresses, -> { where(aasm_state: ['pending', 'approved', 'declined', 'decline_received', 'applied_uboss', 'completed_express_number']) }
 
   validates :order_state, :money, :refund_reason_id, presence: true
   validates_uniqueness_of :order_state, scope: :order_item_id, message: '不能多次申请'
