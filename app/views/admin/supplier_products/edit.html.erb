@@ -1,3 +1,4 @@
+<% @product = @supplier_product %>
 <div class="container admin-container">
 	<ul class="breadcrumb">
 		<li><a href="/admin">主页</a></li>
@@ -12,7 +13,7 @@
 
 <div class="container nogap">
 
-    <%= horizon_form_for @product, url: { controller: 'admin/supplier/products', action: :update } do |f| %>
+    <%= horizon_form_for @product, url: { controller: 'admin/supplier_products', action: :update } do |f| %>
 
       <%= render '/admin/products/fields', f: f, supplier: true %>
 
