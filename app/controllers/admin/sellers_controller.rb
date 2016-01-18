@@ -65,6 +65,12 @@ class Admin::SellersController < AdminController
     redirect_to action: :show, id: user_info.user_id
   end
 
+  def my_suppliers
+    @my_suppliers = current_user.suppliers
+    @statistics = {}
+    @statistics[:count] = @my_suppliers.count
+  end
+
   private
 
   def set_seller

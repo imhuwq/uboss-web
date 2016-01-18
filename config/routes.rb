@@ -236,6 +236,7 @@ Rails.application.routes.draw do
       end
       resources :sellers, only: [:index, :show, :edit, :update] do
         post :update_service_rate, on: :collection
+        get :my_suppliers, on: :collection
       end
       resource :account, only: [:edit, :show, :update] do
         get :password, on: :member
