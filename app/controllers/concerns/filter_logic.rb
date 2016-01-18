@@ -37,6 +37,7 @@ module FilterLogic
 
   def append_default_filter scope, opts = {}
     column_type = opts[:column_type] || 'datetime'
+    order_column = opts[:order_column] || 'updated_at'
     case column_type.to_s
     when 'datetime'
       orderdata = params['orderdata'] ? Time.zone.parse(params['orderdata']) : nil
@@ -46,12 +47,12 @@ module FilterLogic
       orderdata = params['orderdata'] ? params['orderdata'].to_f : nil
     end
     if opts[:order_type].try(:upcase) == 'ASC'
-      scope.where("#{opts[:order_column]} is not null").recent(opts[:order_column], 'ASC')
-      .paginate_by_column_name(nil ,orderdata, opts[:order_column])
+      scope.where("#{order_column} is not null").recent(order_column, 'ASC')
+      .paginate_by_column_name(nil ,orderdata, order_column)
       .page(page_param).per(opts[:page_size] || page_size)
     else 
-      scope.where("#{opts[:order_column]} is not null").recent(opts[:order_column], 'DESC')
-      .paginate_by_column_name(orderdata,nil, opts[:order_column])
+      scope.where("#{order_column} is not null").recent(order_column, 'DESC')
+      .paginate_by_column_name(orderdata,nil, order_column)
       .page(page_param).per(opts[:page_size] || page_size)
     end
   end

@@ -11,7 +11,7 @@ class CategoriesController < ApplicationController
     @category = @store.categories.find(params[:id])
   	@products = append_default_filter @category.products.published.includes(:asset_img), order_column: :updated_at, page_size: 8
     if request.xhr?
-      render partial: 'stores/product', collection: @products
+      render partial: 'product', collection: @products
     else
       render :show
     end
