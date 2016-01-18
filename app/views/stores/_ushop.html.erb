@@ -110,6 +110,7 @@
 <% if @products.size > 4 %>
 <br /><div class="load-more" data-container='.store-list' data-ele='.p-item' data-ref='<%= request.path %>'>加载更多</div>
 <% end %>
+
 <% if @categories.try(:empty?) %>
   <div class="gap-lr m-bottom10"> 
     <%= render partial: 'ad_banner_slider', locals: { seller: @seller } %>

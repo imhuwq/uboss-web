@@ -9,7 +9,7 @@ class CategoriesController < ApplicationController
   def show
     @categories = Category.where(use_in_store: true, user_id: @seller.id).order('use_in_store_at').where('id <> ?', params[:id])
     @category = @store.categories.find(params[:id])
-  	@products = append_default_filter @category.products.published.includes(:asset_img), order_column: :updated_at, page_size: 10
+  	@products = append_default_filter @category.products.published.includes(:asset_img), order_column: :updated_at, page_size: 8
     if request.xhr?
       render partial: 'stores/product', collection: @products
     else

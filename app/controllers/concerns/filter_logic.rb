@@ -46,11 +46,11 @@ module FilterLogic
       orderdata = params['orderdata'] ? params['orderdata'].to_f : nil
     end
     if opts[:order_type].try(:upcase) == 'ASC'
-      scope.recent(opts[:order_column], 'ASC')
+      scope.where("#{opts[:order_column]} is not null").recent(opts[:order_column], 'ASC')
       .paginate_by_column_name(nil ,orderdata, opts[:order_column])
       .page(page_param).per(opts[:page_size] || page_size)
     else 
-      scope.recent(opts[:order_column], 'DESC')
+      scope.where("#{opts[:order_column]} is not null").recent(opts[:order_column], 'DESC')
       .paginate_by_column_name(orderdata,nil, opts[:order_column])
       .page(page_param).per(opts[:page_size] || page_size)
     end
