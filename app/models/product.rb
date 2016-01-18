@@ -8,6 +8,7 @@ class Product < ActiveRecord::Base
 
   has_one_image autosave: true
   #has_many_images name: :figure_images, accepts_nested: true
+  has_one_content name: :purchase_note, type: :purchase_note
 
   belongs_to :user
   belongs_to :carriage_template
