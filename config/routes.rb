@@ -305,6 +305,7 @@ Rails.application.routes.draw do
       end
       resources :sellers, only: [:index, :show, :edit, :update] do
         patch :update_service_rate, on: :member
+        get :my_suppliers, on: :collection
       end
       resource :account, only: [:edit, :show, :update] do
         get :password, on: :member
