@@ -6,8 +6,10 @@ class VerifyCode < ActiveRecord::Base
 
   default_scope {order("updated_at desc")}
 
-  scope :today, ->(user) { where(verified: true, order_item_id: OrderItem.where(product_id: user.product_ids).ids).where('updated_at BETWEEN ? AND ?', Time.now.beginning_of_day, Time.now.end_of_day) }
-  scope :total, ->(user) { where(verified: true, order_item_id: OrderItem.where(product_id: user.product_ids).ids) }
+  scope :with_user, ->(user) { joins(order_item: :service_product).merge(user.service_products) }
+  scope :today, ->(user) { where(verified: true).with_user(user).
+                           where('verify_codes.updated_at BETWEEN ? AND ?', Time.now.beginning_of_day, Time.now.end_of_day) }
+  scope :total, ->(user) { where(verified: true).with_user(user) }
 
   after_commit :call_verify_code_verified_handler, if: -> {
     previous_changes.include?(:verified) && previous_changes[:verified].last == true

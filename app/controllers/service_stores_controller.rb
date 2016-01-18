@@ -29,9 +29,7 @@ class ServiceStoresController < ApplicationController
   end
 
   def verify
-    @verify_code = VerifyCode.joins(order_item: :service_product).
-      merge(current_user.service_products).
-      find_by(code: params[:code])
+    @verify_code = VerifyCode.with_user(current_user).find_by(code: params[:code])
 
     if @verify_code.present? && @verify_code.verify_code
       flash[:success] = '验证成功'
