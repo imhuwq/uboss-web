@@ -174,7 +174,7 @@ class OrderDivideJob < ActiveJob::Base
   end
 
   def reward_sharing_users(order_item, &block)
-    return false if order_item.type == "OrdinaryOrder" && order_item.order_item_refunds.successed.where('money > 0').exists?
+    return false if order_item.order_type == "OrdinaryOrder" && order_item.order_item_refunds.successed.where('money > 0').exists?
 
     sharing_node = order_item.sharing_node
     return false if sharing_node.blank?
@@ -184,7 +184,7 @@ class OrderDivideJob < ActiveJob::Base
 
     LEVEL_AMOUNT_FIELDS.each_with_index do |key, index|
       reward_amount = get_reward_amount_by_product_level_and_order_item(product_inventory, key, order_item)
-      if order_item.type == "OrdinaryOrder"
+      if order_item.order_type == "OrdinaryOrder"
         reward_amount = reward_amount * order_item.amount
       end
       reward_amount = parse_divide_amount(reward_amount)
