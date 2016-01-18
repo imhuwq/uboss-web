@@ -14,9 +14,9 @@ class Admin::ProductsController < AdminController
     @products = current_user.ordinary_products.available.order('created_at DESC')
     @products = @products.includes(:asset_img).page(params[:page] || 1)
     @statistics = {}
-    @statistics[:create_today] = @products.create_today.count
-    @statistics[:count] = @products.count
-    @statistics[:not_enough] = @products.where('count < ?', 10).count
+    @statistics[:create_today] = @products.create_today.total_count
+    @statistics[:count] = @products.total_count
+    @statistics[:not_enough] = @products.where('count < ?', 10).total_count
   end
 
   def new
