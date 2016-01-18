@@ -5,15 +5,15 @@ class Admin::SupplierProductsController < AdminController
   def index
     params[:status] ||= 'supply'
     if params[:status] == 'supply'
-      @products = current_user.products.supply.supply_supplied.order('products.created_at DESC')
+      @supplier_products = current_user.supplier_products.supply_supplied.order('products.created_at DESC')
     elsif params[:status] == 'store'
-      @products = current_user.products.supply.supply_stored.order('products.created_at DESC')
+      @supplier_products = current_user.supplier_products.supply_stored.order('products.created_at DESC')
     elsif params[:status] == 'delete'
-      @products = current_user.products.supply.supply_deleted.order('products.created_at DESC')
+      @supplier_products = current_user.supplier_products.supply_deleted.order('products.created_at DESC')
     end
-    @products = @products.includes(:asset_img).page(params[:page] || 1)
+    @supplier_products = @supplier_products.includes(:asset_img).page(params[:page] || 1)
     @statistics = {}
-    @statistics[:count] = @products.count
+    @statistics[:count] = @supplier_products.count
   end
   
   def new
@@ -24,7 +24,7 @@ class Admin::SupplierProductsController < AdminController
     supplier_product_info = @supplier_product.build_supplier_product_info
     supplier_product_info.build_description
     @supplier_product.assign_attributes supplier_product_params
-    authorize! :manage, @supplier_product
+    authorize! :create, @supplier_product
     if @supplier_product.save
       flash[:success] = '产品创建成功'
       redirect_to action: :show, id: @supplier_product.id
@@ -41,17 +41,17 @@ class Admin::SupplierProductsController < AdminController
   end
 
   def update
-    if @product.update(product_params)
+    if @supplier_product.update(product_params)
       flash[:success] = '保存成功'
-      redirect_to action: :show, id: @product.id
+      redirect_to action: :show, id: @supplier_product.id
     else
-      flash[:error] = "保存失败。#{@product.errors.full_messages.join('<br/>')}"
+      flash[:error] = "保存失败。#{@supplier_product.errors.full_messages.join('<br/>')}"
       render :edit
     end
   end
 
   def toggle_supply_status
-    supplier_product_info = @product.supplier_product_info
+    supplier_product_info = @supplier_product.supplier_product_info
     begin
       if params[:status] == 'store'
         supplier_product_info.stored!
@@ -72,12 +72,12 @@ class Admin::SupplierProductsController < AdminController
     if request.xhr?
       flash.now[:success] = @notice
       flash.now[:error] = @error
-      product_collection = supplier_product_info.deleted? ? [] : [@product]
-      render(partial: 'products', locals: { products: product_collection, supplier: true })
+      product_collection = supplier_product_info.deleted? ? [] : [@supplier_product]
+      render(partial: 'admin/products/products', locals: { products: product_collection, supplier: true })
     else
       flash[:success] = @notice
       flash[:error] = @error
-      redirect_to action: :show_supplier_product, id: @product.id
+      redirect_to action: :show, id: @supplier_product.id
     end
   end
 

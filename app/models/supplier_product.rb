@@ -13,6 +13,7 @@ class SupplierProduct < Product
   delegate :suggest_price_lower, :suggest_price_lower=, to: :supplier_product_info, allow_nil: true
   delegate :suggest_price_upper, :suggest_price_upper=, to: :supplier_product_info, allow_nil: true
   delegate :content, :content=, to: :supplier_product_info, prefix: 'supply', allow_nil: true
+  delegate :supply_status, to: :supplier_product_info
 
   scope :supply_stored, -> { joins(:supplier_product_info).where('supplier_product_infos.supply_status = 0') }
   scope :supply_supplied, -> { joins(:supplier_product_info).where('supplier_product_infos.supply_status = 1') }
