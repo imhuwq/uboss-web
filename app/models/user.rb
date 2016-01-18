@@ -33,6 +33,8 @@ class User < ActiveRecord::Base
   has_many :seller_service_orders,  through: :sellers, source: :sold_service_orders
   # for buyer
   has_one :cart
+  has_one :ordinary_store, class_name: 'OrdinaryStore'
+  has_one :service_store, class_name: 'ServiceStore'
   has_many :user_addresses, -> { where(seller_address: false) }
   has_many :orders
   has_many :ordinary_orders
@@ -115,20 +117,12 @@ class User < ActiveRecord::Base
     RUBY
   end
 
-  def build_service_store
-    user_infos.build(type: 'ServiceStore')
-  end
-
-  def build_ordinary_store
-    user_infos.build(type: 'OrdinaryStore')
-  end
-
   def service_store
-    user_infos.find{ |a| a.type == 'ServiceStore' }
+    service_store || build_service_store
   end
 
   def ordinary_store
-    user_infos.find{ |a| a.type == 'OrdinaryStore' }
+    ordinary_store || build_ordinary_store
   end
 
   def login_identifier=(login_identifier)
