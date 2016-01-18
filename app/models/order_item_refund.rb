@@ -1,6 +1,7 @@
 class OrderItemRefund < ActiveRecord::Base
 
   include AASM
+  include Orderable
   extend Enumerize
 
   WAIT_SELLER_PROCESS_STATES = %w(pending completed_express_number applied_uboss)

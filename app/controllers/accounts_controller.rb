@@ -33,11 +33,13 @@ class AccountsController < ApplicationController
 
   def orders
     if params[:state] == 'after_sale'
-      @refunds = current_user.order_item_refunds.includes(order_item: [:product, :order]).progresses.page(params[:page])
+      @refunds = append_default_filter(
+        current_user.order_item_refunds.progresses.includes(order_item: [:product, :order]),
+        page_size: 10)
     elsif params[:state] == 'unevaluate'
-      @orders = oo_unevaluate(current_user.ordinary_orders).page(params[:page])
+      @orders = append_default_filter(oo_unevaluate(current_user.ordinary_orders).page(params[:page]), page_size: 10)
     else
-      @orders = append_default_filter account_orders(params[:state]), page_size: 10
+      @orders = append_default_filter(account_orders(params[:state]), page_size: 10)
     end
 
     if request.xhr?
