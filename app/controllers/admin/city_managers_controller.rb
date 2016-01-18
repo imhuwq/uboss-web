@@ -19,6 +19,7 @@ class Admin::CityManagersController < AdminController
   end
 
   def revenues
+    params[:segment] ||= 'today'
     scope = Order.have_paid.where(seller_id: certifications.joins(:user).pluck("users.id"))
 
     # 今日营业额
@@ -37,6 +38,7 @@ class Admin::CityManagersController < AdminController
   end
 
   def added
+    params[:segment] ||= 'today'
     scope = %w(today week month).include?(params[:segment]) ? params[:segment] : 'today'
     @total = certifications
     @certifications = @total.send(scope).page(params[:page])

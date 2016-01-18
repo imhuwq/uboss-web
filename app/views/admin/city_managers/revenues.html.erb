@@ -45,12 +45,12 @@
 <br />
   <div class="container">
     <ul class="nav nav-tabs nav-justified">
-        <li class="<%= 'active' if params[:time] == 'today' %>"><%= link_to "今日营收", {time: 'today'} %></li>
-        <li class="<%= 'active' if params[:time].nil? || params[:time] == 'all' %>"><%= link_to "累计营收", {time: 'all'} %></li>
+        <li class="<%= 'active' if params[:segment] == 'today' %>"><%= link_to "今日营收", {segment: 'today'} %></li>
+        <li class="<%= 'active' if params[:segment] == 'all' %>"><%= link_to "累计营收", {segment: 'all'} %></li>
     </ul>
     <table class="list-table" id="personal_authentications">
       <thead>
-        <% segment = params[:time] == 'today' ? '今日' : '累计' %>
+        <% segment = params[:segment] == 'today' ? '今日' : '累计' %>
         <th>商家名称</th>
         <th>入驻时间</th>
         <th>联系方式</th>
@@ -75,8 +75,8 @@
             <td><%= obj.created_at %></td>
             <td><%= obj.user_mobile %></td>
             <td>好评率<%= Evaluation.sharer_good_reputation_rate(obj.user) %></td>
-            <td><%= obj.user_sales(params[:time]) %></td>
-            <td><%= number_to_currency obj.user_turnovers(params[:time]) %></td>
+            <td><%= obj.user_sales(params[:segment]) %></td>
+            <td><%= number_to_currency obj.user_turnovers(params[:segment]) %></td>
           </tr>
         </tbody>
         <tbody class='hidden'>
