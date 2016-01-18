@@ -1,7 +1,6 @@
-<div class="agency">
+<div class="user-box agency">
   <div class="name">
-    <%= current_user.nickname %>
-    <%#<%= agency.nickname %>
+    <%= agency.nickname %>
   </div>
 	<%= image_tag(current_user.avatar.url(:thumb)) %>
   <div class="cooperation_form" id="cooperation_form_<%=agency.id%>">

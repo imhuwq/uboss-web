@@ -1,0 +1,9 @@
+<div class="user-box supplier">
+  <div class="name">
+    <%= supplier.nickname %>
+  </div>
+	<%= image_tag(supplier.avatar.url(:thumb)) if supplier.avatar.present? %>
+  <div class="mobile">
+    <%= supplier.mobile %>
+  </div>
+</div>
