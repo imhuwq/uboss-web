@@ -19,11 +19,9 @@ class Admin::ServiceStoresController < AdminController
   end
 
   def edit
-    @service_store = ServiceStore.find(params[:id])
   end
 
   def update
-    @service_store= ServiceStore.find(params[:id])
     if @service_store.update(service_store_params)
       flash[:success] = '更新店铺信息成功'
       redirect_to edit_admin_service_store_path(@service_store)
