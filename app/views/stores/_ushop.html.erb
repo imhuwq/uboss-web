@@ -60,30 +60,26 @@
 	<% end %>
 </div>
  
+<% if action_name != 'hots' && @categories.try(:any?) %>
+  <div class="bg-white m-bottom10">
+    <div class="category-nav">
+        <a class="tab active" href="#"><span>分组</span></a>
+      <a class="tab" href="#product-container"><span>全部商品</span></a>
+    </div>
+    <div class="tab-container">
+      <div class="tab-content category-list" id="category-container" style="display: block;">
+        <div class="box">
+          <%= render partial: 'categories', collection:  @categories, as: :category %>
+        </div>
+      </div><!-- #category-container -->
 
-<div class="bg-white m-bottom10">
-  <% unless action_name == 'hots' %>
-  <div class="category-nav">
-    <% if @categories.try(:any?) %>
-      <a class="tab active" href="#"><span>分组</span></a>
-    <% end %>
-    <a class="tab" href="#product-container"><span>全部商品</span></a>
+        
+    </div><!-- tab-container -->  
+  </div><!-- bg-white -->
+
+  <div class="gap-lr m-bottom10"> 
+    <%= render partial: 'ad_banner_slider', locals: { seller: @seller } %>
   </div>
-  <% end %>
-  <div class="tab-container">
-    <div class="tab-content category-list" id="category-container" style="display: block;">
-      <div class="box">
-        <%= render partial: 'categories', collection:  @categories, as: :category %>
-      </div>
-    </div><!-- #category-container -->
-
-      
-  </div><!-- tab-container -->  
-</div><!-- bg-white -->
-<% unless action_name == 'hots' %>
-<div class="gap-lr m-bottom10"> 
-  <%= render partial: 'ad_banner_slider', locals: { seller: @seller } %>
-</div>
 <% end %>
 
 <div class="bg-white m-bottom10" id="product-container">
@@ -111,6 +107,11 @@
 
   </div><!-- tab-container -->  
 </div>
+<% if @categories.try(:empty?) %>
+  <div class="gap-lr m-bottom10"> 
+    <%= render partial: 'ad_banner_slider', locals: { seller: @seller } %>
+  </div>
+<% end %> 
 
 <% if @products.size > 4 %>
  
