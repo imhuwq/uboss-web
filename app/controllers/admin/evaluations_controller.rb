@@ -1,7 +1,6 @@
 class Admin::EvaluationsController < AdminController
   def index
-    service_product_ids = ServiceProduct.where(user_id: current_user.id).ids
-    @order_items = OrderItem.where(product_id: service_product_ids)
+    @order_items = OrderItem.joins(:service_product)
     filter_type_by_params
     total
   end
@@ -34,15 +33,10 @@ class Admin::EvaluationsController < AdminController
   end
 
   def total
-    total_evalution = 0.0
-    @total_good_reputation = 0
-    @total_bad_reputation = 0
     service_products = ServiceProduct.where(user_id: current_user.id)
-    service_products.each do |product|
-      total_evalution += product.good_evaluation.to_f + product.bad_evaluation.to_f + product.worst_evaluation.to_f + product.best_evaluation.to_f + product.better_evaluation.to_f
-      @total_good_reputation += product.good_evaluation.to_i + product.best_evaluation.to_i + product.better_evaluation.to_i
-      @total_bad_reputation += product.bad_evaluation.to_i + product.worst_evaluation.to_i
-    end
+    @total_good_reputation = service_products.sum('COALESCE(good_evaluation,0) + COALESCE(better_evaluation,0) + COALESCE(best_evaluation,0)')
+    @total_bad_reputation = service_products.sum('COALESCE(bad_evaluation,0) + COALESCE(worst_evaluation,0)')
+    total_evalution = @total_good_reputation + @total_bad_reputation
     rate = total_evalution > 0 ? @total_good_reputation/total_evalution.to_f : 1
     @total_good_reputation_rate = "#{'%.2f' % (rate*100)}%"
   end

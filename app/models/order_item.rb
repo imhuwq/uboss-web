@@ -3,6 +3,8 @@ class OrderItem < ActiveRecord::Base
   belongs_to :user
   belongs_to :order
   belongs_to :product
+  belongs_to :ordinary_product, foreign_key: :product_id
+  belongs_to :service_product, foreign_key: :product_id
   belongs_to :product_inventory
   belongs_to :sharing_node
   has_many   :evaluations
