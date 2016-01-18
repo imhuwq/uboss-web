@@ -76,7 +76,7 @@ zh-CN:
     province:  省
     country: 国家
     city: 城市
-    area: 区/县
+    area: 地区
     building: 详细地址
     product_inventories: 库存/规格
   simple_form:
@@ -107,6 +107,14 @@ zh-CN:
         full_cut: 满足条件包邮
         full_cut_number: 满足条件包邮数量
         full_cut_unit: 满足条件包邮单位
+        service_type: 团购类型
+        monthes: 团购有效期
+        purchase_note: 团购须知
+      service_product:
+        name: 团购名称
+        service_type: 团购类型
+        monthes: 团购有效期
+        content: 图文详情
       mobile_auth_code:
         mobile: 手机号码
       order_form:
@@ -115,7 +123,7 @@ zh-CN:
         province:  省
         country: 国家
         city: 城市
-        area: 区/县
+        area: 地区
         street: 街道
         building: 详细地址
       personal_authentication:
@@ -174,12 +182,18 @@ zh-CN:
       default: 验证码错误
   nav_groups:
     order_manage: 订单管理
+    service_manage: 团购管理
     orders: 订单
     product_manage: 商品管理
     withdraw_records: 提现
     city_manager: 城市运营商
   li_link:
     dashboard: 主页
+    service_stores: 团购店铺
+    service_products: 团购商品
+    verify_codes: 验证管理
+    evaluations: 评价管理
+    income: 收益管理
     carriage_templates: 运费模板
     expresses: 快递管理
     refund_reasons: 退款理由
@@ -234,6 +248,16 @@ zh-CN:
       product_inventories:
         product_id: SKU产品
         share_amount_total: 总返利
+      service_store:
+        store_phones: 店铺电话
+        begin_hour: 开始时
+        begin_time: 营业开始时间
+        begin_minute: 开始分
+        end_hour: 结束时
+        end_minute: 结束分
+      store_phones:
+        fixed_line_or_phone_number: 固定电话或手机号
+        phone_number: 手机号
       carriage_template:
         name: 模板名称
       different_area:
@@ -294,6 +318,12 @@ zh-CN:
     signed: 交易完成
     completed: 交易完成
     closed: 订单关闭
+  service_order_status_bar:
+    unpay: 待付款
+    payed: 待消费
+    unevaluate: 待评价
+    completed: 交易完成
+    closed: 订单关闭
   enums:
     city_manager:
       category:
@@ -341,12 +371,20 @@ zh-CN:
         l1: 一级分成
         l2: 二级分成
         l3: 三级分成
-    order:
+    ordinary_order:
       state:
         unpay: 未付款
         payed: 已付款
         shiped: 已发货
         signed: 已签收
+        completed: 已完成
+        closed: 关闭
+    service_order:
+      state:
+        unpay: 未付款
+        payed: 待消费
+        expensed: 已消费
+        unevaluate: 待评价
         completed: 已完成
         closed: 关闭
     order_charge:
@@ -368,6 +406,8 @@ zh-CN:
   errors:
     messages:
       already_has_role: 已经拥有该角色
+      only_ordinary_store: 只能创建一个电商店铺
+      only_service_store: 只能创建一个团购店铺
       exists: 已存在
   api_errors:
     unauthorized: 没通过用户认证

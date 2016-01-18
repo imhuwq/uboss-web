@@ -99,7 +99,8 @@ class OrderItemRefundsController < ApplicationController
   end
 
   def order_item_refund_params
-    params.require(:order_item_refund).permit(:money, :refund_reason_id, :description, :refund_type).merge(order_state: @order_item.order.state, user_id: current_user.id)
+    params.require(:order_item_refund).permit(:money, :refund_reason_id, :description, :refund_type).
+      merge(order_state: @order_item.order.state, user_id: current_user.id)
   end
 
 end

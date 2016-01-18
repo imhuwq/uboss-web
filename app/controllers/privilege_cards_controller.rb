@@ -20,7 +20,7 @@ class PrivilegeCardsController < ApplicationController
     set_sharing_link_node
 
     @products = append_default_filter @seller.products.published, order_column: :updated_at
-    @hots = @seller.products.hots.recent.limit(3)
+    @hots = @seller.ordinary_products.hots.recent.limit(3)
   end
 
   def set_privilege_rate

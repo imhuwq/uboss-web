@@ -1,4 +1,5 @@
-.store-category-cover{    
+.store-category-cover{ 
+    word-break: break-all;   
     .cover{
         float: left;
         margin-right: 10px;
@@ -12,6 +13,7 @@
     .content{
         overflow: hidden;
         height: 60px;
+        
     }
 }
 .share-category-box{

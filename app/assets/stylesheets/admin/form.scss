@@ -52,11 +52,18 @@ input[type="search"]:focus,
 input[type="tel"]:focus,
 input[type="color"]:focus,
 select:focus,
-textarea:focus{ 
-  color:#1a1a1a; 
+textarea:focus{
+  color:#1a1a1a;
   outline: none;
   &.main-color { color:#43C3AA}
-  
+}
+.control-txt{
+  padding:8px;
+  display: inline-block;
+  background: #fff;
+  color:#999;
+  border-radius: 4px;
+  word-break: break-all;
 }
 
  .form-group{
@@ -91,11 +98,7 @@ textarea:focus{
      vertical-align: middle;
    }
    .control-input .control-txt{
-     padding:8px;
      display: block;
-     background: #fff;
-     color:#999;
-     border-radius: 4px;
    }
    input[type="text"],
    input[type="password"],

@@ -8,7 +8,7 @@ FactoryGirl.define do
     end
 
     factory :sharing_node_with_product do
-      product
+      product { create(:ordinary_product) }
     end
 
   end

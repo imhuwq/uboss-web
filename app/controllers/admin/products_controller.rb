@@ -1,6 +1,6 @@
 class Admin::ProductsController < AdminController
 
-  load_and_authorize_resource
+  load_and_authorize_resource class: 'OrdinaryProduct'
 
   def select_carriage_template
     @carriage = CarriageTemplate.find(params[:tpl_id]) if params[:tpl_id].present?
@@ -14,9 +14,13 @@ class Admin::ProductsController < AdminController
     @products = @products.available.order('created_at DESC')
     @products = @products.includes(:asset_img).page(params[:page] || 1)
     @statistics = {}
-    @statistics[:create_today] = @products.where('created_at > ? and created_at < ?', Time.now.beginning_of_day, Time.now.end_of_day).count
-    @statistics[:count] = @products.count
-    @statistics[:not_enough] = @products.where('count < ?', 10).count
+    @statistics[:create_today] = @products.create_today.total_count
+    @statistics[:count] = @products.total_count
+    @statistics[:not_enough] = @products.where('count < ?', 10).total_count
+  end
+
+  def new
+    @product = OrdinaryProduct.new()
   end
 
   def create
@@ -24,7 +28,7 @@ class Admin::ProductsController < AdminController
       flash[:success] = '产品创建成功'
       redirect_to action: :show, id: @product.id
     else
-      flash[:error] = "#{@product.errors.full_messages.join('<br/>')}"
+      flash.now[:error] = "#{@product.errors.full_messages.join('<br/>')}"
       render :new
     end
   end
@@ -34,7 +38,7 @@ class Admin::ProductsController < AdminController
       flash[:success] = '保存成功'
       redirect_to action: :show, id: @product.id
     else
-      flash[:error] = "保存失败。#{@product.errors.full_messages.join('<br/>')}"
+      flash.now[:error] = "保存失败。#{@product.errors.full_messages.join('<br/>')}"
       render :edit
     end
   end
@@ -88,18 +92,28 @@ class Admin::ProductsController < AdminController
     params.permit(product_propertys_names: [])
   end
 
+  def product_inventories_params
+    if params[:product]
+      params.require(:product).permit(
+        product_inventories_attributes: [
+          :id, :price, :count, :share_amount_total, :privilege_amount,
+          :share_amount_lv_1, :share_amount_lv_2, :share_amount_lv_3,
+          sku_attributes: product_propertys_params[:product_propertys_names],
+        ]
+      )
+    else
+      { product_inventories_attributes: [] }
+    end
+  end
+
   def product_params
-    params.require(:product).permit(
+    params.require(:ordinary_product).permit(
       :name,      :original_price,  :present_price,     :count,
       :content,   :has_share_lv,    :calculate_way,     :avatar,
       :traffic_expense, :short_description, :transportation_way,
       :carriage_template_id, :categories,
-      :full_cut, :full_cut_number, :full_cut_unit,
-      product_inventories_attributes: [
-        :id, :price, :count, :share_amount_total, :privilege_amount,
-        :share_amount_lv_1, :share_amount_lv_2, :share_amount_lv_3,
-        sku_attributes: product_propertys_params[:product_propertys_names],
-      ]
-    )
+      :full_cut, :full_cut_number, :full_cut_unit
+    ).merge(product_inventories_params)
   end
+
 end

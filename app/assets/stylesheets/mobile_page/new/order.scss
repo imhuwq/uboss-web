@@ -12,7 +12,7 @@
             padding: 10px;
             text-align: center;
             color: #888;
-            font-size: 13px;
+            font-size: 14px;
         }
     }
     li.active a{
@@ -34,7 +34,7 @@
 }
 .seller-box{
     padding: 0 10px 10px;
-    font-size: 15px;
+    font-size: 16px;
     line-height: 25px;
     overflow: hidden;
     border-bottom: 1px solid #f6f6f6;
@@ -67,7 +67,7 @@
     .content{
         overflow: hidden;
         .name{
-            font-size: 15px;
+            font-size: 16px;
             line-height: 20px;
             color: #333;
             overflow: hidden;
@@ -91,7 +91,7 @@
         max-width: 77px;
         float: right;
         margin-left: 10px;
-        font-size: 15px;
+        font-size: 16px;
         line-height: 20px;
         text-align: right;
         .gray-color{
@@ -137,8 +137,6 @@
         display: inline-block;
     }
     .btn{
-        font-size: 10px;
-        line-height: 12px;
         padding: 5px 10px;
         float: right;
     }
@@ -163,14 +161,14 @@
 .price-box{
     padding: 10px 10px 0;
     border-top: 1px solid #f6f6f6;
-    font-size: 15px;
+    font-size: 16px;
     color: #f9ba10;
     text-align: right;    
 }
 .freight-box{
     padding: 10px;
     border-top: 1px solid #f6f6f6;
-    font-size: 15px;
+    font-size: 16px;
 }
 .message-box{
     padding:10px 10px 0;
@@ -256,7 +254,7 @@
     span{
         display: inline-block;
         line-height: 25px;
-        font-size: 15px;
+        font-size: 16px;
     }
     .pay-checkbox{
         float: right;
@@ -264,13 +262,13 @@
     }
 }
 .address-box{
-    padding:18px 10px 18px 24px ;
+    padding:18px 10px 18px 30px;;
     background: image-url('mobile/local.png') #fff no-repeat;
-    background-position:10px 21.5px ;
-    background-size: 7px;
+    background-position:10px 18px ;
+    background-size: auto 16px;
     border-bottom: 1px solid #f6f6f6;
     color: #888;
-    font-size: 13px;
+    font-size: 14px;
     line-height: 20px;
     span{ vertical-align: top;}
     .content{
@@ -289,7 +287,7 @@
     border-top: 3px dashed #f9ba10;
     border-bottom: 3px dashed #f9ba10;
     text-align: center;
-    font-size: 15px;
+    font-size: 16px;
     font-weight: bold;
     line-height: 20px;
     padding: 27px 0;
@@ -308,8 +306,8 @@
     animation: leftIn .3s linear ;
     span{vertical-align: top;line-height: 20px;}
     .address-box { 
-        padding: 10px 10px 10px 24px;
-        background-position:10px 13.5px ;
+        padding: 10px 10px 10px 30px;
+        background-position:10px 10px ;
     }
     .address-list{        
         padding: 41px 0;
@@ -359,7 +357,7 @@
     background: #fff;
     padding: 10px 0;
     border-top: 1px solid #ddd;
-    font-size: 15px;
+    font-size: 16px;
     position: fixed;    
     width: 100%;
     left: 0;

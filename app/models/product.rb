@@ -6,13 +6,9 @@ class Product < ActiveRecord::Base
 
   OFFICIAL_AGENT_NAME = 'UBOSS创客权'.freeze
 
-  # FIXME: @dalezhang 请使用helper or i18n 做view的数值显示
-  DataCalculateWay = { 0 => '按金额', 1 => '按售价比例' }
-  DataBuyerPay = { 0 => '包邮', 1 => '统一邮费', 2 => '运费模板' }
-  FullCut = { 0 => '件', 1 => '元' }
-
   has_one_image autosave: true
   #has_many_images name: :figure_images, accepts_nested: true
+  has_one_content name: :purchase_note, type: :purchase_note
 
   belongs_to :user
   belongs_to :carriage_template
@@ -33,24 +29,13 @@ class Product < ActiveRecord::Base
   scope :hots, -> { where(hot: true) }
   scope :available, -> { where.not(status: 2) }
   scope :hot_ordering, -> { order('products.hot DESC, products.id DESC') }
+  scope :create_today, -> { where('created_at > ? and created_at < ?', Time.now.beginning_of_day, Time.now.end_of_day) }
 
-  validates_presence_of :user_id, :name, :short_description
   validate :must_has_one_product_inventory
-  validates :full_cut_number, :full_cut_unit, presence: true, if: "full_cut"
-  validates_numericality_of :full_cut_number, greater_than: 0, if: "full_cut"
+  validates_presence_of :user_id, :name, :asset_img
 
   before_create :generate_code
   after_create :add_categories_after_create
-
-  validate do
-    #统一邮费
-    if transportation_way == 1
-      self.errors.add(:traffic_expense, "不能小于或等于0") if traffic_expense.to_i <= 0
-    #运费模板
-    elsif transportation_way == 2
-      self.errors.add(:carriage_template, "不能为空") if carriage_template_id.blank?
-    end
-  end
 
   def self.official_agent
     official_account = User.official_account
@@ -170,34 +155,6 @@ class Product < ActiveRecord::Base
 
   def total_sells
     order_items.joins(:order).where('orders.state > 2 AND orders.state <> 5').sum(:amount)
-  end
-
-  def calculate_ship_price(count, user_address, product_inventory_id=nil)
-    return 0.0 if meet_full_cut?(count, product_inventory_id)
-    if transportation_way == 1
-      traffic_expense.to_f
-    elsif transportation_way == 2 && user_address.try(:province)
-      province = ChinaCity.get(user_address.province)
-      carriage_template = CarriageTemplate.find(carriage_template_id)
-      carriage_template.total_carriage(count, province)
-    else
-      0.0
-    end
-  end
-
-  def meet_full_cut?(count, product_inventory_id)
-    if self.full_cut
-      Product::FullCut[self.full_cut_unit] == '件' ? check_full_cut_piece(count) : check_full_cut_yuan(count, product_inventory_id)
-    end
-  end
-
-  def check_full_cut_piece(count)
-    count >= full_cut_number
-  end
-
-  def check_full_cut_yuan(count, product_inventory_id)
-    product_inventory = ProductInventory.find(product_inventory_id) if product_inventory_id
-    ( count * product_inventory.price ) >= full_cut_number
   end
 
   def sku_hash

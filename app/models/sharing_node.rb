@@ -22,23 +22,22 @@ class SharingNode < ActiveRecord::Base
 
   class << self
     def find_or_create_by_resource_and_parent(user, resource, parent = nil)
+      name = resource.class.name
       if parent.present? && parent.user_id == user.id
-        is_circle_parent = case resource.class.name
-                          when 'User'
-                            parent.seller_id == resource.id
-                          when "Product"
-                            parent.product_id == resource.id
-                          end
+        is_circle_parent = if name == 'User'
+                             parent.seller_id == resource.id
+                           elsif name.match('Product')
+                             parent.product_id == resource.id
+                           end
         return parent if is_circle_parent
       end
 
       params = { user_id: user.id }
-      params.merge!(parent_id: parent.id) if parent.present? && resource.is_a?(Product)
+      params.merge!(parent_id: parent.id) if parent.present? && (resource.is_a?(Product) || resource.is_a?(ServiceProduct) || resource.is_a?(OrdinaryProduct))
 
-      case resource.class.name
-      when 'User'
+      if name == 'User'
         params.merge!(seller_id: resource.id)
-      when 'Product'
+      elsif name.match('Product')
         params.merge!(product_id: resource.id)
       end
 
@@ -89,7 +88,7 @@ class SharingNode < ActiveRecord::Base
   end
 
   def privilege_amount(product_inventory)
-    @privilege_amount ||= privilege_card.present? ? privilege_card.privilege_amount(product_inventory) : 0
+    @privilege_amount ||= privilege_card.present? ? privilege_card.amount(product_inventory) : 0
   end
 
   def privilege_card

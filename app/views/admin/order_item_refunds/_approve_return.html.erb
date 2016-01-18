@@ -1,5 +1,5 @@
 <%= horizon_form_for @order_item_refund, url: approved_return_admin_order_item_order_item_refund_path(@order_item, @order_item_refund), method: 'POST' do |f| %>
-  <div class="modal-body">    
+  <div class="modal-body">
     <p >退货地址</p>
     <table class="address-table">
       <% current_user.seller_addresses.each do |address| %>

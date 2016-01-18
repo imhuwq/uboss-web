@@ -1,0 +1,73 @@
+<div class="products_wrapper">
+  <%= render 'layouts/flash_alert' if request.xhr? %>
+  <div class="index_list">
+    <table class="list-table" id="products">
+      <thead>
+        <th colspan="2">团购名称</th>
+        <th>团购类型</th>
+        <th>现价</th>
+        <% if current_user.is_super_admin? %>
+          <th>商家</th>
+        <% end %>
+        <th>好评率</th>
+        <th>总销量</th>
+        <th>发布时间</th>
+        <th>团购有效期</th>
+        <th>操作</th>
+      </thead>
+      <% products = products || @service_products %>
+      <% products.each do |product| %>
+        <tr class="product" id='product_<%= product.id %>'>
+        	<td>
+        		<%= link_to admin_service_product_path(product) do %>
+              <%= image_tag(product.image_url(:thumb), size: "80x80", alt: "-") %>　
+            <% end %>
+        	</td>
+          <td class="text-left" style="max-width: 200px;">
+            <%= link_to admin_service_product_path(product) do %>
+              <%= product.name %>
+            <% end %>
+          </td>
+          <td><%= ServiceProduct::DataServiceType[product.service_type] %></td>
+          <td>
+            <%= number_to_currency product.present_price %>
+          </td>
+          <% if current_user.is_super_admin? %>
+            <td><%= link_to product.user.identify, url_for(controller: 'admin/sellers', action: :show, id: product.user) %></td>
+          <% end %>
+          <td><%= Evaluation.product_good_reputation_rate(product.id) %></td>
+          <td><%= product.total_sells %></td>
+          <td><%= strftime(product.created_at) %></td>
+          <td>截止至 <%= strftime(product.deadline) %></td>
+          <td>
+            <% if can? :update, product %>
+              <% if product.status == 'unpublish' %>
+                <p>
+                <%= link_to("上架", change_status_admin_service_product_path(product, status: 'published'),
+                remote: true, method: :patch, data: { disable_with: '<i class="fa fa-spinner"></i>' },
+                class: "btn btn-mid btn-block yellow-btn change-status-btn") %>
+                </p>
+              <% else %>
+                <p>
+                <%= link_to("下架", change_status_admin_service_product_path(product, status: 'unpublish'),
+                remote: true, method: :patch, data: { disable_with: '<i class="fa fa-spinner"></i>' },
+                class: "btn btn-mid btn-block change-status-btn") %>
+                </p>
+              <% end %>
+
+              <%= link_to url_for(action: :edit, id: product.id), class:'edit-icon', title: '编辑' do %>
+                <i class="fa fa-pencil-square-o"></i>
+              <% end %>
+
+              <%= link_to change_status_admin_product_path(product, status: 'closed'),
+                remote: true, method: :patch, class:'change-status-btn edit-icon',
+                data: { disable_with: '<i class="fa fa-trash-o"></i>' } do %>
+                <i class="fa fa-trash-o"></i>
+              <% end %>
+            <% end %>
+          </td>
+        </tr>
+      <% end %>
+    </table>
+  </div>
+</div>

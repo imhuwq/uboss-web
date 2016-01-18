@@ -6,7 +6,7 @@ module ProductsHelper
 
   def store_sharing_link(seller, sharing_node = nil, redirect = nil)
     if sharing_node.blank?
-      store_url(seller)
+      store_url(seller, redirect: redirect)
     else
       sharing_url(sharing_node, redirect: redirect)
     end
@@ -14,15 +14,19 @@ module ProductsHelper
 
   def product_sharing_link(product, sharing_node = nil)
     if sharing_node.blank?
-      product_url(product)
+      url_of(product)
     else
       sharing_url(sharing_node)
     end
   end
 
+  def url_of(product)
+    product.type == "OrdinaryProduct" ? product_url(product) : service_product_url(product)
+  end
+
   def product_traffic(product)
-    if @product.transportation_way != 0
-      "￥#{@product.traffic_expense}"
+    if product.transportation_way != 0
+      "￥#{product.traffic_expense}"
     else
       '包邮'
     end
@@ -71,9 +75,10 @@ module ProductsHelper
 
   def sku_privilege_amount(product_inventory, privilege_card)
     if privilege_card.present?
-      privilege_card.privilege_amount(product_inventory)
+      privilege_card.amount(product_inventory)
     else
-      product_inventory.privilege_amount
+      0
+      #product_inventory.privilege_amount
     end
   end
 

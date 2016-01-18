@@ -1,0 +1,26 @@
+<div class="container  admin-container">
+	<ul class="breadcrumb">
+		<li><a href="/admin">主页</a></li>
+		<li class="divider"><i class="fa fa-caret-right"></i></li>
+		<li>收益管理</li>
+	</ul>
+</div>
+<br/>
+
+<div id="index_list">
+<div class="container nogap">
+	<div class="box-w25">
+    <div class="admin-box red-bg-color">
+	    <h4>累计收益</h4>
+      <h1 class="num"><%= @total_income %></h1>
+	  </div>
+	</div>
+  <%= link_to admin_withdraw_records_path do %>
+    <div class="box-w25">
+  	  <div class="admin-box red-bg-color">
+        <h4>申请提现</h4>
+        <h1 class="num"></h1>
+      </div>
+    </div>
+  <% end %>
+</div>

@@ -16,7 +16,7 @@ FactoryGirl.define do
       end
 
       after(:create) do |order_charge, evaluator|
-        create_list(:order, evaluator.orders_count, order_charge: order_charge, user: order_charge.user)
+        create_list(:ordinary_order, evaluator.orders_count, order_charge: order_charge, user: order_charge.user)
       end
     end
 

@@ -1,0 +1,64 @@
+<%= content_for :page_title do %>
+  我的订单
+<% end %>
+
+<%= content_for :header_left do %>
+  <a class="back" onclick="history.go(-1)"><%= image_tag 'mobile/right.png' %></a>
+<% end %>
+
+<div class="tab-container m-top10">
+	<div class="tab-content" id="showlist" style="display: block;">
+		<ul class="order-sort">
+			<li class="active"><a href="<%= orders_account_path %>">全部</a></li>
+			<li><a href="<%= orders_account_path(state: 'unpay') %>">未付款</a></li>
+			<li><a href="<%= orders_account_path(state: 'payed') %>">未发货</a></li>
+			<li><a href="<%= orders_account_path(state: 'shiped') %>">未收货</a></li>
+      <li><a href="<%= orders_account_path(state: 'unevaluate') %>">未评价</a></li>
+		</ul>
+    <div id="u-order-list">
+      <%= render partial: 'order', collection: @orders %>
+    </div>
+
+    <% if @orders.blank? %>
+      <div class="bg-white text-center gap">
+        <br/>
+        <p><%= image_tag 'mobile/cart-big.png' %></p>
+        <br />
+        <p class="gray-color">您还没有相关的订单</p>
+        <br />
+        <p><a href="/" class="btn btn-longer">去逛逛</a></p>
+        <br />
+      </div>
+    <% else %>
+      <br />
+      <div class="load-more" data-container='#u-order-list' data-ele='.order-list' data-ref="/account/orders<%= "?state=#{params[:state]}" if params[:state] %>">加载更多</div>
+    <% end %>
+  	<br />
+	</div><!-- tab-content showlist -->
+</div><!-- tab-container  -->
+
+<%= render partial: 'new_share' %>
+
+<script>
+	var locationid=document.location.href.substr(document.location.href.indexOf('#'),document.location.href.length);
+	if($(locationid).length>0){
+		$('.tab-container .tab-content').hide();
+		$('.tab-nav .tab').removeClass('active');
+		$('.tab-nav .tab').each(function(){
+			if($(this).attr('href')==locationid){
+				$(this).addClass('active');
+			}
+		})
+		$(locationid).show();
+	}
+
+  $(document).ready(function(){
+    $.each($('.order-sort li'), function(){
+    if($(this).find('a').attr("href")==(location.pathname+location.search)){
+      $(this).addClass('active')
+    }else{
+      $(this).removeClass('active')
+    }
+    })
+  });
+</script>

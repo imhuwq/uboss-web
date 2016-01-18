@@ -5,7 +5,8 @@ module ApplicationHelper
   end
 
   def product_show?
-    controller_name == 'products' && action_name == 'show'
+    ((controller_name == 'products' || controller_name == 'service_products') && action_name == 'show') ||
+      (controller_name == 'stores' && params[:type] == "service")
   end
 
   def countdown_time(time)
@@ -141,6 +142,10 @@ module ApplicationHelper
       content_tag(:meta, '', name: :Keywords,    content: Rails.application.secrets.metas['keywords']),
       content_tag(:meta, '', name: :description, content: Rails.application.secrets.metas["description"])
     ].join.html_safe
+  end
+
+  def zero_to_nil(num)
+    num == 0 ? nil : num
   end
 
   def recommend_store_banner_data(seller)

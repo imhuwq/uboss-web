@@ -18,7 +18,7 @@ class OrderDivideJobTest < ActiveJob::TestCase
   end
 
   it 'should raise error if not payed' do
-    @order = create(:order)
+    @order = create(:ordinary_order)
 
     assert_equal false, @order.payed?
 
@@ -52,7 +52,7 @@ class OrderDivideJobTest < ActiveJob::TestCase
 
       buyer = create(:user)
 
-      @order = create(:order,
+      @order = create(:ordinary_order,
                       user: buyer,
                       order_items_attributes: [{
                         product: product,
@@ -83,7 +83,7 @@ class OrderDivideJobTest < ActiveJob::TestCase
 
       buyer = create(:user)
 
-      @order = create(:order,
+      @order = create(:ordinary_order,
                       user: buyer,
                       order_items_attributes: [{
                         product: product,
@@ -138,7 +138,7 @@ class OrderDivideJobTest < ActiveJob::TestCase
       assert seller.income == 0
 
       buyer = create(:user)
-      @order = create(:order,
+      @order = create(:ordinary_order,
                       user: buyer,
                       seller: seller,
                       order_items_attributes: [{
@@ -188,7 +188,7 @@ class OrderDivideJobTest < ActiveJob::TestCase
       assert seller.income == 0
 
       buyer = create(:user)
-      @order = create(:order,
+      @order = create(:ordinary_order,
                       user: buyer,
                       seller: seller,
                       order_items_attributes: [{
@@ -222,7 +222,7 @@ class OrderDivideJobTest < ActiveJob::TestCase
       agent = create(:agent_user)
       seller = create(:seller_user, agent: agent)
 
-      @order = create(:order, seller: seller, state: 'signed')
+      @order = create(:ordinary_order, seller: seller, state: 'signed')
       @order.stubs(:pay_amount).returns(BigDecimal('11.11'))
       @order.update_columns(paid_amount: 11.11)
 

@@ -37,7 +37,16 @@ $ ->
 
 
 jQuery ($) ->
-
+  
+  $(".box-num h1.num").each ->
+    ls=$(this).html().length
+    ls_num= $(this).html().replace(/,/g,'').slice(2,ls)
+    ls_num_size=ls_num.length   
+    if ls_num_size>13
+     $(this).html('￥ '+ls_num.slice(0,ls_num_size-10)+'千万') 
+    else if ls_num_size>10
+     $(this).html('￥ '+ls_num.slice(0,ls_num_size-7)+'万')   
+	    
   $("body").on 'click',"#check_all", ->
     $(".check").attr("checked",this.checked)
 

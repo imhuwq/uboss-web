@@ -1,17 +1,4 @@
-small{font-size: 80%; line-height: 1;}
-.gap{padding:10px}
-.gap-lr{padding: 0 10px;}
-.nogap{ padding:0;}
-.line-gap{
-    p{
-        line-height: 120%;
-        font-size: 110%;
-        margin-bottom: 8px;
-    }
-    p:last-child{
-        margin: 0;
-    }
-}
+small{font-size: 80%;}
 .m-bottom10{
     margin-bottom: 10px;
 }
@@ -29,27 +16,33 @@ small{font-size: 80%; line-height: 1;}
 .ul-list{ list-style:disc;padding-left: 15px;}
 
 .border-box { border-bottom: 1px solid #eee; padding-bottom: 5px;}
-.fixed-container{ padding-bottom: 60px;}
-h1{font-size: 18px;}
-h2{font-size: 16px;}
-h3{font-size: 15px;}
-h4{font-size: 13px;}
-h5{font-size: 10px;}
-h6{font-size: 8px;}
+.border-radius{ border-radius:4px ;}
+.border-top { border-top:1px solid #eee ;}
+.border-right { border-right:1px solid #eee ;}
+.noradius{ border-radius:0}
 
+.fixed-container{ padding-bottom: 60px;}
+.enter-content p{ overflow: hidden; word-break: break-all; }
+h1{font-size: 22px;}
+h2{font-size: 20px;}
+h3{font-size: 18px;}
+h4{font-size: 16px;}
+h5{font-size: 12px;}
+h6{font-size: 10px;}
 
 .bg-white{ background:#fff;}
 .bg-main{ background: $brand-primary;color: #fff;}
 .bg-like{ background: #f9ba10;}
+.nobg{background: none;}
 
 .page-title{
     color: $brand-primary;
     padding: 10px 0;
-    font-size: 15px;
+    font-size: 16px;
 }
 .page-title .more-bar {
   color: #b6b6b6;
-  font-size: 11px;
+  font-size: 12px;
   float: right;
   img{ height: 15px; margin-left: 5px;}
  }
@@ -61,12 +54,12 @@ h6{font-size: 8px;}
 .gray-color{ color:#999}
 .white-color{ color: #fff;}
 .red-color{ color: #ff1e1e;}
-.black-color{ color: #333;}
+.black-color{ color: #555;}
 
 .load-more {
   color: #fff;
   padding: 10px;
-  font-size: 15px;
+  font-size: 16px;
   text-align: center;
   width: 200px;
   margin: 0 auto;
@@ -110,19 +103,19 @@ h6{font-size: 8px;}
 
 .hidden {
   display: none;
+  
 }
 
 .gap{padding:10px}
 .gap-lr{padding: 0 10px;}
 .nogap{ padding:0;}
+.nogap-left{padding-left: 0;}
+.nogap-right{padding-right: 0;}
 .line-gap{
     p{
-        line-height: 120%;
-        font-size: 110%;
-        margin-bottom: 8px;
+        margin-bottom: 10px;
     }
     p:last-child{
         margin: 0;
     }
 }
-

@@ -48,7 +48,7 @@ class Admin::UserAddressesController < AdminController
       redirect_to action: :index
     else
       user_address.valid?
-      flash[:error] = "#{user_address.errors.full_messages.join('<br/>')}"
+      flash.now[:error] = "#{user_address.errors.full_messages.join('<br/>')}"
       render 'new'
     end
   end

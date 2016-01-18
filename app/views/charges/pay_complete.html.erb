@@ -2,10 +2,12 @@
   支付结果
 <% end %>
 
-<div class="box">
-  <% if OrderCharge.unpay?(@orders) %>
+<%= content_for :header_left do %>
+  <a class="back" onclick="history.go(-1)"><%= image_tag 'mobile/right.png' %></a>
+<% end %>
 
-    <br  />
+<div class="box">
+  <% if @order_charge.unpay? %>
     <div class="bg-white">
       <div class="box-m40 text-center">
         <br />
@@ -17,7 +19,6 @@
     </div><!-- bg-white -->
 
   <% else %>
-
     <br  />
     <div class="bg-white">
       <div class="box-m40 text-center">
@@ -28,8 +29,8 @@
         <br />
       </div>
     </div><!-- bg-white -->
-    <br  />
     <% if @product.is_official_agent? %>
+    	<br  />
       <div class="bg-white">
         <div class="box-m40 text-center">
           <br />
@@ -48,14 +49,14 @@
         <br />
         <div class="gray-color">帮你省钱和赚钱的会员卡</div>
         <br />
-        <a href="/account#showpcards" class="btn btn-block btn-large">查看我的友情卡</a>
+        <a href="/account" class="btn btn-block btn-large">查看我的友情卡</a>
         <br />
         <p><a href="/about" class="gray-color">了解更多</a></p>
         <br />
       </div>
     </div><!-- bg-white -->
-    <br  />
     <% if @product.is_official_agent? %>
+    	<br  />
       <div class="bg-white">
         <div class="box-m40 text-center">
           <br />
@@ -67,11 +68,45 @@
       </div><!-- bg-white -->
     <% end %>
 
+    <% if @product.type == 'ServiceProduct' %>
+      <% order_item = @order_charge.orders.first.order_item %>
+      <br  />
+      <div class="bg-white">
+        <%= link_to service_product_path(order_item.product) do%>
+          <div class="service-order-box">
+            <div class="cover" style="background:url('<%= order_item.product.image_url(:w120) %>');">
+              <%= image_tag order_item.product.image_url(:w120) %>
+            </div>
+            <div class="content line-gap">
+              <p class="gray-color text-cut"><%= order_item.product.name %></p>
+              <p class="main-color">有效期至：<%= strftime(order_item.product.deadline) %></p>
+              <p class="gray-color">数量：<%= order_item.amount %></h4>
+            </div>
+          </div>
+        <%end%>
+      </div>
+      <br />
+      <% size = order_item.verify_codes.size %>
+      <% order_item.verify_codes.each_with_index do |verify_code, index| %>
+        <div class="service-code bg-white gap m-bottom10">
+        	<span class="pull-left gray-color">验证券密码 ：</span>
+        	<span class="main-color"><%= verify_code.code %></span>
+        	<span class="status-icon"><%= verify_code.verified ? '已消费' : '未使用' %></span>
+        </div> 
+      <% end %>
+      <div class="gap">
+        <p><a href="<%= service_store_path(@product.service_store) %>" class="btn btn-block btn-large btn-black-border">返回店铺首页</a></p>
+      </div>
+      <br />
+    <% else %>
+      <br />
+      <div class="gap">
+        <p><a href="/account/orders" class="btn btn-block btn-large btn-black-border">查看订单</a></p>
+        <br />
+        <p><a href="/" class="btn btn-block btn-large btn-black-border">返回首页</a></p>
+      </div>
+      <br />
+    <% end %>
+
   <% end %>
 </div><!-- box -->
-<br />
-<div class="gap">
-	<p><a href="/account#showlist" class="btn btn-block btn-large btn-black-border">查看订单</a></p>
-	<br />
-	<p><a href="/" class="btn btn-block btn-large btn-black-border">返回首页</a></p>
-</div>

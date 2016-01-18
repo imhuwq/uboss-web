@@ -10,12 +10,20 @@ u1 = User.create(
   mobile: '13800000000',
   password: '111111',
   nickname: "UBOSS",
-  store_name: "UBOSS官方",
   authenticated: 'yes',
   admin: true
 )
 u1.user_roles = [super_role,agent_role,seller_role]
 u1.save
+
+u2 = User.create(
+  login: '19812345678',
+  mobile: '13800000000',
+  password: '111111',
+  nickname: "UBOSS",
+  authenticated: 'yes',
+  admin: true
+)
 
 ChinaCity.provinces.each do |name, code|
   province = Region.find_or_create_by(name: name, numcode: code)

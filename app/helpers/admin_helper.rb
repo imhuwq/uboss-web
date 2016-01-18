@@ -85,6 +85,10 @@ module AdminHelper
     @store_banner_data
   end
 
+  def strftime(time)
+    time.strftime("%Y-%m-%d")
+  end
+
   def platform_banner_data
     return @platform_banner_data if @platform_banner_data.present?
 

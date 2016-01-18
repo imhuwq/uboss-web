@@ -92,10 +92,10 @@
     <div class="form-group">
         <label class="control-label">付款方式</label>
         <div class="control-input">
-          <span class="text-margin"><%= Product::DataBuyerPay[@product.transportation_way] %></span>
+          <span class="text-margin"><%= OrdinaryProduct::DataBuyerPay[@product.transportation_way] %></span>
         </div>
     </div>
-    <% if Product::DataBuyerPay[@product.transportation_way] == '统一邮费' %>
+    <% if OrdinaryProduct::DataBuyerPay[@product.transportation_way] == '统一邮费' %>
       <div class="form-group">
           <label class="control-label">运费</label>
           <div class="control-input">

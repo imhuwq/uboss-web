@@ -5,18 +5,22 @@
   background: $brand-primary;
   color: #fff;
   border-radius: 4px;
-  line-height: 15px;
+  line-height: 20px;
   outline: none;
   border: none;
 }
 .btn-large,input.btn:focus{padding:10px }
 
+.btn-small,.btn-small:focus{ padding:5px 10px;font-size:10px;line-height:12px; }
 .btn-mid,.btn-mid:focus{ padding:5px 10px}
 .btn-longer,.btn-longer:focus{ padding:10px 40px}
 .btn-orange{
   background: #f9ba10;
   color: #fff;
-
+}
+.btn-white{
+  background: #fff;
+  color: $brand-primary;
 }
 .btn-orange-border{
   background: none;

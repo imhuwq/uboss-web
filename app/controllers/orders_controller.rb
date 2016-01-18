@@ -41,7 +41,7 @@ class OrdersController < ApplicationController
       ).calculate_preferential_info
 
       province = @order_form.user_address.province
-      @invalid_items = province.present? && !Order.valid_to_sales?(product, ChinaCity.get(province)) ?
+      @invalid_items = province.present? && !OrdinaryOrder.valid_to_sales?(product, ChinaCity.get(province)) ?
         @products_group_by_seller[product.user] : []
 
       if product.is_official_agent? && current_user && current_user.is_agent?
@@ -55,7 +55,7 @@ class OrdersController < ApplicationController
       cart_items = current_cart.cart_items
         .includes(:sharing_node, product_inventory: [:product])
         .find(session[:cart_item_ids])
-      valid_items = Order.valid_items(cart_items, @order_form.user_address.province)
+      valid_items = OrdinaryOrder.valid_items(cart_items, @order_form.user_address.province)
       session[:valid_items_ids] = valid_items.map(&:id)
       @invalid_items = cart_items - valid_items
       @order_form.cart_id = current_cart.id
@@ -127,18 +127,18 @@ class OrdersController < ApplicationController
       cart_items = current_cart.cart_items
         .includes(:sharing_node, product_inventory: [:product])
         .find(session[:cart_item_ids])
-      valid_items = Order.valid_items(cart_items, user_address.province)
+      valid_items = OrdinaryOrder.valid_items(cart_items, user_address.province)
       session[:valid_items_ids] = valid_items.map(&:id)
       invalid_items = cart_items - valid_items
       ship_prices = []
       CartItem.group_by_seller(valid_items).each do |seller, items|
-        ship_prices << [seller.id, Order.calculate_ship_price(items, user_address).to_s]
+        ship_prices << [seller.id, OrdinaryOrder.calculate_ship_price(items, user_address).to_s]
       end
       render json: { status: 'ok', ship_price: ship_prices, invalid_items: json_of(invalid_items), valid_item_ids: session[:valid_items_ids] }
     elsif !params[:count].blank?
-      product = Product.find(params[:product_id])
+      product = OrdinaryProduct.find(params[:product_id])
       ship_price = product.calculate_ship_price(params[:count].to_i, user_address, params[:product_inventory_id])
-      invalid_items = !Order.valid_to_sales?(product, ChinaCity.get(user_address.province)) ?
+      invalid_items = !OrdinaryOrder.valid_to_sales?(product, ChinaCity.get(user_address.province)) ?
         [CartItem.new(product_inventory_id: params[:product_inventory_id], seller_id: product.user_id, count: params[:count])] : []
       render json: { status: 'ok', ship_price: [[product.user_id, ship_price.to_s]], invalid_items: json_of(invalid_items) }
     end
@@ -166,7 +166,7 @@ class OrdersController < ApplicationController
   end
 
   def find_order
-    @order = current_user.orders.find(params[:id])
+    @order = current_user.ordinary_orders.find(params[:id])
   end
 
   def clean_current_cart

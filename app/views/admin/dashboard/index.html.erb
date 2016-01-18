@@ -36,7 +36,7 @@
 		<div class="box-w66">
 			<div class="admin-box chart">
         <% if current_user.is_seller? %>
-          <h5>未发货订单  <small class="pull-right"><%= link_to "更多...", [:admin, :orders] %></small></h5>
+          <h5>未发货订单  <small class="pull-right"><%= link_to "更多...", admin_orders_path %></small></h5>
           <div style='height: 280px;overflow: auto;'>
             <table class="border-table">
               <thead>
@@ -47,7 +47,7 @@
               <tbody>
                 <% @unship_orders.each do |order| %>
                   <tr>
-                    <td><%= link_to order.number, [:admin, order] %></td>
+                    <td><%= link_to order.number, admin_order_path(order) %></td>
                     <td><%= order.buyer_identify %></td>
                     <td><%= order.state_i18n %></td>
                   </tr>
@@ -151,9 +151,11 @@
 </div>
 <script>
 	$(document).ready(function(){
-		$(".admin-box .num").each(function(){
+		$(".admin-box h1.num").each(function(){
 			var ls=$(this).html().length;
-			if(ls>9){
+			if(ls>13){
+				$(this).css("font-size","20px")
+			}else if (ls>9){
 				$(this).css("font-size","30px")
 			}
 		})

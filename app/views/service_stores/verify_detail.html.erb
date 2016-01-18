@@ -1,0 +1,38 @@
+<%= content_for :header_left do %>
+  <a class="back" onclick="history.go(-1)"><%= image_tag 'mobile/right.png' %></a>
+<% end %>
+<%= content_for :page_title do %>
+	验证明细
+<% end %>
+<div class="box text-center bg-white m-top10">
+	<div class="box-w50 gap border-right">
+		<h4 class="m-bottom10 m-top10 gray-color">总验证数量</h4>
+		<p class="main-color"><%= @total %></p>
+	</div>
+	<div class="box-w50 gap">
+		<h4 class="m-bottom10 m-top10 gray-color">今日验证数量</h4>
+		<p class="main-color"><%= @today %></p>
+	</div>
+</div>
+
+
+      
+<div class="page-title gap black-color">今日验证明细</div>
+<table class="list-table bg-white text-center gray-color">
+  <thead>
+    <tr>
+      <th>团购名称</th>
+      <th>验证时间</th>
+      <th>验证券密码</th>
+    </tr>
+  </thead>
+  <tbody>
+  <% @verify_codes.each do |verify_code| %>
+    <tr>
+	    <td><%= truncate(verify_code.order_item.product.name, length:10) %></td>
+	    <td><%= verify_code.verify_time %></td>
+	    <td><%= verify_code.code %></td>
+	  </tr>
+	<% end %>
+  </tbody>
+</table>

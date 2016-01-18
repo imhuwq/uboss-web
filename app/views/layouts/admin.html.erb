@@ -10,10 +10,17 @@
 	  <%= csrf_meta_tags %>
 	</head>
 	<body class="<%= controller_name %> <%= action_name %>" data-params="<%= request.get? ? params.to_json : {} %>">
+		<div class="main-container">
 	  <%= render 'layouts/admin_navbar' %>
-		<%= render 'layouts/flash_alert' %>
     <div class='modal'></div>
-    <div class='content'>
+    <% thr_navigation = render_navigation(level: 3, skip_if_empty: true) %>
+    <div class='container nogap <%= 'content' if thr_navigation.present? %>'>
+      <% if thr_navigation.present? %>
+        <nav class="nav-v3">
+          <%= thr_navigation %>
+        </nav>
+      <% end %>
+			<%= render 'layouts/flash_alert' %>
       <%= yield %>
     </div>
 		<br />
@@ -21,5 +28,7 @@
 
 		<%= yield :page_specific_javascript %>
 	  <%= render partial: 'baidu_tongji' %>
+
+		</div>
 	</body>
 </html>

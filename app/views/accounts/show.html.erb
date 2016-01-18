@@ -1,156 +1,121 @@
 <%= content_for :page_title do %>
   我的UBOSS
 <% end %>
-<br />
-<div class="bg-white gap">
-		<div class="avatar">
-      <div class="cover">
-      	<%= image_tag current_user.avatar_url(:thumb) %>
-      </div>
-      <div class="name">
-      	<%= truncate current_user.identify,:length=>28,:omission=>'...' %>
-      </div>
-			<div class="setting-icon">
-				<%= link_to settings_account_path do %>
-	      	<%= image_tag("mobile/setting.png") %>
-	      <% end %>
-      </div>
-  	</div><!-- avatar -->
+<div class="bg-white gap m-top10 border-box">
+	<div class="avatar">
+    <div class="cover">
+    	<%= image_tag current_user.avatar_url(:thumb) %>
+    </div>
+    <div class="name">
+    	<%= truncate current_user.identify,:length=>28,:omission=>'...' %>
+    </div>
+		<div class="setting-icon">
+			<%= link_to settings_account_path do %>
+      	<%= image_tag("mobile/setting.png") %>
+      <% end %>
+    </div>
+	</div><!-- avatar -->
+</div><!-- bg-white -->
+<div class="link-tab box bg-white m-bottom10">
+	<%= link_to account_verify_codes_path,class:'box-w33' do %>
+		<div class="black-color">验证券</div>
+		<div class="gray-color"><%= @statistics[:so_payed] %></div>
+	<% end %>
+	<%= link_to bonus_benefit_account_path,class:'box-w33' do %>
+		<div class="black-color">我的红包</div>
+		<div class="gray-color"><%= current_user.bonus_benefit %></div>
+	<% end %>
+	<%= link_to income_account_path,class:'box-w33' do %>
+		<div class="black-color">我的收益</div>
+		<div class="gray-color"><%= current_user.total_income %></div>
+	<% end %>
 </div>
-<br />
 
-<div class="tab-nav">
-	<a class="tab active" title="#showlist"><span>订单</span></a>
-	<a class="tab" title="#showpcards"><span>友情卡</span></a>
-	<a class="tab" title="#hongbao"><span>红包</span></a>
-	<a class="tab" title="#showincome"><span>收益</span></a>
-</div><!-- tab-nav  -->
-
-<div class="tab-container">
-	<div class="tab-content" id="showlist" style="display: block;">
-		<ul class="order-sort">
-			<li class="active"><a href="<%= account_path %>">全部</a></li>
-			<li><a href="<%= account_path(state: 'unpay') %>">未付款</a></li>
-			<li><a href="<%= account_path(state: 'payed') %>">未发货</a></li>
-			<li><a href="<%= account_path(state: 'shiped') %>">未收货</a></li>
-      <!-- <li><a href="<%= account_path(state: 'completed') %>">已完成</a></li> -->
-			<li><a href="<%= account_path(state: 'after_sale') %>">售后</a></li>
-		</ul>
-		<div id="u-order-list">
-      <% if params[:state] == 'after_sale' %>
-        <%= render partial: 'refund', collection: @refunds %>
-      <% else %>
-        <%= render partial: 'order', collection: @orders %>
+<div class="bg-white m-bottom10">
+	<div class="page-title gap border-box">
+    <small class="pull-right">
+      <%= link_to  service_orders_account_path, class: 'gray-color' do %>
+       	全部验证券 <%= image_tag("mobile/gray-arrow-right.png",height:'10') %>
       <% end %>
-   	</div>
-
-    <% if params[:state] == 'after_sale' %>
-      <% if @refunds.blank? %>
-        <div class="bg-white text-center gap">
-          <br />
-          <p class="gray-color">您还没有相关信息</p>
-          <br />
-        </div>
-      <% else %>
-        <div class="load-more" data-container='#u-order-list' data-ele='.order-list' data-ref='/account/orders'>加载更多</div>
-      <% end %>
-    <% else %>
-      <% if @orders.blank? %>
-        <div class="bg-white text-center gap">
-          <br/>
-          <p><%= image_tag 'mobile/cart-big.png' %></p>
-          <br />
-          <p class="gray-color">您还没有相关的订单</p>
-          <br />
-        </div>
-      <% else %>
-        <br />
-        <div class="load-more" data-container='#u-order-list' data-ele='.order-list' data-ref='/account/orders'>加载更多</div>
-      <% end %>
-    <% end %>
-  	<br />
-	</div><!-- tab-content showlist -->
-	<div class="tab-content" id="showpcards">
-		<div class="privilege-rate">
-		<%= link_to edit_rate_privilege_cards_path do %>
-    	友情卡贡献值比率：<span class="like-color"><%= current_user.privilege_rate.to_i %>%</span>
+    </small>
+    <div class="text-cut black-color">我的验证券</div>
+	</div><!-- page-title -->
+  <div class="box-w100 text-center">
+  	<%= link_to service_orders_account_path(state: 'unpay'),class:'box-w33' do %>
+  		<div class="account-icon icon1">
+    		<span class="num"><%= zero_to_nil @statistics[:so_unpay] %></span>
+    	</div>
+  		<div class="gray-color"><small>待付款</small></div>
   	<% end %>
-  	</div>
-	  <div id="pcards-list">
-	    <%= render partial: 'privilege_cards/privilege_card', collection: @privilege_cards %>
-	  </div>
-	  <br />
-	  <div class="load-more" data-container='#pcards-list' data-ele='.share-card' data-ref='/privilege_cards'>加载更多</div>
-	  <br />
-	</div><!-- tab-content showpcards -->
-	<div class="tab-content" id="hongbao">
-		<div class="line-gap">
-      <p>
-        <div class="hidden sharing-meta-container">
-          <%= luffy_meta_tags(
-            title: '双十二送6.4亿大狂欢，流血的女汉子快来摇身一变白富美吧！',
-            desc: '我宁愿当白富美而流泪，也不要当女汉子而流血！',
-            imgurl: asset_url("game/honbao_invite_avatar.jpg"),
-            link: bonus_invite_pages_url(inviter_uid: CryptService.encrypt(current_user.id))
-          ) %>
-        </div>
-        <a class="p-sharing-btn" href="#"><%= image_tag 'mobile/account/hongbao2.jpg'%></a>
-      </p>
-			<div class="hongbao gray-color">
-				<span class="pull-right red-color">￥ <%= current_user.bonus_benefit %></span>红包余额
-        <% if Time.now < Time.parse('2016-1-1') %>
-				  <div class="newyear"></div>
-        <% end %>
-			</div>
-			<div class="bg-white gray-color gap">
-				红包说明：红包直接用于UBOSS购物，提交订单进行随机立减
-			</div>
-			<br />
-			<div class="bg-white gap text-center">
-				<p><%= image_tag 'mobile/qr.jpg'%></p>
-				<div>点击关注UBOSS星球，海量红包带你飞</div>
-			</div>
-			<br />
-		</div>
-	</div>
-	<div class="tab-content" id="showincome">
-		<div class="bg-white gap">
-			<br />
-	    <p class="gray-color">总收益</p>
-	    <h2 class="main-color"><%= number_to_currency(current_user.income.to_f + current_user.frozen_income.to_f) %> <small>元</small></h2>
-		  <hr />
-		  <br />
-	    <p class="gray-color">可提现</p>
-	    <h2 class="main-color"><%= number_to_currency(current_user.income.to_f) %><small>元</small></h2>
-	    <br />
-		  <%= link_to("提现", new_withdraw_records_path , class:"accunt_adilbtn btn btn-large btn-block") %>
-		  <br />
-	 </div><!-- bg-white -->
-	</div><!-- tab-content showincome -->
-</div><!-- tab-container  -->
+    <%= link_to service_orders_account_path(state: 'payed'),class:'box-w33' do %>
+    	<div class="account-icon icon5">
+    		<span class="num"><%= zero_to_nil @statistics[:so_payed] %></span>
+    	</div>
+    	<div class="gray-color"><small>待消费</small></div>
+    <% end %>
+    <%= link_to service_orders_account_path(state: 'unevaluate'),class:'box-w33' do %>
+    	<div class="account-icon icon3">
+    		<span class="num"><%= zero_to_nil @statistics[:so_unevaluate] %></span>
+    	</div>
+    	<div class="gray-color"><small>待评价</small></div>
+    <% end %>
+  </div><!-- box-w100 -->
+</div><!-- bg-white -->
+
+<div class="bg-white m-bottom10">
+  <div class="page-title gap border-box">
+    <small class="pull-right">
+    	 <%= link_to  orders_account_path, class: 'gray-color' do %>
+       	全部订单 <%= image_tag("mobile/gray-arrow-right.png",height:'10') %>
+      <% end %>
+    </small>
+    <div class="text-cut black-color">我的订单</div>
+  </div><!-- page-title -->
+  <div class="box-w100 text-center">
+		<%= link_to orders_account_path(state: 'unpay'),class:'box-w25' do %>
+    	<div class="account-icon icon1">
+    		<span class="num"><%= zero_to_nil @statistics[:oo_unpay] %></span>
+    	</div>
+    	<div class="gray-color"><small>未付款</small></div>
+    <% end %>
+ 		<%= link_to orders_account_path(state: 'shiped'),class:'box-w25' do %>
+ 			<div class="account-icon icon2">
+        <span class="num"><%= zero_to_nil @statistics[:oo_shiped] %></span>
+    	</div>
+    	<div class="gray-color"><small>未收货</small></div>
+    <% end %>
+ 		<%= link_to orders_account_path(state: 'unevaluate'),class:'box-w25' do %>
+ 			<div class="account-icon icon3">
+        <span class="num"><%= zero_to_nil @statistics[:oo_unevaluate] %></span>
+    	</div>
+    	<div class="gray-color"><small>未评价</small></div>
+    <% end %>
+  	<%= link_to orders_account_path(state: 'after_sale'),class:'box-w25' do %>
+  		<div class="account-icon  icon4">
+        <span class="num"><%= zero_to_nil @statistics[:oo_after_sale] %></span>
+    	</div>
+    	<div class="gray-color"><small>退款/售后</small></div>
+    <% end %>
+  </div><!-- box-w100 -->
+</div><!-- bg-white -->
+
+<div class="bg-white m-bottom10">
+  <div class="page-title gap border-box black-color">
+    <div class="text-cut">我的友情卡</div>
+  </div>
+  <div class="privilege-rate gap">
+    <%= link_to edit_rate_privilege_cards_path , class:'gap border-radius' do %>
+      友情卡贡献值比率：<%= current_user.privilege_rate.to_i %>%
+    <% end %>
+  </div>
+</div>
+<div class="bg-white">
+  <div id="pcards-list">
+    <%= render partial: 'privilege_cards/privilege_card', collection: @privilege_cards %>
+  </div>
+</div><!-- bg-white -->
+<br />
+<div class="load-more" data-container='#pcards-list' data-ele='.share-card' data-ref='/privilege_cards'>加载更多</div>
+<br />
 
 <%= render partial: 'new_share' %>
-
-<script>
-	var locationid=document.location.href.substr(document.location.href.indexOf('#'),document.location.href.length);
-	if($(locationid).length>0){
-		$('.tab-container .tab-content').hide();
-		$('.tab-nav .tab').removeClass('active');
-		$('.tab-nav .tab').each(function(){
-			if($(this).attr('title')==locationid){
-				$(this).addClass('active');
-			}
-		})
-		$(locationid).show();
-	}
-
-  $(document).ready(function(){
-    $.each($('.order-sort li'), function(){
-    if($(this).find('a').attr("href")==(location.pathname+location.search)){
-      $(this).addClass('active')
-    }else{
-      $(this).removeClass('active')
-    }
-    })
-  });
-</script>

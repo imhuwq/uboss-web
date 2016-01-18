@@ -1,0 +1,32 @@
+<%= content_for :page_title do %>
+  我的团购店铺
+<% end %>
+
+<%= content_for :header_left do %>
+  <a class="back" onclick="history.go(-1)"><%= image_tag 'mobile/right.png' %></a>
+<% end %>
+
+<div class="privilege-rate m-top10 m-bottom10">
+  <%= link_to share_service_store_path(current_user.service_store),class:'gap bg-white ' do %>
+    <span class='pull-right'>分享</span>
+    <span class='gray-color'><%= @service_store.store_name %></span>
+  <% end %>
+</div><!-- privilege-rate -->
+
+<div class="privilege-rate border-box">
+	<%= link_to '验证明细', verify_detail_service_store_path(current_user.service_store), class: 'gap bg-white text-right' %>
+</div>
+<div class="bg-white m-bottom10">
+<%= form_for 'verify_code', url: verify_service_store_path(current_user.service_store)  do |f| %>
+	<br />
+  <div class="box-w100">
+  	<div class="box-w80 nogap-right">
+  		<%= text_field_tag 'code', '', type: :tel, placeholder: '请输入验证券密码', class: 'input-large input-block' %>
+  	</div>
+  	<div class="box-w20 nogap-left">
+  		<%= f.submit '验证', class: 'btn btn-large btn-block noradius' %>
+  	</div>
+  </div><!-- box-w100 -->
+	<br />
+<% end %>
+</div>

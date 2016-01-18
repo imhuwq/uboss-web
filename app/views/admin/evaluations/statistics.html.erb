@@ -1,0 +1,40 @@
+<%= render 'public' %>
+
+<br />
+<div class="container">
+	<div class="header-tab">
+		<%= link_to "评价详情", admin_evaluations_path, class:"tab-title" %>
+		<div class="tab-title active">团购统计</div>
+	</div>
+</div>
+<br />
+
+<div class="container">
+	<table class="list-table" id="verify_codes">
+    <thead>
+      <tr>
+        <th>团购名称</th>
+        <th>总好评率</th>
+        <th>好评数量</th>
+        <th>差评数量</th>
+        <th>发布时间</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @service_products.each do |product| %>
+        <tr>
+          <td class="text-left">
+					  <%= link_to admin_service_product_path(product) do %>
+              <%= image_tag(product.image_url(:thumb), size: "80x80", alt: "-") %>　
+              <%= product.name %>
+            <% end %>
+          </td>
+          <td><%= Evaluation.product_good_reputation_rate(product.id) %></td>
+          <td><%= Evaluation.product_good_reputation(product.id) %></td>
+          <td><%= Evaluation.product_bad_reputation(product.id) %></td>
+          <td><%= product.created_at.to_date %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>

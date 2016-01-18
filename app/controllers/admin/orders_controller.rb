@@ -1,5 +1,6 @@
 class Admin::OrdersController < AdminController
-  load_and_authorize_resource
+
+  load_and_authorize_resource class: 'OrdinaryOrder'
 
   before_filter :validate_express_params, only: :set_express
 
@@ -7,11 +8,10 @@ class Admin::OrdersController < AdminController
   after_action :record_operation, only: [:update]
 
   def select_orders
-    @orders = Order.where(id: params[:ids])
+    @orders = OrdinaryOrder.where(id: params[:ids])
   end
 
   def close
-    @order = Order.find(params[:id])
     if @order.may_close? && @order.close!
       flash[:success] = '订单关闭成功'
     else
@@ -24,7 +24,7 @@ class Admin::OrdersController < AdminController
     success, errors = 0, 0
     if params[:order].present?
       params[:order].each do |order_id, param|
-        order = Order.find(order_id)
+        order = OrdinaryOrder.find(order_id)
         express = Express.find_by_name(param[:express_name])
         express = Express.create(name: param[:express_name], private_id: current_user.id) if express.blank?
         if validate_batch_shipment_params(param) \
@@ -55,15 +55,14 @@ class Admin::OrdersController < AdminController
     @unship_amount = @orders.payed.total_count
     @today_selled_amount = @orders.today.selled.total_count
     @shiped_amount = @orders.shiped.total_count
-
-    @refunds_amount = current_user.sold_orders.with_refunds.count
+    @refunds_amount = current_user.sold_ordinary_orders.with_refunds.count
     @unprocess_refunds_amount = OrderItemRefund.with_seller(current_user.id).wait_seller_processes.count
 
     case @type
     when 'refunding'
       @orders = @orders.with_refunds
     else
-      @orders = @orders.where(state: Order.states[@type.to_sym]) if @type != 'all'
+      @orders = @orders.where(state: OrdinaryOrder.states[@type.to_sym]) if @type != 'all'
     end
   end
 

@@ -3,7 +3,7 @@
     产品分组
   </label>
   <div class="control-input">
-    <input class="string required form-control" type="text" id="category-option" name="product[categories]">
+    <input class="string required form-control" type="text" id="category-option" name="ordinary_product[categories]">
     <option></option>
   </div>
 </div>

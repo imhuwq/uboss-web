@@ -4,7 +4,7 @@
     <li class="divider"><i class="fa fa-angle-right"></i></li>
     <li><%= link_to '订单', [:admin, :orders] %></li>
     <li class="divider"><i class="fa fa-caret-right"></i></li>
-    <li><%= link_to '订单详情', [:admin, @order_item.order] %></li>
+    <li><%= link_to '订单详情', admin_order_path(@order_item.order) %></li>
     <li class="divider"><i class="fa fa-caret-right"></i></li>
     <li class="active">退款详情</li>
   </ul>
@@ -31,7 +31,7 @@
           <tbody>
             <tr class='table-content'>
               <td class='text-left'>
-                <%= link_to [:admin, @order_item.product], class: 'main-link-color' do %>
+                <%= link_to admin_product_path(@order_item.product), class: 'main-link-color' do %>
                   <%= image_tag(@order_item.product.avatar.url(:thumb), size: "40x40", alt: "-") %>
                   <%= @order_item.product.name %>
                 <% end %>

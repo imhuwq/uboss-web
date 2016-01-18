@@ -72,7 +72,8 @@ class OrderChargeTest < ActiveSupport::TestCase
     order_charge.update prepay_id: 'prepay_id', prepay_id_expired_at: Time.current + 2.hours
     assert order_charge.wx_prepay_valid?, 'prepay valid'
 
-    travel_to Time.current + 3.hours
-    assert_not order_charge.wx_prepay_valid?, 'prepay unvalid cos timeout'
+    travel_to Time.current + 3.hours do
+      assert_not order_charge.wx_prepay_valid?, 'prepay unvalid cos timeout'
+    end
   end
 end

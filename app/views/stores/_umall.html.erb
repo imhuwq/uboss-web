@@ -40,7 +40,7 @@
     <% end %>
 
     <p>
-      <span class="like-color"><%= number_to_percentage(@seller.good_reputation_rate, precision: 0) %></span> 好评（<%= @seller.total_reputations %>）
+      <span class="main-color"><%= number_to_percentage(@seller.good_reputation_rate, precision: 0) %></span> 好评（<%= @seller.total_reputations %>）
     </p>
 
     <% if qr_sharing? %>

@@ -5,7 +5,7 @@ class UserTest < ActiveSupport::TestCase
     assert UserInfo.count == 0
     user = create(:user)
     assert_equal 1, User.count
-    assert_equal 1, UserInfo.count
+    assert_equal 2, UserInfo.count
     assert user.reload.user_info.persisted?
   end
 

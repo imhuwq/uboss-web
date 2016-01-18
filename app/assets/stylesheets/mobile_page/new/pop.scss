@@ -46,6 +46,13 @@
   transform: translate3d(-50%, -50%, 0px);
   -webkit-transform: translate3d(-50%, -50%, 0px);
 }
+.pop-bottom{
+    position: fixed;
+    bottom: 10px;
+    left: 5%;
+    width: 90%;
+    
+}
 .pop-alert{
     position: fixed;
     z-index: 99;
@@ -61,7 +68,7 @@
         width: 240px;
         margin: 0 auto;
         padding: 20px 30px;
-        font-size: 15px;
+        font-size: 16px;
         line-height: 20px;
         border-radius:6px;
     }

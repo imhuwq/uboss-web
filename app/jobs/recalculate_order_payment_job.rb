@@ -14,7 +14,8 @@ class RecalculateOrderPaymentJob < ActiveJob::Base
   private
 
   def close_all_order_charge_within
-    OrderCharge.joins(orders: { order_items: :product_inventory }).merge(Order.unpay).
+    OrderCharge.joins(orders: { order_items: :product_inventory }).
+      merge(product_inventory.type == "ServiceProduct" ? ServiceOrder.unpay : OrdinaryOrder.unpay).
       where(product_inventories: { id: product_inventory.id }).uniq.
       find_in_batches(batch_size: 100) do |overdue_order_charges|
         OrderCharge.check_and_close_prepay(order_charges: overdue_order_charges)
@@ -22,8 +23,9 @@ class RecalculateOrderPaymentJob < ActiveJob::Base
   end
 
   def recalculate_order_payment
-    product_inventory.order_items.includes(:order).merge(Order.unpay).references(:order).
-      find_each do |order_item|
+    product_inventory.order_items.includes(:order).
+      merge(product_inventory.type == "ServiceProduct" ? ServiceOrder.unpay : OrdinaryOrder.unpay).
+      references(:order).find_each do |order_item|
         order_item.reset_payment_info
         order_item.save
       end

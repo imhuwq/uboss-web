@@ -58,6 +58,9 @@ Rails.application.routes.draw do
     post 'change_address', on: :collection
     #resource :charge, only: [:create]
   end
+  resources :service_orders, only: [:new, :create, :show] do
+    get 'cancel', on: :member
+  end
 
   resources :order_items, only: [] do
     resources :order_item_refunds do
@@ -80,26 +83,40 @@ Rails.application.routes.draw do
     get :get_sku, on: :collection
     post :democontent,  on: :collection
   end
+  resources :service_products, only: [:index, :show] do
+    member do
+      patch :switch_favour
+    end
+  end
   resources :evaluations do
     get :append, on: :member
   end
   resource :withdraw_records, only: [:show, :new, :create] do
     get :success, on: :member
   end
+
+  resources :service_stores, only: [:index, :show] do
+    get :verify_detail, on: :member
+    get :share, on: :member
+    post :verify, on: :member
+  end
+
   resource :chat, only: [:show] do
     get :token, :user_info, :check_user_online
     get 'conversations/:conversation_id', to: 'chats#conversion', as: :conversation
   end
   resource :account, only: [:show, :edit, :update] do
-    get :settings,         :edit_password,
-        :orders,           :binding_agent, :invite_seller,
+    get :settings, :edit_password, :orders,
+        :service_orders, :binding_agent, :invite_seller,
         :edit_seller_histroy, :edit_seller_note, :seller_agreement,
-        :merchant_confirm,    :binding_successed
+        :merchant_confirm,    :binding_successed,
+        :income, :service_orders, :bonus_benefit
     post :send_message
     put :bind_agent, :bind_seller, :update_histroy_note
     patch :merchant_confirm, to: 'accounts#merchant_confirmed'
     patch :password, to: 'accounts#update_password'
     resources :user_addresses, except: [:show]
+    resources :verify_codes, only: [:index, :show]
   end
   resource :pay_notify, only: [] do
     collection do
@@ -159,6 +176,26 @@ Rails.application.routes.draw do
       get '/select_carriage_template', to: 'products#select_carriage_template'
       get '/refresh_carriage_template', to: 'products#refresh_carriage_template'
 
+      resources :service_stores, only: [:edit, :update] do
+        collection do
+          get :income_detail
+          get :statistics
+        end
+      end
+
+      resources :verify_codes, only: [:index] do
+        collection do
+          get :statistics
+          post :verify
+        end
+      end
+
+      resources :evaluations, only: [:index, :destroy] do
+        collection do
+          get :statistics
+        end
+      end
+
       resources :expresses do
         member do
           get :set_common
@@ -171,6 +208,12 @@ Rails.application.routes.draw do
           patch :change_status
           get :pre_view
           patch :switch_hot_flag
+        end
+      end
+      resources :service_products, except: [:destroy] do
+        member do
+          patch :change_status
+          get :pre_view
         end
       end
       resources :orders, except: [:destroy] do
@@ -256,7 +299,7 @@ Rails.application.routes.draw do
       end
 
       resources :stores, only: [:show] do
-        post :update_store_logo, :update_store_name, :update_store_short_description,
+        post :update_store_name, :update_store_short_description,
           :update_store_cover, on: :member
         post :update_advertisement_img, :update_advertisement_order, on: :collection
         get :create_advertisement, :add_category, :get_category_img, on: :collection

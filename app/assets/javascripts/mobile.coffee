@@ -52,8 +52,11 @@ $ ->
 
   $("header .menu-btn").on 'click', ->
     $('header .nav-bar').toggle()
+    
+  $(".store-tel").on 'click', ->
+    $('.phone-list').toggle()
 
-  $('.container ').on 'click', ->
+  $('.container').on 'click', ->
     $('header .nav-bar').hide();
 
   $(document).on 'click', '.pop-bg', (e) ->

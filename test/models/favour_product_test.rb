@@ -2,7 +2,7 @@ require 'test_helper'
 
 class FavourProductTest < ActiveSupport::TestCase
   let(:user) { create(:user) }
-  let(:product) { create(:product) }
+  let(:product) { create(:ordinary_product) }
 
   it 'should let user favour product' do
     assert_equal 0, user.favour_products.count

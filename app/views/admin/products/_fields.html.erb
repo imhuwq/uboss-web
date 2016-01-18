@@ -37,7 +37,7 @@
     </p>
   <% end %>
   <div class="form-group ">
-    <label class="control-label">图文详情</label>
+    <label class="control-label">图文详情<abbr title="必填">*</abbr></label>
     <div class="control-input" style='width: 430px;'>
       <%= f.input_field :content, as: :text, class: "redactor" %>
     </div>
@@ -47,7 +47,7 @@
 <div class="admin-box beige-bg-color">
   <h4 class="edit-title">库存/规格</h4>
   <div class="form-group ">
-    <label class="control-label">规格</label>
+    <label class="control-label">规格<abbr title="必填">*</abbr></label>
     <div id='product-sku' class='control-input'>
       <div class="property-list">
       </div>
@@ -55,7 +55,7 @@
     </div>
   </div>
   <div id="product-stock" class="form-group ">
-    <label class="control-label">库存</label>
+    <label class="control-label">库存<abbr title="必填">*</abbr></label>
     <div  class="stock-list control-input">
       <p><span class="text-margin">请添加产品规格属性</span></p>
     </div>
@@ -86,7 +86,7 @@
     <div class='form-group radio_buttons optional product_transportation_way'>
       <label class='optional text-right traffic_expense_label control-label'>运费</label>
       <div class='control-input'>
-        <%= f.collection_radio_buttons :transportation_way, Product::DataBuyerPay.invert, :last, :first %>
+        <%= f.collection_radio_buttons :transportation_way, OrdinaryProduct::DataBuyerPay.invert, :last, :first %>
       </div>
     </div>
   </div>
@@ -106,7 +106,7 @@
     <%= f.input :full_cut, label_html: { class: @product.full_cut ? 'checkbox_is_checked':'checkbox_no_checked' } %>
     <div class='full_cut_params' style=<%=@product.full_cut ? '': 'display:none'%>>
       <%= f.number_field :full_cut_number, placeholder: '输入金额或件数' %>
-      <%= f.select :full_cut_unit, Product::FullCut.invert %>
+      <%= f.select :full_cut_unit, OrdinaryProduct::FullCut.invert %>
     </div>
   </div>
 

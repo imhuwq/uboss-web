@@ -3,18 +3,19 @@ require 'test_helper'
 class OrderTest < ActiveSupport::TestCase
   test 'order closed should recover sku strock' do
     buy_amount = 10
-    product_inventory = create(:product_inventory, product: create(:product))
+    product_inventory = create(:product_inventory, product: create(:ordinary_product))
     buyer = create(:user)
 
-    order = create(:order,
-                    user: buyer,
-                    order_items_attributes: [{
-                      product: product_inventory.product,
-                      product_inventory: product_inventory,
-                      user: buyer,
-                      amount: buy_amount
-                    }]
-                   )
+    order = create(:ordinary_order,
+
+                   user: buyer,
+                   order_items_attributes: [{
+                     product: product_inventory.product,
+                     product_inventory: product_inventory,
+                     user: buyer,
+                     amount: buy_amount
+                   }]
+                  )
 
     assert_equal 90, product_inventory.reload.count
 
@@ -46,7 +47,7 @@ class OrderTest < ActiveSupport::TestCase
     item3.amount = 2
     item3.save
     user_address = create(:user_address)
-    price = Order.calculate_ship_price(items, user_address)
+    price = OrdinaryOrder.calculate_ship_price(items, user_address)
     assert_equal price , 0.0
   end
 
@@ -68,7 +69,7 @@ class OrderTest < ActiveSupport::TestCase
 
     [:declined, :completed_express_number, :decline_received, :applied_uboss].each do |state|
       # reset situation
-      order.update_column(:state, Order.states[:shiped])
+      order.update_column(:state, OrdinaryOrder.states[:shiped])
       refund.update_column(:aasm_state, state.to_s)
 
       assert_equal state.to_s, refund.aasm_state
