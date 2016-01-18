@@ -18,9 +18,9 @@ class Admin::VerifyCodesController < AdminController
   end
 
   def verify
-    service_product_ids = ServiceProduct.where(user_id: current_user.id).ids
-    order_item_ids = OrderItem.where(product_id: service_product_ids).ids
-    @verify_code = VerifyCode.where(code: params[:code], order_item_id: order_item_ids).first
+    @verify_code = VerifyCode.joins(order_item: :service_product).
+      merge(current_user.service_products).
+      find_by(code: params[:code])
 
     if @verify_code.present? && @verify_code.verify_code
       flash[:success] = '验证成功'
