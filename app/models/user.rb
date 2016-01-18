@@ -118,11 +118,11 @@ class User < ActiveRecord::Base
   end
 
   def service_store
-    service_store || build_service_store
+    super || build_service_store
   end
 
   def ordinary_store
-    ordinary_store || build_ordinary_store
+    super || build_ordinary_store
   end
 
   def login_identifier=(login_identifier)
