@@ -149,9 +149,29 @@ class OrderForm
     end
     orders_split_by_product_type(orders_attributes)
   end
-  # 根据order_items的商品类型拆分
+
+  # 根据 order_items 的商品类型拆分
   def orders_split_by_product_type(orders_attributes)
-    orders_attributes
+    orders_attributes.tap do |orders|
+      orders.each do |order|
+        _order = order.dup
+        next if order[:order_items_attributes].length < 2
+        order[:order_items_attributes].group_by do |attrs|
+          product = Product.find(attrs[:product_id])
+          product.type
+        end.each do |type, groups|
+          type = case type
+          when "ServiceProduct"   then "ServiceOrder"
+          when "OrdinaryProduct"  then "OrdinaryOrder"
+          when "AgencyProduct"    then "AgencyOrder"
+          else type end
+          _order[:type] = type
+          _order[:order_items_attributes] = groups
+          orders << _order
+        end
+        orders.delete(order)
+      end
+    end
   end
 
   def order_items_of_seller(seller_id)
