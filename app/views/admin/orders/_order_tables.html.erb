@@ -26,6 +26,7 @@
             <label>
               <%= check_box_tag 'ids[]', order.id, false, disabled: !order.may_ship?, class: "check_box_tag" %>
               <span>订单编号: <%= order.number %></span>
+              <%= order_tag(order) %>
             </label>
             <span class='order_created_at'>创建时间: <%= order.created_at %></span>
           </td>
