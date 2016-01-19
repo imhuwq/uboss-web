@@ -72,11 +72,8 @@
           <%= render partial: 'categories', collection:  @categories, as: :category %>
         </div>
       </div><!-- #category-container -->
-
-        
     </div><!-- tab-container -->  
   </div><!-- bg-white -->
-
   <div class="gap-lr m-bottom10"> 
     <%= render partial: 'ad_banner_slider', locals: { seller: @seller } %>
   </div>
@@ -91,8 +88,8 @@
    	<div class="sort-tab <%= params[:order] == 'published_at' ? 'active' : '' %>">
     	<a href="/stores/<%= params[:id] %>?order=published_at#product-container">新品上架</a>
     </div>
-    <div class="sort-tab <%= params[:order] == 'sales_amount' ? 'active' : '' %>">
-    	<a href="/stores/<%= params[:id] %>?order=sales_amount#product-container">人气热销</a>
+    <div class="sort-tab <%= params[:order] == 'sales_amount_order' ? 'active' : '' %>">
+    	<a href="/stores/<%= params[:id] %>?order=sales_amount_order#product-container">人气热销</a>
   	</div>
   </div>
   <% end %>

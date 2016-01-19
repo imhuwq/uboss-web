@@ -18,9 +18,9 @@ class StoresController < ApplicationController
     if params[:order] == 'published_at'
       @order_column_name = 'published_at'
       @products = append_default_filter @seller.products.published.includes(:asset_img), order_column: :published_at, order_type: 'DESC', page_size: 6, column_type: :datetime
-    elsif  params[:order] == 'sales_amount'
+    elsif  params[:order] == 'sales_amount_order'
       @order_column_name = 'sales_amount'
-      @products = append_default_filter @seller.products.published.includes(:asset_img), order_column: :sales_amount, order_type: 'DESC', page_size: 6, column_type: :integer
+      @products = append_default_filter @seller.products.published.includes(:asset_img), order_column: :sales_amount_order, order_type: 'ASC', page_size: 6, column_type: :integer
     else
       @order_column_name = 'comprehensive_order'
       @products = append_default_filter @seller.products.published.includes(:asset_img), order_column: :comprehensive_order, order_type: 'ASC', page_size: 6, column_type: :integer

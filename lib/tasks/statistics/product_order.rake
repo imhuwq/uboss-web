@@ -47,10 +47,10 @@ namespace :statistics do
                            Row_Number() over(order by published_at desc) as 创建时间排名,
                            Row_Number() over(order by sales_amount desc)+Row_Number() over(order by published_at desc) as 排名相加
                            from  products)
-                    select product_id,Row_Number() over(order by 排名相加) as 综合排名  from T;
+                    select product_id, 数量排名, Row_Number() over(order by 排名相加) as 综合排名  from T;
 
 
-                UPDATE products SET comprehensive_order = tb.综合排名
+                UPDATE products SET comprehensive_order = tb.综合排名, sales_amount_order = tb.数量排名
                 FROM tb
                 WHERE products.id = tb.product_id;
 
