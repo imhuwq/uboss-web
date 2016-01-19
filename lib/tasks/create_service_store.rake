@@ -20,13 +20,11 @@ namespace :migrate do
   desc '创建团购店铺 ServiceStore'
   task init_service_store: :environment do
     User.find_each do |user|
-      if user.service_store.blank?
-        user.build_service_store
-        if user.save(validate: false)
-          printf "\e[1;32m.\e[0m"
-        else
-          printf "\e[1;31m.\e[0m"
-        end
+      service_store = user.service_store
+      if service_store.save(validate: false)
+        printf "\e[1;32m.\e[0m"
+      else
+        printf "\e[1;31m.\e[0m"
       end
     end
 
