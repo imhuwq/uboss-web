@@ -46,7 +46,9 @@ namespace :statistics do
                     with T as(select id as product_id,Row_Number() over(order by sales_amount desc) as 数量排名,
                            Row_Number() over(order by published_at desc) as 创建时间排名,
                            Row_Number() over(order by sales_amount desc)+Row_Number() over(order by published_at desc) as 排名相加
-                           from  products)
+                           FROM  products
+                           WHERE product.user_id = '#{user.id}'
+                           )
                     select product_id, 数量排名, Row_Number() over(order by 排名相加) as 综合排名  from T;
 
 

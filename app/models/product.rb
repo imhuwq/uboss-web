@@ -40,7 +40,7 @@ class Product < ActiveRecord::Base
   validates_numericality_of :full_cut_number, greater_than: 0, if: "full_cut"
 
   before_create :generate_code
-  after_create :add_categories_after_create
+  after_create :add_categories_after_create, :reorder
 
   validate do
     #统一邮费
@@ -259,6 +259,10 @@ class Product < ActiveRecord::Base
       end
       save
     end
+  end
+
+  def reorder
+    ReorderProductsJob.perform_later(self)
   end
 
   private
