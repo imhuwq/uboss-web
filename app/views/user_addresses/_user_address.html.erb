@@ -2,21 +2,22 @@
 <td>所在地区</td>
 <td class="city-group">
   <%= f.select :province, options_for_select([['--省份--', '']] + ChinaCity.provinces, @user_address.province),
-    {}, class: 'city-select ', id: "province", style:"width:70px;" %>
+    {}, class: 'city-select ', id: "province", style:"width:70px;", 'data-manual-chosen'=>true %>
   <%= f.select :city, options_for_select([['--城市--', '']] + ChinaCity.list(@user_address.province), @user_address.city),
-    {}, :class => 'city-select', id: "city", style:"width:70px;" %>
+    {}, :class => 'city-select', id: "city", style:"width:70px;", 'data-manual-chosen'=>true %>
   <%= f.select :area, options_for_select([['--地区--', '']] + ChinaCity.list( @user_address.city), @user_address.area),
-    {}, :class => 'city-select', id: "area", style:"width:70px;" %>
+    {}, :class => 'city-select', id: "area", style:"width:70px;", 'data-manual-chosen'=>true %>
 </td>
 <% else %>
 <td>
 <div class="city-group">
   <%= f.select :province, options_for_select([['--省份--', '']] + ChinaCity.provinces, f.object.province), {},
-  	class: 'city-select', id: "province", style:"width:70px;" %>
+  	class: 'city-select', id: "province", style:"width:70px;", 'data-manual-chosen'=>true %>
   <%= f.select :city, options_for_select([['--城市--', '']] + ChinaCity.list(f.object.province), f.object.city), {},
-   	:class => 'city-select', id: "city", style:"width:70px;" %>
+   	:class => 'city-select', id: "city", style:"width:70px;", 'data-manual-chosen'=>true %>
   <%= f.select :area, options_for_select([['--地区--', '']] + ChinaCity.list(f.object.city), f.object.area), {},
-   	:class => 'city-select', id: "area", style:"width:70px;" %>
+   	:class => 'city-select', id: "area", style:"width:70px;", 'data-manual-chosen'=>true %>
 </div>
+
 </td>
 <% end %>

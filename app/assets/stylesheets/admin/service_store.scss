@@ -6,8 +6,6 @@
     .city-group{
       display: inline-block;
     }
-    .chosen-container {
-    display: none !important;  }
 
     .city-select, {
       display: inline-block !important;
@@ -41,7 +39,7 @@
   }
 
   .city-select {
-    width: auto !important;
+    width: 100px !important;
     height: 37px;
   }
 }
