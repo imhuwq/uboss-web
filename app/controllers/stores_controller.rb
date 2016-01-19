@@ -15,16 +15,8 @@ class StoresController < ApplicationController
   end
 
   def show
-    if params[:order] == 'published_at'
-      @order_column_name = 'published_at'
-      @products = append_default_filter @seller.products.published.includes(:asset_img), order_column: :published_at, order_type: 'DESC', page_size: 6, column_type: :datetime
-    elsif  params[:order] == 'sales_amount_order'
-      @order_column_name = 'sales_amount_order'
-      @products = append_default_filter @seller.products.published.includes(:asset_img), order_column: :sales_amount_order, order_type: 'ASC', page_size: 6, column_type: :integer
-    else
-      @order_column_name = 'comprehensive_order'
-      @products = append_default_filter @seller.products.published.includes(:asset_img), order_column: :comprehensive_order, order_type: 'ASC', page_size: 6, column_type: :integer
-    end
+    @order_column_name = params[:order] || 'comprehensive_order'
+    @products = append_default_filter_for_store_show @seller.products.published.includes(:asset_img), order_column: @order_column_name, page_size: 6
     @hots = @seller.products.hots.recent.limit(3)
     @categories = Category.where(use_in_store: true, user_id: @seller.id).order('use_in_store_at')
     render_product_partial_or_page
@@ -53,5 +45,20 @@ class StoresController < ApplicationController
 
   def set_seller
     @seller = User.find(params[:id])
+  end
+
+  def append_default_filter_for_store_show(scope, opts)
+    append_default_filter scope, order_type: order_column_type(opts[:order_column])[:order], column_type: order_column_type(opts[:order_column])[:type], page_size: opts[:page_size]
+  end
+
+  def order_column_type(order_column)
+    case order_column.to_s
+    when 'published_at'
+      { order: 'DESC', type: :datetime }
+    when 'sales_amount_order'
+      { order: 'ASC', type: :integer }
+    when 'comprehensive_order'
+      { order: 'ASC', type: :integer }
+    end
   end
 end

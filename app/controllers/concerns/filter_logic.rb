@@ -71,4 +71,5 @@ module FilterLogic
   def param_page
     params[:page] || 0
   end
+
 end
