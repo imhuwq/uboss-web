@@ -244,6 +244,11 @@ Rails.application.routes.draw do
         post :batch_shipments, on: :collection
         post :select_orders, on: :collection
       end
+      resources :purchase_orders, only: [:index, :show] do
+        member do
+          put :delivery
+        end
+      end
       resources :order_items, only: [] do
         resources :order_item_refunds, only: [:index] do
           get  :approved_refund,  on: :member
