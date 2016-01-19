@@ -41,7 +41,7 @@ namespace :statistics do
         User.joins(:user_roles).where('user_roles.name = ?','seller').select(:id).each do |user|
             ActiveRecord::Base.connection.execute <<-SQL.squish!
                 DROP TABLE IF EXISTS tb;
-                create table tb (product_id int, 综合排名 int);
+                create table tb (product_id int, 数量排名 int, 综合排名 int);
                 insert into tb
                     with T as(select id as product_id,Row_Number() over(order by sales_amount desc) as 数量排名,
                            Row_Number() over(order by published_at desc) as 创建时间排名,

@@ -19,7 +19,7 @@ class StoresController < ApplicationController
       @order_column_name = 'published_at'
       @products = append_default_filter @seller.products.published.includes(:asset_img), order_column: :published_at, order_type: 'DESC', page_size: 6, column_type: :datetime
     elsif  params[:order] == 'sales_amount_order'
-      @order_column_name = 'sales_amount'
+      @order_column_name = 'sales_amount_order'
       @products = append_default_filter @seller.products.published.includes(:asset_img), order_column: :sales_amount_order, order_type: 'ASC', page_size: 6, column_type: :integer
     else
       @order_column_name = 'comprehensive_order'
