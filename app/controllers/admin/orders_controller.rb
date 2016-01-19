@@ -86,6 +86,17 @@ class Admin::OrdersController < AdminController
     redirect_to admin_orders_path
   end
 
+  def change_ship_price
+    @order = OrdinaryOrder.unpay.find_by!(id: params[:id], seller: current_user)
+
+    if @order.update(ship_price: params[:ordinary_order][:ship_price])
+      flash[:success] = '运费修改成功'
+    else
+      flash[:error] = '运费修改失败'
+    end
+    redirect_to admin_order_path(@order)
+  end
+
   private
 
   def validate_batch_shipment_params(param)
