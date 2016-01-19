@@ -15,7 +15,7 @@ class StoresController < ApplicationController
   end
 
   def show
-    @order_column_name = params[:order] || 'comprehensive_order'
+    @order_column_name = params[:order].present? ? params[:order] : 'comprehensive_order'
     @products = append_default_filter_for_store_show @seller.products.published.includes(:asset_img), order_column: @order_column_name, page_size: 6
     @hots = @seller.products.hots.recent.limit(3)
     @categories = Category.where(use_in_store: true, user_id: @seller.id).order('use_in_store_at')
@@ -48,7 +48,7 @@ class StoresController < ApplicationController
   end
 
   def append_default_filter_for_store_show(scope, opts)
-    append_default_filter scope, order_type: order_column_type(opts[:order_column])[:order], column_type: order_column_type(opts[:order_column])[:type], page_size: opts[:page_size]
+    append_default_filter scope, order_column: opts[:order_column], order_type: order_column_type(opts[:order_column])[:order], column_type: order_column_type(opts[:order_column])[:type], page_size: opts[:page_size]
   end
 
   def order_column_type(order_column)
