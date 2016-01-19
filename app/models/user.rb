@@ -101,6 +101,7 @@ class User < ActiveRecord::Base
   before_create :set_mobile, :set_default_role
   before_create :build_ordinary_store, if: -> { ordinary_store.blank? }
   before_create :build_service_store, if: -> { service_store.blank? }
+  before_create :skip_confirmation!
   before_save   :set_service_rate
   after_commit  :invoke_rongcloud_job, on: [:create, :update]
 
