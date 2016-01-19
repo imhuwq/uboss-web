@@ -25,3 +25,27 @@ class CategoriesController < ApplicationController
   end
 
 end
+
+
+class A
+  def initialize(name, age=18)
+    @name = name
+    @age = age
+    @motherland = "China"
+  end
+  def talk
+    puts "#{@name}-@#{@age}-#{@motherland}"
+  end
+end
+
+class B < A
+  def initialize(name, age=18,motherland)
+    @name = name
+    @age = age
+    @motherland = motherland
+  end
+  def talk
+    super
+  end
+end
+
