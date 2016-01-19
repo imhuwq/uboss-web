@@ -16,12 +16,6 @@
     <div class="cover">
       <div class="img" style="background-image:url('<%= @product.image_url() %>')"></div>
       <%= image_tag("mobile/img.jpg") %>
-      <% if current_user && current_user.has_seller_privilege_card?(@seller) %>
-        <div class="like-box">
-	        <%= link_to "喜欢", switch_favour_service_product_path(@product),
-	          method: 'PATCH', class: "#{user_favour_product_class(@product)} btn btn-like like-product-btn", remote: true %>
-        </div>
-      <% end %>
     </div>
   </div><!-- product-box -->
 
