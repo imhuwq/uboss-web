@@ -16,10 +16,10 @@ class PrivilegeCardsController < ApplicationController
   def show
     @privilege_card = current_user.privilege_cards.find(params[:id])
     @seller = @privilege_card.seller
-    @favour_products = current_user.favoured_products.where(user_id: @seller.id).recent.limit(6)
+    @favour_products = current_user.favoured_products.where(user_id: @seller.id, type: 'OrdinaryProduct').recent.limit(6)
     set_sharing_link_node
 
-    @products = append_default_filter @seller.products.published, order_column: :updated_at
+    @products = append_default_filter @seller.ordinary_products.published, order_column: :updated_at
     @hots = @seller.ordinary_products.hots.recent.limit(3)
   end
 
