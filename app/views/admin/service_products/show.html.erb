@@ -123,7 +123,7 @@
     <% if can? :edit, @service_product %>
       <%= link_to("编辑", url_for(:action=>:edit,:id=>@service_product.id), :class=>"btn btn-large blue-btn",:role=>"button") %>
     <% end %>　
-    <%= link_to("预览", url_for(:action=>:pre_view,:id=>@service_product.id), :class=>"btn btn-large yellow-btn",:role=>"button",:target=>"_blank") %>　
+    <%= link_to("手机效果", url_for(:action=>:pre_view,:id=>@service_product.id), :class=>"btn btn-large yellow-btn",:role=>"button",:target=>"_blank") %>　
     <% if can? :update, @service_product %>
       <% if @service_product.status == 'unpublish' %>
         <%= link_to("上架", url_for(action: :change_status, id: @service_product.id, status: :published), method: :patch, class: "btn btn-large red-btn", role: "button") %>
