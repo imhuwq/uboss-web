@@ -8,7 +8,7 @@ module WechatRewarable
   end
 
   def grant_weixin_invite_reward
-    Ubonus::WeixinInviteReward.delay_for(5.seconds).
+    Ubonus::WeixinInviteReward.delay.
       active_with_to_wx_user(current_user.id, session[:scene_identify])
     session[:scene_identify] = nil
   end
