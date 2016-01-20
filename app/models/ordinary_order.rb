@@ -14,7 +14,7 @@ class OrdinaryOrder < Order
     state :payed
     state :shiped,    after_enter: [:fill_shiped_at, :close_order_item_refund_before_shiping]
     state :signed,    after_enter: [:fill_signed_at, :active_privilege_card, :close_refunds_before_signed]
-    state :completed, after_enter: :fill_completed_at
+    state :completed, after_enter: [:fill_completed_at, :after_completed]
     state :closed,    after_enter: :recover_product_stock
 
     event :pay, after_commit: :invoke_order_payed_processes do
