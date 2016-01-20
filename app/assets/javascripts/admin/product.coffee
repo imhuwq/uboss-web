@@ -5,7 +5,7 @@ $ ->
     else
       $(this).children('.fachange').removeClass('fa-heart red-color').addClass('fa-heart-o')
 
-  $(document).on 'ajax:beforeSend', '#products .change-status-btn', (xhr, settings) ->
+  $(document).on 'ajax:beforeSend', '#products .change-status-btn, .actions .store-supplier-product, .actions .list-supplier-product', (xhr, settings) ->
     return confirm("确定#{$(this).text()}?")
 
   $(document).on 'ajax:success', "#products .change-status-btn", (e, data) ->
@@ -17,7 +17,7 @@ $ ->
     else
       $(this).closest('.product').remove()
 
-  $(document).on 'ajax:error', "#products .change-status-btn, #products .switch-p-hot-btn", ->
+  $(document).on 'ajax:error', "#products .change-status-btn, #products .switch-p-hot-btn, .actions .store-supplier-product, .actions .list-supplier-product", ->
     alert('操作失败')
 
   $('#product_carriage_template_id').on 'change', (event) ->

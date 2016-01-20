@@ -57,6 +57,8 @@ class User < ActiveRecord::Base
   #for agencies
   has_many :reverse_cooperations, foreign_key: 'agency_id', class_name: 'Cooperation', dependent: :destroy
   has_many :suppliers, through: :reverse_cooperations, source: :supplier
+  has_many :agency_products, ->{ where(type: 'AgencyProduct') }
+
 
   validates :login, uniqueness: true, mobile: true, presence: true, if: -> { !need_set_login? }
   validates :mobile, allow_nil: true, mobile: true

@@ -1,0 +1,17 @@
+<div class="product-box">
+	<%= image_tag(product.avatar.url) %>
+  <div class="short-description">
+    <%= product.short_description %>
+  </div>
+  <div class="cost-price">
+    成本价：<%= number_to_currency product.cost_price %>
+  </div>
+  <div class="actions">
+    <%= link_to("+立即上架", admin_list_supplier_product_path(product),
+      remote: true, method: :post, data: { disable_with: '<i class="fa fa-spinner"></i>' },
+      class: "btn btn-mid btn-block list-supplier-product") %>
+    <%= link_to("+添加到仓库", admin_store_supplier_product_path(product),
+      remote: true, method: :post, data: { disable_with: '<i class="fa fa-spinner"></i>' },
+      class: "btn btn-mid btn-block store-supplier-product") %>
+  </div>
+</div>
