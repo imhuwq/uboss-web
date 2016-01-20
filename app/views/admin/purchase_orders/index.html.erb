@@ -69,7 +69,7 @@
             <td colspan='2' class='text-left none-border-right'>
               <%= image_tag(item.product_inventory.product.avatar.url(:thumb), size: "40x40", alt: "-") %>
               <div>
-                <%= link_to [:admin, item.product_inventory.product], class: 'main-link-color' do %>
+                <%= link_to admin_product_path(item.product_inventory.product), class: 'main-link-color' do %>
                   <%= item.product_inventory.product.name %>
                 <% end %>
                 <% item.product_inventory.properties.each do |property| %>
@@ -88,17 +88,17 @@
               <td rowspan=<%= size %>>
                 <%= link_to order.seller.try(:identify), nil, class: 'main-link-color' %>
                 <p>联系买家
-                  <%= link_to [:admin, item.product_inventory.product], class: 'buyer_phone' do %>
+                  <%= link_to admin_product_path(item.product_inventory.product), class: 'buyer_phone' do %>
                     <i class="fa fa-phone"></i>
                   <% end %>
                 </p>
                 <p>买家留言:<%= 'xxx' %></p>
               </td>
               <td rowspan=<%= size %>>
-                <%= order.state %>
+                <%= order.state_i18n %>
                 <%= link_to '详情', [:admin, order], class: 'main-link-color' %>
                 <% if order.payed? && can?(:manage, order) %>
-                  <%= link_to '发货', [:set_express, :admin, order], class: 'btn express-order-btn' %>
+                  <%= link_to '发货', [:delivery, :admin, order], class: 'btn express-order-btn' %>
                 <% end %>
               </td>
               <td rowspan=<%= size %>>
@@ -113,3 +113,5 @@
   </table>
   <%= paginate @purchase_orders %>
 </div>
+
+<%= render partial: 'admin/orders/ship_express', locals: { args: [:purchase_order, action: :delivery, method: :patch] } %>

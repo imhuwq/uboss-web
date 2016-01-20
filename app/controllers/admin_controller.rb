@@ -26,4 +26,11 @@ class AdminController < ApplicationController
     end
   end
 
+  private
+  def find_or_create_express
+    @express = Express.find_by_name(params[:express_name])
+    @express = Express.create(name: params[:express_name], private_id: current_user.id) if @express.blank?
+    @express
+  end
+
 end
