@@ -61,6 +61,8 @@ $ ->
           $this.show()
 
   $(document).on 'click', "input.upyun_file_json", ->
+    upyunPolicy = $(this).siblings("meta[name='upyun-policy']").attr("content")
+    upyunSignature = $(this).siblings("meta[name='upyun-signature']").attr("content")
     $(this).fileupload
       paramName: "file"
       url: upyunUrl
@@ -70,7 +72,7 @@ $ ->
         "signature": upyunSignature
       add: (e, data) ->
         updateFileJson(e,data,upyunBucketDomain)
-        
+
   updateFileJson = (e,data,upyun_bucket_domain) ->
     $this = $(e.target)
     ajax_to = $this.attr('data-to')
