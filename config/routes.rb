@@ -179,20 +179,18 @@ Rails.application.routes.draw do
       end
 
       get '/new_supplier', to: 'accounts#new_supplier'
-
       post '/be_supplier', to: 'accounts#be_supplier'
-
       delete '/be_not_supplier', to: 'accounts#be_not_supplier'
 
       get '/my_agencies', to: 'agencies#my_agencies'
-
       get '/new_agency', to: 'agencies#new_agency'
-
       post '/build_cooperation_with_auth_code', to: 'agencies#build_cooperation_with_auth_code'
-
       post '/build_cooperation_with_agency_id', to: 'agencies#build_cooperation_with_agency_id'
-
       delete '/end_cooperation/:id', to: 'agencies#end_cooperation', as: :end_cooperation
+
+      get '/sellers/valid_agent_products', to: 'agency_products#valid_agent_products'
+      post '/store_supplier_product/:id', to: 'agency_products#store_supplier_product', as: :store_supplier_product
+      post '/list_supplier_product/:id', to: 'agency_products#list_supplier_product', as: :list_supplier_product
 
       get '/select_carriage_template', to: 'products#select_carriage_template'
 
@@ -308,6 +306,7 @@ Rails.application.routes.draw do
         post :update_service_rate, on: :collection
         get :my_suppliers, on: :collection
       end
+
       resource :account, only: [:edit, :show, :update] do
         get :password, on: :member
         get :binding_agent, :binding_email, :binding_mobile

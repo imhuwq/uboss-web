@@ -549,6 +549,8 @@ ActiveRecord::Schema.define(version: 20160225090429) do
     t.integer  "sales_amount",         default: 0
     t.integer  "sales_amount_order"
     t.integer  "ordinary_store_id"
+    t.text     "purchase_note"
+    t.integer  "parent_id"
   end
 
   add_index "products", ["type"], name: "index_products_on_type", using: :btree
