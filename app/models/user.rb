@@ -73,6 +73,8 @@ class User < ActiveRecord::Base
   #for agencies
   has_many :reverse_cooperations, foreign_key: 'agency_id', class_name: 'Cooperation', dependent: :destroy
   has_many :suppliers, through: :reverse_cooperations, source: :supplier
+  has_many :agency_products, ->{ where(type: 'AgencyProduct') }
+
 
   validates :login, uniqueness: true, mobile: true, allow_blank: true
   validates_presence_of :login, presence: true, if: -> { email.blank? }
