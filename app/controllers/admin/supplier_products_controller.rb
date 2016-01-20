@@ -5,11 +5,11 @@ class Admin::SupplierProductsController < AdminController
   def index
     params[:status] ||= 'supply'
     if params[:status] == 'supply'
-      @supplier_products = current_user.supplier_products.supply_supplied.order('products.created_at DESC')
+      @supplier_products = current_user.supplier_products.supplied.order('products.created_at DESC')
     elsif params[:status] == 'store'
-      @supplier_products = current_user.supplier_products.supply_stored.order('products.created_at DESC')
+      @supplier_products = current_user.supplier_products.stored.order('products.created_at DESC')
     elsif params[:status] == 'delete'
-      @supplier_products = current_user.supplier_products.supply_deleted.order('products.created_at DESC')
+      @supplier_products = current_user.supplier_products.deleted.order('products.created_at DESC')
     end
     @supplier_products = @supplier_products.includes(:asset_img).page(params[:page] || 1)
     @statistics = {}

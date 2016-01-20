@@ -3,10 +3,14 @@ class SupplierProduct < Product
   has_one :supplier_product_info, foreign_key: 'supplier_product_id', autosave: true
   has_one :supplier, through: :supplier_product_info
   has_many :supplier_product_inventories, -> { where(type: 'SupplierProductInventory') }, foreign_key: 'product_id', autosave: true
+  has_many :agency_products, foreign_key: 'parent_id'
 
   amoeba do
-    include_association :categories
-    include_association :supplier_product_info
+    set type: 'AgencyProduct'
+    include_association :supplier_product_inventories
+    customize(lambda{|original_product, new_product|
+      new_product.parent_id = original_product.id
+    })
   end
 
   delegate :cost_price, :cost_price=, to: :supplier_product_info, allow_nil: true
@@ -15,9 +19,9 @@ class SupplierProduct < Product
   delegate :content, :content=, to: :supplier_product_info, prefix: 'supply', allow_nil: true
   delegate :supply_status, to: :supplier_product_info
 
-  scope :supply_stored, -> { joins(:supplier_product_info).where('supplier_product_infos.supply_status = 0') }
-  scope :supply_supplied, -> { joins(:supplier_product_info).where('supplier_product_infos.supply_status = 1') }
-  scope :supply_deleted, -> { joins(:supplier_product_info).where('supplier_product_infos.supply_status = 2') }
+  scope :stored, -> { joins(:supplier_product_info).where('supplier_product_infos.supply_status = 0') }
+  scope :supplied, -> { joins(:supplier_product_info).where('supplier_product_infos.supply_status = 1') }
+  scope :deleted, -> { joins(:supplier_product_info).where('supplier_product_infos.supply_status = 2') }
 
   #alias_method :supplier_product_inventories_attributes=, :product_inventories_attributes=
 

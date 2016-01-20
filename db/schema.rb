@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160117081343) do
+ActiveRecord::Schema.define(version: 20160119084412) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -407,6 +407,7 @@ ActiveRecord::Schema.define(version: 20160117081343) do
     t.decimal  "suggest_price_upper"
     t.integer  "quantity"
     t.boolean  "sale_to_agency"
+    t.integer  "parent_id"
   end
 
   add_index "product_inventories", ["sku_attributes"], name: "index_product_inventories_on_sku_attributes", using: :gin
@@ -476,6 +477,7 @@ ActiveRecord::Schema.define(version: 20160117081343) do
     t.integer  "monthes"
     t.integer  "service_store_id"
     t.text     "purchase_note"
+    t.integer  "parent_id"
   end
 
   add_index "products", ["type"], name: "index_products_on_type", using: :btree
