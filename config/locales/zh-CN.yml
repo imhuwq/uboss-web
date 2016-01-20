@@ -325,12 +325,14 @@ zh-CN:
         login: 登录手机
         login_identifier: 账号
         password: 密码
-      order:
+      order: &order
         express_name: 快递公司
         ship_number: 运单号
         number: 订单编号
         buyer_regist_mobile: 买家
         created_at: 创建时间
+      purchase_order:
+        <<: *order
       product:
         <<: *product
       category:
@@ -396,11 +398,6 @@ zh-CN:
         l1: 一级分成
         l2: 二级分成
         l3: 三级分成
-    order:
-      tag:
-        distribution_order: 分销
-        service_order: 团购
-        ordinary_order: ''
     ordinary_order:
       state:
         unpay: 未付款
@@ -415,6 +412,14 @@ zh-CN:
         payed: 待消费
         expensed: 已消费
         unevaluate: 待评价
+        completed: 已完成
+        closed: 关闭
+    purchase_order:
+      state:
+        unpay: 未付款
+        payed: 已付款
+        shiped: 已发货
+        signed: 已签收
         completed: 已完成
         closed: 关闭
     order_charge:
@@ -451,3 +456,8 @@ zh-CN:
     captcha_invalid: 验证码不匹配或者过期
     already_binding_mobile: 该手机号已绑定
     mobile_captcha_fail: 短信发送失败
+  tags:
+    order:
+      distribution_order: 分销
+      service_order: 团购
+      ordinary_order: ''
