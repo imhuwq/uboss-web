@@ -33,6 +33,21 @@ ul.nav.nav-pills.nav-stacked li.active a {
   }
 }
 
+.product-box {
+  padding: 20px;
+  background-color: black;
+  width: 20%;
+  display: inline-block;
+  img {
+    margin-bottom: 10px;
+  }
+  .actions {
+    a {
+      margin-top: 10px;
+    }
+  }
+}
+
 input#product_supplier_product_info_attributes_suggest_price_lower, input#product_supplier_product_info_attributes_suggest_price_upper {
   width: 40%;
   display: inline-block;
