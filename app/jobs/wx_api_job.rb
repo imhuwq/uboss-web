@@ -54,7 +54,7 @@ class WxApiJob < ActiveJob::Base
     scan_weixin_openid = job_options[:scan_weixin_openid]
 
     invitor_weixin_openid = wx_scene.properties['weixin_openid']
-    invitor = User.find_by(weixin_openid: invitor_weixin_openid)
+    invitor = wx_scene.user
     invite_reward = Ubonus::WeixinInviteReward.new(
       amount: rand(5..100)/100.0,
       user: invitor,
@@ -68,7 +68,7 @@ class WxApiJob < ActiveJob::Base
       user_response = weixin_client.user(scan_weixin_openid)
       scan_user_name = user_response.is_ok? ? user_response.result['nickname'] : '微信用户'
       message = <<-MSG
-【#{scan_user_name}】扫了您的二维码，余额增加#{invite_reward.amount}元，当前余额：#{invite_reward.user_total_income}元，满1元即可点击<a href='http://uboss.me/account'>【我的收益】</a>提现
+【#{scan_user_name}】扫了您的二维码，余额增加#{invite_reward.amount}元，当前余额：#{invite_reward.user_total_income}元，满1元即可点击<a href='#{wx_scene.income_link}'>【我的收益】</a>提现
       MSG
       weixin_client.send_text_custom(wx_scene.properties['weixin_openid'], message)
     else

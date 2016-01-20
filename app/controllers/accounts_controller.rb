@@ -1,4 +1,7 @@
 class AccountsController < ApplicationController
+
+  include WechatRewarable
+
   detect_device only: [:new_password, :set_password]
 
   layout :login_layout, only: [:merchant_confirm]

@@ -1,5 +1,7 @@
 class Users::SessionsController < Devise::SessionsController
 
+  include WechatRewarable
+
   detect_device only: [:new, :create]
 
   layout :new_login_layout

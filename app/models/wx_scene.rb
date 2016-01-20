@@ -2,6 +2,8 @@ require 'emoji_cleaner'
 
 class WxScene < ActiveRecord::Base
 
+  belongs_to :user
+
   validates_presence_of :expire_at
 
   after_create :set_scene_id

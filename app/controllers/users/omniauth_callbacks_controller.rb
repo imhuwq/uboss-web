@@ -1,5 +1,7 @@
 class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
 
+  include WechatRewarable
+
   def wechat
     if current_user
       current_user.update_with_wechat_oauth(auth_info.extra['raw_info'])
