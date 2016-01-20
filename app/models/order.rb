@@ -45,6 +45,9 @@ class Order < ActiveRecord::Base
 
   after_create :invoke_privielge_calculator
 
+  def after_completed
+  end
+
   def total_privilege_amount
     @total_privilege_amount ||= preferentials_privileges.sum(:total_amount)
   end
