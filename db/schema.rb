@@ -819,7 +819,6 @@ ActiveRecord::Schema.define(version: 20160225090429) do
     t.datetime "confirmed_at"
     t.datetime "confirmation_sent_at"
     t.string   "unconfirmed_email"
-    t.integer  "supplier_id"
   end
 
   add_index "users", ["agent_code"], name: "index_users_on_agent_code", unique: true, using: :btree
