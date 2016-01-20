@@ -123,6 +123,16 @@ WeixinRailsMiddleware::WeixinController.class_eval do
 你的专属二维码正在生成中，大概需要5秒......
 分享给好友或者发到朋友圈，好友扫描后您将获得0.05元-1元随即红包，满1元即可申请提现。点击【我的收益】即可提现入账。
         MSG
+      when 'invitor_income_link'
+        wx_scene = WxScene.with_properties(
+          wechat_account: @weixin_message.ToUserName,
+          weixin_openid: @weixin_message.FromUserName
+        ).first
+        if wx_scene.present?
+          reply_text_message "点击【<a href='#{wx_scene.income_link}'>我的UBOSS</a>】注册或登录后可查看到您的收益"
+        else
+          reply_text_message "您未邀请过好友，请点击专属二维码，邀请好友加入UBOSS"
+        end
       else
         reply_text_message WxApiService::CUSTOMER_MESSAGE
       end

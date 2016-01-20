@@ -4,6 +4,7 @@ class AccountsController < ApplicationController
   layout :login_layout, only: [:merchant_confirm]
   layout 'mobile', only: [:show, :income, :bonus_benefit, :edit, :password, :edit_password, :invite_seller, :edit_seller_note, :settings, :seller_agreement, :binding_successed]
 
+  before_action :record_scene_identify, only: [:show]
   before_action :authenticate_user!
   before_action :authenticate_agent, only: [:send_message, :invite_seller, :edit_seller_note, :update_histroy_note]
 
@@ -259,5 +260,9 @@ class AccountsController < ApplicationController
       flash[:error] = '您还不是创客.'
       redirect_to action: :settings
     end
+  end
+
+  def record_scene_identify
+    session[:scene_identify] = params[:scene_identify] if params[:scene_identify].present?
   end
 end

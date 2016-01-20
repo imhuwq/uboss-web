@@ -81,4 +81,17 @@ if false
       }
     ]
   )
+  $weixin_frank_client.create_menu(
+    button: [
+      {
+        name: '专属二维码',
+        type: 'click',
+        key: 'personal_invite_qrcode'
+      }, {
+        name: '我的收益',
+        type: 'click',
+        key: 'invitor_income_link'
+      }
+    ]
+  )
 end

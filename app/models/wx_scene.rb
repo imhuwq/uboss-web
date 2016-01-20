@@ -13,6 +13,11 @@ class WxScene < ActiveRecord::Base
     Time.now > expire_at
   end
 
+  def income_link
+    query = {scene_identify: CryptService.encrypt(self.id)}.to_query
+    "#{Rails.application.secrets.host_url}/account?#{query}"
+  end
+
   def request_wx_sence_and_send_message
     WxApiJob.perform_later(job_type: 'scene_qrcode', wx_scene: self)
   end
