@@ -182,6 +182,7 @@ ActiveRecord::Schema.define(version: 20160119084412) do
     t.integer "resource_id"
     t.string  "resource_type"
     t.text    "content"
+    t.string  "content_type"
   end
 
   create_table "different_areas", force: :cascade do |t|
@@ -476,7 +477,6 @@ ActiveRecord::Schema.define(version: 20160119084412) do
     t.integer  "service_type"
     t.integer  "monthes"
     t.integer  "service_store_id"
-    t.text     "purchase_note"
     t.integer  "parent_id"
   end
 
@@ -742,7 +742,6 @@ ActiveRecord::Schema.define(version: 20160119084412) do
     t.datetime "confirmed_at"
     t.datetime "confirmation_sent_at"
     t.string   "unconfirmed_email"
-    t.integer  "supplier_id"
   end
 
   add_index "users", ["authentication_token"], name: "index_users_on_authentication_token", using: :btree
