@@ -28,6 +28,17 @@ $ ->
         )
     else
       $('.req-snode-modal').show()
+      
+  $(document).on 'click', '#pcards-list .pop-qr-btn', (e) ->
+    e.preventDefault()       
+    uimg_url=$('.avatar .cover img').attr('src')
+    simg_url=$(this).closest('.share-card').find('.share-store-info').find('.cover img').attr('src')
+    uname=$('.avatar .name').text()
+    img_tag='<img src="http://imager.ulaiber.com/req/1?user_img_url='+uimg_url+'&item_img_url='+simg_url+'&qrcode_content='+'二维码链接'+'&username='+uname+'&mode=0" />'    
+    $('.qr-modal .img-box').html(img_tag)
+    $('.qr-modal').show()
+      
+    
 
   $(document).on 'click', '.req-pro-snode-btn', (e) ->
     e.preventDefault()
