@@ -246,7 +246,7 @@ Rails.application.routes.draw do
       end
       resources :purchase_orders, only: [:index, :show] do
         member do
-          put :delivery
+          patch :delivery
         end
       end
       resources :order_items, only: [] do
