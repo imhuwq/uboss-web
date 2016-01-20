@@ -6,6 +6,8 @@ class PurchaseOrder < ActiveRecord::Base
   has_many :order_items, through: :order
   validates_uniqueness_of :number, allow_blank: true
 
+  attr_accessor :express_name, :ship_number, :express_id
+
   scope :today, -> (date=Date.today) { where(['DATE(purchase_orders.created_at) = ?', date]) }
   scope :week, -> (time=Time.now) { where(created_at: time.beginning_of_week..time.end_of_week) }
   scope :month, -> (time=Time.now) { where(created_at: time.beginning_of_month..time.end_of_month) }
@@ -37,7 +39,19 @@ class PurchaseOrder < ActiveRecord::Base
     end
   end
 
-  # def shipment_ordinary_order
-  #   order.ship
-  # end
+  def delivery
+    errors.add(:express_name) if express_name.blank?
+    errors.add(:ship_number)  if ship_number.blank?
+    return false if errors.present?
+    ActiveRecord::Base.transaction do
+      order.update!(express_id: express_id, ship_number: ship_number)
+      order.ship!
+      ship!
+    end
+  rescue Exception => e
+    Rails.logger.info e.message
+    Rails.logger.info e.backtrace.join("\n")
+    errors.add(:base, e.message)
+    false
+  end
 end
