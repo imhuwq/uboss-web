@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160113024643) do
+ActiveRecord::Schema.define(version: 20160120041154) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -27,6 +27,7 @@ ActiveRecord::Schema.define(version: 20160113024643) do
     t.integer  "product_id"
     t.integer  "category_id"
     t.boolean  "platform_advertisement", default: false
+    t.string   "user_type"
   end
 
   create_table "agent_invite_seller_histroys", force: :cascade do |t|
@@ -171,6 +172,7 @@ ActiveRecord::Schema.define(version: 20160113024643) do
     t.integer "resource_id"
     t.string  "resource_type"
     t.text    "content"
+    t.string  "content_type"
   end
 
   create_table "different_areas", force: :cascade do |t|
@@ -457,7 +459,6 @@ ActiveRecord::Schema.define(version: 20160113024643) do
     t.integer  "service_type"
     t.integer  "monthes"
     t.integer  "service_store_id"
-    t.text     "purchase_note"
   end
 
   add_index "products", ["type"], name: "index_products_on_type", using: :btree

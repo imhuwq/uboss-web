@@ -48,12 +48,11 @@
   	</div>
   </div><!-- #info -->
   <br />
-  <div id="advertisements">
-    <%= render "advertisements" %>
+  <div id="ordinary_store_advertisements" class='advertisements_content' content='/admin/stores'>
+    <%= render partial: "shared/admin/advertisements", locals: { url_prefix: '/admin/stores', advertisements: @advertisements } %>
   </div>
-  <%= render "add_banner" %>
 
-
+  <%= render "shared/admin/add_banner" %>
   <br />
   <div id="categories">
     <%= render 'categories' %>

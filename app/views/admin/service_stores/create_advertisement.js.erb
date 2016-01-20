@@ -1,0 +1,3 @@
+$('#add-banner').modal('hide');
+$('#service_store_advertisements').html('<%= escape_javascript render partial: 'shared/admin/advertisements', locals: {url_prefix: '/admin/service_stores', advertisements: @advertisements} %>');
+$(".content").prepend('<%= escape_javascript render 'layouts/flash_alert' %>');

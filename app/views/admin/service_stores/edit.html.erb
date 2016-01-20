@@ -11,6 +11,10 @@
   <%= render partial: 'shared/form_error_message', locals: { obj: @service_store } %>
 
   <%= nested_form_for [:admin, @service_store] do |f| %>
+    <div class="text-right">
+      <%= f.submit '提交', class: 'btn btn-large red-btn' %>
+    </div>
+    <br />
     <div class="beige-bg-color admin-box">
     	<div class="box-w60">
     		<br />
@@ -94,8 +98,12 @@
       <br />
     </div>
     <br />
-    <div class="text-center">
-      <%= f.submit '提交', class: 'btn btn-large red-btn' %>
-    </div>
   <% end %>
+
+  <br />
+  <div id="service_store_advertisements" class='advertisements_content' content='/admin/service_stores'>
+    <%= render partial: "shared/admin/advertisements", locals: {url_prefix: '/admin/service_stores', advertisements: @advertisements} %>
+  </div>
+  <%= render "shared/admin/add_banner" %>
+
 </div>

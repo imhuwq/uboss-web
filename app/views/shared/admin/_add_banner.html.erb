@@ -8,7 +8,7 @@
       <%= simple_form_for 'advertisement', url: {action: :create_advertisement}, remote: true, method: 'GET' do |f| %>
   			<div class="modal-body" style="color:#333;">
   				<table width="100%">
-  					<tr>
+  					<tr class='show-type-and-sequence'>
   						<td>
   							<select class="select-adv-type" data-manual-chosen='t' name="advertisement[type]">
                   <option>-请选择-</option>
@@ -21,7 +21,7 @@
   					</tr>
   					<tr>
   						<td colspan="3">
-  							<div class="gray-color gap text-right"><small>提示：若不填排序默认为0，按创建时间优先显示</small></div>
+  							<div class="gray-color gap text-right sequence-info"><small>提示：若不填排序默认为0，按创建时间优先显示</small></div>
   							<div class="text-center">
                     <%= f.input :asset_img, type: :hidden, label: false, hint:"(点击图片进行替换)"  do %>
                       <%= f.input_field :avatar, type: :hidden, as: :file %>
