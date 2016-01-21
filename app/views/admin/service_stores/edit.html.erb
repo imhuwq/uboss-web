@@ -11,10 +11,6 @@
   <%= render partial: 'shared/form_error_message', locals: { obj: @service_store } %>
 
   <%= nested_form_for [:admin, @service_store] do |f| %>
-    <div class="text-right">
-      <%= f.submit '提交', class: 'btn btn-large red-btn' %>
-    </div>
-    <br />
     <div class="beige-bg-color admin-box">
     	<div class="box-w60">
     		<br />
@@ -49,12 +45,9 @@
         <br />
 	  	</div><!-- box-w15 -->
     </div><!-- beige-bg-color -->
-
-
-    <br />
-
     <div class="beige-bg-color admin-box">
-    	<br />
+      <hr />
+      <br />
     	<div class="box-w100">
     		<div class="service-store-address">
           店铺位置<span class='service_store_required'>*</span>
@@ -96,6 +89,9 @@
       </div><!-- box-w100-->
 
       <br />
+      <div class="text-right">
+        <%= f.submit '提交', class: 'btn btn-large red-btn' %>
+      </div>
     </div>
     <br />
   <% end %>
