@@ -82,21 +82,22 @@
 	</div><!-- pop-bottom -->
 </div>
 
-<div class="page-title black-color gap">代金券</div>
-<div class="bg-white service-product-list">
+
+<div class="bg-white gap-left border-tb service-product-list m-top10">
+	<div class="service-title">代金券</div>
   <% if @voucher_products.present? %>
     <%= render partial: 'service_product', collection: @voucher_products %>
   <% else %>
-    <div class="main-color gap text-center">店家正在准备好货，敬请期待</div>
+    <div class="main-color gap nogap-left text-center">店家正在准备好货，敬请期待</div>
   <% end %>
 </div>
 
-<div class="page-title black-color gap">团购</div>
-<div class="bg-white service-product-list">
+<div class="bg-white gap-left border-tb service-product-list m-top10">
+	<div class="service-title">团购</div>
   <% if @group_products.present? %>
     <%= render partial: 'service_product', collection: @group_products %>
   <% else %>
-    <div class="main-color gap text-center">店家正在准备好货，敬请期待</div>
+    <div class="main-color gap nogap-left text-center">店家正在准备好货，敬请期待</div>
   <% end %>
 </div>
 
