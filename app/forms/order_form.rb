@@ -42,7 +42,7 @@ class OrderForm
   end
 
   def product
-    @product ||= OrdinaryProduct.find(self.product_id)
+    @product ||= Product.find(self.product_id)
   end
 
   def product_inventory

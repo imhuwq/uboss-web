@@ -4,7 +4,7 @@ class ProductsController < ApplicationController
   before_action :set_product, only: [:switch_favour]
 
   def index
-    @products = append_default_filter OrdinaryProduct.published.includes(:asset_img), order_column: :updated_at
+    @products = append_default_filter scope.includes(:asset_img), order_column: :updated_at
 
     if request.xhr?
       render partial: 'products/product', collection: @products
@@ -14,7 +14,7 @@ class ProductsController < ApplicationController
   end
 
   def show
-    @product = OrdinaryProduct.published.find_by_id(params[:id])
+    @product = scope.published.find_by_id(params[:id])
     return render_product_invalid if @product.blank?
 
     @seller = @product.user
@@ -58,7 +58,11 @@ class ProductsController < ApplicationController
 
   private
   def set_product
-    @product ||= OrdinaryProduct.published.find(params[:id])
+    @product ||= scope.published.find(params[:id])
+  end
+
+  def scope
+    Product.commons
   end
 
   def render_product_invalid
