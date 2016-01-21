@@ -25,7 +25,12 @@
 	<div class="gap nogap-left">
 		<h2 class="name text-cut"><%= @service_store.store_name %></h2>
 		<% if @service_store.store_short_description.present?  %>
-	    <p class="gray-color"><%= @service_store.store_short_description %></p>
+	    <div class="gray-color text-cut">
+	    		<div class="pull-right">
+	    			<span class="main-color"><%= number_to_percentage(@service_store.good_reputation_rate, precision: 0) %></span> 好评（<%= @service_store.total_reputations %>）
+	    		</div>
+	    		<%= @service_store.store_short_description %>
+	    	</div>
 	  <% end %>
  </div><!-- gap -->
  <% if qr_sharing? %>
