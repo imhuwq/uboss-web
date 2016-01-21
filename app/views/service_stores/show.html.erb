@@ -118,23 +118,19 @@
     </div><!-- pop-bottom -->
   </div>
 
-  <div class="bg-white gap-left border-tb service-product-list m-top10">
-    <div class="service-title">代金券</div>
-    <% if @voucher_products.present? %>
+  <% if @voucher_products.present? %>
+    <div class="bg-white gap-left border-tb service-product-list m-top10">
+      <div class="service-title">代金券</div>
       <%= render partial: 'service_product', collection: @voucher_products %>
-    <% else %>
-      <div class="main-color gap nogap-left text-center">店家正在准备好货，敬请期待</div>
-    <% end %>
-  </div>
+    </div>
+  <% end %>
 
-  <div class="bg-white gap-left border-tb service-product-list m-top10">
-    <div class="service-title">团购</div>
-    <% if @group_products.present? %>
+  <% if @group_products.present? %>
+    <div class="bg-white gap-left border-tb service-product-list m-top10">
+      <div class="service-title">团购</div>
       <%= render partial: 'service_product', collection: @group_products %>
-    <% else %>
-      <div class="main-color gap nogap-left text-center">店家正在准备好货，敬请期待</div>
-    <% end %>
-  </div>
+    </div>
+  <% end %>
 </div><!-- fixed-container -->
 </div><!-- container-->
 
