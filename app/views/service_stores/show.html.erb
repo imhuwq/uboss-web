@@ -135,7 +135,7 @@
       <div class="main-color gap nogap-left text-center">店家正在准备好货，敬请期待</div>
     <% end %>
   </div>
-</div><!-- fixed-container --> 
+</div><!-- fixed-container -->
 </div><!-- container-->
 
 <%= simple_form_for "product_inventory", url: new_service_order_path, method: 'GET' do |f| %>
@@ -145,7 +145,7 @@
       <input type="hidden" name="product_id">
       <div class="buy_now_goods">
         <%= image_tag 'mobile/close.png', class: 'btn_cancle_buy_now close' %>
-        <img class="buy_now_goods_img" src="#" alt="商品" />
+        <img class="buy_now_goods_img" alt="商品" />
         <dl class="buy_now_goods_dl">
           <dt><p class='product_name'></p></dt>
           <dd><p>¥ <span id="price_range"></span></p></dd>
