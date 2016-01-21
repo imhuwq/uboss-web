@@ -24,6 +24,7 @@ class ServiceProductsController < ApplicationController
       @privilege_card = @sharing_node.try(:privilege_card)
     end
     if current_user
+      @privilege_card ||= current_user.privilege_cards.find_by(seller: @seller)
       @sharing_link_node ||= SharingNode.find_or_create_by_resource_and_parent(current_user, @product, @sharing_node)
     end
     render layout: 'mobile'
