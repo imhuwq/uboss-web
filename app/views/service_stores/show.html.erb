@@ -7,8 +7,8 @@
 <% end %>
 
 <%= content_for :extra_meta_tags do %>
-  <% if @seller %>
-    <%= store_sharing_meta_tags(@seller, @sharing_link_node, service_store_path(@seller.service_store)) %>
+  <% if @service_store %>
+    <%= service_store_sharing_meta_tags(@service_store, @sharing_link_node) %>
   <% end %>
 <% end %>
 
@@ -34,8 +34,8 @@
 	  <% end %>
  </div><!-- gap -->
  <% if qr_sharing? %>
-    <div class="gap nogap-left border-top">    	
-    		<a href="/about" class="gray-color pull-right gap nogap-right">查看说明</a>  
+    <div class="gap nogap-left border-top">
+    		<a href="/about" class="gray-color pull-right gap nogap-right">查看说明</a>
       <% if current_user && current_user.has_seller_privilege_card?(@seller) %>
         <a class="btn btn-large p-sharing-btn">分享给朋友</a>
       <% else %>
@@ -44,7 +44,7 @@
           class: "btn btn-large show-req-snode-modal"
         %>
         <a class="btn btn-large hidden p-sharing-btn">分享给朋友</a>
-      <% end %>  
+      <% end %>
     </div>
   <% end %>
 
@@ -117,24 +117,19 @@
 	</div><!-- pop-bottom -->
 </div>
 
-
-<div class="bg-white gap-left border-tb service-product-list m-top10">
-	<div class="service-title">代金券</div>
-  <% if @voucher_products.present? %>
+<% if @voucher_products.present? %>
+  <div class="bg-white gap-left border-tb service-product-list m-top10">
+    <div class="service-title">代金券</div>
     <%= render partial: 'service_product', collection: @voucher_products %>
-  <% else %>
-    <div class="main-color gap nogap-left text-center">店家正在准备好货，敬请期待</div>
-  <% end %>
-</div>
+  </div>
+<% end %>
 
-<div class="bg-white gap-left border-tb service-product-list m-top10">
-	<div class="service-title">团购</div>
-  <% if @group_products.present? %>
+<% if @group_products.present? %>
+  <div class="bg-white gap-left border-tb service-product-list m-top10">
+    <div class="service-title">团购</div>
     <%= render partial: 'service_product', collection: @group_products %>
-  <% else %>
-    <div class="main-color gap nogap-left text-center">店家正在准备好货，敬请期待</div>
-  <% end %>
-</div>
+  </div>
+<% end %>
 
 <%= render partial: 'new_share' %>
 
