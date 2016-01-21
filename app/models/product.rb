@@ -17,6 +17,7 @@ class Product < ActiveRecord::Base
 
   belongs_to :user
   belongs_to :carriage_template
+  belongs_to :parent, :class_name => self.name
   has_many :different_areas, through: :carriage_template
   has_many :order_items
   has_many :advertisements
@@ -38,6 +39,7 @@ class Product < ActiveRecord::Base
   scope :supply_stored, -> { joins(:supplier_product_info).where('supplier_product_infos.supply_status = 0') }
   scope :supply_supplied, -> { joins(:supplier_product_info).where('supplier_product_infos.supply_status = 1') }
   scope :supply_deleted, -> { joins(:supplier_product_info).where('supplier_product_infos.supply_status = 2') }
+  scope :commons, -> { where(type: %w(OrdinaryProduct AgencyProduct)) }
 
   validate :must_has_one_product_inventory
   validates_presence_of :user_id, :name, :asset_img

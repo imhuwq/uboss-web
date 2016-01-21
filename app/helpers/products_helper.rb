@@ -21,7 +21,9 @@ module ProductsHelper
   end
 
   def url_of(product)
-    product.type == "OrdinaryProduct" ? product_url(product) : service_product_url(product)
+    case product.type
+    when "OrdinaryProduct", "AgencyProduct" then product_url(product)
+    else service_product_url(product) end
   end
 
   def product_traffic(product)
