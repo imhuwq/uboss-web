@@ -19,8 +19,9 @@
     </script>
   <% end %>
 <% end %>
-
+<% if @advertisements.present? %>
 <%= render partial: 'banner_slider', locals: { advertisements: @advertisements } %>
+<% else %>
 
 <div class="store-cover text-center">
   <div class="content">
@@ -60,7 +61,7 @@
     <% end %>
   </div>
 </div><!-- store-cover -->
-
+<% end %>
 <!-- 店铺信息-->
 <div class="bg-white gap">
   <div class="service-store-info">

@@ -1,18 +1,17 @@
-<% if advertisements.present? %>
-  <div class="banner-slider m-bottom10">
-    <div id='slider' class='swipe'>
-      <div class='swipe-wrap'>
-        <% advertisements.each do |adv| %>
-          <div>
-            <%= image_tag adv.image_url(:'640x320') %>
-          </div>
-        <% end %>
-      </div>
-    </div>
-    <div id='slider-points'>
-      <% advertisements.size.times do |index| %>
-        <span class="<%= 'active' if index == 0 %>">*</span>
+
+<div class="banner-slider m-bottom10">
+  <div id='slider' class='swipe'>
+    <div class='swipe-wrap'>
+      <% advertisements.each do |adv| %>
+        <div>
+          <%= image_tag adv.image_url(:'640x320') %>
+        </div>
       <% end %>
     </div>
   </div>
-<% end %>
+  <div id='slider-points'>
+    <% advertisements.size.times do |index| %>
+      <span class="<%= 'active' if index == 0 %>">*</span>
+    <% end %>
+  </div>
+</div>
