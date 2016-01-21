@@ -42,7 +42,7 @@ class ServiceStoresController < ApplicationController
 
   private
   def get_advertisements
-    Advertisement.where(user_type: 'Service', user_id: current_user.id).order('order_number')
+    Advertisement.where(user_type: 'Service', user_id: @seller.id).order('order_number')
   end
 
 end

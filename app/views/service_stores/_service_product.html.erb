@@ -1,15 +1,14 @@
 <% cache ['store-product', service_product], expires_in: 1.day do %>
-  
-  <div class="service-store-product">	 
-  		<a class="cover" style="background-image:url('<%= service_product.image_url(:w320) %>')">   
-	    <%= image_tag(service_product.image_url(:w320)) %>  
- 		</a>
- 	 	<%= link_to service_product.name,service_product_path(service_product),class:'title gray-color text-cut' %>    
- 	 	<div class="btn btn-orange pull-right">立即购买</div>
- 	 	<%= link_to service_product_path(service_product) do %>    
-	  		<h2 class="text-cut">
-	  			<small>￥</small><b><%= service_product.present_price %></b>
-	  		</h2>
-  		<% end %>
-  	</div>
+  <div class="service-store-product">
+    <a class="cover" style="background-image:url('<%= service_product.image_url(:w320) %>')">
+      <%= image_tag(service_product.image_url(:w320)) %>
+    </a>
+    <%= link_to service_product.name,service_product_path(service_product),class:'title gray-color text-cut' %>
+    <div class="btn btn-orange-border pull-right">立即购买</div>
+    <%= link_to service_product_path(service_product) do %>
+      <h2 class="text-cut">
+        <small>￥</small><b><%= service_product.present_price %></b>
+      </h2>
+    <% end %>
+  </div>
 <% end %>
