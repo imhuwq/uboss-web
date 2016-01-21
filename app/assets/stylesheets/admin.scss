@@ -119,6 +119,12 @@ header{ background: #2e2e2e;}
         background-position-x: -423px;
     }
 }
+#admin-nav-supplier{
+    width: 60px;
+    > a:before{
+        background-position-x: -423px;
+    }
+}
 #admin-nav-uboss{
     width: 50px;
     > a:before{

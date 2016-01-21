@@ -1,10 +1,6 @@
 class Admin::ProductsController < AdminController
 
-<<<<<<< HEAD
   load_and_authorize_resource class: 'OrdinaryProduct'
-=======
-  load_and_authorize_resource
->>>>>>> get supplier products controller independent from products controller
 
   def select_carriage_template
     @carriage = CarriageTemplate.find(params[:tpl_id]) if params[:tpl_id].present?
@@ -15,7 +11,6 @@ class Admin::ProductsController < AdminController
   end
 
   def index
-<<<<<<< HEAD
     @products = @products.available.order('created_at DESC')
     @products = @products.includes(:asset_img).page(params[:page] || 1)
     @statistics = {}
@@ -26,14 +21,6 @@ class Admin::ProductsController < AdminController
 
   def new
     @product = OrdinaryProduct.new()
-=======
-    @products = current_user.products.available.order('created_at DESC')
-    @products = @products.includes(:asset_img).page(params[:page] || 1)
-    @statistics = {}
-    @statistics[:create_today] = @products.where('created_at > ? and created_at < ?', Time.now.beginning_of_day, Time.now.end_of_day).count
-    @statistics[:count] = @products.count
-    @statistics[:not_enough] = @products.where('count < ?', 10).count
->>>>>>> get supplier products controller independent from products controller
   end
 
   def create
