@@ -18,6 +18,7 @@
 #= require mobile_page/order
 #= require mobile_page/pay
 #= require mobile_page/evaluations
+#= require mobile_page/service_store
 #= require shared/count_down
 #= require shared/city_select
 #= require shared/login

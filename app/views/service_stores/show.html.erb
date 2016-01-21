@@ -19,59 +19,58 @@
     </script>
   <% end %>
 <% end %>
+
 <% if @advertisements.present? %>
-<%= render partial: 'banner_slider', locals: { advertisements: @advertisements } %>
-<div class="bg-white m-bottom10 border-tb gap-left">
-	<div class="gap nogap-left">
-		<h2 class="name text-cut"><%= @service_store.store_name %></h2>
-		<% if @service_store.store_short_description.present?  %>
-	    <div class="gray-color text-cut">
-	    		<div class="pull-right">
-	    			<span class="main-color"><%= number_to_percentage(@service_store.good_reputation_rate, precision: 0) %></span> 好评（<%= @service_store.total_reputations %>）
-	    		</div>
-	    		<%= @service_store.store_short_description %>
-	    	</div>
-	  <% end %>
- </div><!-- gap -->
- <% if qr_sharing? %>
-    <div class="gap nogap-left border-top">
-    		<a href="/about" class="gray-color pull-right gap nogap-right">查看说明</a>
-      <% if current_user && current_user.has_seller_privilege_card?(@seller) %>
-        <a class="btn btn-large p-sharing-btn">分享给朋友</a>
-      <% else %>
-        <%= link_to "领取友情卡", get_seller_sharing_path,
-          data: { sid: @seller.id, uid: current_user.present? },
-          class: "btn btn-large show-req-snode-modal"
-        %>
-        <a class="btn btn-large hidden p-sharing-btn">分享给朋友</a>
+  <%= render partial: 'banner_slider', locals: { advertisements: @advertisements } %>
+  <div class="bg-white m-bottom10 border-tb gap-left">
+    <div class="gap nogap-left">
+      <h2 class="name text-cut"><%= @service_store.store_name %></h2>
+      <% if @service_store.store_short_description.present?  %>
+        <div class="gray-color text-cut">
+          <div class="pull-right">
+            <span class="main-color"><%= number_to_percentage(@service_store.good_reputation_rate, precision: 0) %></span> 好评（<%= @service_store.total_reputations %>）
+          </div>
+          <%= @service_store.store_short_description %>
+        </div>
       <% end %>
-    </div>
-  <% end %>
-
-  <% if @sharing_node %>
-    <div class="service-share-box border-top gap nogap-left">
-      <div class="cover pull-left"><%= image_tag @sharing_node.user.avatar_url(:w120) %></div>
-      <div class="gap name text-cut"><%= @sharing_node.user.identify %> 分享</div>
-    </div>
-  <% end %>
-</div><!-- bg-white -->
-<% else %>
-
-<div class="store-cover text-center">
-  <div class="content">
-  	<br />
-    <h2 class="name"><%= @service_store.store_name %></h2>
-
-    <% if @service_store.store_short_description.present?  %>
-      <p class="gray-color"><%= @service_store.store_short_description %></p>
+    </div><!-- gap -->
+    <% if qr_sharing? %>
+      <div class="gap nogap-left border-top">
+        <a href="/about" class="gray-color pull-right gap nogap-right">查看说明</a>
+        <% if current_user && current_user.has_seller_privilege_card?(@seller) %>
+          <a class="btn btn-large p-sharing-btn">分享给朋友</a>
+        <% else %>
+          <%= link_to "领取友情卡", get_seller_sharing_path,
+            data: { sid: @seller.id, uid: current_user.present? },
+            class: "btn btn-large show-req-snode-modal"
+          %>
+          <a class="btn btn-large hidden p-sharing-btn">分享给朋友</a>
+        <% end %>
+      </div>
     <% end %>
 
-    <p>
-      <span class="main-color"><%= number_to_percentage(@service_store.good_reputation_rate, precision: 0) %></span> 好评（<%= @service_store.total_reputations %>）
-    </p>
+    <% if @sharing_node %>
+      <div class="service-share-box border-top gap nogap-left">
+        <div class="cover pull-left"><%= image_tag @sharing_node.user.avatar_url(:w120) %></div>
+        <div class="gap name text-cut"><%= @sharing_node.user.identify %> 分享</div>
+      </div>
+    <% end %>
+  </div><!-- bg-white -->
 
-    <% if qr_sharing? %>
-      <p class="text-center border-top nogap">
+<% else %>
+
+  <div class="store-cover text-center">
+    <div class="content">
+      <br />
+      <h2 class="name"><%= @service_store.store_name %></h2>
+      <% if @service_store.store_short_description.present?  %>
+        <p class="gray-color"><%= @service_store.store_short_description %></p>
+      <% end %>
+
+      <p><span class="main-color"><%= number_to_percentage(@service_store.good_reputation_rate, precision: 0) %></span> 好评（<%= @service_store.total_reputations %>）</p>
+
+      <% if qr_sharing? %>
+        <p class="text-center border-top nogap">
         <br />
         <% if current_user && current_user.has_seller_privilege_card?(@seller) %>
           <a class="btn btn-large p-sharing-btn cover-share-btn">分享给朋友</a>
@@ -82,54 +81,96 @@
           %>
           <a class="btn btn-large hidden p-sharing-btn cover-share-btn">分享给朋友</a>
         <% end %>
-      </p>
-      <div><a href="/about">查看说明</a></div>
-    <% end %>
+        </p>
+        <div><a href="/about">查看说明</a></div>
+      <% end %>
 
-    <% if @sharing_node %>
-      <div class="share-box border-top nogap">
-        <br />
-        <p class="cover"><%= image_tag @sharing_node.user.avatar_url(:w120) %></p>
-        <p class="name"><%= @sharing_node.user.identify %> 分享</p>
-      </div>
-    <% end %>
-  </div>
-</div><!-- store-cover -->
+      <% if @sharing_node %>
+        <div class="share-box border-top nogap">
+          <br />
+          <p class="cover"><%= image_tag @sharing_node.user.avatar_url(:w120) %></p>
+          <p class="name"><%= @sharing_node.user.identify %> 分享</p>
+        </div>
+      <% end %>
+    </div>
+  </div><!-- store-cover -->
+
 <% end %>
-<!-- 店铺信息-->
-<div class="bg-white border-tb gap">
-  <div class="service-store-info">
-    <%= image_tag('mobile/mobile.png',class:'pull-right store-tel') %>
-    <div class="content">
-      <div class="address text-cut m-bottom10"><%= @service_store.address %></div>
-      <div class="open-time">营业时间：<%= @service_store.business_hours %></div>
+
+  <!-- 店铺信息-->
+  <div class="bg-white border-tb gap">
+    <div class="service-store-info">
+      <%= image_tag('mobile/mobile.png',class:'pull-right store-tel') %>
+      <div class="content">
+        <div class="address text-cut m-bottom10"><%= @service_store.address %></div>
+        <div class="open-time">营业时间：<%= @service_store.business_hours %></div>
+      </div>
     </div>
   </div>
-</div>
-<div class="pop-bg phone-list hidden ">
-	<div class="pop-bottom">
-		<div class="bg-white m-bottom10  border-radius">
-			<% @service_store.mobile_phone.each do |phone| %>
-			  <%= link_to  phone ,"tel:#{phone}" %>
-			<% end %>
-		</div><!-- bg-white -->
-		<div class="btn btn-block btn-large btn-white ">取消</div>
-	</div><!-- pop-bottom -->
-</div>
+  <div class="pop-bg phone-list hidden ">
+    <div class="pop-bottom">
+      <div class="bg-white m-bottom10  border-radius">
+        <% @service_store.mobile_phone.each do |phone| %>
+          <%= link_to  phone ,"tel:#{phone}" %>
+        <% end %>
+      </div><!-- bg-white -->
+      <div class="btn btn-block btn-large btn-white ">取消</div>
+    </div><!-- pop-bottom -->
+  </div>
 
-<% if @voucher_products.present? %>
   <div class="bg-white gap-left border-tb service-product-list m-top10">
     <div class="service-title">代金券</div>
-    <%= render partial: 'service_product', collection: @voucher_products %>
+    <% if @voucher_products.present? %>
+      <%= render partial: 'service_product', collection: @voucher_products %>
+    <% else %>
+      <div class="main-color gap nogap-left text-center">店家正在准备好货，敬请期待</div>
+    <% end %>
   </div>
-<% end %>
 
-<% if @group_products.present? %>
   <div class="bg-white gap-left border-tb service-product-list m-top10">
     <div class="service-title">团购</div>
-    <%= render partial: 'service_product', collection: @group_products %>
+    <% if @group_products.present? %>
+      <%= render partial: 'service_product', collection: @group_products %>
+    <% else %>
+      <div class="main-color gap nogap-left text-center">店家正在准备好货，敬请期待</div>
+    <% end %>
   </div>
-<% end %>
+
+  <%= simple_form_for "product_inventory", url: new_service_order_path, method: 'GET' do |f| %>
+    <div class="hidden service-store" id="inventory" data-price="0">
+      <div class="tab_buy_now">
+        <input type="hidden" name="product_inventory_id">
+        <input type="hidden" name="product_id">
+        <div class="buy_now_goods">
+          <%= image_tag 'mobile/close.png', class: 'btn_cancle_buy_now close' %>
+          <img class="buy_now_goods_img" src="#" alt="商品" />
+          <dl class="buy_now_goods_dl">
+            <dt><p class='product_name'></p></dt>
+            <dd><p>¥ <span id="price_range"></span></p></dd>
+          </dl>
+        </div>
+
+        <div class="options" id="product_inventory_options">
+          <input type="hidden" id="sku_price" value="">
+          <div class="buy_now_option"></div>
+          <div class="count-box gap">
+            <p>数量</p>
+            <br/>
+            <div class="content">
+              <a class="count_min count_icon"><span>-</span></a>
+              <input type="tel" class="count_num" name="amount" readonly="readonly" value="1" />
+              <a class="count_plus count_icon"><span>+</span></a>
+            </div>
+          </div>
+          <div class="done">
+            <input type="submit" class="btn" value="确定" />
+          </div>
+          <div style="clear: both;"></div>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div>
 
 <%= render partial: 'new_share' %>
 
