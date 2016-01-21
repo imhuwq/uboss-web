@@ -82,45 +82,82 @@ header{ background: #2e2e2e;}
     >a{
         color:#43C3AA;
     }
-    >a:before{
-        background-position-y: -83px;
-    }
 }
 /* 一级导航图标 */
-#admin-nav-income > a:before{
-    background-position-x: -79px;
+#admin-nav-main{
+    &.selected,&:hover{
+      a:before{
+          background-position: 0px -83px;
+      }
+    }
+}
+#admin-nav-income {
+    &.selected,&:hover{
+      a:before{
+          background-position: -79px -83px;
+      }
+    }
+    >a:before{
+    background-position: -79px 0;
+    }
 }
 #admin-nav-city_manager{
     width: 77px;
+    &.selected,&:hover{
+      a:before{
+          background-position: -139px -83px;
+      }
+    }
     > a:before{
-        background-position-x: -139px;
+        background-position: -139px 0;
     }
 }
 #admin-nav-agent{
     width: 48px;
+    &.selected,&:hover{
+      a:before{
+          background-position: -244px -83px;
+      }
+    }
     > a:before{
-        background-position-x: -244px;
+        background-position: -244px 0;
     }
 }
 #admin-nav-seller{
     width: 60px;
+    &.selected,&:hover{
+      a:before{
+          background-position: -336px -83px;
+      }
+    }
     > a:before{
-        background-position-x: -336px;
+        background-position: -336px 0;
     }
 }
 #admin-nav-service_seller {
   width: 60px;
+  
 }
 #admin-nav-tuangou{
     width: 60px;
+    &.selected,&:hover{
+      a:before{
+          background-position: -426px -83px;
+      }
+    }
     > a:before{
-        background-position-x: -423px;
+        background-position: -426px 0;
     }
 }
 #admin-nav-uboss{
     width: 50px;
+    &.selected,&:hover{
+      a:before{
+          background-position: -517px -83px;
+      }
+    }
     > a:before{
-        background-position-x: -515px;
+        background-position: -517px 0;
     }
 }
 
