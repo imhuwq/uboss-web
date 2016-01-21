@@ -20,7 +20,9 @@
   <% end %>
 <% end %>
 
-<div class="store-cover text-center" style="<%#= "background-image:url('#{@service_store.store_cover_url(:w640)}')" if @service_store.store_cover_identifier.present? %>">
+<%= render partial: 'banner_slider', locals: { advertisements: @advertisements } %>
+
+<div class="store-cover text-center">
   <div class="content">
   	<br />
     <h2 class="name"><%= @service_store.store_name %></h2>
