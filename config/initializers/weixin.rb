@@ -88,6 +88,10 @@ if false
         type: 'click',
         key: 'personal_invite_qrcode'
       }, {
+        name: 'U主页',
+        type: 'view',
+        url: 'http://stage.uboss.me'
+      }, {
         name: '我的收益',
         type: 'click',
         key: 'invitor_income_link'
