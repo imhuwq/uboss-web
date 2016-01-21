@@ -38,10 +38,10 @@
 $('#oder_over').on('click', function(event) {
   var amount = $('#withdraw_record_amount').val()
   console.log(amount)
-  if (<%= current_user.income %> > amount && amount > 99) {
+  if (<%= current_user.income %> > amount && amount >= 1) {
     $('#new_withdraw_record').submit();
   }else{
-    alert('最低金额100元,最高金额<%= current_user.income %>元。');
+    alert('最低金额1元,最高金额<%= current_user.income %>元。');
   };
 });
 </script>
