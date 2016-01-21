@@ -19,7 +19,7 @@
     </script>
   <% end %>
 <% end %>
-
+<div class="fixed-container nogap">
 <% if @advertisements.present? %>
   <%= render partial: 'banner_slider', locals: { advertisements: @advertisements } %>
   <div class="bg-white m-bottom10 border-tb gap-left">
@@ -135,43 +135,50 @@
       <div class="main-color gap nogap-left text-center">店家正在准备好货，敬请期待</div>
     <% end %>
   </div>
+</div><!-- fixed-container --> 
+</div><!-- container-->
 
-  <%= simple_form_for "product_inventory", url: new_service_order_path, method: 'GET' do |f| %>
-    <div class="hidden service-store" id="inventory" data-price="0">
-      <div class="tab_buy_now">
-        <input type="hidden" name="product_inventory_id">
-        <input type="hidden" name="product_id">
-        <div class="buy_now_goods">
-          <%= image_tag 'mobile/close.png', class: 'btn_cancle_buy_now close' %>
-          <img class="buy_now_goods_img" src="#" alt="商品" />
-          <dl class="buy_now_goods_dl">
-            <dt><p class='product_name'></p></dt>
-            <dd><p>¥ <span id="price_range"></span></p></dd>
-          </dl>
-        </div>
+<%= simple_form_for "product_inventory", url: new_service_order_path, method: 'GET' do |f| %>
+  <div class="hidden service-store" id="inventory" data-price="0">
+    <div class="tab_buy_now">
+      <input type="hidden" name="product_inventory_id">
+      <input type="hidden" name="product_id">
+      <div class="buy_now_goods">
+        <%= image_tag 'mobile/close.png', class: 'btn_cancle_buy_now close' %>
+        <img class="buy_now_goods_img" src="#" alt="商品" />
+        <dl class="buy_now_goods_dl">
+          <dt><p class='product_name'></p></dt>
+          <dd><p>¥ <span id="price_range"></span></p></dd>
+        </dl>
+      </div>
 
-        <div class="options" id="product_inventory_options">
-          <input type="hidden" id="sku_price" value="">
-          <div class="buy_now_option"></div>
-          <div class="count-box gap">
-            <p>数量</p>
-            <br/>
-            <div class="content">
-              <a class="count_min count_icon"><span>-</span></a>
-              <input type="tel" class="count_num" name="amount" readonly="readonly" value="1" />
-              <a class="count_plus count_icon"><span>+</span></a>
-            </div>
+      <div class="options" id="product_inventory_options">
+        <input type="hidden" id="sku_price" value="">
+        <div class="buy_now_option"></div>
+        <div class="count-box gap">
+          <p>数量</p>
+          <br/>
+          <div class="content">
+            <a class="count_min count_icon"><span>-</span></a>
+            <input type="tel" class="count_num" name="amount" readonly="readonly" value="1" />
+            <a class="count_plus count_icon"><span>+</span></a>
           </div>
-          <div class="done">
-            <input type="submit" class="btn" value="确定" />
-          </div>
-          <div style="clear: both;"></div>
         </div>
+        <div class="done">
+          <input type="submit" class="btn" value="确定" />
+        </div>
+        <div style="clear: both;"></div>
       </div>
     </div>
-  <% end %>
-</div>
-
+  </div>
+<% end %>
+<script type="text/javascript">
+  function hideBuyNow() {
+    $('#inventory').addClass('hidden');
+    $('body').css('-webkit-filter', 'blur(0px)');
+    $('html').removeClass('lock')
+  }
+</script>
 <%= render partial: 'new_share' %>
 
 <div class="req-snode-modal pop-bg hidden">
@@ -198,3 +205,4 @@
 <% if qr_sharing? && (current_user.blank? || (current_user && !current_user.has_seller_privilege_card?(@seller)) ) %>
   <%= render partial: 'privilege_card_pop' %>
 <% end %>
+<div>
