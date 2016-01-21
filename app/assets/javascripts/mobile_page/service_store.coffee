@@ -13,34 +13,27 @@ $ ->
     $('#inventory').removeClass('hidden')
     $('.fixed-container').css('-webkit-filter', 'blur(3px)')
     $('html').addClass('lock')
-    minNum()
-    plusNum()
 
   $('.btn_cancle_buy_now').on 'click', ->
     $('#inventory').addClass('hidden')
     $('.fixed-container').css('-webkit-filter', 'blur(0px)')
     $('html').removeClass('lock')
 
-  minNum = ->
-    $('.count_min').on 'click', ->
-      num = parseInt($('.count-box .count_num').val())
-      if num < 2
-        flashPopContent('<div class="pop-text">数量必须大于1</div>')
-        $('.count-box .count_num').val(1)
-        $('#count_amount').val(1)
-      else
-        $('.count-box .count_num').val(num-1)
-        $('#count_amount').val(num - 1)
-        calculateTotalPrice(num - 1)
+  $('.count_min').on 'click', ->
+    num = parseInt($('.count-box .count_num').val())
+    if num < 2
+      flashPopContent('<div class="pop-text">数量必须大于1</div>')
+      $('.count-box .count_num').val(1)
+    else
+      $('.count-box .count_num').val(num - 1)
+      setTotalPrice(num - 1)
 
-  plusNum = ->
-    $('.count_plus').on 'click', ->
-      num = parseInt($('.count-box .count_num').val())
-      $('.count-box .count_num').val(num + 1)
-      $('#count_amount').val(num + 1)
-      calculateTotalPrice(num + 1)
+  $('.count_plus').on 'click', ->
+    num = parseInt($('.count-box .count_num').val())
+    $('.count-box .count_num').val(num + 1)
+    setTotalPrice(num + 1)
 
-  calculateTotalPrice = (num)->
+  setTotalPrice = (num)->
     price = parseFloat($('#inventory').data('price'))
     total_price = floatMul(price, num)
     $('.count-box .count_num').val(num)
