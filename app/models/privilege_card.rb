@@ -1,6 +1,10 @@
 class PrivilegeCard < ActiveRecord::Base
 
+  include Imagable
   include Orderable
+
+  has_one_image name: :ordinary_store_qrcode_img
+  has_one_image name: :service_store_qrcode_img
 
   belongs_to :user
   belongs_to :seller, class_name: "User"
@@ -30,6 +34,40 @@ class PrivilegeCard < ActiveRecord::Base
 
   def amount(product_inventory)
     (user.privilege_rate * product_inventory.share_amount_lv_1 / 100).truncate(2)
+  end
+
+  def ordinary_store_qrcode_img
+    super || build_ordinary_store_qrcode_img
+  end
+
+  def service_store_qrcode_img
+    super || build_service_store_qrcode_img
+  end
+
+  #private
+
+  def generate_store_qrcode_img
+    request_image_query_param = {
+      user_img_url: user.image_url(:thumb),
+      item_img_url: seller.ordinary_store.store_cover_url(:thumb),
+      #item_img_url: seller.service_store.store_cover_url(:thumb),
+      qrcode_content: 'http://stage.uboss.cn',
+      username: user.nickname,
+      mode: 1
+    }.to_param
+
+    request_uri = URI("http://imager.ulaiber.com/req/1?#{request_image_query_param}")
+    res = Net::HTTP.get_response request_uri
+
+    if res.is_a?(Net::HTTPSuccess)
+      res = JSON.parse res.body
+      if res["url"].present?
+        ordinary_store_qrcode_img.remote_avatar_url = res["url"]
+        ordinary_store_qrcode_img.save
+        #service_store_qrcode_img.remote_avatar_url = res["url"]
+        #service_store_qrcode_img.save
+      end
+    end
   end
 
 end
