@@ -1,3 +1,15 @@
+.service-share-box{
+    .cover{
+        width: 40px;
+        height: 40px;
+        border-radius: 100px;
+        overflow: hidden;
+        img{
+            min-width: 40px;
+            min-height: 40px;
+        }
+    }
+}
 .service-store-info{
   .store-tel{
     height: 30px;
@@ -59,6 +71,10 @@
   border-bottom: 1px solid #eee;
   display: block;
   overflow: hidden;
+  .product{display: block;}
+  .buy-box{
+      padding: 14px 0 14px 10px;
+  }
   .cover {
     float: left;
     margin-right: 10px;
