@@ -1,0 +1,26 @@
+<div class="modal fade" id="change_admin_order_ship_price_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span class='close' aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title text-center" id="myModalLabel">修改运费</h4>
+      </div>
+
+      <%= horizon_form_for @order, url: change_ship_price_admin_order_path(@order), method: :patch do |f| %>
+        <div class="modal-body" style="margin:30px 100px;">
+          <div class='form-group'>
+            <div class="control-input">
+              <%= f.input_field :ship_price, required: true, class: "text-center", style: "border:1px solid #e5e5e5;" %>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <%= f.submit '确定', class: 'btn btn-info' %>
+          <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+        </div>
+      <% end %>
+
+    </div>
+  </div>
+</div>

@@ -8,6 +8,10 @@ class OrdinaryOrder < Order
 
 
   before_create :set_info_by_user_address, :set_ship_price
+  after_commit :update_pay_amount_and_close_prepay, on: :update, if: -> {
+    previous_changes.include?(:ship_price) &&
+    previous_changes[:ship_price].first != previous_changes[:ship_price].last
+  }
 
   aasm column: :state, enum: true, skip_validation_on_save: true, whiny_transitions: false do
     state :unpay
@@ -177,6 +181,11 @@ class OrdinaryOrder < Order
   end
 
   private
+
+  def update_pay_amount_and_close_prepay
+    update_pay_amount
+    OrderCharge.delay.check_and_close_prepay(order_charges: [order_charge])
+  end
 
   def set_info_by_user_address
     self.address = "#{user_address}"
