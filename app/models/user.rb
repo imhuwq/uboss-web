@@ -65,6 +65,7 @@ class User < ActiveRecord::Base
   belongs_to :agent, class_name: 'User'
 
   #for supplier
+  has_one :supplier_store, autosave: true
   has_many :cooperations, foreign_key: 'supplier_id', dependent: :destroy
   has_many :agencies, through: :cooperations, source: :agency
   has_many :supplier_products, ->{ where(type: 'SupplierProduct') }

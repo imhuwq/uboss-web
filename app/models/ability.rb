@@ -32,6 +32,8 @@ class Ability
     can :update, User, id: user.id
     can :manage, BankCard, user_id: user.id
     can [:read, :create],   WithdrawRecord, user_id: user.id
+    can :new, SupplierStore, id: nil
+    can :create, SupplierStore, id: nil
   end
 
   def grant_permissions_to_super_admin user
@@ -137,8 +139,9 @@ class Ability
 
   def grant_permissions_to_supplier user
     can :read, User, id: user.id
+    can [:destroy, :edit_info, :update_info], SupplierStore, user_id: user.id
     can :read, User, cooperation: { supplier_id: user.id }
-    can :read, :sellers
+    can :read, :agencies
     can :manage, SupplierProduct, user_id: user.id
   end
 
