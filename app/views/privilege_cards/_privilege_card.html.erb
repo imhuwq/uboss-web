@@ -37,15 +37,17 @@
 			</div>
 		</div><!-- share-store-list -->
 	  <div class="share-bar">
-	  		<div class="pop-qr-btn pull-right"></div>
-	  		<div class="content">
-	  			<div class="hidden sharing-meta-container">
-	        <%= store_sharing_meta_tags(seller) %>
-	      </div>
-			  <%= link_to "分享店铺", get_seller_sharing_path(seller_id: privilege_card.seller_id), remote: true,
-			    class: 'btn btn-block btn-orange-border req-favour-p-snode' %>
-			  <a href="#" class="btn btn-block btn-orange-border p-sharing-btn hidden">分享店铺</a>
-		  </div>
+      <div class="pop-qr-btn pull-right">
+        <input type="hidden" value="<%= privilege_card.ordinary_store_qrcode_img_url %>" />
+      </div>
+      <div class="content">
+        <div class="hidden sharing-meta-container">
+          <%= store_sharing_meta_tags(seller) %>
+        </div>
+        <%= link_to "分享店铺", get_seller_sharing_path(seller_id: privilege_card.seller_id), remote: true,
+          class: 'btn btn-block btn-orange-border req-favour-p-snode' %>
+        <a href="#" class="btn btn-block btn-orange-border p-sharing-btn hidden">分享店铺</a>
+      </div>
 	  </div><!-- share-bar -->
 	</div><!-- share-card -->
 
@@ -89,8 +91,10 @@
       </div>
     </div><!-- share-store-list -->
     <div class="share-bar">
-	  		<div class="pop-qr-btn pull-right"></div>
-	  		<div class="content">
+      <div class="pop-qr-btn pull-right">
+        <input type="hidden" value="<%= privilege_card.service_store_qrcode_img_url %>" />
+      </div>
+      <div class="content">
 	      <div class="hidden sharing-meta-container">
 	        <%= store_sharing_meta_tags(seller, nil, service_store_path(seller.service_store)) %>
 	      </div>

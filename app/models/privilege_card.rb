@@ -11,6 +11,7 @@ class PrivilegeCard < ActiveRecord::Base
 
   validates :user_id, :seller_id, presence: true
   validates_uniqueness_of :user_id, scope: :seller_id
+  after_create :create_store_qrcode_img
 
   def self.find_or_active_card(user_id, seller_id)
     card = PrivilegeCard.find_or_create_by(user_id: user_id, seller_id: seller_id)
@@ -44,30 +45,61 @@ class PrivilegeCard < ActiveRecord::Base
     super || build_service_store_qrcode_img
   end
 
-  #private
+  def ordinary_store_qrcode_img_url
+    if ordinary_store_qrcode_img.new_record?
+      get_and_save_store_qrcode_url
+    end
+    reload.ordinary_store_qrcode_img.image_url
+  end
 
-  def generate_store_qrcode_img
-    request_image_query_param = {
-      user_img_url: user.image_url(:thumb),
-      item_img_url: seller.ordinary_store.store_cover_url(:thumb),
-      #item_img_url: seller.service_store.store_cover_url(:thumb),
-      qrcode_content: 'http://stage.uboss.cn',
-      username: user.nickname,
-      mode: 1
-    }.to_param
+  def service_store_qrcode_img_url
+    if service_store_qrcode_img.new_record?
+      get_and_save_store_qrcode_url
+    end
+    reload.service_store_qrcode_img.image_url
+  end
 
-    request_uri = URI("http://imager.ulaiber.com/req/1?#{request_image_query_param}")
+  private
+
+  def create_store_qrcode_img
+    delay.get_and_save_store_qrcode_url
+  end
+
+  def get_and_save_store_qrcode_url
+    if img_url = get_store_qrcode_img_url(store_qrcode_params[0])
+      ordinary_store_qrcode_img.remote_avatar_url = img_url
+      ordinary_store_qrcode_img.save
+    end
+
+    if img_url = get_store_qrcode_img_url(store_qrcode_params[1])
+      service_store_qrcode_img.remote_avatar_url = img_url
+      service_store_qrcode_img.save
+    end
+  end
+
+  def get_store_qrcode_img_url(qrcode_params)
+    request_uri = URI("http://imager.ulaiber.com/req/1?#{qrcode_params.to_param}")
     res = Net::HTTP.get_response request_uri
 
     if res.is_a?(Net::HTTPSuccess)
       res = JSON.parse res.body
-      if res["url"].present?
-        ordinary_store_qrcode_img.remote_avatar_url = res["url"]
-        ordinary_store_qrcode_img.save
-        #service_store_qrcode_img.remote_avatar_url = res["url"]
-        #service_store_qrcode_img.save
-      end
+      res["url"]
     end
   end
 
+  def store_qrcode_params
+    [{
+      user_img_url: user.image_url(:thumb),
+      item_img_url: seller.ordinary_store.store_cover_url(:thumb),
+      qrcode_content: 'http://stage.uboss.cn',
+      username: user.nickname,
+      mode: 1
+    },{
+      user_img_url: user.image_url(:thumb),
+      item_img_url: seller.service_store.store_cover_url(:thumb),
+      qrcode_content: 'http://stage.uboss.cn',
+      username: user.nickname,
+      mode: 1
+    }]
+  end
 end
