@@ -7,8 +7,10 @@ class Evaluation < ActiveRecord::Base
 
   before_save :relate_attrs
   after_create :count_evaluation, :create_or_attach_sharing_node
+  before_destroy :update_count_evaluation
 
   validates :order_item_id, :status, presence: true
+  scope :has_evaluationed, -> (id) { where(order_item_id: id) }
 
   enum status: { worst: 1, bad: 2, good: 3, better: 4, best: 5 }
 
@@ -17,6 +19,18 @@ class Evaluation < ActiveRecord::Base
       self.buyer_id = order_item.user_id
       self.sharer_id = order_item.sharing_node.try(:user_id)
       self.product_id = order_item.product_id
+    end
+  end
+
+  def update_count_evaluation
+    seller_user_info_id = Product.find(self.product_id).user.user_info.id
+    evaluation_column = "#{self.status}_evaluation"
+
+    UserInfo.update_counters(seller_user_info_id, evaluation_column => -1)
+    Product.update_counters(self.product_id, evaluation_column => -1)
+    if sharer_id.present? && sharer_user = User.find_by(id: self.sharer_id)
+      sharer_user_info_id = sharer_user.user_info.id
+      UserInfo.update_counters(sharer_user_info_id, evaluation_column => -1)
     end
   end
 
@@ -55,7 +69,12 @@ class Evaluation < ActiveRecord::Base
 
   def self.product_good_reputation(product_id) # 商品好评数
     product = Product.find_by_id(product_id)
-    product.good_evaluation.to_f + product.best_evaluation.to_f + product.better_evaluation.to_f
+    (product.good_evaluation.to_f + product.best_evaluation.to_f + product.better_evaluation.to_f).try(:to_i)
+  end
+
+  def self.product_bad_reputation(product_id)
+    product = Product.find_by_id(product_id)
+    (product.bad_evaluation.to_f + product.worst_evaluation.to_f).try(:to_i)
   end
 
   def self.product_good_reputation_rate(product_id) # 商品好评率

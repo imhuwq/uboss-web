@@ -1,0 +1,35 @@
+<%= content_for :page_title do %>
+  我的红包
+<% end %>
+<br />
+<div class="tab-content" id="hongbao">
+  <div class="line-gap">
+    <p>
+    <div class="hidden sharing-meta-container">
+      <%= luffy_meta_tags(
+        title: '双十二送6.4亿大狂欢，流血的女汉子快来摇身一变白富美吧！',
+        desc: '我宁愿当白富美而流泪，也不要当女汉子而流血！',
+        imgurl: asset_url("game/honbao_invite_avatar.jpg"),
+        link: bonus_invite_pages_url(inviter_uid: CryptService.encrypt(current_user.id))
+      ) %>
+  </div>
+  <a class="p-sharing-btn" href="#"><%= image_tag 'mobile/account/hongbao2.jpg'%></a>
+  </p>
+  <div class="hongbao gray-color">
+    <span class="pull-right red-color">￥ <%= current_user.bonus_benefit %></span>红包余额
+    <% if Time.now < Time.parse('2016-1-1') %>
+      <div class="newyear"></div>
+    <% end %>
+  </div>
+  <div class="bg-white gray-color gap">
+    红包说明：红包直接用于UBOSS购物，提交订单进行随机立减
+  </div>
+  <br />
+  <div class="bg-white gap text-center">
+    <p><%= image_tag 'mobile/qr.jpg'%></p>
+    <div>点击关注UBOSS星球，海量红包带你飞</div>
+  </div>
+  <br />
+</div><!-- tab-content showincome -->
+
+<%= render partial: 'new_share' %>

@@ -9,7 +9,7 @@ class ProductInventoryTest < ActiveSupport::TestCase
     assert_equal 0, product_inventory.versions.size
 
     create(
-      :order,
+      :ordinary_order,
       state: 'payed',
       order_items_attributes: [
         {

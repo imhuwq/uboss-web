@@ -16,14 +16,14 @@ class StoresController < ApplicationController
 
   def show
     @order_column_name = params[:order].present? ? params[:order] : 'comprehensive_order'
-    @products = append_default_filter_for_store_show @seller.products.published.includes(:asset_img), order_column: @order_column_name, page_size: 6
-    @hots = @seller.products.hots.recent.limit(3)
+    @products = append_default_filter_for_store_show @seller.ordinary_products.published.includes(:asset_img), order_column: @order_column_name, page_size: 6
+    @hots = @seller.ordinary_products.hots.recent.limit(3)
     @categories = Category.where(use_in_store: true, user_id: @seller.id).order('use_in_store_at')
     render_product_partial_or_page
   end
 
   def hots
-    @products = append_default_filter @seller.products.hots.includes(:asset_img), order_column: :updated_at
+    @products = append_default_filter @seller.ordinary_products.hots.includes(:asset_img), order_column: :updated_at
     render_product_partial_or_page
   end
 

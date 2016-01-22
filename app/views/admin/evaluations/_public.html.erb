@@ -1,0 +1,35 @@
+<div class="container  admin-container">
+	<ul class="breadcrumb">
+		<li><a href="/admin">主页</a></li>
+		<li class="divider"><i class="fa fa-caret-right"></i></li>
+		<li>评价管理</li>
+	</ul>
+</div>
+<br />
+<div id="index_list">
+<div class="container nogap">
+	<div class="box-w25">
+		<div class="admin-box main-bg-color">
+      <a href="<%= admin_evaluations_path %>" data-remote='true'>
+        <h4>总好评率</h4>
+        <h1 class="num"><%= @total_good_reputation_rate %></h1>
+      </a>
+	  </div>
+	</div>
+  <div class="box-w25">
+  	<div class="admin-box red-bg-color">
+      <a href="<%= admin_evaluations_path(type: 'good') %>" data-remote='true'>
+        <h4>好评数量</h4>
+        <h1 class="num"><%= @total_good_reputation %></h1>
+      </a>
+	  </div>
+  </div>
+  <div class="box-w25">
+  	<div class="admin-box red-bg-color">
+      <a href="<%= admin_evaluations_path(type: 'bad') %>" data-remote='true'>
+        <h4>差评数量</h4>
+        <h1 class="num"><%= @total_bad_reputation %></h1>
+      </a>
+	  </div>
+  </div>
+</div>

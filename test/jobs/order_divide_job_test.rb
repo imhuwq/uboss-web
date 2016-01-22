@@ -18,7 +18,7 @@ class OrderDivideJobTest < ActiveJob::TestCase
   end
 
   it 'should raise error if not payed' do
-    @order = create(:order)
+    @order = create(:ordinary_order)
 
     assert_equal false, @order.payed?
 
@@ -52,7 +52,7 @@ class OrderDivideJobTest < ActiveJob::TestCase
 
       buyer = create(:user)
 
-      @order = create(:order,
+      @order = create(:ordinary_order,
                       user: buyer,
                       order_items_attributes: [{
                         product: product,
@@ -83,7 +83,7 @@ class OrderDivideJobTest < ActiveJob::TestCase
 
       buyer = create(:user)
 
-      @order = create(:order,
+      @order = create(:ordinary_order,
                       user: buyer,
                       order_items_attributes: [{
                         product: product,
@@ -105,9 +105,12 @@ class OrderDivideJobTest < ActiveJob::TestCase
       assert_equal 180.5, @order.reload.income
     end
 
-    it 'should reward sharing user success' do
+    it 'should reward sharing user success & divide to agent and citymm' do
       agent = create(:agent_user)
       seller = create(:seller_user, agent: agent)
+      city_manager = create(:city_manager)
+      create(:personal_authentication, user: seller, status: 'pass', )
+      city_manager_user = city_manager.user
 
       product = create :product_with_3sharing, user: seller
       product_inventory = product.seling_inventories.first
@@ -135,7 +138,7 @@ class OrderDivideJobTest < ActiveJob::TestCase
       assert seller.income == 0
 
       buyer = create(:user)
-      @order = create(:order,
+      @order = create(:ordinary_order,
                       user: buyer,
                       seller: seller,
                       order_items_attributes: [{
@@ -157,9 +160,10 @@ class OrderDivideJobTest < ActiveJob::TestCase
       assert_equal sharing_reward_lv1 * buy_amount * 0.5, level4_node.user.reload.income
       assert seller.reload.income > 0, 'Seller get selling income'
       assert agent.reload.income > 0, 'Agent get deviding income'
+      assert city_manager_user.reload.income > 0, 'CityManager get deviding income'
       assert_equal(
         @order.paid_amount,
-        level2_node.user.income + level3_node.user.income + level4_node.user.income + seller.income + agent.income + User.official_account.reload.income
+        level2_node.user.income + level3_node.user.income + level4_node.user.income + seller.income + city_manager_user.income + agent.income + User.official_account.reload.income
       )
     end
 
@@ -184,7 +188,7 @@ class OrderDivideJobTest < ActiveJob::TestCase
       assert seller.income == 0
 
       buyer = create(:user)
-      @order = create(:order,
+      @order = create(:ordinary_order,
                       user: buyer,
                       seller: seller,
                       order_items_attributes: [{
@@ -218,7 +222,7 @@ class OrderDivideJobTest < ActiveJob::TestCase
       agent = create(:agent_user)
       seller = create(:seller_user, agent: agent)
 
-      @order = create(:order, seller: seller, state: 'signed')
+      @order = create(:ordinary_order, seller: seller, state: 'signed')
       @order.stubs(:pay_amount).returns(BigDecimal('11.11'))
       @order.update_columns(paid_amount: 11.11)
 

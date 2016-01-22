@@ -437,6 +437,8 @@ GEM
       redis-namespace (~> 1.5, >= 1.5.2)
     sidekiq-failures (0.4.4)
       sidekiq (>= 2.16.0)
+    simple-navigation (4.0.3)
+      activesupport (>= 2.3.2)
     simple_captcha2 (0.3.4)
       rails (>= 4.1)
     simple_form (3.1.0)
@@ -579,6 +581,7 @@ DEPENDENCIES
   select2-rails (~> 3.5.9.1)
   sidekiq (~> 3.5.1)
   sidekiq-failures
+  simple-navigation
   simple_captcha2
   simple_form
   sinatra

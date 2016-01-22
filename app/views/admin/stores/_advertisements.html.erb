@@ -24,6 +24,7 @@
             <p class="text-center fileinput-button">
             <%= image_tag(adv.image_url('640x320'), class:'clean') %>
             <%= file_field_tag "image", class: "upyun_file_json" ,  data: {to: "/admin/stores/update_advertisement_img?resource_id=#{adv.id}"} %>
+            <%= upyun_meta_tags prefix: "asset_img/avatar" %>
             <b class="loading"><i class="fa fa-spinner"></i></b>
             <span class="tips-text">点击替换</span>
             </p>
@@ -36,6 +37,7 @@
             <p class="text-center fileinput-button">
             <%= image_tag(adv.image_url('640x320'), class:'clean') %>
             <%= file_field_tag "image", class: "upyun_file_json" ,  data: {to: "/admin/stores/update_advertisement_img?resource_id=#{adv.id}"} %>
+            <%= upyun_meta_tags prefix: "asset_img/avatar" %>
             <b class="loading"><i class="fa fa-spinner"></i></b>
             <span class="tips-text">点击替换</span>
             </p>
@@ -47,6 +49,7 @@
             <p class="text-center fileinput-button">
             <%= image_tag(adv.image_url('640x320'), class:'clean') %>
             <%= file_field_tag "image", class: "upyun_file_json" ,  data: {to: "/admin/stores/update_advertisement_img?resource_id=#{adv.id}"} %>
+            <%= upyun_meta_tags prefix: "asset_img/avatar" %>
             <b class="loading"><i class="fa fa-spinner"></i></b>
             <span class="tips-text">点击替换</span>
             </p>

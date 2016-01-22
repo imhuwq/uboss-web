@@ -4,6 +4,7 @@ class User < ActiveRecord::Base
   DATA_AUTHENTICATED = {'no'=> '未认证', 'yes'=> '已认证'}
 
   include Orderable
+  include Sellerable
 
   attr_accessor :code, :mobile_auth_code
   OFFICIAL_ACCOUNT_LOGIN = '13800000000'.freeze
@@ -14,7 +15,9 @@ class User < ActiveRecord::Base
   mount_uploader :avatar, ImageUploader
 
   has_and_belongs_to_many :expresses, uniq: true
-  has_one :user_info, autosave: true
+  has_one :cart
+  has_many :user_infos, autosave: true
+  has_many :carriage_templates
   has_many :transactions
   has_many :user_role_relations, dependent: :destroy
   has_many :user_roles, through: :user_role_relations
@@ -22,14 +25,21 @@ class User < ActiveRecord::Base
   has_many :sharing_nodes
   has_many :favour_products
   has_many :favoured_products, through: :favour_products, source: :product
+  has_many :withdraw_records
   # for agent
   has_many :divide_incomes
   has_many :sellers, class_name: 'User', foreign_key: 'agent_id'
-  has_many :seller_orders, through: :sellers, source: :sold_orders
+  has_many :seller_ordinary_orders, through: :sellers, source: :sold_ordinary_orders
+  has_many :seller_service_orders,  through: :sellers, source: :sold_service_orders
   # for buyer
   has_one :cart
+  has_one :ordinary_store, class_name: 'OrdinaryStore', autosave: true
+  has_one :service_store, class_name: 'ServiceStore', autosave: true
   has_many :user_addresses, -> { where(seller_address: false) }
   has_many :orders
+  has_many :ordinary_orders
+  has_many :service_orders
+  has_many :order_charges
   has_many :order_items
   has_many :sharing_incomes
   has_many :bank_cards
@@ -42,8 +52,13 @@ class User < ActiveRecord::Base
   # for seller
   has_many :seller_addresses, -> { where(seller_address: true) }, class_name: 'UserAddress'
   has_many :sold_orders, class_name: 'Order', foreign_key: 'seller_id'
-  has_many :sold_order_items, through: :sold_orders, source: :order_items
+  has_many :sold_ordinary_orders, class_name: 'OrdinaryOrder', foreign_key: 'seller_id'
+  has_many :sold_service_orders,  class_name: 'ServiceOrder',  foreign_key: 'seller_id'
+  has_many :verified_codes, -> { where(verified: true) }, through: :sold_service_orders, source: :verify_codes
   has_many :products
+  has_many :ordinary_products
+  has_many :service_products
+  has_many :sold_ordinary_order_items, through: :sold_ordinary_orders, source: :order_items
   has_many :categories
   has_many :selling_incomes
   belongs_to :agent, class_name: 'User'
@@ -62,16 +77,17 @@ class User < ActiveRecord::Base
   delegate :sex, :sex=, :province, :province=, :city, :city=, :country, :country=,
     :good_evaluation, :best_evaluation, :better_evaluation, :worst_evaluation, :bad_evaluation,
     :store_name, :store_name=,      :income_level_thr, :frozen_income,
-    :income,     :income_level_one, :income_level_two, :service_rate,
+    :income,     :income_level_one, :income_level_two, :service_rate, :type, :type=,
     :store_banner_one_identifier,  :store_banner_two_identifier,  :store_banner_thr_identifier,
     :store_banner_one,  :store_banner_two,  :store_banner_thr,
     :store_banner_one_url,  :store_banner_two_url,  :store_banner_thr_url,
     :store_banner_one=, :store_banner_two=, :store_banner_thr=,
     :recommend_resource_one_id, :recommend_resource_two_id, :recommend_resource_thr_id,
     :recommend_resource_one_id=, :recommend_resource_two_id=, :recommend_resource_thr_id=,
-    :store_short_description, :store_short_description=, :store_cover, :store_cover=, :bonus_benefit,
-    :store_logo_url, :store_logo=, :store_logo,
-    to: :user_info, allow_nil: true
+    :store_short_description, :store_short_description=, :store_cover, :store_cover=, :bonus_benefit, :bonus_benefit=,
+    :store_title, :store_identify,
+    :good_reputation_rate, :total_reputations,
+    to: :ordinary_store, allow_nil: true
 
   enum authenticated: {no: 0, yes: 1}
 
@@ -83,7 +99,8 @@ class User < ActiveRecord::Base
   end
   before_validation :ensure_authentication_token, :ensure_privilege_rate
   before_create :set_mobile, :set_default_role
-  before_create :build_user_info, if: -> { user_info.blank? }
+  before_create :build_ordinary_store, if: -> { ordinary_store.blank? }
+  before_create :build_service_store, if: -> { service_store.blank? }
   before_create :skip_confirmation!
   before_save   :set_service_rate
   after_commit  :invoke_rongcloud_job, on: [:create, :update]
@@ -99,6 +116,14 @@ class User < ActiveRecord::Base
         @is_#{role} ||= user_roles.exists?(name: '#{role}')
       end
     RUBY
+  end
+
+  def service_store
+    super || build_service_store
+  end
+
+  def ordinary_store
+    super || build_ordinary_store
   end
 
   def login_identifier=(login_identifier)
@@ -119,6 +144,31 @@ class User < ActiveRecord::Base
 
   def received_invite_bonus?
     bonus_records.where(type: 'Ubonus::Invite').exists?
+  end
+
+  def has_role?(role_name)
+    user_roles.any? { |role| role.name == role_name.to_s }
+  end
+
+  def remove_role(role_name)
+    if role=UserRole.find_by_name(role_name)
+      user_roles.delete role
+    else
+      false
+    end
+  end
+
+  def add_role(role_name)
+    return if have_role?(role_name)
+    if role=UserRole.find_by_name(role_name)
+      user_roles << role
+    else
+      false
+    end
+  end
+
+  def have_role?(role_name)
+    user_roles.exists?(name: role_name)
   end
 
   class << self
@@ -263,19 +313,6 @@ class User < ActiveRecord::Base
     nickname || mobile || 'UBOSS用户'
   end
 
-  def store_title
-    if store_name.blank?
-      nil
-    else
-      short_desc = store_short_description.blank? ? nil : store_short_description
-      [store_name, short_desc].compact.join(" | ")
-    end
-  end
-
-  def store_identify
-    store_name || nickname || mobile || 'UBOSS商家'
-  end
-
   def total_income
     income + frozen_income
   end
@@ -309,7 +346,7 @@ class User < ActiveRecord::Base
   end
 
   def today_expect_divide_income
-    seller_orders.today.shiped.sum(:pay_amount) * 0.05
+    seller_ordinary_orders.today.shiped.sum(:pay_amount) * 0.05
   end
 
   def current_month_divide_income
@@ -321,7 +358,7 @@ class User < ActiveRecord::Base
   end
 
   def user_info
-    super || build_user_info
+    ordinary_store
   end
 
   def default_address
@@ -393,22 +430,6 @@ class User < ActiveRecord::Base
     self.weixin_unionid   = data['unionid']
     self.weixin_openid    = data['openid']
     self.remote_avatar_url = data['headimgurl'] if self.avatar_identifier.blank?
-  end
-
-  def good_reputation_rate
-    return @sharer_good_reputation_rate if @sharer_good_reputation_rate
-    good = user_info.best_evaluation.to_i + user_info.better_evaluation.to_i + user_info.good_evaluation.to_i
-    @sharer_good_reputation_rate = if total_reputations > 0
-                                     good * 100 / total_reputations
-                                   else
-                                     100
-                                   end
-  end
-
-  def total_reputations
-    @total_reputations ||= Evaluation.statuses.keys.inject(0) do |sum, statue|
-      sum + user_info["#{statue}_evaluation"].to_i
-    end
   end
 
   def has_seller_privilege_card?(seller)
@@ -484,8 +505,8 @@ class User < ActiveRecord::Base
   end
 
   def set_service_rate
-    if self.agent_id_changed?
-      self.user_info.service_rate = 5
+    if self.agent_id_changed? && user_info.present?
+        user_info.service_rate = 5
     end
   end
 

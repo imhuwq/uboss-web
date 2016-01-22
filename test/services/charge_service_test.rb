@@ -4,7 +4,7 @@ class ChargeServiceTest < ActiveSupport::TestCase
 
   test 'should find_or_create_charge for orders' do
     user = create :user
-    orders_ids = create_list(:order, 5, user: user).map(&:id)
+    orders_ids = create_list(:ordinary_order, 5, user: user).map(&:id)
     orders = Order.where(id: orders_ids)
     assert 5, orders_ids
 
@@ -29,24 +29,24 @@ class ChargeServiceTest < ActiveSupport::TestCase
 
   test 'should validate orders pay' do
     orders = [
-      create(:order, state: 'unpay'),
-      create(:order, state: 'payed')
+      create(:ordinary_order, state: 'unpay'),
+      create(:ordinary_order, state: 'payed')
     ]
     assert_equal false, ChargeService.available_pay?(orders)
 
     orders = [
-      create(:order, state: 'unpay'),
-      create(:order, state: 'unpay')
+      create(:ordinary_order, state: 'unpay'),
+      create(:ordinary_order, state: 'unpay')
     ]
     assert ChargeService.available_pay?(orders), 'Success for all unpay order'
 
     agent_user = create :agent_user
-    agent_order = create(:order, state: 'unpay', user: agent_user)
+    agent_order = create(:ordinary_order, state: 'unpay', user: agent_user)
     agent_order.expects(:official_agent?).returns(true)
 
     orders = [
       agent_order,
-      create(:order, state: 'unpay')
+      create(:ordinary_order, state: 'unpay')
     ]
     assert_not ChargeService.available_pay?(orders), 'Faile for repeat agent order'
   end
@@ -74,7 +74,7 @@ class ChargeServiceTest < ActiveSupport::TestCase
     assert_equal pay_time, order_charge.reload.paid_at
     assert_equal pay_total_fee, order_charge.orders.sum(:paid_amount)
     assert_equal pay_total_fee, order_charge.paid_amount
-    assert_equal [Order.states[:payed]], order_charge.orders.pluck(:state).uniq
+    assert_equal [OrdinaryOrder.states[:payed]], order_charge.orders.pluck(:state).uniq
 
     assert_not ChargeService.process_paid_result(result: result), "reprocess paid reponse should fail"
   end

@@ -21,12 +21,12 @@
   			<% end %>
   		</div>
   		<div class="gray-color text-center" style="float:left;width:100%;"><small>请上传规格为400*400px的图片</small></div>
-  		
+
   	</div>
 
   	<div class="box-w60">
   		<br />
-  		
+
   		<div class="setting-list">
   			<% @categories.each do |category| %>
   			<div class="setting-category-box">
@@ -37,6 +37,7 @@
 						<%#= image_tag(category.image_url, class:'clean', size: '400x400') %>
 						<div class="imgsize img-200-200" style="background-image:url('<%= category.image_url(:thumb) %>')"></div>
 						<%= file_field_tag "image", class: "category_upyun_file_json" ,  data: {to: "/admin/categories/update_category_img?resource_id=#{category.id}"} %>
+            <%= upyun_meta_tags prefix: "asset_img/avatar" %>
 						<b class="loading"><i class="fa fa-spinner"></i></b>
 						<span class="tips-text">点击替换</span>
 					</div>

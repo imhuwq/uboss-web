@@ -27,15 +27,15 @@
                       <%= f.input_field :avatar, type: :hidden, as: :file %>
                       <p class="fileinput-button">
                         <%= image_tag("admin/no-img-640x320.png", class:"clean",style:"max-width:640px;width:100%;height:auto")%>
-                        <%= file_field_tag "image", class: "upyun_file" %>
+                        <%= file_field_tag "image", class: "upyun_file_closest" %>
+                        <%= upyun_meta_tags prefix: "asset_img/avatar" %>
                         <b class="loading"><i class="fa fa-spinner"></i></b>
                         <span class="tips-text">点击上传图片</span>
                       </p>
                     <% end %>
-                    <%= upyun_meta_tags prefix: 'asset_img/avatar' %>
   				      </div>
   						</td>
-  					</tr>						
+  					</tr>
   				</table>
   			</div><!-- modal-body -->
   			<div class="modal-footer">

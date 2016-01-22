@@ -28,10 +28,25 @@
 #= require shared/upyun
 #= require shared/multi_upyun_admin
 #= require shared/count_down
+#= require admin/certification
 #= require_self
 
-jQuery ($) ->
+App = window.App = {};
+$ ->
+  App.params = jQuery.parseJSON($('body').attr('data-params'));
 
+
+jQuery ($) ->
+  
+  $(".box-num h1.num").each ->
+    ls=$(this).html().length
+    ls_num= $(this).html().replace(/,/g,'').slice(2,ls)
+    ls_num_size=ls_num.length   
+    if ls_num_size>13
+     $(this).html('￥ '+ls_num.slice(0,ls_num_size-10)+'千万') 
+    else if ls_num_size>10
+     $(this).html('￥ '+ls_num.slice(0,ls_num_size-7)+'万')   
+	    
   $("body").on 'click',"#check_all", ->
     $(".check").attr("checked",this.checked)
 

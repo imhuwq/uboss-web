@@ -3,10 +3,13 @@ class OrderItem < ActiveRecord::Base
   belongs_to :user
   belongs_to :order
   belongs_to :product
+  belongs_to :ordinary_product, foreign_key: :product_id
+  belongs_to :service_product, foreign_key: :product_id
   belongs_to :product_inventory
   belongs_to :sharing_node
   has_many   :evaluations
   has_many   :sharing_incomes
+  has_many   :verify_codes, autosave: true
   has_many   :order_item_refunds
   has_many   :refund_messages, through: :order_item_refunds
   # act as preferential_item
@@ -19,9 +22,9 @@ class OrderItem < ActiveRecord::Base
   delegate :name, :traffic_expense, to: :product, prefix: true
   delegate :product_name, :price, :sku_attributes, :sku_attributes_str, to: :product_inventory
   delegate :privilege_card, to: :sharing_node, allow_nil: true
+  delegate :type, to: :order, prefix: true
 
   before_validation :set_product_id
-  before_save  :reset_payment_info, if: -> { order.paid_at.blank? }
   after_create :decrease_product_stock
 
   after_commit :update_order_pay_amount, if: -> {
@@ -44,6 +47,10 @@ class OrderItem < ActiveRecord::Base
     present_price - privilege_amount
   end
 
+  def total_price
+    present_price*amount
+  end
+
   def refund_money
     if order_item_refund_id.present?
       OrderItemRefund.find(order_item_refund_id).money
@@ -59,7 +66,7 @@ class OrderItem < ActiveRecord::Base
   def can_reapply_refund?
     return @can_reapply_refund if instance_variable_defined? '@can_reapply_refund'
 
-    @can_reapply_refund = !order_item_refunds.where(order_state: Order.states[order.state]).exists?
+    @can_reapply_refund = !order_item_refunds.where(order_state: OrdinaryOrder.states[order.state]).exists?
   end
 
   def count
@@ -100,6 +107,10 @@ class OrderItem < ActiveRecord::Base
     set_privilege_amount
     set_present_price
     set_pay_amount
+  end
+
+  def verified_time
+    verify_codes.where(verified: true).first.try(:updated_at)
   end
 
   def total_preferential_amount

@@ -4,6 +4,7 @@
   	<%= link_to admin_root_path,class:'logo' do %>
     	<%=image_tag "admin/logo.png",alt:"Uboss"%>
 		<% end %>
+
 		<div id="config">
 	    <%= link_to edit_admin_account_path do %>
 				<%= image_tag(current_user.avatar.url(:thumb)) %>
@@ -12,9 +13,9 @@
 				<li><%= link_to "修改密码", password_admin_account_path %></li>
 				<li>
           <% if can?(:create,PersonalAuthentication) %>
-          <%= link_to "商家认证", admin_user_personal_authentication_path(user_id: current_user.id) %>
-          <% elsif can?(:create,EnterpriseAuthentication) %>
-          <%= link_to "商家认证", admin_user_enterprise_authentication_path(user_id: current_user.id) %>
+          <%= link_to "认证", admin_user_personal_authentication_path(user_id: current_user.id) %>
+          <% elsif can?(:create,CityManagerAuthentication) %>
+          <%= link_to "认证", admin_user_city_manager_authentication_path(user_id: current_user.id) %>
           <% end %>
         </li>
         <% if current_user.is_seller? %>
@@ -24,37 +25,14 @@
 			</ul>
 		</div>
 
-    <nav>
-      <ul>
-        <%= li_link(:dashboard, admin_root_path, action_check: false) %>
-        <%= can_li_link(:read, :sellers, admin_sellers_path) %>
-        <%= can_li_link(:manage, :agents, admin_agents_path) %>
-        <%= nav_group :product_manage do %>
-          <%= can_li_link(:read, Product, admin_products_path) %>
-          <%= can_li_link(:read, CarriageTemplate, admin_carriage_templates_path ) %>
-          <%= can_li_link(:read, Category, admin_categories_path) %>
-        <% end %>
-        <%= nav_group :order_manage do %>
-          <%= can_li_link(:read, Order, admin_orders_path) %>
-          <%= can_li_link(:read, Express, admin_expresses_path) %>
-          <%= can_li_link(:manage, UserAddress, admin_user_addresses_path) %>
-        <% end %>
-        <%= can_li_link(:manage, SharingIncome, admin_sharing_incomes_path) %>
-        <%= nav_group :withdraw_records do %>
-          <%= can_li_link(:read, WithdrawRecord, admin_withdraw_records_path) %>
-          <%= can_li_link(:manage, BankCard, admin_bank_cards_path ) %>
-        <% end %>
-        <%= can_li_link(:manage, :authentications, admin_personal_authentications_path,
-                        another_active_name: 'personal_authentications') %>
-        <%= nav_group :uboss do %>
-          <%= can_li_link(:handle, User, admin_users_path) %>
-          <%= can_li_link(:manage, :platform_advertisements, admin_platform_advertisements_path) %>
-          <%= can_li_link(:manage, Transaction, admin_transactions_path) %>
-          <%= can_li_link(:manage, :backend_status, admin_backend_status_path,
-                          another_active_name: 'backend_status') %>
-        <% end %>
-      </ul>
-    </nav>
+		<nav class="nav">
+			<%= render_navigation(level: 1..3, expand_all: true, skip_if_empty: true) %>
+		</nav>
+
+		<div class="nav-v2">
+			<%= render_navigation(level: 2..3, expand_all: true, skip_if_empty: true) %>
+		</div>
+
   </div>
 </header>
 <br/>

@@ -1,0 +1,36 @@
+<div class="container  admin-container">
+	<ul class="breadcrumb">
+		<li><a href="/admin">主页</a></li>
+		<li class="divider"><i class="fa fa-caret-right"></i></li>
+		<li>验证管理</li>
+	</ul>
+</div>
+<br />
+<div class="inline-form text-center">
+	<br />
+  <%= simple_form_for 'verify_code', url: verify_admin_verify_codes_path do |f| %>
+    <%= number_field_tag 'code', '', type: :tel, placeholder: '请输入验证券密码',style:'vertical-align: top;width:600px;border-radius:0;height:40px' %><%= f.submit '验证', class: 'btn btn-large',style:'border-radius:0;height:40px' %>
+  <% end %>
+</div>
+<br/>
+<br/>
+
+<div id="index_list">
+<div class="container nogap">
+	<div class="box-w25">
+		<div class="admin-box main-bg-color">
+      <a href="<%= admin_verify_codes_path %>" data-remote='true'>
+        <h4>总验证数量</h4>
+        <h1 class="num"><%= @total %></h1>
+      </a>
+	  </div>
+	</div>
+  <div class="box-w25">
+  	<div class="admin-box red-bg-color">
+      <a href="<%= admin_verify_codes_path(type: 'today') %>" data-remote="true">
+        <h4>今日验证数量</h4>
+        <h1 class="num"><%= @today %></h1>
+      </a>
+	  </div>
+  </div>
+</div>

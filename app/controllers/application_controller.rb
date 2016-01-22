@@ -20,11 +20,15 @@ class ApplicationController < ActionController::Base
     request.headers["User-Login"] || params[:login]
   end
 
-  def login_app
+  def login_app(force = false)
     user = authentication_login && User.find_by(login: authentication_login)
     if user && Devise.secure_compare(user.authentication_token, authentication_token)
       session[:app_user] = true
-      sign_in user
+      env['devise.skip_trackable'] = true
+      sign_in user, store: false
+    elsif force
+      flash[:error] = '自动登入失败'
+      redirect_to new_user_session_path
     end
   end
 
@@ -38,6 +42,8 @@ class ApplicationController < ActionController::Base
       login_with_admin_model
     elsif browser.wechat?
       authenticate_weixin_user!
+    elsif browser.uboss?
+      login_app(true)
     else
       super
     end

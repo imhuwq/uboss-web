@@ -1,6 +1,6 @@
 class UserRole < ActiveRecord::Base
 
-  ROLE_NAMES = %w(super_admin seller agent offical_senior offical_financial offical_operating)
+  ROLE_NAMES = %w(super_admin seller agent offical_senior offical_financial offical_operating city_manager)
 
   belongs_to :user
   has_many :user_role_relations, dependent: :destroy
@@ -23,7 +23,7 @@ class UserRole < ActiveRecord::Base
         roles |= %w(super_admin seller agent offical_operating offical_financial)
       end
       if user.is_offical_operating? || user.is_super_admin?
-        roles |= %w(seller agent offical_operating)
+        roles |= %w(seller agent offical_operating city_manager)
       end
       user_roles = self.where(name: roles)
       user_roles.present? ? user_roles : user.user_roles

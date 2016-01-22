@@ -44,6 +44,7 @@ gem "jquery-fileupload-rails"
 gem 'font-awesome-sass', '~> 4.4.0'
 gem 'eco'
 gem "select2-rails", '~> 3.5.9.1'
+gem "simple-navigation"
 
 # enum i18n
 gem 'enumerize'

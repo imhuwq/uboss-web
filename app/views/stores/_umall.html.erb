@@ -31,26 +31,18 @@
   <br />
 <% end %>
 
+<div class="store-cover text-center" style="<%= "background-image:url('#{@seller.store_cover.url(:w640)}')" if @seller.user_info.store_cover_identifier.present? %>">
+  <div class="content">
+    <h3 class="name"><%= @seller.store_name %></h3>
 
-<div class="bg-white gap m-bottom10">
-  <div class="store-category-cover">
-    <div class="cover"><img src='<%= @seller.avatar_url(:w120) %>' /></div>   
-    <div class="content">
-  
-      <h3 class="name"><%= @seller.store_name %></h3>
-  
-      <p>
-        <small>
-          <span class="main-color"><%= number_to_percentage(@seller.good_reputation_rate, precision: 0) %></span> 好评（<%= @seller.total_reputations %>）
-        </small>
-      </p>    
-  
-      <% if @seller.store_short_description.present?  %>
-        <p class="gray-color text-cut"><%= @seller.store_short_description %></p>
-      <% end %>       
-      
-    </div>
-  </div><!-- store-category-cover -->
+    <% if @seller.store_short_description.present?  %>
+      <p class="gray-color"><%= @seller.store_short_description %></p>
+    <% end %>
+
+    <p>
+      <span class="main-color"><%= number_to_percentage(@seller.good_reputation_rate, precision: 0) %></span> 好评（<%= @seller.total_reputations %>）
+    </p>
+
     <% if qr_sharing? %>
       <p class="text-center border-top nogap">
         <br />
@@ -74,8 +66,9 @@
         <p class="name"><%= @sharing_node.user.identify %> 分享</p>
       </div>
     <% end %>
-</div>
- 
+  </div>
+</div><!-- store-cover -->
+
 <br />
 
 <div class="bg-white">

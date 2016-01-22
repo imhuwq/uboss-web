@@ -5,4 +5,5 @@ class UserRoleRelation < ActiveRecord::Base
   #validates :user_id, presence: true
   validates :user_role_id, presence: true
   validates_uniqueness_of :user_id, scope: :user_role_id, message: :already_has_role
+  validates :user_role_id, uniqueness: { scope: :user_id }
 end

@@ -35,7 +35,7 @@ class Admin::SellersController < AdminController
 
   def update
     authorize! :update, @seller
-    if @seller.update(seller_params)
+    if @seller.ordinary_store.update(seller_params)
       flash[:notice] = '更新成功'
       redirect_to action: :edit
     else
@@ -78,7 +78,7 @@ class Admin::SellersController < AdminController
     params.require(:user).permit(
       :store_banner_one,          :store_banner_two,          :store_banner_thr,
       :recommend_resource_one_id, :recommend_resource_two_id, :recommend_resource_thr_id,
-      :store_name, :store_short_description, :store_cover
+      :store_name, :store_short_description, :store_cover,
     )
   end
 end

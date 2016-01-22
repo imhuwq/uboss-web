@@ -2,11 +2,15 @@
     padding-left: 40px;
     border-left:1px solid #aaa ;
 }
+.box-w40.info-right-box{
+    padding-left: 40px;
+    border-left:1px solid #aaa ;
+}
 .setting-list{
     background: #9f9d98;
     padding: 20px;
     margin-left: 30px;
-    position:relative;    
+    position:relative;
 }
 .setting-list:after{
     position: absolute;
@@ -38,7 +42,7 @@
       font-size: 20px;
       color: #fff;
       &:hover{
-        opacity: 1;  
+        opacity: 1;
         background: #888;
         color: #fff;
       }

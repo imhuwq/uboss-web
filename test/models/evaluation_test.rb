@@ -8,7 +8,7 @@ class EvaluationTest < ActiveSupport::TestCase
       product_inventory = create(:product_inventory, product: product)
       level1_node = create(:sharing_node, product: product)
       level2_node = create(:sharing_node, product: product, parent: level1_node)
-      order = create(:order,
+      order = create(:ordinary_order,
                      user: buyer,
                      order_items_attributes: [{
                        product: product,
@@ -25,7 +25,7 @@ class EvaluationTest < ActiveSupport::TestCase
       assert_equal evaluation.product_id, order.order_items.first.product_id
       assert_equal '100.00%', Evaluation.product_good_reputation_rate(product.id)
       assert_equal '100.00%', Evaluation.sharer_good_reputation_rate(level2_node.user.reload)
-      order2 = create(:order,
+      order2 = create(:ordinary_order,
                       user: buyer,
                       order_items_attributes: [{
                         product: product,

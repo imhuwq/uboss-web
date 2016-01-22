@@ -5,8 +5,8 @@ class Admin::StoresController < AdminController
     @select_categories = Category.where(use_in_store: false, user_id: current_user.id)
   end
 
-  def update_store_logo
-    if current_user.update(store_logo: params[:avatar])
+  def update_store_cover
+    if current_user.update(store_cover: params[:avatar])
       @message = { message: '上传成功！' }
     else
       @message = { message: '上传失败' }
@@ -74,7 +74,7 @@ class Admin::StoresController < AdminController
     category = Category.where(use_in_store: false).find_by!(id: params[:category][:id], user_id: current_user.id)
     if category && params[:category][:avatar] == ''
       category.update(use_in_store: true, use_in_store_at: Time.now)
-    elsif category 
+    elsif category
       category.update(use_in_store: true, use_in_store_at: Time.now, avatar: params.require(:category).permit(:avatar, :order_number)[:avatar])
     end
     @categories = Category.where(use_in_store: true, user_id: current_user.id).order('use_in_store_at')
