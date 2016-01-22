@@ -13,6 +13,8 @@ class PrivilegeCard < ActiveRecord::Base
   validates_uniqueness_of :user_id, scope: :seller_id
   after_create :create_store_qrcode_img
 
+  delegate :url_helpers, to: 'Rails.application.routes'
+
   def self.find_or_active_card(user_id, seller_id)
     card = PrivilegeCard.find_or_create_by(user_id: user_id, seller_id: seller_id)
     card.update_column(:actived, true) if not card.actived?
@@ -46,16 +48,14 @@ class PrivilegeCard < ActiveRecord::Base
   end
 
   def ordinary_store_qrcode_img_url
-    if ordinary_store_qrcode_img.new_record?
-      get_and_save_store_qrcode_url
-    end
+    get_and_save_store_qrcode_url if ordinary_store_qrcode_img.new_record?
+
     reload.ordinary_store_qrcode_img.image_url
   end
 
   def service_store_qrcode_img_url
-    if service_store_qrcode_img.new_record?
-      get_and_save_store_qrcode_url
-    end
+    get_and_save_store_qrcode_url if service_store_qrcode_img.new_record?
+
     reload.service_store_qrcode_img.image_url
   end
 
@@ -66,12 +66,12 @@ class PrivilegeCard < ActiveRecord::Base
   end
 
   def get_and_save_store_qrcode_url
-    if img_url = get_store_qrcode_img_url(store_qrcode_params[0])
+    if img_url = get_store_qrcode_img_url(ordinary_store_qrcode_params)
       ordinary_store_qrcode_img.remote_avatar_url = img_url
       ordinary_store_qrcode_img.save
     end
 
-    if img_url = get_store_qrcode_img_url(store_qrcode_params[1])
+    if img_url = get_store_qrcode_img_url(service_store_qrcode_params)
       service_store_qrcode_img.remote_avatar_url = img_url
       service_store_qrcode_img.save
     end
@@ -87,19 +87,32 @@ class PrivilegeCard < ActiveRecord::Base
     end
   end
 
-  def store_qrcode_params
-    [{
+  def ordinary_store_qrcode_params
+    {
       user_img_url: user.image_url(:thumb),
       item_img_url: seller.ordinary_store.store_cover_url(:thumb),
-      qrcode_content: 'http://stage.uboss.cn',
+      qrcode_content: url_helpers.sharing_url(code: sharing_node.code, host: default_host),
       username: user.nickname,
       mode: 1
-    },{
+    }
+  end
+
+  def service_store_qrcode_params
+    {
       user_img_url: user.image_url(:thumb),
       item_img_url: seller.service_store.store_cover_url(:thumb),
-      qrcode_content: 'http://stage.uboss.cn',
+      qrcode_content: url_helpers.sharing_url(code: sharing_node.code, host: default_host, redirect: url_helpers.service_store_path(seller.service_store)),
       username: user.nickname,
       mode: 1
-    }]
+    }
   end
+
+  def sharing_node
+    SharingNode.find_or_create_by(user_id: user_id, seller_id: seller_id)
+  end
+
+  def default_host
+    Rails.env.production? ? "http://uboss.me" : "http://stage.uboss.me"
+  end
+
 end
