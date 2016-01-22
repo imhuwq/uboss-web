@@ -636,6 +636,30 @@ ActiveRecord::Schema.define(version: 20160222063837) do
     t.datetime "updated_at",       null: false
   end
 
+  create_table "supplier_product_infos", force: :cascade do |t|
+    t.decimal  "cost_price"
+    t.decimal  "suggest_price_lower"
+    t.datetime "created_at",                      null: false
+    t.datetime "updated_at",                      null: false
+    t.decimal  "suggest_price_upper"
+    t.integer  "supply_status",       default: 0
+    t.integer  "supplier_product_id"
+  end
+
+  add_index "supplier_product_infos", ["supplier_product_id"], name: "index_supplier_product_infos_on_supplier_product_id", unique: true, using: :btree
+
+  create_table "supplier_store_infos", force: :cascade do |t|
+    t.string   "guess_province"
+    t.string   "guess_city"
+    t.string   "phone_number"
+    t.string   "wechat_id"
+    t.integer  "supplier_store_id"
+    t.datetime "created_at",        null: false
+    t.datetime "updated_at",        null: false
+  end
+
+  add_index "supplier_store_infos", ["supplier_store_id"], name: "index_supplier_store_infos_on_supplier_store_id", unique: true, using: :btree
+
   create_table "transactions", force: :cascade do |t|
     t.integer  "user_id"
     t.decimal  "current_amount", default: 0.0

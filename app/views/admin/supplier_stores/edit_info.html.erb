@@ -1,0 +1,30 @@
+<div class="container admin-container">
+	<ul class="breadcrumb">
+		<li><a href="/admin">主页</a></li>
+		<li class="divider"><i class="fa fa-caret-right"></i></li>
+		<li>我要供货</li>
+	</ul>
+</div>
+<br/>
+<div class="container mod-inner">
+  <div class="beige-bg-color admin-box">
+    <div class="edit-store-info">
+      <p>
+        在发布商品前，请先完善客服信息，方便代销商家联系您
+      </p>
+      <%= form_for @supplier_store, url: update_info_admin_supplier_stores_path do |f| %>
+        <div class="form-group">
+          <div class="control-input">
+            <%= f.text_field :phone_number, placeholder: '客服电话' %>
+          </div>
+          <div class="control-input">
+            <%= f.text_field :wechat_id, placeholder: '客服微信' %>
+          </div>
+        </div>
+        <div class="form-actions text-center">
+          <%= f.submit '确定', class: "btn btn-large", id: "submit" %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

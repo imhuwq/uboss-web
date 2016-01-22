@@ -2,6 +2,8 @@ class Admin::SupplierProductsController < AdminController
 
   load_and_authorize_resource except: :create
 
+  before_action :check_new_supplier
+
   def index
     params[:status] ||= 'supply'
     if params[:status] == 'supply'

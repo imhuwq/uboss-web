@@ -187,15 +187,11 @@ Rails.application.routes.draw do
         end
       end
 
-      get '/new_supplier', to: 'accounts#new_supplier'
-      post '/be_supplier', to: 'accounts#be_supplier'
-      delete '/be_not_supplier', to: 'accounts#be_not_supplier'
-
-      get '/my_agencies', to: 'agencies#my_agencies'
-      get '/new_agency', to: 'agencies#new_agency'
-      post '/build_cooperation_with_auth_code', to: 'agencies#build_cooperation_with_auth_code'
-      post '/build_cooperation_with_agency_id', to: 'agencies#build_cooperation_with_agency_id'
-      delete '/end_cooperation/:id', to: 'agencies#end_cooperation', as: :end_cooperation
+      resources :agencies, only: [:index, :new] do
+        post :build_cooperation_with_auth_code, on: :collection
+        post :build_cooperation_with_agency_id, on: :collection
+        delete :end_cooperation, on: :member
+      end
 
       get '/sellers/valid_agent_products', to: 'agency_products#valid_agent_products'
       post '/store_supplier_product/:id', to: 'agency_products#store_supplier_product', as: :store_supplier_product
@@ -233,6 +229,11 @@ Rails.application.routes.draw do
           get :set_common
           get :cancel_common
         end
+      end
+
+      resource :supplier_stores do
+        get :edit_info
+        patch :update_info
       end
 
       resources :supplier_products, except: [:destroy] do
