@@ -48,13 +48,13 @@ class PrivilegeCard < ActiveRecord::Base
   end
 
   def ordinary_store_qrcode_img_url
-    get_and_save_store_qrcode_url if ordinary_store_qrcode_img.new_record?
+    get_and_save_store_qrcode_url if ordinary_store_qrcode_img.new_record? || need_to_update?
 
     reload.ordinary_store_qrcode_img.image_url
   end
 
   def service_store_qrcode_img_url
-    get_and_save_store_qrcode_url if service_store_qrcode_img.new_record?
+    get_and_save_store_qrcode_url if service_store_qrcode_img.new_record? || need_to_update?
 
     reload.service_store_qrcode_img.image_url
   end
@@ -75,6 +75,11 @@ class PrivilegeCard < ActiveRecord::Base
       service_store_qrcode_img.remote_avatar_url = img_url
       service_store_qrcode_img.save
     end
+
+    self.user_name = user.nickname
+    self.user_img  = user.read_attribute(:avatar)
+    self.store_img = service_store.read_attribute(:store_cover)
+    self.save
   end
 
   def get_store_qrcode_img_url(qrcode_params)
@@ -100,11 +105,21 @@ class PrivilegeCard < ActiveRecord::Base
   def service_store_qrcode_params
     {
       user_img_url: user.image_url(:thumb),
-      item_img_url: seller.service_store.store_cover_url(:thumb),
-      qrcode_content: url_helpers.sharing_url(code: sharing_node.code, host: default_host, redirect: url_helpers.service_store_path(seller.service_store)),
+      item_img_url: service_store.store_cover_url(:thumb),
+      qrcode_content: url_helpers.sharing_url(code: sharing_node.code, host: default_host, redirect: url_helpers.service_store_path(service_store)),
       username: user.nickname,
       mode: 1
     }
+  end
+
+  def need_to_update?
+    user_name != user.nickname ||
+      user_img != user.read_attribute(:avatar) ||
+      store_img != service_store.read_attribute(:store_cover)
+  end
+
+  def service_store
+    seller.service_store
   end
 
   def sharing_node
