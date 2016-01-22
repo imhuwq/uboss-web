@@ -40,7 +40,7 @@
 
       <div class="box-w40 info-right-box">
         <br />
-        <p><img src="http://qr.liantu.com/api.php?&amp;text=<%= service_store_url(id: @service_store) %>" width='160'/></p>
+        <p><%= qrcode_image_tag(service_store_url(id: @service_store), html: {width: '160'}) %></p>
         <p class="gap white-bg-color">店铺链接：<%= service_store_url(id: @service_store) %></p>
         <br />
 	  	</div><!-- box-w15 -->

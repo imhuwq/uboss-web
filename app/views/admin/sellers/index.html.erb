@@ -47,7 +47,7 @@
 	<div class="box-w20">
 		<div class="qrcode-box text-center">
 			<h4>商家绑定二维码</h4>
-			<img src="http://qr.liantu.com/api.php?&amp;text=<%= new_seller_url(agent_code: current_user.agent_code) %>"/>
+      <%= qrcode_image_tag(new_seller_url(agent_code: current_user.agent_code)) %>
 		</div>
 	</div>
 </div>
