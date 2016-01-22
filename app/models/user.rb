@@ -222,7 +222,7 @@ class User < ActiveRecord::Base
 
     def find_or_create_guest_with_session(mobile, session)
       user = find_by(login: mobile)
-      user ||= create_guest(mobile)
+      user ||= new_guest(mobile)
       user.update_with_oauth_session(session)
       user
     end

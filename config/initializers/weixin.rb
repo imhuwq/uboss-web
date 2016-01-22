@@ -14,5 +14,88 @@ end
 $weixin_client ||= WeixinAuthorize::Client.new(
   Rails.application.secrets.weixin["app_id"],
   Rails.application.secrets.weixin["app_secret"],
-  'ssobu_wxtk'
+  redis_key: 'ssobu_wxtk'
 )
+
+$weixin_frank_client ||= WeixinAuthorize::Client.new(
+  Rails.application.secrets.weixin_frank["app_id"],
+  Rails.application.secrets.weixin_frank["app_secret"],
+  redis_key: 'ssobu_frank_wxtk'
+)
+
+$weixin_clients = {
+  'gh_86991e4ebd98' => $weixin_client,
+  'gh_7eb3e2137f71' => $weixin_frank_client
+}
+
+if false
+
+  medias = if Rails.env.production?
+             {
+               maker_tutorial: '9EFRB63AS9XXBIcYwxqvKrFP4t16J2-XsP7WeSYUFeM',
+               seller_tutorial: 'mInCvKRGKYG7BQ3NwYoGXEEtnzU2ZBiI9nyXKpZTJF8',
+               contact_tutorial: 'q3Txbg6FYXdnKY7a5cVBzOi9f4-IgzjnKAnKxcoeU1w',
+               sign_in_url: 'http://stage.uboss.me/sign_in',
+               income_url: 'http://stage.uboss.me/account#showincome'
+             }
+           else
+             {
+               maker_tutorial: '64kPaTt2HyTMsJthw6vPbyAlxhhNbTonWrpLPAk3t_U',
+               seller_tutorial: '64kPaTt2HyTMsJthw6vPbyAlxhhNbTonWrpLPAk3t_U',
+               contact_tutorial: '64kPaTt2HyTMsJthw6vPbyAlxhhNbTonWrpLPAk3t_U',
+               sign_in_url: 'http://stage.uboss.me/sign_in',
+               income_url: 'http://stage.uboss.me/account#showincome'
+             }
+           end
+  $weixin_client.create_menu(
+    button: [
+      {
+        name: '专属二维码',
+        type: 'click',
+        key: 'personal_invite_qrcode'
+      }, {
+        name: 'UBOSS+',
+        sub_button: [
+          {
+            name: '创客教程',
+            type: 'media_id',
+            media_id: medias[:maker_tutorial]
+          }, {
+            name: '商家教程',
+            type: 'media_id',
+            media_id: medias[:seller_tutorial]
+          }, {
+            name: '免费入驻',
+            type: 'view',
+            media_id: medias[:sign_in_url]
+          }, {
+            name: '联系我们',
+            type: 'media_id',
+            media_id: medias[:contact_tutorial]
+          }
+        ]
+      }, {
+        name: '我的收益',
+        type: 'view',
+        url: medias[:income_url]
+      }
+    ]
+  )
+  $weixin_frank_client.create_menu(
+    button: [
+      {
+        name: '专属二维码',
+        type: 'click',
+        key: 'personal_invite_qrcode'
+      }, {
+        name: 'U主页',
+        type: 'view',
+        url: 'http://stage.uboss.me'
+      }, {
+        name: '我的收益',
+        type: 'click',
+        key: 'invitor_income_link'
+      }
+    ]
+  )
+end
