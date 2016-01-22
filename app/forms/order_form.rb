@@ -172,6 +172,29 @@ class OrderForm
         orders.delete(order)
       end
     end
+    orders_split_by_supplier(order_attributes)
+  end
+
+  def orders_split_by_supplier(order_attributes)
+    order_attributes.tap do |orders|
+      orders.each do |order|
+        next if order[:order_items_attributes].length < 2
+        _order = order.dup
+        order[:order_items_attributes].group_by do |item|
+          if product = AgencyProduct.includes(:parent).find_by_id(item[:product_id])
+            product.parent.user_id
+          else
+            nil
+          end
+        end.each do |supplier_id, groups|
+          _order[:supplier_id] = supplier_id
+          _order[:order_items_attributes] = groups
+          orders << _order
+        end
+      end
+      orders.delete(order)
+    end
+    orders_attributes
   end
 
   def order_items_of_seller(seller_id)
