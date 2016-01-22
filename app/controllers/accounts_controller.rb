@@ -196,7 +196,7 @@ class AccountsController < ApplicationController
         histroy.try(:update, status: 1)
         flash[:success] = "绑定成功,#{@seller.identify}成为您的商家。"
       else
-        flash[:error] = model_errors(current_user).join('<br/>')
+        flash[:error] = model_errors(@seller).join('<br/>')
       end
     end
 
