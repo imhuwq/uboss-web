@@ -15,7 +15,7 @@ class Admin::StoresController < AdminController
   end
 
   def update_advertisement_img
-    adv = Advertisement.find_by!(id: params[:resource_id], user_id: current_user.id)
+    adv = Advertisement.find_by!(id: params[:resource_id], user_id: current_user.id, user_type: 'Ordinary')
     if adv && adv.update(avatar: params[:avatar])
       @message = { message: '上传成功！' }
     else
@@ -25,7 +25,7 @@ class Admin::StoresController < AdminController
   end
 
   def update_advertisement_order
-    adv = Advertisement.find_by!(id: params[:resource_id], user_id: current_user.id)
+    adv = Advertisement.find_by!(id: params[:resource_id], user_id: current_user.id, user_type: 'Ordinary')
     if adv && adv.update(order_number: params[:resource_val])
       @message = { message: '上传成功！' }
     else
@@ -55,6 +55,7 @@ class Admin::StoresController < AdminController
       @adv = Advertisement.new(params.require(:advertisement).permit(:avatar, :order_number))
       @adv.platform_advertisement = false
       @adv.user_id = current_user.id
+      @adv.user_type = 'Ordinary'
       if params[:advertisement][:type] == 'product' && product = current_user.products.find_by_id(params[:advertisement][:id])
         @adv.product_id = product.id
       elsif params[:advertisement][:type] == 'category' && category = current_user.categories.find_by_id(params[:advertisement][:id])
@@ -82,7 +83,7 @@ class Admin::StoresController < AdminController
   end
 
   def remove_advertisement_item
-    adv = Advertisement.find_by!(id: params[:id], user_id: current_user.id)
+    adv = Advertisement.find_by!(id: params[:resource_id], user_id: current_user.id, user_type: 'Ordinary')
     if adv && adv.destroy
       flash.now[:success] = '删除成功'
     else
@@ -165,7 +166,7 @@ class Admin::StoresController < AdminController
   def get_advertisements
     Advertisement.joins('left join products on (products.id = advertisements.product_id)')
       .where('(product_id is not null AND products.status = 1) OR product_id is null')
-      .where(user_id: current_user.id, platform_advertisement: false)
+      .where(user_id: current_user.id, platform_advertisement: false, user_type: 'Ordinary')
       .order('order_number')
   end
 end

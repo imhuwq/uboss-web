@@ -12,6 +12,8 @@ class Advertisement < ActiveRecord::Base
   delegate :image_url, to: :asset_img, allow_nil: true
   delegate :avatar=, :avatar, to: :asset_img
 
+  validates :user_type, inclusion: { in: ['Ordinary', 'Service']  }, allow_nil: true
+
   enum status: { hide: 0, show: 1 }
   enum zone: { top: 0, central: 1 }
 

@@ -1,3 +1,15 @@
+.service-share-box{
+    .cover{
+        width: 40px;
+        height: 40px;
+        border-radius: 100px;
+        overflow: hidden;
+        img{
+            min-width: 40px;
+            min-height: 40px;
+        }
+    }
+}
 .service-store-info{
   .store-tel{
     height: 30px;
@@ -28,7 +40,24 @@
   }
   
 }
-
+.service-title{
+    border-bottom: 1px solid #eee;
+    padding: 10px 0;
+    color: $brand-primary;
+    font-size: 16px;
+}
+.service-title:before{
+    content: ' ';
+    display: block;
+    float: left;
+    width: 8px;
+    height: 8px;
+    margin-top: 6px;
+    background: $brand-primary;
+    border-radius: 10px;
+    margin-right: 5px;
+    
+}
 .service-product-list{
   .service-store-product:last-child{
     border-bottom: none;
@@ -38,9 +67,14 @@
 .service-store-product,.service-order-box{
   position: relative;
   padding:10px;
+  padding-left:0 ;
   border-bottom: 1px solid #eee;
   display: block;
   overflow: hidden;
+  .product{display: block;}
+  .buy-box{
+      padding: 14px 0 14px 10px;
+  }
   .cover {
     float: left;
     margin-right: 10px;
@@ -58,6 +92,7 @@
   } 
   .title{
     padding: 5px;
+    display: block;
   }
 }
 

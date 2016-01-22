@@ -19,6 +19,7 @@ small{font-size: 80%;}
 .border-radius{ border-radius:4px ;}
 .border-top { border-top:1px solid #eee ;}
 .border-right { border-right:1px solid #eee ;}
+.border-tb{ border-top: 1px solid #eee;border-bottom: 1px solid #eee;}
 .noradius{ border-radius:0}
 
 .fixed-container{ padding-bottom: 60px;}
@@ -108,6 +109,8 @@ h6{font-size: 10px;}
 
 .gap{padding:10px}
 .gap-lr{padding: 0 10px;}
+.gap-left{padding-left: 10px;}
+.gap-right{padding-right: 10px;}
 .nogap{ padding:0;}
 .nogap-left{padding-left: 0;}
 .nogap-right{padding-right: 0;}

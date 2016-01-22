@@ -16,6 +16,7 @@ class ServiceStoresController < ApplicationController
     set_sharing_link_node
     @voucher_products = append_default_filter @service_store.service_products.vouchers.published, order_column: :updated_at
     @group_products = append_default_filter @service_store.service_products.groups.published, order_column: :updated_at
+    @advertisements = get_advertisements
   end
 
   def share
@@ -38,4 +39,10 @@ class ServiceStoresController < ApplicationController
     end
     redirect_to service_stores_path
   end
+
+  private
+  def get_advertisements
+    Advertisement.where(user_type: 'Service', user_id: @seller.id).order('order_number')
+  end
+
 end

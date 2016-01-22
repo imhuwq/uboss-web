@@ -40,17 +40,14 @@
 
       <div class="box-w40 info-right-box">
         <br />
-        <p><img src="http://qr.liantu.com/api.php?&amp;text=<%= service_store_url(id: @service_store, shared: true) %>" width='160'/></p>
+        <p><%= qrcode_image_tag(service_store_url(id: @service_store, shared: true), html: {width: '160'}) %></p>
         <p class="gap white-bg-color">店铺链接：<%= service_store_url(id: @service_store) %></p>
         <br />
 	  	</div><!-- box-w15 -->
     </div><!-- beige-bg-color -->
-
-
-    <br />
-
     <div class="beige-bg-color admin-box">
-    	<br />
+      <hr />
+      <br />
     	<div class="box-w100">
     		<div class="service-store-address">
           店铺位置<span class='service_store_required'>*</span>
@@ -92,10 +89,17 @@
       </div><!-- box-w100-->
 
       <br />
+      <div class="text-right">
+        <%= f.submit '提交', class: 'btn btn-large red-btn' %>
+      </div>
     </div>
     <br />
-    <div class="text-center">
-      <%= f.submit '提交', class: 'btn btn-large red-btn' %>
-    </div>
   <% end %>
+
+  <br />
+  <div id="service_store_advertisements" class='advertisements_content' content='/admin/service_stores'>
+    <%= render partial: "shared/admin/advertisements", locals: {url_prefix: '/admin/service_stores', advertisements: @advertisements} %>
+  </div>
+  <%= render "shared/admin/add_banner" %>
+
 </div>

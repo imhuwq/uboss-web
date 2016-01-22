@@ -42,18 +42,17 @@
   	</div>
   	<div class="box-w60 info-right-box">
   		<br />
-			<p><img src="http://qr.liantu.com/api.php?&amp;text=<%= store_url(current_user.id, shared: :true) %>" width='160'/></p>
+      <p><%= qrcode_image_tag(store_url(current_user.id, shared: true), html: {width: 160}) %></p>
 			<p class="gap white-bg-color">店铺链接：<%= store_url(current_user.id) %></p>
   		<br />
   	</div>
   </div><!-- #info -->
   <br />
-  <div id="advertisements">
-    <%= render "advertisements" %>
+  <div id="ordinary_store_advertisements" class='advertisements_content' content='/admin/stores'>
+    <%= render partial: "shared/admin/advertisements", locals: { url_prefix: '/admin/stores', advertisements: @advertisements } %>
   </div>
-  <%= render "add_banner" %>
 
-
+  <%= render "shared/admin/add_banner" %>
   <br />
   <div id="categories">
     <%= render 'categories' %>

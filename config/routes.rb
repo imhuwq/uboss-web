@@ -181,6 +181,9 @@ Rails.application.routes.draw do
         collection do
           get :income_detail
           get :statistics
+          get :create_advertisement
+          post :update_advertisement_img
+          get :remove_advertisement_item
         end
       end
 

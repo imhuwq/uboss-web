@@ -7,7 +7,7 @@ class OrderPayedJob < ActiveJob::Base
   attr_reader :order, :seller, :buyer, :agent
 
   def perform(order)
-    @order = order
+    @order = order.reload
     @seller = order.seller
     @buyer = order.user
     @agent = @seller && @seller.agent

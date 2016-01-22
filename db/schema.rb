@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160106103733) do
+ActiveRecord::Schema.define(version: 20160120041154) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -27,6 +27,7 @@ ActiveRecord::Schema.define(version: 20160106103733) do
     t.integer  "product_id"
     t.integer  "category_id"
     t.boolean  "platform_advertisement", default: false
+    t.string   "user_type"
   end
 
   create_table "agent_invite_seller_histroys", force: :cascade do |t|

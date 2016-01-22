@@ -1,14 +1,17 @@
 jQuery ($) ->
+  urlPrefix = () ->
+    return $('.advertisements_content').attr('content')
+
   $(document).on 'click','.show-add-banner', ->
     bsize = $(this).closest('.setting-list').find('.setting-banner-box').size()
-    if(bsize <= 5 )
+    if(bsize < 5 )
       $('#add-banner').modal('show')
     else
-      alert('最多只能添加5张') 
+      alert('最多只能添加5张')
   $(document).on 'change', '.banner-sequence' , ->
     $this = $(this)
     this.value = this.value.replace(/[^\d]/g, '')
-  
+
   $.fn.onlyNum = () ->
     $(this).keypress (event) ->
       eventObj = event || e
@@ -17,16 +20,14 @@ jQuery ($) ->
         return true
       else
         return false
-  
-  $(".banner-sequence").onlyNum()  
-  
+  $(".banner-sequence").onlyNum()
 
   $(document).on 'change', '.select-adv-type', ->
     console.log 'change', '.select-adv-type'
     $this = $(this)
     if $this.val() == 'product'
       $.ajax
-        url:  "/admin/stores/get_advertisement_items"
+        url:  "#{urlPrefix()}/get_advertisement_items"
         type: 'GET'
         data: {type: 'product'}
         success: (res) ->
@@ -41,7 +42,7 @@ jQuery ($) ->
 
     else if $this.val() == 'category'
       $.ajax
-        url:  "/admin/stores/get_advertisement_items"
+        url:  "#{urlPrefix()}/get_advertisement_items"
         type: 'GET'
         data: {type: 'category'}
         success: (res) ->
@@ -56,12 +57,13 @@ jQuery ($) ->
           alert("操作错误")
     else
       $(".js-select2.select-adv-item").select2({data: {}})
+
   $(document).on 'click', '.setting-banner-box .close', ->
     $this = $(this)
     $.ajax
-      url:  "/admin/stores/remove_advertisement_item"
+      url:  "#{urlPrefix()}/remove_advertisement_item"
       type: 'GET'
-      data: {id: $this.attr('data-id')}
+      data: {resource_id: $this.attr('data-id')}
 
 
   $(document).on 'click', '.setting-category-box .close', ->
@@ -96,6 +98,7 @@ jQuery ($) ->
   upyunSignature = $("meta[name='upyun-signature']").attr("content")
   upyunUrl = $("meta[name='upyun-form-url']").attr("content")
   upyunBucketDomain = $("meta[name='upyun-domain']").attr("content")
+
   $(document).on 'click',"input.category_upyun_file_json", ->
     $(this).fileupload
       paramName: "file"
@@ -106,7 +109,7 @@ jQuery ($) ->
         "signature": upyunSignature
       add: (e, data) ->
         updateFileJson(e,data,upyunBucketDomain)
-        
+
   updateFileJson = (e,data,upyun_bucket_domain) ->
     $this = $(e.target)
     ajax_to = $this.attr('data-to')
