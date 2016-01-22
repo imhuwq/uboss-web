@@ -1,10 +1,12 @@
 class Admin::AgenciesController < AdminController
 
-  def my_agencies
+  before_action :check_new_supplier
+
+  def index 
     @agencies = current_user.agencies
   end
   
-  def new_agency
+  def new
   end
 
   def build_cooperation_with_auth_code
