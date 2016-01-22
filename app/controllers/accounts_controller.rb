@@ -135,7 +135,7 @@ class AccountsController < ApplicationController
 
   def invite_seller # 创客通过短信邀请的商家
     @histroys = AgentInviteSellerHistroy.where(agent_id: current_user.id)
-    @bind = User.where(agent_id: current_user, authenticated: 1).count
+    @bind = current_user.seller_total_joins.count
   end
 
   def edit_seller_note # 编辑发送信息备注
