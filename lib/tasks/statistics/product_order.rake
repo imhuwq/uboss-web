@@ -32,32 +32,15 @@
 #     puts '统计成功!'
 #   end
 # end
-
-
+path = Rails.root + 'app/helpers/job_helper'
+require path.to_s
+include JobHelper
 namespace :statistics do
     desc 'statistics product_statistics'
     task product_order: :environment do
         puts '开始统计顺序'
         User.joins(:user_roles).where('user_roles.name = ?','seller').select(:id).each do |user|
-            ActiveRecord::Base.connection.execute <<-SQL.squish!
-                DROP TABLE IF EXISTS tb;
-                create table tb (product_id int, 数量排名 int, 综合排名 int);
-                insert into tb
-                    with T as(select id as product_id,Row_Number() over(order by sales_amount desc) as 数量排名,
-                           Row_Number() over(order by published_at desc) as 创建时间排名,
-                           Row_Number() over(order by sales_amount desc)+Row_Number() over(order by published_at desc) as 排名相加
-                           FROM  products
-                           WHERE product.user_id = '#{user.id}'
-                           )
-                    select product_id, 数量排名, Row_Number() over(order by 排名相加) as 综合排名  from T;
-
-
-                UPDATE products SET comprehensive_order = tb.综合排名, sales_amount_order = tb.数量排名
-                FROM tb
-                WHERE products.id = tb.product_id;
-
-                drop table tb;
-            SQL
+            JobHelper.reorder_user_product(user.id)
         end
         puts '统计成功!'
     end
