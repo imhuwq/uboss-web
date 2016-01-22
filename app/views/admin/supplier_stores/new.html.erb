@@ -1,0 +1,67 @@
+<script type="text/javascript">
+  var baiduIPAPI = "http://api.map.baidu.com/location/ip?ak=33c4d665fc455e241a745513797e21b0";
+  $.ajax({
+    type: "GET",
+    url: baiduIPAPI,
+    dataType: "jsonp",
+    success: function(data){
+      $('span#guesscity').text(data.content.address_detail.city);
+      $('input#supplier_store_guess_province').val(data.content.address_detail.province);
+      $('input#supplier_store_guess_city').val(data.content.address_detail.city);
+    }
+  });
+
+  $(document).on("click", "#submit", function(){
+    if(!$("#accept").prop("checked")){
+      alert("您还没有阅读并同意《UBOSS商家入驻协议》");
+      return false;
+    }
+  });
+</script>
+<div class="container admin-container">
+	<ul class="breadcrumb">
+		<li><a href="/admin">主页</a></li>
+		<li class="divider"><i class="fa fa-caret-right"></i></li>
+		<li>我要供货</li>
+	</ul>
+</div>
+<br/>
+<div class="container mod-inner">
+  <div class="beige-bg-color admin-box">
+    <div class='new_supplier'>
+      <%= form_for @supplier_store, url: admin_supplier_stores_path do |f| %>
+        <div class='form-group'>
+          <div class='control-input'>
+            <%= f.text_field :store_name, placeholder: '给供货店铺起个名称吧' %>
+          </div>
+        </div>
+        <div class='form-group'>
+          <%= f.hidden_field :guess_province %>
+          <%= f.hidden_field :guess_city %>
+          UBOSS猜你在<span id='guesscity'></span>，没猜对？<a id="choose_by_hand" data-toggle="modal" data-target="#address-modal">手动选择</a>
+          <div class="modal fade" id="address-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-body">
+                  <%= render 'user_addresses/user_address', f: f, locals: { obj: @supplier_store } %>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-default" data-dismiss="modal">确定</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class='form-group'>
+          <div class='control-input'>
+            <%= check_box_tag 'accept' %>
+            我已阅读并同意《UBOSS商家入驻协议》
+          </div>
+        </div>
+        <div class="form-actions text-center">
+          <%= f.submit '创建店铺', class: "btn btn-large", id: "submit" %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>
