@@ -165,12 +165,19 @@ Rails.application.routes.draw do
     namespace :v1 do
       namespace :admin do
         resources :carriage_templates, only: [:index, :show]
+        resources :service_products, only: [:create]
+        resources :service_stores, only: [:create]
         resources :products, only: [:index, :show, :create] do
           member do
             get :inventories, :detail
           end
         end
       end
+      resources :service_stores, only: [:create] do
+        get :total_verify_detail, :today_verify_detail
+        post :verify
+      end
+
       post 'login', to: 'sessions#create'
       resources :mobile_captchas, only: [:create]
       resources :users, only: [:show]
