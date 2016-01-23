@@ -44,7 +44,8 @@ class SharingController < ApplicationController
 
   def render_sharing_link_node
     if @sharing_link_node.persisted?
-      render json: { sharing_link: sharing_url(@sharing_link_node) }
+      url_params = params[:type] == "service" ? {redirect: service_store_path(@seller.service_store)} : {}
+      render json: { sharing_link: sharing_url(@sharing_link_node, url_params) }
     else
       render json: { message: @sharing_link_node.errors.full_messages.join(',') }, status: 422
     end

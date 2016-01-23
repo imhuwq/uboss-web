@@ -98,7 +98,7 @@
 	      <div class="hidden sharing-meta-container">
 	        <%= store_sharing_meta_tags(seller, nil, service_store_path(seller.service_store)) %>
 	      </div>
-			  <%= link_to "分享店铺", get_seller_sharing_path(seller_id: privilege_card.seller_id), remote: true,
+			  <%= link_to "分享店铺", get_seller_sharing_path(seller_id: privilege_card.seller_id, type: 'service'), remote: true,
 			    class: 'btn btn-block btn-orange-border req-favour-p-snode' %>
 			  <a href="#" class="btn btn-block btn-orange-border p-sharing-btn hidden">分享店铺</a>
 		  </div>
