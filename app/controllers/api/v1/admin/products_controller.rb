@@ -3,12 +3,12 @@ class Api::V1::Admin::ProductsController < ApiBaseController
   before_action :find_product, only: [:show, :inventories, :detail]
 
   def index
-    @products = append_default_filter current_user.products.available, order_column: :updated_at
+    @products = append_default_filter current_user.ordinary_products.available, order_column: :updated_at
   end
 
   def create
     authorize! :create, Product
-    @product = current_user.products.new(product_params)
+    @product = current_user.ordinary_products.new(product_params)
     if @product.save
       render_model_id @product
     else
@@ -29,7 +29,7 @@ class Api::V1::Admin::ProductsController < ApiBaseController
   private
 
   def find_product
-    @product = current_user.products.available.find(params[:id])
+    @product = current_user.ordinary_products.available.find(params[:id])
   end
 
   def product_propertys_params
