@@ -1,7 +1,5 @@
 class OrderItemRefundsController < ApplicationController
 
-  layout 'mobile'
-
   before_action :authenticate_user!
   before_action :find_order_item
   before_action :find_order_item_refund, only: [:show, :edit, :update, :close, :apply_uboss]

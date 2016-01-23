@@ -1,6 +1,6 @@
 class Users::ConfirmationsController < Devise::ConfirmationsController
 
-  layout :new_login_layout
+  layout :login_layout
 
   # GET /resource/confirmation/new
    def new

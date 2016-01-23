@@ -1,6 +1,6 @@
 class Users::PasswordsController < Devise::PasswordsController
 
-  layout :new_login_layout
+  layout :login_layout
 
   # GET /resource/password/new
   # def new

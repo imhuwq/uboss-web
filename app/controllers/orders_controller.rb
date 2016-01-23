@@ -17,7 +17,6 @@ class OrdersController < ApplicationController
     @order_items = @order.order_items
     @sharing_link_node ||=
       SharingNode.find_or_create_by_resource_and_parent(current_user, @seller)
-    render layout: 'mobile'
   end
 
   def new
@@ -48,7 +47,7 @@ class OrdersController < ApplicationController
         flash[:error] = "您已经是UBOSS创客，请勿重复购买"
         redirect_to root_path
       else
-        render layout: 'mobile'
+        render :new
       end
     elsif current_user && params[:item_ids]
       session[:cart_item_ids] = params[:item_ids].split(',')
@@ -65,7 +64,7 @@ class OrdersController < ApplicationController
         preferential_items: cart_items
       ).calculate_preferential_info
 
-      render layout: 'mobile'
+      render :new
     else
       redirect_to root_path
     end

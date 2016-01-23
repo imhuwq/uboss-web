@@ -4,8 +4,6 @@ class RefundMessagesController < ApplicationController
   before_action :find_order_item
   before_action :find_order_item_refund, only: [:new, :create]
 
-  layout 'mobile'
-
   def new
     @refund_message = RefundMessage.new
     @refund_messages = @order_item.refund_messages.order('created_at DESC')

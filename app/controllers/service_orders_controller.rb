@@ -22,7 +22,6 @@ class ServiceOrdersController < ApplicationController
       flash[:error] = "您已经是UBOSS创客，请勿重复购买"
       redirect_to root_path
     else
-      render layout: 'mobile'
     end
   end
 
@@ -49,7 +48,6 @@ class ServiceOrdersController < ApplicationController
     @order_item = @order.order_items.first
     @sharing_link_node ||=
       SharingNode.find_or_create_by_resource_and_parent(current_user, @seller)
-    render layout: 'mobile'
   end
 
   def cancel

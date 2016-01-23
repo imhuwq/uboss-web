@@ -29,7 +29,6 @@ class ChargesController < ApplicationController
     }
     p @pay_p
     @pay_sign = WxPay::Sign.generate(@pay_p)
-    render layout: 'mobile'
   end
 
   def pay_complete
@@ -37,7 +36,6 @@ class ChargesController < ApplicationController
     @order_charge.check_paid?
     @product = @order_charge.order_items.first.item_product
     @privilege_cards = @order_charge.orders.inject([]) { |cards, order| cards << PrivilegeCard.find_by(user: current_user, seller: order.seller) }
-    render layout: 'mobile'
   end
 
 end

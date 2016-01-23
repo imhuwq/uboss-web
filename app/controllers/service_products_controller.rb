@@ -26,7 +26,6 @@ class ServiceProductsController < ApplicationController
     if current_user
       @sharing_link_node ||= SharingNode.find_or_create_by_resource_and_parent(current_user, @product, @sharing_node)
     end
-    render layout: 'mobile'
   end
 
   def switch_favour
@@ -48,7 +47,7 @@ class ServiceProductsController < ApplicationController
   private
 
   def render_product_invalid
-    render action: :no_found, layout: 'mobile'
+    render action: :no_found
   end
 
 end

@@ -1,8 +1,6 @@
 class StoresController < ApplicationController
   include SharingResource
 
-  layout 'mobile'
-
   before_action :login_app, only: [:show]
   before_action :authenticate_user!, only: [:favours]
   before_action :set_seller, only: [:show, :hots, :favours]

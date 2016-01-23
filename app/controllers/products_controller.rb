@@ -8,8 +8,6 @@ class ProductsController < ApplicationController
 
     if request.xhr?
       render partial: 'products/product', collection: @products
-    else
-      render layout: 'mobile'
     end
   end
 
@@ -33,7 +31,6 @@ class ProductsController < ApplicationController
       @sharing_link_node ||=
         SharingNode.find_or_create_by_resource_and_parent(current_user, @product, @sharing_node)
     end
-    render layout: 'mobile'
   end
 
   def get_sku
@@ -61,7 +58,7 @@ class ProductsController < ApplicationController
   end
 
   def render_product_invalid
-    render action: :no_found, layout: 'mobile'
+    render action: :no_found
   end
 
 end

@@ -97,10 +97,6 @@ class ApplicationController < ActionController::Base
     desktop_request? ? 'login' : 'application'
   end
 
-  def new_login_layout
-    desktop_request? ? 'login' : 'mobile'
-  end
-
   def configure_permitted_parameters
     devise_parameter_sanitizer.for(:sign_up) { |u|
       u.permit(:login, :email, :login_identifier, :captcha, :password, :password_confirmation, :remember_me)

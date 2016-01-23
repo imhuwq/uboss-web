@@ -5,7 +5,6 @@ class AccountsController < ApplicationController
   detect_device only: [:new_password, :set_password]
 
   layout :login_layout, only: [:merchant_confirm]
-  layout 'mobile', only: [:show, :income, :bonus_benefit, :edit, :password, :edit_password, :invite_seller, :edit_seller_note, :settings, :seller_agreement, :binding_successed]
 
   before_action :record_scene_identify, only: [:show]
   before_action :authenticate_user!
@@ -26,8 +25,6 @@ class AccountsController < ApplicationController
     @statistics[:oo_after_sale] = current_user.order_item_refunds.progresses.count
 
     @privilege_cards = append_default_filter current_user.privilege_cards.includes(:seller), order_column: :updated_at, page_size: 10
-
-    render layout: 'mobile'
   end
 
   def refunds
@@ -54,9 +51,9 @@ class AccountsController < ApplicationController
       end
     else
       if params[:state] == 'after_sale'
-        render 'accounts/order_after_sale', layout: 'mobile'
+        render 'accounts/order_after_sale'
       else
-        render :orders, layout: 'mobile'
+        render :orders
       end
     end
   end
@@ -67,7 +64,7 @@ class AccountsController < ApplicationController
     if request.xhr?
       render partial: 'accounts/service_order', collection: @orders
     else
-      render :service_orders, layout: 'mobile'
+      render :service_orders
     end
   end
 
@@ -85,7 +82,7 @@ class AccountsController < ApplicationController
     if flash[:new_password_enabled] != true
       redirect_to after_sign_in_path_for(current_user, need_new_passowrd: false)
     else
-      render layout: new_login_layout
+      render layout: login_layout
     end
   end
 
@@ -98,7 +95,7 @@ class AccountsController < ApplicationController
     else
       flash.now[:new_password_enabled] = true
       flash.now[:error] = current_user.errors.full_messages.join('<br/>')
-      render :new_password, layout: new_login_layout
+      render :new_password, layout: login_layout
     end
   end
 
@@ -126,14 +123,14 @@ class AccountsController < ApplicationController
         redirect_to settings_account_path, notice: '修改密码成功'
       else
         flash.now[:error] = '验证码错误'
-        render :edit_password, layout:'mobile'
+        render :edit_password
       end
     elsif current_user.update_with_password(user_params)
       sign_in current_user, bypass: true
       redirect_to settings_account_path, notice: '修改密码成功'
     else
       flash.now[:error] = current_user.errors.full_messages.join('<br/>')
-      render :edit_password, layout:'mobile'
+      render :edit_password
     end
   end
 

@@ -6,7 +6,6 @@ class CartsController < ApplicationController
     cart_items = @cart.cart_items.includes(:product_inventory)
     @valid_items = CartItem.valid_items(cart_items)
     @invalid_items = cart_items - @valid_items
-    render layout: 'mobile'
   end
 
   def delete_item

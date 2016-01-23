@@ -3,7 +3,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
   #before_filter :configure_sign_up_params, only: [:create]
   #before_filter :configure_account_update_params, only: [:update]
 
-  layout :new_login_layout
+  layout :login_layout
 
   before_action :verfiy_message, only: [:new, :create], if: -> { params[:regist_type] == 'email' }
 

@@ -5,7 +5,6 @@ class EvaluationsController < ApplicationController
     @order_item = current_user.order_items.find(params[:id])
     @evaluation = Evaluation.new(order_item: @order_item)
     @stale_form_check_timestamp = Time.now.to_i
-    render layout: 'mobile'
   end
 
   def append
@@ -13,14 +12,12 @@ class EvaluationsController < ApplicationController
     @evaluations = @order_item.evaluations.where(buyer_id: current_user.id)
     @evaluation = @evaluations.first.dup
     @stale_form_check_timestamp = Time.now.to_i
-    render layout: 'mobile'
   end
 
   def show
     @evaluation = Evaluation.find(params[:id])
     @product = @evaluation.product
     @sharing_link_node = @evaluation.order_item.sharing_link_node
-    render layout: 'mobile'
   end
 
   def create
@@ -38,7 +35,7 @@ class EvaluationsController < ApplicationController
         redirect_to action: :show, id: @evaluation.id
       else
         flash[:error] = @evaluation.errors.full_messages.join('<br/>')
-        render action: :new, id: params[:id], layout: 'mobile'
+        render action: :new, id: params[:id]
       end
     end
   end

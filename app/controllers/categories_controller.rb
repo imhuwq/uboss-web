@@ -2,8 +2,6 @@ class CategoriesController < ApplicationController
 
   include SharingResource
 
-	layout 'mobile'
-
   before_action :set_store, :get_sharing_node, :set_sharing_link_node, only: [:show]
 
   def show

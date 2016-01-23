@@ -25,7 +25,6 @@ class HomeController < ApplicationController
   end
 
   def about_us
-    render layout: 'mobile'
   end
 
   def qrcode
@@ -38,14 +37,13 @@ class HomeController < ApplicationController
   end
 
   def hongbao_game
-    render layout: nil
   end
 
   private
 
   def detect_layout
     if not desktop_request?
-      'mobile'
+      'application'
     else
       'desktop'
     end

@@ -1,8 +1,6 @@
 class ServiceStoresController < ApplicationController
   include SharingResource
 
-  layout 'mobile'
-
   before_action :login_app, only: [:show]
 
   def index

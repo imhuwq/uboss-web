@@ -3,8 +3,6 @@ class SalesReturnsController < ApplicationController
   before_action :authenticate_user!
   before_action :find_order_item, :find_order_item_refund
 
-  layout 'mobile'
-
   def new
     @sales_return = SalesReturn.new
   end

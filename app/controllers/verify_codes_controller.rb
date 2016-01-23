@@ -1,7 +1,5 @@
 class VerifyCodesController < ApplicationController
 
-  layout 'mobile'
-
   before_action :authenticate_user!
 
   def index

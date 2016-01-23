@@ -1,22 +1,47 @@
 @import 'shared/application_variables';
-@import 'animations';
 @import "mobile_page/reset";
-@import 'mobile_page/frontjobs/comm';
-@import 'mobile_page/frontjobs/style';
-@import 'mobile_page/frontjobs/appraisal';
-@import 'mobile_page/frontjobs/successful_payment';
-@import 'mobile_page/toshare';
-@import 'mobile_page/mobile';
-@import 'mobile_page/rewrite_style';
-@import 'mobile_page/order';
-@import 'mobile_page/login';
-@import 'mobile_page/product';
-@import 'mobile_page/cart';
+@import 'mobile_page/new/layout';
+@import 'mobile_page/new/header';
+@import 'mobile_page/new/slider';
+@import 'mobile_page/new/form';
+@import 'mobile_page/new/table';
+@import 'mobile_page/new/button';
+@import 'mobile_page/new/tab';
+@import 'mobile_page/new/pop';
+@import 'mobile_page/new/share';
+@import 'mobile_page/new/product';
+@import 'mobile_page/new/account';
+@import 'mobile_page/new/order';
+@import 'mobile_page/new/evaluatation';
+@import 'mobile_page/new/setting';
+@import 'mobile_page/new/product_cuicui';
+@import 'mobile_page/new/login';
+@import 'mobile_page/new/store';
+@import 'mobile_page/new/service_store';
+@import 'mobile_page/new/store-category';
+@import 'mobile_page/new/new_index';
+@import 'mobile_page/new/pop-friend';
+@import 'mobile_page/new/refund';
+@import 'mobile_page/new/umall';
+@import 'mobile_page/new/chat';
+@import 'mobile_page/new/main';
 
-.box {
-  position: relative;
-  margin: 0 auto;
-  overflow: hidden;
+#load-more {
+  color: #fff;
+  padding: 8px;
+  text-align: center;
+  width: 200px;
+  margin: 5px auto;
+  border-radius: 0.2rem;
+  background-color: lighten(#43c3aa, 10%);
+  &.done {
+    background-color: lighten(#43c3aa, 20%);
+  }
+  &.loading {
+    background: image-url("ajax-loader.gif") no-repeat 50px;
+    background-size: 16px;
+    background-color: lighten(#43c3aa, 10%);
+  }
 }
 .clearfix:before, .clearfix:after {
   content: " ";
@@ -27,36 +52,4 @@
 }
 .clear {
   clear: both;
-}
-
-.hidden {
-  display: none;
-}
-.wx-mod-pop {
-  position: fixed;
-  width: 100%;
-  height: 100%;
-  background: rgba(0,0,0,0.8);
-  z-index: 9000;
-  top: 0;
-  left: 0;
-  display: none;
-}
-.text-share {
-  background: image-url('wechat_sharing.png') no-repeat right center;
-  width: 100%;
-  height: 155px;
-  background-size: contain;
-  top: 0;
-  display: block;
-}
-.agreement-pre {
-  padding: 10px;
-  white-space: pre-line;
-}
-.city-select {
-  -webkit-appearance: none;
-  background-color: transparent;
-  border: none;
-  padding-left: 15px;
 }
