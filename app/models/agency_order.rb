@@ -9,4 +9,12 @@ class AgencyOrder < OrdinaryOrder
   def after_completed
     purchase_order.complete!
   end
+
+  def after_payed
+    purchase_order.pay!
+  end
+
+  def after_close
+    purchase_order.close!
+  end
 end

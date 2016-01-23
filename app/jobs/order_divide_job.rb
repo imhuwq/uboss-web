@@ -13,10 +13,9 @@ class OrderDivideJob < ActiveJob::Base
   attr_reader :order_income
 
   def perform(object)
-    if object.class == OrdinaryOrder
-      perform_order_divide(object)
-    elsif object.class == VerifyCode
-      perform_service_order_divide(object)
+    case object.class
+    when OrdinaryOrder, AgencyOrder  then perform_order_divide(object)
+    when VerifyCode     then perform_service_order_divide(object)
     end
   end
 
@@ -29,6 +28,7 @@ class OrderDivideJob < ActiveJob::Base
   # 3. 城市运营商收入
   # 4. 平台收入
   # 5. 商家营收收入
+  # 6. 供货商收入(如果是分销订单)
   #
   def perform_order_divide(order)
     @order = order
@@ -98,10 +98,21 @@ class OrderDivideJob < ActiveJob::Base
         divide_income_for_official_or_agent do |divide_amount|
           @order_income -= divide_amount
         end
+        supplier_divide_price = 0
+        @order_items.each do |order_item|
+          divide_income_for_agency order_item do |divide_amount|
+            supplier_divide_price += divide_amount
+            @order_income -= divide_amount
+          end
+        end if @order.is_agency_order?
 
         SellingIncome.create!(user: @order.seller, amount: order_income, order: @order)
 
         if @order.class == OrdinaryOrder
+          @order.update_columns(income: order_income, sharing_rewared: true)
+          @order.complete!
+        elsif @order.is_agency_order?
+          @order.purchase_order.update(income: supplier_divide_price)
           @order.update_columns(income: order_income, sharing_rewared: true)
           @order.complete!
         elsif @order.class == ServiceOrder
@@ -171,6 +182,23 @@ class OrderDivideJob < ActiveJob::Base
       yield divide_income
 
     end
+  end
+
+  def divide_income_for_agency(order_item)
+    return if order_item.order_item_refunds.successed.where('money > 0').exists?
+    product_inventory = order_item.product_inventory
+    original_product_inventory = product_inventory.parent
+    divide_price = original_product_inventory.price
+    divide_price = divide_price > @order_income ? @order_income : divide_price
+    DivideIncome.create!(
+            order: @order,
+            amount: divide_price,
+            user: original_product_inventory.user
+          )
+    logger.info(
+      "Divide order: #{@order.number}, [Supplier id: #{divide_record.id}, amount: #{divide_price} ]")
+
+    yield divide_price
   end
 
   def reward_sharing_users(order_item, &block)
