@@ -1,6 +1,6 @@
 module JobHelper
 
-    def reorder_user_product(user_id)
+    def self.reorder_user_product(user_id)
 		ActiveRecord::Base.connection.execute <<-SQL.squish!
 		    DROP TABLE IF EXISTS tb;
 		    create table tb (product_id int, 数量排名 int, 综合排名 int);

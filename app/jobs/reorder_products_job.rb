@@ -4,8 +4,8 @@ class ReorderProductsJob < ActiveJob::Base
 
   include Loggerable
 
-  def perform(product)
-    JobHelper.reorder_user_product(product.id) # Rails.root + 'app/helpers/job_helper'
+  def perform(user_id)
+    JobHelper.reorder_user_product(user_id) # Rails.root + 'app/helpers/job_helper'
   end
 
 end

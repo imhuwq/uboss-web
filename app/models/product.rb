@@ -219,7 +219,7 @@ class Product < ActiveRecord::Base
   end
 
   def reorder
-    ReorderProductsJob.perform_later(self)
+    ReorderProductsJob.perform_later(self.user_id)
   end
 
   private
