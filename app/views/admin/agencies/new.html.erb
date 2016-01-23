@@ -1,5 +1,12 @@
-<div class='container admin-container'>
-  <%= render 'left_bar', from: 'new_agency' %>
+<div class="container admin-container">
+	<ul class="breadcrumb">
+		<li><a href="/admin">主页</a></li>
+		<li class="divider"><i class="fa fa-caret-right"></i></li>
+		<li>代销商</li>
+	</ul>
+</div>
+<br />
+<div class="container nogap ">
   <div class='new_agency'>
     <%= text_field_tag :mobile, '', id: 'new_mobile' %>
     <a style='color:#fff;' href='#' class='btn pull-right' data-invite-agency='true' id='send_mobile'>邀请代销商</a>
