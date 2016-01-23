@@ -35,7 +35,7 @@ class PurchaseOrder < ActiveRecord::Base
       transitions from: [:payed, :shiped], to: :signed
     end
     event :close do
-      transitions from: :unpay, to: :closed, after: -> { order.close }
+      transitions from: :unpay, to: :closed
     end
     event :complete do
       transitions from: :signed, to: :completed
@@ -56,6 +56,10 @@ class PurchaseOrder < ActiveRecord::Base
     Rails.logger.info e.backtrace.join("\n")
     errors.add(:base, e.message)
     false
+  end
+
+  def cancle
+    close! && order.close!
   end
 
   private
