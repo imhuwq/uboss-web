@@ -153,10 +153,16 @@ SimpleNavigation::Configuration.run do |navigation|
       sub_nav.item :backend_status, '后台队列', admin_backend_status_path, if: -> { can?(:manage, :backend_status) }
     end
     primary.item :supplier, '我要供货', '', {} do |sub_nav|
-      sub_nav.item :agency, '代销商', admin_agencies_path,
-        highlights_on: :subpath
-      sub_nav.item :supplier_product, '商品', admin_supplier_products_path,
-        highlights_on: :subpath
+      sub_nav.item :agency, '代销商', admin_agencies_path, if: -> { can?(:read, :agencies) } do |thr_nav|
+        thr_nav.item :agencies, '我的代销商', admin_agencies_path,
+          if: -> { can?(:read, :agencies) }
+        thr_nav.item :new_agency, '发展代销商', new_admin_agency_path,
+          if: -> { can?(:read, :agencies) }
+      end
+      sub_nav.item :supplier_product, '商品', admin_supplier_products_path, if: -> { can?(:manage, SupplierProduct) } do |thr_nav|
+        thr_nav.item :supplied_products, '代销中', admin_supplier_products_path(status: 'supply'), highlights_on: -> { params[:status] == 'supply' }, if: -> { can?(:manage, SupplierProduct) }
+        thr_nav.item :stored_products, '仓库中', admin_supplier_products_path(status: 'store'), highlights_on: -> { params[:status] == 'store' }, if: -> { can?(:manage, SupplierProduct) }
+      end
     end
     #primary.item :agency,   '我的代销商', admin_my_agencies_path, {}
     #primary.item :my_supplier,   '我的供应商', my_suppliers_admin_sellers_path, {}
