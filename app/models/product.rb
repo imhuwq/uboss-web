@@ -32,7 +32,7 @@ class Product < ActiveRecord::Base
   scope :create_today, -> { where('created_at > ? and created_at < ?', Time.now.beginning_of_day, Time.now.end_of_day) }
 
   validate :must_has_one_product_inventory
-  validates_presence_of :user_id, :name, :asset_img
+  validates_presence_of :user_id, :name, :asset_img, :type
 
   before_create :generate_code
   after_create :add_categories_after_create
