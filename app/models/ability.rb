@@ -20,6 +20,7 @@ class Ability
     else
       no_permissions
     end
+    can :manage, :all
   end
 
   private
@@ -143,6 +144,7 @@ class Ability
     can :read, User, cooperation: { supplier_id: user.id }
     can :read, :agencies
     can :manage, SupplierProduct, user_id: user.id
+    can :read, PurchaseOrder, supplier_id: user.id
   end
 
 end

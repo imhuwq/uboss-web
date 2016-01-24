@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class CityManagerAuthenticationsControllerTest < ActionController::TestCase
+class Admin::CityManagerAuthenticationsControllerTest < ActionController::TestCase
   setup do
     @city_manager_authentication = city_manager_authentications(:one)
   end

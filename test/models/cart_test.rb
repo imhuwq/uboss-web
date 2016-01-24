@@ -101,4 +101,22 @@ class CartTest < ActiveSupport::TestCase
       assert_equal 3*20+200, total_price
     end
   end
+  # TODO
+  describe '.split order items' do
+    before do
+      # init data
+    end
+
+    it "should be created service order" do
+      # ...
+    end
+
+    it "should be created ordinary order" do
+      # ...
+    end
+
+    it "should be created fenxiao order" do
+      # ...
+    end
+  end
 end

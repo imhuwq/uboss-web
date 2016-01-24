@@ -10,6 +10,14 @@ GIT
       yajl-ruby (>= 1.2.0)
 
 GIT
+  remote: git://github.com/radar/paranoia.git
+  revision: f180fe6faaffe3f48c58061bab7d14a1fafd16fc
+  branch: rails4
+  specs:
+    paranoia (2.1.5)
+      activerecord (~> 4.0)
+
+GIT
   remote: git://github.com/seuros/capistrano-sidekiq.git
   revision: 7bc73100681805c88ef58bb6984ac48b8662241c
   specs:
@@ -561,6 +569,7 @@ DEPENDENCIES
   nested_form
   omniauth-wechat-oauth2
   paper_trail (~> 4.0.0)
+  paranoia!
   pg
   pry-byebug
   pry-rails

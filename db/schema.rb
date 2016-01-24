@@ -134,13 +134,15 @@ ActiveRecord::Schema.define(version: 20160123073444) do
     t.string   "attachment_2"
     t.string   "attachment_3"
     t.string   "type"
+    t.datetime "verified_at"
     t.datetime "created_at",      null: false
     t.datetime "updated_at",      null: false
-    t.datetime "verified_at"
     t.string   "province_code"
     t.string   "city_code"
     t.string   "district_code"
   end
+
+  add_index "certifications", ["user_id"], name: "index_certifications_on_user_id", using: :btree
 
   create_table "city_managers", force: :cascade do |t|
     t.integer  "user_id"
@@ -337,6 +339,8 @@ ActiveRecord::Schema.define(version: 20160123073444) do
     t.decimal  "ship_price",      default: 0.0
     t.integer  "order_charge_id"
     t.decimal  "paid_amount",     default: 0.0
+    t.string   "type"
+    t.integer  "supplier_id"
   end
 
   add_index "orders", ["number"], name: "index_orders_on_number", unique: true, using: :btree
@@ -479,6 +483,22 @@ ActiveRecord::Schema.define(version: 20160123073444) do
 
   add_index "products", ["type"], name: "index_products_on_type", using: :btree
 
+  create_table "purchase_orders", force: :cascade do |t|
+    t.integer  "seller_id"
+    t.integer  "supplier_id"
+    t.integer  "state"
+    t.string   "number"
+    t.integer  "order_id"
+    t.decimal  "pay_amount",  precision: 10, scale: 2
+    t.datetime "paid_at"
+    t.decimal  "income",      precision: 10, scale: 2
+    t.datetime "created_at",                           null: false
+    t.datetime "updated_at",                           null: false
+  end
+
+  add_index "purchase_orders", ["seller_id"], name: "index_purchase_orders_on_seller_id", using: :btree
+  add_index "purchase_orders", ["supplier_id"], name: "index_purchase_orders_on_supplier_id", using: :btree
+
   create_table "redactor_assets", force: :cascade do |t|
     t.string   "data_file_name",               null: false
     t.string   "data_content_type"
@@ -609,6 +629,16 @@ ActiveRecord::Schema.define(version: 20160123073444) do
   end
 
   add_index "simple_captcha_data", ["key"], name: "idx_key", using: :btree
+
+  create_table "stock_movements", force: :cascade do |t|
+    t.integer  "product_inventory_id"
+    t.integer  "originator_id"
+    t.string   "originator_type"
+    t.integer  "quantity"
+    t.integer  "action"
+    t.datetime "created_at",           null: false
+    t.datetime "updated_at",           null: false
+  end
 
   create_table "store_phones", force: :cascade do |t|
     t.string   "area_code"
