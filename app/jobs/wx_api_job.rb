@@ -56,7 +56,7 @@ class WxApiJob < ActiveJob::Base
     invitor_weixin_openid = wx_scene.properties['weixin_openid']
     invitor = wx_scene.user
     invite_reward = Ubonus::WeixinInviteReward.new(
-      amount: rand(5..100)/100.0,
+      amount: 0.11,
       user: invitor,
       properties: {
         to_wx_user_id: invitor_weixin_openid,
