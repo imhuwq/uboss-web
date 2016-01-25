@@ -22,8 +22,8 @@ class Admin::AgenciesController < AdminController
           user
         end
 
-        if current_user.cooperations.create!(agency_id: user.id)
-          captcha.destroy!
+        if current_user.cooperations.create(agency_id: user.id)
+          captcha.destroy
           render json: nil, status: :created
         else
           render json: { message: '授权失败' }, status: :failure
