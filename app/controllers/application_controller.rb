@@ -21,7 +21,7 @@ class ApplicationController < ActionController::Base
   end
 
   def login_app(force = false)
-    user = authentication_login && User.find_by(login: authentication_login)
+    user = authentication_login && User.find_for_database_authentication(login_identifier: authentication_login)
     if user && Devise.secure_compare(user.authentication_token, authentication_token)
       session[:app_user] = true
       env['devise.skip_trackable'] = true
