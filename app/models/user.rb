@@ -265,7 +265,7 @@ class User < ActiveRecord::Base
       self.agent = agent_user
       self.admin = true
       self.user_info.service_rate = 5
-      self.user_roles << UserRole.seller if not self.is_seller?
+      # self.user_roles << UserRole.seller if not self.is_seller?
       self.save
     else
       false
@@ -288,7 +288,7 @@ class User < ActiveRecord::Base
   def bind_seller(seller)
     seller.agent = self
     seller.admin = true
-    seller.user_roles << UserRole.seller if !seller.is_seller?
+    # seller.user_roles << UserRole.seller if !seller.is_seller?
     seller.save
   end
 

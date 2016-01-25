@@ -55,29 +55,14 @@ class Ability
   end
 
   def grant_permissions_to_seller user
-    can :read, User, id: user.id
-    can :manage, Order, seller_id: user.id
     can :manage, Product, user_id: user.id
+    ordinary_user_permissions(user)
+  end
+
+  def grant_permissions_to_server user
     can :manage, ServiceProduct, user_id: user.id
     can :manage, ServiceStore, user_id: user.id
-    can :manage, VerifyCode, user_id: user.id
-    can :manage, Evaluation, user_id: user.id
-    can :manage, :income
-    can [:read, :create], PersonalAuthentication, user_id: user.id
-    can [:edit, :update], PersonalAuthentication, { user_id: user.id, status: %w(posted no_pass) }
-    can [:read, :create], EnterpriseAuthentication, user_id: user.id
-    can [:edit, :update], EnterpriseAuthentication, { user_id: user.id, status: %w(posted no_pass) }
-    can :read, SharingIncome, seller_id: user.id
-    can :read, DivideIncome, user_id: user.id
-    can :read, DivideIncome, order: { seller_id: user.id }
-    can :read, SellingIncome, user_id: user.id
-    can :manage, Category, user_id: user.id
-    can :manage, BankCard, user_id: user.id
-    can :manage, CarriageTemplate, user_id: user.id
-    can :read, Express
-    can :set_common, Express
-    can :manage, OrderItemRefund, order_item: { order: { seller_id: user.id } }
-    can :manage, UserAddress, user_id: user.id
+    ordinary_user_permissions(user)
   end
 
   def grant_permissions_to_agent user
@@ -133,6 +118,29 @@ class Ability
     can :manage, :platform_advertisements
     can :manage, Advertisement
     can :manage, CityManager
+  end
+
+  def ordinary_user_permissions(user)
+    can :read, User, id: user.id
+    can :manage, Order, seller_id: user.id
+    can :manage, VerifyCode, user_id: user.id
+    can :manage, Evaluation, user_id: user.id
+    can :manage, :income
+    can [:read, :create], PersonalAuthentication, user_id: user.id
+    can [:edit, :update], PersonalAuthentication, { user_id: user.id, status: %w(posted no_pass) }
+    can [:read, :create], EnterpriseAuthentication, user_id: user.id
+    can [:edit, :update], EnterpriseAuthentication, { user_id: user.id, status: %w(posted no_pass) }
+    can :read, SharingIncome, seller_id: user.id
+    can :read, DivideIncome, user_id: user.id
+    can :read, DivideIncome, order: { seller_id: user.id }
+    can :read, SellingIncome, user_id: user.id
+    can :manage, Category, user_id: user.id
+    can :manage, BankCard, user_id: user.id
+    can :manage, CarriageTemplate, user_id: user.id
+    can :read, Express
+    can :set_common, Express
+    can :manage, OrderItemRefund, order_item: { order: { seller_id: user.id } }
+    can :manage, UserAddress, user_id: user.id
   end
 
 end
