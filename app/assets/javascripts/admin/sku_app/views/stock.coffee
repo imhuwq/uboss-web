@@ -1,14 +1,14 @@
 class StockSku.Views.Stock extends Backbone.View
 
-  template: JST["#{StockSku.TemplatesPath}/stock"]
-
   el: '#product-stock'
 
   read_only: false
 
-  initialize: ->
+  initialize: (options)->
     @listenTo @collection, 'skuchange', @render
     @listenTo @, 'initShow', @renderShow
+    @options = options
+    @template = JST["#{StockSku.TemplatesPath}/stock/#{options.type}"]
 
   stockCache: []
 
@@ -41,7 +41,7 @@ class StockSku.Views.Stock extends Backbone.View
       console.log('new stockItemModel')
       stockItemModel = @collection.add(id: skuPVId + parseInt(Math.random() * 1000), sku_attributes: _.clone(skuAttrs))
     stockItemModel.set('read_only', @read_only)
-    stockItemView = new StockSku.Views.StockItem(model: stockItemModel)
+    stockItemView = new StockSku.Views.StockItem(model: stockItemModel, type: @options.type)
     @stockCache.push(stockItemView)
     @$('table#stock-group tbody').append stockItemView.render().el
     @
