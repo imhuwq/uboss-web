@@ -69,11 +69,13 @@ class User < ActiveRecord::Base
   has_many :cooperations, foreign_key: 'supplier_id', dependent: :destroy
   has_many :agencies, through: :cooperations, source: :agency
   has_many :supplier_products, ->{ where(type: 'SupplierProduct') }
+  has_many :send_captcha_histories, ->{ where(invite_type: 1) }, foreign_key: 'sender_id', class_name: 'CaptchaSendingHistory'
 
   #for agencies
   has_many :reverse_cooperations, foreign_key: 'agency_id', class_name: 'Cooperation', dependent: :destroy
   has_many :suppliers, through: :reverse_cooperations, source: :supplier
   has_many :agency_products, ->{ where(type: 'AgencyProduct') }
+  has_many :receive_captcha_histories, ->{ where(invite_type: 1) }, foreign_key: 'receiver_id', class_name: 'CaptchaSendingHistory'
 
 
   validates :login, uniqueness: true, mobile: true, allow_blank: true

@@ -21,6 +21,9 @@ $ ->
         data: data
       .done ->
         if sendBtn.data 'invite-agency'
+          mobile_submit_time = 0
+          sendBtn.removeClass("disabled")
+          $('#new_mobile').val('')
           $('.invite-agency-success .modal-content span').text(mobile)
           $('.invite-agency-success').modal()
         else
