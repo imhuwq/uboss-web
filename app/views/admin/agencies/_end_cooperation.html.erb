@@ -13,7 +13,7 @@
       </div>
       <div class="modal-footer">
         <%= form_for(current_user.cooperations.find_by_agency_id(agency.id),
-                     url: admin_end_cooperation_path(agency.id),
+                     url: end_cooperation_admin_agency_path(agency.id),
                      html: { method: :delete },
                      remote: true) do |f| %>
           <div class="actions">

@@ -2,18 +2,18 @@ class StockSku.Views.StockItem extends Backbone.View
 
   tagName: 'tr'
 
-  template: JST["#{StockSku.TemplatesPath}/stock_item"]
-
   events:
     'blur input.sku-price': 'setPrice'
     'blur input.sku-count': 'setCount'
 
-  initialize: ->
+  initialize: (options)->
     @listenTo @model, "change:id", @render
     @listenTo @model, 'invalid', @showErrors
     @listenTo @model, "change:price", @clearPriceErrors
     @listenTo @model, "change:count", @clearCountErrors
     @listenTo @model, "change:share_amount_total", @clearPriceErrors
+    @options = options
+    @template = JST["#{StockSku.TemplatesPath}/stock_item/" + @options.type]
 
   render: ->
     @$el.html @template(@model.toJSON())
