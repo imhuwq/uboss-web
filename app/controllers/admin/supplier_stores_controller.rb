@@ -10,7 +10,7 @@ class Admin::SupplierStoresController < AdminController
     @supplier_store = current_user.build_supplier_store
     @supplier_store.build_supplier_store_info
     @supplier_store.attributes = supplier_store_params
-    if supplier_store.save and current_user.user_roles << UserRole.find_by(name: 'supplier')
+    if @supplier_store.save and current_user.user_roles.create(name: 'supplier', display_name: '供应商')
       flash[:success] = '恭喜，创建供货店铺成功！'
       redirect_to edit_info_admin_supplier_stores_path
     else
