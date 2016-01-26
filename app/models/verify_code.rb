@@ -37,9 +37,11 @@ class VerifyCode < ActiveRecord::Base
   def generate_code
     loop do
       random_number = SecureRandom.random_number(9999999999).to_s
-      tmp_number = random_number.center(10, rand(1000000000..9999999999).to_s)
-      unless VerifyCode.find_by(code: tmp_number)
-        self.code = tmp_number and break
+      if random_number.size < 10
+        random_number = random_number.center(10, rand(1000000000..9999999999).to_s)
+      end
+      unless VerifyCode.where(code: random_number).exists?
+        self.code = random_number and break
       end
     end
   end
