@@ -93,13 +93,14 @@ $ ->
       return false
     else
       $.ajax
-        url: '/admin/build_cooperation_with_auth_code',
+        url: '/admin/agencies/build_cooperation_with_auth_code',
         type: 'POST',
         data: {
           mobile_auth_code: mobile_auth_code
         },
       .done ->
         alert '您已成功授权'
+        $('#mobile_auth_code').val('')
       .fail (xhr, textStatus) ->
         if xhr.responseJSON?
           alert(xhr.responseJSON.message)

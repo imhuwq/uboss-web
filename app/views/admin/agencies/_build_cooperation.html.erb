@@ -12,7 +12,7 @@
         授权后，此代销商能够看到您代销商品的成本价并选择代销商品进行销售
       </div>
       <div class="modal-footer">
-        <%= form_for(current_user.cooperations.build(agency_id: agency.id), url: admin_build_cooperation_with_agency_id_path, remote: true) do |f| %>
+        <%= form_for(current_user.cooperations.build(agency_id: agency.id), url:  build_cooperation_with_agency_id_admin_agencies_path, remote: true) do |f| %>
           <%= f.hidden_field :agency_id %>
           <div class="actions">
             <button type="button" class="btn" data-dismiss="modal">不取消</button>
