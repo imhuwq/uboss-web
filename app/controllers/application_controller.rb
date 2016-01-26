@@ -27,7 +27,7 @@ class ApplicationController < ActionController::Base
     if user && Devise.secure_compare(user.authentication_token, authentication_token)
       session[:app_user] = true
       env['devise.skip_trackable'] = true
-      sign_in user, store: false
+      sign_in user
     elsif force
       flash[:error] = '自动登入失败'
       redirect_to new_user_session_path
