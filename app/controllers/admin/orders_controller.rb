@@ -49,7 +49,7 @@ class Admin::OrdersController < AdminController
   def index
     @type = params[:type] || 'all'
 
-    @orders = append_default_filter @orders.recent.
+    @orders = append_default_filter scope.recent.
       includes(:user, order_items: [:product, :product_inventory])
     @counting_orders = @orders
 
@@ -121,5 +121,9 @@ class Admin::OrdersController < AdminController
   end
 
   def record_operation
+  end
+
+  def scope
+    OrdinaryOrder.unscope(:where).commons.accessible_by(current_ability)
   end
 end
