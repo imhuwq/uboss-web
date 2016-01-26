@@ -8,9 +8,11 @@
       <% end %>
     </div>
   </div>
-  <div id='slider-points'>
-    <% advertisements.size.times do |index| %>
-      <span class="<%= 'active' if index == 0 %>">*</span>
-    <% end %>
-  </div>
+  <% if advertisements.size > 1 %>
+    <div id='slider-points'>
+      <% advertisements.size.times do |index| %>
+        <span class="<%= 'active' if index == 0 %>">*</span>
+      <% end %>
+    </div>
+  <% end %>
 </div>
