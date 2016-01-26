@@ -1,0 +1,20 @@
+<tr>
+  <td>
+	  <%= image_tag(agency_in_table.avatar.url(:thumb)) %>
+    <%= agency_in_table.nickname %>
+  </td>
+  <td>昨日业绩</td>
+  <td>累计业绩</td>
+  <td>代销商品数</td>
+  <td>商家好评率</td>
+  <td><%= agency_in_table.mobile %></td>
+  <td>
+    <div class="cooperation_form" id="cooperation_form_<%=agency_in_table.id%>">
+      <% if current_user.has_cooperation_with_agency?(agency_in_table) %>
+        <%= render 'end_cooperation', agency: agency_in_table %>
+      <% else %>
+        <%= render 'build_cooperation', agency: agency_in_table %>
+      <% end %>
+    </div>
+  </td>
+</div>
