@@ -67,3 +67,24 @@ a#choose_by_hand {
     margin-bottom: 10px;
   }
 }
+
+.admin-agency-box {
+  padding: 20px;
+  margin-bottom: 20px;
+  .agency-title {
+    border-bottom: 1px solid gray;
+    color: #636363;
+    margin-bottom: 20px;
+  }
+  .input-group {
+    margin-bottom: 10px;
+    input {
+      width: 300px;
+    }
+    #send_mobile, #authorize_agency {
+      padding: 10px;
+      width: 72px;
+      text-align: center;
+    }
+  }
+}

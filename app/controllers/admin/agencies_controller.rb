@@ -7,6 +7,7 @@ class Admin::AgenciesController < AdminController
   end
   
   def new
+    @agencies = User.joins(:receive_captcha_histories)
   end
 
   def build_cooperation_with_auth_code
@@ -16,13 +17,16 @@ class Admin::AgenciesController < AdminController
         if user = User.find_by(login: mobile)
           user
         else
-          user = User.new(login: mobile, nickname: mobile, mobile: mobile)
+          user = User.new(login: mobile, nickname: mobile, mobile: mobile, password: Devise.friendly_token, need_reset_password: true)
           user.save(validate: false)
           user.user_roles << UserRole.find_by(name: 'seller')
           user
         end
 
-        if current_user.cooperations.create(agency_id: user.id)
+        csh = CaptchaSendingHistory.find_by(code: params[:mobile_auth_code], sender_id: current_user.id, receiver_mobile: mobile, invite_type: 1)
+        csh.update_attributes(receiver_id: user.id)
+
+        if csh.update_attributes(receiver_id: user.id) and current_user.cooperations.create(agency_id: user.id)
           captcha.destroy
           render json: nil, status: :created
         else
