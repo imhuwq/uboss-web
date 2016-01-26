@@ -7,13 +7,15 @@ class PurchaseOrder < ActiveRecord::Base
   validates_uniqueness_of :number, allow_blank: true
   validates :order, presence: true, uniqueness: true
 
+  delegate :mobile, :regist_mobile, :identify, to: :seller, prefix: true, allow: nil
   attr_accessor :express_name, :ship_number, :express_id
 
+  scope :with_refunds, -> { joins(order_items: :order_item_refunds).uniq }
   scope :today, -> (date=Date.today) { where(['DATE(purchase_orders.created_at) = ?', date]) }
   scope :week, -> (time=Time.now) { where(created_at: time.beginning_of_week..time.end_of_week) }
   scope :month, -> (time=Time.now) { where(created_at: time.beginning_of_month..time.end_of_month) }
 
-  before_save :set_default_values, if: :order
+  before_create :set_default_values, if: :order
 
   enum state: { unpay: 0, payed: 1, shiped: 3, signed: 4, closed: 5, completed: 6 }
 

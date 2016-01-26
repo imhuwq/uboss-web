@@ -29,7 +29,7 @@
 <div class="container">
   <ul class="nav nav-tabs nav-justified">
     <li class="<%= 'active' if params[:segment] == 'all' %>"><%= link_to "全部", {segment: 'all'} %></li>
-    <li class="<%= 'active' if params[:segment] == 'paid' %>"><%= link_to "待发货", {segment: 'paid'} %></li>
+    <li class="<%= 'active' if params[:segment] == 'payed' %>"><%= link_to "待发货", {segment: 'payed'} %></li>
     <li class="<%= 'active' if params[:segment] == 'completed' %>"><%= link_to "已完成", {segment: 'completed'} %></li>
     <li class="<%= 'active' if params[:segment] == 'return' %>"><%= link_to "售后", {segment: 'return'} %></li>
   </ul>
@@ -61,6 +61,7 @@
               <span>订单编号: <%= order.number %></span>
             </label>
             <span class='order_created_at'>创建时间: <%= order.created_at %></span>
+            <span class='order_created_at'>代销商: <%= order.seller_identify %></span>
           </td>
         </tr>
         <% size = order.order_items.size %>
