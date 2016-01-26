@@ -451,6 +451,6 @@ zh-CN:
     mobile_captcha_fail: 短信发送失败
   tags:
     order:
-      distribution_order: 分销
+      agency_order: 分销
       service_order: 团购
       ordinary_order: ''

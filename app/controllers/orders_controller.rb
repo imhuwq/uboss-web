@@ -1,7 +1,7 @@
 class OrdersController < ApplicationController
   before_action :authenticate_user!, except: [:new, :create, :ship_price, :change_address]
   before_action :find_order, only: [:cancel, :show, :pay, :pay_complete, :received]
-  before_action :find_product, only: :change_address
+  before_action :set_product, only: :change_address
   before_action :authenticate_user_if_browser_wechat, only: [:new]
 
   def cancel

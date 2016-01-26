@@ -59,6 +59,7 @@ class Ability
   def grant_permissions_to_seller user
     can :read, User, id: user.id
     can :manage, Order, seller_id: user.id
+    cannot :delivery, AgencyOrder, seller_id: user.id
     can :manage, Product, user_id: user.id
     can :manage, ServiceProduct, user_id: user.id
     can :manage, ServiceStore, user_id: user.id
@@ -143,6 +144,7 @@ class Ability
     can :read, User, cooperation: { supplier_id: user.id }
     can :read, :agencies
     can :manage, SupplierProduct, user_id: user.id
+    can :manage, PurchaseOrder, supplier_id: user.id
   end
 
   def grant_permissions_to_agency user
