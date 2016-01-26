@@ -1,5 +1,5 @@
 class AgencyOrder < OrdinaryOrder
-  has_one :purchase_order
+  has_one :purchase_order, foreign_key: :order_id
   after_create :create_purchase_order
 
   def create_purchase_order
