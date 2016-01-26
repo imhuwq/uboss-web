@@ -4,6 +4,8 @@ class Admin::AgenciesController < AdminController
 
   def index 
     @agencies = current_user.agencies
+    @statistics = {}
+    @statistics[:count] = @agencies.count
   end
   
   def new

@@ -1,3 +1,14 @@
+@mixin round-image {
+  border: 3px solid #994f24;
+  border-radius: 500px;
+  -webkit-border-radius: 500px;
+  height: 100px;
+  overflow: hidden;
+  width: 100px;
+  display: block;
+  margin: 20px auto;
+}
+
 .new_supplier, .new_agency, .edit-store-info {
   width: 400px;
   margin: 0 auto;
@@ -12,21 +23,14 @@ ul.nav.nav-pills.nav-stacked li.active a {
 
 .user-box {
   padding: 20px 0;
-  background-color: black;
+  background-color: #363636;
   .name, .mobile {
     text-align: center;
   }
   width: 20%;
   display: inline-block;
   img {
-    border: 3px solid #994f24;
-    border-radius: 500px;
-    -webkit-border-radius: 500px;
-    height: 100px;
-    overflow: hidden;
-    width: 100px;
-    display: block;
-    margin: 20px auto;
+    @include round-image;
   }
   .cooperation_form {
     text-align: center;
@@ -86,5 +90,12 @@ a#choose_by_hand {
       width: 72px;
       text-align: center;
     }
+  }
+}
+
+#agencies.list-table {
+  img {
+    @include round-image;
+    margin: 0 auto 5px;
   }
 }

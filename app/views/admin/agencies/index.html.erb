@@ -7,7 +7,27 @@
 </div>
 <br />
 <div class="container nogap ">
-  <div class="beige-bg-color admin-agency-box">
-    <%= render partial: 'agency', collection: @agencies %>
+	<div class="box-w25">
+		<div class="admin-box blue-bg-color">
+      <h4>代销商家数</h4>
+    	<h1 class="num"><%= @statistics[:count] %></h1>
+		</div>
+	</div>
+</div>
+<br />
+<div class="container">
+  <div class="index_list">
+    <table class="list-table" id="agencies">
+      <thead>			
+        <th></th>
+        <th>昨日业绩</th>
+        <th>累计业绩</th>
+        <th>代销商品数</th>
+        <th>商家好评率</th>
+        <th>联系方式</th>
+        <th>操作</th>
+      </thead>
+      <%= render partial: 'agency_in_table', collection: @agencies %>
+    </table>
   </div>
 </div>
