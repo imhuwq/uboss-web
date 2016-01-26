@@ -26,13 +26,14 @@ class Order < ActiveRecord::Base
 
   accepts_nested_attributes_for :order_items
 
-  validates :type, inclusion: { in: ['OrdinaryOrder', 'ServiceOrder'] }
+  validates :type, inclusion: { in: ['OrdinaryOrder', 'ServiceOrder', 'AgencyOrder'] }
   validates :user_id, :seller_id, presence: true
   validates_uniqueness_of :number, allow_blank: true
 
   scope :selled, -> { where("orders.state <> 0") }
 
   delegate :mobile, :regist_mobile, :identify, to: :user, prefix: :buyer
+  delegate :mobile, :regist_mobile, :identify, to: :seller, prefix: true, allow: nil
   delegate :prepay_id, :prepay_id=, :prepay_id_expired_at, :prepay_id_expired_at=,
     :pay_serial_number, :pay_serial_number=, :payment, :payment_i18n, :paid_at,
     to: :order_charge, allow_nil: true
@@ -42,6 +43,7 @@ class Order < ActiveRecord::Base
   scope :today, -> (date=Date.today) { have_paid.where(['DATE(orders.created_at) = ?', date]) }
   scope :week, -> (time=Time.now) { have_paid.where(created_at: time.beginning_of_week..time.end_of_week) }
   scope :month, -> (time=Time.now) { have_paid.where(created_at: time.beginning_of_month..time.end_of_month) }
+  scope :commons, -> { where(type: %w(OrdinaryOrder AgencyOrder)) }
 
   after_create :invoke_privielge_calculator
 
