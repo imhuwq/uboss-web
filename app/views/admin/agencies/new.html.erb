@@ -6,24 +6,38 @@
 	</ul>
 </div>
 <br />
-<div class="container nogap ">
-  <div class='new_agency'>
-    <%= text_field_tag :mobile, '', id: 'new_mobile' %>
-    <a style='color:#fff;' href='#' class='btn pull-right' data-invite-agency='true' id='send_mobile'>邀请代销商</a>
-    <%= text_field_tag :mobile_auth_code %>
-    <a style='color:#fff;' href='#' class='btn pull-right' id='authorize_agency'>授权代销</a>
-    <div class="modal fade invite-agency-success" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
-      <div class="modal-dialog modal-sm">
-        <div class="modal-content">
-          <div class="modal-body">
-            已成功发送邀请码到手机号<span></span>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-default" data-dismiss="modal">确定</button>
+<div class="container mod-inner">
+  <div class="beige-bg-color admin-agency-box">
+    <div class='agency-title'>
+      邀请代销商
+    </div>
+    <div class="new_agency">
+      <div class="input-group">
+        <%= text_field_tag :mobile, '', id: 'new_mobile', placeholder: '输入代销商手机号，发送邀请码给代销商' %>
+        <a style='color:#fff;' href='#' class='btn' data-invite-agency='true' id='send_mobile'>邀请代销商</a>
+      </div>
+      <div class="input-group">
+        <%= text_field_tag :mobile_auth_code, '', placeholder: '从代销商获取邀请码，在这里输入，即可授权' %>
+        <a style='color:#fff;' href='#' class='btn' id='authorize_agency'>授权代销</a>
+      </div>
+      <div class="modal fade invite-agency-success" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+        <div class="modal-dialog modal-sm">
+          <div class="modal-content">
+            <div class="modal-body">
+              已成功发送邀请码到手机号<span></span>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal">确定</button>
+            </div>
           </div>
         </div>
       </div>
     </div>
   </div>
-  <h3>更多代销商</h3>
+  <div class="beige-bg-color admin-agency-box">
+    <div class='agency-title'>
+      更多代销商
+    </div>
+    <%= render partial: 'agency', collection: @agencies %>
+  </div>
 </div>
