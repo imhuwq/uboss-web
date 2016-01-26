@@ -4,7 +4,13 @@ class Admin::PurchaseOrdersController < AdminController
   before_action :find_or_create_express, only: :delivery
 
   def index
-    @scope = scope
+    segment = %w(all payed completed return).include?(params[:segment]) ? params[:segment] : "all"
+    @scope = if segment == 'return'
+      scope.with_refunds
+    else
+      scope.send(segment)
+    end
+
     @purchase_orders = @scope.page(params[:page])
   end
 
