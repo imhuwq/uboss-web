@@ -14,6 +14,13 @@ class Admin::PurchaseOrdersController < AdminController
     @purchase_orders = @scope.page(params[:page])
   end
 
+  def show
+    @purchase_order = scope.find params[:id]
+    @order = @purchase_order.order
+    @user_addresses = current_user.seller_addresses
+    render template: "admin/orders/show"
+  end
+
   def delivery
     @purchase_order.assign_attributes(delivery_params)
     @purchase_order.express_id = @express.id
