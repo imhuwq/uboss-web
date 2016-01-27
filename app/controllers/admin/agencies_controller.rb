@@ -9,7 +9,7 @@ class Admin::AgenciesController < AdminController
   end
   
   def new
-    @agencies = User.joins(:receive_captcha_histories)
+    @agencies = User.role('agency')
   end
 
   def build_cooperation_with_auth_code
@@ -21,7 +21,7 @@ class Admin::AgenciesController < AdminController
         else
           user = User.new(login: mobile, nickname: mobile, mobile: mobile, password: Devise.friendly_token, need_reset_password: true)
           user.save(validate: false)
-          user.user_roles << UserRole.find_by(name: 'seller')
+          user.user_roles << UserRole.find_by(name: 'seller') << UserRole.find_by(name: 'agency')
           user
         end
 
@@ -45,7 +45,7 @@ class Admin::AgenciesController < AdminController
   def build_cooperation_with_agency_id
     @agency = User.find_by(id: params[:cooperation][:agency_id])
     unless current_user.has_cooperation_with_agency?(@agency)
-      current_user.cooperations.create!(agency_id: @agency.id)
+      current_user.cooperations.create(agency_id: @agency.id)
     end
     respond_to do |format|
       format.js { render 'build_cooperation' }
