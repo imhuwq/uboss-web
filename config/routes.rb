@@ -168,6 +168,9 @@ Rails.application.routes.draw do
 
   authenticate :user, lambda { |user| user.admin? } do
     namespace :admin do
+      resources :wechat_accounts do
+        patch :set_menu, on: :member
+      end
       resources :carriage_templates do
         member do
           get :copy

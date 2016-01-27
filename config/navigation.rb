@@ -139,6 +139,9 @@ SimpleNavigation::Configuration.run do |navigation|
 
         thr_nav.item :platform_ads, '平台广告', admin_platform_advertisements_path,
           highlights_on: :subpath, if: -> { can?(:manage, :platform_advertisements) }
+
+        thr_nav.item :wechat_acccount, '微信账户', admin_wechat_accounts_path,
+          highlights_on: :subpath, if: -> { can?(:manage, WechatAccount) }
       end
       sub_nav.item :financial, '财务', admin_transactions_path, if: -> { can?(:manage, Transaction) } do |thr_nav|
         thr_nav.item :transactions, '交易明细', admin_transactions_path,

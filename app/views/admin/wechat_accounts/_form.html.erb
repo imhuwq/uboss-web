@@ -1,0 +1,12 @@
+<br />
+<div class="inline-form text-center">
+  <%= simple_form_for [:admin, @wechat_account] do |f| %>
+    <%= f.input :encoding_app_secret, as: :hidden %>
+    <%= f.input :name %>
+    <%= f.input :wechat_identify %>
+    <%= f.input :app_id %>
+    <%= f.input :app_secret %>
+    <%= f.input :encoding_aes_key %>
+    <p class="text-center"><%= f.submit class: 'btn btn-large' %></p>
+  <% end %>
+</div>
