@@ -22,6 +22,9 @@
 	</div>
 	<br />
   <% if can?(:manage, WechatAccount) %>
-	  <p class="text-center"><%= link_to '编辑', edit_admin_wechat_account_path(@wechat_account), class: 'btn btn-large' %></p>
+    <p class="text-center">
+    <%= link_to '编辑', edit_admin_wechat_account_path(@wechat_account), class: 'btn btn-large' %>
+    <%= link_to "设置菜单", set_menu_admin_wechat_account_path(@wechat_account), method: :post, class: 'btn btn-large' %>
+    </p>
   <% end %>
 </div>

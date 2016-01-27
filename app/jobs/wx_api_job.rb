@@ -78,7 +78,7 @@ class WxApiJob < ActiveJob::Base
   end
 
   def weixin_client
-    @weixin_client ||= ($weixin_clients[wechat_account] || $weixin_client)
+    @weixin_client ||= WechatAccount.get_wexin_client(wechat_identify: wechat_account)
   end
 
 end

@@ -44,6 +44,33 @@ class Admin::WechatAccountsController < AdminController
     end
   end
 
+  def set_menu
+    client = WechatAccount.get_wexin_client(wechat_account: @wechat_account)
+    result = client.create_menu(
+      button: [
+        {
+          name: '专属二维码',
+          type: 'click',
+          key: 'personal_invite_qrcode'
+        }, {
+          name: 'U主页',
+          type: 'view',
+          url: Rails.application.secrets['host_url']
+        }, {
+          name: '我的收益',
+          type: 'click',
+          key: 'invitor_income_link'
+        }
+      ]
+    )
+    if result.is_ok?
+      flash[:notice] = '设置成功'
+    else
+      flash[:error] = client.en_msg || client.cn_msg
+    end
+    redirect_to admin_wechat_account_path(@wechat_account)
+  end
+
   private
 
   def resource_params
