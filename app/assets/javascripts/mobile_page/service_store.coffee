@@ -14,12 +14,12 @@ $ ->
     $('.fixed-container').css('-webkit-filter', 'blur(3px)')
     $('html').addClass('lock')
 
-  $('.btn_cancle_buy_now').on 'click', ->
+  $('.service-store .btn_cancle_buy_now').on 'click', ->
     $('#inventory').addClass('hidden')
     $('.fixed-container').css('-webkit-filter', 'blur(0px)')
     $('html').removeClass('lock')
 
-  $('.count_min').on 'click', ->
+  $('.service-store .count_min').on 'click', ->
     num = parseInt($('.count-box .count_num').val())
     if num < 2
       flashPopContent('<div class="pop-text">数量必须大于1</div>')
@@ -28,10 +28,29 @@ $ ->
       $('.count-box .count_num').val(num - 1)
       setTotalPrice(num - 1)
 
-  $('.count_plus').on 'click', ->
+  $('.service-store .count_plus').on 'click', ->
     num = parseInt($('.count-box .count_num').val())
     $('.count-box .count_num').val(num + 1)
     setTotalPrice(num + 1)
+
+  $('.service-store .count_num').on 'change', ->
+    $('.count-box .count_num').val( $('.count-box .count_num').val().replace(/[^\d]/g, ''))
+    if $('.count-box .count_num').val() == '' || $('.count-box .count_num').val() == "0"
+      $('.count-box .count_num').val(1)
+    setTotalPrice($('.count-box .count_num').val())
+
+
+  $('.service-store .count_num').on 'keypress', (event)->
+    eventObj = event || e
+    keyCode = eventObj.keyCode || eventObj.which
+    if (keyCode >= 48 && keyCode <= 57)
+      return true
+    else
+      return false
+    this.focus () ->
+      this.style.imeMode = 'disabled' # 禁用输入法
+    this.bind "paste", () ->              # 禁用粘贴
+      return false
 
   setTotalPrice = (num)->
     price = parseFloat($('#inventory').data('price'))

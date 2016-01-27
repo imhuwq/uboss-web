@@ -136,27 +136,6 @@ $ ->
         $('.order-price').empty()
         $('.empty-cart').removeClass('hidden')
 
-  # FIXME 将扩展的代码单独到另一个文件中
-  $.fn.onlyNum = () ->
-    $(this).keyup () ->
-      $this = $(this)
-      this.value = this.value.replace(/[^\d]/g, '')
-
-  # FIXME 上下两个函数名称重复
-  # 限制只能输入数字
-  $.fn.onlyNum = () ->
-    $(this).keypress (event) ->
-      eventObj = event || e
-      keyCode = eventObj.keyCode || eventObj.which
-      if (keyCode >= 48 && keyCode <= 57)
-        return true
-      else
-        return false
-    .focus () ->
-      this.style.imeMode = 'disabled' # 禁用输入法
-    .bind "paste", () ->              # 禁用粘贴
-      return false
-
   $("input[name='num']").onlyNum()
 
   # 总价计算
