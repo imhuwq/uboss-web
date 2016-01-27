@@ -78,7 +78,8 @@ class PrivilegeCard < ActiveRecord::Base
 
     self.user_name = user.nickname
     self.user_img  = user.read_attribute(:avatar)
-    self.store_img = service_store.read_attribute(:store_cover)
+    self.service_store_cover = service_store.read_attribute(:store_cover)
+    self.ordinary_store_cover = ordinary_store.read_attribute(:store_cover)
     self.save
   end
 
@@ -95,7 +96,7 @@ class PrivilegeCard < ActiveRecord::Base
   def ordinary_store_qrcode_params
     {
       user_img_url: user.image_url(:thumb),
-      item_img_url: seller.ordinary_store.store_cover_url(:thumb),
+      item_img_url: ordinary_store.store_cover_url(:thumb),
       qrcode_content: url_helpers.sharing_url(code: sharing_node.code, host: default_host),
       username: user.nickname,
       mode: 1
@@ -115,11 +116,16 @@ class PrivilegeCard < ActiveRecord::Base
   def need_to_update?
     user_name != user.nickname ||
       user_img != user.read_attribute(:avatar) ||
-      store_img != service_store.read_attribute(:store_cover)
+      service_store_cover != service_store.read_attribute(:store_cover) ||
+      ordinary_store_cover != ordinary_store.read_attribute(:store_cover)
   end
 
   def service_store
     seller.service_store
+  end
+
+  def ordinary_store
+    seller.ordinary_store
   end
 
   def sharing_node

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160122080844) do
+ActiveRecord::Schema.define(version: 20160127073044) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -419,13 +419,14 @@ ActiveRecord::Schema.define(version: 20160122080844) do
 
   create_table "privilege_cards", force: :cascade do |t|
     t.integer  "user_id"
-    t.datetime "created_at",                 null: false
-    t.datetime "updated_at",                 null: false
-    t.boolean  "actived",    default: false
+    t.datetime "created_at",                           null: false
+    t.datetime "updated_at",                           null: false
+    t.boolean  "actived",              default: false
     t.integer  "seller_id"
     t.string   "user_img"
-    t.string   "store_img"
+    t.string   "service_store_cover"
     t.string   "user_name"
+    t.string   "ordinary_store_cover"
   end
 
   add_index "privilege_cards", ["user_id", "seller_id"], name: "index_privilege_cards_on_user_id_and_seller_id", unique: true, using: :btree
@@ -532,6 +533,7 @@ ActiveRecord::Schema.define(version: 20160122080844) do
     t.integer  "comprehensive_order"
     t.datetime "published_at"
     t.integer  "sales_amount",         default: 0
+    t.integer  "sales_amount_order"
   end
 
   add_index "products", ["type"], name: "index_products_on_type", using: :btree
@@ -820,6 +822,19 @@ ActiveRecord::Schema.define(version: 20160122080844) do
 
   add_index "versions", ["item_type", "item_id"], name: "index_versions_on_item_type_and_item_id", using: :btree
 
+  create_table "wechat_accounts", force: :cascade do |t|
+    t.string   "name"
+    t.datetime "created_at",                   null: false
+    t.datetime "updated_at",                   null: false
+    t.string   "weixin_secret_key"
+    t.string   "weixin_token"
+    t.string   "encoding_aes_key",  limit: 43
+    t.string   "app_id"
+  end
+
+  add_index "wechat_accounts", ["weixin_secret_key"], name: "index_wechat_accounts_on_weixin_secret_key", using: :btree
+  add_index "wechat_accounts", ["weixin_token"], name: "index_wechat_accounts_on_weixin_token", using: :btree
+
   create_table "withdraw_records", force: :cascade do |t|
     t.integer  "user_id"
     t.integer  "state",           default: 0
@@ -845,6 +860,7 @@ ActiveRecord::Schema.define(version: 20160122080844) do
     t.jsonb    "properties", default: {}
     t.datetime "created_at",              null: false
     t.datetime "updated_at",              null: false
+    t.integer  "user_id"
   end
 
   add_foreign_key "bank_cards", "users"
