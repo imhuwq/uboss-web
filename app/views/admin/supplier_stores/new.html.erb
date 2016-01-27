@@ -5,9 +5,16 @@
     url: baiduIPAPI,
     dataType: "jsonp",
     success: function(data){
-      $('span#guesscity').text(data.content.address_detail.city);
-      $('input#supplier_store_guess_province').val(data.content.address_detail.province);
-      $('input#supplier_store_guess_city').val(data.content.address_detail.city);
+      if(data.length > 0){
+        $('span#guesscity').text(data.content.address_detail.city);
+        $('input#supplier_store_guess_province').val(data.content.address_detail.province);
+        $('input#supplier_store_guess_city').val(data.content.address_detail.city);
+      }else{
+        $('span#guesscity').text('未知地点');
+      }
+    },
+    error: function(){
+      $('span#guesscity').text('未知地点');
     }
   });
 
