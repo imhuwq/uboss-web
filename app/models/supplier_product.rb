@@ -10,6 +10,7 @@ class SupplierProduct < Product
     include_association :supplier_product_inventories
     customize(lambda{|original_product, new_product|
       new_product.parent_id = original_product.id
+      new_product.supplier_id = original_product.user_id
     })
   end
 
