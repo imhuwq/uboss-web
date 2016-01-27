@@ -1,11 +1,11 @@
 <tr>
   <td>
-	  <%= image_tag(agency_in_table.avatar.url(:thumb)) %>
-    <%= agency_in_table.nickname %>
+	  <%= image_tag(agency_in_table.avatar.url(:thumb), size: "40x40", alt: "-") %>
   </td>
+  <td><%= agency_in_table.nickname %></td>
   <td>昨日业绩</td>
   <td>累计业绩</td>
-  <td>代销商品数</td>
+  <td><%= agency_in_table.supplier_products.where(supplier_id: current_user.id).count %></td>
   <td>商家好评率</td>
   <td><%= agency_in_table.mobile %></td>
   <td>
