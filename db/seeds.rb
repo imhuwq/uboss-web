@@ -3,6 +3,8 @@ p "Create 3 necessary user_role"
 super_role = UserRole.find_or_create_by(name: 'super_admin', display_name: '超级管理员')
 agent_role = UserRole.find_or_create_by(name: 'agent', display_name: '创客')
 seller_role = UserRole.find_or_create_by(name: 'seller', display_name: '商户')
+supplier_role = UserRole.find_or_create_by(name: 'supplier', display_name: '供货商')
+agency_role = UserRole.find_or_create_by(name: 'agency', display_name: '代销商')
 
 p "Create UBOSS official account"
 u1 = User.create(
