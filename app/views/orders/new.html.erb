@@ -42,7 +42,7 @@
                data-item-id="<%= cart_item.id %>"
                data-privilege-amount="<%= cart_item.privilege_amount %>"
                >
-            <meta itemprop="seller_bonus" content="<%= cart_item.preferentials_seller_bonuses.to_a.sum(&:amount) %>" />
+            <meta itemprop="seller_bonus" content="<%= cart_item.preferentials_seller_bonuses.to_a.sum(&:total_amount) %>" />
             <meta itemprop="privilege_bonus" content="<%= cart_item.preferentials_privileges.to_a.sum(&:amount) %>" />
             <div class="cover"><%= image_tag(url_for(cart_item.image_url),  alt: "-") %></div>
             <div class="content">
