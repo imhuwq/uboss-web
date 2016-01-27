@@ -24,6 +24,6 @@ class Api::V1::Admin::ServiceProductsController < ApiBaseController
         :share_amount_total, :privilege_amount, :share_amount_lv_1,
         sku_attributes: product_propertys_params[:product_propertys_names],
       ]
-    ))
+    )
   end
 end
