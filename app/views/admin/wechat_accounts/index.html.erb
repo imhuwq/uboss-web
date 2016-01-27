@@ -1,0 +1,41 @@
+<div class="container admin-container">
+	<ul class="breadcrumb">
+		<li><a href="/admin">主页</a></li>
+		<li class="divider"><i class="fa fa-caret-right"></i></li>
+		<li>后台账户</li>
+	</ul>
+</div><!-- container -->
+<br />
+<div class="container">
+  <h3 class="page-title">
+    微信账户
+    <% if can?(:manage, WechatAccount) %>
+      <small><%= link_to '新增', new_admin_wechat_account_path, class: 'btn pull-right' %></small>
+    <% end %>
+  </h3>
+	<table class="list-table">
+		<thead>
+			<th>名称</th>
+			<th>AppID</th>
+			<th>创建时间</th>
+			<th>更新时间</th>
+      <th>操作</th>
+		</thead>
+		<% @wechat_accounts.each do |account| %>
+		<tr>
+			<td><%= link_to account.name, [:admin, account] %></td>
+			<td><%= account.app_id %></td>
+			<td><%= account.created_at %></td>
+			<td><%= account.updated_at %></td>
+			<td>
+        <% if can?(:manage, WechatAccount) %>
+          <%= link_to '编辑', edit_admin_wechat_account_path(account),class:'btn' %>
+        <% end %>
+			</td>
+		</tr>
+		<% end %>
+	</table>
+
+  <br />
+  <%= paginate @wechat_accounts %>
+</div>
