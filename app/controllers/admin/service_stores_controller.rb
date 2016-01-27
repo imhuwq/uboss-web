@@ -78,7 +78,7 @@ class Admin::ServiceStoresController < AdminController
   def service_store_params
     params.require(:service_store).permit(
       :store_name, :store_short_description, :store_cover, :province, :city, :area,
-      :street, :store_phones_attributes, :begin_hour, :begin_minute, :end_hour, :end_minute,
+      :street, :begin_hour, :begin_minute, :end_hour, :end_minute,
       store_phones_attributes: [
         :id, :area_code, :fixed_line, :phone_number, :_destroy
       ]
