@@ -66,7 +66,7 @@ class Admin::WechatAccountsController < AdminController
     if result.is_ok?
       flash[:notice] = '设置成功'
     else
-      flash[:error] = client.en_msg || client.cn_msg
+      flash[:error] = result.en_msg || result.cn_msg
     end
     redirect_to admin_wechat_account_path(@wechat_account)
   end

@@ -13,7 +13,7 @@ class WechatAccount < ActiveRecord::Base
     end
 
     if options[:wechat_account] && $weixin_clients[options[:wechat_account].wechat_identify].present?
-      return $weixin_clients[wechat_account.wechat_identify]
+      return $weixin_clients[options[:wechat_account].wechat_identify]
     end
 
     wechat_account = options.fetch(:wechat_account) do
@@ -25,7 +25,7 @@ class WechatAccount < ActiveRecord::Base
     $weixin_clients[wechat_account.wechat_identify] ||= WeixinAuthorize::Client.new(
       wechat_account.app_id,
       wechat_account.app_secret,
-      redis_key: "ssobu_wx_#{wechat_identify.id}"
+      redis_key: "ssobu_wx_#{wechat_account.id}"
     )
   end
 
