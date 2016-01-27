@@ -48,6 +48,7 @@ class Admin::ServiceStoresController < AdminController
       flash[:success] = '更新店铺信息成功'
       redirect_to edit_admin_service_store_path(@service_store)
     else
+      @advertisements = get_advertisements
       render :edit
     end
   end
@@ -77,7 +78,7 @@ class Admin::ServiceStoresController < AdminController
   def service_store_params
     params.require(:service_store).permit(
       :store_name, :store_short_description, :store_cover, :province, :city, :area,
-      :street, :store_phones_attributes, :begin_hour, :begin_minute, :end_hour, :end_minute,
+      :street, :begin_hour, :begin_minute, :end_hour, :end_minute,
       store_phones_attributes: [
         :id, :area_code, :fixed_line, :phone_number, :_destroy
       ]
