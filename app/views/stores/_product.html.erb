@@ -1,7 +1,8 @@
-<% cache ['store-product', product], expires_in: 1.day do %>
-  <% orderdata = @order_column_name ? product.try(@order_column_name.to_sym) : product.try(:updated_at) %>
-  <% if orderdata %>
-    <div class="box-w50 p-item" orderdata="<%= orderdata %>">
+
+<% orderdata = @order_column_name ? product.try(@order_column_name.to_sym) : product.try(:updated_at) %>
+<% if orderdata %>
+  <div class="box-w50 p-item" orderdata="<%= orderdata %>">
+    <% cache ['store-product', product], expires_in: 1.day do %>
       <div class="product-box">
         <div class="cover">
           <%= link_to '', product_path(product),
@@ -13,6 +14,7 @@
         <div class="title"><%= product.name %></div>
         <div class="price">￥<%= product.min_price %> </div>
       </div><!-- product-box -->
-    </div><!-- box-w50 -->
-  <% end %>
+    <% end %>
+  </div><!-- box-w50 -->
 <% end %>
+

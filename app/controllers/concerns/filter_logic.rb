@@ -38,6 +38,9 @@ module FilterLogic
   def append_default_filter(scope, opts = {})
     order_column = opts[:order_column] || 'updated_at'
     order_type = opts[:order_type].try(:to_s) || 'DESC'
+    if order_column == 'published_at'
+      scope = scope.where('published_at is not null')
+    end
     scope.recent(order_column, order_type)
       .paginate_by_column_name(*paginate_params(order_column, order_type, opts[:column_type]))
       .page(page_param).per(opts[:page_size] || page_size)
