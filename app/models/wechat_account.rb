@@ -12,7 +12,7 @@ class WechatAccount < ActiveRecord::Base
       return $weixin_clients[options[:wechat_identify]]
     end
 
-    if options[:wechat_account] && $weixin_clients[wechat_account.wechat_identify].present?
+    if options[:wechat_account] && $weixin_clients[options[:wechat_account].wechat_identify].present?
       return $weixin_clients[wechat_account.wechat_identify]
     end
 
