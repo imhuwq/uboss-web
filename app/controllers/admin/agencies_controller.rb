@@ -3,7 +3,7 @@ class Admin::AgenciesController < AdminController
   before_action :check_new_supplier
 
   def index 
-    @agencies = current_user.agencies
+    @agencies = current_user.agencies.includes(:agency_products)
     @statistics = {}
     @statistics[:count] = @agencies.count
   end
