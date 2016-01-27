@@ -8,6 +8,7 @@ class PurchaseOrder < ActiveRecord::Base
   validates :order, presence: true, uniqueness: true
 
   delegate :mobile, :regist_mobile, :identify, to: :seller, prefix: true, allow: nil
+  delegate :ship_price, :to_seller, to: :order, prefix: true
   attr_accessor :express_name, :ship_number, :express_id
 
   scope :with_refunds, -> { joins(order_items: :order_item_refunds).uniq }

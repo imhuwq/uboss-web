@@ -93,7 +93,7 @@
                     <i class="fa fa-phone"></i>
                   <% end %>
                 </p>
-                <p>买家留言:<%= 'xxx' %></p>
+                <p>买家留言:<%= order.order_to_seller %></p>
               </td>
               <td rowspan=<%= size %>>
                 <%= order.state_i18n %>
@@ -104,7 +104,7 @@
               </td>
               <td rowspan=<%= size %>>
                 <%=order.pay_amount%>
-                <p>(含快递:<%= 1 %>)</p>
+                <p>(含快递:<%= order.order_ship_price %>)</p>
               </td>
             <% end %>
           </tr>
