@@ -146,4 +146,9 @@ class Ability
     can :manage, SupplierProduct, user_id: user.id
   end
 
+  def grant_permissions_to_agency user
+    can :read, User, id: user.id
+    can :manage, AgencyProduct, user_id: user.id
+  end
+
 end
