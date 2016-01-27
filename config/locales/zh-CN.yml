@@ -396,7 +396,7 @@ zh-CN:
         l1: 一级分成
         l2: 二级分成
         l3: 三级分成
-    ordinary_order:
+    ordinary_order: &ordinary_order
       state:
         unpay: 未付款
         payed: 已付款
@@ -404,6 +404,8 @@ zh-CN:
         signed: 已签收
         completed: 已完成
         closed: 关闭
+    agency_order:
+      <<: *ordinary_order
     service_order:
       state:
         unpay: 未付款
