@@ -224,6 +224,7 @@ class User < ActiveRecord::Base
       user = find_by(login: mobile)
       user ||= new_guest(mobile)
       user.update_with_oauth_session(session)
+      user.save if !user.persisted?
       user
     end
 
