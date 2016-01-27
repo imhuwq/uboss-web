@@ -48,6 +48,7 @@ class Admin::ServiceStoresController < AdminController
       flash[:success] = '更新店铺信息成功'
       redirect_to edit_admin_service_store_path(@service_store)
     else
+      @advertisements = get_advertisements
       render :edit
     end
   end
