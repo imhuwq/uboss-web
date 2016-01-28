@@ -15,7 +15,7 @@
 		<% products.each do |product| %>
 			<tr class="product" id='product_<%= product.id %>'>
 				<td>
-					<%= link_to admin_product_path(product) do %>
+					<%= link_to supplier ? admin_supplier_product_path(product) : admin_product_path(product) do %>
 						<%= image_tag(product.image_url(:thumb), size: "80x80", alt: "-") %>　
 					<% end %>
 				</td>

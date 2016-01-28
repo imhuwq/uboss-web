@@ -105,15 +105,12 @@ SimpleNavigation::Configuration.run do |navigation|
         thr_nav.item :edit_store, '店铺设置', admin_store_path(current_user),
           if: -> { can?(:read, Product) }
       end
-      sub_nav.item :fenxiao, '市场进货', "#", {} do |thr_nav|
-        thr_nav.item :new_products, '可代销商品', "/admin/sellers/valid_agent_products",
-          highlights_on: :subpath#, if: -> { can?(:read, Product) }
+      sub_nav.item :stock, '市场进货', "#", if: -> { can?(:manage, AgencyProduct) } do |thr_nav|
+        thr_nav.item :valid_agent_products, '可代销商品', admin_sellers_valid_agent_products_path,
+          highlights_on: :subpath, if: -> { can?(:manage, AgencyProduct) }
 
-        thr_nav.item :my_suppliers, '我的供货商', "/admin/sellers/my_suppliers",
-          highlights_on: :subpath#, if: -> { can?(:read, CarriageTemplate) }
-
-        thr_nav.item :explore_products, '发现货源', "/admin/sellers/explore_products",
-          highlights_on: :subpath#, if: -> { can?(:read, Category) }
+        thr_nav.item :my_suppliers, '我的供货商', my_suppliers_admin_sellers_path,
+          highlights_on: :subpath, if: -> { can?(:manage, AgencyProduct) }
       end
     end
 

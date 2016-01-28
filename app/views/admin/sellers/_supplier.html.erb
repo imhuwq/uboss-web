@@ -1,9 +1,10 @@
 <div class="user-box supplier">
+	<%= image_tag(supplier.supplier_store.store_cover.url(:thumb)) %>
   <div class="name">
-    <%= supplier.nickname %>
+    <%= supplier.supplier_store.store_name %>
   </div>
-	<%= image_tag(supplier.avatar.url(:thumb)) %>
-  <div class="mobile">
-    <%= supplier.mobile %>
+  <div class="contact-info">
+    <div class="contact-label">手机号：</div><div class="contact-text"><%= supplier.supplier_store.phone_number %></div>
+    <div class="contact-label">微信：</div><div class="contact-text"><%= supplier.supplier_store.wechat_id %></div>
   </div>
 </div>
