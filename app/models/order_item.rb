@@ -139,12 +139,14 @@ class OrderItem < ActiveRecord::Base
     end
   end
 
-  def adjust_product_stock_with_supplier(type)
-    adjust_product_stock_without_supplier(type)
+  def adjust_product_stock_with_supplier(*args)
+    type = args.first
+    adjust_product_stock_without_supplier(*args)
     if parent=product_inventory.parent
       adjust_product_stock_without_supplier(type, parent.id)
     end
   end
+  alias_method_chain :adjust_product_stock, :supplier
 
   def set_privilege_amount
     self.privilege_amount = preferential_measures.sum(:amount)
