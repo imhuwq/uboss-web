@@ -69,7 +69,7 @@ class Admin::SellersController < AdminController
   end
 
   def my_suppliers
-    @my_suppliers = current_user.suppliers
+    @my_suppliers = current_user.suppliers.includes(supplier_store: :supplier_store_info)
     @statistics = {}
     @statistics[:count] = @my_suppliers.count
   end
