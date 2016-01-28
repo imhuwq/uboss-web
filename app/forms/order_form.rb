@@ -42,7 +42,7 @@ class OrderForm
   end
 
   def product
-    @product ||= OrdinaryProduct.find(self.product_id)
+    @product ||= Product.find(self.product_id)
   end
 
   def product_inventory
@@ -146,6 +146,53 @@ class OrderForm
         user_address: self.user_address,
         order_items_attributes: order_items_of_seller(seller_id)
       }
+    end
+    orders_split_by_product_type(orders_attributes)
+  end
+
+  # 根据 order_items 的商品类型拆分
+  def orders_split_by_product_type(orders_attributes)
+    orders_attributes.tap do |orders|
+      orders.each do |order|
+        _order = order.dup
+        next if order[:order_items_attributes].length < 2
+        order[:order_items_attributes].group_by do |attrs|
+          product = Product.find(attrs[:product_id])
+          product.type
+        end.each do |type, groups|
+          type = case type
+          when "ServiceProduct"   then "ServiceOrder"
+          when "OrdinaryProduct"  then "OrdinaryOrder"
+          when "AgencyProduct"    then "AgencyOrder"
+          else type end
+          _order[:type] = type
+          _order[:order_items_attributes] = groups
+          orders << _order
+        end
+        orders.delete(order)
+      end
+    end
+    orders_split_by_supplier(order_attributes)
+  end
+
+  def orders_split_by_supplier(order_attributes)
+    order_attributes.tap do |orders|
+      orders.each do |order|
+        next if order[:order_items_attributes].length < 2
+        _order = order.dup
+        order[:order_items_attributes].group_by do |item|
+          if product = AgencyProduct.includes(:parent).find_by_id(item[:product_id])
+            product.parent.user_id
+          else
+            nil
+          end
+        end.each do |supplier_id, groups|
+          _order[:supplier_id] = supplier_id
+          _order[:order_items_attributes] = groups
+          orders << _order
+        end
+      end
+      orders.delete(order)
     end
     orders_attributes
   end

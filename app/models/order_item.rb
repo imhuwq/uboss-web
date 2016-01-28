@@ -130,14 +130,23 @@ class OrderItem < ActiveRecord::Base
   end
 
   private
-
-  def adjust_product_stock(type)
+  def adjust_product_stock(type, inventory_id=product_inventory_id,quantity=amount)
     if [1, -1].include?(type)
-      ProductInventory.update_counters(product_inventory_id, count: amount * type)
+      StockMovement.sale.create!(product_inventory_id: inventory_id, quantity: quantity * type,originator: self)
+      # ProductInventory.update_counters(product_inventory_id, count: amount * type)
     else
       raise 'Accept value is -1 or 1'
     end
   end
+
+  def adjust_product_stock_with_supplier(*args)
+    type = args.first
+    adjust_product_stock_without_supplier(*args)
+    if parent=product_inventory.parent
+      adjust_product_stock_without_supplier(type, parent.id)
+    end
+  end
+  alias_method_chain :adjust_product_stock, :supplier
 
   def set_privilege_amount
     self.privilege_amount = preferential_measures.sum(:amount)

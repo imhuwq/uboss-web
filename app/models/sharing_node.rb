@@ -33,7 +33,7 @@ class SharingNode < ActiveRecord::Base
       end
 
       params = { user_id: user.id }
-      params.merge!(parent_id: parent.id) if parent.present? && (resource.is_a?(Product) || resource.is_a?(ServiceProduct) || resource.is_a?(OrdinaryProduct))
+      params.merge!(parent_id: parent.id) if parent.present? && resource.is_a?(Product)
 
       if name == 'User'
         params.merge!(seller_id: resource.id)

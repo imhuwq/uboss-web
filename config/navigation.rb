@@ -173,6 +173,8 @@ SimpleNavigation::Configuration.run do |navigation|
         thr_nav.item :supplied_products, '代销中', admin_supplier_products_path(status: 'supply'), highlights_on: -> { params[:status] == 'supply' }, if: -> { can?(:manage, SupplierProduct) }
         thr_nav.item :stored_products, '仓库中', admin_supplier_products_path(status: 'store'), highlights_on: -> { params[:status] == 'store' }, if: -> { can?(:manage, SupplierProduct) }
       end
+      sub_nav.item :purchase_orders, '订单管理', admin_purchase_orders_path,
+        if: -> { can?(:manage, PurchaseOrder) }
     end
     #primary.item :agency,   '我的代销商', admin_my_agencies_path, {}
     #primary.item :my_supplier,   '我的供应商', my_suppliers_admin_sellers_path, {}

@@ -34,4 +34,4 @@
 
 <br />
 
-<%= render 'ship_express' %>
+<%= render partial: 'ship_express', locals: { args: [:order, method: :patch] } %>

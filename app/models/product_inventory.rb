@@ -4,9 +4,11 @@ class ProductInventory < ActiveRecord::Base
 
   belongs_to :product
   belongs_to :product_class
+  belongs_to :parent, class_name: 'ProductInventory'
   has_many   :cart_items
   has_many   :order_items
   has_many   :orders, through: :order_items
+  has_many  :stock_movements
 
   validates_presence_of :sku_attributes, if: -> { self.saling }
   validates_numericality_of :price, :count, greater_than_or_equal_to: 0, if: -> { self.saling and self.type == nil }
@@ -73,6 +75,13 @@ class ProductInventory < ActiveRecord::Base
 
   def share_and_privilege_amount_total
     share_amount_lv_3 + share_amount_lv_2 + share_amount_lv_1 + privilege_amount
+  end
+
+  def adjust_count quantity
+    self.with_lock do
+      self.count = self.count.to_i + quantity
+      self.save!
+    end
   end
 
   private

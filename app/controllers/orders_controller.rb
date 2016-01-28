@@ -1,6 +1,7 @@
 class OrdersController < ApplicationController
   before_action :authenticate_user!, except: [:new, :create, :ship_price, :change_address]
   before_action :find_order, only: [:cancel, :show, :pay, :pay_complete, :received]
+  before_action :set_product, only: :change_address
   before_action :authenticate_user_if_browser_wechat, only: [:new]
 
   def cancel
@@ -136,11 +137,10 @@ class OrdersController < ApplicationController
       end
       render json: { status: 'ok', ship_price: ship_prices, invalid_items: json_of(invalid_items), valid_item_ids: session[:valid_items_ids] }
     elsif !params[:count].blank?
-      product = OrdinaryProduct.find(params[:product_id])
-      ship_price = product.calculate_ship_price(params[:count].to_i, user_address, params[:product_inventory_id])
-      invalid_items = !OrdinaryOrder.valid_to_sales?(product, ChinaCity.get(user_address.province)) ?
-        [CartItem.new(product_inventory_id: params[:product_inventory_id], seller_id: product.user_id, count: params[:count])] : []
-      render json: { status: 'ok', ship_price: [[product.user_id, ship_price.to_s]], invalid_items: json_of(invalid_items) }
+      ship_price = @product.calculate_ship_price(params[:count].to_i, user_address, params[:product_inventory_id])
+      invalid_items = !OrdinaryOrder.valid_to_sales?(@product, ChinaCity.get(user_address.province)) ?
+        [CartItem.new(product_inventory_id: params[:product_inventory_id], seller_id: @product.user_id, count: params[:count])] : []
+      render json: { status: 'ok', ship_price: [[@product.user_id, ship_price.to_s]], invalid_items: json_of(invalid_items) }
     end
   end
 
@@ -167,6 +167,10 @@ class OrdersController < ApplicationController
 
   def find_order
     @order = current_user.ordinary_orders.find(params[:id])
+  end
+
+  def set_product
+    @product = Product.commons.find(params[:product_id])
   end
 
   def clean_current_cart
