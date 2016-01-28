@@ -39,17 +39,12 @@
         </div>
       </div><!-- bg-white -->
     <% end %>
-    <div class="bg-white m-top10">
-      <div class="gap text-center">
-        <br />
-        <h2>店家喊你领 现金红包</h2>
-        <br />
-        <div class="gray-color">好友使用你的友钱卡，你获得现金红包<a href="/about" class="like-color">详情</a></div>
-        <br />
-        <div class="box-m40"><a href="/account" class="btn btn-block btn-large">查看我的友钱卡</a></div>
-        <br />
+    <div class="pay-bg text-center m-top10">
+      <div class="pay-info-bg">
+        <div class="gray-color m-bottom10">好友使用你的友钱卡，你获得现金红包<a href="/about" class="red-color">详情</a></div>
+        <p><a href="/account" class="btn btn-longer">查看我的友钱卡</a></p>
       </div>
-    </div><!-- bg-white -->
+    </div><!-- pay-bg -->
     <% if @product.is_official_agent? %>
       <div class="bg-white m-top10">
         <div class="box-m40 text-center">
