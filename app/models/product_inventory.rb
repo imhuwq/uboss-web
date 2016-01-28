@@ -79,7 +79,7 @@ class ProductInventory < ActiveRecord::Base
 
   def adjust_count quantity
     self.with_lock do
-      self.count = self.count + quantity
+      self.count = self.count.to_i + quantity
       self.save!
     end
   end
