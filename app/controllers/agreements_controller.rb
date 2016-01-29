@@ -8,7 +8,7 @@ class AgreementsController < ApplicationController
     if desktop_request?
       'login'
     else
-      'application'
+      'mobile'
     end
   end
 
