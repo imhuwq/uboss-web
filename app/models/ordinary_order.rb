@@ -180,6 +180,14 @@ class OrdinaryOrder < Order
     order_items.joins(:order_item_refunds).exists?
   end
 
+  def auto_sign_date
+    @auto_sign_date ||= if paid_at >= Time.parse('2016-02-06') && paid_at <= Time.parse('2016-02-12')
+                          shiped_at + 15.days
+                        else
+                          shiped_at + 9.days
+                        end
+  end
+
   private
 
   def update_pay_amount_and_close_prepay
