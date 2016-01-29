@@ -80,6 +80,9 @@ class Ability
     can :read, Express
     can :set_common, Express
     can :manage, OrderItemRefund, order_item: { order: { seller_id: user.id } }
+    cannot :manage, OrderItemRefund do |refund|
+      refund.order_item.order.is_agency_order? && refund.order_item.order.supplier_id != user.id
+    end
     can :manage, UserAddress, user_id: user.id
   end
 
@@ -145,6 +148,8 @@ class Ability
     can :read, :agencies
     can :manage, SupplierProduct, user_id: user.id
     can :manage, PurchaseOrder, supplier_id: user.id
+    can :manage, AgencyOrder, supplier_id: user.id
+    can :manage, OrderItemRefund, order_item: { order: { supplier_id: user.id } }
   end
 
   def grant_permissions_to_agency user
