@@ -1,0 +1,33 @@
+<% if order_item_refund.refund_type_include_goods? %>
+  <div class="bottom_line">
+    <h3 class='refund_info_title'>请等待买家回应</h3>
+    <div class="countdown-box"><p id="clock_refund" data-endtime=<%= order_item_refund.deal_at + refund_timeout(order_item_refund).days %>></p></div><br/>
+    <p>* 买家修改退货申请后，需要您重新处理</p>
+    <p>* 买家超时未处理，退货申请将自动关闭</p>
+  </div>
+  <br />
+  <div class='evaluate'>
+    <% if can :approve_return, order_item_refund %>
+      您还可以：<%= link_to '同意退货申请', 'javascripts:;', class: 'btn-link', onclick: '$("#refund_approve_return").modal("show")' %> |
+      <%= render_refund_modal 'approve_return', title: '同意退货申请' %>
+    <% end %>
+    <% if can? :applied_uboss, order_item_refund %>
+      <%= link_to '要求UBOSS介入', 'javascripts:;', class: 'btn-link', onclick: '$("#refund_applied_uboss").modal("show")' %>
+      <%= render_refund_modal 'applied_uboss',  title: '申请UBOSS介入' %>
+    <% end %>
+  </div>
+<% else %>
+  <div class="bottom_line">
+    <h3 class='refund_info_title'>请等待买家回应</h3>
+    <div class="countdown-box"><p id="clock_refund" data-endtime=<%= order_item_refund.deal_at + refund_timeout(order_item_refund).days %>></p></div><br/>
+    <p>* 买家修改退款申请后，需要您重新处理</p>
+    <p>* 买家超时未处理，退款申请将自动关闭</p>
+  </div>
+  <br />
+  <div class='evaluate'>
+    <% if can? :approve_refund, order_item_refund %>
+    	您还可以：<%= link_to '同意退款申请', 'javascripts:;', class: 'btn-link', onclick: '$("#refund_approve_refund").modal("show")' %>
+      <%= render_refund_modal 'approve_refund', title: '同意退款申请' %>
+    <% end %>
+  </div>
+<% end %>
