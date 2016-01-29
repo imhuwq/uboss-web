@@ -1,0 +1,15 @@
+<% if order_item_refund.refund_type_include_goods? %>
+  <div>
+    <h3 class='refund_info_title'>请等待买家退货</h3>
+    <div class="countdown-box"><p id="clock_refund" data-endtime=<%= order_item_refund.deal_at + refund_timeout(order_item_refund).days %>></p></div><br/>
+    <p>* 收到买家退货，请及时验货</p>
+    <p>* 如果买家超时未退货，退货申请将自动关闭</p>
+  </div>
+<% else %>
+  <div>
+    <h3 class='refund_info_title'>您已同意退款</h3>
+    <p>* 退款金额：<%= order_item_refund.money %>元</p>
+    <p>* 同意申请时间：<%= order_item_refund.state_at_attributes['同意时间'] %></p>
+    <p>* 退款金额将会在5个工作日内退回给买家</p>
+  </div>
+<% end %>
