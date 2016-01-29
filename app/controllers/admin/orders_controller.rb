@@ -49,7 +49,7 @@ class Admin::OrdersController < AdminController
   def index
     @type = params[:type] || 'all'
 
-    @orders = append_default_filter scope.recent.
+    @orders = append_default_filter @orders.recent.
       includes(:user, order_items: [:product, :product_inventory])
     @counting_orders = @orders
 
@@ -77,6 +77,7 @@ class Admin::OrdersController < AdminController
   end
 
   def set_express
+    authorize! :delivery, @order
     if @order.update(order_params.merge(express_id: @express.id)) && @order.ship!
       flash[:success] = '发货成功'
     else
@@ -121,9 +122,5 @@ class Admin::OrdersController < AdminController
   end
 
   def record_operation
-  end
-
-  def scope
-    OrdinaryOrder.unscope(:where).commons.accessible_by(current_ability)
   end
 end

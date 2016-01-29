@@ -117,13 +117,22 @@ class OrderForm
           seller: product.user,
           to_seller: to_seller["#{product.user_id}"],
           user_address: self.user_address,
-          order_items_attributes: order_items_attributes
+          order_items_attributes: order_items_attributes,
+          type: to_order_type(product.type)
         }])
       elsif seller_ids
         OrdinaryOrder.create!(
           orders_split_by_seller
         )
       end
+  end
+
+  def to_order_type(name)
+    case name
+    when "ServiceProduct"   then "ServiceOrder"
+    when "OrdinaryProduct"  then "OrdinaryOrder"
+    when "AgencyProduct"    then "AgencyOrder"
+    else name end
   end
 
   def order_items_attributes
@@ -160,11 +169,7 @@ class OrderForm
           product = Product.find(attrs[:product_id])
           product.type
         end.each do |type, groups|
-          type = case type
-          when "ServiceProduct"   then "ServiceOrder"
-          when "OrdinaryProduct"  then "OrdinaryOrder"
-          when "AgencyProduct"    then "AgencyOrder"
-          else type end
+          type = to_order_type(type)
           _order[:type] = type
           _order[:order_items_attributes] = groups
           orders << _order

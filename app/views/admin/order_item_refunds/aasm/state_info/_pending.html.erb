@@ -1,0 +1,121 @@
+<% type = order_item_refund.refund_type %>
+<% if type == 'refund' %><!-- 退款 -->
+  <div class="bottom_line">
+    <h3 class='refund_info_title'>请处理退款申请</h3>
+    <div class="countdown-box"><p id="clock_refund" data-endtime="<%= order_item_refund.deal_at + refund_timeout(order_item_refund).days %>"></span></p>
+    <p>* 如果未发货，请点击同意退款给买家</p>
+    <p>* 如果实际已发货，请主动与买家联系</p>
+    <p>* 如果您逾期未响应，视作同意买家申请，系统将自动退款给买家</p>
+  </div>
+  <br />
+  <div class='evaluate'>
+    <% if can? :approve_refund, order_item_refund %>
+      <%= link_to '同意退款申请', 'javascripts:;', class: 'btn btn-large btn-noraidus', onclick: '$("#refund_approve_refund").modal("show")' %>
+      <%= render_refund_modal 'approve_refund', title: '同意退款申请' %>
+    <% end %>
+    <% if can? :delivery, order_item_refund %>
+      <span>您还可以：<%= link_to '发货', set_express_admin_order_path(@order_item.order), class: 'btn-link express-order-btn', onclick: '$("#ship-express-modal").modal("show")' %></span>
+      <%= render partial: 'admin/orders/ship_express', locals: {args: [ :order, method: :patch ]} %>
+    <% end %>
+  </div>
+
+<% elsif type == 'receipted_refund' %><!-- 已收到货 仅退款 -->
+  <div class="bottom_line">
+    <h3 class='refund_info_title'>请处理退款申请（已收到货 仅退款）</h3>
+    <div class="countdown-box"><p id="clock_refund" data-endtime=<%= order_item_refund.deal_at + refund_timeout(order_item_refund).days %>></p></div><br/>
+    <p>* 如果您同意，将直接退款给买家</p>
+    <p>* 如果您拒绝，买家可以要求UBOSS平台介入处理</p>
+    <p>* 如果您逾期未响应，视作同意买家申请，系统将自动退款给买家</p>
+  </div>
+  <br />
+  <div class='evaluate'>
+    <% if can? :approve_refund, order_item_refund %>
+      <%= link_to '同意退款申请', 'javascripts:;', class: 'btn btn-large btn-noraidus', onclick: '$("#refund_approve_refund").modal("show")' %>
+      <%= render_refund_modal 'approve_refund', title: '同意退款申请' %>
+    <% end %>
+    <% if can? :decline_refund, order_item_refund %>
+      <span>您还可以：<%= link_to '拒绝退款申请', 'javascripts:;', class: 'btn-link', onclick: '$("#refund_decline_refund").modal("show")' %></span>
+      <%= render_refund_modal 'decline_refund', title: '拒绝退款申请' %>
+    <% end %>
+  </div>
+
+<% elsif type == 'unreceipt_refund' %><!-- 未收到货 仅退款 -->
+  <div class="bottom_line">
+    <h3 class='refund_info_title'>请处理退款申请（未收到货 仅退款）</h3>
+    <div class="countdown-box"><p id="clock_refund" data-endtime=<%= order_item_refund.deal_at + refund_timeout(order_item_refund).days %>></p></div><br/>
+    <p>* 如果您同意，将直接退款给买家</p>
+    <p>* 如果您拒绝，买家可以要求UBOSS平台介入处理</p>
+    <p>* 如果您逾期未响应，视作同意买家申请，系统将自动退款给买家</p>
+  </div>
+  <br />
+  <div class='evaluate'>
+    <% if can? :approve_refund, order_item_refund %>
+      <%= link_to '同意退款申请', 'javascripts:;', class: 'btn btn-large btn-noraidus', onclick: '$("#refund_approve_refund").modal("show")' %>
+      <%= render_refund_modal 'approve_refund', title: '同意退款申请' %>
+    <% end %>
+    <% if can? :decline_refund, order_item_refund %>
+      <span>您还可以：<%= link_to '拒绝退款申请', 'javascripts:;', class: 'btn-link', onclick: '$("#refund_decline_refund").modal("show")' %>
+      <%= render_refund_modal 'decline_refund', title: '拒绝退款申请' %>
+    <% end %>
+  </div>
+
+<% elsif type == 'return_goods_and_refund' %><!-- 退款退货 -->
+  <div class="bottom_line">
+    <h3 class='refund_info_title'>请处理退货申请（已收到货--退货）</h3>
+    <div class="countdown-box"><p id="clock_refund" data-endtime=<%= order_item_refund.deal_at + refund_timeout(order_item_refund).days %>></p></div><br/>
+    <p>* 如果同意申请，请发送正确退货地址给买家</p>
+    <p>* 如果您拒绝，买家可以要求UBOSS平台介入处理</p>
+    <p>* 如果您逾期未响应，视作同意买家申请，系统将自动发送您的默认退货地址给买家</p>
+  </div>
+  <br />
+  <div class='evaluate'>
+    <% if can? :approve_return, order_item_refund %>
+      <%= link_to '同意退货申请', 'javascripts:;', class: 'btn btn-large btn-noraidus', onclick: '$("#refund_approve_return").modal("show")' %>
+      <%= render_refund_modal 'approve_return', title: '同意退货申请' %>
+    <% end %>
+    <% if can? :decline_return, order_item_refund %>
+      <span>您还可以：<%= link_to '拒绝退货申请', 'javascripts:;', class: 'btn-link', onclick: '$("#refund_decline_return").modal("show")' %>
+      <%= render_refund_modal 'decline_return', title: '拒绝退货申请' %>
+    <% end %>
+  </div>
+
+<% elsif type == 'after_sale_only_refund' %><!-- 售后 仅退款 -->
+  <div class="bottom_line">
+    <h3 class='refund_info_title'>请处理退款申请（售后--仅退款）</h3>
+    <div class="countdown-box"><p id="clock_refund" data-endtime=<%= order_item_refund.deal_at + refund_timeout(order_item_refund).days %>></p></div><br/>
+    <p>* 如果您同意，将直接退款给买家</p>
+    <p>* 如果您拒绝，买家可以要求UBOSS平台介入处理</p>
+    <p>* 如果您逾期未响应，视作同意买家申请，系统将自动退款给买家</p>
+  </div>
+  <br />
+  <div class='evaluate'>
+    <% if can? :approve_refund, order_item_refund %>
+      <%= link_to '同意退款申请', 'javascripts:;', class: 'btn btn-large btn-noraidus', onclick: '$("#refund_approve_refund").modal("show")' %>
+      <%= render_refund_modal 'approve_refund', title: '同意退款申请' %>
+    <% end %>
+    <% if can? :decline_refund, order_item_refund %>
+      <span>您还可以：<%= link_to '拒绝退款申请', 'javascripts:;', class: 'btn-link', onclick: '$("#refund_decline_refund").modal("show")' %>
+      <%= render_refund_modal 'decline_refund', title: '拒绝退款申请' %>
+    <% end %>
+  </div>
+
+<% elsif type == 'after_sale_return_goods_and_refund' %><!-- 售后 退货 -->
+  <div class="bottom_line">
+    <h3 class='refund_info_title'>请处理退货申请（售后--退货）</h3>
+    <div class="countdown-box"><p id="clock_refund" data-endtime=<%= order_item_refund.deal_at + refund_timeout(order_item_refund).days %>></p></div><br/>
+    <p>* 如果同意申请，请发送正确退货地址给买家</p>
+    <p>* 如果您拒绝，买家可以要求UBOSS平台介入处理</p>
+    <p>* 如果您逾期未响应，视作同意买家申请，系统将自动发送您的默认退货地址给买家</p>
+  </div>
+  <br />
+  <div class='evaluate'>
+    <% if can? :approve_return, order_item_refund %>
+      <%= link_to '同意退货申请', 'javascripts:;', class: 'btn btn-large btn-noraidus', onclick: '$("#refund_approve_return").modal("show")' %>
+      <%= render_refund_modal 'approve_return', title: '同意退货申请' %>
+    <% end %>
+    <% if can? :decline_return, order_item_refund %>
+      <span>您还可以：<%= link_to '拒绝退货申请', 'javascripts:;', class: 'btn-link', onclick: '$("#refund_decline_return").modal("show")' %></span>
+      <%= render_refund_modal 'decline_return', title: '拒绝退货申请' %>
+    <% end %>
+  </div>
+<% end %>

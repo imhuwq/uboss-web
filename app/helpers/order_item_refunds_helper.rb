@@ -69,4 +69,12 @@ module OrderItemRefundsHelper
       order_item_order_item_refund_path(order_item_id: order_item.id, id: last_refund.id)
     end
   end
+
+  def render_refund_modal(partial, title)
+    render partial: "admin/order_item_refunds/#{partial}", title: title
+  end
+
+  def render_refund_info(refund)
+    render partial: "admin/order_item_refunds/aasm/state_info/#{refund.aasm_state}", locals: {order_item_refund: refund}
+  end
 end
