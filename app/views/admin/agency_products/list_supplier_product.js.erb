@@ -1,1 +1,11 @@
-$(".product-box .actions").html("<button class='btn btn-mid btn-block' disabled>已添加到店铺</button>")
+<% if @product_copy.present? %>
+  if($(".agency-product-actions a").hasClass("btn-large")){
+    btn_class = "btn-large"
+  }
+  else{
+    btn_class = "btn-mid"
+  }
+  $(".agency-product-actions").html("<button class='btn "+btn_class+"' disabled>已添加到店铺</button>")
+<% else %>
+  alert('已代销该产品！')
+<% end %>

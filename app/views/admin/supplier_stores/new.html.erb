@@ -5,7 +5,7 @@
     url: baiduIPAPI,
     dataType: "jsonp",
     success: function(data){
-      if(data.length > 0){
+      if(data.content){
         $('span#guesscity').text(data.content.address_detail.city);
         $('input#supplier_store_guess_province').val(data.content.address_detail.province);
         $('input#supplier_store_guess_city').val(data.content.address_detail.city);
@@ -36,7 +36,7 @@
 <div class="container mod-inner">
   <div class="beige-bg-color admin-box">
     <div class='new_supplier'>
-      <%= form_for @supplier_store, url: admin_supplier_stores_path do |f| %>
+      <%= form_for @supplier_store, url: admin_supplier_store_path do |f| %>
         <div class='form-group'>
           <div class='control-input'>
             <%= f.text_field :store_name, placeholder: '给供货店铺起个名称吧' %>

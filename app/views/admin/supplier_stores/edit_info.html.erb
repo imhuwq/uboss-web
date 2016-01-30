@@ -12,7 +12,7 @@
       <p>
         在发布商品前，请先完善客服信息，方便代销商家联系您
       </p>
-      <%= form_for @supplier_store, url: update_info_admin_supplier_stores_path do |f| %>
+      <%= form_for @supplier_store, url: update_info_admin_supplier_store_path do |f| %>
         <div class="form-group">
           <div class="control-input">
             <%= f.text_field :phone_number, placeholder: '客服电话' %>

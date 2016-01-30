@@ -1,5 +1,5 @@
 class SupplierStore < UserInfo
-  belongs_to :supplier, class_name: :user
+  belongs_to :supplier, class_name: 'User', foreign_key: 'user_id'
   has_one :supplier_store_info, validate: true, autosave: true
 
   validates :supplier_store_info, presence: true

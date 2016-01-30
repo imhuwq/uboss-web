@@ -231,10 +231,12 @@ Rails.application.routes.draw do
         end
       end
 
-      resource :supplier_stores do
+      resource :supplier_store, except: [:show] do
         get :edit_info
         patch :update_info
       end
+
+      get '/supplier_stores/:id', to: 'supplier_stores#show', as: :show_supplier_store
 
       resources :supplier_products, except: [:destroy] do
         member do

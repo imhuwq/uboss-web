@@ -21,12 +21,12 @@ class Admin::AgenciesController < AdminController
         else
           user = User.new(login: mobile, nickname: mobile, mobile: mobile, password: Devise.friendly_token, need_reset_password: true)
           user.save(validate: false)
-          user.user_roles << UserRole.find_by(name: 'seller') << UserRole.find_by(name: 'agency')
+          user.add_role('seller')
+          user.add_role('agency')
           user
         end
 
         csh = CaptchaSendingHistory.find_by(code: params[:mobile_auth_code], sender_id: current_user.id, receiver_mobile: mobile, invite_type: 1)
-        csh.update_attributes(receiver_id: user.id)
 
         if csh.update_attributes(receiver_id: user.id) and current_user.cooperations.create(agency_id: user.id)
           captcha.destroy

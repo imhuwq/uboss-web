@@ -10,12 +10,10 @@ class Admin::AgencyProductsController < AdminController
   end
 
   def store_supplier_product
-    @product_copy
   end
 
   def list_supplier_product
-    @product_copy.published!
-    @product_copy
+    @product_copy.try(:published!)
   end
 
   private
@@ -25,9 +23,11 @@ class Admin::AgencyProductsController < AdminController
   end
 
   def copy_product
-    @product_copy = @product.amoeba_dup
-    @product_copy.user_id = current_user.id
-    @product_copy.save
+    unless @product.has_been_agented_by?(current_user)
+      @product_copy = @product.amoeba_dup
+      @product_copy.user_id = current_user.id
+      @product_copy.save
+    end
   end
 
 end

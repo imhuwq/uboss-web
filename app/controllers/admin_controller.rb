@@ -19,10 +19,10 @@ class AdminController < ApplicationController
   def check_new_supplier
     if current_user.is_supplier?
       unless current_user.supplier_store.phone_number.present?
-        redirect_to edit_info_admin_supplier_stores_path, notice: '请先完善客服信息'
+        redirect_to edit_info_admin_supplier_store_path, notice: '请先完善客服信息'
       end
     else
-      redirect_to new_admin_supplier_stores_path, notice: '请先创建供货店铺'
+      redirect_to new_admin_supplier_store_path, notice: '请先创建供货店铺'
     end
   end
 
