@@ -1,7 +1,7 @@
 class SupplierProduct < Product
 
   has_one :supplier_product_info, foreign_key: 'supplier_product_id', autosave: true
-  has_one :supplier, through: :supplier_product_info
+  belongs_to :supplier, class_name: 'User', foreign_key: 'user_id'
   has_many :supplier_product_inventories, -> { where(type: 'SupplierProductInventory') }, foreign_key: 'product_id', autosave: true
   has_many :agency_products, foreign_key: 'parent_id'
 
@@ -90,6 +90,10 @@ class SupplierProduct < Product
       end
       existing_record.assign_attributes(saling: false)
     end
+  end
+
+  def has_been_agented_by?(agency)
+    AgencyProduct.exists?(user_id: agency.id, parent_id: id)
   end
 
   private

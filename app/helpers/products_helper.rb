@@ -128,4 +128,5 @@ module ProductsHelper
     end
     inventories = inventories.to_json(only: json_attributes)
   end
+
 end

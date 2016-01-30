@@ -5,7 +5,7 @@ $ ->
     else
       $(this).children('.fachange').removeClass('fa-heart red-color').addClass('fa-heart-o')
 
-  $(document).on 'ajax:beforeSend', '#products .change-status-btn, .actions .store-supplier-product, .actions .list-supplier-product', (xhr, settings) ->
+  $(document).on 'ajax:beforeSend', '#products .change-status-btn, .store-supplier-product, .list-supplier-product', (xhr, settings) ->
     return confirm("确定#{$(this).text()}?")
 
   $(document).on 'ajax:success', "#products .change-status-btn", (e, data) ->
