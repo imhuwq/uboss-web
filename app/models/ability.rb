@@ -83,6 +83,9 @@ class Ability
     cannot :manage, OrderItemRefund do |refund|
       refund.order_item.order.is_agency_order? && refund.order_item.order.supplier_id != user.id
     end
+    can :read, OrderItemRefund do |refund|
+      refund.order_item.order.is_agency_order? && refund.order_item.order.user_id == user.id
+    end
     can :manage, UserAddress, user_id: user.id
   end
 
