@@ -1,6 +1,6 @@
 <%= content_for :page_specific_javascript do %>
   <script type="text/javascript" charset="utf-8">
-    stockData = <%== get_product_seling_inventories_json @product, supplier %>
+    stockData = <%== get_product_seling_inventories_json @product, (current_user.is_supplier? and can? :manage, product) %>
   </script>
   <%= javascript_include_tag 'admin/sku_app/application' %>
 <% end %>
@@ -50,7 +50,7 @@
         <span class="control-txt"><%= @product.name %></span>
       </div>
     </div>
-    <% if supplier %>
+    <% if current_user.is_supplier? and can? :manage, product %>
       <div class="form-group">
         <label class="control-label">成本价</label>
         <div class="control-input">
@@ -141,8 +141,7 @@
   </div><!-- admin-box -->
   <br />
   <div class="text-center">
-    　
-    <% if supplier %>
+    <% if current_user.is_supplier? and can? :manage, product %>
       <%= link_to("编辑", url_for(controller: 'admin/supplier_products', :action=>:edit, :id=>@product.id), :class=>"btn btn-large blue-btn",:role=>"button") %>
       <% supplier_product_info = @product.supplier_product_info %>
       <% if supplier_product_info.stored? %>
@@ -150,19 +149,34 @@
       <% elsif supplier_product_info.supplied? %>
         <%= link_to("下架", url_for(controller: 'admin/supplier_products', action: :toggle_supply_status, id: @product.id, status: :store), method: :patch, class: "btn btn-large red-btn", role: "button") %>
       <% end %>
-    <% else %>
+    <% end %>
+    <% if current_user.is_seller? %>
       <% if can? :edit, @product %>
         <%= link_to("编辑", url_for(controller: 'admin/products', :action=>:edit,:id=>@product.id), :class=>"btn btn-large blue-btn",:role=>"button") %>
+        <%= link_to("手机效果", url_for(controller: 'admin/products', :action=>:pre_view,:id=>@product.id), :class=>"btn btn-large yellow-btn",:role=>"button",:target=>"_blank") %>
       <% end %>
-      <%= link_to("手机效果", url_for(controller: 'admin/products', :action=>:pre_view,:id=>@product.id), :class=>"btn btn-large yellow-btn",:role=>"button",:target=>"_blank") %>　
       <% if can? :update, @product %>
         <% if @product.status == 'unpublish' %>
           <%= link_to("上架", url_for(controller: 'admin/products', action: :change_status, id: @product.id, status: :published), method: :patch, class: "btn btn-large red-btn", role: "button") %>
-       <% else %>
-         <%= link_to("取消上架", url_for(controller: 'admin/products', action: :change_status,id: @product.id, status: :unpublish),
+        <% else %>
+          <%= link_to("取消上架", url_for(controller: 'admin/products', action: :change_status,id: @product.id, status: :unpublish),
                      method: :patch, class: "btn btn-large ",:role=>"button") %>
         <% end %>
       <% end %>
+    <% end %>
+    <% if current_user.is_agency? and can? :read, @product %>
+      <div class="agency-product-actions">
+        <% if @product.has_been_agented_by?(current_user) %>
+          <button class="btn btn-large" disabled><%= @product.published? ? '已添加到店铺' : '已添加到仓库' %></button>
+        <% else %>
+          <%= link_to("+立即上架", admin_list_supplier_product_path(@product),
+            remote: true, method: :post, data: { disable_with: '<i class="fa fa-spinner"></i>' },
+            class: "btn btn-large list-supplier-product") %>
+          <%= link_to("+添加到仓库", admin_store_supplier_product_path(@product),
+            remote: true, method: :post, data: { disable_with: '<i class="fa fa-spinner"></i>' },
+            class: "btn btn-large store-supplier-product") %>
+        <% end %>
+      </div>
     <% end %>
   </div>
 </div><!-- container -->

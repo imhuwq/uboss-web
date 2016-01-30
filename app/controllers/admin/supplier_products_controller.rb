@@ -2,7 +2,7 @@ class Admin::SupplierProductsController < AdminController
 
   load_and_authorize_resource except: :create
 
-  before_action :check_new_supplier
+  before_action :check_new_supplier, except: :show
 
   def index
     params[:status] ||= 'supply'
