@@ -1,3 +1,28 @@
+.pay-bg{
+    background: image-url('mobile/pay-bg.jpg') top center no-repeat #d83834;
+    background-size:100% auto ;
+    overflow: hidden;
+    height: 100%;
+    .pay-info-bg{
+        margin-top: 60%;
+        padding: 20px;
+        .btn-pay,.btn-pay-about{
+            border-radius: 50px;
+            width: 150px;
+            padding: 6px 40px;
+            color: #b03700;
+            box-shadow: 0px 4px 0px rgba(227,179,77,08);
+        }
+        .btn-pay{
+            background: #fde13a;
+        }
+        .btn-pay-about{            
+            background: #fffbd6;
+            margin-bottom: 20px;
+        }
+    }
+}
+
 small{font-size: 80%;}
 .m-bottom10{
     margin-bottom: 10px;

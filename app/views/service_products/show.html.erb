@@ -85,7 +85,7 @@
       <br />
     </div><!-- product-info-box -->
 
-  <!-- 自己的友情卡  -->
+  <!-- 自己的友钱卡  -->
   <% elsif self_privilege_card?(@privilege_card) || qr_sharing? %>
     <div class="product-info-box">
       <br />
@@ -105,7 +105,7 @@
             <div class="text-center"><a class="btn btn-large btn-longer p-sharing-btn">分享给朋友</a></div>
           <% else %>
             <div class="text-center">
-              <%= link_to "领取友情卡", get_product_sharing_path, data: { pid: @product.id, uid: current_user.present? },
+              <%= link_to "领取友钱卡", get_product_sharing_path, data: { pid: @product.id, uid: current_user.present? },
                 class: "btn btn-large btn-longer show-req-snode-modal"
               %>
 
@@ -117,7 +117,7 @@
       </div>  <!-- friend-card -->
     </div><!-- product-info-box -->
   <% end %>
-  <!-- end 自己的友情卡 -->
+  <!-- end 自己的友钱卡 -->
 
   <div class="bg-white gap">
   	<div class="product-store-box">
@@ -190,7 +190,7 @@
         <p><input type="tel" name="mobile" placeholder='输入手机号，获得分享收益' class='input-block' /></p>
         <br />
         <p>
-        <%= link_to "领取友情卡", get_product_sharing_path, data: { pid: @product.id },
+        <%= link_to "领取友钱卡", get_product_sharing_path, data: { pid: @product.id },
           class: "btn btn-large btn-block req-pro-snode-btn" %>
         </p>
       </div>
