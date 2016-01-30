@@ -48,13 +48,19 @@ class PrivilegeCard < ActiveRecord::Base
   end
 
   def ordinary_store_qrcode_img_url
-    get_and_save_store_qrcode_url if ordinary_store_qrcode_img.new_record? || need_to_update?
+    if ordinary_store_qrcode_img.new_record? || need_to_update?
+      delay.get_and_save_store_qrcode_url
+      return "http://imager.ulaiber.com/req/1?#{ordinary_store_qrcode_params.merge(mode: 0).to_param}"
+    end
 
     reload.ordinary_store_qrcode_img.image_url
   end
 
   def service_store_qrcode_img_url
-    get_and_save_store_qrcode_url if service_store_qrcode_img.new_record? || need_to_update?
+    if service_store_qrcode_img.new_record? || need_to_update?
+      delay.get_and_save_store_qrcode_url
+      return "http://imager.ulaiber.com/req/1?#{service_store_qrcode_params.merge(mode: 0).to_param}"
+    end
 
     reload.service_store_qrcode_img.image_url
   end
@@ -96,7 +102,7 @@ class PrivilegeCard < ActiveRecord::Base
   def ordinary_store_qrcode_params
     {
       user_img_url: user.image_url(:w60),
-      item_img_url: ordinary_store.store_cover_url(:thumb),
+      item_img_url: ordinary_store.store_cover_url(:w250x250),
       qrcode_content: url_helpers.sharing_url(code: sharing_node.code, host: default_host),
       username: user.nickname,
       mode: 1
@@ -106,7 +112,7 @@ class PrivilegeCard < ActiveRecord::Base
   def service_store_qrcode_params
     {
       user_img_url: user.image_url(:w60),
-      item_img_url: service_store.store_cover_url(:thumb),
+      item_img_url: service_store.store_cover_url(:w250x250),
       qrcode_content: url_helpers.sharing_url(code: sharing_node.code, host: default_host, redirect: url_helpers.service_store_path(service_store)),
       username: user.nickname,
       mode: 1
