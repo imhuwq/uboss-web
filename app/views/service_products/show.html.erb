@@ -57,8 +57,36 @@
 		</div><!-- pop-bottom -->
 	</div>
 
+  <!-- 分享者的友情卡  -->
+  <% if other_users_privilege_card?(@privilege_card) && @sharing_node %>
+    <div class="product-info-box">
+      <br />
+      <div class="friend-card">
+        <p class="cover"><%= image_tag @privilege_card.user.avatar_url(:w120) %></p>
+        <p class="name"><%= @privilege_card.user.identify %> 分享</p>
+        <% amounts = product_privilege(@product, @privilege_card, :amount) %>
+        <% if amounts[0] != 0 || (amounts[1].present? && amounts[1] != 0) %>
+          <div class="gray-color">每件为你多省<span class="like-color"><%= amounts.join(' - ') %></span></div>
+        <% end %>
+        <br />
+        <div class="border-box">
+          <p class="name">友情价</p>
+          <div class="price">
+            <%= product_privilege(@product, @privilege_card, :price).join(' - ') %>
+          </div>
+        </div>
+        <br />
+        <p class="name">关于分享者</p>
+        <div class="gray-color">
+          共 <%= @sharing_node.user.total_reputations %> 分享
+          <span class="like-color"><%= @sharing_node.user.good_reputation_rate %>% 靠谱</span>
+        </div>
+      </div>  <!-- friend-card -->
+      <br />
+    </div><!-- product-info-box -->
+
   <!-- 自己的友情卡  -->
-  <% if self_privilege_card?(@privilege_card) || qr_sharing? %>
+  <% elsif self_privilege_card?(@privilege_card) || qr_sharing? %>
     <div class="product-info-box">
       <br />
       <div class="friend-card">
@@ -87,32 +115,6 @@
         </div><!-- border-box -->
         <div class="read gap"><a href="/about"><small>查看说明</small></a></div>
       </div>  <!-- friend-card -->
-    </div><!-- product-info-box -->
-  <% elsif other_users_privilege_card?(@privilege_card) %>
-    <div class="product-info-box">
-      <br />
-      <div class="friend-card">
-        <p class="cover"><%= image_tag @privilege_card.user.avatar_url(:w120) %></p>
-        <p class="name"><%= @privilege_card.user.identify %> 分享</p>
-        <% amounts = product_privilege(@product, @privilege_card, :amount) %>
-        <% if amounts[0] != 0 || (amounts[1].present? && amounts[1] != 0) %>
-          <div class="gray-color">每件为你多省<span class="like-color"><%= amounts.join(' - ') %></span></div>
-        <% end %>
-        <br />
-        <div class="border-box">
-          <p class="name">友情价</p>
-          <div class="price">
-            <%= product_privilege(@product, @privilege_card, :price).join(' - ') %>
-          </div>
-        </div>
-        <br />
-        <p class="name">关于分享者</p>
-        <div class="gray-color">
-          共 <%= @sharing_node.user.total_reputations %> 分享
-          <span class="like-color"><%= @sharing_node.user.good_reputation_rate %>% 靠谱</span>
-        </div>
-      </div>  <!-- friend-card -->
-      <br />
     </div><!-- product-info-box -->
   <% end %>
   <!-- end 自己的友情卡 -->

@@ -25,7 +25,7 @@ class AccountsController < ApplicationController
     @statistics[:oo_unevaluate] = oo_unevaluate(@ordinary_orders).count
     @statistics[:oo_after_sale] = current_user.order_item_refunds.progresses.count
 
-    @privilege_cards = append_default_filter current_user.privilege_cards.includes(:seller), order_column: :updated_at, page_size: 10
+    @privilege_cards = append_default_filter current_user.privilege_cards.includes(:user, [seller: [:service_store, :ordinary_store]]), order_column: :updated_at, page_size: 10
 
     render layout: 'mobile'
   end

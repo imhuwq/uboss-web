@@ -46,6 +46,18 @@
   transform: translate3d(-50%, -50%, 0px);
   -webkit-transform: translate3d(-50%, -50%, 0px);
 }
+.qr-modal {
+    background: rgba(0,0,0,0.5);
+    .close{
+        top: 10px;
+        right:10px;
+        background: none;
+    }
+    .pop-content{
+        width: 90%;
+        text-align: center;
+    }
+}
 .pop-bottom{
     position: fixed;
     bottom: 10px;
