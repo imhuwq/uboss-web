@@ -170,7 +170,7 @@ module WxTemplateMsg extend self
         color: "#000"
       },
       remark: {
-        value: "\n买家手机：#{refund.order_item.order.mobile}\n\n如有疑问，可联系客服400-886-4414",
+        value: "\n买家手机：#{refund.order_item.order.mobile}\n\n如有疑问，可联系客服0755-66691053",
         color: "#000"
       }
     }
@@ -223,7 +223,7 @@ module WxTemplateMsg extend self
         color: "#000"
       },
       remark: {
-        value: "\n\n如有疑问，可联系客服400-886-4414",
+        value: "\n\n如有疑问，可联系客服0755-66691053",
         color: "#000"
       }
     }
