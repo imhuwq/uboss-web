@@ -20,7 +20,7 @@
 					<% end %>
 				</td>
 				<td class="text-left" style="max-width: 400px;">
-					<%= link_to admin_product_path(product) do %>
+					<%= link_to (current_user.is_seller? and can? :manage, product) ? admin_product_path(product) : admin_supplier_product_path(product) do %>
 						<%= product.name %>
 					<% end %>
 				</td>
@@ -34,67 +34,64 @@
 				<td><%= product.total_sells %></td>
 				<td><%= product.created_at %></td>
 				<td>
-          <% if can? :manage, product %>
-            <% if current_user.is_seller? %>
-              <% if product.status == 'unpublish' %>
-                <p>
-                <%= link_to("上架", change_status_admin_product_path(product, status: 'published'),
-                remote: true, method: :patch, data: { disable_with: '<i class="fa fa-spinner"></i>' },
-                class: "btn btn-mid btn-block yellow-btn change-status-btn") %>
-                </p>
-              <% else %>
-                <p>
-                <%= link_to("下架", change_status_admin_product_path(product, status: 'unpublish'),
-                remote: true, method: :patch, data: { disable_with: '<i class="fa fa-spinner"></i>' },
-                class: "btn btn-mid btn-block change-status-btn") %>
-                </p>
-              <% end %>
+          <% if can_manage_seller_product(product) %>
+            <% if product.status == 'unpublish' %>
+              <p>
+              <%= link_to("上架", change_status_admin_product_path(product, status: 'published'),
+              remote: true, method: :patch, data: { disable_with: '<i class="fa fa-spinner"></i>' },
+              class: "btn btn-mid btn-block yellow-btn change-status-btn") %>
+              </p>
+            <% else %>
+              <p>
+              <%= link_to("下架", change_status_admin_product_path(product, status: 'unpublish'),
+              remote: true, method: :patch, data: { disable_with: '<i class="fa fa-spinner"></i>' },
+              class: "btn btn-mid btn-block change-status-btn") %>
+              </p>
+            <% end %>
 
-              <%= link_to switch_hot_flag_admin_product_path(product),
-                remote: true, method: :patch,
-                class:" edit-icon switch-p-hot-btn " ,title:'是否为热销商品' do %>
-                <i class="fa fachange <%=product.hot? ? 'fa-heart red-color' : 'fa-heart-o'%>">  </i>
-              <% end %>
+            <%= link_to switch_hot_flag_admin_product_path(product),
+              remote: true, method: :patch,
+              class:" edit-icon switch-p-hot-btn " ,title:'是否为热销商品' do %>
+              <i class="fa fachange <%=product.hot? ? 'fa-heart red-color' : 'fa-heart-o'%>">  </i>
+            <% end %>
 
-              <%= link_to url_for(action: :edit, id: product.id), class:'edit-icon', title: '编辑' do %>
-                <i class="fa fa-pencil-square-o"></i>
-              <% end %>
+            <%= link_to url_for(action: :edit, id: product.id), class:'edit-icon', title: '编辑' do %>
+              <i class="fa fa-pencil-square-o"></i>
+            <% end %>
 
-              <%= link_to change_status_admin_product_path(product, status: 'closed'),
+            <%= link_to change_status_admin_product_path(product, status: 'closed'),
+              remote: true, method: :patch, class:'change-status-btn edit-icon',
+              data: { disable_with: '<i class="fa fa-trash-o"></i>' } do %>
+              <i class="fa fa-trash-o"></i>
+            <% end %>
+          <% elsif can_manage_supplier_product(product) %>
+            <% if product.supply_status == 'stored' %>
+              <p>
+              <%= link_to("上架", toggle_supply_status_admin_supplier_product_path(product, status: 'supply'),
+              remote: true, method: :patch, data: { disable_with: '<i class="fa fa-spinner"></i>' },
+              class: "btn btn-mid btn-block yellow-btn change-status-btn") %>
+              </p>
+            <% elsif product.supply_status == 'supplied' %>
+              <p>
+              <%= link_to("下架", toggle_supply_status_admin_supplier_product_path(product, status: 'store'),
+              remote: true, method: :patch, data: { disable_with: '<i class="fa fa-spinner"></i>' },
+              class: "btn btn-mid btn-block change-status-btn") %>
+              </p>
+            <% end %>
+
+            <%= link_to url_for(action: :edit, id: product.id), class:'edit-icon', title: '编辑' do %>
+              <i class="fa fa-pencil-square-o"></i>
+            <% end %>
+
+            <% unless product.supply_status == 'deleted' %>
+              <%= link_to toggle_supply_status_admin_supplier_product_path(product, status: 'delete'),
                 remote: true, method: :patch, class:'change-status-btn edit-icon',
                 data: { disable_with: '<i class="fa fa-trash-o"></i>' } do %>
                 <i class="fa fa-trash-o"></i>
               <% end %>
-            
-            <% elsif current_user.is_supplier? %>
-              <% if product.supply_status == 'stored' %>
-                <p>
-                <%= link_to("上架", toggle_supply_status_admin_supplier_product_path(product, status: 'supply'),
-                remote: true, method: :patch, data: { disable_with: '<i class="fa fa-spinner"></i>' },
-                class: "btn btn-mid btn-block yellow-btn change-status-btn") %>
-                </p>
-              <% elsif product.supply_status == 'supplied' %>
-                <p>
-                <%= link_to("下架", toggle_supply_status_admin_supplier_product_path(product, status: 'store'),
-                remote: true, method: :patch, data: { disable_with: '<i class="fa fa-spinner"></i>' },
-                class: "btn btn-mid btn-block change-status-btn") %>
-                </p>
-              <% end %>
-
-              <%= link_to url_for(action: :edit, id: product.id), class:'edit-icon', title: '编辑' do %>
-                <i class="fa fa-pencil-square-o"></i>
-              <% end %>
-
-              <% unless product.supply_status == 'deleted' %>
-                <%= link_to toggle_supply_status_admin_supplier_product_path(product, status: 'delete'),
-                  remote: true, method: :patch, class:'change-status-btn edit-icon',
-                  data: { disable_with: '<i class="fa fa-trash-o"></i>' } do %>
-                  <i class="fa fa-trash-o"></i>
-                <% end %>
-              <% end %>
             <% end %>
           <% end %>
-          <% if current_user.is_agency? and can? :read, product %>
+          <% if can_agent_product(product) %>
             <div class="agency-product-actions">
               <% if product.has_been_agented_by?(current_user) %>
                 <button class="btn btn-mid btn-block" disabled><%= product.published? ? '已添加到店铺' : '已添加到仓库' %></button>
@@ -105,7 +102,7 @@
                 <%= link_to("+添加到仓库", admin_store_supplier_product_path(product),
                   remote: true, method: :post, data: { disable_with: '<i class="fa fa-spinner"></i>' },
                   class: "btn btn-mid btn-block store-supplier-product") %>
-                <% end %>
+              <% end %>
             </div>
           <% end %>
 				</td>

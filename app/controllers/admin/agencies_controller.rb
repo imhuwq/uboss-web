@@ -3,16 +3,19 @@ class Admin::AgenciesController < AdminController
   before_action :check_new_supplier
 
   def index 
+    authorize! :read, :agencies
     @agencies = current_user.agencies.includes(:agency_products)
     @statistics = {}
     @statistics[:count] = @agencies.count
   end
   
   def new
+    authorize! :new, :agency
     @agencies = User.role('agency')
   end
 
   def build_cooperation_with_auth_code
+    authorize! :build_cooperation_with_auth_code, :agency
     if captcha = MobileCaptcha.find_by(code: params[:mobile_auth_code], captcha_type: 'invite_agency', sender_id: current_user.id)
       mobile = captcha.mobile
       if MobileCaptcha.auth_code(mobile, params[:mobile_auth_code], 'invite_agency')
@@ -43,6 +46,7 @@ class Admin::AgenciesController < AdminController
   end
 
   def build_cooperation_with_agency_id
+    authorize! :build_cooperation_with_agency_id, :agency
     @agency = User.find_by(id: params[:cooperation][:agency_id])
     unless current_user.has_cooperation_with_agency?(@agency)
       current_user.cooperations.create(agency_id: @agency.id)
@@ -53,6 +57,8 @@ class Admin::AgenciesController < AdminController
   end
 
   def end_cooperation
+    authorize! :end_cooperation, :agency
+    @agency = User.find_by(id: params[:cooperation][:agency_id])
     @agency = User.find_by(id: params[:id])
     if current_user.has_cooperation_with_agency?(@agency)
       current_user.cooperations.find_by(agency_id: params[:id]).destroy

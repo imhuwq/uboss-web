@@ -3,7 +3,7 @@ class SupplierProduct < Product
   has_one :supplier_product_info, foreign_key: 'supplier_product_id', autosave: true
   belongs_to :supplier, class_name: 'User', foreign_key: 'user_id'
   has_many :supplier_product_inventories, -> { where(type: 'SupplierProductInventory') }, foreign_key: 'product_id', autosave: true
-  has_many :agency_products, foreign_key: 'parent_id'
+  has_many :children, class_name: 'AgencyProduct', foreign_key: 'parent_id'
 
   amoeba do
     set type: 'AgencyProduct'
@@ -19,6 +19,9 @@ class SupplierProduct < Product
   delegate :suggest_price_upper, :suggest_price_upper=, to: :supplier_product_info, allow_nil: true
   delegate :content, :content=, to: :supplier_product_info, prefix: 'supply', allow_nil: true
   delegate :supply_status, to: :supplier_product_info
+  delegate :stored?, to: :supplier_product_info
+  delegate :supplied?, to: :supplier_product_info
+  delegate :deleted?, to: :supplier_product_info
 
   scope :stored, -> { joins(:supplier_product_info).where('supplier_product_infos.supply_status = 0') }
   scope :supplied, -> { joins(:supplier_product_info).where('supplier_product_infos.supply_status = 1') }
@@ -90,10 +93,6 @@ class SupplierProduct < Product
       end
       existing_record.assign_attributes(saling: false)
     end
-  end
-
-  def has_been_agented_by?(agency)
-    AgencyProduct.exists?(user_id: agency.id, parent_id: id)
   end
 
   private

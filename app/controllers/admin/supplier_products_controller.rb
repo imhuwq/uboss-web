@@ -43,7 +43,7 @@ class Admin::SupplierProductsController < AdminController
   end
 
   def update
-    if @supplier_product.update(product_params)
+    if @supplier_product.update(supplier_product_params)
       flash[:success] = '保存成功'
       redirect_to action: :show, id: @supplier_product.id
     else
@@ -57,12 +57,14 @@ class Admin::SupplierProductsController < AdminController
     begin
       if params[:status] == 'store'
         supplier_product_info.stored!
+        unpublish_children_products
         @notice = '下架成功'
       elsif params[:status] == 'supply'
         supplier_product_info.supplied!
         @notice = '上架成功'
       elsif params[:status] == 'delete'
         supplier_product_info.deleted!
+        unpublish_children_products
         @notice = '删除成功'
       else
         @error = '未知操作'
@@ -84,6 +86,15 @@ class Admin::SupplierProductsController < AdminController
   end
 
   private
+
+  def unpublish_children_products
+    children = @supplier_product.children
+    if children.present?
+      children.each do |child|
+        child.unpublish!
+      end
+    end
+  end
 
   def product_propertys_params
     params.permit(product_propertys_names: [])
