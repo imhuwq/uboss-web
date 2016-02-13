@@ -144,6 +144,10 @@ class Ability
     can [:destroy, :edit_info, :update_info], SupplierStore, user_id: user.id
     can :read, User, cooperation: { supplier_id: user.id }
     can :read, :agencies
+    can :new, :agency
+    can :build_cooperation_with_auth_code, :agency
+    can :build_cooperation_with_agency_id, :agency
+    can :end_cooperation, :agency
     can :manage, SupplierProduct, user_id: user.id
     can :manage, PurchaseOrder, supplier_id: user.id
   end

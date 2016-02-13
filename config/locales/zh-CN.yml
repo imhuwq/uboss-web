@@ -95,6 +95,7 @@ zh-CN:
         name: 产品名
         traffic_expense: 运费
         carriage_template: 运费模板
+        cost_price: 成本价
         original_price: 原价
         present_price: 现价
         count: 库存

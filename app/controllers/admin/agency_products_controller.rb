@@ -2,6 +2,7 @@ class Admin::AgencyProductsController < AdminController
 
   before_action :set_product
   before_action :copy_product, only: [:store_supplier_product, :list_supplier_product]
+  authorize_resource
 
   def valid_agent_products
     ids = current_user.suppliers.pluck(:id)
