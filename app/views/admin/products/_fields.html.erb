@@ -1,7 +1,7 @@
 <%= content_for :page_specific_javascript do %>
   <script type="text/javascript" charset="utf-8">
     propertyData = <%== ProductProperty.includes(:product_property_values).all.to_json(only: [:name], include: {product_property_values: {only: [:value]}}) %>;
-    stockData = <%== get_product_seling_inventories_json f.object, (current_user.is_supplier? and can? :manage, product) %>;
+    stockData = <%== get_product_seling_inventories_json f.object, (current_user.is_supplier? and can? :manage, @product) %>;
   </script>
   <%= javascript_include_tag 'admin/sku_app/application' %>
 <% end %>
@@ -20,20 +20,40 @@
   <h4 class="edit-title">商品信息</h4>
   <%= f.input :name %>
   
-  <% if current_user.is_supplier? and can? :manage, product %>
-    <%= f.input :cost_price %>
+  <% if current_user.is_supplier? and can? :manage, @product %>
+    <%= f.input :cost_price, input_html: { type: 'number' } %>
     <div class='form-group'>
       <label class='integer optional control-label'>
         <abbr title="必填">*</abbr>
         建议价
       </label>
       <div class='control-input'>
-        <%= f.input_field :suggest_price_lower %>
+        <%= f.input_field :suggest_price_lower, type: 'number' %>
         至
-        <%= f.input_field :suggest_price_upper %>
+        <%= f.input_field :suggest_price_upper, type: 'number' %>
       </div>
     </div>
-  <% else %>
+  <% elsif current_user.is_agency? and can? :manage, @product %>
+    <div class='form-group'>
+      <label class='integer optional control-label'>
+        成本价
+      </label>
+      <div class='control-input'>
+        <%= @product.parent.cost_price %>
+      </div>
+    </div>
+    <div class='form-group'>
+      <label class='integer optional control-label'>
+        建议价
+      </label>
+      <div class='control-input'>
+        <%= @product.parent.suggest_price_lower %>
+        至
+        <%= @product.parent.suggest_price_upper %>
+      </div>
+    </div>
+  <% end %>
+  <% unless current_user.is_supplier? and can? :manage, @product %>
     <%= f.input :original_price, hint: '仅作页面显示参考' %>
     <%= f.input :present_price, hint: '仅作显示参考，真实价格请在库存/规格中设置' %>
   <% end %>
@@ -55,8 +75,10 @@
   <div class="form-group ">
     <label class="control-label">图文详情<abbr title="必填">*</abbr></label>
     <div class="control-input" style='width: 430px;'>
-      <% if current_user.is_supplier? and can? :manage, product %>
+      <% if current_user.is_supplier? and can? :manage, @product %>
         <%= f.input_field :supply_content, as: :text, class: "redactor", placeholder: '在此添加代销说明' %>
+      <% elsif current_user.is_agency? and can? :manage, @product %>
+        代销说明：<%= raw @product.parent.supply_content %>
       <% end %>
       <%= f.input_field :content, as: :text, class: "redactor", placeholder: '在此添加商品详情' %>
     </div>
@@ -81,7 +103,7 @@
   </div>
 </div>
 <br />
-<% unless current_user.is_supplier? and can? :manage, product %>
+<% unless current_user.is_supplier? and can? :manage, @product %>
   <div id="sku-privelege-group" class="admin-box beige-bg-color">
     <h4 class="edit-title">分成设置</h4>
     <div class="form-group sku-privilege-lvs-group">

@@ -59,8 +59,15 @@ class Admin::ProductsController < AdminController
       @product.status = 'closed'
       @notice = '删除成功'
     end
-    if not @product.save
-      @error = model_errors(@product).join('<br/>')
+
+    if @product.status = 'published' and @product.type == 'AgencyProduct' and @product.parent.stored?
+      @error = "供应商已经下架该商品"
+    elsif @product.status = 'published' and @product.type == 'AgencyProduct' and @product.parent.deleted?
+      @error = "供应商已经删除该商品"
+    else
+      if not @product.save
+        @error = model_errors(@product).join('<br/>')
+      end
     end
     if request.xhr?
       flash.now[:success] = @notice

@@ -102,8 +102,8 @@ module ProductsHelper
     end
   end
 
-  def get_product_seling_inventories_json(product, supplier)
-    json_attributes = if supplier
+  def get_product_seling_inventories_json(product, is_supplier)
+    json_attributes = if is_supplier
       [
         :id, :sku_attributes, :price, :count,
         :share_amount_lv_3, :share_amount_lv_2, :share_amount_lv_1,
@@ -127,6 +127,18 @@ module ProductsHelper
       product.seling_inventories
     end
     inventories = inventories.to_json(only: json_attributes)
+  end
+
+  def can_manage_seller_product(product)
+    can? :manage, product and (product.type == "OrdinaryProduct" or product.type == "AgencyProduct")
+  end
+
+  def can_agent_product(product)
+    current_user.is_agency? and can? :read, product and product.type == "SupplierProduct"
+  end
+  
+  def can_manage_supplier_product(product)
+    can? :manage, product and product.type == "SupplierProduct"
   end
 
 end
