@@ -3,6 +3,7 @@ class ServiceStoresController < ApplicationController
 
   layout 'mobile'
 
+  before_action :authenticate_user!
   before_action :login_app, only: [:show]
 
   def index
