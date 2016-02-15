@@ -4,7 +4,6 @@ class AccountsController < ApplicationController
 
   detect_device only: [:new_password, :set_password]
 
-  layout :login_layout, only: [:merchant_confirm]
   layout 'mobile', only: [:show, :income, :bonus_benefit, :edit, :password, :edit_password, :invite_seller, :edit_seller_note, :settings, :seller_agreement, :binding_successed]
 
   before_action :record_scene_identify, only: [:show]
@@ -225,6 +224,10 @@ class AccountsController < ApplicationController
         redirect_to action: :binding_agent, agent_code: params[:agent_code]
       end
     end
+  end
+
+  def merchant_confirm
+    render layout: login_layout
   end
 
   private
