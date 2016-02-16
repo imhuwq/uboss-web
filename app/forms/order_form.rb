@@ -118,7 +118,8 @@ class OrderForm
           to_seller: to_seller["#{product.user_id}"],
           user_address: self.user_address,
           order_items_attributes: order_items_attributes,
-          type: to_order_type(product.type)
+          type: to_order_type(product.type),
+          supplier_id: product.parent.try(:user_id)
         }])
       elsif seller_ids
         OrdinaryOrder.create!(
