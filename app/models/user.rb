@@ -175,7 +175,7 @@ class User < ActiveRecord::Base
   end
 
   def add_role(role_name)
-    return if have_role?(role_name)
+    return true if have_role?(role_name)
     if role=UserRole.find_by_name(role_name)
       user_roles << role
     else
