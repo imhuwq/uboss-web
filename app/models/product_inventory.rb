@@ -5,6 +5,7 @@ class ProductInventory < ActiveRecord::Base
   belongs_to :product
   belongs_to :product_class
   belongs_to :parent, class_name: 'ProductInventory'
+  has_many   :children, class_name: 'ProductInventory', foreign_key: "parent_id"
   has_many   :cart_items
   has_many   :order_items
   has_many   :orders, through: :order_items
@@ -12,6 +13,10 @@ class ProductInventory < ActiveRecord::Base
 
   validates_presence_of :sku_attributes, if: -> { self.saling }
   validates_numericality_of :price, :count, greater_than_or_equal_to: 0, if: -> { self.saling and self.type == nil }
+  validates_numericality_of :price,
+    greater_than_or_equal_to: -> (o) { o.parent.suggest_price_lower },
+    less_than_or_equal_to: -> (o) { o.parent.suggest_price_upper },
+    if: :parent
   validate :share_amount_total_must_lt_price
 
   scope :saling, -> { where(saling: true) }
@@ -22,6 +27,7 @@ class ProductInventory < ActiveRecord::Base
   # TODO custom properties
   # after_create :create_product_properties
   after_commit :update_unpay_order_items, on: :update, if: -> { price_or_share_amount_changes }
+  after_save :update_children_infos, if: -> { children.present? }
 
   has_paper_trail on: [:update],
     if: Proc.new { |inventory| inventory.orders.where(state: [1, 3]).exists? },
@@ -111,6 +117,10 @@ class ProductInventory < ActiveRecord::Base
     if share_and_privilege_amount_total > price
       errors.add(:share_amount_total, '必须小于对应（商品/规格）的价格')
     end
+  end
+
+  def update_children_infos
+    children.update_all(suggest_price_lower: suggest_price_lower, suggest_price_upper: suggest_price_upper)
   end
 
 end
