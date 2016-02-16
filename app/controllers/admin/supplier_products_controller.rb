@@ -112,7 +112,7 @@ class Admin::SupplierProductsController < AdminController
       supplier_product_inventories_attributes: [
         :id, :share_amount_total, :privilege_amount,
         :share_amount_lv_1, :share_amount_lv_2, :share_amount_lv_3,
-        :cost_price, :suggest_price_lower, :suggest_price_upper, :sale_to_agency, :quantity,
+        :cost_price, :suggest_price_lower, :suggest_price_upper, :sale_to_agency, :quantity, :count,
         sku_attributes: product_propertys_params[:product_propertys_names]
       ],
     )

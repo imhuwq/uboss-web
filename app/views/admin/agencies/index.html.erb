@@ -18,7 +18,7 @@
 <div class="container">
   <div class="index_list">
     <table class="list-table" id="agencies">
-      <thead>			
+      <thead>
         <th colspan='2'>代销商</th>
         <th>昨日业绩</th>
         <th>累计业绩</th>
@@ -27,7 +27,13 @@
         <th>联系方式</th>
         <th>操作</th>
       </thead>
-      <%= render partial: 'agency_in_table', collection: @agencies %>
+      <tbody>
+        <% if @agencies.blank? %>
+          <t><td colspan="8">您还未添加代销商，<%= link_to "现在添加", "/" %></td></t>
+        <% else %>
+          <%= render partial: 'agency_in_table', collection: @agencies %>
+        <% end %>
+      </tbody>
     </table>
   </div>
 </div>

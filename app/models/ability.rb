@@ -32,8 +32,8 @@ class Ability
     can :update, User, id: user.id
     can :manage, BankCard, user_id: user.id
     can [:read, :create],   WithdrawRecord, user_id: user.id
-    can :new, SupplierStore, id: nil
-    can :create, SupplierStore, id: nil
+    can :new, SupplierStore
+    can :create, SupplierStore
   end
 
   def grant_permissions_to_super_admin user
