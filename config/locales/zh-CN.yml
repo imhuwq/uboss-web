@@ -336,6 +336,8 @@ zh-CN:
         <<: *order
       product:
         <<: *product
+      supplier_product:
+        <<: *product
       category:
         name: 分组名
         asset_img: 展示图

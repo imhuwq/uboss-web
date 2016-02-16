@@ -36,7 +36,7 @@
 <div class="container mod-inner">
   <div class="beige-bg-color admin-box">
     <div class='new_supplier'>
-      <%= form_for @supplier_store, url: admin_supplier_store_path do |f| %>
+      <%= form_for @supplier_store, url: admin_supplier_store_path, method: :post do |f| %>
         <div class='form-group'>
           <div class='control-input'>
             <%= f.text_field :store_name, placeholder: '给供货店铺起个名称吧' %>
