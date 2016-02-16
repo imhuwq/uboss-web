@@ -313,6 +313,11 @@ Rails.application.routes.draw do
       resources :platform_advertisements do
         patch :change_status, on: :member
       end
+
+      resources :businesses, only: [:index, :new] do
+        post :create_ordinary_store, on: :collection
+        post :create_service_store, on: :collection
+      end
     end
     mount RedactorRails::Engine => '/redactor_rails'
   end
