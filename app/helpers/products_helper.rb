@@ -103,21 +103,13 @@ module ProductsHelper
   end
 
   def get_product_seling_inventories_json(product, is_supplier)
-    json_attributes = if is_supplier
-      [
+    json_attributes = [
         :id, :sku_attributes, :price, :count,
         :share_amount_lv_3, :share_amount_lv_2, :share_amount_lv_1,
         :privilege_amount, :share_amount_total,
         :cost_price, :suggest_price_lower, :suggest_price_upper,
         :sale_to_agency, :quantity
       ]
-    else
-      [
-        :id, :sku_attributes, :price, :count,
-        :share_amount_lv_3, :share_amount_lv_2, :share_amount_lv_1,
-        :privilege_amount, :share_amount_total,
-      ]
-    end
     inventories = if product.new_record?
       product.product_inventories
     elsif product.association(:product_inventories).target.present?
