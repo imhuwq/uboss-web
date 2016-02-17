@@ -54,7 +54,7 @@
     <div class="box-w100">
       <p>微信公众平台推广</p>
       <p class="gap white-bg-color">
-      <span style="display:block;">二维码推广链接：<%= account_url(type: 'ordinary', sid: current_user.id) %></span>
+      <span style="display:block;">二维码推广链接：<%= store_qrcode_img_url(type: 'ordinary', sid: current_user.id) %></span>
       <br />
       <span style="display:block;">我的收益链接：<%= income_account_url %><span>
       </p>

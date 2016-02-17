@@ -25,9 +25,6 @@ class AccountsController < ApplicationController
     @statistics[:oo_after_sale] = current_user.order_item_refunds.progresses.count
 
     @privilege_cards = append_default_filter current_user.privilege_cards.includes(:user, [seller: [:service_store, :ordinary_store]]), order_column: :updated_at, page_size: 10
-    if ['ordinary', 'service'].include?(params[:type]) && (privilege_card = current_user.privilege_cards.find_by(seller_id: params[:sid]))
-      @qrcode_img_url = params[:type] == 'ordinary' ? privilege_card.ordinary_store_qrcode_img_url : privilege_card.service_store_qrcode_img_url
-    end
 
     render layout: 'mobile'
   end

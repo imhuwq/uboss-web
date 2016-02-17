@@ -41,6 +41,13 @@ class HomeController < ApplicationController
     render layout: nil
   end
 
+  def store_qrcode_img
+    if ['ordinary', 'service'].include?(params[:type]) && (privilege_card = current_user.privilege_cards.find_by(seller_id: params[:sid]))
+      @qrcode_img_url = params[:type] == 'ordinary' ? privilege_card.ordinary_store_qrcode_img_url : privilege_card.service_store_qrcode_img_url
+    end
+    render layout: nil
+  end
+
   private
 
   def detect_layout
