@@ -82,7 +82,9 @@ class AccountsController < ApplicationController
 
   def new_password
     if flash[:new_password_enabled] != true
-      redirect_to after_sign_in_path_for(current_user, need_new_passowrd: false)
+      redirect_to params[:redirectUrl].present? ?
+        params[:redirectUrl] :
+        after_sign_in_path_for(current_user, need_new_passowrd: false)
     else
       render layout: new_login_layout
     end
@@ -93,7 +95,9 @@ class AccountsController < ApplicationController
     if current_user.update(password_params.merge(need_reset_password: false))
       sign_in(current_user, bypass: true)
       flash[:notice] = '密码设定成功'
-      redirect_to after_sign_in_path_for(current_user)
+      redirect_to params[:redirectUrl].present? ?
+        params[:redirectUrl] :
+        after_sign_in_path_for(current_user)
     else
       flash.now[:new_password_enabled] = true
       flash.now[:error] = current_user.errors.full_messages.join('<br/>')
