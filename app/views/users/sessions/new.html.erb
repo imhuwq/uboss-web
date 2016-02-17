@@ -29,8 +29,6 @@
       <% if params[:redirect] == 'discourse' %>
         <%= hidden_field_tag 'redirect', params[:redirect] %>
         <%= hidden_field_tag 'redirectUrl', params[:redirectUrl] %>
-      <% elsif params[:redirectUrl].present? %>
-        <%= hidden_field_tag 'redirectUrl', params[:redirectUrl] %>
       <% end %>
       <div class="form-inputs">
         <%= f.input :login, required: false, label: '账号', input_html: {id: 'new_mobile', placeholder: '手机'} %>
@@ -78,8 +76,6 @@
     <%= simple_form_for(resource, as: resource_name, url: session_path(resource_name, redirect: params[:redirect])) do |f| %>
       <% if params[:redirect] == 'discourse' %>
         <%= hidden_field_tag 'redirect', params[:redirect] %>
-        <%= hidden_field_tag 'redirectUrl', params[:redirectUrl] %>
-      <% elsif params[:redirectUrl].present? %>
         <%= hidden_field_tag 'redirectUrl', params[:redirectUrl] %>
       <% end %>
       <div class="form-inputs">

@@ -120,9 +120,9 @@ class ApplicationController < ActionController::Base
       params[:redirectUrl]
     elsif current_user.need_reset_password? && opts[:need_new_passowrd]
       flash[:new_password_enabled] = true
-      params[:redirectUrl].present? ? set_password_path(redirectUrl: params[:redirectUrl]) : set_password_path
+      set_password_path
     else
-      params[:redirectUrl] ||
+      session[:oauth_callback_redirect_path] ||
         request.env['omniauth.origin'] ||
         stored_location_for(resource) ||
         logined_redirect_path
