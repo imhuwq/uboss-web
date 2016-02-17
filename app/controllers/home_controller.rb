@@ -4,6 +4,8 @@ class HomeController < ApplicationController
 
   layout :detect_layout, only: [:index, :service_centre_tutorial, :service_centre_agent, :service_centre_consumer, :lady, :maca, :snacks,:city]
 
+  before_action :authenticate_user!, only: :store_qrcode_img
+
   def index
     if !desktop_request?
       redirect_to stores_path
@@ -42,9 +44,10 @@ class HomeController < ApplicationController
   end
 
   def store_qrcode_img
-    if ['ordinary', 'service'].include?(params[:type]) && (privilege_card = current_user.privilege_cards.find_by(seller_id: params[:sid]))
+    if ['ordinary', 'service'].include?(params[:type]) && (privilege_card = PrivilegeCard.find_or_active_card(current_user.id, params[:sid]))
       @qrcode_img_url = params[:type] == 'ordinary' ? privilege_card.ordinary_store_qrcode_img_url : privilege_card.service_store_qrcode_img_url
     end
+
     render layout: nil
   end
 
