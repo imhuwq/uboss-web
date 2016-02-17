@@ -117,12 +117,23 @@
 <br />
 <div class="load-more" data-container='#pcards-list' data-ele='.share-card' data-ref='/privilege_cards'>加载更多</div>
 <br />
-<div class="qr-modal pop-bg hidden">
-	<div class="close"><%= image_tag('mobile/close-icon.png') %></div>
-	<div class="pop-content">		
-		<div class="img-box"></div>
-		<br />
-		<div class="white-color">长按图片保存到手机，分享给朋友</div>
-	</div>
-</div>
+<% if @qrcode_img_url %>
+  <div class="qr-modal pop-bg">
+    <div class="close"><%= image_tag('mobile/close-icon.png') %></div>
+    <div class="pop-content">
+      <div class="img-box"><img src="<%= @qrcode_img_url %>" alt="" /></div>
+      <br />
+      <div class="white-color">长按图片保存到手机，分享给朋友</div>
+    </div>
+  </div>
+<% else %>
+  <div class="qr-modal pop-bg hidden">
+    <div class="close"><%= image_tag('mobile/close-icon.png') %></div>
+    <div class="pop-content">
+      <div class="img-box"></div>
+      <br />
+      <div class="white-color">长按图片保存到手机，分享给朋友</div>
+    </div>
+  </div>
+<% end %>
 <%= render partial: 'new_share' %>
