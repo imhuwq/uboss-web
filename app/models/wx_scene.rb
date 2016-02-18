@@ -60,7 +60,8 @@ class WxScene < ActiveRecord::Base
     return false if properties['scene_ticket'].blank?
 
     user_response = weixin_client.user(properties['weixin_openid'])
-    nickname = user_response.is_ok? ? user_response.result['nickname'] : '微信用户'
+    nickname = '微信用户'
+    nickname = user_response.result['nickname'] if user_response.is_ok?
 
     request_image_query_param = {
       qrcode_content: properties['scene_url'],
