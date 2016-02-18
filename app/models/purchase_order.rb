@@ -20,6 +20,8 @@ class PurchaseOrder < ActiveRecord::Base
 
   enum state: { unpay: 0, payed: 1, shiped: 3, signed: 4, closed: 5, completed: 6 }
 
+  scope :with_payed, -> { where(state: [1,3,4,6]) }
+
   aasm column: :state, enum: true do
     state :unpay
     state :payed
@@ -28,7 +30,7 @@ class PurchaseOrder < ActiveRecord::Base
     state :completed
     state :closed
 
-    event :pay do
+    event :pay, after_enter: :after_payed do
       transitions from: :unpay, to: :payed
     end
     event :ship do
@@ -68,5 +70,10 @@ class PurchaseOrder < ActiveRecord::Base
   private
   def set_default_values
     assign_attributes(seller_id: order.seller_id, supplier_id: order.supplier_id)
+  end
+
+  def after_payed
+    self.paid_at = Time.current
+    self.pay_amount ||= order_items.joins(:product_inventory).sum("product_inventories.cost_price")
   end
 end

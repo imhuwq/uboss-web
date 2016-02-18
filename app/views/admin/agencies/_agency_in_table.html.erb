@@ -1,19 +1,20 @@
+<% user = agency_in_table.agency %>
 <tr>
   <td>
-	  <%= image_tag(agency_in_table.avatar.url(:thumb), size: "40x40", alt: "-") %>
+	  <%= image_tag(user.avatar.url(:thumb), size: "40x40", alt: "-") %>
   </td>
-  <td><%= agency_in_table.nickname %></td>
-  <td>昨日业绩</td>
-  <td>累计业绩</td>
-  <td><%= agency_in_table.supplier_products.where(supplier_id: current_user.id).count %></td>
-  <td>商家好评率</td>
-  <td><%= agency_in_table.mobile %></td>
+  <td><%= user.nickname %></td>
+  <td><%= agency_in_table.yday_performance %></td>
+  <td><%= agency_in_table.total_performance %></td>
+  <td><%= user.supplier_products.where(supplier_id: current_user.id).count %></td>
+  <td><%= Evaluation.sharer_good_reputation_rate(user) %></td>
+  <td><%= user.mobile %></td>
   <td>
     <div class="cooperation_form" id="cooperation_form_<%=agency_in_table.id%>">
-      <% if current_user.has_cooperation_with_agency?(agency_in_table) %>
-        <%= render 'end_cooperation', agency: agency_in_table %>
+      <% if current_user.has_cooperation_with_agency?(user) %>
+        <%= render 'end_cooperation', agency: user %>
       <% else %>
-        <%= render 'build_cooperation', agency: agency_in_table %>
+        <%= render 'build_cooperation', agency: user %>
       <% end %>
     </div>
   </td>

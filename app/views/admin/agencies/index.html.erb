@@ -28,12 +28,13 @@
         <th>操作</th>
       </thead>
       <tbody>
-        <% if @agencies.blank? %>
+        <% if @cooperations.blank? %>
           <t><td colspan="8">您还未添加代销商，<%= link_to "现在添加", "/" %></td></t>
         <% else %>
-          <%= render partial: 'agency_in_table', collection: @agencies %>
+          <%= render partial: 'agency_in_table', collection: @cooperations %>
         <% end %>
       </tbody>
     </table>
   </div>
+  <%= paginate @cooperations %>
 </div>
