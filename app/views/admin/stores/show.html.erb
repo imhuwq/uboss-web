@@ -13,41 +13,63 @@
     <a class="tab-title" href="#categories">分组设置</a>
 	</div>
 	<br />
-  <div id="info" class="beige-bg-color admin-box">
-  	<div class="box-w40">
-  		<br />
-  		<div>
-  			店铺头像　
-	  		<p class="fileinput-button">
-					<%= upyun_meta_tags prefix: "ordinary_store/store_cover" %>
+  <div class="container ordinary_store_edit">
+    <%= render partial: 'shared/form_error_message', locals: { obj: @ordinary_store } %>
 
-					<% if  current_user.ordinary_store.store_cover_identifier.blank? %>
-						<%= image_tag("admin/no-img-160x160.png", class:"clean") %>
-					<% else %>
-						<%= image_tag(current_user.store_cover.url(:w320), class:"clean", style:"height: 160px;width:160px")%>
-					<% end %>
-					<%= file_field_tag "image", class: "upyun_file_json" ,  data: {to: "/admin/stores/#{current_user.id}/update_store_cover"} %>
-					<b class="loading"><i class="fa fa-spinner"></i></b>
-					<span class="tips-text">点击替换</span>
-				</p>
-			</div>
-			<p>
-				店铺名称　
-				<%= text_field_tag :store_name , current_user.store_name , class: 'update_item border-bottom-input main-color', data:{url: "/admin/stores/#{current_user.id}/update_store_name" }, placeholder: '店铺名称',style:'width:160px' %>
-			</p>
-			<p>
-				店铺简介　
-				<%= text_field_tag :store_short_description, current_user.store_short_description , class: 'update_item border-bottom-input', data:{ url: "/admin/stores/#{current_user.id}/update_store_short_description" } , placeholder: '店铺简介',style:'width:160px' %>
-			</p>
-  	</div>
-  	<div class="box-w60 info-right-box">
-  		<br />
-      <p><%= qrcode_image_tag(store_url(current_user.id, shared: true), html: {width: 160}) %></p>
-			<p class="gap white-bg-color">店铺链接：<%= store_url(current_user.id) %></p>
-  		<br />
-  	</div>
-  </div><!-- #info -->
-  <br />
+    <%= horizon_form_for @ordinary_store, url: update_store_admin_store_path(current_user.id), method: 'post' do |f| %>
+      <div class="beige-bg-color admin-box">
+        <div class="box-w60">
+          <br />
+          <div class='form-group file optional user_store_cover'>
+            店铺头像
+            <%= f.text_field :store_cover, value: @ordinary_store.store_cover_name, type: :hidden, as: :file, class: 'file optional' %>
+            <p class="fileinput-button">
+              <% if @ordinary_store.store_cover_identifier.blank? %>
+                <%= image_tag("admin/no-img.png") %>
+              <% else %>
+                <%= image_tag(@ordinary_store.store_cover.url(:w320))%>
+              <% end %>
+              <%= upyun_meta_tags prefix: "ordinary_store/store_cover" %>
+              <%= file_field_tag "st_c_image", class: "upyun_file_closest" %>
+              <b class="loading"><i class="fa fa-spinner"></i></b>
+            </p>
+          </div>
+          <p>
+            店铺名称<span class='ordinary_store_required'>*</span>
+            <%= f.text_field :store_name , value: @ordinary_store.store_name,  placeholder: '店铺名称',style:'width:350px' %>
+          </p>
+          <p>
+            店铺简介<span class='ordinary_store_no_required'></span>
+            <%= f.text_field :store_short_description, value: @ordinary_store.store_short_description, placeholder: '请控制在20字以内，以保证显示效果',style:'width:350px' %>
+          </p>
+        </div>
+        <div class="box-w40 info-right-box">
+          <br />
+          <p><%= qrcode_image_tag(store_url(current_user.ordinary_store, shared: true), html: {width: 160}) %></p>
+          <p class="gap white-bg-color">店铺链接：<%= store_url(id: current_user.ordinary_store) %></p>
+
+          <br />
+        </div><!-- box-w15 -->
+      </div><!-- beige-bg-color -->
+      <div class="beige-bg-color admin-box">
+        <hr />
+        <br />
+        <div class="box-w100">
+          <div class="ordinary-store-address">
+            店铺位置<span class='ordinary_store_required'>*</span>
+            <%= render 'user_addresses/user_address', f: f, locals: { obj: @ordinary_store } %>
+            <%= f.text_field :street, value: @ordinary_store.street, placeholder: '填写详细地址',style:'width:350px' %>
+          </div>
+        </div><!-- box-w100-->
+        <br />
+        <div class="text-right">
+          <%= f.submit '提交', class: 'btn btn-large red-btn' %>
+        </div>
+      </div>
+      <br />
+    <% end %>
+  </div>
+
   <div id="ordinary_store_advertisements" class='advertisements_content' content='/admin/stores'>
     <%= render partial: "shared/admin/advertisements", locals: { url_prefix: '/admin/stores', advertisements: @advertisements } %>
   </div>

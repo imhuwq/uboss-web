@@ -1,1 +1,37 @@
-nitialize_user_role.html.erb
+<div class="container admin-container">
+  <ul class="breadcrumb">
+    <li><a href="/admin">主页</a></li>
+    <li class="divider"><i class="fa fa-caret-right"></i></li>
+    <li class="active"><%= @title %></li>
+  </ul>
+</div><!-- container -->
+<br />
+<div class="container nogap">
+
+<%= horizon_form_for 'role_info', url: create_role_admin_dashboard_index_path do |f| %>
+
+  <div class="admin-box black-bg-color">
+    <%= f.input :store_name, label: '店铺名称', placeholder: '店铺名称', require: true %>
+    <%= hidden_field_tag 'role_info[role]', params[:role] %>
+
+    <div class="form-group string required user_address_mobile">
+      <label class="string required control-label"><abbr title="必填">*</abbr>所在地区</label>
+      <div class="city-group control-input" style="padding-top:7px;">
+        <%= f.select :province, options_for_select([['--省份--', '']] + ChinaCity.provinces, @region),
+          {}, class: 'city-select ', id: "province", style:"width:100px;display:inline;", 'data-manual-chosen'=>true %>
+        <%= f.select :city, options_for_select([['--城市--', '']] + ChinaCity.list(@region), @city),
+          {}, :class => 'city-select', id: "city", style:"width:100px;display:inline;", 'data-manual-chosen'=>true %>
+        <%= f.select :area, options_for_select([['--地区--', '']] + ChinaCity.list( @city), @county),
+          {}, :class => 'city-select', id: "area", style:"width:100px;display:inline;", 'data-manual-chosen'=>true %>
+      </div>
+    </div>
+    <br />
+    <% if params[:role] == 'service_store_seller' %>
+      <%= render 'service_store_seller_info', f: f %>
+    <% end %>
+    <%= check_box_tag :agree %>我已阅读并同意<%= link_to '《UBOSS商家入驻协议》', '###' %>
+  </div>
+  <p class="text-center"><%= f.submit '提交', class: 'btn btn-large' %></p>
+<% end %>
+</div>
+

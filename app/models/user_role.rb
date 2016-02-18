@@ -1,6 +1,5 @@
 class UserRole < ActiveRecord::Base
-
-  ROLE_NAMES = %w(super_admin seller agent offical_senior offical_financial offical_operating city_manager)
+  ROLE_NAMES = %w(super_admin seller agent offical_senior offical_financial offical_operating city_manager ordinary_store_seller service_store_seller)
 
   belongs_to :user
   has_many :user_role_relations, dependent: :destroy
@@ -10,24 +9,23 @@ class UserRole < ActiveRecord::Base
 
   class << self
     ROLE_NAMES.each do |role|
-      class_eval <<-RUBY, __FILE__, __LINE__+1
+      class_eval <<-RUBY, __FILE__, __LINE__ + 1
         def #{role}
           @#{role} ||= find_by(name: '#{role}')
         end
       RUBY
     end
 
-    def roles_can_manage_by_user user
+    def roles_can_manage_by_user(user)
       roles = []
       if user.is_offical_senior?
         roles |= %w(super_admin seller agent offical_operating offical_financial)
       end
       if user.is_offical_operating? || user.is_super_admin?
-        roles |= %w(seller agent offical_operating city_manager)
+        roles |= %w(seller agent offical_operating city_manager ordinary_store_seller service_store_seller)
       end
-      user_roles = self.where(name: roles)
+      user_roles = where(name: roles)
       user_roles.present? ? user_roles : user.user_roles
     end
   end
-
 end

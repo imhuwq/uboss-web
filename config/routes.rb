@@ -297,6 +297,12 @@ Rails.application.routes.draw do
 
       root 'dashboard#index'
 
+      resources :dashboard do
+        get :initialize_user_role, :create_role_success_page, on: :collection
+        post :create_role, on: :collection
+
+      end
+
       resources :categories, except: [:show] do
         post :update_categories, on: :collection
         post :update_category_name,  on: :member
@@ -305,7 +311,7 @@ Rails.application.routes.draw do
 
       resources :stores, only: [:show] do
         post :update_store_name, :update_store_short_description,
-          :update_store_cover, on: :member
+          :update_store_cover, :update_store, on: :member
         post :update_advertisement_img, :update_advertisement_order, on: :collection
         get :create_advertisement, :add_category, :get_category_img, on: :collection
         get :new_advertisement, :remove_advertisement, :show_category, :get_advertisement_items, :remove_advertisement_item, :remove_category_item, on: :collection

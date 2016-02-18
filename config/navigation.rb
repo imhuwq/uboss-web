@@ -79,7 +79,7 @@ SimpleNavigation::Configuration.run do |navigation|
     end
 
     # Add an item which has a sub navigation (same params, but with block)
-    primary.item :seller, '电商店铺', '#', {} do |sub_nav|
+    primary.item :seller, '电商店铺', '#', if: -> { can?(:manage, Product) }  do |sub_nav|
       # Add an item to the sub navigation (same params again)
       sub_nav.item :products, '商品', admin_products_path, {} do |thr_nav|
         thr_nav.item :new_products, '商品', admin_products_path,
@@ -107,7 +107,7 @@ SimpleNavigation::Configuration.run do |navigation|
       end
     end
 
-    primary.item :tuangou, '团购店铺', '#', {} do |sub_nav|
+    primary.item :tuangou, '团购店铺', '#', if: -> { can?(:manage, ServiceStore) } do |sub_nav|
       sub_nav.item :s_product, '商品', admin_service_products_path,
         highlights_on: :subpath, if: -> { can?(:read, ServiceProduct) }
 

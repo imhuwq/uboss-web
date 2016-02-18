@@ -1,5 +1,4 @@
 class Ability
-
   include CanCan::Ability
 
   attr_reader :user
@@ -9,7 +8,7 @@ class Ability
     roles = user.user_roles
     if user.admin? && roles.present?
       begin
-        roles.order("id ASC").each do |role|
+        roles.order('id ASC').each do |role|
           grant_method = "grant_permissions_to_#{role.name}"
           __send__ grant_method, user
         end
@@ -23,6 +22,7 @@ class Ability
   end
 
   private
+
   def no_permissions
     cannot :manage, :all
   end
@@ -34,38 +34,61 @@ class Ability
     can [:read, :create],   WithdrawRecord, user_id: user.id
   end
 
-  def grant_permissions_to_super_admin user
+  def grant_permissions_to_super_admin(_user)
     can :manage, User
     can :manage, Transaction
     can :manage, :backend_status
   end
 
-  def grant_permissions_to_offical_senior(user)
+  def grant_permissions_to_offical_senior(_user)
     senior_permissions
     financial_permissions
     can :update_service_rate, :uboss_seller
   end
 
-  def grant_permissions_to_offical_financial(user)
+  def grant_permissions_to_offical_financial(_user)
     financial_permissions
   end
 
-  def grant_permissions_to_offical_operating(user)
+  def grant_permissions_to_offical_operating(_user)
     operating_permissions
   end
 
-  def grant_permissions_to_seller user
-    can :manage, Product, user_id: user.id
-    ordinary_user_permissions(user)
+  def grant_permissions_to_seller(user)
+    can :read, User, id: user.id
+    can :manage, Order, seller_id: user.id
+    can :manage, VerifyCode, user_id: user.id
+    can :manage, Evaluation, user_id: user.id
+    can :manage, :income
+    can [:read, :create], PersonalAuthentication, user_id: user.id
+    can [:edit, :update], PersonalAuthentication, user_id: user.id, status: %w(posted no_pass)
+    can [:read, :create], EnterpriseAuthentication, user_id: user.id
+    can [:edit, :update], EnterpriseAuthentication, user_id: user.id, status: %w(posted no_pass)
+    can :read, SharingIncome, seller_id: user.id
+    can :read, DivideIncome, user_id: user.id
+    can :read, DivideIncome, order: { seller_id: user.id }
+    can :read, SellingIncome, user_id: user.id
+    can :manage, Category, user_id: user.id
+    can :manage, BankCard, user_id: user.id
+    can :manage, CarriageTemplate, user_id: user.id
+    can :read, Express
+    can :set_common, Express
+    can :manage, OrderItemRefund, order_item: { order: { seller_id: user.id } }
+    can :manage, UserAddress, user_id: user.id
   end
 
-  def grant_permissions_to_server user
+  def grant_permissions_to_ordinary_store_seller(user)
+    can :manage, Product, user_id: user.id
+    grant_permissions_to_seller user
+  end
+
+  def grant_permissions_to_service_store_seller(user)
     can :manage, ServiceProduct, user_id: user.id
     can :manage, ServiceStore, user_id: user.id
-    ordinary_user_permissions(user)
+    grant_permissions_to_seller user
   end
 
-  def grant_permissions_to_agent user
+  def grant_permissions_to_agent(user)
     can :read, User, id: user.id
     can :read, User, agent_id: user.id
     can :read, :sellers
@@ -80,9 +103,9 @@ class Ability
     can :read, Evaluation, user_id: user.id
   end
 
-  def grant_permissions_to_city_manager user
+  def grant_permissions_to_city_manager(user)
     can [:read, :create], CityManagerAuthentication, user_id: user.id
-    can [:edit, :update], CityManagerAuthentication, { user_id: user.id, status: %w(posted no_pass) }
+    can [:edit, :update], CityManagerAuthentication, user_id: user.id, status: %w(posted no_pass)
     can :added, CityManager, user_id: user.id
     can :revenues, CityManager, user_id: user.id
   end
@@ -109,7 +132,7 @@ class Ability
     can :read, Order
     can :read, Product
     can :read, ServiceProduct
-    can :manage, User, { user_roles: { name: %w(seller agent offical_operating) } }
+    can :manage, User, user_roles: { name: %w(seller agent offical_operating) }
     can :manage, PersonalAuthentication
     can :manage, EnterpriseAuthentication
     can :manage, CityManagerAuthentication
@@ -119,28 +142,4 @@ class Ability
     can :manage, Advertisement
     can :manage, CityManager
   end
-
-  def ordinary_user_permissions(user)
-    can :read, User, id: user.id
-    can :manage, Order, seller_id: user.id
-    can :manage, VerifyCode, user_id: user.id
-    can :manage, Evaluation, user_id: user.id
-    can :manage, :income
-    can [:read, :create], PersonalAuthentication, user_id: user.id
-    can [:edit, :update], PersonalAuthentication, { user_id: user.id, status: %w(posted no_pass) }
-    can [:read, :create], EnterpriseAuthentication, user_id: user.id
-    can [:edit, :update], EnterpriseAuthentication, { user_id: user.id, status: %w(posted no_pass) }
-    can :read, SharingIncome, seller_id: user.id
-    can :read, DivideIncome, user_id: user.id
-    can :read, DivideIncome, order: { seller_id: user.id }
-    can :read, SellingIncome, user_id: user.id
-    can :manage, Category, user_id: user.id
-    can :manage, BankCard, user_id: user.id
-    can :manage, CarriageTemplate, user_id: user.id
-    can :read, Express
-    can :set_common, Express
-    can :manage, OrderItemRefund, order_item: { order: { seller_id: user.id } }
-    can :manage, UserAddress, user_id: user.id
-  end
-
 end

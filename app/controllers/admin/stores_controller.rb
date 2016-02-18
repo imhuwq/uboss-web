@@ -1,17 +1,18 @@
 class Admin::StoresController < AdminController
   def show
+    @ordinary_store = current_user.ordinary_store
     @advertisements = get_advertisements
     @categories = Category.where(use_in_store: true, user_id: current_user.id).order('use_in_store_at')
     @select_categories = Category.where(use_in_store: false, user_id: current_user.id)
   end
 
-  def update_store_cover
-    if current_user.update(store_cover: params[:avatar])
-      @message = { message: '上传成功！' }
+  def update_store
+    if current_user.ordinary_store.update(ordinary_store_params)
+      flash[:success] = '修改成功！'
     else
-      @message = { message: '上传失败' }
+      flash[:error] = "修改失败。#{current_user.ordinary_store.errors.join('\n')}"
     end
-    render json:  @message
+    redirect_to action: :show
   end
 
   def update_advertisement_img
@@ -105,25 +106,6 @@ class Admin::StoresController < AdminController
     render 'add_category'
   end
 
-  def update_store_name
-    duplication_name = UserInfo.find_by(store_name: params[:resource_val]) if params[:resource_val] != ''
-    if (!duplication_name.present? || duplication_name.try(:user_id) == current_user.id) && current_user.update(store_name: params[:resource_val])
-      @message = { success: '修改成功！' }
-    else
-      @message = { error: "修改失败#{duplication_name.present? ? ',此名称已经有人使用。' : ''}" }
-    end
-    render json:  @message
-  end
-
-  def update_store_short_description
-    if current_user.update(store_short_description: params[:resource_val])
-      @message = { message: '修改成功！' }
-    else
-      @message = { message: '修改失败' }
-    end
-    render json:  @message
-  end
-
   def remove_advertisement
     case params[:resource_type]
     when 'product'
@@ -168,5 +150,9 @@ class Admin::StoresController < AdminController
       .where('(product_id is not null AND products.status = 1) OR product_id is null')
       .where(user_id: current_user.id, platform_advertisement: false, user_type: 'Ordinary')
       .order('order_number')
+  end
+
+  def ordinary_store_params
+    params.require(:ordinary_store).permit(:store_cover, :store_name, :store_short_description, :province, :city, :area, :street)
   end
 end

@@ -1,4 +1,4 @@
-.service_store_edit {
+.service_store_edit,.ordinary_store_edit {
   .order_banner_by_sequence, .show-type-and-sequence, .sequence-info {
     display: none;
   }
@@ -6,7 +6,7 @@
   .fileinput-button {
     padding-left: 30px;
   }
-  .service-store-address{
+  .service-store-address,.ordinary-store-address {
     .city-group{
       display: inline-block;
     }
@@ -28,11 +28,11 @@
   td.none-border-bottom {
     border: none;
   }
-  .service_store_required {
+  .service_store_required,.ordinary_store_required {
     padding: 0 5px 0 18px;
     color: red;
   }
-  .service_store_required_1 {
+  .service_store_required_1,.ordinary_store_required_1 {
     padding: 0px 7px 0px 15px;
     color: red;
   }
@@ -40,7 +40,7 @@
     background: #ECE9E2;
     color: #1F1E1E;
   }
-  .service_store_no_required {
+  .service_store_no_required,.ordinary_store_no_required {
     padding: 0 5px 0 22px;
   }
 

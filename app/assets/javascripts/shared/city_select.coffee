@@ -1,4 +1,5 @@
 (($) ->
+  console.log "$.fn.china_city"
   $.fn.china_city = () ->
     @each ->
       selects = $(@).find('.city-select')
@@ -11,6 +12,7 @@
             $(item).remove()
         if next_selects.first()[0] and $this.val() and !$this.val().match(/--.*--/) # init next child
           $.get "/china_city/#{$(@).val()}", (data) ->
+            console.log "data", data
             data = data.data if data.data?
             next_selects.first()[0].options.add(new Option(option[0], option[1])) for option in data
             # init value after data completed.
@@ -19,4 +21,4 @@
   $(document).on 'ready page:load', ->
     $('.city-group').china_city()
 
-)(Zepto)
+)(if typeof(jQuery)=="function" then jQuery else Zepto)

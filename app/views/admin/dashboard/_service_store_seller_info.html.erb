@@ -1,0 +1,26 @@
+<%= f.input :street, label: '详细地址', input_html: {placeholder: '详细地址'} %>
+<div class="box-w100">
+  <span class="pull-left" style="width: 130px;">店铺电话</span>
+  <div class="pull-left service-store-tel">
+    <%= f.fields_for :store_phones do |p| %>
+      <span><%= p.text_field :area_code, placeholder: '区号' %></span>
+      <span>--</span>
+      <span><%= p.text_field :fixed_line, placeholder: '固定电话' %></span>
+      <span>或</span>
+      <span><%= p.text_field :phone_number, placeholder: '手机号' %></span>
+    <% end %>
+  </div>
+</div><!-- box-w100-->
+<br />
+<div class="box-w100">
+  <span class="pull-left" style="width: 130px;">营业时间</span>
+  <div class="pull-left">
+    <%= f.text_field :begin_hour, placeholder: '几时, 如: 9' %> <span>:<span>
+    <%= f.text_field :begin_minute, placeholder: '几分, 如: 00' %> <span>至<span>
+    <%= f.text_field :end_hour, placeholder: '几时, 如: 22' %> <span>:<span>
+    <%= f.text_field :end_minute, placeholder: '几分,如: 30' %>
+    <div class="gray-color"><small>举例: 9 : 00 至 22 : 00</small></div>
+  </div>
+</div><!-- box-w100-->
+
+<br />
