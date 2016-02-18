@@ -24,6 +24,13 @@
       return false;
     }
   });
+
+  $(document).on("click", "#address-modal button", function(){
+    var city = $("#address-modal select").map(function(index,e){
+      return $(e).find('option:selected').text()
+    }).toArray().join(" ");
+    $('span#guesscity').text(city);
+  });
 </script>
 <div class="container admin-container">
 	<ul class="breadcrumb">
