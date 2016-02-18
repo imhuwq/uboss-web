@@ -122,7 +122,8 @@ class ApplicationController < ActionController::Base
       flash[:new_password_enabled] = true
       set_password_path
     else
-      request.env['omniauth.origin'] ||
+      session[:oauth_callback_redirect_path] ||
+        request.env['omniauth.origin'] ||
         stored_location_for(resource) ||
         logined_redirect_path
     end
