@@ -4,9 +4,9 @@ class Admin::AgenciesController < AdminController
 
   def index 
     authorize! :read, :agencies
-    @agencies = current_user.agencies.includes(:agency_products)
+    @cooperations = current_user.cooperations.includes(:supplier, :agency).page(params[:page])
     @statistics = {}
-    @statistics[:count] = @agencies.count
+    @statistics[:count] = @cooperations.total_count
   end
   
   def new
