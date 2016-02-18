@@ -20,6 +20,5 @@
    <input class='input-mini sku-sale-to-agency' <%= 'disabled' if @read_only %> type='checkbox' name="product[product_inventories_attributes][<%= @id %>][sale_to_agency]" value=<%= @sale_to_agency %> />
   <% end %>
 </td>
-<td><input class='input-mini sku-quantity' <%= 'disabled' if @read_only %> type='number' name="product[product_inventories_attributes][<%= @id %>][quantity]" value=<%= @quantity %> /></td>
 <td><input class='input-mini sku-price' price <%= 'disabled' if @read_only %> type='number' name="product[product_inventories_attributes][<%= @id %>][price]" value=<%= @price %> ></td>
 <td><input class='input-mini sku-count' <%= 'disabled' if @read_only %> type='number' name="product[product_inventories_attributes][<%= @id %>][count]" value=<%= @count %>></td>
