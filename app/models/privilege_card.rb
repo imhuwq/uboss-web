@@ -1,4 +1,5 @@
 class PrivilegeCard < ActiveRecord::Base
+  require 'emoji_cleaner'
 
   include Imagable
   include Orderable
@@ -104,7 +105,7 @@ class PrivilegeCard < ActiveRecord::Base
       user_img_url: user.image_url(:w60),
       item_img_url: ordinary_store.store_cover_url(:w250x250),
       qrcode_content: url_helpers.sharing_url(code: sharing_node.code, host: default_host),
-      username: user.nickname,
+      username: EmojiCleaner.clear(user.nickname),
       mode: 1
     }
   end
@@ -114,7 +115,7 @@ class PrivilegeCard < ActiveRecord::Base
       user_img_url: user.image_url(:w60),
       item_img_url: service_store.store_cover_url(:w250x250),
       qrcode_content: url_helpers.sharing_url(code: sharing_node.code, host: default_host, redirect: url_helpers.service_store_path(service_store)),
-      username: user.nickname,
+      username: EmojiCleaner.clear(user.nickname),
       mode: 1
     }
   end
