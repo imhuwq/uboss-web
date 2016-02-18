@@ -2,7 +2,7 @@ class ServiceStoresController < ApplicationController
   include SharingResource
 
   layout 'mobile'
-
+  before_action :authenticate_user!, except: [:show]
   before_action :login_app, only: [:show]
 
   def index
