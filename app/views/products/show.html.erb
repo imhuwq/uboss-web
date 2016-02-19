@@ -30,23 +30,23 @@
     <p class="price">
       <small>￥</small>
       <%= product_price(@product).join(' - ') %>
+    		<span class="original-price">￥<%= @product.original_price %></span>
     </p>
-    <p class="original-price">￥<%= @product.original_price %></p>
     <div class="border-top">
-    	<p class="gray-color">
-	    <% if @product.transportation_way != 0 %>
-	     	 快递：<%= product_traffic(@product) %>
-	    <%else%>
-	     	 包邮
-	    <% end %>　
-	    <%= Evaluation.product_good_reputation_rate(@product.id) %> 好评 (<%= Evaluation.product_good_reputation(@product.id) %>人)
-	    </p>
-  	</div><!-- border-top -->
-  	<br />
-  	<div class="detail text-left">
-  		<%= @product.short_description %>
-  	</div><!-- detail -->
-  	<br />
+	    	<p class="gray-color">
+		    <% if @product.transportation_way != 0 %>
+		     	 快递：<%= product_traffic(@product) %>
+		    <%else%>
+		     	 包邮
+		    <% end %>　
+		    <%= Evaluation.product_good_reputation_rate(@product.id) %> 好评 (<%= Evaluation.product_good_reputation(@product.id) %>人)
+		    </p>
+	  	</div><!-- border-top -->
+	  	<br />
+	  	<div class="detail text-left">
+	  		<%= @product.short_description %>
+	  	</div><!-- detail -->
+  		<br />
   </div><!-- product-info-box -->
 
   <!-- 分享者的友情卡  -->

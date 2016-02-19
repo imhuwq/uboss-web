@@ -1,9 +1,10 @@
 <%= content_for :title do %>
-  <%= @seller.store_title || Rails.application.secrets.metas["title"] %>
+   <%= @seller.store_title || Rails.application.secrets.metas["title"] %>
 <% end %>
 
 <%= content_for :page_title do %>
-  <%= @seller.store_identify %>
+  <%#= @seller.store_identify %>
+  &nbsp;
 <% end %>
 
 <%= content_for :extra_meta_tags do %>
