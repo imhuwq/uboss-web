@@ -142,3 +142,10 @@ jQuery ($) ->
             error: (data, status, e) ->
               console.log 'data, status, e', data, status, e
               alert("操作错误")
+
+  $(document).on 'click', '.new_store #store_submit', ->
+    checkbox = document.getElementById('agree');
+    if checkbox.checked == true
+      $('.new_store form')[0].submit()
+    else
+      alert("请先阅读并同意《UBOSS商家入驻协议》")

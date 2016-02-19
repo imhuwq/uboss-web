@@ -2,7 +2,7 @@
 <div class="box-w100">
   <span class="pull-left" style="width: 130px;">店铺电话</span>
   <div class="pull-left service-store-tel">
-    <%= f.fields_for :store_phones do |p| %>
+    <%= f.fields_for "store_phones_attributes[1]" do |p| %>
       <span><%= p.text_field :area_code, placeholder: '区号' %></span>
       <span>--</span>
       <span><%= p.text_field :fixed_line, placeholder: '固定电话' %></span>

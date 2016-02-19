@@ -1,0 +1,6 @@
+恭喜，创建供货店铺成功
+<% if params['role'] == 'ordinary_store_seller' %>
+  <%= link_to '进一步完善信息', admin_store_path(current_user.ordinary_store) %>
+<% elsif params['role'] == 'service_store_seller' %>
+  <%= link_to '进一步完善信息', edit_admin_service_store_path(current_user.service_store)%>
+<% end %>

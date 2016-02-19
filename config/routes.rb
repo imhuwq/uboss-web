@@ -297,12 +297,6 @@ Rails.application.routes.draw do
 
       root 'dashboard#index'
 
-      resources :dashboard do
-        get :initialize_user_role, :create_role_success_page, on: :collection
-        post :create_role, on: :collection
-
-      end
-
       resources :categories, except: [:show] do
         post :update_categories, on: :collection
         post :update_category_name,  on: :member
@@ -320,9 +314,8 @@ Rails.application.routes.draw do
         patch :change_status, on: :member
       end
 
-      resources :businesses, only: [:index, :new] do
-        post :create_ordinary_store, on: :collection
-        post :create_service_store, on: :collection
+      resources :businesses, only: [:index, :new, :create] do
+        get  :success_page, on: :collection
       end
     end
     mount RedactorRails::Engine => '/redactor_rails'

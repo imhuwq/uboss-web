@@ -258,7 +258,7 @@ class User < ActiveRecord::Base
       self.agent = agent_user
       self.admin = true
       user_info.service_rate = 5
-      # self.user_roles << UserRole.seller if not self.is_seller?
+      self.user_roles << UserRole.seller if not self.is_seller?
       save
     else
       false

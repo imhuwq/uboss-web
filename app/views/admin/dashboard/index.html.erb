@@ -23,18 +23,22 @@
 
 		<div class="box-w33">
       <div class="admin-box">
-        <img src="<%= current_user.ordinary_store.store_cover_url(:w120) %>" alt="No img" class="btn-block" style="margin:10px auto;">
+        <a href="<%= admin_store_path(current_user.ordinary_store) %>" class="btn-block">
+          <img src="<%= current_user.ordinary_store.store_cover_url(:w120) %>" alt="No img" class="btn-block" style="margin:10px auto;">
+        </a>
         <span class="text-center btn-block">店铺名（物流发货）</span>
         <br />
-        <a href="javascript:;" class="btn btn-large btn-noraidus btn-block">进入店铺</a>
+        <a href="<%= admin_store_path(current_user.ordinary_store) %>" class="btn btn-large btn-noraidus btn-block">进入店铺</a>
       </div>
 		</div>
 		<div class="box-w33">
       <div class="admin-box">
-        <img src="<%= current_user.service_store.store_cover_url(:w120) %>" alt="No img" class="btn-block" style="margin:10px auto;">
+        <a href="<%= edit_admin_service_store_path(current_user.service_store) %>" class="btn-block">
+          <img src="<%= current_user.service_store.store_cover_url(:w120) %>" alt="No img" class="btn-block" style="margin:10px auto;">
+        </a>
         <span class="text-center btn-block">店铺名（本地服务）</span>
         <br />
-        <a href="javascript:;" class="btn btn-large btn-noraidus btn-block">进入店铺</a>
+        <a href="<%= edit_admin_service_store_path(current_user.service_store) %>" class="btn btn-large btn-noraidus btn-block">进入店铺</a>
       </div>
     </div>
 		<div class="box-w33">
