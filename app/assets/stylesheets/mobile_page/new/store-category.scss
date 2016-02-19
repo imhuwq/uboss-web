@@ -1,11 +1,12 @@
 .default-banner img{ width: 100%;}
-.store-category-cover{ 
-    word-break: break-all;  
+.store-category-cover{
+    word-break: break-all;
     padding: 30px 10px 0;
-    margin-top: -60px; 
+    margin-top: -60px;
     margin-bottom: 6px;
     position: relative;
     z-index: 2;
+    min-height: 59px;
     background:-webkit-linear-gradient(to bottom,rgba(0,0,0,0) 0%,rgba(0,0,0,0.7) 68%,rgba(0,0,0,0) 69%,rgba(0,0,0,0) 100%) ;
     background:linear-gradient(to bottom,rgba(0,0,0,0) 0%,rgba(0,0,0,0.7) 68%,rgba(0,0,0,0) 69%,rgba(0,0,0,0) 100%) ;
     .cover{
@@ -24,7 +25,7 @@
         padding-top: 4px;
         color: #fff;
         text-shadow: 0 1px rgba(0,0,0,0.75);
-        
+
     }
     .detail{
         margin-top: 14px;
@@ -59,7 +60,7 @@
         overflow: hidden;
         z-index: 3;
       }
-    }    
+    }
 }
 .all-category-list{
     padding: 0 5px 10px;
@@ -71,8 +72,8 @@
         margin: 10px 0 0;
         padding: 4px;
         text-align: center;
-        overflow: hidden; 
-        text-overflow: ellipsis; 
+        overflow: hidden;
+        text-overflow: ellipsis;
         white-space: nowrap;
         &.active{
             color: $brand-primary;
@@ -93,7 +94,7 @@
             transform: rotate(-90deg);
        }
        .down-text{display: none;}
-       .up-text{display: inline;} 
+       .up-text{display: inline;}
     }
 }
-    
+
