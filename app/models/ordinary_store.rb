@@ -7,6 +7,7 @@ class OrdinaryStore < UserInfo
   before_update :record_rate_history, if: -> {
     changes.include?(:platform_service_rate) || changes.include?(:agent_service_rate)
   }
+  has_many :ordinary_products
 
   def store_cover_name
     store_cover.try(:file).try(:filename)
