@@ -1,0 +1,22 @@
+<% if current_user == @user %>
+  <%= content_for :page_title do %>
+    <- 个人主页
+  <% end %>
+<% end %>
+<div class="bg-white gap m-top10 border-box">
+	<div class="homepage text-center">
+    <div class="cover">
+    	<%= image_tag @user.avatar_url(:thumb) %>
+    </div>
+    <p class="title text-cut"><%= @user.mobile %></p>
+	</div>
+
+  <div class='text-center'>
+    <%= link_to '分享给朋友', '#', class: 'btn btn-large btn-longer p-sharing-btn' if current_user == @user %>
+  </div>
+
+</div><!-- bg-white -->
+
+<%= render 'recommend_product' %>
+
+<%= render partial: 'new_share' %>
