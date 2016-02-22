@@ -22,6 +22,8 @@
           <%= product_sharing_link(@product, @sharing_link_node) %>
         <% elsif @seller.present? %>
           <%= store_sharing_link(@seller, @sharing_link_node) %>
+        <% elsif @user.present? %>
+          <%= homepage_sharing_link(@user, @sharing_link_node) %>
         <% end %>
       </div>
     </div>

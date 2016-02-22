@@ -16,6 +16,7 @@ class User < ActiveRecord::Base
 
   has_and_belongs_to_many :expresses, uniq: true
   has_one :cart
+  has_many :recommends
   has_many :user_infos, autosave: true
   has_many :carriage_templates
   has_many :transactions
