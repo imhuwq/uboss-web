@@ -175,14 +175,14 @@ ActiveRecord::Schema.define(version: 20160222063837) do
   create_table "cooperations", force: :cascade do |t|
     t.integer  "supplier_id"
     t.integer  "agency_id"
-    t.integer  "seller_id"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
+    t.datetime "created_at",                                               null: false
+    t.datetime "updated_at",                                               null: false
+    t.decimal  "yday_performance",  precision: 8,  scale: 2, default: 0.0
+    t.decimal  "total_performance", precision: 10, scale: 2, default: 0.0
   end
 
   add_index "cooperations", ["agency_id"], name: "index_cooperations_on_agency_id", using: :btree
   add_index "cooperations", ["supplier_id", "agency_id"], name: "index_cooperations_on_supplier_id_and_agency_id", unique: true, using: :btree
-  add_index "cooperations", ["seller_id"], name: "index_cooperations_on_seller_id", using: :btree
   add_index "cooperations", ["supplier_id"], name: "index_cooperations_on_supplier_id", using: :btree
 
   create_table "daily_reports", force: :cascade do |t|

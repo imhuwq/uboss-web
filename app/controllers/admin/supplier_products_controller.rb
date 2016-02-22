@@ -77,7 +77,7 @@ class Admin::SupplierProductsController < AdminController
       flash.now[:success] = @notice
       flash.now[:error] = @error
       product_collection = supplier_product_info.deleted? ? [] : [@supplier_product]
-      render(partial: 'admin/products/products', locals: { products: product_collection, supplier: true })
+      render(partial: 'admin/products/products', locals: { products: product_collection })
     else
       flash[:success] = @notice
       flash[:error] = @error
