@@ -111,6 +111,28 @@ class Ability
     can :revenues, CityManager, user_id: user.id
   end
 
+  def grant_permissions_to_supplier user
+    can :read, User, id: user.id
+    can [:destroy, :edit_info, :update_info], SupplierStore, user_id: user.id
+    can :read, User, cooperation: { supplier_id: user.id }
+    can :read, :agencies
+    can :new, :agency
+    can :build_cooperation_with_auth_code, :agency
+    can :build_cooperation_with_agency_id, :agency
+    can :end_cooperation, :agency
+    can :manage, SupplierProduct, user_id: user.id
+    can :manage, PurchaseOrder, supplier_id: user.id
+    can :manage, AgencyOrder, supplier_id: user.id
+    can :manage, OrderItemRefund, order_item: { order: { supplier_id: user.id } }
+  end
+
+  def grant_permissions_to_agency user
+    can :read, User, id: user.id
+    can :manage, AgencyProduct, user_id: user.id
+    can :read, SupplierStore, supplier: { cooperations: { agency_id: user.id } }
+    can :read, SupplierProduct, supplier: { cooperations: { agency_id: user.id } }
+  end
+
   private
 
   def senior_permissions
@@ -143,28 +165,6 @@ class Ability
     can :manage, Advertisement
     can :manage, CityManager
     can :manage, WechatAccount
-  end
-
-  def grant_permissions_to_supplier user
-    can :read, User, id: user.id
-    can [:destroy, :edit_info, :update_info], SupplierStore, user_id: user.id
-    can :read, User, cooperation: { supplier_id: user.id }
-    can :read, :agencies
-    can :new, :agency
-    can :build_cooperation_with_auth_code, :agency
-    can :build_cooperation_with_agency_id, :agency
-    can :end_cooperation, :agency
-    can :manage, SupplierProduct, user_id: user.id
-    can :manage, PurchaseOrder, supplier_id: user.id
-    can :manage, AgencyOrder, supplier_id: user.id
-    can :manage, OrderItemRefund, order_item: { order: { supplier_id: user.id } }
-  end
-
-  def grant_permissions_to_agency user
-    can :read, User, id: user.id
-    can :manage, AgencyProduct, user_id: user.id
-    can :read, SupplierStore, supplier: { cooperations: { agency_id: user.id } }
-    can :read, SupplierProduct, supplier: { cooperations: { agency_id: user.id } }
   end
 
 end

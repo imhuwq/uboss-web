@@ -4,19 +4,14 @@ class ProductInventory < ActiveRecord::Base
 
   belongs_to :product
   belongs_to :product_class
-  belongs_to :parent, class_name: 'ProductInventory'
-  has_many   :children, class_name: 'ProductInventory', foreign_key: "parent_id"
   has_many   :cart_items
   has_many   :order_items
   has_many   :orders, through: :order_items
-  has_many  :stock_movements
+  has_many   :stock_movements
 
   validates_presence_of :sku_attributes, if: -> { self.saling }
   validates_numericality_of :price, :count, greater_than_or_equal_to: 0, if: -> { self.saling and self.type == nil }
-  validates_numericality_of :price,
-    greater_than_or_equal_to: -> (o) { o.parent.suggest_price_lower },
-    less_than_or_equal_to: -> (o) { o.parent.suggest_price_upper },
-    if: :parent
+  
   validate :share_amount_total_must_lt_price
 
   scope :saling, -> { where(saling: true) }

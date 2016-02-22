@@ -9,7 +9,7 @@ class MobileCaptcha < ActiveRecord::Base
   before_validation :generate_code, :set_expire_time
   before_save :send_code
 
-  belongs_to :sender, class: 'User'
+  belongs_to :sender, class_name: 'User'
 
   class Verfier
     attr_reader :result
