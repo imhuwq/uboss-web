@@ -3,7 +3,11 @@ class ServiceProductsController < ApplicationController
 
   def index
     @products = append_default_filter ServiceProduct.published.includes(:asset_img), order_column: :updated_at
-    render partial: 'service_products/product', collection: @products if request.xhr?
+    if request.xhr?
+      render partial: 'service_products/product', collection: @products
+    else
+      render layout: 'mobile'
+    end
   end
 
   def show
