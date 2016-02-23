@@ -27,7 +27,7 @@ class Admin::SupplierStoresController < AdminController
       flash[:success] = '完善客服信息成功！'
       redirect_to admin_agencies_path
     else
-      flash[:error] = '完善客服信息失败'
+      flash[:error] = @supplier_store.errors.full_messages.join(', ')
       redirect_to :back
     end
   end
