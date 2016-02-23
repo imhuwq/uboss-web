@@ -279,6 +279,7 @@ ActiveRecord::Schema.define(version: 20160222063837) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "captcha_type"
+    t.integer  "sender_id"
   end
 
   add_index "mobile_captchas", ["mobile"], name: "index_mobile_captchas_on_mobile", using: :btree
@@ -414,18 +415,25 @@ ActiveRecord::Schema.define(version: 20160222063837) do
     t.integer  "product_id"
     t.integer  "product_class_id"
     t.integer  "count"
-    t.jsonb    "sku_attributes",     default: {},   null: false
-    t.datetime "created_at",                        null: false
-    t.datetime "updated_at",                        null: false
+    t.jsonb    "sku_attributes",      default: {},   null: false
+    t.datetime "created_at",                         null: false
+    t.datetime "updated_at",                         null: false
     t.integer  "user_id"
     t.string   "name"
-    t.decimal  "price",              default: 0.0
-    t.decimal  "share_amount_total", default: 0.0
-    t.decimal  "share_amount_lv_1",  default: 0.0
-    t.decimal  "share_amount_lv_2",  default: 0.0
-    t.decimal  "share_amount_lv_3",  default: 0.0
-    t.decimal  "privilege_amount",   default: 0.0
-    t.boolean  "saling",             default: true
+    t.decimal  "price",               default: 0.0
+    t.decimal  "share_amount_total",  default: 0.0
+    t.decimal  "share_amount_lv_1",   default: 0.0
+    t.decimal  "share_amount_lv_2",   default: 0.0
+    t.decimal  "share_amount_lv_3",   default: 0.0
+    t.decimal  "privilege_amount",    default: 0.0
+    t.boolean  "saling",              default: true
+    t.string   "type"
+    t.decimal  "cost_price"
+    t.decimal  "suggest_price_lower"
+    t.decimal  "suggest_price_upper"
+    t.integer  "quantity"
+    t.boolean  "sale_to_agency"
+    t.integer  "parent_id"
   end
 
   add_index "product_inventories", ["sku_attributes"], name: "index_product_inventories_on_sku_attributes", using: :gin
@@ -494,14 +502,9 @@ ActiveRecord::Schema.define(version: 20160222063837) do
     t.integer  "service_type"
     t.integer  "monthes"
     t.integer  "service_store_id"
-    t.integer  "comprehensive_order"
-    t.datetime "published_at"
-    t.integer  "sales_amount",         default: 0
-    t.integer  "sales_amount_order"
-    t.integer  "ordinary_store_id"
-    t.text     "purchase_note"
     t.integer  "parent_id"
     t.integer  "supplier_id"
+    t.integer  "ordinary_store_id"
   end
 
   add_index "products", ["type"], name: "index_products_on_type", using: :btree
@@ -661,6 +664,16 @@ ActiveRecord::Schema.define(version: 20160222063837) do
   end
 
   add_index "simple_captcha_data", ["key"], name: "idx_key", using: :btree
+
+  create_table "stock_movements", force: :cascade do |t|
+    t.integer  "product_inventory_id"
+    t.integer  "originator_id"
+    t.string   "originator_type"
+    t.integer  "quantity"
+    t.integer  "action"
+    t.datetime "created_at",           null: false
+    t.datetime "updated_at",           null: false
+  end
 
   create_table "store_phones", force: :cascade do |t|
     t.string   "area_code"
