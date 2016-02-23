@@ -37,9 +37,9 @@ class StockSku.Models.Stock extends Backbone.Model
       errors.share_amount_total = '返利不能小于0'
     if attrs.price < 0.01
       errors.price = '价格必须大于0.01'
-    #if suggest_price_lower + suggest_price_upper > 0
-      #if attrs.price > suggest_price_upper || attrs.price < suggest_price_lower
-        #errors.price = '价格必须大于' + suggest_price_lower + '且小于' + suggest_price_upper
+    if suggest_price_lower + suggest_price_upper > 0
+      if attrs.price > suggest_price_upper || attrs.price < suggest_price_lower
+        errors.price = '价格必须大于' + suggest_price_lower + '且小于' + suggest_price_upper
     if not _.isEmpty(errors)
       return errors
 

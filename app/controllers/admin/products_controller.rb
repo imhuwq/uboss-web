@@ -60,12 +60,12 @@ class Admin::ProductsController < AdminController
       @notice = '删除成功'
     end
 
-    if @product.status = 'published' and @product.type == 'AgencyProduct' and @product.parent.stored?
+    if @product.status == 'published' and @product.type == 'AgencyProduct' and @product.parent.stored?
       @error = "供应商已经下架该商品"
-    elsif @product.status = 'published' and @product.type == 'AgencyProduct' and @product.parent.deleted?
+    elsif @product.status == 'published' and @product.type == 'AgencyProduct' and @product.parent.deleted?
       @error = "供应商已经删除该商品"
     else
-      if not @product.save
+      unless @product.save(validate: false)
         @error = model_errors(@product).join('<br/>')
       end
     end
