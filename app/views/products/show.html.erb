@@ -59,7 +59,7 @@
         <div class="content">
 	        	<% amounts = product_privilege(@product, @privilege_card, :amount) %>
 	        <% if amounts[0] != 0 || (amounts[1].present? && amounts[1] != 0) %>
-	        		<div class="text-cut m-bottom10">￥<%= amounts.join(' - ') %></div>
+	        		<div class="text-cut m-bottom10">￥ <%= amounts.join(' - ') %></div>
 	        <% end %>
 	        <div class="detail">通过此页下单，自动抵扣</div> 		
         </div><!-- content -->        
@@ -76,11 +76,10 @@
 	        <% if amounts[0] != 0 || (amounts[1].present? && amounts[1] != 0) %>
 	          <div class="text-cut m-bottom10">￥ <%= amounts.join(' - ') %></div>
 	        <% end %>     
-	         <div class="detail">通过此页下单，自动抵扣</div> 		
-      		</div>
-        
+	        <div class="detail">通过此页下单，自动抵扣</div> 		
+      		</div><!-- content --> 
       </div>  <!-- friend-card -->
-      <div class="box text-center">
+      <div class="text-center">
       		<% if @privilege_card.present? %>
         		<a class="btn btn-large btn-orange-border btn-w30 p-sharing-btn">分享给朋友</a>
       		<% else %>
