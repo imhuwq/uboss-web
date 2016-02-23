@@ -19,6 +19,7 @@
 #= require mobile_page/pay
 #= require mobile_page/evaluations
 #= require mobile_page/service_store
+#= require mobile_page/recommend
 #= require shared/count_down
 #= require shared/city_select
 #= require shared/login
@@ -43,7 +44,7 @@ $ ->
     transitionEnd: (index, elem) ->
       $('#slider-points span').removeClass('active')
       $('#slider-points span').eq(index).addClass('active')
-  
+
   new Swipe document.getElementById('ad-slider'),
     speed: 300
     auto: 5000
@@ -53,7 +54,7 @@ $ ->
 
   $("header .menu-btn").on 'click', ->
     $('header .nav-bar').toggle()
-    
+
   $(".store-tel").on 'click', ->
     $('.phone-list').toggle()
 
@@ -73,14 +74,14 @@ $ ->
 
   $('.alert-error .close').on 'click', (e)->
     $(this).closest('.alert-error').remove()
-    
+
   $('.chat-to-btn').each ->
     element = $(this)
     $.getJSON "/chat/check_user_online",
       user_id: $(this).data('uid')
     , (response) ->
       element.addClass("online") if response.online
-  
+
   $('.category-more-btn').on 'click',->
     $('.category-more-box').toggleClass('hidden')
     $(this).toggleClass('up')
