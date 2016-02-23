@@ -493,6 +493,10 @@ class User < ActiveRecord::Base
     reverse_cooperations.find_by_supplier_id(user.id)
   end
 
+  def has_supplier_store?
+    SupplierStore.exists?(user_id: self.id)
+  end
+
   private
 
   def ensure_privilege_rate
