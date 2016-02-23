@@ -60,7 +60,7 @@ class Ability
     can :read, User, id: user.id
     can :manage, Order, seller_id: user.id
     cannot :delivery, AgencyOrder, seller_id: user.id
-    can :manage, Product, user_id: user.id
+    can :manage, OrdinaryProduct, user_id: user.id
     can :manage, ServiceProduct, user_id: user.id
     can :manage, ServiceStore, user_id: user.id
     can :manage, VerifyCode, user_id: user.id
