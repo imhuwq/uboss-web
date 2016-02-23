@@ -4,7 +4,9 @@
 <div class="bg-white gap m-top10 border-box">
 	<div class="avatar">
     <div class="cover">
-    	<%= image_tag current_user.avatar_url(:thumb) %>
+      <%= link_to homepage_path(current_user) do %>
+        <%= image_tag current_user.avatar_url(:thumb) %>
+      <% end %>
     </div>
     <div class="name">
     	<%= truncate current_user.identify,:length=>28,:omission=>'...' %>

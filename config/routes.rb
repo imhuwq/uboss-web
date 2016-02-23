@@ -54,6 +54,8 @@ Rails.application.routes.draw do
     end
   end
 
+  resources :recommends, only: [:create, :destroy]
+
   resources :bonus, only: [:create] do
     post :invited, on: :collection
   end
