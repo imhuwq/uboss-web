@@ -230,10 +230,6 @@ class Product < ActiveRecord::Base
     end
   end
 
-  def has_been_agented_by?(agency)
-    AgencyProduct.exists?(user_id: agency.id, parent_id: id)
-  end
-
   private
 
   def must_has_one_product_inventory
