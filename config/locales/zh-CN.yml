@@ -88,6 +88,7 @@ zh-CN:
     product_inventories: 库存/规格
     supplier_product_inventories: 库存/规格
     agency_product_inventories: 库存/规格
+    supplier_store_info: 供货商铺信息
   simple_form:
     labels:
       express:
@@ -246,11 +247,15 @@ zh-CN:
       product_inventory: 库存/规格
       supplier_product_inventory: 库存/规格
       agency_product_inventory: 库存/规格
+      supplier_store_info: 供货商铺信息
     attributes:
       supplier_product_info:
         cost_price: 成本价
         suggest_price_lower: 建议价下限
         suggest_price_upper: 建议价上限
+      supplier_store_info:
+        phone_number: 客服电话 
+        wechat_id: 客服微信
       order_item_refund:
         money: 金额
         order_state: 订单退款
