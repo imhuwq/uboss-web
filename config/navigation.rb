@@ -162,7 +162,8 @@ SimpleNavigation::Configuration.run do |navigation|
 
       sub_nav.item :backend_status, '后台队列', admin_backend_status_path, if: -> { can?(:manage, :backend_status) }
     end
-    primary.item :supplier, '我要供货', '', {} do |sub_nav|
+    primary.item :supplier, '我要供货', '#' do |sub_nav|
+      sub_nav.item :new_supplier_store, '创建供货店铺', new_admin_supplier_store_path, if: -> { can? :new, SupplierStore }
       sub_nav.item :agency, '代销商', admin_agencies_path, if: -> { can?(:read, :agencies) } do |thr_nav|
         thr_nav.item :agencies, '我的代销商', admin_agencies_path,
           if: -> { can?(:read, :agencies) }
