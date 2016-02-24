@@ -1,5 +1,5 @@
 <% if params[:state] != "completed" || service_order.order_item.evaluations.size == 0 %>
-  <div class="order-list" timestamp='<%= service_order.created_at %>'>
+  <div class="order-list" orderdata='<%= service_order.created_at %>'>
     <div class="seller-box">
       <span class="pull-right like-color">
         <%= I18n.t("service_order_status_bar.#{service_order.state}") %>

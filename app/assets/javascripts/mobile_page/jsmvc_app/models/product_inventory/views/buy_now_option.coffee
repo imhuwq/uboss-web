@@ -20,6 +20,7 @@ class ProductInventory.View.BuyNowOption extends Backbone.View
     'click .count_min' : 'minNum'
     'click .count_plus' : "plusNum"
     'change .count_num' : 'limitToNumChange'
+    'change .count_num' : 'countNum'
     'keyup  .count_num' : 'limitToNumKeyup'
     'keypress .count_num' : 'limitToNumKeypress'
 
@@ -218,6 +219,11 @@ class ProductInventory.View.BuyNowOption extends Backbone.View
     @count = num+1
     @calculateTotalPrice()
 
+  countNum: ->
+    num=parseInt($('.count-box .count_num').val())
+    @count = num
+    console.log "count", @count
+    @calculateTotalPrice()
 
   limitToNumKeyup: (e) ->
     $('.count-box .count_num').val( $('.count-box .count_num').val().replace(/[^\d]/g, ''))

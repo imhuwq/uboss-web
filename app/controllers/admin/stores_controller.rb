@@ -1,7 +1,7 @@
 class Admin::StoresController < AdminController
-  def show
+  def edit
     @advertisements = get_advertisements
-    @categories = Category.where(use_in_store: true, user_id: current_user.id).order('use_in_store_at')
+    @categories = Category.where(use_in_store: true, user_id: current_user.id).includes(:asset_img).order('use_in_store_at')
     @select_categories = Category.where(use_in_store: false, user_id: current_user.id)
   end
 

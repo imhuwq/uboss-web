@@ -1,3 +1,4 @@
+
 <% if store_banner_data(@seller).size > 0 %>
 	
 <% else %>
@@ -37,15 +38,29 @@
 	<% end %>
 	<%= render partial: 'ad_banner_slider', locals: { seller: @seller } %>
 <% end %>
-<div class="page-title gap">全部商品</div>
+
+
+
 <div class="bg-white" id="product-container" >
+  <% if @order_column_name %>
+    <div class="sort-nav">
+      <div class="sort-tab <%= params[:order] == nil ? 'active' : '' %>">
+        <a href="/stores/<%= params[:id] %>#product-container">综合排序</a>
+      </div>
+      <div class="sort-tab <%= params[:order] == 'published_at' ? 'active' : '' %>">
+        <a href="/stores/<%= params[:id] %>?order=published_at#product-container">新品上架</a>
+      </div>
+      <div class="sort-tab <%= params[:order] == 'sales_amount_order' ? 'active' : '' %>">
+        <a href="/stores/<%= params[:id] %>?order=sales_amount_order#product-container">人气热销</a>
+      </div>
+    </div>
+  <% end %>
   <div class="store-list">
     <% if @products.present? %>
-      <%= render partial: 'product', collection: @products %>
+    <%= render partial: 'product', collection: @products %>
     <% else %>
-      <h2 class="page-title text-center">店家正在准备好货，敬请期待</h2>
-    <% end %>
-
+    <h2 class="page-title text-center">店家正在准备好货，敬请期待</h2>
+    <% end %>           
   </div>
 </div>
 <br />
@@ -85,3 +100,4 @@
   </div>
 <br />
 <% end %>
+

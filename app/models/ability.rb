@@ -90,6 +90,7 @@ class Ability
   end
 
   def grant_permissions_to_agent user
+    can :manage, :platform_advertisements
     can :read, User, id: user.id
     can :read, User, agent_id: user.id
     can :read, :sellers

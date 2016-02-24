@@ -47,7 +47,7 @@ class Product < ActiveRecord::Base
   validates_presence_of :user_id, :name, :asset_img, :type
 
   before_create :generate_code
-  after_create :add_categories_after_create
+  after_create :add_categories_after_create, :reorder
 
   def self.official_agent
     official_account = User.official_account
@@ -68,7 +68,7 @@ class Product < ActiveRecord::Base
   end
 
   def min_price
-    @min_price ||= min_price_inventory.price
+    @min_price ||= seling_inventories.order('price DESC').last.price
   end
 
   # SKU(product_inventory) 更新保存逻辑
@@ -228,6 +228,10 @@ class Product < ActiveRecord::Base
       end
       save
     end
+  end
+
+  def reorder
+    ReorderProductsJob.perform_later(self.user_id)
   end
 
   private

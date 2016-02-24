@@ -242,6 +242,7 @@
   position: relative;
   margin-right: 10px;
   margin-bottom: 5px;
+  word-break:break-all;
   &:hover{
     .remove-pv{
       display: block;

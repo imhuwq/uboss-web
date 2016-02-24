@@ -22,3 +22,12 @@ end
 every 1.day, at: '01:00 am', roles: [:db] do
   runner "Cooperation.perform"
 end
+
+every 1.day, at: "1:50am", roles: [:db] do
+  rake "statistics:product_order"
+end
+
+every :tuesday, at: "2:50am", roles: [:db] do
+  rake "statistics:count_product_sales_amount"
+end
+

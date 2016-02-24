@@ -1,22 +1,26 @@
-<% cache ['store-product', product], expires_in: 1.day do %>
-  <div class="p-item" timestamp="<%= product.updated_at %>">
-    <div class="product-box">
-      <div class="cover">
-        <%= link_to '', product_path(product),
-          style: "background-image:url(#{product.image_url(:w320)})",
-          class:'img',
-          title:"#{product.name}" %>
-        <%= image_tag("mobile/img.jpg") %>
-      </div>
-      <div class="title"><%= product.name %></div>
-      <div class="price">￥<%= product.min_price %> <span class="original-price">￥<%= product.original_price %></span> </div>
-      <div class="transportation gray-color">
-      		<% if product.transportation_way != 0 %>
-		     	 快递：<%= product_traffic(product) %>
-		    <%else%>
-		     	 包邮
-		    <% end %>　
-      </div>
-    </div><!-- product-box -->
+<% orderdata = @order_column_name ? product.try(@order_column_name.to_sym) : product.try(:updated_at) %>
+<% if orderdata %>
+  <div class="p-item" orderdata="<%= orderdata %>">
+    <% cache ['store-product', product], expires_in: 1.day do %>
+      <div class="product-box">
+        <div class="cover">
+          <%= link_to '', product_path(product),
+            style: "background-image:url(#{product.image_url(:w320)})",
+            class:'img',
+            title:"#{product.name}" %>
+          <%= image_tag("mobile/img.jpg") %>
+        </div>
+        <div class="title"><%= product.name %></div>
+        <div class="price">￥<%= product.min_price %> <span class="original-price">￥<%= product.original_price %></span> </div>
+        <div class="transportation gray-color">
+            <% if product.transportation_way != 0 %>
+             快递：<%= product_traffic(product) %>
+          <%else%>
+             包邮
+          <% end %>　
+        </div>
+      </div><!-- product-box -->
+    <% end %>
   </div><!-- p-item -->
 <% end %>
+

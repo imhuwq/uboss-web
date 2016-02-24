@@ -85,6 +85,9 @@ textarea:focus{
    }
    .control-input{
      overflow: hidden;
+     &[class*='box-w']{
+         overflow: visible;
+     }
      .text-margin{
        margin:8px 0px;
        display: inline-block;

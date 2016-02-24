@@ -8,7 +8,7 @@
 
 <% @service_orders.each do |order| %>
 	
-  <div class="service-order-list m-bottom10"  timestamp='<%= order.created_at %>'>
+  <div class="service-order-list m-bottom10"  orderdata='<%= order.created_at %>'>
 		<div class="text-cut page-title gray-color gap">商家：<%= order.seller.identify %></div>
     <% order.order_items.each do |order_item| %>
       <%= link_to account_verify_code_path(id: order_item.id) do %>

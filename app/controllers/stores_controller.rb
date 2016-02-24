@@ -18,7 +18,8 @@ class StoresController < ApplicationController
     if params[:redirect]
       redirect_to params[:redirect]
     else
-      @products = append_default_filter @seller.ordinary_products.published, order_column: :updated_at
+      @order_column_name = params[:order].present? ? params[:order] : 'comprehensive_order'
+      @products = append_default_filter_for_store_show @seller.ordinary_products.published.includes(:asset_img), order_column: @order_column_name, page_size: 6
       @hots = @seller.ordinary_products.hots.recent.limit(3)
       @categories = Category.where(use_in_store: true, user_id: @seller.id).order('use_in_store_at')
       render_product_partial_or_page
@@ -26,12 +27,13 @@ class StoresController < ApplicationController
   end
 
   def hots
-    @products = append_default_filter @seller.ordinary_products.hots, order_column: :updated_at
+    @products = append_default_filter @seller.ordinary_products.hots.includes(:asset_img), order_column: :updated_at
     render_product_partial_or_page
   end
 
   def favours
-    @products = append_default_filter current_user.favoured_products.where(user_id: @seller.id)
+    @order_column_name = 'updated_at'
+    @products = append_default_filter current_user.favoured_products.where(user_id: @seller.id).includes(:asset_img)
     render_product_partial_or_page
   end
 
@@ -47,5 +49,20 @@ class StoresController < ApplicationController
 
   def set_seller
     @seller = User.find(params[:id])
+  end
+
+  def append_default_filter_for_store_show(scope, opts)
+    append_default_filter scope, order_column: opts[:order_column], order_type: order_column_type(opts[:order_column])[:order], column_type: order_column_type(opts[:order_column])[:type], page_size: opts[:page_size]
+  end
+
+  def order_column_type(order_column)
+    case order_column.to_s
+    when 'published_at'
+      { order: 'DESC', type: :datetime }
+    when 'sales_amount_order'
+      { order: 'ASC', type: :integer }
+    when 'comprehensive_order'
+      { order: 'ASC', type: :integer }
+    end
   end
 end

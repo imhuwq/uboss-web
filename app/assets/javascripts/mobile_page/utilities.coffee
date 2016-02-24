@@ -26,10 +26,17 @@ $ ->
     e.preventDefault()
     element = $(this)
     if not element.hasClass('loading')
-      if $(element.data('ele')).length > 6 # nothing but set it anyway
+      if $(element.data('ele')).length > 4 # nothing but set it anyway
         element.addClass('loading')
         element.text('加载中...')
-        params = { before_published_at: $(element.data('ele')).last().attr('timestamp') }
+        reg = new RegExp("(^|&)order=([^&]*)(&|$)")
+        r = window.location.search.substr(1).match(reg)
+        if (r != null)
+          order = unescape(r[2])
+        else
+          order = ''
+        orderdata = $(element.data('ele')).last().attr('timestamp') || $(element.data('ele')).last().attr('orderdata')
+        params = { orderdata: orderdata, order: order }
         $.get element.data('ref'), params, (data) ->
           if $.trim(data).length
             $(element.data('container')).append(data)

@@ -1,5 +1,5 @@
 <% cache ['mlist', product], expires_in: 1.day do %>
-  <%= link_to product_path(product), class: 'p-item', timestamp: product.updated_at do %>
+  <%= link_to product_path(product), class: 'p-item', orderdata: product.updated_at do %>
   <li class="list_li">
     <div class="li_image">
       <%= image_tag(product.image_url(:w320),  alt: "-") %>
