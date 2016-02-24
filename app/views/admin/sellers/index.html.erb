@@ -65,37 +65,66 @@
 			<% end %>
 			<th>状态</th>
 		</thead>
-		<% @sellers.each do |sellers| %>
+		<% @sellers.each do |seller| %>
 		<tr class="
-			<% if sellers.authenticated == 'no' %>
+			<% if seller.authenticated == 'no' %>
 				red-bg
 			<% end %>
 		">
 			<td class="text-left">
-				<%= link_to url_for(controller: 'admin/sellers', action: :show, id: sellers) do %>
-					<%= image_tag(sellers.avatar, size: "60x60", alt: "-") %>　
-					<%= sellers.identify %>
+				<%= link_to url_for(controller: 'admin/sellers', action: :show, id: seller) do %>
+					<%= image_tag(seller.avatar, size: "60x60", alt: "-") %>　
+					<%= seller.identify %>
 				<% end %>
 			</td>
 			<td>
-				<%= Evaluation.sharer_good_reputation_rate(sellers) %>
+				<%= Evaluation.sharer_good_reputation_rate(seller) %>
 			</td>
-			<td><%= sellers.user_info.try(:service_rate) %></td>
-			<td><%= sellers.created_at %></td>
-			<td><%= sellers.login %></td>
+      <td>
+        <%= link_to update_service_rate_admin_seller_path(seller.id), class: "edit-rate-btn" do %>
+          <%= hidden_field_tag :platform_service_rate, seller.user_info.try(:platform_service_rate) %>
+          <%= hidden_field_tag :agent_service_rate, seller.user_info.try(:agent_service_rate) %>
+          <%= seller.user_info.try(:platform_service_rate) %> | <%= seller.user_info.try(:agent_service_rate) %>
+        <% end %>
+      </td>
+			<td><%= seller.created_at %></td>
+			<td><%= seller.login %></td>
 			<% if current_user.is_super_admin? %>
         <td>
           &nbsp;
-          <% if sellers.agent.present? %>
-            <%= link_to sellers.agent.identify, url_for(controller: :agents, action: :show, id: sellers.agent_id) %>
+          <% if seller.agent.present? %>
+            <%= link_to seller.agent.identify, url_for(controller: :agents, action: :show, id: seller.agent_id) %>
           <% end %>
           &nbsp;
         </td>
 		    <% end %>
-			<td><%= User::DATA_AUTHENTICATED[sellers.authenticated] %></td>
+			<td><%= User::DATA_AUTHENTICATED[seller.authenticated] %></td>
 		</tr>
 		<% end %>
 
 	</table>
-    <%= paginate @sellers %>
+  <%= paginate @sellers %>
+</div>
+
+<div class="modal fade" id="service-rate-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span class='close' aria-hidden="true">&times;</span></button>
+        <h3 class="modal-title" id="myModalLabel">服务费率</h3>
+      </div>
+
+      <%= horizon_form_for :user_info, method: :patch do |f| %>
+        <div class="modal-body">
+          <%= f.input :platform_service_rate, input_html: { class: 'platform-rate' } %>
+          <%= f.input :agent_service_rate, input_html: { class: 'agent-rate' } %>
+        </div>
+
+        <div class="modal-footer">
+          <%= f.submit '确定', class: 'btn btn-large' %>
+          <button type="button" class="btn btn-large gray-btn" data-dismiss="modal">取消</button>
+        </div>
+      <% end %>
+    </div>
+  </div>
 </div>
