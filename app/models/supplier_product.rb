@@ -1,6 +1,6 @@
 class SupplierProduct < Product
 
-  has_one :supplier_product_info, foreign_key: 'supplier_product_id', autosave: true
+  has_one :supplier_product_info, foreign_key: 'supplier_product_id', autosave: true, dependent: :destroy
   belongs_to :supplier, class_name: 'User', foreign_key: 'user_id'
   has_many :supplier_product_inventories, -> { where(type: 'SupplierProductInventory') }, foreign_key: 'product_id', autosave: true
   has_many :children, class_name: 'AgencyProduct', foreign_key: 'parent_id'

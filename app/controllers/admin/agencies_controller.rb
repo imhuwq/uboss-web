@@ -22,12 +22,14 @@ class Admin::AgenciesController < AdminController
         if user = User.find_by(login: mobile)
           user
         else
-          user = User.new(login: mobile, nickname: mobile, mobile: mobile, password: Devise.friendly_token, need_reset_password: true)
+          user = User.new(login: mobile, mobile: mobile, password: Devise.friendly_token, need_reset_password: true)
           user.save(validate: false)
-          user.add_role('seller')
-          user.add_role('agency')
+          
           user
         end
+
+        user.add_role('seller') unless user.has_role?('seller')
+        user.add_role('agency') unless user.has_role?('agency')
 
         csh = CaptchaSendingHistory.find_by(code: params[:mobile_auth_code], sender_id: current_user.id, receiver_mobile: mobile, invite_type: 1)
 
@@ -58,7 +60,6 @@ class Admin::AgenciesController < AdminController
 
   def end_cooperation
     authorize! :end_cooperation, :agency
-    @agency = User.find_by(id: params[:cooperation][:agency_id])
     @agency = User.find_by(id: params[:id])
     if current_user.has_cooperation_with_agency?(@agency)
       current_user.cooperations.find_by(agency_id: params[:id]).destroy
