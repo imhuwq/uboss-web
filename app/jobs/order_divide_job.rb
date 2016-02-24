@@ -123,17 +123,20 @@ class OrderDivideJob < ActiveJob::Base
     seller = @order.seller
 
     if seller.service_rate && order_income > 0
-      divide_income = (order_income * seller.service_rate / 100).truncate(2)
-      agent_divide_income = city_divide_income = 0
+      platform_divide_income = (order_income * seller.platform_service_rate / 1000).truncate(2)
+      agent_divide_income = (order_income * seller.agent_service_rate / 1000).truncate(2)
+
+      divide_income = platform_divide_income
+      city_divide_income = 0
 
       # 商家创客分成
       if agent = seller.agent
-        agent_divide_income = (divide_income / 2).truncate(2)
         divide_record = DivideIncome.create!(
           order: @order,
           amount: agent_divide_income,
           user: agent
         )
+        divide_income += agent_divide_income
         logger.info(
           "Divide order: #{@order.number}, [CAgent id: #{divide_record.id}, amount: #{agent_divide_income} ]")
       end
@@ -159,7 +162,7 @@ class OrderDivideJob < ActiveJob::Base
       end
 
       # UBOSS平台
-      official_divide_income = divide_income - agent_divide_income - city_divide_income
+      official_divide_income = platform_divide_income - city_divide_income
       divide_record = DivideIncome.create!(
         order: @order,
         amount: official_divide_income,
