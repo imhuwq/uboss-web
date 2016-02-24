@@ -86,11 +86,11 @@ $ ->
         alert('发送失败')
 
   $('#authorize_agency').on 'click', ->
+    $('#authorize_agency').attr('disabled', true)
     mobile_auth_code = $('#mobile_auth_code').val()
     checkNum = /^[0-9]{5}$/
     if not checkNum.test(mobile_auth_code)
       alert "验证码格式错误"
-      return false
     else
       $.ajax
         url: '/admin/agencies/build_cooperation_with_auth_code',
@@ -99,10 +99,14 @@ $ ->
           mobile_auth_code: mobile_auth_code
         },
       .done ->
-        alert '您已成功授权'
+        $('.auth-agency-success .modal-content span').text('您已成功授权')
+        $('.auth-agency-success').modal()
         $('#mobile_auth_code').val('')
       .fail (xhr, textStatus) ->
         if xhr.responseJSON?
           alert(xhr.responseJSON.message)
         else
-          alert '授权失败'
+          $('.auth-agency-success .modal-content span').text('授权失败')
+          $('.auth-agency-success').modal()
+    $('#mobile_auth_code').val('')
+    $('#authorize_agency').attr('disabled', false)

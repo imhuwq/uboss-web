@@ -1,8 +1,8 @@
 <div class="user-box agency">
   <div class="name">
-    <%= agency.nickname %>
+    <%= agency.nickname || 'Ta还没有设置名称' %>
   </div>
-	<%= image_tag(current_user.avatar.url(:thumb)) %>
+	<%= image_tag(agency.avatar.url(:thumb)) %>
   <div class="cooperation_form" id="cooperation_form_<%=agency.id%>">
     <% if current_user.has_cooperation_with_agency?(agency) %>
       <%= render 'end_cooperation', agency: agency %>
