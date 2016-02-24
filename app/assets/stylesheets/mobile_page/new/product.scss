@@ -51,9 +51,6 @@
             height: 100%;
         }
     }
-    .btn{
-        margin-top: 5px;
-    }
     .content{
       overflow: hidden;
     }
@@ -64,7 +61,6 @@
 .product-info-box{
     background:#fff;
     margin-bottom: 10px;
-    padding:10px;
     text-align: center;
     overflow: hidden;
     word-break: break-all;
@@ -73,14 +69,15 @@
     .title{
         font-size: 18px;
         font-weight: bold;
-        margin: 15px 0;
-        line-height: 25px;
+        margin: 10px 0;
+        padding: 0 10px;
+        line-height: 26px;
 
     }
     .price{
         font-size: 18px;
         color: $brand-primary;
-        margin: 0 20px 5px;
+        padding: 0 20px 10px;
         line-height: 20px;
     }
     .gray-color{
@@ -106,7 +103,7 @@
         }
     }
     .detail{
-        margin: 0px 20px 0;
+        padding: 20px 10px;
         line-height: 110%;
         color: #999;
     }
@@ -161,18 +158,67 @@
     }
 }
 .friend-card{
-    .cover{
-        img{
-            border-radius: 80px;
-        }
+    color: #feffe0;
+    font-size: 24px;
+    line-height: 30px;
+    border-radius: 6px 0 0 6px;
+    overflow: hidden;
+    background: image-url('mobile/friend-card/right-top.png') right top #f9ba10 no-repeat;
+    position: relative;
+    .title{
+        width: 40px;
+        padding:  10px;
+        margin-right: 10px;
+        float: left;        
+        background: image-url('mobile/friend-card/left.png') left top repeat-y;
+        border-right:2px dotted #fff ;
+        position: relative;
     }
-    .price{
-        border:none;
-        padding:0;
-        margin:0;
-        font-size: 30px;
-        color: #f9ba10;
+    .detail{font-size: 14px;line-height: 22px;}
+    .title:before{
+        content: '';
+        position: absolute;
+        right: -11px;
+        top: -1px;
+        height: 6px;
+        width: 20px;
+        background: image-url('mobile/friend-card/top.png') center bottom no-repeat;
     }
+    .title:after{
+        content: '';
+        position: absolute;
+        right: -11px;
+        bottom: -1px;
+        height: 6px;
+        width: 20px;
+        transform: rotate(180deg);
+        background: image-url('mobile/friend-card/top.png') center bottom no-repeat;
+    }
+    .content{
+        overflow: hidden;
+        box-sizing: border-box;        
+        padding: 10px;
+        height: 90px;
+        margin: 10px;
+        border: 1px dotted #fcd983;
+        border-radius: 4px;
+    }
+    
+}
+.friend-card:before{
+    content: '';
+    position: absolute;
+    right: 0;
+    bottom: -1px;
+    height: 12px;
+    width: 10px;
+    transform: rotate(90deg);
+    background: image-url('mobile/friend-card/right-top.png') center center no-repeat;
+}
+.friend-card-user img{
+    height: 36px;
+    width: 36px;
+    border-radius:50px ;
 }
 .friend-box{
     position: fixed;
@@ -262,7 +308,7 @@
 .like-box {
   position: absolute;
   bottom: -2px;
-  z-index: 99;
+  z-index: 88;
   right: 10px;
   background-color: rgba(255,255,255,0.8);
   border-radius: 4px 4px 0 0;
