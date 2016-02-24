@@ -15,7 +15,7 @@
         <%= form_for(current_user.cooperations.build(agency_id: agency.id), url:  build_cooperation_with_agency_id_admin_agencies_path, remote: true) do |f| %>
           <%= f.hidden_field :agency_id %>
           <div class="actions">
-            <button type="button" class="btn" data-dismiss="modal">不取消</button>
+            <button type="button" class="btn" data-dismiss="modal">取消</button>
             <%= f.submit "确定授权", class: "btn btn-default" %>
           </div>
         <% end %>

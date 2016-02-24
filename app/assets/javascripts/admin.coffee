@@ -82,3 +82,9 @@ jQuery ($) ->
       error: (data, status, e) ->
         console.log data, status, e
         alert("操作错误")
+
+  $('.cooperation').on 'show.bs.modal', ->
+    $('.list-table tr:hover td').css('opacity', '1')
+
+  $('.cooperation').on 'hide.bs.modal', ->
+    $('.list-table tr:hover td').removeAttr('style')
