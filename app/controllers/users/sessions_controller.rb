@@ -1,5 +1,7 @@
 class Users::SessionsController < Devise::SessionsController
 
+  include WechatRewarable
+
   detect_device only: [:new, :create]
 
   layout :new_login_layout
@@ -14,6 +16,7 @@ class Users::SessionsController < Devise::SessionsController
 
   # POST /resource/sign_in
    def create
+     #session[:oauth_callback_redirect_path]
      if sign_in_params[:mobile_auth_code].present?
        @using_captcha = true
        if MobileCaptcha.auth_code(sign_in_params[:login], sign_in_params[:mobile_auth_code])

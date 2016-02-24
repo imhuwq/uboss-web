@@ -30,58 +30,27 @@
     <p class="price">
       <small>￥</small>
       <%= product_price(@product).join(' - ') %>
+    		<span class="original-price">￥<%= @product.original_price %></span>
     </p>
-    <p class="original-price">￥<%= @product.original_price %></p>
     <div class="border-top">
-    	<p class="gray-color">
-	    <% if @product.transportation_way != 0 %>
-	     	 快递：<%= product_traffic(@product) %>
-	    <%else%>
-	     	 包邮
-	    <% end %>　
-	    <%= Evaluation.product_good_reputation_rate(@product.id) %> 好评 (<%= Evaluation.product_good_reputation(@product.id) %>人)
-	    </p>
-  	</div><!-- border-top -->
-  	<br />
-  	<div class="detail text-left">
-  		<%= @product.short_description %>
-  	</div><!-- detail -->
-  	<br />
+	    	<p class="gray-color">
+		    <% if @product.transportation_way != 0 %>
+		     	 快递：<%= product_traffic(@product) %>
+		    <%else%>
+		     	 包邮
+		    <% end %>　
+		    <%= Evaluation.product_good_reputation_rate(@product.id) %> 好评 (<%= Evaluation.product_good_reputation(@product.id) %>人)
+		    </p>
+	  	</div><!-- border-top -->
+	  	<br />
+	  	<div class="detail text-left">
+	  		<%= @product.short_description %>
+	  	</div><!-- detail -->
+  		<br />
   </div><!-- product-info-box -->
 
-  <!-- 自己的友情卡  -->
-  <% if self_privilege_card?(@privilege_card) || qr_sharing? %>
-    <div class="product-info-box">
-      <br />
-      <div class="friend-card">
-        <div class="name">友情价</div>
-        <br />
-        <div class="price">
-          <%= product_privilege(@product, @privilege_card, :price).join(' - ') %>
-        </div>
-        <br/>
-        <% amounts = product_privilege(@product, @privilege_card, :amount) %>
-        <% if amounts[0] != 0 || (amounts[1].present? && amounts[1] != 0) %>
-          <p class="gray-color">帮朋友优惠<%= amounts.join(' - ') %></p>
-        <% end %>
-        <div class="border-box">
-          <% if @privilege_card.present? %>
-            <div class="text-center"><a class="btn btn-large btn-longer p-sharing-btn">分享给朋友</a></div>
-          <% else %>
-            <div class="text-center">
-              <%= link_to "领取友情卡", get_product_sharing_path, data: { pid: @product.id, uid: current_user.present? },
-                class: "btn btn-large btn-longer show-req-snode-modal"
-              %>
-
-              <a class="btn btn-large btn-longer hidden p-sharing-btn">分享给朋友</a>
-            </div>
-          <% end %>
-        </div><!-- border-box -->
-        <br />
-        <div class="read"><a href="/about"><small>查看说明</small></a></div>
-      </div>  <!-- friend-card -->
-    </div><!-- product-info-box -->
-  <% elsif other_users_privilege_card?(@privilege_card) %>
+  <!-- 分享者的友情卡  -->
+  <% if other_users_privilege_card?(@privilege_card) && @sharing_node %>
     <div class="product-info-box">
       <br />
       <div class="friend-card">
@@ -107,8 +76,41 @@
       </div>  <!-- friend-card -->
       <br />
     </div><!-- product-info-box -->
+
+  <!-- 自己的友钱卡  -->
+  <% elsif self_privilege_card?(@privilege_card) || qr_sharing? %>
+    <div class="product-info-box">
+      <br />
+      <div class="friend-card">
+        <div class="name">友情价</div>
+        <br />
+        <div class="price">
+          <%= product_privilege(@product, @privilege_card, :price).join(' - ') %>
+        </div>
+        <br/>
+        <% amounts = product_privilege(@product, @privilege_card, :amount) %>
+        <% if amounts[0] != 0 || (amounts[1].present? && amounts[1] != 0) %>
+          <p class="gray-color">帮朋友优惠<%= amounts.join(' - ') %></p>
+        <% end %>
+        <div class="border-box">
+          <% if @privilege_card.present? %>
+            <div class="text-center"><a class="btn btn-large btn-longer p-sharing-btn">分享给朋友</a></div>
+          <% else %>
+            <div class="text-center">
+              <%= link_to "领取友钱卡", get_product_sharing_path, data: { pid: @product.id, uid: current_user.present? },
+                class: "btn btn-large btn-longer show-req-snode-modal"
+              %>
+
+              <a class="btn btn-large btn-longer hidden p-sharing-btn">分享给朋友</a>
+            </div>
+          <% end %>
+        </div><!-- border-box -->
+        <br />
+        <div class="read"><a href="/about"><small>查看说明</small></a></div>
+      </div>  <!-- friend-card -->
+    </div><!-- product-info-box -->
   <% end %>
-  <!-- end 自己的友情卡 -->
+  <!-- end 自己的友钱卡 -->
 
   <div class="bg-white gap">
   	<div class="product-store-box">
@@ -199,7 +201,7 @@
         <p><input type="tel" name="mobile" placeholder='输入手机号，获得分享收益' class='input-block' /></p>
         <br />
         <p>
-        <%= link_to "领取友情卡", get_product_sharing_path, data: { pid: @product.id },
+        <%= link_to "领取友钱卡", get_product_sharing_path, data: { pid: @product.id },
           class: "btn btn-large btn-block req-pro-snode-btn" %>
         </p>
       </div>

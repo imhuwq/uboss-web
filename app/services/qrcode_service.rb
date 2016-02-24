@@ -3,11 +3,12 @@ class QrcodeService
   API_KEY = '20150929143547'
   API_URL = 'http://api.wwei.cn/wwei.html'
 
-  attr_reader :text, :logo
+  attr_reader :text, :logo, :uploader
 
   def initialize(text, logo = nil)
     @text = text
     @logo = logo
+    @uploader = QrImageUploader.new
   end
 
   def url
@@ -21,23 +22,18 @@ class QrcodeService
     return cache_url if cache_url.present?
 
     payload = {
-      data: @text,
-      apikey: API_KEY
+      content: @text,
+      mode: 0
     }
     payload[:logo] = @logo if !only_text
-    response = RestClient.post API_URL, payload
-    result = JSON.parse response.body rescue nil
 
-    if result.blank?
-      return nil if only_text
-      return request_qrcode_url(true) if only_text == false
-    end
-
-    if result['status'] == 1
-      url = result['data']['qr_filepath']
-      Rails.cache.write cache_key_value, url, expires_in: 7.days
-      url
-    else
+    begin
+      uploader.download!("http://imager.ulaiber.com/req/qrcode?#{payload.to_query}")
+      uploader.store!
+      Rails.cache.write cache_key_value, uploader.url, expires_in: 7.days
+      uploader.url
+    rescue Exception => e
+      send_exception_message(e, payload)
       nil
     end
   end
@@ -45,7 +41,7 @@ class QrcodeService
   private
 
   def get_cache_key(identify)
-    Digest::MD5.digest identify
+    Digest::SHA1.hexdigest identify
   end
 
 end

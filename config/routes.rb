@@ -3,6 +3,7 @@ require 'okay_responder'
 
 Rails.application.routes.draw do
 
+  mount WeixinRailsMiddleware::Engine, at: "/wx_api"
   mount OkayResponder.new, at: "__upyun_uploaded"
   mount ChinaCity::Engine => '/china_city'
 
@@ -23,6 +24,7 @@ Rails.application.routes.draw do
   get 'maker_qrcode', to: 'home#maker_qrcode', as: :maker_qrcode
   get 'qrcode', to: 'home#qrcode', as: :request_qrcode
   get 'ls_game', to: 'home#hongbao_game'
+  get 'store_qrcode_img', to: 'home#store_qrcode_img'
 
   get 'service_centre_consumer', to: 'home#service_centre_consumer'
   get 'service_centre_agent', to: 'home#service_centre_agent'
@@ -167,6 +169,9 @@ Rails.application.routes.draw do
 
   authenticate :user, lambda { |user| user.admin? } do
     namespace :admin do
+      resources :wechat_accounts do
+        post :set_menu, on: :member
+      end
       resources :carriage_templates do
         member do
           get :copy
@@ -180,6 +185,9 @@ Rails.application.routes.draw do
         collection do
           get :income_detail
           get :statistics
+          get :create_advertisement
+          post :update_advertisement_img
+          get :remove_advertisement_item
         end
       end
 
@@ -218,6 +226,7 @@ Rails.application.routes.draw do
       end
       resources :orders, except: [:destroy] do
         patch :set_express, on: :member
+        patch :change_ship_price, on: :member
         get :close, on: :member
         post :batch_shipments, on: :collection
         post :select_orders, on: :collection

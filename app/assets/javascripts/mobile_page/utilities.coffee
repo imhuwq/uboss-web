@@ -70,3 +70,25 @@ $ ->
     n1 = if (m = a1.split(".")[1]) then m.length else 0
     n2 = if (m = a2.split(".")[1]) then m.length else 0
     floatMul(Number(a1.replace(".", "")) / Number(a2.replace(".", "")), Math.pow(10, n2 - n1))
+
+  # 限制只能输入数字
+  $.fn.onlyNum = () ->
+    this.limitToNumKeyup()
+    this.limitToNumKeypress()
+
+  $.fn.limitToNumKeyup = () ->
+    this.keyup () ->
+      this.value = this.value.replace(/[^\d]/g, '')
+
+  $.fn.limitToNumKeypress = () ->
+    this.keypress (event) ->
+      eventObj = event || e
+      keyCode = eventObj.keyCode || eventObj.which
+      if (keyCode >= 48 && keyCode <= 57)
+        return true
+      else
+        return false
+    .focus () ->
+      this.style.imeMode = 'disabled' # 禁用输入法
+    .bind "paste", () ->              # 禁用粘贴
+      return false

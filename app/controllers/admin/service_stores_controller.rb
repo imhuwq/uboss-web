@@ -1,6 +1,27 @@
 class Admin::ServiceStoresController < AdminController
   load_and_authorize_resource
 
+  def remove_advertisement_item
+    adv = Advertisement.find_by!(id: params[:resource_id], user_id: current_user.id, user_type: 'Service')
+    if adv && adv.destroy
+      flash.now[:success] = '删除成功'
+    else
+      flash.now[:error] = '删除失败'
+    end
+    @advertisements = get_advertisements
+    render 'create_advertisement'
+  end
+
+  def update_advertisement_img
+    adv = Advertisement.find_by!(id: params[:resource_id], user_id: current_user.id, user_type: 'Service')
+    if adv && adv.update(avatar: params[:avatar])
+      @message = { message: '上传成功！' }
+    else
+      @message = { message: '上传失败' }
+    end
+    render json:  @message
+  end
+
   def income_detail
     @total_income = get_total_income
     @income_by_date = {}
@@ -19,6 +40,7 @@ class Admin::ServiceStoresController < AdminController
   end
 
   def edit
+    @advertisements = get_advertisements
   end
 
   def update
@@ -26,11 +48,29 @@ class Admin::ServiceStoresController < AdminController
       flash[:success] = '更新店铺信息成功'
       redirect_to edit_admin_service_store_path(@service_store)
     else
+      @advertisements = get_advertisements
       render :edit
     end
   end
 
+  def create_advertisement
+    if params[:advertisement]
+      adv = Advertisement.new(params.require(:advertisement).permit(:avatar))
+      adv.platform_advertisement = false
+      adv.user_id = current_user.id
+      adv.user_type = 'Service'
+      if !adv.save
+        flash[:error] = '图片保存失败'
+      end
+    end
+    @advertisements = get_advertisements
+  end
+
   private
+  def get_advertisements
+    Advertisement.where(user_type: 'Service', user_id: current_user.id).order('order_number')
+  end
+
   def get_total_income
     current_user.verified_codes.sum(:income)
   end
@@ -38,7 +78,7 @@ class Admin::ServiceStoresController < AdminController
   def service_store_params
     params.require(:service_store).permit(
       :store_name, :store_short_description, :store_cover, :province, :city, :area,
-      :street, :store_phones_attributes, :begin_hour, :begin_minute, :end_hour, :end_minute,
+      :street, :begin_hour, :begin_minute, :end_hour, :end_minute,
       store_phones_attributes: [
         :id, :area_code, :fixed_line, :phone_number, :_destroy
       ]

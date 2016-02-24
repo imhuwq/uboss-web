@@ -134,6 +134,7 @@ class Ability
     can :manage, :platform_advertisements
     can :manage, Advertisement
     can :manage, CityManager
+    can :manage, WechatAccount
   end
 
 end

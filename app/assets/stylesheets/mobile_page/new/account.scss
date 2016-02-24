@@ -119,28 +119,34 @@
 }
 .share-card {
     background: #fff;
-    overflow: hidden;
-    line-height: 20px;
-    border-bottom: 1px solid #eee;
+    margin-bottom:10px;
+}
+.share-store-info{  
+    display: block;
     .cover{
-        float: right;
-        margin-left: 10px;
-        img{
-            width: 100px;
-            height: 100px;
-        }
+        width: 40px;
+        height: 40px;        
+        border-radius: 4px;
+        margin: 0 auto 6px;
+        background-size:cover ;
+        background-position: center;
+        img{display: none;}
+    }      
+    .title{
+        color: #aaa;
+        width: 100px;
+        margin: 0 auto;
     }
-    .info{
+        
+}
+.share-store-list{
+    .product-box{
+        border: 1px solid #eee;
+        border-radius: 4px;
         overflow: hidden;
-        .title{
-            font-size: 16px;
-            color: #333;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-            overflow: hidden;
-        }
-        p{
-            margin-bottom: 10px;
-        }
+        .cover{margin: 0;}
     }
+}
+.share-bar .content{
+    overflow: hidden;
 }

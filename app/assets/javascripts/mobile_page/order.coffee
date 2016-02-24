@@ -111,7 +111,7 @@ $ ->
         seller_amount = parseFloat($(this).find('meta[itemprop="seller_bonus"]').attr('content'))
         num   = parseInt($(this).find('.num').data('num'))
         privilege_amount = floatAdd(privilege_amount, floatMul(amount, num))
-        seller_bonus = floatAdd(seller_bonus, floatMul(seller_amount, num))
+        seller_bonus = floatAdd(seller_bonus, seller_amount)
       $privilege_amount = $this.find('.order-privilege-amount')
       $friend_info = $privilege_amount.closest('.friend-info')
       $privilege_amount.text(privilege_amount)

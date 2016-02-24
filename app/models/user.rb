@@ -33,8 +33,8 @@ class User < ActiveRecord::Base
   has_many :seller_service_orders,  through: :sellers, source: :sold_service_orders
   # for buyer
   has_one :cart
-  has_one :ordinary_store, class_name: 'OrdinaryStore', autosave: true
-  has_one :service_store, class_name: 'ServiceStore', autosave: true
+  has_one :ordinary_store, class_name: 'OrdinaryStore', autosave: true, validate: false
+  has_one :service_store, class_name: 'ServiceStore', autosave: true, validate: false
   has_many :user_addresses, -> { where(seller_address: false) }
   has_many :orders
   has_many :ordinary_orders
@@ -222,8 +222,9 @@ class User < ActiveRecord::Base
 
     def find_or_create_guest_with_session(mobile, session)
       user = find_by(login: mobile)
-      user ||= create_guest(mobile)
+      user ||= new_guest(mobile)
       user.update_with_oauth_session(session)
+      user.save if !user.persisted?
       user
     end
 

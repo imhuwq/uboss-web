@@ -34,10 +34,13 @@ class PreferentialCalculator
     return false if bonus_benefit <= 0
 
     preferential_items.each do |preferential_item|
-      preferential_measures << preferential_item.preferentials_seller_bonuses.new(
+      preferentials_seller_bonuse = preferential_item.preferentials_seller_bonuses.new(
+        available_bonus_benefit: bonus_benefit,
         preferential_item: preferential_item,
         preferential_source: @buyer.user_info
       )
+      bonus_benefit -= preferentials_seller_bonuse.total_amount
+      preferential_measures << preferentials_seller_bonuse
     end
   end
 

@@ -50,7 +50,7 @@
 
 .btn-like{
   background: image-url('mobile/like.png') no-repeat;
-  background-position: 0 -15px;
+  background-position: 0 -16px;
   background-size: 20px auto;
   padding-left: 25px;
   color: #aaa;
@@ -66,6 +66,11 @@
   float: right;
   padding: 0;
 }
+.friend-btn{
+   background: none;
+   color: #f9ba10;
+   img{vertical-align: bottom;} 
+}
 .share-btn{
   color:#f9ba10;
   background: image-url('mobile/share-icon.png') no-repeat center;
@@ -79,6 +84,13 @@
   background:rgba(255,255,255,0.5);
   border: 1px solid #666;
   color:#333
+}
+.pop-qr-btn{
+    background: image-url('mobile/qr.png') no-repeat center;
+    background-size: auto 30px ;
+    height: 32px;
+    width: 32px;
+    margin-left: 10px;
 }
 .btn:hover{
   animation: btn-hover .5s linear ;

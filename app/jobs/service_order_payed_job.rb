@@ -7,7 +7,7 @@ class ServiceOrderPayedJob < ActiveJob::Base
   attr_reader :order, :seller, :buyer
 
   def perform(order)
-    @order = order
+    @order = order.reload
     @seller = order.seller
     @buyer = order.user
     raise ServiceOrderNotPayed, order if !order.payed?

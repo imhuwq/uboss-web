@@ -1,7 +1,6 @@
-
 <% orderdata = @order_column_name ? product.try(@order_column_name.to_sym) : product.try(:updated_at) %>
 <% if orderdata %>
-  <div class="box-w50 p-item" orderdata="<%= orderdata %>">
+  <div class="p-item" orderdata="<%= orderdata %>">
     <% cache ['store-product', product], expires_in: 1.day do %>
       <div class="product-box">
         <div class="cover">
@@ -12,9 +11,16 @@
           <%= image_tag("mobile/img.jpg") %>
         </div>
         <div class="title"><%= product.name %></div>
-        <div class="price">￥<%= product.min_price %> </div>
+        <div class="price">￥<%= product.min_price %> <span class="original-price">￥<%= product.original_price %></span> </div>
+        <div class="transportation gray-color">
+            <% if product.transportation_way != 0 %>
+             快递：<%= product_traffic(product) %>
+          <%else%>
+             包邮
+          <% end %>　
+        </div>
       </div><!-- product-box -->
     <% end %>
-  </div><!-- box-w50 -->
+  </div><!-- p-item -->
 <% end %>
 

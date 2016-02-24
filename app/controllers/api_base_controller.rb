@@ -53,7 +53,7 @@ class ApiBaseController < ActionController::API
   end
 
   def authenticate_user_from_token!
-    user = authentication_login && User.find_by(login: authentication_login)
+    user = authentication_login && User.find_for_database_authentication(login_identifier: authentication_login)
 
     # Notice how we use Devise.secure_compare to compare the token
     # in the database with the token given in the params, mitigating

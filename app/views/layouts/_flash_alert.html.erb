@@ -1,9 +1,12 @@
 <% if flash[:error].present? %>
-  <%= sanitize alert_box flash[:error], type: 'alert-danger' %>
+  <%= sanitize(alert_box(flash[:error], type: 'alert-danger'), tags: %w(div span button), attributes: %w(class role data-dismiss)) %>
+
 <% elsif flash[:notice].present? %>
-  <%= sanitize alert_box flash[:notice] %>
+  <%= sanitize(alert_box(flash[:notice]), tags: %w(div span button), attributes: %w(class role data-dismiss)) %>
+
 <% elsif flash[:alert].present? %>
-  <%= sanitize alert_box flash[:alert], type: 'alert-warning' %>
+  <%= sanitize(alert_box(flash[:alert], type: 'alert-warning'),  tags: %w(div span button), attributes: %w(class role data-dismiss)) %>
+
 <% elsif flash[:success].present? %>
-  <%= sanitize alert_box flash[:success], type: 'alert-success' %>
+  <%= sanitize(alert_box(flash[:success], type: 'alert-success'), tags: %w(div span button), attributes: %w(class role data-dismiss)) %>
 <% end -%>

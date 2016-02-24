@@ -1,9 +1,12 @@
 class AccountsController < ApplicationController
+
+  include WechatRewarable
+
   detect_device only: [:new_password, :set_password]
 
-  layout :login_layout, only: [:merchant_confirm]
   layout 'mobile', only: [:show, :income, :bonus_benefit, :edit, :password, :edit_password, :invite_seller, :edit_seller_note, :settings, :seller_agreement, :binding_successed]
 
+  before_action :record_scene_identify, only: [:show]
   before_action :authenticate_user!
   before_action :authenticate_agent, only: [:send_message, :invite_seller, :edit_seller_note, :update_histroy_note]
 
@@ -21,7 +24,7 @@ class AccountsController < ApplicationController
     @statistics[:oo_unevaluate] = oo_unevaluate(@ordinary_orders).count
     @statistics[:oo_after_sale] = current_user.order_item_refunds.progresses.count
 
-    @privilege_cards = append_default_filter current_user.privilege_cards.includes(:seller), order_column: :updated_at, page_size: 10
+    @privilege_cards = append_default_filter current_user.privilege_cards.includes(:user, [seller: [:service_store, :ordinary_store]]), order_column: :updated_at, page_size: 10
 
     render layout: 'mobile'
   end
@@ -135,7 +138,7 @@ class AccountsController < ApplicationController
 
   def invite_seller # 创客通过短信邀请的商家
     @histroys = AgentInviteSellerHistroy.where(agent_id: current_user.id)
-    @bind = User.where(agent_id: current_user, authenticated: 1).count
+    @bind = current_user.seller_total_joins.count
   end
 
   def edit_seller_note # 编辑发送信息备注
@@ -196,7 +199,7 @@ class AccountsController < ApplicationController
         histroy.try(:update, status: 1)
         flash[:success] = "绑定成功,#{@seller.identify}成为您的商家。"
       else
-        flash[:error] = model_errors(current_user).join('<br/>')
+        flash[:error] = model_errors(@seller).join('<br/>')
       end
     end
 
@@ -221,6 +224,10 @@ class AccountsController < ApplicationController
         redirect_to action: :binding_agent, agent_code: params[:agent_code]
       end
     end
+  end
+
+  def merchant_confirm
+    render layout: login_layout
   end
 
   private
@@ -259,5 +266,9 @@ class AccountsController < ApplicationController
       flash[:error] = '您还不是创客.'
       redirect_to action: :settings
     end
+  end
+
+  def record_scene_identify
+    session[:scene_identify] = params[:scene_identify] if params[:scene_identify].present?
   end
 end

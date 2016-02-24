@@ -9,6 +9,11 @@ zh-CN:
         after_sale_only_refund: '售后—仅退款'
         after_sale_return_goods_and_refund: '售后—退款退货'
   attributes: &attributes
+    name: 名称
+    wechat_identify: 原始微信号
+    encoding_app_secret: 加密AppSecret
+    weixin_token: Token(令牌)
+    encoding_aes_key: 消息加解密密钥
     sku_attributes: 规格属性
     express_name: 快递公司
     store_cover: 店铺封面背景

@@ -19,7 +19,7 @@ class SellersController < AdminController
       user = User.new(allow_params)
       user.login = allow_params[:mobile]
       user.admin = true
-      if user.save and user.user_roles << @user_role and user.save
+      if user.save and user.user_roles << @user_role
         MobileCaptcha.find_by(code: allow_params[:mobile_auth_code]).try(:destroy)
         user.bind_agent(user.agent.try(:agent_code))
         flash[:success] = "成功注册并绑定创客#{user.agent.identify}."

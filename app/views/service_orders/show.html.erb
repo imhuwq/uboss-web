@@ -7,7 +7,7 @@
 <% end %>
 
 <%= content_for :extra_meta_tags do %>
-  <%= store_sharing_meta_tags(@seller, @sharing_link_node) %>
+  <%= service_store_sharing_meta_tags(@service_store, @sharing_link_node) %>
 <% end %>
 
 <%= content_for :extra_javascript do %>
@@ -120,7 +120,7 @@
   <p>团购总价：<%= @order_item.total_price %> </p>
   <p>数量：<%= @order_item.amount %> </p>
   <% if @order.total_privilege_amount != 0 %>
-    <p>友情卡优惠：<%= @order.total_privilege_amount %> </p>
+    <p>友钱卡优惠：<%= @order.total_privilege_amount %> </p>
   <% end %>
   <% if @order.seller_bonus != 0 %>
     <p>红包优惠：<%= @order.seller_bonus %> </p>

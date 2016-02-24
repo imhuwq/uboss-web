@@ -6,7 +6,7 @@
   <a class="back" onclick="history.go(-1)"><%= image_tag 'mobile/right.png' %></a>
 <% end %>
 
-<div class="box">
+<div class="box m-top10">
   <% if @order_charge.unpay? %>
     <div class="bg-white">
       <div class="box-m40 text-center">
@@ -19,45 +19,34 @@
     </div><!-- bg-white -->
 
   <% else %>
-    <br  />
     <div class="bg-white">
       <div class="box-m40 text-center">
         <br />
-        <h2>支付成功</h2>
+        <h1>支付成功</h1>
         <br />
-        <div class="gray-color">恭喜你，获得 <span class="like-color"><%= @privilege_cards.count %></span> 家店铺友情卡</div>
+        <div class="gray-color">恭喜你，获得 <span class="like-color"><%= @privilege_cards.count %></span> 家店铺友钱卡</div>
         <br />
       </div>
     </div><!-- bg-white -->
     <% if @product.is_official_agent? %>
-    	<br  />
       <div class="bg-white">
         <div class="box-m40 text-center">
           <br />
-          <h2>支付成功</h2>
+          <h1>支付成功</h1>
           <br />
-          <div class="gray-color">恭喜你，获得 <span class="like-color">创客权</span> 的友情卡</div>
+          <div class="gray-color">恭喜你，获得 <span class="like-color">创客权</span> 的友钱卡</div>
           <br />
         </div>
       </div><!-- bg-white -->
     <% end %>
-    <br  />
-    <div class="bg-white">
-      <div class="box-m40 text-center">
-        <br />
-        <h2>友情卡</h2>
-        <br />
-        <div class="gray-color">帮你省钱和赚钱的会员卡</div>
-        <br />
-        <a href="/account" class="btn btn-block btn-large">查看我的友情卡</a>
-        <br />
-        <p><a href="/about" class="gray-color">了解更多</a></p>
-        <br />
+    <div class="pay-bg text-center m-top10">
+      <div class="pay-info-bg">
+        <p><a href="/about" class="btn btn-pay-about">玩法说明</a></p>
+        <p><a href="/account" class="btn btn-pay">查看我的友钱卡</a></p>
       </div>
-    </div><!-- bg-white -->
+    </div><!-- pay-bg -->
     <% if @product.is_official_agent? %>
-    	<br  />
-      <div class="bg-white">
+      <div class="bg-white m-top10">
         <div class="box-m40 text-center">
           <br />
           <p>恭喜你成为UBOSS的第 <span class="like-color"><%= UserRole.agent.users.count %></span> 位创客</p>
@@ -70,11 +59,10 @@
 
     <% if @product.type == 'ServiceProduct' %>
       <% order_item = @order_charge.orders.first.order_item %>
-      <br  />
-      <div class="bg-white">
+      <div class="bg-white gap-left m-top10 m-bottom10">
         <%= link_to service_product_path(order_item.product) do%>
           <div class="service-order-box">
-            <div class="cover" style="background:url('<%= order_item.product.image_url(:w120) %>');">
+            <div class="cover" style="background-image:url('<%= order_item.product.image_url(:w120) %>');">
               <%= image_tag order_item.product.image_url(:w120) %>
             </div>
             <div class="content line-gap">
@@ -85,7 +73,6 @@
           </div>
         <%end%>
       </div>
-      <br />
       <% size = order_item.verify_codes.size %>
       <% order_item.verify_codes.each_with_index do |verify_code, index| %>
         <div class="service-code bg-white gap m-bottom10">

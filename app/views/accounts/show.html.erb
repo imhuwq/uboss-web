@@ -101,15 +101,15 @@
 
 <div class="bg-white m-bottom10">
   <div class="page-title gap border-box black-color">
-    <div class="text-cut">我的友情卡</div>
+    <div class="text-cut">我的友钱卡</div>
   </div>
   <div class="privilege-rate gap">
     <%= link_to edit_rate_privilege_cards_path , class:'gap border-radius' do %>
-      友情卡贡献值比率：<%= current_user.privilege_rate.to_i %>%
+      友钱卡贡献值比率：<%= current_user.privilege_rate.to_i %>%
     <% end %>
   </div>
 </div>
-<div class="bg-white">
+<div class="box-w100">
   <div id="pcards-list">
     <%= render partial: 'privilege_cards/privilege_card', collection: @privilege_cards %>
   </div>
@@ -117,5 +117,12 @@
 <br />
 <div class="load-more" data-container='#pcards-list' data-ele='.share-card' data-ref='/privilege_cards'>加载更多</div>
 <br />
-
+<div class="qr-modal pop-bg hidden">
+  <div class="close"><%= image_tag('mobile/close-icon.png') %></div>
+  <div class="pop-content">
+    <div class="img-box"></div>
+    <br />
+    <div class="white-color">长按图片保存到手机，分享给朋友</div>
+  </div>
+</div>
 <%= render partial: 'new_share' %>

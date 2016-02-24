@@ -13,9 +13,9 @@ class OrderItem < ActiveRecord::Base
   has_many   :order_item_refunds
   has_many   :refund_messages, through: :order_item_refunds
   # act as preferential_item
-  has_many   :preferential_measures, as: :preferential_item
-  has_many   :preferentials_seller_bonuses, as: :preferential_item, class_name: 'Preferentials::SellerBonus'
-  has_many   :preferentials_privileges, as: :preferential_item, class_name: 'Preferentials::Privilege'
+  has_many   :preferential_measures, as: :preferential_item, validate: false
+  has_many   :preferentials_seller_bonuses, as: :preferential_item, class_name: 'Preferentials::SellerBonus', validate: false
+  has_many   :preferentials_privileges, as: :preferential_item, class_name: 'Preferentials::Privilege', validate: false
 
   validates :user, :product_inventory, :amount, :present_price, :pay_amount, presence: true
 
@@ -140,7 +140,7 @@ class OrderItem < ActiveRecord::Base
   end
 
   def set_privilege_amount
-    self.privilege_amount = preferential_measures.sum(:amount)
+    self.privilege_amount = preferentials_privileges.sum(:amount)
   end
 
   def set_present_price
@@ -152,7 +152,7 @@ class OrderItem < ActiveRecord::Base
   end
 
   def set_pay_amount
-    self.pay_amount = deal_price * amount
+    self.pay_amount = deal_price * amount - preferentials_seller_bonuses.sum(:total_amount)
   end
 
   def update_order_pay_amount

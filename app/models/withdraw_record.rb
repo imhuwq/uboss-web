@@ -17,7 +17,7 @@ class WithdrawRecord < ActiveRecord::Base
   belongs_to :bank_card
 
   validates :user_id, :amount, presence: true
-  validates_numericality_of :amount, greater_than_or_equal_to: 100
+  validates_numericality_of :amount, greater_than_or_equal_to: 1
   validates_numericality_of :amount,
     less_than_or_equal_to: ->(record) { record.user.income.to_f },
     if: :new_record?

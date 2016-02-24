@@ -115,7 +115,7 @@
         <p>传播你的商品</p>
       </div>
       <div class="box-w20">
-        <img src="http://qr.liantu.com/api.php?&text=<%= "http://#{request.env["HTTP_HOST"]}/products/#{@product.id}?shared=true" %>"/>
+        <%= qrcode_image_tag("http://#{request.env["HTTP_HOST"]}/products/#{@product.id}?shared=true") %>
       </div>
     </div>
   </div><!-- admin-box -->

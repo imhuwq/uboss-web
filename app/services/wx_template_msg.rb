@@ -98,7 +98,7 @@ module WxTemplateMsg extend self
         color: "#000"
       },
       remark: {
-        value: "优惠抵扣：#{order.total_privilege_amount}元\n收货信息：#{order.ship_info}\n\n客官，确认收货后获得该商品的友情卡，给好友打折，给自己返现！",
+        value: "优惠抵扣：#{order.total_privilege_amount}元\n收货信息：#{order.ship_info}\n\n客官，确认收货后获得该商品的友钱卡，给好友打折，给自己返现！",
         color: "#000"
       }
     }
@@ -170,7 +170,7 @@ module WxTemplateMsg extend self
         color: "#000"
       },
       remark: {
-        value: "\n买家手机：#{refund.order_item.order.mobile}\n\n如有疑问，可联系客服400-886-4414",
+        value: "\n买家手机：#{refund.order_item.order.mobile}\n\n如有疑问，可联系客服0755-66691053",
         color: "#000"
       }
     }
@@ -223,7 +223,7 @@ module WxTemplateMsg extend self
         color: "#000"
       },
       remark: {
-        value: "\n\n如有疑问，可联系客服400-886-4414",
+        value: "\n\n如有疑问，可联系客服0755-66691053",
         color: "#000"
       }
     }
@@ -244,7 +244,7 @@ module WxTemplateMsg extend self
         color: "#000"
       },
       remark: {
-        value: "\n【分享友情卡，帮朋友打折，给自己收益】UBOSS，一个边买边赚的商城！详情请电脑登录 uboss.cn 查看。",
+        value: "\n【分享友钱卡，帮朋友打折，给自己收益】UBOSS，一个边买边赚的商城！详情请电脑登录 uboss.cn 查看。",
         color: "#000"
       }
     }
@@ -269,7 +269,7 @@ module WxTemplateMsg extend self
         color: "#000"
       },
       remark: {
-        value: "\n【分享友情卡，帮朋友打折，给自己收益】UBOSS，一个边买边赚的商城！详情请电脑登录 uboss.cn 查看。",
+        value: "\n【分享友钱卡，帮朋友打折，给自己收益】UBOSS，一个边买边赚的商城！详情请电脑登录 uboss.cn 查看。",
         color: "#000"
       }
     }

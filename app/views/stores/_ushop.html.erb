@@ -1,116 +1,103 @@
-<% if params[:action] == 'show' && @hots.present? %>
-	<div class="page-title like-color gap">
-      <%= link_to hots_store_path(@seller), class: 'more-bar' do %>
-        more
-    	<% end %>
-    	热销商品
-  </div>
-  <div class="bg-white m-bottom10">
-    <div class="box">
-      <div class="box-w100">          
-      <%= render partial: 'hot_product', collection: @hots, as: :product %>
-      </div><!-- box-w100 -->
-    </div><!-- box -->
-  </div><!-- bg-white -->
-<% end %>
 
-<div class="bg-white gap m-top10 m-bottom10">
-	<div class="store-category-cover">
-	  <div class="cover"><img src='<%= @seller.avatar_url(:w120) %>' /></div>   
-	  <div class="content">
+<% if store_banner_data(@seller).size > 0 %>
 	
-	    <h3 class="name"><%= @seller.store_name %></h3>
-	
-	    <p>
-	      <small>
-	        <span class="main-color"><%= number_to_percentage(@seller.good_reputation_rate, precision: 0) %></span> 好评（<%= @seller.total_reputations %>）
-	      </small>
-	    </p>    
-	
-	    <% if @seller.store_short_description.present?  %>
-	      <p class="gray-color text-cut"><%= @seller.store_short_description %></p>
-	    <% end %>       
-	    
-	  </div>
-	</div><!-- store-category-cover -->
-	<% if qr_sharing? %>
-	 	<div class="border-top text-center m-top10">
-	    <p>
-				<% if current_user && current_user.has_seller_privilege_card?(@seller) %>
-					<a class="btn btn-large p-sharing-btn">分享给朋友</a>
-				<% else %>
-					<%= link_to "领取友情卡", get_seller_sharing_path,
-						data: { sid: @seller.id, uid: current_user.present? },
-						class: "btn btn-large show-req-snode-modal"
-					%>
-					<a class="btn btn-large hidden p-sharing-btn">分享给朋友</a>
-				<% end %>
-			</p>
-			<div><small><a class="gray-color" href="/about">查看说明</a></small></div>
-		</div>
-	<% end %>
-	<% if @sharing_node %>
-		<div class="share-category-box border-top text-center m-top10">
-			<h3 class="text-cut">
-				<%= image_tag @sharing_node.user.avatar_url(:w120) %>
-				<%= @sharing_node.user.identify %> 推荐
-	    </h3>
-	  </div>
-	<% end %>
-</div>
- 
+<% else %>
+	<div class="default-banner">
+		<%= image_tag('mobile/slideshow/banner.jpg') %>
+	</div>
+<% end %>
+<div class="store-category-cover">
+  <div class="cover"><img src='<%= @seller.ordinary_store.store_cover_url(:thumb) %>' /></div>   
+  <div class="content">
+		<span class="pull-right"><%= number_to_percentage(@seller.good_reputation_rate, precision: 0) %> 好评 (<%= @seller.total_reputations %>)</span> 
+    <h3 class="name text-cut"><%= @seller.store_name %></h3>
+
+    <% if @seller.store_short_description.present?  %>
+      <p class="detail gray-color text-right text-cut"><%= @seller.store_short_description %></p>
+    <% end %>       
+    
+  </div>
+</div><!-- store-category-cover -->
 <% if action_name != 'hots' %>
-  <% if @categories.try(:any?) %>
-    <div class="bg-white m-bottom10">
-      <div class="category-nav">
-          <a class="tab active" href="#"><span>分组</span></a>
-        <a class="tab" href="#product-container"><span>全部商品</span></a>
-      </div>
-      <div class="tab-container">
-        <div class="tab-content category-list" id="category-container" style="display: block;">
-          <div class="box">
-            <%= render partial: 'categories', collection:  @categories, as: :category %>
-          </div>
-        </div><!-- #category-container -->
-      </div><!-- tab-container -->  
-    </div><!-- bg-white -->
-  <% end %>
-  <div class="gap-lr m-bottom10"> 
-    <%= render partial: 'ad_banner_slider', locals: { seller: @seller } %>
-  </div>
+	<% if @categories.try(:any?) %>
+		<div class="bg-white m-top10">
+		  <div class="category-nav">
+		    <div class="tab active" ><span>分组</span></div>
+		    <a class="tab" href="#product-container"><span>全部</span></a>
+		  </div>
+		  <div class="tab-container">
+		    <div class="tab-content category-list" id="category-container" style="display: block;">
+		      <div class="box">
+		        <%= render partial: 'categories', collection:  @categories, as: :category %>
+		      </div>
+		    </div><!-- #category-container -->
+		
+		      
+		  </div><!-- tab-container -->  
+		</div><!-- bg-white -->
+	<% end %>
+	<%= render partial: 'ad_banner_slider', locals: { seller: @seller } %>
 <% end %>
 
-<div class="bg-white m-bottom10" id="product-container">
+
+
+<div class="bg-white" id="product-container" >
   <% if @order_column_name %>
-  <div class="sort-nav">
-  	<div class="sort-tab <%= params[:order] == nil ? 'active' : '' %>">
-    	<a href="/stores/<%= params[:id] %>#product-container">综合排序</a>
-   	</div>
-   	<div class="sort-tab <%= params[:order] == 'published_at' ? 'active' : '' %>">
-    	<a href="/stores/<%= params[:id] %>?order=published_at#product-container">新品上架</a>
+    <div class="sort-nav">
+      <div class="sort-tab <%= params[:order] == nil ? 'active' : '' %>">
+        <a href="/stores/<%= params[:id] %>#product-container">综合排序</a>
+      </div>
+      <div class="sort-tab <%= params[:order] == 'published_at' ? 'active' : '' %>">
+        <a href="/stores/<%= params[:id] %>?order=published_at#product-container">新品上架</a>
+      </div>
+      <div class="sort-tab <%= params[:order] == 'sales_amount_order' ? 'active' : '' %>">
+        <a href="/stores/<%= params[:id] %>?order=sales_amount_order#product-container">人气热销</a>
+      </div>
     </div>
-    <div class="sort-tab <%= params[:order] == 'sales_amount_order' ? 'active' : '' %>">
-    	<a href="/stores/<%= params[:id] %>?order=sales_amount_order#product-container">人气热销</a>
-  	</div>
-  </div>
   <% end %>
-  <div class="tab-container">
-    <div class="tab-content store-list" id="sort-container1" style="display: block;">
-      <% if @products.present? %>
-      <%= render partial: 'product', collection: @products %>
-      <% else %>
-      <h2 class="page-title text-center">店家正在准备好货，敬请期待</h2>
-      <% end %>           
-    </div><!-- #category-container -->
-
-  </div><!-- tab-container -->  
+  <div class="store-list">
+    <% if @products.present? %>
+    <%= render partial: 'product', collection: @products %>
+    <% else %>
+    <h2 class="page-title text-center">店家正在准备好货，敬请期待</h2>
+    <% end %>           
+  </div>
 </div>
-<% if @products.size > 4 %>
-<br /><div class="load-more" data-container='.store-list' data-ele='.p-item' data-ref='<%= request.path %>'>加载更多</div>
+<br />
+
+<% if @products.size > 6 %>
+  <div class="load-more" data-container='.store-list' data-ele='.p-item' data-ref='<%= request.path %>'>加载更多</div>
+	<br />
 <% end %>
 
-<% if @categories.try(:empty?) %>
-  <div class="gap-lr m-bottom10"> 
-    <%= render partial: 'ad_banner_slider', locals: { seller: @seller } %>
+<% if qr_sharing? %>
+<br />
+<div class="friend-box"> 	
+   
+		<% if current_user && current_user.has_seller_privilege_card?(@seller) %>
+			<a class="btn-block friend-btn p-sharing-btn">分享给朋友 <%= image_tag('mobile/share-icon.png',height:20) %></a>
+		<% else %>
+			<%= link_to(get_seller_sharing_path,
+				data: { sid: @seller.id, uid: current_user.present? },
+				class: "btn-block friend-btn show-req-snode-modal"
+			) do %>
+				 <%= image_tag('mobile/gift.png',height:26) %> 领取友钱卡
+			<% end %>
+			<a class="btn-block friend-btn hidden p-sharing-btn">分享给朋友 <%= image_tag('mobile/share-icon.png',height:20) %></a>
+		<% end %>
+		
+
+</div>
+<br />
+<% end %>
+<% if @sharing_node %>
+<br />
+	<div class="friend-box share-category-box text-center">
+		<h3 class="text-cut">
+			<%= image_tag @sharing_node.user.avatar_url(:w120) %>
+			<%= @sharing_node.user.identify %> 推荐
+    </h3>
   </div>
-<% end %> 
+<br />
+<% end %>
+
