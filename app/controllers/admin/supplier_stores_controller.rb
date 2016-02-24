@@ -14,7 +14,7 @@ class Admin::SupplierStoresController < AdminController
       flash[:success] = '恭喜，创建供货店铺成功！'
       redirect_to edit_info_admin_supplier_store_path
     else
-      flash[:error] = '创建失败！'
+      flash[:error] = @supplier_store.errors.full_messages.join(', ')
       redirect_to :back
     end
   end
