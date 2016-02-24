@@ -48,8 +48,8 @@ class PrivilegeCard < ActiveRecord::Base
     super || build_service_store_qrcode_img
   end
 
-  def ordinary_store_qrcode_img_url
-    if ordinary_store_qrcode_img.new_record? || need_to_update?
+  def ordinary_store_qrcode_img_url(expire = false)
+    if ordinary_store_qrcode_img.new_record? || daily_expired_or_info_charged?(expire)
       delay.get_and_save_store_qrcode_url
       return "http://imager.ulaiber.com/req/1?#{ordinary_store_qrcode_params.merge(mode: 0).to_param}"
     end
@@ -57,8 +57,8 @@ class PrivilegeCard < ActiveRecord::Base
     reload.ordinary_store_qrcode_img.image_url
   end
 
-  def service_store_qrcode_img_url
-    if service_store_qrcode_img.new_record? || need_to_update?
+  def service_store_qrcode_img_url(expire = false)
+    if service_store_qrcode_img.new_record? || daily_expired_or_info_charged?(expire)
       delay.get_and_save_store_qrcode_url
       return "http://imager.ulaiber.com/req/1?#{service_store_qrcode_params.merge(mode: 0).to_param}"
     end
@@ -87,6 +87,7 @@ class PrivilegeCard < ActiveRecord::Base
     self.user_img  = user.read_attribute(:avatar)
     self.service_store_cover = service_store.read_attribute(:store_cover)
     self.ordinary_store_cover = ordinary_store.read_attribute(:store_cover)
+    self.qrcode_expire_at = Time.current + 1.day
     self.save
   end
 
@@ -120,11 +121,15 @@ class PrivilegeCard < ActiveRecord::Base
     }
   end
 
-  def need_to_update?
-    user_name != user.nickname ||
+  def daily_expired_or_info_charged?(expire)
+    (
+      expire && qrcode_expire_at < (Rails.env.production? ? Time.current : Time.current + 1.day - 5.minute)
+    ) || (
+      user_name != user.nickname ||
       user_img != user.read_attribute(:avatar) ||
-      service_store_cover != service_store.read_attribute(:store_cover) ||
+      service_store_cover  != service_store.read_attribute(:store_cover) ||
       ordinary_store_cover != ordinary_store.read_attribute(:store_cover)
+    )
   end
 
   def service_store
