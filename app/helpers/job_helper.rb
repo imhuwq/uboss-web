@@ -1,6 +1,7 @@
 module JobHelper
 
-    def self.reorder_user_product(user_id)
+  def self.reorder_user_product(user_id)
+    user_id = user_id.to_s.split(/[\D]+/)[0] # 防止sql注入
 		ActiveRecord::Base.connection.execute <<-SQL.squish!
 		    DROP TABLE IF EXISTS tb;
 		    create table tb (product_id int, 数量排名 int, 综合排名 int);
@@ -9,7 +10,7 @@ module JobHelper
 		               Row_Number() over(order by published_at desc) as 创建时间排名,
 		               Row_Number() over(order by sales_amount desc)+Row_Number() over(order by published_at desc) as 排名相加
 		               FROM  products
-		               WHERE products.user_id = '#{user_id}'
+		               WHERE products.user_id = '#{user_id}' AND products.type = 'OrdinaryProduct'
 		               )
 		        select product_id, 数量排名, Row_Number() over(order by 排名相加) as 综合排名  from T;
 
