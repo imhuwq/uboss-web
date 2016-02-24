@@ -1,0 +1,40 @@
+<%= render 'public' %>
+
+<br />
+<div class="container">
+	<div class="header-tab">
+		<%= link_to "验证明细", admin_verify_codes_path, class:"tab-title" %>
+		<div class="tab-title active">团购统计</div>
+	</div>
+</div>
+<br />
+
+<div class="container">
+  <table class="list-table" id="statistics">
+    <thead>
+      <tr>
+        <th>团购名称</th>
+        <th>现价</th>
+        <th>今日验证数量</th>
+        <th>总验证数量</th>
+        <th>团购有效期</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @service_products.each do |product| %>
+        <tr>
+          <td class="text-left">
+					  <%= link_to admin_service_product_path(product) do %>
+              <%= image_tag(product.image_url(:thumb), size: "80x80", alt: "-") %>　
+              <%= product.name %>
+            <% end %>
+          </td>
+          <td><%= product.present_price %></td>
+          <td><%= product.today_verify_code.size %></td>
+          <td><%= product.total_verify_code.size %></td>
+          <td>截止至<%= (product.created_at + product.monthes.to_i.months).to_date %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>

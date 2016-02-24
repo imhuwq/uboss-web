@@ -1,0 +1,73 @@
+
+<div class="login-container" >
+
+  <% if current_user.present? and current_user.can_rebind_agent? and @agent.present? %>
+    <%= horizon_form_for(:seller, url: seller_path(current_user), method: 'PUT') do |f| %>
+      <h4>注册绑定UBOSS</h4>
+      <h6>您将与<%= @agent.try(:identify) %>创客进行绑定</h6>
+      <br />
+      <%= hidden_field_tag "seller[agent_id]", @agent.try(:id) %>
+      <%= f.input_field :mobile, value: current_user.login, disabled: true,
+        as: :tel, id:"new_mobile", class:"input-block" %>
+      <br />
+      <div class="box-w100 nogap">
+        <div class="box-w50 nogap"><%= f.input_field :mobile_auth_code, as: :tel, :input_html=>{:id=>"mobile_auth_code"}, placeholder:'请输入4位验证码',class:'input-block' %></div>
+        <div class="box-w50 nogap-right"><%= link_to '发送手机验证码', '###',class: "btn btn-block btn-mid gray-btn",id:"send_mobile"%></div>
+      </div>
+      <br />
+      <p> <%= f.submit "绑定",class: "btn btn-large btn-block", id:"submit_bottom" %> </p>
+      <br />
+      <div>
+        <%= link_to "返回主页", root_path, class: "btn btn-large btn-link"%>
+      </div>
+    <% end %>
+  <% elsif current_user.present? %>
+  	<br />
+    <h4>注册绑定UBOSS</h4>
+    <br />
+    <% if @agent.present? %>
+      <h3>您将与<%= @agent.try(:identify) %>创客进行绑定</h3>
+      <br />
+    <% end %>
+    <div class="text-center">
+      <% if current_user.agent.present? %>
+        您已经绑定创客，不允许更换绑定。
+      <% elsif current_user.authenticated? %>
+        您已经通过身份验证，不允许更换绑定。
+      <% else %>
+        请输入正确的创客绑定链接。
+      <% end %>
+    </div>
+    <br />
+    <p><%= link_to "返回主页", root_path, class: "btn btn-large btn-block"%></p>
+  <% else %>
+    <%= horizon_form_for(:seller, url: url_for(controller: :sellers, action: :create), method: 'POST') do |f| %>
+        <h4>注册绑定UBOSS</h4>
+        <% if @agent.present? %>
+          <p>您将与<%= @agent.try(:identify) %>创客进行绑定</p>
+        <% end %>
+        <%= hidden_field_tag "seller[agent_id]", @agent.try(:id) %>
+        <%= f.input_field :mobile , as: :tel, id:"new_mobile",class:"input-block",placeholder:'手机号码'%>
+        <br />
+        <div class="box-w100 nogap">
+          <div class="box-w50 nogap"><%= f.input_field :mobile_auth_code, as: :tel, :input_html=>{:id=>"mobile_auth_code"}, placeholder:'请输入4位验证码',class:'input-block' %></div>
+          <div class="box-w50 nogap-right"><%= link_to '发送手机验证码', '###',class: "btn btn-block btn-mid gray-btn",id:"send_mobile"%></div>
+        </div>
+       	<br />
+        <p>
+        	<%= f.input_field :password, required: true, placeholder: "请输入密码",class:'input-block'  %>
+        </p>
+       	<div class="text-left">至少六位以上的字母数字组合</div>
+       	<br />
+        <p><%= f.input_field :password_confirmation, required: true,class:'input-block' ,placeholder: "请再次输入密码" %></p>
+				<br />
+	      <p>
+	        <%= f.submit "创建",class: "btn btn-large btn-block", id:"submit_bottom" %>
+	      </p>
+	      <br />
+	      <div>
+	        <%= link_to "返回主页", root_path, class: "btn btn-large btn-link"%>
+	      </div>
+    <% end %>
+  <% end %>
+</div>

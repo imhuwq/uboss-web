@@ -1,0 +1,295 @@
+.service-share-box{
+    .cover{
+        width: 40px;
+        height: 40px;
+        border-radius: 100px;
+        overflow: hidden;
+        img{
+            min-width: 40px;
+            min-height: 40px;
+        }
+    }
+}
+.service-store-info{
+  .store-tel{
+    height: 30px;
+    padding: 10px 10px 10px 20px;
+    border-left:1px solid #eee ;    
+  }
+  .address{
+    background: image-url('mobile/local.png') no-repeat left center;
+    background-size:auto 16px; 
+    padding-left: 30px;
+  }
+  .open-time{
+    background: image-url('mobile/clock.png') no-repeat left center;
+    background-size:auto 16px; 
+    padding-left: 30px;
+  }
+}
+.phone-list{
+  a{
+    display: block;
+    color: #333;
+    border-bottom: 1px solid #eee;
+    padding: 10px;
+    text-align: center;
+  }
+  a:last-child{
+    border: none;
+  }
+  
+}
+.service-title{
+    border-bottom: 1px solid #eee;
+    padding: 10px 0;
+    color: $brand-primary;
+    font-size: 16px;
+}
+.service-title:before{
+    content: ' ';
+    display: block;
+    float: left;
+    width: 8px;
+    height: 8px;
+    margin-top: 6px;
+    background: $brand-primary;
+    border-radius: 10px;
+    margin-right: 5px;
+    
+}
+.service-product-list{
+  .service-store-product:last-child{
+    border-bottom: none;
+  }
+}
+
+.service-store-product,.service-order-box{
+  position: relative;
+  padding:10px;
+  padding-left:0 ;
+  border-bottom: 1px solid #eee;
+  display: block;
+  overflow: hidden;
+  .product{display: block;}
+  .buy-box{
+      padding: 14px 0 14px 10px;
+  }
+  .cover {
+    float: left;
+    margin-right: 10px;
+    position: relative;
+    width: 60px;
+    height: 60px;
+    background-size:cover;
+    background-position:center center;
+    background-color: #fff;
+    background-repeat: no-repeat;
+    img{display: none;}
+  } 
+  .content{
+    overflow: hidden;
+  } 
+  .title{
+    padding: 5px;
+    display: block;
+  }
+}
+
+.service-order-box{
+  .line-gap p,.line-gap p:last-child{    
+    margin-top: 5px;
+    margin-bottom: 0;
+  }
+  .cover{
+    width: 80px;
+    height: 80px;
+  }
+}
+
+
+.service-code{
+  position: relative;
+  overflow: hidden;
+  .status-icon{
+    display: block;
+    position: absolute;
+    right: -30px;
+    top: -8px;
+    padding: 16px 24px 0 16px;
+    font-size: 8px;
+    color: #fff;
+    background: #f9ba10;
+    transform: rotate(45deg);
+    -webkit-transform: rotate(45deg);
+  }
+}
+
+#service_stores_verify_detail {
+  .box-w49{
+    width: 49%;
+    display: inline-block;
+    .grey-bg-color{
+      background: #fff;
+      color: #C7C7C7;
+      text-align: center;
+
+      .num {
+        color: #43c3aa;
+        font-size: 17px;
+        padding: 15px 13px;
+      }
+    }
+  }
+
+  .today_details{
+    padding: 3px 0px 14px 10px;
+    font-size: 17px;
+    color: #7F7E7E;
+  }
+
+  table.list-table#verify_codes {
+    background-color: #fff;
+    thead {
+      tr {
+        border-bottom: 1px solid #ddd;
+      }
+    }
+    td, th {
+      padding: 18px 0px 18px 0;
+      color: #9A9696;
+      font-size: 14px;
+    }
+
+    td {
+      text-align: center;
+    }
+  }
+}
+
+.share_service_store, .verify_detail_link {
+  padding: 16px;
+  background-color: #fff;
+  font-size: 13px;
+
+  a {
+    display: block;
+    background: image-url('mobile/gray-arrow-right.png') no-repeat right center;
+    background-size:10px;
+    font-size: 16px;
+    color: #333;
+    line-height: 20px;
+  }
+
+  .share_link, .verify_detail {
+    padding-right: 13px;
+  }
+}
+.verify_detail_link {
+  padding: 0;
+  padding-bottom: 31px;
+  border-bottom: 1px solid #ddd;
+}
+
+.verify_detail_link_warp {
+  margin-right: 15px;
+}
+
+.valid-order-list {
+  .inline-form {
+    padding: 13px;
+
+    .verify_code_input{
+      width: 76%;
+      height: 30px;
+      border-radius: 4px;
+      background-color: #43C3AA;
+      color: #fff;
+    }
+  }
+
+  ::-webkit-input-placeholder {
+    color: #D8D8D8;
+  }
+  :-moz-placeholder { /* older Firefox*/
+    color: #D8D8D8;
+  }
+  ::-moz-placeholder { /* Firefox 19+ */
+    color: #D8D8D8;
+  }
+  :-ms-input-placeholder {
+    color: #D8D8D8;
+  }
+}
+
+.service_store_share {
+  .text-center {
+    background-color: #E8E8E8;
+    .evaluat_info {
+      padding: 8px;
+      color: #ABA9A9;
+      span {
+        color: #43C3AA;
+      }
+    }
+    .text-info {
+      color: #ABA9A9;
+    }
+  }
+
+  .share-title {
+    font-size: 20px;
+    padding: 20px 0 14px 0;
+  }
+
+  .qrcode_wrap {
+    .qrcode-title {
+      background-color: #fff;
+      padding: 5px;
+      p {
+        color:#f9ba10;
+        background: image-url('mobile/share-icon.png') no-repeat right;
+        background-size: 15px;
+        padding: 10px;
+        margin-right: 10px;
+
+        span {
+          font-size: 16px;
+          color: #8A8787;
+        }
+      }
+    }
+  }
+
+  .service_store_link {
+    .link-title {
+      p {
+        color:#f9ba10;
+        background: image-url('mobile/share-icon.png') no-repeat right;
+        background-size: 15px;
+        padding: 10px;
+        margin-right: 10px;
+      }
+      span {
+        font-size: 16px;
+        color: #8A8787;
+      }
+    }
+    .url {
+      padding: 17px 0 17px 10px;
+      background-color: #fff;
+      font-size: 16px;
+      color: #8A8787;
+    }
+  }
+}
+
+
+
+
+.type-title{
+  margin-left: 15px;
+  padding: 5px 0px;
+  color: #999;
+}
+

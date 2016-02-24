@@ -6,7 +6,7 @@ class SharingNodeTest < ActiveSupport::TestCase
     before do
       @user = create(:user)
       @seller = create(:user)
-      @product = create(:product)
+      @product = create(:ordinary_product)
     end
 
     it 'should find resource sharing node & touch it' do
@@ -51,7 +51,7 @@ class SharingNodeTest < ActiveSupport::TestCase
 
     it 'should find a product node' do
       seller_node = create(:sharing_node_with_seller)
-      product = create(:product)
+      product = create(:ordinary_product)
       query_node = seller_node.lastest_product_sharing_node(product)
       assert query_node.persisted?
       assert_equal product.id, query_node.product_id

@@ -5,15 +5,15 @@
 <td>
   <input class='input-mini pri-total'  <%= 'disabled' if @read_only %> type='number' name="product[product_inventories_attributes][<%= @id %>][share_amount_total]" value=<%= @share_amount_total %>>
 </td>
-<td>
+<td class='td-pri-lv1'>
   <input class='input-mini pri-lv1' type='hidden' name="product[product_inventories_attributes][<%= @id %>][share_amount_lv_1]"  value=<%= @share_amount_lv_1 %> >
   <%= @share_amount_lv_1 %>
 </td>
-<td>
+<td class='td-pri-lv2'>
   <input class='input-mini pri-lv2' type='hidden' name="product[product_inventories_attributes][<%= @id %>][share_amount_lv_2]"  value=<%= @share_amount_lv_2 %>>
   <%= @share_amount_lv_2 %>
 </td>
-<td>
+<td class='td-pri-lv3'>
   <input class='input-mini pri-lv3' type='hidden' name="product[product_inventories_attributes][<%= @id %>][share_amount_lv_3]"  value=<%= @share_amount_lv_3 %> >
   <%= @share_amount_lv_3 %>
 </td>

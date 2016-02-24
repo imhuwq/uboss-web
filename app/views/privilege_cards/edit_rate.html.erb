@@ -2,9 +2,9 @@
 <%= simple_form_for current_user, url: set_privilege_rate_privilege_cards_path  do |f| %>
 	<div class="gap">
 		<div class="bg-white gap">
-			<div class="form-group privilege-form">
-		  	<div class="form-label">贡献值比率</div>
-		    <div class="form-input"><%= f.input_field :privilege_rate %>%</div>
+			<div class="privilege-form">
+		  	<div class="pull-left">贡献值比率　</div>
+		    <div><%= f.input_field :privilege_rate %>%</div>
 	  	</div><!-- form-group-->
 	  </div>
   </div>
@@ -15,7 +15,7 @@
 <div class="gap">
 	<div class="bg-white gap text-center">
 		<br />
-	  <h4 class="gray-color">朋友为我直接带来的每笔收益中，<br/> 我获得40%，用 60% 帮TA打折.　</h4>
+	  <p class="gray-color">朋友为我直接带来的每笔收益中，<br/> 我获得<%= 100 - current_user.privilege_rate.to_i %>%，用 <%= current_user.privilege_rate.to_i %>% 帮TA打折.</p>
 	  <br />
     <div> <a href="/about" class="gray-color"><small>解释说明?</small></a></div>
 	  <br />

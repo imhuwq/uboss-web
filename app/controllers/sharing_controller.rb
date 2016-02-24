@@ -6,8 +6,12 @@ class SharingController < ApplicationController
 	def show
 		@sharing_node = SharingNode.find_by!(code: params[:code])
     set_sharing_code(@sharing_node)
-    path = if @sharing_node.product_id.present?
-             product_path(@sharing_node.product_id)
+    path = if params[:redirect].present?
+             params[:redirect]
+           elsif @sharing_node.product_id.present?
+             @sharing_node.product.try(:type) == "OrdinaryProduct" ?
+               product_path(@sharing_node.product_id) :
+               service_product_path(@sharing_node.product_id)
            else
              store_path(@sharing_node.seller_id)
            end
@@ -40,7 +44,8 @@ class SharingController < ApplicationController
 
   def render_sharing_link_node
     if @sharing_link_node.persisted?
-      render json: { sharing_link: sharing_url(@sharing_link_node) }
+      url_params = params[:type] == "service" ? {redirect: service_store_path(@seller.service_store)} : {}
+      render json: { sharing_link: sharing_url(@sharing_link_node, url_params) }
     else
       render json: { message: @sharing_link_node.errors.full_messages.join(',') }, status: 422
     end

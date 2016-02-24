@@ -1,0 +1,22 @@
+<div class="container  admin-container">
+	<ul class="breadcrumb">
+		<li>主页</li>
+		<li class="divider"><i class="fa fa-caret-right"></i></li>
+		<li>地址库</li>
+	</ul>
+</div><!-- container -->
+<br />
+<div class="container">
+	<h3 class="page-title">地址库</h3>
+
+	<div class="list-search-bar">
+		<%= link_to("+ 新增地址", url_for(:action=>:new), :class=>"btn btn-large",:role=>"button") %>
+	</div>
+	<br />
+	<div id="index_list">
+		<%= render partial: 'index_list', locals: { user_addresses: @user_addresses } %>
+	</div>
+	
+
+
+</div>

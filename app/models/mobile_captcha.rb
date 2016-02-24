@@ -9,13 +9,35 @@ class MobileCaptcha < ActiveRecord::Base
   before_validation :generate_code, :set_expire_time
   before_save :send_code
 
+  class Verfier
+    attr_reader :result
+
+    def initialize(mobile, code, type = nil)
+      MobileCaptcha.where('expire_at < ?', DateTime.now).delete_all
+      @result = MobileCaptcha.exists?(
+        mobile: mobile,
+        code: code,
+        captcha_type: type
+      )
+    end
+
+    def if_success
+      yield if result && block_given?
+      self
+    end
+
+    def if_failure
+      yield if !result && block_given?
+      self
+    end
+  end
+
   def self.auth_code(auth_mobile, auth_code, type = nil)
-    MobileCaptcha.where('expire_at < ?', DateTime.now).delete_all
-    MobileCaptcha.exists?(
-      mobile: auth_mobile,
-      code: auth_code,
-      captcha_type: type
-    )
+    verify(auth_mobile, auth_code, type).result
+  end
+
+  def self.verify(auth_mobile, auth_code, type = nil)
+    Verfier.new(auth_mobile, auth_code, type)
   end
 
   def self.send_captcha_with_mobile(auth_mobile, type = nil)
@@ -58,6 +80,6 @@ class MobileCaptcha < ActiveRecord::Base
 
   private
   def rand_code
-    rand(999..10_000).to_s.ljust(4,'0')
+    rand(100_000).to_s.ljust(5,'0')
   end
 end

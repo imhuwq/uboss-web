@@ -1,16 +1,18 @@
-<h2>Resend confirmation instructions</h2>
+<div class='login-container'>
 
-<%= simple_form_for(resource, as: resource_name, url: confirmation_path(resource_name), html: { method: :post }) do |f| %>
-  <%= f.error_notification %>
-  <%= f.full_error :confirmation_token %>
+  <% if params[:type] == 'regist' %>
+    <h2>发送邮箱注册确认邮件</h2>
+  <% else %>
+    <h2>重新发送确认邮件</h2>
+  <% end %>
 
-  <div class="form-inputs">
-    <%= f.input :email, required: true, autofocus: true %>
-  </div>
+  <%= simple_form_for(resource, as: resource_name, url: confirmation_path(resource_name, type: params[:type]), html: { method: :post }) do |f| %>
 
-  <div class="form-actions">
-    <%= f.button :submit, "Resend confirmation instructions" %>
-  </div>
-<% end %>
-
-<%= render "users/shared/links" %>
+    <%= f.input_field :email, required: true, class: 'input-block',
+      autofocus: true, placeholder: '邮箱地址' %>
+    <br />
+    <%= f.button :submit, "发送验证邮件", class: "btn btn-large btn-block" %>
+    <br />
+    <%= link_to "登录", new_session_path(resource_name), class: "btn btn-link btn-block" %>
+  <% end %>
+</div>

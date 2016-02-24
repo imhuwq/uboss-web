@@ -17,7 +17,7 @@
 			<p>分成类型：<%= t("l#{@sharing_income.level}", scope: 'enums.sharing_income.level') %></p>
 		</div>
 		<div class="box-w50">
-			<p>来源订单编号：<%= link_to @sharing_income.order.number, [:admin, @sharing_income.order] %></p>
+			<p>来源订单编号：<%= link_to @sharing_income.order.number, admin_order_path(@sharing_income.order) %></p>
     	<p>分成收益：<%= @sharing_income.amount %></p>
 		</div>
 	</div>

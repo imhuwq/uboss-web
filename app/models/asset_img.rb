@@ -2,7 +2,7 @@ class AssetImg < ActiveRecord::Base
 
   include Imagable
 
-  belongs_to :resource, polymorphic: true #指定图片的类型/对象
+  belongs_to :resource, polymorphic: true, touch: true #指定图片的类型/对象
 
   mount_uploader :avatar, ImageUploader
 

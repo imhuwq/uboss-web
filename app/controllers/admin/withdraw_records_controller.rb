@@ -22,6 +22,7 @@ class Admin::WithdrawRecordsController < AdminController
     if @withdraw_record.save
       redirect_to [:admin, @withdraw_record]
     else
+      flash.now[:error] = model_errors(@withdraw_record).join('<br/>')
       render :new
     end
   end
@@ -35,13 +36,28 @@ class Admin::WithdrawRecordsController < AdminController
     change_record_state(:close!)
   end
 
+  def finish
+    if @withdraw_record.bank_processing?
+      change_record_state(:finish!)
+    else
+      flash[:error] = '手动确认交易完成仅支持银行打款'
+      redirect_to :back
+    end
+  end
+
+  def query_wx
+    @withdraw_record.delay_query_wx_transfer
+    flash[:notice] = '后台查询中，请稍后刷新查看结果'
+    redirect_to :back
+  end
+
   def generate_excel
     excel = Axlsx::Package.new
     excel.workbook.add_worksheet(:name => "Basic Worksheet") do |sheet|
       sheet.add_row ["编号", "申请人", "收款人", "收款银行", "收款账号", "申请时间", "金额", "状态"]
       @withdraw_records.find_each do |record|
         sheet.add_row [record.number, record.user_identify, record.card_username, record.target_title, record.target_content.to_s, record.created_at, record.amount, record.state_i18n],
-          :types => [nil, nil, nil, nil, :string, nil, nil, nil]
+          :types => [:string, nil, nil, nil, :string, nil, :string, nil]
       end
     end
     send_data excel.to_stream.read, :filename => "UBOSS提现记录总表#{Date.today}.xlsx", :type => 'application/xlsx'

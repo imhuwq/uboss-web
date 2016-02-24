@@ -16,11 +16,15 @@ FactoryGirl.define do
       end
 
       after(:create) do |order_charge, evaluator|
-        create_list(:order, evaluator.orders_count, order_charge: order_charge, user: order_charge.user)
+        create_list(:ordinary_order, evaluator.orders_count, order_charge: order_charge, user: order_charge.user)
       end
     end
 
     factory :charge_with_orders, traits: [:with_orders]
+
+    factory :paid_order_charge, traits: [:paid_order_charge] do
+      paid_amount { orders.sum(:pay_amount) }
+    end
 
     factory :paid_order_charge_with_orders, traits: [:paid_order_charge, :with_orders] do
       paid_amount { orders.sum(:pay_amount) }

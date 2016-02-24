@@ -1,5 +1,4 @@
 $ ->
-  console.log("application is load")
   mobile_submit_time = 0
   @btn_text = ''
   $('#send_mobile').on 'click', (e) ->
@@ -58,7 +57,6 @@ $ ->
       @btn_text = sendBtn.text()
       timedown sendBtn
     .fail (xhr, textStatus) ->
-      console.log arguments
       sendBtn.removeClass("disabled")
       alert(
         try

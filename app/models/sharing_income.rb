@@ -16,7 +16,7 @@ class SharingIncome < ActiveRecord::Base
   delegate :product_name, :product, to: :order_item
   delegate :order, to: :order_item
 
-  after_create :increase_user_income, :record_trade
+  after_create :increase_user_income, :record_trade, :send_income_arrive_template_msg
 
   private
 
@@ -41,5 +41,9 @@ class SharingIncome < ActiveRecord::Base
       current_amount: user.income,
       trade_type: 'sharing'
     )
+  end
+
+  def send_income_arrive_template_msg
+    WxTemplateMsg.income_arrive_notify_msg_to_buyer(user.weixin_openid, self) if user && user.weixin_openid.present?
   end
 end

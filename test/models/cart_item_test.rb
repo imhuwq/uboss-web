@@ -55,7 +55,7 @@ class CartItemTest < ActiveSupport::TestCase
 
   describe '.product' do
     it 'should return the product_inventory.proudct' do
-      product = create(:product)
+      product = create(:ordinary_product)
       cart_item = create(:cart_item, product_inventory: create(:product_inventory, product: product))
 
       assert_equal product, cart_item.product

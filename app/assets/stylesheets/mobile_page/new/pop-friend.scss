@@ -1,0 +1,46 @@
+.pop-friend{
+  background: rgba(0,0,0,.65);
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  z-index: 999;
+  overflow: hidden;
+  .text-icon{
+    position: fixed;
+    display: inline-block;
+    left: 50%;
+  }
+  .input-box,.show-share-btn,.share-guide{
+    display: inline-block;
+    width: 250px;
+    bottom: 10px;
+    position: fixed;
+    left: 50%;
+    margin-left: -125px;
+    z-index: 6;
+  }
+  .pop-friend-close{
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    padding: 10px;
+    font-size: 15px;
+    color: #ccc;
+  }
+}
+.pf-instruction {
+  width: 150px;
+  text-align: center;
+  border: 1px solid #fff;
+  padding: 20px;
+  margin: 100px auto 0;
+  line-height: 1.2;
+  .font1 {
+    font-size: 21px;
+  }
+  .font2 {
+    font-size: 31px;
+  }
+}

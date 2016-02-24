@@ -29,6 +29,14 @@ $ ->
     else
       $('.req-snode-modal').show()
 
+  $(document).on 'click', '#pcards-list .pop-qr-btn', (e) ->
+    e.preventDefault()
+    qrcode_img = $(this).find('input[type="hidden"]').val()
+    img_tag = '<img src="' + qrcode_img + '" />'
+    $('.qr-modal .img-box').html(img_tag)
+    $('.qr-modal').show()
+
+
   $(document).on 'click', '.req-pro-snode-btn', (e) ->
     e.preventDefault()
     _ele = $(this)
@@ -59,7 +67,7 @@ $ ->
   $(document).on 'click', '.pro-snode-success-btn', (e) ->
     e.preventDefault()
     $('.req-snode-modal').hide()
-    $('.show-req-snode-modal').hide().next().show()
+    $('.show-req-snode-modal').hide().next().removeClass('hidden')
     if window.wx?
       UBoss.luffy.showWxPopTip()
     else

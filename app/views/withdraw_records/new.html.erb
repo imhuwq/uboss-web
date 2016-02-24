@@ -1,50 +1,47 @@
 <%= content_for :page_title do %>
-  提现
+  申请提现
 <% end %>
-<div class="container">
-  <div class="wd_box">
-    <%= simple_form_for @withdraw_record, url: withdraw_records_path,method: :POST do |f| %>
-    <ul>
-   <!--    <li class="wd_sele">
-        <p>开户账号</p>
-        <p><select class="wd_actnumeber"><option>请在此输入</option></select></p>
-        <div class="san"></div>
-      </li>
-      <li>
-        <p>开户姓名</p>
-        <p><input type="select" class="wd_input wd_usrname" value="请在此输入" ></p>
-      </li>
-      <li>
-        <p>开户银行</p>
-        <p><input type="select" class="wd_input wd_bank" value="请在此输入" ></p>
-      </li>
-      <li>
-        <p>手机号</p>
-        <p><input type="select" class="wd_input wd_phone" value="请在此输入" ></p>
-      </li> -->
-      <li>
-        <p class="greedr">当前可提现金额：<%= @income %> 元</p>
-        <p class="greedr">最低提现金额：100 元</p>
-        <p>提现金额</p>
-        <p>
-          <%= f.input_field :amount, placeholder: '请在此输入提现金额', type: :tel, class:'wd_input wd_phone' %>
-        </p>
-      </li>
-    </ul>
-    <div class="oder_anniu">
-      <a href="#" id="oder_over">提现</a>
-    </div>
-    <% end %>
+<div class="wd_box">
+  <%= simple_form_for @withdraw_record, url: withdraw_records_path,method: :POST do |f| %>
+  <div class="bg-white gap m-top10">
+  	<table>
+  		<tr>
+  			<td> 目前可提现金额 </td>
+  			<td class="text-right"> <%= number_to_currency current_user.income %> 元 </td>
+  		</tr>
+  		<tr>
+  			<td class="gray-color"> 最低提现金额 </td>
+  			<td class="gray-color text-right"> ￥1 元 </td>
+  		</tr>
+  		<tr>
+  			<td> 提现方式 </td>
+        <td class="text-right">
+          <%= f.input_field :bank_card_id, as: :select, label_method: :identify, value_method: :id, dir: 'rtl',
+            collection: current_user.bank_cards,
+            prompt: "#{@withdraw_record.wechat_available? ? '微信打款' : '请选择银行卡'}" %>
+        </td>
+  		</tr>
+  	</table>
+  	<hr />
+  	<br />
+  	<div><%= f.input_field :amount, placeholder: '请在此输入提现金额', type: :tel, class:'wd_input wd_phone input-block input-large' %> </div>
+  	<br />
+  	<div class="oder_anniu">
+	    <a href="#" id="oder_over" class="btn btn-block btn-large">提现</a>
+	  </div>
+	  <br />
   </div>
+
+  <% end %>
 </div>
 <script type="text/javascript">
 $('#oder_over').on('click', function(event) {
   var amount = $('#withdraw_record_amount').val()
   console.log(amount)
-  if (<%= @income %> > amount && amount > 99) {
+  if (<%= current_user.income %> > amount && amount >= 1) {
     $('#new_withdraw_record').submit();
   }else{
-    alert('最低金额100元,最高金额<%= @income %>元。');
+    alert('最低金额1元,最高金额<%= current_user.income %>元。');
   };
 });
 </script>

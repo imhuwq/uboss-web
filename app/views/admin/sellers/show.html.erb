@@ -49,7 +49,7 @@
 				</p>
 			</div><!-- box-w45 -->
 			<div class="box-w10">
-				<p><img src="http://qr.liantu.com/api.php?&text=<%= store_url(@seller, shared: true) %>"/>	</p>
+        <p><%= qrcode_image_tag(store_url(@seller, shared: true)) %></p>
 			</div>
 		</div><!-- admin-box -->
 		<br />
@@ -101,7 +101,7 @@
 		<br />
       <% end %>
 		<div class="pull-right">
-		<% if current_user.is_super_admin? %>
+		<% if can?(:update_service_rate, :uboss_seller) %>
 			<%= form_for 'seller', url: url_for(controller: :sellers, action: :update_service_rate), method: :post do |f| %>
 				<%= hidden_field_tag 'seller[id]', @seller.id %>
 				<%= text_field_tag 'seller[service_rate]', @seller.try(:user_info).try(:service_rate), type: :tel %> %
@@ -264,13 +264,16 @@
 
 <script>
 $(window).load(function(){
-	$(".pop-img").click(function(){
-		$("body").append("<div class='pop-bg'><div class='pop-container' style='margin-top:-"+($(this).children("img").height()+20)/2+"px;margin-left:-"+($(this).children("img").width()+20)/2+"px'><div class='pop-content'><img src='"+$(this).attr("data-src")+"'/><div class='pop-close'><i class='fa fa-times'></i></div></div></div></div>");
-		$("html").addClass("pop-html");
+	$("body").on('click','.pop-img',function(){
+		$("html").addClass("lock");
+		var pop_html="<div class='pop-bg'><div class='pop-container'>"
+		pop_html=pop_html+"<div class='pop'><div class='pop-content'>";
+		pop_html=pop_html+"<img src='"+$(this).attr("data-src")+"'/>"+"<div class='pop-close'><i class='fa fa-times'></i></div></div></div></div>";
+		$("body").append(pop_html)
 	})
 	$("body").on("click",".pop-bg .pop-close",function(){
 		$(".pop-bg").remove();
-		$("html").removeClass("pop-html");
+		$("html").removeClass("lock");
 	})
 })
 $(document).ready(function(){

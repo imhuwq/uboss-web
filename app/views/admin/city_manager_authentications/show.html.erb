@@ -1,0 +1,97 @@
+<div class="container  admin-container">
+	<ul class="breadcrumb">
+		<li><a href="/admin">主页</a></li>
+		<li class="divider"><i class="fa fa-angle-right"></i></li>
+		<li><a href="/admin/certifications/city_managers">城市运营商认证</a></li>
+		<li class="divider"><i class="fa fa-caret-right"></i></li>
+		<li>城市运营商认证信息</li>
+	</ul>
+</div>
+<br />
+<% if cannot?(:manage, @certification) %>
+  <%= render "admin/certifications/tabs" %>
+<br />
+<% end %>
+<div class="container">
+		<div class="admin-box black-bg-color">
+      <div class="form-group clear">
+				<label class="string required control-label" for="product_name">
+					<abbr title="必填">*</abbr>
+					状态
+				</label>
+				<div class="control-input"><span>
+          <%= @certification.status_i18n %></span>
+				</div>
+			</div>
+			<div class="form-group clear">
+				<label class="string required control-label" for="product_name">
+					<abbr title="必填">*</abbr>
+					公司名
+				</label>
+				<div class="control-input"><span>
+					<%= @certification.enterprise_name %></span>
+				</div>
+			</div>
+      <div class="form-group clear">
+				<label class="string required control-label" for="product_name">
+					<abbr title="必填">*</abbr>
+				  营业执照
+				</label>
+				<div class="control-input"><span>
+          <%= link_to(@certification.business_license_img.to_s, target:'_blank') do %>
+					<%= image_tag(@certification.business_license_img.url(:w320), width: "60%", alt: "-", title:"点击查看原图") %>
+          <% end %></span>
+				</div>
+			</div>
+			<div class="form-group clear">
+				<label class="string required control-label" for="product_name">
+					<abbr title="必填">*</abbr>
+				  法人身份证正面
+				</label>
+				<div class="control-input"><span>
+          <%= link_to(@certification.legal_person_identity_card_front_img.to_s, target:'_blank') do %>
+					<%= image_tag(@certification.legal_person_identity_card_front_img.url(:w320), width: "60%", alt: "-", title:"点击查看原图") %>
+          <% end %></span>
+				</div>
+			</div>
+      <div class="form-group clear">
+				<label class="string required control-label" for="product_name">
+					<abbr title="必填">*</abbr>
+				  法人身份证反面
+				</label>
+				<div class="control-input"><span>
+          <%= link_to(@certification.legal_person_identity_card_end_img.to_s, target:'_blank') do %>
+					<%= image_tag(@certification.legal_person_identity_card_end_img.url(:w320), width: "60%", alt: "-", title:"点击查看原图") %>
+          <% end %></span>
+				</div>
+			</div>
+      <div class="form-group clear">
+        <label class="string required control-label" for="product_name">
+          <abbr title="必填">*</abbr>
+          地址
+        </label>
+        <div class="control-input"><span>
+          <%= @certification.address %></span>
+        </div>
+      </div>
+      <div class="form-group clear">
+        <label class="string required control-label" for="product_name">
+          <abbr title="必填">*</abbr>
+          手机号码
+        </label>
+        <div class="control-input"><span><%= @certification.mobile %></span></div>
+      </div>
+  <% if can?(:manage, @certification) %>
+      <%= render partial: 'admin/certifications/actions', locals: { obj: @certification } %>
+		</div>
+	</div>
+	<br />
+  <p class='text-center'>
+    <%= link_to "返回",  city_managers_admin_certifications_path, class:"btn blue-btn btn-large",:role=>"button" %>
+  </p>
+  <% elsif ['posted','no_pass'].include?(@certification.status) %>
+	<p class="text-center"><%= link_to("编辑", url_for(:action=>:edit), :class=>"btn btn-large",:role=>"button") %></p>
+	</div>
+  <% end %>
+
+</div>

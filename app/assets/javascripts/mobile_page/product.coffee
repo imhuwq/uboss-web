@@ -34,40 +34,6 @@ $ ->
       $('html').addClass('lock')
       product_inventory_property_buy_now_option.render('','',$('#submit_way').val(),$('#product_id').val())
 
-  $('.count-box .count_min').on 'click',->
-    num=parseInt($('.count-box .count_num').val())
-    if num < 2
-      alert('数量必须大于1')
-      $('.count-box .count_num').val(1)
-      $('#count_amount').val(1)
-    else
-      $('.count-box .count_num').val(num-1)
-      $('#count_amount').val(num-1)
-
-  $('.count-box .count_plus').on 'click',->
-    num=parseInt($('.count-box .count_num').val())
-    $('.count-box .count_num').val(num+1)
-    $('#count_amount').val(num+1)
-
-  $.fn.onlyNum = () ->
-    $(this).keyup () ->
-      $this = $(this)
-      this.value = this.value.replace(/[^\d]/g, '')
-
-  # 限制只能输入数字
-  $.fn.onlyNum = () ->
-    $(this).keypress (event) ->
-      eventObj = event || e
-      keyCode = eventObj.keyCode || eventObj.which
-      if (keyCode >= 48 && keyCode <= 57)
-        return true
-      else
-        return false
-    .focus () ->
-      this.style.imeMode = 'disabled' # 禁用输入法
-    .bind "paste", () ->              # 禁用粘贴
-      return false
-
   $(".count-box .count_num").on 'change',->
     $this = $(this)
     this.value = this.value.replace(/[^\d]/g, '')

@@ -1,22 +1,38 @@
-@import "bootstrap-sprockets";
-@import 'shared/variables';
-@import "bootstrap";
-@import 'shared/bootswatch';
-@import 'shared/login';
+@import "shared/application_variables";
+@import "shared/reset";
+@import "shared/base";
+@import 'admin/form';
+@import 'admin/login';
 
-.container-sm {
-  width: 380px;
-  margin: 50px auto;
+html{
+  background: image-url('login/bg.jpg') center center #1a1a1a;
+}
+pre {
+  color: #fff;
+}
+.hidden {
+  display: none;
 }
 
-.simple_form {
-  &.new_user, &.edit_user {
-    @extend .container-sm
-  }
-}
-.simple_captcha_image img{
-  height: 39px;
-}
-.simple_captcha_field {
-  margin-left: 110px;
-}
+.alert{padding:15px;margin:0 auto 20px;border:1px solid transparent;border-radius:0;width: 300px; display: inline-block;}
+.alert h4{margin-top:0;color:inherit}
+.alert .alert-link{font-weight:bold}
+.alert>p,.alert>ul{margin-bottom:0}
+.alert>p+p{margin-top:5px}
+.alert-dismissable,.alert-dismissible{padding-right:35px}
+.alert-dismissable .close,.alert-dismissible .close{position:relative;top:-2px;right:-21px;color:inherit}
+.alert-success{background-color:#5cb85c;border-color:transparent;color:#EBEBEB}
+.alert-success hr{border-top-color:transparent}
+.alert-success .alert-link{color:#d2d2d2}
+.alert-info{background-color:#5bc0de;border-color:transparent;color:#EBEBEB}
+.alert-info hr{border-top-color:transparent}
+.alert-info .alert-link{color:#d2d2d2}
+.alert-warning{background-color:#f0ad4e;border-color:transparent;color:#EBEBEB}
+.alert-warning hr{border-top-color:transparent}
+.alert-warning .alert-link{color:#d2d2d2}
+.alert-danger{background-color:#d9534f;border-color:transparent;color:#EBEBEB}
+.alert-danger hr{border-top-color:transparent}
+.alert-danger .alert-link{color:#d2d2d2}
+.close{float:right;font-size:22.5px;font-weight:bold;line-height:1;color:#666;text-shadow:none;opacity:0.2;filter:alpha(opacity=20)}
+.close:hover,.close:focus{color:#666;text-decoration:none;cursor:pointer;opacity:0.5;filter:alpha(opacity=50)}
+button.close{padding:0;cursor:pointer;background:transparent;border:0;-webkit-appearance:none}

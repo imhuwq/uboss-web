@@ -1,0 +1,10 @@
+<li class="xiaoxiti <%= @direction %> user" data-sender='<%= @sender %>'>
+  <div class="user_img">
+    <img src='<%= @avatar %>' onerror='this.src="<%= @errorAavatar %>"' />
+  </div>
+  <div class="msg">
+    <div class='msg-info'><strong class='u-name'><%= @username %></strong> <font class='msg-time'><%= @sentTime %></font></div>
+    <div class='msg-content'><%= @content %></div>
+  </div>
+  <div messageId="<%= @messageId %>" class="status"></div>
+</li>

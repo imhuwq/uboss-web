@@ -1,0 +1,27 @@
+<div class="container verify_codes_wrapper">
+	<table class="list-table" id="verify_codes">
+    <thead>
+      <tr>
+        <th>团购名称</th>
+        <th>现价</th>
+        <th>验证时间</th>
+        <th>验证券密码</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @verify_codes.each do |verify_code| %>
+        <tr>
+          <td class="text-left">
+					  <%= link_to admin_service_product_path(verify_code.order_item.product) do %>
+              <%= image_tag(verify_code.order_item.product.image_url(:thumb), size: "80x80", alt: "-") %>　
+              <%= verify_code.order_item.product.name %>
+            <% end %>
+          </td>
+          <td><%= verify_code.order_item.present_price%></td>
+          <td><%= verify_code.updated_at %></td>
+          <td><%= verify_code.code %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>

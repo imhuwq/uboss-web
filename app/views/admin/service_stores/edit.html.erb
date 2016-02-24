@@ -1,0 +1,119 @@
+<div class="container admin-container">
+  <ul class="breadcrumb">
+    <li><a href="/admin">主页</a></li>
+    <li class="divider"><i class="fa fa-caret-right"></i></li>
+    <li>团购店铺设置</li>
+  </ul>
+</div>
+<br />
+<div class="container service_store_edit">
+
+  <%= render partial: 'shared/form_error_message', locals: { obj: @service_store } %>
+
+  <%= nested_form_for [:admin, @service_store] do |f| %>
+    <div class="beige-bg-color admin-box">
+    	<div class="box-w60">
+    		<br />
+    		<div class='form-group file optional user_store_cover'>
+	  			店铺头像
+		  		<%= f.text_field :store_cover, value: @service_store.store_cover_name, type: :hidden, as: :file, class: 'file optional' %>
+          <p class="fileinput-button">
+            <% if @service_store.store_cover_identifier.blank? %>
+              <%= image_tag("admin/no-img.png") %>
+            <% else %>
+              <%= image_tag(@service_store.store_cover.url(:w320))%>
+            <% end %>
+            <%= upyun_meta_tags prefix: "service_store/store_cover" %>
+            <%= file_field_tag "st_c_image", class: "upyun_file_closest" %>
+            <b class="loading"><i class="fa fa-spinner"></i></b>
+          </p>
+				</div>
+			  <p>
+          店铺名称<span class='service_store_required'>*</span>
+					<%= f.text_field :store_name , value: @service_store.store_name,  placeholder: '店铺名称',style:'width:400px' %>
+				</p>
+			  <p>
+          店铺简介<span class='service_store_no_required'></span>
+					<%= f.text_field :store_short_description, value: @service_store.store_short_description, placeholder: '请控制在20字以内，以保证显示效果',style:'width:400px' %>
+        </p>
+      </div>
+
+      <div class="box-w40 info-right-box">
+        <br />
+        <p><%= qrcode_image_tag(service_store_url(id: @service_store, shared: true), html: {width: '160'}) %></p>
+        <p class="gap white-bg-color">店铺链接：<%= service_store_url(id: @service_store) %></p>
+        <br />
+	  	</div><!-- box-w15 -->
+    </div><!-- beige-bg-color -->
+
+    <div class="beige-bg-color admin-box">
+      <hr />
+      <br />
+      <div class="box-w100">
+        <p>微信公众平台推广</p>
+        <p class="gap white-bg-color">
+        <span style="display:block;">二维码推广链接：<%= store_qrcode_img_url(type: 'service', sid: current_user.id) %></span>
+        <br />
+        <span style="display:block;">我的收益链接：<%= income_account_url %></span>
+        </p>
+      </div>
+    </div>
+
+    <div class="beige-bg-color admin-box">
+      <hr />
+      <br />
+    	<div class="box-w100">
+    		<div class="service-store-address">
+          店铺位置<span class='service_store_required'>*</span>
+		      <%= render 'user_addresses/user_address', f: f, locals: { obj: @service_store } %>
+		      <%= f.text_field :street, value: @service_store.street, placeholder: '填写详细地址',style:'width:400px' %>
+	      </div>
+    	</div><!-- box-w100-->
+	    <br />
+      <div class="box-w100">
+        <span class="pull-left">店铺电话
+          <span class='service_store_required_1'>*</span>
+        </span>
+      	<div class="pull-left service-store-tel">
+      		<%= f.fields_for :store_phones do |p| %>
+            <span><%= p.text_field :area_code, placeholder: '区号' %></span>
+            <span>--</span>
+            <span><%= p.text_field :fixed_line, placeholder: '固定电话' %></span>
+            <span>或</span>
+            <span><%= p.text_field :phone_number, placeholder: '手机号' %></span>
+            <span><%= p.link_to_remove '删除', class: 'remove', tabIndex: '-1' %></span>
+          <% end %>
+          <div class="table-body">
+	          <div class="add_store_phone"><%= f.link_to_add "　新增电话", :store_phones, class: 'fa fa-plus text-center add-chapter main-color'%></div>
+	        </div>
+      	</div>
+      </div><!-- box-w100-->
+      <br />
+      <div class="box-w100">
+        <span class="pull-left">营业时间
+          <span class='service_store_required_1'>*</span>
+        </span>
+      	<div class="pull-left">
+      		<%= f.text_field :begin_hour, placeholder: '几时, 如: 9' %> <span>:<span>
+	      	<%= f.text_field :begin_minute, placeholder: '几分, 如: 00' %> <span>至<span>
+	      	<%= f.text_field :end_hour, placeholder: '几时, 如: 22' %> <span>:<span>
+	      	<%= f.text_field :end_minute, placeholder: '几分,如: 30' %>
+	      	<div class="gray-color"><small>举例: 9 : 00 至 22 : 00</small></div>
+      	</div>
+      </div><!-- box-w100-->
+
+      <br />
+      <div class="text-right">
+        <%= f.submit '提交', class: 'btn btn-large red-btn' %>
+      </div>
+    </div>
+    <br />
+  <% end %>
+
+  <br />
+  <div id="service_store_advertisements" class='advertisements_content' content='/admin/service_stores'>
+    <%= render partial: "shared/admin/advertisements", locals: {url_prefix: '/admin/service_stores', advertisements: @advertisements} %>
+  </div>
+  <%= render "shared/admin/add_banner" %>
+
+</div>

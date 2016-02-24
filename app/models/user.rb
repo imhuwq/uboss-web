@@ -4,18 +4,19 @@ class User < ActiveRecord::Base
   DATA_AUTHENTICATED = {'no'=> '未认证', 'yes'=> '已认证'}
 
   include Orderable
+  include Sellerable
 
   attr_accessor :code, :mobile_auth_code
   OFFICIAL_ACCOUNT_LOGIN = '13800000000'.freeze
 
-  devise :database_authenticatable, :rememberable, :trackable, :validatable,
-    :omniauthable, :registerable
+  devise :database_authenticatable, :rememberable, :trackable, :recoverable, :validatable, :confirmable,
+    :async, :omniauthable, :registerable, authentication_keys: [:login_identifier]
 
   mount_uploader :avatar, ImageUploader
 
   has_and_belongs_to_many :expresses, uniq: true
-  has_one :user_info, autosave: true
   has_one :cart
+  has_many :user_infos, autosave: true
   has_many :carriage_templates
   has_many :transactions
   has_many :user_role_relations, dependent: :destroy
@@ -24,23 +25,47 @@ class User < ActiveRecord::Base
   has_many :sharing_nodes
   has_many :favour_products
   has_many :favoured_products, through: :favour_products, source: :product
+  has_many :withdraw_records
   # for agent
   has_many :divide_incomes
   has_many :sellers, class_name: 'User', foreign_key: 'agent_id'
-  has_many :seller_orders, through: :sellers, source: :sold_orders
+  has_many :seller_ordinary_orders, through: :sellers, source: :sold_ordinary_orders
+  has_many :seller_service_orders,  through: :sellers, source: :sold_service_orders
   # for buyer
-  has_many :user_addresses
+  has_one :cart
+  has_one :ordinary_store, class_name: 'OrdinaryStore', autosave: true, validate: false
+  has_one :service_store, class_name: 'ServiceStore', autosave: true, validate: false
+  has_many :user_addresses, -> { where(seller_address: false) }
   has_many :orders
+  has_many :ordinary_orders
+  has_many :service_orders
+  has_many :order_charges
+  has_many :order_items
   has_many :sharing_incomes
   has_many :bank_cards
   has_many :privilege_cards
+  has_many :refund_messages
+  has_many :order_item_refunds
+  has_many :sales_returns, through: :order_item_refunds
+  has_many :carriage_templates
+  has_many :bonus_records
   # for seller
+  has_many :seller_addresses, -> { where(seller_address: true) }, class_name: 'UserAddress'
   has_many :sold_orders, class_name: 'Order', foreign_key: 'seller_id'
+  has_many :sold_ordinary_orders, class_name: 'OrdinaryOrder', foreign_key: 'seller_id'
+  has_many :sold_service_orders,  class_name: 'ServiceOrder',  foreign_key: 'seller_id'
+  has_many :verified_codes, -> { where(verified: true) }, through: :sold_service_orders, source: :verify_codes
   has_many :products
+  has_many :ordinary_products
+  has_many :service_products
+  has_many :sold_ordinary_order_items, through: :sold_ordinary_orders, source: :order_items
+  has_many :categories
   has_many :selling_incomes
   belongs_to :agent, class_name: 'User'
 
-  validates :login, uniqueness: true, mobile: true, presence: true, if: -> { !need_set_login? }
+  validates :login, uniqueness: true, mobile: true, allow_blank: true
+  validates_presence_of :login, presence: true, if: -> { email.blank? }
+  validates_presence_of :email, presence: true, if: -> { login.blank? }
   validates :mobile, allow_nil: true, mobile: true
   validates :agent_code, uniqueness: true, allow_nil: true
   validates :authentication_token, uniqueness: true, presence: true
@@ -52,27 +77,33 @@ class User < ActiveRecord::Base
   delegate :sex, :sex=, :province, :province=, :city, :city=, :country, :country=,
     :good_evaluation, :best_evaluation, :better_evaluation, :worst_evaluation, :bad_evaluation,
     :store_name, :store_name=,      :income_level_thr, :frozen_income,
-    :income,     :income_level_one, :income_level_two, :service_rate,
+    :income,     :income_level_one, :income_level_two, :service_rate, :type, :type=,
     :store_banner_one_identifier,  :store_banner_two_identifier,  :store_banner_thr_identifier,
     :store_banner_one,  :store_banner_two,  :store_banner_thr,
     :store_banner_one_url,  :store_banner_two_url,  :store_banner_thr_url,
     :store_banner_one=, :store_banner_two=, :store_banner_thr=,
     :recommend_resource_one_id, :recommend_resource_two_id, :recommend_resource_thr_id,
     :recommend_resource_one_id=, :recommend_resource_two_id=, :recommend_resource_thr_id=,
-    :store_short_description, :store_short_description=, :store_cover, :store_cover=,
-    to: :user_info, allow_nil: true
+    :store_short_description, :store_short_description=, :store_cover, :store_cover=, :bonus_benefit, :bonus_benefit=,
+    :store_title, :store_identify,
+    :good_reputation_rate, :total_reputations,
+    to: :ordinary_store, allow_nil: true
 
   enum authenticated: {no: 0, yes: 1}
 
   before_destroy do # prevent destroy official account
-    if login == OFFICIAL_ACCOUNT_LOGIN
-      false
-    end
+    false if login == OFFICIAL_ACCOUNT_LOGIN
+  end
+  before_update do
+    false if login == OFFICIAL_ACCOUNT_LOGIN && changes.include?(:login)
   end
   before_validation :ensure_authentication_token, :ensure_privilege_rate
   before_create :set_mobile, :set_default_role
-  before_create :build_user_info, if: -> { user_info.blank? }
+  before_create :build_ordinary_store, if: -> { ordinary_store.blank? }
+  before_create :build_service_store, if: -> { service_store.blank? }
+  before_create :skip_confirmation!
   before_save   :set_service_rate
+  after_commit  :invoke_rongcloud_job, on: [:create, :update]
 
   scope :admin, -> { where(admin: true) }
   scope :agent, -> { role('agent') }
@@ -87,11 +118,71 @@ class User < ActiveRecord::Base
     RUBY
   end
 
+  def service_store
+    super || build_service_store
+  end
+
+  def ordinary_store
+    super || build_ordinary_store
+  end
+
+  def login_identifier=(login_identifier)
+    @login_identifier = login_identifier
+  end
+
+  def login_identifier
+    @login_identifier || self.login || self.email
+  end
+
   def image_url(version = nil)
     avatar.url(version)
   end
 
+  def crypt_id
+    self.id && CryptService.encrypt(self.id)
+  end
+
+  def received_invite_bonus?
+    bonus_records.where(type: 'Ubonus::Invite').exists?
+  end
+
+  def has_role?(role_name)
+    user_roles.any? { |role| role.name == role_name.to_s }
+  end
+
+  def remove_role(role_name)
+    if role=UserRole.find_by_name(role_name)
+      user_roles.delete role
+    else
+      false
+    end
+  end
+
+  def add_role(role_name)
+    return if have_role?(role_name)
+    if role=UserRole.find_by_name(role_name)
+      user_roles << role
+    else
+      false
+    end
+  end
+
+  def have_role?(role_name)
+    user_roles.exists?(name: role_name)
+  end
+
   class << self
+
+    def find_for_database_authentication(warden_conditions)
+      conditions = warden_conditions.dup
+      if login_identifier = conditions.delete(:login_identifier)
+        where(conditions.to_h).
+          where(["lower(login) = :value OR lower(email) = :value", { value: login_identifier.downcase }]).first
+      else
+        where(conditions.to_h).first
+      end
+    end
+
     def official_account
       @official_account ||= find_by(login: OFFICIAL_ACCOUNT_LOGIN)
     end
@@ -131,8 +222,9 @@ class User < ActiveRecord::Base
 
     def find_or_create_guest_with_session(mobile, session)
       user = find_by(login: mobile)
-      user ||= create_guest(mobile)
+      user ||= new_guest(mobile)
       user.update_with_oauth_session(session)
+      user.save if !user.persisted?
       user
     end
 
@@ -150,6 +242,12 @@ class User < ActiveRecord::Base
       end
     end
 
+  end
+
+  def invoke_rongcloud_job
+    if rongcloud_token.blank? || [:nickname, :avatar].any? { |key| previous_changes.include?(key) }
+      RongcloudJob.perform_later(user: self, type: 'user_info')
+    end
   end
 
   # 默认绑定official agent
@@ -213,11 +311,7 @@ class User < ActiveRecord::Base
   end
 
   def identify
-    nickname || regist_mobile
-  end
-
-  def store_identify
-    store_name || nickname || regist_mobile
+    nickname || mobile || 'UBOSS用户'
   end
 
   def total_income
@@ -253,7 +347,7 @@ class User < ActiveRecord::Base
   end
 
   def today_expect_divide_income
-    seller_orders.today.shiped.sum(:pay_amount) * 0.05
+    seller_ordinary_orders.today.shiped.sum(:pay_amount) * 0.05
   end
 
   def current_month_divide_income
@@ -265,12 +359,12 @@ class User < ActiveRecord::Base
   end
 
   def user_info
-    super || build_user_info
+    ordinary_store
   end
 
   def default_address
-    @default_address ||= user_addresses.where(default: true).first
-    @default_address ||= user_addresses.first
+    @default_address ||= user_addresses.where(default: true, seller_address: false).first
+    @default_address ||= user_addresses.where(seller_address: false).first
   end
 
   def set_default_address(address = nil)
@@ -336,22 +430,7 @@ class User < ActiveRecord::Base
     self.country        ||= data['country']
     self.weixin_unionid   = data['unionid']
     self.weixin_openid    = data['openid']
-    self.remote_avatar_url = data['headimgurl'] if self.avatar.blank?
-  end
-
-  def good_reputation_rate
-    return @sharer_good_reputation_rate if @sharer_good_reputation_rate
-    good = user_info.best_evaluation.to_i + user_info.better_evaluation.to_i + user_info.good_evaluation.to_i
-    @sharer_good_reputation_rate = if total_reputations > 0
-                                     good * 100 / total_reputations
-                                   else
-                                     100
-                                   end
-  end
-
-  def total_reputations
-    @total_reputations ||= UserInfo.where(user_id: id).
-      sum("good_evaluation + bad_evaluation + better_evaluation + best_evaluation + worst_evaluation")
+    self.remote_avatar_url = data['headimgurl'] if self.avatar_identifier.blank?
   end
 
   def has_seller_privilege_card?(seller)
@@ -368,6 +447,26 @@ class User < ActiveRecord::Base
 
   def is_comman_express?(express)
     self.expresses.exists?(express)
+  end
+
+  def default_post_address
+    @default_post_address ||= seller_addresses.find_by('usage @> ?', {default_post_address: 'true'}.to_json)
+  end
+
+  def default_get_address
+    @default_get_address ||= seller_addresses.find_by('usage @> ?', {default_get_address: 'true'}.to_json)
+  end
+
+  def find_or_create_rongcloud_token
+    return rongcloud_token if rongcloud_token.present?
+
+    user = Rongcloud::Service::User.new
+    user.user_id = self.id
+    user.name = self.identify
+    user.portrait_uri = self.avatar.url(:thumb)
+    user.get_token
+    self.update_columns(rongcloud_token: user.token)
+    user.token
   end
 
   private
@@ -407,8 +506,9 @@ class User < ActiveRecord::Base
   end
 
   def set_service_rate
-    if self.agent_id_changed?
-      self.user_info.service_rate = 5
+    if self.agent_id_changed? && user_info.present?
+        user_info.service_rate = 5
     end
   end
+
 end

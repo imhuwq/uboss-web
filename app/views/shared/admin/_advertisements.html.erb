@@ -1,0 +1,74 @@
+<div id="slider" class="beige-bg-color admin-box">
+  <div class="box-w40 text-center">
+    <br />
+    <% if advertisements.empty? %>
+      <p><%= image_tag("admin/no-img-640x320.png") %></p>
+    <% else %>
+      <ul class="setting-slider">
+        <% advertisements.each do |adv| %>
+          <li id="slider_<%= adv.id %>"><%= image_tag(adv.image_url('640x320')) %></li>
+        <% end %>
+      </ul><!-- setting-slider -->
+    <% end %>
+    <p class="gray-color"><small>请上传规格为640*320px的图片</small></p>
+  </div>
+
+  <div class="box-w60">
+    <br />
+    <div class="setting-list">
+      <% advertisements.each do |adv| %>
+        <% if adv.product_id %>
+          <div class="setting-banner-box">
+            <span class="close" data-id="<%= adv.id %>"><i class="fa fa-times"></i></span>
+            <p>商品：<span class="main-color"><%= adv.product.name %></span></p>
+            <p class="text-center fileinput-button">
+            <%= image_tag(adv.image_url('640x320'), class:'clean') %>
+            <%= file_field_tag "image", class: "upyun_file_json" ,  data: {to: "#{url_prefix}/update_advertisement_img?resource_id=#{adv.id}"} %>
+            <%= upyun_meta_tags prefix: "asset_img/avatar" %>
+            <b class="loading"><i class="fa fa-spinner"></i></b>
+            <span class="tips-text">点击替换</span>
+            </p>
+            <div class='order_banner_by_sequence'>排序：<input type="number" min="0" value="<%= adv.order_number %>" class="banner-sequence update_item" style="width: 100px;" data-url="<%= url_prefix %>/update_advertisement_order?resource_id=<%= adv.id %>"/></div>
+          </div><!-- setting-banner-box -->
+        <% elsif adv.category_id %>
+          <div class="setting-banner-box">
+            <span class="close" data-id="<%= adv.id %>"><i class="fa fa-times"></i></span>
+            <p>分组：<span class="main-color"><%= adv.category.name %></span></p>
+            <p class="text-center fileinput-button">
+            <%= image_tag(adv.image_url('640x320'), class:'clean') %>
+            <%= file_field_tag "image", class: "upyun_file_json" ,  data: {to: "#{url_prefix}/update_advertisement_img?resource_id=#{adv.id}"} %>
+            <%= upyun_meta_tags prefix: "asset_img/avatar" %>
+            <b class="loading"><i class="fa fa-spinner"></i></b>
+            <span class="tips-text">点击替换</span>
+            </p>
+            <div class='order_banner_by_sequence'>排序：<input type="number" min="0" value="<%= adv.order_number %>" class="banner-sequence update_item" style="width: 100px;" data-url="<%= url_prefix %>/update_advertisement_order?resource_id=<%= adv.id %>"/></div>
+          </div><!-- setting-banner-box -->
+        <% else %>
+          <div class="setting-banner-box">
+            <span class="close" data-id="<%= adv.id %>"><i class="fa fa-times"></i></span>
+            <p class="text-center fileinput-button">
+            <%= image_tag(adv.image_url('640x320'), class:'clean') %>
+            <%= file_field_tag "image", class: "upyun_file_json" ,  data: {to: "#{url_prefix}/update_advertisement_img?resource_id=#{adv.id}"} %>
+            <%= upyun_meta_tags prefix: "asset_img/avatar" %>
+            <b class="loading"><i class="fa fa-spinner"></i></b>
+            <span class="tips-text">点击替换</span>
+            </p>
+            <div class='order_banner_by_sequence'>排序：<input type="number" min="0" value="<%= adv.order_number %>" class="banner-sequence update_item" style="width: 100px;" data-url="<%= url_prefix %>/update_advertisement_order?resource_id=<%= adv.id %>"/></div>
+          </div><!-- setting-banner-box -->
+        <% end %>
+      <% end %>
+
+      <a class="btn white-btn btn-large btn-block show-add-banner" >+ 轮播图</a>
+
+    </div><!-- setting-list -->
+    <br />
+  </div>
+</div><!-- #slider -->
+
+<script>
+$(document).ready(function(){
+  $('.setting-slider').bxSlider({
+    controls :false
+  });
+})
+</script>

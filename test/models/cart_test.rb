@@ -17,7 +17,7 @@ class CartTest < ActiveSupport::TestCase
 
     it 'should add a new cart_item record if product not exist' do
       count = @cart_item.count
-      product_inventory = create(:product_inventory, product: create(:product, user: @seller))
+      product_inventory = create(:product_inventory, product: create(:ordinary_product, user: @seller))
       cart_item = @cart.add_product(product_inventory, '', 1)
 
       assert       cart_item.new_record?
@@ -91,7 +91,7 @@ class CartTest < ActiveSupport::TestCase
 
   describe '.total_price' do
     it 'should calculate total_price of cart' do
-      product = create(:product)
+      product = create(:ordinary_product)
       cart = create(:cart, cart_items: [
         create(:cart_item, count: 3, product_inventory: create(:product_inventory, product: product, price: 20)),
         create(:cart_item, count: 1, product_inventory: create(:product_inventory, product: product, price: 200))

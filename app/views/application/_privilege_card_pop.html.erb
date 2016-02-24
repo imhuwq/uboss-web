@@ -1,0 +1,89 @@
+<div class="pop-friend hidden">
+  <div class="close pop-friend-close">跳过</div>
+  <div id="page1">
+    <div class='pf-instruction'>
+      <p class="white-color font1">推荐口碑商家</p>
+      <p class="main-color font2">好友优惠</p>
+      <p class="white-color font2">个人返现</p>
+    </div>
+    <div class="input-box text-center">
+      <% if current_user.blank? %>
+        <p><input type="tel"  class="input-block input-radius input-large input-tel-value" placeholder="请输入手机号码"/></p>
+        <br />
+      <% end %>
+      <p>
+        <% if @product.present? %>
+          <%= link_to "领取友钱卡", get_product_sharing_path,
+            class: 'btn btn-block btn-large get-p-card-btn', data: { pid: @product.id, uid: current_user.present? } %>
+        <% elsif @seller.present? %>
+          <%= link_to "领取友钱卡", get_seller_sharing_path,
+            class: 'btn btn-block btn-large get-p-card-btn', data: { sid: @seller.id, uid: current_user.present? } %>
+        <% end %>
+      </p>
+      <br />
+      <p class="white-color">友钱卡可以帮好友省钱，帮自己赚钱</p>
+    </div>
+
+    <div class="show-share-btn text-center">
+      <p class="white-color">友钱卡已放入 <span id="user-tel" class="like-color"><%= current_user && current_user.login %></span> !</p>
+      <br />
+      <h4 class="white-color">点击右上角分享给好友，坐等收益 <%= image_tag("mobile/friend/arrow-up.png",width:'20') %></h4>
+      <br />
+      <% if current_user.blank? %>
+        <p><a href="/sign_in" class="btn btn-block btn-large">完成注册 随时提现</a></p>
+        <br />
+        <p class="white-color"><span class="close">去逛逛</span></p>
+      <% else %>
+        <br />
+        <p class="btn btn-block btn-large"><span class="close">去逛逛</span></p>
+      <% end %>
+      <br />
+    </div>
+  </div><!-- page1 -->
+</div><!-- pop-friend -->
+<script>
+  $('.show-share-btn').hide();
+  $('.pop-friend').removeClass('hidden');
+  $('html,body').addClass('lock');
+  window.onload = function(){
+    $('.input-box').show().css('transform-origin','');
+    $('.pop-friend-close').show();
+    //动画结束
+    $('.pop-friend .get-p-card-btn').on('click',function(e){
+      e.preventDefault();
+      element = $(this);
+      var user_tel= $('.input-tel-value').val();
+      if (!element.data('uid')) {
+        var telReg = !!user_tel.match(/^(0|86|17951)?(13[0-9]|15[012356789]|17[678]|18[0-9]|14[57])[0-9]{8}$/);
+        if(!telReg){
+          alert("请输入正确的手机号码");
+          return false;
+        }
+        $('#user-tel').text(user_tel)
+      }
+      $.ajax({
+        url: element.attr("href"),
+        type: 'GET',
+        data: {
+          mobile: user_tel,
+          product_id: element.data("pid"),
+          seller_id: element.data("sid")
+        },
+      }).done(function(data) {
+        console.log("success");
+        $('.show-req-snode-modal').addClass('hidden');
+        $('.p-sharing-btn').removeClass('hidden');
+        $('meta[name=sharing_link]').attr('content', data.sharing_link + '?redirect=' + encodeURIComponent(window.location.pathname));
+        $('.input-box').hide();
+        $('.show-share-btn').show();
+        UBoss.luffy.resetInvokeSharing();
+      }).fail(function(xhr, textStatus) {
+        alert('领取失败，请尝试重新领取');
+      })
+    })
+    $('.pop-friend .close').on('click',function(){
+      $('.pop-friend').hide();
+      $('html,body').removeClass('lock');
+    })
+  }
+</script>

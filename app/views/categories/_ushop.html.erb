@@ -1,0 +1,83 @@
+<%= content_for :page_title do %>
+  <%= @seller.store_title || Rails.application.secrets.metas["title"] %>
+<% end %>
+
+<%= content_for :header_left do %>
+  <%= link_to store_path(@seller), class: 'back' do %>
+    <%= image_tag 'mobile/right.png' %>
+  <% end %>
+<% end %>
+
+<div class="all-category-list box">
+  <div class="box-w33">
+  	<div class="all-category-tab active"><%= @category.name %></div>
+  </div>
+  <%
+  	csize=0
+  	@categories.each do |category|
+  	csize=csize+1
+  %>
+  	<% if @categories.size >= 9  %>
+
+  		<% if csize >= 8 %>
+		    <div class="box-w33 hidden category-more-box">
+		    	<div class="all-category-tab">
+		    		<%= link_to category.name, store_category_path(store_id:params[:store_id], id: category.id) %>
+		    	</div><!-- all-category-tab -->
+		    </div><!-- box-w33 -->
+		  <% else %>
+		  	<div class="box-w33">
+		    	<div class="all-category-tab">
+		    		<%= link_to category.name, store_category_path(store_id:params[:store_id], id: category.id) %>
+		    	</div><!-- all-category-tab -->
+		    </div><!-- box-w33 -->
+		  <% end %>
+
+    	<% if csize == @categories.size %>
+    		<div class="box-w33 category-more-btn">
+		    	<div class="all-category-tab">
+		    		<span class="down-text">更多</span> <span class="up-text">收起</span> <%= image_tag 'mobile/gray-arrow-right.png' %>
+		    	</div><!-- all-category-tab -->
+		    </div><!-- box-w33 -->
+	    <% end %>
+
+    <% else %>
+    	<div class="box-w33">
+	    	<div class="all-category-tab">
+	    		<%= link_to category.name, store_category_path(store_id:params[:store_id], id: category.id) %>
+	    	</div><!-- all-category-tab -->
+	    </div><!-- box-w33 -->
+    <% end %>
+  <% end %>
+</div><!-- all-category-list -->
+
+
+<div class="bg-white m-bottom10">
+	<div class="box store-list"  id="category-list">
+	  <% if @products.present? %>
+	      <%= render partial: 'stores/product', collection: @products %>
+	  <% else %>
+	    <h2 class="page-title text-center">店家正在准备好货，敬请期待</h2>
+	  <% end %>
+	</div><!-- box -->
+</div><!-- bg-white -->
+
+<% if @products.size > 6 %>
+  <br />
+  <div class="load-more" data-container='.store-list' data-ele='.p-item' data-ref='<%= request.path %>'>加载更多</div>
+  <br />
+<% end %>
+
+<%= render partial: 'new_share' %>
+
+<% if qr_sharing? && (current_user.blank? || (current_user && !current_user.has_seller_privilege_card?(@seller)) ) %>
+  <%= render partial: 'privilege_card_pop' %>
+<% end %>
+
+<% if browser.wechat? %>
+  <%= content_for :extra_javascript do %>
+    <script type="text/javascript" charset="utf-8">
+      wx.ready(function(){ UBoss.luffy.invokeSharing(); });
+    </script>
+  <% end %>
+<% end %>

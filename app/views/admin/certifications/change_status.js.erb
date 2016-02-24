@@ -1,0 +1,4 @@
+$("#index_list").html('<%= escape_javascript render partial: 'table' %>');
+$("#index_list").prepend('<%= escape_javascript render 'layouts/flash_alert' %>')
+
+$(".actions-" + "<%= @certification.id %>").replaceWith("<%= j render(partial: 'admin/certifications/actions', locals: {obj: @certification}) %>")

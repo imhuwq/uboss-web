@@ -1,4 +1,30 @@
 namespace :migrate do
+
+  desc 'Migrate new roles'
+  task user_roles: :environment do
+    UserRole.create(name: 'offical_senior',    display_name: 'UBOSS高级管理员')
+    UserRole.create(name: 'offical_financial', display_name: 'UBOSS财务')
+    UserRole.create(name: 'offical_operating', display_name: 'UBOSS运营')
+  end
+
+  desc 'Migrate order_item privilege_info to preferentials_privileges'
+  task order_item_preferentials: :environment do
+    order_items = OrderItem.where('privilege_amount > 0 AND sharing_node_id IS NOT NULL AND created_at < ?',
+                                  PreferentialMeasure.first.try(:created_at) || Time.now)
+
+    OrderItem.transaction do
+      order_items.each do |order_item|
+        if order_item.privilege_amount > 0
+          order_item.preferentials_privileges.create!(
+            amount: order_item.privilege_amount,
+            preferential_item: order_item,
+            preferential_source: order_item.privilege_card
+          )
+        end
+      end
+    end
+  end
+
   desc 'Migrate none inventory product to get one'
   task :product_inventories do
     Product.where(share_rate_total: nil).update_all(share_rate_total: 0)
@@ -37,6 +63,13 @@ namespace :migrate do
     comment_express = %w(EMS 顺丰快递 申通快递 韵达快递 圆通快递 中通快递 天天快递 天天快递 德邦 百世汇通)
     comment_express.each do |express|
       Express.find_or_create_by(name: express)
+    end
+  end
+
+  desc "Init User rongclud token"
+  task init_rongcloud_token: :environment  do
+    User.where(rongcloud_token: nil).find_each do |user|
+      user.find_or_create_rongcloud_token
     end
   end
 end

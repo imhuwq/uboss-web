@@ -20,26 +20,43 @@ $ ->
   $(document).on 'ajax:error', "#products .change-status-btn, #products .switch-p-hot-btn", ->
     alert('操作失败')
 
-  $('#product_carriage_template_id').change (event) ->
+  $('#ordinary_product_carriage_template_id').change (event) ->
     id = this.selectedOptions[0].value
-    $.ajax '/admin/select_carriage_template',
-      type: 'GET'
-      data: { tpl_id: id}
+    if id != ''
+      $.ajax '/admin/select_carriage_template',
+        type: 'GET'
+        data: { tpl_id: id}
+        false
       false
-    false
+    else
+      $('.select_carriage_template').remove()
 
   $('.product_transportation_way').find('input').change (event)->
-    if $("label[for='product_transportation_way_1']").find('input')[0].checked
-      $('#product_traffic_expense').focus()
+    if $("label[for='ordinary_product_transportation_way_1']").find('input')[0].checked
+      $('#ordinary_product_traffic_expense').focus()
 
-    if !$("label[for='product_transportation_way_1']").find('input')[0].checked
-      $('#product_traffic_expense').val('0.0')
+    if !$("label[for='ordinary_product_transportation_way_1']").find('input')[0].checked
+      $('#ordinary_product_traffic_expense').val('0.0')
 
-    if $("label[for='product_transportation_way_2']").find('input')[0].checked
-      $('#product_carriage_template_id_chosen').addClass('chosen-container-active chosen-with-drop')
+    if $("label[for='ordinary_product_transportation_way_2']").find('input')[0].checked
+      $('#ordinary_product_carriage_template_id_chosen').addClass('chosen-container-active chosen-with-drop')
 
-    if !$("label[for='product_transportation_way_2']").find('input')[0].checked
+    if !$("label[for='ordinary_product_transportation_way_2']").find('input')[0].checked
       $('.select_carriage_template').remove()
-      $('#product_carriage_template_id_chosen').removeClass('chosen-container-active chosen-with-drop')
-      $('#product_carriage_template_id_chosen').find('.chosen-single').find('span').text('请选择运费模板...');
-      $('#product_carriage_template_id option:selected').attr('selected', false);
+      $('#ordinary_product_carriage_template_id_chosen').removeClass('chosen-container-active chosen-with-drop')
+      $('#ordinary_product_carriage_template_id_chosen').find('.chosen-single').find('span').text('请选择运费模板...')
+      $('#ordinary_product_carriage_template_id option:selected').attr('selected', false)
+
+  $("label[for='ordinary_product_full_cut']").click (event)->
+    if $(this).find('input')[0].checked
+      $('.full_cut_params').show()
+      $(this).addClass('checkbox_is_checked')
+      $(this).removeClass('checkbox_no_checked')
+    else
+      $('.full_cut_params').hide()
+      $(this).addClass('checkbox_no_checked')
+      $(this).removeClass('checkbox_is_checked')
+
+  $(document).on "focusout", '#service_product_present_price', (event) ->
+    $("a[data-level='1']").click()
+    $('input.sku-price').val($(this).val()).focusout()

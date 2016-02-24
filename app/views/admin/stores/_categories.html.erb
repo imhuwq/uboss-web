@@ -1,0 +1,52 @@
+
+
+<div id="category" class="beige-bg-color admin-box">
+  	<div class="box-w40">
+  		<br/>
+  		<div class="product-category-list">
+  			<% @categories.each do |category| %>
+				<% if (@select_categories.size%3 == 1) %>
+					<div class="box-w50">
+				<% else %>
+					<div class="box-w33">
+				<% end %>
+  				<div class="product-box">
+			      <div class="cover">
+			        <%= link_to '', '', style: "background-image:url(#{category.image_url(:thumb)})",class:'img' ,title:"#{category.name}", id:"product-category-list-#{category.id}" %>
+			        <%= image_tag("mobile/img.jpg") %>
+			      </div>
+			      <div class="title"><%= category.name %></div>
+			    </div><!-- product-box -->
+  			</div>
+  			<% end %>
+  		</div>
+  		<div class="gray-color text-center" style="float:left;width:100%;"><small>请上传规格为400*400px的图片</small></div>
+
+  	</div>
+
+  	<div class="box-w60">
+  		<br />
+
+  		<div class="setting-list">
+  			<% @categories.each do |category| %>
+  			<div class="setting-category-box">
+  				<span class="close" data-id="<%= category.id %>"><i class="fa fa-times"></i></span>
+				<p>分组：<span class="main-color"><%= category.name %></span></p>
+				<div class="text-center">
+					<div class="fileinput-button">
+						<%#= image_tag(category.image_url, class:'clean', size: '400x400') %>
+						<div class="imgsize img-200-200" style="background-image:url('<%= category.image_url(:thumb) %>')"></div>
+						<%= file_field_tag "image", class: "category_upyun_file_json" ,  data: {to: "/admin/categories/update_category_img?resource_id=#{category.id}"} %>
+            <%= upyun_meta_tags prefix: "asset_img/avatar" %>
+						<b class="loading"><i class="fa fa-spinner"></i></b>
+						<span class="tips-text">点击替换</span>
+					</div>
+				</div>
+  			</div><!-- setting-banner-box -->
+  			<% end %>
+  			<a class="btn white-btn btn-large btn-block show-add-category" onclick="$('#add-category').modal('show')">+ 添加列表</a>
+
+  		</div><!-- setting-list -->
+  		<br />
+  	</div>
+</div>

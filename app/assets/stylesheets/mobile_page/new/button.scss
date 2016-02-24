@@ -5,18 +5,22 @@
   background: $brand-primary;
   color: #fff;
   border-radius: 4px;
-  line-height: 15px;
+  line-height: 20px;
   outline: none;
   border: none;
 }
 .btn-large,input.btn:focus{padding:10px }
 
+.btn-small,.btn-small:focus{ padding:5px 10px;font-size:10px;line-height:12px; }
 .btn-mid,.btn-mid:focus{ padding:5px 10px}
 .btn-longer,.btn-longer:focus{ padding:10px 40px}
 .btn-orange{
   background: #f9ba10;
   color: #fff;
-
+}
+.btn-white{
+  background: #fff;
+  color: $brand-primary;
 }
 .btn-orange-border{
   background: none;
@@ -27,6 +31,11 @@
   background: #fff;
   color: #444;
   border:1px solid #ddd;
+}
+.btn-main-border{
+  background: #fff;
+  color: $brand-primary;
+  border:1px solid $brand-primary;
 }
 .btn-gray{
   background: #999;
@@ -41,13 +50,13 @@
 
 .btn-like{
   background: image-url('mobile/like.png') no-repeat;
-  background-position: 0 -20.5px;
-  background-size: 37%;
+  background-position: 0 -16px;
+  background-size: 20px auto;
   padding-left: 25px;
   color: #aaa;
 }
 .btn-like.active{
-  background-position: 0 3px;
+  background-position: 0 7px;
 }
 .btn-delete{
   background: image-url('mobile/delete.png') no-repeat center right;
@@ -56,6 +65,11 @@
   width: 25px;
   float: right;
   padding: 0;
+}
+.friend-btn{
+   background: none;
+   color: #f9ba10;
+   img{vertical-align: bottom;} 
 }
 .share-btn{
   color:#f9ba10;
@@ -70,6 +84,13 @@
   background:rgba(255,255,255,0.5);
   border: 1px solid #666;
   color:#333
+}
+.pop-qr-btn{
+    background: image-url('mobile/qr.png') no-repeat center;
+    background-size: auto 30px ;
+    height: 32px;
+    width: 32px;
+    margin-left: 10px;
 }
 .btn:hover{
   animation: btn-hover .5s linear ;

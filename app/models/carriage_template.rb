@@ -1,5 +1,9 @@
 class CarriageTemplate < ActiveRecord::Base
+
+  include Orderable
+
   MIN_SECTION_SIZE = 1
+
   has_many :different_areas
   has_many :products
   belongs_to :user
@@ -33,8 +37,9 @@ class CarriageTemplate < ActiveRecord::Base
     if template.present?
       balance = count - template.first_item
       extend_count = balance > 0 ? balance : 0
+      extend_price = extend_count.to_f / template.extend_item.to_f
 
-      template.carriage + extend_count * template.extend_carriage
+      template.carriage + template.extend_carriage * ((extend_price < 1 && extend_price> 0) ? 1 : extend_price.round)
     else
       0
     end

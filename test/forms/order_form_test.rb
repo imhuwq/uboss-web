@@ -5,7 +5,7 @@ class OrderFormTest < ActiveSupport::TestCase
   #:province, :city, :street, :deliver_mobile, :sharing_code
 
   before do
-    @product = create(:product, count: 100, status: 'published')
+    @product = create(:ordinary_product, count: 100, status: 'published')
     @product_inventory = create(:product_inventory, product: @product)
     @seller = @product.user
     @buyer = create(:user_with_address)

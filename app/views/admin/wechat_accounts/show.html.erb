@@ -1,0 +1,30 @@
+<div class="container admin-container">
+	<ul class="breadcrumb">
+		<li><a href="/admin">主页</a></li>
+		<li class="divider"><i class="fa fa-angle-right"></i></li>
+		<li><a href="/admin/wechat_accounts">后台账户</a></li>
+		<li class="divider"><i class="fa fa-caret-right"></i></li>
+		<li class="active">账户详情</li>
+	</ul>
+</div><!-- container -->
+<br />
+<div class="container">
+	<h3 class="page-title">账户详情</h3>
+	<div class="admin-box black-bg-color">
+		<p><%= WechatAccount.human_attribute_name(:name) %>：<%= @wechat_account.name %></p>
+		<p><%= WechatAccount.human_attribute_name(:app_id) %>：<%= @wechat_account.app_id %></p>
+    <p><%= WechatAccount.human_attribute_name(:encoding_app_secret) %>：<%= @wechat_account.encoding_app_secret %></p>
+		<p><%= WechatAccount.human_attribute_name(:wechat_identify) %>：<%= @wechat_account.wechat_identify %></p>
+		<p><%= WechatAccount.human_attribute_name(:weixin_token) %>：<%= @wechat_account.weixin_token %></p>
+		<p><%= WechatAccount.human_attribute_name(:encoding_aes_key) %>：<%= @wechat_account.encoding_aes_key %></p>
+		<p><%= WechatAccount.human_attribute_name(:weixin_secret_key) %>：<%= @wechat_account.weixin_secret_key %></p>
+    <p>服务器地址：<%= "#{Rails.application.secrets['host_url']}/wx_api/weixin/#{@wechat_account.weixin_secret_key}" %></p>
+	</div>
+	<br />
+  <% if can?(:manage, WechatAccount) %>
+    <p class="text-center">
+    <%= link_to '编辑', edit_admin_wechat_account_path(@wechat_account), class: 'btn btn-large' %>
+    <%= link_to "设置菜单", set_menu_admin_wechat_account_path(@wechat_account), method: :post, class: 'btn btn-large' %>
+    </p>
+  <% end %>
+</div>

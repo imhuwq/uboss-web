@@ -1,57 +1,63 @@
-
 <%= content_for :page_title do %>
   个人信息
 <% end %>
+<%= content_for :header_left do %>
+  <a class="back" onclick="history.go(-1)"><%= image_tag 'mobile/right.png' %></a>
+<% end %>
 <br />
+
 <div class="bg-white" >
-	<div class="setting-list">
-	  <%= link_to edit_account_path do %>
-				昵称
-				<span class="pull-right right-icon main-color"><%= truncate current_user.identify,:length=>28,:omission=>'...' %></span>
-	  <% end %>
-	  
-	  <% if !current_user.is_seller? && !current_user.authenticated? %>
-	      <%= link_to url_for(action: :seller_agreement) do %>
-					成为商家 
-					<span class="pull-right right-icon main-color">绑定</span>
-	      <% end %>
-	  <% elsif !current_user.authenticated? %>
-	      <%= link_to seller_agreement_account_path do %>	        
-					绑定创客
-					<span class="pull-right right-icon main-color">绑定</span>
-	      <% end %>
-	  <% end %>
-	  
-	  <a href="#">
-				绑定手机
-				<span class="pull-right  main-color"><%= current_user.login %></span>
-	  </a>
-	  
-	</div><!-- setting-list -->	 
+  <div class="setting-list">
+    <%= link_to edit_account_path do %>
+    昵称
+    <span class="pull-right right-icon main-color"><%= truncate current_user.identify,:length=>28,:omission=>'...' %></span>
+  <% end %>
+
+  <% if !current_user.is_seller? && !current_user.authenticated? %>
+    <%= link_to url_for(action: :seller_agreement) do %>
+      成为商家
+      <span class="pull-right right-icon main-color">绑定</span>
+    <% end %>
+  <% elsif !current_user.authenticated? %>
+    <%= link_to seller_agreement_account_path do %>
+      绑定创客
+      <span class="pull-right right-icon main-color">绑定</span>
+    <% end %>
+  <% end %>
+
+  <a href="#">
+    绑定手机
+    <span class="pull-right  main-color"><%= current_user.login || '未绑定' %></span>
+  </a>
+
+  <a href="#">
+    绑定邮箱
+    <span class="pull-right  main-color"><%= current_user.email || '未绑定' %></span>
+  </a>
+
+  </div><!-- setting-list -->
 </div> <!-- bg-white -->
 <br />
 <div class="bg-white" >
-	<div class="setting-list">
-	  <% if current_user.login.present? %>
-	    <%= link_to edit_password_account_path do %>
-					设置密码
-					<span class="pull-right right-icon">&nbsp;</span>
-	    <% end %>
-	  <% end %>
-	  
-	  <%= link_to account_user_addresses_path do %>
-				收货地址   
-				<span class="pull-right right-icon">&nbsp;</span>
-	  <% end %> 
-	  
-	  <% if current_user.is_agent? %>
-	      <%= link_to invite_seller_account_path do %>        
-					邀请商家
-					<span class="pull-right right-icon">&nbsp;</span>
-	      <% end %>
-	  <% end %>
-	  <% if not browser.wechat? %>      
-	      <%= link_to "退出账户", destroy_user_session_path, method: :delete %>
-	  <% end %>
-	</div><!-- setting-list -->	 
+  <div class="setting-list">
+    <%= link_to edit_password_account_path do %>
+      设置密码
+      <span class="pull-right right-icon">&nbsp;</span>
+    <% end %>
+
+  <%= link_to account_user_addresses_path do %>
+    收货地址
+    <span class="pull-right right-icon">&nbsp;</span>
+  <% end %>
+
+  <% if current_user.is_agent? %>
+    <%= link_to invite_seller_account_path do %>
+      邀请商家
+      <span class="pull-right right-icon">&nbsp;</span>
+    <% end %>
+  <% end %>
+  <% if !browser.wechat? && !session[:app_user] %>
+    <%= link_to "退出账户", destroy_user_session_path, method: :delete %>
+  <% end %>
+  </div><!-- setting-list -->
 </div><!-- bg-white -->

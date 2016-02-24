@@ -2,7 +2,7 @@
 	<ul class="breadcrumb">
 		<li><a href="/admin">主页</a></li>
 		<li class="divider"><i class="fa fa-angle-right"></i></li>
-		<li><%= link_to '订单', [:admin, :orders] %></li>
+		<li><%= link_to '订单', admin_orders_path %></li>
 		<li class="divider"><i class="fa fa-caret-right"></i></li>
 		<li class="active">订单详情</li>
 	</ul>
@@ -12,8 +12,12 @@
 	<div class="admin-border no-border">
 		<div class="box-w100">
       <span class="order-info-state label label-default"><%= @order.state_i18n %></span>
-      <% if @order.may_close? %>
+      <% if @order.may_close? && can?(:close, @order) %>
         <a class="btn btn-sm" href="#" data-toggle="modal" data-target="#close_admin_order_modal">关闭交易</a>
+      <% end %>
+      <% if @order.unpay?  %>
+        <a class="btn btn-sm" href="#" data-toggle="modal" data-target="#change_admin_order_ship_price_modal">修改运费</a>
+        <%= render 'change_ship_price_modal' %>
       <% end %>
       <div class='buyer-info'>
         <span>买家 : <%= @order.buyer_identify %><span>
@@ -21,8 +25,10 @@
       </div>
 		</div>
   </div>
+	<div id="order_info_partial">
+		<%= render partial: 'order_info', locals: { obj: @type, order: @order } %>
+	</div>
 
-  <%= render partial: 'order_info', locals: { obj: @type, order: @order } %>
 
 </div>
 

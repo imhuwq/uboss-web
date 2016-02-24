@@ -7,20 +7,6 @@
 </div>
 <br />
 <div class="container">
-	<div class="header-tab">
-		<div class="tab-title active">编辑个人认证</div>
-		<%= link_to "编辑企业认证", url_for(controller: :enterprise_authentications, action: :edit, user_id: current_user), class:"tab-title" %>
-	</div>
-	<br />
-	<h3 class="page-title">编辑个人认证</h3>
-	<%= horizon_form_for @personal_authentication,url: {:action=>:update}, method: 'PATCH' do |f| %>
-	  <%= render 'fields', f: f %>
-    <br />
-	  <p class="text-center">
-	    <%= link_to('返回', url_for(action: :show), :class=>"btn btn-large",:role=>"button") %>
-	    <%= f.submit '提交', class: 'btn btn-large red-btn' %>
-	  </p>
-	<% end %>
+  <%= render partial: "admin/certifications/edit", object: @certification, locals: { title: "编辑个人认证" } %>
 </div>
-
 

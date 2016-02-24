@@ -2,13 +2,14 @@
 source 'https://ruby.taobao.org'
 
 ruby '2.2.2'
-gem 'rails', '4.2.2'
+gem 'rails', '4.2.5.1'
 
 #DB
 gem "pg"
 
 # Reusable logic
 gem 'devise'
+gem "devise-async"
 gem 'china_sms'
 gem "cancancan", "~> 1.10"
 gem "kaminari"
@@ -20,9 +21,12 @@ gem 'dalli' # memcache client
 gem "browser", github: 'xEasy/browser'
 gem 'wx_pay', github: 'xEasy/wx_pay'
 gem 'weixin_authorize', github: "lanrion/weixin_authorize"
+gem 'weixin_rails_middleware'
 gem 'ransack'
 gem 'rails-api'
 gem 'sanitize'
+gem 'rongcloud', github: 'xEasy/rongcloud'
+gem "paper_trail", "~> 4.0.0" # modal versioning
 
 # copying of ActiveRecord objects and their associated children
 gem 'amoeba'
@@ -41,6 +45,10 @@ gem "jquery-fileupload-rails"
 gem 'font-awesome-sass', '~> 4.4.0'
 gem 'eco'
 gem "select2-rails", '~> 3.5.9.1'
+gem "simple-navigation"
+
+# enum i18n
+gem 'enumerize'
 
 # See https://github.com/rails/execjs#readme for more supported runtimes
 gem 'therubyracer', '~> 0.12.2', platforms: :ruby
@@ -100,6 +108,7 @@ group :development do
   gem "better_errors"
   gem "quiet_assets"
   gem 'rack-mini-profiler', require: false
+  gem 'awesome_print'
 end
 
 group :staging, :development do

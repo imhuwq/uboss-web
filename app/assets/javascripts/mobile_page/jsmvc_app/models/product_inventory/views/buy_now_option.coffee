@@ -31,13 +31,17 @@ class ProductInventory.View.BuyNowOption extends Backbone.View
       type: 'GET'
       data: {product_id: that.product_id}
       success: (res) ->
-        # 获取属性列表 ->>
-        that.newProperties(res['skus'])
-        # <<= 获取属性列表
-        # 获取sku信息 ->>
-        that.newSKUs(res['sku_details'])
-        # <<= 获取sku信息
-        that.render('','',that.submit_way,that.product_id)
+        if res['count'] > 0
+          # 获取属性列表 ->>
+          that.newProperties(res['skus'])
+          # <<= 获取属性列表
+          # 获取sku信息 ->>
+          that.newSKUs(res['sku_details'])
+          # <<= 获取sku信息
+          that.render('','',that.submit_way,that.product_id)
+        else
+          that.$el.html JST["#{ProductInventory.TemplatesPath}/no_inventory"]
+          that
       error: (data, status, e) ->
         alert("操作错误")
 
@@ -245,4 +249,5 @@ class ProductInventory.View.BuyNowOption extends Backbone.View
         @total_price = floatMul(@single_price, @count)
         flashPopContent('<div class="pop-text">此类型商品最多购买'+"#{@count}"+'件</div>')
       $('.count-box .count_num').val(@count)
+      $('#count_amount').val(@count)
       product_inventory_property_price_range.render(@total_price)

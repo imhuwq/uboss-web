@@ -4,25 +4,29 @@ module ProductsHelper
     'active' if current_user.favour_products.exists?(product_id: product.id)
   end
 
-  def store_sharing_link(seller, sharing_node = nil)
+  def store_sharing_link(seller, sharing_node = nil, redirect = nil)
     if sharing_node.blank?
-      store_url(seller)
+      store_url(seller, redirect: redirect)
     else
-      sharing_url(sharing_node)
+      sharing_url(sharing_node, redirect: redirect)
     end
   end
 
   def product_sharing_link(product, sharing_node = nil)
     if sharing_node.blank?
-      product_url(product)
+      url_of(product)
     else
       sharing_url(sharing_node)
     end
   end
 
+  def url_of(product)
+    product.type == "OrdinaryProduct" ? product_url(product) : service_product_url(product)
+  end
+
   def product_traffic(product)
-    if @product.transportation_way != 0
-      "￥#{@product.traffic_expense}"
+    if product.transportation_way != 0
+      "￥#{product.traffic_expense}"
     else
       '包邮'
     end
@@ -52,8 +56,8 @@ module ProductsHelper
     if product.seling_inventories.size == 1
       [__send__(privilege_method, product.seling_inventories.first, privilege_card)]
     else
-      max_inventory = product.seling_inventories.max { |inventory| inventory.price }
-      min_inventory = product.seling_inventories.min { |inventory| inventory.price }
+      max_inventory = product.max_price_inventory
+      min_inventory = product.min_price_inventory
       if max_inventory.price == min_inventory.price
         [ __send__(privilege_method, max_inventory, privilege_card) ]
       else
@@ -71,24 +75,20 @@ module ProductsHelper
 
   def sku_privilege_amount(product_inventory, privilege_card)
     if privilege_card.present?
-      privilege_card.privilege_amount(product_inventory)
+      privilege_card.amount(product_inventory)
     else
-      product_inventory.privilege_amount
+      0
+      #product_inventory.privilege_amount
     end
   end
 
   def product_price(product)
-    product_inventories = product.seling_inventories
-    if product_inventories.size == 1
-      [product_inventories.first.price]
+    max_price = product.max_price
+    min_price = product.min_price
+    if max_price == min_price
+      [max_price]
     else
-      max_inventory = product_inventories.max { |inventory| inventory.price }
-      min_inventory = product_inventories.min { |inventory| inventory.price }
-      if max_inventory.price == min_inventory.price
-        [max_inventory.price]
-      else
-        [min_inventory.price, max_inventory.price]
-      end
+      [min_price, max_price]
     end
   end
 

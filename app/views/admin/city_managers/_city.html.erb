@@ -1,0 +1,38 @@
+<tbody id="city-<%= city_manager.id %>">
+  <tr class="item <%= 'red-bg' if city_manager.user_id.present? %>">
+    <td><%= city_manager.city_name %></td>
+    <td class="text-left">
+      <% if city_manager.user %>
+        <%= image_tag(city_manager.user_avatar, size: "60x60", alt: "-") %>
+        <%= city_manager.user_identify %>
+      <% end %>
+    </td>
+    <td><%= city_manager.settled_at %></td>
+    <td><%= city_manager.user_mobile %></td>
+    <td><%= city_manager.enterprise_authentications.pass.count %></td>
+    <td>
+      <%= link_to_if city_manager.user.present?, '解除账号', {action: :unbind, id: city_manager}, remote: true, data: {method: :put,  behavior: 'remove', confirm: "确认解绑该账号?" } do %>
+      <%= link_to "添加账号", '#', data: {behavior: 'add'} %>
+      <% end %>
+    </td>
+  </tr>
+</tbody>
+<tbody class="hidden">
+  <%= form_tag bind_admin_city_manager_path(city_manager), remote: true, method: :put do %>
+  <tr>
+    <td style="background: white;text-align:right">添加账号</td>
+    <td style="background: white;text-align:left" colspan="5"><input class="form-control" name='mobile' required></td>
+  </tr>
+  <tr>
+    <td style="background: white;text-align:right">设置收益率</td>
+    <td style="background: white;text-align:left" colspan="5"><input name='rate' value="0.5" type="number" max="0.90" min="0.01" step="0.01"></td>
+  </tr>
+  <tr>
+    <td style="background: white"></td>
+    <td style="background: white;text-align:left" colspan="5">
+      <%= submit_tag '提交', class: 'btn btn-small' %>&nbsp;
+      <%= button_tag '取消', type: 'button', class: 'btn btn-small cancle' %>
+    </td>
+  </tr>
+  <% end %>
+</tbody>

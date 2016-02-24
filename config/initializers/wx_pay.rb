@@ -11,7 +11,7 @@ WxPay.key = Rails.application.secrets.weixin["key_secret"]
 WxPay.mch_id = Rails.application.secrets.weixin["app_mchid"]
 
 if File.exists?(File.join(Rails.root, 'config/apiclient_cert.p12'))
-  WxPay.apiclient_cert_path = File.join(Rails.root, 'config/apiclient_cert.p12')
+  WxPay.apiclient_cert_path = File.read("#{Rails.root}/config/apiclient_cert.p12")
 else
   p "WARN! There is no apiclient_cert.p12 file for wechat, some api will fail!"
 end

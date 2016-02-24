@@ -2,6 +2,10 @@
   提交订单
 <% end %>
 
+<%= content_for :header_left do %>
+  <a class="back" onclick="history.go(-1)"><%= image_tag 'mobile/right.png' %></a>
+<% end %>
+
 <%= simple_form_for @order_form, url: orders_path, method: 'POST', wrapper: :default do |f| %>
 	<br />
   <div id="address">
@@ -34,7 +38,12 @@
         <div class="seller-box"><div class="text-cut">商家：<%= seller.store_identify %></div></div>
 
         <% cart_items.each do |cart_item| %>
-          <div class="order-box <%= valid_order_box_class(@invalid_items.include?(cart_item)) %>" data-item-id="<%= cart_item.id %>" data-privilege-amount="<%= cart_item.privilege_amount %>">
+          <div class="order-box <%= valid_order_box_class(@invalid_items.include?(cart_item)) %>"
+               data-item-id="<%= cart_item.id %>"
+               data-privilege-amount="<%= cart_item.privilege_amount %>"
+               >
+            <meta itemprop="seller_bonus" content="<%= cart_item.preferentials_seller_bonuses.to_a.sum(&:total_amount) %>" />
+            <meta itemprop="privilege_bonus" content="<%= cart_item.preferentials_privileges.to_a.sum(&:amount) %>" />
             <div class="cover"><%= image_tag(url_for(cart_item.image_url),  alt: "-") %></div>
             <div class="content">
               <div class="price">
@@ -62,6 +71,12 @@
             </div>
           </div><!-- friend-info -->
         <% end %>
+        <div class="friend-info">
+          <div class="content">
+            <span class="pull-right red-color order-seller-bonus">0.0</span>
+            红包优惠
+          </div>
+        </div><!-- friend-info -->
 
         <div class="freight-box">
           运费
@@ -161,6 +176,7 @@
         <td><%= f.input_field :deliver_mobile, placeholder: '手机或固话', type: :tel, class: 'input-block' %></td>
       </tr>
       <tr>
+        <td>所在地区</td>
         <%= render 'user_addresses/user_address', f: f  %>
       </tr>
       <tr>

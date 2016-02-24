@@ -1,7 +1,44 @@
+.account-icon{
+    background: image-url('mobile/account-icon.png') no-repeat;
+    background-size:30px auto ;
+    margin-top: 10px;
+    width: 30px;
+    height: 26px;
+    display: inline-block;
+    position: relative;
+    text-align: center;
+    &.icon1{
+        background-position:0 0 ;
+    }
+    &.icon2{
+        background-position:0 -47px ;
+    }
+    &.icon3{
+        background-position:0 -94px ;
+    }
+    &.icon4{
+        background-position:0 -141px ;
+    }
+    &.icon5{
+        background-position:0 0 ;
+    }
+    .num{
+        min-width: 16px;
+        line-height: 16px;
+        font-size: 10px;
+        color: #fff;
+        background: $brand-primary;
+        border-radius: 20px;
+        display: block;
+        position: absolute;
+        top: -5px;
+        right: -5px;
+    }
+}
 .invite-title{
     font-size: 18px;
     padding:20px 4px;
-    border-bottom: 1px solid #eee; 
+    border-bottom: 1px solid #eee;
 }
 #invite_seller_histroy{font-size: 14px;color: #777;padding: 0 10px;}
 #invite_seller_histroy .edit-icon a{display: inline-block;width:19px;padding:9px;}
@@ -9,6 +46,22 @@
 #invite_seller_histroy .note-box{
     td{ border: none; padding-bottom: 0;}
     .edit-icon{ border-bottom: 1px solid #eee;}
+}
+.hongbao{
+    background: image-url('mobile/account/hongbao-icon.png') #fff no-repeat;
+    padding: 15px 10px 15px 30px;
+    background-position:10px center;
+    background-size:auto 18px ;
+    position: relative;
+    .newyear{
+        background: image-url('mobile/account/newyear.png') rgba(0,0,0,.7) center center no-repeat;
+        background-size: auto 30px;
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 100%;
+        width: 100%;
+    }
 }
 .avatar{
     display: table;
@@ -26,11 +79,11 @@
         height: 80px;
         border-radius:100px ;
         overflow: hidden;
-        
+
     }
     .name{
         text-align: left;
-        font-size: 15px;
+        font-size: 16px;
     }
     .setting-icon{
         width:30px;
@@ -39,53 +92,61 @@
             display: block;
             width: 20px;
         }
-        
+
     }
 }
 .privilege-rate{
-    padding:0 10px;
-    margin-bottom: 8px;
     background: #fff;
     a{
         display: block;
-        padding:10px 0;
-        background: image-url('mobile/gray-arrow-right.png') no-repeat right center;
-        background-size:10px;
-        font-size: 15px;
-        color: #333;
+        background: image-url('mobile/gray-arrow-right.png') no-repeat right center #f6f6f6;
+        background-position-x: 97%;
+        background-size:8px auto;
+        padding-right: 30px;
+        color: #555;
         line-height: 20px;
+        &.bg-white{
+            background-color: #fff;
+        }
     }
     
+
 }
 .privilege-form{
     .form-input{text-align: right;}
     input{ border: none; text-align: right;color:#f9ba10;}
-    
+
 }
 .share-card {
     background: #fff;
-    overflow: hidden;
-    margin-bottom: 8px;    
-    line-height: 20px;
+    margin-bottom:10px;
+}
+.share-store-info{  
+    display: block;
     .cover{
-        float: right;
-        margin-left: 10px;
-        img{
-            width: 100px;
-            height: 100px;
-        }
+        width: 40px;
+        height: 40px;        
+        border-radius: 4px;
+        margin: 0 auto 6px;
+        background-size:cover ;
+        background-position: center;
+        img{display: none;}
+    }      
+    .title{
+        color: #aaa;
+        width: 100px;
+        margin: 0 auto;
     }
-    .info{
+        
+}
+.share-store-list{
+    .product-box{
+        border: 1px solid #eee;
+        border-radius: 4px;
         overflow: hidden;
-        .title{
-            font-size: 15px;
-            color: #333;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-            overflow: hidden;
-        }
-        p{
-            margin-bottom: 10px;
-        }
+        .cover{margin: 0;}
     }
+}
+.share-bar .content{
+    overflow: hidden;
 }

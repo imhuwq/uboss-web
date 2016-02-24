@@ -1,0 +1,10 @@
+<% if defined?(obj) && obj.present? && obj.errors.any? %>
+  <div class='alert-error'>
+    <span class="close">
+      <%= image_tag('mobile/close-icon.png')%>
+     </span>
+    <% obj.errors.full_messages.each do |message| %>
+      <p><%= message %></p>
+    <% end %>
+  </div>
+<% end %>

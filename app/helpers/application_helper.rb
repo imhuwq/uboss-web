@@ -1,7 +1,16 @@
 module ApplicationHelper
 
+  def uboss_mall?(seller)
+    %w(19800000888 19800051140).include? seller.login.to_s
+  end
+
   def product_show?
-    controller_name == 'products' && action_name == 'show'
+    ((controller_name == 'products' || controller_name == 'service_products') && action_name == 'show') ||
+      (controller_name == 'stores' && params[:type] == "service")
+  end
+
+  def countdown_time(time)
+    time.strftime('%Y/%m/%d %H:%M:%S')
   end
 
   def qrcode_image_tag(text, opts = {})
@@ -92,12 +101,38 @@ module ApplicationHelper
     end.join.html_safe
   end
 
-  def store_sharing_meta_tags(seller, sharing_link_node = nil)
+  def service_store_sharing_meta_tags(service_store, sharing_link_node = nil, redirect = nil)
+    redirect ||= service_store_path(service_store)
     meta_tags = {
-      sharing_title:  "【#{seller.store_identify}】好货不断，通过分享购买更有优惠惊喜！",
+      sharing_title:  "【#{service_store.store_name || 'UBOSS商家'}】好东西不断，通过分享购买更有优惠惊喜！",
+      sharing_desc:   "在我这儿，谁还会用市场价购买啊？",
+      sharing_imgurl: service_store.store_cover_url(:thumb),
+      sharing_link:  store_sharing_link(service_store.user, sharing_link_node, redirect),
+    }
+    meta_tags.collect do |key, value|
+      content_tag :meta, '', name: key, content: value
+    end.join.html_safe
+  end
+
+  def store_sharing_meta_tags(seller, sharing_link_node = nil, redirect = nil)
+    store_name = redirect.try(:match, /\/service_stores\//) ? seller.service_store.store_name : seller.store_identify
+    meta_tags = {
+      sharing_title:  "【#{store_name}】好货不断，通过分享购买更有优惠惊喜！",
       sharing_desc:   "在我这儿，谁还会用市场价购买啊？",
       sharing_imgurl: seller.avatar_url(:thumb),
-      sharing_link:  store_sharing_link(seller, sharing_link_node)
+      sharing_link:  store_sharing_link(seller, sharing_link_node, redirect),
+    }
+    meta_tags.collect do |key, value|
+      content_tag :meta, '', name: key, content: value
+    end.join.html_safe
+  end
+
+  def luffy_meta_tags(opts={})
+    meta_tags = {
+      sharing_title:  opts[:title] || 'UBOSS商城 | 基于人，超乎想象',
+      sharing_desc:   opts[:desc],
+      sharing_imgurl: opts[:imgurl] || image_url('favicon-lg.png'),
+      sharing_link:  opts[:link] || root_url
     }
     meta_tags.collect do |key, value|
       content_tag :meta, '', name: key, content: value
@@ -121,6 +156,34 @@ module ApplicationHelper
       content_tag(:meta, '', name: :Keywords,    content: Rails.application.secrets.metas['keywords']),
       content_tag(:meta, '', name: :description, content: Rails.application.secrets.metas["description"])
     ].join.html_safe
+  end
+
+  def zero_to_nil(num)
+    num == 0 ? nil : num
+  end
+
+  def recommend_store_banner_data(seller)
+    return @recommend_store_banner_data if @recommend_store_banner_data.present?
+
+    @recommend_store_banner_data = []
+    advertisements = Advertisement.joins('left join products on (products.id = advertisements.product_id)').
+      where('(product_id is not null AND products.status = 1) OR product_id is null').
+      where(user_id: seller.id, platform_advertisement: false).
+      order('order_number')
+    advertisements.each do |advertisement|
+      if advertisement.product_id
+        url = advertisement.product.short_description
+      elsif advertisement.category_id
+        url = store_category_path(store_id: advertisement.user_id, id:advertisement.category_id)
+      else
+        url = '###'
+      end
+      @recommend_store_banner_data << [
+        advertisement.asset_img ,
+        url
+      ]
+    end
+    @recommend_store_banner_data
   end
 
 end

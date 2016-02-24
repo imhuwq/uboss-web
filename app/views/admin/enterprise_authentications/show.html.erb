@@ -1,22 +1,18 @@
-<% if !is_super_admin? %>
 <div class="container  admin-container">
 	<ul class="breadcrumb">
 		<li><a href="/admin">主页</a></li>
+		<li class="divider"><i class="fa fa-angle-right"></i></li>
+		<li><a href="/admin/certifications/enterprises">企业认证</a></li>
 		<li class="divider"><i class="fa fa-caret-right"></i></li>
 		<li>企业信息认证</li>
 	</ul>
 </div>
 <br />
-<div class="container">
-	<div class="header-tab">
-		<%= link_to "个人认证", url_for(controller: :personal_authentications, action: :show, user_id: current_user), class:"tab-title" %>
-		<div class="tab-title active">企业认证</div>
-	</div>
-</div>
-<br />
+<% if cannot?(:manage, @certification) %>
+  <%= render "admin/certifications/tabs" %>
+  <br />
 <% end %>
 <div class="container">
-		<h3 class="page-title">企业信息认证</h3>
 		<div class="admin-box black-bg-color">
       <div class="form-group clear">
 				<label class="string required control-label" for="product_name">
@@ -24,7 +20,7 @@
 					状态
 				</label>
 				<div class="control-input"><span>
-          <%= @enterprise_authentication.status_i18n %></span>
+          <%= @certification.status_i18n %></span>
 				</div>
 			</div>
 			<div class="form-group clear">
@@ -33,7 +29,7 @@
 					公司名
 				</label>
 				<div class="control-input"><span>
-					<%= @enterprise_authentication.enterprise_name %></span>
+					<%= @certification.enterprise_name %></span>
 				</div>
 			</div>
       <div class="form-group clear">
@@ -42,8 +38,8 @@
 				  营业执照
 				</label>
 				<div class="control-input"><span>
-          <%= link_to(@enterprise_authentication.business_license_img.to_s, target:'_blank') do %>
-					<%= image_tag(@enterprise_authentication.business_license_img.url(:w320), width: "60%", alt: "-", title:"点击查看原图") %>
+          <%= link_to(@certification.business_license_img.to_s, target:'_blank') do %>
+					<%= image_tag(@certification.business_license_img.url(:w320), width: "60%", alt: "-", title:"点击查看原图") %>
           <% end %></span>
 				</div>
 			</div>
@@ -53,8 +49,8 @@
 				  法人身份证正面
 				</label>
 				<div class="control-input"><span>
-          <%= link_to(@enterprise_authentication.legal_person_identity_card_front_img.to_s, target:'_blank') do %>
-					<%= image_tag(@enterprise_authentication.legal_person_identity_card_front_img.url(:w320), width: "60%", alt: "-", title:"点击查看原图") %>
+          <%= link_to(@certification.legal_person_identity_card_front_img.to_s, target:'_blank') do %>
+					<%= image_tag(@certification.legal_person_identity_card_front_img.url(:w320), width: "60%", alt: "-", title:"点击查看原图") %>
           <% end %></span>
 				</div>
 			</div>
@@ -64,8 +60,8 @@
 				  法人身份证反面
 				</label>
 				<div class="control-input"><span>
-          <%= link_to(@enterprise_authentication.legal_person_identity_card_end_img.to_s, target:'_blank') do %>
-					<%= image_tag(@enterprise_authentication.legal_person_identity_card_end_img.url(:w320), width: "60%", alt: "-", title:"点击查看原图") %>
+          <%= link_to(@certification.legal_person_identity_card_end_img.to_s, target:'_blank') do %>
+					<%= image_tag(@certification.legal_person_identity_card_end_img.url(:w320), width: "60%", alt: "-", title:"点击查看原图") %>
           <% end %></span>
 				</div>
 			</div>
@@ -75,7 +71,7 @@
           地址
         </label>
         <div class="control-input"><span>
-          <%= @enterprise_authentication.address %></span>
+          <%= @certification.address %></span>
         </div>
       </div>
       <div class="form-group clear">
@@ -83,33 +79,17 @@
           <abbr title="必填">*</abbr>
           手机号码
         </label>
-        <div class="control-input"><span><%= @enterprise_authentication.mobile %></span></div>
+        <div class="control-input"><span><%= @certification.mobile %></span></div>
       </div>
-  <% if is_super_admin? %>
-  	<p class="text-center">
-    <% case @enterprise_authentication.status %>
-    <% when 'posted' %>
-      <%= link_to '锁定资料', url_for(action: :change_status, id:  @enterprise_authentication.id, status: 'review'), :class=>"btn btn-large",:role=>"button" %>
-      <%= link_to '通过', url_for(action: :change_status, id:  @enterprise_authentication.id, status: 'pass'), :class=>"btn btn-large",:role=>"button" %>
-      <%= link_to '不通过', url_for(action: :change_status, id:  @enterprise_authentication.id, status: 'no_pass'), :class=>"btn btn-large",:role=>"button" %>
-    <% when 'review' %>
-      <%= link_to '通过', url_for(action: :change_status, id:  @enterprise_authentication.id, status: 'pass'), :class=>"btn btn-large",:role=>"button" %>
-      <%= link_to '不通过', url_for(action: :change_status, id:  @enterprise_authentication.id, status: 'no_pass'), :class=>"btn btn-large",:role=>"button" %>
-    <% when 'pass' %>
-      <%= link_to '不通过', url_for(action: :change_status, id:  @enterprise_authentication.id, status: 'no_pass'), :class=>"btn btn-large",:role=>"button" %>
-    <% when 'no_pass' %>
-      <%= link_to '通过', url_for(action: :change_status, id:  @enterprise_authentication.id, status: 'pass'), :class=>"btn btn-large",:role=>"button" %>
-    <% end %>
-   	</p>
-		</div>
-	</div>
-	<br />
-  <p class='text-center'>
-    <%= link_to "返回",  url_for(controller: :enterprise_authentications, action: :index), class:"btn blue-btn btn-large",:role=>"button" %>
-  </p>
-  <% elsif ['posted','no_pass'].include?(@enterprise_authentication.status) %>
-	<p class="text-center"><%= link_to("编辑", url_for(:action=>:edit), :class=>"btn btn-large",:role=>"button") %></p>
-	</div>
+  <% if can?(:manage, @certification) %>
+    <%= render partial: 'admin/certifications/actions', locals: { obj: @certification } %>
+    <br />
+    <p class='text-center'>
+    <%= link_to "返回",  enterprises_admin_certifications_path, class:"btn blue-btn btn-large",:role=>"button" %>
+    </p>
+  <% elsif ['posted','no_pass'].include?(@certification.status) %>
+    <p class="text-center"><%= link_to("编辑", url_for(:action=>:edit), :class=>"btn btn-large",:role=>"button") %></p>
   <% end %>
+	</div>
 
 </div>

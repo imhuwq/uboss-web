@@ -1,5 +1,6 @@
 class Admin::OrdersController < AdminController
-  load_and_authorize_resource
+
+  load_and_authorize_resource class: 'OrdinaryOrder'
 
   before_filter :validate_express_params, only: :set_express
 
@@ -7,11 +8,10 @@ class Admin::OrdersController < AdminController
   after_action :record_operation, only: [:update]
 
   def select_orders
-    @orders = Order.where(id: params[:ids])
+    @orders = OrdinaryOrder.where(id: params[:ids])
   end
 
   def close
-    @order = Order.find(params[:id])
     if @order.may_close? && @order.close!
       flash[:success] = '订单关闭成功'
     else
@@ -24,7 +24,7 @@ class Admin::OrdersController < AdminController
     success, errors = 0, 0
     if params[:order].present?
       params[:order].each do |order_id, param|
-        order = Order.find(order_id)
+        order = OrdinaryOrder.find(order_id)
         express = Express.find_by_name(param[:express_name])
         express = Express.create(name: param[:express_name], private_id: current_user.id) if express.blank?
         if validate_batch_shipment_params(param) \
@@ -47,16 +47,28 @@ class Admin::OrdersController < AdminController
 
   def index
     @type = params[:type] || 'all'
-    @orders = append_default_filter @orders.recent.includes(:user, order_items: [:product, :product_inventory])
+
+    @orders = append_default_filter @orders.recent.
+      includes(:user, order_items: [:product, :product_inventory])
     @counting_orders = @orders
+
     @unship_amount = @orders.payed.total_count
     @today_selled_amount = @orders.today.selled.total_count
     @shiped_amount = @orders.shiped.total_count
-    @orders = @orders.where(state: Order.states[@type.to_sym]) if @type != 'all'
+    @refunds_amount = current_user.sold_ordinary_orders.with_refunds.count
+    @unprocess_refunds_amount = OrderItemRefund.with_seller(current_user.id).wait_seller_processes.count
+
+    case @type
+    when 'refunding'
+      @orders = @orders.with_refunds
+    else
+      @orders = @orders.where(state: OrdinaryOrder.states[@type.to_sym]) if @type != 'all'
+    end
   end
 
   def show
     @order_item = @order.order_items.first
+    @user_addresses = current_user.seller_addresses
   end
 
   def update
@@ -69,9 +81,20 @@ class Admin::OrdersController < AdminController
     if @order.update(order_params.merge(express_id: express.id)) && @order.ship!
       flash[:success] = '发货成功'
     else
-      flash[:error] = '发货失败'
+      flash[:error] = "发货失败,#{@order.errors.full_messages.join('\n')}"
     end
     redirect_to admin_orders_path
+  end
+
+  def change_ship_price
+    @order = OrdinaryOrder.unpay.find_by!(id: params[:id], seller: current_user)
+
+    if @order.update(ship_price: params[:ordinary_order][:ship_price])
+      flash[:success] = '运费修改成功'
+    else
+      flash[:error] = '运费修改失败'
+    end
+    redirect_to admin_order_path(@order)
   end
 
   private

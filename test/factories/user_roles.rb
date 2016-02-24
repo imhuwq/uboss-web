@@ -14,6 +14,10 @@ FactoryGirl.define do
       name 'agent'
     end
 
+    factory :city_manager_role do
+      name 'city_manager'
+    end
+
   end
 
 end

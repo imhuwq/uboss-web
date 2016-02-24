@@ -1,0 +1,22 @@
+<div class="container admin-container">
+  <ul class="breadcrumb">
+    <li><a href="/admin">主页</a></li>
+    <li class="divider"><i class="fa fa-angle-right"></i></li>
+    <li><%= link_to '平台广告管理', [:admin, :platform_advertisements] %></li>
+    <li class="divider"><i class="fa fa-caret-right"></i></li>
+    <li class="active">编辑平台广告</li>
+ </ul>
+</div><!-- container -->
+<br />
+<div class="container nogap">
+    <%= horizon_form_for @platform_advertisement, url: {controller: 'admin/platform_advertisements', action: :update} do |f| %>
+
+      <%= render 'fields', f: f %>
+      <br />
+      <div class="form-actions text-right">
+        <%= f.submit "保存", class: "btn btn-large" %>
+      </div>
+      </div><!-- box-w50 -->
+    <% end %>
+
+</div>

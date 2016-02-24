@@ -9,7 +9,7 @@ module Imagable
         define_method "#{column}=" do |file|
           if file.present?
             if file.is_a?(String)
-              write_uploader column, file
+              write_uploader _mounter(column).serialization_column, file
             else
               super(file)
             end

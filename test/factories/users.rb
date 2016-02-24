@@ -6,7 +6,9 @@ FactoryGirl.define do
 
     trait :agent do
       after(:create) do |user|
-        create(:agent_role_relation, user: user)
+        if !user.is_agent?
+          create(:agent_role_relation, user: user)
+        end
       end
     end
 

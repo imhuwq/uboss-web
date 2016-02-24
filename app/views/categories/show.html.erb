@@ -1,0 +1,15 @@
+<%= content_for :extra_meta_tags do %>
+  <% if @seller %>
+    <%= store_sharing_meta_tags(
+      @seller,
+      @sharing_link_node,
+      store_category_path(store_id: @seller.id, id: @category.id)
+    ) %>
+  <% end %>
+<% end %>
+
+<% if uboss_mall?(@seller) %>
+  <%= render partial: 'umall' %>
+<% else %>
+  <%= render partial: 'ushop' %>
+<% end %>

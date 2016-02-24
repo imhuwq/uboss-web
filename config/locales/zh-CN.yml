@@ -1,5 +1,20 @@
 zh-CN:
+  enumerize:
+    order_item_refund:
+      refund_type:
+        refund: '退款'
+        receipted_refund: '已收到货 仅退款'
+        unreceipt_refund: '未收到货 退款'
+        return_goods_and_refund: '退款退货'
+        after_sale_only_refund: '售后—仅退款'
+        after_sale_return_goods_and_refund: '售后—退款退货'
   attributes: &attributes
+    name: 名称
+    wechat_identify: 原始微信号
+    encoding_app_secret: 加密AppSecret
+    weixin_token: Token(令牌)
+    encoding_aes_key: 消息加解密密钥
+    sku_attributes: 规格属性
     express_name: 快递公司
     store_cover: 店铺封面背景
     store_short_description: 店铺简介
@@ -8,6 +23,7 @@ zh-CN:
     image_captcha: 图片验证码
     mobile_captcha: 手机验证码
     bank_card: 银行卡
+    bank_card_id: 银行卡
     bankname: 银行名称
     user_name: 账户名
     user: 用户
@@ -39,6 +55,7 @@ zh-CN:
     updated_at: 更新时间
     mobile: 手机
     login: 帐号
+    login_identifier: 账号
     email: 邮箱
     nickname: 昵称
     avatar:  头像
@@ -64,7 +81,7 @@ zh-CN:
     province:  省
     country: 国家
     city: 城市
-    area: 区/县
+    area: 地区
     building: 详细地址
     product_inventories: 库存/规格
   simple_form:
@@ -73,6 +90,8 @@ zh-CN:
         name: 名称
       product: &product
         name: 产品名
+        traffic_expense: 运费
+        carriage_template: 运费模板
         original_price: 原价
         present_price: 现价
         count: 库存
@@ -90,6 +109,17 @@ zh-CN:
         short_description: 简介
         property_value:  属性值
         property:        属性名
+        full_cut: 满足条件包邮
+        full_cut_number: 满足条件包邮数量
+        full_cut_unit: 满足条件包邮单位
+        service_type: 团购类型
+        monthes: 团购有效期
+        purchase_note: 团购须知
+      service_product:
+        name: 团购名称
+        service_type: 团购类型
+        monthes: 团购有效期
+        content: 图文详情
       mobile_auth_code:
         mobile: 手机号码
       order_form:
@@ -98,7 +128,7 @@ zh-CN:
         province:  省
         country: 国家
         city: 城市
-        area: 区/县
+        area: 地区
         street: 街道
         building: 详细地址
       personal_authentication:
@@ -119,11 +149,36 @@ zh-CN:
         address:                                 地址
         mobile:                                  手机号码
         mobile_auth_code:                        验证码
+      city_manager_authentication:
+        status:                                  状态
+        enterprise_name:                         公司名
+        business_license_img:                    营业执照
+        legal_person_identity_card_front_img:    法人身份证正面
+        legal_person_identity_card_end_img:      法人身份证反面
+        address:                                 地址
+        mobile:                                  手机号码
+        mobile_auth_code:                        验证码
+      certification:
+        status:                                   状态
+        name:                                     姓名
+        enterprise_name:                          公司名
+        id_num:                                   身份证号码
+        address:                                  地址
+        mobile:                                   手机号
+        business_license_img:                     营业执照
+        legal_person_identity_card_front_img:     法人身份证正面
+        legal_person_identity_card_end_img:       法人身份证反面
+        identity_card_code:                       身份证号码
+        face_with_identity_card_img:              手持身份证图片
+        identity_card_front_img:                  身份证正面
       order:
         ship_number: 运单号
         express_name: 快递公司
       seller:
         <<: *attributes
+      advertisement:
+        advertisement_url: 广告链接
+        asset_img: 广告图片
   simple_captcha:
     label: 验证码
     placeholder: 请输入验证码
@@ -132,13 +187,21 @@ zh-CN:
       default: 验证码错误
   nav_groups:
     order_manage: 订单管理
+    service_manage: 团购管理
     orders: 订单
     product_manage: 商品管理
     withdraw_records: 提现
+    city_manager: 城市运营商
   li_link:
     dashboard: 主页
+    service_stores: 团购店铺
+    service_products: 团购商品
+    verify_codes: 验证管理
+    evaluations: 评价管理
+    income: 收益管理
     carriage_templates: 运费模板
     expresses: 快递管理
+    refund_reasons: 退款理由
     data: 数据
     orders: 订单
     sharing_incomes: 分成
@@ -153,6 +216,13 @@ zh-CN:
     banking:  提现
     daily_reports: 收益
     authentications: 认证
+    user_addresses: 地址库
+    categories: 商品分组
+    platform_advertisements: 平台广告
+    city_managers: 城市运营商
+    cities: 权限管理
+    revenues: 商家营收
+    added: 新增商家
   activerecord:
     models:
       withdraw_record: 提现记录
@@ -162,9 +232,37 @@ zh-CN:
       bank_card: 银行卡
       product_inventory: 库存/规格
     attributes:
+      order_item_refund:
+        money: 金额
+        order_state: 订单退款
+        refund_reason_id: 退款理由
+        refund_type: 退款类型
+        aasm_state:
+          pending: '卖家处理中'
+          approved: '卖家同意退款'
+          declined: '卖家拒绝退款'
+          completed_express_number: '等待卖家确认收货'
+          confirm_received: '卖家确认收货'
+          decline_received: '卖家拒绝收货'
+          applied_uboss: '等待UBOSS处理'
+          finished: '退款成功'
+          cancelled: '退款撤销'
+          closed: '退款关闭'
+      refund_reason:
+        reason: 理由
       product_inventories:
         product_id: SKU产品
         share_amount_total: 总返利
+      service_store:
+        store_phones: 店铺电话
+        begin_hour: 开始时
+        begin_time: 营业开始时间
+        begin_minute: 开始分
+        end_hour: 结束时
+        end_minute: 结束分
+      store_phones:
+        fixed_line_or_phone_number: 固定电话或手机号
+        phone_number: 手机号
       carriage_template:
         name: 模板名称
       different_area:
@@ -182,6 +280,8 @@ zh-CN:
         code: 手机验证码
       user_address:
         username: 收件人
+        post_code: 邮政编码
+        note: 备注
       evaluation:
         status: 评价
       bank_card:
@@ -203,6 +303,7 @@ zh-CN:
         level: 分成类型
       user:
         login: 登录手机
+        login_identifier: 账号
         password: 密码
       order:
         express_name: 快递公司
@@ -212,6 +313,9 @@ zh-CN:
         created_at: 创建时间
       product:
         <<: *product
+      category:
+        name: 分组名
+        asset_img: 展示图
   order_status_bar:
     unpay: 等待买家付款
     payed: 等待卖家发货
@@ -219,7 +323,20 @@ zh-CN:
     signed: 交易完成
     completed: 交易完成
     closed: 订单关闭
+  service_order_status_bar:
+    unpay: 待付款
+    payed: 待消费
+    unevaluate: 待评价
+    completed: 交易完成
+    closed: 订单关闭
   enums:
+    city_manager:
+      category:
+        firstline: 一类城市
+        secondline: 二类城市
+        thirdline: 三类城市
+        fourthline: 四类城市
+        fifthline: 五类城市
     evaluation:
       status:
         good:   满意
@@ -241,23 +358,38 @@ zh-CN:
     enterprise_authentication:
       status:
         <<: *status
+    certification:
+      status:
+        <<: *status
+    city_manager_authentication:
+      status:
+        <<: *status
     withdraw_record:
       state:
         unprocess: 未处理
         processed: 交易中
         done: 交易完成
         closed: 拒绝
+        failure: 交易失败
     sharing_income:
       level:
         l1: 一级分成
         l2: 二级分成
         l3: 三级分成
-    order:
+    ordinary_order:
       state:
         unpay: 未付款
         payed: 已付款
         shiped: 已发货
         signed: 已签收
+        completed: 已完成
+        closed: 关闭
+    service_order:
+      state:
+        unpay: 未付款
+        payed: 待消费
+        expensed: 已消费
+        unevaluate: 待评价
         completed: 已完成
         closed: 关闭
     order_charge:
@@ -279,6 +411,9 @@ zh-CN:
   errors:
     messages:
       already_has_role: 已经拥有该角色
+      only_ordinary_store: 只能创建一个电商店铺
+      only_service_store: 只能创建一个团购店铺
+      exists: 已存在
   api_errors:
     unauthorized: 没通过用户认证
     forbidden: 权限不够

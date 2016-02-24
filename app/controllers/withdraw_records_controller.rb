@@ -1,27 +1,29 @@
-# 提现
 class WithdrawRecordsController < ApplicationController
-	def show
+
+  before_action :authenticate_user!
+
+  def show
+    render layout: 'mobile'
   end
 
   def new
-    @income = current_user.user_info.income
-    @withdraw_record = WithdrawRecord.new(amount: nil)
+    @withdraw_record = current_user.withdraw_records.new(amount: nil)
+    render layout: 'mobile'
   end
 
   def create
-    amount = params.require(:withdraw_record).permit(:amount)
-    @withdraw_record = WithdrawRecord.new(amount)
-    @withdraw_record.user = current_user
+    amount = params.require(:withdraw_record).permit(:amount, :bank_card_id)
+    @withdraw_record = current_user.withdraw_records.new(amount)
     if @withdraw_record.save
       redirect_to action: :success, id: @withdraw_record.id
     else
-      puts @withdraw_record.errors.full_messages.join('<br/>')
-      flash[:error] = @withdraw_record.errors.full_messages.join('<br/>')
-      redirect_to 'new'
+      flash.now[:error] = model_errors(@withdraw_record).join('<br/>')
+      render :new, layout: 'mobile'
     end
   end
 
   def success
     @withdraw_record = WithdrawRecord.find(params[:id])
+    render layout: 'mobile'
   end
 end

@@ -11,7 +11,7 @@
 <br />
 
 <div class="container nogap">
-    <%= horizon_form_for [:admin, @product] do |f| %>
+    <%= horizon_form_for @product, url: admin_products_path do |f| %>
 
       <%= render 'fields', f: f %>
 

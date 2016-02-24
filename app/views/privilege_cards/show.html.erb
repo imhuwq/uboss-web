@@ -43,7 +43,9 @@
 		  <div class="box-w33">
 		  	<div class="product-box">
 		  		<div class="cover">
-	          <%= link_to '', product_path(product), style: "background-image:url(#{product.image_url(:w120)})",class:'img' %>
+            <%= link_to '', product_path(product),
+              style: "background-image:url(#{product.image_url(:w320)})",
+              class:'img' %>
 	          <%= image_tag("mobile/img.jpg") %>
 	        </div>
 	        <div class="share">
@@ -63,36 +65,30 @@
 
 <%= render partial: 'stores/banner_slider', locals: { seller: @seller } %>
 
-<div class="bg-white">
-	<div class="box store-list">
-		<div class="box-w100">
-			<div class="page-title like-color">
-	      <%= link_to hots_store_path(@seller), class: 'more-bar' do %>
-	        more <%= image_tag 'mobile/arrow-right.png' %>
-	      <% end %>
-	      热销商品
-			</div>
-		</div>
-
-    <%= render partial: 'stores/hot_product', collection: @hots, as: :product %>
-
-	</div>
-</div>
-
-<br />
-
-<div class="bg-white">
-  <div class="box store-list">
-    <div class="box-w100">
-      <div class="page-title">全部商品</div>
+<% if @hots.present? %>
+  <div class="page-title gap like-color">
+    <%= link_to hots_store_path(@seller), class: 'more-bar' do %>
+      more <%= image_tag 'mobile/arrow-right.png' %>
+    <% end %>
+    热销商品
+  </div>
+  <div class="bg-white">
+    <div class="store-list">
+      <%= render partial: 'stores/product', collection: @hots, as: :product %>
     </div>
+  </div>
+<% end %>
+
+<div class="page-title gap">全部商品</div>
+<div class="bg-white">
+  <div id='products-container' class="store-list">
     <%= render partial: 'stores/product', collection: @products, locals: { show_favour: true } %>
   </div>
 </div>
 
 <% if @products.size > 6 %>
 	<br />
-  <div class="load-more" data-container='.store-list' data-ele='.p-item' data-ref='<%= store_path(@seller) %>'>加载更多</div>
+  <div class="load-more" data-container='#products-container' data-ele='.p-item' data-ref='<%= store_path(@seller) %>'>加载更多</div>
 <% end %>
 
 <%= render partial: 'new_share' %>

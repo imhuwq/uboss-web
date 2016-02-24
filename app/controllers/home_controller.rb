@@ -2,9 +2,14 @@ class HomeController < ApplicationController
 
   detect_device only: [:index, :service_centre_consumer, :service_centre_agent, :service_centre_tutorial]
 
-  layout :detect_layout, only: [:index, :service_centre_tutorial, :service_centre_agent, :service_centre_consumer, :lady, :maca, :snacks]
+  layout :detect_layout, only: [:index, :service_centre_tutorial, :service_centre_agent, :service_centre_consumer, :lady, :maca, :snacks,:city]
+
+  before_action :authenticate_user!, only: [:store_qrcode_img]
 
   def index
+    if !desktop_request?
+      redirect_to stores_path
+    end
   end
 
   def service_centre_consumer
@@ -32,6 +37,18 @@ class HomeController < ApplicationController
     else
       head(422)
     end
+  end
+
+  def hongbao_game
+    render layout: nil
+  end
+
+  def store_qrcode_img
+    if ['ordinary', 'service'].include?(params[:type]) && (privilege_card = PrivilegeCard.find_or_active_card(current_user.id, params[:sid]))
+      @qrcode_img_url = params[:type] == 'ordinary' ? privilege_card.ordinary_store_qrcode_img_url : privilege_card.service_store_qrcode_img_url
+    end
+
+    render layout: nil
   end
 
   private

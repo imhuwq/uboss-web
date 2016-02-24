@@ -13,6 +13,15 @@ module ChinaCity extend self
     end
   end
 
+  def self.children(parent_id = nil)
+    children = list(parent_id.to_s)
+    if children.any? { |name,code| code == parent_id.to_s }
+      []
+    else
+      children
+    end
+  end
+
   def provinces
     old_list
   end

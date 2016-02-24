@@ -13,22 +13,22 @@
         <th style='width:100px;'>
         	<div class='tips-info'>
         		总返利  <i class='fa fa-info-circle'></i>
-        		<div class='info-hover'>购买者的直接上家获得的返利</div>
-        	</div>
-        </th>
-        <th>
-        	<div class='tips-info'>
-        		一级 <i class='fa fa-info-circle'></i>
         		<div class='info-hover'>为商品设定总返利金额</div>
         	</div>
         </th>
-        <th>
+        <th class='th-tips-info-pri-lv1'>
+        	<div class='tips-info'>
+        		一级 <i class='fa fa-info-circle'></i>
+        		<div class='info-hover'>购买者的直接上家获得的返利</div>
+        	</div>
+        </th>
+        <th class='th-tips-info-pri-lv2'>
         	<div class='tips-info'>
         		二级 <i class='fa fa-info-circle'></i>
         		<div class='info-hover'>购买者的二级上家获得的返利</div>
         	</div>
         </th>
-        <th>
+        <th class='th-tips-info-pri-lv3'>
         	<div class='tips-info'>
         		三级 <i class='fa fa-info-circle'></i>
         		<div class='info-hover'>购买者的三级上家获得的返利</div>

@@ -12,6 +12,28 @@ class ApplicationController < ActionController::Base
 
   protected
 
+  def authentication_token
+    request.headers["User-Token"] || params[:accesstoken]
+  end
+
+  def authentication_login
+    request.headers["User-Login"] || params[:login]
+  end
+
+  def login_app(force = false)
+    return false if current_user.present?
+
+    user = authentication_login && User.find_for_database_authentication(login_identifier: authentication_login)
+    if user && Devise.secure_compare(user.authentication_token, authentication_token)
+      session[:app_user] = true
+      env['devise.skip_trackable'] = true
+      sign_in user
+    elsif force
+      flash[:error] = '自动登入失败'
+      redirect_to new_user_session_path
+    end
+  end
+
   def model_errors(model)
     model.errors.full_messages
   end
@@ -22,6 +44,8 @@ class ApplicationController < ActionController::Base
       login_with_admin_model
     elsif browser.wechat?
       authenticate_weixin_user!
+    elsif browser.uboss?
+      login_app(true)
     else
       super
     end
@@ -81,13 +105,13 @@ class ApplicationController < ActionController::Base
 
   def configure_permitted_parameters
     devise_parameter_sanitizer.for(:sign_up) { |u|
-      u.permit(:login, :captcha, :password, :password_confirmation, :remember_me)
+      u.permit(:login, :email, :login_identifier, :captcha, :password, :password_confirmation, :remember_me)
     }
     devise_parameter_sanitizer.for(:sign_in) { |u|
-      u.permit(:login, :password, :remember_me, :mobile_auth_code, :captcha, :captcha_key)
+      u.permit(:login, :email, :login_identifier, :password, :remember_me, :mobile_auth_code, :captcha, :captcha_key)
     }
     devise_parameter_sanitizer.for(:account_update) { |u|
-      u.permit(:login, :password, :password_confirmation, :current_password)
+      u.permit(:login, :email, :login_identifier, :password, :password_confirmation, :current_password)
     }
   end
 
@@ -98,7 +122,8 @@ class ApplicationController < ActionController::Base
       flash[:new_password_enabled] = true
       set_password_path
     else
-      request.env['omniauth.origin'] ||
+      session[:oauth_callback_redirect_path] ||
+        request.env['omniauth.origin'] ||
         stored_location_for(resource) ||
         logined_redirect_path
     end

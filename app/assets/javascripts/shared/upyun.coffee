@@ -14,7 +14,7 @@ $ ->
     add: (e, data) ->
       updateFile(e,data,upyunBucketDomain)
 
-  $("input.upyun_file_closest").click ->
+  $(document).on 'click', "input.upyun_file_closest", ->
     upyunPolicy = $(this).siblings("meta[name='upyun-policy']").attr("content")
     upyunSignature = $(this).siblings("meta[name='upyun-signature']").attr("content")
     $(this).fileupload
@@ -59,3 +59,50 @@ $ ->
 
           button.removeClass('uploading')
           $this.show()
+
+  $(document).on 'click', "input.upyun_file_json", ->
+    upyunPolicy = $(this).siblings("meta[name='upyun-policy']").attr("content")
+    upyunSignature = $(this).siblings("meta[name='upyun-signature']").attr("content")
+    $(this).fileupload
+      paramName: "file"
+      url: upyunUrl
+      forceIframeTransport: true
+      formData:
+        "policy": upyunPolicy
+        "signature": upyunSignature
+      add: (e, data) ->
+        updateFileJson(e,data,upyunBucketDomain)
+
+  updateFileJson = (e,data,upyun_bucket_domain) ->
+    $this = $(e.target)
+    ajax_to = $this.attr('data-to')
+    button = $this.closest('.fileinput-button')
+    fileName = data.originalFiles[0].name
+    unless button.hasClass('uploading')
+
+      $this.hide()
+      button.addClass('uploading')
+      data.submit().done (doc) ->
+        returnUrl = doc[0].location.href
+        queryString = returnUrl.split("?")[1]
+        qs = $.parseQueryString(queryString)
+        if qs.code isnt "200"
+          button.removeClass('uploading')
+          $this.show()
+          alert('图片上传失败')
+        else
+          [_, ..., fileName] = qs.url.split '/'
+          button.find('img').attr('src', "#{ upyunBucketDomain }/#{ qs.url }-w320")
+          button.removeClass('uploading')
+          $this.show()
+          $.ajax
+            url:  ajax_to
+            type: 'POST'
+            data: {avatar: fileName}
+            success: (res) ->
+              console.log "res", res
+              alert(res['message'])
+            error: (data, status, e) ->
+              console.log 'data, status, e', data, status, e
+              alert("操作错误")
+

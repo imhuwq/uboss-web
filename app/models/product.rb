@@ -6,17 +6,17 @@ class Product < ActiveRecord::Base
 
   OFFICIAL_AGENT_NAME = 'UBOSS创客权'.freeze
 
-  # FIXME: @dalezhang 请使用helper or i18n 做view的数值显示
-  DataCalculateWay = { 0 => '按金额', 1 => '按售价比例' }
-  DataBuyerPay = { 0 => '包邮', 1 => '统一邮费', 2 => '运费模板' }
-
   has_one_image autosave: true
   #has_many_images name: :figure_images, accepts_nested: true
+  has_one_content name: :purchase_note, type: :purchase_note
 
   belongs_to :user
   belongs_to :carriage_template
   has_many :different_areas, through: :carriage_template
   has_many :order_items
+  has_many :advertisements
+  has_many :categories
+  has_and_belongs_to_many :categories, -> { uniq } ,autosave: true
   has_many :product_inventories, autosave: true, dependent: :destroy
   has_many :cart_items,  through: :product_inventories
   has_many :seling_inventories, -> { where(saling: true) }, class_name: 'ProductInventory', autosave: true
@@ -28,16 +28,35 @@ class Product < ActiveRecord::Base
 
   scope :hots, -> { where(hot: true) }
   scope :available, -> { where.not(status: 2) }
+  scope :hot_ordering, -> { order('products.hot DESC, products.id DESC') }
+  scope :create_today, -> { where('created_at > ? and created_at < ?', Time.now.beginning_of_day, Time.now.end_of_day) }
 
-  validates_presence_of :user_id, :name, :short_description
   validate :must_has_one_product_inventory
+  validates_presence_of :user_id, :name, :asset_img, :type
 
   before_create :generate_code
+  after_create :add_categories_after_create
 
   def self.official_agent
     official_account = User.official_account
     return nil if official_account.blank?
     @official_agent_product ||= find_by(user_id: official_account.id, name: OFFICIAL_AGENT_NAME)
+  end
+
+  def max_price_inventory
+    @max_price_inventory ||= seling_inventories.order('price DESC').first
+  end
+
+  def min_price_inventory
+    @min_price_inventory ||= seling_inventories.order('price DESC').last
+  end
+
+  def max_price
+    @max_price ||= max_price_inventory.price
+  end
+
+  def min_price
+    @min_price ||= min_price_inventory.price
   end
 
   # SKU(product_inventory) 更新保存逻辑
@@ -138,44 +157,65 @@ class Product < ActiveRecord::Base
     order_items.joins(:order).where('orders.state > 2 AND orders.state <> 5').sum(:amount)
   end
 
-  def calculate_ship_price(count, user_address)
-    if transportation_way == 1
-      traffic_expense.to_f
-    elsif transportation_way == 2 && user_address.try(:province)
-      province = ChinaCity.get(user_address.province)
-      carriage_template = CarriageTemplate.find(carriage_template_id)
-      carriage_template.total_carriage(count, province)
-    else
-      0.0
-    end
-  end
-
   def sku_hash
     skus = {}
     sku_details = {}
-    # FIXME 不要使用毫无意义的变量名 obj, k , v ~
-    self.seling_inventories.where("count > 0").each do |obj|
-      obj.sku_attributes.each do |k,v|
-        if !skus[k].present?
-          skus[k] = {}
+    count = 0
+    self.seling_inventories.where("count > 0").each do |seling_invertory|
+      seling_invertory.sku_attributes.each do |property_name,property_value|
+        if !skus[property_name].present?
+          skus[property_name] = {}
         end
-        if !skus[k][v].present?
-          skus[k][v] = []
+        if !skus[property_name][property_value].present?
+          skus[property_name][property_value] = []
         end
-        skus[k][v] << obj.id
+        skus[property_name][property_value] << seling_invertory.id
       end
 
-      if !sku_details[obj.id].present?
-        sku_details[obj.id] = {}
+      if !sku_details[seling_invertory.id].present?
+        sku_details[seling_invertory.id] = {}
       end
-      sku_details[obj.id][:count] = obj.count
-      sku_details[obj.id][:sku_attributes] = obj.sku_attributes
-      sku_details[obj.id][:price] = obj.price
+      sku_details[seling_invertory.id][:count] = seling_invertory.count
+      sku_details[seling_invertory.id][:sku_attributes] = seling_invertory.sku_attributes
+      sku_details[seling_invertory.id][:price] = seling_invertory.price
+      count += seling_invertory.count
     end
     hash = {}
     hash[:skus] = skus
     hash[:sku_details] = sku_details
+    hash[:count] = count
     return hash
+  end
+
+  def categories=(category_names)
+    unless category_names.is_a?(Array)
+      category_names = category_names.split(',')
+    end
+    if self.new_record?
+      @category_names = category_names
+    else
+      self.categories.clear
+      category_names.each do |item|
+        category = Category.find_or_new_by(name: item, user_id: self.user_id)
+        if category.new_record?
+          category.use_in_store = false
+        end
+        category.save
+        self.categories << category
+      end
+    end
+  end
+
+  def add_categories_after_create
+    if @category_names && @category_names.any?
+      @category_names.each do |item|
+        category = Category.find_or_new_by(name: item, user_id: self.user_id)
+        category.use_in_store = false
+        category.save
+        categories << category
+      end
+      save
+    end
   end
 
   private

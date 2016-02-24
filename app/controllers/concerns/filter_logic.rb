@@ -2,6 +2,11 @@ module FilterLogic
 
   extend ActiveSupport::Concern
 
+  included do
+    helper_method :page_size
+    helper_method :page_param
+  end
+
   protected
   # default: order by created_at, limit 20, page 1
   # order_column to change order column and page columns

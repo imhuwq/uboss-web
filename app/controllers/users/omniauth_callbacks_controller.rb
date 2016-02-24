@@ -1,5 +1,7 @@
 class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
 
+  include WechatRewarable
+
   def wechat
     if current_user
       current_user.update_with_wechat_oauth(auth_info.extra['raw_info'])
@@ -11,6 +13,7 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
     if current_user.blank? && after_oauth_success_redirect_path.match(/orders/).blank?
       redirect_to new_user_session_path
     else
+      current_user && Ubonus::Invite.delay.active_by_user_id(current_user.id)
       redirect_to after_oauth_success_redirect_path
     end
   end

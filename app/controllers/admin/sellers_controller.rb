@@ -5,7 +5,9 @@ class Admin::SellersController < AdminController
   def index
     authorize! :read, :sellers
     @sellers = User.role('seller')
-    @sellers = @sellers.where(agent_id: current_user.id) if !current_user.is_super_admin?
+    if cannot?(:handle, :sellers)
+      @sellers = @sellers.where(agent_id: current_user.id)
+    end
     @sellers = @sellers.page(params[:page] || 1).per(15)
   end
 
@@ -33,7 +35,7 @@ class Admin::SellersController < AdminController
 
   def update
     authorize! :update, @seller
-    if @seller.update(seller_params)
+    if @seller.ordinary_store.update(seller_params)
       flash[:notice] = '更新成功'
       redirect_to action: :edit
     else
@@ -43,6 +45,7 @@ class Admin::SellersController < AdminController
   end
 
   def update_service_rate
+    authorize! :update_service_rate, :uboss_seller
     user_info = UserInfo.find_by(user_id: params['seller']['id'])
     to_service_rate = params['seller']['service_rate']
     if to_service_rate.present? && user_info.present?
@@ -75,7 +78,7 @@ class Admin::SellersController < AdminController
     params.require(:user).permit(
       :store_banner_one,          :store_banner_two,          :store_banner_thr,
       :recommend_resource_one_id, :recommend_resource_two_id, :recommend_resource_thr_id,
-      :store_name, :store_short_description, :store_cover
+      :store_name, :store_short_description, :store_cover,
     )
   end
 end
