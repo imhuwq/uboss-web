@@ -1,10 +1,10 @@
 <div class='recommend_stores_wrap recomment_store_or_product'>
-  <div class="link-tab box bg-white m-bottom10">
-    <%= link_to recommend_products_homepage_path(@user), remote: true, class:'box-w50' do %>
-      <div class="gray-color">推荐商品</div>
+  <div class="tab-nav m-top10">
+    <%= link_to recommend_products_homepage_path(@user), remote: true, class:'tab border-right' do %>
+      推荐商品
     <% end %>
-    <%= link_to recommend_stores_homepage_path(@user), remote: true,class:'box-w50' do %>
-      <div class="black-color active">推荐店铺</div>
+    <%= link_to recommend_stores_homepage_path(@user), remote: true,class:'tab active' do %>
+      推荐店铺
     <% end %>
   </div>
 

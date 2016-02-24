@@ -2,26 +2,19 @@
     display: table;
     width: 100%;
     background: #fff;
-    margin-bottom: 8px;
     line-height: 20px;
     .tab,.sort-tab{
         width: 1%;
         vertical-align: middle;
-        padding:10px 5px;
         display: table-cell;
         text-align: center;
         color: #888;
-        span{
-            display: inline-block;
-            padding: 10px 0;
-        }
+        padding:10px;
     }
-    .tab.active{
-        span{
-            padding-bottom:8px;
-            border-bottom: 2px solid $brand-primary;
-            color: $brand-primary;
-        }
+    .tab.active{       
+        padding-bottom: 8px; 
+        border-bottom: 2px solid $brand-primary;
+        color: $brand-primary;
     }
     
 }
@@ -43,12 +36,7 @@
 .service-store-nav{
     background: none;
     margin: 0;
-    .tab{
-        padding: 0;
-        span{
-            padding: 10px 10px;
-        }
-    }
+    
 }
 .link-tab{
     text-align: center;    

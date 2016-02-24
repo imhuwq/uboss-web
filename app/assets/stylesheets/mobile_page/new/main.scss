@@ -59,7 +59,6 @@ h6{font-size: 10px;}
 .bg-white{ background:#fff;}
 .bg-main{ background: $brand-primary;color: #fff;}
 .bg-like{ background: #f9ba10;}
-.nobg{background: none;}
 
 .page-title{
     color: $brand-primary;
@@ -75,12 +74,7 @@ h6{font-size: 10px;}
 .lock{
     height: 100%; overflow: hidden;
 }
-.main-color{ color: $brand-primary; }
-.like-color{ color: #f9ba10;}
-.gray-color{ color:#999}
-.white-color{ color: #fff;}
-.red-color{ color: #ff1e1e;}
-.black-color{ color: #555;}
+
 
 .load-more {
   color: #fff;
@@ -121,11 +115,12 @@ h6{font-size: 10px;}
   }
 }
 
-
 .main-color{ color: $brand-primary; }
 .like-color{ color: #f9ba10;}
 .gray-color{ color:#999}
-.red-color{ color: #f91d36;}
+.white-color{ color: #fff;}
+.red-color{ color: #ff1e1e;}
+.black-color{ color: #555;}
 
 .hidden {
   display: none;
