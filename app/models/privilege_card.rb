@@ -87,7 +87,7 @@ class PrivilegeCard < ActiveRecord::Base
     self.user_img  = user.read_attribute(:avatar)
     self.service_store_cover = service_store.read_attribute(:store_cover)
     self.ordinary_store_cover = ordinary_store.read_attribute(:store_cover)
-    self.qrcode_expire_at = Time.current + 1.day
+    self.qrcode_expire_at = Time.current + Rails.application.secrets.privilege_card['qrcode_expire_days'].day
     self.save
   end
 
@@ -123,7 +123,7 @@ class PrivilegeCard < ActiveRecord::Base
 
   def daily_expired_or_info_charged?(expire)
     (
-      expire && qrcode_expire_at < (Rails.env.production? ? Time.current : Time.current + 1.day - 5.minute)
+      expire && qrcode_expire_at < (Rails.env.production? ? Time.current : Time.current + Rails.application.secrets.privilege_card['qrcode_expire_days'].day - 5.minute)
     ) || (
       user_name != user.nickname ||
       user_img != user.read_attribute(:avatar) ||
