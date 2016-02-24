@@ -1,26 +1,28 @@
 <div class='recommend_products_wrap recomment_store_or_product'>
-  <div class="link-tab box bg-white m-bottom10">
-    <%= link_to recommend_products_homepage_path(@user), remote: true, class:'box-w50' do %>
-      <div class="black-color active">推荐商品</div>
+  <div class="tab-nav m-top10">
+    <%= link_to recommend_products_homepage_path(@user), remote: true, class:'tab border-right active' do %>
+      推荐商品
     <% end %>
-    <%= link_to recommend_stores_homepage_path(@user), remote: true,class:'box-w50' do %>
-      <div class="gray-color">推荐店铺</div>
+    <%= link_to recommend_stores_homepage_path(@user), remote: true,class:'tab' do %>
+      推荐店铺
     <% end %>
   </div>
 
   <% @recommend_products.each_slice(2) do |products| %>
-		<div class="share-store-list box-w100 nogap">
+		<div class="recommend-product-list box-w100">
       <% products.each_with_index do |product, index| %>
-        <div class="box-w50 <%= index == 0 ? 'nogap-left':'nogap-right'%>">
+        <div class="box-w50">
           <div class="product-box">
             <div class="cover">
               <% url = product.class.name == 'OrdinaryProduct' ? product_path(id: product.id): service_product_path(product) %>
-              <%= link_to url do %>
-                <%= image_tag( product.image_url(:w120)) %>
-                <p class='gray-color desc text-cut'><%= product.short_description %></p>
-              <% end %>
-              <div class='price'>￥<%= product.present_price %></div>
-            </div>
+              <%= link_to '',url,
+              		style: "background-image:url(#{product.image_url(:w320)})",
+              		class:'img',title:"#{product.name}" %>
+              
+              <%= image_tag("mobile/img.jpg") %>   
+            		<div class='title text-cut'><%= product.name %></div>           
+            </div><!-- cover -->
+            <div class='price text-center'>￥<%= product.present_price %></div>
           </div><!-- product-box -->
         </div>
       <% end %>
