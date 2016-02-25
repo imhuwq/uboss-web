@@ -5,6 +5,8 @@ class SupplierProductInventory < ProductInventory
 
   belongs_to :supplier_product
   has_many :children, class_name: 'AgencyProductInventory', foreign_key: 'parent_id'
+  after_create :copy_to_children
+  after_destroy :remove_children
 
   amoeba do
     customize(lambda{|original_inventory, new_inventory|
@@ -14,4 +16,15 @@ class SupplierProductInventory < ProductInventory
     })
   end
 
+  private
+  # TODO 如果数量太多需要放入队列处理
+  def copy_to_children
+    product.children.each do |pro|
+      amoeba_dup.update(product_id: pro.id, user_id: pro.user_id, saling: false)
+    end
+  end
+
+  def remove_children
+    children.delete_all
+  end
 end
