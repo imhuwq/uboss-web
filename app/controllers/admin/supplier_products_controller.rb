@@ -56,15 +56,13 @@ class Admin::SupplierProductsController < AdminController
     supplier_product_info = @supplier_product.supplier_product_info
     begin
       if params[:status] == 'store'
-        supplier_product_info.stored!
-        unpublish_children_products
+        @supplier_product.stored!
         @notice = '下架成功'
       elsif params[:status] == 'supply'
-        supplier_product_info.supplied!
+        @supplier_product.supplied!
         @notice = '上架成功'
       elsif params[:status] == 'delete'
-        supplier_product_info.deleted!
-        unpublish_children_products
+        @supplier_product.deleted!
         @notice = '删除成功'
       else
         @error = '未知操作'
@@ -86,15 +84,6 @@ class Admin::SupplierProductsController < AdminController
   end
 
   private
-
-  def unpublish_children_products
-    children = @supplier_product.children
-    if children.present?
-      children.each do |child|
-        child.unpublish!
-      end
-    end
-  end
 
   def product_propertys_params
     params.permit(product_propertys_names: [])
