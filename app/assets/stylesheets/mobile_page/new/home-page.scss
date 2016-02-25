@@ -1,0 +1,42 @@
+.home-page{
+    background:image-url('mobile/p_bg.jpg') no-repeat top center;
+    background-size:cover ;
+    .btn{
+        background: #fff;
+        padding: 8px;
+        width: 35%;
+        border-radius: 50px;
+        color: #f9ba10;
+        box-shadow: 5px 3px 5px rgba(0,0,0,0.1) ;
+    }
+    .title{font-size: 18px;}
+    .cover{
+        background-position:center;
+        background-repeat:no-repeat ;
+        background-size:cover ;
+        display: inline-block;
+        height: 80px;
+        width: 80px;
+        border: 2px solid #fff;
+        border-radius: 100px;
+    }
+}
+.recommend-product-list{
+    .product-box{
+        background: #fff;
+        padding: 10px 10px 6px;
+        border-radius:2px ;
+        .cover{margin-bottom: 6px;border-radius: 4px;overflow: hidden;}
+        .title{
+            position: absolute;
+            bottom: 6px;
+            left: 0;
+            background: rgba(255,255,255,0.5);
+            padding: 4px;
+            width: 100%;
+            color: #999;
+            box-sizing: border-box;
+            z-index: 8;
+        }
+    }
+}

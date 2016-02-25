@@ -4,14 +4,6 @@ module ProductsHelper
     'active' if current_user.favour_products.exists?(product_id: product.id)
   end
 
-  def homepage_sharing_link(user, sharing_node = nil, redirect = nil)
-    if sharing_node.blank?
-      homepage_url(user, redirect: redirect)
-    else
-      sharing_url(sharing_node, redirect: redirect)
-    end
-  end
-
   def store_sharing_link(seller, sharing_node = nil, redirect = nil)
     if sharing_node.blank?
       store_url(seller, redirect: redirect)

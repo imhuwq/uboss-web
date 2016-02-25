@@ -1,21 +1,32 @@
-<% if current_user == @user %>
-  <%= content_for :page_title do %>
-    <- 个人主页
+<%= content_for :extra_meta_tags do %>
+  <%= store_sharing_meta_tags(@user, @sharing_link_node) %>
+<% end %>
+
+<% if browser.wechat? %>
+  <%= content_for :extra_javascript do %>
+    <script type="text/javascript" charset="utf-8">
+      wx.ready(function(){ UBoss.luffy.invokeSharing(); });
+    </script>
   <% end %>
 <% end %>
-<div class="bg-white gap m-top10 border-box">
-	<div class="homepage text-center">
-    <div class="cover">
-    	<%= image_tag @user.avatar_url(:thumb) %>
-    </div>
-    <p class="title text-cut"><%= @user.mobile %></p>
-	</div>
-
-  <div class='text-center'>
-    <%= link_to '分享给朋友', '#', class: 'btn btn-large btn-longer p-sharing-btn' if current_user == @user %>
+<% if current_user == @user %>
+  <%= content_for :page_title do %>
+    个人主页
+  <% end %>
+<% end %>
+<div class="home-page gap text-center">
+	<br />
+	<div class="m-bottom10">
+  		<div class="cover" style="background-image:url('<%= @user.avatar_url(:thumb)%>') ;"></div>
+ 	</div><!-- m-bottom10 -->
+  <div class="title text-cut m-bottom10"><%= @user.mobile %></div>  
+ <% if current_user == @user %>
+  <div class="gap">
+    <%= link_to '分享给朋友', '#', class: 'btn  p-sharing-btn'  %>
   </div>
+ <% end %>
+</div><!-- home-page -->
 
-</div><!-- bg-white -->
 
 <%= render 'recommend_product' %>
 

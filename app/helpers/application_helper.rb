@@ -127,6 +127,26 @@ module ApplicationHelper
     end.join.html_safe
   end
 
+  def homepage_sharing_link(user, sharing_node = nil, redirect = nil)
+    if sharing_node.blank?
+      homepage_url(user, redirect: redirect)
+    else
+      sharing_url(sharing_node, redirect: redirect)
+    end
+  end
+
+  def homepage_sharing_meta_tags(user, sharing_link_node = nil, redirect = nil)
+    meta_tags = {
+      sharing_title:  "【#{user.nickname}】个人主页",
+      sharing_desc:   "个人主页",
+      sharing_imgurl: user.avatar_url(:thumb),
+      sharing_link:  homepage_sharing_link(user, sharing_link_node, redirect),
+    }
+    meta_tags.collect do |key, value|
+      content_tag :meta, '', name: key, content: value
+    end.join.html_safe
+  end
+
   def luffy_meta_tags(opts={})
     meta_tags = {
       sharing_title:  opts[:title] || 'UBOSS商城 | 基于人，超乎想象',
