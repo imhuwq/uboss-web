@@ -8,6 +8,7 @@ class SupplierProduct < Product
   amoeba do
     set type: 'AgencyProduct'
     include_association :supplier_product_inventories
+    include_association :asset_img
     customize(lambda{|original_product, new_product|
       new_product.parent_id = original_product.id
       new_product.supplier_id = original_product.user_id
@@ -28,6 +29,28 @@ class SupplierProduct < Product
   scope :deleted, -> { joins(:supplier_product_info).where('supplier_product_infos.supply_status = 2') }
 
   #alias_method :supplier_product_inventories_attributes=, :product_inventories_attributes=
+
+  def stored
+    supplier_product_info.stored!
+    unpublish_children_products
+  end
+
+  def supplied
+    supplier_product_info.supplied!
+  end
+
+  def deleted
+    supplier_product_info.deleted!
+    unpublish_children_products
+  end
+
+  def unpublish_children_products
+    if children.present?
+      children.all? do |child|
+        child.unpublish!
+      end
+    end
+  end
 
   def supplier_product_inventories_attributes= attributes_collection
     unless attributes_collection.is_a?(Hash) || attributes_collection.is_a?(Array)
