@@ -180,10 +180,11 @@ ActiveRecord::Schema.define(version: 20160225090429) do
   create_table "cooperations", force: :cascade do |t|
     t.integer  "supplier_id"
     t.integer  "agency_id"
-    t.datetime "created_at",                                               null: false
-    t.datetime "updated_at",                                               null: false
-    t.decimal  "yday_performance",  precision: 8,  scale: 2, default: 0.0
-    t.decimal  "total_performance", precision: 10, scale: 2, default: 0.0
+    t.datetime "created_at",                                 null: false
+    t.datetime "updated_at",                                 null: false
+    t.date     "yday"
+    t.decimal  "yday_performance",  precision: 8,  scale: 2
+    t.decimal  "total_performance", precision: 10, scale: 2
   end
 
   add_index "cooperations", ["agency_id"], name: "index_cooperations_on_agency_id", using: :btree
@@ -390,6 +391,7 @@ ActiveRecord::Schema.define(version: 20160225090429) do
     t.decimal  "privilege_amount",     default: 0.0
     t.integer  "product_inventory_id"
     t.integer  "order_item_refund_id"
+    t.string   "sku_properties"
   end
 
   create_table "orders", force: :cascade do |t|
@@ -594,6 +596,7 @@ ActiveRecord::Schema.define(version: 20160225090429) do
     t.decimal  "income",      precision: 10, scale: 2
     t.datetime "created_at",                           null: false
     t.datetime "updated_at",                           null: false
+    t.decimal  "ship_price",  precision: 5,  scale: 2
   end
 
   add_index "purchase_orders", ["seller_id"], name: "index_purchase_orders_on_seller_id", using: :btree

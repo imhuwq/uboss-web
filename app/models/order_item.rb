@@ -26,6 +26,7 @@ class OrderItem < ActiveRecord::Base
 
   before_validation :set_product_id
   after_create :decrease_product_stock
+  before_create :cache_sku_properties
 
   after_commit :update_order_pay_amount, if: -> {
     previous_changes.include?(:pay_amount) &&
@@ -172,5 +173,9 @@ class OrderItem < ActiveRecord::Base
     if product_inventory && product_id.blank?
       self.product_id = self.product_inventory.product_id
     end
+  end
+
+  def cache_sku_properties
+    self.sku_properties = sku_attributes_str
   end
 end

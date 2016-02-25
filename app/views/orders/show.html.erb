@@ -64,9 +64,7 @@
         	<%= order_item.product_name %>
         </p>
         <p class="info">
-          <% order_item.product_inventory.properties.each do |property| %>
-            <span><%= "#{property.key}：#{property.value}" %></span>
-          <% end %>
+          <span><%= order_item.sku_properties %></span>
         </p>
     	</div><!-- content -->
     </div><!-- order-box -->
