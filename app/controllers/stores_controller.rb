@@ -15,14 +15,10 @@ class StoresController < ApplicationController
   end
 
   def show
-    if params[:redirect]
-      redirect_to params[:redirect]
-    else
-      @products = append_default_filter @seller.ordinary_products.published, order_column: :updated_at
-      @hots = @seller.ordinary_products.hots.recent.limit(3)
-      @categories = Category.where(use_in_store: true, user_id: @seller.id).order('use_in_store_at')
-      render_product_partial_or_page
-    end
+    @products = append_default_filter @seller.ordinary_products.published, order_column: :updated_at
+    @hots = @seller.ordinary_products.hots.recent.limit(3)
+    @categories = Category.where(use_in_store: true, user_id: @seller.id).order('use_in_store_at')
+    render_product_partial_or_page
   end
 
   def hots
