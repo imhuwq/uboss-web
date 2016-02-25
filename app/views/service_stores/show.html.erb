@@ -8,7 +8,7 @@
 
 <%= content_for :extra_meta_tags do %>
   <% if @service_store %>
-    <%= service_store_sharing_meta_tags(@service_store, @sharing_link_node, params[:redirect]) %>
+    <%= service_store_sharing_meta_tags(@service_store, @sharing_link_node) %>
   <% end %>
 <% end %>
 
