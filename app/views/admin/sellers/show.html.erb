@@ -102,14 +102,18 @@
       <% end %>
 		<div class="pull-right">
 		<% if can?(:update_service_rate, :uboss_seller) %>
-			<%= form_for 'seller', url: url_for(controller: :sellers, action: :update_service_rate), method: :post do |f| %>
-				<%= hidden_field_tag 'seller[id]', @seller.id %>
-				<%= text_field_tag 'seller[service_rate]', @seller.try(:user_info).try(:service_rate), type: :tel %> %
-				<%= submit_tag '调整', class:"btn btn-large" %>
-			<% end %>
+      <%= link_to update_service_rate_admin_seller_path(@seller.id), class: "btn btn-large edit-rate-btn" do %>
+        <%= hidden_field_tag :platform_service_rate, @seller.user_info.try(:platform_service_rate) %>
+        <%= hidden_field_tag :agent_service_rate, @seller.user_info.try(:agent_service_rate) %>
+        调整
+      <% end %>
 		<% end %>
 		</div>
-		<h3 class="page-title">当前平台费率：<%= @seller.user_info.service_rate %>%</h3>
+    <h3 class="page-title">当前平台费率：
+      <span class="rate-info-<%= @seller.id %>">
+        <%= @seller.user_info.try(:platform_service_rate) %> | <%= @seller.user_info.try(:agent_service_rate) %>
+      </span>‰
+    </h3>
 		<br />
 		<table class="list-table">
 		  <tr>
@@ -117,11 +121,11 @@
 			<th>调整前费率</th>
 			<th>调整后费率</th>
 		  </tr>
-		  <% (@seller.try(:user_info).try(:service_rate_histroy) || {}).each do |k,v| %>
+		  <% (@seller.user_info.service_rate_histroy || {}).each do |k,v| %>
 		  <tr>
 			<td><%= k %></td>
-			<td><%= v['from_service_rate'] %>%</td>
-			<td><%= v['to_service_rate'] %>%</td>
+			<td><%= v['from_service_rate'] %>‰</td>
+			<td><%= v['to_service_rate'] %>‰</td>
 		  </tr>
 		  <% end %>
 		</table>
@@ -289,3 +293,28 @@ $(document).ready(function(){
 	})
 })
 </script>
+
+<div class="modal fade" id="service-rate-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span class='close' aria-hidden="true">&times;</span></button>
+        <h3 class="modal-title" id="myModalLabel">服务费率</h3>
+      </div>
+
+      <%= horizon_form_for :user_info, method: :patch, remote: true do |f| %>
+        <div class="modal-body">
+          <%= f.input :platform_service_rate, label: '平台费率', input_html: { class: 'platform-rate' } %>
+          <%= f.input :agent_service_rate, label: '创客费率', input_html: { class: 'agent-rate' } %>
+        </div>
+
+        <div class="modal-footer">
+          <%= f.submit '确定', class: 'btn btn-large', data: { disable_with: '提交中...' } %>
+          <button type="button" class="btn btn-large gray-btn"data-dismiss="modal">
+            取消
+          </button>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>
