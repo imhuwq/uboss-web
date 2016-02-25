@@ -55,3 +55,10 @@
 <% if qr_sharing? && (current_user.blank? || (current_user && !current_user.has_seller_privilege_card?(@seller)) ) %>
   <%= render partial: 'privilege_card_pop' %>
 <% end %>
+
+<div class="share_buy">
+  <%= link_to '#', class: "#{current_user.has_recommend?(@seller.ordinary_store) ? 'has_recommend': ''} buy-nav recommend_link", user_id: current_user.id, recommended_id: @seller.ordinary_store.id, recommended_type: @seller.ordinary_store.class do %>
+    <div class='buy-icon buy-enter-icon'></div>
+    <div>推荐</div>
+  <% end %>
+</div>
