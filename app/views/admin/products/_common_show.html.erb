@@ -50,7 +50,7 @@
         <span class="control-txt"><%= @product.name %></span>
       </div>
     </div>
-    <% if current_user.is_supplier? and can? :manage, @product %>
+    <% if @product.is_a?(SupplierProduct) && current_user.is_supplier? and can? :manage, @product %>
       <div class="form-group">
         <label class="control-label">成本价</label>
         <div class="control-input">
