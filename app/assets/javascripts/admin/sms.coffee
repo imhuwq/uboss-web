@@ -104,7 +104,8 @@ $ ->
         $('#mobile_auth_code').val('')
       .fail (xhr, textStatus) ->
         if xhr.responseJSON?
-          alert(xhr.responseJSON.message)
+          $('.auth-agency-success .modal-content span').text('授权失败')
+          $('.auth-agency-success').modal()
         else
           $('.auth-agency-success .modal-content span').text('授权失败')
           $('.auth-agency-success').modal()
