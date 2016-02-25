@@ -64,32 +64,32 @@
       		<%= image_tag @privilege_card.user.avatar_url(:w120) %>
       		<%= @privilege_card.user.identify %> <span class="like-color">分享</span>
       </div>
-      <div class="friend-card text-center m-bottom10">
-        <div class="title">优<br/>惠<br/>劵</div>
-        <div class="content">
-	        <% amounts = product_privilege(@product, @privilege_card, :amount) %>
-	        <% if amounts[0] != 0 || (amounts[1].present? && amounts[1] != 0) %>
-	          <div class="text-cut m-bottom10">￥ <%= amounts.join(' - ') %></div>
-	        <% end %>
-	        <div class="detail">通过此页下单，自动抵扣</div> 		
-        </div><!-- content -->  
-      </div>  <!-- friend-card -->
+      <% amounts = product_privilege(@product, @privilege_card, :amount) %>
+      <% if amounts[0] != 0 || (amounts[1].present? && amounts[1] != 0) %>
+        <div class="friend-card text-center m-bottom10">
+          <div class="title">优<br/>惠<br/>劵</div>
+          <div class="content">
+            <div class="text-cut m-bottom10">￥ <%= amounts.join(' - ') %></div>
+            <div class="detail">通过此页下单，自动抵扣</div>
+          </div><!-- content -->
+        </div>  <!-- friend-card -->
+      <% end %>
     </div><!-- bg-white -->
 
   <!-- 自己的友钱卡  -->
   <% elsif self_privilege_card?(@privilege_card) || qr_sharing? %>
     <div class="bg-white gap m-bottom10">
-      <div class="friend-card text-center m-bottom10">
-        <div class="title">优<br/>惠<br/>劵</div>
-        <div class="content">
-	        <% amounts = product_privilege(@product, @privilege_card, :amount) %>
-	        <% if amounts[0] != 0 || (amounts[1].present? && amounts[1] != 0) %>
-	         	<div class="text-cut m-bottom10">￥ <%= amounts.join(' - ') %></div>
-	        <% end %>
-	        <div class="detail">通过此页下单，自动抵扣</div>
-      		</div><!-- content --> 
-      </div>  <!-- friend-card -->
-      <div class="text-center"> 
+      <% amounts = product_privilege(@product, @privilege_card, :amount) %>
+      <% if amounts[0] != 0 || (amounts[1].present? && amounts[1] != 0) %>
+        <div class="friend-card text-center m-bottom10">
+          <div class="title">优<br/>惠<br/>劵</div>
+          <div class="content">
+            <div class="text-cut m-bottom10">￥ <%= amounts.join(' - ') %></div>
+            <div class="detail">通过此页下单，自动抵扣</div>
+          </div><!-- content -->
+        </div>  <!-- friend-card -->
+      <% end %>
+      <div class="text-center">
         <% if @privilege_card.present? %>
           <a class="btn btn-large btn-orange-border btn-w30 p-sharing-btn">分享给朋友</a>
         <% else %>
