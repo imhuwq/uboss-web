@@ -22,7 +22,6 @@ class ProductInventory < ActiveRecord::Base
   # TODO custom properties
   # after_create :create_product_properties
   after_commit :update_unpay_order_items, on: :update, if: -> { price_or_share_amount_changes }
-  after_save :update_children_infos, if: -> { children.present? }
 
   has_paper_trail on: [:update],
     if: Proc.new { |inventory| inventory.orders.where(state: [1, 3]).exists? },
@@ -112,10 +111,6 @@ class ProductInventory < ActiveRecord::Base
     if share_and_privilege_amount_total > price
       errors.add(:share_amount_total, '必须小于对应（商品/规格）的价格')
     end
-  end
-
-  def update_children_infos
-    children.update_all(suggest_price_lower: suggest_price_lower, suggest_price_upper: suggest_price_upper)
   end
 
 end
