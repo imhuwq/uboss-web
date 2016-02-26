@@ -327,6 +327,7 @@ Rails.application.routes.draw do
       resources :sellers, only: [:index, :show, :edit, :update] do
         post :update_service_rate, on: :collection
         get :my_suppliers, on: :collection
+        patch :update_service_rate, on: :member
       end
 
       resource :account, only: [:edit, :show, :update] do

@@ -8,6 +8,7 @@ FactoryGirl.define do
 
       after :create do |order|
         create(:order_item, order: order)
+        order.reload.send(:invoke_privielge_calculator)
       end
 
     end

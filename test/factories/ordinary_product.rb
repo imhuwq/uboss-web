@@ -13,6 +13,7 @@ FactoryGirl.define do
     short_description "product short desc"
     transportation_way 1
     traffic_expense 10
+    avatar 'fake.jpg'
     product_inventories_attributes [{ price: 100, count: 100, sku_attributes: { size: 'x', color: 'red' } }]
 
     trait :sharing_thr do
