@@ -30,6 +30,8 @@ class OrderDivideJobTest < ActiveJob::TestCase
   it 'should setup seller income' do
     @order = create(:order_with_item, state: 'signed')
 
+    @order.reload
+    assert @order.pay_amount > 0
     assert_equal 0, @order.income
 
     OrderDivideJob.perform_now(@order)
@@ -101,8 +103,8 @@ class OrderDivideJobTest < ActiveJob::TestCase
       OrderDivideJob.perform_now(@order.reload)
 
       assert_equal 0, @order.sharing_incomes.count
-      assert_equal 9.5, @order.divide_incomes.sum(:amount)
-      assert_equal 180.5, @order.reload.income
+      assert_equal 4.75, @order.divide_incomes.sum(:amount)
+      assert_equal 185.25, @order.reload.income
     end
 
     it 'should reward sharing user success & divide to agent and citymm' do
@@ -229,8 +231,8 @@ class OrderDivideJobTest < ActiveJob::TestCase
       OrderDivideJob.perform_now(@order.reload)
 
       assert_equal 0.27, agent.reload.income
-      assert_equal 0.28, official_account.reload.income
-      assert_equal 10.56, seller.reload.income
+      assert_equal 0.27, official_account.reload.income
+      assert_equal 10.57, seller.reload.income
     end
 
   end

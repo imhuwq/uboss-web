@@ -87,6 +87,7 @@ class User < ActiveRecord::Base
     :store_short_description, :store_short_description=, :store_cover, :store_cover=, :bonus_benefit, :bonus_benefit=,
     :store_title, :store_identify,
     :good_reputation_rate, :total_reputations,
+    :platform_service_rate, :agent_service_rate,
     to: :ordinary_store, allow_nil: true
 
   enum authenticated: {no: 0, yes: 1}
@@ -507,7 +508,8 @@ class User < ActiveRecord::Base
 
   def set_service_rate
     if self.agent_id_changed? && user_info.present?
-        user_info.service_rate = 5
+        user_info.platform_service_rate = 25
+        user_info.agent_service_rate = 25
     end
   end
 

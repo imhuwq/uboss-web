@@ -4,6 +4,10 @@ FactoryGirl.define do
     sequence(:login) { |n| "138#{n}".ljust(11, '0') }
     password "superPassword"
 
+    after(:create) do |user|
+      user.user_info.update(service_rate: 5, platform_service_rate: 25, agent_service_rate: 25)
+    end
+
     trait :agent do
       after(:create) do |user|
         if !user.is_agent?
@@ -15,7 +19,7 @@ FactoryGirl.define do
     trait :seller do
       after(:create) do |user|
         create(:seller_role_relation, user: user)
-        user.user_info.update(service_rate: 5)
+        user.user_info.update(service_rate: 5, platform_service_rate: 25, agent_service_rate: 25)
       end
     end
 

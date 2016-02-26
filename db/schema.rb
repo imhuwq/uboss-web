@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160127073044) do
+ActiveRecord::Schema.define(version: 20160225090429) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -59,11 +59,6 @@ ActiveRecord::Schema.define(version: 20160127073044) do
     t.string   "alt"
     t.string   "url"
     t.string   "image_type"
-  end
-
-  create_table "attention_associations", force: :cascade do |t|
-    t.integer "user_id"
-    t.integer "following_id"
   end
 
   create_table "bank_cards", force: :cascade do |t|
@@ -166,17 +161,6 @@ ActiveRecord::Schema.define(version: 20160127073044) do
     t.datetime "updated_at",                         null: false
   end
 
-  create_table "cooperations", force: :cascade do |t|
-    t.integer  "supplier_id"
-    t.integer  "agency_id"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
-  end
-
-  add_index "cooperations", ["agency_id"], name: "index_cooperations_on_agency_id", using: :btree
-  add_index "cooperations", ["supplier_id", "agency_id"], name: "index_cooperations_on_supplier_id_and_agency_id", unique: true, using: :btree
-  add_index "cooperations", ["supplier_id"], name: "index_cooperations_on_supplier_id", using: :btree
-
   create_table "daily_reports", force: :cascade do |t|
     t.date     "day"
     t.decimal  "amount"
@@ -272,6 +256,11 @@ ActiveRecord::Schema.define(version: 20160127073044) do
 
   add_index "favour_products", ["product_id", "user_id"], name: "index_favour_products_on_product_id_and_user_id", unique: true, using: :btree
 
+  create_table "follower_associations", force: :cascade do |t|
+    t.integer "user_id"
+    t.integer "follower_id"
+  end
+
   create_table "mobile_captchas", force: :cascade do |t|
     t.string   "code"
     t.datetime "expire_at"
@@ -279,7 +268,6 @@ ActiveRecord::Schema.define(version: 20160127073044) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "captcha_type"
-    t.integer  "sender_id"
   end
 
   add_index "mobile_captchas", ["mobile"], name: "index_mobile_captchas_on_mobile", using: :btree
@@ -347,13 +335,13 @@ ActiveRecord::Schema.define(version: 20160127073044) do
     t.integer  "refund_reason_id"
     t.string   "description"
     t.integer  "order_item_id"
-    t.datetime "created_at",          null: false
-    t.datetime "updated_at",          null: false
+    t.datetime "created_at",                       null: false
+    t.datetime "updated_at",                       null: false
     t.string   "aasm_state"
     t.integer  "order_state"
     t.string   "refund_type"
     t.integer  "user_id"
-    t.jsonb    "state_at_attributes"
+    t.jsonb    "state_at_attributes", default: {}, null: false
     t.string   "address"
     t.string   "return_explain"
     t.datetime "deal_at"
@@ -361,6 +349,7 @@ ActiveRecord::Schema.define(version: 20160127073044) do
 
   create_table "order_items", force: :cascade do |t|
     t.integer  "order_id"
+    t.integer  "product_id"
     t.integer  "user_id"
     t.integer  "amount"
     t.datetime "created_at",                         null: false
@@ -370,7 +359,6 @@ ActiveRecord::Schema.define(version: 20160127073044) do
     t.decimal  "present_price",        default: 0.0
     t.decimal  "privilege_amount",     default: 0.0
     t.integer  "product_inventory_id"
-    t.integer  "product_id"
     t.integer  "order_item_refund_id"
   end
 
@@ -393,10 +381,10 @@ ActiveRecord::Schema.define(version: 20160127073044) do
     t.datetime "signed_at"
     t.datetime "shiped_at"
     t.datetime "completed_at"
-    t.string   "to_seller"
-    t.decimal  "ship_price",      default: 0.0
     t.string   "ship_number"
     t.integer  "express_id"
+    t.string   "to_seller"
+    t.decimal  "ship_price",      default: 0.0
     t.integer  "order_charge_id"
     t.decimal  "paid_amount",     default: 0.0
     t.string   "type"
@@ -436,24 +424,17 @@ ActiveRecord::Schema.define(version: 20160127073044) do
 
   create_table "privilege_cards", force: :cascade do |t|
     t.integer  "user_id"
-    t.datetime "created_at",                           null: false
-    t.datetime "updated_at",                           null: false
+    t.datetime "created_at",                                           null: false
+    t.datetime "updated_at",                                           null: false
     t.boolean  "actived",              default: false
     t.integer  "seller_id"
     t.string   "user_img"
     t.string   "service_store_cover"
     t.string   "user_name"
     t.string   "ordinary_store_cover"
-  end
-
-  add_index "privilege_cards", ["user_id", "seller_id"], name: "index_privilege_cards_on_user_id_and_seller_id", unique: true, using: :btree
-
-  create_table "product_attribute_names", force: :cascade do |t|
-    t.string   "name"
-    t.boolean  "is_key_attr",      default: true
-    t.integer  "product_class_id"
-    t.datetime "created_at",                      null: false
-    t.datetime "updated_at",                      null: false
+    t.datetime "qrcode_expire_at",     default: '2016-02-25 14:44:59'
+    t.string   "service_store_name"
+    t.string   "ordinary_store_name"
   end
 
   add_index "privilege_cards", ["user_id", "seller_id"], name: "index_privilege_cards_on_user_id_and_seller_id", unique: true, using: :btree
@@ -469,25 +450,18 @@ ActiveRecord::Schema.define(version: 20160127073044) do
     t.integer  "product_id"
     t.integer  "product_class_id"
     t.integer  "count"
-    t.jsonb    "sku_attributes",      default: {},   null: false
-    t.datetime "created_at",                         null: false
-    t.datetime "updated_at",                         null: false
+    t.jsonb    "sku_attributes",     default: {},   null: false
+    t.datetime "created_at",                        null: false
+    t.datetime "updated_at",                        null: false
     t.integer  "user_id"
     t.string   "name"
-    t.decimal  "price",               default: 0.0
-    t.decimal  "share_amount_total",  default: 0.0
-    t.decimal  "share_amount_lv_1",   default: 0.0
-    t.decimal  "share_amount_lv_2",   default: 0.0
-    t.decimal  "share_amount_lv_3",   default: 0.0
-    t.decimal  "privilege_amount",    default: 0.0
-    t.boolean  "saling",              default: true
-    t.string   "type"
-    t.decimal  "cost_price"
-    t.decimal  "suggest_price_lower"
-    t.decimal  "suggest_price_upper"
-    t.integer  "quantity"
-    t.boolean  "sale_to_agency"
-    t.integer  "parent_id"
+    t.decimal  "price",              default: 0.0
+    t.decimal  "share_amount_total", default: 0.0
+    t.decimal  "share_amount_lv_1",  default: 0.0
+    t.decimal  "share_amount_lv_2",  default: 0.0
+    t.decimal  "share_amount_lv_3",  default: 0.0
+    t.decimal  "privilege_amount",   default: 0.0
+    t.boolean  "saling",             default: true
   end
 
   add_index "product_inventories", ["sku_attributes"], name: "index_product_inventories_on_sku_attributes", using: :gin
@@ -498,7 +472,6 @@ ActiveRecord::Schema.define(version: 20160127073044) do
     t.integer  "product_class_id"
     t.datetime "created_at",                      null: false
     t.datetime "updated_at",                      null: false
-    t.integer  "user_id"
   end
 
   create_table "product_property_values", force: :cascade do |t|
@@ -507,10 +480,7 @@ ActiveRecord::Schema.define(version: 20160127073044) do
     t.integer  "product_class_id"
     t.datetime "created_at",          null: false
     t.datetime "updated_at",          null: false
-    t.integer  "user_id"
   end
-
-  add_index "product_property_values", ["user_id"], name: "index_product_property_values_on_user_id", using: :btree
 
   create_table "product_property_values_products", id: false, force: :cascade do |t|
     t.integer "product_id",                null: false
@@ -560,29 +530,23 @@ ActiveRecord::Schema.define(version: 20160127073044) do
     t.integer  "service_type"
     t.integer  "monthes"
     t.integer  "service_store_id"
+    t.integer  "parent_id"
     t.integer  "comprehensive_order"
     t.datetime "published_at"
     t.integer  "sales_amount",         default: 0
     t.integer  "sales_amount_order"
+    t.integer  "ordinary_store_id"
   end
 
   add_index "products", ["type"], name: "index_products_on_type", using: :btree
 
-  create_table "purchase_orders", force: :cascade do |t|
-    t.integer  "seller_id"
-    t.integer  "supplier_id"
-    t.integer  "state"
-    t.string   "number"
-    t.integer  "order_id"
-    t.decimal  "pay_amount",  precision: 10, scale: 2
-    t.datetime "paid_at"
-    t.decimal  "income",      precision: 10, scale: 2
-    t.datetime "created_at",                           null: false
-    t.datetime "updated_at",                           null: false
+  create_table "recommends", force: :cascade do |t|
+    t.integer  "user_id"
+    t.integer  "recommended_id"
+    t.string   "recommended_type"
+    t.datetime "created_at",       null: false
+    t.datetime "updated_at",       null: false
   end
-
-  add_index "purchase_orders", ["seller_id"], name: "index_purchase_orders_on_seller_id", using: :btree
-  add_index "purchase_orders", ["supplier_id"], name: "index_purchase_orders_on_supplier_id", using: :btree
 
   create_table "redactor_assets", force: :cascade do |t|
     t.string   "data_file_name",               null: false
@@ -715,16 +679,6 @@ ActiveRecord::Schema.define(version: 20160127073044) do
 
   add_index "simple_captcha_data", ["key"], name: "idx_key", using: :btree
 
-  create_table "stock_movements", force: :cascade do |t|
-    t.integer  "product_inventory_id"
-    t.integer  "originator_id"
-    t.string   "originator_type"
-    t.integer  "quantity"
-    t.integer  "action"
-    t.datetime "created_at",           null: false
-    t.datetime "updated_at",           null: false
-  end
-
   create_table "store_phones", force: :cascade do |t|
     t.string   "area_code"
     t.string   "fixed_line"
@@ -732,16 +686,6 @@ ActiveRecord::Schema.define(version: 20160127073044) do
     t.integer  "service_store_id"
     t.datetime "created_at",       null: false
     t.datetime "updated_at",       null: false
-  end
-
-  create_table "supplier_product_infos", force: :cascade do |t|
-    t.decimal  "cost_price"
-    t.decimal  "suggest_price_lower"
-    t.datetime "created_at",                      null: false
-    t.datetime "updated_at",                      null: false
-    t.decimal  "suggest_price_upper"
-    t.integer  "supply_status",       default: 0
-    t.integer  "supplier_product_id"
   end
 
   create_table "transactions", force: :cascade do |t|
@@ -800,6 +744,7 @@ ActiveRecord::Schema.define(version: 20160127073044) do
     t.integer  "better_evaluation"
     t.integer  "best_evaluation"
     t.string   "store_cover"
+    t.decimal  "bonus_benefit",             default: 0.0
     t.string   "type"
     t.string   "begin_hour"
     t.string   "begin_minute"
@@ -807,7 +752,8 @@ ActiveRecord::Schema.define(version: 20160127073044) do
     t.string   "end_minute"
     t.string   "area"
     t.string   "street"
-    t.decimal  "bonus_benefit",             default: 0.0
+    t.integer  "platform_service_rate",     default: 0
+    t.integer  "agent_service_rate",        default: 0
   end
 
   create_table "user_role_relations", force: :cascade do |t|
@@ -949,8 +895,6 @@ ActiveRecord::Schema.define(version: 20160127073044) do
   add_foreign_key "orders", "users"
   add_foreign_key "orders", "users", column: "seller_id", name: "fk_order_seller_foreign_key"
   add_foreign_key "privilege_cards", "users"
-  add_foreign_key "product_properties", "users"
-  add_foreign_key "product_property_values", "users"
   add_foreign_key "refund_messages", "order_item_refunds"
   add_foreign_key "refund_records", "order_item_refunds"
   add_foreign_key "selling_incomes", "orders"
