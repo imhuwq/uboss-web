@@ -102,7 +102,7 @@ SimpleNavigation::Configuration.run do |navigation|
           highlights_on: :subpath, if: -> { can?(:manage, UserAddress) }
       end
       sub_nav.item :store,  '设置', admin_store_path(current_user) do |thr_nav|
-        thr_nav.item :edit_store, '店铺设置', admin_store_path(current_user),
+        thr_nav.item :edit_store, '店铺设置', edit_admin_stores_path,
           if: -> { can?(:read, Product) }
       end
       sub_nav.item :stock, '市场进货', "#", if: -> { can?(:manage, AgencyProduct) } do |thr_nav|
