@@ -152,6 +152,9 @@ class OrderDivideJob < ActiveJob::Base
                      end
       if city_manager && city_manager.user
         city_divide_income = (order_income * city_manager.rate / 100).truncate(2)
+        if city_divide_income > platform_divide_income
+          city_divide_income = platform_divide_income
+        end
         divide_record = DivideIncome.create!(
           order: @order,
           amount: city_divide_income,
@@ -163,13 +166,18 @@ class OrderDivideJob < ActiveJob::Base
 
       # UBOSS平台
       official_divide_income = platform_divide_income - city_divide_income
-      divide_record = DivideIncome.create!(
-        order: @order,
-        amount: official_divide_income,
-        user: User.official_account
-      )
-      logger.info(
-        "Divide order: #{@order.number}, [OAgent id: #{divide_record.id}, amount: #{official_divide_income} ]")
+      if official_divide_income > 0
+        divide_record = DivideIncome.create!(
+          order: @order,
+          amount: official_divide_income,
+          user: User.official_account
+        )
+        logger.info(
+          "Divide order: #{@order.number}, [OAgent id: #{divide_record.id}, amount: #{official_divide_income} ]")
+      else
+        logger.info(
+          "Divide order: #{@order.number}, [OAgent Reject id: #{divide_record.id}, amount: #{official_divide_income} ]")
+      end
 
       yield divide_income
 
