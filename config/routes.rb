@@ -183,9 +183,13 @@ Rails.application.routes.draw do
       resources :wechat_accounts do
         post :set_menu, on: :member
       end
-      resources :carriage_templates do
-        member do
-          get :copy
+      %w(suppliers sellers).each do |mod|
+        scope path: mod, as: mod do
+          resources :carriage_templates do
+            member do
+              get :copy
+            end
+          end
         end
       end
 

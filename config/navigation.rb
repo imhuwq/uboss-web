@@ -85,8 +85,8 @@ SimpleNavigation::Configuration.run do |navigation|
         thr_nav.item :new_products, '商品', admin_products_path,
           highlights_on: :subpath, if: -> { can?(:read, Product) }
 
-        thr_nav.item :new_products, '运费模板', admin_carriage_templates_path,
-          highlights_on: :subpath, if: -> { params[:as] == 'OrdinaryProduct' && can?(:read, CarriageTemplate) }
+        thr_nav.item :new_products, '运费模板', admin_sellers_carriage_templates_path,
+          highlights_on: :subpath, if: -> { can?(:read, CarriageTemplate) }
 
         thr_nav.item :new_products, '商品分组', admin_categories_path,
           highlights_on: :subpath, if: -> { can?(:read, Category) }
@@ -173,6 +173,8 @@ SimpleNavigation::Configuration.run do |navigation|
       sub_nav.item :supplier_product, '商品', admin_supplier_products_path, if: -> { can?(:manage, SupplierProduct) } do |thr_nav|
         thr_nav.item :supplied_products, '代销中', admin_supplier_products_path(status: 'supply'), highlights_on: -> { params[:status] == 'supply' }, if: -> { can?(:manage, SupplierProduct) }
         thr_nav.item :stored_products, '仓库中', admin_supplier_products_path(status: 'store'), highlights_on: -> { params[:status] == 'store' }, if: -> { can?(:manage, SupplierProduct) }
+        thr_nav.item :new_products, '运费模板', admin_suppliers_carriage_templates_path,
+          highlights_on: :subpath, if: -> { can?(:read, CarriageTemplate) }
       end
       sub_nav.item :purchase_orders, '订单管理', admin_purchase_orders_path,
         if: -> { can?(:manage, PurchaseOrder) }

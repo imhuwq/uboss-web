@@ -1,7 +1,6 @@
 <div class="carriage_template_form_wrapper">
   <%= render partial: 'shared/form_error_message', locals: { obj: @carriage } %>
-  <%= nested_form_for [:admin, @carriage] do |f| %>
-  <%= f.hidden_field :as, value: params[:as] %>
+  <%= nested_form_for action_to_path(@carriage) do |f| %>
     <%= f.label :name %>
     <%= f.text_field :name, class: 'form-control no-border'%>
     <br />
@@ -31,7 +30,7 @@
     </div>
     <div class='submit_btn'>
       <%= f.submit '提交', class: 'btn btn-primary btn-lg' %>
-      <%= link_to '取消', admin_carriage_templates_path %>
+      <%= link_to '取消', action_to_path(:carriage_templates) %>
     </div>
   <% end %>
 </div>
