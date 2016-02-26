@@ -59,12 +59,12 @@
         	已认证
       	<% else %>
         	未认证
-        	<% if current_user.is_super_admin? %>
+        	<% if can?(:manage, Certification) %>
          		<a href="#" class="btn">通过审核</a>  <a href="#" class="btn">未通过</a>
          	<% end %>
       	<% end %>
 		</h3>
-      <% if current_user.is_super_admin? %>
+    <% if can?(:manage, Certification) %>
 		<div class="admin-box">
 			<div class="box-w30">
 				<p>企业营业执照副本：</p>
