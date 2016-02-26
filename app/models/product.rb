@@ -31,6 +31,7 @@ class Product < ActiveRecord::Base
   scope :hot_ordering, -> { order('products.hot DESC, products.id DESC') }
   scope :create_today, -> { where('created_at > ? and created_at < ?', Time.now.beginning_of_day, Time.now.end_of_day) }
 
+  validate :must_has_one_image
   validate :must_has_one_product_inventory
   validates_presence_of :user_id, :name, :asset_img, :type
 
@@ -222,6 +223,10 @@ class Product < ActiveRecord::Base
 
   def must_has_one_product_inventory
     errors.add(:product_inventories, '至少添加一个产品规格属性') unless product_inventories.size > 0
+  end
+
+  def must_has_one_image
+    errors.add(:asset_img, '不能为空') if asset_img.avatar_identifier.blank?
   end
 
 end
