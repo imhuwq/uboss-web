@@ -123,17 +123,20 @@ class OrderDivideJob < ActiveJob::Base
     seller = @order.seller
 
     if seller.service_rate && order_income > 0
-      divide_income = (order_income * seller.service_rate / 100).truncate(2)
-      agent_divide_income = city_divide_income = 0
+      platform_divide_income = (order_income * seller.platform_service_rate / 1000).truncate(2)
+      agent_divide_income = (order_income * seller.agent_service_rate / 1000).truncate(2)
+
+      divide_income = platform_divide_income
+      city_divide_income = 0
 
       # 商家创客分成
       if agent = seller.agent
-        agent_divide_income = (divide_income / 2).truncate(2)
         divide_record = DivideIncome.create!(
           order: @order,
           amount: agent_divide_income,
           user: agent
         )
+        divide_income += agent_divide_income
         logger.info(
           "Divide order: #{@order.number}, [CAgent id: #{divide_record.id}, amount: #{agent_divide_income} ]")
       end
@@ -149,6 +152,9 @@ class OrderDivideJob < ActiveJob::Base
                      end
       if city_manager && city_manager.user
         city_divide_income = (order_income * city_manager.rate / 100).truncate(2)
+        if city_divide_income > platform_divide_income
+          city_divide_income = platform_divide_income
+        end
         divide_record = DivideIncome.create!(
           order: @order,
           amount: city_divide_income,
@@ -159,14 +165,19 @@ class OrderDivideJob < ActiveJob::Base
       end
 
       # UBOSS平台
-      official_divide_income = divide_income - agent_divide_income - city_divide_income
-      divide_record = DivideIncome.create!(
-        order: @order,
-        amount: official_divide_income,
-        user: User.official_account
-      )
-      logger.info(
-        "Divide order: #{@order.number}, [OAgent id: #{divide_record.id}, amount: #{official_divide_income} ]")
+      official_divide_income = platform_divide_income - city_divide_income
+      if official_divide_income > 0
+        divide_record = DivideIncome.create!(
+          order: @order,
+          amount: official_divide_income,
+          user: User.official_account
+        )
+        logger.info(
+          "Divide order: #{@order.number}, [OAgent id: #{divide_record.id}, amount: #{official_divide_income} ]")
+      else
+        logger.info(
+          "Divide order: #{@order.number}, [OAgent Reject id: #{divide_record.id}, amount: #{official_divide_income} ]")
+      end
 
       yield divide_income
 

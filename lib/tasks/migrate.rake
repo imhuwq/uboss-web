@@ -1,5 +1,17 @@
 namespace :migrate do
 
+  desc 'Migrate service rate'
+  task service_rate: :environment do
+    OrdinaryStore.find_each do |ordinary_store|
+      rate = ordinary_store.service_rate * 5
+      ordinary_store.update_columns(
+        platform_service_rate: rate,
+        agent_service_rate: rate
+      )
+      printf '.'
+    end
+  end
+
   desc 'Migrate new roles'
   task user_roles: :environment do
     UserRole.create(name: 'offical_senior',    display_name: 'UBOSS高级管理员')

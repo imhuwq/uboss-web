@@ -37,7 +37,7 @@
     <% end %>
 
     <%= f.input :service_rate, label: '当前平台费率' do %>
-      <span><%= number_to_percentage(f.object.service_rate, precision: 0) %></span>
+      <span><%= number_to_percentage((f.object.platform_service_rate + f.object.agent_service_rate)/10.0, precision: 1) %></span>
     <% end %>
     </div>
 	<br />

@@ -100,7 +100,7 @@ class Order < ActiveRecord::Base
   private
 
   def invoke_privielge_calculator
-    @preferential_calculator ||= PreferentialCalculator.new(
+    @preferential_calculator = PreferentialCalculator.new(
       buyer: user,
       preferential_items: order_items
     )

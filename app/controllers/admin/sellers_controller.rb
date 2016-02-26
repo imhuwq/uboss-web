@@ -46,26 +46,19 @@ class Admin::SellersController < AdminController
 
   def update_service_rate
     authorize! :update_service_rate, :uboss_seller
-    user_info = UserInfo.find_by(user_id: params['seller']['id'])
-    to_service_rate = params['seller']['service_rate']
-    if to_service_rate.present? && user_info.present?
-      from_service_rate = user_info.service_rate
-      if to_service_rate.to_f >= 5 && to_service_rate.to_f <= 10
-        user_info.update(service_rate: to_service_rate)
-        user_info.service_rate_histroy = {}
-        user_info.service_rate_histroy[Time.now.to_datetime] = { from_service_rate: from_service_rate, to_service_rate: to_service_rate }
-        if user_info.save
-          flash[:success] = '保存成功'
-        else
-          flash[:error] = "保存失败：#{user_info.errors.full_messages.join('<br/>')}"
-        end
-      else
-        flash[:error] = '可选范围介于5%~10%'
-      end
+    user_params = params.require('user_info').permit(:platform_service_rate, :agent_service_rate)
+
+    @ordinary_store = OrdinaryStore.find_by!(user_id: params[:id])
+
+    if @ordinary_store.update(user_params)
+      render json: {
+        id: @ordinary_store.user_id,
+        platform_service_rate: @ordinary_store.platform_service_rate,
+        agent_service_rate: @ordinary_store.agent_service_rate
+      }
     else
-      flash[:error] = "提交的参数有误：#{params}"
+      render json: { message: @ordinary_store.errors.full_messages.join('，') }, status: 422
     end
-    redirect_to action: :show, id: user_info.user_id
   end
 
   private
