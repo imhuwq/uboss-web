@@ -226,7 +226,7 @@ class Product < ActiveRecord::Base
   end
 
   def must_has_one_image
-    errors.add(:asset_img, '不能为空') unless asset_img.read_attribute(:avatar)
+    errors.add(:asset_img, '不能为空') if asset_img.avatar_identifier.blank?
   end
 
 end
