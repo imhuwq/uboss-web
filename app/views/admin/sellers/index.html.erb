@@ -81,12 +81,16 @@
 				<%= Evaluation.sharer_good_reputation_rate(seller) %>
 			</td>
       <td>
-        <%= link_to update_service_rate_admin_seller_path(seller.id), class: "edit-rate-btn" do %>
-          <%= hidden_field_tag :platform_service_rate, seller.user_info.try(:platform_service_rate) %>
-          <%= hidden_field_tag :agent_service_rate, seller.user_info.try(:agent_service_rate) %>
-          <span class="rate-info-<%= seller.id %>">
-            <%= seller.user_info.try(:platform_service_rate) %> | <%= seller.user_info.try(:agent_service_rate) %>
-          </span>‰
+        <% if can?(:update_service_rate, :uboss_seller) %>
+          <%= link_to update_service_rate_admin_seller_path(seller.id), class: "edit-rate-btn" do %>
+            <%= hidden_field_tag :platform_service_rate, seller.user_info.try(:platform_service_rate) %>
+            <%= hidden_field_tag :agent_service_rate, seller.user_info.try(:agent_service_rate) %>
+            <span class="rate-info-<%= seller.id %>">
+              <%= seller.user_info.try(:platform_service_rate) %> | <%= seller.user_info.try(:agent_service_rate) %>
+            </span>‰
+          <% end %>
+        <% else %>
+          <%= seller.user_info.try(:platform_service_rate) %> | <%= seller.user_info.try(:agent_service_rate) %>
         <% end %>
       </td>
 			<td><%= seller.created_at %></td>
