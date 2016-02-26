@@ -1,6 +1,7 @@
 <div class="carriage_template_form_wrapper">
   <%= render partial: 'shared/form_error_message', locals: { obj: @carriage } %>
   <%= nested_form_for [:admin, @carriage] do |f| %>
+  <%= f.hidden_field :as, value: params[:as] %>
     <%= f.label :name %>
     <%= f.text_field :name, class: 'form-control no-border'%>
     <br />
