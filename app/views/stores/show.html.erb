@@ -56,9 +56,11 @@
   <%= render partial: 'privilege_card_pop' %>
 <% end %>
 
-<div class="share_buy">
-  <%= link_to '#', class: "#{current_user.has_recommend?(@seller.ordinary_store) ? 'has_recommend': ''} buy-nav recommend_link", user_id: current_user.id, recommended_id: @seller.ordinary_store.id, recommended_type: @seller.ordinary_store.class do %>
-    <div class='buy-icon buy-enter-icon'></div>
-    <div>推荐</div>
-  <% end %>
-</div>
+<% if current_user %>
+  <div class="share_buy">
+    <%= link_to '#', class: "#{current_user.has_recommend?(@seller.ordinary_store) ? 'has_recommend': ''} buy-nav recommend_link", user_id: current_user.id, recommended_id: @seller.ordinary_store.id, recommended_type: @seller.ordinary_store.class do %>
+      <div class='buy-icon buy-enter-icon'></div>
+      <div>推荐</div>
+    <% end %>
+  </div>
+<% end %>
