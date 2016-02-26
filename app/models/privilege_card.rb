@@ -51,7 +51,7 @@ class PrivilegeCard < ActiveRecord::Base
   def ordinary_store_qrcode_img_url(expire = false)
     if ordinary_store_qrcode_img.new_record? || daily_expired_or_info_charged?(expire)
       delay.get_and_save_store_qrcode_url
-      return "http://imager.ulaiber.com/req/1?#{ordinary_store_qrcode_params.merge(mode: 0).to_param}"
+      return "http://imager.ulaiber.com/req/2?#{ordinary_store_qrcode_params.merge(mode: 0).to_param}"
     end
 
     reload.ordinary_store_qrcode_img.image_url
@@ -60,7 +60,7 @@ class PrivilegeCard < ActiveRecord::Base
   def service_store_qrcode_img_url(expire = false)
     if service_store_qrcode_img.new_record? || daily_expired_or_info_charged?(expire)
       delay.get_and_save_store_qrcode_url
-      return "http://imager.ulaiber.com/req/1?#{service_store_qrcode_params.merge(mode: 0).to_param}"
+      return "http://imager.ulaiber.com/req/2?#{service_store_qrcode_params.merge(mode: 0).to_param}"
     end
 
     reload.service_store_qrcode_img.image_url
@@ -85,14 +85,16 @@ class PrivilegeCard < ActiveRecord::Base
 
     self.user_name = user.nickname
     self.user_img  = user.read_attribute(:avatar)
-    self.service_store_cover = service_store.read_attribute(:store_cover)
+    self.service_store_name   = service_store.store_name
+    self.ordinary_store_name  = ordinary_store.store_name
+    self.service_store_cover  = service_store.read_attribute(:store_cover)
     self.ordinary_store_cover = ordinary_store.read_attribute(:store_cover)
     self.qrcode_expire_at = Time.current + Rails.application.secrets.privilege_card['qrcode_expire_days'].day
     self.save
   end
 
   def get_store_qrcode_img_url(qrcode_params)
-    request_uri = URI("http://imager.ulaiber.com/req/1?#{qrcode_params.to_param}")
+    request_uri = URI("http://imager.ulaiber.com/req/2?#{qrcode_params.to_param}")
     res = Net::HTTP.get_response request_uri
 
     if res.is_a?(Net::HTTPSuccess)
@@ -103,32 +105,36 @@ class PrivilegeCard < ActiveRecord::Base
 
   def ordinary_store_qrcode_params
     {
-      user_img_url: user.image_url(:w60),
-      item_img_url: ordinary_store.store_cover_url(:w250x250),
+      user_img_url: user.image_url(:thumb),
+      item_img_url: ordinary_store.store_cover_url(:thumb),
       qrcode_content: url_helpers.sharing_url(code: sharing_node.code, host: default_host),
-      username: EmojiCleaner.clear(user.nickname),
+      itemname: EmojiCleaner.clear(ordinary_store.store_name),
+      username:  EmojiCleaner.clear(user.nickname),
       mode: 1
     }
   end
 
   def service_store_qrcode_params
     {
-      user_img_url: user.image_url(:w60),
-      item_img_url: service_store.store_cover_url(:w250x250),
+      user_img_url: user.image_url(:thumb),
+      item_img_url: service_store.store_cover_url(:thumb),
       qrcode_content: url_helpers.sharing_url(code: sharing_node.code, host: default_host, redirect: url_helpers.service_store_path(service_store)),
-      username: EmojiCleaner.clear(user.nickname),
+      itemname: EmojiCleaner.clear(service_store.store_name),
+      username:  EmojiCleaner.clear(user.nickname),
       mode: 1
     }
   end
 
   def daily_expired_or_info_charged?(expire)
     (
-      expire && qrcode_expire_at < (Rails.env.production? ? Time.current : Time.current + Rails.application.secrets.privilege_card['qrcode_expire_days'].day - 5.minute)
+      expire && qrcode_expire_at < (Rails.env.production? ? Time.current : Time.current + Rails.application.secrets.privilege_card['qrcode_expire_days'].day - 1.minute)
     ) || (
       user_name != user.nickname ||
       user_img != user.read_attribute(:avatar) ||
       service_store_cover  != service_store.read_attribute(:store_cover) ||
-      ordinary_store_cover != ordinary_store.read_attribute(:store_cover)
+      ordinary_store_cover != ordinary_store.read_attribute(:store_cover) ||
+      service_store_name   != service_store.store_name ||
+      ordinary_store_name  != ordinary_store.store_name
     )
   end
 
