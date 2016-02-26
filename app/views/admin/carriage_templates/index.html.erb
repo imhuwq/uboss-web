@@ -8,7 +8,7 @@
 <br />
 <div class="container admin-container carriage_template_index_wrapper">
   <% if can? :create, CarriageTemplate %>
-    <%= link_to '新增运费模板', new_admin_carriage_template_path, class: 'btn btn-primary' %>
+    <%= link_to '新增运费模板', action_to_path(:carriage_template, {action: :new}), class: 'btn btn-primary' %>
   <% end %>
   <div class='carriage_template_table_list_wrapper'>
     <% @carriages.each do |carriage| %>

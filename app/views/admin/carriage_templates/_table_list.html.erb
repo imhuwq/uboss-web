@@ -4,13 +4,13 @@
     <div class='header_label_right'>
       <span>最后编辑时间: <%= carriage.updated_at %></span>
       <% if can? :create, CarriageTemplate %>
-        <%= link_to '复制模板', copy_admin_carriage_template_path(carriage), remote: true %>
+        <%= link_to '复制模板', action_to_path(carriage, {action: :copy}), remote: true %>
       <% end %>
       <% if can? :update, carriage %>
-        <%= link_to '修改', edit_admin_carriage_template_path(carriage) %>
+        <%= link_to '修改', action_to_path(carriage, {action: :edit}) %>
       <% end %>
       <% if can? :destroy, carriage %>
-        <%= link_to '删除模板', admin_carriage_template_path(carriage), method: 'DELETE', data: {confirm: "确定删除模板 #{carriage.name} ?"} %>
+        <%= link_to '删除模板', action_to_path(carriage), method: 'DELETE', data: {confirm: "确定删除模板 #{carriage.name} ?"} %>
       <% end %>
     </div>
   </div>
