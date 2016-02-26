@@ -72,25 +72,7 @@
   </div>
 </div>
 <br />
-<% unless current_user.is_supplier? and can? :manage, @product %>
-  <div id="sku-privelege-group" class="admin-box beige-bg-color">
-    <h4 class="edit-title">分成设置</h4>
-    <div class="form-group sku-privilege-lvs-group">
-      <label class="control-label">返利方案</label>
-      <div class='sku-plvs-btns control-input'>
-        <!-- <a href="#" class='btn btn&#45;link btn&#45;border' data&#45;level='3'>三级返利</a> -->
-        <!-- <a href="#" class='btn btn&#45;link btn&#45;border' data&#45;level='2'>二级返利</a> -->
-        <a href="#" class='btn btn-link btn-border' data-level='1'>一级返利</a>
-      </div>
-    </div>
-    <div class="form-group sku-privilege-list-group">
-      <label class="control-label">返利金额</label>
-      <div class='sku-privilege-list control-input'>
-        <p><span>请添加产品规格属性</span></p>
-      </div>
-    </div>
-  </div><!-- admin-box -->
-<% end %>
+<%= render "admin/products/form/rebate" if @product.is_a?(OrdinaryProduct) && can?(:manage, @product) %>
 <br  />
 <div class="admin-box beige-bg-color logistics_and_other">
   <h4 class="edit-title">物流及其他</h4>
@@ -110,7 +92,7 @@
   <%= link_to admin_refresh_carriage_template_path, remote: true do %>
     <i class="fa fa-refresh link_refresh"></i>
   <% end %>
-  <span class='link_new_carriage_temp'><%= link_to '新建运费模板', new_admin_carriage_template_path, target: '_blank', class: 'label new_admin_carriage_template' %></span>
+  <span class='link_new_carriage_temp'><%= link_to '新建运费模板', new_admin_carriage_template_path(as: @product.type), target: '_blank', class: 'label new_admin_carriage_template' %></span>
   <%= render partial: 'admin/products/show_carriage_template', locals: {carriage: @product.carriage_template} %>
 
   <div class='full_cut_wrap'>
