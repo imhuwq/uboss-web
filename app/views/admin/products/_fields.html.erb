@@ -110,7 +110,7 @@
   <%= link_to admin_refresh_carriage_template_path, remote: true do %>
     <i class="fa fa-refresh link_refresh"></i>
   <% end %>
-  <span class='link_new_carriage_temp'><%= link_to '新建运费模板', new_admin_carriage_template_path, target: '_blank', class: 'label new_admin_carriage_template' %></span>
+  <span class='link_new_carriage_temp'><%= link_to '新建运费模板', new_admin_carriage_template_path(as: @product.type), target: '_blank', class: 'label new_admin_carriage_template' %></span>
   <%= render partial: 'admin/products/show_carriage_template', locals: {carriage: @product.carriage_template} %>
 
   <div class='full_cut_wrap'>

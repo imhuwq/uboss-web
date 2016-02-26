@@ -86,7 +86,7 @@ SimpleNavigation::Configuration.run do |navigation|
           highlights_on: :subpath, if: -> { can?(:read, Product) }
 
         thr_nav.item :new_products, '运费模板', admin_carriage_templates_path,
-          highlights_on: :subpath, if: -> { can?(:read, CarriageTemplate) }
+          highlights_on: :subpath, if: -> { params[:as] == 'OrdinaryProduct' && can?(:read, CarriageTemplate) }
 
         thr_nav.item :new_products, '商品分组', admin_categories_path,
           highlights_on: :subpath, if: -> { can?(:read, Category) }
