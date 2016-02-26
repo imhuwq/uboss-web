@@ -99,14 +99,7 @@
     </div>
   </div>
   <br />
-  <div id="sku-privelege-group" class="admin-box beige-bg-color">
-    <h4 class="edit-title">返利详情</h4>
-    <div class="form-group sku-privilege-list-group">
-      <label class="control-label">返利金额</label>
-      <div class='sku-privilege-list control-input'></div>
-    </div>
-  </div><!-- admin-box -->
-  <br />
+  <%= render "admin/products/show/rebate" if @product.is_a?(OrdinaryProduct) %>
   <div class="admin-box beige-bg-color">
     <h4 class="edit-title">物流及其他</h4>
     <div class="form-group">
