@@ -56,13 +56,13 @@ class Admin::SupplierProductsController < AdminController
     supplier_product_info = @supplier_product.supplier_product_info
     begin
       if params[:status] == 'store'
-        @supplier_product.stored!
+        @supplier_product.stored
         @notice = '下架成功'
       elsif params[:status] == 'supply'
-        @supplier_product.supplied!
+        @supplier_product.supplied
         @notice = '上架成功'
       elsif params[:status] == 'delete'
-        @supplier_product.deleted!
+        @supplier_product.deleted
         @notice = '删除成功'
       else
         @error = '未知操作'
