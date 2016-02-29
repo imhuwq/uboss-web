@@ -122,3 +122,57 @@ a#choose_by_hand {
 a.standout-link {
   color: #43c3aa;
 }
+
+.dropdown.card {
+  float: right;
+  margin-right: 10px;
+  position: relative;
+  .dropdown-menu {
+    background-color: #505050;
+    text-align: center;
+    width: 480px;
+    .errors {
+      color: tomato;
+    }
+    .img, .name, .add-sign {
+      margin: 5px 0;
+    }
+    ul {
+      list-style: none;
+      overflow: hidden;
+      padding: 0;
+      &.supply-contact {
+        margin-bottom: 0;
+        border-top: 1px solid black;
+        padding: 10px 0 2px;
+      }
+      li {
+        float: left;
+        width: 50%;
+        
+      }
+    }
+    .form {
+      display: none;
+      form {
+        input[type='text'] {
+          border-radius: 0;
+          width: 120px;
+          padding-bottom: 0;
+        }
+      }
+    }
+    .show-value {
+      span {
+        margin-left: 12px;
+        &.text {
+          margin-left: 0;
+        }
+        a {
+          cursor: pointer;
+          font-size: 12px;
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,9 @@
+<% if @supplier_store.errors.blank? %>
+  $('#card-dropdown-menu .errors').html('')
+  $('#card-dropdown-menu .contacts .show-value span.phone').text('<%= @supplier_store.phone_number %>')
+  $('#card-dropdown-menu .contacts .show-value span.wechat').text('<%= @supplier_store.wechat_id %>')
+  $('#card-dropdown-menu .contacts .show-value').show()
+  $('#card-dropdown-menu .contacts .form').hide()
+<% else %>
+  $('#card-dropdown-menu .errors').text('<%= @supplier_store.errors.full_messages.join('，') %>')
+<% end %>
