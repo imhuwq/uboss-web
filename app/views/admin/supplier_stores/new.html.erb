@@ -25,19 +25,25 @@
     }
   });
 
-  $(document).on("click", "#address-modal button", function(){
+  $(document).on("click", "#address-modal button", function(event){
+    var errors;
     var city = $("#address-modal select").map(function(index,e){
       if(index == 0 && $(e).find('option:selected').text() == '--省份--'){
+        errors = "请选择省份";
         return null;
       } else if (index == 1 && $(e).find('option:selected').text() == '--城市--'){
+        errors = "请选择城市"
         return null;
       } else if (index == 2 && $(e).find('option:selected').text() == '--地区--'){
+        errors = "请选择地区"
         return null;
       } else {
         return $(e).find('option:selected').text();
       }
-    }).toArray().join(" ");
-    if(city.length > 0){
+    }).toArray().join(" ").trim();
+    if(errors){
+      alert(errors);
+    } else if (city.length > 0){
       $('span#guesscity').text(city);
     }else{
       $('span#guesscity').text('未知地点');
