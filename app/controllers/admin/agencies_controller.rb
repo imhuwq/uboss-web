@@ -7,6 +7,7 @@ class Admin::AgenciesController < AdminController
     @agencies = current_user.agencies.includes(:agency_products, :reverse_cooperations).page(params[:page])
     @statistics = {}
     @statistics[:count] = @agencies.total_count
+    @statistics[:supplier_product_count] = current_user.supplier_products.supplied.count
   end
   
   def new
@@ -24,7 +25,6 @@ class Admin::AgenciesController < AdminController
         else
           user = User.new(login: mobile, mobile: mobile, password: Devise.friendly_token, need_reset_password: true)
           user.save(validate: false)
-          
           user
         end
 

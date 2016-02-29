@@ -88,3 +88,15 @@ jQuery ($) ->
 
   $('.cooperation').on 'hide.bs.modal', ->
     $('.list-table tr:hover td').removeAttr('style')
+
+  $('#card-link').hover(->
+    $('#card-dropdown-menu').toggle()
+  ).click ->
+    $('#card-dropdown-menu').toggle()
+
+  $('#card-dropdown-menu').hover ->
+    $('#card-dropdown-menu').toggle()
+
+  $(document).on 'click', '.show-value span a', ->
+    $(this).closest('.show-value').siblings().show()
+    $(this).closest('.show-value').hide()
