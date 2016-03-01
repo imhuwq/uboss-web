@@ -1,0 +1,78 @@
+<%= render 'layouts/flash_alert' if request.xhr? %>
+<div class="index_list">
+<table class="list-table" id="products">
+		<thead>			
+			<th colspan="2">商品</th>
+			<th>成本价</th>
+			<th>建议售价</th>
+			<% if current_user.is_super_admin? %>
+				<th>商家</th>
+			<% end %>
+			<th>好评率</th>
+      <th>库存</th>
+			<th>总销量</th>
+			<th>发布时间</th>
+			<th>操作</th>
+		</thead>
+		<% products.each do |product| %>
+			<tr class="product" id='product_<%= product.id %>'>
+				<td>
+          <%= link_to the_product_path(product) do %>
+						<%= image_tag(product.image_url(:thumb), size: "80x80", alt: "-") %>　
+					<% end %>
+				</td>
+				<td class="text-left" style="max-width: 400px;">
+					<%= link_to the_product_path(product) do %>
+						<%= product.name %>
+					<% end %>
+				</td>
+        <td><%= number_to_currency product.cost_price %></td>
+				<td>
+          <% if product.suggest_price_upper.present? %>
+            <%= number_to_currency product.suggest_price_lower %>
+            -
+            <%= number_to_currency product.suggest_price_upper %>
+          <% else %>
+            最低<%= number_to_currency product.suggest_price_lower %>
+          <% end %>
+				</td>
+				<% if current_user.is_super_admin? %>
+				<td><%= link_to product.user.identify, url_for(controller: 'admin/sellers', action: :show, id: product.user) %></td>
+				<% end %>
+				<td><%= Evaluation.product_good_reputation_rate(product.id) %></td>
+        <td><%= product.count %></td>
+				<td><%= product.total_sells %></td>
+				<td><%= product.created_at %></td>
+				<td>
+          <% if can_manage_supplier_product(product) %>
+            <% if product.supply_status == 'stored' %>
+              <p>
+              <%= link_to("上架", toggle_supply_status_admin_supplier_product_path(product, status: 'supply'),
+              remote: true, method: :patch, data: { disable_with: '<i class="fa fa-spinner"></i>' },
+              class: "btn btn-mid btn-block yellow-btn change-status-btn") %>
+              </p>
+            <% elsif product.supply_status == 'supplied' %>
+              <p>
+              <%= link_to("下架", toggle_supply_status_admin_supplier_product_path(product, status: 'store'),
+              remote: true, method: :patch, data: { disable_with: '<i class="fa fa-spinner"></i>' },
+              class: "btn btn-mid btn-block change-status-btn") %>
+              </p>
+            <% end %>
+
+            <%= link_to url_for(action: :edit, id: product.id), class:'edit-icon', title: '编辑' do %>
+              <i class="fa fa-pencil-square-o"></i>
+            <% end %>
+
+            <% unless product.supply_status == 'deleted' %>
+              <%= link_to toggle_supply_status_admin_supplier_product_path(product, status: 'delete'),
+                remote: true, method: :patch, class:'change-status-btn edit-icon',
+                data: { disable_with: '<i class="fa fa-trash-o"></i>' } do %>
+                <i class="fa fa-trash-o"></i>
+              <% end %>
+            <% end %>
+          <% end %>
+				</td>
+			</tr>
+		<% end %>
+</table>
+</div>

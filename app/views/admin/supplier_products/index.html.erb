@@ -20,7 +20,7 @@
     <%= link_to("+ 发布商品", (current_user.is_supplier? ? url_for(action: :new) : new_admin_supplier_store_path), class: "btn btn-large", role: "button") %>
   </div>
   <br />
-  <%= render partial: 'admin/products/products', locals: { products: @supplier_products } %>
+  <%= render 'products', products: @supplier_products %>
 </div>
 
 <%= paginate @supplier_products %>
