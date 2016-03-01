@@ -47,7 +47,7 @@ $ ->
       $('#ordinary_product_carriage_template_id_chosen').find('.chosen-single').find('span').text('请选择运费模板...')
       $('#ordinary_product_carriage_template_id option:selected').attr('selected', false)
 
-  $("label[for='ordinary_product_full_cut']").click (event)->
+  $("label[for='ordinary_product_full_cut'],label[for='supplier_product_full_cut']").click (event)->
     if $(this).find('input')[0].checked
       $('.full_cut_params').show()
       $(this).addClass('checkbox_is_checked')
