@@ -28,16 +28,17 @@ class StockSku.Models.Stock extends Backbone.Model
     errors = {}
     suggest_price_lower = Number(@get('suggest_price_lower'))
     suggest_price_upper = Number(@get('suggest_price_upper'))
+    isSupplierProduct = App.controller == "admin/supplier_products" ? true : false
     if attrs.count < 0
       errors.count = '库存必须大于0'
-    if attrs.share_amount_total >= attrs.price
+    if !isSupplierProduct && attrs.share_amount_total >= attrs.price
       errors.share_amount_total = '返利需小于商品价格'
       errors.price = '商品价格需大于返利值'
     if attrs.share_amount_total < 0
       errors.share_amount_total = '返利不能小于0'
-    if attrs.price < 0.01
+    if !isSupplierProduct && attrs.price < 0.01
       errors.price = '价格必须大于0.01'
-    if suggest_price_lower + suggest_price_upper > 0
+    if isSupplierProduct && suggest_price_lower + suggest_price_upper > 0
       if attrs.price > suggest_price_upper || attrs.price < suggest_price_lower
         errors.price = '价格必须大于' + suggest_price_lower + '且小于' + suggest_price_upper
     if not _.isEmpty(errors)
