@@ -10,7 +10,7 @@
 
   <% @recommend_stores.each do |store| %>
     <% cache ['recommend', store], expires_in: 1.hour do %>
-      <div class="bg-white gap border-box">
+      <div class="bg-white gap border-box m-top10">
         <div class="product-store-box">
           <div class="cover">
             <%= image_tag store.store_cover.url(:w120) %>
@@ -43,8 +43,8 @@
             <% end %>
           </div>
         </div>
-        <br />
       <% end %>
     <% end %>
   <% end %>
 </div>
+<br />
