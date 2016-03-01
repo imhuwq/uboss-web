@@ -92,7 +92,7 @@
             <% end %>
           <% end %>
           <% if can_agent_product(product) %>
-            <div class="agency-product-actions">
+            <div class="agency-product-actions agency-product-action-<%= product.id %>">
               <% if product.has_been_agented_by?(current_user) %>
                 <button class="btn btn-mid btn-block" disabled><%= product.published? ? '已添加到店铺' : '已添加到仓库' %></button>
               <% else %>
