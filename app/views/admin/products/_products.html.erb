@@ -20,7 +20,7 @@
 					<% end %>
 				</td>
 				<td class="text-left" style="max-width: 400px;">
-					<%= link_to (current_user.is_seller? and can? :manage, product) ? admin_product_path(product) : admin_supplier_product_path(product) do %>
+					<%= link_to the_product_path(product) do %>
 						<%= product.name %>
 					<% end %>
 				</td>
