@@ -1,11 +1,11 @@
 <% if @product_copy.valid? %>
-  if($(".agency-product-actions a").hasClass("btn-large")){
+  if($(".agency-product-action-<%= @product.id %> a").hasClass("btn-large")){
     btn_class = "btn-large"
   }
   else{
     btn_class = "btn-mid"
   }
-  $(".agency-product-actions").html("<button class='btn "+btn_class+"' disabled>已添加到店铺</button>")
+  $(".agency-product-action-<%= @product.id %>").html("<button class='btn "+btn_class+"' disabled>已添加到店铺</button>")
 <% else %>
   alert('添加到店铺失败！')
 <% end %>
