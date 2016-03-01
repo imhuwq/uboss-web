@@ -91,6 +91,7 @@ class Admin::SupplierProductsController < AdminController
 
   def supplier_product_params
     params['supplier_product'].merge!(params['product']) if params[:product].is_a?(Hash)
+    params['supplier_product'].merge!(params['ordinary_product']) if params[:ordinary_product].is_a?(Hash)
     params['supplier_product']['supplier_product_inventories_attributes'] = params['supplier_product']['product_inventories_attributes']
     params.require(:supplier_product).permit(
       :name, :content, :has_share_lv, :calculate_way, :avatar,
