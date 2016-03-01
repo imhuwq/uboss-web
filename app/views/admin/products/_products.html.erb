@@ -23,6 +23,9 @@
 					<%= link_to the_product_path(product) do %>
 						<%= product.name %>
 					<% end %>
+          <% if product.type == "AgencyProduct" %>
+            (<%= t(product.type) %>)
+          <% end %>
 				</td>
 				<td>
 					<%= number_to_currency product.present_price %>
@@ -63,32 +66,6 @@
               remote: true, method: :patch, class:'change-status-btn edit-icon',
               data: { disable_with: '<i class="fa fa-trash-o"></i>' } do %>
               <i class="fa fa-trash-o"></i>
-            <% end %>
-          <% elsif can_manage_supplier_product(product) %>
-            <% if product.supply_status == 'stored' %>
-              <p>
-              <%= link_to("上架", toggle_supply_status_admin_supplier_product_path(product, status: 'supply'),
-              remote: true, method: :patch, data: { disable_with: '<i class="fa fa-spinner"></i>' },
-              class: "btn btn-mid btn-block yellow-btn change-status-btn") %>
-              </p>
-            <% elsif product.supply_status == 'supplied' %>
-              <p>
-              <%= link_to("下架", toggle_supply_status_admin_supplier_product_path(product, status: 'store'),
-              remote: true, method: :patch, data: { disable_with: '<i class="fa fa-spinner"></i>' },
-              class: "btn btn-mid btn-block change-status-btn") %>
-              </p>
-            <% end %>
-
-            <%= link_to url_for(action: :edit, id: product.id), class:'edit-icon', title: '编辑' do %>
-              <i class="fa fa-pencil-square-o"></i>
-            <% end %>
-
-            <% unless product.supply_status == 'deleted' %>
-              <%= link_to toggle_supply_status_admin_supplier_product_path(product, status: 'delete'),
-                remote: true, method: :patch, class:'change-status-btn edit-icon',
-                data: { disable_with: '<i class="fa fa-trash-o"></i>' } do %>
-                <i class="fa fa-trash-o"></i>
-              <% end %>
             <% end %>
           <% end %>
           <% if can_agent_product(product) %>

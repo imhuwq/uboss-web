@@ -122,6 +122,14 @@ class SupplierProduct < Product
     AgencyProduct.exists?(user_id: agency.id, parent_id: id)
   end
 
+  def total_sells
+    count = 0
+    children.each do |child|
+      count += child.total_sells
+    end
+    count
+  end
+
   private
 
   def must_has_one_product_inventory
