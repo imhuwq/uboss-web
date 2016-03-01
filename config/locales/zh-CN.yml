@@ -90,6 +90,7 @@ zh-CN:
     agency_product_inventories: 库存/规格
     supplier_store_info: 供货商铺信息
     supplier_store: 供货商铺
+    
   simple_form:
     labels:
       express:
@@ -484,3 +485,4 @@ zh-CN:
       agency_order: 分销
       service_order: 团购
       ordinary_order: ''
+  AgencyProduct: 代销商品
