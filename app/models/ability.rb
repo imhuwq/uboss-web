@@ -131,6 +131,7 @@ class Ability
     can :manage, AgencyProduct, user_id: user.id
     can :read, SupplierStore, supplier: { cooperations: { agency_id: user.id } }
     can :valid_agent_products, SupplierProduct
+    can :read, SupplierProduct, supplier: { cooperations: { agency_id: user.id } }
     can :store_or_list_supplier_product, SupplierProduct, supplier: { cooperations: { agency_id: user.id } }
   end
 
