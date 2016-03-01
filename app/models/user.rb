@@ -120,6 +120,11 @@ class User < ActiveRecord::Base
     RUBY
   end
 
+  def has_privilege_card?(object)
+    seller_ids = self.privilege_cards.map(&:seller_id)
+    seller_ids.include?(object.user_id)
+  end
+
   def service_store
     super || build_service_store
   end

@@ -371,7 +371,7 @@ ActiveRecord::Schema.define(version: 20160222063837) do
     t.string   "service_store_cover"
     t.string   "user_name"
     t.string   "ordinary_store_cover"
-    t.datetime "qrcode_expire_at",     default: '2016-03-02 10:40:27'
+    t.datetime "qrcode_expire_at",     default: '2016-03-02 14:41:41'
     t.string   "service_store_name"
     t.string   "ordinary_store_name"
   end
@@ -467,6 +467,10 @@ ActiveRecord::Schema.define(version: 20160222063837) do
     t.integer  "service_type"
     t.integer  "monthes"
     t.integer  "service_store_id"
+    t.integer  "comprehensive_order"
+    t.datetime "published_at"
+    t.integer  "sales_amount",         default: 0
+    t.integer  "sales_amount_order"
     t.integer  "ordinary_store_id"
   end
 
