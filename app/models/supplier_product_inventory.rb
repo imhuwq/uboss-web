@@ -17,6 +17,16 @@ class SupplierProductInventory < ProductInventory
     })
   end
 
+  def adjust_count_with_checking(*args)
+    transaction do
+      adjust_count_without_checking(*args)
+      if count.zero?
+        children.update_all(count: 0, saling: false)
+      end
+    end
+  end
+  alias_method_chain :adjust_count, :checking
+
   private
   # TODO 如果数量太多需要放入队列处理
   def copy_to_children
