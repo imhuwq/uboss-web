@@ -12,6 +12,7 @@ class SupplierProductInventory < ProductInventory
     customize(lambda{|original_inventory, new_inventory|
       new_inventory.parent_id = original_inventory.id
       new_inventory.type = 'AgencyProductInventory'
+      new_inventory.price = original_inventory.suggest_price_lower
       new_inventory.cost_price = original_inventory.price
     })
   end
