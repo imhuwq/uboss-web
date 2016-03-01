@@ -57,7 +57,7 @@
   }
   .buy-nav {
     float: left;
-    width: 15%;
+    width: 20%;
     box-sizing:border-box ;
     height: 100%;
     margin-top: 5px;
@@ -76,7 +76,18 @@
     .buy-cart-icon{
       background-position-y: -31px
     }
+    .buy-recommed-icon{
+        background-image: image-url('mobile/good.png');
+    }
+    
   }
+  .has_recommend{
+      color: #f9ab10;
+  }
+  .has_recommend .buy-recommed-icon{
+    
+    background-position-y: -42px;
+   }
   .buy-nav:first-child{
     border: none;
   }

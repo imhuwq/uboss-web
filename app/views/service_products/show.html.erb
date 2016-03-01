@@ -146,7 +146,19 @@
 
   <% if @sharing_node.blank? %>
     <div class="share_buy">
-      <%= link_to '立即购买', 'javascript:;', class: 'btn_buy_now', id:"show_inventory", style: 'float:right;width:100%;' %>
+    		<%= link_to '#', class: "#{current_user.has_recommend?(@product) ? 'has_recommend': ''} buy-nav recommend_link", user_id: current_user.id, recommended_id: @product.id, recommended_type: @product.class do %>
+        <div class='buy-icon buy-recommed-icon'></div>
+        <div>推荐</div>
+      <% end %>
+	    	<%= link_to  service_store_path(@seller.service_store), class: 'buy-nav' do%>
+	    		<div class="buy-icon buy-enter-icon"></div>
+	    		<div>店铺</div>
+	    	<% end %>
+	    <div class="buy-nav store-tel">
+	    		<div class="buy-icon buy-chat-icon"></div>
+	    		<div>客服</div>
+	    	</div>
+      <%= link_to '购买', 'javascript:;', class: 'btn_buy_now', id:"show_inventory" %>
     </div>
   <% else %>
     <div class="share_buy">

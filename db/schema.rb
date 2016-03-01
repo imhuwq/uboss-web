@@ -371,12 +371,10 @@ ActiveRecord::Schema.define(version: 20160222063837) do
     t.string   "service_store_cover"
     t.string   "user_name"
     t.string   "ordinary_store_cover"
-    t.datetime "qrcode_expire_at",     default: '2016-02-25 14:44:59'
+    t.datetime "qrcode_expire_at",     default: '2016-03-02 10:40:27'
     t.string   "service_store_name"
     t.string   "ordinary_store_name"
   end
-
-  add_index "privilege_cards", ["user_id", "seller_id"], name: "index_privilege_cards_on_user_id_and_seller_id", unique: true, using: :btree
 
   create_table "product_classes", force: :cascade do |t|
     t.integer  "parent_id"
@@ -469,11 +467,6 @@ ActiveRecord::Schema.define(version: 20160222063837) do
     t.integer  "service_type"
     t.integer  "monthes"
     t.integer  "service_store_id"
-    t.integer  "parent_id"
-    t.integer  "comprehensive_order"
-    t.datetime "published_at"
-    t.integer  "sales_amount",         default: 0
-    t.integer  "sales_amount_order"
     t.integer  "ordinary_store_id"
   end
 
@@ -683,7 +676,6 @@ ActiveRecord::Schema.define(version: 20160222063837) do
     t.integer  "better_evaluation"
     t.integer  "best_evaluation"
     t.string   "store_cover"
-    t.decimal  "bonus_benefit",             default: 0.0
     t.string   "type"
     t.decimal  "bonus_benefit",             default: 0.0
     t.string   "begin_hour"
