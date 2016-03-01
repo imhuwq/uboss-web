@@ -1,7 +1,7 @@
 <% seller = privilege_card.seller %>
 <div class="box-w50">
 	<div class="share-card gap" orderdata='<%= privilege_card.updated_at %>'>
-		<a href="/privilege_cards/<%= privilege_card.id %>" class="share-store-info text-center">
+		<a href="/stores/<%= privilege_card.user.ordinary_store.id %>" class="share-store-info text-center">
 	    <div class="cover" style="background-image: url('<%= seller.ordinary_store.store_cover_url(:w120)%>');">
 	      <%= image_tag seller.ordinary_store.store_cover_url(:w120) %>
 	    </div>
