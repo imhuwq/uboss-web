@@ -9,7 +9,7 @@
 	<ul class="breadcrumb">
 		<li><a href="/admin">主页</a></li>
 		<li class="divider"><i class="fa fa-angle-right"></i></li>
-		<li><%= link_to '商品管理', [:admin, :products] %></li>
+		<li><%= link_to '商品管理', params[:controller].split("/") %></li>
 		<li class="divider"><i class="fa fa-caret-right"></i></li>
 		<li class="active">查看商品信息</li>
 	</ul>
