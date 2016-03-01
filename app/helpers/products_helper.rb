@@ -126,7 +126,7 @@ module ProductsHelper
   end
 
   def can_agent_product(product)
-    current_user.is_agency? and can? :agent, product
+    current_user.is_agency? and can? :store_or_list_supplier_product, product and product.type == "SupplierProduct"
   end
   
   def can_manage_supplier_product(product)
