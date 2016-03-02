@@ -143,7 +143,7 @@ class OrderItem < ActiveRecord::Base
   def adjust_product_stock_with_supplier(*args)
     type = args.first
     adjust_product_stock_without_supplier(*args)
-    if parent=product_inventory.parent
+    if parent=product_inventory.try(:parent)
       adjust_product_stock_without_supplier(type, parent.id)
     end
   end

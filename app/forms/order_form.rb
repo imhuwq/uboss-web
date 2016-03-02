@@ -162,30 +162,31 @@ class OrderForm
 
   # 根据 order_items 的商品类型拆分
   def orders_split_by_product_type(orders_attributes)
+    _orders = []
     orders_attributes.tap do |orders|
       orders.each do |order|
-        _order = order.dup
         next if order[:order_items_attributes].length < 2
         order[:order_items_attributes].group_by do |attrs|
           product = Product.find(attrs[:product_id])
           product.type
-        end.each do |type, groups|
-          type = to_order_type(type)
-          _order[:type] = type
-          _order[:order_items_attributes] = groups
-          orders << _order
+        end.to_a.each do |type, groups|
+          _order = order.dup
+          _order[:type] = to_order_type(type)
+          _order[:order_items_attributes] = groups.deep_dup
+          _orders << _order
         end
         orders.delete(order)
       end
     end
-    orders_split_by_supplier(order_attributes)
+    orders_attributes.concat _orders
+    orders_split_by_supplier(orders_attributes)
   end
 
   def orders_split_by_supplier(order_attributes)
+    _orders = []
     order_attributes.tap do |orders|
       orders.each do |order|
         next if order[:order_items_attributes].length < 2
-        _order = order.dup
         order[:order_items_attributes].group_by do |item|
           if product = AgencyProduct.includes(:parent).find_by_id(item[:product_id])
             product.parent.user_id
@@ -193,14 +194,15 @@ class OrderForm
             nil
           end
         end.each do |supplier_id, groups|
+          _order = order.deep_dup
           _order[:supplier_id] = supplier_id
           _order[:order_items_attributes] = groups
-          orders << _order
+          _orders << _order
         end
       end
       orders.delete(order)
     end
-    orders_attributes
+    order_attributes.concat _orders
   end
 
   def order_items_of_seller(seller_id)
