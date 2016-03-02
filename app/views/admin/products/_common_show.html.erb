@@ -153,7 +153,7 @@
                    method: :patch, class: "btn btn-large ",:role=>"button") %>
       <% end %>
     <% end %>
-    <% if can_agent_product(@product) %>
+    <% if can_agent_product(@product) and not_supplier %>
       <div class="agency-product-actions">
         <% if @product.has_been_agented_by?(current_user) %>
           <button class="btn btn-large" disabled><%= @product.published? ? '已添加到店铺' : '已添加到仓库' %></button>
