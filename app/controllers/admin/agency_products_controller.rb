@@ -5,8 +5,8 @@ class Admin::AgencyProductsController < AdminController
   def valid_agent_products
     authorize! :valid_agent_products, SupplierProduct
     ids = current_user.suppliers.pluck(:id)
-    p_ids = current_user.agency_products.pluck(:parent_id)
-    @products = SupplierProduct.supplied.where(user_id: ids).where.not(id: p_ids)
+    p_ids = current_user.agency_products.where.not(status: 2).pluck(:parent_id)
+    @products = SupplierProduct.supplied.where(user_id: ids).where.not(id: p_ids).page(params[:page])
   end
 
   def store_supplier_product

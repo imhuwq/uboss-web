@@ -54,17 +54,27 @@ ul.nav.nav-pills.nav-stacked li.active a {
   }
 }
 
-.product-box {
-  padding: 20px;
-  background-color: #383838;
-  width: 20%;
-  display: inline-block;
-  img {
+.box-list {
+  margin-bottom: 20px;
+  float: left;
+  width: 100%;
+  .product-box {
+    float: left;
+    padding: 20px;
+    background-color: #383838;
+    width: 20%;
+    margin-right: 10px;
     margin-bottom: 10px;
+    display: inline-block;
+    height: 288px;
+    img {
+      margin-bottom: 10px;
+    }
   }
 }
 
 .agency-product-actions {
+  margin-top: 20px;
   display: inline-block;
   a {
     margin-top: 10px;

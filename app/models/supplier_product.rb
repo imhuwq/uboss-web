@@ -121,7 +121,7 @@ class SupplierProduct < Product
   end
 
   def has_been_agented_by?(agency)
-    AgencyProduct.exists?(user_id: agency.id, parent_id: id)
+    AgencyProduct.exists?(user_id: agency.id, parent_id: id, status: [0,1])
   end
 
   def total_sells
