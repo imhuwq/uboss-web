@@ -283,6 +283,7 @@ zh-CN:
       product_inventories:
         product_id: SKU产品
         share_amount_total: 总返利
+        price: 库存规格价格
       supplier_product_inventories:
         product_id: SKU产品
         share_amount_total: 总返利
