@@ -170,7 +170,7 @@ class OrdersController < ApplicationController
   end
 
   def set_product
-    @product = Product.commons.find(params[:product_id])
+    @product = Product.commons.find_by_id(params[:product_id])
   end
 
   def clean_current_cart
