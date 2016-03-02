@@ -121,6 +121,7 @@
           <div class='buy-icon buy-recommed-icon'></div>
           <div>推荐</div>
         <% end %>
+        <a class="btn-block friend-btn p-sharing-btn">分享给朋友 <%= image_tag('mobile/share-icon.png',height:20) %></a>
       <% end %>
       <%= link_to conversation_chat_path(conversation_id: @seller.id), class: 'buy-nav chat-btn' do%>
 	    		<div class="buy-icon buy-chat-icon"></div>

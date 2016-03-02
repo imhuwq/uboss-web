@@ -1,20 +1,20 @@
 <% if store_banner_data(@seller).size > 0 %>
-	
+
 <% else %>
 	<div class="default-banner">
 		<%= image_tag('mobile/slideshow/banner.jpg') %>
 	</div>
 <% end %>
 <div class="store-category-cover">
-  <div class="cover"><img src='<%= @seller.ordinary_store.store_cover_url(:thumb) %>' /></div>   
+  <div class="cover"><img src='<%= @seller.ordinary_store.store_cover_url(:thumb) %>' /></div>
   <div class="content">
-		<span class="pull-right"><%= number_to_percentage(@seller.good_reputation_rate, precision: 0) %> 好评 (<%= @seller.total_reputations %>)</span> 
+		<span class="pull-right"><%= number_to_percentage(@seller.good_reputation_rate, precision: 0) %> 好评 (<%= @seller.total_reputations %>)</span>
     <h3 class="name text-cut"><%= @seller.store_name %></h3>
 
     <% if @seller.store_short_description.present?  %>
       <p class="detail gray-color text-right text-cut"><%= @seller.store_short_description %></p>
-    <% end %>       
-    
+    <% end %>
+
   </div>
 </div><!-- store-category-cover -->
 <% if action_name != 'hots' %>
@@ -30,9 +30,9 @@
 		        <%= render partial: 'categories', collection:  @categories, as: :category %>
 		      </div>
 		    </div><!-- #category-container -->
-		
-		      
-		  </div><!-- tab-container -->  
+
+
+		  </div><!-- tab-container -->
 		</div><!-- bg-white -->
 	<% end %>
 	<%= render partial: 'ad_banner_slider', locals: { seller: @seller } %>
@@ -57,8 +57,8 @@
 
 <% if qr_sharing? %>
 <br />
-<div class="friend-box"> 	
-   
+<div class="friend-box">
+
 		<% if current_user && current_user.has_seller_privilege_card?(@seller) %>
 			<a class="btn-block friend-btn p-sharing-btn">分享给朋友 <%= image_tag('mobile/share-icon.png',height:20) %></a>
 		<% else %>
@@ -70,7 +70,7 @@
 			<% end %>
 			<a class="btn-block friend-btn hidden p-sharing-btn">分享给朋友 <%= image_tag('mobile/share-icon.png',height:20) %></a>
 		<% end %>
-		
+
 
 </div>
 <br />
