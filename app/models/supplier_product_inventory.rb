@@ -1,19 +1,21 @@
 class SupplierProductInventory < ProductInventory
 
-  validates_numericality_of :suggest_price_upper, greater_than: :suggest_price_lower,  if: -> { suggest_price_lower.present? }
-  validates_numericality_of :suggest_price_lower, greater_than_or_equal_to: :cost_price, if: -> { cost_price.present? }
+  validates :cost_price, presence: true, numericality: true
+  validates_numericality_of :suggest_price_upper, greater_than: :suggest_price_lower,  if: -> { suggest_price_lower.present? and suggest_price_upper.present? }
+  validates_numericality_of :suggest_price_lower, greater_than_or_equal_to: :cost_price, if: -> { suggest_price_lower.present? }
 
   belongs_to :supplier_product, foreign_key: 'product_id'
   has_many :children, class_name: 'AgencyProductInventory', foreign_key: 'parent_id'
+
   after_create :copy_to_children, if: -> { type == 'SupplierProductInventory' }
   after_destroy :remove_children
+  before_save :set_default_suggest_price_lower, unless: -> { suggest_price_lower.present? }
 
   amoeba do
     customize(lambda{|original_inventory, new_inventory|
       new_inventory.parent_id = original_inventory.id
       new_inventory.type = 'AgencyProductInventory'
       new_inventory.price = original_inventory.suggest_price_lower
-      new_inventory.cost_price = original_inventory.price
     })
   end
 
@@ -37,5 +39,9 @@ class SupplierProductInventory < ProductInventory
 
   def remove_children
     children.delete_all
+  end
+
+  def set_default_suggest_price_lower
+    self.suggest_price_lower = self.cost_price
   end
 end
