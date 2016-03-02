@@ -4,14 +4,16 @@ class AutoSignOrderJob < ActiveJob::Base
 
   include Loggerable
 
+  AUTOSIGN_TIME = Rails.env.production? ? 9.days.freeze : 30.minutes.freeze
+
   def perform
     OrdinaryOrder.joins(:order_charge).shiped.
-      where("orders.shiped_at <= ? AND (order_charges.paid_at BETWEEN '2016-02-06' AND '2016-02-12')", Time.now - 15.days).find_each do |ordinary_order|
+      where("orders.shiped_at <= ? AND (order_charges.paid_at BETWEEN '2016-02-06' AND '2016-02-12')", Time.now - AUTOSIGN_TIME - 6.days).find_each do |ordinary_order|
       sign_order_if_no_refunds(ordinary_order)
     end
 
     OrdinaryOrder.joins(:order_charge).shiped.
-      where("orders.shiped_at <= ? AND (order_charges.paid_at NOT BETWEEN '2016-02-06' AND '2016-02-12')", Time.now - 9.days).
+      where("orders.shiped_at <= ? AND (order_charges.paid_at NOT BETWEEN '2016-02-06' AND '2016-02-12')", Time.now - AUTOSIGN_TIME).
       find_each do |ordinary_order|
       sign_order_if_no_refunds(ordinary_order)
     end
@@ -20,7 +22,9 @@ class AutoSignOrderJob < ActiveJob::Base
   private
 
   def sign_order_if_no_refunds(ordinary_order)
-    return false if ordinary_order.has_refund?
+    if ordinary_order.order_items.joins(:order_item_refunds).merge(OrderItemRefund.progresses).exists?
+      return false
+    end
 
     if ordinary_order.may_sign?
       logger.info "Auto Sign Order SUCCESS, number: #{ordinary_order.number}"
