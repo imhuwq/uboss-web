@@ -55,7 +55,12 @@
       border-left:1px solid #ddd ;
     }
   }
-  .buy-nav {
+  .buy-nav:first-child{
+    border: none;
+  }
+}
+
+.buy-nav {
     float: left;
     width: 20%;
     box-sizing:border-box ;
@@ -77,22 +82,16 @@
       background-position-y: -31px
     }
     .buy-recommed-icon{
-        background-image: image-url('mobile/good.png');
+    background-image: image-url('mobile/good.png');
     }
     
-  }
-  .has_recommend{
-      color: #f9ab10;
-  }
-  .has_recommend .buy-recommed-icon{
-    
-    background-position-y: -42px;
-   }
-  .buy-nav:first-child{
-    border: none;
-  }
 }
-
+.has_recommend{
+    color: #f9ab10;
+}
+.has_recommend .buy-recommed-icon{    
+    background-position-y: -42px;
+}
 #inventory {
   img.blur {
     width: 400px;
