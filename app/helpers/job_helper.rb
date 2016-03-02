@@ -10,7 +10,7 @@ module JobHelper
 		               Row_Number() over(order by published_at desc) as 创建时间排名,
 		               Row_Number() over(order by sales_amount desc)+Row_Number() over(order by published_at desc) as 排名相加
 		               FROM  products
-		               WHERE products.user_id = '#{user_id}' AND products.type = 'OrdinaryProduct'
+		               WHERE products.user_id = '#{user_id}' AND products.type != 'ServiceProduct'
 		               )
 		        select product_id, 数量排名, Row_Number() over(order by 排名相加) as 综合排名  from T;
 
