@@ -202,3 +202,12 @@
   <%= render partial: 'privilege_card_pop' %>
 <% end %>
 <div>
+
+<% if current_user && current_user.has_privilege_card?(@seller.service_store) %>
+  <div class="share_buy">
+    <%= link_to '#', class: "#{current_user.has_recommend?(@seller.service_store) ? 'has_recommend': ''} buy-nav recommend_link", user_id: current_user.id, recommended_id: @seller.service_store.id, recommended_type: @seller.service_store.class do %>
+      <div class='buy-icon buy-enter-icon'></div>
+      <div>推荐</div>
+    <% end %>
+  </div>
+<% end %>

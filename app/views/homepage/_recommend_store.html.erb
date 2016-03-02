@@ -16,7 +16,8 @@
             <%= image_tag store.store_cover.url(:w120) %>
           </div>
           <div class="content">
-            <%= link_to  store_path(store.user.id),class:'btn btn-main-border pull-right' do%>
+            <% url = store.class.name == 'OrdinaryStore' ? store_path(store.user.id): service_store_path(store.id) %>
+            <%= link_to url,class:'btn btn-main-border pull-right' do%>
               进店逛逛
             <%end%>
             <h4 class="name text-cut"><%= store.store_name || 'UBOSS商家' %></h4>

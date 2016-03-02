@@ -18,9 +18,9 @@
               <%= link_to '',url,
               		style: "background-image:url(#{product.image_url(:w320)})",
               		class:'img',title:"#{product.name}" %>
-              
-              <%= image_tag("mobile/img.jpg") %>   
-            		<div class='title text-cut'><%= product.name %></div>           
+
+              <%= image_tag("mobile/img.jpg") %>
+            		<div class='title text-cut'><%= product.name %></div>
             </div><!-- cover -->
             <div class='price text-center'>￥<%= product.present_price %></div>
           </div><!-- product-box -->
