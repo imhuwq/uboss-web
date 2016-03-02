@@ -89,7 +89,7 @@
     <%= f.text_field :traffic_expense, placeholder: '请在此处输入金额', class: 'form-control' %>
     <span class='price_label'>元</span>
   </div>
-  <%= f.select :carriage_template_id, current_user.carriage_templates.collect { |p| [ p.name, p.id ] }, include_blank: '请选择运费模板...' %>
+  <%= f.select :carriage_template_id, current_user.carriage_templates.collect { |p| [ p.name, p.id ] }, {include_blank: '请选择运费模板...'}, {id: "product_carriage_template_id"} %>
   <%= link_to admin_refresh_carriage_template_path, remote: true do %>
     <i class="fa fa-refresh link_refresh"></i>
   <% end %>
