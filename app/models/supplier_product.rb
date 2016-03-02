@@ -12,6 +12,8 @@ class SupplierProduct < Product
     customize(lambda{|original_product, new_product|
       new_product.parent_id = original_product.id
       new_product.supplier_id = original_product.user_id
+      new_product.original_price = original_product.suggest_price_lower
+      new_product.present_price = original_product.suggest_price_lower
     })
   end
 
