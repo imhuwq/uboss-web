@@ -1,11 +1,10 @@
-<%= upyun_meta_tags prefix: "asset_img/avatar" %>
 <div class="index_list">
   <table class="list-table">
     <thead>
 <!--       <th><input id="category-checkbox" type="checkbox"></th> -->
       <th>分组名</th>
       <th>分组图片</th>
-      <th>分享二维码</th>
+      <!-- <th>分享二维码</th>-->
       <th>修改时间</th>
       <th>操作</th>
     </thead>
@@ -26,11 +25,12 @@
               <%= image_tag(category.image_url(:thumb), class:"clean", style:"height: 80px;")%>
             <% end %>
             <%= file_field_tag "image", class: "upyun_file_json" ,  data: {to: "/admin/categories/update_category_img?resource_id=#{category.id}"} %>
+            <%= upyun_meta_tags prefix: "asset_img/avatar" %>
             <b class="loading"><i class="fa fa-spinner"></i></b>
           </p>
           <div style="font-size:10px;">(点击图片进行替换)</div>
         </td>
-        <td><%= qrcode_image_tag(store_category_url(category.user_id, category.id, shared: true), html: { width: 100 }) %></td>
+        <!--<td><%#= qrcode_image_tag(store_category_url(category.user_id, category.id, shared: true), html: { width: 100 }) %></td>-->
         <td><%= category.updated_at %></td>
         <td>
           <% if can? :update, category %>
