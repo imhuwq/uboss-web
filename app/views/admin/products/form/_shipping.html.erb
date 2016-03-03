@@ -1,0 +1,32 @@
+<div class="admin-box beige-bg-color logistics_and_other">
+  <h4 class="edit-title">物流及其他</h4>
+  <div class='radio_transportation_way_wrap'>
+    <div class='form-group radio_buttons optional product_transportation_way'>
+      <label class='optional text-right traffic_expense_label control-label'>运费</label>
+      <div class='control-input'>
+        <%= f.collection_radio_buttons :transportation_way, OrdinaryProduct::DataBuyerPay.invert, :last, :first %>
+      </div>
+    </div>
+  </div>
+  <div class='unify_carriage'>
+    <%= f.text_field :traffic_expense, placeholder: '请在此处输入金额', class: 'form-control' %>
+    <span class='price_label'>元</span>
+  </div>
+  <%= f.select :carriage_template_id, current_user.carriage_templates.collect { |p| [ p.name, p.id ] }, {include_blank: '请选择运费模板...'}, {id: "product_carriage_template_id"} %>
+  <%= link_to admin_refresh_carriage_template_path, remote: true do %>
+    <i class="fa fa-refresh link_refresh"></i>
+  <% end %>
+  <span class='link_new_carriage_temp'><%= link_to '新建运费模板', action_to_path(:carriage_template, action: :new), target: '_blank', class: 'label new_admin_carriage_template' %></span>
+  <%= render partial: 'admin/products/show_carriage_template', locals: {carriage: product.carriage_template} %>
+
+  <div class='full_cut_wrap'>
+    <label class='optional text-right control-label'>更多设置</label>
+    <%= f.input :full_cut, label_html: { class: product.full_cut ? 'checkbox_is_checked':'checkbox_no_checked' } %>
+    <div class='full_cut_params' style=<%=product.full_cut ? '': 'display:none'%>>
+      <%= f.number_field :full_cut_number, placeholder: '输入金额或件数' %>
+      <%= f.select :full_cut_unit, OrdinaryProduct::FullCut.invert %>
+    </div>
+  </div>
+
+</div><!-- admin-box -->
+<br />
