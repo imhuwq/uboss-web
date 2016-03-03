@@ -55,7 +55,7 @@ class OrdersController < ApplicationController
       session[:cart_item_ids] = params[:item_ids].split(',')
       cart_items = current_cart.cart_items
         .includes(:sharing_node, product_inventory: [:product])
-        .find(session[:cart_item_ids])
+        .where(id: session[:cart_item_ids])
       valid_items = OrdinaryOrder.valid_items(cart_items, @order_form.user_address.province)
       session[:valid_items_ids] = valid_items.map(&:id)
       @invalid_items = cart_items - valid_items

@@ -18,6 +18,7 @@ class Product < ActiveRecord::Base
   belongs_to :user
   belongs_to :carriage_template
   belongs_to :parent, :class_name => self.name
+  belongs_to :supplier, :class_name => "User", :foreign_key => "supplier_id"
   has_many :different_areas, through: :carriage_template
   has_many :order_items
   has_many :advertisements
