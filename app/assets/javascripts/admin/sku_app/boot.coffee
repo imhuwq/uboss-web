@@ -32,13 +32,20 @@ jQuery ($) ->
             console.log "Boot: add value #{skuAttrs[key]} to Propertie #{key}"
             propertyItem.get('values').add(value: skuAttrs[key])
             propertieCollectionData[key].push(skuAttrs[key])
-    productType = switch App.controller
-      when 'admin/products'
-        "ordinary"
-      when 'admin/supplier_products'
-        "agency"
-      else
-        "ordinary"
+    #productType = switch App.controller
+      #when 'admin/products'
+        #"ordinary"
+      #when 'admin/supplier_products'
+        #"agency"
+      #else
+        #"ordinary"
+    productType = switch App.productType
+      when 'OrdinaryProduct'
+        'ordinary'
+      when 'SupplierProduct'
+        'supplier'
+      when 'AgencyProduct'
+        'agency'
     if $('#product-sku').length > 0
       StockSku.stock_view = new StockSku.Views.Stock(collection: StockSku.Collections.stock_collection, type: productType)
       StockSku.privilege_view = new StockSku.Views.Privilege(collection: StockSku.Collections.stock_collection)
