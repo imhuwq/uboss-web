@@ -9,6 +9,7 @@ class SupplierProduct < Product
     set type: 'AgencyProduct'
     include_association :supplier_product_inventories
     include_association :asset_img
+    include_association :description
     customize(lambda{|original_product, new_product|
       new_product.parent_id = original_product.id
       new_product.supplier_id = original_product.user_id
@@ -33,8 +34,10 @@ class SupplierProduct < Product
   #alias_method :supplier_product_inventories_attributes=, :product_inventories_attributes=
 
   def stored
-    supplier_product_info.stored!
-    unpublish_children_products
+    transaction do
+      supplier_product_info.stored!
+      unpublish_children_products
+    end
   end
 
   def supplied
@@ -42,8 +45,10 @@ class SupplierProduct < Product
   end
 
   def deleted
-    supplier_product_info.deleted!
-    unpublish_children_products
+    transaction do
+      supplier_product_info.deleted!
+      unpublish_children_products
+    end
   end
 
   def unpublish_children_products

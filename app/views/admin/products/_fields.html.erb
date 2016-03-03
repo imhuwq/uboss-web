@@ -43,13 +43,13 @@
   <div class="form-group ">
     <label class="control-label">图文详情<abbr title="必填">*</abbr></label>
     <div class="control-input" style='width: 430px;'>
-    <% if @product.is_a?(SupplierProduct) %>
-      <% if current_user.is_supplier? and can? :manage, @product %>
-        <%= f.input_field :supply_content, as: :text, class: "redactor", placeholder: '在此添加代销说明' %>
-      <% elsif current_user.is_agency? and can? :manage, @product %>
-        代销说明：<%= raw @product.parent.supply_content %>
+      <% if @product.is_a?(SupplierProduct) %>
+        <% if current_user.is_supplier? and can? :manage, @product %>
+          <%= f.input_field :supply_content, as: :text, class: "redactor", placeholder: '在此添加代销说明' %>
+        <% elsif current_user.is_agency? and can? :manage, @product %>
+          代销说明：<%= raw @product.parent.supply_content %>
+        <% end %>
       <% end %>
-    <% end %>
       <%= f.input_field :content, as: :text, class: "redactor", placeholder: '在此添加商品详情' %>
     </div>
   </div>
