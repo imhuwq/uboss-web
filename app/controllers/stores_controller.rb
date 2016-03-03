@@ -19,6 +19,7 @@ class StoresController < ApplicationController
     @products = append_default_filter_for_store_show @seller.ordinary_products.published.includes(:asset_img), order_column: @order_column_name, page_size: 6
     @hots = @seller.ordinary_products.hots.recent.limit(3)
     @categories = Category.where(use_in_store: true, user_id: @seller.id).order('use_in_store_at')
+    @category_class_name = @categories.size%3 != 0 ? 'box-w50' : 'box-w33'
     render_product_partial_or_page
   end
 

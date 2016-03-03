@@ -1,5 +1,5 @@
 <% cache ['categories', category] do %>
-	<div class="<%= class_name %>">
+	<div class="<%= @category_class_name %>">
   	<div class="product-box">
       <div class="cover">
         <%= link_to '', store_category_path(store_id: @seller.id, id: category.id), style: "background-image:url(#{category.image_url(:w120)})",class:'img' ,title:"#{category.name}" %>

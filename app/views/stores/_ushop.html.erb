@@ -28,7 +28,6 @@
 		  <div class="tab-container">
 		    <div class="tab-content category-list" id="category-container" style="display: block;">
 		      <div class="box">
-            <% class_name = @categories.size%3 != 0 ? 'box-w50' : 'box-w33' %>
 		        <%= render partial: 'categories', collection:  @categories, as: :category %>
 		      </div>
 		    </div><!-- #category-container -->
