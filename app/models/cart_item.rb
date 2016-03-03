@@ -12,20 +12,21 @@ class CartItem < ActiveRecord::Base
   validates_presence_of   :cart_id, :product_inventory_id, :seller_id
   validates_uniqueness_of :product_inventory_id, scope: :cart_id
 
-  delegate :product_name, :price, :sku_attributes, :sku_attributes_str, to: :product_inventory
+  delegate :product, :product_name, :price, :sku_attributes, :sku_attributes_str, to: :product_inventory
   delegate :privilege_card, to: :sharing_node, allow_nil: true
+  delegate :supplier, to: :product, allow_nil: true, prefix: true
 
   before_save :check_count
   after_update :update_user_cart_sharing_info_in_one_store, if: :sharing_node_store_changed?
 
   # 购物车商品按店铺分组 TODO 什么情况下商品失效，下架、数量不正确 and ?
   def self.group_by_seller(cart_items)
-    seller_ids = cart_items.map(&:seller_id).uniq
-    seller_ids.inject({}) { |items, seller_id|
-      items.merge!(
-        { User.find(seller_id) => cart_items.select { |item| item.seller_id == seller_id } }
-      )
-    }
+    result = Hash.new {|k,v| k[v] = []}
+    cart_items.each do |item|
+      key = item.product_supplier || item.seller
+      result[key] << item
+    end
+    result
   end
 
   def self.valid_items(cart_items)
