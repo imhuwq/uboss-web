@@ -1,6 +1,8 @@
 <%= content_for :page_specific_javascript do %>
   <script type="text/javascript" charset="utf-8">
-    stockData = <%== get_product_seling_inventories_json @product, (current_user.is_supplier? and can? :manage, @product) %>
+    stockData = <%== get_product_seling_inventories_json @product %>
+    App.controller = "<%= params[:controller] %>";
+    App.productType = "<%= @product.type %>";
   </script>
   <%= javascript_include_tag 'admin/sku_app/application' %>
 <% end %>

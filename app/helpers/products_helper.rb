@@ -102,7 +102,7 @@ module ProductsHelper
     end
   end
 
-  def get_product_seling_inventories_json(product, is_supplier)
+  def get_product_seling_inventories_json(product)
     json_attributes = [
         :id, :sku_attributes, :price, :count,
         :share_amount_lv_3, :share_amount_lv_2, :share_amount_lv_1,
