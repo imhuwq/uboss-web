@@ -104,11 +104,11 @@ module ProductsHelper
 
   def get_product_seling_inventories_json(product)
     json_attributes = [
-        :id, :sku_attributes, :price, :count,
+        :id, :sku_attributes, :price, :count, :sale_to_customer,
         :share_amount_lv_3, :share_amount_lv_2, :share_amount_lv_1,
         :privilege_amount, :share_amount_total,
         :cost_price, :suggest_price_lower, :suggest_price_upper,
-        :sale_to_agency, :quantity
+        :sale_to_agency
       ]
     inventories = if product.new_record?
       product.product_inventories

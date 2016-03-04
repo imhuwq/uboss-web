@@ -9,4 +9,6 @@ class AgencyProductInventory < ProductInventory
 
   belongs_to :parent, class_name: 'SupplierProductInventory'
   belongs_to :agency_product
+
+  delegate :sale_to_agency, to: :parent
 end

@@ -1,7 +1,7 @@
 <div class='select_carriage_template_wrapper'>
   <% if carriage.present? %>
     <div class='select_carriage_template'>
-      <% ct_path = (@product.is_a?(SupplierProduct) and current_user.is_supplier? and can? :manage, @product) ? edit_admin_suppliers_carriage_template_path(carriage) : edit_admin__sellers_carriage_template_path(carriage) %>
+      <% ct_path = can_manage_supplier_product(@product) ? edit_admin_suppliers_carriage_template_path(carriage) : edit_admin__sellers_carriage_template_path(carriage) %>
       <%= link_to '修改', ct_path, class: 'prodcut_edit_carrage_template', target: '_blank' %>
 
       <table class='table table-bordered'>
