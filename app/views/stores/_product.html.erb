@@ -1,7 +1,7 @@
 <% orderdata = @order_column_name ? product.try(@order_column_name.to_sym) : product.try(:updated_at) %>
 <% if orderdata %>
   <div class="p-item" orderdata="<%= orderdata %>">
-    <%# cache ['store-product', product], expires_in: 1.day do %>
+    <% cache ['store-product', product], expires_in: 1.day do %>
       <div class="product-box">
         <div class="cover">
           <%= link_to '', product_path(product),
@@ -20,7 +20,7 @@
           <% end %>　
         </div>
       </div><!-- product-box -->
-    <%# end %>
+    <% end %>
   </div><!-- p-item -->
 <% end %>
 
