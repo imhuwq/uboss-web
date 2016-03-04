@@ -17,4 +17,8 @@ class AgencyOrder < OrdinaryOrder
   def after_close
     purchase_order.close!
   end
+
+  def after_signed
+    purchase_order.sign!
+  end
 end
