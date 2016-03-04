@@ -199,7 +199,7 @@ class OrderDivideJob < ActiveJob::Base
     return if order_item.order_item_refunds.successed.where('money > 0').exists?
     product_inventory = order_item.product_inventory
     original_product_inventory = product_inventory.parent
-    divide_price = original_product_inventory.price
+    divide_price = product_inventory.cost_price
     divide_price = divide_price > @order_income ? @order_income : divide_price
     divide_record = DivideIncome.create!(
             order: @order,
