@@ -5,6 +5,8 @@ class StockSku.Views.StockItem extends Backbone.View
   events:
     'blur input.sku-price': 'setPrice'
     'blur input.sku-count': 'setCount'
+    'change input#check-sale-to-agency': 'setSale'
+    'change input#check-sale-out': 'setSaleout'
 
   initialize: (options)->
     @listenTo @model, "change:id", @render
@@ -56,3 +58,7 @@ class StockSku.Views.StockItem extends Backbone.View
           Number(item.get('count')) + num
         , 0
         $('#product_count').val(total)
+  setSale: (e)->
+    $('#sale-to-agency').val($('#check-sale-to-agency').prop('checked'))
+  setSaleout: (e)->
+    $('#sale-out').val($('#check-sale-out').prop('checked'))
