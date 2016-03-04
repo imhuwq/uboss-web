@@ -172,7 +172,7 @@ class OrderForm
         end.to_a.each do |type, groups|
           _order = order.dup
           _order[:type] = to_order_type(type)
-          _order[:order_items_attributes] = groups.deep_dup
+          _order[:order_items_attributes] = groups
           _orders << _order
         end
         orders.delete(order)
@@ -194,7 +194,7 @@ class OrderForm
             nil
           end
         end.each do |supplier_id, groups|
-          _order = order.deep_dup
+          _order = order.dup
           _order[:supplier_id] = supplier_id
           _order[:order_items_attributes] = groups
           _orders << _order
