@@ -50,7 +50,7 @@ module FilterLogic
   end
 
   def orderdata(column_type = 'datetime')
-    if column_type == 'integer'
+    if column_type.to_s == 'integer'
       params['orderdata'] ? params['orderdata'].to_i : nil
     else
       params['orderdata'] ? Time.zone.parse(params['orderdata']) : nil

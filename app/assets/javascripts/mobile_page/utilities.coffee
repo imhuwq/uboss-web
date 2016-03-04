@@ -34,7 +34,7 @@ $ ->
         if (r != null)
           order = unescape(r[2])
         else
-          order = 'no_order'
+          order = ''
         orderdata = $(element.data('ele')).last().attr('timestamp') || $(element.data('ele')).last().attr('orderdata')
         params = { orderdata: orderdata, order: order }
         get_url = element.data('ref')
