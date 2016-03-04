@@ -53,6 +53,8 @@ class Order < ActiveRecord::Base
   end
   def after_close
   end
+  def after_signed
+  end
 
   def total_privilege_amount
     @total_privilege_amount ||= preferentials_privileges.sum(:total_amount)
