@@ -28,8 +28,11 @@ module Orderable
     #   end
     # end
 
-    def paginate_by_column_name(before_column_name, after_column_name, column_name = nil)
-      column_name ||= 'created_at'
+    def paginate_by_column_name(hash={})
+      hash = hash.symbolize_keys
+      before_column_name = hash[:before_column_name] || nil
+      after_column_name  = hash[:after_column_name]  || nil
+      column_name        = hash[:order_column]       || 'created_at'
       column_name = "#{table_name}.#{column_name}" unless column_name.to_s.include?('.')
       all.tap do |_scope|
         _scope.where! ["#{column_name} < ?", before_column_name] if before_column_name

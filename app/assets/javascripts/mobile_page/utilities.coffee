@@ -34,16 +34,20 @@ $ ->
         if (r != null)
           order = unescape(r[2])
         else
-          order = ''
+          order = 'no_order'
         orderdata = $(element.data('ele')).last().attr('timestamp') || $(element.data('ele')).last().attr('orderdata')
         params = { orderdata: orderdata, order: order }
-        $.get element.data('ref'), params, (data) ->
-          if $.trim(data).length
-            $(element.data('container')).append(data)
-            element.removeClass('loading')
-            element.text('加载更多')
-          else
-            disabledLoadMore(element)
+        get_url = element.data('ref')
+        if get_url != null
+          $.get get_url, params, (data) ->
+            if $.trim(data).length
+              $(element.data('container')).append(data)
+              element.removeClass('loading')
+              element.text('加载更多')
+            else
+              disabledLoadMore(element)
+        else
+          alert '错误：加载地址为空'
       else
         disabledLoadMore(element)
 
