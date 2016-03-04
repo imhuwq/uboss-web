@@ -4,6 +4,10 @@ module Admin::ProductsHelper
     can? :manage, product and (product.type == "OrdinaryProduct" or product.type == "AgencyProduct")
   end
 
+  def can_manage_agency_product(product)
+    can? :manage, product and product.type == "AgencyProduct"
+  end
+
   def can_agent_product(product)
     current_user.is_agency? and can? :store_or_list_supplier_product, product and product.type == "SupplierProduct"
   end

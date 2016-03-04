@@ -35,6 +35,7 @@ class Admin::ProductsController < AdminController
   end
 
   def update
+    binding.pry
     if @product.update(product_params)
       flash[:success] = '保存成功'
       redirect_to action: :show, id: @product.id
@@ -106,7 +107,7 @@ class Admin::ProductsController < AdminController
     if params[:product]
       params.require(:product).permit(
         product_inventories_attributes: [
-          :id, :price, :count, :share_amount_total, :privilege_amount,
+          :id, :price, :count, :sale_to_customer, :share_amount_total, :privilege_amount,
           :share_amount_lv_1, :share_amount_lv_2, :share_amount_lv_3,
           sku_attributes: product_propertys_params[:product_propertys_names],
         ]

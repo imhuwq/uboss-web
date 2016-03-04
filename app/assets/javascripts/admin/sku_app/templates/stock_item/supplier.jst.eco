@@ -13,10 +13,11 @@
   <input class='input-mini sku-suggest-price-upper' price <%= 'disabled' if @read_only %> type='number' name="product[product_inventories_attributes][<%= @id %>][suggest_price_upper]" value=<%= @suggest_price_upper %> />
 </td>
 <td>
+  <input id='sale-to-agency' type='hidden' name="product[product_inventories_attributes][<%= @id %>][sale_to_agency]" value=<%= @sale_to_agency %> />
   <% if @sale_to_agency: %>
-    <input class='input-mini sku-sale-to-agency' <%= 'disabled' if @read_only %> type='checkbox' name="product[product_inventories_attributes][<%= @id %>][sale_to_agency]" checked />
+    <input id='check-sale-to-agency' class='input-mini sku-sale-to-agency' <%= 'disabled' if @read_only %> type='checkbox' checked />
   <% else: %>
-    <input class='input-mini sku-sale-to-agency' <%= 'disabled' if @read_only %> type='checkbox' name="product[product_inventories_attributes][<%= @id %>][sale_to_agency]" />
+    <input id='check-sale-to-agency' class='input-mini sku-sale-to-agency' <%= 'disabled' if @read_only %> type='checkbox' />
   <% end %>
 </td>
 <td><input class='input-mini sku-count' <%= 'disabled' if @read_only %> type='number' name="product[product_inventories_attributes][<%= @id %>][count]" value=<%= @count %>></td>
