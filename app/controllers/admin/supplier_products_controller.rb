@@ -43,7 +43,6 @@ class Admin::SupplierProductsController < AdminController
   end
 
   def update
-    binding.pry
     if @supplier_product.update(supplier_product_params)
       flash[:success] = '保存成功'
       redirect_to action: :show, id: @supplier_product.id
