@@ -54,7 +54,7 @@ class SupplierProduct < Product
   def unpublish_children_products
     if children.present?
       children.all? do |child|
-        child.unpublish!
+        child.unpublish! if child.published?
       end
     end
   end
