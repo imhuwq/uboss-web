@@ -13,7 +13,7 @@ class OrderDivideJob < ActiveJob::Base
   attr_reader :order_income
 
   def perform(object)
-    case object.class
+    case object
     when OrdinaryOrder, AgencyOrder  then perform_order_divide(object)
     when VerifyCode     then perform_service_order_divide(object)
     end
@@ -201,10 +201,10 @@ class OrderDivideJob < ActiveJob::Base
     original_product_inventory = product_inventory.parent
     divide_price = original_product_inventory.price
     divide_price = divide_price > @order_income ? @order_income : divide_price
-    DivideIncome.create!(
+    divide_record = DivideIncome.create!(
             order: @order,
             amount: divide_price,
-            user: original_product_inventory.user
+            user: original_product_inventory.product.user
           )
     logger.info(
       "Divide order: #{@order.number}, [Supplier id: #{divide_record.id}, amount: #{divide_price} ]")
