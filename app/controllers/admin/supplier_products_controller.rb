@@ -97,7 +97,7 @@ class Admin::SupplierProductsController < AdminController
       :name, :content, :has_share_lv, :calculate_way, :avatar,
       :traffic_expense, :short_description, :transportation_way,
       :carriage_template_id, :categories,
-      :full_cut, :full_cut_number, :full_cut_unit,
+      :full_cut, :full_cut_number, :full_cut_unit, :count,
       :supply_content, :cost_price, :suggest_price_lower, :suggest_price_upper,
       supplier_product_inventories_attributes: [
         :id, :share_amount_total, :privilege_amount,
