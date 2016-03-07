@@ -38,7 +38,7 @@ class Admin::PurchaseOrdersController < AdminController
   end
 
   def scope
-    PurchaseOrder.accessible_by(current_ability)
+    PurchaseOrder.recent.accessible_by(current_ability)
   end
 
   def delivery_params
