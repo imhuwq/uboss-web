@@ -1,6 +1,6 @@
 <%= render 'layouts/flash_alert' if request.xhr? %>
 <div class="index_list">
-<table class="list-table" id="products">
+  <table class="list-table" id="products">
 		<thead>			
 			<th colspan="2">商品</th>
 			<th>成本价</th>
@@ -17,12 +17,12 @@
 		<% products.each do |product| %>
 			<tr class="product" id='product_<%= product.id %>'>
 				<td>
-          <%= link_to the_product_path(product) do %>
+          <%= link_to the_product_path(product, visitor) do %>
 						<%= image_tag(product.image_url(:thumb), size: "80x80", alt: "-") %>　
 					<% end %>
 				</td>
 				<td class="text-left" style="max-width: 400px;">
-					<%= link_to the_product_path(product) do %>
+					<%= link_to the_product_path(product, visitor) do %>
 						<%= product.name %>
 					<% end %>
 				</td>
@@ -44,7 +44,7 @@
 				<td><%= product.total_sells %></td>
 				<td><%= product.created_at %></td>
 				<td>
-          <% if can_manage_supplier_product(product) %>
+          <% if can_manage_supplier_product(product) and visitor == 'supplier' %>
             <% if product.supply_status == 'stored' %>
               <p>
               <%= link_to("上架", toggle_supply_status_admin_supplier_product_path(product, status: 'supply'),
@@ -59,7 +59,7 @@
               </p>
             <% end %>
 
-            <%= link_to url_for(action: :edit, id: product.id), class:'edit-icon', title: '编辑' do %>
+            <%= link_to edit_admin_supplier_product_path(product), class:'edit-icon', title: '编辑' do %>
               <i class="fa fa-pencil-square-o"></i>
             <% end %>
 
@@ -71,7 +71,7 @@
               <% end %>
             <% end %>
           <% end %>
-          <% if can_agent_product(product) %>
+          <% if can_agent_product(product) and visitor == 'seller' %>
             <div class="agency-product-actions agency-product-action-<%= product.id %>">
               <% if product.has_been_agented_by?(current_user) %>
                 <button class="btn btn-mid btn-block" disabled><%= product.published? ? '已添加到店铺' : '已添加到仓库' %></button>
@@ -88,5 +88,5 @@
 				</td>
 			</tr>
 		<% end %>
-</table>
+  </table>
 </div>
