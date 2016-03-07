@@ -12,7 +12,7 @@ class Admin::AgenciesController < AdminController
   
   def new
     authorize! :new, :agency
-    @agencies = User.role('agency')
+    @agencies = User.role('agency').page(params[:page])
   end
 
   def build_cooperation_with_auth_code
