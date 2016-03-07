@@ -41,9 +41,9 @@ module FilterLogic
     if order_column == 'published_at'
       scope = scope.where('published_at is not null')
     end
-    params_hash = {order_column: order_column,
-                   order_type: order_type,
-                   column_type: opts[:column_type]}
+    params_hash = { order_column: order_column,
+                    order_type: order_type,
+                    column_type: opts[:column_type] }
     scope.recent(order_column, order_type)
       .paginate_by_column_name(paginate_params(params_hash))
       .page(page_param).per(opts[:page_size] || page_size)
@@ -57,15 +57,15 @@ module FilterLogic
     end
   end
 
-  def paginate_params(hash={})
+  def paginate_params(hash = {})
     hash = hash.symbolize_keys
     order_column = hash[:order_column] || 'updated_at'
     order_type = hash[:order_type] || 'DESC'
     column_type = hash[:column_type] || 'datetime'
     if order_type == 'ASC'
-      return {before_column_name: nil, after_column_name: orderdata(column_type), order_column: order_column}
+      return { before_column_name: nil, after_column_name: orderdata(column_type), order_column: order_column }
     else
-      return {before_column_name: orderdata(column_type), after_column_name: nil, order_column: order_column}
+      return { before_column_name: orderdata(column_type), after_column_name: nil, order_column: order_column }
     end
   end
 
@@ -80,5 +80,4 @@ module FilterLogic
   def param_page
     params[:page] || 0
   end
-
 end

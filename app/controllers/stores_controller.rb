@@ -19,7 +19,7 @@ class StoresController < ApplicationController
     @products = append_default_filter_for_store_show @seller.ordinary_products.published.includes(:asset_img), order_column: @order_column_name, page_size: 6
     @hots = @seller.ordinary_products.hots.recent.limit(3)
     @categories = Category.where(use_in_store: true, user_id: @seller.id).order('use_in_store_at')
-    @category_class_name = @categories.size%3 != 0 ? 'box-w50' : 'box-w33'
+    @category_class_name = @categories.size % 3 != 0 ? 'box-w50' : 'box-w33'
     render_product_partial_or_page
   end
 
@@ -53,13 +53,15 @@ class StoresController < ApplicationController
   end
 
   def order_column_type(order_column)
-    case order_column.to_s
-    when 'published_at'
+    order_column = order_column.to_s
+    if order_column == 'published_at'
       { order: 'DESC', type: :datetime }
-    when 'sales_amount_order'
+    elsif order_column == 'sales_amount_order'
       { order: 'ASC', type: :integer }
-    when 'comprehensive_order'
+    elsif order_column == 'comprehensive_order'
       { order: 'ASC', type: :integer }
+    else
+      fail ArgumentError.new('no such order')
     end
   end
 end

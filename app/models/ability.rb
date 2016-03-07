@@ -12,7 +12,8 @@ class Ability
         begin
           grant_method = "grant_permissions_to_#{role.name}"
           __send__ grant_method, user
-        rescue NoMethodError
+        rescue NoMethodError => e
+          Rails.logger.error("ERROR: missing definition for #{role.name}, find me at: #{e.backtrace[0]}")
           next
         end
       end
