@@ -1,5 +1,5 @@
 <% cooperation = agency_in_table.reverse_cooperations.find_by(supplier_id: current_user.id) %>
-<% supplier_product = agency_in_table.supplier_products.where(supplier_id: current_user.id) %>
+<% val_agency_products = agency_in_table.agency_products.where(status: 1, parent_id: current_user.supplier_products.pluck(:id)) %>
 <tr>
   <td>
 	  <%= image_tag(agency_in_table.avatar.url(:thumb), size: "40x40", alt: "-") %>
@@ -7,7 +7,7 @@
   <td><%= agency_in_table.nickname || 'Ta还没有设置名称' %></td>
   <td><%= cooperation.yday_performance %></td>
   <td><%= cooperation.total_performance %></td>
-  <td><%= supplier_product.count %></td>
+  <td><%= val_agency_products.count %></td>
   <td><%= Evaluation.sharer_good_reputation_rate(agency_in_table) %></td>
   <td><%= agency_in_table.mobile %></td>
   <td>
