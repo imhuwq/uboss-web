@@ -16,9 +16,9 @@ class Cooperation < ActiveRecord::Base
 
   def self.perform
     segment = Date.yesterday
-    PurchaseOrder.today(segment).with_payed.group(:supplier_id, :seller_id).sum("pay_amount").each do |(supplier_id, seller_id), amount|
-      cooperation = where(supplier_id: supplier_id, agency_id: seller_id).first
-      cooperation.adjust(amount, segment)
+    PurchaseOrder.today(segment).with_payed.select("supplier_id, seller_id, sum(pay_amount) as sum_pay_amount").group("supplier_id, seller_id").each do |po|
+      cooperation = Cooperation.find_by(supplier_id: po.supplier_id, agency_id: po.seller_id)
+      cooperation.adjust(po.sum_pay_amount, segment)
       cooperation.save
     end
   end
