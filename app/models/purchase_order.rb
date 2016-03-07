@@ -1,6 +1,7 @@
 class PurchaseOrder < ActiveRecord::Base
   include AASM
   include Numberable
+  include Orderable
   belongs_to :order
   belongs_to :seller, class_name: 'User'
   has_many :order_items, through: :order
