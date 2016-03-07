@@ -84,6 +84,7 @@ gem 'sinatra', :require => nil
 # app server
 gem 'unicorn', require: false
 gem 'unicorn-worker-killer', require: false
+gem 'facter', require: false
 # cronjob
 gem 'whenever', :require => false
 
