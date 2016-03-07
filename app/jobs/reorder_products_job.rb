@@ -15,7 +15,7 @@ class ReorderProductsJob < ActiveJob::Base
     rescue => exception
       logger.error("ERROR: method calling while ReorderProducts, user_id: #{user_id}, exception: #{exception}")
     end
-    logger.info("DONE: ReorderProducts, user_id: #{user_id}")
+    logger.info("DONE: ReorderProducts, user_id: #{user_id}, last_product: #{Product.last.inspect} ")
   end
 
 end
