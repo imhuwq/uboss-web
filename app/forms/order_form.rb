@@ -165,7 +165,6 @@ class OrderForm
     _orders = []
     orders_attributes.tap do |orders|
       orders.each do |order|
-        next if order[:order_items_attributes].length < 2
         order[:order_items_attributes].group_by do |attrs|
           product = Product.find(attrs[:product_id])
           product.type
@@ -175,18 +174,15 @@ class OrderForm
           _order[:order_items_attributes] = groups
           _orders << _order
         end
-        orders.delete(order)
       end
     end
-    orders_attributes.concat _orders
-    orders_split_by_supplier(orders_attributes)
+    orders_split_by_supplier(_orders)
   end
 
   def orders_split_by_supplier(order_attributes)
     _orders = []
     order_attributes.tap do |orders|
       orders.each do |order|
-        next if order[:order_items_attributes].length < 2
         order[:order_items_attributes].group_by do |item|
           if product = AgencyProduct.includes(:parent).find_by_id(item[:product_id])
             product.parent.user_id
@@ -200,9 +196,8 @@ class OrderForm
           _orders << _order
         end
       end
-      orders.delete(order)
     end
-    order_attributes.concat _orders
+    _orders
   end
 
   def order_items_of_seller(seller_id)
