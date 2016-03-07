@@ -25,13 +25,13 @@ class PurchaseOrder < ActiveRecord::Base
 
   aasm column: :state, enum: true do
     state :unpay
-    state :payed
+    state :payed, before_enter: :after_payed
     state :shiped
     state :signed
     state :completed
     state :closed
 
-    event :pay, after_enter: :after_payed do
+    event :pay do
       transitions from: :unpay, to: :payed
     end
     event :ship do
