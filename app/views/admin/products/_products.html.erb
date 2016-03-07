@@ -1,6 +1,6 @@
 <%= render 'layouts/flash_alert' if request.xhr? %>
 <div class="index_list">
-<table class="list-table" id="products">
+  <table class="list-table" id="products">
 		<thead>			
 			<th colspan="2">商品</th>
 			<th>价格</th>
@@ -76,20 +76,11 @@
           <% end %>
           <% if can_agent_product(product) %>
             <div class="agency-product-actions agency-product-action-<%= product.id %>">
-              <% if product.has_been_agented_by?(current_user) %>
-                <button class="btn btn-mid btn-block" disabled><%= product.published? ? '已添加到店铺' : '已添加到仓库' %></button>
-              <% else %>
-                <%= link_to("+立即上架", admin_list_supplier_product_path(product),
-                  remote: true, method: :post, data: { disable_with: '<i class="fa fa-spinner"></i>' },
-                  class: "btn btn-mid btn-block list-supplier-product") %>
-                <%= link_to("+添加到仓库", admin_store_supplier_product_path(product),
-                  remote: true, method: :post, data: { disable_with: '<i class="fa fa-spinner"></i>' },
-                  class: "btn btn-mid btn-block store-supplier-product") %>
-              <% end %>
+              <%= render 'agency_actions', product: product %>
             </div>
           <% end %>
 				</td>
 			</tr>
 		<% end %>
-</table>
+  </table>
 </div>

@@ -32,6 +32,6 @@
     <%= link_to("+ 发布商品", (current_user.is_seller? ? url_for(action: :new) : merchant_confirm_account_path), class: "btn btn-large", role: "button") %>
   </div>
   <br />
-  <%= render partial: 'products', locals: { products: @products } %>
+  <%= render partial: 'products', locals: { products: @products, visitor: 'seller' } %>
   <%= paginate @products %>
 </div>

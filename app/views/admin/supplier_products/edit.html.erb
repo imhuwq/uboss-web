@@ -15,7 +15,7 @@
 
     <%= horizon_form_for @product, url: { controller: 'admin/supplier_products', action: :update } do |f| %>
 
-      <%= render '/admin/products/fields', f: f, supplier: true %>
+      <%= render '/admin/products/fields', f: f %>
 
     <% end %>
 

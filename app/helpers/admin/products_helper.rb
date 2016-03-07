@@ -16,9 +16,9 @@ module Admin::ProductsHelper
     can? :manage, product and product.type == "SupplierProduct"
   end
 
-  def the_product_path(product)
+  def the_product_path(product, visitor=nil)
     if product.type == "SupplierProduct"
-      admin_supplier_product_path(product)
+      visitor == 'supplier' ? admin_supplier_product_path(product) : admin_supplier_product_path(product, visitor: visitor)
     else
       admin_product_path(product)
     end
