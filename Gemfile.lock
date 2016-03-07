@@ -56,6 +56,7 @@ PATH
 GEM
   remote: https://ruby.taobao.org/
   specs:
+    CFPropertyList (2.2.8)
     aasm (4.5.0)
     actionmailer (4.2.5.1)
       actionpack (= 4.2.5.1)
@@ -217,6 +218,8 @@ GEM
     erubis (2.7.0)
     eventmachine (1.0.7)
     execjs (2.5.2)
+    facter (2.4.6)
+      CFPropertyList (~> 2.2.6)
     factory_girl (4.5.0)
       activesupport (>= 3.0.0)
     factory_girl_rails (4.5.0)
@@ -557,6 +560,7 @@ DEPENDENCIES
   eco
   enum_help
   enumerize
+  facter
   factory_girl_rails
   font-awesome-sass (~> 4.4.0)
   hiredis

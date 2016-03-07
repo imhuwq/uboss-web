@@ -1,3 +1,5 @@
+require 'facter'
+
 APP_ROOT = File.expand_path("../..", __FILE__)
 ENV["RACK_ENV"] = ENV["RAILS_ENV"] ||= "production"
 
@@ -8,7 +10,13 @@ stdout_path "#{APP_ROOT}/log/unicorn.stdout.log"
 
 listen "#{APP_ROOT}/tmp/sockets/unicorn.uboss.sock", :backlog => 64
 listen 4096, :tcp_nopush => false
-worker_processes ENV["RAILS_ENV"] == "production" ? 20 : 2
+
+if ENV["RAILS_ENV"] == "production"
+  worker_processes Facter.value('processors')['count']
+else
+  worker_processes 2
+end
+
 timeout 30
 
 # To save some memory and improve performance

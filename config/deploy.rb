@@ -17,7 +17,7 @@ set :rbenv_prefix, "RBENV_ROOT=#{fetch(:rbenv_path)} RBENV_VERSION=#{fetch(:rben
 set :rbenv_map_bins, %w{rake gem bundle ruby rails}
 
 set :unicorn_config_path, -> { File.join(current_path, "config", "unicorn.rb") }
-set :unicorn_rack_env, -> { fetch(:rails_env) == "development" ? "development" : "staging" }
+set :unicorn_rack_env, -> { fetch(:rails_env) }
 
 set :sidekiq_config, -> { File.join(current_path, "config", "sidekiq.yml") }
 set :conditionally_migrate, true
