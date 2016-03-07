@@ -1,5 +1,5 @@
 <div class="product-box">
-	<%= link_to image_tag(product.avatar.url), admin_supplier_product_path(product) %>
+	<%= link_to image_tag(product.avatar.url("640x320")), admin_supplier_product_path(product) %>
   <div class="short-description">
     <%= product.short_description %>
   </div>
