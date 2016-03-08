@@ -27,7 +27,7 @@ class Product < ActiveRecord::Base
   has_many :product_inventories, autosave: true, dependent: :destroy
   has_many :cart_items,  through: :product_inventories
   validates_associated :product_inventories
-  has_many :seling_inventories, -> { where(saling: true, sale_to_customer: true) }, class_name: 'ProductInventory', autosave: true
+  has_many :seling_inventories, -> { where(saling: true) }, class_name: 'ProductInventory', autosave: true
 
   delegate :image_url, to: :asset_img, allow_nil: true
   delegate :avatar=, :avatar, to: :asset_img
@@ -174,7 +174,7 @@ class Product < ActiveRecord::Base
     skus = {}
     sku_details = {}
     count = 0
-    self.seling_inventories.where("count > 0").each do |seling_invertory|
+    self.seling_inventories.where("count > 0 and sale_to_customer is true").each do |seling_invertory|
       seling_invertory.sku_attributes.each do |property_name,property_value|
         if !skus[property_name].present?
           skus[property_name] = {}
