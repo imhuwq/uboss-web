@@ -1,7 +1,7 @@
 <div class="product-box">
-	<%= link_to image_tag(product.avatar.url("640x320")), admin_supplier_product_path(product) %>
+	<%= link_to image_tag(product.avatar.url("640x320")), admin_supplier_product_path(product, visitor: 'seller') %>
   <div class="short-description">
-    <%= product.short_description %>
+    <%= truncate product.name, length: 30 %>
   </div>
   <div class="cost-price">
     成本价：<%= number_to_currency product.cost_price %>
