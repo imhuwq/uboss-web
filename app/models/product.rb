@@ -174,7 +174,7 @@ class Product < ActiveRecord::Base
     skus = {}
     sku_details = {}
     count = 0
-    self.seling_inventories.where("count > 0 and sale_to_customer is true").each do |seling_invertory|
+    self.seling_inventories.where("count > 0 and sale_to_agency is true and sale_to_customer is true").each do |seling_invertory|
       seling_invertory.sku_attributes.each do |property_name,property_value|
         if !skus[property_name].present?
           skus[property_name] = {}
