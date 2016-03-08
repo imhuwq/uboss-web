@@ -1,6 +1,6 @@
 <div class="user-box agency">
   <div class="name">
-    <%= agency.nickname || 'Ta还没有设置名称' %>
+    <%= agency.nickname.present? ? agency.nickname : 'Ta还没有设置名称' %>
   </div>
 	<%= image_tag(agency.avatar.url(:thumb)) %>
   <div class="cooperation_form" id="cooperation_form_<%=agency.id%>">
