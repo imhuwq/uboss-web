@@ -114,7 +114,7 @@ module ProductsHelper
       product.product_inventories
     elsif product.association(:product_inventories).target.present?
       product.association(:product_inventories).target.
-        select { |inventory| inventory.saling }
+        select { |inventory| inventory.saling and inventory.sale_to_customer }
     else
       product.seling_inventories
     end
