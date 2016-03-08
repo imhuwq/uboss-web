@@ -43,7 +43,7 @@ class Product < ActiveRecord::Base
   scope :supply_deleted, -> { joins(:supplier_product_info).where('supplier_product_infos.supply_status = 2') }
   scope :commons, -> { where(type: %w(OrdinaryProduct AgencyProduct)) }
 
-  validate :must_has_one_image
+  #validate :must_has_one_image
   validate :must_has_one_product_inventory
   validates_presence_of :user_id, :name, :asset_img, :type
 

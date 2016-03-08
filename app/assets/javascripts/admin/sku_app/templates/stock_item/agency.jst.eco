@@ -17,11 +17,11 @@
 </td>
 <td><input class='input-mini sku-price' price <%= 'disabled' if @read_only %> type='number' name="product[product_inventories_attributes][<%= @id %>][price]" value=<%= @price %> ></td>
 <td>
-  <input id='sale-out' type='hidden' name="product[product_inventories_attributes][<%= @id %>][sale_to_customer]" value=<%= @sale_to_customer %> />
+  <input class='sale-out' type='hidden' name="product[product_inventories_attributes][<%= @id %>][sale_to_customer]" value=<%= @sale_to_customer %> />
   <% if @sale_to_customer: %>
-    <input id='check-sale-out' class='input-mini sku-sale-to-customer' <%= 'disabled' if @read_only %> type='checkbox' checked />
+    <input class='check-sale-out' class='input-mini sku-sale-to-customer' <%= 'disabled' if @read_only %> type='checkbox' checked />
   <% else: %>
-    <input id='check-sale-out' class='input-mini sku-sale-to-customer' <%= 'disabled' if @read_only %> type='checkbox' />
+    <input class='check-sale-out' class='input-mini sku-sale-to-customer' <%= 'disabled' if @read_only %> type='checkbox' />
   <% end %>
 </td>
 <td><input class='input-mini sku-count' <%= 'disabled' %> type='number' name="product[product_inventories_attributes][<%= @id %>][count]" value=<%= @count %>></td>
