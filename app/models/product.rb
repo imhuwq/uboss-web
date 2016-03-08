@@ -174,24 +174,26 @@ class Product < ActiveRecord::Base
     skus = {}
     sku_details = {}
     count = 0
-    self.seling_inventories.where("count > 0 and sale_to_agency is true and sale_to_customer is true").each do |seling_invertory|
-      seling_invertory.sku_attributes.each do |property_name,property_value|
-        if !skus[property_name].present?
-          skus[property_name] = {}
+    self.seling_inventories.where("count > 0 and sale_to_customer is true").each do |seling_invertory|
+      if seling_invertoy.sale_to_agency
+        seling_invertory.sku_attributes.each do |property_name,property_value|
+          if !skus[property_name].present?
+            skus[property_name] = {}
+          end
+          if !skus[property_name][property_value].present?
+            skus[property_name][property_value] = []
+          end
+          skus[property_name][property_value] << seling_invertory.id
         end
-        if !skus[property_name][property_value].present?
-          skus[property_name][property_value] = []
-        end
-        skus[property_name][property_value] << seling_invertory.id
-      end
 
-      if !sku_details[seling_invertory.id].present?
-        sku_details[seling_invertory.id] = {}
+        if !sku_details[seling_invertory.id].present?
+          sku_details[seling_invertory.id] = {}
+        end
+        sku_details[seling_invertory.id][:count] = seling_invertory.count
+        sku_details[seling_invertory.id][:sku_attributes] = seling_invertory.sku_attributes
+        sku_details[seling_invertory.id][:price] = seling_invertory.price
+        count += seling_invertory.count
       end
-      sku_details[seling_invertory.id][:count] = seling_invertory.count
-      sku_details[seling_invertory.id][:sku_attributes] = seling_invertory.sku_attributes
-      sku_details[seling_invertory.id][:price] = seling_invertory.price
-      count += seling_invertory.count
     end
     hash = {}
     hash[:skus] = skus
