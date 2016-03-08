@@ -33,7 +33,7 @@ class SupplierProductInventory < ProductInventory
   # TODO 如果数量太多需要放入队列处理
   def copy_to_children
     supplier_product.children.each do |pro|
-      amoeba_dup.update(product_id: pro.id, user_id: pro.user_id, saling: false)
+      amoeba_dup.update(product_id: pro.id, user_id: pro.user_id, sale_to_customer: false)
     end
   end
 
