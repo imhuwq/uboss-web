@@ -114,7 +114,6 @@ class Ability
   def grant_permissions_to_supplier user
     can :read, User, id: user.id
     can [:destroy, :edit_info, :update_info, :update_name, :update_short_description, :update_store_cover], SupplierStore, user_id: user.id
-    can :read, User, cooperation: { supplier_id: user.id }
     can :read, :agencies
     can :new, :agency
     can :build_cooperation_with_auth_code, :agency
