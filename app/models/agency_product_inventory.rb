@@ -7,8 +7,19 @@ class AgencyProductInventory < ProductInventory
     less_than_or_equal_to: -> (api) { api.parent.suggest_price_upper },
     if: -> { self.parent.suggest_price_upper.present? }
 
+  before_save :check_sale_to_agency
+
   belongs_to :parent, class_name: 'SupplierProductInventory'
   belongs_to :agency_product
 
   delegate :sale_to_agency, to: :parent
+
+  private
+
+  def check_sale_to_agency
+    unless sale_to_agency
+      return false
+    end
+  end
+    
 end

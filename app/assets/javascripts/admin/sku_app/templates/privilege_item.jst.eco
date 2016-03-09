@@ -2,6 +2,9 @@
   <td rowspan='1'><%= pValue %></td>
 <% end %>
 <td><%= @price %></td>
+<% if @sale_to_agency == false: %>
+  <% @read_only = true %>
+<% end %>
 <td>
   <input class='input-mini pri-total'  <%= 'disabled' if @read_only %> type='number' name="product[product_inventories_attributes][<%= @id %>][share_amount_total]" value=<%= @share_amount_total %>>
 </td>
