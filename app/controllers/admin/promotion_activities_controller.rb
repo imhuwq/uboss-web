@@ -4,6 +4,7 @@ class Admin::PromotionActivitiesController < AdminController
   before_action :set_activity_info, only: [:new, :edit]
 
   def index
+    @promotion_activities = @promotion_activities.includes(:user, :activity_infos).page(params[:page] || 1)
   end
 
   def create
@@ -29,6 +30,27 @@ class Admin::PromotionActivitiesController < AdminController
   end
 
   def change_status
+    if params[:status] == 'published'
+      @promotion_activity.status = "published"
+      @notice = '上架成功'
+    elsif params[:status] == 'unpublish'
+      @promotion_activity.status = "unpublish"
+      @notice = '取消上架成功'
+    end
+
+    if not @promotion_activity.save
+      @error = model_errors(@promotion_activity).join('<br/>')
+    end
+
+    if request.xhr?
+      flash.now[:success] = @notice
+      flash.now[:error]   = @error
+      render(partial: 'promotion_activities', locals: { promotion_activities: [@promotion_activity] })
+    else
+      flash[:success] = @notice
+      flash[:error]   = @error
+      redirect_to admin_promotion_activities_path
+    end
   end
 
   private

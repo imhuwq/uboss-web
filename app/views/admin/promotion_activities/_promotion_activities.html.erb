@@ -1,0 +1,60 @@
+<%= render 'layouts/flash_alert' if request.xhr? %>
+<div class="index_list">
+<table class="list-table" id="promotion_activities">
+		<thead>
+			<th colspan="2">商家名称</th>
+			<th>活动类型</th>
+      <th>活动单价</th>
+			<th>中奖数量</th>
+			<th>中奖概率</th>
+			<th>已中奖数量</th>
+			<th>已验证数量</th>
+			<th>参与时间</th>
+			<th>操作</th>
+		</thead>
+		<% promotion_activities.each do |promotion_activity| %>
+      <% promotion_activity.activity_infos.each do |activity_info| %>
+        <tr class="promotion_activity">
+          <% if activity_info.activity_type == "live" %>
+            <td rowspan="2">
+              <%= link_to url_for(action: :edit, id: promotion_activity.id), title: '编辑' do %>
+                <%= image_tag(promotion_activity.user.image_url(:thumb), size: "80x80", alt: "-") %>
+              <% end %>
+            </td>
+            <td rowspan="2" class="text-left" style="max-width: 400px;">
+              <%= link_to url_for(action: :edit, id: promotion_activity.id), title: '编辑' do %>
+                <%= promotion_activity.user.nickname %>
+              <% end %>
+            </td>
+          <% end %>
+
+          <td><%= translate_activity_type activity_info.activity_type %></td>
+          <td><%= number_to_currency activity_info.price %></td>
+          <td><%= activity_info.win_count %></td>
+          <td><%= activity_info.win_rate %></td>
+          <td><%= 0 %></td>
+          <td><%= 0 %></td>
+
+          <% if activity_info.activity_type == "live" %>
+            <td rowspan="2"><%= promotion_activity.created_at %></td>
+            <td rowspan="2">
+              <% if promotion_activity.status == 'unpublish' %>
+                <p>
+                <%= link_to("上架", change_status_admin_promotion_activity_path(promotion_activity, status: 'published'),
+                remote: true, method: :patch, data: { disable_with: '<i class="fa fa-spinner"></i>' },
+                class: "btn btn-mid btn-block yellow-btn change-status-btn") %>
+                </p>
+              <% else %>
+                <p>
+                <%= link_to("下架", change_status_admin_promotion_activity_path(promotion_activity, status: 'unpublish'),
+                remote: true, method: :patch, data: { disable_with: '<i class="fa fa-spinner"></i>' },
+                class: "btn btn-mid btn-block change-status-btn") %>
+                </p>
+              <% end %>
+            </td>
+          <% end %>
+        </tr>
+      <% end %>
+		<% end %>
+</table>
+</div>

@@ -12,4 +12,6 @@
     <%= link_to("+ 绑定商家", url_for(action: :new), class: "btn btn-large", role: "button") %>
   </div>
   <br />
+  <%= render partial: 'promotion_activities', locals: { promotion_activities: @promotion_activities } %>
+  <%= paginate @promotion_activities %>
 </div>
