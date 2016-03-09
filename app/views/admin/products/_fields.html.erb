@@ -22,6 +22,9 @@
   <h4 class="edit-title">商品信息</h4>
   <%= f.input :name %>
   <%= render partial: "admin/products/form/supplier_product", locals: { f: f, product: @product } if @product.is_a?(SupplierProduct) %>
+  <% if can_manage_agency_product(@product) %>
+    <%= render 'agency_show_fields', product: @product %>
+  <% end %>
   <% unless can_manage_supplier_product(@product) %>
     <%= f.input :original_price, hint: '仅作页面显示参考' %>
     <%= f.input :present_price, hint: '仅作显示参考，真实价格请在库存/规格中设置' %>

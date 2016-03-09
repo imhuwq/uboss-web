@@ -52,7 +52,7 @@
         <span class="control-txt"><%= @product.name %></span>
       </div>
     </div>
-    <% if @product.is_a?(SupplierProduct) && current_user.is_supplier? and can? :manage, @product %>
+    <% if can_manage_supplier_product(@product) %>
       <div class="form-group">
         <label class="control-label">成本价</label>
         <div class="control-input">
@@ -71,6 +71,9 @@
           <span class="control-txt"><%= raw @product.supply_content %></span>
         </div>
       </div>
+    <% end %>
+    <% if can_manage_agency_product(@product) %>
+      <%= render 'agency_show_fields', product: @product %>
     <% end %>
     <div class="form-group">
       <label class="control-label"> 描述 </label>
