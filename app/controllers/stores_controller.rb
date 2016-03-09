@@ -49,7 +49,12 @@ class StoresController < ApplicationController
   end
 
   def append_default_filter_for_store_show(scope, opts)
-    append_default_filter scope, order_column: opts[:order_column], order_type: order_column_type(opts[:order_column])[:order], column_type: order_column_type(opts[:order_column])[:type], page_size: opts[:page_size]
+    new_products = []
+    if !params['orderdata'] && opts[:order_column] != 'published_at'
+      new_products = scope.where("#{opts[:order_column]}" => nil)
+    end
+    old_products = append_default_filter scope, order_column: opts[:order_column], order_type: order_column_type(opts[:order_column])[:order], column_type: order_column_type(opts[:order_column])[:type], page_size: opts[:page_size]
+    new_products + old_products
   end
 
   def order_column_type(order_column)

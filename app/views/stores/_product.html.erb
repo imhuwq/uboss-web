@@ -1,5 +1,5 @@
 <% orderdata = @order_column_name ? product.try(@order_column_name.to_sym) : product.try(:updated_at) %>
-<% if orderdata %>
+<% if orderdata || !params['orderdata'] %>
   <div class="p-item" orderdata="<%= orderdata %>">
     <% cache ['store-product', product], expires_in: 1.day do %>
       <div class="product-box">
