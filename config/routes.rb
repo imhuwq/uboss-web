@@ -224,6 +224,13 @@ Rails.application.routes.draw do
           get :pre_view
         end
       end
+
+      resources :promotion_activities, except: [:destroy] do
+        member do
+          patch :change_status
+        end
+      end
+
       resources :orders, except: [:destroy] do
         patch :set_express, on: :member
         patch :change_ship_price, on: :member

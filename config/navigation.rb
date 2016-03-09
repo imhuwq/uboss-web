@@ -78,6 +78,8 @@ SimpleNavigation::Configuration.run do |navigation|
         if: -> { can?(:revenues, CityManager) }
     end
 
+    primary.item :promotion_activity, '商家活动', admin_promotion_activities_path, if: -> { can?(:read, PromotionActivity) }
+
     # Add an item which has a sub navigation (same params, but with block)
     primary.item :seller, '电商店铺', '#', {} do |sub_nav|
       # Add an item to the sub navigation (same params again)

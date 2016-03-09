@@ -1,0 +1,98 @@
+<div class="admin-box beige-bg-color">
+  <h4 class="edit-title">商家信息</h4>
+  <%= f.input :user_id %>
+</div>
+<br />
+
+<%= f.simple_fields_for "activity_infos_attributes[]", @live_activity_info do |info| %>
+  <div class="admin-box beige-bg-color">
+    <h4 class="edit-title">现场活动</h4>
+    <%= info.hidden_field :activity_type %>
+    <%= info.input :name %>
+    <%= info.input :price %>
+    <div class="form-group">
+      <label class="control-label"><abbr title="必填">*</abbr> 使用有效期</label>
+      <div class="control-input half-width">
+        <div class="f15 lh36">
+          <input name="promotion_activity[activity_infos_attributes][][expiry_days]" value="<%= @live_activity_info.expiry_days %>" /> 天
+          <span class="fs ml20">（自领取当天开始计算）</span>
+        </div>
+      </div>
+    </div>
+    <%= info.input :description %>
+    <div class="form-group">
+      <label class="control-label"><abbr title="必填">*</abbr> 中奖数量</label>
+      <div class="control-input half-width">
+        <div class="f15 lh36">
+          <input name="promotion_activity[activity_infos_attributes][][win_count]" value="<%= @live_activity_info.win_count %>" />
+        </div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="control-label"><abbr title="必填">*</abbr> 中奖概率</label>
+      <div class="control-input half-width">
+        <div class="f15 lh36">
+          <input name="promotion_activity[activity_infos_attributes][][win_rate]" value="<%= @live_activity_info.win_rate %>" /> %
+        </div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="control-label">已中奖数量</label>
+      <div class="control-input half-width"><span class="db pt10">0</span></div>
+    </div>
+    <div class="form-group">
+      <label class="control-label">已验证数量</label>
+      <div class="control-input half-width"><span class="db pt10">0</span></div>
+    </div>
+  </div>
+  <br />
+<% end %>
+
+<%= f.simple_fields_for "activity_infos_attributes[]", @share_activity_info do |info| %>
+  <div class="admin-box beige-bg-color">
+    <h4 class="edit-title">分享活动</h4>
+    <%= info.hidden_field :activity_type %>
+    <%= info.input :name %>
+    <%= info.input :price %>
+    <div class="form-group">
+      <label class="control-label"><abbr title="必填">*</abbr> 使用有效期</label>
+      <div class="control-input half-width">
+        <div class="f15 lh36">
+          <input name="promotion_activity[activity_infos_attributes][][expiry_days]" value="<%= @live_activity_info.expiry_days %>" /> 天
+          <span class="fs ml20">（自领取当天开始计算）</span>
+        </div>
+      </div>
+    </div>
+    <%= info.input :description %>
+    <div class="form-group">
+      <label class="control-label"><abbr title="必填">*</abbr> 中奖数量</label>
+      <div class="control-input half-width">
+        <div class="f15 lh36">
+          <input name="promotion_activity[activity_infos_attributes][][win_count]" value="<%= @live_activity_info.win_count %>" />
+        </div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="control-label"><abbr title="必填">*</abbr> 中奖概率</label>
+      <div class="control-input half-width">
+        <div class="f15 lh36">
+          <input name="promotion_activity[activity_infos_attributes][][win_rate]" value="<%= @live_activity_info.win_rate %>" /> %
+        </div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="control-label">已中奖数量</label>
+      <div class="control-input half-width"><span class="db pt10">0</span></div>
+    </div>
+    <div class="form-group">
+      <label class="control-label">已验证数量</label>
+      <div class="control-input half-width"><span class="db pt10">0</span></div>
+    </div>
+  </div>
+  <br />
+<% end %>
+
+
+<div class="form-actions text-center">
+  <%= f.submit "保存", class: "btn btn-large" %>
+</div>

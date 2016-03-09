@@ -160,6 +160,17 @@ header{ background: #2e2e2e;}
         background-position: -517px 0;
     }
 }
+#admin-nav-promotion_activity{
+    width: 60px;
+    &.selected,&:hover{
+      a:before{
+          background-position: -426px -83px;
+      }
+    }
+    > a:before{
+        background-position: -426px 0;
+    }
+}
 
 /* 2级导航 */
 .nav-v2{
