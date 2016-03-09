@@ -1,7 +1,7 @@
 class Admin::PromotionActivitiesController < AdminController
   load_and_authorize_resource
 
-  before_action :set_activity_info, only: [:new, :edit]
+  before_action :set_activity_info, only: :new
 
   def index
     @promotion_activities = @promotion_activities.includes(:user, :activity_infos).page(params[:page] || 1)
@@ -15,17 +15,6 @@ class Admin::PromotionActivitiesController < AdminController
       set_activity_info
       flash.now[:error] = "创建失败。#{@promotion_activity.errors.full_messages.join('<br/>')}"
       render :new
-    end
-  end
-
-  def update
-    if @promotion_activity.update(promotion_activity_params)
-      flash[:success] = '修改成功'
-      redirect_to admin_promotion_activities_path
-    else
-      set_activity_info
-      flash.now[:error] = "修改失败。#{@promotion_activity.errors.full_messages.join('<br/>')}"
-      render :edit
     end
   end
 

@@ -16,25 +16,15 @@
       <% promotion_activity.activity_infos.each do |activity_info| %>
         <tr class="promotion_activity">
           <% if activity_info.activity_type == "live" %>
-            <td rowspan="2">
-              <%= link_to url_for(action: :edit, id: promotion_activity.id), title: '编辑' do %>
-                <%= image_tag(promotion_activity.user.image_url(:thumb), size: "80x80", alt: "-") %>
-              <% end %>
-            </td>
-            <td rowspan="2" class="text-left" style="max-width: 400px;">
-              <%= link_to url_for(action: :edit, id: promotion_activity.id), title: '编辑' do %>
-                <%= promotion_activity.user.nickname %>
-              <% end %>
-            </td>
+            <td rowspan="2"><%= image_tag(promotion_activity.user.image_url(:thumb), size: "80x80", alt: "-") %></td>
+            <td rowspan="2" class="text-left" style="max-width: 400px;"><%= promotion_activity.user.nickname %></td>
           <% end %>
-
           <td><%= translate_activity_type activity_info.activity_type %></td>
           <td><%= number_to_currency activity_info.price %></td>
           <td><%= activity_info.win_count %></td>
           <td><%= activity_info.win_rate %></td>
           <td><%= 0 %></td>
           <td><%= 0 %></td>
-
           <% if activity_info.activity_type == "live" %>
             <td rowspan="2"><%= promotion_activity.created_at %></td>
             <td rowspan="2">
