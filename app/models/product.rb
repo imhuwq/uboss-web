@@ -43,7 +43,7 @@ class Product < ActiveRecord::Base
   scope :supply_deleted, -> { joins(:supplier_product_info).where('supplier_product_infos.supply_status = 2') }
   scope :commons, -> { where(type: %w(OrdinaryProduct AgencyProduct)) }
 
-  #validate :must_has_one_image
+  validate :must_has_one_image
   validate :must_has_one_product_inventory
   validates_presence_of :user_id, :name, :asset_img, :type
 
@@ -175,7 +175,7 @@ class Product < ActiveRecord::Base
     sku_details = {}
     count = 0
     self.seling_inventories.where("count > 0 and sale_to_customer is true").each do |seling_invertory|
-      if seling_invertoy.sale_to_agency
+      if seling_invertory.sale_to_agency
         seling_invertory.sku_attributes.each do |property_name,property_value|
           if !skus[property_name].present?
             skus[property_name] = {}
