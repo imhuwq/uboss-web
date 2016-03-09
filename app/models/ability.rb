@@ -124,6 +124,7 @@ class Ability
     can :manage, AgencyOrder, supplier_id: user.id
     can :manage, OrderItemRefund, order_item: { order: { supplier_id: user.id } }
     can :manage, CarriageTemplate, user_id: user.id
+    can :manage, UserAddress, user_id: user.id
   end
 
   def grant_permissions_to_agency user
