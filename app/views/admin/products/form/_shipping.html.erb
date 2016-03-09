@@ -17,7 +17,7 @@
     <i class="fa fa-refresh link_refresh"></i>
   <% end %>
   <span class='link_new_carriage_temp'><%= link_to '新建运费模板', action_to_path(:carriage_template, action: :new), target: '_blank', class: 'label new_admin_carriage_template' %></span>
-  <%= render partial: 'admin/products/show_carriage_template', locals: {carriage: product.carriage_template} %>
+  <%= render partial: 'admin/products/show_carriage_template', locals: {carriage: product.carriage_template, show: false} %>
 
   <div class='full_cut_wrap'>
     <label class='optional text-right control-label'>更多设置</label>

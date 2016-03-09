@@ -5,6 +5,8 @@ class SupplierProduct < Product
   has_many :supplier_product_inventories, -> { where(type: 'SupplierProductInventory') }, foreign_key: 'product_id', autosave: true
   has_many :children, class_name: 'AgencyProduct', foreign_key: 'parent_id'
 
+  after_save :update_children_transportation, if: -> { carriage_template_id_changed? or transportation_way_changed? or traffic_expense_changed? }
+
   amoeba do
     set type: 'AgencyProduct'
     include_association :supplier_product_inventories
@@ -141,6 +143,12 @@ class SupplierProduct < Product
 
   def must_has_one_product_inventory
     errors.add(:supplier_product_inventories, '至少添加一个产品规格属性') unless supplier_product_inventories.size > 0
+  end
+
+  def update_children_transportation
+    children.each do |child|
+      child.update(carriage_template_id: carriage_template_id, transportation_way: transportation_way, traffic_expense: traffic_expense)
+    end
   end
 
 end
