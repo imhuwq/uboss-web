@@ -105,24 +105,7 @@
   </div>
   <br />
   <%= render "admin/products/show/rebate" if @product.is_a?(OrdinaryProduct) %>
-  <div class="admin-box beige-bg-color">
-    <h4 class="edit-title">物流及其他</h4>
-    <div class="form-group">
-        <label class="control-label">付款方式</label>
-        <div class="control-input">
-          <span class="text-margin"><%= Product::DataBuyerPay[@product.transportation_way] %></span>
-        </div>
-    </div>
-    <% if Product::DataBuyerPay[@product.transportation_way] == '统一邮费' %>
-      <div class="form-group">
-          <label class="control-label">运费</label>
-          <div class="control-input">
-            <div class="control-txt"><%= @product.traffic_expense %></div>
-          </div>
-      </div>
-    <% end %>
-  </div>
-  <br />
+  <%= render 'admin/products/transportation_show', product: @product %>
   <div class="admin-box beige-bg-color">
     <h4 class="edit-title">二维码</h4>
     <div class="box-w100">
