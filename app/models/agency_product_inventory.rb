@@ -13,6 +13,9 @@ class AgencyProductInventory < ProductInventory
   belongs_to :agency_product
 
   delegate :sale_to_agency, to: :parent
+  delegate :cost_price, to: :parent
+  delegate :suggest_price_lower, to: :parent
+  delegate :suggest_price_upper, to: :parent
 
   private
 

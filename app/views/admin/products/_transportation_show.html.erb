@@ -1,0 +1,22 @@
+<div class="admin-box beige-bg-color">
+  <h4 class="edit-title">物流及其他</h4>
+  <div class="form-group">
+      <label class="control-label">付款方式</label>
+      <div class="control-input">
+        <span class="text-margin"><%= Product::DataBuyerPay[product.transportation_way] %></span>
+      </div>
+  </div>
+  <% if Product::DataBuyerPay[product.transportation_way] == '统一邮费' %>
+    <div class="form-group">
+        <label class="control-label">运费</label>
+        <div class="control-input">
+          <div class="control-txt"><%= product.traffic_expense %></div>
+        </div>
+    </div>
+  <% elsif Product::DataBuyerPay[product.transportation_way] == '运费模板' %>
+    <div class="logistics_and_other">
+      <%= render partial: 'admin/products/show_carriage_template', locals: {carriage: product.carriage_template, show: true} %>
+    </div>
+  <% end %>
+</div>
+<br />

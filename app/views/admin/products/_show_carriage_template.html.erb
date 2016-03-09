@@ -1,8 +1,8 @@
 <div class='select_carriage_template_wrapper'>
   <% if carriage.present? %>
     <div class='select_carriage_template'>
-      <% ct_path = can_manage_supplier_product(@product) ? edit_admin_suppliers_carriage_template_path(carriage) : edit_admin__sellers_carriage_template_path(carriage) %>
-      <%= link_to '修改', ct_path, class: 'prodcut_edit_carrage_template', target: '_blank' %>
+      <% ct_path = can_manage_supplier_product(@product) ? edit_admin_suppliers_carriage_template_path(carriage) : edit_admin_sellers_carriage_template_path(carriage) %>
+      <%= link_to '修改', ct_path, class: 'prodcut_edit_carrage_template', target: '_blank' unless show %>
 
       <table class='table table-bordered'>
         <thead>
