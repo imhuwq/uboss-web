@@ -6,7 +6,7 @@ class ServiceProduct < Product
   validates :service_type, inclusion: { in: [0, 1] }
   validates :monthes, numericality: { greater_than_or_equal_to: 3 }
 
-  DataServiceType = { 0 => '代金券', 1 => '团购' }
+  DataServiceType = { 0 => '代金券', 1 => '商品' }
 
   after_initialize  :initialize_product_inventory
   before_update :check_product_inventory_count

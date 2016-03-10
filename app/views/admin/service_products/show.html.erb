@@ -9,17 +9,17 @@
 	<ul class="breadcrumb">
 		<li><a href="/admin">主页</a></li>
 		<li class="divider"><i class="fa fa-angle-right"></i></li>
-		<li><%= link_to '团购店铺', '#' %></li>
+		<li><%= link_to '实体店铺', '#' %></li>
 		<li class="divider"><i class="fa fa-angle-right"></i></li>
-		<li><%= link_to '团购管理', [:admin, :service_products] %></li>
+		<li><%= link_to '商品管理', [:admin, :service_products] %></li>
 		<li class="divider"><i class="fa fa-caret-right"></i></li>
-		<li class="active">查看团购信息</li>
+		<li class="active">查看商品信息</li>
 	</ul>
 </div><!-- container -->
 <br />
 <div class="container nogap">
   <div class="admin-box beige-bg-color">
-    <h4 class="edit-title">团购信息</h4>
+    <h4 class="edit-title">商品信息</h4>
     <% if current_user.is_super_admin? %>
       <div class="form-group">
         <label class="control-label">所属商家</label>
@@ -29,13 +29,13 @@
       </div>
     <% end %>
     <div class="form-group">
-      <label class="control-label"> 团购名称 </label>
+      <label class="control-label"> 商品名称 </label>
       <div class="control-input">
         <span class="control-txt"><%= @service_product.name %></span>
       </div>
     </div>
     <div class="form-group">
-      <label class="control-label"> 团购类型 </label>
+      <label class="control-label"> 商品类型 </label>
       <div class="control-input">
         <span class="control-txt"><%= ServiceProduct::DataServiceType[@service_product.service_type] %></span>
       </div>
@@ -61,7 +61,7 @@
     </div>
     <% end %>
     <div class="form-group">
-      <label class="control-label"> 团购有效期 </label>
+      <label class="control-label"> 商品有效期 </label>
       <div class="control-input">
         <span class="control-txt"><%= @service_product.created_at + @service_product.monthes.months %>（自发布时间后 <%= @service_product.monthes %> 个月）</span>
       </div>
