@@ -134,7 +134,7 @@ class User < ActiveRecord::Base
   end
 
   def has_recommend?(object)
-    Recommend.where(user_id: 1, recommended_id: object.id, recommended_type: object.class).exists?
+    Recommend.where(user_id: self.id, recommended_id: object.id, recommended_type: object.class).exists?
   end
 
   def login_identifier=(login_identifier)
