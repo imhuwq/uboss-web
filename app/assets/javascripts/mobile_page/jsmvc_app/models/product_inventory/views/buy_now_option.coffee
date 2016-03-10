@@ -222,7 +222,6 @@ class ProductInventory.View.BuyNowOption extends Backbone.View
   countNum: ->
     num=parseInt($('.count-box .count_num').val())
     @count = num
-    console.log "count", @count
     @calculateTotalPrice()
 
   limitToNumKeyup: (e) ->

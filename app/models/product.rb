@@ -219,7 +219,7 @@ class Product < ActiveRecord::Base
   end
 
   def reorder
-    ReorderProductsJob.set(wait: 10.seconds).perform_later(self.user_id)
+    ReorderProductsJob.set(wait: 10.seconds).perform_later(self.user_id) # 延迟10秒是为了在AcitveRecord写完数据后再执行Job
   end
 
   private
