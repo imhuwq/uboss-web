@@ -9,11 +9,11 @@
 <%= upyun_meta_tags prefix: 'asset_img/avatar' %>
 
 <div class="admin-box beige-bg-color">
-  <h4 class="edit-title">团购信息</h4>
+  <h4 class="edit-title">商品信息</h4>
   <%= f.input :name %>
   <div class="form-group string required service_product_service_type">
     <label class="string required control-label" for="service_product_service_type">
-      团购类型
+      商品类型
     </label>
     <div class="control-input" style="margin-top:5px;">
       <%= f.collection_radio_buttons :service_type, ServiceProduct::DataServiceType.invert, :last, :first %>
@@ -24,7 +24,7 @@
   <%= f.input :short_description %>
   <div class="form-group integer required service_product_monthes">
     <label class="integer required control-label" for="service_product_monthes">
-      <abbr title="必填">*</abbr> 团购有效期
+      <abbr title="必填">*</abbr> 商品有效期
     </label>
     <div class="control-input">
       <span style="font-size:15px;line-height:36px;">自发布时间后
