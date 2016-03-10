@@ -49,7 +49,7 @@ class HomeController < ApplicationController
 
       render layout: nil
     else
-      render 'users/sessions/new_of_activity', layout: 'mobile'
+      render 'users/sessions/new_of_activity', layout: 'activity'
     end
   end
 
