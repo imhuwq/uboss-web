@@ -3,8 +3,8 @@
   <div class="index_list">
     <table class="list-table" id="products">
       <thead>
-        <th colspan="2">团购名称</th>
-        <th>团购类型</th>
+        <th colspan="2">商品名称</th>
+        <th>商品类型</th>
         <th>现价</th>
         <% if current_user.is_super_admin? %>
           <th>商家</th>
@@ -12,7 +12,7 @@
         <th>好评率</th>
         <th>总销量</th>
         <th>发布时间</th>
-        <th>团购有效期</th>
+        <th>商品有效期</th>
         <th>操作</th>
       </thead>
       <% products = products || @service_products %>

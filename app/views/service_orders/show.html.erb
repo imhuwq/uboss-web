@@ -117,7 +117,7 @@
   <% if @order.paid_at %>
     <p>支付时间：<%= @order.paid_at %> </p>
   <% end %>
-  <p>团购总价：<%= @order_item.total_price %> </p>
+  <p>商品总价：<%= @order_item.total_price %> </p>
   <p>数量：<%= @order_item.amount %> </p>
   <% if @order.total_privilege_amount != 0 %>
     <p>友钱卡优惠：<%= @order.total_privilege_amount %> </p>

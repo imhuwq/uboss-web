@@ -2,9 +2,9 @@
 	<ul class="breadcrumb">
 		<li><a href="/admin">主页</a></li>
 		<li class="divider"><i class="fa fa-caret-right"></i></li>
-		<li><%= link_to '团购管理', [:admin, :service_products] %></li>
+		<li><%= link_to '商品管理', [:admin, :service_products] %></li>
 		<li class="divider"><i class="fa fa-caret-right"></i></li>
-		<li>团购</li>
+		<li>商品</li>
 	</ul>
 </div>
 <br />
@@ -12,7 +12,7 @@
 	<div class="box-w25">
     <a href="<%= admin_service_products_path %>" data-remote="true">
       <div class="admin-box main-bg-color">
-        <h4>总发布团购</h4>
+        <h4>总发布商品</h4>
         <h1 class="num"><%= @statistics[:count] %></h1>
       </div>
     </a>
@@ -20,7 +20,7 @@
   <div class="box-w25">
     <a href="<%= admin_service_products_path(type: 'published') %>" data-remote="true">
       <div class="admin-box red-bg-color">
-        <h4>上线团购</h4>
+        <h4>上线商品</h4>
         <h1 class="num"><%= @statistics[:published] %></h1>
       </div>
     </a>
@@ -28,7 +28,7 @@
   <div class="box-w25">
     <a href="<%= admin_service_products_path(type: 'unpublish') %>" data-remote="true">
       <div class="admin-box blue-bg-color">
-        <h4>下线团购</h4>
+        <h4>下线商品</h4>
         <h1 class="num"><%= @statistics[:unpublish] %></h1>
       </div>
     </a>
@@ -38,7 +38,7 @@
 
 <div class="container  mod-inner">
   <div class="list-search-bar">
-    <%= link_to("+ 发布团购", (current_user.is_seller? ? url_for(action: :new) : merchant_confirm_account_path), class: "btn btn-large", role: "button") %>
+    <%= link_to("+ 发布商品", (current_user.is_seller? ? url_for(action: :new) : merchant_confirm_account_path), class: "btn btn-large", role: "button") %>
   </div>
   <br />
 

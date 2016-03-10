@@ -114,13 +114,13 @@ zh-CN:
         full_cut: 满足条件包邮
         full_cut_number: 满足条件包邮数量
         full_cut_unit: 满足条件包邮单位
-        service_type: 团购类型
-        monthes: 团购有效期
-        purchase_note: 团购须知
+        service_type: 商品类型
+        monthes: 商品有效期
+        purchase_note: 商品须知
       service_product:
-        name: 团购名称
-        service_type: 团购类型
-        monthes: 团购有效期
+        name: 商品名称
+        service_type: 商品类型
+        monthes: 商品有效期
         content: 图文详情
       mobile_auth_code:
         mobile: 手机号码
@@ -189,15 +189,15 @@ zh-CN:
       default: 验证码错误
   nav_groups:
     order_manage: 订单管理
-    service_manage: 团购管理
+    service_manage: 商品管理
     orders: 订单
     product_manage: 商品管理
     withdraw_records: 提现
     city_manager: 城市运营商
   li_link:
     dashboard: 主页
-    service_stores: 团购店铺
-    service_products: 团购商品
+    service_stores: 实体店铺
+    service_products: 商品
     verify_codes: 验证管理
     evaluations: 评价管理
     income: 收益管理
@@ -414,7 +414,7 @@ zh-CN:
     messages:
       already_has_role: 已经拥有该角色
       only_ordinary_store: 只能创建一个电商店铺
-      only_service_store: 只能创建一个团购店铺
+      only_service_store: 只能创建一个实体店铺
       exists: 已存在
   api_errors:
     unauthorized: 没通过用户认证
