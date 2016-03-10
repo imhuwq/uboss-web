@@ -4,7 +4,11 @@
   <% if current_user.present? and current_user.can_rebind_agent? and @agent.present? %>
     <%= horizon_form_for(:seller, url: seller_path(current_user), method: 'PUT') do |f| %>
       <h4>注册绑定UBOSS</h4>
-      <h6>您将与<%= @agent.try(:identify) %>创客进行绑定</h6>
+      <h6>
+				<%= image_tag(@agent.avatar.url(:thumb)) %>
+        创客<%= @agent.try(:identify) %>
+        将为您服务
+      </h6>
       <br />
       <%= hidden_field_tag "seller[agent_id]", @agent.try(:id) %>
       <%= f.input_field :mobile, value: current_user.login, disabled: true,
@@ -26,7 +30,11 @@
     <h4>注册绑定UBOSS</h4>
     <br />
     <% if @agent.present? %>
-      <h3>您将与<%= @agent.try(:identify) %>创客进行绑定</h3>
+      <h6>
+				<%= image_tag(@agent.avatar.url(:thumb)) %>
+        创客<%= @agent.try(:identify) %>
+        将为您服务
+      </h6>
       <br />
     <% end %>
     <div class="text-center">
@@ -44,7 +52,11 @@
     <%= horizon_form_for(:seller, url: url_for(controller: :sellers, action: :create), method: 'POST') do |f| %>
         <h4>注册绑定UBOSS</h4>
         <% if @agent.present? %>
-          <p>您将与<%= @agent.try(:identify) %>创客进行绑定</p>
+          <h6>
+			    	<%= image_tag(@agent.avatar.url(:thumb)) %>
+            创客<%= @agent.try(:identify) %>
+            将为您服务
+          </h6>
         <% end %>
         <%= hidden_field_tag "seller[agent_id]", @agent.try(:id) %>
         <%= f.input_field :mobile , as: :tel, id:"new_mobile",class:"input-block",placeholder:'手机号码'%>
