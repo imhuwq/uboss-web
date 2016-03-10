@@ -16,16 +16,16 @@
 			<tr class="product" id='product_<%= product.id %>'>
 				<td>
           <%= link_to the_product_path(product) do %>
-						<%= image_tag(product.image_url(:thumb), size: "80x80", alt: "-") %>　
+						<%= image_tag(product.image_url(:thumb), size: "80x80", alt: "-") %>
 					<% end %>
 				</td>
 				<td class="text-left" style="max-width: 400px;">
+          <% if product.type == "AgencyProduct" %>
+            <span class="label label-primary"><%= t(product.type) %></span>
+          <% end %>
 					<%= link_to the_product_path(product) do %>
 						<%= product.name %>
 					<% end %>
-          <% if product.type == "AgencyProduct" %>
-            (<%= t(product.type) %>)
-          <% end %>
 				</td>
 				<td>
 					<%= number_to_currency product.present_price %>
