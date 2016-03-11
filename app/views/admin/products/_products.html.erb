@@ -40,7 +40,7 @@
           <% if can_manage_seller_product(product) %>
             <% if product.type == 'AgencyProduct' and !(product.parent.supplied?) %>
               <p>
-                <button class="btn btn-mid btn-block" disabled><%= product.parent.stored? ? '供应商已下架该商品' : '供应商已删除改商品' %></button>
+                <a class="btn btn-mid btn-block yellow-btn" disabled><%= product.parent.stored? ? '供应商已下架该商品' : '供应商已删除改商品' %></a>
               </p>
             <% else %>
               <% if product.status == 'unpublish' %>
