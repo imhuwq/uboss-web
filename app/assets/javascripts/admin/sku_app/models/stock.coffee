@@ -40,10 +40,9 @@ class StockSku.Models.Stock extends Backbone.Model
       errors.price = '价格必须大于0.01'
     if !isSupplierProduct && suggest_price_lower + suggest_price_upper > 0
       if attrs.price < suggest_price_lower
-        if suggest_price_upper && attrs.price > suggest_price_upper
-          errors.price = '价格必须大于' + suggest_price_lower + '且小于' + suggest_price_upper
-        else
-          errors.price = '价格必须大于' + suggest_price_lower
+        errors.price = '价格必须大于' + suggest_price_lower
+      if suggest_price_upper && attrs.price > suggest_price_upper
+        errors.price = '价格必须小于' + suggest_price_upper
     if not _.isEmpty(errors)
       return errors
 

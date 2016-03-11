@@ -46,7 +46,7 @@ class StockSku.Views.StockItem extends Backbone.View
       @$('input.sku-price').val @model.get('price')
     else
       @$('input.sku-price').val price
-    $(e.target).closest('tr').find('td.profit').html((price - suggest_price_lower).toFixed(2))
+      $(e.target).closest('tr').find('td.profit').html((price - suggest_price_lower).toFixed(2))
 
   setCount: (e)->
     count = parseInt(Number($(e.target).val()))
