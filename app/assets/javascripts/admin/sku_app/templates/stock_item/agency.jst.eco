@@ -16,6 +16,11 @@
   <input class='input-mini sku-suggest-price-upper' price <%= 'disabled' %> type='number' name="product[product_inventories_attributes][<%= @id %>][suggest_price_upper]" value=<%= @suggest_price_upper %> />
 </td>
 <td><input class='input-mini sku-price' price <%= 'disabled' if @read_only %> type='number' name="product[product_inventories_attributes][<%= @id %>][price]" value=<%= @price %> ></td>
+<td class="profit">
+  <% if @price: %>
+    <%= (@price - @suggest_price_lower).toFixed(2) %>
+  <% end %>
+</td>
 <td>
   <input class='sale-out' type='hidden' name="product[product_inventories_attributes][<%= @id %>][sale_to_customer]" value=<%= @sale_to_customer %> />
   <% if @sale_to_customer: %>
