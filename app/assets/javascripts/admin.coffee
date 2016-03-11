@@ -32,10 +32,9 @@
 #= require admin/sellers
 #= require_self
 
-App = window.App = {};
+App = window.App = {}
 $ ->
-  App.params = jQuery.parseJSON($('body').attr('data-params'));
-
+  App.params = jQuery.parseJSON($('body').attr('data-params'))
 
 jQuery ($) ->
 
