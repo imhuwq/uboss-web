@@ -5,7 +5,7 @@
   else{
     btn_class = "btn-mid"
   }
-  $(".agency-product-action-<%= @product.id %>").html("<button class='btn "+btn_class+"' disabled>已添加到店铺</button>")
+  $(".agency-product-action-<%= @product.id %>").html("<a class='btn "+btn_class+" yellow-btn' disabled>已添加到店铺</a>")
 <% else %>
   alert('添加到店铺失败！')
 <% end %>

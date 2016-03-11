@@ -129,7 +129,7 @@
       <%= render '/admin/products/seller_actions', product: @product %>
     <% end %>
     <% if can_agent_product(@product) and visitor == 'seller' %>
-      <div class="agency-product-actions">
+      <div class="agency-product-actions agency-product-action-<%= @product.id %>">
         <%= render '/admin/products/agency_actions', product: @product %>
       </div>
     <% end %>

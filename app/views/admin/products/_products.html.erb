@@ -24,7 +24,7 @@
             <span class="label label-primary"><%= t(product.type) %></span>
           <% end %>
 					<%= link_to the_product_path(product) do %>
-						<%= product.name %>
+						<%= truncate product.name, length: 30 %>
 					<% end %>
 				</td>
 				<td>
