@@ -105,12 +105,12 @@ SimpleNavigation::Configuration.run do |navigation|
         thr_nav.item :edit_store, '店铺设置', edit_admin_stores_path,
           if: -> { can?(:read, Product) }
       end
-      sub_nav.item :stock, '市场进货', "#", if: -> { can?(:manage, AgencyProduct) } do |thr_nav|
+      sub_nav.item :stock, '市场进货', "#", if: -> { can?(:manage, :agency_product) } do |thr_nav|
         thr_nav.item :valid_agent_products, '可代销商品', admin_sellers_valid_agent_products_path,
-          highlights_on: :subpath, if: -> { can?(:manage, AgencyProduct) }
+          highlights_on: :subpath, if: -> { can?(:manage, :agency_product) }
 
         thr_nav.item :my_suppliers, '我的供货商', my_suppliers_admin_sellers_path,
-          highlights_on: :subpath, if: -> { can?(:manage, AgencyProduct) }
+          highlights_on: :subpath, if: -> { can?(:manage, :agency_product) }
       end
     end
 

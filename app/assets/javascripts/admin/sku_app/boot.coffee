@@ -40,12 +40,12 @@ jQuery ($) ->
       #else
         #"ordinary"
     productType = switch App.productType
-      when 'OrdinaryProduct'
-        'ordinary'
       when 'SupplierProduct'
         'supplier'
       when 'AgencyProduct'
         'agency'
+      else
+        'ordinary'
     if $('#product-sku').length > 0
       StockSku.stock_view = new StockSku.Views.Stock(collection: StockSku.Collections.stock_collection, type: productType)
       StockSku.privilege_view = new StockSku.Views.Privilege(collection: StockSku.Collections.stock_collection)

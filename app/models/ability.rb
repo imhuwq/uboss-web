@@ -130,6 +130,7 @@ class Ability
   def grant_permissions_to_agency user
     can :read, User, id: user.id
     can :manage, AgencyProduct, user_id: user.id
+    can :manage, :agency_product
     can :read, SupplierStore, supplier: { cooperations: { agency_id: user.id } }
     can :valid_agent_products, SupplierProduct
     can :read, SupplierProduct, supplier: { cooperations: { agency_id: user.id } }
