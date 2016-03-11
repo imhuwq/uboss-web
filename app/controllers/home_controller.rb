@@ -47,7 +47,11 @@ class HomeController < ApplicationController
         @qrcode_img_url = params[:type] == 'ordinary' ? privilege_card.ordinary_store_qrcode_img_url(true) : privilege_card.service_store_qrcode_img_url(true)
       end
 
-      render layout: nil
+      if true
+        render 'activity', layout: 'activity'
+      else
+        render layout: nil
+      end
     else
       render 'users/sessions/new_of_activity', layout: 'activity'
     end
