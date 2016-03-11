@@ -6,8 +6,8 @@ class AgencyProductInventory < ProductInventory
   validates_numericality_of :price,
     less_than_or_equal_to: -> (api) { api.parent.suggest_price_upper },
     if: -> { self.parent.suggest_price_upper.present? }
+  validate :check_sale
 
-  before_save :check_sale_to_agency
 
   belongs_to :parent, class_name: 'SupplierProductInventory'
   belongs_to :agency_product
@@ -19,10 +19,7 @@ class AgencyProductInventory < ProductInventory
 
   private
 
-  def check_sale_to_agency
-    unless sale_to_agency
-      return false
-    end
+  def check_sale
+    errors.add(:sale_to_customer, "商品已下架或库存不足.") if parent.count.zero? || !parent.sale_to_agency
   end
-    
 end
