@@ -6,9 +6,12 @@
   <div class="cost-price">
     成本价：<%= number_to_currency product.cost_price %>
   </div>
+  <div class="suggest-price">
+    建议价：<%= number_to_currency product.suggest_price_lower %> - <%= number_to_currency product.suggest_price_upper %>
+  </div>
   <div class="agency-product-actions agency-product-action-<%= product.id %>">
     <% if product.has_been_agented_by?(current_user) %>
-      <button class="btn btn-mid btn-block" disabled><%= product.published? ? '已添加到店铺' : '已添加到仓库' %></button>
+      <a class="btn btn-mid btn-block yellow-btn" disabled><%= product.published? ? '已添加到店铺' : '已添加到仓库' %></a>
     <% else %>
       <%= link_to("+立即上架", admin_list_supplier_product_path(product),
         remote: true, method: :post, data: { disable_with: '<i class="fa fa-spinner"></i>' },
