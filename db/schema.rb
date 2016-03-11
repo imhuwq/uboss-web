@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160308031423) do
+ActiveRecord::Schema.define(version: 20160311071659) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -477,6 +477,7 @@ ActiveRecord::Schema.define(version: 20160308031423) do
     t.datetime "qrcode_expire_at",     default: '2016-02-25 14:44:59'
     t.string   "service_store_name"
     t.string   "ordinary_store_name"
+    t.boolean  "activity",             default: false
   end
 
   add_index "privilege_cards", ["user_id", "seller_id"], name: "index_privilege_cards_on_user_id_and_seller_id", unique: true, using: :btree
@@ -516,9 +517,9 @@ ActiveRecord::Schema.define(version: 20160308031423) do
     t.decimal  "cost_price"
     t.decimal  "suggest_price_lower"
     t.decimal  "suggest_price_upper"
-    t.integer  "quantity"
     t.boolean  "sale_to_agency"
     t.integer  "parent_id"
+    t.boolean  "sale_to_customer",    default: true
   end
 
   add_index "product_inventories", ["sku_attributes"], name: "index_product_inventories_on_sku_attributes", using: :gin
@@ -597,7 +598,6 @@ ActiveRecord::Schema.define(version: 20160308031423) do
   end
 
   add_index "products", ["type"], name: "index_products_on_type", using: :btree
-  add_index "products", ["user_id", "parent_id"], name: "index_products_on_user_id_and_parent_id", unique: true, using: :btree
 
   create_table "promotion_activities", force: :cascade do |t|
     t.integer  "user_id"

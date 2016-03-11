@@ -62,6 +62,7 @@ class User < ActiveRecord::Base
   has_many :categories
   has_many :selling_incomes
   belongs_to :agent, class_name: 'User'
+  has_many :promotion_activities
 
   validates :login, uniqueness: true, mobile: true, allow_blank: true
   validates_presence_of :login, presence: true, if: -> { email.blank? }
@@ -170,6 +171,10 @@ class User < ActiveRecord::Base
 
   def have_role?(role_name)
     user_roles.exists?(name: role_name)
+  end
+
+  def published_activity
+    promotion_activities.find_by(status: 1)
   end
 
   class << self
