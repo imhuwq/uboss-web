@@ -52,7 +52,7 @@
         <span class="control-txt"><%= @product.name %></span>
       </div>
     </div>
-    <% if can_manage_supplier_product(@product) %>
+    <% if can_manage_supplier_product(@product) or (can_agent_product(@product) and visitor == 'seller') %>
       <div class="form-group">
         <label class="control-label">成本价</label>
         <div class="control-input">
