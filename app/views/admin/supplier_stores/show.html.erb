@@ -2,21 +2,34 @@
 	<ul class="breadcrumb">
 		<li><a href="/admin">主页</a></li>
 		<li class="divider"><i class="fa fa-caret-right"></i></li>
+    <li><%= link_to '我的供货商', my_suppliers_admin_sellers_path %></li>
+		<li class="divider"><i class="fa fa-caret-right"></i></li>
     <li>供货店铺：<%= @supplier_store.store_name %></li>
 	</ul>
 </div>
 <br />
-<div class="container nogap ">
-	<div class="box-w25">
-		<div class="admin-box blue-bg-color">
-      <h4>商品数</h4>
-    	<h1 class="num"><%= @statistics[:count] %></h1>
-		</div>
-	</div>
+<div class="container">
+  <div class="info-bar">
+    <%= image_tag(@supplier_store.store_cover.url(:thumb)) %>
+    <div class="store-info">
+      <div class="store-name"><%= @supplier_store.store_name %></div>
+      <div class="short-description"><%= @supplier_store.store_short_description %></div>
+      <div class="count-info">
+        <span class="agencies-count">代销商：<%= @statistics[:agencies_count] %></span>
+        <span class="products-count">商品：<%= @statistics[:products_count] %></span>
+      </div>
+    </div>
+    <div class="contacts">
+      <div class="phone">手机：<%= @supplier_store.phone_number %></div>
+      <div class="wechat">微信：<%= @supplier_store.wechat_id %></div>
+    </div>
+  </div>
 </div>
 <br />
-<div class="container  mod-inner">
-  <%= render partial: 'admin/supplier_products/products', locals: { products: @supplier_products, visitor: 'seller' } %>
+<div class="container mod-inner">
+  <div class="box-list">
+    <%= render partial: 'admin/agency_products/product', collection: @supplier_products %>
+  </div>
 </div>
 
 <%= paginate @supplier_products %>

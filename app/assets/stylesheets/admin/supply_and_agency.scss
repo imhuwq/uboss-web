@@ -189,3 +189,32 @@ a.standout-link {
     }
   }
 }
+
+
+.info-bar {
+  overflow: hidden;
+  border-bottom: 1px solid gray;
+  padding-bottom: 20px;
+  img {
+    float: left;
+    margin-right: 10px;
+  }
+  .store-info {
+    width: 400px;
+    float: left;
+    .store-name {
+      font-size: 18px;
+    }
+    .short-description {
+      height: 40px;
+    }
+  }
+  .count-info {
+    .agencies-count {
+      margin-right: 10px;
+    }
+  }
+  .contacts {
+    float: right;
+  }
+}

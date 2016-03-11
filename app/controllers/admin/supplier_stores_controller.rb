@@ -74,7 +74,8 @@ class Admin::SupplierStoresController < AdminController
     @supplier_products = @supplier_store.supplier.supplier_products.supplied.order('products.created_at DESC')
     @supplier_products = @supplier_products.includes(:asset_img).page(params[:page] || 1)
     @statistics = {}
-    @statistics[:count] = @supplier_products.count
+    @statistics[:products_count] = @supplier_products.count
+    @statistics[:agencies_count] = @supplier_store.supplier.agencies.count
   end
 
   private
