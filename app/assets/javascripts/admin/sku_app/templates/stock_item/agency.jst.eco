@@ -18,7 +18,7 @@
 <td><input class='input-mini sku-price' price <%= 'disabled' if @read_only %> type='number' name="product[product_inventories_attributes][<%= @id %>][price]" value=<%= @price %> ></td>
 <td class="profit">
   <% if @price: %>
-    <%= (@price - @suggest_price_lower).toFixed(2) %>
+    <%= (@price - @cost_price).toFixed(2) %>
   <% end %>
 </td>
 <td>
