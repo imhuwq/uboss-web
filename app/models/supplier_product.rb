@@ -124,6 +124,7 @@ class SupplierProduct < Product
         association.add_to_target(existing_record, :skip_callbacks)
       end
       existing_record.assign_attributes(saling: false)
+      existing_record.remove_children
     end
   end
 
