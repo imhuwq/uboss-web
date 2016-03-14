@@ -12,7 +12,9 @@ class SharingController < ApplicationController
              @sharing_node.product.try(:type) == "OrdinaryProduct" ?
                product_path(@sharing_node.product_id) :
                service_product_path(@sharing_node.product_id)
-           else
+           elsif @sharing_node.self_page_id.present?
+             homepage_path(@sharing_node.user_id)
+           elsif @sharing_node.seller_id.present?
              store_path(@sharing_node.seller_id)
            end
     redirect_to path

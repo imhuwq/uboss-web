@@ -7,8 +7,9 @@ class SharingNode < ActiveRecord::Base
   belongs_to :seller, class_name: "User"
 
   validates :user_id, presence: true
-  validates_presence_of :product_id, if: -> { self.seller_id.blank? }
-  validates_presence_of :seller_id,  if: -> { self.product_id.blank? }
+  validates_presence_of :product_id, if: -> { self.seller_id.blank? && self.self_page_id.blank? }
+  validates_presence_of :seller_id,  if: -> { self.product_id.blank? && self.self_page_id.blank? }
+  validates_presence_of :self_page_id,  if: -> { self.product_id.blank? && self.seller_id.blank? }
 
   # NOTE now using databse uniq index, do not remove this code
   # validates_uniqueness_of :user_id, scope: [:product_id, :parent_id]
@@ -21,7 +22,7 @@ class SharingNode < ActiveRecord::Base
   before_create :set_code, :set_product
 
   class << self
-    def find_or_create_by_resource_and_parent(user, resource, parent = nil)
+    def find_or_create_by_resource_and_parent(user, resource, parent = nil, is_self_page=false)
       name = resource.class.name
       if parent.present? && parent.user_id == user.id
         is_circle_parent = if name == 'User'
@@ -35,7 +36,9 @@ class SharingNode < ActiveRecord::Base
       params = { user_id: user.id }
       params.merge!(parent_id: parent.id) if parent.present? && (resource.is_a?(Product) || resource.is_a?(ServiceProduct) || resource.is_a?(OrdinaryProduct))
 
-      if name == 'User'
+      if is_self_page
+        params.merge!(self_page_id: resource.id)
+      elsif name == 'User'
         params.merge!(seller_id: resource.id)
       elsif name.match('Product')
         params.merge!(product_id: resource.id)

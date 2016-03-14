@@ -22,7 +22,7 @@ class HomepageController < ApplicationController
 
   def set_sharing_link_node
     @sharing_link_node ||=
-      SharingNode.find_or_create_by_resource_and_parent(current_user, @user)
+      SharingNode.find_or_create_by_resource_and_parent(current_user, @user, nil, true)
   end
 
 end
