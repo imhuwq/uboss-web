@@ -10,13 +10,21 @@
 <br />
 <div class="container">
   <div class="info-bar">
-    <%= image_tag(@supplier_store.store_cover.url(:thumb)) %>
     <div class="store-info">
-      <div class="store-name"><%= @supplier_store.store_name %></div>
-      <div class="short-description"><%= @supplier_store.store_short_description %></div>
+      <%= image_tag(@supplier_store.store_cover.url(:thumb)) %>
+      <div class="main-info">
+        <div class="store-name"><%= @supplier_store.store_name %></div>
+        <div class="short-description"><%= @supplier_store.store_short_description %></div>
+      </div>
       <div class="count-info">
-        <span class="agencies-count">代销商：<%= @statistics[:agencies_count] %></span>
-        <span class="products-count">商品：<%= @statistics[:products_count] %></span>
+        <div class="agencies-count">
+          <div class="count-value"><%= @statistics[:agencies_count] %></div>
+          <div class="count-name">代销商</div>
+        </div>
+        <div class="products-count">
+          <div class="count-value"><%= @statistics[:products_count] %></div>
+          <div class="count-name">商品</div>
+        </div>
       </div>
     </div>
     <div class="contacts">
@@ -25,9 +33,8 @@
     </div>
   </div>
 </div>
-<br />
 <div class="container mod-inner">
-  <div class="box-list">
+  <div class="box-list store-list">
     <%= render partial: 'admin/agency_products/product', collection: @supplier_products %>
   </div>
 </div>
