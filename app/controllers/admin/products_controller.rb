@@ -66,7 +66,7 @@ class Admin::ProductsController < AdminController
     elsif @product.status == 'published' and @product.type == 'AgencyProduct' and @product.parent.deleted?
       @error = "供应商已经删除该商品"
     else
-      unless @product.save(validate: false)
+      unless @product.save
         @error = model_errors(@product).join('<br/>')
       end
     end
