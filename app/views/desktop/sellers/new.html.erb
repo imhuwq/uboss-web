@@ -3,12 +3,11 @@
 
   <% if current_user.present? and current_user.can_rebind_agent? and @agent.present? %>
     <%= horizon_form_for(:seller, url: seller_path(current_user), method: 'PUT') do |f| %>
-      <h4>注册绑定UBOSS</h4>
-      <h6>
+      <h5>
 				<%= image_tag(@agent.avatar.url(:thumb)) %>
         创客<%= @agent.try(:identify) %>
         将为您服务
-      </h6>
+      </h5>
       <br />
       <%= hidden_field_tag "seller[agent_id]", @agent.try(:id) %>
       <%= f.input_field :mobile, value: current_user.login, disabled: true,
@@ -27,14 +26,12 @@
     <% end %>
   <% elsif current_user.present? %>
   	<br />
-    <h4>注册绑定UBOSS</h4>
-    <br />
     <% if @agent.present? %>
-      <h6>
+      <h5>
 				<%= image_tag(@agent.avatar.url(:thumb)) %>
         创客<%= @agent.try(:identify) %>
         将为您服务
-      </h6>
+      </h5>
       <br />
     <% end %>
     <div class="text-center">
