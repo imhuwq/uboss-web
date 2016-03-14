@@ -14,7 +14,7 @@
         <div class="box-w50">
           <div class="product-box">
             <div class="cover">
-              <% url = product.class.name == 'OrdinaryProduct' ? product_path(id: product.id): service_product_path(product) %>
+              <% url = product.class.name == 'ServiceProduct' ? service_product_path(product) : product_path(id: product.id) %>
               <%= link_to '',url,
               		style: "background-image:url(#{product.image_url(:w320)})",
               		class:'img',title:"#{product.name}" %>
