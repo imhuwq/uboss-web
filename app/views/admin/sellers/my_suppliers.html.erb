@@ -7,6 +7,9 @@
 	</div>
 </div>
 <br />
-<div class='container admin-container'>
-  <%= render partial: 'supplier', collection: @my_suppliers %>
+<div class="container admin-container">
+  <div class="my-suppliers">
+    <%= render partial: 'supplier', collection: @my_suppliers %>
+  </div>
+  <%= paginate @my_suppliers %>
 </div>
