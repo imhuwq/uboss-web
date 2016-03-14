@@ -64,11 +64,11 @@ ul.nav.nav-pills.nav-stacked li.active a {
     float: left;
     padding: 20px;
     background-color: #383838;
-    width: 245px;
+    width: 260px;
     margin-right: 10px;
     margin-bottom: 10px;
     display: inline-block;
-    height: 288px;
+    height: 300px;
     img {
       margin-bottom: 10px;
     }
@@ -194,14 +194,17 @@ a.standout-link {
 .info-bar {
   overflow: hidden;
   padding-bottom: 20px;
+  height: 100px;
+  word-break: break-all;
   img {
     float: left;
     margin-right: 10px;
+    height: 80px;
   }
   .store-info {
-    width: 80%;
+    background-color: #383838;
+    width: 900px;
     float: left;
-    border: 1px solid gray;
     padding: 10px;
     .main-info {
       float: left;
@@ -213,7 +216,6 @@ a.standout-link {
       }
       .short-description {
         height: 40px;
-        word-break: break-all;
       }
     }
   }
@@ -233,9 +235,10 @@ a.standout-link {
     }
   }
   .contacts {
+    background-color: #383838;
     float: right;
-    height: 80px;
-    border: 1px solid gray;
-    padding: 10px;
+    height: 60px;
+    padding: 20px;
+    width: 200px;
   }
 }
