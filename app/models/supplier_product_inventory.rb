@@ -53,13 +53,7 @@ class SupplierProductInventory < ProductInventory
 
   def update_price_with_child
     children.each do |child|
-      suggest_price_lower = child.suggest_price_lower || child.price
-      suggest_price_upper = child.suggest_price_upper || child.price
-      child.assign_attributes(suggest_price_lower: suggest_price_lower, suggest_price_upper: suggest_price_upper)
-      if !(suggest_price_lower..suggest_price_upper).include?(child.price)
-        child.sale_to_customer = false
-      end
-      child.save(validate: false)
+      child.update_attributes(price: suggest_price_lower, sale_to_customer: false)
     end
   end
 
