@@ -88,7 +88,7 @@
 	 	<br />
 	<% end %>
 <% end %>
-<% if @sharing_node %>
+<% if @sharing_node && @sharing_node.user != current_user%>
 <br />
 	<div class="friend-box share-category-box text-center">
 		<h3 class="text-cut">
