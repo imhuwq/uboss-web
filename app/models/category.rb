@@ -2,7 +2,10 @@ class Category < ActiveRecord::Base
 
 	include Imagable
 
+  acts_as_list
+
   belongs_to :user
+  belongs_to :store, polymorphic: true
   has_many :advertisements
   has_and_belongs_to_many :products, -> { uniq }
 
@@ -10,6 +13,7 @@ class Category < ActiveRecord::Base
 
   delegate :image_url, to: :asset_img, allow_nil: true
   delegate :avatar=, :avatar, to: :asset_img
+  default_scope -> { order(position: :asc) }
 
   validates_presence_of :user_id, :name
   validates :name, uniqueness: { scope: :user_id, message: :exists }

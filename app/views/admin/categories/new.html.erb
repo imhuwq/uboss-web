@@ -9,7 +9,7 @@
 </div><!-- container -->
 <br />
 <div class="container nogap">
-    <%= horizon_form_for @category, url: {action: :create} do |f| %>
+    <%= horizon_form_for @category, url: {action: :create, dishes: @dishes} do |f| %>
 
       <%= render 'fields', f: f %>
       <br />

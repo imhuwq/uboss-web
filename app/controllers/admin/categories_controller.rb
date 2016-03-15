@@ -2,36 +2,42 @@ class Admin::CategoriesController < AdminController
   load_and_authorize_resource
 
   def index
+    @dishes = params[:dishes]
     @categories = current_user.categories.order('updated_at DESC')
   end
 
   def new
+    @dishes = params[:dishes]
   end
 
   def edit
+    @dishes = params[:dishes]
   end
 
   def create
+    @dishes = params[:dishes]
     if @category.save
-      redirect_to admin_categories_url, notice: "分组#{@category.name}创建成功"
+      redirect_to admin_categories_url(dishes: @dishes), notice: "分组#{@category.name}创建成功"
     else
       render :new
     end
   end
 
   def update
+    @dishes = params[:dishes]
     if @category.update(category_params)
-      redirect_to admin_categories_url, notice: "成功更新分组#{@category.name}"
+      redirect_to admin_categories_url(dishes: @dishes), notice: "成功更新分组#{@category.name}"
     else
       render :edit
     end
   end
 
   def destroy
+    @dishes = params[:dishes]
     @category.destroy
-    redirect_to admin_categories_url, notice: '成功删除分组'
+    redirect_to admin_categories_url(dishes: @dishes), notice: '成功删除分组'
   end
-  
+
   def update_category_img
     category = Category.find(params[:resource_id])
     if category.update(avatar: params[:avatar])

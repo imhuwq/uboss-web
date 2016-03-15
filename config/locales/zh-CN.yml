@@ -96,6 +96,9 @@ zh-CN:
     labels:
       express:
         name: 名称
+      dishes_product:
+        name: 菜品名称
+        asset_img: 菜品图片
       product: &product
         name: 产品名
         traffic_expense: 运费
@@ -103,6 +106,7 @@ zh-CN:
         cost_price: 成本价
         original_price: 原价
         present_price: 现价
+        rebate_amount: 返利金额
         count: 库存
         content: 图文详情
         transportation_way: 运费
@@ -383,6 +387,7 @@ zh-CN:
         <<: *product
       category:
         name: 分组名
+        position: 手机端排序
         asset_img: 展示图
       promotion_activity:
         user: 商家名称
