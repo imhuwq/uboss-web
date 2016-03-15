@@ -7,4 +7,9 @@
   <td rowspan='1'><%= pValue %></td>
 <% end %>
 <td><input class='input-mini sku-price' price <%= 'disabled' if @read_only %> type='number' name="product[product_inventories_attributes][<%= @id %>][price]" value=<%= @price %> ></td>
-<td><input class='input-mini sku-count' <%= 'disabled' if @read_only %> type='number' name="product[product_inventories_attributes][<%= @id %>][count]" value=<%= @count %>></td>
+
+<% if window.location.pathname.includes('dishes_products'): %>
+  <td><input class='input-mini pri-total' <%= 'disabled' if @read_only %> type='number' name="product[product_inventories_attributes][<%= @id %>][share_amount_total]" value=<%= @share_amount_total %>></td>
+<% else: %>
+  <td><input class='input-mini sku-count' <%= 'disabled' if @read_only %> type='number' name="product[product_inventories_attributes][<%= @id %>][count]" value=<%= @count %>></td>
+<% end %>
