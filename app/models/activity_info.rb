@@ -1,4 +1,9 @@
 class ActivityInfo < ActiveRecord::Base
+
+  include Descriptiontable
+
+  has_one_content name: :description
+
   belongs_to :promotion_activity
 
   validates :activity_type, :name, :price, :expiry_days, :win_count, :win_rate, presence: true
