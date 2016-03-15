@@ -34,10 +34,10 @@
         <td><%= category.updated_at %></td>
         <td>
           <% if can? :update, category %>
-            <%= link_to url_for(action: :edit, id: category.id), class:'edit-icon', title: '编辑' do %>
+            <%= link_to url_for(action: :edit, id: category.id, dishes: @dishes), class:'edit-icon', title: '编辑' do %>
               <i class="fa fa-pencil-square-o"></i>
             <% end %>
-            <%= link_to admin_category_path(category),
+            <%= link_to admin_category_path(category, dishes: @dishes),
               method: :delete, class:'change-status-btn edit-icon', data: { confirm: '确认删除？' } do %>
               <i class="fa fa-trash-o"></i>
             <% end %>

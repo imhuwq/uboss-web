@@ -33,6 +33,8 @@ gem 'amoeba'
 
 # nested sharing_node
 gem 'awesome_nested_set'
+# order
+gem 'acts_as_list'
 
 #Fornt
 gem 'sass-rails', '~> 5.0'

@@ -1,5 +1,6 @@
 class VerifyCode < ActiveRecord::Base
   belongs_to :order_item
+  belongs_to :dishes_order
 
   before_create :generate_code
   validates_uniqueness_of :code
