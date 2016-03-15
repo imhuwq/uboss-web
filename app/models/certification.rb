@@ -9,7 +9,7 @@ class Certification < ActiveRecord::Base
   validates :user_id, :mobile, :presence => true
   validates :mobile, mobile: true
   validates :address,:presence => true
-  validates :province_code, :city_code, presence: true
+  validates :province_code, :city_code, :district_code, presence: true
 
   scope :today, -> (date=Date.today) { where(['DATE(verified_at) = ?', date]) }
   scope :week, -> (time=Time.now) { where(verified_at: time.beginning_of_week..time.end_of_week) }
