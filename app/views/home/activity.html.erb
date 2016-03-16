@@ -21,16 +21,22 @@
 	</div>
 	<br />
 </div>
-<% if(1==0) #刮奖 %>
+<% if(1==1) #刮奖 %>
 <script type="text/javascript">
 
 window.onload = function () {	 
     var lottery = new Lottery('lotteryContainer', '#bebebe', 'color', 280, 60, drawPercent);
-    lottery.init("中奖啦啦", 'text');
+    lottery.init("", 'text');
+    var sd= false;
     function drawPercent(percent) {
-        // percent + '%'
+        if( percent > 2){  
+					if(sd == false){
+			      		lottery.init("zz", 'text');
+			      		sd=true;
+			     } 
+        }
     }
+    
 }
-
 </script>
 <% end %>
