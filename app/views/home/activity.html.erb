@@ -1,1 +1,36 @@
-<p>推广活动 抽奖页面</p>
+<div class="container">	
+	 
+	<div class="text-center gap">
+	<% if(1==1) #刮奖 %>
+		<div class="lottery-box">
+			<div class="border-line">
+				<h3>一大波好礼坐等领取</h3>
+				<div id="lotteryContainer"></div>
+			</div>
+		</div><!-- lottery-box -->
+	<% else %>
+		<div class="activate-info">
+			<div class="border-line">
+				<h3>中奖信息之类的东西</h3>
+			</div>
+		</div><!-- activate-info -->
+	<% end %>
+	</div>
+	<div class="share-img-box">
+		<%= image_tag('mobile/lady.jpg')%>
+	</div>
+	<br />
+</div>
+<% if(1==0) #刮奖 %>
+<script type="text/javascript">
+
+window.onload = function () {	 
+    var lottery = new Lottery('lotteryContainer', '#bebebe', 'color', 280, 60, drawPercent);
+    lottery.init("中奖啦啦", 'text');
+    function drawPercent(percent) {
+        // percent + '%'
+    }
+}
+
+</script>
+<% end %>

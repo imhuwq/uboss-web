@@ -16,11 +16,16 @@ html,body{
 }
 .container{
     max-width: 800px;
-    background: image-url('activate_page/bg.jpg') #483c6c fixed;
-    background-size: cover ;
+    background :image-url('activate_page/bg-1.jpg') top center #c2e0d4  no-repeat;
+    background-size:120% auto ;
     margin: 0 auto;
     width: 100%;
     min-height: 100%;
+}
+
+.bg{
+    background: image-url('activate_page/bg.jpg') #483c6c fixed;
+    background-size: cover ;
 }
 .login-box{width: 90%; margin: 0 auto;}
 .login-box input{
@@ -65,3 +70,104 @@ input.cap{
     float: left;
     margin: 2px 5px 5px 0px;
 }
+
+/* 抽奖页面 */
+.lottery-box {
+    background: #ff7f00;
+    color: #fff;
+    position: relative;
+    width: 220px;
+    padding: 8px 0px;
+    margin: 0 auto 10px;
+}
+.activate-info{
+    background: #f28b8c;
+    color: #fff;
+    position: relative;
+    min-width: 220px;
+    display: inline-block;
+    padding: 5px 0px;
+    margin: 0px auto 65px; 
+    h3{
+        margin: 0;
+    }
+}
+.lottery-box:before,.lottery-box:after{
+    content: " ";
+    height: 100%;
+    width: 12px;
+    position: absolute;
+    right: -12px;
+    top: 0;
+    background: image-url('activate_page/orange-border.png') repeat-y;
+    background-size:100% auto ;
+}
+.activate-info:before,.activate-info:after{
+    background: image-url('activate_page/pink-border.png') repeat-y;
+    width: 8px;
+    content: " ";
+    height: 100%;
+    position: absolute;
+    background-size:100% auto ;
+    right: -8px;
+    top: 0;
+    
+}
+.lottery-box:after,.activate-info:after{
+    left: -12px;
+    right: auto;
+    transform:  scaleX(-1);
+    -webkit-transform: scaleX(-1);
+   
+}
+.activate-info:after{
+    left: -8px;
+   
+}
+.border-line{
+    border:1px solid #fff;
+    border-radius: 6px;
+    padding: 8px;
+}
+#lotteryContainer {
+    position:relative;
+    background: #CCC;
+    width: 150px;
+    height: 33px;
+    margin: 0 auto;
+    canvas{
+        height: 100%;
+        width: 100%;
+    }
+}
+.share-img-box{
+    margin: 0 auto;
+    width: 80%;
+    padding: 5px;
+    background: #fff;
+    text-align: center;
+    border-radius:6px ;
+    box-shadow: 0px 0px 8px rgba(100,100,100,0.5);
+}
+@media  screen and (min-width: 400px){
+    .lottery-box{
+        padding: 12px 0;
+    }
+    .activate-info{
+        padding: 10px 0;
+    }
+    .lottery-box:before,.lottery-box:after{
+        width: 14px;
+        right: -14px;
+    }
+    .lottery-box:after{
+        left: -14px;
+    }
+    .activate-info:before,.activate-info:after{
+        width: 10px;
+        right: -10px;
+    }
+    .activate-info:after{
+        left: -10px;
+    }
+} 

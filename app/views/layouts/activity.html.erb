@@ -9,11 +9,10 @@
     <link rel="apple-touch-icon" href="<%= image_url("favicon-lg.png") %>">
     <%= csrf_meta_tags %>
 		<%= stylesheet_link_tag 'activate/activate' %>
+		 <%= javascript_include_tag "activate/activate" %>
   </head>
   <body>
-    <div class="container">
-      <%= yield %>
-    </div>
+    <%= yield %>
 
     <%= render partial: 'baidu_tongji' %>
     <% if browser.wechat? %>
