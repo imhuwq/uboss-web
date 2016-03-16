@@ -4,9 +4,17 @@ class PromotionActivity < ActiveRecord::Base
   has_one  :live_activity_info,  -> { where(activity_type: 'live') },  class_name: 'ActivityInfo'
   has_one  :share_activity_info, -> { where(activity_type: 'share') }, class_name: 'ActivityInfo'
 
+  validates :user, presence: true
+
+  before_save :seller_can_join_but_one_activity
+
   accepts_nested_attributes_for :activity_infos
 
   enum status: { unpublish: 0, published: 1, closed: 2 }
+
+  def seller_name
+    user.nickname
+  end
 
   def live_activity_info
     super || build_live_activity_info
@@ -20,4 +28,13 @@ class PromotionActivity < ActiveRecord::Base
     self.activity_infos.where(activity_type: 'live').draw_prize(winner_id)
     self.activity_infos.where(activity_type: 'share').draw_prize(winner_id)
   end
+
+  private
+  def seller_can_join_but_one_activity
+    if self.status == "published" && PromotionActivity.where(user_id: user_id, status: 1).count > 0
+      self.errors.add(:base, "一个商家只能参与中一个活动")
+      return false
+    end
+  end
+
 end

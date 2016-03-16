@@ -1,7 +1,7 @@
 class Admin::PromotionActivitiesController < AdminController
   load_and_authorize_resource
 
-  before_action :set_activity_info, only: :new
+  before_action :set_activity_info, only: [:new, :show]
 
   def index
     @promotion_activities = @promotion_activities.includes(:user, :activity_infos).page(params[:page] || 1)
@@ -16,6 +16,9 @@ class Admin::PromotionActivitiesController < AdminController
       flash.now[:error] = "创建失败。#{@promotion_activity.errors.full_messages.join('<br/>')}"
       render :new
     end
+  end
+
+  def show
   end
 
   def change_status
@@ -34,7 +37,7 @@ class Admin::PromotionActivitiesController < AdminController
     if request.xhr?
       flash.now[:success] = @notice
       flash.now[:error]   = @error
-      render(partial: 'promotion_activities', locals: { promotion_activities: [@promotion_activity] })
+      render(partial: 'promotion_activities', locals: { promotion_activities: [@promotion_activity.reload] })
     else
       flash[:success] = @notice
       flash[:error]   = @error
