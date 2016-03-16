@@ -225,7 +225,7 @@ Rails.application.routes.draw do
         end
       end
 
-      resources :promotion_activities, only: [:index, :new, :create] do
+      resources :promotion_activities, only: [:index, :new, :create, :show] do
         member do
           patch :change_status
         end
