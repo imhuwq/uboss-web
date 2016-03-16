@@ -22,6 +22,13 @@
 <div class="fixed-container nogap">
 <% if @advertisements.present? %>
   <%= render partial: 'banner_slider', locals: { advertisements: @advertisements } %>
+<% else %>
+	<div class="sstore-slider">
+		<%= image_tag ('mobile/s-bg.jpg') %>
+		<h3 class="store-name text-cut"><%= @service_store.store_name %></h3>
+	</div>
+
+<% end %>
   <div class="bg-white m-bottom10 border-tb gap-left">
     <div class="gap nogap-left">
       <h2 class="name text-cut"><%= @service_store.store_name %></h2>
@@ -51,51 +58,28 @@
 
     <% if @sharing_node %>
       <div class="service-share-box border-top gap nogap-left">
+      		<div class="lottery-icon 
+	      		<% if 1==1 #如果没抽过 %>
+	      			active 
+	      		<% end %>
+      		pull-right">
+      				<%= link_to '去登陆页面' do %>
+      					<%= image_tag ('activate_page/lottery-icon1.png'),style:'width:40px' %>
+      				<% end %>
+      		</div>
         <div class="cover pull-left"><%= image_tag @sharing_node.user.avatar_url(:w120) %></div>
         <div class="gap name text-cut"><%= @sharing_node.user.identify %> 分享</div>
+      </div>
+      <div class="lottery-modal pop-bg text-center">
+      		<div class="pop-content">
+    				<%= link_to '去登陆页面' do %>
+    					<%= image_tag ('activate_page/color-gift.png'),style:'width:50%'%>
+    				<% end %>
+    			</div><!-- pop-content -->
       </div>
     <% end %>
   </div><!-- bg-white -->
 
-<% else %>
-
-  <div class="store-cover text-center">
-    <div class="content">
-      <br />
-      <h2 class="name"><%= @service_store.store_name %></h2>
-      <% if @service_store.store_short_description.present?  %>
-        <p class="gray-color"><%= @service_store.store_short_description %></p>
-      <% end %>
-
-      <p><span class="main-color"><%= number_to_percentage(@service_store.good_reputation_rate, precision: 0) %></span> 好评（<%= @service_store.total_reputations %>）</p>
-
-      <% if qr_sharing? %>
-        <p class="text-center border-top nogap">
-        <br />
-        <% if current_user && current_user.has_seller_privilege_card?(@seller) %>
-          <a class="btn btn-large p-sharing-btn cover-share-btn">分享给朋友</a>
-        <% else %>
-          <%= link_to "领取友钱卡", get_seller_sharing_path,
-            data: { sid: @seller.id, uid: current_user.present? },
-            class: "btn btn-large show-req-snode-modal cover-share-btn"
-          %>
-          <a class="btn btn-large hidden p-sharing-btn cover-share-btn">分享给朋友</a>
-        <% end %>
-        </p>
-        <div><a href="/about">查看说明</a></div>
-      <% end %>
-
-      <% if @sharing_node %>
-        <div class="share-box border-top nogap">
-          <br />
-          <p class="cover"><%= image_tag @sharing_node.user.avatar_url(:w120) %></p>
-          <p class="name"><%= @sharing_node.user.identify %> 分享</p>
-        </div>
-      <% end %>
-    </div>
-  </div><!-- store-cover -->
-
-<% end %>
 
   <!-- 店铺信息-->
   <div class="bg-white border-tb gap">
