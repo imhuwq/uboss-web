@@ -70,8 +70,8 @@ module OrderItemRefundsHelper
     end
   end
 
-  def render_refund_modal(partial, title)
-    render partial: "admin/order_item_refunds/#{partial}", title: title
+  def render_refund_modal(partial, opts = {})
+    render partial: "admin/order_item_refunds/refund_modal", locals: {page: partial, title: opts[:title]}
   end
 
   def render_refund_info(refund)
