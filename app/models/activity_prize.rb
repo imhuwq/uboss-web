@@ -8,9 +8,10 @@ class ActivityPrize < ActiveRecord::Base
   def load_info_oncreate
     self.promotion_activity_id = activity_info.promotion_activity_id
     # 方便复查
-    info[:draw_count] = activity_info.draw_count
+    info = {}
+    info[:draw_count] = (activity_info.activity_type == 'live') ? (activity_info.draw_count ? (activity_info.draw_count + 1) : 1) : 0
     info[:win_rate] = activity_info.win_rate
-    info[:win_count] = (activity_info.activity_type == 'live') ? (activity_info.win_count + 1) : 0
+    info[:win_count] = activity_info.win_count 
     info[:activity_type] = activity_info.activity_type
     # save
   end

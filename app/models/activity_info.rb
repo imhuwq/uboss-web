@@ -13,7 +13,7 @@ class ActivityInfo < ActiveRecord::Base
 
   def prize_arr
     @win_count = win_count
-    @win_rate = win_rate
+    @win_rate = win_rate/100
     total = @win_count / @win_rate
     prize_step = (total / @win_count).to_i
     arr = []
@@ -43,7 +43,7 @@ class ActivityInfo < ActiveRecord::Base
         winner_activity_prize = ActivityPrize.create!(activity_info_id: id,
                                                       prize_winner_id: winner_id,
                                                       verify_code_id: winner_verify_code_id)
-        update!(draw_count: draw_count + 1)
+        update!(draw_count: draw_count ? (draw_count + 1) : 1)
 
         # 创建分享者礼品
         sharer_activity_info = promotion_activity.activity_infos.where(activity_type: 'share').first

@@ -5,7 +5,7 @@ class CreateActivityPrizes < ActiveRecord::Migration
       t.integer :promotion_activity_id
       t.integer :activity_info_id
       t.integer :verify_code_id
-      t.jsonb   :info
+      t.jsonb   :info, default: {}
       t.string  :activity_type
       t.timestamps null: false
     end
