@@ -6,5 +6,7 @@
 #= require rails-behaviors/index
 #= require fastclick
 #= require activate/lottery
-#= reuqire_self
+#= require mobile_page/sms
+#= require mobile_page/utilities
+#= require_self
 

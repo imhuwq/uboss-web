@@ -4,14 +4,16 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <meta content="telephone=no" name="format-detection" />
-    <title>asd</title>
     <link href="<%= image_url("favicon-lg.png") %>" type="image/x-icon" rel="shortcut icon">
     <link rel="apple-touch-icon" href="<%= image_url("favicon-lg.png") %>">
+    <%= render partial: "page_title" %>
     <%= csrf_meta_tags %>
 		<%= stylesheet_link_tag 'activate/activate' %>
-		 <%= javascript_include_tag "activate/activate" %>
+    <%= javascript_include_tag "activate/activate" %>
   </head>
   <body>
+
+		<%= render 'layouts/pop' %>
     <%= yield %>
 
     <%= render partial: 'baidu_tongji' %>

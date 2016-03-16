@@ -56,7 +56,7 @@ class HomeController < ApplicationController
         render layout: nil
       end
     else
-      render 'users/sessions/new_of_activity', layout: 'activity'
+      redirect_to new_user_session_path(redirect: 'activity', redirectUrl: request.env["REQUEST_URI"])
     end
   end
 
