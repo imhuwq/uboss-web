@@ -14,11 +14,27 @@
   </head>
 	<body>
 		<div class="container">
+      <% if @promotion_activity.present? %>
+		    <div style="color: #fff;line-height: 150%;padding: 20px;">
+          <% if @draw_prize.try(:order_item_id).present? %>
+		    	  <p>你已中奖，奖券已经放入账户。</p>
+          <% elsif @draw_prize.present? %>
+		    	  <p>你已抽过奖。</p>
+          <% else %>
+		    	  <p>#刮奖区#</p>
+          <% end %>
+		    </div>
 		    <div style="padding: 20px;text-align: center;"><img src="<%= @qrcode_img_url %>" alt="" /></div>
 		    <div style="color: #fff;line-height: 150%;padding: 20px;">
-		    		<p>长按图片保存到手机，分享给朋友，朋友购买获得优惠， 自己获得收益。</p>
-		    		<p>点击<a href="/account/income" style="color:#f9ab10">【我的收益】</a>即可提现入账。</p>
-		    	</div>
+		     	<p>奖品已放入<a href="/account/service_orders" style="color:#f9ab10">【验证券】</a></p>
+		    </div>
+      <% else %>
+		    <div style="padding: 20px;text-align: center;"><img src="<%= @qrcode_img_url %>" alt="" /></div>
+		    <div style="color: #fff;line-height: 150%;padding: 20px;">
+		     	<p>长按图片保存到手机，分享给朋友，朋友购买获得优惠， 自己获得收益。</p>
+		     	<p>点击<a href="/account/income" style="color:#f9ab10">【我的收益】</a>即可提现入账。</p>
+		    </div>
+      <% end %>
 		</div>
 	</body>
 </html>

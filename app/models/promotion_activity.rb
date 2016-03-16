@@ -16,4 +16,8 @@ class PromotionActivity < ActiveRecord::Base
     super || build_share_activity_info
   end
 
+  def share_path_draw_prize(winner_id,sharer_id)
+    self.activity_infos.where(activity_type: 'live').draw_prize(winner_id)
+    self.activity_infos.where(activity_type: 'share').draw_prize(winner_id)
+  end
 end
