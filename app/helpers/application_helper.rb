@@ -133,8 +133,8 @@ module ApplicationHelper
 
   def homepage_sharing_meta_tags(user, redirect = nil)
     meta_tags = {
-      sharing_title:  "【#{user.nickname}】个人主页",
-      sharing_desc:   "个人主页",
+      sharing_title:  "【#{user.nickname}】这都是我精心挑选的宝贝",
+      sharing_desc:   "偷偷告诉你，在我这儿买，能打折，分享还能返现。",
       sharing_imgurl: user.avatar_url(:thumb),
       sharing_link:  homepage_sharing_link(user, redirect),
     }
