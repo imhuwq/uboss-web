@@ -4,7 +4,7 @@ class HomepageController < ApplicationController
   before_action :set_user
 
   def show
-    @recommend_products = @user.recommends.products.map(&:recommended)
+    @recommend_products = @user.recommended_products
   end
 
   def recommend_products

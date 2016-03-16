@@ -120,6 +120,11 @@ class User < ActiveRecord::Base
     RUBY
   end
 
+  def recommended_products
+    Product.joins('INNER JOIN recommends ON products.id = recommends.recommended_id').
+      where('recommends.user_id = :user_id AND recommends.recommended_type IN (:product_types)', user_id: id, product_types: ['ServiceProduct', 'OrdinaryProduct', 'AgencyProduct'])
+  end
+
   def has_privilege_card?(object)
     seller_ids = self.privilege_cards.map(&:seller_id)
     seller_ids.include?(object.user_id)
