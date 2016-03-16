@@ -1,0 +1,33 @@
+<%= upyun_meta_tags prefix: "asset_img/avatar" %>
+<div class="index_list">
+  <table class="list-table">
+    <thead>
+<!--       <th><input id="category-checkbox" type="checkbox"></th> -->
+      <th>分组名</th>
+      <th>菜品数目</th>
+      <th>手机端排序</th>
+      <th>操作</th>
+    </thead>
+    <% categories.each_with_index do |category,i| %>
+      <tr>
+        <%= hidden_field_tag "categories[#{i}][id]", category.id %>
+        <%= hidden_field_tag "categories[#{i}][check]", 'false', class:"form-item-check" %>
+
+        <td><%= text_field_tag "categories[#{i}][name]", category.name, class:"update_item", data: { url:  "/admin/categories/#{category.id}/update_category_name"}, disabled: true %></td>
+        <td><%= category.products.size %></td>
+        <td><%= category.position %></td>
+        <td>
+          <% if can? :update, category %>
+            <%= link_to url_for(action: :edit, id: category.id, dishes: @dishes), class:'edit-icon', title: '编辑' do %>
+              <i class="fa fa-pencil-square-o"></i>
+            <% end %>
+            <%= link_to admin_category_path(category, dishes: @dishes),
+              method: :delete, class:'change-status-btn edit-icon', data: { confirm: '确认删除？' } do %>
+              <i class="fa fa-trash-o"></i>
+            <% end %>
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+  </table>
+</div>

@@ -3,7 +3,8 @@ namespace :category do
   task add_store_to_category: :environment do
     puts '开始迁移category数据'
     Category.all.each do |category|
-      category.store = category.user.ordinary_store
+      category.store_id = category.user.ordinary_store.id
+      category.store_type = category.user.ordinary_store.class.name
       category.save
     end
   end
