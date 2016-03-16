@@ -9,6 +9,6 @@ class CreateActivityPrizes < ActiveRecord::Migration
       t.string  :activity_type
       t.timestamps null: false
     end
-    add_column :activity_infos, :draw_count, :integer
+    add_column :activity_infos, :draw_count, :integer, default: 0
   end
 end

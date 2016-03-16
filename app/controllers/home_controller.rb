@@ -50,7 +50,7 @@ class HomeController < ApplicationController
         @draw_prize = @promotion_activity ? ActivityPrize.where(promotion_activity_id: @promotion_activity.id, activity_type: 'live').first : nil
       end
 
-      if false
+      if true
         render 'activity', layout: 'activity'
       else
         render layout: nil
