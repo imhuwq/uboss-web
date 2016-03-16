@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160311071659) do
+ActiveRecord::Schema.define(version: 20160314024217) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -146,8 +146,8 @@ ActiveRecord::Schema.define(version: 20160311071659) do
     t.integer  "user_id",                        null: false
     t.datetime "created_at",                     null: false
     t.datetime "updated_at",                     null: false
-    t.boolean  "use_in_store",    default: true
     t.datetime "use_in_store_at"
+    t.boolean  "use_in_store",    default: true
   end
 
   add_index "categories", ["user_id", "name"], name: "index_categories_on_user_id_and_name", unique: true, using: :btree
@@ -300,6 +300,23 @@ ActiveRecord::Schema.define(version: 20160311071659) do
 
   add_index "favour_products", ["product_id", "user_id"], name: "index_favour_products_on_product_id_and_user_id", unique: true, using: :btree
 
+  create_table "job_histories", force: :cascade do |t|
+    t.integer  "user_id"
+    t.integer  "status"
+    t.string   "message"
+    t.string   "resource_type"
+    t.string   "resource_id"
+    t.string   "job_class"
+    t.string   "job_method"
+    t.jsonb    "options"
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
+  end
+
+  create_table "json_test", force: :cascade do |t|
+    t.jsonb "data"
+  end
+
   create_table "mobile_captchas", force: :cascade do |t|
     t.string   "code"
     t.datetime "expire_at"
@@ -375,13 +392,13 @@ ActiveRecord::Schema.define(version: 20160311071659) do
     t.integer  "refund_reason_id"
     t.string   "description"
     t.integer  "order_item_id"
-    t.datetime "created_at",          null: false
-    t.datetime "updated_at",          null: false
+    t.datetime "created_at",                       null: false
+    t.datetime "updated_at",                       null: false
     t.string   "aasm_state"
     t.integer  "order_state"
     t.string   "refund_type"
     t.integer  "user_id"
-    t.jsonb    "state_at_attributes"
+    t.jsonb    "state_at_attributes", default: {}, null: false
     t.string   "address"
     t.string   "return_explain"
     t.datetime "deal_at"
@@ -389,6 +406,7 @@ ActiveRecord::Schema.define(version: 20160311071659) do
 
   create_table "order_items", force: :cascade do |t|
     t.integer  "order_id"
+    t.integer  "product_id"
     t.integer  "user_id"
     t.integer  "amount"
     t.datetime "created_at",                         null: false
@@ -398,7 +416,6 @@ ActiveRecord::Schema.define(version: 20160311071659) do
     t.decimal  "present_price",        default: 0.0
     t.decimal  "privilege_amount",     default: 0.0
     t.integer  "product_inventory_id"
-    t.integer  "product_id"
     t.integer  "order_item_refund_id"
     t.string   "sku_properties"
   end
@@ -422,10 +439,10 @@ ActiveRecord::Schema.define(version: 20160311071659) do
     t.datetime "signed_at"
     t.datetime "shiped_at"
     t.datetime "completed_at"
-    t.string   "to_seller"
-    t.decimal  "ship_price",      default: 0.0
     t.string   "ship_number"
     t.integer  "express_id"
+    t.string   "to_seller"
+    t.decimal  "ship_price",      default: 0.0
     t.integer  "order_charge_id"
     t.decimal  "paid_amount",     default: 0.0
     t.string   "type"
@@ -470,25 +487,18 @@ ActiveRecord::Schema.define(version: 20160311071659) do
     t.datetime "updated_at",                                           null: false
     t.boolean  "actived",              default: false
     t.integer  "seller_id"
+    t.integer  "product_inventory_id"
     t.string   "user_img"
     t.string   "service_store_cover"
     t.string   "user_name"
     t.string   "ordinary_store_cover"
-    t.datetime "qrcode_expire_at",     default: '2016-02-25 14:44:59'
+    t.datetime "qrcode_expire_at",     default: '2016-03-03 14:49:49'
     t.string   "service_store_name"
     t.string   "ordinary_store_name"
     t.boolean  "activity",             default: false
   end
 
   add_index "privilege_cards", ["user_id", "seller_id"], name: "index_privilege_cards_on_user_id_and_seller_id", unique: true, using: :btree
-
-  create_table "product_attribute_names", force: :cascade do |t|
-    t.string   "name"
-    t.boolean  "is_key_attr",      default: true
-    t.integer  "product_class_id"
-    t.datetime "created_at",                      null: false
-    t.datetime "updated_at",                      null: false
-  end
 
   create_table "product_classes", force: :cascade do |t|
     t.integer  "parent_id"
@@ -584,17 +594,18 @@ ActiveRecord::Schema.define(version: 20160311071659) do
     t.boolean  "full_cut",             default: false
     t.integer  "full_cut_number"
     t.integer  "full_cut_unit"
+    t.integer  "total_sales"
+    t.integer  "comprehensive_order"
+    t.datetime "published_at"
     t.string   "type"
     t.integer  "service_type"
     t.integer  "monthes"
     t.integer  "service_store_id"
-    t.integer  "comprehensive_order"
-    t.datetime "published_at"
     t.integer  "sales_amount",         default: 0
     t.integer  "sales_amount_order"
-    t.integer  "ordinary_store_id"
     t.integer  "parent_id"
     t.integer  "supplier_id"
+    t.integer  "ordinary_store_id"
   end
 
   add_index "products", ["type"], name: "index_products_on_type", using: :btree
@@ -739,11 +750,12 @@ ActiveRecord::Schema.define(version: 20160311071659) do
     t.integer  "product_id"
     t.string   "code"
     t.integer  "parent_id"
-    t.integer  "lft",        null: false
-    t.integer  "rgt",        null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.integer  "lft",          null: false
+    t.integer  "rgt",          null: false
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
     t.integer  "seller_id"
+    t.integer  "self_page_id"
   end
 
   add_index "sharing_nodes", ["code"], name: "index_sharing_nodes_on_code", unique: true, using: :btree
@@ -862,6 +874,7 @@ ActiveRecord::Schema.define(version: 20160311071659) do
     t.integer  "better_evaluation"
     t.integer  "best_evaluation"
     t.string   "store_cover"
+    t.decimal  "bonus_benefit",             default: 0.0
     t.string   "type"
     t.string   "begin_hour"
     t.string   "begin_minute"
@@ -869,7 +882,6 @@ ActiveRecord::Schema.define(version: 20160311071659) do
     t.string   "end_minute"
     t.string   "area"
     t.string   "street"
-    t.decimal  "bonus_benefit",             default: 0.0
     t.integer  "platform_service_rate",     default: 0
     t.integer  "agent_service_rate",        default: 0
   end
