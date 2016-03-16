@@ -3,7 +3,11 @@ class Admin::CategoriesController < AdminController
 
   def index
     @dishes = params[:dishes]
-    @categories = current_user.categories.order('updated_at DESC')
+    if @dishes == 'true'
+      @categories = current_user.categories.dishes_categories.includes(:products)
+    else
+      @categories = current_user.categories.electricity_categories.includes(:products)
+    end
   end
 
   def new
@@ -16,7 +20,15 @@ class Admin::CategoriesController < AdminController
 
   def create
     @dishes = params[:dishes]
+    if @dishes == "true"
+      @category.store_id = current_user.service_store.id
+      @category.store_type = current_user.service_store.class.name
+    else
+      @category.store_id = current_user.ordinary_store.id
+      @category.store_type = current_user.ordinary_store.class.name
+    end
     if @category.save
+      @category.update(position: nil) if @dishes == "false"
       redirect_to admin_categories_url(dishes: @dishes), notice: "分组#{@category.name}创建成功"
     else
       render :new
@@ -63,6 +75,10 @@ class Admin::CategoriesController < AdminController
   private
     # Never trust parameters from the scary internet, only allow the white list through.
     def category_params
-      params.require(:category).permit(:name,:avatar)
+      if params[:category][:position].present?
+        params.require(:category).permit(:name,:avatar, :position)
+      else
+        params.require(:category).permit(:name,:avatar)
+      end
     end
 end

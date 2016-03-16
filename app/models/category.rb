@@ -15,8 +15,11 @@ class Category < ActiveRecord::Base
   delegate :avatar=, :avatar, to: :asset_img
   default_scope -> { order(position: :asc) }
 
+  scope :dishes_categories, -> {where(store_type: 'ServiceStore')}
+  scope :electricity_categories, -> {where(store_type: 'OrdinaryStore')}
+
   validates_presence_of :user_id, :name
-  validates :name, uniqueness: { scope: :user_id, message: :exists }
+  validates :name, uniqueness: { :scope => [:user_id, :store_id], message: :exists }
 
   def asset_img
     super || build_asset_img
@@ -29,5 +32,4 @@ class Category < ActiveRecord::Base
     end
     category
   end
-
 end

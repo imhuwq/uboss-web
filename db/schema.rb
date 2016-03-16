@@ -225,7 +225,7 @@ ActiveRecord::Schema.define(version: 20160408035556) do
     t.integer  "position"
   end
 
-  add_index "categories", ["user_id", "name"], name: "index_categories_on_user_id_and_name", unique: true, using: :btree
+  add_index "categories", ["user_id", "name", "store_id"], name: "index_categories_on_user_id_and_name_and_store_id", unique: true, using: :btree
 
   create_table "categories_products", id: false, force: :cascade do |t|
     t.integer "product_id",  null: false

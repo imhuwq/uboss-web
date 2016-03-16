@@ -16,6 +16,10 @@
 
   <br />
 
-  <%= render partial: 'categories', locals: { categories: @categories } %>
+  <% if @dishes == 'true' %>
+    <%= render partial: 'dishes_categories_table', locals: { categories: @categories } %>
+  <% else %>
+    <%= render partial: 'categories', locals: { categories: @categories } %>
+  <% end %>
 
 </div>
