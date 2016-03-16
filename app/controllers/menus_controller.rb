@@ -5,7 +5,13 @@ class MenusController < ApplicationController
   # GET /menus
   # GET /menus.json
   def index
-    @menus = scope.page(params[:page])
+    @q = scope.search(categories_name_eq: params[:category]).result
+    @menus = @q.page(params[:page])
+
+    respond_to do |format|
+      format.html
+      format.json
+    end
   end
 
   # POST /menus
