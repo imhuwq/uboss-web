@@ -1,0 +1,46 @@
+<div class="bg-white">
+  <div class="box-m40 text-center">
+    <br />
+    <h1>支付成功</h1>
+    <br />
+    <div class="gray-color">恭喜你，获得 <span class="like-color"><%= @privilege_cards.count %></span> 家店铺友钱卡</div>
+    <br />
+  </div>
+</div><!-- bg-white -->
+<% if @product.is_official_agent? %>
+  <div class="bg-white">
+    <div class="box-m40 text-center">
+      <br />
+      <h1>支付成功</h1>
+      <br />
+      <div class="gray-color">恭喜你，获得 <span class="like-color">创客权</span> 的友钱卡</div>
+      <br />
+    </div>
+  </div><!-- bg-white -->
+<% end %>
+<div class="pay-bg text-center m-top10 activate">
+  <div class="pay-info-bg">
+    <p><a href="/about" class="btn btn-pay-about">玩法说明</a></p>
+    <p><a href="/account" class="btn btn-pay">分享友钱卡获得收益</a></p>
+  </div>
+</div><!-- pay-bg -->
+<% if @product.is_official_agent? %>
+  <div class="bg-white m-top10">
+    <div class="box-m40 text-center">
+      <br />
+      <p>恭喜你成为UBOSS的第 <span class="like-color"><%= UserRole.agent.users.count %></span> 位创客</p>
+      <br />
+      <a href="/about" class="btn btn-block btn-large">查看创客教程</a>
+      <br />
+    </div>
+  </div><!-- bg-white -->
+<% end %>
+
+<% case @product.type %>
+<% when 'ServiceProduct' %>
+  <%= render partial: "charges/pay_complete/service_order", locals: { order_item: @order_charge.orders.first.order_item, product: @product } %>
+<% when 'DishesProduct' %>
+  <%= render partial: "charges/pay_complete/dishes_product" %>
+<% else %>
+  <%= render partial: "charges/pay_complete/order" %>
+<% end %>

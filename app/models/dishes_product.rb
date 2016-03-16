@@ -1,5 +1,6 @@
 class DishesProduct < Product
   belongs_to :service_store
+  scope :with_store, ->(store) { where(user_id: store.user_id) }
 
   validates_numericality_of :rebate_amount, if: "rebate_amount"
   after_initialize  :initialize_product_inventory
