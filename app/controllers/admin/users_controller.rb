@@ -38,6 +38,17 @@ class Admin::UsersController < AdminController
     end
   end
 
+  def search
+    users = User.where("nickname ILIKE ?", "%#{params[:q]}%")
+    results = append_default_filter(users.page(params[:page]), page_size: 10).pluck(:id, :nickname)
+
+    render json: {
+      error: nil,
+      results: results.inject([]){ |arr, result| arr << {_id: result[0], text: result[1]} },
+      total_count: users.count
+    }
+  end
+
   private
 
   def authorize_user_managing_permissions

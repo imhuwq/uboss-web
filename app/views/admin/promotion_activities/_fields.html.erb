@@ -4,9 +4,9 @@
     <label class="control-label"><abbr title="必填">*</abbr> 商家名称</label>
     <div class="control-input half-width">
       <div class="f15 lh36">
-        <input type="text" value="" />
-        <input type="hidden" name="promotion_activity[user_id]" value="3" />
-        <input type="button" class="btn btn-large black-btn" value="搜索" style="width:80px;" />
+        <%= text_field_tag 'promotion_activity[user_id]', '', class:'input-block users-select2' %>
+        <%#<input type="hidden" name="promotion_activity[user_id]" value="3" />%>
+        <%#<input type="button" class="btn btn-large black-btn" value="搜索" style="width:80px;" />%>
       </div>
     </div>
   </div>
@@ -109,3 +109,37 @@
 <div class="form-actions text-center">
   <%= f.submit "保存", class: "btn btn-large" %>
 </div>
+
+
+<script type="text/javascript" charset="utf-8">
+  $(".users-select2").select2({
+    minimumInputLength: 1,
+    escapeMarkup: function (markup) { return markup; },
+    placeholder: "请输入商家名称...",
+    multiple: false,
+    id: function(bond){ return bond._id; },
+
+    ajax: {
+      url: "/admin/users/<%== current_user.id %>/search",
+      dataType: 'json',
+      delay: 1000,
+      data: function(params, page) {
+        return {
+          q: params,
+          page: page
+        }
+      },
+      results: function(data, params) {
+        params.page = params.page || 1;
+
+        return {
+          results: data.results,
+          pagination: {
+            more: (params.page * 10) < data.total_count
+          }
+        }
+      },
+      cache: true
+    }
+  });
+</script>

@@ -270,6 +270,7 @@ Rails.application.routes.draw do
         put :change_status, on: :member
       end
       resources :users, except: [:destroy] do
+        get :search
         resource :personal_authentication
         resource :enterprise_authentication
         resource :city_manager_authentication
