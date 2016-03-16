@@ -20,7 +20,6 @@ class Admin::ProductsController < AdminController
   end
 
   def new
-    @product = OrdinaryProduct.new(user: current_user)
   end
 
   def create
