@@ -2,7 +2,7 @@ class RecommendsController < ApplicationController
   before_action :authenticate_user!
 
   def create
-    @recommend = Recommend.new(user_id: params[:user_id], recommended_id: params[:recommended_id], recommended_type: params[:recommended_type])
+    @recommend = Recommend.new(user_id: current_user.id, recommended_id: params[:recommended_id], recommended_type: params[:recommended_type])
     if @recommend.save
       render json: { status: 'ok', message: '操作成功' }
     else
@@ -11,7 +11,7 @@ class RecommendsController < ApplicationController
   end
 
   def destroy
-    @recommend = Recommend.where(user_id: params[:user_id], recommended_id: params[:recommended_id], recommended_type: params[:recommended_type]).first
+    @recommend = Recommend.where(user_id: current_user.id, recommended_id: params[:recommended_id], recommended_type: params[:recommended_type]).first
     if @recommend.destroy
       render json: { status: 'ok', message: '操作成功' }
     else

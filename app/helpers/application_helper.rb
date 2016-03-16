@@ -127,15 +127,11 @@ module ApplicationHelper
     end.join.html_safe
   end
 
-  def homepage_sharing_link(user, sharing_node = nil, redirect = nil)
-    if sharing_node.blank?
-      homepage_url(user, redirect: redirect)
-    else
-      sharing_url(sharing_node, redirect: redirect)
-    end
+  def homepage_sharing_link(user, redirect = nil)
+    homepage_url(user, redirect: redirect)
   end
 
-  def homepage_sharing_meta_tags(user, sharing_link_node = nil, redirect = nil)
+  def homepage_sharing_meta_tags(user, redirect = nil)
     meta_tags = {
       sharing_title:  "【#{user.nickname}】个人主页",
       sharing_desc:   "个人主页",

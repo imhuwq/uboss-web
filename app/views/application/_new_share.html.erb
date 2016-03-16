@@ -23,7 +23,7 @@
         <% elsif @seller.present? %>
           <%= store_sharing_link(@seller, @sharing_link_node) %>
         <% elsif @user.present? %>
-          <%= homepage_sharing_link(@user, @sharing_link_node) %>
+          <%= homepage_sharing_link(@user) %>
         <% end %>
       </div>
     </div>
