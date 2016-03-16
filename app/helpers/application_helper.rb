@@ -136,7 +136,7 @@ module ApplicationHelper
       sharing_title:  "【#{user.nickname}】个人主页",
       sharing_desc:   "个人主页",
       sharing_imgurl: user.avatar_url(:thumb),
-      sharing_link:  homepage_sharing_link(user, sharing_link_node, redirect),
+      sharing_link:  homepage_sharing_link(user, redirect),
     }
     meta_tags.collect do |key, value|
       content_tag :meta, '', name: key, content: value
