@@ -23,20 +23,36 @@
 </div>
 <% if(1==1) #刮奖 %>
 <script type="text/javascript">
-
-window.onload = function () {	 
+  window.onload = function () {
     var lottery = new Lottery('lotteryContainer', '#bebebe', 'color', 280, 60, drawPercent);
     lottery.init("", 'text');
     var sd= false;
     function drawPercent(percent) {
-        if( percent > 2){  
-					if(sd == false){
-			      		lottery.init("zz", 'text');
-			      		sd=true;
-			     } 
-        }
+      if( percent > 2){
+	  		if(sd == false){
+          console.log("1");
+          $.ajax({
+            url: 'promotion_activities/draw_prize',
+            type: 'GET',
+            data: {
+              sharer_id: "<%= @sharer.id %>",
+              activity_info_id: "<%= @activity_info.id %>"
+            },
+            success: function(res) {
+              console.log("res", res);
+	      	    lottery.init(res['success'], 'text');
+            },
+            error: function(data, status, e) {
+              console.log('data, status, e', data, status, e);
+              return alert("操作错误");
+            }
+          });
+
+	      	//lottery.init("zz", 'text');
+	      	sd=true;
+	  	  }
+      }
     }
-    
-}
+  }
 </script>
 <% end %>

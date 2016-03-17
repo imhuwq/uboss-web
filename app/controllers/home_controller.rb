@@ -46,8 +46,13 @@ class HomeController < ApplicationController
       if ['ordinary', 'service'].include?(params[:type]) && (privilege_card = PrivilegeCard.find_or_active_card(current_user.id, params[:sid]))
         @qrcode_img_url = params[:type] == 'ordinary' ? privilege_card.ordinary_store_qrcode_img_url(true) : privilege_card.service_store_qrcode_img_url(true)
         seller = User.find(privilege_card.seller_id)
-        @promotion_activity = PromotionActivity.where(user_id: seller.id, status: 1).first
-        @draw_prize = @promotion_activity ? ActivityPrize.where(promotion_activity_id: @promotion_activity.id, activity_type: 'live').first : nil
+        promotion_activity = PromotionActivity.where(user_id: seller.id, status: 1).first
+        if promotion_activity.present?
+          @promotion_activity = promotion_activity
+          @live_activity_info = promotion_activity.activity_info.where(activity_type: 'live')
+          @share_user = User.find_by_id(params[:sharer_id])
+          @draw_prize = ActivityPrize.where(promotion_activity_id: @promotion_activity.id, activity_type: 'live').first
+        end
       end
 
       if true
@@ -57,28 +62,6 @@ class HomeController < ApplicationController
       end
     else
       redirect_to new_user_session_path(redirect: 'activity', redirectUrl: request.env["REQUEST_URI"])
-    end
-  end
-
-  def draw_prize
-    activity_info = ActivityInfo.find(params[:activity_info_id])
-    if activity_info.promotion_activity.status == 'published'
-      sharer_id = params[:sharer_id]
-      prize_ids = activity_info.draw_prize(current_user.id, sharer_id)
-      if prize_ids[:sharer_activity_prize_id]
-        sharer_name = ActivityPrize.find(prize_ids[:sharer_activity_prize_id]).prize_winner.identity
-        @message[:success] = "恭喜，你中奖了！你的分享者-#{sharer_name}-也收到了一份奖品，赶快让他(她)请你吃饭吧:P"
-      elsif verify_code_id == nil
-        @message[:success] = "非常遗憾，你没有抽中。不过分享你的二维码给他人一样有机会中奖哦！"
-      else
-        @message[:error] = "未知错误，请联系管理员。"
-      end
-    elsif activity_info.promotion_activity.status == 'closed'
-      @message[:error] = "活动已过期。"
-    elsif activity_info.promotion_activity.status == 'unpublish'
-      @message[:error] = "活动尚未开始。"
-    else
-      @message[:error] = "未知错误，请联系管理员。"
     end
   end
 

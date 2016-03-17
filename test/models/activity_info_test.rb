@@ -19,4 +19,17 @@ class ActivityInfoTest < ActiveSupport::TestCase
 
   end
 
+  test '#should raise exception when someone draw_prize twice' do
+    seller = create :seller_user
+    winner = create :user
+    promotion_activity = create(:active_promotion_activity, user: seller)
+    live_activity_info = create(:live_activity_info, promotion_activity: promotion_activity)
+    create(:share_activity_info, promotion_activity: promotion_activity)
+
+    live_activity_info.draw_prize(winner.id)
+    assert_raises RepeatedActionError do
+      live_activity_info.draw_prize(winner.id)
+    end
+
+  end
 end
