@@ -1,5 +1,7 @@
 class OrdinaryStore < UserInfo
 
+  has_many :ordinary_products, through: :user
+
   validates_uniqueness_of :user_id, message: :only_ordinary_store
   validates_numericality_of :platform_service_rate, :agent_service_rate,
     less_than_or_equal_to: 50, allow_blank: true
