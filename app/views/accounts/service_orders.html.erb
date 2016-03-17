@@ -38,17 +38,7 @@
 <%= render partial: 'new_share' %>
 
 <script>
-	var locationid=document.location.href.substr(document.location.href.indexOf('#'),document.location.href.length);
-	if($(locationid).length>0){
-		$('.tab-container .tab-content').hide();
-		$('.tab-nav .tab').removeClass('active');
-		$('.tab-nav .tab').each(function(){
-			if($(this).attr('href')==locationid){
-				$(this).addClass('active');
-			}
-		})
-		$(locationid).show();
-	}
+	
 
   $(document).ready(function(){
     $.each($('.order-sort li'), function(){

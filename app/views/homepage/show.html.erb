@@ -1,0 +1,30 @@
+<%= content_for :extra_meta_tags do %>
+  <%= homepage_sharing_meta_tags(@user) %>
+<% end %>
+
+<%= content_for :extra_javascript do %>
+  <% if browser.wechat? %>
+    <script type="text/javascript" charset="utf-8">
+      wx.ready(function(){ UBoss.luffy.invokeSharing(); });
+    </script>
+  <% end %>
+  <%= javascript_include_tag "mobile_page/jsmvc_app/application" %>
+<% end %>
+
+<div class="home-page gap text-center">
+	<br />
+	<div class="m-bottom10">
+  		<div class="cover" style="background-image:url('<%= @user.avatar_url(:thumb)%>') ;"></div>
+ 	</div><!-- m-bottom10 -->
+  <div class="title text-cut m-bottom10"><%= @user.mobile %></div>
+ <% if current_user == @user %>
+  <div class="gap">
+    <%= link_to '分享给朋友', '#', class: 'btn  p-sharing-btn'  %>
+  </div>
+ <% end %>
+</div><!-- home-page -->
+
+
+<%= render 'recommend_product' %>
+
+<%= render partial: 'new_share' %>

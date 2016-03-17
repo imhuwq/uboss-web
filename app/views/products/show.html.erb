@@ -110,21 +110,22 @@
 	 		</div><!-- content -->
     </div><!-- product-store-box -->
   </div><!-- bg-white gap -->
-	<br />
-  <div class="product-info-box enter-content">
+  <div class="bg-white gap text-center enter-content  m-top10">
     <%== @product.content %>
   </div>
 
-  <% if @sharing_node.blank? %>
+  <% if @sharing_node.blank? || @sharing_node.user == current_user %>
     <div class="share_buy">
-    	<%= link_to  store_path(@seller), class: 'buy-nav' do%>
-    		<div class="buy-icon buy-enter-icon"></div>
-    		<div>店铺</div>
-    	<% end %>
+      <% if current_user && current_user.has_privilege_card?(@product) %>
+        <%= link_to '#', class: "#{current_user.has_recommend?(@product) ? 'has_recommend': ''} buy-nav recommend_link", user_id: current_user.id, recommended_id: @product.id, recommended_type: @product.class do %>
+          <div class='buy-icon buy-recommed-icon'></div>
+          <div>推荐</div>
+        <% end %>
+      <% end %>
       <%= link_to conversation_chat_path(conversation_id: @seller.id), class: 'buy-nav chat-btn' do%>
-    		<div class="buy-icon buy-chat-icon"></div>
-    		<div>客服</div>
-    	<% end %>
+	    		<div class="buy-icon buy-chat-icon"></div>
+	    		<div>客服</div>
+	    	<% end %>
       <% if current_user %>
         <%= link_to  'javascript:;', class: 'buy-nav btn_add_to_cart', id: 'show_inventory_cart' do%>
 	    		<div class="buy-icon buy-cart-icon"></div>

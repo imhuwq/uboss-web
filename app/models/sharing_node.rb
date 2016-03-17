@@ -21,7 +21,7 @@ class SharingNode < ActiveRecord::Base
   before_create :set_code, :set_product
 
   class << self
-    def find_or_create_by_resource_and_parent(user, resource, parent = nil)
+   def find_or_create_by_resource_and_parent(user, resource, parent = nil)
       name = resource.class.name
       if parent.present? && parent.user_id == user.id
         is_circle_parent = if name == 'User'
