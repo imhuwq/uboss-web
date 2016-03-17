@@ -35,8 +35,7 @@
             url: 'promotion_activities/draw_prize',
             type: 'GET',
             data: {
-              sharer_id: "<%= @sharer.id %>",
-              activity_info_id: "<%= @activity_info.id %>"
+              activity_info_id: "<%= @live_activity_info.id %>"
             },
             success: function(res) {
               console.log("res", res);
