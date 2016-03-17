@@ -8,7 +8,7 @@ class HomepageController < ApplicationController
   end
 
   def recommend_products
-    @recommend_products = @user.recommends.products.map(&:recommended)
+    @recommend_products = @user.recommended_products
   end
 
   def recommend_stores
