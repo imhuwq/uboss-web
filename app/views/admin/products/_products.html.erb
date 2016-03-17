@@ -37,7 +37,7 @@
 				<td><%= product.total_sells %></td>
 				<td><%= product.created_at %></td>
 				<td>
-          <% if can? :delete_agency_product, product %>
+          <% if can? :delete_agency_product, product and product.is_a?(AgencyProduct) %>
             <p>该供应商已取消与你的供销关系</p>
             <%= link_to("删除", delete_agency_product_admin_product_path(product),
               remote: true, method: :patch, data: { disable_with: '<i class="fa fa-spinner"></i>' },

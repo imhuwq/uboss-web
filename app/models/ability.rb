@@ -61,6 +61,9 @@ class Ability
     can :manage, Order, seller_id: user.id
     cannot :delivery, AgencyOrder, seller_id: user.id
     can :manage, OrdinaryProduct, type: 'OrdinaryProduct', user_id: user.id
+    cannot :delete_agency_product, OrdinaryProduct do |op|
+      op.type == "OrdinaryProduct"
+    end
     can :manage, ServiceProduct, user_id: user.id
     can :manage, ServiceStore, user_id: user.id
     can :manage, VerifyCode, user_id: user.id
