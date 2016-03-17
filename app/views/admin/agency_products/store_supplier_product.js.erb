@@ -1,4 +1,4 @@
-<% if @product_copy.valid? %>
+<% if @product_copy and @product_copy.valid? %>
   if($(".agency-product-action-<%= @product.id %> a").hasClass("btn-large")){
     btn_class = "btn-large"
   }
@@ -6,6 +6,8 @@
     btn_class = "btn-mid"
   }
   $(".agency-product-action-<%= @product.id %>").html("<a class='btn "+btn_class+" yellow-btn' disabled>已添加到仓库</a>")
+<% elsif @denied %>
+  alert("此操作没有权限！")
 <% else %>
   alert('添加到仓库失败！')
 <% end %>

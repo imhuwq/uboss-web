@@ -26,6 +26,8 @@ class Admin::AgencyProductsController < AdminController
       @product_copy.user_id = current_user.id
       @product_copy.save
     end
+  rescue CanCan::AccessDenied
+    @denied = true
   end
 
 end

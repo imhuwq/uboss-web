@@ -246,6 +246,7 @@ Rails.application.routes.draw do
       resources :products, except: [:destroy] do
         member do
           patch :change_status
+          patch :delete_agency_product
           get :pre_view
           patch :switch_hot_flag
         end

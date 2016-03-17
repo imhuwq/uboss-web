@@ -133,5 +133,10 @@
         <%= render '/admin/products/agency_actions', product: @product %>
       </div>
     <% end %>
+    <% if can? :delete_agency_product, @product %>
+      <p>该供应商已取消与你的供销关系</p>
+      <%= link_to("删除", delete_agency_product_admin_product_path(@product),
+        method: :patch, class: "btn btn-large red-btn") %>
+    <% end %>
   </div>
 </div><!-- container -->

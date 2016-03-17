@@ -51,7 +51,7 @@ class Admin::AgenciesController < AdminController
     authorize! :build_cooperation_with_agency_id, :agency
     @agency = User.find_by(id: params[:cooperation][:agency_id])
     unless current_user.has_cooperation_with_agency?(@agency)
-      current_user.cooperations.create(agency_id: @agency.id)
+      @cooperation = current_user.cooperations.create(agency_id: @agency.id)
     end
     respond_to do |format|
       format.js { render 'build_cooperation' }
@@ -62,11 +62,24 @@ class Admin::AgenciesController < AdminController
     authorize! :end_cooperation, :agency
     @agency = User.find_by(id: params[:id])
     if current_user.has_cooperation_with_agency?(@agency)
-      current_user.cooperations.find_by(agency_id: params[:id]).destroy
+      begin
+        ActiveRecord::Base.transaction do
+          current_user.cooperations.find_by(agency_id: params[:id]).destroy
+          down_agency_products
+        end
+      rescue => e
+        @error = e
+      end
     end
     respond_to do |format|
       format.js
     end
+  end
+
+  private
+
+  def down_agency_products
+    current_user.the_agency_products.with(@agency).where(status: 1).update_all(status: 0)
   end
 
 end

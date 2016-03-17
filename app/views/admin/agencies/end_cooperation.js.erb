@@ -1,10 +1,14 @@
-if($('.list-table').length > 0){
-  $("#cooperation_form_<%=@agency.id%>").closest('tr').remove()
-  val = parseInt($('h1.num').text()) - 1
-  $('h1.num').text(val)
-  $('#agency-count').text(val)
-}else{
-  $("#cooperation_form_<%=@agency.id%>").html("<%= j render('admin/agencies/build_cooperation', agency: @agency) %>")
-}
+<% if @error %>
+  alert("<%= @error %>")
+<% else %>
+  if($('.list-table').length > 0){
+    $("#cooperation_form_<%=@agency.id%>").closest('tr').remove()
+    val = parseInt($('h1.num').text()) - 1
+    $('h1.num').text(val)
+    $('#agency-count').text(val)
+  }else{
+    $("#cooperation_form_<%=@agency.id%>").html("<%= j render('admin/agencies/build_cooperation', agency: @agency) %>")
+  }
+<% end %>
 $(".modal-backdrop").remove()
 $("body").removeClass('modal-open')

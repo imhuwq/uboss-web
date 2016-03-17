@@ -69,6 +69,11 @@ class User < ActiveRecord::Base
   has_many :cooperations, foreign_key: 'supplier_id', dependent: :destroy
   has_many :agencies, through: :cooperations, source: :agency
   has_many :supplier_products, ->{ where(type: 'SupplierProduct') }
+  has_many :the_agency_products, ->{ where(type: 'AgencyProduct') }, foreign_key: 'supplier_id', class_name: 'AgencyProduct' do
+    def with(agency)
+      where(user_id: agency.id)
+    end
+  end
   has_many :send_captcha_histories, ->{ where(invite_type: 1) }, foreign_key: 'sender_id', class_name: 'CaptchaSendingHistory'
 
   #for agency

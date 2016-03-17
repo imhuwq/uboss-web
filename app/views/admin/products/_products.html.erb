@@ -37,6 +37,12 @@
 				<td><%= product.total_sells %></td>
 				<td><%= product.created_at %></td>
 				<td>
+          <% if can? :delete_agency_product, product %>
+            <p>该供应商已取消与你的供销关系</p>
+            <%= link_to("删除", delete_agency_product_admin_product_path(product),
+              remote: true, method: :patch, data: { disable_with: '<i class="fa fa-spinner"></i>' },
+              class: "btn btn-mid btn-block red-btn change-status-btn") %>
+          <% end %>
           <% if can_manage_seller_product(product) %>
             <% if product.type == 'AgencyProduct' and !(product.parent.supplied?) %>
               <p>

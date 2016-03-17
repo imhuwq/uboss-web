@@ -60,7 +60,7 @@ class Ability
     can :read, User, id: user.id
     can :manage, Order, seller_id: user.id
     cannot :delivery, AgencyOrder, seller_id: user.id
-    can :manage, OrdinaryProduct, user_id: user.id
+    can :manage, OrdinaryProduct, type: 'OrdinaryProduct', user_id: user.id
     can :manage, ServiceProduct, user_id: user.id
     can :manage, ServiceStore, user_id: user.id
     can :manage, VerifyCode, user_id: user.id
@@ -119,7 +119,16 @@ class Ability
     can :build_cooperation_with_auth_code, :agency
     can :build_cooperation_with_agency_id, :agency
     can :end_cooperation, :agency
-    can :manage, SupplierProduct, user_id: user.id
+    can :manage, SupplierProduct, user_id: user.id, type: "SupplierProduct"
+    cannot :delete_agency_product, SupplierProduct do |sp|
+      sp.type == "SupplierProduct"
+    end
+    cannot :store_or_list_supplier_product, SupplierProduct do |sp|
+      sp.type == "SupplierProduct" and !sp.supplier.has_cooperation_with_agency?(user)
+    end
+    cannot :read, SupplierProduct do |sp|
+      sp.type == "SupplierProduct" and !sp.supplier.has_cooperation_with_agency?(user) and sp.user_id != user.id
+    end
     can :manage, PurchaseOrder, supplier_id: user.id
     can :manage, AgencyOrder, supplier_id: user.id
     can :manage, OrderItemRefund, order_item: { order: { supplier_id: user.id } }
@@ -129,7 +138,13 @@ class Ability
 
   def grant_permissions_to_agency user
     can :read, User, id: user.id
-    can :manage, AgencyProduct, user_id: user.id
+    can :manage, AgencyProduct, user_id: user.id, supplier: { cooperations: { agency_id: user.id } }
+    cannot :delete_agency_product, AgencyProduct do |ap|
+      ap.user_id == user.id and ap.supplier.has_cooperation_with_agency?(user)
+    end
+    can :delete_agency_product, AgencyProduct do |ap|
+      ap.user_id == user.id and ap.parent.supplier == ap.supplier and !ap.supplier.has_cooperation_with_agency?(user) and ap.type == "AgencyProduct"
+    end
     can :manage, :agency_product
     can :read, SupplierStore, supplier: { cooperations: { agency_id: user.id } }
     can :valid_agent_products, SupplierProduct

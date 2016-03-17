@@ -80,6 +80,24 @@ class Admin::ProductsController < AdminController
     end
   end
 
+  def delete_agency_product
+    @product.status = 'closed'
+    @notice = '删除成功'
+    unless @product.save
+      @error = model_errors(@product).join('<br/>')
+    end
+    if request.xhr?
+      flash.now[:success] = @notice
+      flash.now[:error] = @error
+      product_collection = @product.closed? ? [] : [@product]
+      render(partial: 'products', locals: { products: product_collection })
+    else
+      flash[:success] = @notice
+      flash[:error] = @error
+      redirect_to admin_products_path
+    end
+  end
+
   def switch_hot_flag
     if @product.update(hot: !@product.hot)
       render json: { hot: @product.hot }
