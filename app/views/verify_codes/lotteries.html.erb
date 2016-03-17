@@ -1,9 +1,24 @@
 
 <%= content_for :page_title do %>
-  验证券
+  奖券
 <% end %>
 
 <%= content_for :header_left do %>
   <a class="back" onclick="history.go(-1)"><%= image_tag 'mobile/right.png' %></a>
 <% end %>
-
+<div class="lottery-list m-bottom10">
+	<div class="title text-cut">店铺名称</div><!-- title -->
+	<div class="lottery-message gap">
+		<h4 class="text-cut">中奖产品名称</h4>
+		<p><small>有效期: 2016-03-25</small></p>
+	</div><!-- lottery-message -->
+	<div class="lottery-from text-cut">
+		<% if 1 == 1 %>
+			识别朋友分享的二维码抽奖获得
+		<% elsif 0 == 2 %>
+			关注公众号抽奖获得
+		<% else %>
+			朋友通过我分享的二维码获奖后我同样获取一份
+		<% end %>
+	</div><!-- lottery-from -->
+</div><!-- lottery-list -->

@@ -10,10 +10,11 @@
 	
   <div class="service-order-list m-bottom10"  timestamp='<%= order.created_at %>'>
 		<div class="text-cut page-title gray-color gap">商家：<%= order.seller.identify %></div>
+		<div class="gap-left bg-white">
     <% order.order_items.each do |order_item| %>
       <%= link_to account_verify_code_path(id: order_item.id) do %>
         <div class="service-order-box bg-white">
-        	<div class="cover" style="background:url('<%= order_item.item_product.image_url('w120') %>');">
+        	<div class="cover" style="background-image:url('<%= order_item.item_product.image_url('w120') %>');">
             <%= image_tag order_item.item_product.image_url('w120') %>
           </div>
           <div class="content line-gap">

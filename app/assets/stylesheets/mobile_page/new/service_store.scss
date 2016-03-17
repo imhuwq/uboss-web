@@ -95,7 +95,9 @@
     display: block;
   }
 }
-
+.service-order-list a:last-child .service-order-box{
+    border-bottom:none ;
+}
 .service-order-box{
   .line-gap p,.line-gap p:last-child{    
     margin-top: 5px;
@@ -312,6 +314,23 @@
 .lottery-icon.active img{
     animation: lottery 2s infinite  ease-in;
     -webkit-animation: lottery 2s infinite ease-in;
+}
+.lottery-list{
+    .title{
+        background: image-url('activate_page/seller-icon.png') #fff no-repeat 10px center;
+        background-size:auto 18px;
+        padding: 10px 10px 10px 36px;
+    }
+    h4{
+        margin: 5px 0;
+    }
+    .lottery-from{
+        background: image-url('activate_page/from-icon.png') #fff no-repeat 10px center;
+        background-size:auto 18px;
+        padding: 10px 10px 10px 36px;
+        border-top: 1px solid #eee;
+        border-bottom: 1px solid #eee;
+    }
 }
 @keyframes lottery
 {
