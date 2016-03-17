@@ -111,13 +111,13 @@ module ProductsHelper
         :sale_to_agency
       ]
     inventories = if product.new_record?
-      product.product_inventories
-    elsif product.association(:product_inventories).target.present?
-      product.association(:product_inventories).target.
-        select { |inventory| inventory.saling }
-    else
-      product.seling_inventories
-    end
+                    product.product_inventories.present? ? product.product_inventories : product.supplier_product_inventories
+                  elsif product.association(:product_inventories).target.present?
+                    product.association(:product_inventories).target.
+                      select { |inventory| inventory.saling }
+                  else
+                    product.seling_inventories
+                  end
     inventories = inventories.to_json(only: json_attributes)
   end
 
