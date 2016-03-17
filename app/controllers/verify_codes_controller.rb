@@ -13,4 +13,7 @@ class VerifyCodesController < ApplicationController
     @verify_codes = order_item.verify_codes
   end
 
+  def lotteries
+  end
+
 end

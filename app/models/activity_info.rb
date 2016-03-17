@@ -5,6 +5,7 @@ class ActivityInfo < ActiveRecord::Base
   has_one_content name: :description
 
   belongs_to :promotion_activity
+  has_many   :activity_prize
 
   validates :activity_type, :name, :price, :expiry_days, :win_count, :win_rate, presence: true
   validates :activity_type, inclusion: { in: %w(live share) }
@@ -13,7 +14,7 @@ class ActivityInfo < ActiveRecord::Base
 
   def prize_arr
     @win_count = win_count
-    @win_rate = win_rate/100
+    @win_rate = win_rate * 0.01
     total = @win_count / @win_rate
     prize_step = (total / @win_count).to_i
     arr = []
@@ -32,8 +33,11 @@ class ActivityInfo < ActiveRecord::Base
       raise ArgumentError.new('sharer not found')
     elsif promotion_activity.status != 'published'
       raise RuntimeError.new('activity not published or closed')
+    elsif self.activity_type == 'live' && ActivityPrize.find_by(prize_winner_id: winner_id, activity_info_id: self.id).present?
+      raise RepeatedActionError.new('you have already drawed prize')
     else
       ActivityInfo.transaction do
+        self.lock
         winner_verify_code_id, sharer_verify_code_id = nil
         if prize_arr.include?(draw_count + 1) # 本次draw_count在中奖数组中
           winner_verify_code_id = VerifyCode.create!.id
@@ -60,4 +64,7 @@ class ActivityInfo < ActiveRecord::Base
       end
     end
   end
+end
+
+class RepeatedActionError < StandardError
 end

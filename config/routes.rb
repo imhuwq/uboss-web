@@ -118,7 +118,9 @@ Rails.application.routes.draw do
     patch :merchant_confirm, to: 'accounts#merchant_confirmed'
     patch :password, to: 'accounts#update_password'
     resources :user_addresses, except: [:show]
-    resources :verify_codes, only: [:index, :show]
+    resources :verify_codes, only: [:index, :show] do
+      get :lotteries, on: :collection
+    end
   end
   resource :pay_notify, only: [] do
     collection do
@@ -142,6 +144,9 @@ Rails.application.routes.draw do
     end
   end
   resources :cart_items, only: [:index, :create]
+  resources :promotion_activities do
+    get :draw_prize, on: :collection
+  end
 
   namespace :api do
     namespace :v1 do
