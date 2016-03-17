@@ -51,7 +51,7 @@ class PrivilegeCard < ActiveRecord::Base
   def ordinary_store_qrcode_img_url(expire = false)
     if ordinary_store_qrcode_img.new_record? || daily_expired_or_info_charged?(expire)
       delay.get_and_save_store_qrcode_url
-      return seller_promotion_activity_present? ? "活动二维码" : "http://imager.ulaiber.com/req/2?#{ordinary_store_qrcode_params.merge(mode: 0).to_param}"
+      return "http://imager.ulaiber.com/req/2?#{ordinary_store_qrcode_params.merge(mode: 0).to_param}"
     end
 
     reload.ordinary_store_qrcode_img.image_url
@@ -73,12 +73,12 @@ class PrivilegeCard < ActiveRecord::Base
   end
 
   def get_and_save_store_qrcode_url
-    if img_url = get_store_qrcode_img_url(ordinary_store_qrcode_params)
+    if img_url = get_store_qrcode_img_url(ordinary_store_qrcode_params, 'ordinary')
       ordinary_store_qrcode_img.remote_avatar_url = img_url
       ordinary_store_qrcode_img.save
     end
 
-    if img_url = get_store_qrcode_img_url(service_store_qrcode_params)
+    if img_url = get_store_qrcode_img_url(service_store_qrcode_params, 'service')
       service_store_qrcode_img.remote_avatar_url = img_url
       service_store_qrcode_img.save
     end
@@ -94,8 +94,8 @@ class PrivilegeCard < ActiveRecord::Base
     self.save
   end
 
-  def get_store_qrcode_img_url(qrcode_params)
-    request_uri = seller_promotion_activity_present? ? URI("活动二维码") : URI("http://imager.ulaiber.com/req/2?#{qrcode_params.to_param}")
+  def get_store_qrcode_img_url(qrcode_params, type)
+    request_uri = type == 'service' && seller_promotion_activity_present? ? URI("活动二维码") : URI("http://imager.ulaiber.com/req/2?#{qrcode_params.to_param}")
     res = Net::HTTP.get_response request_uri
 
     if res.is_a?(Net::HTTPSuccess)

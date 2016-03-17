@@ -42,22 +42,30 @@ class HomeController < ApplicationController
   end
 
   def store_qrcode_img
+    if params[:type] == 'service'
+      @promotion_activity = PromotionActivity.find_by(user_id: params[:sid], status: 1)
+      @draw_prize = ActivityPrize.find_by(promotion_activity_id: @promotion_activity.id, activity_type: 'live')
+    end
+
     if current_user
-      if ['ordinary', 'service'].include?(params[:type]) && (privilege_card = PrivilegeCard.find_or_active_card(current_user.id, params[:sid]))
-        @qrcode_img_url = params[:type] == 'ordinary' ? privilege_card.ordinary_store_qrcode_img_url(true) : privilege_card.service_store_qrcode_img_url(true)
-        seller = User.find(privilege_card.seller_id)
-        promotion_activity = PromotionActivity.where(user_id: seller.id, status: 1).first
-        if promotion_activity.present?
-          @promotion_activity = promotion_activity
-          @live_activity_info = promotion_activity.live_activity_info
-          @draw_prize = ActivityPrize.where(promotion_activity_id: @promotion_activity.id, activity_type: 'live').first
-          render 'activity', layout: 'activity'
+      privilege_card = PrivilegeCard.find_or_active_card(current_user.id, params[:sid])
+      if @promotion_activity.present?
+        if @draw_prize.present?
+          @live_activity_info = @promotion_activity.live_activity_info
+          render 'promotion_activities/live_draw', layout: 'activity'
         else
-          render layout: nil
+          redirect_to promotion_activity_path(@promotion_activity)
         end
+      else
+        @qrcode_img_url = params[:type] == 'ordinary' ? privilege_card.ordinary_store_qrcode_img_url(true) : privilege_card.service_store_qrcode_img_url(true)
+        render layout: nil
       end
     else
-      redirect_to new_user_session_path(redirect: 'activity', redirectUrl: request.env["REQUEST_URI"])
+      if @promotion_activity.present?
+        redirect_to new_user_session_path(redirect: 'activity', redirectUrl: live_draw_promotion_activity_path(@promotion_activity))
+      else
+        authenticate_user!
+      end
     end
   end
 

@@ -1,4 +1,16 @@
 class PromotionActivitiesController < ApplicationController
+  layout 'activity', only: [:show, :live_draw]
+
+  def show
+    @promotion_activity = PromotionActivity.find(params[:id])
+  end
+
+  def live_draw
+    @promotion_activity = PromotionActivity.find(params[:id])
+    @live_activity_info = @promotion_activity.live_activity_info
+    @draw_prize = ActivityPrize.find_by(promotion_activity_id: @promotion_activity.id, activity_type: 'live')
+  end
+
   def draw_prize
     activity_info = ActivityInfo.find(params[:activity_info_id])
     if activity_info.promotion_activity.status == 'published'
