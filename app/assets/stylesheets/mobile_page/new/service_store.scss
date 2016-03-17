@@ -310,7 +310,21 @@
   padding: 5px 0px;
   color: #999;
 }
-
+.lottery-icon{
+    position: relative;
+    
+}
+.lottery-icon.active:before{
+    content: '';
+    position: absolute;
+    bottom: 2px;
+    left: 0;
+    width: 100%;
+    height: 12px;
+    background:image-url('activate_page/lottery-text.png') no-repeat center;
+    z-index: 2;
+    background-size:auto 12px;
+}
 .lottery-icon.active img{
     animation: lottery 2s infinite  ease-in;
     -webkit-animation: lottery 2s infinite ease-in;

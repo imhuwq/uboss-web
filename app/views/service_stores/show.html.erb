@@ -60,9 +60,9 @@
       <div class="service-share-box border-top gap nogap-left">
       		<div class="lottery-icon 
 	      		<% if 1==1 #如果没抽过 %>
-	      			active 
+	      			active hidden
 	      		<% end %>
-      		pull-right">
+      		pull-right" id="lottery-icon">
       				<%= link_to '去登陆页面' do %>
       					<%= image_tag ('activate_page/lottery-icon1.png'),style:'width:40px' %>
       				<% end %>
@@ -71,7 +71,8 @@
         <div class="gap name text-cut"><%= @sharing_node.user.identify %> 分享</div>
       </div>
       <div class="lottery-modal pop-bg text-center">
-      		<div class="pop-content">
+      		<div class="close"><%= image_tag('mobile/close-icon.png')%></div>
+      		<div class="pop-content">      			
     				<%= link_to '去登陆页面' do %>
     					<%= image_tag ('activate_page/color-gift.png'),style:'width:50%'%>
     				<% end %>
