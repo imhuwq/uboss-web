@@ -6,7 +6,17 @@
 <%= content_for :header_left do %>
   <a class="back" onclick="history.go(-1)"><%= image_tag 'mobile/right.png' %></a>
 <% end %>
-<div class="lottery-list m-bottom10">
+
+<div class="tab-nav m-top10">
+	<a class="tab border-right" href="/account/verify_codes">
+  		验证券
+	</a>    
+	<a class="tab active" href="/account/verify_codes/lotteries">
+    奖券
+	</a>  
+</div>
+
+<div class="lottery-list m-top10">
 	<div class="title text-cut">店铺名称</div><!-- title -->
 	<div class="lottery-message gap">
 		<h4 class="text-cut">中奖产品名称</h4>

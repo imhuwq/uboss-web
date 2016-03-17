@@ -5,7 +5,14 @@
 <%= content_for :header_left do %>
   <a class="back" onclick="history.go(-1)"><%= image_tag 'mobile/right.png' %></a>
 <% end %>
-
+<div class="tab-nav m-top10">
+	<a class="tab border-right active"  href="/account/verify_codes">
+  		验证券
+	</a>    
+	<a class="tab"  href="/account/verify_codes/lotteries">
+    奖券
+	</a>  
+</div>
 <% @service_orders.each do |order| %>
 	
   <div class="service-order-list m-bottom10"  timestamp='<%= order.created_at %>'>
