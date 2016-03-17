@@ -49,16 +49,12 @@ class HomeController < ApplicationController
         promotion_activity = PromotionActivity.where(user_id: seller.id, status: 1).first
         if promotion_activity.present?
           @promotion_activity = promotion_activity
-          @live_activity_info = promotion_activity.activity_info.where(activity_type: 'live')
-          @share_user = User.find_by_id(params[:sharer_id])
+          @live_activity_info = promotion_activity.live_activity_info
           @draw_prize = ActivityPrize.where(promotion_activity_id: @promotion_activity.id, activity_type: 'live').first
+          render 'activity', layout: 'activity'
+        else
+          render layout: nil
         end
-      end
-
-      if true
-        render 'activity', layout: 'activity'
-      else
-        render layout: nil
       end
     else
       redirect_to new_user_session_path(redirect: 'activity', redirectUrl: request.env["REQUEST_URI"])

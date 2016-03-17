@@ -2,6 +2,7 @@ class ActivityPrize < ActiveRecord::Base
   belongs_to :promotion_activity, dependent: :destroy
   belongs_to :activity_info, dependent: :destroy
   belongs_to :prize_winner, class_name: 'User'
+  belongs_to :sharer, class_name: 'User'
   validates :activity_info_id, presence: true
   before_create :load_info_oncreate
 

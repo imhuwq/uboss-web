@@ -15,6 +15,7 @@ class ActivityInfoTest < ActiveSupport::TestCase
     assert_equal true, draw_prize_result[:sharer_activity_prize_id].present?
     assert_equal winner.id, ActivityPrize.find_by_id(draw_prize_result[:winner_activity_prize_id]).prize_winner.id
     assert_equal sharer.id, ActivityPrize.find_by_id(draw_prize_result[:sharer_activity_prize_id]).prize_winner.id
+    assert_equal sharer.id, ActivityPrize.find_by_id(draw_prize_result[:winner_activity_prize_id]).sharer_id
     assert_equal share_activity_info.id, ActivityPrize.find_by_id(draw_prize_result[:sharer_activity_prize_id]).activity_info.id
 
   end
