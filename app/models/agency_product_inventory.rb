@@ -20,6 +20,6 @@ class AgencyProductInventory < ProductInventory
   private
 
   def check_sale
-    errors.add(:sale_to_customer, "商品已下架或库存不足.") if parent.count.zero? || !parent.sale_to_agency
+    errors.add(:sale_to_customer, "商品已下架或库存不足.") if parent.count.to_i.zero? || !parent.sale_to_agency
   end
 end
