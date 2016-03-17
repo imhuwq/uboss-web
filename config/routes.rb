@@ -46,6 +46,16 @@ Rails.application.routes.draw do
       get :bonus_invite
     end
   end
+
+  resources :homepage, only: [:show] do
+    member do
+      get :recommend_products
+      get :recommend_stores
+    end
+  end
+
+  resources :recommends, only: [:create, :destroy]
+
   resources :bonus, only: [:create] do
     post :invited, on: :collection
   end
@@ -78,6 +88,7 @@ Rails.application.routes.draw do
     get 'payments',     on: :collection
     get 'pay_complete', on: :member
   end
+
   resources :products, only: [:index, :show] do
     member do
       patch :switch_favour

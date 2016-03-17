@@ -1,0 +1,51 @@
+<div class='recommend_stores_wrap recomment_store_or_product'>
+  <div class="tab-nav m-top10">
+    <%= link_to recommend_products_homepage_path(@user), remote: true, class:'tab border-right' do %>
+      推荐商品
+    <% end %>
+    <%= link_to recommend_stores_homepage_path(@user), remote: true,class:'tab active' do %>
+      推荐店铺
+    <% end %>
+  </div>
+
+  <% @recommend_stores.each do |store| %>
+    <% cache ['recommend', store], expires_in: 1.hour do %>
+      <div class="bg-white gap border-box m-top10">
+        <div class="product-store-box">
+          <div class="cover">
+            <%= image_tag store.store_cover.url(:w120) %>
+          </div>
+          <div class="content">
+            <% url = store.class.name == 'OrdinaryStore' ? store_path(store.user.id): service_store_path(store.id) %>
+            <%= link_to url,class:'btn btn-main-border pull-right' do%>
+              进店逛逛
+            <%end%>
+            <h4 class="name text-cut"><%= store.store_name || 'UBOSS商家' %></h4>
+            <p class="gray-color"><%= number_to_percentage(store.good_reputation_rate, precision: 0) %> 好评（<%= store.total_reputations %>）</p>
+            <p class="gray-color desc text-cut"><%= store.store_short_description || "UBOSS 推荐店铺" %></p>
+          </div><!-- content -->
+        </div><!-- product-store-box -->
+      </div><!-- bg-white gap -->
+      <% if store.class.name == 'OrdinaryStore' %>
+        <div class="bg-white index-product-list">
+          <div class="box">
+            <% store.ordinary_products.published.hot_ordering.limit(3).each do |product| %>
+              <div class="box-w33">
+                <div class="product-box">
+                  <div class="cover">
+                    <%= link_to '', product_path(product),
+                      style: "background-image:url(#{product.image_url(:w320)})",
+                      class: 'img',
+                      title: "#{product.name}" %>
+                    <%= image_tag("mobile/img.jpg") %>
+                  </div>
+                </div><!-- product-box -->
+              </div><!-- box-w33 -->
+            <% end %>
+          </div>
+        </div>
+      <% end %>
+    <% end %>
+  <% end %>
+</div>
+<br />

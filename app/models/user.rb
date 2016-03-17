@@ -16,6 +16,7 @@ class User < ActiveRecord::Base
 
   has_and_belongs_to_many :expresses, uniq: true
   has_one :cart
+  has_many :recommends
   has_many :user_infos, autosave: true
   has_many :carriage_templates
   has_many :transactions
@@ -119,12 +120,26 @@ class User < ActiveRecord::Base
     RUBY
   end
 
+  def recommended_products
+    Product.joins('INNER JOIN recommends ON products.id = recommends.recommended_id').
+      where('recommends.user_id = :user_id AND recommends.recommended_type IN (:product_types)', user_id: id, product_types: ['ServiceProduct', 'OrdinaryProduct', 'AgencyProduct'])
+  end
+
+  def has_privilege_card?(object)
+    seller_ids = self.privilege_cards.map(&:seller_id)
+    seller_ids.include?(object.user_id)
+  end
+
   def service_store
     super || build_service_store
   end
 
   def ordinary_store
     super || build_ordinary_store
+  end
+
+  def has_recommend?(object)
+    Recommend.where(user_id: self.id, recommended_id: object.id, recommended_type: object.class).exists?
   end
 
   def login_identifier=(login_identifier)

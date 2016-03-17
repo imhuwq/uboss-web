@@ -173,6 +173,9 @@ zh-CN:
         identity_card_code:                       身份证号码
         face_with_identity_card_img:              手持身份证图片
         identity_card_front_img:                  身份证正面
+        province_code:                            省份
+        city_code:                                城市
+        district_code:                            地区
       order:
         ship_number: 运单号
         express_name: 快递公司
@@ -234,6 +237,22 @@ zh-CN:
       bank_card: 银行卡
       product_inventory: 库存/规格
     attributes:
+      certification:
+        status:                                   状态
+        name:                                     姓名
+        enterprise_name:                          公司名
+        id_num:                                   身份证号码
+        address:                                  地址
+        mobile:                                   手机号
+        business_license_img:                     营业执照
+        legal_person_identity_card_front_img:     法人身份证正面
+        legal_person_identity_card_end_img:       法人身份证反面
+        identity_card_code:                       身份证号码
+        face_with_identity_card_img:              手持身份证图片
+        identity_card_front_img:                  身份证正面
+        province_code:                            省份
+        city_code:                                城市
+        district_code:                            地区
       order_item_refund:
         money: 金额
         order_state: 订单退款

@@ -55,3 +55,5 @@
 <% if qr_sharing? && (current_user.blank? || (current_user && !current_user.has_seller_privilege_card?(@seller)) ) %>
   <%= render partial: 'privilege_card_pop' %>
 <% end %>
+
+

@@ -6,7 +6,8 @@ module ApplicationHelper
 
   def product_show?
     ((controller_name == 'products' || controller_name == 'service_products') && action_name == 'show') ||
-      (controller_name == 'stores' && params[:type] == "service")
+      (controller_name == 'stores' && params[:type] == "service") ||
+      (controller_name == 'homepage')
   end
 
   def countdown_time(time)
@@ -120,6 +121,22 @@ module ApplicationHelper
       sharing_desc:   "在我这儿，谁还会用市场价购买啊？",
       sharing_imgurl: seller.avatar_url(:thumb),
       sharing_link:  store_sharing_link(seller, sharing_link_node, redirect),
+    }
+    meta_tags.collect do |key, value|
+      content_tag :meta, '', name: key, content: value
+    end.join.html_safe
+  end
+
+  def homepage_sharing_link(user, redirect = nil)
+    homepage_url(user, redirect: redirect)
+  end
+
+  def homepage_sharing_meta_tags(user, redirect = nil)
+    meta_tags = {
+      sharing_title:  "【#{user.nickname}】这都是我精心挑选的宝贝",
+      sharing_desc:   "偷偷告诉你，在我这儿买，能打折，分享还能返现。",
+      sharing_imgurl: user.avatar_url(:thumb),
+      sharing_link:  homepage_sharing_link(user, redirect),
     }
     meta_tags.collect do |key, value|
       content_tag :meta, '', name: key, content: value
