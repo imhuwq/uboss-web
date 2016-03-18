@@ -17,6 +17,11 @@ class ServiceStoresController < ApplicationController
     @voucher_products = append_default_filter @service_store.service_products.vouchers.published, order_column: :updated_at
     @group_products = append_default_filter @service_store.service_products.groups.published, order_column: :updated_at
     @advertisements = get_advertisements
+
+    if @sharing_node && @sharing_node.user != current_user
+      @promotion_activity = PromotionActivity.find_by(user_id: @seller.id, status: 1)
+      @draw_prize = ActivityPrize.find_by(prize_winner_id: current_user.try(:id), promotion_activity_id: @promotion_activity.try(:id), activity_type: 'live')
+    end
   end
 
   def share

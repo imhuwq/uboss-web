@@ -152,4 +152,15 @@ class ApplicationController < ActionController::Base
     params['shared'] == 'true'
   end
   helper_method :qr_sharing?
+
+  def activity_sign_in_and_redirect_path(type, promotion_activity)
+    if type == "share"
+      redirect_url = share_draw_promotion_activity_path(promotion_activity)
+    else
+      redirect_url = live_draw_promotion_activity_path(promotion_activity)
+    end
+
+    return new_user_session_path(redirect: 'activity', redirectUrl: redirect_url)
+  end
+  helper_method :activity_sign_in_and_redirect_path
 end

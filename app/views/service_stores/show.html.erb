@@ -58,26 +58,36 @@
 
     <% if @sharing_node %>
       <div class="service-share-box border-top gap nogap-left">
-      		<div class="lottery-icon 
-	      		<% if 1==1 #如果没抽过 %>
-	      			active hidden
-	      		<% end %>
-      		pull-right" id="lottery-icon">
-      				<%= link_to '去登陆页面' do %>
-      					<%= image_tag ('activate_page/lottery-icon1.png'),style:'width:40px' %>
-      				<% end %>
-      		</div>
+        <% if @promotion_activity %>
+          <% if @draw_prize.blank? %>
+            <div class="lottery-icon active hidden pull-right" id="lottery-icon">
+              <%= link_to (current_user ? promotion_activity_path(@promotion_activity) : activity_sign_in_and_redirect_path('share', @promotion_activity)) do %>
+                <%= image_tag ('activate_page/lottery-icon1.png'), style:'width:40px' %>
+              <% end %>
+            </div>
+          <% else %>
+            <div class="lottery-icon pull-right" id="lottery-icon">
+              <%= link_to '分享抽奖开奖页' do %>
+                <%= image_tag ('activate_page/lottery-icon1.png'), style:'width:40px' %>
+              <% end %>
+            </div>
+          <% end %>
+        <% end %>
         <div class="cover pull-left"><%= image_tag @sharing_node.user.avatar_url(:w120) %></div>
         <div class="gap name text-cut"><%= @sharing_node.user.identify %> 分享</div>
       </div>
-      <div class="lottery-modal pop-bg text-center">
-      		<div class="close"><%= image_tag('mobile/close-icon.png')%></div>
-      		<div class="pop-content">      			
-    				<%= link_to '去登陆页面' do %>
-    					<%= image_tag ('activate_page/color-gift.png'),style:'width:50%'%>
-    				<% end %>
-    			</div><!-- pop-content -->
-      </div>
+
+      <% if @promotion_activity && @draw_prize.blank? %>
+        <div class="lottery-modal pop-bg text-center">
+          <div class="close"><%= image_tag('mobile/close-icon.png')%></div>
+          <div class="pop-content">
+            <%= link_to (current_user ? promotion_activity_path(@promotion_activity) : activity_sign_in_and_redirect_path('share', @promotion_activity)) do %>
+              <%= image_tag ('activate_page/color-gift.png'), style:'width:50%'%>
+            <% end %>
+          </div><!-- pop-content -->
+        </div>
+      <% end %>
+
     <% end %>
   </div><!-- bg-white -->
 
