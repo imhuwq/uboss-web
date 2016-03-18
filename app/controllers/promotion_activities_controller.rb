@@ -2,7 +2,7 @@ class PromotionActivitiesController < ApplicationController
   layout 'activity', only: [:show, :live_draw]
 
   def show
-    @promotion_activity = PromotionActivity.find(params[:id])
+    #@promotion_activity = PromotionActivity.find(params[:id])
   end
 
   def live_draw

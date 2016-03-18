@@ -47,12 +47,27 @@ input.cap{
     height: 40px;
     padding: 10px 2px;
 }
-.login-btn{
-    font-size: 16px;
+.login-btn,.login-btn:focus{
+    font-size: 16px !important;
     padding: 14px;
     letter-spacing: 1px;
-    border-radius: 6px;    
+    border-radius: 6px; 
+    color: #fff !important;   
 }
+
+.lottery-btn,.lottery-btn:focus,.lottery-btn:hover{
+    margin: 30px auto 20px;
+    width:80%;
+    display: inline-block;
+    background:image-url('activate_page/login-btn.png') no-repeat ;
+    background-size:100% 100% ;
+    padding: 19px 0 20px;
+    text-align: center;
+    font-size: 16px;
+    color: #863203;
+    font-weight: bold;
+}
+
 .btn.disable{
     background: #999;
 }

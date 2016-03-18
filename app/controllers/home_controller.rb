@@ -44,7 +44,7 @@ class HomeController < ApplicationController
   def store_qrcode_img
     if params[:type] == 'service'
       @promotion_activity = PromotionActivity.find_by(user_id: params[:sid], status: 1)
-      @draw_prize = ActivityPrize.find_by(promotion_activity_id: @promotion_activity.id, activity_type: 'live')
+      @draw_prize = ActivityPrize.find_by(promotion_activity_id: @promotion_activity.try(:id), activity_type: 'live')
     end
 
     if current_user
