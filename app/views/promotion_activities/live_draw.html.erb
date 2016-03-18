@@ -32,7 +32,7 @@
           if(sd == false){
             console.log("1");
             $.ajax({
-              url: 'promotion_activities/draw_prize',
+              url: '/promotion_activities/draw_prize',
               type: 'GET',
               data: {
                 activity_info_id: "<%= @live_activity_info.id %>"

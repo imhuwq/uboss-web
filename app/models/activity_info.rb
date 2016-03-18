@@ -1,5 +1,4 @@
 class ActivityInfo < ActiveRecord::Base
-
   include Descriptiontable
 
   has_one_content name: :description
@@ -9,12 +8,19 @@ class ActivityInfo < ActiveRecord::Base
 
   validates :activity_type, :name, :price, :expiry_days, :win_count, :win_rate, presence: true
   validates :activity_type, inclusion: { in: %w(live share) }
-  validates :win_rate, numericality: { greater_than_or_equal_to: 0, less_than_or_equal_to: 100 }
+  validates :win_rate, numericality: { greater_than: 0, less_than_or_equal_to: 100 }
+  validates :win_count, numericality: { greater_than: 0 }
   validates :promotion_activity_id, uniqueness: { scope: :activity_type }
 
   def prize_arr
-    @win_count = win_count
-    @win_rate = win_rate * 0.01
+    if activity_type == 'live'
+      @win_count = win_count.to_f
+    elsif activity_type == 'share'
+      @win_count = win_count / 2
+    else
+      raise RuntimeError.new('unexpected activity_type')
+    end
+    @win_rate = win_rate.to_f * 0.01
     total = @win_count / @win_rate
     prize_step = (total / @win_count).to_i
     arr = []
@@ -23,6 +29,7 @@ class ActivityInfo < ActiveRecord::Base
       arr << i
       i += prize_step
     end
+
     arr
   end
 
@@ -33,9 +40,9 @@ class ActivityInfo < ActiveRecord::Base
       raise ArgumentError.new('sharer not found')
     elsif promotion_activity.status != 'published'
       raise RuntimeError.new('activity not published or closed')
-    elsif self.activity_type != 'share'
+    elsif activity_type != 'share'
       raise RuntimeError.new('wrong method used')
-    elsif ActivityDrawRecord.find_by(user_id: winner_id, sharer_id: sharer_id, activity_info_id: self.id).present?
+    elsif ActivityDrawRecord.find_by(user_id: winner_id, sharer_id: sharer_id, activity_info_id: id).present?
       raise RepeatedActionError.new('you have already drawed prize')
     else
       ActivityInfo.transaction do
@@ -56,7 +63,7 @@ class ActivityInfo < ActiveRecord::Base
                                                         prize_winner_id: sharer_id,
                                                         verify_code_id: sharer_verify_code_id)
         end
-        ActivityDrawRecord.create!(activity_info_id: id,user_id: winner_id, sharer_id: sharer_id)
+        ActivityDrawRecord.create!(activity_info_id: id, user_id: winner_id, sharer_id: sharer_id)
 
         return { winner_activity_prize_id: winner_activity_prize.id, sharer_activity_prize_id: sharer_activity_prize.id }
       end
@@ -68,9 +75,9 @@ class ActivityInfo < ActiveRecord::Base
       raise ArgumentError.new('winner not found')
     elsif promotion_activity.status != 'published'
       raise RuntimeError.new('activity not published or closed')
-    elsif self.activity_type != 'live'
+    elsif activity_type != 'live'
       raise RuntimeError.new('wrong method used')
-    elsif ActivityDrawRecord.find_by(user_id: winner_id, activity_info_id: self.id).present?
+    elsif ActivityDrawRecord.find_by(user_id: winner_id, activity_info_id: id).present?
       raise RepeatedActionError.new('you have already drawed prize')
     else
       ActivityInfo.transaction do
@@ -84,7 +91,7 @@ class ActivityInfo < ActiveRecord::Base
         end
         # 创建抽奖者礼品
         update!(draw_count: draw_count ? (draw_count + 1) : 1)
-        ActivityDrawRecord.create!(activity_info_id: id,user_id: winner_id)
+        ActivityDrawRecord.create!(activity_info_id: id, user_id: winner_id)
 
         winner_activity_prize
       end
