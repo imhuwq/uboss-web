@@ -32,16 +32,16 @@ $ ->
       $('.select_carriage_template').remove()
 
   $('.product_transportation_way').find('input').change (event)->
-    if $("label[for='ordinary_product_transportation_way_1']").find('input')[0].checked
-      $('#ordinary_product_traffic_expense').focus()
+    if $("label[for='ordinary_product_transportation_way_1'], label[for='supplier_product_transportation_way_1']").find('input')[0].checked
+      $('#ordinary_product_traffic_expense, #supplier_product_traffic_expense').focus()
 
-    if !$("label[for='ordinary_product_transportation_way_1']").find('input')[0].checked
-      $('#ordinary_product_traffic_expense').val('0.0')
+    if !$("label[for='ordinary_product_transportation_way_1'], label[for='supplier_product_transportation_way_1']").find('input')[0].checked
+      $('#ordinary_product_traffic_expense, #supplier_product_traffic_expense').val('0.0')
 
-    if $("label[for='ordinary_product_transportation_way_2']").find('input')[0].checked
-      $('#ordinary_product_carriage_template_id_chosen').addClass('chosen-container-active chosen-with-drop')
+    if $("label[for='ordinary_product_transportation_way_2'], label[for='supplier_product_transportation_way_2']").find('input')[0].checked
+      $('#ordinary_product_carriage_template_id_chosen, #supplier_product_carriage_template_id_chosen').addClass('chosen-container-active chosen-with-drop')
 
-    if !$("label[for='ordinary_product_transportation_way_2']").find('input')[0].checked
+    if !$("label[for='ordinary_product_transportation_way_2'], label[for='supplier_product_transportation_way_2']").find('input')[0].checked
       $('.select_carriage_template').remove()
       $('#ordinary_product_carriage_template_id_chosen').removeClass('chosen-container-active chosen-with-drop')
       $('#ordinary_product_carriage_template_id_chosen').find('.chosen-single').find('span').text('请选择运费模板...')
