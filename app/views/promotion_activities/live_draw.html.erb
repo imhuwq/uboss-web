@@ -1,57 +1,37 @@
-<div class="container">	
-  <div class="text-center gap">
-    <% if true #刮奖 %>
-      <div class="lottery-box">
-        <div class="border-line">
-          <h3>一大波好礼坐等领取</h3>
-          <div id="lotteryContainer"></div>
-        </div>
-      </div><!-- lottery-box -->
-    <% else %>
-      <div class="activate-info">
-        <div class="border-line">
-          <h3>中奖信息之类的东西</h3>
-        </div>
-      </div><!-- activate-info -->
-    <% end %>
+<div class="container shared">	
+  <div class="text-center gap">    
+    <div class="activate-info">
+      <div class="border-line">
+        <h3><%= @live_activity_info.id %></h3>
+      </div>
+    </div><!-- activate-info -->
   </div>
-  <div class="share-img-box">
-    <%= image_tag('mobile/lady.jpg')%>
+  <div class="text-center tips-text">你的奖品已放入在<a href="/奖券" class="orange-color">【验证券】</a></div>
+  <div class="activate-text">
+  		
+  </div><!-- activate-text -->
+  <div class="activate-bg">
+  		
+  </div><!-- activate-bg -->
+  <div class="pop-bg hidden">
+  		<div class="pop-content text-center">
+  			<div class="share-img-box">
+		    <%= image_tag('mobile/slideshow/1.jpg')%>
+		  </div>
+		  <br />
+		  <div>长按图片保存</div>
+  		</div>
   </div>
   <br />
 </div>
+<script>
+	$('.activate-bg').click(function(){
+		$('.pop-bg').removeClass('hidden')
+		$('html,body').attr('style','overflow: hidden;')
+	})
+	$('.pop-bg').click(function(){
+		$('.pop-bg').addClass('hidden')
+		$('html,body').attr('style','')
+	})
+</script>
 
-<% if true #刮奖 %>
-  <script type="text/javascript">
-    window.onload = function () {
-      var lottery = new Lottery('lotteryContainer', '#bebebe', 'color', 280, 60, drawPercent);
-      lottery.init("", 'text');
-      var sd= false;
-      function drawPercent(percent) {
-        if( percent > 2){
-          if(sd == false){
-            console.log("1");
-            $.ajax({
-              url: 'promotion_activities/draw_prize',
-              type: 'GET',
-              data: {
-                activity_info_id: "<%= @live_activity_info.id %>"
-              },
-              success: function(res) {
-                console.log("res", res);
-                lottery.init(res['success'], 'text');
-              },
-              error: function(data, status, e) {
-                console.log('data, status, e', data, status, e);
-                return alert("操作错误");
-              }
-            });
-
-            //lottery.init("zz", 'text');
-            sd=true;
-          }
-        }
-      }
-    }
-  </script>
-<% end %>

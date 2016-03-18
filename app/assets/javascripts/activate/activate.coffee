@@ -5,7 +5,6 @@
 #= require zepto/plugins/deferred
 #= require rails-behaviors/index
 #= require fastclick
-#= require activate/lottery
 #= require mobile_page/sms
 #= require mobile_page/utilities
 #= require_self

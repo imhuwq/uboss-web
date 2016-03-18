@@ -3,7 +3,6 @@
 @import "mobile_page/new/button";
 @import "mobile_page/new/layout";
 @import "mobile_page/new/main";
-@import 'mobile_page/new/pop';
 html,body{
     height: 100%;
     min-height: 100%;
@@ -15,6 +14,7 @@ html,body{
     line-height: 20px;
     color: #ededed;
 }
+
 .container{
     max-width: 800px;
     background :image-url('activate_page/bg-1.jpg') top center #c2e0d4  no-repeat;
@@ -22,11 +22,45 @@ html,body{
     margin: 0 auto;
     width: 100%;
     min-height: 100%;
+    position: relative;
 }
-
+.container > *{
+    z-index: 2;
+    position: relative;
+}
+.container.shared:before{
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    min-height: 70%;
+    background: linear-gradient(to bottom, #c2e0d4 , #8CC4AC);    
+    background: -webkit-linear-gradient( top, #c2e0d4 , #8CC4AC);
+    z-index: 0;
+    content: '';
+}
 .bg{
     background: image-url('activate_page/bg.jpg') #483c6c fixed;
     background-size: cover ;
+}
+/* pop */
+.pop-bg{
+    background: rgba(0,0,0,.8);
+    width: 100%;
+    height: 100%;
+    display: flex;
+    display:-webkit-box;
+    align-items: center;
+    -webkit-box-align: center;
+    overflow-y: auto;
+    z-index: 88;
+    position: fixed !important;
+    top: 0;
+    left: 0;
+}
+/* end pop */
+.hidden{
+    display: none !important;
 }
 .login-box{width: 90%; margin: 0 auto;}
 .login-box input{
@@ -77,14 +111,14 @@ input.cap{
     
 }
 .orange-circle{
-    width: 14px;
-    height: 14px;
-    line-height: 1;
+    width: 8px;
+    height: 8px;
+    vertical-align: middle;
     background: #ffbd21;
     display: inline-block;
     border-radius: 30px;
     float: left;
-    margin: 2px 5px 5px 0px;
+    margin:5px 5px 5px 0px;
 }
 
 /* 抽奖页面 */
@@ -103,7 +137,7 @@ input.cap{
     min-width: 220px;
     display: inline-block;
     padding: 5px 0px;
-    margin: 0px auto 65px; 
+    margin: 0 auto 20%; 
     h3{
         margin: 0;
     }
@@ -156,6 +190,27 @@ input.cap{
         width: 100%;
     }
 }
+.activate-text{
+    background:image-url('activate_page/activate-text.png') no-repeat center;
+    background-size:contain ;
+    width: 90%;
+    margin: 0 auto;
+    padding: 22% 0;
+    
+}
+.activate-bg{
+    background:image-url('activate_page/activate-bg.png') no-repeat center;
+    background-size:contain ;
+    width: 100%;
+    margin: 0 auto;
+    padding: 37% 0;
+}
+.tips-text{
+    color: #666;
+}
+.orange-color{
+    color: #ff8700;
+}
 .share-img-box{
     margin: 0 auto;
     width: 80%;
@@ -187,3 +242,7 @@ input.cap{
         left: -10px;
     }
 } 
+@media  screen and (min-width: 500px){
+    
+    .activate-info{margin-bottom: 30%;}
+}
