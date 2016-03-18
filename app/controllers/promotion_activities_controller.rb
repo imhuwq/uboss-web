@@ -1,8 +1,13 @@
 class PromotionActivitiesController < ApplicationController
-  layout 'activity', only: [:show, :live_draw]
+  layout 'activity', only: [:show, :live_draw, :share_draw]
 
   def show
-    # @promotion_activity = PromotionActivity.find(params[:id])
+    if ['live', 'share'].include?(params[:type])
+      @type = params[:type]
+      @promotion_activity = PromotionActivity.find(params[:id])
+    else
+      redirect_to root_path
+    end
   end
 
   def live_draw
