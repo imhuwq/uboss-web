@@ -130,8 +130,9 @@ class Ability
       sp.type == "SupplierProduct" and !sp.supplier.has_cooperation_with_agency?(user)
     end
     cannot :read, SupplierProduct do |sp|
-      sp.type == "SupplierProduct" and !sp.supplier.has_cooperation_with_agency?(user) and sp.user_id != user.id
+      !sp.id.nil? and sp.type == "SupplierProduct" and !sp.supplier.has_cooperation_with_agency?(user) and sp.user_id != user.id
     end
+    can :index, SupplierProduct
     can :manage, PurchaseOrder, supplier_id: user.id
     can :manage, AgencyOrder, supplier_id: user.id
     can :manage, OrderItemRefund, order_item: { order: { supplier_id: user.id } }
