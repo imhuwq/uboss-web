@@ -54,7 +54,7 @@ class HomeController < ApplicationController
           @live_activity_info = @promotion_activity.live_activity_info
           render 'promotion_activities/live_draw', layout: 'activity'
         else
-          redirect_to promotion_activity_path(@promotion_activity)
+          redirect_to promotion_activity_path(@promotion_activity, type: 'live')
         end
       else
         @qrcode_img_url = params[:type] == 'ordinary' ? privilege_card.ordinary_store_qrcode_img_url(true) : privilege_card.service_store_qrcode_img_url(true)

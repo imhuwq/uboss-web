@@ -4,9 +4,7 @@
   </div>
   <div class="login-box box">
     <div class="lottery-btn-box text-center">
-    		<a href="/抽奖页面" class="lottery-btn">
-    			参与抽奖
-    		</a>
+      <%= link_to "参与抽奖", @type == 'live' ? live_draw_promotion_activity_path(@promotion_activity) : share_draw_promotion_activity_path(@promotion_activity), class: "lottery-btn" %>
     </div><!-- lottery-btn-box -->
     <br />
     <div class="text-center">活动规则</div>
