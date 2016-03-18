@@ -9,15 +9,14 @@
   </div>
 
   <% @recommend_stores.each do |store| %>
-    <% cache ['recommend', store], expires_in: 1.hour do %>
+    <% cache [@user, store, 'recommend'], expires_in: 1.day do %>
       <div class="bg-white gap border-box m-top10">
         <div class="product-store-box">
           <div class="cover">
             <%= image_tag store.store_cover.url(:w120) %>
           </div>
           <div class="content">
-            <% url = store.class.name == 'OrdinaryStore' ? store_path(store.user.id): service_store_path(store.id) %>
-            <%= link_to url,class:'btn btn-main-border pull-right' do%>
+            <%= link_to resource_sharing_link(@user, store),class:'btn btn-main-border pull-right' do%>
               进店逛逛
             <%end%>
             <h4 class="name text-cut"><%= store.store_name || 'UBOSS商家' %></h4>
