@@ -44,7 +44,7 @@ class HomeController < ApplicationController
   def store_qrcode_img
     if params[:type] == 'service'
       @promotion_activity = PromotionActivity.find_by(user_id: params[:sid], status: 1)
-      @draw_prize = ActivityPrize.find_by(promotion_activity_id: @promotion_activity.try(:id), activity_type: 'live')
+      @draw_prize = ActivityPrize.find_by(prize_winner_id: current_user.try(:id), promotion_activity_id: @promotion_activity.try(:id), activity_type: 'live')
     end
 
     if current_user
@@ -62,7 +62,7 @@ class HomeController < ApplicationController
       end
     else
       if @promotion_activity.present?
-        redirect_to new_user_session_path(redirect: 'activity', redirectUrl: live_draw_promotion_activity_path(@promotion_activity))
+        redirect_to activity_sign_in_and_redirect_path('live', @promotion_activity)
       else
         authenticate_user!
       end

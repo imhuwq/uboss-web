@@ -146,6 +146,7 @@ Rails.application.routes.draw do
   resources :cart_items, only: [:index, :create]
   resources :promotion_activities, only: [:show] do
     get :live_draw,  on: :member
+    get :share_draw, on: :member
     get :draw_prize, on: :collection
   end
 
