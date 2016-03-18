@@ -216,7 +216,7 @@ module ApplicationHelper
                          nil
                        end
     if sharing_resource.present?
-      sharing_node = SharingNode.find_or_create_by_resource_and_parent(user, resource)
+      sharing_node = SharingNode.find_or_create_by_resource_and_parent(user, sharing_resource)
       sharing_path(sharing_node, opts)
     else
       resource
