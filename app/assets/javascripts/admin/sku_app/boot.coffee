@@ -32,13 +32,6 @@ jQuery ($) ->
             console.log "Boot: add value #{skuAttrs[key]} to Propertie #{key}"
             propertyItem.get('values').add(value: skuAttrs[key])
             propertieCollectionData[key].push(skuAttrs[key])
-    #productType = switch App.controller
-      #when 'admin/products'
-        #"ordinary"
-      #when 'admin/supplier_products'
-        #"agency"
-      #else
-        #"ordinary"
     productType = switch App.productType
       when 'SupplierProduct'
         'supplier'
