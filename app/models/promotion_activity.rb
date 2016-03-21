@@ -1,6 +1,7 @@
 class PromotionActivity < ActiveRecord::Base
   belongs_to :user
   has_many :activity_infos, autosave: true, dependent: :destroy
+  has_many :activity_prize, dependent: :destroy
   has_one  :live_activity_info,  -> { where(activity_type: 'live') },  class_name: 'ActivityInfo'
   has_one  :share_activity_info, -> { where(activity_type: 'share') }, class_name: 'ActivityInfo'
 
