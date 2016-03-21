@@ -33,6 +33,9 @@ class Admin::ProductsController < AdminController
   end
 
   def update
+    if @product.is_a?(AgencyProduct)
+      product_params = agency_product_params
+    end
     if @product.update(product_params)
       flash[:success] = '保存成功'
       redirect_to action: :show, id: @product.id
@@ -133,6 +136,16 @@ class Admin::ProductsController < AdminController
 
   def product_params
     params.require(:ordinary_product).permit(
+      :name,      :original_price,  :present_price,     :count,
+      :content,   :has_share_lv,    :calculate_way,     :avatar,
+      :traffic_expense, :short_description, :transportation_way,
+      :carriage_template_id, :categories,
+      :full_cut, :full_cut_number, :full_cut_unit
+    ).merge(product_inventories_params)
+  end
+
+  def agency_product_params
+    params.require(:agency_product).permit(
       :name,      :original_price,  :present_price,     :count,
       :content,   :has_share_lv,    :calculate_way,     :avatar,
       :traffic_expense, :short_description, :transportation_way,
