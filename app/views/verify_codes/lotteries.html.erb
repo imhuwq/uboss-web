@@ -31,11 +31,11 @@
       </p>
   	</div><!-- lottery-message -->
   	<div class="lottery-from text-cut">
-  		<% if activity_prize.info['activity_type'] == 'share' && activity_prize.sharer_id %>
+  		<% if activity_prize.activity_type == 'share' && activity_prize.sharer_id %>
   			朋友通过我分享的二维码获奖后我同样获取一份
-  		<% elsif activity_prize.info['activity_type'] == 'live' %>
+  		<% elsif activity_prize.activity_type == 'live' %>
   			关注公众号抽奖获得
-      <% elsif activity_prize.info['activity_type'] == 'share' %>
+      <% elsif activity_prize.activity_type == 'share' %>
   			识别朋友分享的二维码抽奖获得
   		<% end %>
   	</div><!-- lottery-from -->

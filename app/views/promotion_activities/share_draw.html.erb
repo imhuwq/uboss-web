@@ -1,11 +1,11 @@
-<div class="container shared">	
-  <div class="text-center gap">    
+<div class="container shared">
+  <div class="text-center gap">
     <div class="activate-info">
       <div class="border-line">
         <% if @draw_prize.present? %>
-          <h3>已经抽过奖了</h3>
+          <h3>亲，你已经抽过了哦</h3>
         <% else %>
-          <h3><%= @message[:success] %></h3>
+          <h3><%= @draw_prize.present? %><%= @message[:success] %></h3>
         <% end %>
       </div>
     </div><!-- activate-info -->

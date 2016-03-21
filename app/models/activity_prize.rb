@@ -8,12 +8,12 @@ class ActivityPrize < ActiveRecord::Base
 
   def load_info_oncreate
     self.promotion_activity_id = activity_info.promotion_activity_id
+    self.activity_type = activity_info.activity_type
     # 方便复查
     hash = {}
     hash['draw_count'] = activity_info.draw_count ? activity_info.draw_count : 1
     hash['win_rate'] = activity_info.win_rate
     hash['win_count'] = activity_info.win_count
-    hash['activity_type'] = activity_info.activity_type
     self.info = hash
   end
 
