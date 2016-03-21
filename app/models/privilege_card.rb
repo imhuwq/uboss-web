@@ -60,7 +60,7 @@ class PrivilegeCard < ActiveRecord::Base
   def service_store_qrcode_img_url(expire = false)
     if service_store_qrcode_img.new_record? || daily_expired_or_info_charged?(expire)
       delay.get_and_save_store_qrcode_url
-      return seller_promotion_activity_present? ? "活动二维码" : "http://imager.ulaiber.com/req/2?#{service_store_qrcode_params.merge(mode: 0).to_param}"
+      return "http://imager.ulaiber.com/req/2?#{service_store_qrcode_params.merge(mode: 0).to_param}"
     end
 
     reload.service_store_qrcode_img.image_url
@@ -95,7 +95,7 @@ class PrivilegeCard < ActiveRecord::Base
   end
 
   def get_store_qrcode_img_url(qrcode_params, type)
-    request_uri = type == 'service' && seller_promotion_activity_present? ? URI("活动二维码") : URI("http://imager.ulaiber.com/req/2?#{qrcode_params.to_param}")
+    request_uri = URI("http://imager.ulaiber.com/req/2?#{qrcode_params.to_param}")
     res = Net::HTTP.get_response request_uri
 
     if res.is_a?(Net::HTTPSuccess)
@@ -122,6 +122,7 @@ class PrivilegeCard < ActiveRecord::Base
       qrcode_content: url_helpers.sharing_url(code: sharing_node.code, host: default_host, redirect: url_helpers.service_store_path(service_store)),
       itemname: EmojiCleaner.clear(service_store.store_name),
       username:  EmojiCleaner.clear(user.nickname),
+      is_lottery: (seller_promotion_activity_present? ? 1 : 0),
       mode: 1
     }
   end
