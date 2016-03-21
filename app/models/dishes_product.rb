@@ -5,7 +5,15 @@ class DishesProduct < Product
   validates_numericality_of :rebate_amount, if: "rebate_amount"
   after_initialize  :initialize_product_inventory
   before_update :check_product_inventory_count
+  validate :rebaste_amount_less_price
 
+  def today_verify_code
+    VerifyCode.where(dishes_order_id: self.user.dishes_order_ids, verified: true).where('updated_at BETWEEN ? AND ?', Time.now.beginning_of_day, Time.now.end_of_day)
+  end
+
+  def total_verify_code
+    VerifyCode.where(dishes_order_id: self.user.dishes_order_ids, verified: true)
+  end
 
   def price_range
     if product_inventories.present?
@@ -27,6 +35,10 @@ class DishesProduct < Product
   end
 
   private
+  def rebaste_amount_less_price
+    errors.add(:rebate_amount, '不能大于现价') if self.rebate_amount.present? && self.rebate_amount > self.present_price
+  end
+
   def initialize_product_inventory
     if self.new_record? && self.product_inventories.present?
       self.product_inventories.each do |inventory|

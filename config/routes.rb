@@ -195,6 +195,7 @@ Rails.application.routes.draw do
       resources :verify_codes, only: [:index] do
         collection do
           get :statistics
+          get :dishes
           post :verify
         end
       end

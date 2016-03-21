@@ -23,7 +23,7 @@
               <%= product.name %>
             <% end %>
           </td>
-          <td></td>
+          <td><%= product.categories.map(&:name).join(', ') %></td>
           <td>
             <%= number_to_currency product.price_range %>
           </td>

@@ -12,7 +12,7 @@ class Admin::DishesProductsController < AdminController
     @dishes_product = DishesProduct.find(params[:id])
     if @dishes_product.update(dishes_product_params)
       flash[:success] = '更新菜品成功'
-      redirect_to action: :show, id: @dishes_product.id
+      redirect_to admin_dishes_products_path
     else
       flash.now[:error] = "#{@dishes_product.errors.full_messages.join('<br/>')}"
       render :edit
@@ -57,7 +57,7 @@ class Admin::DishesProductsController < AdminController
     @dishes_product.service_store = current_user.service_store
     if @dishes_product.save
       flash[:success] = '菜品创建成功'
-      redirect_to action: :show, id: @dishes_product.id
+      redirect_to admin_dishes_products_path
     else
       flash.now[:error] = "#{@dishes_product.errors.full_messages.join('<br/>')}"
       render :new
@@ -70,14 +70,21 @@ class Admin::DishesProductsController < AdminController
   end
 
   def dishes_product_params
-    params.require(:dishes_product).permit(
+    dishes = params.require(:dishes_product).permit(
       :name, :present_price, :rebate_amount, :avatar,
-      :categories,
-    ).merge(params.require(:product).permit(
+    )
+    if params[:product].present?
+      dishes = dishes.merge(params.require(:product).permit(
       product_inventories_attributes: [
         :id, :price, :share_amount_total,
         sku_attributes: product_propertys_params[:product_propertys_names],
       ]
       ))
+    end
+
+    if params[:ordinary_product].present?
+      dishes = dishes.merge(params.require(:ordinary_product).permit(:categories))
+    end
+    dishes
   end
 end

@@ -39,6 +39,7 @@ class User < ActiveRecord::Base
   has_many :orders
   has_many :ordinary_orders
   has_many :service_orders
+  has_many :dishes_orders
   has_many :order_charges
   has_many :order_items
   has_many :sharing_incomes

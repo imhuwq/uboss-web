@@ -11,6 +11,12 @@ class Admin::VerifyCodesController < AdminController
     @today = VerifyCode.today(current_user).size
   end
 
+  def dishes
+    @dishes = DishesProduct.where(user_id: current_user.id)
+    @total = VerifyCode.total(current_user).size
+    @today = VerifyCode.today(current_user).size
+  end
+
   def statistics
     @service_products = ServiceProduct.where(user_id: current_user.id)
     @total = VerifyCode.total(current_user).size
