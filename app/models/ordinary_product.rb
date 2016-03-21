@@ -42,3 +42,4 @@ class OrdinaryProduct < Product
   end
 
 end
+require_dependency 'agency_product'
