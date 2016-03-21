@@ -44,7 +44,7 @@ class Product < ActiveRecord::Base
   scope :commons, -> { where(type: %w(OrdinaryProduct AgencyProduct)) }
 
   validate :must_has_one_image
-  validate :must_has_one_product_inventory
+  validate :must_has_one_product_inventory, if: -> { self.class.name != 'DishesProduct'}
   validates_presence_of :user_id, :name, :asset_img, :type
 
   before_create :generate_code
@@ -213,6 +213,13 @@ class Product < ActiveRecord::Base
       category_names.each do |item|
         category = Category.find_or_new_by(name: item, user_id: self.user_id)
         if category.new_record?
+          if self.type == 'OrdinaryProduct'
+            category.store_id = self.user.ordinary_store.id
+            category.store_type = self.user.ordinary_store.class.name
+          else
+            category.store_id = self.user.service_store.id
+            category.store_type = self.user.service_store.class.name
+          end
           category.use_in_store = false
         end
         category.save

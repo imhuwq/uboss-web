@@ -2,12 +2,12 @@ class Category < ActiveRecord::Base
 
 	include Imagable
 
-  acts_as_list
-
   belongs_to :user
   belongs_to :store, polymorphic: true
   has_many :advertisements
   has_and_belongs_to_many :products, -> { uniq }
+
+  acts_as_list
 
   has_one_image autosave: true
 
