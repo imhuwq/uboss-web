@@ -2,8 +2,8 @@ class MenusController < ApplicationController
   before_action :authenticate_user!, only: [:create]
   before_action :set_store
 
-  # GET /menus
-  # GET /menus.json
+  # GET /service_stores/:service_store_id/menus
+  # GET /service_stores/:service_store_id/menus.json
   def index
     @q = scope.search(categories_name_eq: params[:category]).result
     @menus = @q.page(params[:page])
@@ -14,26 +14,25 @@ class MenusController < ApplicationController
     end
   end
 
-  # POST /menus
-  # POST /menus.json
-  def create
-    @menu = DishieOrder.new(menu_params)
+  def confirm
+    @order = DishesOrder.new(order_params)
+    @order.user = current_user
+    @order.seller_id = @store.user_id
 
     respond_to do |format|
-      if @menu.save
-        format.html { redirect_to @menu, notice: 'Menu was successfully created.' }
-        format.json { render :show, status: :created, location: @menu }
+      if @order.save
+        format.html { redirect_to payments_charges_path(order_ids: @order.id, showwxpaytitle: 1) }
       else
-        format.html { render :new }
-        format.json { render json: @menu.errors, status: :unprocessable_entity }
+        format.html { redirect_to service_store_menus_path(@store) }
       end
+      format.js
     end
   end
 
   private
 
     # Never trust parameters from the scary internet, only allow the white list through.
-    def menu_params
+    def order_params
       params.permit()
     end
 

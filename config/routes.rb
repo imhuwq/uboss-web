@@ -113,7 +113,9 @@ Rails.application.routes.draw do
     get :verify_detail, on: :member
     get :share, on: :member
     post :verify, on: :member
-    resources :menus, only: [:index, :create]
+    resources :menus, only: :index do
+      post :confirm, on: :member
+    end
   end
 
   resource :chat, only: [:show] do

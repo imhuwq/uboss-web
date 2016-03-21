@@ -223,4 +223,12 @@ module ApplicationHelper
     end
   end
 
+  def display_mobile_nav?
+    @display_mobile_nav.nil? ? true : false
+  end
+
+  def hide_mobile_nav
+    @display_mobile_nav = false
+  end
+
 end
