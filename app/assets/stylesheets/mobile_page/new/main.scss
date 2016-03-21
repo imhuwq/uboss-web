@@ -1,5 +1,5 @@
 .pay-bg{
-    background: image-url('mobile/pay-bg.jpg') top center no-repeat #d83834;
+    background: image-url('mobile/pay-bg.jpg') top center no-repeat #f4f4f4;
     background-size:100% auto ;
     overflow: hidden;
     height: 100%;
@@ -22,7 +22,9 @@
         }
     }
 }
-
+.pay-bg.activate{
+    background-image:image-url('mobile/pay-bg1.jpg') ;
+}
 small{font-size: 80%;}
 .m-bottom10{
     margin-bottom: 10px;
