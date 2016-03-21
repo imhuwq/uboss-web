@@ -4,8 +4,10 @@
   </div>
   <div class="login-box box">
     <%= simple_form_for(User.new, url: user_session_path, method: 'POST') do |f| %>
-      <%= hidden_field_tag 'redirect', params[:redirect] %>
-      <%= hidden_field_tag 'redirectUrl', params[:redirectUrl] %>
+      <% if params[:redirect] && params[:redirectUrl] %>
+        <%= hidden_field_tag 'redirect', params[:redirect] %>
+        <%= hidden_field_tag 'redirectUrl', params[:redirectUrl] %>
+      <% end %>
       <div class="box-w100 m-bottom10">
         <%= f.text_field :login, class: 'tel', type: 'tel', id: "new_mobile", placeholder:"请输入手机号码" %>
       </div><!-- box-w100 -->

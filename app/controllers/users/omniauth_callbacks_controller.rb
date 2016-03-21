@@ -11,7 +11,11 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
       session["devise.wechat_data"] = auth_info
     end
     if current_user.blank? && after_oauth_success_redirect_path.match(/orders/).blank?
-      redirect_to new_user_session_path
+      if after_oauth_success_redirect_path.match(/promotion_activities/).present?
+        redirect_to new_user_session_path(redirect: 'activity')
+      else
+        redirect_to new_user_session_path
+      end
     else
       current_user && Ubonus::Invite.delay.active_by_user_id(current_user.id)
       redirect_to after_oauth_success_redirect_path

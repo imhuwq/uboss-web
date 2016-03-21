@@ -1,13 +1,29 @@
 class PromotionActivitiesController < ApplicationController
+  before_action :check_current_user, only: [:live_draw, :share_draw]
+  before_action :check_param_type,   only: :show
   layout 'activity', only: [:show, :live_draw, :share_draw]
 
   def show
-    #if ['live', 'share'].include?(params[:type])
-    #  @type = params[:type]
-    #  @promotion_activity = PromotionActivity.find(params[:id])
-    #else
-    #  redirect_to root_path
-    #end
+    @type = params[:type]
+    @promotion_activity = PromotionActivity.find(params[:id])
+
+    if current_user
+      if @draw_prize = ActivityPrize.find_by(prize_winner_id: current_user.try(:id), promotion_activity_id: @promotion_activity.try(:id), activity_type: 'live')
+        redirect_to @type == 'live' ? live_draw_promotion_activity_path(@promotion_activity) : share_draw_promotion_activity_path(@promotion_activity)
+        return
+      end
+
+      if params[:redirect] == "draw"
+        redirect_to @type == 'live' ? live_draw_promotion_activity_path(@promotion_activity) : share_draw_promotion_activity_path(@promotion_activity)
+      end
+    else
+      if browser.wechat?
+        redirect = 'draw'
+        authenticate_weixin_user!(redirect)
+      else
+        redirect_to activity_sign_in_and_redirect_path('live', @promotion_activity)
+      end
+    end
   end
 
   def live_draw
@@ -91,4 +107,17 @@ class PromotionActivitiesController < ApplicationController
     end
   end
 
+  protected
+
+  def check_param_type
+    if !['live', 'share'].include?(params[:type])
+      redirect_to root_path
+    end
+  end
+
+  def check_current_user
+    if current_user.blank?
+      redirect_to root_path
+    end
+  end
 end

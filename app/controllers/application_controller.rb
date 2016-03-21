@@ -51,11 +51,16 @@ class ApplicationController < ActionController::Base
     end
   end
 
-  def authenticate_weixin_user!
+  def authenticate_weixin_user!(redirect = nil)
     return false unless browser.wechat?
     return false unless current_user.blank? || current_user.weixin_openid.blank?
 
-    session[:oauth_callback_redirect_path] = request.fullpath
+    path = request.fullpath
+    if redirect.present?
+      path += path.match(/\?/) ? "&redirect=#{redirect}" : "?redirect=#{redirect}"
+    end
+
+    session[:oauth_callback_redirect_path] = path
     redirect_to user_omniauth_authorize_path(:wechat)
   end
 
@@ -118,7 +123,7 @@ class ApplicationController < ActionController::Base
   def after_sign_in_path_for(resource, opts = {need_new_passowrd: true})
     if ['discourse', 'activity'].include? params[:redirect]
       params[:redirectUrl]
-    elsif current_user.need_reset_password? && opts[:need_new_passowrd]
+    elsif current_user.need_reset_password? && opts[:need_new_passowrd] && session[:oauth_callback_redirect_path].match(/promotion_activities/).blank?
       flash[:new_password_enabled] = true
       set_password_path
     else
