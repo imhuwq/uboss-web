@@ -2,25 +2,25 @@ class PromotionActivitiesController < ApplicationController
   layout 'activity', only: [:show, :live_draw, :share_draw]
 
   def show
-    if ['live', 'share'].include?(params[:type])
-      @type = params[:type]
-      @promotion_activity = PromotionActivity.find(params[:id])
-    else
-      redirect_to root_path
-    end
+    #if ['live', 'share'].include?(params[:type])
+    #  @type = params[:type]
+    #  @promotion_activity = PromotionActivity.find(params[:id])
+    #else
+    #  redirect_to root_path
+    #end
   end
 
   def live_draw
-    @promotion_activity = PromotionActivity.find(params[:id])
-    @live_activity_info = @promotion_activity.live_activity_info
-    @draw_prize = ActivityPrize.find_by(prize_winner_id: current_user.id, promotion_activity_id: @promotion_activity.id, activity_type: 'live')
+    #@promotion_activity = PromotionActivity.find(params[:id])
+    #@live_activity_info = @promotion_activity.live_activity_info
+    #@draw_prize = ActivityPrize.find_by(prize_winner_id: current_user.id, promotion_activity_id: @promotion_activity.id, activity_type: 'live')
   end
 
   def share_draw
-    @promotion_activity = PromotionActivity.find(params[:id])
-    @share_activity_info = @promotion_activity.share_activity_info
-    #@draw_prize = ActivityPrize.find_by(prize_winner_id: current_user.id, promotion_activity_id: @promotion_activity.id, sharer_id: 'sharer_id')
-    @draw_prize = ActivityPrize.find_by(prize_winner_id: current_user.id, promotion_activity_id: @promotion_activity.id, activity_type: 'live')
+    #@promotion_activity = PromotionActivity.find(params[:id])
+    #@share_activity_info = @promotion_activity.share_activity_info
+    ##@draw_prize = ActivityPrize.find_by(prize_winner_id: current_user.id, promotion_activity_id: @promotion_activity.id, sharer_id: 'sharer_id')
+    #@draw_prize = ActivityPrize.find_by(prize_winner_id: current_user.id, promotion_activity_id: @promotion_activity.id, activity_type: 'live')
   end
 
   def draw_prize
