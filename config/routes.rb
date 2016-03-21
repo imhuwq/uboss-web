@@ -245,6 +245,7 @@ Rails.application.routes.draw do
       resources :evaluations, only: [:index, :destroy] do
         collection do
           get :statistics
+          get :dishes
         end
       end
 
