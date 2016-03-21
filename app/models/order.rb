@@ -20,7 +20,7 @@ class Order < ActiveRecord::Base
 
   accepts_nested_attributes_for :order_items
 
-  validates :type, inclusion: { in: ['OrdinaryOrder', 'ServiceOrder'] }
+  validates :type, inclusion: { in: ['OrdinaryOrder', 'ServiceOrder', 'DishesOrder'] }
   validates :user_id, :seller_id, presence: true
   validates_uniqueness_of :number, allow_blank: true
 

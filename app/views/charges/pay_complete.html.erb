@@ -8,8 +8,8 @@
 
 <div class="box m-top10">
   <% if @order_charge.unpay? %>
-    <%= render 'pay_complete/unpay' %>
+    <%= render 'charges/pay_complete/unpay' %>
   <% else %>
-    <%= render 'pay_complete/completed'%>
+    <%= render 'charges/pay_complete/completed'%>
   <% end %>
 </div><!-- box -->
