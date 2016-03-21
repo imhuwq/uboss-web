@@ -17,6 +17,7 @@ class ActivityInfoTest < ActiveSupport::TestCase
     assert_equal sharer.id, ActivityPrize.find_by_id(draw_prize_result[:winner_activity_prize_id]).sharer_id
     assert_equal share_activity_info.id, ActivityPrize.find_by_id(draw_prize_result[:sharer_activity_prize_id]).activity_info.id
     assert_equal true, ActivityDrawRecord.where(user_id: winner.id, sharer_id: sharer.id, activity_info_id: share_activity_info.id).present?
+    assert_equal share_activity_info.win_rate , ActivityPrize.find_by_id(draw_prize_result[:winner_activity_prize_id]).info['win_rate']
   end
 
   test '#should raise exception when someone draw_share_prize from one sharer twice' do
