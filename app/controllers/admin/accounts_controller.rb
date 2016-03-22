@@ -83,6 +83,8 @@ class Admin::AccountsController < AdminController
     }
   end
 
+  
+
   private
 
   def after_binding_agent_path

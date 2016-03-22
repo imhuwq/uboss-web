@@ -1,6 +1,6 @@
 <%= render 'layouts/flash_alert' if request.xhr? %>
 <div class="index_list">
-<table class="list-table" id="products">
+  <table class="list-table" id="products">
 		<thead>			
 			<th colspan="2">商品</th>
 			<th>价格</th>
@@ -15,13 +15,16 @@
 		<% products.each do |product| %>
 			<tr class="product" id='product_<%= product.id %>'>
 				<td>
-					<%= link_to admin_product_path(product) do %>
-						<%= image_tag(product.image_url(:thumb), size: "80x80", alt: "-") %>　
+          <%= link_to the_product_path(product) do %>
+						<%= image_tag(product.image_url(:thumb), size: "80x80", alt: "-") %>
 					<% end %>
 				</td>
 				<td class="text-left" style="max-width: 400px;">
-					<%= link_to admin_product_path(product) do %>
-						<%= product.name %>
+          <% if product.type == "AgencyProduct" %>
+            <span class="label label-primary"><%= t(product.type) %></span>
+          <% end %>
+					<%= link_to the_product_path(product) do %>
+						<%= truncate product.name, length: 30 %>
 					<% end %>
 				</td>
 				<td>
@@ -34,23 +37,35 @@
 				<td><%= product.total_sells %></td>
 				<td><%= product.created_at %></td>
 				<td>
-					<% if can? :update, product %>
-						<% if product.status == 'unpublish' %>
-				      <p>
-              <%= link_to("上架", change_status_admin_product_path(product, status: 'published'),
+          <% if can? :delete_agency_product, product and product.is_a?(AgencyProduct) %>
+            <p>该供应商已取消与你的供销关系</p>
+            <%= link_to("删除", delete_agency_product_admin_product_path(product),
               remote: true, method: :patch, data: { disable_with: '<i class="fa fa-spinner"></i>' },
-              class: "btn btn-mid btn-block yellow-btn change-status-btn") %>
-							</p>
-				    <% else %>
-				    	<p>
-				      <%= link_to("下架", change_status_admin_product_path(product, status: 'unpublish'),
-				      remote: true, method: :patch, data: { disable_with: '<i class="fa fa-spinner"></i>' },
-				      class: "btn btn-mid btn-block change-status-btn") %>
-				      </p>
-				    <% end %>
+              class: "btn btn-mid btn-block red-btn change-status-btn") %>
+          <% end %>
+          <% if can_manage_seller_product(product) %>
+            <% if product.type == 'AgencyProduct' and !(product.parent.supplied?) %>
+              <p>
+                <a class="btn btn-mid btn-block yellow-btn" disabled><%= product.parent.stored? ? '供应商已下架该商品' : '供应商已删除改商品' %></a>
+              </p>
+            <% else %>
+              <% if product.status == 'unpublish' %>
+                <p>
+                <%= link_to("上架", change_status_admin_product_path(product, status: 'published'),
+                remote: true, method: :patch, data: { disable_with: '<i class="fa fa-spinner"></i>' },
+                class: "btn btn-mid btn-block yellow-btn change-status-btn") %>
+                </p>
+              <% else %>
+                <p>
+                <%= link_to("下架", change_status_admin_product_path(product, status: 'unpublish'),
+                remote: true, method: :patch, data: { disable_with: '<i class="fa fa-spinner"></i>' },
+                class: "btn btn-mid btn-block change-status-btn") %>
+                </p>
+              <% end %>
+            <% end %>
 
             <%= link_to switch_hot_flag_admin_product_path(product),
-				      remote: true, method: :patch,
+              remote: true, method: :patch,
               class:" edit-icon switch-p-hot-btn " ,title:'是否为热销商品' do %>
               <i class="fa fachange <%=product.hot? ? 'fa-heart red-color' : 'fa-heart-o'%>">  </i>
             <% end %>
@@ -59,14 +74,19 @@
               <i class="fa fa-pencil-square-o"></i>
             <% end %>
 
-				    <%= link_to change_status_admin_product_path(product, status: 'closed'),
+            <%= link_to change_status_admin_product_path(product, status: 'closed'),
               remote: true, method: :patch, class:'change-status-btn edit-icon',
               data: { disable_with: '<i class="fa fa-trash-o"></i>' } do %>
-				    	<i class="fa fa-trash-o"></i>
-				    <% end %>
-			    <% end %>
+              <i class="fa fa-trash-o"></i>
+            <% end %>
+          <% end %>
+          <% if can_agent_product(product) %>
+            <div class="agency-product-actions agency-product-action-<%= product.id %>">
+              <%= render 'agency_actions', product: product %>
+            </div>
+          <% end %>
 				</td>
 			</tr>
 		<% end %>
-</table>
+  </table>
 </div>

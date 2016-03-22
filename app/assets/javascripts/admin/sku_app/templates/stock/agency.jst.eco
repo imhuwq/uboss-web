@@ -1,0 +1,24 @@
+<% if @propertys.length == 0: %>
+  <p>请添加产品规格属性</p>
+<% else: %>
+  <table id='stock-group' class='border-table'>
+    <thead>
+      <tr>
+        <% for property in @propertys: %>
+          <th>
+            <input type='hidden' name="product_propertys_names[]" value=<%= property %>>
+            <%= property %>
+          </th>
+        <% end %>
+        <th>成本价格</th>
+        <th>建议价格</th>
+        <th>价格</th>
+        <th>利润</th>
+        <th>是否销售</th>
+        <th>库存</th>
+      </tr>
+    </thead>
+    <tbody>
+    </tbody>
+  </table>
+<% end %>

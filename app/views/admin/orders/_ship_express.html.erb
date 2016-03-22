@@ -6,7 +6,7 @@
         <h3 class="modal-title" id="myModalLabel">快递信息</h3>
       </div>
 
-      <%= simple_form_for :order, method: :patch do |f| %>
+      <%= simple_form_for *args do |f| %>
         <div class="modal-body">
           <h4>快递公司</h4>
           <p><%= text_field_tag 'express_name', '', class: 'input-block form-control input-lg js-select2-express-tags select2-offscreen',placeholder:'可输入其他快递公司名称, 按回车结束'%></p>

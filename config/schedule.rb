@@ -18,3 +18,7 @@ end
 every 1.hours, roles: [:db] do
   runner "AutoSignOrderJob.perform_later"
 end
+
+every 1.day, at: '01:00 am', roles: [:db] do
+  runner "Cooperation.perform"
+end

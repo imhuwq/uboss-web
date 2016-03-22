@@ -27,6 +27,7 @@ class User < ActiveRecord::Base
   has_many :favour_products
   has_many :favoured_products, through: :favour_products, source: :product
   has_many :withdraw_records
+  has_many :sended_mobile_captchas, class_name: 'MobileCaptcha', foreign_key: 'sender_id'
   # for agent
   has_many :divide_incomes
   has_many :sellers, class_name: 'User', foreign_key: 'agent_id'
@@ -63,6 +64,25 @@ class User < ActiveRecord::Base
   has_many :categories
   has_many :selling_incomes
   belongs_to :agent, class_name: 'User'
+
+  #for supplier
+  has_one :supplier_store, autosave: true
+  has_many :cooperations, foreign_key: 'supplier_id', dependent: :destroy
+  has_many :agencies, through: :cooperations, source: :agency
+  has_many :supplier_products, ->{ where(type: 'SupplierProduct') }
+  has_many :the_agency_products, ->{ where(type: 'AgencyProduct') }, foreign_key: 'supplier_id', class_name: 'AgencyProduct' do
+    def with(agency)
+      where(user_id: agency.id)
+    end
+  end
+  has_many :send_captcha_histories, ->{ where(invite_type: 1) }, foreign_key: 'sender_id', class_name: 'CaptchaSendingHistory'
+
+  #for agency
+  has_many :reverse_cooperations, foreign_key: 'agency_id', class_name: 'Cooperation', dependent: :destroy
+  has_many :suppliers, through: :reverse_cooperations, source: :supplier
+  has_many :agency_products, ->{ where(type: 'AgencyProduct') }
+  has_many :receive_captcha_histories, ->{ where(invite_type: 1) }, foreign_key: 'receiver_id', class_name: 'CaptchaSendingHistory'
+
 
   validates :login, uniqueness: true, mobile: true, allow_blank: true
   validates_presence_of :login, presence: true, if: -> { email.blank? }
@@ -175,7 +195,7 @@ class User < ActiveRecord::Base
   end
 
   def add_role(role_name)
-    return if have_role?(role_name)
+    return true if have_role?(role_name)
     if role=UserRole.find_by_name(role_name)
       user_roles << role
     else
@@ -483,6 +503,18 @@ class User < ActiveRecord::Base
     user.get_token
     self.update_columns(rongcloud_token: user.token)
     user.token
+  end
+
+  def has_cooperation_with_agency?(user)
+    cooperations.find_by_agency_id(user.id)
+  end
+
+  def has_cooperation_with_supplier?(user)
+    reverse_cooperations.find_by_supplier_id(user.id)
+  end
+
+  def has_supplier_store?
+    SupplierStore.exists?(user_id: self.id)
   end
 
   private

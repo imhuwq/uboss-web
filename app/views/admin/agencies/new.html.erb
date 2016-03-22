@@ -1,0 +1,56 @@
+<div class="container admin-container">
+	<ul class="breadcrumb">
+		<li><a href="/admin">主页</a></li>
+		<li class="divider"><i class="fa fa-caret-right"></i></li>
+		<li>代销商</li>
+	</ul>
+</div>
+<br />
+<div class="container mod-inner">
+  <div class="beige-bg-color admin-agency-box">
+    <div class='agency-title'>
+      邀请代销商
+    </div>
+    <div class="new_agency">
+      <div class="input-group">
+        <%= text_field_tag :mobile, '', id: 'new_mobile', placeholder: '输入代销商手机号，发送邀请码给代销商' %>
+        <button style='color:#fff;' href='#' class='btn' data-invite-agency='true' id='send_mobile'>邀请代销商</button>
+      </div>
+      <div class="input-group">
+        <%= text_field_tag :mobile_auth_code, '', placeholder: '从代销商获取邀请码，在这里输入，即可授权' %>
+        <button style='color:#fff;' href='#' class='btn' id='authorize_agency'>授权代销</button>
+      </div>
+      <div class="modal fade invite-agency-success" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+        <div class="modal-dialog modal-sm">
+          <div class="modal-content">
+            <div class="modal-body">
+              已成功发送邀请码到手机号<span></span>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal">确定</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal fade auth-agency-success" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+        <div class="modal-dialog modal-sm">
+          <div class="modal-content">
+            <div class="modal-body">
+              <span></span>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal">确定</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="beige-bg-color admin-agency-box">
+    <div class='agency-title'>
+      更多代销商
+    </div>
+    <%= render partial: 'agency', collection: @agencies %>
+    <%= paginate @agencies %>
+  </div>
+</div>

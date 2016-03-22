@@ -1,0 +1,28 @@
+<button type="button" class="btn red-btn btn-primary btn-lg" data-toggle="modal" data-target="#end_cooperation_<%=agency.id%>">
+  取消授权
+</button>
+<div class="modal fade cooperation" id="end_cooperation_<%=agency.id%>" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">取消对代销商授权</h4>
+      </div>
+      <div class="modal-body">
+        取消对该代销商授权后，该代销商无法对您的产品继续进行代销。
+      </div>
+      <div class="modal-footer">
+        <%= form_for(current_user.cooperations.find_by_agency_id(agency.id),
+                     url: end_cooperation_admin_agency_path(agency.id),
+                     html: { method: :delete },
+                     remote: true) do |f| %>
+          <div class="actions">
+            <button type="button" class="btn" data-dismiss="modal">不取消</button>
+            <%= f.submit "确定取消", class: "btn btn-default" %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
+

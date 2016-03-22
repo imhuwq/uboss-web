@@ -1,0 +1,8 @@
+<% if @supplier_store.errors.blank? %>
+  $('#card-dropdown-menu .errors').html('')
+  $('#card-dropdown-menu .short-description .show-value span.text').text('<%= @supplier_store.store_short_description %>')
+  $('#card-dropdown-menu .short-description .show-value').show()
+  $('#card-dropdown-menu .short-description .form').hide()
+<% else %>
+  $('#card-dropdown-menu .errors').text('<%= @supplier_store.errors.full_messages.join('，') %>')
+<% end %>

@@ -32,19 +32,25 @@ jQuery ($) ->
             console.log "Boot: add value #{skuAttrs[key]} to Propertie #{key}"
             propertyItem.get('values').add(value: skuAttrs[key])
             propertieCollectionData[key].push(skuAttrs[key])
-
+    productType = switch App.productType
+      when 'SupplierProduct'
+        'supplier'
+      when 'AgencyProduct'
+        'agency'
+      else
+        'ordinary'
     if $('#product-sku').length > 0
-      StockSku.stock_view = new StockSku.Views.Stock(collection: StockSku.Collections.stock_collection)
+      StockSku.stock_view = new StockSku.Views.Stock(collection: StockSku.Collections.stock_collection, type: productType)
       StockSku.privilege_view = new StockSku.Views.Privilege(collection: StockSku.Collections.stock_collection)
       StockSku.sku_view = new StockSku.Views.Sku(collection: StockSku.Collections.property_collection)
 
     else if $('#product-stock').length > 0
-      StockSku.stock_view = new StockSku.Views.Stock(collection: StockSku.Collections.stock_collection)
+      StockSku.stock_view = new StockSku.Views.Stock(collection: StockSku.Collections.stock_collection, type: productType)
       StockSku.privilege_view = new StockSku.Views.Privilege(collection: StockSku.Collections.stock_collection)
       StockSku.stock_view.trigger('initShow')
       StockSku.privilege_view.trigger('initShow')
 
 
   if $('#category').length > 0
-    category = new StockSku.Views.Category
+    category = new StockSku.Views.Category(type: productType)
     category.render()

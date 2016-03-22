@@ -1,0 +1,22 @@
+<% @product = @supplier_product %>
+<div class="container admin-container">
+	<ul class="breadcrumb">
+		<li><a href="/admin">主页</a></li>
+		<li class="divider"><i class="fa fa-angle-right"></i></li>
+		<li><%= link_to '商品管理', [:admin, :supplier_products] %></li>
+		<li class="divider"><i class="fa fa-caret-right"></i></li>
+		<li class="active">编辑商品信息</li>
+	</ul>
+</div><!-- container -->
+
+<br />
+
+<div class="container nogap">
+
+    <%= horizon_form_for @product, url: { controller: 'admin/supplier_products', action: :update } do |f| %>
+
+      <%= render '/admin/products/fields', f: f %>
+
+    <% end %>
+
+</div>

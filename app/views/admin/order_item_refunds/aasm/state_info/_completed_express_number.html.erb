@@ -1,0 +1,23 @@
+<div class="bottom_line">
+  <h3 class='refund_info_title'>请收货并退款</h3>
+  <div class="countdown-box"><p id="clock_refund" data-endtime=<%= order_item_refund.deal_at + refund_timeout(order_item_refund).days %>></p></div><br/>
+  <p>* 买家已退货</p>
+  <p>* 收到买家退货，请及时验货</p>
+  <p>* 如果拒绝退款，买家可以要求UBOSS介入处理</p>
+  <p>* 如果您超时未处理，将自动退款给买家</p>
+</div>
+<br />
+<div class='evaluate'>
+  <%= link_to '确认收货并打款', 'javascripts:;', class: 'btn btn-large btn-noraidus', onclick: '$("#refund_confirm_receive").modal("show")' %>
+  <span>您还可以：<%= link_to '拒绝确认收货', 'javascripts:;', class: 'btn-link', onclick: '$("#refund_decline_receive").modal("show")' %> |
+  <%= link_to '要求UBOSS介入', 'javascripts:;', class: 'btn-link', onclick: '$("#refund_applied_uboss").modal("show")' %>
+</div>
+<br />
+<div class="bottom_line">
+  <p>* 物流公司：<%= order_item_refund.logistics_company %></p>
+  <p>* 运单号：<%= order_item_refund.ship_number %></p>
+  <p>* 退货时间：<%= order_item_refund.state_at_attributes['退货时间'] %></p>
+</div>
+<%= render_refund_modal 'confirm_receive', title: '退款给买家' %>
+<%= render_refund_modal 'decline_receive', title: '拒绝确认收货' %>
+<%= render_refund_modal 'applied_uboss', title: '申请UBOSS介入' %>

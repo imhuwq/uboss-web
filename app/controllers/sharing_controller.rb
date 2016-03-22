@@ -8,10 +8,10 @@ class SharingController < ApplicationController
     set_sharing_code(@sharing_node)
     path = if params[:redirect].present?
              params[:redirect]
-           elsif @sharing_node.product_id.present?
-             @sharing_node.product.try(:type) == "OrdinaryProduct" ?
-               product_path(@sharing_node.product_id) :
-               service_product_path(@sharing_node.product_id)
+           elsif product=@sharing_node.product
+             Product.commons.exists?(id: product.id) ?
+               product_path(product.id) :
+               service_product_path(product.id)
            else
              store_path(@sharing_node.seller_id)
            end

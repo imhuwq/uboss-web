@@ -1,0 +1,13 @@
+<% if order_item_refund.refund_type_include_goods? %>
+  <div>
+    <h3 class='refund_info_title'>退货关闭</h3>
+    <p>* 买家已撤销此次退货申请</p>
+    <p>* 撤销时间：<%= order_item_refund.state_at_attributes['关闭时间'] %></p>
+  </div>
+<% else %>
+  <div>
+    <h3 class='refund_info_title'>退款关闭</h3>
+    <p>* 买家已撤销此次退款申请</p>
+    <p>* 撤销时间：<%= order_item_refund.state_at_attributes['关闭时间'] %></p>
+  </div>
+<% end %>

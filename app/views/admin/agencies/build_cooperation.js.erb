@@ -1,0 +1,7 @@
+<% if @cooperation and @cooperation.errors.blank? %>
+  $("#cooperation_form_<%=@agency.id%>").html("<%= j render('admin/agencies/end_cooperation', agency: @agency) %>")
+<% else %>
+  alert('操作失败！')
+<% end %>
+$(".modal-backdrop").remove()
+$("body").removeClass('modal-open')

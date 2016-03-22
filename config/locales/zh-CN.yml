@@ -86,6 +86,11 @@ zh-CN:
     area: 地区
     building: 详细地址
     product_inventories: 库存/规格
+    supplier_product_inventories: 库存/规格
+    agency_product_inventories: 库存/规格
+    supplier_store_info: 供货商铺信息
+    supplier_store: 供货商铺
+
   simple_form:
     labels:
       express:
@@ -94,6 +99,7 @@ zh-CN:
         name: 产品名
         traffic_expense: 运费
         carriage_template: 运费模板
+        cost_price: 成本价
         original_price: 原价
         present_price: 现价
         count: 库存
@@ -117,11 +123,19 @@ zh-CN:
         service_type: 商品类型
         monthes: 商品有效期
         purchase_note: 商品须知
+        supplier_product_info:
+          cost_price: 成本价
+          suggest_price_lower: 建议价下限
+          suggest_price_upper: 建议价上限
       service_product:
         name: 商品名称
         service_type: 商品类型
         monthes: 商品有效期
         content: 图文详情
+      supplier_product_info:
+        cost_price: 成本价
+        suggest_price_lower: 建议价下限
+        suggest_price_upper: 建议价上限
       mobile_auth_code:
         mobile: 手机号码
       order_form:
@@ -236,6 +250,10 @@ zh-CN:
       divide_income: 分成收入
       bank_card: 银行卡
       product_inventory: 库存/规格
+      supplier_product_inventory: 库存/规格
+      agency_product_inventory: 库存/规格
+      supplier_store_info: 供货商铺信息
+      supplier_store: 供货商铺
     attributes:
       certification:
         status:                                   状态
@@ -253,6 +271,16 @@ zh-CN:
         province_code:                            省份
         city_code:                                城市
         district_code:                            地区
+      supplier_product_info:
+        cost_price: 成本价
+        suggest_price_lower: 建议价下限
+        suggest_price_upper: 建议价上限
+      supplier_store_info:
+        phone_number: 客服电话
+        wechat_id: 客服微信
+      supplier_store:
+        phone_number: 客服电话
+        wechat_id: 客服微信
       order_item_refund:
         money: 金额
         order_state: 订单退款
@@ -272,6 +300,17 @@ zh-CN:
       refund_reason:
         reason: 理由
       product_inventories:
+        product_id: SKU产品
+        share_amount_total: 总返利
+        price: 库存规格价格
+      supplier_product_inventories:
+        product_id: SKU产品
+        share_amount_total: 总返利
+        price: 价格
+        cost_price: 成本价
+        suggest_price_lower: 建议价下限
+        suggest_price_upper: 建议价上限
+      agency_product_inventories:
         product_id: SKU产品
         share_amount_total: 总返利
       service_store:
@@ -326,13 +365,17 @@ zh-CN:
         login: 登录手机
         login_identifier: 账号
         password: 密码
-      order:
+      order: &order
         express_name: 快递公司
         ship_number: 运单号
         number: 订单编号
         buyer_regist_mobile: 买家
         created_at: 创建时间
+      purchase_order:
+        <<: *order
       product:
+        <<: *product
+      supplier_product:
         <<: *product
       category:
         name: 分组名
@@ -397,7 +440,7 @@ zh-CN:
         l1: 一级分成
         l2: 二级分成
         l3: 三级分成
-    ordinary_order:
+    ordinary_order: &ordinary_order
       state:
         unpay: 未付款
         payed: 已付款
@@ -405,12 +448,22 @@ zh-CN:
         signed: 已签收
         completed: 已完成
         closed: 关闭
+    agency_order:
+      <<: *ordinary_order
     service_order:
       state:
         unpay: 未付款
         payed: 待消费
         expensed: 已消费
         unevaluate: 待评价
+        completed: 已完成
+        closed: 关闭
+    purchase_order:
+      state:
+        unpay: 未付款
+        payed: 已付款
+        shiped: 已发货
+        signed: 已签收
         completed: 已完成
         closed: 关闭
     order_charge:
@@ -447,3 +500,9 @@ zh-CN:
     captcha_invalid: 验证码不匹配或者过期
     already_binding_mobile: 该手机号已绑定
     mobile_captcha_fail: 短信发送失败
+  tags:
+    order:
+      agency_order: 分销
+      service_order: 团购
+      ordinary_order: ''
+  AgencyProduct: 代销商品

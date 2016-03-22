@@ -1,0 +1,2 @@
+<% @product = @supplier_product %>
+<%= render '/admin/products/common_show', visitor: params[:visitor] == 'seller' ? 'seller' : 'supplier' %>
