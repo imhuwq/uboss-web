@@ -16,8 +16,10 @@
 
   <body class='<%= controller_name %> <%= action_name %>'>
 
-    <% unless browser.uboss? %>
+    <% if !browser.uboss? && controller_name != 'menus' %>
       <header> <%= render partial: 'layouts/mobile_header' %> </header>
+    <% elsif controller_name == 'menus' %>
+      <header> </header>
     <% end %>
 
 		<%= render 'layouts/pop' %>

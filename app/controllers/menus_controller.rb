@@ -1,6 +1,7 @@
 class MenusController < ApplicationController
   before_action :authenticate_user!, only: [:create]
   before_action :set_store
+  layout 'mobile'
 
   # GET /service_stores/:service_store_id/menus
   # GET /service_stores/:service_store_id/menus.json
