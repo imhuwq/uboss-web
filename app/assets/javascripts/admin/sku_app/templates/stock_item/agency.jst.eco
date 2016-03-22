@@ -1,0 +1,32 @@
+<% if @id < 1444813700000: %>
+  <input type="hidden" name="product[product_inventories_attributes][<%= @id %>][id]" value=<%= @id %> >
+<% end %>
+<% for pName of @sku_attributes: %>
+  <% pValue = @sku_attributes[pName] %>
+  <input type="hidden" name="product[product_inventories_attributes][<%= @id %>][sku_attributes][<%= pName %>]" value=<%= pValue %> >
+  <td rowspan='1'><%= pValue %></td>
+<% end %>
+<% if @sale_to_agency == false: %>
+  <% @read_only = true %>
+<% end %>
+<td><input class='input-mini sku-cost-price' price <%= 'disabled' %> type='number' name="product[product_inventories_attributes][<%= @id %>][cost_price]" value=<%= @cost_price %> /></td>
+<td>
+  <input class='input-mini sku-suggest-price-lower' price <%= 'disabled' %> type='number' name="product[product_inventories_attributes][<%= @id %>][suggest_price_lower]" value=<%= @suggest_price_lower %> />
+  至
+  <input class='input-mini sku-suggest-price-upper' price <%= 'disabled' %> type='number' name="product[product_inventories_attributes][<%= @id %>][suggest_price_upper]" value=<%= @suggest_price_upper %> />
+</td>
+<td><input class='input-mini sku-price' price <%= 'disabled' if @read_only %> type='number' name="product[product_inventories_attributes][<%= @id %>][price]" value=<%= @price %> ></td>
+<td class="profit">
+  <% if @price: %>
+    <%= (@price - @cost_price).toFixed(2) %>
+  <% end %>
+</td>
+<td>
+  <input class='sale-out' type='hidden' name="product[product_inventories_attributes][<%= @id %>][sale_to_customer]" value=<%= @sale_to_customer %> />
+  <% if @sale_to_customer: %>
+    <input class='check-sale-out' class='input-mini sku-sale-to-customer' <%= 'disabled' if @read_only %> type='checkbox' checked />
+  <% else: %>
+    <input class='check-sale-out' class='input-mini sku-sale-to-customer' <%= 'disabled' if @read_only %> type='checkbox' />
+  <% end %>
+</td>
+<td><input class='input-mini sku-count' <%= 'disabled' %> type='number' name="product[product_inventories_attributes][<%= @id %>][count]" value=<%= @count %>></td>

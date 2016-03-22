@@ -1,0 +1,12 @@
+<%= link_to("编辑", url_for(controller: 'admin/products', :action=>:edit,:id=>product.id), :class=>"btn btn-large blue-btn",:role=>"button") %>
+<%= link_to("手机效果", url_for(controller: 'admin/products', :action=>:pre_view,:id=>product.id), :class=>"btn btn-large yellow-btn",:role=>"button",:target=>"_blank") %>
+<% if product.type == 'AgencyProduct' and !(product.parent.supplied?) %>
+  <a class="btn btn-large yellow-btn" disabled role="button"><%= product.parent.stored? ? '供应商已下架该商品' : '供应商已删除改商品' %></a>
+<% else %>
+  <% if product.status == "unpublish" %>
+    <%= link_to("上架", url_for(controller: 'admin/products', action: :change_status, id: product.id, status: :published), method: :patch, class: "btn btn-large red-btn", role: "button") %>
+  <% else %>
+    <%= link_to("取消上架", url_for(controller: 'admin/products', action: :change_status,id: product.id, status: :unpublish),
+          method: :patch, class: "btn btn-large ",:role=>"button") %>
+  <% end %>
+<% end %>

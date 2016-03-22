@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160314024217) do
+ActiveRecord::Schema.define(version: 20160317021456) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -403,7 +403,7 @@ ActiveRecord::Schema.define(version: 20160314024217) do
     t.string   "service_store_cover"
     t.string   "user_name"
     t.string   "ordinary_store_cover"
-    t.datetime "qrcode_expire_at",     default: '2016-03-02 14:41:41'
+    t.datetime "qrcode_expire_at",     default: '2016-03-23 15:25:16'
     t.string   "service_store_name"
     t.string   "ordinary_store_name"
   end
@@ -435,9 +435,9 @@ ActiveRecord::Schema.define(version: 20160314024217) do
     t.decimal  "cost_price"
     t.decimal  "suggest_price_lower"
     t.decimal  "suggest_price_upper"
-    t.integer  "quantity"
     t.boolean  "sale_to_agency"
     t.integer  "parent_id"
+    t.boolean  "sale_to_customer",    default: true
   end
 
   add_index "product_inventories", ["sku_attributes"], name: "index_product_inventories_on_sku_attributes", using: :gin
@@ -506,17 +506,11 @@ ActiveRecord::Schema.define(version: 20160314024217) do
     t.integer  "service_type"
     t.integer  "monthes"
     t.integer  "service_store_id"
-    t.integer  "comprehensive_order"
-    t.datetime "published_at"
-    t.integer  "sales_amount",         default: 0
-    t.integer  "sales_amount_order"
-    t.integer  "ordinary_store_id"
     t.integer  "parent_id"
     t.integer  "supplier_id"
   end
 
   add_index "products", ["type"], name: "index_products_on_type", using: :btree
-  add_index "products", ["user_id", "parent_id"], name: "index_products_on_user_id_and_parent_id", unique: true, using: :btree
 
   create_table "purchase_orders", force: :cascade do |t|
     t.integer  "seller_id"
@@ -649,12 +643,11 @@ ActiveRecord::Schema.define(version: 20160314024217) do
     t.integer  "product_id"
     t.string   "code"
     t.integer  "parent_id"
-    t.integer  "lft",          null: false
-    t.integer  "rgt",          null: false
-    t.datetime "created_at",   null: false
-    t.datetime "updated_at",   null: false
+    t.integer  "lft",        null: false
+    t.integer  "rgt",        null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.integer  "seller_id"
-    t.integer  "self_page_id"
   end
 
   add_index "sharing_nodes", ["code"], name: "index_sharing_nodes_on_code", unique: true, using: :btree
@@ -773,8 +766,8 @@ ActiveRecord::Schema.define(version: 20160314024217) do
     t.integer  "better_evaluation"
     t.integer  "best_evaluation"
     t.string   "store_cover"
-    t.string   "type"
     t.decimal  "bonus_benefit",             default: 0.0
+    t.string   "type"
     t.string   "begin_hour"
     t.string   "begin_minute"
     t.string   "end_hour"

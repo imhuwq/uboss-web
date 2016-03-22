@@ -202,4 +202,25 @@ module ApplicationHelper
     @recommend_store_banner_data
   end
 
+  def resource_sharing_link(user, resource)
+    opts = {}
+    sharing_resource = case resource
+                       when OrdinaryStore
+                         resource.user
+                       when ServiceStore
+                         opts[:redirect] = service_store_path(resource)
+                         resource.user
+                       when Product, User
+                         resource
+                       else
+                         nil
+                       end
+    if sharing_resource.present?
+      sharing_node = SharingNode.find_or_create_by_resource_and_parent(user, sharing_resource)
+      sharing_path(sharing_node, opts)
+    else
+      resource
+    end
+  end
+
 end

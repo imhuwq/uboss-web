@@ -1,0 +1,23 @@
+<% if @id < 1444813700000: %>
+  <input type="hidden" name="product[product_inventories_attributes][<%= @id %>][id]" value=<%= @id %> >
+<% end %>
+<% for pName of @sku_attributes: %>
+  <% pValue = @sku_attributes[pName] %>
+  <input type="hidden" name="product[product_inventories_attributes][<%= @id %>][sku_attributes][<%= pName %>]" value=<%= pValue %> >
+  <td rowspan='1'><%= pValue %></td>
+<% end %>
+<td><input class='input-mini sku-cost-price' price <%= 'disabled' if @read_only %> type='number' name="product[product_inventories_attributes][<%= @id %>][cost_price]" value=<%= @cost_price %> /></td>
+<td>
+  <input class='input-mini sku-suggest-price-lower' price <%= 'disabled' if @read_only %> type='number' name="product[product_inventories_attributes][<%= @id %>][suggest_price_lower]" value=<%= @suggest_price_lower %> />
+  至
+  <input class='input-mini sku-suggest-price-upper' price <%= 'disabled' if @read_only %> type='number' name="product[product_inventories_attributes][<%= @id %>][suggest_price_upper]" value=<%= @suggest_price_upper %> />
+</td>
+<td>
+  <input class='sale-to-agency' type='hidden' name="product[product_inventories_attributes][<%= @id %>][sale_to_agency]" value=<%= @sale_to_agency %> />
+  <% if @sale_to_agency: %>
+    <input class='check-sale-to-agency' class='input-mini sku-sale-to-agency' <%= 'disabled' if @read_only %> type='checkbox' checked />
+  <% else: %>
+    <input class='check-sale-to-agency' class='input-mini sku-sale-to-agency' <%= 'disabled' if @read_only %> type='checkbox' />
+  <% end %>
+</td>
+<td><input class='input-mini sku-count' <%= 'disabled' if @read_only %> type='number' name="product[product_inventories_attributes][<%= @id %>][count]" value=<%= @count %>></td>

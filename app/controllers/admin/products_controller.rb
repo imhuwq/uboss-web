@@ -20,7 +20,6 @@ class Admin::ProductsController < AdminController
   end
 
   def new
-    @product = OrdinaryProduct.new()
   end
 
   def create
@@ -34,7 +33,12 @@ class Admin::ProductsController < AdminController
   end
 
   def update
-    if @product.update(product_params)
+    if @product.is_a?(AgencyProduct)
+      the_product_params = agency_product_params
+    else
+      the_product_params = product_params
+    end
+    if @product.update(the_product_params)
       flash[:success] = '保存成功'
       redirect_to action: :show, id: @product.id
     else
@@ -46,7 +50,8 @@ class Admin::ProductsController < AdminController
   def change_status
     if params[:status] == 'published'
       # if @product.user.authenticated?
-        @product.status = 'published'
+        @product.status = "published"
+        @product.published_at = Time.now
         @notice = '上架成功'
       # else
       #   @error = '该帐号还未通过身份验证，请先验证:点击右上角用户名，进入“个人/企业认证”'
@@ -58,8 +63,15 @@ class Admin::ProductsController < AdminController
       @product.status = 'closed'
       @notice = '删除成功'
     end
-    if not @product.save
-      @error = model_errors(@product).join('<br/>')
+
+    if @product.status == 'published' and @product.type == 'AgencyProduct' and @product.parent.stored?
+      @error = "供应商已经下架该商品"
+    elsif @product.status == 'published' and @product.type == 'AgencyProduct' and @product.parent.deleted?
+      @error = "供应商已经删除该商品"
+    else
+      unless @product.save
+        @error = model_errors(@product).join('<br/>')
+      end
     end
     if request.xhr?
       flash.now[:success] = @notice
@@ -70,6 +82,24 @@ class Admin::ProductsController < AdminController
       flash[:success] = @notice
       flash[:error] = @error
       redirect_to action: :show, id: @product.id
+    end
+  end
+
+  def delete_agency_product
+    @product.status = 'closed'
+    @notice = '删除成功'
+    unless @product.save
+      @error = model_errors(@product).join('<br/>')
+    end
+    if request.xhr?
+      flash.now[:success] = @notice
+      flash.now[:error] = @error
+      product_collection = @product.closed? ? [] : [@product]
+      render(partial: 'products', locals: { products: product_collection })
+    else
+      flash[:success] = @notice
+      flash[:error] = @error
+      redirect_to admin_products_path
     end
   end
 
@@ -96,7 +126,7 @@ class Admin::ProductsController < AdminController
     if params[:product]
       params.require(:product).permit(
         product_inventories_attributes: [
-          :id, :price, :count, :share_amount_total, :privilege_amount,
+          :id, :price, :count, :sale_to_customer, :share_amount_total, :privilege_amount,
           :share_amount_lv_1, :share_amount_lv_2, :share_amount_lv_3,
           sku_attributes: product_propertys_params[:product_propertys_names],
         ]
@@ -108,6 +138,16 @@ class Admin::ProductsController < AdminController
 
   def product_params
     params.require(:ordinary_product).permit(
+      :name,      :original_price,  :present_price,     :count,
+      :content,   :has_share_lv,    :calculate_way,     :avatar,
+      :traffic_expense, :short_description, :transportation_way,
+      :carriage_template_id, :categories,
+      :full_cut, :full_cut_number, :full_cut_unit
+    ).merge(product_inventories_params)
+  end
+
+  def agency_product_params
+    params.require(:agency_product).permit(
       :name,      :original_price,  :present_price,     :count,
       :content,   :has_share_lv,    :calculate_way,     :avatar,
       :traffic_expense, :short_description, :transportation_way,

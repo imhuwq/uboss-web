@@ -7,15 +7,17 @@ class ProductInventory < ActiveRecord::Base
   has_many   :cart_items
   has_many   :order_items
   has_many   :orders, through: :order_items
+  has_many   :stock_movements
 
-  validates_presence_of :product, :sku_attributes, if: -> { self.saling }
-  validates_numericality_of :price, :count, greater_than_or_equal_to: 0
+  validates_presence_of :sku_attributes, if: -> { self.saling }
+  validates_numericality_of :price, :count, greater_than_or_equal_to: 0, if: -> { self.saling }
+  
   validate :share_amount_total_must_lt_price
 
   scope :saling, -> { where(saling: true) }
   scope :not_saling, -> { where(saling: false) }
 
-  delegate :image_url, :status, :traffic_expense, :carriage_template, :carriage_template_id, :transportation_way, :full_cut, :full_cut_number, :full_cut_unit, :is_official_agent?, :type, to: :product
+  delegate :image_url, :status, :traffic_expense, :carriage_template, :carriage_template_id, :transportation_way, :full_cut, :full_cut_number, :full_cut_unit, :is_official_agent?, to: :product
 
   # TODO custom properties
   # after_create :create_product_properties
@@ -73,6 +75,13 @@ class ProductInventory < ActiveRecord::Base
 
   def share_and_privilege_amount_total
     share_amount_lv_3 + share_amount_lv_2 + share_amount_lv_1 + privilege_amount
+  end
+
+  def adjust_count quantity
+    self.with_lock do
+      self.count = self.count.to_i + quantity
+      self.save!
+    end
   end
 
   private

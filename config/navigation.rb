@@ -85,7 +85,7 @@ SimpleNavigation::Configuration.run do |navigation|
         thr_nav.item :new_products, '商品', admin_products_path,
           highlights_on: :subpath, if: -> { can?(:read, Product) }
 
-        thr_nav.item :new_products, '运费模板', admin_carriage_templates_path,
+        thr_nav.item :new_products, '运费模板', admin_sellers_carriage_templates_path,
           highlights_on: :subpath, if: -> { can?(:read, CarriageTemplate) }
 
         thr_nav.item :new_products, '商品分组', admin_categories_path,
@@ -102,8 +102,15 @@ SimpleNavigation::Configuration.run do |navigation|
           highlights_on: :subpath, if: -> { can?(:manage, UserAddress) }
       end
       sub_nav.item :store,  '设置', admin_store_path(current_user) do |thr_nav|
-        thr_nav.item :edit_store, '店铺设置', admin_store_path(current_user),
+        thr_nav.item :edit_store, '店铺设置', edit_admin_stores_path,
           if: -> { can?(:read, Product) }
+      end
+      sub_nav.item :stock, '市场进货', "#", if: -> { can?(:manage, :agency_product) } do |thr_nav|
+        thr_nav.item :valid_agent_products, '可代销商品', admin_sellers_valid_agent_products_path,
+          highlights_on: :subpath, if: -> { can?(:manage, :agency_product) }
+
+        thr_nav.item :my_suppliers, '我的供货商', my_suppliers_admin_sellers_path,
+          highlights_on: :subpath, if: -> { can?(:manage, :agency_product) }
       end
     end
 
@@ -123,6 +130,24 @@ SimpleNavigation::Configuration.run do |navigation|
 
       sub_nav.item :s_store,   '设置', edit_admin_service_store_path(current_user.service_store),
         if: -> { can?(:manage, ServiceStore) }
+    end
+
+    primary.item :supplier, '我要供货', '#' do |sub_nav|
+      sub_nav.item :new_supplier_store, '创建供货店铺', new_admin_supplier_store_path, if: -> { can? :new, SupplierStore }
+      sub_nav.item :agency, '代销商', admin_agencies_path, if: -> { can?(:read, :agencies) } do |thr_nav|
+        thr_nav.item :agencies, '我的代销商', admin_agencies_path,
+          if: -> { can?(:read, :agencies) }
+        thr_nav.item :new_agency, '发展代销商', new_admin_agency_path,
+          if: -> { can?(:read, :agencies) }
+      end
+      sub_nav.item :supplier_product, '商品', admin_supplier_products_path, if: -> { can?(:manage, SupplierProduct) } do |thr_nav|
+        thr_nav.item :supplied_products, '代销中', admin_supplier_products_path(status: 'supply'), highlights_on: -> { params[:status] == 'supply' }, if: -> { can?(:manage, SupplierProduct) }
+        thr_nav.item :stored_products, '仓库中', admin_supplier_products_path(status: 'store'), highlights_on: -> { params[:status] == 'store' }, if: -> { can?(:manage, SupplierProduct) }
+        thr_nav.item :new_products, '运费模板', admin_suppliers_carriage_templates_path,
+          highlights_on: :subpath, if: -> { can?(:read, CarriageTemplate) }
+      end
+      sub_nav.item :purchase_orders, '订单管理', admin_purchase_orders_path,
+        if: -> { can?(:manage, PurchaseOrder) }
     end
 
     # You can also specify a condition-proc that needs to be fullfilled to display an item.
@@ -155,6 +180,8 @@ SimpleNavigation::Configuration.run do |navigation|
 
       sub_nav.item :backend_status, '后台队列', admin_backend_status_path, if: -> { can?(:manage, :backend_status) }
     end
+    #primary.item :agency,   '我的代销商', admin_my_agencies_path, {}
+    #primary.item :my_supplier,   '我的供应商', my_suppliers_admin_sellers_path, {}
 
     # you can also specify html attributes to attach to this particular level
     # works for all levels of the menu

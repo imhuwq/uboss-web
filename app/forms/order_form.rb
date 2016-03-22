@@ -42,7 +42,7 @@ class OrderForm
   end
 
   def product
-    @product ||= OrdinaryProduct.find(self.product_id)
+    @product ||= Product.find(self.product_id)
   end
 
   def product_inventory
@@ -117,13 +117,23 @@ class OrderForm
           seller: product.user,
           to_seller: to_seller["#{product.user_id}"],
           user_address: self.user_address,
-          order_items_attributes: order_items_attributes
+          order_items_attributes: order_items_attributes,
+          type: to_order_type(product.type),
+          supplier_id: product.parent.try(:user_id)
         }])
       elsif seller_ids
         OrdinaryOrder.create!(
           orders_split_by_seller
         )
       end
+  end
+
+  def to_order_type(name)
+    case name
+    when "ServiceProduct"   then "ServiceOrder"
+    when "OrdinaryProduct"  then "OrdinaryOrder"
+    when "AgencyProduct"    then "AgencyOrder"
+    else name end
   end
 
   def order_items_attributes
@@ -147,7 +157,47 @@ class OrderForm
         order_items_attributes: order_items_of_seller(seller_id)
       }
     end
-    orders_attributes
+    orders_split_by_product_type(orders_attributes)
+  end
+
+  # 根据 order_items 的商品类型拆分
+  def orders_split_by_product_type(orders_attributes)
+    _orders = []
+    orders_attributes.tap do |orders|
+      orders.each do |order|
+        order[:order_items_attributes].group_by do |attrs|
+          product = Product.find(attrs[:product_id])
+          product.type
+        end.to_a.each do |type, groups|
+          _order = order.dup
+          _order[:type] = to_order_type(type)
+          _order[:order_items_attributes] = groups
+          _orders << _order
+        end
+      end
+    end
+    orders_split_by_supplier(_orders)
+  end
+
+  def orders_split_by_supplier(order_attributes)
+    _orders = []
+    order_attributes.tap do |orders|
+      orders.each do |order|
+        order[:order_items_attributes].group_by do |item|
+          if product = AgencyProduct.includes(:parent).find_by_id(item[:product_id])
+            product.parent.user_id
+          else
+            nil
+          end
+        end.each do |supplier_id, groups|
+          _order = order.dup
+          _order[:supplier_id] = supplier_id
+          _order[:order_items_attributes] = groups
+          _orders << _order
+        end
+      end
+    end
+    _orders
   end
 
   def order_items_of_seller(seller_id)

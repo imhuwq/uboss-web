@@ -1,4 +1,5 @@
 require 'test_helper'
+require 'agency_order'
 
 class OrderDivideJobTest < ActiveJob::TestCase
   before :each do

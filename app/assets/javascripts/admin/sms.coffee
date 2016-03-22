@@ -14,12 +14,20 @@ $ ->
       return false if mobile_submit_time != 0
       mobile_submit_time = 60
       sendBtn.addClass("disabled")
+      data = if sendBtn.data 'invite-agency' then {mobile: mobile, captcha_type: 'invite_agency'} else {mobile: mobile}
       $.ajax
         url: '/mobile_captchas/create',
         type: 'POST',
-        data: {mobile: mobile},
+        data: data
       .done ->
-        timedown $('#send_mobile')
+        if sendBtn.data 'invite-agency'
+          mobile_submit_time = 0
+          sendBtn.removeClass("disabled")
+          $('#new_mobile').val('')
+          $('.invite-agency-success .modal-content span').text(mobile)
+          $('.invite-agency-success').modal()
+        else
+          timedown $('#send_mobile')
       .fail ->
         mobile_submit_time = 0
         sendBtn.removeClass("disabled")
@@ -76,3 +84,30 @@ $ ->
         alert(xhr.responseJSON.message)
       else
         alert('发送失败')
+
+  $('#authorize_agency').on 'click', ->
+    $('#authorize_agency').attr('disabled', true)
+    mobile_auth_code = $('#mobile_auth_code').val()
+    checkNum = /^[0-9]{5}$/
+    if not checkNum.test(mobile_auth_code)
+      alert "验证码格式错误"
+    else
+      $.ajax
+        url: '/admin/agencies/build_cooperation_with_auth_code',
+        type: 'POST',
+        data: {
+          mobile_auth_code: mobile_auth_code
+        },
+      .done ->
+        $('.auth-agency-success .modal-content span').text('您已成功授权')
+        $('.auth-agency-success').modal()
+        $('#mobile_auth_code').val('')
+      .fail (xhr, textStatus) ->
+        if xhr.responseJSON?
+          $('.auth-agency-success .modal-content span').text('授权失败')
+          $('.auth-agency-success').modal()
+        else
+          $('.auth-agency-success .modal-content span').text('授权失败')
+          $('.auth-agency-success').modal()
+    $('#mobile_auth_code').val('')
+    $('#authorize_agency').attr('disabled', false)

@@ -3,7 +3,7 @@ class Admin::DashboardController < AdminController
   def index
     @unship_orders = current_user.sold_ordinary_orders.payed.includes(:user).limit(10)
     @sellers = current_user.sellers.unauthenticated_seller_identify.limit(10)
-    @official_agent_product = OrdinaryProduct.official_agent
+    @official_agent_product = Product.official_agent
     @unship_amount = current_user.sold_ordinary_orders.payed.count
     @today_selled_amount = current_user.sold_orders.today.count
     @total_history_income = current_user.transactions.sum(:adjust_amount)

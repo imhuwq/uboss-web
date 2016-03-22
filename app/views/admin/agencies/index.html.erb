@@ -1,0 +1,96 @@
+<% supplier_store = current_user.supplier_store %>
+<div class="container admin-container">
+	<ul class="breadcrumb">
+		<li><a href="/admin">主页</a></li>
+		<li class="divider"><i class="fa fa-caret-right"></i></li>
+		<li>代销商</li>
+	</ul>
+</div>
+<br />
+<div class="container nogap ">
+	<div class="box-w25">
+		<div class="admin-box blue-bg-color">
+      <h4>代销商家数</h4>
+    	<h1 class="num"><%= @statistics[:count] %></h1>
+		</div>
+	</div>
+  <div class="dropdown card">
+    <a class="dropdown-toggle" href="#" id="card-link" >我的名片</a>
+    <div id="card-dropdown-menu" class="dropdown-menu" style="right: 0;left: auto;">
+      <div class="img">
+        <p class="fileinput-button">
+					<%= upyun_meta_tags prefix: "supplier_store/store_cover" %>
+          <%= image_tag(supplier_store.store_cover.url(:thumb)) %>
+					<%= file_field_tag "image", class: "upyun_file_json" ,  data: {to: "/admin/supplier_store/update_store_cover"} %>
+					<b class="loading"><i class="fa fa-spinner"></i></b>
+					<span class="tips-text">点击替换</span>
+				</p>
+      </div>
+      <div class="errors">
+      </div>
+      <div class="name">
+        <div class="show-value"><span class="text"><%= supplier_store.store_name %></span><span><a class="standout-link"><%= supplier_store.store_name.present? ? "编辑" : "添加店铺名称" %></a></span></div>
+        <div class="form">
+          <%= form_for supplier_store, url: update_name_admin_supplier_store_path, remote: true do |f| %>
+            <%= f.label :store_name %>
+            <%= f.text_field :store_name, class: "border-bottom-input main-color" %>
+            <%= f.submit '确定', class: "btn btn-primary btn-lg" %>
+          <% end %>
+        </div>
+      </div>
+      <div class="short-description">
+        <div class="show-value"><span class="text"><%= supplier_store.store_short_description %></span><span><a class="standout-link"><%= supplier_store.store_short_description.present? ? "编辑" : "添加店铺简介" %></a></span></div>
+        <div class="form">
+          <%= form_for supplier_store, url: update_short_description_admin_supplier_store_path, remote: true do |f| %>
+            <%= f.label :store_short_description %>
+            <%= f.text_field :store_short_description, class: "border-bottom-input main-color" %>
+            <%= f.submit '确定', class: "btn btn-primary btn-lg" %>
+          <% end %>
+        </div>
+      </div>
+      <ul class="supply-info">
+        <li><%= @statistics[:supplier_product_count] %>件商品供代销</li>
+        <li><span id="agency-count"><%= @statistics[:count] %></span>家代销商家</li>
+      </ul>
+      <div class="contacts">
+        <ul class="show-value">
+          <li>客服电话：<span class="phone"><%= supplier_store.phone_number %></span></li>
+          <li>客服微信：<span class="wechat"><%= supplier_store.wechat_id %></span><span><a class="standout-link">编辑</a></span></li>
+        </ul>
+        <div class="form">
+          <%= form_for supplier_store, url: update_info_admin_supplier_store_path, remote: true do |f| %>
+            <%= f.label :phone_number %>
+            <%= f.text_field :phone_number, class: "border-bottom-input main-color" %>
+            <%= f.label :wechat_id %>
+            <%= f.text_field :wechat_id, class: "border-bottom-input main-color" %>
+            <%= f.submit '确定', class: "btn btn-primary btn-lg" %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<br />
+<div class="container">
+  <div class="index_list">
+    <table class="list-table" id="agencies">
+      <thead>
+        <th colspan='2'>代销商</th>
+        <th>昨日业绩</th>
+        <th>累计业绩</th>
+        <th>代销商品数</th>
+        <th>商家好评率</th>
+        <th>联系方式</th>
+        <th>操作</th>
+      </thead>
+      <tbody>
+        <% if @agencies.blank? %>
+          <t><td colspan="8">您还未添加代销商，<%= link_to "现在添加", new_admin_agency_path, class: 'standout-link' %></td></t>
+        <% else %>
+          <%= render partial: 'agency_in_table', collection: @agencies %>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+  <%= paginate @agencies %>
+</div>

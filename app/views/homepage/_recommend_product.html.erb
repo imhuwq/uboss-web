@@ -11,20 +11,21 @@
   <% @recommend_products.each_slice(2) do |products| %>
 		<div class="recommend-product-list box-w100">
       <% products.each_with_index do |product, index| %>
-        <div class="box-w50">
-          <div class="product-box">
-            <div class="cover">
-              <% url = product.class.name == 'ServiceProduct' ? service_product_path(product) : product_path(id: product.id) %>
-              <%= link_to '',url,
-              		style: "background-image:url(#{product.image_url(:w320)})",
-              		class:'img',title:"#{product.name}" %>
+        <%= cache [@user, product, 'recommend'], expires_in: 1.day do %>
+          <div class="box-w50">
+            <div class="product-box">
+              <div class="cover">
+                <%= link_to '', resource_sharing_link(@user, product),
+                  style: "background-image:url(#{product.image_url(:w320)})",
+                  class:'img',title:"#{product.name}" %>
 
-              <%= image_tag("mobile/img.jpg") %>
-            		<div class='title text-cut'><%= product.name %></div>
-            </div><!-- cover -->
-            <div class='price text-center'>￥<%= product.present_price %></div>
-          </div><!-- product-box -->
-        </div>
+                <%= image_tag("mobile/img.jpg") %>
+                <div class='title text-cut'><%= product.name %></div>
+              </div><!-- cover -->
+              <div class='price text-center'>￥<%= product.present_price %></div>
+            </div><!-- product-box -->
+          </div>
+        <% end %>
       <% end %>
     </div>
   <% end %>

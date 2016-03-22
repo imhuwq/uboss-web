@@ -1,6 +1,10 @@
 class StockSku.Views.Category extends Backbone.View
 
-  template: JST["#{StockSku.TemplatesPath}/category"]
+  initialize: (options)->
+    @template = JST["#{StockSku.TemplatesPath}/category/#{options.type}"]
+
+  template: @template
+
   el: '#category'
 
   tags: []

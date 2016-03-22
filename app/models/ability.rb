@@ -32,6 +32,8 @@ class Ability
     can :update, User, id: user.id
     can :manage, BankCard, user_id: user.id
     can [:read, :create],   WithdrawRecord, user_id: user.id
+    can :new, SupplierStore unless user.has_supplier_store?
+    can :create, SupplierStore unless user.has_supplier_store?
   end
 
   def grant_permissions_to_super_admin user
@@ -57,7 +59,11 @@ class Ability
   def grant_permissions_to_seller user
     can :read, User, id: user.id
     can :manage, Order, seller_id: user.id
-    can :manage, Product, user_id: user.id
+    cannot :delivery, AgencyOrder, seller_id: user.id
+    can :manage, OrdinaryProduct, type: 'OrdinaryProduct', user_id: user.id
+    cannot :delete_agency_product, OrdinaryProduct do |op|
+      op.type == "OrdinaryProduct"
+    end
     can :manage, ServiceProduct, user_id: user.id
     can :manage, ServiceStore, user_id: user.id
     can :manage, VerifyCode, user_id: user.id
@@ -77,6 +83,12 @@ class Ability
     can :read, Express
     can :set_common, Express
     can :manage, OrderItemRefund, order_item: { order: { seller_id: user.id } }
+    cannot :manage, OrderItemRefund do |refund|
+      refund.order_item.order.is_agency_order? && refund.order_item.order.supplier_id != user.id
+    end
+    can :read, OrderItemRefund do |refund|
+      refund.order_item.order.is_agency_order? && refund.order_item.order.user_id == user.id
+    end
     can :manage, UserAddress, user_id: user.id
   end
 
@@ -100,6 +112,49 @@ class Ability
     can [:edit, :update], CityManagerAuthentication, { user_id: user.id, status: %w(posted no_pass) }
     can :added, CityManager, user_id: user.id
     can :revenues, CityManager, user_id: user.id
+  end
+
+  def grant_permissions_to_supplier user
+    can :read, User, id: user.id
+    can [:destroy, :edit_info, :update_info, :update_name, :update_short_description, :update_store_cover], SupplierStore, user_id: user.id
+    can :read, :agencies
+    can :new, :agency
+    can :build_cooperation_with_auth_code, :agency
+    can :build_cooperation_with_agency_id, :agency
+    can :end_cooperation, :agency
+    can :manage, SupplierProduct, user_id: user.id, type: "SupplierProduct"
+    cannot :delete_agency_product, SupplierProduct do |sp|
+      sp.type == "SupplierProduct"
+    end
+    cannot :store_or_list_supplier_product, SupplierProduct do |sp|
+      sp.type == "SupplierProduct" and !sp.supplier.has_cooperation_with_agency?(user)
+    end
+    cannot :read, SupplierProduct do |sp|
+      !sp.id.nil? and sp.type == "SupplierProduct" and !sp.supplier.has_cooperation_with_agency?(user) and sp.user_id != user.id
+    end
+    can :index, SupplierProduct
+    can :manage, PurchaseOrder, supplier_id: user.id
+    can :manage, AgencyOrder, supplier_id: user.id
+    can :manage, OrderItemRefund, order_item: { order: { supplier_id: user.id } }
+    can :manage, CarriageTemplate, user_id: user.id
+    can :manage, UserAddress, user_id: user.id
+    can :refresh_carriage_template, Product
+  end
+
+  def grant_permissions_to_agency user
+    can :read, User, id: user.id
+    can :manage, AgencyProduct, user_id: user.id, supplier: { cooperations: { agency_id: user.id } }
+    cannot :delete_agency_product, AgencyProduct do |ap|
+      ap.user_id == user.id and ap.supplier.has_cooperation_with_agency?(user)
+    end
+    can :delete_agency_product, AgencyProduct do |ap|
+      ap.user_id == user.id and ap.parent.supplier == ap.supplier and !ap.supplier.has_cooperation_with_agency?(user) and ap.type == "AgencyProduct"
+    end
+    can :manage, :agency_product
+    can :read, SupplierStore, supplier: { cooperations: { agency_id: user.id } }
+    can :valid_agent_products, SupplierProduct
+    can :read, SupplierProduct, supplier: { cooperations: { agency_id: user.id } }
+    can :store_or_list_supplier_product, SupplierProduct, supplier: { cooperations: { agency_id: user.id } }
   end
 
   private

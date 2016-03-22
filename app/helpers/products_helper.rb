@@ -29,7 +29,9 @@ module ProductsHelper
   end
 
   def url_of(product)
-    product.type == "OrdinaryProduct" ? product_url(product) : service_product_url(product)
+    case product.type
+    when "OrdinaryProduct", "AgencyProduct" then product_url(product)
+    else service_product_url(product) end
   end
 
   def product_traffic(product)
@@ -102,18 +104,21 @@ module ProductsHelper
 
   def get_product_seling_inventories_json(product)
     json_attributes = [
-      :id, :sku_attributes, :price, :count,
-      :share_amount_lv_3, :share_amount_lv_2, :share_amount_lv_1,
-      :privilege_amount, :share_amount_total
-    ]
-    if product.new_record?
-      product.product_inventories.to_json(only: json_attributes)
-    elsif product.association(:product_inventories).target.present?
-      product.association(:product_inventories).target.
-        select { |inventory| inventory.saling }.
-        to_json(only: json_attributes)
-    else
-      product.seling_inventories.select(json_attributes).to_json
-    end
+        :id, :sku_attributes, :price, :count, :sale_to_customer,
+        :share_amount_lv_3, :share_amount_lv_2, :share_amount_lv_1,
+        :privilege_amount, :share_amount_total,
+        :cost_price, :suggest_price_lower, :suggest_price_upper,
+        :sale_to_agency
+      ]
+    inventories = if product.new_record?
+                    product.is_a?(SupplierProduct) ? product.supplier_product_inventories : product.product_inventories
+                  elsif product.association(:product_inventories).target.present?
+                    product.association(:product_inventories).target.
+                      select { |inventory| inventory.saling }
+                  else
+                    product.seling_inventories
+                  end
+    inventories = inventories.to_json(only: json_attributes)
   end
+
 end

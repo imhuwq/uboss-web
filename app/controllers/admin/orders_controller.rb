@@ -6,6 +6,7 @@ class Admin::OrdersController < AdminController
 
   # TODO record use operations
   after_action :record_operation, only: [:update]
+  before_action :find_or_create_express, only: :set_express
 
   def select_orders
     @orders = OrdinaryOrder.where(id: params[:ids])
@@ -76,9 +77,8 @@ class Admin::OrdersController < AdminController
   end
 
   def set_express
-    express = Express.find_by_name(express_params)
-    express = Express.create(name: express_params, private_id: current_user.id) if express.blank?
-    if @order.update(order_params.merge(express_id: express.id)) && @order.ship!
+    authorize! :delivery, @order
+    if @order.update(order_params.merge(express_id: @express.id)) && @order.ship!
       flash[:success] = '发货成功'
     else
       flash[:error] = "发货失败,#{@order.errors.full_messages.join('\n')}"

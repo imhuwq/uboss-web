@@ -1,0 +1,22 @@
+<% cooperation = agency_in_table.reverse_cooperations.find_by(supplier_id: current_user.id) %>
+<% val_agency_products = agency_in_table.agency_products.where(status: 1, parent_id: current_user.supplier_products.pluck(:id)) %>
+<tr>
+  <td>
+	  <%= image_tag(agency_in_table.avatar.url(:thumb), size: "40x40", alt: "-") %>
+  </td>
+  <td><%= agency_in_table.nickname || 'Ta还没有设置名称' %></td>
+  <td><%= cooperation.yday_performance %></td>
+  <td><%= cooperation.total_performance %></td>
+  <td><%= val_agency_products.count %></td>
+  <td><%= Evaluation.sharer_good_reputation_rate(agency_in_table) %></td>
+  <td><%= agency_in_table.mobile %></td>
+  <td>
+    <div class="cooperation_form" id="cooperation_form_<%=agency_in_table.id%>">
+      <% if current_user.has_cooperation_with_agency?(agency_in_table) %>
+        <%= render 'end_cooperation', agency: agency_in_table %>
+      <% else %>
+        <%= render 'build_cooperation', agency: agency_in_table %>
+      <% end %>
+    </div>
+  </td>
+</tr>

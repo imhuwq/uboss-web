@@ -1,0 +1,6 @@
+<div class='container admin-container'>
+  <div class="box-list">
+    <%= render partial: 'product', collection: @products %>
+  </div>
+  <%= paginate @products %>
+</div>

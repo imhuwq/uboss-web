@@ -1,0 +1,118 @@
+<div class="container  admin-container">
+  <ul class="breadcrumb">
+    <li><a href="/admin">主页</a></li>
+    <li class="divider"><i class="fa fa-caret-right"></i></li>
+    <li>采购单</li>
+  </ul>
+</div>
+<br />
+<div class="container nogap">
+  <div class="box-w100 nogap">
+    <div class="box-w20">
+      <div class="admin-box <%= cycle(%w(main-bg-color yellow-bg-color red-bg-color)) %>">
+        <h4>等待发货</h4>
+        <h1 class="num"><%= @scope.payed.count %></h1>
+      </div>
+      <br />
+    </div><!-- box-w25 -->
+    <div class="box-w20">
+      <div class="admin-box <%= cycle(%w(main-bg-color yellow-bg-color red-bg-color)) %>">
+        <h4>今日订单</h4>
+        <h1 class="num"><%= @scope.today.count %></h1>
+      </div>
+      <br />
+    </div><!-- box-w25 -->
+    <br />
+  </div><!-- box-w25 -->
+</div> <!-- box-w80 -->
+
+<div class="container">
+  <ul class="nav nav-tabs nav-justified">
+    <li class="<%= 'active' if params[:segment] == 'all' %>"><%= link_to "全部", {segment: 'all'} %></li>
+    <li class="<%= 'active' if params[:segment] == 'payed' %>"><%= link_to "待发货", {segment: 'payed'} %></li>
+    <li class="<%= 'active' if params[:segment] == 'completed' %>"><%= link_to "已完成", {segment: 'completed'} %></li>
+    <li class="<%= 'active' if params[:segment] == 'return' %>"><%= link_to "售后", {segment: 'return'} %></li>
+  </ul>
+  <table class="list-table">
+    <thead>
+      <tr>
+        <td class='text-left'>
+          <label class='select_all_orders'>
+            <%= check_box_tag 'select_all', 'select_all'%>
+            <span>全选</span>
+          </label>
+          <%#= f.submit '批量发货', class: 'btn' %>
+        </td>
+        <td>商品</td>
+        <td>单价/数量</td>
+        <td>售后</td>
+        <td>买家</td>
+        <td>交易状态</td>
+        <td>实付款</td>
+      </tr>
+    </thead>
+    <tbody>
+      <% @purchase_orders.each do |order| %>
+        <tr class='line'></tr>
+        <tr class='table-content'>
+          <td colspan='7' class='greyish_white_back_color text-left'>
+            <label>
+              <%= check_box_tag 'ids[]', order.id, false, disabled: !order.may_ship?, class: "check_box_tag" %>
+              <span>订单编号: <%= order.number %></span>
+            </label>
+            <span class='order_created_at'>创建时间: <%= order.created_at %></span>
+            <span class='order_created_at'>代销商: <%= order.seller_identify %></span>
+          </td>
+        </tr>
+        <% size = order.order_items.size %>
+        <% order.order_items.each_with_index do |item, index| %>
+          <tr class='table-content'>
+            <td colspan='2' class='text-left none-border-right'>
+              <%= image_tag(item.product_inventory.product.avatar.url(:thumb), size: "40x40", alt: "-") %>
+              <div>
+                <%= link_to admin_product_path(item.product_inventory.product), class: 'main-link-color' do %>
+                  <%= item.product_inventory.product.name %>
+                <% end %>
+                <% item.product_inventory.properties.each do |property| %>
+                  <span class='color'><%= property.key %> : <%= property.value %></span>
+                <% end %>
+              </div>
+            </td>
+            <td class='none-border-left'><%= item.present_price %>(<%= item.amount %>件)</td>
+            <td>
+              <% if (refund = item.last_refund) && refund.present? && can?(:manage, order) %>
+                <%= link_to admin_refund_state(refund), [:admin, item, :order_item_refunds],
+                  class: "main-link-color #{refund_text_color(refund)}" %>
+              <% end %>
+            </td>
+            <% if index == 0 %>
+              <td rowspan=<%= size %>>
+                <%= link_to order.seller.try(:identify), nil, class: 'main-link-color' %>
+                <p>联系买家
+                  <%= link_to admin_product_path(item.product_inventory.product), class: 'buyer_phone' do %>
+                    <i class="fa fa-phone"></i>
+                  <% end %>
+                </p>
+                <p>买家留言:<%= order.order_to_seller %></p>
+              </td>
+              <td rowspan=<%= size %>>
+                <%= order.state_i18n %>
+                <%= link_to '详情', [:admin, order], class: 'main-link-color' %>
+                <% if order.payed? && can?(:manage, order) %>
+                  <%= link_to '发货', [:delivery, :admin, order], class: 'btn express-order-btn' %>
+                <% end %>
+              </td>
+              <td rowspan=<%= size %>>
+                <%=order.pay_amount%>
+                <p>(含快递:<%= order.order_ship_price %>)</p>
+              </td>
+            <% end %>
+          </tr>
+        <% end %>
+      <% end %>
+    </tbody>
+  </table>
+  <%= paginate @purchase_orders %>
+</div>
+
+<%= render partial: 'admin/orders/ship_express', locals: { args: [:purchase_order, action: :delivery, method: :patch] } %>

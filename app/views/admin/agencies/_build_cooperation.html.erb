@@ -1,0 +1,25 @@
+<button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#build_cooperation_<%=agency.id%>">
+  授权代销
+</button>
+<div class="modal fade cooperation" id="build_cooperation_<%=agency.id%>" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">对代销商授权</h4>
+      </div>
+      <div class="modal-body">
+        授权后，此代销商能够看到您代销商品的成本价并选择代销商品进行销售
+      </div>
+      <div class="modal-footer">
+        <%= form_for(current_user.cooperations.build(agency_id: agency.id), url:  build_cooperation_with_agency_id_admin_agencies_path, remote: true) do |f| %>
+          <%= f.hidden_field :agency_id %>
+          <div class="actions">
+            <button type="button" class="btn" data-dismiss="modal">取消</button>
+            <%= f.submit "确定授权", class: "btn btn-default" %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>

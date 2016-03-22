@@ -6,12 +6,19 @@ class Product < ActiveRecord::Base
 
   OFFICIAL_AGENT_NAME = 'UBOSS创客权'.freeze
 
+  # FIXME: @dalezhang 请使用helper or i18n 做view的数值显示
+  DataCalculateWay = { 0 => '按金额', 1 => '按售价比例' }
+  DataBuyerPay = { 0 => '包邮', 1 => '统一邮费', 2 => '运费模板' }
+  FullCut = { 0 => '件', 1 => '元' }
+
   has_one_image autosave: true
   #has_many_images name: :figure_images, accepts_nested: true
   has_one_content name: :purchase_note, type: :purchase_note
 
   belongs_to :user
   belongs_to :carriage_template
+  belongs_to :parent, :class_name => self.name
+  belongs_to :supplier, :class_name => "User", :foreign_key => "supplier_id"
   has_many :different_areas, through: :carriage_template
   has_many :order_items
   has_many :advertisements
@@ -19,17 +26,22 @@ class Product < ActiveRecord::Base
   has_and_belongs_to_many :categories, -> { uniq } ,autosave: true
   has_many :product_inventories, autosave: true, dependent: :destroy
   has_many :cart_items,  through: :product_inventories
+  validates_associated :product_inventories
   has_many :seling_inventories, -> { where(saling: true) }, class_name: 'ProductInventory', autosave: true
 
   delegate :image_url, to: :asset_img, allow_nil: true
   delegate :avatar=, :avatar, to: :asset_img
-
+  
   enum status: { unpublish: 0, published: 1, closed: 2 }
 
   scope :hots, -> { where(hot: true) }
   scope :available, -> { where.not(status: 2) }
   scope :hot_ordering, -> { order('products.hot DESC, products.id DESC') }
   scope :create_today, -> { where('created_at > ? and created_at < ?', Time.now.beginning_of_day, Time.now.end_of_day) }
+  scope :supply_stored, -> { joins(:supplier_product_info).where('supplier_product_infos.supply_status = 0') }
+  scope :supply_supplied, -> { joins(:supplier_product_info).where('supplier_product_infos.supply_status = 1') }
+  scope :supply_deleted, -> { joins(:supplier_product_info).where('supplier_product_infos.supply_status = 2') }
+  scope :commons, -> { where(type: %w(OrdinaryProduct AgencyProduct)) }
 
   validate :must_has_one_image
   validate :must_has_one_product_inventory
@@ -162,24 +174,26 @@ class Product < ActiveRecord::Base
     skus = {}
     sku_details = {}
     count = 0
-    self.seling_inventories.where("count > 0").each do |seling_invertory|
-      seling_invertory.sku_attributes.each do |property_name,property_value|
-        if !skus[property_name].present?
-          skus[property_name] = {}
+    self.seling_inventories.where("count > 0 and sale_to_customer is true").each do |seling_invertory|
+      if seling_invertory.type.nil? or (seling_invertory.type == "AgencyProductInventory" and seling_invertory.sale_to_agency)
+        seling_invertory.sku_attributes.each do |property_name,property_value|
+          if !skus[property_name].present?
+            skus[property_name] = {}
+          end
+          if !skus[property_name][property_value].present?
+            skus[property_name][property_value] = []
+          end
+          skus[property_name][property_value] << seling_invertory.id
         end
-        if !skus[property_name][property_value].present?
-          skus[property_name][property_value] = []
-        end
-        skus[property_name][property_value] << seling_invertory.id
-      end
 
-      if !sku_details[seling_invertory.id].present?
-        sku_details[seling_invertory.id] = {}
+        if !sku_details[seling_invertory.id].present?
+          sku_details[seling_invertory.id] = {}
+        end
+        sku_details[seling_invertory.id][:count] = seling_invertory.count
+        sku_details[seling_invertory.id][:sku_attributes] = seling_invertory.sku_attributes
+        sku_details[seling_invertory.id][:price] = seling_invertory.price
+        count += seling_invertory.count
       end
-      sku_details[seling_invertory.id][:count] = seling_invertory.count
-      sku_details[seling_invertory.id][:sku_attributes] = seling_invertory.sku_attributes
-      sku_details[seling_invertory.id][:price] = seling_invertory.price
-      count += seling_invertory.count
     end
     hash = {}
     hash[:skus] = skus

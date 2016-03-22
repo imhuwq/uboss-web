@@ -1,0 +1,26 @@
+<div class="container admin-container">
+	<ul class="breadcrumb">
+		<li><a href="/admin">主页</a></li>
+		<li class="divider"><i class="fa fa-caret-right"></i></li>
+		<li>商品</li>
+	</ul>
+</div>
+<br />
+<div class="container nogap ">
+	<div class="box-w25">
+		<div class="admin-box blue-bg-color">
+      <h4><%= params[:status] == 'store' ? '仓库商品数' : '代销商品数' %></h4>
+    	<h1 class="num"><%= @statistics[:count] %></h1>
+		</div>
+	</div>
+</div>
+<br />
+<div class="container  mod-inner">
+  <div class="list-search-bar">
+    <%= link_to("+ 发布商品", (current_user.is_supplier? ? url_for(action: :new) : new_admin_supplier_store_path), class: "btn btn-large", role: "button") %>
+  </div>
+  <br />
+  <%= render 'products', products: @supplier_products, visitor: 'supplier' %>
+</div>
+
+<%= paginate @supplier_products %>

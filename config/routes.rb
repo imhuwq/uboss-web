@@ -183,13 +183,28 @@ Rails.application.routes.draw do
       resources :wechat_accounts do
         post :set_menu, on: :member
       end
-      resources :carriage_templates do
-        member do
-          get :copy
+      %w(suppliers sellers).each do |mod|
+        scope path: mod, as: mod do
+          resources :carriage_templates do
+            member do
+              get :copy
+            end
+          end
         end
       end
 
+      resources :agencies, only: [:index, :new] do
+        post :build_cooperation_with_auth_code, on: :collection
+        post :build_cooperation_with_agency_id, on: :collection
+        delete :end_cooperation, on: :member
+      end
+
+      get '/sellers/valid_agent_products', to: 'agency_products#valid_agent_products'
+      post '/store_supplier_product/:id', to: 'agency_products#store_supplier_product', as: :store_supplier_product
+      post '/list_supplier_product/:id', to: 'agency_products#list_supplier_product', as: :list_supplier_product
+
       get '/select_carriage_template', to: 'products#select_carriage_template'
+
       get '/refresh_carriage_template', to: 'products#refresh_carriage_template'
 
       resources :service_stores, only: [:edit, :update] do
@@ -222,9 +237,27 @@ Rails.application.routes.draw do
         end
       end
 
+      resource :supplier_store, except: [:show] do
+        get :edit_info
+        patch :update_info
+        patch :update_name
+        patch :update_short_description
+        patch :update_store_cover
+        post :update_store_cover
+      end
+
+      get '/supplier_stores/:id', to: 'supplier_stores#show', as: :show_supplier_store
+
+      resources :supplier_products, except: [:destroy] do
+        member do
+          patch :toggle_supply_status
+        end
+      end
+
       resources :products, except: [:destroy] do
         member do
           patch :change_status
+          patch :delete_agency_product
           get :pre_view
           patch :switch_hot_flag
         end
@@ -241,6 +274,11 @@ Rails.application.routes.draw do
         get :close, on: :member
         post :batch_shipments, on: :collection
         post :select_orders, on: :collection
+      end
+      resources :purchase_orders, only: [:index, :show] do
+        member do
+          patch :delivery
+        end
       end
       resources :order_items, only: [] do
         resources :order_item_refunds, only: [:index] do
@@ -293,7 +331,9 @@ Rails.application.routes.draw do
       end
       resources :sellers, only: [:index, :show, :edit, :update] do
         patch :update_service_rate, on: :member
+        get :my_suppliers, on: :collection
       end
+
       resource :account, only: [:edit, :show, :update] do
         get :password, on: :member
         get :binding_agent, :binding_email, :binding_mobile
@@ -322,7 +362,7 @@ Rails.application.routes.draw do
         post :update_store_name, :update_store_short_description,
           :update_store_cover, on: :member
         post :update_advertisement_img, :update_advertisement_order, on: :collection
-        get :create_advertisement, :add_category, :get_category_img, on: :collection
+        get :create_advertisement, :add_category, :get_category_img, :edit,  on: :collection
         get :new_advertisement, :remove_advertisement, :show_category, :get_advertisement_items, :remove_advertisement_item, :remove_category_item, on: :collection
       end
       resources :platform_advertisements do
