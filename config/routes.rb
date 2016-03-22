@@ -120,6 +120,7 @@ Rails.application.routes.draw do
     resources :user_addresses, except: [:show]
     resources :verify_codes, only: [:index, :show] do
       get :lotteries, on: :collection
+      get :lottery_detail, on: :collection
     end
   end
   resource :pay_notify, only: [] do

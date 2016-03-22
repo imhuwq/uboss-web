@@ -1,0 +1,20 @@
+<%= content_for :page_title do %>
+  奖券
+<% end %>
+
+<%= content_for :header_left do %>
+  <a class="back" onclick="history.go(-1)"><%= image_tag 'mobile/right.png' %></a>
+<% end %>
+
+<div class="m-top10">
+    <div class="service-code bg-white gap m-bottom10">
+    	<span class="pull-left gray-color">验证券密码 ：</span>
+      <span class="main-color"><%= @verify_code.code %></span>
+      <span class="status-icon"><%= @verify_code.verified ? '已消费' : '未使用' %></span>
+    </div>
+    <div class="gap">
+      <h3 class="m-bottom10">活动说明</h3>
+      <%= @activity_info.description %>
+    </div>
+</div>
+<br />

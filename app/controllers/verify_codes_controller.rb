@@ -18,4 +18,10 @@ class VerifyCodesController < ApplicationController
     @verify_codes = VerifyCode.where(id: @activity_prizes.collect(&:verify_code_id) )
   end
 
+  def lottery_detail
+    @activity_prize = ActivityPrize.find(params[:id])
+    @verify_code = VerifyCode.find(@activity_prize.verify_code_id)
+    @activity_info = @activity_prize.activity_info
+  end
+
 end
