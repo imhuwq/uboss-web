@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160304072432) do
+ActiveRecord::Schema.define(version: 20160317021456) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -175,11 +175,10 @@ ActiveRecord::Schema.define(version: 20160304072432) do
   create_table "cooperations", force: :cascade do |t|
     t.integer  "supplier_id"
     t.integer  "agency_id"
-    t.datetime "created_at",                                 null: false
-    t.datetime "updated_at",                                 null: false
-    t.date     "yday"
-    t.decimal  "yday_performance",  precision: 8,  scale: 2
-    t.decimal  "total_performance", precision: 10, scale: 2
+    t.datetime "created_at",                                               null: false
+    t.datetime "updated_at",                                               null: false
+    t.decimal  "yday_performance",  precision: 8,  scale: 2, default: 0.0
+    t.decimal  "total_performance", precision: 10, scale: 2, default: 0.0
   end
 
   add_index "cooperations", ["agency_id"], name: "index_cooperations_on_agency_id", using: :btree
@@ -404,7 +403,7 @@ ActiveRecord::Schema.define(version: 20160304072432) do
     t.string   "service_store_cover"
     t.string   "user_name"
     t.string   "ordinary_store_cover"
-    t.datetime "qrcode_expire_at",     default: '2016-02-27 12:10:55'
+    t.datetime "qrcode_expire_at",     default: '2016-03-23 15:25:16'
     t.string   "service_store_name"
     t.string   "ordinary_store_name"
   end
@@ -509,15 +508,9 @@ ActiveRecord::Schema.define(version: 20160304072432) do
     t.integer  "service_store_id"
     t.integer  "parent_id"
     t.integer  "supplier_id"
-    t.integer  "ordinary_store_id"
-    t.integer  "comprehensive_order"
-    t.datetime "published_at"
-    t.integer  "sales_amount",         default: 0
-    t.integer  "sales_amount_order"
   end
 
   add_index "products", ["type"], name: "index_products_on_type", using: :btree
-  add_index "products", ["user_id", "parent_id"], name: "index_products_on_user_id_and_parent_id", unique: true, using: :btree
 
   create_table "purchase_orders", force: :cascade do |t|
     t.integer  "seller_id"
@@ -530,23 +523,6 @@ ActiveRecord::Schema.define(version: 20160304072432) do
     t.decimal  "income",      precision: 10, scale: 2
     t.datetime "created_at",                           null: false
     t.datetime "updated_at",                           null: false
-  end
-
-  add_index "purchase_orders", ["seller_id"], name: "index_purchase_orders_on_seller_id", using: :btree
-  add_index "purchase_orders", ["supplier_id"], name: "index_purchase_orders_on_supplier_id", using: :btree
-
-  create_table "purchase_orders", force: :cascade do |t|
-    t.integer  "seller_id"
-    t.integer  "supplier_id"
-    t.integer  "state"
-    t.string   "number"
-    t.integer  "order_id"
-    t.decimal  "pay_amount",  precision: 10, scale: 2
-    t.datetime "paid_at"
-    t.decimal  "income",      precision: 10, scale: 2
-    t.datetime "created_at",                           null: false
-    t.datetime "updated_at",                           null: false
-    t.decimal  "ship_price",  precision: 5,  scale: 2
   end
 
   add_index "purchase_orders", ["seller_id"], name: "index_purchase_orders_on_seller_id", using: :btree
@@ -667,12 +643,11 @@ ActiveRecord::Schema.define(version: 20160304072432) do
     t.integer  "product_id"
     t.string   "code"
     t.integer  "parent_id"
-    t.integer  "lft",          null: false
-    t.integer  "rgt",          null: false
-    t.datetime "created_at",   null: false
-    t.datetime "updated_at",   null: false
+    t.integer  "lft",        null: false
+    t.integer  "rgt",        null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.integer  "seller_id"
-    t.integer  "self_page_id"
   end
 
   add_index "sharing_nodes", ["code"], name: "index_sharing_nodes_on_code", unique: true, using: :btree
@@ -791,8 +766,8 @@ ActiveRecord::Schema.define(version: 20160304072432) do
     t.integer  "better_evaluation"
     t.integer  "best_evaluation"
     t.string   "store_cover"
-    t.string   "type"
     t.decimal  "bonus_benefit",             default: 0.0
+    t.string   "type"
     t.string   "begin_hour"
     t.string   "begin_minute"
     t.string   "end_hour"
