@@ -1,8 +1,10 @@
 class SupplierProductInventory < ProductInventory
 
-  validates :cost_price, presence: true, numericality: true
+  validates :cost_price, presence: true
+  validates :cost_price, numericality: { greater_than: 0 }, if: -> { cost_price.present? }
+  validates :suggest_price_lower, :suggest_price_upper, numericality: { greater_than: 0, allow_nil: true }
   validates_numericality_of :suggest_price_upper, greater_than: :suggest_price_lower,  if: -> { suggest_price_lower.present? and suggest_price_upper.present? }
-  validates_numericality_of :suggest_price_lower, greater_than_or_equal_to: :cost_price, if: -> { suggest_price_lower.present? }
+  validates_numericality_of :suggest_price_lower, greater_than_or_equal_to: :cost_price, if: -> { suggest_price_lower.present? and cost_price.present? }
 
   belongs_to :supplier_product, foreign_key: 'product_id'
   has_many :children, class_name: 'AgencyProductInventory', foreign_key: 'parent_id'
