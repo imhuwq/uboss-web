@@ -52,5 +52,5 @@ jQuery ($) ->
 
 
   if $('#category').length > 0
-    category = new StockSku.Views.Category
+    category = new StockSku.Views.Category(type: productType)
     category.render()

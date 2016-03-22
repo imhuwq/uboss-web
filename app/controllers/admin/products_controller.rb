@@ -34,9 +34,12 @@ class Admin::ProductsController < AdminController
 
   def update
     if @product.is_a?(AgencyProduct)
-      product_params = agency_product_params
+      the_product_params = agency_product_params
+    else
+      the_product_params = product_params
     end
-    if @product.update(product_params)
+    binding.pry
+    if @product.update(the_product_params)
       flash[:success] = '保存成功'
       redirect_to action: :show, id: @product.id
     else
