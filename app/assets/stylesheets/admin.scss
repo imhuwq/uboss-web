@@ -164,11 +164,11 @@ header{ background: #2e2e2e;}
     width: 60px;
     &.selected,&:hover{
       a:before{
-          background-position: -426px -83px;
+          background-position: -594px -83px;
       }
     }
     > a:before{
-        background-position: -426px 0;
+        background-position: -594px 0;
     }
 }
 

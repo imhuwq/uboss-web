@@ -78,8 +78,6 @@ SimpleNavigation::Configuration.run do |navigation|
         if: -> { can?(:revenues, CityManager) }
     end
 
-    primary.item :promotion_activity, '商家活动', admin_promotion_activities_path, if: -> { can?(:read, PromotionActivity) }
-
     # Add an item which has a sub navigation (same params, but with block)
     primary.item :seller, '电商店铺', '#', {} do |sub_nav|
       # Add an item to the sub navigation (same params again)
@@ -125,6 +123,16 @@ SimpleNavigation::Configuration.run do |navigation|
 
       sub_nav.item :s_store,   '设置', edit_admin_service_store_path(current_user.service_store),
         if: -> { can?(:manage, ServiceStore) }
+    end
+
+    primary.item :promotion_activity, '活动商家', '#', {} do |sub_nav|
+      sub_nav.item :s_published_activities, '参与中', admin_promotion_activities_path(type: 'published'),
+        highlights_on: /type=published/,
+        if: -> { can?(:read, PromotionActivity) }
+
+      sub_nav.item :s_unpublish_activities, '已下架', admin_promotion_activities_path(type: 'unpublish'),
+        highlights_on: /type=unpublish/,
+        if: -> { can?(:read, PromotionActivity) }
     end
 
     # You can also specify a condition-proc that needs to be fullfilled to display an item.

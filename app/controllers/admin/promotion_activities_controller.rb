@@ -4,7 +4,11 @@ class Admin::PromotionActivitiesController < AdminController
   before_action :set_activity_info, only: [:new, :show]
 
   def index
-    @promotion_activities = @promotion_activities.includes(:user, :activity_infos).page(params[:page] || 1)
+    if ["published", "unpublish"].include?(params[:type])
+      @promotion_activities = @promotion_activities.try(params[:type]).includes(:user, :activity_infos).page(params[:page] || 1)
+    else
+      raise "invalid promotion_activities state"
+    end
   end
 
   def create

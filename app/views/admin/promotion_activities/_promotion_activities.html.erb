@@ -22,9 +22,7 @@
           <% end %>
         </td>
         <td rowspan="2" class="text-left" style="max-width: 400px;">
-          <%= link_to admin_promotion_activity_path(promotion_activity) do %>
-            <%= promotion_activity.user.nickname %>
-          <% end %>
+          <%= link_to promotion_activity.user.nickname, admin_promotion_activity_path(promotion_activity) %>
         </td>
         <td><%= translate_activity_type live_activity_info.activity_type %></td>
         <td><%= live_activity_info.name %></td>
@@ -39,12 +37,14 @@
             remote: true, method: :patch, data: { disable_with: '<i class="fa fa-spinner"></i>' },
             class: "btn btn-mid btn-block yellow-btn change-status-btn") %>
             </p>
+            <%= link_to "查看详情", admin_promotion_activity_path(promotion_activity), style: "font-size:12px;" %>
           <% else %>
             <p>
             <%= link_to("下架", change_status_admin_promotion_activity_path(promotion_activity, status: 'unpublish'),
             remote: true, method: :patch, data: { disable_with: '<i class="fa fa-spinner"></i>' },
             class: "btn btn-mid btn-block change-status-btn") %>
             </p>
+            <%= link_to "查看详情", admin_promotion_activity_path(promotion_activity), style: "font-size:12px;" %>
           <% end %>
         </td>
       </tr>

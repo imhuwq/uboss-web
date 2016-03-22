@@ -1,9 +1,25 @@
-<div class="container admin-container">
-	<ul class="breadcrumb">
-		<li><a href="/admin">主页</a></li>
-		<li class="divider"><i class="fa fa-caret-right"></i></li>
-		<li>活动商家</li>
-	</ul>
+<br />
+<div class="container nogap ">
+  <% if params[:type] == "published" %>
+    <div class="box-w25">
+      <a href="<%= admin_promotion_activities_path(type: 'published') %>" data-remote="true">
+        <div class="admin-box red-bg-color">
+          <h4>参与中商家</h4>
+          <h1 class="num"><%= @promotion_activities.count %></h1>
+        </div>
+      </a>
+    </div>
+  <% end %>
+  <% if params[:type] == "unpublish" %>
+    <div class="box-w25">
+      <a href="<%= admin_promotion_activities_path(type: 'unpublish') %>" data-remote="true">
+        <div class="admin-box red-bg-color">
+          <h4>已下架商家</h4>
+          <h1 class="num"><%= @promotion_activities.count %></h1>
+        </div>
+      </a>
+    </div>
+  <% end %>
 </div>
 <br />
 
