@@ -2,26 +2,23 @@
   <div class="text-center gap">
     <div class="activate-info">
       <div class="border-line">
-        <% if @draw_prize.present? %>
-          <h3>亲，你已经抽过了哦</h3>
-        <% else %>
-          <h3><%= @message[:success] %></h3>
-        <% end %>
+        <h3><%= @message[:success] %></h3>
       </div>
     </div><!-- activate-info -->
   </div>
-  <div class="text-center tips-text">你的奖品已放入在
-    <%= link_to "【奖券】", lotteries_account_verify_codes_path %>
+  <div class="text-center tips-text">
+    <%= @draw_prize.present? ? "查看您的奖品" : "您的奖品已放入" %>
+      <%= link_to "【奖券】", lotteries_account_verify_codes_path %>
   <div class="activate-text">
-  		
+
   </div><!-- activate-text -->
   <div class="activate-bg">
-  		
+
   </div><!-- activate-bg -->
   <div class="pop-bg hidden">
   		<div class="pop-content text-center">
   			<div class="share-img-box">
-		    <%= image_tag('mobile/slideshow/1.jpg')%>
+		    <%= image_tag(@qrcode_img_url)%>
 		  </div>
 		  <br />
 		  <p>长按图片保存并发送给好友</p>

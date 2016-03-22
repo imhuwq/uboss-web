@@ -129,7 +129,7 @@ class PrivilegeCard < ActiveRecord::Base
 
   def daily_expired_or_info_charged?(expire)
     qrcode_expire_days = Rails.application.secrets.privilege_card['qrcode_expire_days'].day
-    qrcode_expire_time = Rails.env.production? ? Time.current : Time.current + qrcode_expire_days - 1.minute
+    qrcode_expire_time = Rails.env.production? ? Time.current : Time.current + qrcode_expire_days - 5.minute
 
     (
       expire && qrcode_expire_at < qrcode_expire_time
@@ -141,7 +141,7 @@ class PrivilegeCard < ActiveRecord::Base
       service_store_name   != service_store.store_name ||
       ordinary_store_name  != ordinary_store.store_name
     ) || (
-      seller_promotion_activity_present? || activity
+      seller_promotion_activity_present? && !activity
     )
   end
 

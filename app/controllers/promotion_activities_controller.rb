@@ -1,4 +1,6 @@
 class PromotionActivitiesController < ApplicationController
+  include SharingResource
+
   before_action :check_current_user, only: [:live_draw, :share_draw]
   before_action :check_param_type,   only: :show
   layout 'activity', only: [:show, :live_draw, :share_draw]
@@ -30,26 +32,24 @@ class PromotionActivitiesController < ApplicationController
     @promotion_activity = PromotionActivity.find(params[:id])
     @live_activity_info = @promotion_activity.live_activity_info
     @draw_prize = ActivityPrize.find_by(prize_winner_id: current_user.id, promotion_activity_id: @promotion_activity.id, activity_type: 'live')
+    @message ||= {}
+
     unless @draw_prize.present?
-      @message ||= {}
-      if @live_activity_info.promotion_activity.status == 'published'
+      if @promotion_activity.status == 'published'
         begin
           live_activity_prize = @live_activity_info.draw_live_prize(current_user.id)
           if live_activity_prize.present?
-            @message[:success] = "你中奖了！"
-            @message[:info] = "恭喜，你中奖了！赶快分享二维码给朋友，获得更多中奖机会吧~"
+            @message[:success] = "您中奖了！"
           else
             @message[:success] = "没有抽中"
-            @message[:info] = "非常遗憾，你没有抽中。不过分享你的二维码给他人一样有机会中奖哦！"
           end
         rescue RepeatedActionError
           @message[:success] = "已经抽过奖了"
-          @message[:info] = "你已经抽过奖了，分享你的二维码给他人还有机会中奖哦！"
         end
       else
-        if @live_activity_info.promotion_activity.status == 'closed'
+        if @promotion_activity.status == 'closed'
           @message[:error] = "活动已过期。"
-        elsif @live_activity_info.promotion_activity.status == 'unpublish'
+        elsif @promotion_activity.status == 'unpublish'
           @message[:error] = "活动尚未开始。"
         else
           @message[:error] = "未知错误，请联系管理员。"
@@ -58,14 +58,20 @@ class PromotionActivitiesController < ApplicationController
         redirect_to lotteries_account_verify_codes_path
         return
       end
+    else
+      @message[:success] = "亲，您已经抽过奖了"
     end
+
+    get_service_store_qrcode_img_url
   end
 
   def share_draw
     @promotion_activity = PromotionActivity.find(params[:id])
-    @service_store = @promotion_activity.user.service_store
+    @seller = @promotion_activity.user
+    @service_store = @seller.service_store
     @share_activity_info = @promotion_activity.share_activity_info
-    sharer_id = SharingNode.find_by(code: params[:sharing_node]).try(:user).try(:id)
+    get_sharing_node
+    sharer_id = @sharing_node.try(:user_id)
     if sharer_id && sharer_id != current_user.id
       @draw_prize = ActivityPrize.find_by(prize_winner_id: current_user.id,
                                           promotion_activity_id: @promotion_activity.id,
@@ -76,21 +82,19 @@ class PromotionActivitiesController < ApplicationController
       redirect_to lotteries_account_verify_codes_path
       return
     end
+
     if sharer_id && !@draw_prize.present?
       @message ||= {}
       if @share_activity_info.promotion_activity.status == 'published'
         begin
           share_activity_prize = @share_activity_info.draw_share_prize(current_user.id, sharer_id)
           if share_activity_prize.present?
-            @message[:success] = "你中奖了！"
-            @message[:info] = "恭喜，你中奖了！赶快分享二维码给朋友，获得更多中奖机会吧~"
+            @message[:success] = "恭喜，您中奖了！"
           else
             @message[:success] = "没有抽中"
-            @message[:info] = "非常遗憾，你没有抽中。不过分享你的二维码给他人一样有机会中奖哦！"
           end
         rescue RepeatedActionError
           @message[:success] = "已经抽过奖了"
-          @message[:info] = "你已经抽过奖了，分享你的二维码给他人还有机会中奖哦！"
         end
       else
         if @share_activity_info.promotion_activity.status == 'closed'
@@ -105,6 +109,8 @@ class PromotionActivitiesController < ApplicationController
         return
       end
     end
+
+    get_service_store_qrcode_img_url
   end
 
   protected
@@ -120,4 +126,10 @@ class PromotionActivitiesController < ApplicationController
       redirect_to root_path
     end
   end
+
+  def get_service_store_qrcode_img_url
+    privilege_card = PrivilegeCard.find_or_active_card(current_user.id, @promotion_activity.user_id)
+    @qrcode_img_url = privilege_card.service_store_qrcode_img_url(true)
+  end
+
 end

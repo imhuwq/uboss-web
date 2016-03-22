@@ -17,23 +17,25 @@
           <% if products[0].present? %>
             <%= link_to '', product_path(products[0]), style: "background-image:url(#{products[0].image_url(:thumb)})", class:'img', title: products[0].name %>
           <% else %>
-            <%= link_to '', 'javascript:;', style: "background-image:url()", class:'img', title:"UBOSS产品" %>
+            <%= link_to '', 'javascript:;', class:'img', title:"UBOSS产品" %>
           <% end %>
 	        <%= image_tag("mobile/img.jpg") %>
 	      </div>
 	    </div><!-- product-box -->
 			</div>
+
 			<div class="box-w50 nogap-right">
 				<div class="product-box">
 	      <div class="cover">
           <% if products[1].present? %>
             <%= link_to '', product_path(products[1]), style: "background-image:url(#{products[1].image_url(:thumb)})", class:'img', title:"products[1].name" %>
           <% else %>
-            <%= link_to '', '', style: "background-image:url()", class:'img', title:"UBOSS产品" %>
+            <%= link_to '', 'javascript:;', class:'img', title:"UBOSS产品" %>
           <% end %>
 	        <%= image_tag("mobile/img.jpg") %>
 	      </div>
 	    </div><!-- product-box -->
+
 			</div>
 		</div><!-- share-store-list -->
 	  <div class="share-bar">
@@ -46,7 +48,7 @@
         </div>
         <%= link_to "分享店铺", get_seller_sharing_path(seller_id: privilege_card.seller_id), remote: true,
           class: 'btn btn-block btn-orange-border req-favour-p-snode' %>
-        <a href="#" class="btn btn-block btn-orange-border p-sharing-btn hidden">分享店铺</a>
+        <a href="javascript:;" class="btn btn-block btn-orange-border p-sharing-btn hidden">分享店铺</a>
       </div>
 	  </div><!-- share-bar -->
 	</div><!-- share-card -->
@@ -71,7 +73,7 @@
           <% if products[0].present? %>
             <%= link_to '', service_product_path(products[0]), style: "background-image:url(#{products[0].image_url(:thumb)})", class:'img', title: products[0].name %>
           <% else %>
-            <%= link_to '', 'javascript:;', style: "background-image:url()", class:'img', title:"UBOSS产品" %>
+            <%= link_to '', 'javascript:;', class:'img', title:"UBOSS产品" %>
           <% end %>
           <%= image_tag("mobile/img.jpg") %>
         </div>
@@ -83,7 +85,7 @@
           <% if products[1].present? %>
             <%= link_to '', service_product_path(products[1]), style: "background-image:url(#{products[1].image_url(:thumb)})", class:'img', title:"products[1].name" %>
           <% else %>
-            <%= link_to '', '', style: "background-image:url()", class:'img', title:"UBOSS产品" %>
+            <%= link_to '', 'javascript:;', class:'img', title:"UBOSS产品" %>
           <% end %>
           <%= image_tag("mobile/img.jpg") %>
         </div>
@@ -100,7 +102,7 @@
 	      </div>
 			  <%= link_to "分享店铺", get_seller_sharing_path(seller_id: privilege_card.seller_id, type: 'service'), remote: true,
 			    class: 'btn btn-block btn-orange-border req-favour-p-snode' %>
-			  <a href="#" class="btn btn-block btn-orange-border p-sharing-btn hidden">分享店铺</a>
+			  <a href="javascript:;" class="btn btn-block btn-orange-border p-sharing-btn hidden">分享店铺</a>
 		  </div>
 	  </div><!-- share-bar -->
 	</div><!-- share-card -->
