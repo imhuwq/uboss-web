@@ -3,7 +3,7 @@ class ActivityPrize < ActiveRecord::Base
   belongs_to :activity_info
   belongs_to :prize_winner, class_name: 'User'
   belongs_to :sharer, class_name: 'User'
-  has_one    :verify_code
+  belongs_to :verify_code
   validates :activity_info_id, presence: true
   before_create :load_info_oncreate
 

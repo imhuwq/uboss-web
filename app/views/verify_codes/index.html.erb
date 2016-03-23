@@ -12,6 +12,9 @@
 
 <% @service_orders.each do |order| %>
   <div class="service-order-list m-bottom10"  timestamp='<%= order.created_at %>'>
+    <span class="pull-right like-color">
+      <%= @verify_code.verified ? '已消费' : '未使用' %>
+    </span>
 		<div class="text-cut page-title gray-color gap">商家：<%= order.seller.identify %></div>
 		<div class="gap-left bg-white">
     <% order.order_items.each do |order_item| %>
