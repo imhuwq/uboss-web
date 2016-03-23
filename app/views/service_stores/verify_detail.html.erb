@@ -29,7 +29,13 @@
   <tbody>
   <% @verify_codes.each do |verify_code| %>
     <tr>
-	    <td><%= truncate(verify_code.order_item.product.name, length:10) %></td>
+      <td>
+        <% if verify_code.order_item_id %>
+          <%= truncate(verify_code.order_item.product.name, length:10) %>
+        <% elsif activity_prize = ActivityPrize.find_by(verify_code_id: verify_code.id) %>
+          <%= activity_prize.try(:activity_info).try(:name) %>(活动奖品)
+        <% end %>
+      </td>
 	    <td><%= verify_code.verify_time %></td>
 	    <td><%= verify_code.code %></td>
 	  </tr>

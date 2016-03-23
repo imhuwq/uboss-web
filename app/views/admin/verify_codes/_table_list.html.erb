@@ -12,12 +12,16 @@
       <% @verify_codes.each do |verify_code| %>
         <tr>
           <td class="text-left">
-					  <%= link_to admin_service_product_path(verify_code.order_item.product) do %>
-              <%= image_tag(verify_code.order_item.product.image_url(:thumb), size: "80x80", alt: "-") %>　
-              <%= verify_code.order_item.product.name %>
+            <% if verify_code.order_item_id %>
+				    	<%= link_to admin_service_product_path(verify_code.order_item.product) do %>
+                <%= image_tag(verify_code.order_item.product.image_url(:thumb), size: "80x80", alt: "-") %>　
+                <%= verify_code.order_item.product.name %>
+              <% end %>
+            <% elsif activity_prize = ActivityPrize.find_by(verify_code_id: verify_code.id) %>
+              <%= activity_prize.try(:activity_info).try(:name) %>(活动奖品)
             <% end %>
           </td>
-          <td><%= verify_code.order_item.present_price%></td>
+          <td><%= verify_code.try(:order_item).try(:present_price)%></td>
           <td><%= verify_code.updated_at %></td>
           <td><%= verify_code.code %></td>
         </tr>
