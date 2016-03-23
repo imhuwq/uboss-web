@@ -140,6 +140,22 @@
         }
       },
       cache: true
-    }
+    },
+  formatResult: function(data)
+  {
+    this.description =
+      '<span style="display:block;float:left;width:250px;">'+
+      data.text + '</span><span>' + data.login +'</span>';
+    return this.description;
+  },
+  formatSelection: function(data)
+  {
+    this.description =
+      '<span style="display:block;float:left;width:250px;">'+
+      data.text + '</span><span>' + data.login +'</span>';
+    return this.description;
+  },
+  escapeMarkup: function (m) { return m; },
+  dropdownCssClass: "bigdrop"
   });
 </script>
