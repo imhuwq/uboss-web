@@ -19,13 +19,13 @@ class Admin::VerifyCodesController < AdminController
 
   def verify
     verify_code = VerifyCode.find_by(code: params[:code])
-    if verify_code.order_item_id
+    if verify_code && verify_code.order_item_id
       @verify_code = VerifyCode.with_user(current_user).find_by(code: params[:code])
     else
       @verify_code = verify_code
     end
 
-    if @verify_code.present? && verify_code.order_item_id && @verify_code.verify_code
+    if @verify_code.present? && @verify_code.order_item_id && @verify_code.verify_code
       flash[:success] = '验证成功'
     elsif @verify_code.present? && @verify_code.verify_activity_code
       flash[:success] = '验证成功'
