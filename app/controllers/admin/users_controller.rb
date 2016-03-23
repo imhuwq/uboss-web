@@ -39,8 +39,14 @@ class Admin::UsersController < AdminController
   end
 
   def search
-    users = User.where("nickname ILIKE ?", "%#{params[:q]}%")
-    results = append_default_filter(users.page(params[:page]), page_size: 10).pluck(:id, :nickname)
+    users = User.joins(:user_infos).where(
+      "login ILIKE ? OR email ILIKE ? OR (user_infos.type = ? AND user_infos.store_name ILIKE ?)",
+      "%#{params[:q]}%", "%#{params[:q]}%", "ServiceStore", "%#{params[:q]}%")
+      .uniq
+
+    results = users.limit(10).inject([]){ |arr, user|
+      arr << (user.service_store.valid? ? [user.id, "#{user.login} -- #{user.service_store.store_name}"] : nil)
+    }.compact
 
     render json: {
       error: nil,
