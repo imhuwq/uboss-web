@@ -7,16 +7,25 @@ class PromotionActivitiesController < ApplicationController
 
   def show
     @type = params[:type]
-    @promotion_activity = PromotionActivity.find(params[:id])
+    @promotion_activity = PromotionActivity.published.find(params[:id])
 
-    if current_user
-      if @draw_prize = ActivityPrize.find_by(prize_winner_id: current_user.try(:id), promotion_activity_id: @promotion_activity.try(:id), activity_type: 'live')
-        redirect_to @type == 'live' ? live_draw_promotion_activity_path(@promotion_activity) : share_draw_promotion_activity_path(@promotion_activity)
+    if @type == "share"
+      @seller = @promotion_activity.user
+      get_sharing_node
+      sharer_id = @sharing_node.try(:user_id)
+      if sharer_id.blank?
+        redirect_to root_path
+        flash[:error] = "找不到对应的分享者，请重新获取分享信息"
         return
       end
+    end
 
-      if params[:redirect] == "draw"
-        redirect_to @type == 'live' ? live_draw_promotion_activity_path(@promotion_activity) : share_draw_promotion_activity_path(@promotion_activity)
+    if current_user
+      @draw_prize = find_activity_prize_by(@type, sharer_id)
+      if @draw_prize.present? || params[:redirect] == "draw"
+        redirect_to @type == 'live' ?
+          live_draw_promotion_activity_path(@promotion_activity) :
+          share_draw_promotion_activity_path(@promotion_activity)
       end
     else
       if browser.wechat?
@@ -29,34 +38,21 @@ class PromotionActivitiesController < ApplicationController
   end
 
   def live_draw
-    @promotion_activity = PromotionActivity.find(params[:id])
+    @promotion_activity = PromotionActivity.published.find(params[:id])
     @live_activity_info = @promotion_activity.live_activity_info
-    @draw_prize = ActivityPrize.find_by(prize_winner_id: current_user.id, promotion_activity_id: @promotion_activity.id, activity_type: 'live')
+    @draw_prize = find_activity_prize_by('live')
     @message ||= {}
 
     unless @draw_prize.present?
-      if @promotion_activity.status == 'published'
-        begin
-          live_activity_prize = @live_activity_info.draw_live_prize(current_user.id)
-          if live_activity_prize.present?
-            @message[:success] = "您中奖了！"
-          else
-            @message[:success] = "没有抽中"
-          end
-        rescue RepeatedActionError
-          @message[:success] = "已经抽过奖了"
-        end
-      else
-        if @promotion_activity.status == 'closed'
-          @message[:error] = "活动已过期。"
-        elsif @promotion_activity.status == 'unpublish'
-          @message[:error] = "活动尚未开始。"
+      begin
+        live_activity_prize = @live_activity_info.draw_live_prize(current_user.id)
+        if live_activity_prize.present?
+          @message[:success] = "您中奖了！"
         else
-          @message[:error] = "未知错误，请联系管理员。"
+          @message[:success] = "没有抽中"
         end
-        flash[:error] = @message[:error]
-        redirect_to lotteries_account_verify_codes_path
-        return
+      rescue RepeatedActionError
+        @message[:success] = "已经抽过奖了"
       end
     else
       @message[:success] = "亲，您已经抽过奖了"
@@ -66,17 +62,14 @@ class PromotionActivitiesController < ApplicationController
   end
 
   def share_draw
-    @promotion_activity = PromotionActivity.find(params[:id])
+    @promotion_activity = PromotionActivity.published.find(params[:id])
     @seller = @promotion_activity.user
     @service_store = @seller.service_store
     @share_activity_info = @promotion_activity.share_activity_info
     get_sharing_node
     sharer_id = @sharing_node.try(:user_id)
     if sharer_id && sharer_id != current_user.id
-      @draw_prize = ActivityPrize.find_by(prize_winner_id: current_user.id,
-                                          promotion_activity_id: @promotion_activity.id,
-                                          sharer_id: sharer_id,
-                                          activity_type: 'share')
+      @draw_prize = find_activity_prize_by('share', sharer_id)
     else
       flash[:error] = "找不到对应的分享者，请重新获取分享信息"
       redirect_to lotteries_account_verify_codes_path
@@ -85,28 +78,15 @@ class PromotionActivitiesController < ApplicationController
 
     if sharer_id && !@draw_prize.present?
       @message ||= {}
-      if @share_activity_info.promotion_activity.status == 'published'
-        begin
-          share_activity_prize = @share_activity_info.draw_share_prize(current_user.id, sharer_id)
-          if share_activity_prize.present?
-            @message[:success] = "恭喜，您中奖了！"
-          else
-            @message[:success] = "没有抽中"
-          end
-        rescue RepeatedActionError
-          @message[:success] = "已经抽过奖了"
-        end
-      else
-        if @share_activity_info.promotion_activity.status == 'closed'
-          @message[:error] = "活动已过期。"
-        elsif @share_activity_info.promotion_activity.status == 'unpublish'
-          @message[:error] = "活动尚未开始。"
+      begin
+        share_activity_prize = @share_activity_info.draw_share_prize(current_user.id, sharer_id)
+        if share_activity_prize.present?
+          @message[:success] = "恭喜，您中奖了！"
         else
-          @message[:error] = "未知错误，请联系管理员。"
+          @message[:success] = "没有抽中"
         end
-        flash[:error] = @message[:error]
-        redirect_to lotteries_account_verify_codes_path
-        return
+      rescue RepeatedActionError
+        @message[:success] = "已经抽过奖了"
       end
     end
 
@@ -132,4 +112,11 @@ class PromotionActivitiesController < ApplicationController
     @qrcode_img_url = privilege_card.service_store_qrcode_img_url(true)
   end
 
+  def find_activity_prize_by(type, sharer_id = nil)
+    ActivityPrize.find_by(prize_winner_id: current_user.id,
+                          promotion_activity_id: @promotion_activity.id,
+                          sharer_id: sharer_id,
+                          activity_type: type
+                         )
+  end
 end

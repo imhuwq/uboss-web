@@ -10,6 +10,12 @@
       </div>
     </div><!-- activate-info -->
   </div>
+  <div class="text-center tips-text">
+    <%= @draw_prize.present? ? "查看您的奖品" : "您的奖品已放入" %>
+    <%= link_to "【奖券】", lotteries_account_verify_codes_path %>
+  </div>
+  <br />
+
 	<div class="share-img-box">
 			<h4 class="gap black-color">
 				购买商品参与分享抽奖活动<br/>

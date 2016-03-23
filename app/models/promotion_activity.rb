@@ -11,7 +11,7 @@ class PromotionActivity < ActiveRecord::Base
 
   accepts_nested_attributes_for :activity_infos
 
-  enum status: { unpublish: 0, published: 1, closed: 2 }
+  enum status: { unpublish: 0, published: 1 }
 
   def seller_name
     user.nickname
