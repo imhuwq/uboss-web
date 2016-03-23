@@ -15,14 +15,15 @@ class AccountsController < ApplicationController
     @ordinary_orders = OrdinaryOrder.where(user_id: current_user.id)
 
     @statistics = {}
-    @statistics[:so_unpay]      = @service_orders.unpay.count
-    @statistics[:so_payed]      = @service_orders.payed.count
-    @statistics[:so_unevaluate] = so_unevaluate(@service_orders).count
+    @statistics[:so_unpay]               = @service_orders.unpay.count
+    @statistics[:so_payed]               = @service_orders.payed.count
+    @statistics[:so_payed_join_activity] = @service_orders.payed.count + VerifyCode.activity_noverified_total(current_user).size
+    @statistics[:so_unevaluate]          = so_unevaluate(@service_orders).count
 
-    @statistics[:oo_unpay]      = @ordinary_orders.unpay.count
-    @statistics[:oo_shiped]     = @ordinary_orders.shiped.count
-    @statistics[:oo_unevaluate] = oo_unevaluate(@ordinary_orders).count
-    @statistics[:oo_after_sale] = current_user.order_item_refunds.progresses.count
+    @statistics[:oo_unpay]               = @ordinary_orders.unpay.count
+    @statistics[:oo_shiped]              = @ordinary_orders.shiped.count
+    @statistics[:oo_unevaluate]          = oo_unevaluate(@ordinary_orders).count
+    @statistics[:oo_after_sale]          = current_user.order_item_refunds.progresses.count
 
     @privilege_cards = append_default_filter current_user.privilege_cards.includes(:user, [seller: [:service_store, :ordinary_store]]), order_column: :updated_at, page_size: 10
 
