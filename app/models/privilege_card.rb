@@ -73,12 +73,12 @@ class PrivilegeCard < ActiveRecord::Base
   end
 
   def get_and_save_store_qrcode_url
-    if img_url = get_store_qrcode_img_url(ordinary_store_qrcode_params, 'ordinary')
+    if img_url = get_store_qrcode_img_url(ordinary_store_qrcode_params)
       ordinary_store_qrcode_img.remote_avatar_url = img_url
       ordinary_store_qrcode_img.save
     end
 
-    if img_url = get_store_qrcode_img_url(service_store_qrcode_params, 'service')
+    if img_url = get_store_qrcode_img_url(service_store_qrcode_params)
       service_store_qrcode_img.remote_avatar_url = img_url
       service_store_qrcode_img.save
     end
@@ -94,7 +94,7 @@ class PrivilegeCard < ActiveRecord::Base
     self.save
   end
 
-  def get_store_qrcode_img_url(qrcode_params, type)
+  def get_store_qrcode_img_url(qrcode_params)
     request_uri = URI("http://imager.ulaiber.com/req/2?#{qrcode_params.to_param}")
     res = Net::HTTP.get_response request_uri
 

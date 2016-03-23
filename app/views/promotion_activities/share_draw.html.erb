@@ -5,7 +5,7 @@
         <% if @draw_prize.present? %>
           <h3>亲，你已经抽过了哦</h3>
         <% else %>
-          <h3><%= @draw_prize.present? %><%= @message[:success] %></h3>
+          <h3><%= @message[:success] %></h3>
         <% end %>
       </div>
     </div><!-- activate-info -->
@@ -18,7 +18,7 @@
       <div class="gap">
         <%= link_to '', service_store_path(@service_store.id),
           class: "store-cover",
-          style: "background-image:url('#{image_url('mobile/slideshow/1.jpg')}')" %>
+          style: "background-image:url('#{image_url(@service_store.store_cover_url)}')" %>
       </div>
       <div class="gap">
         <%= link_to service_store_path(@service_store.id) do %>
