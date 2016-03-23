@@ -65,7 +65,7 @@ class ActivityInfo < ActiveRecord::Base
         end
         ActivityDrawRecord.create!(activity_info_id: id, user_id: winner_id, sharer_id: sharer_id)
 
-        return { winner_activity_prize_id: winner_activity_prize.id, sharer_activity_prize_id: sharer_activity_prize.id }
+        return { winner_activity_prize_id: winner_activity_prize.try(:id), sharer_activity_prize_id: sharer_activity_prize.try(:id) }
       end
     end
   end
