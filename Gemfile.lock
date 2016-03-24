@@ -391,6 +391,8 @@ GEM
       activesupport (>= 3.0)
       i18n
       polyamorous (~> 1.2)
+    realtime (0.1.0)
+      rails (>= 4.0)
     redis (3.2.2)
     redis-actionpack (4.0.0)
       actionpack (~> 4)
@@ -586,6 +588,7 @@ DEPENDENCIES
   rails-api
   rails_db
   ransack
+  realtime
   redactor-rails!
   redis (~> 3.0)
   redis-namespace

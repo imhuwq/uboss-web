@@ -18,6 +18,10 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
     end
   end
 
+  def wechat_service
+
+  end
+
   # GET|POST /users/auth/twitter/callback
   # def failure
   #   super

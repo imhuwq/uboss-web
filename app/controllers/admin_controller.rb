@@ -14,7 +14,17 @@ class AdminController < ApplicationController
     end
   end
 
+  realtime_controller({:queue => :redis})
+
   private
+
+  def realtime_user_id
+    (current_user && current_user.id) || 1
+  end
+
+  def realtime_server_url
+    return 'http://localhost:4000'
+  end
 
   def check_new_supplier
     if current_user.is_supplier?

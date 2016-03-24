@@ -30,6 +30,7 @@
 #= require shared/count_down
 #= require admin/certification
 #= require admin/sellers
+#= require admin/websocket_client
 #= require_self
 
 App = window.App = {}
