@@ -64,7 +64,9 @@ class VerifyCode < ActiveRecord::Base
   end
 
   def call_verify_code_verified_handler
-    OrderDivideJob.set(wait: 5.seconds).perform_later(self)
+    if order_item_id
+      OrderDivideJob.set(wait: 5.seconds).perform_later(self)
+    end
   end
 
 end

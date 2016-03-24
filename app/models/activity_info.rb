@@ -61,6 +61,7 @@ class ActivityInfo < ActiveRecord::Base
           # 创建分享者礼品
           sharer_activity_prize = ActivityPrize.create!(activity_info_id: id,
                                                         prize_winner_id: sharer_id,
+                                                        relate_winner_id: winner_id, # 检查这份奖品是因为谁中奖二连带获得的
                                                         verify_code_id: sharer_verify_code_id)
         end
         ActivityDrawRecord.create!(activity_info_id: id, user_id: winner_id, sharer_id: sharer_id)

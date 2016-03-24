@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160318032123) do
+ActiveRecord::Schema.define(version: 20160324084041) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -31,10 +31,10 @@ ActiveRecord::Schema.define(version: 20160318032123) do
     t.decimal  "price",                 default: 0.0
     t.integer  "expiry_days",           default: 0
     t.integer  "win_count",             default: 0
-    t.integer  "win_rate",              default: 0
     t.datetime "created_at",                          null: false
     t.datetime "updated_at",                          null: false
     t.integer  "draw_count",            default: 0
+    t.float    "win_rate",              default: 1.0
   end
 
   add_index "activity_infos", ["promotion_activity_id"], name: "index_activity_infos_on_promotion_activity_id", using: :btree
@@ -49,6 +49,7 @@ ActiveRecord::Schema.define(version: 20160318032123) do
     t.datetime "created_at",            null: false
     t.datetime "updated_at",            null: false
     t.integer  "sharer_id"
+    t.integer  "relate_winner_id"
   end
 
   create_table "advertisements", force: :cascade do |t|
@@ -625,7 +626,6 @@ ActiveRecord::Schema.define(version: 20160318032123) do
     t.integer  "sales_amount_order"
     t.integer  "parent_id"
     t.integer  "supplier_id"
-    t.integer  "ordinary_store_id"
   end
 
   add_index "products", ["type"], name: "index_products_on_type", using: :btree
