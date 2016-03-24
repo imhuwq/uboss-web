@@ -45,12 +45,12 @@ class Admin::UsersController < AdminController
       .uniq
 
     results = users.limit(10).inject([]){ |arr, user|
-      arr << (user.service_store.valid? ? [user.id, user.login_identifier, user.service_store.store_name] : nil)
+      arr << (user.service_store.valid? ? [user.id, user.service_store.store_name, user.login || "", user.email || ""] : nil)
     }.compact
 
     render json: {
       error: nil,
-      results: results.inject([]){ |arr, result| arr << {_id: result[0], login: result[1], text: result[2]} },
+      results: results.inject([]){ |arr, result| arr << {_id: result[0], text: result[1], login: result[2], email: result[3]} },
       total_count: users.count
     }
   end

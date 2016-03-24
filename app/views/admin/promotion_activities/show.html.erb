@@ -2,7 +2,7 @@
 	<ul class="breadcrumb">
 		<li><a href="/admin">主页</a></li>
 		<li class="divider"><i class="fa fa-angle-right"></i></li>
-		<li><%= link_to '活动商家', [:admin, :promotion_activities] %></li>
+		<li><%= link_to '活动商家', admin_promotion_activities_path(type: 'published') %></li>
 		<li class="divider"><i class="fa fa-caret-right"></i></li>
 		<li class="active">查看活动信息</li>
 	</ul>

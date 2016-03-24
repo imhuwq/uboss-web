@@ -145,14 +145,16 @@
   {
     this.description =
       '<span style="display:block;float:left;width:250px;">'+
-      data.text + '</span><span>' + data.login +'</span>';
+      data.text + '</span><span>' + data.login + '</span><span style="display:block;float:right;">' +
+      data.email + '</span>';
     return this.description;
   },
   formatSelection: function(data)
   {
     this.description =
-      '<span style="display:block;float:left;width:250px;">'+
-      data.text + '</span><span>' + data.login +'</span>';
+      '<span style="display:block;float:left;width:250px;">' +
+      data.text + '</span><span>' + data.login + '</span><span style="display:block;float:right;">' +
+      data.email + '</span>';
     return this.description;
   },
   escapeMarkup: function (m) { return m; },
