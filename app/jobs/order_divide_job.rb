@@ -17,6 +17,8 @@ class OrderDivideJob < ActiveJob::Base
       perform_order_divide(object)
     elsif object.class == VerifyCode
       perform_service_order_divide(object)
+    elsif object.class = DishesOrder
+      perform_dishes_order_divide(object)
     end
   end
 
@@ -80,6 +82,28 @@ class OrderDivideJob < ActiveJob::Base
     send_exception_message(exception,  @verify_code.attributes.merge({order: @order.attributes}))
   end
 
+  def perform_dishes_order_divide(object)
+    @order = object
+    @order_items = object.order_items
+    @order_income = Rails.env.production? ? @order.paid_amount : @order.pay_amount
+    logger.info "Start divide dishes order: #{@order.number}, total_paid: #{@order_income}"
+
+    refunded_money = @order.order_item_refunds.successed.sum(:money)
+    logger.info "Divide dishes order: #{@order.number}, reduce refund money #{refunded_money}"
+    @order_income -= refunded_money
+
+    @privilege_amount = @order.order_items.joins(:product_inventory).sum("product_inventories.privilege_amount")
+    logger.info "Divide dishes order: #{@order.number}, reduce privilege amount money #{privilege_amount}"
+    @order_income -= @privilege_amount
+
+    start_divide_order_paid_amount
+
+    logger.info "Done divide dishes order: #{@order.number}"
+
+  rescue => exception
+    send_exception_message(exception, @order.attributes)
+  end
+
   def start_divide_order_paid_amount
     # NOTE
     # ----------------------
@@ -89,6 +113,10 @@ class OrderDivideJob < ActiveJob::Base
     # ----------------------
     Order.transaction do
       begin
+        if @privilege_amount
+          divide_record = DivideIncome.create!(order: @order,amount: @privilege_amount,user: order.user)
+          logger.info("Divide order: #{@order.number}, [DishesOrder id: #{divide_record.id}, amount: #{@privilege_amount} ]")
+        end
         @order_items.each do |order_item|
           reward_sharing_users order_item do |reward_amount|
             @order_income -= reward_amount
