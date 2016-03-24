@@ -14,7 +14,7 @@ class Admin::PromotionActivitiesController < AdminController
   def create
     if @promotion_activity.save
       flash[:success] = '商家活动创建成功'
-      redirect_to admin_promotion_activities_path
+      redirect_to admin_promotion_activities_path(type: 'published')
     else
       set_activity_info
       flash.now[:error] = "创建失败。#{@promotion_activity.errors.full_messages.join('<br/>')}"
@@ -45,7 +45,7 @@ class Admin::PromotionActivitiesController < AdminController
     else
       flash[:success] = @notice
       flash[:error]   = @error
-      redirect_to admin_promotion_activities_path
+      redirect_to admin_promotion_activities_path(type: 'published')
     end
   end
 
