@@ -3,36 +3,31 @@ class PromotionActivitiesController < ApplicationController
 
   before_action :check_current_user, only: [:live_draw, :share_draw]
   before_action :check_param_type,   only: :show
-  layout 'activity', only: [:show, :live_draw, :share_draw]
+  layout 'activity'
 
   def show
-    @type = params[:type]
     @promotion_activity = PromotionActivity.published.find(params[:id])
-
-    if @type == "share"
-      @seller = @promotion_activity.user
-      get_sharing_node
-      sharer_id = @sharing_node.try(:user_id)
-      if sharer_id.blank?
-        redirect_to root_path
-        flash[:error] = "找不到对应的分享者，请重新获取分享信息"
-        return
-      end
-    end
+    @type = params[:type]
 
     if current_user
-      @draw_prize = find_activity_prize_by(@type, sharer_id)
-      if @draw_prize.present? || params[:redirect] == "draw"
-        redirect_to @type == 'live' ?
-          live_draw_promotion_activity_path(@promotion_activity) :
-          share_draw_promotion_activity_path(@promotion_activity)
+      if @type == "share"
+        activity_info = @promotion_activity.share_activity_info
+        draw_path = share_draw_promotion_activity_path(@promotion_activity)
+      else
+        activity_info = @promotion_activity.live_activity_info
+        draw_path = live_draw_promotion_activity_path(@promotion_activity)
+      end
+
+      @draw_record = current_user.activity_draw_records.find_by(activity_info_id: activity_info.id, sharer_id: sharer_id)
+      if @draw_record.present? || params[:redirect] == "draw"
+        redirect_to draw_path
       end
     else
       if browser.wechat?
         redirect = 'draw'
         authenticate_weixin_user!(redirect)
       else
-        redirect_to activity_sign_in_and_redirect_path('live', @promotion_activity)
+        redirect_to activity_sign_in_and_redirect_path(@type, @promotion_activity)
       end
     end
   end
