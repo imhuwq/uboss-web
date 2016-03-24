@@ -18,7 +18,7 @@ class PromotionActivitiesController < ApplicationController
         draw_path = live_draw_promotion_activity_path(@promotion_activity)
       end
 
-      @draw_record = current_user.activity_draw_records.find_by(activity_info_id: activity_info.id, sharer_id: sharer_id)
+      @draw_record = current_user.activity_draw_records.find_by(activity_info_id: activity_info.id)
       if @draw_record.present? || params[:redirect] == "draw"
         redirect_to draw_path
       end
