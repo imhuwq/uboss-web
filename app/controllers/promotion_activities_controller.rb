@@ -33,19 +33,20 @@ class PromotionActivitiesController < ApplicationController
   end
 
   def live_draw
+    @promotion_activity = PromotionActivity.find(params[:id])
     @message ||= {}
     begin
-      live_activity_prize = PromotionActivity.published.find(params[:id]).live_activity_info.draw_live_prize(current_user.id)
+      live_activity_prize = @promotion_activity.live_activity_info.draw_live_prize(current_user.id)
       if live_activity_prize.present?
         @message[:success] = "您中奖了！"
       else
         @message[:success] = "没有抽中"
       end
-    rescue RepeatedActionError
-      @message[:success] = "已经抽过奖了"
-    rescue ActivityNotPublishError
+    rescue ActivityInfo::ActivityNotPublishError
       flash[:error] = "活动还没开始"
       redirect_to root_path
+    rescue ActivityInfo::RepeatedDrawError
+      @message[:success] = "已经抽过奖了"
     end
 
     get_service_store_qrcode_img_url
@@ -53,7 +54,8 @@ class PromotionActivitiesController < ApplicationController
 
   def share_draw
     @promotion_activity = PromotionActivity.find(params[:id])
-    @service_store = @promotion_activity.user.service_store
+    @seller = @promotion_activity.user
+    @service_store = @seller.service_store
     get_sharing_node
     sharer_id = @sharing_node.try(:user_id)
 
@@ -65,17 +67,16 @@ class PromotionActivitiesController < ApplicationController
       else
         @message[:success] = "没有抽中"
       end
-    rescue ActivityNotPublishError
+    rescue ActivityInfo::ActivityNotPublishError
       flash[:error] = "活动还没开始"
       redirect_to lotteries_account_verify_codes_path
       return
-    rescue SharerNotFoundError
+    rescue ActivityInfo::SharerNotFoundError
       flash[:error] = "找不到对应的分享者，请重新获取分享信息"
       redirect_to lotteries_account_verify_codes_path
       return
-    rescue RepeatedActionError
-      @drawed_prize = true
-      @message[:success] = "已经抽过奖了"
+    rescue ActivityInfo::RepeatedDrawError
+      @message[:success] = "亲，你已经抽过了哦"
     end
 
     get_service_store_qrcode_img_url

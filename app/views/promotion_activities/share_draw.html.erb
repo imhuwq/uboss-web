@@ -2,16 +2,12 @@
   <div class="text-center gap">
     <div class="activate-info">
       <div class="border-line">
-        <% if @drawed_prize %>
-          <h3>亲，你已经抽过了哦</h3>
-        <% else %>
-          <h3><%= @message[:success] %></h3>
-        <% end %>
+        <h3><%= @message[:success] %></h3>
       </div>
     </div><!-- activate-info -->
   </div>
   <div class="text-center tips-text">
-    <%= @drawed_prize ? "查看您的奖品" : "您的奖品已放入" %>
+    您的奖品已放入
     <%= link_to "【奖券】", lotteries_account_verify_codes_path %>
   </div>
   <br />
