@@ -33,27 +33,24 @@ class PromotionActivitiesController < ApplicationController
   end
 
   def live_draw
-    @promotion_activity = PromotionActivity.find(params[:id])
+    @promotion_activity = PromotionActivity.published.find(params[:id])
     @message ||= {}
     begin
-      live_activity_prize = @promotion_activity.live_activity_info.draw_live_prize(current_user.id)
-      if live_activity_prize.present?
-        @message[:success] = "您中奖了！"
+      live_activity_info = @promotion_activity.live_activity_info
+      if live_activity_info.draw_live_prize(current_user.id)
+        @message[:success] = "中奖了，恭喜获得“#{live_activity_info.name}” ！"
       else
-        @message[:success] = "没有抽中"
+        @message[:success] = "(*^_^*) 没中，请再接再厉"
       end
-    rescue ActivityInfo::ActivityNotPublishError
-      flash[:error] = "活动还没开始"
-      redirect_to root_path
     rescue ActivityInfo::RepeatedDrawError
-      @message[:success] = "已经抽过奖了"
+      @message[:success] = "^o^ 亲您已抽过，下次再来吧"
     end
 
     get_service_store_qrcode_img_url
   end
 
   def share_draw
-    @promotion_activity = PromotionActivity.find(params[:id])
+    @promotion_activity = PromotionActivity.published.find(params[:id])
     @seller = @promotion_activity.user
     @service_store = @seller.service_store
     get_sharing_node
@@ -61,22 +58,18 @@ class PromotionActivitiesController < ApplicationController
 
     @message ||= {}
     begin
-      share_activity_prize = @promotion_activity.share_activity_info.draw_share_prize(current_user.id, sharer_id)
-      if share_activity_prize.present?
-        @message[:success] = "恭喜，您中奖了！"
+      share_activity_info = @promotion_activity.share_activity_info
+      if share_activity_info.draw_share_prize(current_user.id, sharer_id)
+        @message[:success] = "中奖了，恭喜获得“#{share_activity_info.name}” ！"
       else
-        @message[:success] = "没有抽中"
+        @message[:success] = "(*^_^*) 没中，请再接再厉"
       end
-    rescue ActivityInfo::ActivityNotPublishError
-      flash[:error] = "活动还没开始"
-      redirect_to lotteries_account_verify_codes_path
-      return
     rescue ActivityInfo::SharerNotFoundError
       flash[:error] = "找不到对应的分享者，请重新获取分享信息"
       redirect_to lotteries_account_verify_codes_path
       return
     rescue ActivityInfo::RepeatedDrawError
-      @message[:success] = "亲，你已经抽过了哦"
+      @message[:success] = "^o^ 亲您已抽过，下次再来吧"
     end
 
     get_service_store_qrcode_img_url
