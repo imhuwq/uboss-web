@@ -1,0 +1,10 @@
+<header class="dishes-header">
+	<% if content_for?(:header_left) %>
+    <%= yield :header_left %>
+  <% end %>
+ 	<div class="menu-btn"> <%= image_tag 'mobile/navbar.png' %></div>
+	<% if content_for?(:page_title) %>
+		<div class="title"><%= yield(:page_title) %></div>
+ 	<% end %>
+</header>
+
