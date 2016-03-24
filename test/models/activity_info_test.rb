@@ -20,6 +20,21 @@ class ActivityInfoTest < ActiveSupport::TestCase
     assert_equal share_activity_info.win_rate , ActivityPrize.find_by_id(draw_prize_result[:winner_activity_prize_id]).info['win_rate']
   end
 
+  test '#should not create share_activity_prize twice when win_rate is 1%' do
+    seller = create :seller_user
+    winner = create :user
+    winner2 = create :user
+    sharer = create :user
+    promotion_activity = create(:active_promotion_activity, user: seller)
+    share_activity_info = create(:share_activity_info, promotion_activity: promotion_activity, win_rate: 1)
+
+    draw_prize_result = share_activity_info.draw_share_prize(winner.id, sharer.id)
+    draw_prize_result2 = share_activity_info.draw_share_prize(winner2.id, sharer.id)
+    assert_equal false, draw_prize_result.present? && draw_prize_result2.present?
+    assert_equal true, ActivityDrawRecord.where(user_id: winner.id, sharer_id: sharer.id, activity_info_id: share_activity_info.id).present?
+    assert_equal share_activity_info.win_rate , ActivityPrize.find_by_id(draw_prize_result[:winner_activity_prize_id]).info['win_rate']
+  end
+
   test '#should raise exception when someone draw_share_prize from one sharer twice' do
     seller = create :seller_user
     winner = create :user
@@ -28,7 +43,7 @@ class ActivityInfoTest < ActiveSupport::TestCase
     share_activity_info = create(:share_activity_info, promotion_activity: promotion_activity)
 
     share_activity_info.draw_share_prize(winner.id, sharer.id)
-    assert_raises RepeatedActionError do
+    assert_raises ActivityInfo::RepeatedDrawError do
       share_activity_info.draw_share_prize(winner.id, sharer.id)
     end
 
@@ -53,7 +68,7 @@ class ActivityInfoTest < ActiveSupport::TestCase
     live_activity_info = create(:live_activity_info, promotion_activity: promotion_activity)
 
     live_activity_info.draw_live_prize(winner.id)
-    assert_raises RepeatedActionError do
+    assert_raises ActivityInfo::RepeatedDrawError do
       live_activity_info.draw_live_prize(winner.id)
     end
 

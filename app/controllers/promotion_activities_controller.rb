@@ -33,56 +33,49 @@ class PromotionActivitiesController < ApplicationController
   end
 
   def live_draw
-    @promotion_activity = PromotionActivity.published.find(params[:id])
-    @live_activity_info = @promotion_activity.live_activity_info
-    @draw_prize = find_activity_prize_by('live')
     @message ||= {}
-
-    unless @draw_prize.present?
-      begin
-        live_activity_prize = @live_activity_info.draw_live_prize(current_user.id)
-        if live_activity_prize.present?
-          @message[:success] = "您中奖了！"
-        else
-          @message[:success] = "没有抽中"
-        end
-      rescue RepeatedActionError
-        @message[:success] = "已经抽过奖了"
+    begin
+      live_activity_prize = PromotionActivity.published.find(params[:id]).live_activity_info.draw_live_prize(current_user.id)
+      if live_activity_prize.present?
+        @message[:success] = "您中奖了！"
+      else
+        @message[:success] = "没有抽中"
       end
-    else
-      @message[:success] = "亲，您已经抽过奖了"
+    rescue RepeatedActionError
+      @message[:success] = "已经抽过奖了"
+    rescue ActivityNotPublishError
+      flash[:error] = "活动还没开始"
+      redirect_to root_path
     end
 
     get_service_store_qrcode_img_url
   end
 
   def share_draw
-    @promotion_activity = PromotionActivity.published.find(params[:id])
-    @seller = @promotion_activity.user
-    @service_store = @seller.service_store
-    @share_activity_info = @promotion_activity.share_activity_info
+    @promotion_activity = PromotionActivity.find(params[:id])
+    @service_store = @promotion_activity.user.service_store
     get_sharing_node
     sharer_id = @sharing_node.try(:user_id)
-    if sharer_id && sharer_id != current_user.id
-      @draw_prize = find_activity_prize_by('share', sharer_id)
-    else
+
+    @message ||= {}
+    begin
+      share_activity_prize = @promotion_activity.share_activity_info.draw_share_prize(current_user.id, sharer_id)
+      if share_activity_prize.present?
+        @message[:success] = "恭喜，您中奖了！"
+      else
+        @message[:success] = "没有抽中"
+      end
+    rescue ActivityNotPublishError
+      flash[:error] = "活动还没开始"
+      redirect_to lotteries_account_verify_codes_path
+      return
+    rescue SharerNotFoundError
       flash[:error] = "找不到对应的分享者，请重新获取分享信息"
       redirect_to lotteries_account_verify_codes_path
       return
-    end
-
-    if sharer_id && !@draw_prize.present?
-      @message ||= {}
-      begin
-        share_activity_prize = @share_activity_info.draw_share_prize(current_user.id, sharer_id)
-        if share_activity_prize.present?
-          @message[:success] = "恭喜，您中奖了！"
-        else
-          @message[:success] = "没有抽中"
-        end
-      rescue RepeatedActionError
-        @message[:success] = "已经抽过奖了"
-      end
+    rescue RepeatedActionError
+      @drawed_prize = true
+      @message[:success] = "已经抽过奖了"
     end
 
     get_service_store_qrcode_img_url

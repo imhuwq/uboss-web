@@ -36,14 +36,14 @@ class ActivityInfo < ActiveRecord::Base
   def draw_share_prize(winner_id, sharer_id)
     if !User.find_by_id(winner_id)
       raise ArgumentError.new('winner not found')
-    elsif !User.find_by_id(sharer_id)
-      raise ArgumentError.new('sharer not found')
     elsif promotion_activity.status != 'published'
-      raise RuntimeError.new('activity not published or closed')
+      raise ActivityNotPublishError.new('activity not published or closed')
     elsif activity_type != 'share'
       raise RuntimeError.new('wrong method used')
+    elsif !User.find_by_id(sharer_id)
+      raise SharerNotFoundError.new('sharer not found')
     elsif ActivityDrawRecord.find_by(user_id: winner_id, sharer_id: sharer_id, activity_info_id: id).present?
-      raise RepeatedActionError.new('you have already drawed prize')
+      raise RepeatedDrawError.new('you have already drawed prize')
     else
       ActivityInfo.transaction do
         ActivityInfo.lock
@@ -74,11 +74,11 @@ class ActivityInfo < ActiveRecord::Base
     if !User.find_by_id(winner_id)
       raise ArgumentError.new('winner not found')
     elsif promotion_activity.status != 'published'
-      raise RuntimeError.new('activity not published or closed')
+      raise ActivityNotPublishError.new('activity not published or closed')
     elsif activity_type != 'live'
       raise RuntimeError.new('wrong method used')
     elsif ActivityDrawRecord.find_by(user_id: winner_id, activity_info_id: id).present?
-      raise RepeatedActionError.new('you have already drawed prize')
+      raise RepeatedDrawError.new('you have already drawed prize')
     else
       ActivityInfo.transaction do
         ActivityInfo.lock
@@ -97,7 +97,11 @@ class ActivityInfo < ActiveRecord::Base
       end
     end
   end
+  class RepeatedDrawError < StandardError
+  end
+  class ActivityNotPublishError < StandardError
+  end
+  class SharerNotFoundError < StandardError
+  end
 end
 
-class RepeatedActionError < StandardError
-end
