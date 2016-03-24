@@ -1,5 +1,9 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh-CN"
+	<% if controller_name == 'menus' %>
+	class="dishes-html"
+	<% end %>
+>
   <head>
     <meta charset="utf-8" />
     <meta id='MobileViewport' name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
@@ -19,7 +23,7 @@
     <% if !browser.uboss? && controller_name != 'menus' %>
       <header> <%= render partial: 'layouts/mobile_header' %> </header>
     <% elsif controller_name == 'menus' %>
-      <header> </header>
+      <header> <%= render partial: 'layouts/menu_nav' %> </header>
     <% end %>
 
 		<%= render 'layouts/pop' %>
