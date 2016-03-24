@@ -1,8 +1,7 @@
 <% if current_user.is_supplier? and can? :manage, product %>
-  <%= f.input :cost_price, input_html: { type: 'number' } %>
+  <%= f.input :cost_price, input_html: { type: 'number' }, required: true %>
   <div class='form-group'>
     <label class='integer optional control-label'>
-      <abbr title="必填">*</abbr>
       建议价
     </label>
     <div class='control-input'>
