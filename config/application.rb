@@ -30,6 +30,10 @@ module UBoss
     #config.i18n.load_path += Dir[Rails.root.join('config', 'locales', '*.{rb,yml}').to_s]
     config.i18n.default_locale = :"zh-CN"
 
+    config.to_prepare do
+      require 'dishes_order' # fix 开发环境下 cache_classes 为 false 导致的STI查找条件问题
+    end
+
     config.api_only = false
 
     config.generators do |g|
