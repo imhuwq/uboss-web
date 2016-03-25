@@ -18,6 +18,10 @@ class ActivityInfoTest < ActiveSupport::TestCase
     assert_equal share_activity_info.id, ActivityPrize.find_by_id(draw_prize_result[:sharer_activity_prize_id]).activity_info.id
     assert_equal true, ActivityDrawRecord.where(user_id: winner.id, sharer_id: sharer.id, activity_info_id: share_activity_info.id).present?
     assert_equal share_activity_info.win_rate , ActivityPrize.find_by_id(draw_prize_result[:winner_activity_prize_id]).info['win_rate']
+    verify_code =  VerifyCode.find_by(activity_prize_id: draw_prize_result[:winner_activity_prize_id])
+    assert_equal true, verify_code.present?
+    assert_equal true, verify_code.verify_activity_code(seller)
+    assert_equal 100, verify_code.activity_prize.activity_info.win_rate
   end
 
   test '#should not create share_activity_prize twice when win_rate is 1%' do

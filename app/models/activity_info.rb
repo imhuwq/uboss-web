@@ -50,19 +50,17 @@ class ActivityInfo < ActiveRecord::Base
         update!(draw_count: draw_count ? (draw_count + 1) : 1)
         winner_activity_prize, sharer_activity_prize = nil
         if prize_arr.include?(draw_count) # 本次draw_count在中奖数组中
-          winner_verify_code_id = VerifyCode.create!.id
-          sharer_verify_code_id = VerifyCode.create!.id
           # 创建抽奖者礼品
           winner_activity_prize = ActivityPrize.create!(activity_info_id: id,
                                                         sharer_id: sharer_id,
-                                                        prize_winner_id: winner_id,
-                                                        verify_code_id: winner_verify_code_id)
+                                                        prize_winner_id: winner_id)
 
           # 创建分享者礼品
           sharer_activity_prize = ActivityPrize.create!(activity_info_id: id,
                                                         prize_winner_id: sharer_id,
-                                                        relate_winner_id: winner_id, # 检查这份奖品是因为谁中奖二连带获得的
-                                                        verify_code_id: sharer_verify_code_id)
+                                                        relate_winner_id: winner_id) # 检查这份奖品是因为谁中奖二连带获得的
+          VerifyCode.create!(activity_prize_id: winner_activity_prize.id)
+          VerifyCode.create!(activity_prize_id: sharer_activity_prize.id)
         end
         ActivityDrawRecord.create!(activity_info_id: id, user_id: winner_id, sharer_id: sharer_id)
 
@@ -85,10 +83,9 @@ class ActivityInfo < ActiveRecord::Base
         ActivityInfo.lock
         winner_activity_prize = nil
         if prize_arr.include?(draw_count + 1) # 本次draw_count在中奖数组中
-          winner_verify_code_id = VerifyCode.create!.id
           winner_activity_prize = ActivityPrize.create!(activity_info_id: id,
-                                                        prize_winner_id: winner_id,
-                                                        verify_code_id: winner_verify_code_id)
+                                                        prize_winner_id: winner_id)
+          VerifyCode.create!(activity_prize_id: winner_activity_prize.id)
         end
         # 创建抽奖者礼品
         update!(draw_count: draw_count ? (draw_count + 1) : 1)

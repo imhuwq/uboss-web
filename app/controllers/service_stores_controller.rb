@@ -37,15 +37,17 @@ class ServiceStoresController < ApplicationController
   def verify
     verify_code = VerifyCode.find_by(code: params[:code])
     if verify_code && verify_code.order_item_id
-      @verify_code = VerifyCode.with_user(current_user).find_by(code: params[:code])
-    else
-      @verify_code = verify_code
-    end
-
-    if @verify_code.present? && @verify_code.order_item_id && @verify_code.verify_code
-      flash[:success] = '验证成功'
-    elsif @verify_code.present? && @verify_code.verify_activity_code
-      flash[:success] = '验证成功'
+      if VerifyCode.with_user(current_user).find_by(code: params[:code]).verify_code
+        flash[:success] = '验证成功'
+      else
+        flash[:error] = '验证失败'
+      end
+    elsif verify_code && verify_code.activity_prize
+      if verify_code.verify_activity_code(current_user)
+        flash[:success] = "#{verify_code.activity_prize.activity_info.name}:验证成功。"
+      else
+        flash[:error] = '验证失败'
+      end
     else
       flash[:error] = '验证失败'
     end

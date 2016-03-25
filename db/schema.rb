@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160324084041) do
+ActiveRecord::Schema.define(version: 20160324095649) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -43,7 +43,6 @@ ActiveRecord::Schema.define(version: 20160324084041) do
     t.integer  "prize_winner_id"
     t.integer  "promotion_activity_id"
     t.integer  "activity_info_id"
-    t.integer  "verify_code_id"
     t.jsonb    "info"
     t.string   "activity_type"
     t.datetime "created_at",            null: false
@@ -965,12 +964,14 @@ ActiveRecord::Schema.define(version: 20160324084041) do
 
   create_table "verify_codes", force: :cascade do |t|
     t.string   "code"
-    t.boolean  "verified",        default: false
-    t.datetime "created_at",                      null: false
-    t.datetime "updated_at",                      null: false
+    t.boolean  "verified",          default: false
+    t.datetime "created_at",                        null: false
+    t.datetime "updated_at",                        null: false
     t.integer  "order_item_id"
-    t.boolean  "sharing_rewared", default: false
-    t.decimal  "income",          default: 0.0
+    t.boolean  "sharing_rewared",   default: false
+    t.decimal  "income",            default: 0.0
+    t.boolean  "expired",           default: false
+    t.integer  "activity_prize_id"
   end
 
   create_table "versions", force: :cascade do |t|
