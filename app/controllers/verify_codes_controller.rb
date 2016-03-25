@@ -19,7 +19,7 @@ class VerifyCodesController < ApplicationController
 
   def lottery_detail
     @activity_prize = ActivityPrize.find(params[:id])
-    @verify_code = VerifyCode.find(@activity_prize.verify_code_id)
+    @verify_code = VerifyCode.find_by(activity_prize_id: @activity_prize.id)
     @activity_info = @activity_prize.activity_info
   end
 
