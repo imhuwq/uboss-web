@@ -13,11 +13,8 @@ class VerifyCode < ActiveRecord::Base
   scope :total, ->(user) { where(verified: true).with_user(user) }
 
 
-  # scope :with_activity_user, ->(user) { joins('inner join activity_prizes on verify_codes.activity_prize_id=activity_prizes.id').
-  #                             where(' activity_prizes.prize_winner_id = ?',user.id) }
-  scope :with_activity_user, ->(user) { ids = user.promotion_activities.published.collect(&:activity_infos).
-                                        flatten.collect(&:activity_prize).flatten.collect(&:id)
-                                        where(activity_prize_id: ids)}
+  scope :with_activity_user, ->(user) { joins(activity_prize:[:promotion_activity]).
+                                        where('promotion_activities.user_id = ?',user.id) }
   scope :activity_today, ->(user) { where(verified: true).with_activity_user(user).
                            where('verify_codes.updated_at BETWEEN ? AND ?', Time.now.beginning_of_day, Time.now.end_of_day) }
   scope :activity_total, ->(user) { where(verified: true).with_activity_user(user) }
