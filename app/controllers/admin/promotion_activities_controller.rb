@@ -7,22 +7,20 @@ class Admin::PromotionActivitiesController < AdminController
     if ["published", "unpublish"].include?(params[:type])
       @promotion_activities = @promotion_activities.try(params[:type]).includes(:user, :activity_infos).page(params[:page] || 1)
     else
-      raise "invalid promotion_activities state"
+      flash[:error] = "invalid promotion_activities state"
+      redirect_to admin_promotion_activities_path(type: 'published')
     end
   end
 
   def create
     if @promotion_activity.save
       flash[:success] = '商家活动创建成功'
-      redirect_to admin_promotion_activities_path(type: 'published')
+      redirect_to admin_promotion_activity_path(@promotion_activity)
     else
       set_activity_info
       flash.now[:error] = "创建失败。#{@promotion_activity.errors.full_messages.join('<br/>')}"
       render :new
     end
-  end
-
-  def show
   end
 
   def change_status
