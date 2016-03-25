@@ -34,7 +34,7 @@ class VerifyCode < ActiveRecord::Base
   end
 
   def verify_activity_code(store_admin)
-    if activity_prize.promotion_activity.user.id == store_admin.id && !verified && update(verified: true)
+    if activity_prize.promotion_activity.user.id == store_admin.id && !verified && !expired && update(verified: true)
       true
     else
       false
