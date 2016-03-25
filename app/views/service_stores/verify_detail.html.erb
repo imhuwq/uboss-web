@@ -32,7 +32,7 @@
       <td>
         <% if verify_code.order_item_id %>
           <%= truncate(verify_code.order_item.product.name, length:10) %>
-        <% elsif activity_prize = ActivityPrize.find_by(verify_code_id: verify_code.id) %>
+        <% elsif activity_prize = verify_code.activity_prize %>
           <%= activity_prize.try(:activity_info).try(:name) %>(活动奖品)
         <% end %>
       </td>
