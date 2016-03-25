@@ -18,7 +18,7 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
       end
     else
       current_user && Ubonus::Invite.delay.active_by_user_id(current_user.id)
-      redirect_to after_oauth_success_redirect_path
+      redirect_to after_oauth_success_redirect_path.gsub(/redirect=draw/, 'redirect=drawing')
     end
   end
 

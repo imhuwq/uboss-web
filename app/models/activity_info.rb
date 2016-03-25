@@ -6,10 +6,10 @@ class ActivityInfo < ActiveRecord::Base
   belongs_to :promotion_activity
   has_many   :activity_prize, dependent: :destroy
   has_many   :activity_draw_records, dependent: :destroy
-  validates :activity_type, :name, :price, :expiry_days, :win_count, :win_rate, presence: true
+  validates :activity_type, :name, :expiry_days, :win_count, :win_rate, presence: true
   validates :activity_type, inclusion: { in: %w(live share) }
   validates :win_rate, numericality: { greater_than: 0, less_than_or_equal_to: 100 }
-  validates :win_count, numericality: { greater_than: 0 }
+  validates :win_count, :expiry_days, numericality: { greater_than: 0 }
   validates :promotion_activity_id, uniqueness: { scope: :activity_type }
 
   def prize_arr
