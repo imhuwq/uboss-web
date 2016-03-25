@@ -14,12 +14,12 @@ class VerifyCodesController < ApplicationController
   end
 
   def lotteries
-    @activity_prizes = ActivityPrize.where(prize_winner_id: current_user.id)
+    @activity_prizes = ActivityPrize.where(prize_winner_id: current_user.id).order('created_at DESC')
   end
 
   def lottery_detail
     @activity_prize = ActivityPrize.find(params[:id])
-    @verify_code = VerifyCode.find_by(activity_prize_id: @activity_prize.id)
+    @verify_code = @activity_prize.verify_code
     @activity_info = @activity_prize.activity_info
   end
 
