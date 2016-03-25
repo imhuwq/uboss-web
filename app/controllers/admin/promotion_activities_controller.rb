@@ -39,7 +39,8 @@ class Admin::PromotionActivitiesController < AdminController
     if request.xhr?
       flash.now[:success] = @notice
       flash.now[:error]   = @error
-      render(partial: 'promotion_activities', locals: { promotion_activities: [@promotion_activity.reload] })
+      promotion_activities = @error.present? ? [@promotion_activity.reload] : []
+      render(partial: 'promotion_activities', locals: { promotion_activities: promotion_activities })
     else
       flash[:success] = @notice
       flash[:error]   = @error
