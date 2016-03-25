@@ -15,7 +15,6 @@ class VerifyCodesController < ApplicationController
 
   def lotteries
     @activity_prizes = ActivityPrize.where(prize_winner_id: current_user.id)
-    @verify_codes = VerifyCode.where(id: @activity_prizes.collect(&:verify_code_id) )
   end
 
   def lottery_detail

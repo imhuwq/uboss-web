@@ -15,9 +15,16 @@
     <div class="lottery-list m-top10 black-color">
       <div class="title text-cut">
         <%= activity_prize.promotion_activity.user.service_store.store_name %>
-        <span class="pull-right like-color">
-          <%= activity_prize.verify_code.verified ? '已消费' : '未使用' %>
-        </span>
+        <% verify_code = VerifyCode.find_by(activity_prize_id: activity_prize.id) %>
+          <% if verify_code && verify_code.verified %>
+            <span class="pull-right grey-color">
+              已消费
+            </span>
+          <% else %>
+            <span class="pull-right like-color">
+              未使用
+            </span>
+          <% end %>
       </div><!-- title -->
     	<div class="lottery-message gap">
         <h4 class="text-cut">
