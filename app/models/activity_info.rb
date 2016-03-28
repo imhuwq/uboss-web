@@ -5,12 +5,19 @@ class ActivityInfo < ActiveRecord::Base
 
   belongs_to :promotion_activity
   has_many   :activity_prizes, dependent: :destroy
+  has_many   :live_prizes,  -> { where(activity_type: 'live') },  class_name: 'ActivityPrize'
+  has_many   :share_prizes, -> { where(activity_type: 'share') }, class_name: 'ActivityPrize'
   has_many   :activity_draw_records, dependent: :destroy
   validates :activity_type, :name, :expiry_days, :win_count, :win_rate, presence: true
   validates :activity_type, inclusion: { in: %w(live share) }
   validates :win_rate, numericality: { greater_than: 0, less_than_or_equal_to: 100 }
   validates :win_count, :expiry_days, numericality: { greater_than: 0 }
   validates :promotion_activity_id, uniqueness: { scope: :activity_type }
+
+  def verified_verify_codes
+    prize_ids = activity_type == 'live' ? live_prizes.pluck(:id) : share_prizes.pluck(:id)
+    VerifyCode.where(activity_prize_id: prize_ids, verified: true)
+  end
 
   def prize_arr
     if activity_type == 'live'

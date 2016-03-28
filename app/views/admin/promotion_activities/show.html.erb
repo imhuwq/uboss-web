@@ -65,13 +65,13 @@
     <div class="form-group">
       <label class="control-label"> 已中奖数量 </label>
       <div class="control-input">
-        <span class="control-txt">0</span>
+        <span class="control-txt"><%= @live_activity_info.live_prizes.count %></span>
       </div>
     </div>
     <div class="form-group">
       <label class="control-label"> 已验证数量 </label>
       <div class="control-input">
-        <span class="control-txt">0</span>
+        <span class="control-txt"><%= @live_activity_info.verified_verify_codes.count %></span>
       </div>
     </div>
   </div><!-- admin-box -->
@@ -118,13 +118,13 @@
     <div class="form-group">
       <label class="control-label"> 已中奖数量 </label>
       <div class="control-input">
-        <span class="control-txt">0</span>
+        <span class="control-txt"><%= @share_activity_info.share_prizes.count %></span>
       </div>
     </div>
     <div class="form-group">
       <label class="control-label"> 已验证数量 </label>
       <div class="control-input">
-        <span class="control-txt">0</span>
+        <span class="control-txt"><%= @share_activity_info.verified_verify_codes.count %></span>
       </div>
     </div>
   </div><!-- admin-box -->
