@@ -32,20 +32,15 @@
           <td><%= live_activity_info.verified_verify_codes.count %></td>
           <td rowspan="2"><%= promotion_activity.created_at %></td>
           <td rowspan="2">
-            <% if promotion_activity.status == 'unpublish' %>
-              <p>
-              <%= link_to("上架", change_status_admin_promotion_activity_path(promotion_activity, status: 'published'),
-              remote: true, method: :patch, data: { disable_with: '<i class="fa fa-spinner"></i>' },
-              class: "btn btn-mid btn-block yellow-btn change-status-btn") %>
-              </p>
-              <%= link_to "查看详情", admin_promotion_activity_path(promotion_activity), style: "font-size:12px;" %>
-            <% else %>
+            <% if promotion_activity.status == 'published' %>
               <p>
               <%= link_to("下架", change_status_admin_promotion_activity_path(promotion_activity, status: 'unpublish'),
               remote: true, method: :patch, data: { disable_with: '<i class="fa fa-spinner"></i>' },
               class: "btn btn-mid btn-block change-status-btn") %>
               </p>
               <%= link_to "查看详情", admin_promotion_activity_path(promotion_activity), style: "font-size:12px;" %>
+            <% else %>
+              <p><%= link_to "查看详情", admin_promotion_activity_path(promotion_activity), style: "font-size:12px;" %></p>
             <% end %>
           </td>
         </tr>

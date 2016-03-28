@@ -13,6 +13,7 @@ class Admin::PromotionActivitiesController < AdminController
   end
 
   def create
+    @promotion_activity.status = 1
     if @promotion_activity.save
       flash[:success] = '商家活动创建成功'
       redirect_to admin_promotion_activity_path(@promotion_activity)
@@ -24,26 +25,19 @@ class Admin::PromotionActivitiesController < AdminController
   end
 
   def change_status
-    if params[:status] == 'published'
-      @promotion_activity.status = "published"
-      @notice = '上架成功'
-    elsif params[:status] == 'unpublish'
+    if params[:status] == 'unpublish'
       @promotion_activity.status = "unpublish"
-      @notice = '取消上架成功'
+      flash.now[:success] = '下架成功'
     end
 
     if not @promotion_activity.save
-      @error = model_errors(@promotion_activity).join('<br/>')
+      flash.now[:error] = model_errors(@promotion_activity).join('<br/>')
     end
 
     if request.xhr?
-      flash.now[:success] = @notice
-      flash.now[:error]   = @error
-      promotion_activities = @error.present? ? [@promotion_activity.reload] : []
+      promotion_activities = flash.now[:error].present? ? [@promotion_activity.reload] : []
       render(partial: 'promotion_activities', locals: { promotion_activities: promotion_activities })
     else
-      flash[:success] = @notice
-      flash[:error]   = @error
       redirect_to admin_promotion_activities_path(type: 'published')
     end
   end

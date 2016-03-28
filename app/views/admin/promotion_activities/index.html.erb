@@ -2,7 +2,7 @@
   <div class="container nogap ">
     <% if params[:type] == "published" %>
       <div class="box-w20" style="position:relative;left:40%;">
-        <a href="<%= admin_promotion_activities_path(type: 'published') %>" data-remote="true">
+        <a href="javascript:;">
           <div class="admin-box red-bg-color">
             <h4>参与中商家活动</h4>
             <h1 class="num activities-count"><%= @promotion_activities.count %></h1>
@@ -12,7 +12,7 @@
     <% end %>
     <% if params[:type] == "unpublish" %>
       <div class="box-w20" style="position:relative;left:40%;">
-        <a href="<%= admin_promotion_activities_path(type: 'unpublish') %>" data-remote="true">
+        <a href="javascript:;">
           <div class="admin-box blue-bg-color">
             <h4>已下架商家活动</h4>
             <h1 class="num activities-count"><%= @promotion_activities.count %></h1>

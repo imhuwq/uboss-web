@@ -5,8 +5,6 @@
     <div class="control-input half-width">
       <div class="f15 lh36">
         <%= text_field_tag 'promotion_activity[user_id]', '', class:'input-block users-select2' %>
-        <%#<input type="hidden" name="promotion_activity[user_id]" value="3" />%>
-        <%#<input type="button" class="btn btn-large black-btn" value="搜索" style="width:80px;" />%>
       </div>
     </div>
   </div>
@@ -141,23 +139,27 @@
       },
       cache: true
     },
-  formatResult: function(data)
-  {
-    this.description =
-      '<span style="display:block;float:left;width:250px;">'+
-      data.text + '</span><span>' + data.login + '</span><span style="display:block;float:right;">' +
-      data.email + '</span>';
-    return this.description;
-  },
-  formatSelection: function(data)
-  {
-    this.description =
-      '<span style="display:block;float:left;width:250px;">' +
-      data.text + '</span><span>' + data.login + '</span><span style="display:block;float:right;">' +
-      data.email + '</span>';
-    return this.description;
-  },
-  escapeMarkup: function (m) { return m; },
-  dropdownCssClass: "bigdrop"
+
+    formatResult: function(data)
+    {
+      this.description =
+        '<span style="display:block;float:left;width:250px;">'+
+        data.text + '</span><span>' + data.login + '</span>';
+      if(data.disabled){ this.description += '<span style="display:block;float:right;">' + data.email + '<a href="#">（参与中）</a></span>' }
+      else{ this.description += '<span style="display:block;float:right;">' + data.email + '</span>' }
+      return this.description;
+    },
+    formatSelection: function(data)
+    {
+      this.description =
+        '<span style="display:block;float:left;width:250px;">' +
+        data.text + '</span><span>' + data.login + '</span><span style="display:block;float:right;">' +
+        data.email + '</span>';
+      return this.description;
+    },
+    escapeMarkup: function (m) { return m; },
+    dropdownCssClass: "bigdrop"
+  }).on("select2-selecting", function(e) {
+    console.log(e.val);
   });
 </script>
