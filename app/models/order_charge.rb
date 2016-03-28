@@ -6,12 +6,15 @@ class OrderCharge < ActiveRecord::Base
   WXPAY_SUCCESS_FLAG = "SUCCESS".freeze
 
   belongs_to :user
+  # Bill order
+  has_many :bill_orders
+  # Product order
   has_many :orders
   has_many :order_items, through: :orders
   has_many :preferential_measures, through: :order_items
   has_many :products, -> { uniq }, through: :order_items
 
-  validates_presence_of :user_id
+  #validates_presence_of :user_id
 
   enum payment: { alipay: 0, alipay_wap: 1, alipay_qr: 2, wx: 3, wx_pub: 4, wx_pub_qr: 5, yeepay_wap: 6 }
 
@@ -44,7 +47,7 @@ class OrderCharge < ActiveRecord::Base
   end
 
   def pay_amount
-    orders.sum(:pay_amount)
+    orders.sum(:pay_amount) + bill_orders.sum(:pay_amount)
   end
 
   def check_paid?
@@ -62,6 +65,7 @@ class OrderCharge < ActiveRecord::Base
       #TODO
       assign_paid_amount_to_order
       orders.each { |order| order.pay! }
+      bill_orders.each { |order| order.pay! }
       true
     else
       invoke_wx_pay_cheking
@@ -80,7 +84,7 @@ class OrderCharge < ActiveRecord::Base
     distribute_amount = self.paid_amount
     distribute_orders_size = orders.size
 
-    orders.each_with_index do |order, index|
+    (orders + bill_orders).each_with_index do |order, index|
       order_paid_amount = if index == distribute_orders_size - 1
                             distribute_amount
                           else

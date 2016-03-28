@@ -36,6 +36,7 @@ module ChargeService extend self
       order_charge.update_with_wx_pay_result(result)
       order_charge.assign_paid_amount_to_order
       order_charge.orders.each { |order| order.pay! }
+      order_charge.bill_orders.each { |order| order.pay! }
     end
 
     true
@@ -43,6 +44,58 @@ module ChargeService extend self
 
   def available_pay?(orders)
     orders.map(&:available_pay?).all? { |result| result }
+  end
+
+  def request_weixin_unifiedorder_for_bill(wx_params)
+    user         = User.find_by(weixin_openid: wx_params[:openid])
+    bill_order   = BillOrder.create!(user: user, product_id: wx_params[:product_id])
+    order_charge = OrderCharge.create!(user: user, bill_orders: [bill_order])
+    order_charge.reset_pay_serial_number
+    order_charge.save(validate: false)
+
+    pay_amount   = Rails.env.production? ? (charge.pay_amount * 100).to_i : 1
+
+    unifiedorder = {
+      body: "店铺支付好多元".first(32),
+      out_trade_no: order_charge.pay_serial_number,
+      total_fee: pay_amount, # 需要转换为分
+      spbill_create_ip: '127.0.0.1',
+      notify_url: 'http://ssobu.ngrok.cc/pay_notify/wechat_notify',
+      trade_type: 'NATIVE',
+      product_id: wx_params[:product_id],
+      nonce_str: SecureRandom.hex
+    }
+
+    Rails.logger.debug("unifiedorder_params: #{unifiedorder}")
+    res = WxPay::Service.invoke_unifiedorder(unifiedorder)
+
+    unifiedorder_result = {
+      return_code: "SUCCESS",
+      appid: WxPay.appid,
+      mch_id: WxPay.mch_id,
+      nonce_str: SecureRandom.hex,
+    }
+    if res.success?
+      order_charge.update_columns(
+        prepay_id: res["prepay_id"],
+        wx_code_url: res["code_url"],
+        wx_trade_type: res["trade_type"],
+        prepay_id_expired_at: Time.current + 2.hours
+      )
+      unifiedorder_result.merge!(
+        prepay_id: res['prepay_id'],
+        result_code: 'SUCCESS',
+      )
+    else
+      Rails.logger.debug("set prepay_id fail: #{res}")
+      unifiedorder_result.merge!(
+        prepay_id: res['prepay_id'],
+        result_code: 'FAIL',
+      )
+    end
+    sign = WxPay::Sign.generate(unifiedorder_result)
+    unifiedorder_result[:sign] = sign
+    unifiedorder_result
   end
 
   private

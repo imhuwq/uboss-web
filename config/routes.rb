@@ -136,8 +136,7 @@ Rails.application.routes.draw do
   end
   resource :pay_notify, only: [] do
     collection do
-      post :wechat_notify
-      post :wechat_alarm
+      post :wechat_notify, :wechat_callback, :wechat_alarm
     end
   end
   resources :privilege_cards, only: [:show, :index] do
