@@ -4,7 +4,7 @@ class ActivityInfo < ActiveRecord::Base
   has_one_content name: :description
 
   belongs_to :promotion_activity
-  has_many   :activity_prize, dependent: :destroy
+  has_many   :activity_prizes, dependent: :destroy
   has_many   :activity_draw_records, dependent: :destroy
   validates :activity_type, :name, :expiry_days, :win_count, :win_rate, presence: true
   validates :activity_type, inclusion: { in: %w(live share) }
