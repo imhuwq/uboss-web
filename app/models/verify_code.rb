@@ -18,7 +18,7 @@ class VerifyCode < ActiveRecord::Base
   scope :activity_today, ->(user) { where(verified: true).with_activity_user(user).
                            where('verify_codes.updated_at BETWEEN ? AND ?', Time.now.beginning_of_day, Time.now.end_of_day) }
   scope :activity_total, ->(user) { where(verified: true).with_activity_user(user) }
-  scope :activity_noverified_total, ->(user) { where(verified: false).with_activity_user(user) }
+  scope :activity_noverified_total_for_customer, ->(user) { where(verified: false).joins(:activity_prize).where('activity_prizes.prize_winner_id = ? ', user.id) }
 
   after_commit :call_verify_code_verified_handler, if: -> {
     previous_changes.include?(:verified) && previous_changes[:verified].last == true

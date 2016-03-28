@@ -17,7 +17,7 @@ class AccountsController < ApplicationController
     @statistics = {}
     @statistics[:so_unpay]               = @service_orders.unpay.count
     @statistics[:so_payed]               = @service_orders.payed.count
-    @statistics[:so_payed_join_activity] = @service_orders.payed.count + VerifyCode.activity_noverified_total(current_user).size
+    @statistics[:so_payed_join_activity] = @service_orders.payed.count + VerifyCode.activity_noverified_total_for_customer(current_user).size
     @statistics[:so_unevaluate]          = so_unevaluate(@service_orders).count
 
     @statistics[:oo_unpay]               = @ordinary_orders.unpay.count
