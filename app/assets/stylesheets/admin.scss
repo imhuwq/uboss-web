@@ -541,3 +541,7 @@ a.admin-box:hover,a.admin-box:focus{opacity: 0.9;  filter: alpha(opacity=90);col
 .hidden{
   display: none;
 }
+.word-break {
+  word-wrap: break-word;
+  word-break: normal;
+}
