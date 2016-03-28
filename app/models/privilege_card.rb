@@ -50,6 +50,7 @@ class PrivilegeCard < ActiveRecord::Base
 
   def ordinary_store_qrcode_img_url(expire = false)
     if ordinary_store_qrcode_img.new_record? || daily_expired_or_info_charged?(expire)
+      init_sharing_node
       delay.get_and_save_store_qrcode_url
       return "http://imager.ulaiber.com/req/2?#{ordinary_store_qrcode_params.merge(mode: 0).to_param}"
     end
@@ -59,6 +60,7 @@ class PrivilegeCard < ActiveRecord::Base
 
   def service_store_qrcode_img_url(expire = false)
     if service_store_qrcode_img.new_record? || daily_expired_or_info_charged?(expire)
+      init_sharing_node
       delay.get_and_save_store_qrcode_url
       return "http://imager.ulaiber.com/req/2?#{service_store_qrcode_params.merge(mode: 0).to_param}"
     end
@@ -69,7 +71,12 @@ class PrivilegeCard < ActiveRecord::Base
   private
 
   def create_store_qrcode_img
+    init_sharing_node
     delay.get_and_save_store_qrcode_url
+  end
+
+  def init_sharing_node
+    SharingNode.find_or_create_by(user_id: user_id, seller_id: seller_id)
   end
 
   def get_and_save_store_qrcode_url
@@ -158,7 +165,7 @@ class PrivilegeCard < ActiveRecord::Base
   end
 
   def sharing_node
-    @sharing_node ||= SharingNode.find_or_create_by(user_id: user_id, seller_id: seller_id)
+    @sharing_node ||= SharingNode.find_by(user_id: user_id, seller_id: seller_id)
   end
 
   def default_host
