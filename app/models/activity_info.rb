@@ -21,20 +21,29 @@ class ActivityInfo < ActiveRecord::Base
 
   def prize_arr
     if activity_type == 'live'
-      @win_count = win_count.to_f
+      @win_count = win_count
     elsif activity_type == 'share'
       @win_count = win_count / 2
     else
       raise RuntimeError.new('unexpected activity_type')
     end
     @win_rate = win_rate.to_f * 0.01
-    total = @win_count / @win_rate
-    prize_step = (total / @win_count).to_i
+    prize_step = 1 / @win_rate
+    @prize_step = prize_step.to_i
+    f = prize_step - @prize_step
     arr = []
     i = 1
-    win_count.times do
-      arr << i
-      i += prize_step
+    e = 0
+    @win_count.times do
+      if e < 1
+        arr << i
+        i += @prize_step
+      else
+        arr << i + 1
+        e -= 1
+        i += @prize_step + 1
+      end
+      e += f
     end
 
     arr
