@@ -49,9 +49,12 @@ class HomeController < ApplicationController
     if @promotion_activity.present?
       redirect_to promotion_activity_path(@promotion_activity, type: 'live')
     else
-      authenticate_user!
-      if ['ordinary', 'service'].include?(params[:type]) && (privilege_card = PrivilegeCard.find_or_active_card(current_user.id, params[:sid]))
-        @qrcode_img_url = params[:type] == 'ordinary' ? privilege_card.ordinary_store_qrcode_img_url(true) : privilege_card.service_store_qrcode_img_url(true)
+      if current_user
+        if ['ordinary', 'service'].include?(params[:type]) && (privilege_card = PrivilegeCard.find_or_active_card(current_user.id, params[:sid]))
+          @qrcode_img_url = params[:type] == 'ordinary' ? privilege_card.ordinary_store_qrcode_img_url(true) : privilege_card.service_store_qrcode_img_url(true)
+        end
+      else
+        authenticate_user!
       end
 
       render layout: nil
