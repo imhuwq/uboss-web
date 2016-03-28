@@ -390,6 +390,7 @@ Rails.application.routes.draw do
       root 'dashboard#index'
 
       resources :categories, except: [:show] do
+        get :sort, on: :member
         post :update_categories, on: :collection
         post :update_category_name,  on: :member
         post :update_category_img, on: :collection

@@ -11,8 +11,8 @@
 <div class="admin-box beige-bg-color">
   <h4 class="edit-title">菜品信息</h4>
   <%= f.input :name %>
-  <%= hidden_field_tag :pre_load_tages, @dishes_product.categories.collect(&:name).join(',') %>
-  <%= hidden_field_tag :tages, current_user.categories.collect(&:name).join(',') %>
+  <%= hidden_field_tag :pre_load_tages, @dishes_product.categories.dishes_categories.collect(&:name).join(',') %>
+  <%= hidden_field_tag :tages, current_user.categories.dishes_categories.collect(&:name).join(',') %>
   <div id="category">
   </div>
   <%= f.input :present_price, hint: '若菜品有多种规格,价格信息在菜品规格中设置' %>

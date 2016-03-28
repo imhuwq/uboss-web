@@ -10,6 +10,16 @@ class Admin::CategoriesController < AdminController
     end
   end
 
+  def sort
+    @dishes = params[:dishes]
+    if params[:opt] == 'up'
+      @category.move_higher
+    else
+      @category.move_lower
+    end
+    @categories = current_user.categories.dishes_categories.includes(:products)
+  end
+
   def new
     @dishes = params[:dishes]
   end

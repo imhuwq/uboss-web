@@ -223,6 +223,7 @@ class Product < ActiveRecord::Base
           category.use_in_store = false
         end
         category.save
+        category.update(position: nil) if self.type == 'OrdinaryProduct'
         self.categories << category
       end
     end

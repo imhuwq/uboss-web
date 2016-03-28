@@ -1,3 +1,4 @@
+<div class='dises-categories-table-wrap'>
 <%= upyun_meta_tags prefix: "asset_img/avatar" %>
 <div class="index_list">
   <table class="list-table">
@@ -15,7 +16,22 @@
 
         <td><%= text_field_tag "categories[#{i}][name]", category.name, class:"update_item", data: { url:  "/admin/categories/#{category.id}/update_category_name"}, disabled: true %></td>
         <td><%= category.products.size %></td>
-        <td><%= category.position %></td>
+        <td>
+          <%= category.position %>
+          <% if i == 0 %>
+            <div class='font-sort'>
+              <%= link_to sort_admin_category_path(id: category.id, opt: 'down'), remote: true do %>
+                <i class='fa fa-caret-down'></i>
+              <% end %>
+            </div>
+          <% else %>
+            <div class='font-sort'>
+              <%= link_to sort_admin_category_path(id: category.id, opt: 'up'), remote: true do %>
+                <i class='fa fa-sort-asc'></i>
+              <% end %>
+            </div>
+          <% end %>
+        </td>
         <td>
           <% if can? :update, category %>
             <%= link_to url_for(action: :edit, id: category.id, dishes: @dishes), class:'edit-icon', title: '编辑' do %>
@@ -30,4 +46,5 @@
       </tr>
     <% end %>
   </table>
+</div>
 </div>
