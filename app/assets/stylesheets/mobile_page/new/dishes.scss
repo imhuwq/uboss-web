@@ -183,7 +183,7 @@
         }
     }
 }
-.dishes-sku-num{
+.dishes-sku-num,#dishes-order-list{
     margin-left: 10px;
     line-height: 44px;
     padding: 0;
@@ -225,9 +225,55 @@
         font-size: 20px;       
     }
 }
+/* 菜单弹出框 */
+#dishes-order-box{    
+    z-index: 77;
+    height: calc(100% - 45px);
+    height: -webkit-calc(100% - 45px);
+}
+#dishes-order-box .dishes-pop-container{  
+    padding-top: 35px;
+    overflow-y: scroll;
+}
+.dishes-order-container{
+    position: relative;
+    background: #fff;
+    padding-left:10px ;
+}
+.order-clear { 
+    background:image-url('mobile/delete.png') left center no-repeat;
+    background-position-x: 10px;
+    background-size:auto 14px; 
+    padding: 10px 10px 10px 30px;
+    color: #aaa;
+    line-height: 1;
+    border-bottom: 1px solid #eee;
+    position: absolute;
+    width: calc(100% - 40px);
+    width: -webkit-calc(100% - 40px);
+    top: -35px;
+    left: 0px;
+    
+}
+#dishes-order-list{
+    line-height: 1;
+    margin: 0;
+    .num-box{
+        margin-top: 8px;
+    }
+}
+.order-name{
+    border-bottom: 1px solid #eee;
+    padding: 10px 10px 8px 0;
+    font-size: 16px;
+    font-weight: lighter;
+    .name{
+        color: #ee7727; 
+        margin-bottom: 8px;
+    }
+}
 .dishes-buy-bar{
     background: #23272a;
-    border-top: 1px solid #333;
     width: 100%;
     position: fixed;
     line-height: 44px;
