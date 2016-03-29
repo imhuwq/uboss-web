@@ -132,9 +132,7 @@
   <br />
   <div class="text-center">
     <% if can? :update, @promotion_activity %>
-      <% if @promotion_activity.status == 'unpublish' %>
-        <%= link_to("上架", url_for(action: :change_status, id: @promotion_activity.id, status: :published), method: :patch, class: "btn btn-large red-btn", role: "button") %>
-     <% else %>
+      <% if @promotion_activity.status == 'published' %>
        <%= link_to("取消上架", url_for(action: :change_status,id: @promotion_activity.id, status: :unpublish),
                    method: :patch, class: "btn btn-large ",:role=>"button") %>
       <% end %>
