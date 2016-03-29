@@ -10,8 +10,8 @@ class ActivityInfoTest < ActiveSupport::TestCase
     share_activity_info = create(:share_activity_info, promotion_activity: promotion_activity, win_rate: 100)
 
     draw_prize_result = share_activity_info.draw_share_prize(winner.id, sharer.id)
-    assert_equal true, draw_prize_result[:winner_activity_prize_id].present?
-    assert_equal true, draw_prize_result[:sharer_activity_prize_id].present?
+    assert_equal true, draw_prize_result[:winner_activity_prize_id].try(:present?)
+    assert_equal true, draw_prize_result[:sharer_activity_prize_id].try(:present?)
     assert_equal winner.id, ActivityPrize.find_by_id(draw_prize_result[:winner_activity_prize_id]).prize_winner.id
     assert_equal sharer.id, ActivityPrize.find_by_id(draw_prize_result[:sharer_activity_prize_id]).prize_winner.id
     assert_equal sharer.id, ActivityPrize.find_by_id(draw_prize_result[:winner_activity_prize_id]).sharer_id
@@ -22,6 +22,7 @@ class ActivityInfoTest < ActiveSupport::TestCase
     assert_equal true, verify_code.present?
     assert_equal true, verify_code.verify_activity_code(seller)
     assert_equal 100, verify_code.activity_prize.activity_info.win_rate
+    assert_equal share_activity_info.win_rate , ActivityPrize.find_by_id(draw_prize_result[:winner_activity_prize_id]).info['win_rate']
   end
 
   test '#should not create share_activity_prize twice when win_rate is 1%' do
@@ -36,7 +37,6 @@ class ActivityInfoTest < ActiveSupport::TestCase
     draw_prize_result2 = share_activity_info.draw_share_prize(winner2.id, sharer.id)
     assert_equal false, draw_prize_result.present? && draw_prize_result2.present?
     assert_equal true, ActivityDrawRecord.where(user_id: winner.id, sharer_id: sharer.id, activity_info_id: share_activity_info.id).present?
-    assert_equal share_activity_info.win_rate , ActivityPrize.find_by_id(draw_prize_result[:winner_activity_prize_id]).info['win_rate']
   end
 
   test '#should raise exception when someone draw_share_prize from one sharer twice' do
@@ -77,4 +77,24 @@ class ActivityInfoTest < ActiveSupport::TestCase
     end
 
   end
+
+  test '#should recaculate surplus when update win_rate' do
+    seller = create :seller_user
+    winner = create :user
+    sharer = create :user
+    winner2 = create :user
+    winner3 = create :user
+    promotion_activity = create(:active_promotion_activity, user: seller)
+    share_activity_info = create(:share_activity_info, promotion_activity: promotion_activity, win_rate: 100)
+    assert_equal share_activity_info.surplus, share_activity_info.win_count
+
+    share_activity_info.draw_share_prize(winner.id, sharer.id)
+    share_activity_info.draw_share_prize(winner2.id, sharer.id)
+    share_activity_info.draw_share_prize(winner3.id, sharer.id)
+    draw_count = share_activity_info.draw_count
+    share_activity_info.update(win_rate: 90)
+    assert_equal false, share_activity_info.surplus == share_activity_info.win_count
+    assert_equal share_activity_info.surplus + draw_count, share_activity_info.win_count
+  end
+
 end

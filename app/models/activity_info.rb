@@ -15,14 +15,16 @@ class ActivityInfo < ActiveRecord::Base
   validates :win_count, :expiry_days, numericality: { greater_than: 0 }
   validates :promotion_activity_id, uniqueness: { scope: :activity_type }
 
+  before_save :examine_win_rate
+
   def verified_verify_codes
     prize_ids = activity_type == 'live' ? live_prizes.pluck(:id) : share_prizes.pluck(:id)
     VerifyCode.where(activity_prize_id: prize_ids, verified: true)
   end
 
   def prize_arr
-    prize_count = activity_type == 'live' ? win_count : win_count / 2
-    prize_interval = activity_type == 'live' ? 100 / win_rate : 100*2 / win_rate
+    prize_count = activity_type == 'live' ? surplus : surplus / 2
+    prize_interval = 100 / win_rate
     prize_step = prize_interval.to_i
     f = prize_interval - prize_step
     arr = []
@@ -104,6 +106,20 @@ class ActivityInfo < ActiveRecord::Base
       end
     end
   end
+
+  def examine_win_rate
+    if attribute_changed?(:win_rate)
+      if new_record?
+        self.surplus = self.win_count
+        self.draw_count = 0
+      else
+        self.surplus -= self.draw_count
+        self.draw_count = 0
+      end
+    end
+
+  end
+
   class RepeatedDrawError < StandardError
   end
   class ActivityNotPublishError < StandardError

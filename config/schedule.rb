@@ -19,6 +19,10 @@ every 1.hours, roles: [:db] do
   runner "AutoSignOrderJob.perform_later"
 end
 
-every 1.day, at: "1:55am", roles: [:db] do
+# every 1.day, at: "1:55am", roles: [:db] do
+#   runner "ExpiryActivityVerifyCodeJob.perform_later"
+# end
+
+every 30.minute, roles: [:db] do
   runner "ExpiryActivityVerifyCodeJob.perform_later"
 end
