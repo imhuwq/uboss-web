@@ -34,7 +34,7 @@ class PromotionActivity < ActiveRecord::Base
 
   private
   def seller_can_join_but_one_activity
-    if self.status == "published" && PromotionActivity.where(user_id: user_id, status: 1).count > 0
+    if previous_changes.include?(:status) && self.status == "published" && PromotionActivity.where(user_id: user_id, status: 1).count > 0
       self.errors.add(:base, "一个商家只能参与中一个活动，请把该商家参与中的活动下架再上架新的活动。")
       return false
     end

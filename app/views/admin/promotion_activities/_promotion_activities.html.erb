@@ -38,7 +38,11 @@
               remote: true, method: :patch, data: { disable_with: '<i class="fa fa-spinner"></i>' },
               class: "btn btn-mid btn-block change-status-btn") %>
               </p>
-              <%= link_to "查看详情", admin_promotion_activity_path(promotion_activity), style: "font-size:12px;" %>
+              <p>
+              <%= link_to url_for(action: :edit, id: promotion_activity.id), class:'edit-icon', title: '编辑' do %>
+                <i class="fa fa-pencil-square-o"></i>
+              <% end %>
+              </p>
             <% else %>
               <p><%= link_to "查看详情", admin_promotion_activity_path(promotion_activity), style: "font-size:12px;" %></p>
             <% end %>
