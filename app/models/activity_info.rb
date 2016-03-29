@@ -3,11 +3,12 @@ class ActivityInfo < ActiveRecord::Base
 
   has_one_content name: :description
 
-  belongs_to :promotion_activity
   has_many   :activity_prizes, dependent: :destroy
   has_many   :live_prizes,  -> { where(activity_type: 'live') },  class_name: 'ActivityPrize'
   has_many   :share_prizes, -> { where(activity_type: 'share') }, class_name: 'ActivityPrize'
   has_many   :activity_draw_records, dependent: :destroy
+  belongs_to :promotion_activity
+
   validates :activity_type, :name, :expiry_days, :win_count, :win_rate, presence: true
   validates :activity_type, inclusion: { in: %w(live share) }
   validates :win_rate, numericality: { greater_than: 0, less_than_or_equal_to: 100 }
@@ -20,29 +21,21 @@ class ActivityInfo < ActiveRecord::Base
   end
 
   def prize_arr
-    if activity_type == 'live'
-      @win_count = win_count
-    elsif activity_type == 'share'
-      @win_count = win_count / 2
-    else
-      raise RuntimeError.new('unexpected activity_type')
-    end
-    @win_rate = win_rate.to_f * 0.01
-    prize_step = 1 / @win_rate
-    @prize_step = prize_step.to_i
-    f = prize_step - @prize_step
+    prize_count = activity_type == 'live' ? win_count : win_count / 2
+    prize_interval = activity_type == 'live' ? 100 / win_rate : 100*2 / win_rate
+    prize_step = prize_interval.to_i
+    f = prize_interval - prize_step
     arr = []
-    i = 1
+    i = 0
     e = 0
-    @win_count.times do
-      if e < 1
-        arr << i
-        i += @prize_step
-      else
-        arr << i + 1
+
+    prize_count.times do
+      i += prize_step
+      if e >= 1
         e -= 1
-        i += @prize_step + 1
+        i += 1
       end
+      arr << i
       e += f
     end
 
