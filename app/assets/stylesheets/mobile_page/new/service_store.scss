@@ -124,7 +124,11 @@
     background: #f9ba10;
     transform: rotate(45deg);
     -webkit-transform: rotate(45deg);
+    &.gray-bg{
+      background:#888;
+    }
   }
+
 }
 
 #service_stores_verify_detail {

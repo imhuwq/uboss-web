@@ -21,6 +21,16 @@ class VerifyCodesController < ApplicationController
     @activity_prize = ActivityPrize.find(params[:id])
     @verify_code = @activity_prize.verify_code
     @activity_info = @activity_prize.activity_info
+    if !@verify_code.expired && !@verify_code.verified
+      @hint = '未使用'
+      @css_class = ''
+    elsif !@verify_code.expired
+      @hint = '已消费'
+      @css_class = 'gray-bg'
+    else
+      @hint = '已过期'
+      @css_class = 'gray-bg'
+    end
   end
 
 end

@@ -10,7 +10,7 @@
     <div class="service-code bg-white gap m-bottom10">
     	<span class="pull-left gray-color">验证券密码 ：</span>
       <span class="main-color"><%= @verify_code.code %></span>
-      <span class="status-icon"><%= @verify_code.verified ? '已消费' : '未使用' %></span>
+      <span class="status-icon <%= @css_class %>"><%= @hint %></span>
     </div>
     <div class="gap word-break">
       <h3 class="m-bottom10">活动说明</h3>
