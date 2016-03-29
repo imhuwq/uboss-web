@@ -65,7 +65,6 @@ Rails.application.routes.draw do
   end
   resources :orders, only: [:new, :create, :show] do
     get 'received', on: :member
-    get 'pay_complete', on: :member
     get 'cancel', on: :member
     post 'change_address', on: :collection
     #resource :charge, only: [:create]
@@ -85,8 +84,10 @@ Rails.application.routes.draw do
   end
 
   resources :charges, only: [:show] do
+    post 'bill_payments', on: :collection
     get 'payments',     on: :collection
     get 'pay_complete', on: :member
+    get 'bill_complete', on: :member
   end
 
   resources :products, only: [:index, :show] do
@@ -109,6 +110,7 @@ Rails.application.routes.draw do
   end
 
   resources :service_stores, only: [:index, :show] do
+    resources :bill_orders, only: [:new]
     get :verify_detail, on: :member
     get :share, on: :member
     post :verify, on: :member
@@ -133,6 +135,7 @@ Rails.application.routes.draw do
       get :lotteries, on: :collection
       get :lottery_detail, on: :collection
     end
+    resources :bill_orders, only: [:index, :show, :create]
   end
   resource :pay_notify, only: [] do
     collection do

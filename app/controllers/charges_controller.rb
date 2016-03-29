@@ -1,6 +1,39 @@
 class ChargesController < ApplicationController
 
-  before_action :authenticate_user!
+  before_action :authenticate_user!, only: [:payments, :pay_complete]
+  before_action :authenticate_weixin_user_token!, only: [:bill_payments, :bill_complete]
+
+  def bill_payments
+    @service_store = ServiceStore.find(params[:service_store_id])
+    trade_type = browser.wechat? ? ChargeService::WX_JS_TRADETYPE : ChargeService::WX_NATIVE_TRADETYPE
+    @order_charge = ChargeService.create_bill_charge(
+      service_store: @service_store,
+      pay_amount: params[:pay_amount],
+      user: current_user,
+      weixin_openid: get_weixin_openid_form_session,
+      remote_ip: request.ip,
+      trade_type: trade_type
+    )
+    @pay_p = {
+      appId: WxPay.appid,
+      timeStamp: Time.now.to_i.to_s,
+      nonceStr: SecureRandom.hex,
+      package: "prepay_id=#{@order_charge.prepay_id}",
+      signType: "MD5"
+    }
+    @pay_sign = WxPay::Sign.generate(@pay_p)
+  end
+
+  def bill_complete
+    @order_charge = if current_user.present?
+                      current_user.order_charges.find(params[:id])
+                    else
+                      OrderCharge.joins(:bill_orders).
+                        where(bill_orders: { weixin_openid: get_weixin_openid_form_session }).
+                        find(params[:id])
+                    end
+    @order_charge.check_paid?
+  end
 
   def payments
     order_ids = params[:order_ids].split(',')
@@ -27,7 +60,6 @@ class ChargesController < ApplicationController
       package: "prepay_id=#{@order_charge.prepay_id}",
       signType: "MD5"
     }
-    p @pay_p
     @pay_sign = WxPay::Sign.generate(@pay_p)
     render layout: 'mobile'
   end

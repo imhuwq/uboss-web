@@ -14,7 +14,9 @@ class BillOrder < ActiveRecord::Base
   belongs_to :seller, class_name: 'User'
   belongs_to :order_charge
 
-  validates_presence_of :seller
+  validates_presence_of :seller, :pay_amount
+  validates_presence_of :weixin_openid, if: -> { self.user.blank? }
+  validates_presence_of :user, if: -> { self.weixin_openid.blank? }
 
   enum state: { unpay: 0, payed: 1, closed: 3 }
 
@@ -43,6 +45,14 @@ class BillOrder < ActiveRecord::Base
       User.find_by(id: seller_id),
       BigDecimal.new(pay_amount)
     )
+  end
+
+  def store_name
+    @store_name ||= seller.service_store.store_name
+  end
+
+  def weixin_openid
+    super || (user && user.weixin_openid)
   end
 
   def product_id=(wechat_product_id)

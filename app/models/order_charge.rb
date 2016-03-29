@@ -30,7 +30,11 @@ class OrderCharge < ActiveRecord::Base
   end
 
   def unpay?
-    orders.any? { |order| order.state == 'unpay' }
+    if orders.exists?
+      orders.any? { |order| order.state == 'unpay' }
+    else
+      bill_orders.any? { |order| order.state == 'unpay' }
+    end
   end
 
   def total_privilege_amount
@@ -38,7 +42,13 @@ class OrderCharge < ActiveRecord::Base
   end
 
   def orders_detail
-    @orders_detail ||= products.limit(10).pluck(:name)
+    if orders.exists?
+      @orders_detail ||= products.limit(10).pluck(:name)
+    elsif bill_orders.exists?
+      bill_orders.map do |bill_order|
+        "[#{bill_order.store_name}]-店铺支付"
+      end
+    end
   end
 
   def reset_pay_serial_number

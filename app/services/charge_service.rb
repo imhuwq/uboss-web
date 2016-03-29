@@ -12,10 +12,30 @@ module ChargeService extend self
     order_charge = find_or_create_order_charge_for_orders(orders, options)
 
     if !order_charge.wx_prepay_valid?
-      refresh_order_wx_charge(orders, order_charge, options)
+      refresh_order_wx_charge(order_charge, options)
     else
       order_charge
     end
+  end
+
+  def create_bill_charge(options)
+    validate_options(options)
+
+    weixin_openid = options[:weixin_openid]
+    user = options.fetch(:user) do
+      User.find_by(weixin_openid: weixin_openid)
+    end
+    seller = options.fetch(:service_store).user
+
+    bill_order   = BillOrder.create!(
+      user: user,
+      seller: seller,
+      weixin_openid: options[:weixin_openid],
+      pay_amount: options.fetch(:pay_amount)
+    )
+    order_charge = OrderCharge.create!(user: user, bill_orders: [bill_order])
+
+    refresh_order_wx_charge(order_charge, options)
   end
 
   def process_paid_result(options = {})
@@ -48,7 +68,11 @@ module ChargeService extend self
 
   def request_weixin_unifiedorder_for_bill(wx_params)
     user         = User.find_by(weixin_openid: wx_params[:openid])
-    bill_order   = BillOrder.create!(user: user, product_id: wx_params[:product_id])
+    bill_order   = BillOrder.create!(
+      user: user,
+      weixin_openid: wx_params[:openid],
+      product_id: wx_params[:product_id]
+    )
     order_charge = OrderCharge.create!(user: user, bill_orders: [bill_order])
     order_charge.reset_pay_serial_number
     order_charge.save(validate: false)
@@ -56,11 +80,11 @@ module ChargeService extend self
     pay_amount   = Rails.env.production? ? (charge.pay_amount * 100).to_i : 1
 
     unifiedorder = {
-      body: "店铺支付好多元".first(32),
+      body: "#{SITE_NAME}订单-#{order_charge.orders_detail.join('、')}".first(32),
       out_trade_no: order_charge.pay_serial_number,
       total_fee: pay_amount, # 需要转换为分
       spbill_create_ip: '127.0.0.1',
-      notify_url: 'http://ssobu.ngrok.cc/pay_notify/wechat_notify',
+      notify_url: wx_notify_url,
       trade_type: 'NATIVE',
       product_id: wx_params[:product_id],
       nonce_str: SecureRandom.hex
@@ -82,16 +106,10 @@ module ChargeService extend self
         wx_trade_type: res["trade_type"],
         prepay_id_expired_at: Time.current + 2.hours
       )
-      unifiedorder_result.merge!(
-        prepay_id: res['prepay_id'],
-        result_code: 'SUCCESS',
-      )
+      unifiedorder_result.merge!(prepay_id: res['prepay_id'], result_code: 'SUCCESS')
     else
       Rails.logger.debug("set prepay_id fail: #{res}")
-      unifiedorder_result.merge!(
-        prepay_id: res['prepay_id'],
-        result_code: 'FAIL',
-      )
+      unifiedorder_result.merge!(prepay_id: res['prepay_id'], result_code: 'FAIL')
     end
     sign = WxPay::Sign.generate(unifiedorder_result)
     unifiedorder_result[:sign] = sign
@@ -130,7 +148,7 @@ module ChargeService extend self
   end
 
   # 只有当微信支付时使用到，订单一旦确认(confirm)，即进行获取
-  def refresh_order_wx_charge(orders, charge, options)
+  def refresh_order_wx_charge(charge, options)
     # 重新更新支付流水号
     charge.reset_pay_serial_number
     charge.prepay_id_expired_at = Time.current + 2.hours
@@ -164,7 +182,7 @@ module ChargeService extend self
       nonce_str: SecureRandom.hex
     }
     if unifiedorder[:trade_type] == WX_JS_TRADETYPE
-      unifiedorder[:openid] = charge.user.weixin_openid
+      unifiedorder[:openid] = options[:weixin_openid] || charge.user.weixin_openid
     end
 
     Rails.logger.debug("unifiedorder_params: #{unifiedorder}")

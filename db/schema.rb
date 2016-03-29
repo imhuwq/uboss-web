@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160328061808) do
+ActiveRecord::Schema.define(version: 20160329080524) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -129,6 +129,7 @@ ActiveRecord::Schema.define(version: 20160328061808) do
     t.integer  "order_charge_id"
     t.datetime "created_at",      null: false
     t.datetime "updated_at",      null: false
+    t.string   "weixin_openid"
   end
 
   add_index "bill_orders", ["number"], name: "index_bill_orders_on_number", unique: true, using: :btree

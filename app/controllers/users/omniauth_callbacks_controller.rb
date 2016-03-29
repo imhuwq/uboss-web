@@ -10,7 +10,7 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
     else
       session["devise.wechat_data"] = auth_info
     end
-    if current_user.blank? && after_oauth_success_redirect_path.match(/orders/).blank?
+    if current_user.blank? && path_force_login?
       if after_oauth_success_redirect_path.match(/promotion_activities/).present?
         redirect_to new_user_session_path(redirect: 'activity')
       else
@@ -35,6 +35,10 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
 
   def after_oauth_success_redirect_path
     session[:oauth_callback_redirect_path] || root_path
+  end
+
+  def path_force_login?
+    after_oauth_success_redirect_path.match(/orders|bill_orders/).blank?
   end
 
   # The path used when OmniAuth fails

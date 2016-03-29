@@ -1,0 +1,30 @@
+<%= content_for :page_title do %>
+  支付结果
+<% end %>
+
+<%= content_for :header_left do %>
+  <a class="back" onclick="history.go(-1)"><%= image_tag 'mobile/right.png' %></a>
+<% end %>
+
+<div class="box m-top10">
+  <% if @order_charge.unpay? %>
+    <div class="bg-white">
+      <div class="box-m40 text-center">
+        <br />
+        <h2>暂未收到订单支付结果</h2>
+        <br />
+        <div class="gray-color">支付结果可能会有几分钟延迟，您可以刷新结果或稍晚查看我的订单。</div>
+        <br />
+      </div>
+    </div><!-- bg-white -->
+
+  <% else %>
+    <div class="bg-white">
+      <div class="box-m40 text-center">
+        <br />
+        <h1>支付成功</h1>
+        <br />
+      </div>
+    </div><!-- bg-white -->
+  <% end %>
+</div><!-- box -->

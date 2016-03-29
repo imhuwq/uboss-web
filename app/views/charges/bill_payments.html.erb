@@ -29,7 +29,6 @@
   <% end %>
   <div class="content">
     <p>应付款：￥<span id="payment_total_price"><%= @order_charge.pay_amount %></span></p>
-    <p class="gray-color"><small>已优惠了<%= @order_charge.total_privilege_amount %>元</small></p>
   </div>
 </div><!-- order-price -->
 
@@ -49,7 +48,7 @@
                "signType": "<%= @pay_p[:signType] %>",
                "paySign": "<%= @pay_sign %>", // 支付签名
                "success": function (res) {
-                 window.location.href = "/charges/" + "<%= @order_charge.id %>" + "/pay_complete";
+                 window.location.href = "/charges/" + "<%= @order_charge.id %>" + "/bill_complete";
                }
              });
            });
