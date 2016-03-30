@@ -68,9 +68,11 @@ class BillOrder < ActiveRecord::Base
   private
 
   def invoke_payed_processes
-    # TODO
     # divide order
+    BillOrderDivideJob.set(wait: 3.seconds).perform_later(self)
+    # TODO
     # notification
+    BillOrderNotifyJob.perform_later(self)
   end
 
 end
