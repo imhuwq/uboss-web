@@ -20,6 +20,7 @@
 #= require mobile_page/evaluations
 #= require mobile_page/service_store
 #= require mobile_page/recommend
+#= require mobile_page/bill_orders
 #= require shared/count_down
 #= require shared/city_select
 #= require shared/login

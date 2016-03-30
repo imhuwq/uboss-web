@@ -84,7 +84,7 @@ Rails.application.routes.draw do
   end
 
   resources :charges, only: [:show] do
-    post 'bill_payments', on: :collection
+    get 'pay_bill', on: :collection
     get 'payments',     on: :collection
     get 'pay_complete', on: :member
     get 'bill_complete', on: :member
@@ -109,8 +109,8 @@ Rails.application.routes.draw do
     get :success, on: :member
   end
 
+  resources :bill_orders, only: [:create]
   resources :service_stores, only: [:index, :show] do
-    resources :bill_orders, only: [:new]
     get :verify_detail, on: :member
     get :share, on: :member
     post :verify, on: :member

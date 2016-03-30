@@ -1,27 +1,10 @@
 class ChargesController < ApplicationController
 
   before_action :authenticate_user!, only: [:payments, :pay_complete]
-  before_action :authenticate_weixin_user_token!, only: [:bill_payments, :bill_complete]
+  before_action :authenticate_weixin_user_token!, only: [:pay_bill, :bill_complete]
 
-  def bill_payments
-    @service_store = ServiceStore.find(params[:service_store_id])
-    trade_type = browser.wechat? ? ChargeService::WX_JS_TRADETYPE : ChargeService::WX_NATIVE_TRADETYPE
-    @order_charge = ChargeService.create_bill_charge(
-      service_store: @service_store,
-      pay_amount: params[:pay_amount],
-      user: current_user,
-      weixin_openid: get_weixin_openid_form_session,
-      remote_ip: request.ip,
-      trade_type: trade_type
-    )
-    @pay_p = {
-      appId: WxPay.appid,
-      timeStamp: Time.now.to_i.to_s,
-      nonceStr: SecureRandom.hex,
-      package: "prepay_id=#{@order_charge.prepay_id}",
-      signType: "MD5"
-    }
-    @pay_sign = WxPay::Sign.generate(@pay_p)
+  def pay_bill
+    @service_store = ServiceStore.find(params.fetch(:ssid))
   end
 
   def bill_complete

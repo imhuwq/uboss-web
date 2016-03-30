@@ -1,7 +1,0 @@
-<h3><%= @service_store.store_name %> 线上支付</h3>
-
-<%= form_tag bill_payments_charges_path, method: :post do |f| %>
-  <%= hidden_field_tag :service_store_id, @service_store.id %>
-  <%= text_field_tag :pay_amount, '', type: :tel %>
-  <%= submit_tag '提交' %>
-<% end %>
