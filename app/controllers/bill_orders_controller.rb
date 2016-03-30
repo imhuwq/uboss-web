@@ -1,18 +1,13 @@
 class BillOrdersController < ApplicationController
 
-  before_action :authenticate_user!, only: [:index]
-  before_action :authenticate_weixin_user_token!, only: [:show]
+  before_action :authenticate_user!
 
   def index
     @bill_orders = append_default_filter current_user.bill_orders
   end
 
   def show
-    @bill_order = if current_user.present?
-                    current_user.bill_orders.find(params[:id])
-                  else
-                    BillOrder.where(weixin_openid: get_weixin_openid_form_session).find(params[:id])
-                  end
+    @bill_order = current_user.bill_orders.find(params[:id])
   end
 
   def create

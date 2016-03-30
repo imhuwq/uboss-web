@@ -38,7 +38,7 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
   end
 
   def path_force_login?
-    after_oauth_success_redirect_path.match(/orders|bill_orders/).blank?
+    after_oauth_success_redirect_path.match(/orders|pay_bill|bill_complete/).blank?
   end
 
   # The path used when OmniAuth fails
