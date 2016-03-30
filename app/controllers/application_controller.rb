@@ -68,7 +68,8 @@ class ApplicationController < ActionController::Base
 
   # for actions need weixin openid but not uboss user
   def authenticate_weixin_user_token!
-    return false if !browser.wechat?
+    # Force request wehat token
+    # return false if !browser.wechat?
     return false if current_user && current_user.weixin_openid.present?
     return false if session["devise.wechat_data"].present?
 
