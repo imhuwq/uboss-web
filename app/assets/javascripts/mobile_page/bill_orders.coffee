@@ -1,5 +1,17 @@
 $ ->
+
+  invokePayment = (data) ->
+    UBoss.nami.chooseWXPay
+      "timestamp": data.timeStamp
+      "nonceStr":  data.nonceStr
+      "package":   data.package
+      "signType":  data.signType
+      "paySign":   data.sign
+      "success":   (res) ->
+        window.location.href = "/charges/" + data.order_charge_id + "/bill_complete"
+
   requesting_bill = false
+  requested_data_cache = {}
   $('.req-bill-btn').on 'click', (e)->
     e.preventDefault()
     return false if requesting_bill
@@ -7,8 +19,12 @@ $ ->
     if not pay_amount > 0
       alert('请输入付款金额')
       return false
+    if requested_data_cache["bill-#{pay_amount}"] != undefined
+      invokePayment(requested_data_cache["bill-#{pay_amount}"])
+      return false
     ssid = $('#service_store_id').val()
     requesting_bill = true
+    UBoss.chopper.showSpinner()
     $.ajax
       url: $(this).attr('href'),
       type: 'POST',
@@ -16,14 +32,8 @@ $ ->
         pay_amount: pay_amount
         ssid: ssid
     .done (data)->
-      UBoss.nami.chooseWXPay
-        "timestamp": data.timeStamp
-        "nonceStr":  data.nonceStr
-        "package":   data.package
-        "signType":  data.signType
-        "paySign":   data.sign
-        "success":   (res) ->
-          window.location.href = "/charges/" + data.order_charge_id + "/bill_complete"
+      requested_data_cache["bill-#{Number(data.pay_amount)}"] = data
+      invokePayment(data)
     .fail (xhr, errorType, error)->
       alert(
         try
@@ -33,3 +43,4 @@ $ ->
       )
     .always ->
       requesting_bill = false
+      UBoss.chopper.hideSpinner()
