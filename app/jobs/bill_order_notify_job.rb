@@ -5,7 +5,7 @@ class BillOrderNotifyJob < ActiveJob::Base
   attr_reader :bill_order, :seller, :user, :user_name
 
   def perform(bill_order)
-    @bill_order = bill_order
+    @bill_order = bill_order.reload
     @seller = bill_order.seller
     @user = bill_order.user
     @payer_weixin_openid = @user.weixin_openid || bill_order.weixin_openid

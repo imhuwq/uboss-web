@@ -72,7 +72,7 @@ class BillOrder < ActiveRecord::Base
     BillOrderDivideJob.set(wait: 3.seconds).perform_later(self)
     # TODO
     # notification
-    BillOrderNotifyJob.perform_later(self)
+    BillOrderNotifyJob.set(wait: 2.seconds).perform_later(self)
   end
 
 end

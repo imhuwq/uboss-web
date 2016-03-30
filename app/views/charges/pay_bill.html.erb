@@ -2,7 +2,7 @@
 
 
 <%= hidden_field_tag :service_store_id, @service_store.id %>
-<%= text_field_tag :pay_amount, '', type: :tel %>
+<%= text_field_tag :pay_amount, params[:pay_amount].to_f, type: :tel %>
 <%= link_to "付款", bill_orders_path, class: 'req-bill-btn' %>
 
 <% if browser.wechat? %>
