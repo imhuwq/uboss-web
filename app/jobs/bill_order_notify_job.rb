@@ -8,11 +8,11 @@ class BillOrderNotifyJob < ActiveJob::Base
     @bill_order = bill_order.reload
     @seller = bill_order.seller
     @user = bill_order.user
-    @payer_weixin_openid = @user.weixin_openid || bill_order.weixin_openid
+    @payer_weixin_openid = (@user && @user.weixin_openid) || bill_order.weixin_openid
 
     @user_name = "微信用户"
-    if user.blank? && payer_weixin_openid.present?
-      user_response = weixin_client.user(scan_weixin_openid)
+    if user.blank? && @payer_weixin_openid.present?
+      user_response = $weixin_client.user(@payer_weixin_openid)
       @user_name = user_response.result['nickname'] if user_response.is_ok?
     else
       @user_name = user.identify
