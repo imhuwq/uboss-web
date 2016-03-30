@@ -42,6 +42,10 @@ class ProductsController < ApplicationController
     render json: product.sku_hash
   end
 
+  def info
+    @product = Product.find params[:id]
+  end
+
   def switch_favour
     if current_user.favour_products.exists?(product_id: @product.id)
       current_user.unfavour_product(@product)

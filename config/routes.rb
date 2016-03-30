@@ -81,6 +81,7 @@ Rails.application.routes.draw do
   resources :products, only: [:index, :show] do
     member do
       patch :switch_favour
+      get :info
     end
     get :get_sku, on: :collection
     post :democontent,  on: :collection
@@ -102,7 +103,7 @@ Rails.application.routes.draw do
     get :share, on: :member
     post :verify, on: :member
     resources :menus, only: :index do
-      put :confirm, on: :collection
+      post :confirm, on: :collection
       post :order, on: :collection
     end
   end

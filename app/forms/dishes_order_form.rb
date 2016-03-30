@@ -80,7 +80,7 @@ class DishesOrderForm
   end
 
   def order_items_attributes=(items)
-    @order_items_attributes = items.map do |item|
+    @order_items_attributes = items.map do |_, item|
       item[:sharing_node] = sharing_node if sharing_node
       item[:user_id]      = buyer.id
       item
@@ -88,16 +88,14 @@ class DishesOrderForm
   end
 
   def product_must_be_valid
-    errors.add(:base, "菜品必须为同一商家") if product_inventories.any? { |inventory| inventory.user_id.to_i != seller_id.to_i }
+    errors.add(:base, "菜品必须为同一商家") if product_inventories.any? { |inventory| inventory.product.user_id.to_i != seller_id.to_i }
     product_inventories.detect do |inventory|
+      item_attr = order_items_attributes.detect {|item| item["product_inventory_id"].to_i == inventory.id }
       if !inventory.saling?
         errors.add(:base, "该商品不可售")
-      elsif amount.to_i > inventory.reload.count
+      elsif item_attr["amount"].to_i > inventory.reload.count
         self.amount = inventory.count
-        errors.add(:base, "该商品库存不足，最多购买 #{amount} 件")
-      elsif amount.to_i > 1 && inventory.product.is_official_agent?
-        self.amount = 1
-        errors.add(:base, '创客权只能购买一个')
+        errors.add(:base, "#{inventory.product.name} #{inventory.sku_attributes_str}库存不足，最多购买 #{amount} 件")
       end
     end
   end

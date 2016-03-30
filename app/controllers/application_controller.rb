@@ -148,6 +148,12 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  def authenticate_user_if_browser_wechat
+    if browser.wechat? && session['devise.wechat_data'].blank?
+      authenticate_user!
+    end
+  end
+
   def qr_sharing?
     params['shared'] == 'true'
   end
