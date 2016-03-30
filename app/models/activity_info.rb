@@ -72,6 +72,8 @@ class ActivityInfo < ActiveRecord::Base
                                                         relate_winner_id: winner_id) # 检查这份奖品是因为谁中奖二连带获得的
           VerifyCode.create!(activity_prize_id: winner_activity_prize.id)
           VerifyCode.create!(activity_prize_id: sharer_activity_prize.id)
+        elsif !prize_arr.present? || prize_arr.last <= draw_count
+          raise NoPrizeSurplusError.new('No prize surplus')
         end
         ActivityDrawRecord.create!(activity_info_id: id, user_id: winner_id, sharer_id: sharer_id)
 
@@ -97,6 +99,8 @@ class ActivityInfo < ActiveRecord::Base
           winner_activity_prize = ActivityPrize.create!(activity_info_id: id,
                                                         prize_winner_id: winner_id)
           VerifyCode.create!(activity_prize_id: winner_activity_prize.id)
+        elsif !prize_arr.present? || prize_arr.last <= draw_count
+          raise NoPrizeSurplusError.new('No prize surplus')
         end
         # 创建抽奖者礼品
         update!(draw_count: draw_count ? (draw_count + 1) : 1)
@@ -108,14 +112,9 @@ class ActivityInfo < ActiveRecord::Base
   end
 
   def examine_win_rate
-    if attribute_changed?(:win_rate)
-      if new_record?
-        self.surplus = self.win_count
-        self.draw_count = 0
-      else
-        self.surplus -= self.draw_count
-        self.draw_count = 0
-      end
+    if self.new_record? || attribute_changed?(:win_rate)
+      self.surplus = self.win_count - self.activity_prizes.count
+      self.draw_count = 0
     end
 
   end
@@ -125,6 +124,8 @@ class ActivityInfo < ActiveRecord::Base
   class ActivityNotPublishError < StandardError
   end
   class SharerNotFoundError < StandardError
+  end
+  class NoPrizeSurplusError < StandardError
   end
 end
 

@@ -44,6 +44,8 @@ class PromotionActivitiesController < ApplicationController
       end
     rescue ActivityInfo::RepeatedDrawError
       @message[:success] = "^o^ 亲您已抽过，下次再来吧"
+    rescue ActivityInfo::NoPrizeSurplusError
+      @message[:success] = "^o^ 奖品已经抽完，请关注下次活动"
     end
 
     get_service_store_qrcode_img_url
@@ -70,6 +72,8 @@ class PromotionActivitiesController < ApplicationController
       return
     rescue ActivityInfo::RepeatedDrawError
       @message[:success] = "^o^ 亲您已抽过，下次再来吧"
+    rescue ActivityInfo::NoPrizeSurplusError
+      @message[:success] = "^o^ 奖品已经抽完，请关注下次活动"
     end
 
     get_service_store_qrcode_img_url

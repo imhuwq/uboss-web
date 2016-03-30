@@ -91,10 +91,27 @@ class ActivityInfoTest < ActiveSupport::TestCase
     share_activity_info.draw_share_prize(winner.id, sharer.id)
     share_activity_info.draw_share_prize(winner2.id, sharer.id)
     share_activity_info.draw_share_prize(winner3.id, sharer.id)
-    draw_count = share_activity_info.draw_count
     share_activity_info.update(win_rate: 90)
     assert_equal false, share_activity_info.surplus == share_activity_info.win_count
-    assert_equal share_activity_info.surplus + draw_count, share_activity_info.win_count
+    assert_equal share_activity_info.surplus + share_activity_info.activity_prizes.count, share_activity_info.win_count
   end
 
+  test '#should raise exception when prize < 0' do
+    seller = create :seller_user
+    winner = create :user
+    winner2 = create :user
+    sharer = create :user
+    promotion_activity = create(:active_promotion_activity, user: seller)
+    live_activity_info = create(:live_activity_info, promotion_activity: promotion_activity, win_count: 1, win_rate: 100)
+    share_activity_info = create(:share_activity_info, promotion_activity: promotion_activity, win_count: 1, win_rate: 100)
+
+    assert_raises ActivityInfo::NoPrizeSurplusError do
+      share_activity_info.draw_share_prize(winner2.id, sharer.id)
+    end
+    live_activity_info.draw_live_prize(winner.id)
+    assert_raises ActivityInfo::NoPrizeSurplusError do
+      live_activity_info.draw_live_prize(winner2.id)
+    end
+
+  end
 end
