@@ -57,7 +57,7 @@ class ActivityInfo < ActiveRecord::Base
       raise RepeatedDrawError.new('you have already drawed prize')
     else
       ActivityInfo.transaction do
-        ActivityInfo.lock
+        self.lock!
         update!(draw_count: draw_count ? (draw_count + 1) : 1)
         winner_activity_prize, sharer_activity_prize = nil
         if prize_arr.include?(draw_count) # 本次draw_count在中奖数组中
@@ -93,7 +93,7 @@ class ActivityInfo < ActiveRecord::Base
       raise RepeatedDrawError.new('you have already drawed prize')
     else
       ActivityInfo.transaction do
-        ActivityInfo.lock
+        self.lock!
         winner_activity_prize = nil
         if prize_arr.include?(draw_count + 1) # 本次draw_count在中奖数组中
           winner_activity_prize = ActivityPrize.create!(activity_info_id: id,
