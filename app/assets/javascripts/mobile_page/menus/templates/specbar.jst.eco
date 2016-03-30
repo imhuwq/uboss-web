@@ -1,0 +1,24 @@
+<div class="close-area"></div>
+<div class="dishes-pop-container">
+  <div class="dishes-meida">
+    <div class="cover"></div>
+    <div class="title"><%= @name %> </div>
+    <div class="price"><small>￥</small> <span class="dishes-price" id="dishes-price"><%= @price %></span></div>
+  </div><!-- dishes-meida -->
+  <div class="dishes-sku-list">
+    <div class="dishes-sku-info">
+
+    </div><!-- dishes-sku-info -->
+  </div>
+  <div class="dishes-sku-num border-top">
+    购买数量
+    <div class="num-box pull-right">
+      <div class="reduce minus disabled"><span>-</span></div>
+      <div class="num disabled" id='spec-num'><%= @count %></div>
+      <div class="increase plus"><span>+</span></div>
+    </div>      
+  </div><!-- dishes-info -->
+  <a class="dishes-add-btn btn btn-block disabled">
+    确定
+  </a>
+</div><!-- dishes-pop-container -->

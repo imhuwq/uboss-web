@@ -1,0 +1,12 @@
+<!-- 循环 这里 默认选中第一个-->
+<div class="dishes-sku-box border-top" id='specs'>
+  <% for sname, specs  of @skus: %>
+  <div class="title"><%= sname %></div>
+    <div class="sku-select" data-category="<%= sname %>">
+      <% for spec of specs: %>
+        <span sid="<%= specs[spec] %>"><%= spec %></span>
+      <% end %>
+    </div><!-- sku-select -->
+  <% end %>
+</div><!-- dishes-sku-box -->
+<!-- 结束循环 -->

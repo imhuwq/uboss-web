@@ -48,7 +48,7 @@ class MenusController < ApplicationController
     end
 
     def order_item_params
-      params.permit(:product_inventory_id, :amount, )
+      params.permit(:product_inventory_id, :amount)
     end
 
     def set_store

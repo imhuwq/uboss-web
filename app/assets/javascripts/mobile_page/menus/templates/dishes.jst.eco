@@ -1,0 +1,24 @@
+<div class="close-area"></div>
+<div class="dishes-pop-container">
+	
+	<div class="dishes-order-container">
+		<div class="order-clear" id="dishes-clear">清空菜单</div>
+
+		<div id="dishes-order-list">
+			<div class="dishes-order-list-container">
+        <% for dishe in @dishes: %>
+				<div class="order-name dishes-id-01" >
+					<div class="num-box pull-right" data-dishe-id="<%= dishe.id %>">
+						<div class="minus reduce-dishe-amount"><span>-</span></div>
+		        <div class="num"><%= dishe.get("amount") %></div>
+		        <div class="plus ponly increase-dishe-amount"><span>+</span></div>
+					</div><!-- num-box -->
+					<div class="name text-cut"><%= dishe.get("name") %></div>
+					<div class="price text-cut"><small>￥</small> <%= dishe.get("price") %></div>
+				</div><!-- order-name -->
+        <% end %>
+			</div><!-- dishes-order-list-container -->
+		</div><!-- dishes-order-list -->
+	</div><!-- dishes-order-container -->
+	
+</div><!-- dishes-pop-container -->
