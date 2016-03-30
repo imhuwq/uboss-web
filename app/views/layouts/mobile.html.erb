@@ -18,12 +18,12 @@
     <%= csrf_meta_tags %>
   </head>
 
-  <body class='<%= controller_name %> <%= action_name %>'>
+  <body class='<%= controller_name %> <%= action_name %>' <% if controller_name == 'menus' %>onload="loaded()"<% end %>>
 
     <% if !browser.uboss? && controller_name != 'menus' %>
       <header> <%= render partial: 'layouts/mobile_header' %> </header>
     <% elsif controller_name == 'menus' %>
-      <header> <%= render partial: 'layouts/menu_nav' %> </header>
+      <%= render partial: 'layouts/menu_nav' %>
     <% end %>
 
 		<%= render 'layouts/pop' %>
