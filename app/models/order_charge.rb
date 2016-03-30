@@ -53,7 +53,7 @@ class OrderCharge < ActiveRecord::Base
 
   def reset_pay_serial_number
     set_number if number.blank?
-    self.pay_serial_number = "#{number}-#{Time.current.to_i}"
+    self.pay_serial_number = "#{number}-#{(Time.now - Time.parse('2016-1-1')).to_i}"
   end
 
   def pay_amount
