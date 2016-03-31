@@ -208,13 +208,20 @@ to {transform:translate3d(0%,0,0) ;-webkit-transform:translate3d(0%,0,0) ;}
     height: 0;
     overflow: hidden;
 }
-.dishes-sku-info{
-    padding-left: 10px;
+.dishes-sku-list{
+    border-top:1px solid #eee ;
+    margin-left: 10px;
     max-height:160px ;
-    overflow-y: hidden;
+    overflow-y: scroll;
     .title{margin-bottom: 10px;}
-    .sku-select span{
-        
+    .dishes-sku-box{
+        padding-top: 10px;
+        border-bottom: 1px solid #eee;
+    }
+    .dishes-sku-box:last-child{
+        border-bottom: none;
+    }
+    .sku-select span{        
         display: inline-block;
         min-width: 40px;
         padding: 5px;
@@ -325,6 +332,7 @@ to {transform:translate3d(0%,0,0) ;-webkit-transform:translate3d(0%,0,0) ;}
 #dishes-order-list{
     line-height: 1;
     margin: 0;
+    max-height: 210px;
     .num-box{
         margin-top: 8px;
     }
