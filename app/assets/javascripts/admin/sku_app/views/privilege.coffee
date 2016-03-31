@@ -10,7 +10,9 @@ class StockSku.Views.Privilege extends Backbone.View
   initialize: ->
     @listenTo @collection, 'skuchange', @render
     @listenTo @, 'initShow', @render
-    @currentLevel = 1
+    @currentLevel = @$('.sku-plvs-btns .btn').eq(0).data('level')
+    if @currentLevel == undefined
+      @currentLevel = 1
     @setLevel()
 
   propertyCollection: ->
