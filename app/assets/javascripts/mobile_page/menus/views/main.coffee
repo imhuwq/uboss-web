@@ -8,7 +8,7 @@ class Menus.Views.Main extends Backbone.View
     'click .remove-from-dishes': 'reduce'
     'click .dishes-add-btn': 'addToDishe'
     'click #order-buy-btn': 'submit'
-    'click .dishes-buy-bar': 'showDishes'
+    'click .dishes-order-price, .order-icon': 'showDishes'
 
   initialize: ->
     @listenTo Dispatcher, Menus.Events.CLOSE_BAR, ->
@@ -22,7 +22,9 @@ class Menus.Views.Main extends Backbone.View
     @skusView.parent = @barView
 
   showDishes: () ->
-    new Menus.Views.Dishes().render()
+    if !@dishesView
+      @dishesView = new Menus.Views.Dishes()
+    @dishesView.render()
 
   plus: (e) ->
     productId = @getProductId(e)
@@ -41,7 +43,11 @@ class Menus.Views.Main extends Backbone.View
   reduce: (e) ->
     productId = @getProductId(e)
     dishe = window.dishes.findWhere({product_id: productId})
-    window.dishes.remove dishe
+    amount = dishe.get("amount")
+    if amount == 1
+      window.dishes.remove dishe
+    else
+      dishe.set "amount", amount - 1
     Dispatcher.trigger Menus.Events.DISHE_REMOVED, dishe
 
   getProductId: (e) ->
@@ -69,7 +75,8 @@ class Menus.Views.Main extends Backbone.View
       Dispatcher.trigger Menus.Events.ADDED_DISHE, _dishe
     Dispatcher.trigger Menus.Events.CLOSE_BAR
 
-  submit: ->
+  submit: (e)->
+    e.stopPropagation()
     order_items_attributes = []
     _.each window.dishes.models, (dishe) ->
       order_items_attributes.push({ amount: dishe.get("amount"), product_inventory_id: dishe.get("id") })

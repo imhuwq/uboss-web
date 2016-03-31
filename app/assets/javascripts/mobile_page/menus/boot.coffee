@@ -36,9 +36,6 @@ Zepto ($) ->
     root.dishes = new Menus.Collections.Dishes
     root.menus  = new Menus.Views.Main
 
-    root.dishes.on 'reset', ->
-      Dispatcher.trigger Menus.Events.ADDED_DISHE
-
     Dispatcher.on Menus.Events.ADDED_DISHE, (dishe) ->
       productId = dishe.get("product_id")
       element = $("[data-product-id='" + productId + "']")
@@ -53,6 +50,7 @@ Zepto ($) ->
       else
         element.find("div.num-box>.remove-from-dishes,div.num-box>.num").addClass("disabled")
       recalculateBar()
+      $("[data-dishe-id='" + dishe.id + "'] .num").text(dishe.get("amount"))
 
     Dispatcher.on Menus.Events.DISHE_CHANGED, (dishe) ->
       Dispatcher.trigger Menus.Events.ADDED_DISHE, dishe
@@ -77,6 +75,7 @@ Zepto ($) ->
         $("#order-buy-btn").removeClass("disabled")
       else
         $("#order-buy-btn").addClass("disabled")
+      $("#order-count").text(num)
 
     recalculateBarPrice = ->
       price = window.dishes.reduce (sum, dishe) ->

@@ -11,21 +11,38 @@ class Menus.Views.Dishes extends Backbone.View
     'click #dishes-clear': 'clearDishes'
 
   increase: (e)->
-    disheId = $(e.target).parent().data("disheId")
-    dishe = window.dishes.findWhere({id: disheId})
+    dishe = @getDishe(e)
     dishe.set("amount", dishe.get("amount") + 1)
+    Dispatcher.trigger Menus.Events.DISHE_CHANGED, dishe
+
   reduce: (e)->
-    disheId = $(e.target).parent().data("dishe-id")
-    dishe = window.dishes.findWhere({id: disheId})
-    dishe.set("amount", dishe.get("amount") - 1)
+    dishe = @getDishe(e)
+    amount = dishe.get("amount")
+    if amount == 1
+      window.dishes.remove dishe
+      @render()
+    else
+      dishe.set("amount", amount - 1)
+    Dispatcher.trigger Menus.Events.DISHE_REMOVED, dishe
+
+  getDishe: (e) ->
+    disheId = $(e.target).parent().parent().data("dishe-id")
+    window.dishes.findWhere({id: disheId})
+
   remove: (e)->
     $(e.target).closest('.dishes-pop-bg').removeClass('show');
 
   clearDishes: ->
-    window.dishes.reset()
+    window.dishes.each (dishe) ->
+      window.dishes.remove dishe
+      Dispatcher.trigger Menus.Events.DISHE_REMOVED, dishe
+    @render({display: false})
 
-  render: () ->
+  render: (options={}) ->
     @$el.html @template({dishes: window.dishes.models})
-    $('#dishes-order-box').addClass("show")
+    if options.display == false
+      $('#dishes-order-box').removeClass("show")
+    else
+      $('#dishes-order-box').addClass("show")
     new IScroll('#dishes-order-list',{click:iScrollClick()});
     @

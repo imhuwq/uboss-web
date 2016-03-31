@@ -111,25 +111,25 @@
   //  })
   //
   //
-  //  $(document).ready(function(){
-  //   //弹出分类菜单栏
-  //   var Isflag = true;
-  //   $('.dishes-header .menu-btn').on('click',function(){
-  //       $('#store-dishes-menus').addClass('show');
-  //       if(Isflag){
-  //         dishes_menus_Scroll = new IScroll('.dishes-menus-container',{click:iScrollClick()});
-  //         Isflag = false;
-  //       }
+   $(document).ready(function(){
+    //弹出分类菜单栏
+    var Isflag = true;
+    $('.dishes-header .menu-btn').on('click',function(){
+        $('#store-dishes-menus').addClass('show');
+        if(Isflag){
+          dishes_menus_Scroll = new IScroll('.dishes-menus-container',{click:iScrollClick()});
+          Isflag = false;
+        }
+
+     })
+
+    $('.dishes-menus').on('click',function(){
+      $('.dishes-menus').removeClass('active')
+      $(this).addClass('active');
+      dishes_list_Scroll.scrollToElement(document.querySelector('.dishes-list-container li:nth-child('+  $(this).attr("data-chlid") +')'))
+    })
   //
-  //    })
-  //
-  //   $('.dishes-menus').on('click',function(){
-  //     $('.dishes-menus').removeClass('active')
-  //     $(this).addClass('active');
-  //     dishes_list_Scroll.scrollToElement(document.querySelector('.dishes-list-container li:nth-child('+  $(this).attr("data-chlid") +')'))
-  //   })
-  //
-  // })
+  })
   </script>
 <% end %>
 
