@@ -48,13 +48,15 @@ class ActivityInfo < ActiveRecord::Base
     if !User.find_by_id(winner_id)
       raise ArgumentError.new('winner not found')
     elsif promotion_activity.status != 'published'
-      raise ActivityNotPublishError.new('activity not published')
+      return {status: 500, message: 'activity not published'}
     elsif activity_type != 'share'
       raise RuntimeError.new('wrong method used')
     elsif !User.find_by_id(sharer_id)
-      raise SharerNotFoundError.new('sharer not found')
+      return {status: 500, message: 'sharer not found'}
     elsif ActivityDrawRecord.find_by(user_id: winner_id, sharer_id: sharer_id, activity_info_id: id).present?
-      raise RepeatedDrawError.new('you have already drawed prize')
+      return {status: 500, message: 'you have already drawed prize'}
+    elsif !prize_arr.present? || prize_arr.last <= draw_count
+      return {status: 500, message: 'No prize surplus'}
     else
       ActivityInfo.transaction do
         self.lock!
@@ -72,12 +74,14 @@ class ActivityInfo < ActiveRecord::Base
                                                         relate_winner_id: winner_id) # 检查这份奖品是因为谁中奖二连带获得的
           VerifyCode.create!(activity_prize_id: winner_activity_prize.id)
           VerifyCode.create!(activity_prize_id: sharer_activity_prize.id)
-        elsif !prize_arr.present? || prize_arr.last <= draw_count
-          raise NoPrizeSurplusError.new('No prize surplus')
         end
         ActivityDrawRecord.create!(activity_info_id: id, user_id: winner_id, sharer_id: sharer_id)
 
-        return winner_activity_prize.present? ? { winner_activity_prize_id: winner_activity_prize.id, sharer_activity_prize_id: sharer_activity_prize.id } : nil
+        if winner_activity_prize.present?
+          return {status: 200, winner_activity_prize_id: winner_activity_prize.id, sharer_activity_prize_id: sharer_activity_prize.id }
+        else
+          return {status: 200}
+        end
       end
     end
   end
@@ -86,11 +90,13 @@ class ActivityInfo < ActiveRecord::Base
     if !User.find_by_id(winner_id)
       raise ArgumentError.new('winner not found')
     elsif promotion_activity.status != 'published'
-      raise ActivityNotPublishError.new('activity not published')
+      return {status: 500, message: 'activity not published'}
     elsif activity_type != 'live'
       raise RuntimeError.new('wrong method used')
     elsif ActivityDrawRecord.find_by(user_id: winner_id, activity_info_id: id).present?
-      raise RepeatedDrawError.new('you have already drawed prize')
+      return {status: 500, message: 'you have already drawed prize'}
+    elsif !prize_arr.present? || prize_arr.last <= draw_count
+      return {status: 500, message: 'No prize surplus'}
     else
       ActivityInfo.transaction do
         self.lock!
@@ -99,14 +105,12 @@ class ActivityInfo < ActiveRecord::Base
           winner_activity_prize = ActivityPrize.create!(activity_info_id: id,
                                                         prize_winner_id: winner_id)
           VerifyCode.create!(activity_prize_id: winner_activity_prize.id)
-        elsif !prize_arr.present? || prize_arr.last <= draw_count
-          raise NoPrizeSurplusError.new('No prize surplus')
         end
         # 创建抽奖者礼品
         update!(draw_count: draw_count ? (draw_count + 1) : 1)
         ActivityDrawRecord.create!(activity_info_id: id, user_id: winner_id)
 
-        winner_activity_prize
+        return {status: 200, winner_activity_prize: winner_activity_prize}
       end
     end
   end
@@ -119,13 +123,5 @@ class ActivityInfo < ActiveRecord::Base
 
   end
 
-  class RepeatedDrawError < StandardError
-  end
-  class ActivityNotPublishError < StandardError
-  end
-  class SharerNotFoundError < StandardError
-  end
-  class NoPrizeSurplusError < StandardError
-  end
 end
 

@@ -35,7 +35,7 @@ class ActivityInfoTest < ActiveSupport::TestCase
 
     draw_prize_result = share_activity_info.draw_share_prize(winner.id, sharer.id)
     draw_prize_result2 = share_activity_info.draw_share_prize(winner2.id, sharer.id)
-    assert_equal false, draw_prize_result.present? && draw_prize_result2.present?
+    assert_equal nil, draw_prize_result[:winner_activity_prize_id].try(:present?) && draw_prize_result2[:winner_activity_prize_id].try(:present?)
     assert_equal true, ActivityDrawRecord.where(user_id: winner.id, sharer_id: sharer.id, activity_info_id: share_activity_info.id).present?
   end
 
@@ -47,9 +47,9 @@ class ActivityInfoTest < ActiveSupport::TestCase
     share_activity_info = create(:share_activity_info, promotion_activity: promotion_activity)
 
     share_activity_info.draw_share_prize(winner.id, sharer.id)
-    assert_raises ActivityInfo::RepeatedDrawError do
-      share_activity_info.draw_share_prize(winner.id, sharer.id)
-    end
+    result =  share_activity_info.draw_share_prize(winner.id, sharer.id)
+    assert_equal 'you have already drawed prize', result[:message]
+    assert_equal 500, result[:status]
 
   end
 
@@ -60,9 +60,9 @@ class ActivityInfoTest < ActiveSupport::TestCase
     live_activity_info = create(:live_activity_info, promotion_activity: promotion_activity, win_rate: 100)
 
     draw_prize_result = live_activity_info.draw_live_prize(winner.id)
-    assert_equal true, draw_prize_result.present?
-    assert_equal winner.id, draw_prize_result.prize_winner.id
-    assert_equal live_activity_info.id, draw_prize_result.activity_info.id
+    assert_equal true, draw_prize_result[:winner_activity_prize].present?
+    assert_equal winner.id, draw_prize_result[:winner_activity_prize].prize_winner.id
+    assert_equal live_activity_info.id, draw_prize_result[:winner_activity_prize].activity_info.id
     assert_equal true, ActivityDrawRecord.where(user_id: winner.id, activity_info_id: live_activity_info.id).present?
   end
   test '#should raise exception when someone draw_live_prize twice' do
@@ -72,9 +72,9 @@ class ActivityInfoTest < ActiveSupport::TestCase
     live_activity_info = create(:live_activity_info, promotion_activity: promotion_activity)
 
     live_activity_info.draw_live_prize(winner.id)
-    assert_raises ActivityInfo::RepeatedDrawError do
-      live_activity_info.draw_live_prize(winner.id)
-    end
+    result = live_activity_info.draw_live_prize(winner.id)
+    assert_equal 500, result[:status]
+    assert_equal 'you have already drawed prize', result[:message]
 
   end
 
@@ -105,13 +105,11 @@ class ActivityInfoTest < ActiveSupport::TestCase
     live_activity_info = create(:live_activity_info, promotion_activity: promotion_activity, win_count: 1, win_rate: 100)
     share_activity_info = create(:share_activity_info, promotion_activity: promotion_activity, win_count: 1, win_rate: 100)
 
-    assert_raises ActivityInfo::NoPrizeSurplusError do
-      share_activity_info.draw_share_prize(winner2.id, sharer.id)
-    end
+    result =  share_activity_info.draw_share_prize(winner2.id, sharer.id)
+    assert_equal 'No prize surplus', result[:message]
     live_activity_info.draw_live_prize(winner.id)
-    assert_raises ActivityInfo::NoPrizeSurplusError do
-      live_activity_info.draw_live_prize(winner2.id)
-    end
+    result2 = live_activity_info.draw_live_prize(winner2.id)
+    assert_equal 'No prize surplus', result2[:message]
 
   end
 end
