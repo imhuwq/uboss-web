@@ -10,7 +10,7 @@ class Menus.Views.Bar extends Backbone.View
     'click .close-area': 'closeBar'
 
   closeBar: (e) ->
-    $(e.currentTarget.parentNode).removeClass("show")
+    Dispatcher.trigger Menus.Events.DISPLAY_BAR, 'hide'
 
   reduce: (e) ->
     count = @model.get("count")

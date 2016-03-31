@@ -8,16 +8,18 @@
 	<div class="close-area"></div>
 	<div class="dishes-menus-container">
 		<ul class="store-menus-list">
-			<li class="dishes-menus active" data-chlid="1">菜品分类1</li>
-			<li class="dishes-menus" data-chlid="2">菜品分类2</li>
-			<li class="dishes-menus" data-chlid="5">菜品分类3</li>
+      <% @index = 1 %>
+      <% @dishes.each do |name, dishes| %>
+        <li class="dishes-menus <%= 'active' if @index == 1 %>" data-chlid="<%= @index %>"><%= name %></li>
+        <% @index += dishes.length %>
+      <% end %>
 		</ul><!-- store-menus-list -->
 	</div>
 </div><!-- store-dishes-menus -->
 
 <div class="dishes-list-container">
   <ul class="dishes-list">
-    <% @dishes.each do |dishe| %>
+    <% @dishes.values.flatten.each do |dishe| %>
       <li class="dishes-box" 
         <% if 0 == 1 %>
           <!--
@@ -76,46 +78,17 @@
   function loaded () {
   	dishes_list_Scroll = new IScroll('.dishes-list-container',{click:iScrollClick()});
   }
-  // document.addEventListener('touchmove', function (e) { e.preventDefault(); }, false);
-  //  $(document).ready(function(){
-  //    //menu
-  //    var order_count = $('#order-count');
-  //    var order_btn =$('#order-buy-btn');
-  //    var total_price =$('#dishes-total-price');
-  //    var total_price_num = 0;
-  //
-  //
-  //   /*弹出规格*/
-  //   $('.pselect').on('click',function(){
-  //     $('.dishes-sku').addClass('show');
-  //     dishes_sku_Scroll= new IScroll('.dishes-sku-list',{click:iScrollClick()})
-  //
-  //   })
-  //   $('.dishes-pop-bg .close-area').on('click',function(){
-  //     $(this).closest('.dishes-pop-bg').removeClass('show');
-  //
-  //   })
-  //   //规格选择
-  //   $('.sku-select span').on('click',function(){
-  //     $(this).closest('.sku-select').find('span').removeClass('active');
-  //     $(this).addClass('active');
-  //   })
-  //   //弹出订单菜单
-  //   $('.dishes-buy-bar .order-icon').on('click',function(){
-  //
-  //        $('#dishes-order-box').addClass('show');
-  //     dishes_order_Scroll = new IScroll('#dishes-order-list',{click:iScrollClick()});
-  //
-  //
-  //   })
-  //  })
-  //
-  //
+
+    $('.dishes-pop-bg .close-area').on('click',function(){
+      $(this).closest('.dishes-pop-bg').removeClass('show');
+
+    })
+
    $(document).ready(function(){
     //弹出分类菜单栏
     var Isflag = true;
     $('.dishes-header .menu-btn').on('click',function(){
-        $('#store-dishes-menus').addClass('show');
+        $('#store-dishes-menus').toggleClass('show');
         if(Isflag){
           dishes_menus_Scroll = new IScroll('.dishes-menus-container',{click:iScrollClick()});
           Isflag = false;

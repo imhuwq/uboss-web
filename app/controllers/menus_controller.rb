@@ -7,8 +7,19 @@ class MenusController < ApplicationController
   # GET /service_stores/:service_store_id/menus
   # GET /service_stores/:service_store_id/menus.json
   def index
-    @q = scope.search(categories_name_eq: params[:category]).result
-    @dishes = @q.page(params[:page])
+    @q = scope.search(categories_name_eq: params[:category])
+    @dishes = @q.result.joins(:categories).order("categories.name")
+
+    c = Hash.new {|x,v| x[v] = []}
+    @dishes = @dishes.reduce(c) do |h, dishe|
+      dishe.categories.each do |c|
+        h[c.name] << dishe
+      end
+      if dishe.categories.blank?
+        h['默认'] << dishe
+      end
+      h
+    end
 
     respond_to do |format|
       format.html

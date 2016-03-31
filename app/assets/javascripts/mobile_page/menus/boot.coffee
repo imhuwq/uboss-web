@@ -24,6 +24,7 @@ console.log "menus is ready"
     'ADDED_DISHE'
     'DISHE_CHANGED'
     'DISHE_REMOVED'
+    'DISPLAY_BAR'
   ], (e) ->
     Menus.Events[e] = e;
 
@@ -40,8 +41,7 @@ Zepto ($) ->
       productId = dishe.get("product_id")
       element = $("[data-product-id='" + productId + "']")
       element.find("div.num-box>.remove-from-dishes,div.num-box>.num").removeClass("disabled")
-      _dishes = window.dishes.where({product_id: productId})
-      amount = _dishes.reduce (s, item) ->
+      amount = window.dishes.where({product_id: productId}).reduce (s, item) ->
         s + item.get("amount")
       , 0
 
@@ -62,6 +62,11 @@ Zepto ($) ->
       switch action
         when 'disable' then $(".dishes-add-btn").addClass("disabled")
         when 'enable'  then $(".dishes-add-btn").removeClass("disabled")
+
+    Dispatcher.on Menus.Events.DISPLAY_BAR, (action) ->
+      switch action
+        when 'show' then $(".dishes-pop-bg").addClass("show")
+        when 'hide' then $(".dishes-pop-bg").removeClass("show")
 
     recalculateBar = ->
       recalculateBarNum()

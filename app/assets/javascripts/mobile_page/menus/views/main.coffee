@@ -4,16 +4,11 @@ class Menus.Views.Main extends Backbone.View
 
   events:
     'click .menus': 'showMenu'
-    'click .add-to-dishes': 'plus'
+    'click .add-to-dishes': 'increase'
     'click .remove-from-dishes': 'reduce'
     'click .dishes-add-btn': 'addToDishe'
     'click #order-buy-btn': 'submit'
     'click .dishes-order-price, .order-icon': 'showDishes'
-
-  initialize: ->
-    @listenTo Dispatcher, Menus.Events.CLOSE_BAR, ->
-      $(@barView.el).find(".close-area").trigger("click")
-      $(@barView.el).find(".close-area").trigger("click")
 
   showMenu: (product) ->
     @product  = new Menus.Models.Product(product)
@@ -26,11 +21,10 @@ class Menus.Views.Main extends Backbone.View
       @dishesView = new Menus.Views.Dishes()
     @dishesView.render()
 
-  plus: (e) ->
-    productId = @getProductId(e)
+  increase: (e) ->
     that = this
     $.ajax
-      url: '/products/' + productId + '/info'
+      url: '/products/' + @getProductId(e) + '/info'
       dataType: 'json'
       success: (result) ->
         if result.items.length > 1
@@ -60,25 +54,24 @@ class Menus.Views.Main extends Backbone.View
       alert('请选择规格')
       return
     skuId = parseInt(skuIds[0])
-    dishe = _.findWhere(@product.get("items"), { id: skuId })
-    dishe.product_id = @product.id
-    dishe.name  = @product.get("name")
+    sku = _.findWhere(@product.get("items"), { id: skuId })
+    sku.product_id = @product.id
+    sku.name  = @product.get("name")
     amount = @barView.model.get("count")
-    if _dishe = window.dishes.findWhere({ id: skuId })
-      _dishe.set "amount", amount + _dishe.get("amount")
-      Dispatcher.trigger Menus.Events.DISHE_CHANGED, _dishe
+    if dishe = window.dishes.findWhere({ id: skuId })
+      dishe.set "amount", amount + dishe.get("amount")
+      Dispatcher.trigger Menus.Events.DISHE_CHANGED, dishe
     else
-      _dishe = _.clone dishe
-      _dishe.amount = amount
-      _dishe = new Menus.Models.Dishe(_dishe)
-      window.dishes.add _dishe
-      Dispatcher.trigger Menus.Events.ADDED_DISHE, _dishe
-    Dispatcher.trigger Menus.Events.CLOSE_BAR
+      dishe = new Menus.Models.Dishe(sku)
+      dishe.set "amount", amount
+      window.dishes.push dishe
+      Dispatcher.trigger Menus.Events.ADDED_DISHE, dishe
+    Dispatcher.trigger Menus.Events.DISPLAY_BAR, 'hide'
 
   submit: (e)->
     e.stopPropagation()
     order_items_attributes = []
-    _.each window.dishes.models, (dishe) ->
+    window.dishes.each (dishe) ->
       order_items_attributes.push({ amount: dishe.get("amount"), product_inventory_id: dishe.get("id") })
     $.ajax
       type: 'POST'

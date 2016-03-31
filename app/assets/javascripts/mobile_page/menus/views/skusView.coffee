@@ -72,6 +72,5 @@ class Menus.Views.Skus extends Backbone.View
   render: () ->
     console.log 'rendered skus'
     @$el.html @template({skus: @collection})
-    $('#product-specs').addClass('show')
-    $('html,body').on 'touchmove', (e) -> e.preventDefault();
+    Dispatcher.trigger Menus.Events.DISPLAY_BAR, 'show'
     @
