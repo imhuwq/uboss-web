@@ -115,7 +115,7 @@ Rails.application.routes.draw do
     get :share, on: :member
     post :verify, on: :member
     resources :menus, only: :index do
-      post :confirm, on: :collection
+      get :confirm, on: :collection
       post :order, on: :collection
     end
   end

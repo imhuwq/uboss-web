@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="zh-CN"
-	<% if controller_name == 'menus' %>
+	<% if controller_name == 'menus' && params[:action] == 'index' %>
 	class="dishes-html"
 	<% end %>
 >
@@ -18,12 +18,12 @@
     <%= csrf_meta_tags %>
   </head>
 
-  <body class='<%= controller_name %> <%= action_name %>' <% if controller_name == 'menus' %>onload="loaded()"<% end %>>
+  <body class='<%= controller_name %> <%= action_name %>' <% if controller_name == 'menus' && params[:action] == 'index' %>onload="loaded()"<% end %>>
 
-    <% if !browser.uboss? && controller_name != 'menus' %>
-      <header> <%= render partial: 'layouts/mobile_header' %> </header>
-    <% elsif controller_name == 'menus' %>
+    <% if controller_name == 'menus' && params[:action] == 'index' %>
       <%= render partial: 'layouts/menu_nav' %>
+    <% elsif  !browser.uboss? %>
+      <header> <%= render partial: 'layouts/mobile_header' %> </header>
     <% end %>
 
 		<%= render 'layouts/pop' %>
