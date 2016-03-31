@@ -484,13 +484,16 @@
   }
 }
 .comfirmed-dishes-box {
+  padding-bottom: 62px;
   .num,.price{
     width: 20%;
     margin-left: 1%;
-  }
-  
+  }  
   .store-name{
-    padding: 10px;
+    padding: 10px 10px 10px 32px;
+    background: image-url('activate_page/seller-icon.png') no-repeat left center;
+    background-position-x:10px ;
+    background-size:auto 16px;
     border-bottom: 1px solid #eee;
     
   }
