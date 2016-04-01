@@ -78,7 +78,7 @@ class ActivityInfo < ActiveRecord::Base
         ActivityDrawRecord.create!(activity_info_id: id, user_id: winner_id, sharer_id: sharer_id)
 
         if winner_activity_prize.present?
-          return {status: 200, winner_activity_prize_id: winner_activity_prize.id, sharer_activity_prize_id: sharer_activity_prize.id }
+          return {status: 200, winner_activity_prize: winner_activity_prize.id, sharer_activity_prize: sharer_activity_prize }
         else
           return {status: 200}
         end
