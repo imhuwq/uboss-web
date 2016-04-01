@@ -25,7 +25,20 @@
 </div>
 <br />
 -->
-
+<% if 1==1 %>
+<div class="gap">套餐内容</div>
+<div class="comfirmed-dishes-box bg-white nogap">
+  <div class="gap-lr m-top10">
+    <!-- 循环  -->
+    <div class="m-bottom10">
+      <span class="pull-right text-cut num text-right gray-color">x 数量</span>
+      <span class="pull-right text-cut price ">￥ 单价</span>
+      <div class="text-cut">菜品名称</div>
+    </div><!-- m-bottom10 -->
+    <!-- 结束循环  -->
+  </div><!-- gap-lr -->
+</div><!-- dishes-comfirmed-box -->
+<% end %>
 <div class="order-list m-top10">
 	<div class="seller-box">
 	  <div class="cover"><%= image_tag @service_store.store_cover.url(:w640) %></div>
