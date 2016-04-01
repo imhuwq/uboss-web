@@ -165,7 +165,7 @@ class PrivilegeCard < ActiveRecord::Base
   end
 
   def sharing_node
-    @sharing_node ||= SharingNode.find_by(user_id: user_id, seller_id: seller_id)
+    @sharing_node ||= SharingNode.find_or_create_by(user_id: user_id, seller_id: seller_id)
   end
 
   def default_host
