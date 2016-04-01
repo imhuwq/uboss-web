@@ -10,13 +10,16 @@ class Users::SessionsController < Devise::SessionsController
 
   # GET /resource/sign_in
   def new
-    @using_captcha = sign_in_params[:password].blank?
-    super
+    if params[:redirect] == "activity"
+      render 'activity', layout: 'activity'
+    else
+      @using_captcha = sign_in_params[:password].blank?
+      super
+    end
   end
 
   # POST /resource/sign_in
    def create
-     #session[:oauth_callback_redirect_path]
      if sign_in_params[:mobile_auth_code].present?
        @using_captcha = true
        if MobileCaptcha.auth_code(sign_in_params[:login], sign_in_params[:mobile_auth_code])
@@ -27,13 +30,13 @@ class Users::SessionsController < Devise::SessionsController
            Ubonus::Invite.delay.active_by_user_id(resource.id)
            redirect_to after_sign_in_path_for(resource)
          else
-           flash.now[:error] = resource.errors.full_messages.join('<br/>')
-           render :new
+           error_msg = resource.errors.full_messages.join('<br/>')
+           render_or_redirect(error_msg, params[:redirect])
          end
        else
          self.resource = resource_class.new(sign_in_params)
-         flash.now[:error] = '手机验证码错误'
-         render :new
+         error_msg = '手机验证码错误'
+         render_or_redirect(error_msg, params[:redirect])
        end
      else
        wechat_omniauth_data = { "devise.wechat_data" => session["devise.wechat_data"] }
@@ -54,6 +57,16 @@ class Users::SessionsController < Devise::SessionsController
   # If you have extra params to permit, append them to the sanitizer.
   def configure_sign_in_params
     devise_parameter_sanitizer.for(:sign_in) << :mobile_auth_code
+  end
+
+  def render_or_redirect(message, redirect)
+    if redirect == "activity"
+      flash[:error] = message
+      redirect_to new_user_session_path(redirect: redirect, redirectUrl: params[:redirectUrl])
+    else
+      flash.now[:error] = message
+      render :new
+    end
   end
 
 end

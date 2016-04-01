@@ -129,7 +129,10 @@ Rails.application.routes.draw do
     patch :merchant_confirm, to: 'accounts#merchant_confirmed'
     patch :password, to: 'accounts#update_password'
     resources :user_addresses, except: [:show]
-    resources :verify_codes, only: [:index, :show]
+    resources :verify_codes, only: [:index, :show] do
+      get :lotteries, on: :collection
+      get :lottery_detail, on: :collection
+    end
   end
   resource :pay_notify, only: [] do
     collection do
@@ -153,6 +156,10 @@ Rails.application.routes.draw do
     end
   end
   resources :cart_items, only: [:index, :create]
+  resources :promotion_activities, only: [:show] do
+    get :live_draw,  on: :member
+    get :share_draw, on: :member
+  end
 
   namespace :api do
     namespace :v1 do
@@ -268,6 +275,13 @@ Rails.application.routes.draw do
           get :pre_view
         end
       end
+
+      resources :promotion_activities, except: [:destroy] do
+        member do
+          patch :change_status
+        end
+      end
+
       resources :orders, except: [:destroy] do
         patch :set_express, on: :member
         patch :change_ship_price, on: :member
@@ -312,6 +326,7 @@ Rails.application.routes.draw do
         put :change_status, on: :member
       end
       resources :users, except: [:destroy] do
+        get :search
         resource :personal_authentication
         resource :enterprise_authentication
         resource :city_manager_authentication

@@ -1,0 +1,165 @@
+<div class="admin-box beige-bg-color">
+  <h4 class="edit-title">商家信息</h4>
+  <div class="form-group">
+    <label class="control-label"><abbr title="必填">*</abbr> 商家名称</label>
+    <div class="control-input half-width">
+      <div class="f15 lh36">
+        <%= text_field_tag 'promotion_activity[user_id]', '', class:'input-block users-select2' %>
+      </div>
+    </div>
+  </div>
+</div>
+<br />
+
+<%= f.simple_fields_for "activity_infos_attributes[]", @live_activity_info do |info| %>
+  <%= info.hidden_field :id %>
+  <div class="admin-box beige-bg-color">
+    <h4 class="edit-title">现场活动</h4>
+    <%= info.hidden_field :activity_type %>
+    <%= info.input :name %>
+    <%= info.input :price %>
+    <div class="form-group">
+      <label class="control-label"><abbr title="必填">*</abbr> 使用有效期</label>
+      <div class="control-input half-width">
+        <div class="f15 lh36">
+          <%= info.text_field :expiry_days %> 天
+          <span class="fs ml20">（自领取当天开始计算）</span>
+        </div>
+      </div>
+    </div>
+    <div class="form-group ">
+      <label class="control-label">活动说明</label>
+      <div class="control-input" style='width: 430px;'>
+        <%= info.input_field :description, as: :text, class: "redactor" %>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="control-label"><abbr title="必填">*</abbr> 中奖数量</label>
+      <div class="control-input half-width">
+        <div class="f15 lh36"><%= info.text_field :win_count %></div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="control-label"><abbr title="必填">*</abbr> 中奖概率</label>
+      <div class="control-input half-width">
+        <div class="f15 lh36"><%= info.text_field :win_rate %> %</div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="control-label">已中奖数量</label>
+      <div class="control-input half-width"><span class="db pt10">0</span></div>
+    </div>
+    <div class="form-group">
+      <label class="control-label">已验证数量</label>
+      <div class="control-input half-width"><span class="db pt10">0</span></div>
+    </div>
+  </div>
+  <br />
+<% end %>
+
+<%= f.simple_fields_for "activity_infos_attributes[]", @share_activity_info do |info| %>
+  <%= info.hidden_field :id %>
+  <div class="admin-box beige-bg-color">
+    <h4 class="edit-title">分享活动</h4>
+    <%= info.hidden_field :activity_type %>
+    <%= info.input :name %>
+    <%= info.input :price %>
+    <div class="form-group">
+      <label class="control-label"><abbr title="必填">*</abbr> 使用有效期</label>
+      <div class="control-input half-width">
+        <div class="f15 lh36">
+          <%= info.text_field :expiry_days %> 天
+          <span class="fs ml20">（自领取当天开始计算）</span>
+        </div>
+      </div>
+    </div>
+    <div class="form-group ">
+      <label class="control-label">活动说明</label>
+      <div class="control-input" style='width:430px;'>
+        <%= info.input_field :description, as: :text, class: "redactor" %>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="control-label"><abbr title="必填">*</abbr> 中奖数量</label>
+      <div class="control-input half-width">
+        <div class="f15 lh36"><%= info.text_field :win_count %></div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="control-label"><abbr title="必填">*</abbr> 中奖概率</label>
+      <div class="control-input half-width">
+        <div class="f15 lh36"><%= info.text_field :win_rate %> %</div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="control-label">已中奖数量</label>
+      <div class="control-input half-width"><span class="db pt10">0</span></div>
+    </div>
+    <div class="form-group">
+      <label class="control-label">已验证数量</label>
+      <div class="control-input half-width"><span class="db pt10">0</span></div>
+    </div>
+  </div>
+  <br />
+<% end %>
+
+
+<div class="form-actions text-center">
+  <%= f.submit "保存", class: "btn btn-large" %>
+</div>
+
+
+<script type="text/javascript" charset="utf-8">
+  $(".users-select2").select2({
+    minimumInputLength: 1,
+    escapeMarkup: function (markup) { return markup; },
+    placeholder: "请输入商家名称...",
+    multiple: false,
+    id: function(bond){ return bond._id; },
+
+    ajax: {
+      url: "/admin/users/<%== current_user.id %>/search",
+      dataType: 'json',
+      delay: 1000,
+      data: function(params, page) {
+        return {
+          q: params,
+          page: page
+        }
+      },
+      results: function(data, params) {
+        params.page = params.page || 1;
+
+        return {
+          results: data.results,
+          pagination: {
+            more: (params.page * 10) < data.total_count
+          }
+        }
+      },
+      cache: true
+    },
+
+    formatResult: function(data)
+    {
+      this.description =
+        '<span style="display:block;float:left;width:250px;">'+
+        data.text + '</span><span>' + data.login + '</span>';
+      if(data.disabled){ this.description += '<span style="display:block;float:right;">' + data.email + '<a href="#">（参与中）</a></span>' }
+      else{ this.description += '<span style="display:block;float:right;">' + data.email + '</span>' }
+      return this.description;
+    },
+    formatSelection: function(data)
+    {
+      this.description =
+        '<span style="display:block;float:left;width:250px;">' +
+        data.text + '</span><span>' + data.login + '</span><span style="display:block;float:right;">' +
+        data.email + '</span>';
+      return this.description;
+    },
+    escapeMarkup: function (m) { return m; },
+    dropdownCssClass: "bigdrop"
+  }).on("select2-selecting", function(e) {
+    console.log(e.val);
+  });
+</script>

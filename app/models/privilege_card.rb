@@ -50,6 +50,7 @@ class PrivilegeCard < ActiveRecord::Base
 
   def ordinary_store_qrcode_img_url(expire = false)
     if ordinary_store_qrcode_img.new_record? || daily_expired_or_info_charged?(expire)
+      init_sharing_node
       delay.get_and_save_store_qrcode_url
       return "http://imager.ulaiber.com/req/2?#{ordinary_store_qrcode_params.merge(mode: 0).to_param}"
     end
@@ -59,6 +60,7 @@ class PrivilegeCard < ActiveRecord::Base
 
   def service_store_qrcode_img_url(expire = false)
     if service_store_qrcode_img.new_record? || daily_expired_or_info_charged?(expire)
+      init_sharing_node
       delay.get_and_save_store_qrcode_url
       return "http://imager.ulaiber.com/req/2?#{service_store_qrcode_params.merge(mode: 0).to_param}"
     end
@@ -69,7 +71,12 @@ class PrivilegeCard < ActiveRecord::Base
   private
 
   def create_store_qrcode_img
+    init_sharing_node
     delay.get_and_save_store_qrcode_url
+  end
+
+  def init_sharing_node
+    SharingNode.find_or_create_by(user_id: user_id, seller_id: seller_id)
   end
 
   def get_and_save_store_qrcode_url
@@ -83,6 +90,7 @@ class PrivilegeCard < ActiveRecord::Base
       service_store_qrcode_img.save
     end
 
+    self.activity  = seller_promotion_activity_present?
     self.user_name = user.nickname
     self.user_img  = user.read_attribute(:avatar)
     self.service_store_name   = service_store.store_name
@@ -121,13 +129,17 @@ class PrivilegeCard < ActiveRecord::Base
       qrcode_content: url_helpers.sharing_url(code: sharing_node.code, host: default_host, redirect: url_helpers.service_store_path(service_store)),
       itemname: EmojiCleaner.clear(service_store.store_name),
       username:  EmojiCleaner.clear(user.nickname),
+      is_lottery: (seller_promotion_activity_present? ? 1 : 0),
       mode: 1
     }
   end
 
   def daily_expired_or_info_charged?(expire)
+    qrcode_expire_days = Rails.application.secrets.privilege_card['qrcode_expire_days'].day
+    qrcode_expire_time = Rails.env.production? ? Time.current : Time.current + qrcode_expire_days - 5.minute
+
     (
-      expire && qrcode_expire_at < (Rails.env.production? ? Time.current : Time.current + Rails.application.secrets.privilege_card['qrcode_expire_days'].day - 1.minute)
+      expire && qrcode_expire_at < qrcode_expire_time
     ) || (
       user_name != user.nickname ||
       user_img != user.read_attribute(:avatar) ||
@@ -135,7 +147,13 @@ class PrivilegeCard < ActiveRecord::Base
       ordinary_store_cover != ordinary_store.read_attribute(:store_cover) ||
       service_store_name   != service_store.store_name ||
       ordinary_store_name  != ordinary_store.store_name
+    ) || (
+      seller_promotion_activity_present? && !activity
     )
+  end
+
+  def seller_promotion_activity_present?
+    seller.published_activity.present?
   end
 
   def service_store

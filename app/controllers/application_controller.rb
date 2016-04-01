@@ -51,11 +51,16 @@ class ApplicationController < ActionController::Base
     end
   end
 
-  def authenticate_weixin_user!
+  def authenticate_weixin_user!(redirect = nil)
     return false unless browser.wechat?
     return false unless current_user.blank? || current_user.weixin_openid.blank?
 
-    session[:oauth_callback_redirect_path] = request.fullpath
+    path = request.fullpath
+    if redirect.present?
+      path += path.match(/\?/) ? "&redirect=#{redirect}" : "?redirect=#{redirect}"
+    end
+
+    session[:oauth_callback_redirect_path] = path
     redirect_to user_omniauth_authorize_path(:wechat)
   end
 
@@ -116,9 +121,9 @@ class ApplicationController < ActionController::Base
   end
 
   def after_sign_in_path_for(resource, opts = {need_new_passowrd: true})
-    if params[:redirect] == 'discourse'
+    if ['discourse', 'activity'].include? params[:redirect]
       params[:redirectUrl]
-    elsif current_user.need_reset_password? && opts[:need_new_passowrd]
+    elsif current_user.need_reset_password? && opts[:need_new_passowrd] && session[:oauth_callback_redirect_path].try(:match, /promotion_activities/).blank?
       flash[:new_password_enabled] = true
       set_password_path
     else
@@ -152,4 +157,15 @@ class ApplicationController < ActionController::Base
     params['shared'] == 'true'
   end
   helper_method :qr_sharing?
+
+  def activity_sign_in_and_redirect_path(type, promotion_activity)
+    if type == "share"
+      redirect_url = share_draw_promotion_activity_path(promotion_activity)
+    else
+      redirect_url = live_draw_promotion_activity_path(promotion_activity)
+    end
+
+    return new_user_session_path(redirect: 'activity', redirectUrl: redirect_url)
+  end
+  helper_method :activity_sign_in_and_redirect_path
 end

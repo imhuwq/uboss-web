@@ -38,6 +38,31 @@ class Admin::UsersController < AdminController
     end
   end
 
+  def search
+    users = User.joins(:user_infos).where(
+      "login ILIKE ? OR email ILIKE ? OR (user_infos.type = ? AND user_infos.store_name ILIKE ?)",
+      "%#{params[:q]}%", "%#{params[:q]}%", "ServiceStore", "%#{params[:q]}%")
+      .uniq
+
+    results = users.limit(10).inject([]){ |arr, user|
+      arr << (user.service_store.valid? ? [user.id, user.service_store.store_name, user.login || "", user.email || ""] : nil)
+    }.compact
+
+    render json: {
+      error: nil,
+      results: results.inject([]){ |arr, result|
+        arr << {
+          _id:      result[0],
+          text:     result[1],
+          login:    result[2],
+          email:    result[3],
+          disabled: PromotionActivity.where(status: 1, user_id: result[0]).exists?
+        }
+      },
+      total_count: users.count
+    }
+  end
+
   private
 
   def authorize_user_managing_permissions

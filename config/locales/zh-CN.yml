@@ -136,6 +136,9 @@ zh-CN:
         cost_price: 成本价
         suggest_price_lower: 建议价下限
         suggest_price_upper: 建议价上限
+      activity_infos:
+        name: 活动名称
+        price: 活动单价
       mobile_auth_code:
         mobile: 手机号码
       order_form:
@@ -380,6 +383,15 @@ zh-CN:
       category:
         name: 分组名
         asset_img: 展示图
+      promotion_activity:
+        user: 商家名称
+      activity_infos:
+        name: 活动名称
+        price: 活动单价
+        expiry_days: 使用有效期
+        description: 活动说明
+        win_count: 中奖数量
+        win_rate: 中奖概率
   order_status_bar:
     unpay: 等待买家付款
     payed: 等待卖家发货

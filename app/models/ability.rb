@@ -190,6 +190,7 @@ class Ability
     can :manage, Advertisement
     can :manage, CityManager
     can :manage, WechatAccount
+    can :manage, PromotionActivity
   end
 
 end

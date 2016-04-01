@@ -56,4 +56,5 @@ config/nginx.conf
 # Ignore application configuration
 /config/application.yml
 Thumbs.db
+/tags
 tags

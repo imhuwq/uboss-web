@@ -1,0 +1,36 @@
+<div class="container bg">
+  <div class="text-center">
+    <%= image_tag("activate_page/login-image.png")%>
+  </div>
+  <div class="login-box box">
+    <%= simple_form_for(User.new, url: user_session_path, method: 'POST') do |f| %>
+      <% if params[:redirect] && params[:redirectUrl] %>
+        <%= hidden_field_tag 'redirect', params[:redirect] %>
+        <%= hidden_field_tag 'redirectUrl', params[:redirectUrl] %>
+      <% end %>
+      <div class="box-w100 m-bottom10">
+        <%= f.text_field :login, class: 'tel', type: 'tel', id: "new_mobile", placeholder:"请输入手机号码" %>
+      </div><!-- box-w100 -->
+      <div class="box-w100">
+        <div class="box-w65 nogap">
+          <%= f.text_field :mobile_auth_code, class: "cap", type: "tel", placeholder:"请输入验证码" %>
+        </div>
+        <div class="box-w35 nogap">
+          <a id="send_mobile" class="send_mobile btn btn-block send-cap" href="javascript:;">发送验证码</a>
+        </div>
+      </div><!-- box-w100 -->
+      <br />
+      <div class="box-w100">
+        <%= f.button :submit, "参与抽奖", class: "btn-block btn login-btn" %>
+      </div>
+    <% end %>
+    <br />
+    <div class="text-center">活动规则</div>
+    <br />
+    <div class="box-w100 text-box">
+      <p><span class="orange-circle"></span> 参与抽奖有机会获得商家一份礼品</p>
+      <p><span class="orange-circle"></span> 分享二维码，好友抽中奖后双方皆有奖励</p>
+      <p><span class="orange-circle"></span> 活动最终解释权归UBOSS所有</p>
+    </div>
+  </div><!-- login-box -->
+</div><!-- container -->

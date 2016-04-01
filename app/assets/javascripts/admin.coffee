@@ -30,6 +30,7 @@
 #= require shared/count_down
 #= require admin/certification
 #= require admin/sellers
+#= require admin/promotion_activity
 #= require_self
 
 App = window.App = {}
