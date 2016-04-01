@@ -54,6 +54,8 @@
         <p class="gap white-bg-color">
         <span style="display:block;">二维码推广链接：<%= store_qrcode_img_url(type: 'service', sid: current_user.id) %></span>
         <br />
+        <span style="display:block;">店铺收款链接：<%= pay_bill_charges_url(ssid: current_user.service_store.id) %></span>
+        <br />
         <span style="display:block;">我的收益链接：<%= income_account_url %></span>
         </p>
       </div>

@@ -1,9 +1,19 @@
-<h3><%= @service_store.store_name %> 线上支付</h3>
-
-
-<%= hidden_field_tag :service_store_id, @service_store.id %>
-<%= text_field_tag :pay_amount, params[:pay_amount].to_f, type: :tel %>
-<%= link_to "付款", bill_orders_path, class: 'req-bill-btn' %>
+<div class="bg-white">
+  <div class="box-m40">
+    <br />
+    <h3 class='main-color text-center'><%= @service_store.store_name %> 线上支付</h3>
+    <br />
+    <div>
+      <%= hidden_field_tag :service_store_id, @service_store.id %>
+      <%= text_field_tag :pay_amount, params[:pay_amount].to_f,
+        type: :tel, class:'input-radius input-large input-block' %>
+    </div>
+    <br />
+    <div>
+      <%= link_to "微信支付", bill_orders_path, class: 'req-bill-btn btn btn-large btn-block' %>
+    </div>
+  </div>
+</div>
 
 <% if browser.wechat? %>
 <script type="text/javascript" charset="utf-8">

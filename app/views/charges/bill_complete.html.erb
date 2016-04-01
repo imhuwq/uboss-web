@@ -24,7 +24,20 @@
         <br />
         <h1>支付成功</h1>
         <br />
+        <br />
+        <div class="gray-color">金额：<%= @order_charge.paid_amount %></div>
+        <br />
+        <% @order_charge.bill_orders.each do |bill_order|%>
+          <div class="gray-color">收款方：<%= bill_order.seller.service_store.store_name %></div>
+          <br />
+          <div class="gray-color">交易单号：<%= bill_order.number %></div>
+          <br />
+        <% end %>
+        <div class="gray-color">付款时间：<%= @order_charge.paid_at %></div>
+        <br />
+        <div class="gray-color">付款单号：<%= @order_charge.pay_serial_number %></div>
       </div>
+      <br />
     </div><!-- bg-white -->
   <% end %>
 </div><!-- box -->
