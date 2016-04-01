@@ -11,7 +11,7 @@
 					
 					<div class="content">
 						<div class="name text-cut"><%= dishe.get("name") %></div>
-						<div class="sku text-cut"><small>( 规格名 / 分号隔开 )</small></div>
+						<div class="sku text-cut"><small><%= dishe.get("properties") %></small></div>
 					</div>
 					<div class="price text-cut"><small>￥</small> <%= dishe.get("price") %></div>
 					<div class="num-box " data-dishe-id="<%= dishe.id %>">

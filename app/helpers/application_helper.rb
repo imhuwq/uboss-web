@@ -231,4 +231,9 @@ module ApplicationHelper
     @display_mobile_nav = false
   end
 
+  def params_without_path_parameters
+    keys = %w(authenticity_token utf8 controller action)
+    params.except(*keys)
+  end
+
 end

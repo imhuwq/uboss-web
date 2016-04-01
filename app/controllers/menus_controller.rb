@@ -28,20 +28,23 @@ class MenusController < ApplicationController
   end
 
   def confirm
-    @order_form = DishesOrderForm.new(order_params)
+    @order = DishesOrder.new(order_params)
+    @order_form = DishesOrderForm.new(@order, form_params)
   end
 
   def order
-    @order_form = DishesOrderForm.new(order_params)
+    @order = DishesOrder.new(order_params)
+    @order_form = DishesOrderForm.new(@order, form_params)
 
     respond_to do |format|
       if @order_form.save
         sign_in(@order_form.buyer) if current_user.blank?
-        format.html { redirect_to payments_charges_path(order_ids: @order_form.order.id, showwxpaytitle: 1) }
+        format.html { redirect_to payments_charges_path(order_ids: @order_form.order_id, showwxpaytitle: 1) }
+        format.json { render json: { url: payments_charges_path(order_ids: @order_form.order_id, showwxpaytitle: 1) }, status: 200 }
       else
         format.html { redirect_to service_store_menus_path(@store) }
+        format.json   { render json: { errors: @order_form.errors.full_messages } }
       end
-      format.js
     end
   end
 
@@ -51,15 +54,19 @@ class MenusController < ApplicationController
     def order_params
       {
         seller_id: @store.user_id,
-        buyer: current_user,
-        sharing_code: get_seller_sharing_code(@store.user_id),
-        session: session
-      }.
-      merge(params.permit(order_items_attributes: [:amount, :product_inventory_id]))
+        user: current_user
+      }.merge params.permit({
+        order_items_attributes: [:amount, :product_inventory_id]
+      })
     end
 
-    def order_item_params
-      params.permit(:product_inventory_id, :amount)
+    def form_params
+      params.permit(:mobile, :captcha).merge({
+        sharing_node: get_seller_sharing_code(@store.user_id),
+        session: session,
+        seller_id: @store.user_id,
+        buyer: current_user
+      })
     end
 
     def set_store

@@ -1,46 +1,55 @@
 class DishesOrderForm
-  extend ActiveModel::Naming
-  include ActiveModel::Conversion
-  include ActiveModel::Validations
   include ActiveModel::Model
-
-  ATTRIBUTES = [:mobile, :seller_id, :sharing_code]
-
-  ATTRIBUTES.each do |order_attr|
-    attr_accessor order_attr
-  end
-
-  attr_accessor :session, :sharing_node, :buyer, :order, :order_items_attributes
+  include ActiveModel::Validations::Callbacks
 
   validate  :captcha_must_be_valid, :mobile_blank_with_oauth_or_binding, if: :need_bind_mobile
   validate  :product_must_be_valid
 
-  def product_inventory
-    @product_inventory ||= ProductInventory.find(self.product_inventory_id)
+  delegate :id  , to: '@order'        , prefix: :order  , allow_nil: true
+  delegate :user, to: '@sharing_node' , prefix: :sharing, allow_nil: true
+
+  attr_accessor :sharing_node, :order, :buyer, :mobile, :captcha, :session, :seller_id
+
+  define_model_callbacks :save
+  after_validation :set_value
+
+  before_save :ensure_valid!
+
+  def ensure_valid!
+    order &&
+    valid? &&
+    order.valid? &&
+    order.order_items.all? { |i| i.errors.blank? }
   end
 
-  def sharing_node
-    return @sharing_node if @sharing_node.present?
-    @sharing_node = SharingNode.find_by(code: self.sharing_code)
-    if @sharing_node && @sharing_node.seller_id.present?
-      @sharing_node = @sharing_node.lastest_product_sharing_node(self.product)
-    end
-    @sharing_node
+  def initialize(order, options={})
+    @order = order
+    @shrging_node = SharingNode.find_by(code: options[:sharing_code])
+    options.each { |k, v| instance_variable_set("@#{k}", v) }
   end
 
   def sharing_user
-    @sharing_user ||= sharing_node.try(:user)
+    @shrging_node.try(:user) || User.new
   end
 
   def save
-    if self.valid?
-      ActiveRecord::Base.transaction do
-        create_or_update_user
-        create_order_and_order_item
-      end
-      true
-    else
-      false
+    run_callbacks(:save) do
+      byebug
+      order.save
+    end
+  end
+
+  def order_items
+    order.order_items.each &:reset_payment_info
+  end
+
+  def set_value
+    return if buyer.blank?
+    order.user = buyer
+    order.mobile = buyer.login
+    order.order_items.each do |item|
+      item.sharing_node = sharing_node if sharing_node
+      item.user_id = buyer.id
     end
   end
 
@@ -69,39 +78,20 @@ class DishesOrderForm
     buyer.present? && session['devise.wechat_data'] && session['devise.wechat_data'].extra['raw_info']
   end
 
-  def create_order_and_order_item
-    self.order =
-      DishesOrder.create!({
-        user: buyer,
-        seller_id: seller_id,
-        mobile: buyer.login,
-        order_items_attributes: order_items_attributes
-        })
-  end
-
-  def order_items_attributes=(items)
-    @order_items_attributes = items.map do |_, item|
-      item[:sharing_node] = sharing_node if sharing_node
-      item[:user_id]      = buyer.id
-      item
-    end
-  end
-
   def product_must_be_valid
-    errors.add(:base, "菜品必须为同一商家") if product_inventories.any? { |inventory| inventory.product.user_id.to_i != seller_id.to_i }
-    product_inventories.detect do |inventory|
-      item_attr = order_items_attributes.detect {|item| item["product_inventory_id"].to_i == inventory.id }
-      if !inventory.saling?
-        errors.add(:base, "该商品不可售")
-      elsif item_attr["amount"].to_i > inventory.reload.count
-        self.amount = inventory.count
-        errors.add(:base, "#{inventory.product.name} #{inventory.sku_attributes_str}库存不足，最多购买 #{amount} 件")
+    s = []
+    order_items.each do |item|
+      product_inventory = item.product_inventory
+      item.errors.add(:base, "此规格商品不可售") if not product_inventory.saling?
+      if item.amount > product_inventory.count
+        item.errors.add(:base, "#{inventory.product.name} #{inventory.sku_attributes_str}库存不足，最多购买 #{amount} 件")
       end
     end
+    errors.add(:base, "菜品必须为同一商家") if product_inventories.any? { |inventory| inventory.product.user_id.to_i != seller_id.to_i }
   end
 
   def product_inventories
-    @product_inventories ||= ProductInventory.where(id: order_items_attributes.map {|i| i['product_inventory_id']}).includes(:product).to_a
+    @product_inventories ||= ProductInventory.where(id: order_items.map {|i| i['product_inventory_id']}).includes(:product).to_a
   end
 
   def captcha_must_be_valid

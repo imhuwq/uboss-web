@@ -26,6 +26,7 @@ class Menus.Views.Main extends Backbone.View
     $.ajax
       url: '/products/' + @getProductId(e) + '/info'
       dataType: 'json'
+      cache: true
       success: (result) ->
         if result.items.length > 1
           that.showMenu(result)
@@ -70,13 +71,4 @@ class Menus.Views.Main extends Backbone.View
 
   submit: (e)->
     e.stopPropagation()
-    order_items_attributes = []
-    window.dishes.each (dishe) ->
-      order_items_attributes.push({ amount: dishe.get("amount"), product_inventory_id: dishe.get("id") })
-    $.ajax
-      type: 'POST'
-      url: window.location.pathname + '/confirm'
-      data: { order_items_attributes: order_items_attributes }
-      success: (req) ->
-        console.log req
-      
+    Dispatcher.trigger Menus.Events.SUBMIT_DISHES, 'confirm'

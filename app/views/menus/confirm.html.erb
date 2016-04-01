@@ -1,1 +1,56 @@
-<%= content_for :page_title do %>  提交订单<% end %><%= content_for :header_left do %>  <a class="back" onclick="history.go(-1)"><%= image_tag 'mobile/right.png' %></a><% end %><div class="comfirmed-dishes-box">  <div class="bg-white m-top10">    <div class="store-name m-bottom10 text-cut">店铺名称</div>    <div class="gap-lr">      <!-- 循环  -->      <div class="m-bottom10">        <span class="pull-right text-cut num text-right gray-color">x 数量</span>        <span class="pull-right text-cut price ">￥ 单价</span>        <div class="text-cut">菜品名称</div>      </div><!-- m-bottom10 -->      <!-- 结束循环  -->    </div><!-- gap-lr -->    <div class="friend-info border-top">      <div class="cover">        <%= image_tag ('mobile/img.jpg') %>      </div>      <div class="content">        <span class="pull-right red-color order-privilege-amount">40</span><span class="main-color">分享者名称</span> 帮你优惠      </div>    </div><!-- friend-info -->  </div><!-- bg-white --> </div><!-- dishes-comfirmed-box --><div class="order-price">      <%= submit_tag '提交订单', class: "accunt_adilbtn cart-btn btn" %>   <div class="content">     <p>应付款：<span id="total_price">0.0</span></p>     <p class="gray-color"><small>共优惠0.0元</small></p>   </div></div><!-- order-price -->
+<%= content_for :page_title do %>
+  提交订单
+<% end %>
+<%= content_for :header_left do %>
+  <a class="back" onclick="window.close()"><%= image_tag 'mobile/right.png' %></a>
+<% end %>
+<div class="comfirmed-dishes-box">
+  <div class="bg-white m-top10">
+    <div class="store-name m-bottom10 text-cut"><%= @order.seller.identify %></div>
+    <div class="gap-lr">
+      <!-- 循环  -->
+      <% @order_form.order_items.each do |item| %>
+        <div class="m-bottom10">
+          <span class="pull-right text-cut num text-right gray-color">x <%= item.amount %></span>
+          <span class="pull-right text-cut price ">￥ <%= item.present_price %></span>
+          <div class="text-cut"><%= item.product_inventory.product_name %></div>
+        </div><!-- m-bottom10 -->
+      <% end %>
+      <!-- 结束循环  -->
+    </div><!-- gap-lr -->
+    <div class="friend-info border-top">
+      <div class="cover">
+        <%= image_tag ('mobile/img.jpg') %>
+      </div>
+      <div class="content">
+        <% if sharing_user = @order_form.sharing_user %>
+          <span class="pull-right red-color order-privilege-amount">40</span><span class="main-color"><%= sharing_user.identify %></span> 帮你返利
+        <% end %>
+      </div>
+    </div><!-- friend-info -->
+  </div><!-- bg-white --> 
+</div><!-- dishes-comfirmed-box -->
+<div class="order-price">
+   <%= submit_tag '提交订单', class: "accunt_adilbtn cart-btn btn" %>
+   <div class="content">
+     <p>应付款：<span id="total_price"><%= @order.order_items.map(&:pay_amount).sum %></span></p>
+     <p class="gray-color"><small>共优惠0.0元</small></p>
+   </div>
+</div><!-- order-price -->
+<script type="text/javascript">
+  $(document).ready(function(){
+    $("input[name='commit']").on('click', function(){
+      $.ajax({
+        url: "<%= order_service_store_menus_path(@store, format: :json) %>",
+        type: 'POST',
+        data: <%= raw params_without_path_parameters.to_json %>,
+        success: function(data, status, xhr){
+          window.location.href = data.url;
+        },
+        error: function(xhr, data){
+          console.log(req, 'error');
+        }
+      })
+    });
+  })
+</script>

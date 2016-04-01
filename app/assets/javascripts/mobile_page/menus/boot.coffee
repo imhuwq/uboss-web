@@ -25,6 +25,7 @@ console.log "menus is ready"
     'DISHE_CHANGED'
     'DISHE_REMOVED'
     'DISPLAY_BAR'
+    'SUBMIT_DISHES'
   ], (e) ->
     Menus.Events[e] = e;
 
@@ -67,6 +68,10 @@ Zepto ($) ->
       switch action
         when 'show' then $(".dishes-pop-bg").addClass("show")
         when 'hide' then $(".dishes-pop-bg").removeClass("show")
+
+    Dispatcher.on Menus.Events.SUBMIT_DISHES, (action='confirm') ->
+      new Menus.Views.Form({collection: window.dishes}).render()
+      $('#dishes-form').submit()
 
     recalculateBar = ->
       recalculateBarNum()

@@ -51,9 +51,12 @@
 </div><!-- dishes-order-box -->
 <div class="dishes-buy-bar">
   <div class="order-icon pull-left">
-    <span class="order-count" id="order-count">100</span>
+    <span class="order-count" id="order-count"></span>
   </div><!-- order-icon -->
   <a class="order-buy-btn btn disabled pull-right" id="order-buy-btn">去付款</a><!-- order-buy-btn -->
+  <%= form_tag confirm_service_store_menus_path(@store), style: 'display:none', id: "dishes-form" do %>
+    <div id='dishe-form-container'></div>
+  <% end %>
   <div class="dishes-order-price text-cut">
     <small>应付：</small><span id="dishes-total-price">0</span> 元
   </div><!-- order-info -->
