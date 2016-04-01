@@ -44,10 +44,10 @@ ActiveRecord::Schema.define(version: 20160329062136) do
     t.integer  "prize_winner_id"
     t.integer  "promotion_activity_id"
     t.integer  "activity_info_id"
-    t.jsonb    "info"
+    t.jsonb    "info",                  default: {}
     t.string   "activity_type"
-    t.datetime "created_at",            null: false
-    t.datetime "updated_at",            null: false
+    t.datetime "created_at",                         null: false
+    t.datetime "updated_at",                         null: false
     t.integer  "sharer_id"
     t.integer  "relate_winner_id"
   end
@@ -162,8 +162,8 @@ ActiveRecord::Schema.define(version: 20160329062136) do
     t.integer  "user_id",                        null: false
     t.datetime "created_at",                     null: false
     t.datetime "updated_at",                     null: false
-    t.datetime "use_in_store_at"
     t.boolean  "use_in_store",    default: true
+    t.datetime "use_in_store_at"
   end
 
   add_index "categories", ["user_id", "name"], name: "index_categories_on_user_id_and_name", unique: true, using: :btree
@@ -435,12 +435,11 @@ ActiveRecord::Schema.define(version: 20160329062136) do
     t.datetime "updated_at",                                           null: false
     t.boolean  "actived",              default: false
     t.integer  "seller_id"
-    t.integer  "product_inventory_id"
     t.string   "user_img"
     t.string   "service_store_cover"
     t.string   "user_name"
     t.string   "ordinary_store_cover"
-    t.datetime "qrcode_expire_at",     default: '2016-03-03 14:49:49'
+    t.datetime "qrcode_expire_at",     default: '2016-03-23 15:25:16'
     t.string   "service_store_name"
     t.string   "ordinary_store_name"
     t.boolean  "activity",             default: false
@@ -540,15 +539,10 @@ ActiveRecord::Schema.define(version: 20160329062136) do
     t.boolean  "full_cut",             default: false
     t.integer  "full_cut_number"
     t.integer  "full_cut_unit"
-    t.integer  "total_sales"
-    t.integer  "comprehensive_order"
-    t.datetime "published_at"
     t.string   "type"
     t.integer  "service_type"
     t.integer  "monthes"
     t.integer  "service_store_id"
-    t.integer  "sales_amount",         default: 0
-    t.integer  "sales_amount_order"
     t.integer  "parent_id"
     t.integer  "supplier_id"
   end
@@ -695,12 +689,11 @@ ActiveRecord::Schema.define(version: 20160329062136) do
     t.integer  "product_id"
     t.string   "code"
     t.integer  "parent_id"
-    t.integer  "lft",          null: false
-    t.integer  "rgt",          null: false
-    t.datetime "created_at",   null: false
-    t.datetime "updated_at",   null: false
+    t.integer  "lft",        null: false
+    t.integer  "rgt",        null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.integer  "seller_id"
-    t.integer  "self_page_id"
   end
 
   add_index "sharing_nodes", ["code"], name: "index_sharing_nodes_on_code", unique: true, using: :btree
