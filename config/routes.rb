@@ -166,7 +166,9 @@ Rails.application.routes.draw do
       namespace :admin do
         resources :carriage_templates, only: [:index, :show]
         resources :service_products, only: [:create]
-        resources :service_stores, only: [:create]
+        resources :service_stores, only: [:create] do
+          post :verify, on: :collection
+        end
         resources :products, only: [:index, :show, :create] do
           member do
             get :inventories, :detail
@@ -175,7 +177,6 @@ Rails.application.routes.draw do
       end
       resources :service_stores, only: [:create] do
         get :total_verify_detail, :today_verify_detail
-        post :verify
       end
 
       post 'login', to: 'sessions#create'

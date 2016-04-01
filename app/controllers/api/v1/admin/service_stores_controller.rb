@@ -1,4 +1,5 @@
 class Api::V1::Admin::ServiceStoresController < ApiBaseController
+
   def create
     authorize! :create, ServiceStore
     @service_store = current_user.bulid_service_store(service_store_params)
@@ -6,6 +7,16 @@ class Api::V1::Admin::ServiceStoresController < ApiBaseController
       render_model_id @service_store
     else
       render_model_errors @service_store
+    end
+  end
+
+  def verify
+    @verify_code = VerifyCode.with_user(current_user).find_by(code: params[:code])
+
+    if @verify_code.present? && @verify_code.verify_code
+      head(200)
+    else
+      render_error :validation_failed, '验证失败'
     end
   end
 
