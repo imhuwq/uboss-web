@@ -171,7 +171,7 @@ Rails.application.routes.draw do
         end
         resources :products, only: [:index, :show, :create] do
           member do
-            get :inventories, :detail
+            get :inventories, :detail, :change_status
           end
         end
       end

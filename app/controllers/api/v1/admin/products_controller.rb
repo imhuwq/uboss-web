@@ -26,6 +26,22 @@ class Api::V1::Admin::ProductsController < ApiBaseController
     @product_inventories = @product.seling_inventories
   end
 
+  def change_status
+    if params[:status] == 'published'
+      @product.status = "published"
+    elsif params[:status] == 'unpublish'
+      @product.status = 'unpublish'
+    elsif params[:status] == 'closed'
+      @product.status = 'closed'
+    end
+
+    if @product.save
+      render_model_id @product
+    else
+      render_model_errors @product
+    end
+  end
+
   private
 
   def find_product
