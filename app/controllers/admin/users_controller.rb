@@ -48,11 +48,17 @@ class Admin::UsersController < AdminController
       arr << (user.service_store.valid? ? [user.id, user.service_store.store_name, user.login || "", user.email || ""] : nil)
     }.compact
 
-    seller_ids = PromotionActivity.where(status: 1).pluck(:user_id)
-
     render json: {
       error: nil,
-      results: results.inject([]){ |arr, result| arr << {_id: result[0], text: result[1], login: result[2], email: result[3], disabled: seller_ids.include?(result[0])} },
+      results: results.inject([]){ |arr, result|
+        arr << {
+          _id:      result[0],
+          text:     result[1],
+          login:    result[2],
+          email:    result[3],
+          disabled: PromotionActivity.where(status: 1, user_id: result[0]).exists?
+        }
+      },
       total_count: users.count
     }
   end
