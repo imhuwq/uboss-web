@@ -91,7 +91,10 @@ $ ->
   $('.category-more-btn').on 'click',->
     $('.category-more-box').toggleClass('hidden')
     $(this).toggleClass('up')
-
+    
+  $('.recommend-icon span').on 'click',->
+    $(this).toggleClass('active')
+    
   $('#ucategory-more').on 'click' , ->
     if $(this).hasClass('arrow-top')
       $(this).removeClass('arrow-top')

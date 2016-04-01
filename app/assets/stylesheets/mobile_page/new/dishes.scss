@@ -107,7 +107,7 @@
 }
 .dishes-box {
   position: relative;
-  background: url('https://mir-s3-cdn-cf.behance.net/project_modules/hd/66fdd723501831.5632411ead864.jpg') #fff no-repeat left center;
+  background: image-url('mobile/dishes-defualt.jpg') #fff no-repeat left center;
   margin-bottom: 10px;
   background-size: cover;
 }
@@ -204,7 +204,7 @@
   line-height: 1;
   .cover {
     padding: 14%;
-    background: url('http://m2.quanjing.com/2m/suc005/c4-172530.jpg') left center #fff;
+    background: image-url('mobile/dishes-defualt.jpg') left center #fff;
     background-size: cover;
     display: inline-block;
     float: left;
@@ -487,6 +487,7 @@
   padding-bottom: 62px;
   .num,.price{
     width: 20%;
+    max-width: 66px;
     margin-left: 1%;
   }  
   .store-name{
