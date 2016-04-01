@@ -11,12 +11,11 @@ class Api::V1::Admin::ServiceStoresController < ApiBaseController
   end
 
   def verify
-    @verify_code = VerifyCode.with_user(current_user).find_by(code: params[:code])
-
-    if @verify_code.present? && @verify_code.verify_code
-      head(200)
+    result = VerifyCode.verify(current_user, params[:code])
+    if result[:success]
+      render json: { message: result[:message] }
     else
-      render_error :validation_failed, '验证失败'
+      render_error :validation_failed, result[:message]
     end
   end
 
