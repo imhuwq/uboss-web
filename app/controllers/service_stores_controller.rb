@@ -21,7 +21,7 @@ class ServiceStoresController < ApplicationController
     if @sharing_node && @sharing_node.user != current_user
       @promotion_activity = PromotionActivity.find_by(user_id: @seller.id, status: 1)
       @draw_record = current_user && @promotion_activity && ActivityDrawRecord.find_by(
-        user_id: current_user.id, activity_info_id: @promotion_activity.share_activity_info.id)
+        user_id: current_user.id, sharer_id: @sharing_node.user_id, activity_info_id: @promotion_activity.share_activity_info.id)
     end
   end
 
