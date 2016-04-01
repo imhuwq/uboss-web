@@ -11,7 +11,7 @@ class Menus.Views.Main extends Backbone.View
     'click .dishes-order-price, .order-icon': 'showDishes'
 
   showMenu: (product) ->
-    @product  = new Menus.Models.Product(product)
+    
     @barView  = new Menus.Views.Bar({model: @product}).render()
     @skusView = new Menus.Views.Skus({collection: product.skus}).render()
     @skusView.parent = @barView
@@ -28,12 +28,12 @@ class Menus.Views.Main extends Backbone.View
       dataType: 'json'
       cache: true
       success: (result) ->
+        that.product  = new Menus.Models.Product(result)
         if result.items.length > 1
           that.showMenu(result)
         else
-          dishe = new Menus.Models.Dishe(result.items[0])
-          dishe.set("count", 1)
-          window.dishes.push(dishe)
+          sku = result.items[0]
+          that.addOrUpdateDishe(sku.id)
 
   reduce: (e) ->
     productId = @getProductId(e)
@@ -55,10 +55,15 @@ class Menus.Views.Main extends Backbone.View
       alert('请选择规格')
       return
     skuId = parseInt(skuIds[0])
-    sku = _.findWhere(@product.get("items"), { id: skuId })
+    @addOrUpdateDishe(skuId)
+    Dispatcher.trigger Menus.Events.DISPLAY_BAR, 'hide'
+
+  addOrUpdateDishe: (skuId) ->
+    sku = _.clone _.findWhere(@product.get("items"), { id: skuId })
     sku.product_id = @product.id
-    sku.name  = @product.get("name")
-    amount = @barView.model.get("count")
+    sku.name       = @product.get("name")
+    amount         = @product.get("count")
+
     if dishe = window.dishes.findWhere({ id: skuId })
       dishe.set "amount", amount + dishe.get("amount")
       Dispatcher.trigger Menus.Events.DISHE_CHANGED, dishe
@@ -67,7 +72,6 @@ class Menus.Views.Main extends Backbone.View
       dishe.set "amount", amount
       window.dishes.push dishe
       Dispatcher.trigger Menus.Events.ADDED_DISHE, dishe
-    Dispatcher.trigger Menus.Events.DISPLAY_BAR, 'hide'
 
   submit: (e)->
     e.stopPropagation()
