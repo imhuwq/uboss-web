@@ -150,6 +150,16 @@ SimpleNavigation::Configuration.run do |navigation|
         if: -> { can?(:manage, PurchaseOrder) }
     end
 
+    primary.item :promotion_activity, '活动商家', '#', {} do |sub_nav|
+      sub_nav.item :s_published_activities, '参与中', admin_promotion_activities_path(type: 'published'),
+        highlights_on: /type=published/,
+        if: -> { can?(:read, PromotionActivity) }
+
+      sub_nav.item :s_unpublish_activities, '已下架', admin_promotion_activities_path(type: 'unpublish'),
+        highlights_on: /type=unpublish/,
+        if: -> { can?(:read, PromotionActivity) }
+    end
+
     # You can also specify a condition-proc that needs to be fullfilled to display an item.
     # Conditions are part of the options. They are evaluated in the context of the views,
     # thus you can use all the methods and vars you have available in the views.

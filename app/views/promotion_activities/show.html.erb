@@ -1,0 +1,18 @@
+<div class="container bg">
+  <div class="text-center">
+    <%= image_tag("activate_page/login-image.png")%>
+  </div>
+  <div class="login-box box">
+    <div class="lottery-btn-box text-center">
+      <%= link_to "参与抽奖", @type == 'live' ? live_draw_promotion_activity_path(@promotion_activity) : share_draw_promotion_activity_path(@promotion_activity), class: "lottery-btn" %>
+    </div><!-- lottery-btn-box -->
+    <br />
+    <div class="text-center">活动规则</div>
+    <br />
+    <div class="box-w100 text-box">
+      <p><span class="orange-circle"></span> 参与抽奖有机会获得商家一份礼品</p>
+      <p><span class="orange-circle"></span> 分享二维码，好友抽中奖后双方皆有奖励</p>
+      <p><span class="orange-circle"></span> 活动最终解释权归UBOSS所有</p>
+    </div>
+  </div><!-- login-box -->
+</div><!-- container -->

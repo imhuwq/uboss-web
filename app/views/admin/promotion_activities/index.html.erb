@@ -1,0 +1,34 @@
+<div class="container admin-container">
+  <div class="container nogap ">
+    <% if params[:type] == "published" %>
+      <div class="box-w20" style="position:relative;left:40%;">
+        <a href="javascript:;">
+          <div class="admin-box red-bg-color">
+            <h4>参与中商家活动</h4>
+            <h1 class="num activities-count"><%= @promotion_activities.count %></h1>
+          </div>
+        </a>
+      </div>
+    <% end %>
+    <% if params[:type] == "unpublish" %>
+      <div class="box-w20" style="position:relative;left:40%;">
+        <a href="javascript:;">
+          <div class="admin-box blue-bg-color">
+            <h4>已下架商家活动</h4>
+            <h1 class="num activities-count"><%= @promotion_activities.count %></h1>
+          </div>
+        </a>
+      </div>
+    <% end %>
+  </div>
+</div>
+<br />
+
+<div class="container  mod-inner">
+  <div class="list-search-bar">
+    <%= link_to("+ 绑定商家", url_for(action: :new), class: "btn btn-large", role: "button") %>
+  </div>
+  <br />
+  <%= render partial: 'promotion_activities', locals: { promotion_activities: @promotion_activities } %>
+  <%= paginate @promotion_activities %>
+</div>

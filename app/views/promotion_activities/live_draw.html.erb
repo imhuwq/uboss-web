@@ -1,0 +1,39 @@
+<div class="container shared">
+  <div class="text-center gap">
+    <div class="activate-info">
+      <div class="border-line">
+        <h3><%= @message[:success] %></h3>
+      </div>
+    </div><!-- activate-info -->
+  </div>
+  <div class="text-center tips-text">
+    您的奖品已放入
+    <%= link_to "【奖券】", lotteries_account_verify_codes_path %>
+  <div class="activate-text">
+
+  </div><!-- activate-text -->
+  <div class="activate-bg">
+
+  </div><!-- activate-bg -->
+  <div class="pop-bg hidden">
+  		<div class="pop-content text-center">
+  			<div class="share-img-box">
+		    <%= image_tag(@qrcode_img_url)%>
+		  </div>
+		  <br />
+		  <p style="color:#fff;">长按图片保存并发送给好友</p>
+		  <p style="color:#fff;">还能让好友直接扫描二维码</p>
+  		</div>
+  </div>
+  <br />
+</div>
+<script>
+	$('.activate-bg').click(function(){
+		$('.pop-bg').removeClass('hidden')
+		$('html,body').attr('style','overflow: hidden;')
+	})
+	$('.pop-bg').click(function(){
+		$('.pop-bg').addClass('hidden')
+		$('html,body').attr('style','')
+	})
+</script>

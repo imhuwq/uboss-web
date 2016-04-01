@@ -39,10 +39,14 @@
         </div>
       </div><!-- bg-white -->
     <% end %>
-    <div class="pay-bg text-center m-top10">
+    <div class="pay-bg text-center m-top10 
+    		<% if 1 == 1%>
+    			activate
+    		<% end %>
+    	">
       <div class="pay-info-bg">
         <p><a href="/about" class="btn btn-pay-about">玩法说明</a></p>
-        <p><a href="/account" class="btn btn-pay">查看我的友钱卡</a></p>
+        <p><a href="/account" class="btn btn-pay">分享友钱卡获得收益</a></p>
       </div>
     </div><!-- pay-bg -->
     <% if @product.is_official_agent? %>

@@ -1,0 +1,33 @@
+<div class="container shared">
+  <div class="text-center gap">
+    <div class="activate-info">
+      <div class="border-line">
+        <h3><%= @message[:success] %></h3>
+      </div>
+    </div><!-- activate-info -->
+  </div>
+  <div class="text-center tips-text">
+    您的奖品已放入
+    <%= link_to "【奖券】", lotteries_account_verify_codes_path %>
+  </div>
+  <br />
+
+	<div class="share-img-box">
+			<h4 class="gap black-color">
+				购买商品参与分享抽奖活动<br/>
+				一大波好礼坐等领取
+			</h4>
+      <div class="gap">
+        <%= link_to '', service_store_path(@service_store.id),
+          class: "store-cover",
+          style: "background-image:url('#{image_url(@service_store.store_cover_url)}')" %>
+      </div>
+      <div class="gap">
+        <%= link_to service_store_path(@service_store.id) do %>
+          <%= @service_store.store_name %>
+          <span class="right-icon">→</span>
+        <% end %>
+      </div>
+	</div>
+  <br />
+</div>

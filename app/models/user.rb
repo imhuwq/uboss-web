@@ -28,6 +28,7 @@ class User < ActiveRecord::Base
   has_many :favoured_products, through: :favour_products, source: :product
   has_many :withdraw_records
   has_many :sended_mobile_captchas, class_name: 'MobileCaptcha', foreign_key: 'sender_id'
+  has_many :activity_draw_records
   # for agent
   has_many :divide_incomes
   has_many :sellers, class_name: 'User', foreign_key: 'agent_id'
@@ -64,6 +65,7 @@ class User < ActiveRecord::Base
   has_many :categories
   has_many :selling_incomes
   belongs_to :agent, class_name: 'User'
+  has_many :promotion_activities
 
   #for supplier
   has_one :supplier_store, autosave: true
@@ -207,6 +209,10 @@ class User < ActiveRecord::Base
     user_roles.exists?(name: role_name)
   end
 
+  def published_activity
+    promotion_activities.find_by(status: 1)
+  end
+
   class << self
 
     def find_for_database_authentication(warden_conditions)
@@ -347,7 +353,7 @@ class User < ActiveRecord::Base
   end
 
   def identify
-    nickname || mobile || 'UBOSS用户'
+    nickname || mobile.present? || 'UBOSS用户'
   end
 
   def total_income

@@ -16,4 +16,6 @@ admin/sku_app/application.js mobile_page/chat_app/boot.js
 hongbao.js hongbao.css
 pages/bonus_invite.js
 pages/bonus_invite.css
+activate/activate.js
+activate/activate.css
 )

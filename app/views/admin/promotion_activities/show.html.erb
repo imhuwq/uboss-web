@@ -1,0 +1,141 @@
+<div class="container admin-container">
+	<ul class="breadcrumb">
+		<li><a href="/admin">主页</a></li>
+		<li class="divider"><i class="fa fa-angle-right"></i></li>
+		<li><%= link_to '活动商家', admin_promotion_activities_path(type: 'published') %></li>
+		<li class="divider"><i class="fa fa-caret-right"></i></li>
+		<li class="active">查看活动信息</li>
+	</ul>
+</div><!-- container -->
+<br />
+
+<div class="container nogap">
+  <div class="admin-box beige-bg-color">
+    <h4 class="edit-title">商家信息</h4>
+
+    <div class="form-group">
+      <label class="control-label">商家名称</label>
+      <div class="control-input">
+        <span class="control-input" style="padding:8px">
+          <span class='label label-info'><%= @promotion_activity.seller_name %></span>
+        </span>
+      </div>
+    </div>
+  </div><!-- admin-box -->
+  <br />
+
+  <div class="admin-box beige-bg-color">
+    <h4 class="edit-title">现场活动</h4>
+    <div class="form-group">
+      <label class="control-label">活动名称</label>
+      <div class="control-input">
+        <span class="control-txt"><%= @live_activity_info.name %></span>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="control-label"> 活动单价 </label>
+      <div class="control-input">
+        <span class="control-txt"><%= @live_activity_info.price %></span>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="control-label"> 使用有效期 </label>
+      <div class="control-input">
+        <span class="control-txt"><%= @live_activity_info.expiry_days %>天 （自领取当天开始计算）</span>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="control-label"> 活动说明 </label>
+      <div class="control-input">
+        <div style='width:350px;' class="control-txt word-break"><%= raw @live_activity_info.description %>　</div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="control-label"> 中奖数量 </label>
+      <div class="control-input">
+        <span class="control-txt"><%= @live_activity_info.win_count %></span>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="control-label"> 中奖概率 </label>
+      <div class="control-input">
+        <span class="control-txt"><%= @live_activity_info.win_rate %>%</span>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="control-label"> 已中奖数量 </label>
+      <div class="control-input">
+        <span class="control-txt"><%= @live_activity_info.live_prizes.count %></span>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="control-label"> 已验证数量 </label>
+      <div class="control-input">
+        <span class="control-txt"><%= @live_activity_info.verified_verify_codes.count %></span>
+      </div>
+    </div>
+  </div><!-- admin-box -->
+  <br />
+
+  <div class="admin-box beige-bg-color">
+    <h4 class="edit-title">分享活动</h4>
+    <div class="form-group">
+      <label class="control-label">活动名称</label>
+      <div class="control-input">
+        <span class="control-txt"><%= @share_activity_info.name %></span>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="control-label"> 活动单价 </label>
+      <div class="control-input">
+        <span class="control-txt"><%= @share_activity_info.price %></span>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="control-label"> 使用有效期 </label>
+      <div class="control-input">
+        <span class="control-txt"><%= @share_activity_info.expiry_days %>天 （自领取当天开始计算）</span>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="control-label"> 活动说明 </label>
+      <div class="control-input">
+        <div style='width:350px;' class="control-txt word-break"><%= raw @share_activity_info.description %>　</div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="control-label"> 中奖数量 </label>
+      <div class="control-input">
+        <span class="control-txt"><%= @share_activity_info.win_count %></span>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="control-label"> 中奖概率 </label>
+      <div class="control-input">
+        <span class="control-txt"><%= @share_activity_info.win_rate %>%</span>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="control-label"> 已中奖数量 </label>
+      <div class="control-input">
+        <span class="control-txt"><%= @share_activity_info.share_prizes.count %></span>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="control-label"> 已验证数量 </label>
+      <div class="control-input">
+        <span class="control-txt"><%= @share_activity_info.verified_verify_codes.count %></span>
+      </div>
+    </div>
+  </div><!-- admin-box -->
+
+  <br />
+  <div class="text-center">
+    <% if can? :update, @promotion_activity %>
+      <% if @promotion_activity.status == 'published' %>
+       <%= link_to("取消上架", url_for(action: :change_status,id: @promotion_activity.id, status: :unpublish),
+                   method: :patch, class: "btn btn-large ",:role=>"button") %>
+      <% end %>
+    <% end %>
+  </div>
+</div><!-- container -->

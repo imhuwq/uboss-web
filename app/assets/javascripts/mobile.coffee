@@ -64,6 +64,10 @@ $ ->
   $(document).on 'click', '.pop-bg', (e) ->
     unless $(e.target).closest('.pop-content').length > 0
       $(this).hide()
+  
+  $(document).on 'click', '.lottery-modal', (e) ->
+    unless $(e.target).closest('.pop-content').length > 0
+      $('#lottery-icon').removeClass('hidden')
 
   $('.tab-nav .tab').on 'click', (e)->
     $('.tab-nav .tab').removeClass('active')

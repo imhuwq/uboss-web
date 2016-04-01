@@ -84,7 +84,7 @@
             <p class="title"><span><%= message.user_type %></span> <%= message.user.identify %></p>
             <p><%= message.created_at %></p>
         	</div><!-- user-info-box -->
-          <div class="message-content">
+          <div class="message-content word-break">
 	          <p><%= message.action %></p>
 	          <% if !message.money.blank? %>
 	            <p>退款金额：<%= message.money %>元</p>

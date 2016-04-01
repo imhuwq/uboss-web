@@ -138,7 +138,7 @@ header{ background: #2e2e2e;}
 }
 #admin-nav-service_seller {
   width: 60px;
-  
+
 }
 #admin-nav-tuangou{
     width: 60px;
@@ -166,6 +166,17 @@ header{ background: #2e2e2e;}
     }
     > a:before{
         background-position: -517px 0;
+    }
+}
+#admin-nav-promotion_activity{
+    width: 60px;
+    &.selected,&:hover{
+      a:before{
+          background-position: -594px -83px;
+      }
+    }
+    > a:before{
+        background-position: -594px 0;
     }
 }
 
@@ -541,4 +552,8 @@ a.admin-box:hover,a.admin-box:focus{opacity: 0.9;  filter: alpha(opacity=90);col
 
 .modal-dialog.modal-sm{
   margin-top: 10%;
+}
+.word-break {
+  word-wrap: break-word;
+  word-break: normal;
 }

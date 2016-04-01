@@ -8,15 +8,16 @@ class Ability
     @user ||= User.new # for guest user (not logged in)
     roles = user.user_roles
     if user.admin? && roles.present?
-      begin
-        roles.order("id ASC").each do |role|
+      roles.order("id ASC").each do |role|
+        begin
           grant_method = "grant_permissions_to_#{role.name}"
           __send__ grant_method, user
+        rescue NoMethodError => e
+          Rails.logger.error("ERROR: missing definition for #{role.name}, find me at: #{e.backtrace[0]}")
+          next
         end
-        grant_general_permission user
-      rescue NoMethodError
-        no_permissions
       end
+      grant_general_permission user
     else
       no_permissions
     end
@@ -189,6 +190,7 @@ class Ability
     can :manage, Advertisement
     can :manage, CityManager
     can :manage, WechatAccount
+    can :manage, PromotionActivity
   end
 
 end

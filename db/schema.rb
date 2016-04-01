@@ -11,10 +11,46 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160317021456) do
+ActiveRecord::Schema.define(version: 20160329062136) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "activity_draw_records", force: :cascade do |t|
+    t.integer "user_id"
+    t.integer "sharer_id"
+    t.integer "promotion_activity_id"
+    t.integer "activity_info_id"
+    t.integer "draw_count"
+  end
+
+  create_table "activity_infos", force: :cascade do |t|
+    t.integer  "promotion_activity_id"
+    t.string   "activity_type"
+    t.string   "name"
+    t.decimal  "price",                 default: 0.0
+    t.integer  "expiry_days",           default: 0
+    t.integer  "win_count",             default: 0
+    t.datetime "created_at",                          null: false
+    t.datetime "updated_at",                          null: false
+    t.integer  "draw_count",            default: 0
+    t.float    "win_rate",              default: 1.0
+    t.integer  "surplus",               default: 0
+  end
+
+  add_index "activity_infos", ["promotion_activity_id"], name: "index_activity_infos_on_promotion_activity_id", using: :btree
+
+  create_table "activity_prizes", force: :cascade do |t|
+    t.integer  "prize_winner_id"
+    t.integer  "promotion_activity_id"
+    t.integer  "activity_info_id"
+    t.jsonb    "info",                  default: {}
+    t.string   "activity_type"
+    t.datetime "created_at",                         null: false
+    t.datetime "updated_at",                         null: false
+    t.integer  "sharer_id"
+    t.integer  "relate_winner_id"
+  end
 
   create_table "advertisements", force: :cascade do |t|
     t.string   "advertisement_url"
@@ -406,6 +442,7 @@ ActiveRecord::Schema.define(version: 20160317021456) do
     t.datetime "qrcode_expire_at",     default: '2016-03-23 15:25:16'
     t.string   "service_store_name"
     t.string   "ordinary_store_name"
+    t.boolean  "activity",             default: false
   end
 
   create_table "product_classes", force: :cascade do |t|
@@ -511,6 +548,15 @@ ActiveRecord::Schema.define(version: 20160317021456) do
   end
 
   add_index "products", ["type"], name: "index_products_on_type", using: :btree
+
+  create_table "promotion_activities", force: :cascade do |t|
+    t.integer  "user_id"
+    t.integer  "status",     default: 0
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
+  end
+
+  add_index "promotion_activities", ["user_id"], name: "index_promotion_activities_on_user_id", using: :btree
 
   create_table "purchase_orders", force: :cascade do |t|
     t.integer  "seller_id"
@@ -831,12 +877,14 @@ ActiveRecord::Schema.define(version: 20160317021456) do
 
   create_table "verify_codes", force: :cascade do |t|
     t.string   "code"
-    t.boolean  "verified",        default: false
-    t.datetime "created_at",                      null: false
-    t.datetime "updated_at",                      null: false
+    t.boolean  "verified",          default: false
+    t.datetime "created_at",                        null: false
+    t.datetime "updated_at",                        null: false
     t.integer  "order_item_id"
-    t.boolean  "sharing_rewared", default: false
-    t.decimal  "income",          default: 0.0
+    t.boolean  "sharing_rewared",   default: false
+    t.decimal  "income",            default: 0.0
+    t.boolean  "expired",           default: false
+    t.integer  "activity_prize_id"
   end
 
   create_table "versions", force: :cascade do |t|
@@ -893,6 +941,7 @@ ActiveRecord::Schema.define(version: 20160317021456) do
     t.integer  "user_id"
   end
 
+  add_foreign_key "activity_infos", "promotion_activities"
   add_foreign_key "bank_cards", "users"
   add_foreign_key "bonus_records", "users"
   add_foreign_key "cart_items", "carts"
@@ -911,6 +960,7 @@ ActiveRecord::Schema.define(version: 20160317021456) do
   add_foreign_key "orders", "users"
   add_foreign_key "orders", "users", column: "seller_id", name: "fk_order_seller_foreign_key"
   add_foreign_key "privilege_cards", "users"
+  add_foreign_key "promotion_activities", "users"
   add_foreign_key "refund_messages", "order_item_refunds"
   add_foreign_key "refund_records", "order_item_refunds"
   add_foreign_key "selling_incomes", "orders"
