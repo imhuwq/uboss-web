@@ -1,0 +1,45 @@
+<div class="container admin-container">
+  <ul class="breadcrumb">
+    <li><a href="/admin">主页</a></li>
+    <li class="divider"><i class="fa fa-caret-right"></i></li>
+    <li>子账号设置</li>
+  </ul>
+</div>
+
+<br />
+
+<div>
+  <%= link_to("+ 添加子账号", new_admin_sub_account_path, class: "btn btn-large", role: "button") %>
+</div>
+
+<br />
+
+<div class="container">
+  <table class="list-table">
+    <thead>
+      <th>账号</th>
+      <th>昵称</th>
+      <th>创建时间</th>
+      <th>状态</th>
+      <th>操作</th>
+    </thead>
+    <tbody>
+      <% @sub_accounts.each do |sub_account| %>
+        <tr>
+          <td><%= sub_account.account.login_identifier %></td>
+          <td><%= sub_account.account.nickname %></td>
+          <td><%= sub_account.created_at %></td>
+          <td><%= sub_account.state_i18n %></td>
+          <td>
+            <% if sub_account.active? %>
+              <%= link_to '禁用', block_admin_sub_account_path(sub_account), method: :patch %>
+            <% else %>
+              <%= link_to '激活', active_admin_sub_account_path(sub_account), method: :patch %>
+            <% end %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+
+</div>

@@ -394,6 +394,10 @@ zh-CN:
     completed: 交易完成
     closed: 订单关闭
   enums:
+    sub_account:
+      state:
+        active: 正常
+        block: 禁用
     city_manager:
       category:
         firstline: 一类城市

@@ -1,0 +1,24 @@
+<div class="container admin-container">
+  <ul class="breadcrumb">
+    <li><a href="/admin">主页</a></li>
+    <li class="divider"><i class="fa fa-angle-right"></i></li>
+    <li><%= link_to '子账号管理', [:admin, :sub_accounts] %></li>
+    <li class="divider"><i class="fa fa-caret-right"></i></li>
+    <li class="active">添加子账号</li>
+  </ul>
+</div><!-- container -->
+
+<br />
+
+<div class="container nogap">
+  <%= horizon_form_for @sub_account, url: admin_sub_accounts_path do |f| %>
+    <div class="admin-box beige-bg-color">
+
+      <%= f.input :account_id, required: true, input_html: { class: 'user_selection' } %>
+
+      <div class="form-actions text-center">
+        <%= f.submit "绑定", class: "btn btn-large" %>
+      </div>
+    </div>
+  <% end %>
+</div>

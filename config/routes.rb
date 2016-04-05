@@ -207,6 +207,10 @@ Rails.application.routes.draw do
 
       get '/refresh_carriage_template', to: 'products#refresh_carriage_template'
 
+      resources :sub_accounts, only: [:index, :update, :create, :new] do
+        patch :active, :block, on: :member
+      end
+
       resources :service_stores, only: [:edit, :update] do
         collection do
           get :income_detail
@@ -315,6 +319,7 @@ Rails.application.routes.draw do
         resource :personal_authentication
         resource :enterprise_authentication
         resource :city_manager_authentication
+        get :search, on: :collection
       end
       resources :agents, except: [:new, :edit, :update, :destroy] do
       end

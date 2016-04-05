@@ -101,3 +101,24 @@ jQuery ($) ->
   $(document).on 'click', '.show-value span a', ->
     $(this).closest('.show-value').siblings().show()
     $(this).closest('.show-value').hide()
+
+
+  $(".user_selection").select2
+    width: 500
+    placeholder: '请选择用户'
+    allowClear: true
+    minimumInputLength: 2
+    ajax:
+      url: "/admin/users/search"
+      dataType: 'json'
+      data: (term, page) ->
+        return { q: term, page_limit: 10 }
+      results: (data, page) ->
+        return {results: data}
+    initSelection: (ele, callback) ->
+      #callback({id: 1, text: 'Mock User'})
+      id = $(ele).val()
+      if(id!="")
+        $.ajax("/admin/users/search", data: {id: id}, dataType: 'json')
+         .done (data) ->
+           callback(data)
