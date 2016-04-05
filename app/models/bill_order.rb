@@ -2,6 +2,7 @@ class BillOrder < ActiveRecord::Base
 
   include AASM
   include Numberable
+  include Orderable
 
   class WrongBillInfoType < StandardError; ;end
   class BillProductInfo < Struct.new(:seller, :pay_amount)

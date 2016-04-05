@@ -135,7 +135,7 @@ Rails.application.routes.draw do
       get :lotteries, on: :collection
       get :lottery_detail, on: :collection
     end
-    resources :bill_orders, only: [:index, :show, :create]
+    resources :bill_orders, only: [:index, :show]
   end
   resource :pay_notify, only: [] do
     collection do

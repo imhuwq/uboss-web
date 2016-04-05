@@ -3,7 +3,7 @@ class BillOrdersController < ApplicationController
   before_action :authenticate_user!
 
   def index
-    @bill_orders = append_default_filter current_user.bill_orders
+    @bill_orders = append_default_filter current_user.bill_orders.payed
   end
 
   def show
