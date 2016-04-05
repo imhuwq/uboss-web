@@ -43,12 +43,16 @@ class Product < ActiveRecord::Base
   scope :supply_deleted, -> { joins(:supplier_product_info).where('supplier_product_infos.supply_status = 2') }
   scope :commons, -> { where(type: %w(OrdinaryProduct AgencyProduct)) }
 
-  validate :must_has_one_image
+  validate :must_has_one_image, unless: :optional_image?
   validate :must_has_one_product_inventory, if: -> { self.class.name != 'DishesProduct'}
   validates_presence_of :user_id, :name, :asset_img, :type
 
   before_create :generate_code
   after_create :add_categories_after_create
+
+  def optional_image?
+    false
+  end
 
   def self.official_agent
     official_account = User.official_account

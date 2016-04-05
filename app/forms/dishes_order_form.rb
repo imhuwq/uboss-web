@@ -78,7 +78,6 @@ class DishesOrderForm
   end
 
   def product_must_be_valid
-    s = []
     order_items.each do |item|
       product_inventory = item.product_inventory
       item.errors.add(:base, "此规格商品不可售") if not product_inventory.saling?

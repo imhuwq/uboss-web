@@ -29,9 +29,12 @@ class Menus.Views.Main extends Backbone.View
       cache: true
       success: (result) ->
         that.product  = new Menus.Models.Product(result)
-        if result.items.length > 1
+        count = result.items.length
+        if count > 1
           that.showMenu(result)
-        else
+        else if count is 0
+          alert('菜品已售完')
+        else if count is 1
           sku = result.items[0]
           that.addOrUpdateDishe(sku.id)
 

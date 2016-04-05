@@ -5,6 +5,5 @@ class Menus.Views.Form extends Backbone.View
   el: '#dishe-form-container'
 
   render: () ->
-    console.log @template
     @$el.replaceWith @template({dishes: window.dishes.toJSON()})
     @

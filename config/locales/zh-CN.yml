@@ -468,7 +468,7 @@ zh-CN:
         closed: 关闭
     agency_order:
       <<: *ordinary_order
-    service_order:
+    service_order_states: &service_order_states
       state:
         unpay: 未付款
         payed: 待消费
@@ -484,6 +484,10 @@ zh-CN:
         signed: 已签收
         completed: 已完成
         closed: 关闭
+    service_order:
+      <<: *service_order_states
+    dishes_order:
+      <<: *service_order_states
     order_charge:
       payment:
         alipay: 支付宝手机

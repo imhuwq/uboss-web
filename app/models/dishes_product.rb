@@ -6,6 +6,8 @@ class DishesProduct < Product
   after_initialize  :initialize_product_inventory
   before_update :check_product_inventory_count
   validate :rebaste_amount_less_price
+  validates_presence_of :present_price
+  validates_presence_of :product_inventories
 
   def today_verify_code
     VerifyCode.where(dishes_order_id: self.user.dishes_order_ids, verified: true).where('updated_at BETWEEN ? AND ?', Time.now.beginning_of_day, Time.now.end_of_day)
@@ -32,6 +34,10 @@ class DishesProduct < Product
   end
 
   def attr_min()
+  end
+
+  def optional_image?
+    true
   end
 
   private
