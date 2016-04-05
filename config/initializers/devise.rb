@@ -1,13 +1,3 @@
-require "omniauth/strategies/wechat"
-
-module OmniAuth
-  module Strategies
-    class WechatService < Wechat
-      option :name, "wechat_service"
-    end
-  end
-end
-
 Devise.setup do |config|
   # The secret key used by Devise. Devise uses this key to generate
   # random tokens. Changing this key will render invalid all existing
@@ -246,10 +236,6 @@ Devise.setup do |config|
   # ==> OmniAuth
   # Add a new OmniAuth provider. Check the wiki for more information on setting
   # up on your models and hooks.
-  config.omniauth :wechat_service,
-                  ::Rails.application.secrets.weixin["app_id"],
-                  ::Rails.application.secrets.weixin["app_secret"]
-
   config.omniauth :wechat,
                   ::Rails.application.secrets.weixin["app_id"],
                   ::Rails.application.secrets.weixin["app_secret"]
