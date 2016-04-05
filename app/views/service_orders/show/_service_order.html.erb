@@ -25,20 +25,36 @@
 </div>
 <br />
 -->
-<% if 1==1 %>
-<div class="gap">套餐内容</div>
-<div class="comfirmed-dishes-box bg-white nogap">
-  <div class="gap-lr m-top10">
-    <!-- 循环  -->
-    <div class="m-bottom10">
-      <span class="pull-right text-cut num text-right gray-color">x 数量</span>
-      <span class="pull-right text-cut price ">￥ 单价</span>
-      <div class="text-cut">菜品名称</div>
-    </div><!-- m-bottom10 -->
-    <!-- 结束循环  -->
-  </div><!-- gap-lr -->
-</div><!-- dishes-comfirmed-box -->
+<% if !@order.available_pay? && !@order.closed? %>
+  <div class="bg-white m-bottom10">
+    <div class="gap border-box">
+      <% if @order.paid_and_expensed? %>
+        <% if @order_item.evaluations.size > 0 %>
+          <%= link_to "追评", append_evaluation_path(id: @order_item.id), class: 'btn btn-small btn-orange pull-right', style: "margin-left:15px;" %>
+        <% else %>
+          <%= link_to "评价", new_evaluation_path(id: @order_item.id), class: 'btn btn-small btn-orange pull-right', style: "margin-left:15px;" %>
+        <% end %>
+        <% if !@order.completed? %>
+          <div class="pull-right">有效期至：<%= strftime(@order_item.product.deadline) %></div>
+        <% end %>
+      <% end %>
+      <div class="text-cut">验证券</div>
+    </div>
+    <% @order_item.verify_codes.each do |verify_code| %>
+    	<div class="service-code gap border-box">
+    		<div class="pull-right">
+    		<% if verify_code.verified %>
+      		<span class="red-color">已消费</span>
+      	<% else %>
+      		<span class="like-color">待消费</span>
+      	<% end %>
+      	</div>
+      	<span class="main-color"><%= verify_code.code %></span>
+    	</div>
+    <% end %>
+	</div>
 <% end %>
+
 <div class="order-list m-top10">
 	<div class="seller-box">
 	  <div class="cover"><%= image_tag @service_store.store_cover.url(:w640) %></div>
@@ -69,36 +85,6 @@
   <div class="bg-white gap m-bottom10">
     <%= link_to "立即付款", payments_charges_path(order_ids: @order.id, showwxpaytitle: 1), id: 'wx-pay-btn', class: 'btn btn-block btn-lagre' %>
   </div><!-- bg-white -->
-
-<% elsif !@order.closed? %>
-
-  <div class="bg-white m-bottom10">
-    <div class="gap border-box">
-      <% if @order.paid_and_expensed? %>
-        <% if @order_item.evaluations.size > 0 %>
-          <%= link_to "追评", append_evaluation_path(id: @order_item.id), class: 'btn btn-small btn-orange pull-right', style: "margin-left:15px;" %>
-        <% else %>
-          <%= link_to "评价", new_evaluation_path(id: @order_item.id), class: 'btn btn-small btn-orange pull-right', style: "margin-left:15px;" %>
-        <% end %>
-        <% if !@order.completed? %>
-          <div class="pull-right">有效期至：<%= strftime(@order_item.product.deadline) %></div>
-        <% end %>
-      <% end %>
-      <div class="text-cut">验证券</div>
-    </div>
-    <% @order_item.verify_codes.each do |verify_code| %>
-    	<div class="service-code gap border-box">
-    		<div class="pull-right">
-    		<% if verify_code.verified %>
-      		<span class="red-color">已消费</span>
-      	<% else %>
-      		<span class="like-color">待消费</span>
-      	<% end %>
-      	</div>
-      	<span class="main-color"><%= verify_code.code %></span>
-    	</div>
-    <% end %>
-	</div>
 <% end %>
 
 <!-- 店铺信息-->

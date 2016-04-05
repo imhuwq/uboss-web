@@ -1,29 +1,3 @@
-<div class="comfirmed-dishes-box nogap m-bottom10">
-  <div class="bg-white">
-    <div class="store-name page-title black-color m-bottom10 text-cut"><span class="pull-right like-color">未消费</span>店铺名称</div>
-    <a href="#" class="gap-lr black-color" style="display: block;">
-      <!-- 循环  -->
-      <div class="m-bottom10">
-        <span class="pull-right text-cut num text-right gray-color">x 数量</span>
-        <span class="pull-right text-cut price ">￥ 单价</span>
-        <div class="text-cut">菜品名称</div>
-      </div><!-- m-bottom10 -->
-      <!-- 结束循环  -->
-    </a><!-- gap-lr -->
-    <div class="friend-info border-top">
-      <div class="cover">
-        <%= image_tag ('mobile/img.jpg') %>
-      </div>
-      <div class="content">
-        <span class="pull-right red-color order-privilege-amount">40</span><span class="main-color">分享者名称</span> 帮你优惠
-      </div>
-    </div><!-- friend-info -->
-    <div class="price-box gap">
-      合计：￥250
-    </div>
-  </div><!-- bg-white --> 
-</div><!-- dishes-comfirmed-box -->
-
 <% if params[:state] != "completed" || service_order.order_item.evaluations.size == 0 %>
   <div class="order-list" timestamp='<%= service_order.created_at %>'>
     <div class="seller-box">

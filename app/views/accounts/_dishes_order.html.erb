@@ -1,0 +1,45 @@
+<% if params[:state] != "completed" || service_order.order_item.evaluations.size == 0 %>
+  <div class="order-list" timestamp='<%= service_order.created_at %>'>
+    <div class="seller-box">
+      <span class="pull-right like-color">
+        <%= I18n.t("service_order_status_bar.#{service_order.state}") %>
+      </span>
+      <div class="text-cut">商家：<%= service_order.seller.identify %></div>
+    </div>
+    <%= link_to  service_order_path(service_order) do %>
+      <% service_order.order_items.each do |order_item| %>
+
+        <div class="order-box">
+          <div class="m-bottom10">
+            <span class="pull-right text-cut num text-right gray-color">x <%= order_item.try(:amount) %></span>
+            <span class="pull-right text-cut price ">￥ <%= order_item.present_price %></span>
+            <div class="text-cut"><%= order_item.product_name %></div>
+          </div><!-- m-bottom10 -->
+        </div><!-- order-box -->
+      <% end %>
+    <% end %>
+
+    <% if service_order.sharing_user.present? && service_order.total_privilege_amount != 0 %>
+      <div class="friend-info">
+        <div class="cover">
+          <%= image_tag service_order.sharing_user.avatar_url(:thumb) %>
+        </div>
+        <div class="content">
+          <span class="pull-right red-color">-<%= service_order.total_privilege_amount %></span>
+          <span class="main-color"><%= service_order.sharing_user.identify %></span> 帮你返利
+        </div>
+      </div><!-- friend-info -->
+    <% end %>
+
+    <div class="price-box <%= 'gray-color' if service_order.state == 'closed' %> ">
+      合计：￥<%= service_order.pay_amount %><small class="gray-color"></small>
+    </div><!-- price-box -->
+
+    <% if service_order.state == 'unpay' %>
+      <div class="order-info">
+        <%= link_to "确认付款", payments_charges_path(order_ids: service_order.id, showwxpaytitle: 1), class: 'my_retur my_confir btn btn-orange-border' %>
+      </div><!-- order-info -->
+    <% end %>
+
+  </div>
+<% end %>
