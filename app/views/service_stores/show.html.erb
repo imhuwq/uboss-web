@@ -113,6 +113,12 @@
     </div><!-- pop-bottom -->
   </div>
 
+  <% if DishesProduct.where(user_id: @service_store.user_id).first %>
+    <div class="privilege-rate border-tb m-top10 ">
+      <%= link_to "在线点单", service_store_menus_path(@service_store), class: "bg-white gap" %>
+    </div>
+  <% end %>
+
   <% if @voucher_products.present? %>
     <div class="bg-white gap-left border-tb service-product-list m-top10">
       <div class="service-title">代金券</div>
