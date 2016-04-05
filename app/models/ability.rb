@@ -66,6 +66,7 @@ class Ability
       op.type == "OrdinaryProduct"
     end
     can :manage, ServiceProduct, user_id: user.id
+    can :manage, DishesProduct, user_id: user.id
     can :manage, ServiceStore, user_id: user.id
     can :manage, VerifyCode, user_id: user.id
     can :manage, Evaluation, user_id: user.id
