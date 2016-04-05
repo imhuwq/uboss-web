@@ -75,7 +75,7 @@ class AdminController < ApplicationController
   end
 
   def realtime_server_url
-    return 'http://localhost:4000'
+    return 'http://localhost:5001'
   end
 
   def check_new_supplier
