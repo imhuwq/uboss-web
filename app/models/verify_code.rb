@@ -35,42 +35,40 @@ class VerifyCode < ActiveRecord::Base
     result = {}
     verify_code = VerifyCode.find_by(code: code)
     if verify_code && verify_code.order_item_id
-      if VerifyCode.with_user(seller).find_by(code: code).verify_code
-        result[:success] = true
-        result[:message] = "验证成功。"
+      result = VerifyCode.with_user(seller).find_by(code: code).verify_code
+      if result[:success] == true
         result[:verfiy_code] = verify_code
-      else
-        result[:success] = false
       end
     elsif verify_code && verify_code.activity_prize
-      if verify_code.verify_activity_code(seller)
-        result[:success] = true
-        result[:message] = "#{verify_code.activity_prize.activity_info.name}:验证成功。"
+      result =  verify_code.verify_activity_code(seller)
+      if result[:success] == true
         result[:verfiy_code] = verify_code
-      else
-        result[:success] = false
       end
     else
       result[:success] = false
+      result[:message] = "无效的验证码"
     end
     result
   end
 
   def verify_code
-    if !verified && update(verified: true)
+    if verified
+      return {success: false, message: '已经使用过了。'}
+    elsif update(verified: true)
       order.try(:check_completed)
-      true
-    else
-      false
+      return {success: true, message: '验证成功。'}
     end
   end
 
   def verify_activity_code(store_admin)
-    if activity_prize.promotion_activity.user_id == store_admin.id &&
-        !verified && !expired && update(verified: true)
-      true
-    else
-      false
+    if activity_prize.promotion_activity.user_id != store_admin.id
+      return {success: false, message: '你不是本活动的创建者。'}
+    elsif verified
+      return {success: false, message: '已经使用过了。'}
+    elsif expired
+      return {success: false, message: '已经过期了。'}
+    elsif update(verified: true)
+      return {success: true, message: '验证成功。'}
     end
   end
 

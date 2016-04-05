@@ -40,7 +40,7 @@ class ServiceStoresController < ApplicationController
     if result[:success]
       flash[:success] = result[:message]
     else
-      flash[:error] = '验证失败'
+      flash[:error] = result[:message]
     end
     redirect_to service_stores_path
   end
