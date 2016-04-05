@@ -1,0 +1,91 @@
+<%= content_for :page_specific_javascript do %>
+  <script type="text/javascript" charset="utf-8">
+    stockData = <%== get_product_seling_inventories_json @dishes_product %>
+  </script>
+  <%= javascript_include_tag 'admin/sku_app/application' %>
+<% end %>
+
+<div class="container admin-container">
+	<ul class="breadcrumb">
+		<li><a href="/admin">主页</a></li>
+		<li class="divider"><i class="fa fa-angle-right"></i></li>
+		<li><%= link_to '实体店铺', '#' %></li>
+		<li class="divider"><i class="fa fa-angle-right"></i></li>
+		<li><%= link_to '菜品管理', [:admin, :dishes_products] %></li>
+		<li class="divider"><i class="fa fa-caret-right"></i></li>
+		<li class="active">查看菜品信息</li>
+	</ul>
+</div><!-- container -->
+<br />
+<div class="container nogap">
+  <div class="admin-box beige-bg-color">
+    <h4 class="edit-title">菜品名称</h4>
+    <% if current_user.is_super_admin? %>
+      <div class="form-group">
+        <label class="control-label">所属商家</label>
+        <div class="control-input">
+          <span class="text-margin"><%= link_to @dishes_product.user.identify, url_for(controller: 'admin/sellers', action: :show, id: @dishes_product.user) %></span>
+        </div>
+      </div>
+    <% end %>
+    <div class="form-group">
+      <label class="control-label"> 商品名称 </label>
+      <div class="control-input">
+        <span class="control-txt"><%= @dishes_product.name %></span>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="control-label"> 产品分组 </label>
+      <div class="control-input">
+        <span class="control-input" style="padding:8px">
+          <% @dishes_product.categories.each do |category| %>
+            <span class='label label-info'><%= category.name %></span>
+          <% end %>
+        </span>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="control-label"> 现价 </label>
+      <div class="control-input">
+        <span class="control-txt"><%= @dishes_product.present_price %></span>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="control-label"> 菜品图片 </label>
+      <div class="control-input">
+        <span><%= image_tag(@dishes_product.image_url(:w120)) %></span>
+      </div>
+    </div>
+  <br />
+  <div class='display_none'>
+    <div id="product-stock" class="admin-box beige-bg-color">
+      <h4 class="edit-title">库存/规格</h4>
+      <div class="form-group">
+        <label class="control-label">库存</label>
+        <div  class="stock-list control-input">
+        </div>
+      </div>
+    </div>
+  </div>
+  <div id="sku-privelege-group" class="admin-box beige-bg-color">
+    <h4 class="edit-title">返利详情</h4>
+    <div class="form-group sku-privilege-list-group">
+      <label class="control-label">返利金额</label>
+      <div class='sku-privilege-list control-input'></div>
+    </div>
+  </div><!-- admin-box -->
+  <br />
+  <div class="text-center">
+    <% if can? :edit, @dishes_product %>
+      <%= link_to("编辑", url_for(:action=>:edit,:id=>@dishes_product.id), :class=>"btn btn-large blue-btn",:role=>"button") %>
+    <% end %>
+    <% if can? :update, @dishes_product %>
+      <% if @dishes_product.status == 'unpublish' %>
+        <%= link_to("上架", url_for(action: :change_status, id: @dishes_product.id, status: :published), method: :patch, class: "btn btn-large red-btn", role: "button") %>
+     <% else %>
+       <%= link_to("取消上架", url_for(action: :change_status,id: @dishes_product.id, status: :unpublish),
+                   method: :patch, class: "btn btn-large ",:role=>"button") %>
+      <% end %>
+    <% end %>
+  </div>
+</div><!-- container -->
