@@ -62,13 +62,13 @@ class VerifyCode < ActiveRecord::Base
 
   def verify_activity_code(store_admin)
     if activity_prize.promotion_activity.user_id != store_admin.id
-      return {success: false, message: '你不是本活动的创建者。'}
+      return {success: false, message: "#{activity_prize.activity_info.name}:你不是本活动的创建者。"}
     elsif verified
-      return {success: false, message: '已经使用过了。'}
+      return {success: false, message: "#{activity_prize.activity_info.name}:已经使用过了。"}
     elsif expired
-      return {success: false, message: '已经过期了。'}
+      return {success: false, message: "#{activity_prize.activity_info.name}:已经过期了。"}
     elsif update(verified: true)
-      return {success: true, message: '验证成功。'}
+      return {success: true, message: "#{activity_prize.activity_info.name}:验证成功。"}
     end
   end
 
