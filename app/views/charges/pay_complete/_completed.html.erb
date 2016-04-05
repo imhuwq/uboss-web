@@ -40,7 +40,7 @@
 <% when 'ServiceProduct' %>
   <%= render partial: "charges/pay_complete/service_order", locals: { order_item: @order_charge.orders.first.order_item, product: @product } %>
 <% when 'DishesProduct' %>
-  <%= render partial: "charges/pay_complete/dishes_product" %>
+  <%= render partial: "charges/pay_complete/dishes_product", locals: { order_charge: @order_charge, product: @product} %>
 <% else %>
   <%= render partial: "charges/pay_complete/order" %>
 <% end %>
