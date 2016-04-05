@@ -129,6 +129,9 @@ class User < ActiveRecord::Base
   before_create :skip_confirmation!
   before_save   :set_service_rate
   after_commit  :invoke_rongcloud_job, on: [:create, :update]
+  after_commit :invoke_bill_order_attach_job, on: [:create, :update], if: -> {
+    weixin_openid.present? && previous_changes.include?(:weixin_openid)
+  }
 
   scope :admin, -> { where(admin: true) }
   scope :agent, -> { role('agent') }
@@ -285,6 +288,10 @@ class User < ActiveRecord::Base
       end
     end
 
+  end
+
+  def invoke_bill_order_attach_job
+    BillOrderAttachJob.perform_later(user: self)
   end
 
   def invoke_rongcloud_job
