@@ -9,6 +9,7 @@ zh-CN:
         after_sale_only_refund: '售后—仅退款'
         after_sale_return_goods_and_refund: '售后—退款退货'
   attributes: &attributes
+    account_id: 账号
     platform_service_rate: 平台费率
     agent_service_rate: 创客费率
     name: 名称
