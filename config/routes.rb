@@ -190,6 +190,7 @@ Rails.application.routes.draw do
       resource :chat, only: [] do
         get :token, :check_user_online
       end
+      post 'verify_codes/verify', to: 'verify_codes#verify'
     end
   end
 
