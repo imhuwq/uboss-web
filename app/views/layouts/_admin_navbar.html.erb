@@ -6,28 +6,39 @@
 		<% end %>
 
 		<div id="config">
-	    <%= link_to edit_admin_account_path do %>
-				<%= image_tag(current_user.avatar.url(:thumb)) %>
-			<% end %>
-			<ul class="dropdown-menu">
-				<li><%= link_to "修改密码", password_admin_account_path %></li>
-				<li>
-          <% if can?(:create,PersonalAuthentication) %>
-          <%= link_to "认证", admin_user_personal_authentication_path(user_id: current_user.id) %>
-          <% elsif can?(:create,CityManagerAuthentication) %>
-          <%= link_to "认证", admin_user_city_manager_authentication_path(user_id: current_user.id) %>
-          <% end %>
-        </li>
-				<li><%= link_to '退出', destroy_user_session_path, method: :delete %></li>
-			</ul>
+      <% if current_account.present? %>
+        <%= image_tag(current_user.avatar.url(:thumb)) %>
+        <ul class="dropdown-menu">
+          <li><%= link_to '退出子账号', switch_account_admin_account_path(sid: 'sign_out'), method: :patch %></li>
+          <li><%= link_to '退出', destroy_user_session_path, method: :delete %></li>
+        </ul>
+      <% else %>
+        <%= link_to edit_admin_account_path do %>
+          <%= image_tag(current_user.avatar.url(:thumb)) %>
+        <% end %>
+        <ul class="dropdown-menu">
+          <li><%= link_to "修改密码", password_admin_account_path %></li>
+          <li>
+            <% if can?(:create,PersonalAuthentication) %>
+              <%= link_to "认证", admin_user_personal_authentication_path(user_id: current_user.id) %>
+            <% elsif can?(:create,CityManagerAuthentication) %>
+              <%= link_to "认证", admin_user_city_manager_authentication_path(user_id: current_user.id) %>
+            <% end %>
+          </li>
+          <li><%= link_to "切换子账号", switching_account_admin_account_path %></li>
+          <li><%= link_to '退出', destroy_user_session_path, method: :delete %></li>
+        </ul>
+      <% end %>
 		</div>
 
 		<nav class="nav">
-			<%= render_navigation(level: 1..3, expand_all: true, skip_if_empty: true) %>
+      <%= render_navigation(level: 1..3, expand_all: true, skip_if_empty: true,
+                            context: current_navigation_context) %>
 		</nav>
 
 		<div class="nav-v2">
-			<%= render_navigation(level: 2..3, expand_all: true, skip_if_empty: true) %>
+      <%= render_navigation(level: 2..3, expand_all: true, skip_if_empty: true,
+                            context: current_navigation_context) %>
 		</div>
   </div>
 </header>

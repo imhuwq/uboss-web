@@ -16,6 +16,34 @@ class Admin::AccountsController < AdminController
     end
   end
 
+  def switching_account
+    if !current_user.store_accounts.exists?
+      flash[:error] = '你没有子账号'
+      redirect_to :back
+    else
+      @store_accounts = current_user.store_accounts
+    end
+  end
+
+  def switch_account
+    if params[:sid] == 'sign_out'
+      current_account = set_current_account(nil)
+      if current_account.blank?
+        flash[:notice] = '退出成功'
+      else
+        flash[:error] = '退出失败'
+      end
+    else
+      current_account = set_current_account(params[:sid])
+      if params[:sid].present? && current_account.present?
+        flash[:notice] = '切换成功'
+      else
+        flash[:error] = '切换失败'
+      end
+    end
+    redirect_to admin_root_path
+  end
+
   def update_password
     user_params = params.require(:user).permit(:password, :password_confirmation, :current_password)
 
@@ -82,8 +110,6 @@ class Admin::AccountsController < AdminController
       render :binding_mobile
     }
   end
-
-  
 
   private
 

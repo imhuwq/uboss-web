@@ -28,6 +28,7 @@ class User < ActiveRecord::Base
   has_many :favoured_products, through: :favour_products, source: :product
   has_many :withdraw_records
   has_many :sended_mobile_captchas, class_name: 'MobileCaptcha', foreign_key: 'sender_id'
+  has_many :store_accounts, class_name: 'SubAccount', foreign_key: 'account_id'
   # for agent
   has_many :divide_incomes
   has_many :sellers, class_name: 'User', foreign_key: 'agent_id'
@@ -63,6 +64,7 @@ class User < ActiveRecord::Base
   has_many :sold_ordinary_order_items, through: :sold_ordinary_orders, source: :order_items
   has_many :categories
   has_many :selling_incomes
+  has_many :sub_accounts
   belongs_to :agent, class_name: 'User'
 
   #for supplier

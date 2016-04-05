@@ -340,6 +340,10 @@ Rails.application.routes.draw do
       end
 
       resource :account, only: [:edit, :show, :update] do
+        collection do
+          get :switching_account
+          patch :switch_account
+        end
         get :password, on: :member
         get :binding_agent, :binding_email, :binding_mobile
         patch :binding_agent, to: 'accounts#bind_agent'
