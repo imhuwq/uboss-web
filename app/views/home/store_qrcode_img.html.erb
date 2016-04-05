@@ -5,36 +5,91 @@
     <meta id='MobileViewport' name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
     <meta content="telephone=no" name="format-detection" />
     <meta content="email=no" name="format-detection" />
+    <%= javascript_include_tag "activate/activate" %>
     <style>
     		*{margin: 0;padding: 0;border: 0; outline: 0; vertical-align: middle; text-decoration: none;}
     		img{max-width: 100%;}
-    		html{background: #333;}
-    		.container{ width: 100%;max-width: 800px; overflow: hidden;}
+    		html{background: #333;line-height:20px;font-size:14px;}
+    		html,body{height:100%;min-height: 100%;}
+    		.container{ width: 100%;max-width: 800px; min-height: 100%;height: 100%; overflow: hidden;background: #692484; color: #fff;text-shadow: 0px 1px 1px rgba(0,0,0,0.75);}
+    		.nologin{padding: 45%; background:url('<%= image_url("activate_page/nologin.jpg") %>') no-repeat center ; background-size:contain ;}
+     .text-info{text-align: center;line-height: 150%;margin: 20px 0;font-weight: lighter;}
+     .content{ width:75%;margin:0 auto;text-align: center;}
+     .tel{background: #fff;border-radius:6px; width: 100%;padding: 10px ; box-sizing: border-box;}
+     .btn{background: #ffd330;padding: 10px;border-radius:6px; margin-top: 30px;}
+     .line-lr{ position: relative; text-align: center;}
+     .line-lr:before{content: '';width: -webkit-calc(50% - 136px);width: calc(50% - 136px);height: 2px; background: #fff; position: absolute;left: 0;top:49%}
+     .line-lr:after{content: '';width: -webkit-calc(50% - 136px);width: calc(50% - 136px);height: 2px; background: #fff; position: absolute;right: 0;top:49%}
+     .pop-bg{
+      position: fixed;
+      top:0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.9);
+     }
+     .hidden{
+      display: none;
+     }
     </style>
   </head>
 	<body>
-		<div class="container">
-      <% if @promotion_activity.present? %>
-		    <div style="color: #fff;line-height: 150%;padding: 20px;">
-          <% if @draw_prize.try(:order_item_id).present? %>
-		    	  <p>你已中奖，奖券已经放入账户。</p>
-          <% elsif @draw_prize.present? %>
-		    	  <p>你已抽过奖。</p>
-          <% else %>
-		    	  <p>#刮奖区#</p>
-          <% end %>
-		    </div>
-		    <div style="padding: 20px;text-align: center;"><img src="<%= @qrcode_img_url %>" alt="" /></div>
-		    <div style="color: #fff;line-height: 150%;padding: 20px;">
-		     	<p>奖品已放入<a href="/account/service_orders" style="color:#f9ab10">【验证券】</a></p>
-		    </div>
-      <% else %>
-		    <div style="padding: 20px;text-align: center;"><img src="<%= @qrcode_img_url %>" alt="" /></div>
-		    <div style="color: #fff;line-height: 150%;padding: 20px;">
-		     	<p>长按图片保存到手机，分享给朋友，朋友购买获得优惠， 自己获得收益。</p>
-		     	<p>点击<a href="/account/income" style="color:#f9ab10">【我的收益】</a>即可提现入账。</p>
-		    </div>
-      <% end %>
-		</div>
+	 <% if 1==1 %>
+	   <div class="container">
+	     <div class="nologin"></div><!-- nologin -->
+	     <div class="text-info">
+	      分享给好友你的专属优惠二维码，成<br/>
+	      功邀请TA下单后，你将获得现金红包
+	     </div>
+	     <div class="content">
+	       <p><input type="tel" class="tel" placeholder="输入手机号"/></p>	      
+	       <div class="btn" id="qr-btn">生成我的二维码</div>
+	     </div>
+	     <!-- 弹出框 -->
+   	     <div class="pop-bg hidden" id="qr-pop-bg">
+   	      <br />
+   	      <div class="content">
+   	        <p><img src="<%=image_url("activate_page/nologin.jpg") %>" alt="" /></p>
+   	        <br />
+   	        <p>长按保存图片，分享让好友获得优惠</p>
+   	        <br />
+   	      </div><!-- content -->
+   	      <br />
+   	      <div class="line-lr">
+   	        提现小窍门：点击【<a href="/account/income" style="color:#f9ab10">我的收益</a>】即可提现
+   	      </div>
+   	     </div><!-- pop-bg -->
+	     <!-- end -->
+	   </div><!-- container -->
+	   <script>
+	     $('#qr-btn').on('click',function(){
+	       $('#qr-pop-bg').removeClass('hidden');
+	     })
+	   </script>
+	 <% else %>
+   		<div class="container">
+         <% if @promotion_activity.present? %>
+   		    <div style="color: #fff;line-height: 150%;padding: 20px;">
+             <% if @draw_prize.try(:order_item_id).present? %>
+   		    	  <p>你已中奖，奖券已经放入账户。</p>
+             <% elsif @draw_prize.present? %>
+   		    	  <p>你已抽过奖。</p>
+             <% else %>
+   		    	  <p>#刮奖区#</p>
+             <% end %>
+   		    </div>
+   		    <div style="padding: 20px;text-align: center;"><img src="<%= @qrcode_img_url %>" alt="" /></div>
+   		    <div style="color: #fff;line-height: 150%;padding: 20px;">
+   		     	<p>奖品已放入<a href="/account/service_orders" style="color:#f9ab10">【验证券】</a></p>
+   		    </div>
+         <% else %>
+   		    <div style="padding: 20px;text-align: center;"><img src="<%= @qrcode_img_url %>" alt="" /></div>
+   		    <div style="color: #fff;line-height: 150%;padding: 20px;">
+   		     	<p>长按图片保存到手机，分享给朋友，朋友购买获得优惠， 自己获得收益。</p>
+   		     	<p>点击<a href="/account/income" style="color:#f9ab10">【我的收益】</a>即可提现入账。</p>
+   		    </div>
+         <% end %>
+   		</div>
+		<% end %>
 	</body>
 </html>
