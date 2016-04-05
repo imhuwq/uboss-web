@@ -1,0 +1,32 @@
+<div class="index_list">
+  <table class="list-table" id="calling_notifies">
+		<thead>
+			<th>桌号</th>
+			<th>服务类型</th>
+			<th>呼叫时间</th>
+			<th>操作</th>
+		</thead>
+		<% calling_notifies.each do |calling_notify| %>
+			<tr class="product">
+				<td><%= calling_notify.calling_number %></td>
+				<td><%= calling_notify.service_name %></td>
+				<td><%= calling_notify.called_at %></td>
+				<td>
+          <% if can? :update, CallingNotify %>
+            <% if calling_notify.status == 'unservice' %>
+              <p>
+                <%= link_to("去服务", "#",
+                remote: true, method: :patch, data: { disable_with: '<i class="fa fa-spinner"></i>' },
+                class: "btn btn-mid btn-block change-status-btn") %>
+              </p>
+            <% else %>
+              <p>
+                <span>已服务</span>
+              </p>
+            <% end %>
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+  </table>
+</div>

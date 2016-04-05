@@ -65,6 +65,9 @@ class User < ActiveRecord::Base
   has_many :categories
   has_many :selling_incomes
   has_many :sub_accounts
+  has_many :calling_services
+  has_many :calling_notifies
+  has_many :table_numbers
   belongs_to :agent, class_name: 'User'
 
   #for supplier

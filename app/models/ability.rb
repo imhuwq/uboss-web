@@ -83,6 +83,8 @@ class Ability
     can :manage, ServiceProduct, user_id: user.id
     can :manage, ServiceStore, user_id: user.id
     can :manage, VerifyCode, user_id: user.id
+    can :manage, CallingNotify, user_id: user.id
+    can :manage, CallingService, user_id: user.id
     can :manage, Evaluation, user_id: user.id
     can :manage, :income
     can [:read, :create], PersonalAuthentication, user_id: user.id
@@ -121,6 +123,8 @@ class Ability
     can :read, ServiceProduct, user_id: user.id
     can :read, ServiceStore, user_id: user.id
     can :read, VerifyCode, user_id: user.id
+    can :read, CallingNotify, user_id: user.id
+    can :read, CallingService, user_id: user.id
     can :read, Evaluation, user_id: user.id
   end
 

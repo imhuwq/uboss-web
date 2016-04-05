@@ -1,0 +1,17 @@
+<div class="container nogap ">
+  <% @table_numbers.each do |table_number| %>
+    <a href="#">
+      <div class="box-w8">
+        <div class="admin-box text-center <%= table_number.status == 'used' ? "main-bg-color" : "beige-bg-color" %>">
+          <span><%= table_number.number %>桌</span>
+        </div>
+      </div>
+    </a>
+  <% end %>
+</div>
+<br />
+
+<div class="container  mod-inner">
+  <%= render partial: 'calling_notifies', locals: { calling_notifies: @calling_notifies } %>
+  <%= paginate @calling_notifies %>
+</div>

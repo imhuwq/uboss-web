@@ -228,6 +228,9 @@ Rails.application.routes.draw do
         end
       end
 
+      resources :calling_notifies, only: [:index]
+      resources :calling_services, except: [:show]
+
       resources :evaluations, only: [:index, :destroy] do
         collection do
           get :statistics
