@@ -40,12 +40,12 @@ class Admin::UsersController < AdminController
 
   def search
     users = User.joins(:user_infos).where(
-      "login ILIKE ? OR email ILIKE ? OR (user_infos.type = ? AND user_infos.store_name ILIKE ?)",
-      "%#{params[:q]}%", "%#{params[:q]}%", "ServiceStore", "%#{params[:q]}%")
+      "login ILIKE ? OR email ILIKE ?",
+      "%#{params[:q]}%", "%#{params[:q]}%")
       .uniq
 
     results = users.limit(10).inject([]){ |arr, user|
-      arr << (user.service_store.valid? ? [user.id, user.service_store.store_name, user.login || "", user.email || ""] : nil)
+      arr << (user.service_store.valid? ? [user.id,'', user.login || "", user.email || ""] : nil)
     }.compact
 
     render json: {

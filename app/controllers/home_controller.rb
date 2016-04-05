@@ -42,9 +42,7 @@ class HomeController < ApplicationController
   end
 
   def store_qrcode_img
-    if params[:type] == 'service'
-      @promotion_activity = PromotionActivity.find_by(user_id: params[:sid], status: 1)
-    end
+    @promotion_activity = PromotionActivity.find_by(user_id: params[:sid], status: 1)
 
     if @promotion_activity.present?
       redirect_to promotion_activity_path(@promotion_activity, type: 'live')

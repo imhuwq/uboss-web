@@ -53,7 +53,6 @@ class PromotionActivitiesController < ApplicationController
   def share_draw
     @promotion_activity = PromotionActivity.published.find(params[:id])
     @seller = @promotion_activity.user
-    @service_store = @seller.service_store
     get_sharing_node
     sharer_id = @sharing_node.try(:user_id)
 
@@ -93,7 +92,17 @@ class PromotionActivitiesController < ApplicationController
 
   def get_service_store_qrcode_img_url
     privilege_card = PrivilegeCard.find_or_active_card(current_user.id, @promotion_activity.user_id)
-    @qrcode_img_url = privilege_card.service_store_qrcode_img_url(true)
+    if cookies['activity_store_type'] == 'service'
+      @store_url = service_store_path(@seller.service_store.id)
+      @store_name = @seller.service_store.store_name
+      @store_cover_url = @seller.service_store.store_cover_url
+      @qrcode_img_url = privilege_card.service_store_qrcode_img_url(true)
+    elsif cookies['activity_store_type'] == 'ordinary'
+      @store_url = store_path(@seller.ordinary_store.id)
+      @store_name = @seller.ordinary_store.store_name
+      @store_cover_url = @seller.ordinary_store.store_cover_url
+      @qrcode_img_url = privilege_card.ordinary_store_qrcode_img_url(true)
+    end
   end
 
   def find_activity_prize_by(type, sharer_id = nil)

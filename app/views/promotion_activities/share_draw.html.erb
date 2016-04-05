@@ -18,13 +18,13 @@
 				一大波好礼坐等领取
 			</h4>
       <div class="gap">
-        <%= link_to '', service_store_path(@service_store.id),
+        <%= link_to '', @store_url,
           class: "store-cover",
-          style: "background-image:url('#{image_url(@service_store.store_cover_url)}')" %>
+          style: "background-image:url('#{image_url(@store_cover_url)}')" %>
       </div>
       <div class="gap">
-        <%= link_to service_store_path(@service_store.id) do %>
-          <%= @service_store.store_name %>
+        <%= link_to @store_url do %>
+          <%= @store_name %>
           <span class="right-icon">→</span>
         <% end %>
       </div>

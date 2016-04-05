@@ -10,6 +10,7 @@ class ServiceStoresController < ApplicationController
   end
 
   def show
+    cookies["activity_store_type"] = 'service'
     @service_store = ServiceStore.find(params[:id])
     @seller = @service_store.user
     get_sharing_node

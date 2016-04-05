@@ -14,8 +14,8 @@ class PromotionActivity < ActiveRecord::Base
   enum status: { unpublish: 0, published: 1 }
 
   def seller_name
-    "#{user.service_store.try(:store_name)}" +
-      (user.login.present? ? " -- #{user.login}" : "") +
+     # "#{user.service_store.try(:store_name)}" +
+      (user.login.present? ? "#{user.login}" : "") +
       (user.email.present? ? "-- #{user.email}" : "")
   end
 
