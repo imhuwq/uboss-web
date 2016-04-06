@@ -8,7 +8,7 @@ class MenusController < ApplicationController
   # GET /service_stores/:service_store_id/menus.json
   def index
     @q = scope.search(categories_name_eq: params[:category])
-    @dishes = @q.result.joins(:categories).order("categories.name")
+    @dishes = @q.result.includes(:categories).order("categories.name")
 
     c = Hash.new {|x,v| x[v] = []}
     @dishes = @dishes.reduce(c) do |h, dishe|
