@@ -3,7 +3,7 @@ class DishesOrder < ServiceOrder
 
   def privilege_amount
     @privilege_amount ||= order_items.reduce(0) do |sum, item|
-      item.product_inventory.privilege_amount
+      item.product_inventory.privilege_amount * item.amount
     end
   end
 
