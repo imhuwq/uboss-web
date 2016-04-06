@@ -8,6 +8,7 @@ class DishesProduct < Product
   validate :rebaste_amount_less_price
   validates_presence_of :present_price
   validates_presence_of :product_inventories
+  validates_presence_of :categories
 
   def today_verify_code
     VerifyCode.where(dishes_order_id: self.user.dishes_order_ids, verified: true).where('updated_at BETWEEN ? AND ?', Time.now.beginning_of_day, Time.now.end_of_day)
