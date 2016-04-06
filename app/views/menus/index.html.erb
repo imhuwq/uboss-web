@@ -20,14 +20,7 @@
 <div class="dishes-list-container">
   <ul class="dishes-list">
     <% @dishes.values.flatten.each do |dishe| %>
-      <li class="dishes-box" 
-        <% if 0 == 1 %>
-          <!--
-          没有图片的时候 （Ps：不要那种通用的默认图片）
-          -->
-          style="background-image:url('图片地址') ;"
-        <% end %>
-      >
+      <li class="dishes-box" style="background-image:url('<%= dishe.image_url(:w640) %>') ;">
         <div class="dishes-info" data-product-id="<%= dishe.id %>">
           <div class="title"><%= dishe.name %></div>
           <br />

@@ -29,7 +29,7 @@ class DishesOrderForm
   end
 
   def sharing_user
-    @shrging_node.try(:user) || User.new
+    @shrging_node.try(:user)
   end
 
   def save

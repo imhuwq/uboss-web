@@ -62,7 +62,7 @@ class MenusController < ApplicationController
 
     def form_params
       params.permit(:mobile, :captcha).merge({
-        sharing_node: get_seller_sharing_code(@store.user_id),
+        sharing_code: get_seller_sharing_code(@store.user_id),
         session: session,
         seller_id: @store.user_id,
         buyer: current_user
@@ -74,6 +74,6 @@ class MenusController < ApplicationController
     end
 
     def scope
-      DishesProduct.published.with_store(@store)
+      DishesProduct.published.with_store(@store).includes(:asset_img)
     end
 end

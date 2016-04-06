@@ -1,7 +1,7 @@
 <div class="close-area"></div>
 <div class="dishes-pop-container">
   <div class="dishes-meida">
-    <div class="cover"></div>
+    <div class="cover" style="background-image:url('<%= @cover %>') ;"></div>
     <div class="title"><%= @name %> </div>
     <div class="price"><small>￥</small> <span class="dishes-price" id="dishes-price"><%= @price %></span></div>
   </div><!-- dishes-meida -->

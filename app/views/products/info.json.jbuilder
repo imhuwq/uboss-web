@@ -194,7 +194,7 @@ items = @product.product_inventories.reduce([]) do |s, i|
 end
 json.id     @product.id
 json.skus   skus
-json.img    @product.asset_img
+json.cover  @product.image_url(:w640)
 json.name   @product.name
 json.price  @product.present_price
 json.items  items
