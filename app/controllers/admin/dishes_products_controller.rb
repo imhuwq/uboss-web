@@ -2,7 +2,7 @@ class Admin::DishesProductsController < AdminController
   load_and_authorize_resource
   def index
     @statistics = {}
-    @dishes = @dishes_products.page(params[:page] || 1)
+    @dishes = @dishes_products.available.page(params[:page])
   end
 
   def edit
@@ -37,7 +37,7 @@ class Admin::DishesProductsController < AdminController
       @error = model_errors(@dishes_product).join('<br/>')
     end
     if request.xhr?
-      flash.now[:success] = @notice
+      flash.now[:success] = @notice if @error.blank?
       flash.now[:error] = @error
       product_collection = @dishes_product.closed? ? [] : [@dishes_product]
       render(partial: 'products', locals: { dishes: product_collection })
