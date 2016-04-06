@@ -26,7 +26,7 @@
 <br />
 -->
 <% if !@order.available_pay? && !@order.unpay? && !@order.closed? %>
-  <div class="bg-white m-bottom10">
+  <div class="bg-white m-top10">
     <div class="gap border-box">
       <% if @order.paid_and_expensed? %>
         <% if @order_item.evaluations.size > 0 %>
@@ -38,7 +38,7 @@
           <div class="pull-right">有效期至：<%= strftime(@order_item.product.deadline) %></div>
         <% end %>
       <% end %>
-      <div class="gap">验证券</div>
+      验证券
     </div>
     	<div class="service-code gap border-box">
     		<div class="pull-right">
@@ -53,22 +53,18 @@
 	</div>
 <% end %>
 <div class="gap">套餐内容</div>
-<div class="order-list m-top10">
-	<div class="seller-box">
 
-  <div class="comfirmed-dishes-box bg-white nogap">
-    <div class="gap-lr m-top10">
-      <!-- 循环  -->
-      <div class="m-bottom10">
-        <span class="pull-right text-cut num text-right gray-color">x <%= @order_item.amount %></span>
-        <span class="pull-right text-cut price ">￥ <%= @order_item.present_price %></span>
-        <div class="text-cut"><%= @order_item.product_name %></div>
-      </div><!-- m-bottom10 -->
-      <!-- 结束循环  -->
-    </div><!-- gap-lr -->
-  </div><!-- dishes-comfirmed-box -->
-
-</div><!-- order-list -->
+<div class="comfirmed-dishes-box bg-white nogap m-bottom10">
+  <div class="gap-lr m-top10">
+    <!-- 循环  -->
+    <div class="m-bottom10">
+      <span class="pull-right text-cut num text-right gray-color">x <%= @order_item.amount %></span>
+      <span class="pull-right text-cut price ">￥ <%= @order_item.present_price %></span>
+      <div class="text-cut"><%= @order_item.product_name %></div>
+    </div><!-- m-bottom10 -->
+    <!-- 结束循环  -->
+  </div><!-- gap-lr -->
+</div><!-- dishes-comfirmed-box -->
 
 <% if @order.available_pay? %>
 
