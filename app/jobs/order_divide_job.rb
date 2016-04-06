@@ -89,8 +89,7 @@ class OrderDivideJob < ActiveJob::Base
     refunded_money = @order.order_item_refunds.successed.sum(:money)
     logger.info "Divide dishes order: #{@order.number}, reduce refund money #{refunded_money}"
     @order_income -= refunded_money
-
-    @privilege_amount = @order.order_items.joins(:product_inventory).sum("product_inventories.privilege_amount")
+    @privilege_amount = @order.order_items.where("sharing_node_id > 0").joins(:product_inventory).sum("product_inventories.privilege_amount")
     logger.info "Divide dishes order: #{@order.number}, reduce privilege amount money #{privilege_amount}"
     @order_income -= @privilege_amount
 
