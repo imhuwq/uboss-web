@@ -113,7 +113,7 @@
     </div><!-- pop-bottom -->
   </div>
 
-  <% if DishesProduct.where(user_id: @service_store.user_id).first %>
+  <% if DishesProduct.published.with_store(@service_store).first %>
     <div class="privilege-rate border-tb m-top10 ">
       <%= link_to "在线点单", service_store_menus_path(@service_store), class: "bg-white gap" %>
     </div>
