@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160405063952) do
+ActiveRecord::Schema.define(version: 20160406024038) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -925,6 +925,8 @@ ActiveRecord::Schema.define(version: 20160405063952) do
     t.decimal  "bonus_benefit",             default: 0.0
     t.integer  "platform_service_rate",     default: 0
     t.integer  "agent_service_rate",        default: 0
+    t.integer  "table_count",               default: 0
+    t.integer  "table_expired_in",          default: 0
   end
 
   create_table "user_role_relations", force: :cascade do |t|

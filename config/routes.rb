@@ -229,7 +229,12 @@ Rails.application.routes.draw do
       end
 
       resources :calling_notifies, only: [:index]
-      resources :calling_services, except: [:show]
+      resources :calling_services, except: [:show] do
+        collection do
+          get :set_table_info
+          patch :update_table_info
+        end
+      end
 
       resources :evaluations, only: [:index, :destroy] do
         collection do

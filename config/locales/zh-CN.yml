@@ -321,6 +321,8 @@ zh-CN:
         begin_minute: 开始分
         end_hour: 结束时
         end_minute: 结束分
+        table_count: 桌号数量
+        table_expired_in: 下桌时长
       store_phones:
         fixed_line_or_phone_number: 固定电话或手机号
         phone_number: 手机号
