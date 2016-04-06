@@ -23,6 +23,7 @@ class Menus.Views.Dishes extends Backbone.View
       @render()
     else
       dishe.set("amount", amount - 1)
+    @remove() if window.dishes.length is 0
     Dispatcher.trigger Menus.Events.DISHE_REMOVED, dishe
 
   getDishe: (e) ->
@@ -30,7 +31,7 @@ class Menus.Views.Dishes extends Backbone.View
     window.dishes.findWhere({id: disheId})
 
   remove: (e)->
-    $(e.target).closest('.dishes-pop-bg').removeClass('show');
+    $(@el).removeClass('show')
 
   clearDishes: ->
     window.dishes.each (dishe) ->
