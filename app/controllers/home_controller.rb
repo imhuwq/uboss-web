@@ -51,10 +51,24 @@ class HomeController < ApplicationController
         if ['ordinary', 'service'].include?(params[:type]) && (privilege_card = PrivilegeCard.find_or_active_card(current_user.id, params[:sid]))
           @qrcode_img_url = params[:type] == 'ordinary' ? privilege_card.ordinary_store_qrcode_img_url(true) : privilege_card.service_store_qrcode_img_url(true)
         end
-        render layout: nil
       else
-        authenticate_user!
+        # authenticate_user!
       end
+      render layout: nil
+    end
+  end
+
+  def generate_privilege_card
+    user = User.find_or_create_guest(params[:mobile])
+    if !['ordinary', 'service'].include?(params[:type])
+      render json: {status: 500, message: '类型错误'}
+    elsif !params[:sid]
+      render json: {status: 500, message: '请提供sid'}
+    elsif privilege_card = PrivilegeCard.find_or_active_card(user.id, params[:sid])
+      @qrcode_img_url = params[:type] == 'ordinary' ? privilege_card.ordinary_store_qrcode_img_url(true) : privilege_card.service_store_qrcode_img_url(true)
+      render json: {status: 200, message: @qrcode_img_url}
+    else
+      render json: {status:500, message: '创建友情卡失败'}
     end
   end
 

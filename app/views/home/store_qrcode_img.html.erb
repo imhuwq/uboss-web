@@ -6,6 +6,7 @@
     <meta content="telephone=no" name="format-detection" />
     <meta content="email=no" name="format-detection" />
     <%= javascript_include_tag "activate/activate" %>
+    <%= csrf_meta_tags %>
     <style>
     		*{margin: 0;padding: 0;border: 0; outline: 0; vertical-align: middle; text-decoration: none;}
     		img{max-width: 100%;}
@@ -41,8 +42,12 @@
 	      分享给好友你的专属优惠二维码，成<br/>
 	      功邀请TA下单后，你将获得现金红包
 	     </div>
-	     <div class="content">
-	       <p><input type="tel" class="tel" placeholder="输入手机号"/></p>	      
+	     <div class="content" id='tel'>
+         <% if current_user %>
+           <p><input type="tel" class="tel hidden" value='<%= current_user.login %>' /></p>
+         <% else %>
+           <p><input type="tel" class="tel" placeholder="输入手机号"/></p>
+         <% end %>
 	       <div class="btn" id="qr-btn">生成我的二维码</div>
 	     </div>
 	     <!-- 弹出框 -->
@@ -63,7 +68,33 @@
 	   </div><!-- container -->
 	   <script>
 	     $('#qr-btn').on('click',function(){
-	       $('#qr-pop-bg').removeClass('hidden');
+         var tel = $('#tel input.tel').attr('value')
+         var sid = '<%= params[:sid] %>'
+         var type = '<%= params[:type] %>'
+         console.log(tel)
+         $.ajax({
+           url: 'generate_privilege_card',
+           type: 'POST',
+           dataType: 'json',
+           data: {mobile: tel,
+                  sid: sid,
+                  type: type
+                  },
+           complete: function (jqXHR, textStatus) {
+             // callback
+           },
+           success: function (data, textStatus, jqXHR) {
+            console.log(data)
+            if(data['status'] == '200'){
+              $('#qr-pop-bg .content img').attr('src',data['message']);
+              $('#qr-pop-bg').removeClass('hidden');
+              };
+            // success callback
+           },
+           error: function (jqXHR, textStatus, errorThrown) {
+             // error callback
+           }
+         });
 	     })
 	   </script>
 	 <% else %>

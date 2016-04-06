@@ -98,7 +98,7 @@ class PromotionActivitiesController < ApplicationController
       @store_cover_url = @seller.service_store.store_cover_url
       @qrcode_img_url = privilege_card.service_store_qrcode_img_url(true)
     elsif cookies['activity_store_type'] == 'ordinary'
-      @store_url = store_path(@seller.ordinary_store.id)
+      @store_url = store_path(@seller.id)
       @store_name = @seller.ordinary_store.store_name
       @store_cover_url = @seller.ordinary_store.store_cover_url
       @qrcode_img_url = privilege_card.ordinary_store_qrcode_img_url(true)
