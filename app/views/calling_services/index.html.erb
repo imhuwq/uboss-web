@@ -1,0 +1,13 @@
+<p>
+<a href="<%= table_numbers_seller_calling_services_path(seller_id: params[:seller_id]) %>">桌号</a>
+<a href="#">呼叫详情</a>
+</p>
+<br />
+<% @calling_services.each do |calling_service| %>
+  <p>
+  <span><%= calling_service.name %></span>
+  <a href="#">呼叫</a>
+  </p>
+<% end %>
+
+<a href="#" class="btn btn-large btn-block">其他服务，一键呼叫</a>

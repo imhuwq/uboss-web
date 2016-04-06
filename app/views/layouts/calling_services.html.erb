@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta id='MobileViewport' name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+    <meta content="telephone=no" name="format-detection" />
+    <meta content="email=no" name="format-detection" />
+    <link href="<%= image_url("favicon-lg.png") %>" type="image/x-icon" rel="shortcut icon">
+    <link rel="apple-touch-icon" href="<%= image_url("favicon-lg.png") %>">
+    <%= yield(:extra_meta_tags) %>
+    <%= render partial: "page_title" %>
+    <%= stylesheet_link_tag "mobile" %>
+    <%= javascript_include_tag "mobile" %>
+    <%= csrf_meta_tags %>
+  </head>
+
+  <body class='<%= controller_name %> <%= action_name %>'>
+
+		<%= render 'layouts/pop' %>
+    <div class="container">
+      <%= yield %>
+    </div>
+
+    <%= render partial: 'baidu_tongji' %>
+    <% if browser.wechat? %>
+      <%= render "weixin_js" %>
+      <div class="wx-mod-pop" id="pop-share">
+        <span class="text-share"></span>
+      </div>
+    <% end %>
+    <%= yield(:extra_javascript) %>
+  </body>
+</html>

@@ -143,7 +143,14 @@ Rails.application.routes.draw do
       get :edit_rate
     end
   end
-  resources :sellers, only: [:new, :create, :update]
+  resources :sellers, only: [:new, :create, :update] do
+    resources :calling_services, only: [:index] do
+      collection do
+        get :table_numbers
+        post :set_table_number
+      end
+    end
+  end
   resources :carts, only: [:index] do
     collection do
       post :checkout
