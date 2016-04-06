@@ -23,7 +23,7 @@
             <% end %>
           </td>
           <td rowspan="2" class="text-left" style="max-width: 400px;">
-            <%= link_to promotion_activity.user.nickname, admin_promotion_activity_path(promotion_activity) %>
+            <%= link_to promotion_activity.user.service_store.store_name, admin_promotion_activity_path(promotion_activity) %>
           </td>
           <td><%= translate_activity_type live_activity_info.activity_type %></td>
           <td><%= live_activity_info.name %></td>

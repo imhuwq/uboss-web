@@ -143,7 +143,7 @@
     formatResult: function(data)
     {
       this.description =
-        '<span style="display:block;float:left;width:250px;">'+
+        '<span style="display:block;float:left;width:250px;" class="text-cut">'+
         data.text + '</span><span>' + data.login + '</span>';
       if(data.disabled){ this.description += '<span style="display:block;float:right;">' + data.email + '<a href="#">（参与中）</a></span>' }
       else{ this.description += '<span style="display:block;float:right;">' + data.email + '</span>' }
@@ -152,7 +152,7 @@
     formatSelection: function(data)
     {
       this.description =
-        '<span style="display:block;float:left;width:250px;">' +
+        '<span style="display:block;float:left;width:250px;" class="text-cut">' +
         data.text + '</span><span>' + data.login + '</span><span style="display:block;float:right;">' +
         data.email + '</span>';
       return this.description;
