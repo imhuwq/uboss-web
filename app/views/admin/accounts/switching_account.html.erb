@@ -8,7 +8,7 @@
 <br />
 
 <div class="container nogap">
-  <% current_user.store_accounts.each do |account| %>
+  <% @store_accounts.each do |account| %>
     <%= link_to switch_account_admin_account_path(sid: account.user_id), method: :patch do || %>
       <div>
         <%= image_tag account.user.avatar_url(:thumb) %>

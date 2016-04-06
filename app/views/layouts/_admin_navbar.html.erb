@@ -7,7 +7,7 @@
 
 		<div id="config">
       <% if current_account.present? %>
-        <%= image_tag(current_user.avatar.url(:thumb)) %>
+        <%= image_tag(current_account.avatar.url(:thumb)) %>
         <ul class="dropdown-menu">
           <li><%= link_to '退出子账号', switch_account_admin_account_path(sid: 'sign_out'), method: :patch %></li>
           <li><%= link_to '退出', destroy_user_session_path, method: :delete %></li>

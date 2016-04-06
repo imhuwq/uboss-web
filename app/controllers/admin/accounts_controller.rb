@@ -21,7 +21,7 @@ class Admin::AccountsController < AdminController
       flash[:error] = '你没有子账号'
       redirect_to :back
     else
-      @store_accounts = current_user.store_accounts
+      @store_accounts = current_user.store_accounts.active.includes(user: :service_store)
     end
   end
 
