@@ -1,5 +1,5 @@
 class TableNumber < ActiveRecord::Base
-  has_many   :calling_notifies
+  has_many   :calling_notifies, dependent: :destroy
   belongs_to :user
 
   enum status: { unuse: 0, used: 1 }

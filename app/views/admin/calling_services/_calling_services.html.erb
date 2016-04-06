@@ -15,8 +15,8 @@
             <%= link_to url_for(action: :edit, id: calling_service.id), class:'edit-icon', title: '编辑' do %>
               <i class="fa fa-pencil-square-o"></i>
             <% end %>
-            <%= link_to admin_calling_service_path(calling_service), remote: true, method: :delete,
-              class:'change-status-btn edit-icon', data: { disable_with: '<i class="fa fa-trash-o"></i>' } do %>
+            <%= link_to admin_calling_service_path(calling_service), method: :delete,
+              class:'change-status-btn edit-icon', data: { disable_with: '<i class="fa fa-trash-o"></i>', confirm: "确定删除服务 “#{calling_service.name}” ?" } do %>
               <i class="fa fa-trash-o"></i>
             <% end %>
             </p>
