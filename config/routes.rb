@@ -174,6 +174,9 @@ Rails.application.routes.draw do
             get :inventories, :detail, :change_status
           end
         end
+        post 'verify_codes/verify', to: 'verify_codes#verify'
+        get 'verify_history/:date', to: 'verify_codes#verify_history'
+        get 'receipt_history/:date', to: 'verify_codes#receipt_history'
       end
       resources :service_stores, only: [:create] do
         get :total_verify_detail, :today_verify_detail
@@ -190,7 +193,6 @@ Rails.application.routes.draw do
       resource :chat, only: [] do
         get :token, :check_user_online
       end
-      post 'verify_codes/verify', to: 'verify_codes#verify'
     end
   end
 
