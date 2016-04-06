@@ -24,12 +24,8 @@ class DishesOrderForm
 
   def initialize(order, options={})
     @order = order
-    @shrging_node = SharingNode.find_by(code: options[:sharing_code])
+    @sharing_node = SharingNode.find_by(code: options[:sharing_code])
     options.each { |k, v| instance_variable_set("@#{k}", v) }
-  end
-
-  def sharing_user
-    @shrging_node.try(:user)
   end
 
   def save
