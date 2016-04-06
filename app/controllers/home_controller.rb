@@ -43,7 +43,7 @@ class HomeController < ApplicationController
 
   def store_qrcode_img
     @promotion_activity = PromotionActivity.find_by(user_id: params[:sid], status: 1)
-
+    cookies['activity_store_type'] = params[:type]
     if @promotion_activity.present?
       redirect_to promotion_activity_path(@promotion_activity, type: 'live')
     else
