@@ -1,7 +1,7 @@
 class MenusController < ApplicationController
   before_action :authenticate_user!, only: [:order]
   before_action :set_store
-  before_action :authenticate_user_if_browser_wechat, only: [:confirm]
+  before_action :authenticate_user_if_browser_wechat, only: [:index, :confirm]
   layout 'mobile'
 
   # GET /service_stores/:service_store_id/menus
