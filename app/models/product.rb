@@ -48,7 +48,7 @@ class Product < ActiveRecord::Base
   validates_presence_of :user_id, :name, :asset_img, :type
 
   before_create :generate_code
-  after_create :add_categories_after_create
+  before_validation :add_categories_after_create
 
   def optional_image?
     false
@@ -241,7 +241,6 @@ class Product < ActiveRecord::Base
         category.save
         categories << category
       end
-      save
     end
   end
 
