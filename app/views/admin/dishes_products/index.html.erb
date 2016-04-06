@@ -3,7 +3,7 @@
     <a href="<%= admin_service_products_path(type: 'published') %>" data-remote="true">
       <div class="admin-box red-bg-color">
         <h4>上架菜品</h4>
-        <h1 class="num"><%= @statistics[:published] %></h1>
+        <h1 class="num"><%= @dishes_products.published.count %></h1>
       </div>
     </a>
   </div>
@@ -11,7 +11,7 @@
     <a href="<%= admin_service_products_path(type: 'unpublish') %>" data-remote="true">
       <div class="admin-box blue-bg-color">
         <h4>下架菜品</h4>
-        <h1 class="num"><%= @statistics[:unpublish] %></h1>
+        <h1 class="num"><%= @dishes_products.unpublish.count %></h1>
       </div>
     </a>
 	</div>
