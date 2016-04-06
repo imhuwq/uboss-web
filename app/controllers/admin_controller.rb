@@ -21,22 +21,33 @@ class AdminController < ApplicationController
   private
 
   def check_current_account_availability
-    if !current_user.store_accounts.active.where(user_id: session[:sub_account_id]).exists?
+    if !original_current_user.store_accounts.active.where(user_id: session[:sub_account_id]).exists?
       flash[:error] = '子账号失效'
       set_current_account(nil)
       redirect_to admin_root_path
     end
   end
 
+  alias original_current_user current_user
+  def current_user
+    if current_account.present?
+      current_account
+    else
+      super
+    end
+  end
+
   def current_account
     return @current_account if @current_account.present?
     return nil if session[:sub_account_id].blank?
-    @current_account = current_user.store_accounts.active.find_by(user_id: session[:sub_account_id]).try(:user)
+    @current_account = original_current_user.store_accounts.active.find_by(user_id: session[:sub_account_id]).try(:user)
+    @current_account.being_agency = true
+    @current_account
   end
   helper_method :current_account
 
   def set_current_account(account)
-    return nil if !current_user.store_accounts.active.exists?
+    return nil if !original_current_user.store_accounts.active.exists?
     if account.nil?
       session[:sub_account_id] = nil
       @current_account = nil
@@ -45,7 +56,9 @@ class AdminController < ApplicationController
     account = account.is_a?(User) ? account : User.find_by(id: account)
     return nil if account.blank?
     session[:sub_account_id] = account.id
-    @current_account = current_user.store_accounts.active.find_by(user_id: session[:sub_account_id]).try(:user)
+    @current_account = original_current_user.store_accounts.active.find_by(user_id: session[:sub_account_id]).try(:user)
+    @current_account.being_agency = true
+    @current_account
   end
 
   def current_navigation_context

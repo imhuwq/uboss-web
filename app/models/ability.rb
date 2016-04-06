@@ -9,11 +9,15 @@ class Ability
     roles = user.user_roles
     if user.admin? && roles.present?
       begin
-        roles.order("id ASC").each do |role|
-          grant_method = "grant_permissions_to_#{role.name}"
-          __send__ grant_method, user
+        if user.being_agency
+          grant_permissions_to_being_agency(user)
+        else
+          roles.order("id ASC").each do |role|
+            grant_method = "grant_permissions_to_#{role.name}"
+            __send__ grant_method, user
+          end
+          grant_general_permission user
         end
-        grant_general_permission user
       rescue NoMethodError
         no_permissions
       end
@@ -25,6 +29,18 @@ class Ability
   private
   def no_permissions
     cannot :manage, :all
+  end
+
+  def grant_permissions_to_being_agency(user)
+    can :read, User, id: user.id
+    cannot :delivery, AgencyOrder, seller_id: user.id
+    cannot :delete_agency_product, OrdinaryProduct do |op|
+      op.type == "OrdinaryProduct"
+    end
+    can :manage, ServiceProduct, user_id: user.id
+    can :manage, ServiceStore, user_id: user.id
+    can :manage, VerifyCode, user_id: user.id
+    can :manage, Evaluation, user_id: user.id
   end
 
   def grant_general_permission(user)

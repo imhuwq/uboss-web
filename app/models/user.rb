@@ -6,7 +6,7 @@ class User < ActiveRecord::Base
   include Orderable
   include Sellerable
 
-  attr_accessor :code, :mobile_auth_code
+  attr_accessor :being_agency, :code, :mobile_auth_code
   OFFICIAL_ACCOUNT_LOGIN = '13800000000'.freeze
 
   devise :database_authenticatable, :rememberable, :trackable, :recoverable, :validatable, :confirmable,
