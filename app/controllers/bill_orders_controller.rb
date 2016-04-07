@@ -1,6 +1,7 @@
 class BillOrdersController < ApplicationController
 
-  before_action :authenticate_user!
+  before_action :authenticate_user!, only: [:index, :show]
+  before_action :authenticate_weixin_user_token!, only: [:create]
 
   def index
     @bill_orders = append_default_filter current_user.bill_orders.payed

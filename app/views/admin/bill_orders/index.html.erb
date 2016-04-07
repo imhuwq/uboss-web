@@ -1,0 +1,30 @@
+<div class="container  admin-container">
+  <ul class="breadcrumb">
+    <li><a href="/admin">主页</a></li>
+    <li class="divider"><i class="fa fa-caret-right"></i></li>
+    <li>收银管理</li>
+  </ul>
+</div>
+
+<br />
+
+<div class="container">
+  <table class="list-table">
+    <thead>
+      <th>单号</th>
+      <th>付款人</th>
+      <th>付款金额</th>
+      <th>交易时间</th>
+    </thead>
+    <tbody>
+      <% @bill_orders.each do |bill_order| %>
+        <tr>
+          <td><%= bill_order.number.insert(-6, ' - ') %></td>
+          <td><%= bill_order.user_identify %></td>
+          <td><%= bill_order.paid_amount %></td>
+          <td><%= bill_order.created_at %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>

@@ -21,6 +21,8 @@ class BillOrder < ActiveRecord::Base
 
   enum state: { unpay: 0, payed: 1, closed: 3 }
 
+  after_commit :set_user_identify, on: :create, if: -> { self.user_id.blank? }
+
   aasm column: :state, enum: true, skip_validation_on_save: true, whiny_transitions: false do
     state :unpay
     state :payed
@@ -48,6 +50,14 @@ class BillOrder < ActiveRecord::Base
     )
   end
 
+  def user_identify
+    if user_id.present?
+      user.identify
+    else
+      super
+    end
+  end
+
   def store_name
     @store_name ||= seller.service_store.store_name
   end
@@ -66,7 +76,21 @@ class BillOrder < ActiveRecord::Base
     self.class.generate_wx_qrcode_product_id(seller, pay_amount)
   end
 
+  def self.set_user_identify(bill_order)
+    user_response = $weixin_client.user(bill_order.weixin_openid)
+    if user_response.is_ok?
+      bill_order.update_columns(
+        user_identify: user_response.result['nickname']
+      )
+    end
+    '微信用户'
+  end
+
   private
+
+  def set_user_identify
+    self.class.delay.set_user_identify(self)
+  end
 
   def invoke_payed_processes
     # divide order

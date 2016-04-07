@@ -67,7 +67,7 @@ class User < ActiveRecord::Base
   has_many :selling_incomes
   belongs_to :agent, class_name: 'User'
   has_many :promotion_activities
-
+  has_many :sold_bill_orders, class_name: 'BillOrder', foreign_key: :seller_id
   #for supplier
   has_one :supplier_store, autosave: true
   has_many :cooperations, foreign_key: 'supplier_id', dependent: :destroy

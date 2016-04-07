@@ -197,6 +197,7 @@ Rails.application.routes.draw do
 
   authenticate :user, lambda { |user| user.admin? } do
     namespace :admin do
+      resources :bill_orders, only: [:index]
       resources :wechat_accounts do
         post :set_menu, on: :member
       end
