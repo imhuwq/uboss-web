@@ -1,0 +1,13 @@
+<%= content_for :title do %>
+  呼叫服务
+<% end %>
+
+<div style="width:90%;margin:50% auto;">
+  <% @calling_notifies.each do |calling_notify| %>
+    <p>
+    <span><%= calling_notify.called_at %></span>
+    <span><%= calling_notify.service_name %></span>
+    <span><%= calling_notify.unservice? ? "已呼叫" : (calling_notify.serviced? ? "已服务" : "来服务") %></span>
+    </p>
+  <% end %>
+</div>

@@ -146,8 +146,10 @@ Rails.application.routes.draw do
   resources :sellers, only: [:new, :create, :update] do
     resources :calling_services, only: [:index] do
       collection do
-        get :table_numbers
+        get  :share
+        get  :table_numbers
         post :set_table_number
+        get  :notifies
       end
     end
   end

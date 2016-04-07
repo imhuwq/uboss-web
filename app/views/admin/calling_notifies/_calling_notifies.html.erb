@@ -13,15 +13,19 @@
 				<td><%= calling_notify.called_at %></td>
 				<td>
           <% if can? :update, CallingNotify %>
-            <% if calling_notify.status == 'unservice' %>
+            <% if calling_notify.unservice? %>
               <p>
                 <%= link_to("去服务", "#",
                 remote: true, method: :patch, data: { disable_with: '<i class="fa fa-spinner"></i>' },
-                class: "btn btn-mid btn-block change-status-btn") %>
+                class: "btn btn-mid change-status-btn") %>
               </p>
+            <% elsif calling_notify.serviced? %>
+              <p><span>已服务</span></p>
             <% else %>
               <p>
-                <span>已服务</span>
+                <%= link_to("已服务", "#",
+                remote: true, method: :patch, data: { disable_with: '<i class="fa fa-spinner"></i>' },
+                class: "btn btn-mid white-btn btn-border change-status-btn") %>
               </p>
             <% end %>
           <% end %>

@@ -1,6 +1,6 @@
 class Admin::CallingServicesController < AdminController
   load_and_authorize_resource
-  #before_action :validate_service_store_info
+  before_action :validate_service_store_info
 
   def index
     @calling_services = CallingService.where(user: current_user).page(params[:page] || 1)

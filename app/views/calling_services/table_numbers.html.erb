@@ -1,6 +1,12 @@
-<%= simple_form_for 'table_number', url: set_table_number_seller_calling_services_path(seller_id: params[:seller_id]) do |f| %>
-  <span>所在桌号</span>
-  <%= f.select :number, options_for_select([['--选择桌号--', '']] + @select_arr, cookies["table_nu"]), {} %>
+<%= content_for :title do %>
+  呼叫服务
+<% end %>
 
-  <%= f.submit '保存', class:"btn btn-large btn-block" %>
+<%= simple_form_for 'table_number', url: set_table_number_seller_calling_services_path(seller_id: params[:seller_id]) do |f| %>
+  <div style="width:50%;margin:50% auto;">
+    <span>所在桌号</span>
+    <%= f.select :number, options_for_select([['--选择桌号--', '']] + @select_arr, cookies["table_nu"]), {} %>
+  </div>
+
+  <%= f.submit '保存', class:"btn btn-large btn-block btn-orange", style: "position:fixed;bottom:0;"%>
 <% end %>

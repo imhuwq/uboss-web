@@ -14,4 +14,11 @@ class TableNumber < ActiveRecord::Base
       INSERT INTO table_numbers (user_id, number, created_at, updated_at) VALUES #{values.join(',')};
     SQL
   end
+
+  def self.clear_seller_table_number(seller, number)
+    if number && (table_number = find_by(user: seller, number: number))
+      table_number.update(status: 0)
+      table_number.calling_notifies.destroy_all
+    end
+  end
 end

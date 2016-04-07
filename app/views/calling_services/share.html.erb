@@ -1,0 +1,14 @@
+<%= content_for :title do %>
+  乐分享
+<% end %>
+
+<div style="width:50%;margin:50% auto;">
+  <div style="text-align:center;">
+    <p>老板服务还是不错是吗？</p>
+    <p>帮商家分享一下吧</p>
+  </div>
+  <br />
+  <a href="<%= store_qrcode_img_path(sid: @seller.id, type: 'service') %>" class="btn btn-large btn-block btn-orange">果断分享</a>
+  <br />
+  <a href="#" class="btn btn-large btn-block btn-white">残忍拒绝</a>
+</div>

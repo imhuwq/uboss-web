@@ -3,7 +3,7 @@ class CallingNotify < ActiveRecord::Base
   belongs_to :table_number
   belongs_to :calling_service
 
-  enum status: { unservice: 0, serviced: 1 }
+  enum status: { unservice: 0, serviced: 1, servicing: 2 }
 
   before_create :init_called_at
 
