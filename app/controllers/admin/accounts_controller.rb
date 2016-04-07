@@ -17,7 +17,7 @@ class Admin::AccountsController < AdminController
   end
 
   def switching_account
-    if !current_user.store_accounts.exists?
+    if !current_user.has_store_account?
       flash[:error] = '你没有子账号'
       redirect_to :back
     else

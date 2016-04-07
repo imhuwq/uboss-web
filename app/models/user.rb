@@ -155,6 +155,11 @@ class User < ActiveRecord::Base
     seller_ids.include?(object.user_id)
   end
 
+  def has_store_account?
+    return @has_store_account if instance_variable_defined?('@has_store_account')
+    @has_store_account = store_accounts.active.exists?
+  end
+
   def service_store
     super || build_service_store
   end

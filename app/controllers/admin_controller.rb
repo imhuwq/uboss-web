@@ -47,7 +47,7 @@ class AdminController < ApplicationController
   helper_method :current_account
 
   def set_current_account(account)
-    return nil if !original_current_user.store_accounts.active.exists?
+    return nil if !original_current_user.has_store_account?
     if account.nil?
       session[:sub_account_id] = nil
       @current_account = nil
