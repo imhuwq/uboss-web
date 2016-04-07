@@ -15,6 +15,10 @@
 
       <%= render 'fields', f: f %>
 
+      <div class="form-actions text-center">
+        <%= f.submit "上架", class: "btn btn-large" %>
+        <%= f.submit "上架并继续新增菜品", class: "btn btn-large" %>
+      </div>
     <% end %>
 
 </div>

@@ -51,9 +51,14 @@ class Admin::DishesProductsController < AdminController
   def create
     @dishes_product.user_id = current_user.id
     @dishes_product.service_store = current_user.service_store
+    @dishes_product.status = 'published'
     if @dishes_product.save
       flash[:success] = '菜品创建成功'
-      redirect_to admin_dishes_products_path
+      if params[:commit] == '上架并继续新增菜品'
+        redirect_to new_admin_dishes_product_path
+      else
+        redirect_to admin_dishes_products_path
+      end
     else
       flash.now[:error] = "#{@dishes_product.errors.full_messages.join('<br/>')}"
       render :new
