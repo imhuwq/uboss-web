@@ -353,7 +353,13 @@ class User < ActiveRecord::Base
   end
 
   def identify
-    nickname || mobile.present? || 'UBOSS用户'
+    if nickname.present?
+      nickname
+    elsif mobile.present?
+      mobile
+    else
+      'UBOSS用户'
+    end
   end
 
   def total_income
