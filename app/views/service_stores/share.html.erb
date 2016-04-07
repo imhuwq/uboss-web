@@ -3,7 +3,7 @@
 <% end %>
 <div class="store-cover m-bottom10 text-center" style="<%#= "background-image:url('#{@service_store.store_cover_url(:w640)}')" if @service_store.store_cover_identifier.present? %>">
   <div class="content">
-    <h2 class="name"><%= @service_store.store_name %></h2>
+    <h2 class="name"><%= @service_store.store_identify %></h2>
 
     <% if @service_store.store_short_description.present?  %>
       <p class="gray-color"><%= @service_store.store_short_description %></p>

@@ -96,12 +96,12 @@ class PromotionActivitiesController < ApplicationController
     @seller ||= @promotion_activity.user
     if cookies['activity_store_type'] == 'service'
       @store_url = service_store_path(@seller.service_store.id)
-      @store_name = @seller.service_store.store_name
+      @store_identify = @seller.service_store.store_identify
       @store_cover_url = @seller.service_store.store_cover_url
       @qrcode_img_url = privilege_card.service_store_qrcode_img_url(true)
     elsif cookies['activity_store_type'] == 'ordinary'
       @store_url = store_path(@seller.id)
-      @store_name = @seller.ordinary_store.store_name
+      @store_identify = @seller.ordinary_store.store_identify
       @store_cover_url = @seller.ordinary_store.store_cover_url
       @qrcode_img_url = privilege_card.ordinary_store_qrcode_img_url(true)
     end

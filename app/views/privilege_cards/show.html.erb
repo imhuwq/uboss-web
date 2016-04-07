@@ -16,7 +16,7 @@
     <%= image_tag @seller.avatar_url(:w120) %>
   </div>
   <br />
-  <p class="name"><%= @seller.store_name %></p>
+  <p class="name"><%= @seller.store_identify %></p>
   <p class="gray-color"><%= @seller.store_short_description %></p>
   <p class="gray-color"><%= number_to_percentage(@seller.good_reputation_rate, precision: 0) %> 好评（<%= @seller.total_reputations %>）</p>
   <div class="text-center border-top">

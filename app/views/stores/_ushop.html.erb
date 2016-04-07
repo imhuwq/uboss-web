@@ -9,7 +9,7 @@
   <div class="cover"><img src='<%= @seller.ordinary_store.store_cover_url(:thumb) %>' /></div>
   <div class="content">
 		<span class="pull-right"><%= number_to_percentage(@seller.good_reputation_rate, precision: 0) %> 好评 (<%= @seller.total_reputations %>)</span>
-    <h3 class="name text-cut"><%= @seller.store_name %></h3>
+    <h3 class="name text-cut"><%= @seller.store_identify %></h3>
 
     <% if @seller.store_short_description.present?  %>
       <p class="detail gray-color text-right text-cut"><%= @seller.store_short_description %></p>

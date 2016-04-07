@@ -33,7 +33,7 @@
 
 <div class="store-cover text-center" style="<%= "background-image:url('#{@seller.store_cover.url(:w640)}')" if @seller.user_info.store_cover_identifier.present? %>">
   <div class="content">
-    <h3 class="name"><%= @seller.store_name %></h3>
+    <h3 class="name"><%= @seller.store_identify %></h3>
 
     <% if @seller.store_short_description.present?  %>
       <p class="gray-color"><%= @seller.store_short_description %></p>

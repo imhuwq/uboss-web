@@ -4,7 +4,7 @@
 		<li class="divider"><i class="fa fa-caret-right"></i></li>
     <li><%= link_to '我的供货商', my_suppliers_admin_sellers_path %></li>
 		<li class="divider"><i class="fa fa-caret-right"></i></li>
-    <li>供货店铺：<%= @supplier_store.store_name %></li>
+    <li>供货店铺：<%= @supplier_store.store_identify %></li>
 	</ul>
 </div>
 <br />
@@ -13,7 +13,7 @@
     <div class="store-info">
       <%= image_tag(@supplier_store.store_cover.url(:thumb)) %>
       <div class="main-info">
-        <div class="store-name"><%= @supplier_store.store_name %></div>
+        <div class="store-name"><%= @supplier_store.store_identify %></div>
         <div class="short-description"><%= @supplier_store.store_short_description %></div>
       </div>
       <div class="count-info">

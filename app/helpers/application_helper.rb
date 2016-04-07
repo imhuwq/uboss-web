@@ -104,7 +104,7 @@ module ApplicationHelper
 
   def service_store_sharing_meta_tags(service_store, sharing_link_node = nil)
     meta_tags = {
-      sharing_title:  "【#{service_store.store_name || 'UBOSS商家'}】好东西不断，通过分享购买更有优惠惊喜！",
+      sharing_title:  "【#{service_store.store_identify}】好东西不断，通过分享购买更有优惠惊喜！",
       sharing_desc:   "在我这儿，谁还会用市场价购买啊？",
       sharing_imgurl: service_store.store_cover_url(:thumb),
       sharing_link:  service_store_sharing_link(service_store, sharing_link_node),
@@ -115,9 +115,9 @@ module ApplicationHelper
   end
 
   def store_sharing_meta_tags(seller, sharing_link_node = nil, redirect = nil)
-    store_name = redirect.try(:match, /\/service_stores\//) ? seller.service_store.store_name : seller.store_identify
+    store_identify = redirect.try(:match, /\/service_stores\//) ? seller.service_store.store_identify : seller.store_identify
     meta_tags = {
-      sharing_title:  "【#{store_name}】好货不断，通过分享购买更有优惠惊喜！",
+      sharing_title:  "【#{store_identify}】好货不断，通过分享购买更有优惠惊喜！",
       sharing_desc:   "在我这儿，谁还会用市场价购买啊？",
       sharing_imgurl: seller.avatar_url(:thumb),
       sharing_link:  store_sharing_link(seller, sharing_link_node, redirect),

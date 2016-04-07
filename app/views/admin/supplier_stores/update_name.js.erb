@@ -1,6 +1,6 @@
 <% if @supplier_store.errors.blank? %>
   $('#card-dropdown-menu .errors').html('')
-  $('#card-dropdown-menu .name .show-value span.text').text('<%= @supplier_store.store_name %>')
+  $('#card-dropdown-menu .name .show-value span.text').text('<%= @supplier_store.store_identify %>')
   $('#card-dropdown-menu .name .show-value').show()
   $('#card-dropdown-menu .name .form').hide()
 <% else %>
