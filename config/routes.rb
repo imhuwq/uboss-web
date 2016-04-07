@@ -165,7 +165,7 @@ Rails.application.routes.draw do
     namespace :v1 do
       namespace :admin do
         resources :carriage_templates, only: [:index, :show]
-        resources :service_products, only: [:create]
+        resources :service_products, only: [:index, :create, :show]
         resources :service_stores, only: [:create] do
           post :verify, on: :collection
         end

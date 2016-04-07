@@ -7,7 +7,7 @@ class Api::V1::VerifyCodesController < ApiBaseController
     if result[:success]
       verify_code = VerifyCode.find_by(code: params[:code])
       product = verify_code.order_item.product
-      render json: { product_name: product.name, product_price: product.price, inventories: product.seling_inventories }
+      render json: { product_name: product.name, product_price: product.present_price, inventories: product.seling_inventories }
     else
       render_error :verify_faild
     end
@@ -18,7 +18,7 @@ class Api::V1::VerifyCodesController < ApiBaseController
       orders.each do |order|
         order_item = order.order_item
         product = order_item.product
-        code = order_item.verify_codes.where(verified: true, expired: false)
+        code = order_item.verify_codes.where(verified: true)
         history << { product_name: product.name, verify_code: code, exchange_time: order.created_at, pay_amount: order.pay_amount, paid_amount: order.paid_amount }
       end
     end

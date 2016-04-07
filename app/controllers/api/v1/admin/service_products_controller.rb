@@ -1,4 +1,30 @@
 class Api::V1::Admin::ServiceProductsController < ApiBaseController
+
+  def index
+    products = current_user.service_products.available
+    product_infos = []
+    unless products.nil?
+      products.each do |product|
+        product_infos << { id: product.id, product_name: product.name, price: product.present_price, sold_amount: product.total_sells }
+      end
+    end
+    render json: product_infos
+  end
+
+  def show
+    product = ServiceProduct.find_by(id: params[:id])
+    codes = product.verified_codes
+    verified_codes = []
+    unless codes.nil?
+      codes.each do |code|
+        verified_codes << { verify_code: code.code, exchange_time: code.order_item.order.created_at }
+      end
+    end
+    render json: { product_id: product.id, product_name: product.name, price: product.present_price, sold_amount: product.total_sells, verified_codes: verified_codes }
+  rescue => e
+    render_error :wrong_params
+  end
+
   def create
     authorize! :create, ServiceProduct
     @service_product = current_user.service_products.new(service_product_params)
