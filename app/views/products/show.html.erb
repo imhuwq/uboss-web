@@ -1,3 +1,7 @@
+<%= content_for :title do %>
+   <%= @product.user.store_title || Rails.application.secrets.metas["title"] %>
+<% end %>
+
 <%= content_for :extra_meta_tags do %>
   <%= sharing_meta_tags(@product, @sharing_link_node) %>
 <% end %>
