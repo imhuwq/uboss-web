@@ -20,13 +20,13 @@
           <%= category.position %>
           <% if i == 0 %>
             <div class='font-sort'>
-              <%= link_to sort_admin_category_path(id: category.id, opt: 'down'), remote: true do %>
+              <%= link_to sort_admin_category_path(id: category.id, opt: 'down', dishes: true), remote: true do %>
                 <i class='fa fa-caret-down'></i>
               <% end %>
             </div>
           <% else %>
             <div class='font-sort'>
-              <%= link_to sort_admin_category_path(id: category.id, opt: 'up'), remote: true do %>
+              <%= link_to sort_admin_category_path(id: category.id, opt: 'up', dishes: true), remote: true do %>
                 <i class='fa fa-sort-asc'></i>
               <% end %>
             </div>
