@@ -34,7 +34,7 @@ class Menus.Views.Dishes extends Backbone.View
     $(@el).removeClass('show')
 
   clearDishes: ->
-    window.dishes.each (dishe) ->
+    window.dishes.clone().each (dishe) ->
       window.dishes.remove dishe
       Dispatcher.trigger Menus.Events.DISHE_REMOVED, dishe
     @render({display: false})
