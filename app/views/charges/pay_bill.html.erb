@@ -5,7 +5,8 @@
     <br />
     <div>
       <%= hidden_field_tag :service_store_id, @service_store.id %>
-      <%= text_field_tag :pay_amount, params[:pay_amount].to_f,
+      <%= text_field_tag :pay_amount, @pay_amount,
+        placeholder: '付款金额',
         type: :tel, class:'input-radius input-large input-block' %>
     </div>
     <br />

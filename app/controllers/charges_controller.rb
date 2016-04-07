@@ -5,6 +5,7 @@ class ChargesController < ApplicationController
 
   def pay_bill
     @service_store = ServiceStore.find(params.fetch(:ssid))
+    @pay_amount = params[:pay_amount].present? ? params[:pay_amount].to_f : nil
   end
 
   def bill_complete
