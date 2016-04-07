@@ -87,6 +87,8 @@
       if(data['status'] == '200'){
       $('#qr-pop-bg .content img').attr('src',data['message']);
       $('#qr-pop-bg').removeClass('hidden');
+      }else{
+        alert(data['message'])
       };
       // success callback
       },
