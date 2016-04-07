@@ -7,7 +7,7 @@ class Admin::CallingNotifiesController < AdminController
       .includes(:table_number, :calling_service)
       .page(params[:page] || 1)
     @unservice_count = @calling_notifies.unservice.count
-    flash[:success] = "您有#{@unservice_count}条呼叫服务未处理" if @unservice_count > 0
+    @notice = "您有#{@unservice_count}条呼叫服务未处理" if @unservice_count > 0
   end
 
   def change_status
