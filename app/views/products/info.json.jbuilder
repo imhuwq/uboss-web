@@ -196,5 +196,5 @@ json.id     @product.id
 json.skus   skus
 json.cover  @product.image_url(:w640)
 json.name   @product.name
-json.price  @product.present_price
+json.price  @product.price_ranges.join("-")
 json.items  items

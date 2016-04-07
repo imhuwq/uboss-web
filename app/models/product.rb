@@ -14,6 +14,7 @@ class Product < ActiveRecord::Base
   has_one_image autosave: true
   #has_many_images name: :figure_images, accepts_nested: true
   has_one_content name: :purchase_note, type: :purchase_note
+  serialize :price_ranges, Array
 
   belongs_to :user
   belongs_to :carriage_template
@@ -24,7 +25,7 @@ class Product < ActiveRecord::Base
   has_many :advertisements
   has_many :categories
   has_and_belongs_to_many :categories, -> { uniq } ,autosave: true
-  has_many :product_inventories, autosave: true, dependent: :destroy
+  has_many :product_inventories, autosave: true, dependent: :destroy, inverse_of: :product
   has_many :cart_items,  through: :product_inventories
   validates_associated :product_inventories
   has_many :seling_inventories, -> { where(saling: true) }, class_name: 'ProductInventory', autosave: true

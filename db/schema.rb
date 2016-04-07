@@ -609,12 +609,13 @@ ActiveRecord::Schema.define(version: 20160408035556) do
     t.integer  "service_store_id"
     t.integer  "parent_id"
     t.integer  "supplier_id"
-    t.integer  "ordinary_store_id"
     t.integer  "comprehensive_order"
     t.datetime "published_at"
     t.integer  "sales_amount",         default: 0
     t.integer  "sales_amount_order"
     t.integer  "supplier_id"
+    t.decimal  "rebate_amount"
+    t.string   "price_ranges"
   end
 
   add_index "products", ["type"], name: "index_products_on_type", using: :btree
@@ -992,6 +993,7 @@ ActiveRecord::Schema.define(version: 20160408035556) do
     t.integer  "order_item_id"
     t.boolean  "sharing_rewared",   default: false
     t.decimal  "income",            default: 0.0
+    t.integer  "dishes_order_id"
     t.boolean  "expired",           default: false
     t.integer  "activity_prize_id"
   end

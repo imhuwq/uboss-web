@@ -31,6 +31,7 @@ class ProductInventory < ActiveRecord::Base
             :share_amount_lv_2,
             :share_amount_lv_3,
             :privilege_amount ]
+  after_save :cache_product_money
 
   def saling?
     status == 'published' && saling && count > 0
@@ -111,6 +112,16 @@ class ProductInventory < ActiveRecord::Base
     if share_and_privilege_amount_total > price
       errors.add(:share_amount_total, '必须小于对应（商品/规格）的价格')
     end
+  end
+
+  def cache_product_money
+    price_ranges = [*product.price_ranges, price.to_f].compact.sort
+    if price_ranges.length > 2
+      price_ranges = [price_ranges[0], price_ranges[-1]]
+    else
+      price_ranges
+    end
+    product.update(price_ranges: price_ranges.compact)
   end
 
 end
