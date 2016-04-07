@@ -237,7 +237,11 @@ Rails.application.routes.draw do
         end
       end
 
-      resources :calling_notifies, only: [:index]
+      resources :calling_notifies, only: [:index] do
+        member do
+          patch :change_status
+        end
+      end
       resources :calling_services, except: [:show] do
         collection do
           get :set_table_info

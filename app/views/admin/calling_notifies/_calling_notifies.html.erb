@@ -7,7 +7,7 @@
 			<th>操作</th>
 		</thead>
 		<% calling_notifies.each do |calling_notify| %>
-			<tr class="product">
+			<tr class="calling_notify">
 				<td><%= calling_notify.calling_number %></td>
 				<td><%= calling_notify.service_name %></td>
 				<td><%= calling_notify.called_at %></td>
@@ -15,16 +15,16 @@
           <% if can? :update, CallingNotify %>
             <% if calling_notify.unservice? %>
               <p>
-                <%= link_to("去服务", "#",
-                remote: true, method: :patch, data: { disable_with: '<i class="fa fa-spinner"></i>' },
+                <%= link_to("去服务", change_status_admin_calling_notify_path(calling_notify, status: 'servicing'),
+                remote: true, method: :patch, data: { disable_with: '<i class="fa fa-spinner"></i>', text: '去服务' },
                 class: "btn btn-mid change-status-btn") %>
               </p>
             <% elsif calling_notify.serviced? %>
               <p><span>已服务</span></p>
             <% else %>
               <p>
-                <%= link_to("已服务", "#",
-                remote: true, method: :patch, data: { disable_with: '<i class="fa fa-spinner"></i>' },
+                <%= link_to("已服务", change_status_admin_calling_notify_path(calling_notify, status: 'serviced'),
+                remote: true, method: :patch, data: { disable_with: '<i class="fa fa-spinner"></i>', text: '已服务' },
                 class: "btn btn-mid white-btn btn-border change-status-btn") %>
               </p>
             <% end %>
