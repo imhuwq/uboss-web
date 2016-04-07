@@ -236,7 +236,7 @@ class Product < ActiveRecord::Base
   private
 
   def must_has_one_product_inventory
-    errors.add(:product_inventories, '至少添加一个产品规格属性') unless seling_inventories.size > 0
+    errors.add(:product_inventories, '至少添加一个产品规格属性') unless product_inventories.size > 0
   end
 
   def must_has_one_image
