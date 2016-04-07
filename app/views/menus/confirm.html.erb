@@ -28,12 +28,15 @@
       </div>
     </div><!-- friend-info -->
     <% end %>
+    <div class="price-box gap">
+      合计：￥<%= @pay_amount = @order.order_items.map(&:pay_amount).sum %><small class="gray-color"></small>
+    </div>
   </div><!-- bg-white --> 
 </div><!-- dishes-comfirmed-box -->
 <div class="order-price">
    <%= submit_tag '提交订单', class: "accunt_adilbtn cart-btn btn" %>
    <div class="content">
-     <p>应付款：<span id="total_price"><%= @order.order_items.map(&:pay_amount).sum %></span></p>
+     <p>应付款：<span id="total_price"><%= @pay_amount %></span></p>
    </div>
 </div><!-- order-price -->
 <script type="text/javascript">
