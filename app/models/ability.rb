@@ -178,6 +178,7 @@ class Ability
     can :manage, :agents
     can :read, :sellers
     can :handle, :sellers
+    can :read, BillOrder
     can :read, Order
     can :read, Product
     can :read, ServiceProduct
