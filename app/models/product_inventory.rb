@@ -122,7 +122,7 @@ class ProductInventory < ActiveRecord::Base
     else
       price_ranges
     end
-    product.update(price_ranges: price_ranges.compact)
+    product.update(price_ranges: price_ranges.uniq.compact)
   end
 
 end
