@@ -13,7 +13,7 @@
           <div class="m-bottom10">
             <span class="pull-right text-cut num text-right gray-color">x <%= order_item.try(:amount) %></span>
             <span class="pull-right text-cut price ">￥ <%= order_item.present_price %></span>
-            <div class="text-cut"><%= order_item.product_name %></div>
+            <div class="text-cut"><%= product_inventory_fullname(order_item) %></div>
           </div><!-- m-bottom10 -->
       <% end %>
       </div>
