@@ -22,10 +22,11 @@ module OrdersHelper
   end
 
   def product_inventory_fullname(item)
-    item.product.name + if item.is_a?(OrderItem)
-      "(#{item.sku_properties})"
+    prop = if item.is_a?(OrderItem)
+      item.sku_properties
     elsif item.is_a?(ProductInventory)
-      "(#{item.sku_attributes_str})"
+      item.sku_attributes_str
     end
+    item.product.name + (prop.blank? ? "" : "(#{prop})")
   end
 end

@@ -1,0 +1,15 @@
+<!-- 菜品的样式 一起循环 -->
+<div class="comfirmed-dishes-box nogap"> 
+    <div class="text-cut page-title gray-color gap">商家：<%= order.seller.identify %></div>
+    <div class="bg-white">
+      <a href="#" class="gap-lr black-color m-top10" style="display: block;">
+        <% order.order_items.each do |item| %>
+          <div class="m-bottom10">
+            <span class="pull-right text-cut num text-right gray-color">x <%= item.amount %></span>
+            <span class="pull-right text-cut price ">￥ <%= item.present_price %></span>
+            <div class="text-cut"><%= product_inventory_fullname(item) %></div>
+          </div><!-- m-bottom10 -->
+        <% end %>
+      </a><!-- gap-lr -->  
+  </div><!-- bg-white --> 
+</div><!-- comfirmed-dishes-box -->

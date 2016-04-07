@@ -34,6 +34,9 @@ class DishesProduct < Product
     end
   end
 
+  def deadline
+  end
+
   def attr_min()
   end
 
