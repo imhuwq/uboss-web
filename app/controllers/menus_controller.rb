@@ -1,7 +1,9 @@
 class MenusController < ApplicationController
+  include SharingResource
   before_action :authenticate_user!, only: [:order]
   before_action :set_store
   before_action :authenticate_user_if_browser_wechat, only: [:index, :confirm]
+  before_action :set_sharing_link_node, only: [:index]
   layout 'mobile'
 
   # GET /service_stores/:service_store_id/menus
@@ -70,7 +72,8 @@ class MenusController < ApplicationController
     end
 
     def set_store
-      @store = ServiceStore.find params[:service_store_id]
+      @store = ServiceStore.includes(:user).find params[:service_store_id]
+      @seller = @store.user
     end
 
     def scope

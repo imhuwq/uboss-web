@@ -1,8 +1,17 @@
-<%= content_for :page_title do %>
-  <%= @store.user.identify %>
+<%= content_for :title do %>
+  <%= @store.store_title || Rails.application.secrets.metas["title"] %>
 <% end %>
+
+<%= content_for :page_title do %>
+  <%= @store.store_identify %>
+<% end %>
+
+<%= content_for :extra_meta_tags do %>
+  <%= service_store_menus_sharing_meta_tags(@store, @sharing_link_node) %>
+<% end %>
+
 <%= content_for :header_left do %>
-<a class="back" onclick="history.go(-1)"><%= image_tag 'mobile/right.png' %></a>
+  <a class="back" onclick="history.go(-1)"><%= image_tag 'mobile/right.png' %></a>
 <% end %>
 <div id="store-dishes-menus" class="dishes-pop-bg">
 	<div class="close-area"></div>
@@ -56,6 +65,11 @@
 </div><!-- dishes-buy-bar -->
 <%= content_for :extra_javascript do %>
   <%= javascript_include_tag "mobile_page/menus/boot" %>
+  <% if browser.wechat? %>
+    <script type="text/javascript" charset="utf-8">
+      wx.ready(function(){ UBoss.luffy.invokeSharing(); });
+    </script>
+  <% end %>
   <script type="text/javascript">
   //iscroll 滑动
   var dishes_list_Scroll;

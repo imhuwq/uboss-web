@@ -20,6 +20,14 @@ module ProductsHelper
     end
   end
 
+  def service_store_menus_sharing_link(store, sharing_node = nil)
+    if sharing_node.blank?
+      service_store_menus_url(store)
+    else
+      sharing_url(sharing_node, redirect: service_store_menus_path(store))
+    end
+  end
+
   def product_sharing_link(product, sharing_node = nil)
     if sharing_node.blank?
       url_of(product)
