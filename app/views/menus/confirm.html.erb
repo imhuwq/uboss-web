@@ -18,13 +18,13 @@
       <% end %>
       <!-- 结束循环  -->
     </div><!-- gap-lr -->
-    <% if (sharing_user = @order_form.sharing_user) && @order.privilege_amount > 0 %>
+    <% if (sharing_user = @order_form.sharing_user) && @order.share_amount_total > 0 %>
     <div class="friend-info border-top">
       <div class="cover">
         <%= image_tag @order_form.sharing_user.avatar_url(:w120) %>
       </div>
       <div class="content">
-          <span class="pull-right red-color order-privilege-amount"><%= @order.privilege_amount %></span><span class="main-color"><%= sharing_user.identify %></span> 帮你返利
+          <span class="pull-right red-color order-privilege-amount"><%= @order.share_amount_total %></span><span class="main-color"><%= sharing_user.identify %></span> 帮你返利
       </div>
     </div><!-- friend-info -->
     <% end %>
@@ -34,7 +34,6 @@
    <%= submit_tag '提交订单', class: "accunt_adilbtn cart-btn btn" %>
    <div class="content">
      <p>应付款：<span id="total_price"><%= @order.order_items.map(&:pay_amount).sum %></span></p>
-     <p class="gray-color"><small>共优惠0.0元</small></p>
    </div>
 </div><!-- order-price -->
 <script type="text/javascript">

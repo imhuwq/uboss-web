@@ -89,9 +89,9 @@ class OrderDivideJob < ActiveJob::Base
     refunded_money = @order.order_item_refunds.successed.sum(:money)
     logger.info "Divide dishes order: #{@order.number}, reduce refund money #{refunded_money}"
     @order_income -= refunded_money
-    @privilege_amount = @order.privilege_amount
-    logger.info "Divide dishes order: #{@order.number}, reduce privilege amount money #{privilege_amount}"
-    @order_income -= @privilege_amount
+    share_amount_total = @order.share_amount_total
+    logger.info "Divide dishes order: #{@order.number}, reduce privilege amount money #{share_amount_total}"
+    @order_income -= share_amount_total
 
     start_divide_order_paid_amount
 
