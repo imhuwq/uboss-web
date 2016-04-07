@@ -14,6 +14,7 @@ class BillOrder < ActiveRecord::Base
   belongs_to :user
   belongs_to :seller, class_name: 'User'
   belongs_to :order_charge
+  has_many :bill_incomes
 
   validates_presence_of :seller, :pay_amount
   validates_presence_of :weixin_openid, if: -> { self.user.blank? }
@@ -48,6 +49,10 @@ class BillOrder < ActiveRecord::Base
       User.find_by(id: seller_id),
       BigDecimal.new(pay_amount)
     )
+  end
+
+  def income
+    @income ||= bill_incomes.sum(:amount)
   end
 
   def user_identify

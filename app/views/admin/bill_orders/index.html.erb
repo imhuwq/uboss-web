@@ -20,8 +20,6 @@
 
 <br />
 
-<br />
-
 <div class="container">
   <table class="list-table">
     <thead>
@@ -55,6 +53,7 @@
 
       <div class="modal-body">
         <%= qrcode_image_tag(pay_bill_charges_url(ssid: current_user.service_store.id), html: {width: '160'}) %>
+        <p>平台店铺支付费率：0.7%</p>
       </div>
 
       <div class="modal-footer">
