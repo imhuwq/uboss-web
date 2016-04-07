@@ -156,6 +156,11 @@ class User < ActiveRecord::Base
     seller_ids.include?(object.user_id)
   end
 
+  def has_promotion_activity?
+    return @has_promotion_activity if instance_variable_defined?('@has_promotion_activity')
+    @has_promotion_activity = PromotionActivity.where(user: self, status: 1).exists?
+  end
+
   def service_store
     super || build_service_store
   end

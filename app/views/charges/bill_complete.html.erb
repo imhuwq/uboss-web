@@ -37,6 +37,11 @@
         <br />
         <div class="gray-color">付款单号：<%= @order_charge.pay_serial_number %></div>
       </div>
+      <% if @seller.has_promotion_activity? %>
+        <%= link_to "去抽奖", store_qrcode_img_path(sid: @seller.id, type: 'service'), class: 'btn btn-large btn-block' %>
+      <% else %>
+        <%= link_to "去分享", store_qrcode_img_path(sid: @seller.id, type: 'service'), class: 'btn btn-large btn-block' %>
+      <% end %>
       <br />
     </div><!-- bg-white -->
   <% end %>

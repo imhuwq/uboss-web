@@ -16,6 +16,7 @@ class ChargesController < ApplicationController
                         find(params[:id])
                     end
     @order_charge.check_paid?
+    @seller = @order_charge.bill_orders.first.seller
   end
 
   def payments
