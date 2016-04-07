@@ -12,11 +12,11 @@ class CallingNotify < ActiveRecord::Base
   #validates :calling_service_id, uniqueness: { scope: [:user_id, :table_number_id]}
 
   def service_name
-    calling_service.try(:name)
+    @name || calling_service.try(:name)
   end
 
   def calling_number
-    table_number.try(:number)
+    @number || table_number.try(:number)
   end
 
   private

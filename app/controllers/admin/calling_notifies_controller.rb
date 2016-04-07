@@ -30,4 +30,14 @@ class Admin::CallingNotifiesController < AdminController
     end
   end
 
+  def drop_table
+    @table_number = TableNumber.find_by(user: current_user, number: params[:number], status: 1)
+
+    if @table_number && TableNumber.clear_seller_table_number(current_user, params[:number])
+      render json: { status: 'ok', number: @table_number.number }
+    else
+      render json: { status: 'no_found' }
+    end
+  end
+
 end

@@ -238,6 +238,9 @@ Rails.application.routes.draw do
       end
 
       resources :calling_notifies, only: [:index] do
+        collection do
+          post  :drop_table
+        end
         member do
           patch :change_status
         end

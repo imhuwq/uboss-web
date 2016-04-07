@@ -1,8 +1,8 @@
 <div class="container nogap ">
   <% @table_numbers.each do |table_number| %>
-    <a href="#">
+    <a href="javascript:;">
       <div class="box-w8">
-        <div class="admin-box text-center <%= table_number.status == 'used' ? "main-bg-color" : "beige-bg-color" %>">
+        <div class="admin-box text-center table-number <%= table_number.status == 'used' ? "used main-bg-color" : "unuse beige-bg-color" %>" data-number="<%= table_number.number %>">
           <span><%= table_number.number %>桌</span>
         </div>
       </div>
