@@ -3,8 +3,6 @@ class DishesProduct < Product
   scope :with_store, ->(store) { where(user_id: store.user_id) }
 
   validates_numericality_of :rebate_amount, if: "rebate_amount"
-  after_initialize  :initialize_product_inventory
-  before_update :check_product_inventory_count
   validate :rebaste_amount_less_price
   validates_presence_of :present_price
   validates_presence_of :product_inventories
@@ -47,21 +45,5 @@ class DishesProduct < Product
   private
   def rebaste_amount_less_price
     errors.add(:rebate_amount, '不能大于现价') if self.rebate_amount.present? && self.rebate_amount > self.present_price
-  end
-
-  def initialize_product_inventory
-    if self.new_record? && self.product_inventories.present?
-      self.product_inventories.each do |inventory|
-        inventory.count = 9*10000
-      end
-    end
-  end
-
-  def check_product_inventory_count
-    if self.product_inventories.present?
-      self.product_inventories.each do |inventory|
-        inventory.update(count: 9*10000) if inventory.count < 10000
-      end
-    end
   end
 end

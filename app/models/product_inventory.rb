@@ -1,8 +1,9 @@
 class ProductInventory < ActiveRecord::Base
+  include DishesProductInventoryAble
 
   SkuProperty = Struct.new(:key, :value)
 
-  belongs_to :product
+  belongs_to :product, inverse_of: :product_inventories
   belongs_to :product_class
   has_many   :cart_items
   has_many   :order_items
