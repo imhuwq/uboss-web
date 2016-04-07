@@ -39,7 +39,14 @@
      <p>应付款：<span id="total_price"><%= @pay_amount %></span></p>
    </div>
 </div><!-- order-price -->
-<script type="text/javascript">
+
+<%= content_for :extra_javascript do %>
+  <script type="text/javascript" charset="utf-8">
+  <% if browser.wechat? %>
+    wx.ready(function(){
+      wx.hideOptionMenu();
+    });
+  <% end %>
   $(document).ready(function(){
     $("input[name='commit']").on('click', function(){
       $.ajax({
@@ -55,4 +62,5 @@
       })
     });
   })
-</script>
+  </script>
+<% end %>
