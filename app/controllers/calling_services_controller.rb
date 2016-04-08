@@ -12,7 +12,7 @@ class CallingServicesController < ApplicationController
   end
 
   def set_table_number
-    table_number = @table_numbers.find_by(number: params[:table_number][:number])
+    table_number = @table_numbers.find_by(id: params[:table_number][:id])
 
     if table_number
       TableNumber.clear_seller_table_number(@seller, cookies[:table_nu])
@@ -50,7 +50,7 @@ class CallingServicesController < ApplicationController
 
   private
   def trigger_realtime_message
-    $redis.publish 'realtime_msg', {msg: "#{@table_number.number}号桌需要#{@calling_service.name}", recipient_user_ids: [@seller.id]}.to_json
+    $redis.publish 'realtime_msg', {msg: {text: "#{@table_number.number}号桌需要#{@calling_service.name}", title: '新服务通知'}, recipient_user_ids: [@seller.id]}.to_json
   end
 
   def find_seller
@@ -62,7 +62,7 @@ class CallingServicesController < ApplicationController
   end
 
   def find_using_table_number
-    unless @table_number = TableNumber.find_by(user: @seller, number: cookies[:table_nu])
+    unless @table_number = TableNumber.find_by(user: @seller, number: cookies[:table_nu], status: 1)
       redirect_to action: :table_numbers
     end
   end
