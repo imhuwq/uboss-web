@@ -1,6 +1,5 @@
 class Admin::VerifyCodesController < AdminController
   load_and_authorize_resource
-  before_action :get_total_and_today, only: [:index, :dishes, :statistics]
 
   def index
     if params[:type] == 'today'
@@ -32,11 +31,5 @@ class Admin::VerifyCodesController < AdminController
       flash[:error] = '验证失败'
     end
     redirect_to admin_verify_codes_path
-  end
-
-  private
-  def get_total_and_today
-    @total = VerifyCode.total(current_user).size
-    @today = VerifyCode.today(current_user).size
   end
 end

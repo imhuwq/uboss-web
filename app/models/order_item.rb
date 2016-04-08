@@ -9,7 +9,7 @@ class OrderItem < ActiveRecord::Base
   belongs_to :sharing_node
   has_many   :evaluations
   has_many   :sharing_incomes
-  has_many   :verify_codes, autosave: true
+  has_many   :verify_codes, -> { where(target_type: 'OrderItem') }, foreign_key: :target_id, autosave: true
   has_many   :order_item_refunds
   has_many   :refund_messages, through: :order_item_refunds
   # act as preferential_item
@@ -50,10 +50,6 @@ class OrderItem < ActiveRecord::Base
 
   def total_price
     present_price*amount
-  end
-
-  def verify_code
-    self.verify_codes.first
   end
 
   def refund_money

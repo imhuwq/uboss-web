@@ -3,7 +3,6 @@
     <thead>
       <tr>
         <th>商品名称</th>
-        <th>现价</th>
         <th>验证时间</th>
         <th>验证券密码</th>
       </tr>
@@ -12,16 +11,11 @@
       <% @verify_codes.each do |verify_code| %>
         <tr>
           <td class="text-left">
-            <% if verify_code.order_item_id %>
-				    	<%= link_to admin_service_product_path(verify_code.order_item.product) do %>
-                <%= image_tag(verify_code.order_item.product.image_url(:thumb), size: "80x80", alt: "-") %>　
-                <%= verify_code.order_item.product.name %>
-              <% end %>
-            <% elsif activity_prize = verify_code.activity_prize %>
-              <%= activity_prize.try(:activity_info).try(:name) %>(活动奖品)
+            <%= link_to verify_code_target_url(verify_code) do %>
+              <%= image_tag(get_product(verify_code).image_url(:thumb), size: "80x80", alt: "-") %>　
+              <%= get_product(verify_code).name %>
             <% end %>
           </td>
-          <td><%= verify_code.try(:order_item).try(:present_price)%></td>
           <td><%= verify_code.updated_at %></td>
           <td><%= verify_code.code %></td>
         </tr>

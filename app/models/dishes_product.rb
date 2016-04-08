@@ -1,7 +1,5 @@
 class DishesProduct < Product
   belongs_to :service_store
-  after_initialize  :initialize_product_inventory
-  before_validation :check_product_inventory_count
   scope :with_store, ->(store) { where(user_id: store.user_id) }
 
   validates_numericality_of :rebate_amount, if: "rebate_amount"
@@ -11,11 +9,11 @@ class DishesProduct < Product
   validates_presence_of :categories
 
   def today_verify_code
-    VerifyCode.where(order_item_id: self.order_item_ids, verified: true).where('updated_at BETWEEN ? AND ?', Time.now.beginning_of_day, Time.now.end_of_day)
+    self.user.verify_codes.today
   end
 
   def total_verify_code
-    VerifyCode.where(order_item_id: self.order_item_ids, verified: true)
+    self.user.verify_codes.total
   end
 
   def categories=(id)
@@ -52,21 +50,5 @@ class DishesProduct < Product
   private
   def rebaste_amount_less_price
     errors.add(:rebate_amount, '不能大于现价') if self.rebate_amount.present? && self.rebate_amount > self.present_price
-  end
-
-  def initialize_product_inventory
-    if self.new_record? && self.product_inventories.present?
-      self.product_inventories.each do |inventory|
-        inventory.count = 9*10000
-      end
-    end
-  end
-
-  def check_product_inventory_count
-    if self.product_inventories.present?
-      self.product_inventories.each do |inventory|
-        inventory.update(count: 9*10000) if inventory.count.to_i < 10000
-      end
-    end
   end
 end

@@ -19,11 +19,11 @@ class ServiceProduct < Product
   scope :published, -> { where(status: 1) }
 
   def today_verify_code
-    VerifyCode.where(order_item_id: self.order_item_ids, verified: true).where('updated_at BETWEEN ? AND ?', Time.now.beginning_of_day, Time.now.end_of_day)
+    self.user.verify_codes.today
   end
 
   def total_verify_code
-    VerifyCode.where(order_item_id: self.order_item_ids, verified: true)
+    self.user.verify_codes.total
   end
 
   def deadline

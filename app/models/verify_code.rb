@@ -1,4 +1,5 @@
 class VerifyCode < ActiveRecord::Base
+  belongs_to :target, polymorphic: true
   belongs_to :order_item
   belongs_to :activity_prize
 
@@ -7,9 +8,11 @@ class VerifyCode < ActiveRecord::Base
 
   default_scope {order("updated_at desc")}
 
-  scope :with_user, ->(user) { joins(order_item: :product).where(products: {type: ["DishesProduct", "ServiceProduct"]}) }
-  scope :today, ->(user) { where(verified: true).with_user(user).
-                           where('verify_codes.updated_at BETWEEN ? AND ?', Time.now.beginning_of_day, Time.now.end_of_day) }
+  scope :with_user, ->(user) { joins(order_item: :service_product).merge(user.service_products) }
+  scope :today, ->(user) {
+    where(verified: true).with_user(user).
+    where('verify_codes.updated_at BETWEEN ? AND ?',
+          Time.now.beginning_of_day, Time.now.end_of_day) }
   scope :total, ->(user) { where(verified: true).with_user(user) }
   scope :with_activity_user, ->(user) {
     joins(activity_prize:[:promotion_activity]).
@@ -50,13 +53,17 @@ class VerifyCode < ActiveRecord::Base
   end
 
   def verify_code
-    if verified
-      return {success: false, message: '已经使用过了。'}
-    elsif update(verified: true)
-      order.try(:check_completed)
-      return {success: true, message: '验证成功。'}
-    end
-  end
+     if !verified && update(verified: true)
+       if target_type == 'DishesOrder'
+         target.try(:check_completed)
+       else
+         target.order.try(:check_completed)
+       end
+       true
+     else
+       false
+     end
+   end
 
   def verify_activity_code(store_admin)
     if activity_prize.promotion_activity.user_id != store_admin.id

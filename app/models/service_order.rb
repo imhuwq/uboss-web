@@ -1,5 +1,4 @@
 class ServiceOrder < Order
-  has_many :verify_codes, through: :order_items
 
   enum state: { unpay: 0, payed: 1, closed: 5, completed: 6 }
 
@@ -44,7 +43,7 @@ class ServiceOrder < Order
   private
 
   def invoke_service_order_payed_job
-    order_item.amount.times { order_item.verify_codes.create!() }
+    order_item.amount.times { order_item.verify_codes.create!(user_id: self.user_id) }
     ServiceOrderPayedJob.perform_later(self)
   end
 
