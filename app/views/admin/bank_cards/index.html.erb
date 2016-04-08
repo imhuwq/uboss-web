@@ -21,6 +21,7 @@
     <%= t.cell :username %>
     <%= t.cell :bankname %>
     <%= t.cell :number %>
+    <%= t.cell :remark %>
     <%= t.cell :action do |bank_card| %>
       <%= link_to [:edit, :admin, bank_card], title: "编辑", class: 'edit-icon' do %>
         <i class="fa fa-pencil-square-o"></i>

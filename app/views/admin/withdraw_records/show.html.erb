@@ -24,6 +24,7 @@
 			<p><%= BankCard.human_attribute_name(:bankname) %> : <%= @withdraw_record.card_bankname %></p>
 			<p><%= BankCard.human_attribute_name(:username) %> : <%= @withdraw_record.card_username %></p>
 			<p><%= BankCard.human_attribute_name(:number) %> : <%= @withdraw_record.card_number %></p>
+			<p><%= BankCard.human_attribute_name(:remark) %> : <%= @withdraw_record.card_remark %></p>
 	</div>
 	<% elsif @withdraw_record.user.weixin_openid.present? %>
 	  <p class="alert alert-info">已绑定微信，通过微信打款。</p>

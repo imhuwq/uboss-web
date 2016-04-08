@@ -6,7 +6,7 @@ class WithdrawRecord < ActiveRecord::Base
 
   class AdjuestUserIncomeTypeWrong < StandardError;;end
 
-  BANK_INFO_STORE_KEYS = [:username, :bankname, :number]
+  BANK_INFO_STORE_KEYS = [:username, :bankname, :number, :remark]
 
   attr_accessor :transfer_remote_ip
 
