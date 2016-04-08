@@ -9,7 +9,7 @@ module DishesProductInventoryAble
     end
 
     def it_was_dishes_product_inventory?
-      product.type == 'DishesProduct'
+      product && product.type == 'DishesProduct'
     end
   end
 end
