@@ -103,7 +103,7 @@ class Admin::ServiceProductsController < AdminController
 
   def validate_service_store_info
     unless current_user.service_store && current_user.service_store.try(:valid?)
-      flash[:alert] = '请先完善实体店铺信息再发布商品'
+      flash[:alert] = '请先完善本地服务信息再发布商品'
       redirect_to edit_admin_service_store_path(current_user.service_store)
     end
   end
