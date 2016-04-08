@@ -92,6 +92,7 @@ class Ability
       refund.order_item.order.is_agency_order? && refund.order_item.order.user_id == user.id
     end
     can :manage, UserAddress, user_id: user.id
+    can :manage, PromotionActivity, user_id: user.id
   end
 
   def grant_permissions_to_agent user
