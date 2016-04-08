@@ -2,7 +2,7 @@
   <% @table_numbers.each do |table_number| %>
     <a href="javascript:;">
       <div class="box-w8">
-        <div class="admin-box text-center table-number <%= table_number.status == 'used' ? "used main-bg-color" : "unuse beige-bg-color" %>" data-number="<%= table_number.number %>">
+        <div class="admin-box text-center table-number <%= table_number.status == 'used' ? "used main-bg-color" : "unuse beige-bg-color" %>" data-number="<%= table_number.number %>" style="margin-bottom:15px;">
           <span><%= table_number.number %>桌</span>
         </div>
       </div>
