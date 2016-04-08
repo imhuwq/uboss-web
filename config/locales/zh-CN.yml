@@ -12,6 +12,7 @@ zh-CN:
     platform_service_rate: 平台费率
     agent_service_rate: 创客费率
     name: 名称
+    remark: 备注
     wechat_identify: 原始微信号
     encoding_app_secret: 加密AppSecret
     weixin_token: Token(令牌)

@@ -22,7 +22,6 @@ class Admin::BankCardsController < AdminController
   def update
     if @bank_card.update(update_params)
       redirect_to [:admin, :bank_cards], notice: '更新成功'
-      redirect_to [:admin, :bank_cards]
     else
       render :edit
     end
@@ -38,7 +37,7 @@ class Admin::BankCardsController < AdminController
 
   private
   def create_params
-    params.require(:bank_card).permit(:username, :bankname, :number)
+    params.require(:bank_card).permit(:username, :bankname, :number, :remark)
   end
 
   def update_params
