@@ -10,12 +10,14 @@
 <div style="width:50%;margin:50% auto;">
   <br />
   <% @calling_services.each do |calling_service| %>
-    <p>
-    <span><%= calling_service.name %></span>
-    <button type="button" class="btn calling-service-btn"
-      data-url=<%= calling_seller_calling_services_path(seller_id: @seller.id, service_id: calling_service.id) %>>呼叫</button>
-    </p>
-    <br />
+    <% if calling_service.name != "结帐" %>
+      <p>
+      <span><%= calling_service.name %></span>
+      <button type="button" class="btn calling-service-btn"
+        data-url=<%= calling_seller_calling_services_path(seller_id: @seller.id, service_id: calling_service.id) %>>呼叫</button>
+      </p>
+      <br />
+    <% end %>
   <% end %>
 
   <p>
@@ -26,4 +28,4 @@
 </div>
 
 <button type="button" class="btn btn-large btn-block btn-orange calling-service-btn" style="position:fixed;bottom:0;"
-  data-url=<%= calling_seller_calling_services_path(seller_id: @seller.id, type: 'checkout') %>>呼叫</button>
+  data-url=<%= calling_seller_calling_services_path(seller_id: @seller.id, type: 'checkout') %>>其它服务</button>

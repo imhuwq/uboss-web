@@ -38,10 +38,16 @@ class CallingServicesController < ApplicationController
                         CallingService.find_or_create_by(user: @seller, name: "其它")
                       end
 
-    calling_notify  = CallingNotify.find_or_initialize_by(user: @seller, table_number: @table_number, calling_service: @calling_service)
+    @calling_notify = CallingNotify.find_or_initialize_by(user: @seller, table_number: @table_number, calling_service: @calling_service)
 
-    if !calling_notify.new_record? || calling_notify.save
+    unless @calling_notify.new_record?
+      @calling_notify.called_at = Time.now
+      @calling_notify.status = 'unservice'
+    end
+
+    if @calling_notify.save
       trigger_realtime_message
+      notify_seller
       render json: { status: "ok", message: "呼叫成功" }
     else
       render json: { status: "failure", error: "呼叫错误，请刷新再尝试" }
@@ -51,6 +57,20 @@ class CallingServicesController < ApplicationController
   private
   def trigger_realtime_message
     $redis.publish 'realtime_msg', {msg: {text: "#{@table_number.number}号桌需要#{@calling_service.name}", title: '新服务通知'}, recipient_user_ids: [@seller.id]}.to_json
+  end
+
+  def notify_seller
+    if @seller.weixin_openid.present?
+      $weixin_client.send_text_custom(
+        @seller.weixin_openid,
+        <<-MSG
+服务提醒：
+#{@table_number.number}号桌需要#{@calling_service.name}
+---------
+<a href='#{notifies_seller_calling_services_url(seller_id: @seller.id)}'>查看详情</a>
+        MSG
+      )
+    end
   end
 
   def find_seller
