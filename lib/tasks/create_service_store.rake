@@ -17,7 +17,7 @@ namespace :migrate do
     puts '初始化店铺类型完毕!'
   end
 
-  desc '创建实体店铺 ServiceStore'
+  desc '创建本地服务 ServiceStore'
   task init_service_store: :environment do
     User.find_each do |user|
       service_store = user.service_store
@@ -28,6 +28,6 @@ namespace :migrate do
       end
     end
 
-    puts '创建实体店铺完毕!'
+    puts '创建本地服务完毕!'
   end
 end

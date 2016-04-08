@@ -25,13 +25,13 @@
 <% else %>
 	<div class="sstore-slider">
 		<%= image_tag ('mobile/s-bg.jpg') %>
-		<h3 class="store-name text-cut"><%= @service_store.store_name %></h3>
+		<h3 class="store-name text-cut"><%= @service_store.store_identify %></h3>
 	</div>
 
 <% end %>
   <div class="bg-white m-bottom10 border-tb gap-left">
     <div class="gap nogap-left">
-      <h2 class="name text-cut"><%= @service_store.store_name %></h2>
+      <h2 class="name text-cut"><%= @service_store.store_identify %></h2>
       <% if @service_store.store_short_description.present?  %>
         <div class="gray-color text-cut">
           <div class="pull-right">

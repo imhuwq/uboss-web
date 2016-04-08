@@ -18,4 +18,5 @@ pages/bonus_invite.js
 pages/bonus_invite.css
 activate/activate.js
 activate/activate.css
+activate_page/nologin.jpg
 )

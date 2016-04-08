@@ -5,7 +5,7 @@
 	    <div class="cover" style="background-image: url('<%= seller.ordinary_store.store_cover_url(:w120)%>');">
 	      <%= image_tag seller.ordinary_store.store_cover_url(:w120) %>
 	    </div>
-      <p class="title text-cut"><%= seller.ordinary_store.store_name || 'UBOSS商家' %></p>
+      <p class="title text-cut"><%= seller.ordinary_store.store_identify %></p>
       <!-- <p class="gray-color">商品共 <%= seller.ordinary_products.published.count %> 件</p> -->
 	 	</a><!-- share-store-info -->
 	  <!-- 固定两个 无论是否有两个商品 -->
@@ -54,7 +54,7 @@
 	</div><!-- share-card -->
 
 </div>
-<!-- 实体店铺 -->
+<!-- 本地服务 -->
 <% if (store = seller.service_store) && store.valid? %>
 <div class="box-w50">
 	<div class="share-card gap" timestamp='<%= privilege_card.updated_at %>'>
@@ -62,7 +62,7 @@
       <div class="cover" style="background-image: url('<%=store.store_cover_url(:w120)%>')">
         <%= image_tag store.store_cover_url(:w120) %>
       </div>
-      <p class="title text-cut"><%= store.store_name %></p>
+      <p class="title text-cut"><%= store.store_identify %></p>
       <!-- <p class="gray-color">商品共 <%#= seller.service_products.published.count %> 件</p> -->
     </a><!-- share-store-info -->
     <div class="share-store-list box-w100 nogap">

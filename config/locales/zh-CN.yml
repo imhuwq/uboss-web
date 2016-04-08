@@ -12,6 +12,7 @@ zh-CN:
     platform_service_rate: 平台费率
     agent_service_rate: 创客费率
     name: 名称
+    remark: 备注
     wechat_identify: 原始微信号
     encoding_app_secret: 加密AppSecret
     weixin_token: Token(令牌)
@@ -216,7 +217,7 @@ zh-CN:
     city_manager: 城市运营商
   li_link:
     dashboard: 主页
-    service_stores: 实体店铺
+    service_stores: 本地服务
     service_products: 商品
     verify_codes: 验证管理
     evaluations: 评价管理
@@ -498,7 +499,7 @@ zh-CN:
     messages:
       already_has_role: 已经拥有该角色
       only_ordinary_store: 只能创建一个电商店铺
-      only_service_store: 只能创建一个实体店铺
+      only_service_store: 只能创建一个本地服务
       exists: 已存在
   api_errors:
     unauthorized: 没通过用户认证

@@ -1,3 +1,7 @@
+<%= content_for :title do %>
+   <%= @product.user.store_title || Rails.application.secrets.metas["title"] %>
+<% end %>
+
 <%= content_for :extra_meta_tags do %>
   <%= sharing_meta_tags(@product, @sharing_link_node) %>
 <% end %>
@@ -103,7 +107,7 @@
 				<%= link_to  store_path(@seller),class:'btn btn-main-border pull-right' do%>
 	       	进店逛逛
 	      <%end%>
-		    <h4 class="name text-cut"><%= @seller.store_name %></h4>
+		    <h4 class="name text-cut"><%= @seller.store_identify %></h4>
 		    <p class="gray-color"><%= number_to_percentage(@seller.good_reputation_rate, precision: 0) %> 好评（<%= @seller.total_reputations %>）</p>
 	      <p class="gray-color desc text-cut"><%= @seller.store_short_description %></p>
 

@@ -1,5 +1,5 @@
 <%= content_for :page_title do %>
-  我的实体店铺
+  我的本地服务
 <% end %>
 
 <%= content_for :header_left do %>
@@ -9,7 +9,7 @@
 <div class="privilege-rate m-top10 m-bottom10">
   <%= link_to share_service_store_path(current_user.service_store),class:'gap bg-white ' do %>
     <span class='pull-right'>分享</span>
-    <span class='gray-color'><%= @service_store.store_name %></span>
+    <span class='gray-color'><%= @service_store.store_identify %></span>
   <% end %>
 </div><!-- privilege-rate -->
 

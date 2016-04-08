@@ -34,6 +34,7 @@ class PromotionActivitiesController < ApplicationController
 
   def live_draw
     @promotion_activity = PromotionActivity.published.find(params[:id])
+    @seller ||= @promotion_activity.user
     @message ||= {}
     live_activity_info = @promotion_activity.live_activity_info
     result = live_activity_info.draw_live_prize(current_user.id)
@@ -52,8 +53,7 @@ class PromotionActivitiesController < ApplicationController
 
   def share_draw
     @promotion_activity = PromotionActivity.published.find(params[:id])
-    @seller = @promotion_activity.user
-    @service_store = @seller.service_store
+    @seller ||= @promotion_activity.user
     get_sharing_node
     sharer_id = @sharing_node.try(:user_id)
 
@@ -93,7 +93,18 @@ class PromotionActivitiesController < ApplicationController
 
   def get_service_store_qrcode_img_url
     privilege_card = PrivilegeCard.find_or_active_card(current_user.id, @promotion_activity.user_id)
-    @qrcode_img_url = privilege_card.service_store_qrcode_img_url(true)
+    @seller ||= @promotion_activity.user
+    if cookies['activity_store_type'] == 'service'
+      @store_url = service_store_path(@seller.service_store.id)
+      @store_identify = @seller.service_store.store_identify
+      @store_cover_url = @seller.service_store.store_cover_url
+      @qrcode_img_url = privilege_card.service_store_qrcode_img_url(true)
+    elsif cookies['activity_store_type'] == 'ordinary'
+      @store_url = store_path(@seller.id)
+      @store_identify = @seller.ordinary_store.store_identify
+      @store_cover_url = @seller.ordinary_store.store_cover_url
+      @qrcode_img_url = privilege_card.ordinary_store_qrcode_img_url(true)
+    end
   end
 
   def find_activity_prize_by(type, sharer_id = nil)
