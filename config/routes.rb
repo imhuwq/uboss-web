@@ -177,6 +177,9 @@ Rails.application.routes.draw do
         post 'verify_codes/verify', to: 'verify_codes#verify'
         get 'verify_history/:date', to: 'verify_codes#verify_history'
         get 'receipt_history/:date', to: 'verify_codes#receipt_history'
+        get 'yesterday_income_and_balance', to: 'incomes#yesterday_income_and_balance'
+        get 'the_income/:date', to: 'incomes#the_income'
+        get 'balance', to: 'incomes#balance'
       end
       resources :service_stores, only: [:create] do
         get :total_verify_detail, :today_verify_detail
