@@ -10,7 +10,7 @@
       <th>操作</th>
     </thead>
     <% categories.each_with_index do |category,i| %>
-      <tr>
+      <tr class="category_<%= category.id %>">
         <%= hidden_field_tag "categories[#{i}][id]", category.id %>
         <%= hidden_field_tag "categories[#{i}][check]", 'false', class:"form-item-check" %>
 
@@ -19,17 +19,17 @@
         <td>
           <%= category.position %>
           <% if i == 0 %>
-            <div class='font-sort'>
+            <span class='font-sort'>
               <%= link_to sort_admin_category_path(id: category.id, opt: 'down', dishes: true), remote: true do %>
                 <i class='fa fa-caret-down'></i>
               <% end %>
-            </div>
+            </span>
           <% else %>
-            <div class='font-sort'>
+            <span class='font-sort'>
               <%= link_to sort_admin_category_path(id: category.id, opt: 'up', dishes: true), remote: true do %>
                 <i class='fa fa-sort-asc'></i>
               <% end %>
-            </div>
+            </span>
           <% end %>
         </td>
         <td>
