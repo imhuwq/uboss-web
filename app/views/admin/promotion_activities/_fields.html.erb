@@ -4,7 +4,12 @@
     <label class="control-label"><abbr title="必填">*</abbr> 商家帐号</label>
     <div class="control-input half-width">
       <div class="f15 lh36">
-        <%= text_field_tag 'promotion_activity[user_id]', '', class:'input-block users-select2' %>
+        <% if current_user.is_role?(:super_admin) %>
+          <%= text_field_tag 'promotion_activity[user_id]', '', class:'input-block users-select2' %>
+        <% else %>
+          <%= current_user.login.presence || current_user.email %>
+          <%= hidden_field_tag 'promotion_activity[user_id]', current_user.id %>
+        <% end %>
       </div>
     </div>
   </div>
