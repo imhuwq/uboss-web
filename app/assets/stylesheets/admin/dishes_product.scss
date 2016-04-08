@@ -1,0 +1,31 @@
+.dishes_categories_label {
+  padding-left: 12px;
+}
+.dishes_categories_select {
+  .chosen-container.chosen-container-single {
+    width: 82% !important;
+    padding-left: 97px;
+    margin-bottom: 17px;
+  }
+
+  .chosen-container-single .chosen-single{
+    background-color: #fff;
+    color: #313030;
+    height: 27px;
+    line-height: 27px;
+  }
+
+  .chosen-single.chosen-default {
+    background: #fff;
+    color: #313030;
+    height: 27px;
+  }
+  .chosen-drop {
+    background-color: #fff;
+    margin-left: 97px;
+    width: 690px !important;
+  }
+  .chosen-search {
+    display: none;
+  }
+}

@@ -266,20 +266,6 @@ ActiveRecord::Schema.define(version: 20160408035556) do
     t.datetime "updated_at",                         null: false
   end
 
-  create_table "cooperations", force: :cascade do |t|
-    t.integer  "supplier_id"
-    t.integer  "agency_id"
-    t.datetime "created_at",                                 null: false
-    t.datetime "updated_at",                                 null: false
-    t.date     "yday"
-    t.decimal  "yday_performance",  precision: 8,  scale: 2
-    t.decimal  "total_performance", precision: 10, scale: 2
-  end
-
-  add_index "cooperations", ["agency_id"], name: "index_cooperations_on_agency_id", using: :btree
-  add_index "cooperations", ["supplier_id", "agency_id"], name: "index_cooperations_on_supplier_id_and_agency_id", unique: true, using: :btree
-  add_index "cooperations", ["supplier_id"], name: "index_cooperations_on_supplier_id", using: :btree
-
   create_table "daily_reports", force: :cascade do |t|
     t.date     "day"
     t.decimal  "amount"
@@ -375,7 +361,6 @@ ActiveRecord::Schema.define(version: 20160408035556) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "captcha_type"
-    t.integer  "sender_id"
   end
 
   add_index "mobile_captchas", ["mobile"], name: "index_mobile_captchas_on_mobile", using: :btree
@@ -428,7 +413,6 @@ ActiveRecord::Schema.define(version: 20160408035556) do
     t.decimal  "privilege_amount",     default: 0.0
     t.integer  "product_inventory_id"
     t.integer  "order_item_refund_id"
-    t.string   "sku_properties"
   end
 
   create_table "orders", force: :cascade do |t|
@@ -457,7 +441,6 @@ ActiveRecord::Schema.define(version: 20160408035556) do
     t.integer  "order_charge_id"
     t.decimal  "paid_amount",     default: 0.0
     t.string   "type"
-    t.integer  "supplier_id"
   end
 
   add_index "orders", ["number"], name: "index_orders_on_number", unique: true, using: :btree
@@ -516,25 +499,18 @@ ActiveRecord::Schema.define(version: 20160408035556) do
     t.integer  "product_id"
     t.integer  "product_class_id"
     t.integer  "count"
-    t.jsonb    "sku_attributes",      default: {},   null: false
-    t.datetime "created_at",                         null: false
-    t.datetime "updated_at",                         null: false
+    t.jsonb    "sku_attributes",     default: {},   null: false
+    t.datetime "created_at",                        null: false
+    t.datetime "updated_at",                        null: false
     t.integer  "user_id"
     t.string   "name"
-    t.decimal  "price",               default: 0.0
-    t.decimal  "share_amount_total",  default: 0.0
-    t.decimal  "share_amount_lv_1",   default: 0.0
-    t.decimal  "share_amount_lv_2",   default: 0.0
-    t.decimal  "share_amount_lv_3",   default: 0.0
-    t.decimal  "privilege_amount",    default: 0.0
-    t.boolean  "saling",              default: true
-    t.string   "type"
-    t.decimal  "cost_price"
-    t.decimal  "suggest_price_lower"
-    t.decimal  "suggest_price_upper"
-    t.boolean  "sale_to_agency"
-    t.integer  "parent_id"
-    t.boolean  "sale_to_customer",    default: true
+    t.decimal  "price",              default: 0.0
+    t.decimal  "share_amount_total", default: 0.0
+    t.decimal  "share_amount_lv_1",  default: 0.0
+    t.decimal  "share_amount_lv_2",  default: 0.0
+    t.decimal  "share_amount_lv_3",  default: 0.0
+    t.decimal  "privilege_amount",   default: 0.0
+    t.boolean  "saling",             default: true
   end
 
   add_index "product_inventories", ["sku_attributes"], name: "index_product_inventories_on_sku_attributes", using: :gin
@@ -800,16 +776,6 @@ ActiveRecord::Schema.define(version: 20160408035556) do
   end
 
   add_index "simple_captcha_data", ["key"], name: "idx_key", using: :btree
-
-  create_table "stock_movements", force: :cascade do |t|
-    t.integer  "product_inventory_id"
-    t.integer  "originator_id"
-    t.string   "originator_type"
-    t.integer  "quantity"
-    t.integer  "action"
-    t.datetime "created_at",           null: false
-    t.datetime "updated_at",           null: false
-  end
 
   create_table "store_phones", force: :cascade do |t|
     t.string   "area_code"

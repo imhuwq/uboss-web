@@ -52,6 +52,10 @@ class OrderItem < ActiveRecord::Base
     present_price*amount
   end
 
+  def verify_code
+    self.verify_codes.first
+  end
+
   def refund_money
     if order_item_refund_id.present?
       OrderItemRefund.find(order_item_refund_id).money

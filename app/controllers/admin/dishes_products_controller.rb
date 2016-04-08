@@ -72,7 +72,7 @@ class Admin::DishesProductsController < AdminController
 
   def dishes_product_params
     dishes = params.require(:dishes_product).permit(
-      :name, :present_price, :rebate_amount, :avatar,
+      :name, :present_price, :rebate_amount, :avatar, :categories
     )
     if params[:product].present?
       dishes = dishes.merge(params.require(:product).permit(
@@ -81,10 +81,6 @@ class Admin::DishesProductsController < AdminController
         sku_attributes: product_propertys_params[:product_propertys_names],
       ]
       ))
-    end
-
-    if params[:ordinary_product].present?
-      dishes = dishes.merge(params.require(:ordinary_product).permit(:categories))
     end
     dishes
   end

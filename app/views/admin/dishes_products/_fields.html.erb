@@ -13,8 +13,10 @@
   <%= f.input :name %>
   <%= hidden_field_tag :pre_load_tages, @dishes_product.categories.dishes_categories.collect(&:name).join(',') %>
   <%= hidden_field_tag :tages, current_user.categories.dishes_categories.collect(&:name).join(',') %>
-  <div id="category">
-  </div>
+  <label class='optional dishes_categories_label'>分组</label>
+  <span class='dishes_categories_select'>
+    <%= f.select :categories, Category.dishes_categories.collect { |p| [ p.name, p.id ] }, {include_blank: true, selected: @dishes_product.categories.first.try(:id)}%>
+  </span>
   <%= f.input :present_price, hint: '若菜品有多种规格,价格信息在菜品规格中设置' %>
   <%= f.input :rebate_amount, hint: '若菜品有多种规格,返利金额在菜品规格中设置' %>
   <%= f.input :asset_img, hint:"(点击图片进行替换)"  do %>

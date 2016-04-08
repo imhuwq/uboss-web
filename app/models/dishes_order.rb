@@ -1,6 +1,4 @@
 class DishesOrder < ServiceOrder
-  has_one :verify_code
-
   def privilege_amount
     @privilege_amount ||= order_items.reduce(0) do |sum, item|
       item.product_inventory.privilege_amount * item.amount
@@ -14,7 +12,11 @@ class DishesOrder < ServiceOrder
   end
 
   def invoke_service_order_payed_job
-    create_verify_code
+    order_item.verify_codes.create!()
     ServiceOrderPayedJob.perform_later(self)
+  end
+
+  def verify_code
+    order_item.verify_code
   end
 end

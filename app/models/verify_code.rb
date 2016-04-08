@@ -7,11 +7,9 @@ class VerifyCode < ActiveRecord::Base
 
   default_scope {order("updated_at desc")}
 
-  scope :with_user, ->(user) { joins(order_item: :service_product).merge(user.service_products) }
-  scope :today, ->(user) {
-    where(verified: true).with_user(user).
-    where('verify_codes.updated_at BETWEEN ? AND ?',
-          Time.now.beginning_of_day, Time.now.end_of_day) }
+  scope :with_user, ->(user) { joins(order_item: :product).where(products: {type: ["DishesProduct", "ServiceProduct"]}) }
+  scope :today, ->(user) { where(verified: true).with_user(user).
+                           where('verify_codes.updated_at BETWEEN ? AND ?', Time.now.beginning_of_day, Time.now.end_of_day) }
   scope :total, ->(user) { where(verified: true).with_user(user) }
   scope :with_activity_user, ->(user) {
     joins(activity_prize:[:promotion_activity]).
