@@ -413,6 +413,7 @@ ActiveRecord::Schema.define(version: 20160408035556) do
     t.decimal  "privilege_amount",     default: 0.0
     t.integer  "product_inventory_id"
     t.integer  "order_item_refund_id"
+    t.string   "sku_properties"
   end
 
   create_table "orders", force: :cascade do |t|
@@ -957,11 +958,8 @@ ActiveRecord::Schema.define(version: 20160408035556) do
     t.datetime "created_at",                        null: false
     t.datetime "updated_at",                        null: false
     t.integer  "order_item_id"
-    t.boolean  "sharing_rewared",   default: false
-    t.decimal  "income",            default: 0.0
-    t.integer  "dishes_order_id"
-    t.boolean  "expired",           default: false
-    t.integer  "activity_prize_id"
+    t.boolean  "sharing_rewared", default: false
+    t.decimal  "income",          default: 0.0
   end
 
   create_table "versions", force: :cascade do |t|
