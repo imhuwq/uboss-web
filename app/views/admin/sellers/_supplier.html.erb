@@ -1,7 +1,7 @@
 <div class="user-box supplier">
 	<%= link_to image_tag(supplier.supplier_store.store_cover.url(:thumb)), admin_show_supplier_store_path(supplier.supplier_store) %>
   <div class="name">
-    <%= truncate supplier.supplier_store.store_name, length: 16 %>
+    <%= truncate supplier.supplier_store.store_identify, length: 16 %>
   </div>
   <div class="contact-info">
     <div class="contact-label">手机号：</div><div class="contact-text"><%= supplier.supplier_store.phone_number %></div>

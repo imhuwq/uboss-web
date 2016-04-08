@@ -7,8 +7,9 @@
     </div><!-- activate-info -->
   </div>
   <div class="text-center tips-text">
-    您的奖品已放入
+    在
     <%= link_to "【奖券】", lotteries_account_verify_codes_path %>
+    查看我的中奖
   </div>
   <br />
 
@@ -18,13 +19,13 @@
 				一大波好礼坐等领取
 			</h4>
       <div class="gap">
-        <%= link_to '', service_store_path(@service_store.id),
+        <%= link_to '', @store_url,
           class: "store-cover",
-          style: "background-image:url('#{image_url(@service_store.store_cover_url)}')" %>
+          style: "background-image:url('#{image_url(@store_cover_url)}')" %>
       </div>
       <div class="gap">
-        <%= link_to service_store_path(@service_store.id) do %>
-          <%= @service_store.store_name %>
+        <%= link_to @store_url do %>
+          <%= @store_identify %>
           <span class="right-icon">→</span>
         <% end %>
       </div>

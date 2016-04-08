@@ -42,21 +42,29 @@ class HomeController < ApplicationController
   end
 
   def store_qrcode_img
-    if params[:type] == 'service'
-      @promotion_activity = PromotionActivity.find_by(user_id: params[:sid], status: 1)
-    end
-
+    @promotion_activity = PromotionActivity.find_by(user_id: params[:sid], status: 1)
+    cookies['activity_store_type'] = params[:type]
     if @promotion_activity.present?
       redirect_to promotion_activity_path(@promotion_activity, type: 'live')
     else
-      if current_user
-        if ['ordinary', 'service'].include?(params[:type]) && (privilege_card = PrivilegeCard.find_or_active_card(current_user.id, params[:sid]))
-          @qrcode_img_url = params[:type] == 'ordinary' ? privilege_card.ordinary_store_qrcode_img_url(true) : privilege_card.service_store_qrcode_img_url(true)
-        end
-        render layout: nil
-      else
-        authenticate_user!
+      if current_user && ['ordinary', 'service'].include?(params[:type]) && (privilege_card = PrivilegeCard.find_or_active_card(current_user.id, params[:sid]))
+        @qrcode_img_url = params[:type] == 'ordinary' ? privilege_card.ordinary_store_qrcode_img_url : privilege_card.service_store_qrcode_img_url
       end
+      render layout: nil
+    end
+  end
+
+  def generate_privilege_card
+    user = User.find_or_create_guest(params[:mobile])
+    if !['ordinary', 'service'].include?(params[:type])
+      render json: {status: 400, message: '类型错误'}
+    elsif !params[:sid]
+      render json: {status: 400, message: '请提供sid'}
+    elsif privilege_card = PrivilegeCard.find_or_active_card(user.id, params[:sid])
+      @qrcode_img_url = params[:type] == 'ordinary' ? privilege_card.ordinary_store_qrcode_img_url : privilege_card.service_store_qrcode_img_url
+      render json: {status: 200, message: @qrcode_img_url}
+    else
+      render json: {status:400, message: '创建友情卡失败'}
     end
   end
 

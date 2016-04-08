@@ -18,7 +18,7 @@
 
 <div class="store-cover text-center" style="<%= "background-image:url('#{@store.store_cover.url(:w640)}')" if @store.user_info.store_cover_identifier.present? %>">
   <div class="content">
-    <h2 class="name"><%= @store.store_name %></h2>
+    <h2 class="name"><%= @store.store_identify %></h2>
 
     <% if @store.store_short_description.present?  %>
       <p class="gray-color"><%= @store.store_short_description %></p>

@@ -9,7 +9,7 @@
   <div class="cover"><img src='<%= @seller.ordinary_store.store_cover_url(:thumb) %>' /></div>
   <div class="content">
 		<span class="pull-right"><%= number_to_percentage(@seller.good_reputation_rate, precision: 0) %> 好评 (<%= @seller.total_reputations %>)</span>
-    <h3 class="name text-cut"><%= @seller.store_name %></h3>
+    <h3 class="name text-cut"><%= @seller.store_identify %></h3>
 
     <% if @seller.store_short_description.present?  %>
       <p class="detail gray-color text-right text-cut"><%= @seller.store_short_description %></p>
@@ -17,6 +17,41 @@
 
   </div>
 </div><!-- store-category-cover -->
+<div class="bg-white m-bottom10 border-tb gap-left">
+  <% if @sharing_node %>
+    <div class="service-share-box border-top gap nogap-left">
+      <% if @promotion_activity %>
+        <% if @draw_record.blank? %>
+          <div class="lottery-icon active hidden pull-right" id="lottery-icon">
+            <%= link_to promotion_activity_path(@promotion_activity, type: 'share') do %>
+              <%= image_tag ('activate_page/lottery-icon1.png'), style:'width:40px' %>
+            <% end %>
+          </div>
+        <% else %>
+          <div class="lottery-icon pull-right" id="lottery-icon">
+            <%= link_to share_draw_promotion_activity_path(@promotion_activity) do %>
+              <%= image_tag ('activate_page/lottery-icon1.png'), style:'width:40px' %>
+            <% end %>
+          </div>
+        <% end %>
+      <% end %>
+      <div class="cover pull-left"><%= image_tag @sharing_node.user.avatar_url(:w120) %></div>
+      <div class="gap name text-cut"><%= @sharing_node.user.identify %> 分享</div>
+    </div>
+
+    <% if @promotion_activity && @draw_record.blank? %>
+      <div class="lottery-modal pop-bg text-center">
+        <div class="close"><%= image_tag('mobile/close-icon.png')%></div>
+        <div class="pop-content">
+          <%= link_to promotion_activity_path(@promotion_activity, type: 'share') do %>
+            <%= image_tag ('activate_page/color-gift.png'), style:'width:50%'%>
+          <% end %>
+        </div><!-- pop-content -->
+      </div>
+    <% end %>
+
+  <% end %>
+</div>
 <% if action_name != 'hots' %>
 	<% if @categories.try(:any?) %>
 		<div class="bg-white m-top10">

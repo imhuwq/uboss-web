@@ -25,6 +25,7 @@ Rails.application.routes.draw do
   get 'qrcode', to: 'home#qrcode', as: :request_qrcode
   get 'ls_game', to: 'home#hongbao_game'
   get 'store_qrcode_img', to: 'home#store_qrcode_img'
+  post 'generate_privilege_card', to: 'home#generate_privilege_card'
 
   get 'service_centre_consumer', to: 'home#service_centre_consumer'
   get 'service_centre_agent', to: 'home#service_centre_agent'

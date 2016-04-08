@@ -127,7 +127,7 @@
 				<%= link_to  store_path(@seller, type: 'service'),class:'btn btn-main-border pull-right' do%>
 	       	进店逛逛
 	      <%end%>
-		    <h4 class="name text-cut"><%= @service_product.service_store.store_name %></h4>
+		    <h4 class="name text-cut"><%= @service_product.service_store.store_identify %></h4>
 		    <p class="gray-color"><%= number_to_percentage(@service_product.service_store.good_reputation_rate, precision: 0) %> 好评（<%= @service_product.service_store.total_reputations %>人）</p>
 	      <p class="gray-color desc text-cut"><%= @service_product.service_store.store_short_description %></p>
 
