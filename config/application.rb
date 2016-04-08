@@ -31,7 +31,7 @@ module UBoss
     config.i18n.default_locale = :"zh-CN"
 
     config.to_prepare do
-      autoload :DishesOrder, 'app/models' # fix 开发环境下 cache_classes 为 false 导致的STI查找条件问题
+      DishesOrder # fix 开发环境下 cache_classes 为 false 导致的STI查找条件问题
     end
 
     config.api_only = false
