@@ -1,7 +1,7 @@
 class CallingServicesController < ApplicationController
   before_action :find_seller
   before_action :find_unuse_table_numbers, only: [:table_numbers, :set_table_number]
-  before_action :find_using_table_number,  only: [:index, :notifies]
+  before_action :find_using_table_number,  only: [:index, :notifies, :calling]
 
   def index
     @calling_services = @seller.calling_services
@@ -29,7 +29,30 @@ class CallingServicesController < ApplicationController
     @calling_notifies = CallingNotify.where(user: @seller, table_number: @table_number)
   end
 
+  def calling
+    @calling_service = if params[:service_id].present?
+                        CallingService.find_by(user: @seller, id: params[:service_id])
+                      elsif params[:type] == "checkout"
+                        CallingService.find_or_create_by(user: @seller, name: "结帐")
+                      elsif params[:type] == "other"
+                        CallingService.find_or_create_by(user: @seller, name: "其它")
+                      end
+
+    calling_notify  = CallingNotify.find_or_initialize_by(user: @seller, table_number: @table_number, calling_service: @calling_service)
+
+    if !calling_notify.new_record? || calling_notify.save
+      trigger_realtime_message
+      render json: { status: "ok", message: "呼叫成功" }
+    else
+      render json: { status: "failure", error: "呼叫错误，请刷新再尝试" }
+    end
+  end
+
   private
+  def trigger_realtime_message
+    $redis.publish 'realtime_msg', {msg: "#{@table_number.number}号桌需要#{@calling_service.name}", recipient_user_ids: [@seller.id]}.to_json
+  end
+
   def find_seller
     @seller = User.find(params[:seller_id])
   end

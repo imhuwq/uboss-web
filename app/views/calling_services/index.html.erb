@@ -3,8 +3,8 @@
 <% end %>
 
 <p>
-  <a href="<%= table_numbers_seller_calling_services_path(seller_id: params[:seller_id]) %>"><%= cookies[:table_nu] %>号桌</a>
-  <a href="<%= notifies_seller_calling_services_path(seller_id: params[:seller_id]) %>">呼叫详情</a>
+  <a href="<%= table_numbers_seller_calling_services_path(seller_id: @seller.id) %>"><%= cookies[:table_nu] %>号桌</a>
+  <a href="<%= notifies_seller_calling_services_path(seller_id: @seller.id) %>">呼叫详情</a>
 </p>
 
 <div style="width:50%;margin:50% auto;">
@@ -12,14 +12,18 @@
   <% @calling_services.each do |calling_service| %>
     <p>
     <span><%= calling_service.name %></span>
-    <a href="#">呼叫</a>
+    <button type="button" class="btn calling-service-btn"
+      data-url=<%= calling_seller_calling_services_path(seller_id: @seller.id, service_id: calling_service.id) %>>呼叫</button>
     </p>
+    <br />
   <% end %>
 
   <p>
   <span>结帐</span>
-  <a href="#">呼叫</a>
+  <button type="button" class="btn calling-service-btn"
+    data-url=<%= calling_seller_calling_services_path(seller_id: @seller.id, type: 'checkout') %>>呼叫</button>
   </p>
 </div>
 
-<a href="#" class="btn btn-large btn-block btn-orange" style="position:fixed;bottom:0;">其他服务，一键呼叫</a>
+<button type="button" class="btn btn-large btn-block btn-orange calling-service-btn" style="position:fixed;bottom:0;"
+  data-url=<%= calling_seller_calling_services_path(seller_id: @seller.id, type: 'checkout') %>>呼叫</button>

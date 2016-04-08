@@ -150,6 +150,7 @@ Rails.application.routes.draw do
         get  :table_numbers
         post :set_table_number
         get  :notifies
+        patch :calling
       end
     end
   end
