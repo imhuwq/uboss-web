@@ -64,49 +64,53 @@
 			</div>
 			<br />
 		</div>
-		<div class="box-w40">
-			<%= link_to admin_withdraw_records_path,class:'admin-box main-bg-color' do %>
-				<div class="withdraw">提现<br/>申请</div>
-				<br />
-				<div class="text-right"><%= image_tag("admin/long-arrow.png") %></div>
-			<% end %>
-			<br />
-		</div>
-		<div class="box-w30">
-			<div class="admin-box blue-bg-color">
-				<h4>账户余额</h4>
-				<br />
-				<h1 class="num"><%= current_user.total_income %></h1>
-			</div>
-			<br />
-		</div>
-		<div class="box-w30">
-			<div class="admin-box yellow-bg-color">
-				<h4>可提现</h4>
-				<br />
-				<h1 class="num"><%= current_user.income %></h1>
-			</div>
-			<br />
-		</div>
+    <% if can?(:create, WithdrawRecord) %>
+      <div class="box-w40">
+        <%= link_to admin_withdraw_records_path,class:'admin-box main-bg-color' do %>
+          <div class="withdraw">提现<br/>申请</div>
+          <br />
+          <div class="text-right"><%= image_tag("admin/long-arrow.png") %></div>
+        <% end %>
+        <br />
+      </div>
+      <div class="box-w30">
+        <div class="admin-box blue-bg-color">
+          <h4>账户余额</h4>
+          <br />
+          <h1 class="num"><%= current_user.total_income %></h1>
+        </div>
+        <br />
+      </div>
+      <div class="box-w30">
+        <div class="admin-box yellow-bg-color">
+          <h4>可提现</h4>
+          <br />
+          <h1 class="num"><%= current_user.income %></h1>
+        </div>
+        <br />
+      </div>
+    <% end %>
 	</div>
 
 	<div class="box-w40 nogap">
-		<div class="box-w50">
-			<div class="admin-box blue-bg-color">
-				<h4>总收益</h4>
-				<br />
-				<h1 class="num"><%= @total_history_income %></h1>
-			</div>
-			<br />
-		</div>
-		<div class="box-w50">
-			<div class="admin-box red-bg-color">
-				<h4>预期收益</h4>
-				<br />
-        <h1 class="num"><%= @expect_income; %></h1>
-			</div>
-			<br />
-		</div>
+    <% if can?(:create, WithdrawRecord) %>
+      <div class="box-w50">
+        <div class="admin-box blue-bg-color">
+          <h4>总收益</h4>
+          <br />
+          <h1 class="num"><%= @total_history_income %></h1>
+        </div>
+        <br />
+      </div>
+      <div class="box-w50">
+        <div class="admin-box red-bg-color">
+          <h4>预期收益</h4>
+          <br />
+          <h1 class="num"><%= @expect_income; %></h1>
+        </div>
+        <br />
+      </div>
+    <% end %>
 		<div class="box-w100">
 			<div class="admin-box chart">
         <% if current_user.is_agent? %>
@@ -121,17 +125,19 @@
               </thead>
               <tbody>
                 <% @sellers.each do |seller| %>
-                  <tr>
-                    <td class="text-left">
-                      <%= link_to admin_seller_path(seller) do %>
-                        <%= image_tag(seller.avatar, size: "60x60", alt: "-") %>　
-                        <%= seller.identify %>
-                      <% end %>
-                    </td>
-                    <td><%= seller.created_at.to_date %></td>
-                    <td><%= seller.login %></td>
-                    <td><%= User::DATA_AUTHENTICATED[seller.authenticated] %></td>
-                  </tr>
+                  <% if can?(:read, seller) %>
+                    <tr>
+                      <td class="text-left">
+                        <%= link_to admin_seller_path(seller) do %>
+                          <%= image_tag(seller.avatar, size: "60x60", alt: "-") %>　
+                          <%= seller.identify %>
+                        <% end %>
+                      </td>
+                      <td><%= seller.created_at.to_date %></td>
+                      <td><%= seller.login %></td>
+                      <td><%= User::DATA_AUTHENTICATED[seller.authenticated] %></td>
+                    </tr>
+                  <% end %>
                 <% end %>
               </tbody>
             </table>

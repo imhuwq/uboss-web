@@ -40,7 +40,9 @@ class AdminController < ApplicationController
   def current_account
     return @current_account if @current_account.present?
     return nil if session[:sub_account_id].blank?
-    @current_account = original_current_user.store_accounts.active.find_by(user_id: session[:sub_account_id]).try(:user)
+    @current_account = original_current_user.store_accounts.
+      active.find_by(user_id: session[:sub_account_id]).try(:user)
+    return nil if @current_account.blank?
     @current_account.being_agency = true
     @current_account
   end
@@ -56,7 +58,9 @@ class AdminController < ApplicationController
     account = account.is_a?(User) ? account : User.find_by(id: account)
     return nil if account.blank?
     session[:sub_account_id] = account.id
-    @current_account = original_current_user.store_accounts.active.find_by(user_id: session[:sub_account_id]).try(:user)
+    @current_account = original_current_user.store_accounts.
+      active.find_by(user_id: session[:sub_account_id]).try(:user)
+    return nil if @current_account.blank?
     @current_account.being_agency = true
     @current_account
   end
