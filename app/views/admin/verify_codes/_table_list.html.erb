@@ -3,6 +3,7 @@
     <thead>
       <tr>
         <th>商品名称</th>
+        <th>现价</th>
         <th>验证时间</th>
         <th>验证券密码</th>
       </tr>
@@ -15,12 +16,13 @@
               菜品验证
               <%= link_to '详情', '#', class: 'btn' %>
             <% else %>
-              <%= link_to admin_service_product_path(get_product(verify_code)) do %>
+              <%= link_to admin_service_product_path(verify_code.order_item.product) do %>
                 <%= image_tag(verify_code.order_item.product.image_url(:thumb), size: "80x80", alt: "-") %>　
                 <%= verify_code.order_item.product.name %>
               <% end %>
             <% end %>
           </td>
+          <td><%= verify_code.target.verify_code_price %></td>
           <td><%= verify_code.updated_at %></td>
           <td><%= verify_code.code %></td>
         </tr>
