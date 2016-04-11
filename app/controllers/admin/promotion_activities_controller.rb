@@ -13,7 +13,7 @@ class Admin::PromotionActivitiesController < AdminController
   end
 
   def new
-    if !current_user.has_role?(:super_admin)
+    if cannot?(:manage, PromotionActivity.where('user_id != ?',current_user.id).take)
      if !current_user.service_store.valid? 
       flash[:error] = "为验证奖品验证码，请您先开通实体店铺。"
       redirect_to controller: :service_stores, action: :edit, id: current_user.service_store.id
