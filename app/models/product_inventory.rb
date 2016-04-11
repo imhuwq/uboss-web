@@ -122,6 +122,11 @@ class ProductInventory < ActiveRecord::Base
     else
       price_ranges
     end
+    if not saling?
+      salings = product.product_inventories.saling.order("price")
+      price_ranges = [salings.first, salings.last].compact.map(&:price)
+    end
+
     product.update(price_ranges: price_ranges.uniq.compact)
   end
 
