@@ -9,8 +9,12 @@ class VerifyCodesController < ApplicationController
   end
 
   def show
-    order_item = OrderItem.find(params[:id])
-    @verify_codes = order_item.verify_codes
+    if params[:type] == 'dishes'
+      @verify_codes = VerifyCode.where(target_type: 'DishesOrder', target_id: params[:id])
+    else
+      order_item = OrderItem.find(params[:id])
+      @verify_codes = order_item.verify_codes
+    end
   end
 
   def lotteries

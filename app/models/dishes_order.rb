@@ -1,6 +1,10 @@
 class DishesOrder < ServiceOrder
   has_one :verify_code, -> { where(target_type: 'DishesOrder') }, foreign_key: :target_id
 
+  def present_price
+    self.order_items.sum(:pay_amount)
+  end
+
   def check_completed
     may_complete? && completed!
   end
