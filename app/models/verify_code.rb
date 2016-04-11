@@ -8,7 +8,7 @@ class VerifyCode < ActiveRecord::Base
 
   default_scope {order("updated_at desc")}
 
-  scope :with_user, ->(user) { joins(order_item: :service_product).merge(user.service_products) }
+  scope :with_user, ->(user) { user.verify_codes }
   scope :today, ->(user) {
     where(verified: true).with_user(user).
     where('verify_codes.updated_at BETWEEN ? AND ?',
