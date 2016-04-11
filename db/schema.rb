@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160406024038) do
+ActiveRecord::Schema.define(version: 20160411041910) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -825,6 +825,16 @@ ActiveRecord::Schema.define(version: 20160406024038) do
     t.datetime "updated_at",       null: false
   end
 
+  create_table "sub_accounts", force: :cascade do |t|
+    t.integer  "user_id"
+    t.integer  "account_id"
+    t.integer  "state"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_index "sub_accounts", ["user_id", "account_id"], name: "index_sub_accounts_on_user_id_and_account_id", unique: true, using: :btree
+
   create_table "supplier_product_infos", force: :cascade do |t|
     t.decimal  "cost_price"
     t.decimal  "suggest_price_lower"
@@ -855,6 +865,7 @@ ActiveRecord::Schema.define(version: 20160406024038) do
     t.integer  "status",     default: 0
     t.datetime "created_at",             null: false
     t.datetime "updated_at",             null: false
+    t.datetime "expired_at"
   end
 
   add_index "table_numbers", ["user_id"], name: "index_table_numbers_on_user_id", using: :btree
@@ -1086,6 +1097,8 @@ ActiveRecord::Schema.define(version: 20160406024038) do
   add_foreign_key "sharing_nodes", "products", on_delete: :cascade
   add_foreign_key "sharing_nodes", "users", column: "seller_id"
   add_foreign_key "sharing_nodes", "users", on_delete: :cascade
+  add_foreign_key "sub_accounts", "users"
+  add_foreign_key "sub_accounts", "users", column: "account_id"
   add_foreign_key "table_numbers", "users"
   add_foreign_key "transactions", "users"
   add_foreign_key "user_addresses", "users"

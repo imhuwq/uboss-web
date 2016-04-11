@@ -22,3 +22,7 @@ end
 every 1.day, at: '01:00 am', roles: [:db] do
   runner "Cooperation.perform"
 end
+
+every 5.minutes, roles: [:db] do
+  runner "TableDropJob.perform_now"
+end
