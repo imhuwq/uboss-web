@@ -11,10 +11,8 @@ class Menus.Views.Main extends Backbone.View
     'click .dishes-order-price, .order-icon': 'showDishes'
 
   showMenu: (product) ->
-    
     @barView  = new Menus.Views.Bar({model: @product}).render()
-    @skusView = new Menus.Views.Skus({collection: product.skus}).render()
-    @skusView.parent = @barView
+    @skusView = new Menus.Views.Skus({collection: product.skus, parent: @barView}).render(product.selected)
 
   showDishes: () ->
     if !@dishesView
