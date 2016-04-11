@@ -10,7 +10,7 @@
       <p>
       <span><%= notify_time calling_notify.called_at %></span>
       <span><%= calling_notify.service_name %></span>
-      <span><%= calling_notify.unservice? ? "已呼叫" : (calling_notify.serviced? ? "已服务" : "来服务") %></span>
+      <span><%= calling_notify.unservice? ? "已呼叫" : "来服务" %></span>
       </p>
     <% end %>
   <% end %>

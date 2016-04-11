@@ -11,10 +11,7 @@ class Admin::CallingNotifiesController < AdminController
   end
 
   def change_status
-    if params[:status] == "servicing"
-      @calling_notify.status = "servicing"
-      flash.now[:success] = "去服务成功"
-    elsif params[:status] == 'serviced'
+    if params[:status] == 'serviced'
       @calling_notify.status = "serviced"
       flash.now[:success] = "已服务"
     end

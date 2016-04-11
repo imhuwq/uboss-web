@@ -15,18 +15,17 @@
           <% if can? :update, CallingNotify %>
             <% if calling_notify.unservice? %>
               <p>
-                <%= link_to("去服务", change_status_admin_calling_notify_path(calling_notify, status: 'servicing'),
+                <%= link_to("去服务", change_status_admin_calling_notify_path(calling_notify, status: 'serviced'),
                 remote: true, method: :patch, data: { disable_with: '<i class="fa fa-spinner"></i>', text: '去服务' },
                 class: "btn btn-mid change-status-btn") %>
               </p>
-            <% elsif calling_notify.serviced? %>
-              <p><span>已服务</span></p>
-            <% else %>
               <p>
-                <%= link_to("已服务", change_status_admin_calling_notify_path(calling_notify, status: 'serviced'),
+                <%= link_to("已服务", change_status_admin_calling_notify_path(calling_notify, status: 'serviced', notice: false),
                 remote: true, method: :patch, data: { disable_with: '<i class="fa fa-spinner"></i>', text: '已服务' },
                 class: "btn btn-mid white-btn btn-border change-status-btn") %>
               </p>
+            <% else %>
+              <p><span>已服务</span></p>
             <% end %>
           <% end %>
         </td>
