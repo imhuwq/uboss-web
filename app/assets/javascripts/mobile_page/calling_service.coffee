@@ -21,4 +21,3 @@ $ ->
         error: (data, status, e) ->
           alert("操作错误, 请刷新后再尝试")
           location.reload()
-    

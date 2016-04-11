@@ -14,7 +14,7 @@
 <div class="m-top10">
   <% @calling_services.each do |calling_service| %>
     <% if calling_service.name != "结帐" %>
-      <div class="calling-notify-box">
+      <div class="calling-notify-box" data-id="<%= calling_service.id %>">
       <span class="text-cut"><%= calling_service.name %></span>
       <button type="button" class="btn calling-service-btn pull-right"
         data-url=<%= calling_seller_calling_services_path(seller_id: @seller.id, service_id: calling_service.id) %>>呼叫</button>
