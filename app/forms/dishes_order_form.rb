@@ -11,7 +11,6 @@ class DishesOrderForm
   attr_accessor :sharing_node, :order, :buyer, :mobile, :captcha, :session, :seller_id
 
   define_model_callbacks :save
-  after_validation :set_value
 
   before_save :ensure_valid!
 
@@ -26,6 +25,16 @@ class DishesOrderForm
     @order = order
     @sharing_node = SharingNode.find_by(code: options[:sharing_code])
     options.each { |k, v| instance_variable_set("@#{k}", v) }
+    set_attributes
+  end
+
+  def set_attributes
+    order.user = buyer
+    order.mobile = buyer.login
+    order.order_items.each do |item|
+      item.sharing_node = sharing_node
+      item.user = buyer
+    end
   end
 
   def save
@@ -38,14 +47,14 @@ class DishesOrderForm
     order.order_items.each &:reset_payment_info
   end
 
-  def set_value
-    return if buyer.blank?
-    order.user = buyer
-    order.mobile = buyer.login
-    order.order_items.each do |item|
-      item.sharing_node = sharing_node if sharing_node
-      item.user_id = buyer.id
+  def total_privilege_amount
+    @total_privilege_amount ||= order.order_items.reduce(0) do |sum, item|
+      sum + item.privilege_card.amount(item.product_inventory) * item.amount.to_i
     end
+  end
+
+  def pay_amount
+    @pay_amount ||= order.order_items.map(&:pay_amount).sum - total_privilege_amount
   end
 
   def create_or_update_user

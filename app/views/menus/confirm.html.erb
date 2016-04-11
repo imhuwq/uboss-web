@@ -24,19 +24,20 @@
         <%= image_tag @order_form.sharing_user.avatar_url(:w120) %>
       </div>
       <div class="content">
-          <span class="pull-right red-color order-privilege-amount"><%= @order.share_amount_total %></span><span class="main-color"><%= sharing_user.identify %></span> 帮你返利
+          <span class="pull-right red-color order-privilege-amount"><%= @order_form.total_privilege_amount %></span><span class="main-color"><%= sharing_user.identify %></span> 帮你优惠
       </div>
     </div><!-- friend-info -->
     <% end %>
     <div class="price-box gap">
-      合计：￥<%= @pay_amount = @order.order_items.map(&:pay_amount).sum %><small class="gray-color"></small>
+      合计：￥<%= @order_form.pay_amount %><small class="gray-color"></small>
     </div>
   </div><!-- bg-white --> 
 </div><!-- dishes-comfirmed-box -->
 <div class="order-price">
    <%= submit_tag '提交订单', class: "accunt_adilbtn cart-btn btn" %>
    <div class="content">
-     <p>应付款：<span id="total_price"><%= @pay_amount %></span></p>
+     <p>应付款：<span id="total_price"><%= @order_form.pay_amount %></span></p>
+     <p class="gray-color"><small>共优惠<%= @order_form.total_privilege_amount %>元</small></p>
    </div>
 </div><!-- order-price -->
 
