@@ -1,6 +1,6 @@
 class VerifyCode < ActiveRecord::Base
   belongs_to :target, polymorphic: true
-  belongs_to :order_item
+  belongs_to :user
   belongs_to :activity_prize
 
   before_create :generate_code
