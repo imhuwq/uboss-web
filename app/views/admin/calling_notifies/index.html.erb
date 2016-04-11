@@ -16,43 +16,6 @@
   <%= paginate @calling_notifies %>
 </div>
 
-
-<!-- required: realtime support framework -->
-<%= realtime_support %>
-<script type="text/javascript" charset="utf-8">
-
-if (window.realtime.enabled && window.realtime.eventBus){
-  // handle events in the queue with eventing
-  var realtimeMessageEventConsoleLogger = function(message) {
-    console.log(message);
-  };
-  window.realtime.eventBus.on('realtimeMessage', realtimeMessageEventConsoleLogger);
-
-} else if (window.realtime.enabled) {
-  // handle events in the queue without eventing
-  messageQueueConsoleLogger = function() {
-    message = window.realtime.messageQueue.shift();
-    if (message) {
-      $('#realtime-modal .modal-body').html(message.msg.text);
-      $('#realtime-modal .modal-title').html(message.msg.title);
-      $('#realtime-modal').modal();
-    }
-  };
-  setInterval(messageQueueConsoleLogger, 100);
-
-} else {
-  console.log('Error: Realtime was not enabled.')
-}
-
-$(function() {
-  if($('#realtime-modal').hasClass('notice')){
-    $('#realtime-modal .modal-title').html('服务通知');
-    $('#realtime-modal').modal();
-  }
-})
-
-</script>
-
 <!-- Modal -->
 <div class="modal fade <%= "notice" if @notice.present? %>" id="realtime-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
   <div class="modal-dialog" role="document">
@@ -68,3 +31,61 @@ $(function() {
     </div>
   </div>
 </div>
+
+
+<!-- required: realtime support framework -->
+<%= realtime_support %>
+<script type="text/javascript" charset="utf-8">
+  function appendCallingNotityItem(item){
+    html =
+      '<tr class="calling_notify" data-number="'+ item.table_number +'" data-id="'+ item.id +'">' +
+      '<td>'+ item.table_number +'</td>' +
+      '<td>'+ item.service_name +'</td>' +
+      '<td>'+ item.called_at +'</td>' +
+      '<td>' +
+      '<p><a data-disable-with="<i class=' + "'fa fa-spinner'" + '></i>" data-text="去服务" class="btn btn-mid change-status-btn" data-remote="true" rel="nofollow" data-method="patch" href="/admin/calling_notifies/'+ item.id +'/change_status?status=serviced">去服务</a></p>' +
+      '<p><a data-disable-with="<i class=' + "'fa fa-spinner'" + '></i>" data-text="已服务" class="btn btn-mid white-btn btn-border change-status-btn" data-remote="true" rel="nofollow" data-method="patch" href="/admin/calling_notifies/'+ item.id +'/change_status?notice=false&status=serviced">已服务</a></p>' +
+      '</td></tr>';
+
+    $('.calling_notify[data-id="'+ item.id +'"]').remove();
+    html += $('#calling_notifies tbody').html();
+    $('#calling_notifies tbody').html(html);
+  }
+
+  if (window.realtime.enabled && window.realtime.eventBus){
+    // handle events in the queue with eventing
+    var realtimeMessageEventConsoleLogger = function(message) {
+      console.log(message);
+    };
+    window.realtime.eventBus.on('realtimeMessage', realtimeMessageEventConsoleLogger);
+  } else if (window.realtime.enabled) {
+    // handle events in the queue without eventing
+    messageQueueConsoleLogger = function() {
+      message = window.realtime.messageQueue.shift();
+      if (message) {
+        if (message.msg.type == "notify") {
+          appendCallingNotityItem(message.msg.calling_notify);
+          $('#realtime-modal .modal-body').html(message.msg.text);
+          $('#realtime-modal .modal-title').html(message.msg.title);
+          $('#realtime-modal').modal();
+        }
+        if (message.msg.type == "unuse_table") {
+          $('.table-number[data-number="'+ message.msg.number +'"]').removeClass('used unuse main-bg-color beige-bg-color').addClass('unuse beige-bg-color');
+        }
+        if (message.msg.type == "used_table") {
+          $('.table-number[data-number="'+ message.msg.number +'"]').removeClass('used unuse main-bg-color beige-bg-color').addClass('used main-bg-color');
+        }
+      }
+    };
+    setInterval(messageQueueConsoleLogger, 100);
+  } else {
+    console.log('Error: Realtime was not enabled.')
+  }
+
+  $(function() {
+    if($('#realtime-modal').hasClass('notice')){
+      $('#realtime-modal .modal-title').html('服务通知');
+      $('#realtime-modal').modal();
+    }
+  })
+</script>

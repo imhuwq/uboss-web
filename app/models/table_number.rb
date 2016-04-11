@@ -18,7 +18,7 @@ class TableNumber < ActiveRecord::Base
   end
 
   def self.clear_seller_table_number(seller, number)
-    if number && (table_number = find_by(user: seller, number: number))
+    if table_number = find_by(user: seller, number: number)
       table_number.update(status: 0, expired_at: nil)
       table_number.calling_notifies.destroy_all
     end
