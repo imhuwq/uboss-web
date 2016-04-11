@@ -3,6 +3,7 @@ class ServiceOrder < Order
   enum state: { unpay: 0, payed: 1, closed: 5, completed: 6 }
 
   scope :has_payed, -> { where(state: [1, 6]) }
+  has_many :verify_codes, through: :order_items
 
   aasm column: :state, enum: true, skip_validation_on_save: true, whiny_transitions: false do
     state :unpay
@@ -35,7 +36,7 @@ class ServiceOrder < Order
   end
 
   def check_completed
-    if VerifyCode.where(order_item_id: self.order_item_ids, verified: false).blank?
+    if VerifyCode.where(target: self.order_item, verified: false).blank?
       may_complete? && completed!
     end
   end
