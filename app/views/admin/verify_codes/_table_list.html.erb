@@ -9,12 +9,51 @@
       </tr>
     </thead>
     <tbody>
+      <% i = 0 %>
       <% @verify_codes.each do |verify_code| %>
+      <% i += 1%>
         <tr>
           <td class="text-left">
             <% if verify_code.target_type == 'DishesOrder' %>
               菜品验证
-              <%= link_to '详情', '#', class: 'btn' %>
+              
+              <div id="ordermodal_<%= i %>" class="modal fade in show-order-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+               <div class="modal-dialog" role="document">
+                 
+                 <div class="modal-content">   
+                  <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                    <h4 class="modal-title" id="myModalLabel">验证详情</h4>
+                  </div>
+                   <div class="modal-body">
+                     <table class="white-table">
+                       <tr>
+                         <td style="width: 120px;">
+                          <%= image_tag('admin/no-img.png',width:120)%>
+                         </td>
+                         <td class="text-left">菜品名称</td>
+                         <td class="text-right">菜品数量</td>
+                       </tr>
+                       <tr>
+                         <td style="width: 120px;">
+                          <%= image_tag('admin/no-img.png',width:120)%>
+                         </td>
+                         <td class="text-left">菜品名称</td>
+                         <td class="text-right">菜品数量</td>
+                       </tr>
+                     </table>
+                     <br />
+                     <div class="text-center"><button type="button" class="btn btn-default" data-dismiss="modal">关闭</button></div>
+                   </div>
+                   
+                    
+                 </div><!-- /.modal-content -->
+               </div><!-- /.modal-dialog -->
+             </div>
+              <button type="button" class="btn " data-toggle="modal" data-target="#ordermodal_<%= i %>">
+                详情
+              </button>
+              
             <% else %>
               <%= link_to admin_service_product_path(verify_code.target.product) do %>
                 <%= image_tag(verify_code.target.product.image_url(:thumb), size: "80x80", alt: "-") %>　

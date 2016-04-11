@@ -44,10 +44,10 @@ ActiveRecord::Schema.define(version: 20160330032403) do
     t.integer  "prize_winner_id"
     t.integer  "promotion_activity_id"
     t.integer  "activity_info_id"
-    t.jsonb    "info",                  default: {}
+    t.jsonb    "info"
     t.string   "activity_type"
-    t.datetime "created_at",                         null: false
-    t.datetime "updated_at",                         null: false
+    t.datetime "created_at",            null: false
+    t.datetime "updated_at",            null: false
     t.integer  "sharer_id"
     t.integer  "relate_winner_id"
   end
@@ -198,8 +198,8 @@ ActiveRecord::Schema.define(version: 20160330032403) do
     t.integer  "user_id",                        null: false
     t.datetime "created_at",                     null: false
     t.datetime "updated_at",                     null: false
-    t.boolean  "use_in_store",    default: true
     t.datetime "use_in_store_at"
+    t.boolean  "use_in_store",    default: true
     t.integer  "store_id"
     t.string   "store_type"
     t.integer  "position"
@@ -461,7 +461,6 @@ ActiveRecord::Schema.define(version: 20160330032403) do
     t.decimal  "privilege_amount",     default: 0.0
     t.integer  "product_inventory_id"
     t.integer  "order_item_refund_id"
-    t.string   "sku_propertie"
     t.string   "sku_properties"
   end
 
@@ -532,6 +531,7 @@ ActiveRecord::Schema.define(version: 20160330032403) do
     t.datetime "updated_at",                                           null: false
     t.boolean  "actived",              default: false
     t.integer  "seller_id"
+    t.integer  "product_inventory_id"
     t.string   "user_img"
     t.string   "service_store_cover"
     t.string   "user_name"
@@ -642,18 +642,23 @@ ActiveRecord::Schema.define(version: 20160330032403) do
     t.boolean  "full_cut",             default: false
     t.integer  "full_cut_number"
     t.integer  "full_cut_unit"
+    t.integer  "total_sales"
+    t.integer  "comprehensive_order"
+    t.datetime "published_at"
     t.string   "type"
     t.integer  "service_type"
     t.integer  "monthes"
     t.integer  "service_store_id"
-    t.decimal  "rebate_amount"
-    t.string   "price_ranges"
+    t.integer  "sales_amount",         default: 0
+    t.integer  "sales_amount_order"
     t.integer  "parent_id"
     t.integer  "comprehensive_order"
     t.datetime "published_at"
     t.integer  "sales_amount",         default: 0
     t.integer  "sales_amount_order"
     t.integer  "supplier_id"
+    t.decimal  "rebate_amount"
+    t.string   "price_ranges"
   end
 
   add_index "products", ["type"], name: "index_products_on_type", using: :btree
@@ -798,11 +803,12 @@ ActiveRecord::Schema.define(version: 20160330032403) do
     t.integer  "product_id"
     t.string   "code"
     t.integer  "parent_id"
-    t.integer  "lft",        null: false
-    t.integer  "rgt",        null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.integer  "lft",          null: false
+    t.integer  "rgt",          null: false
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
     t.integer  "seller_id"
+    t.integer  "self_page_id"
   end
 
   add_index "sharing_nodes", ["code"], name: "index_sharing_nodes_on_code", unique: true, using: :btree
@@ -921,8 +927,8 @@ ActiveRecord::Schema.define(version: 20160330032403) do
     t.integer  "better_evaluation"
     t.integer  "best_evaluation"
     t.string   "store_cover"
-    t.string   "type"
     t.decimal  "bonus_benefit",             default: 0.0
+    t.string   "type"
     t.string   "begin_hour"
     t.string   "begin_minute"
     t.string   "end_hour"
@@ -997,11 +1003,11 @@ ActiveRecord::Schema.define(version: 20160330032403) do
     t.datetime "updated_at",                        null: false
     t.boolean  "sharing_rewared",   default: false
     t.decimal  "income",            default: 0.0
+    t.boolean  "expired",           default: false
+    t.integer  "activity_prize_id"
     t.integer  "target_id"
     t.string   "target_type"
     t.integer  "user_id"
-    t.boolean  "expired",           default: false
-    t.integer  "activity_prize_id"
   end
 
   create_table "versions", force: :cascade do |t|

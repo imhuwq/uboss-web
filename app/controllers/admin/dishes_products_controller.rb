@@ -82,6 +82,8 @@ class Admin::DishesProductsController < AdminController
       ]
       ))
     end
+    ## 目前没有红包优惠, 如果加上红包优惠需要去掉此行
+    dishes[:product_inventories_attributes].each {|k,v| v[:share_amount_lv_1] = v[:share_amount_total] }
     dishes
   end
 end
