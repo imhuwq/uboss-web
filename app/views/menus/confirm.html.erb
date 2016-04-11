@@ -18,7 +18,7 @@
       <% end %>
       <!-- 结束循环  -->
     </div><!-- gap-lr -->
-    <% if (sharing_user = @order_form.sharing_user) && @order.share_amount_total > 0 %>
+    <% if (sharing_user = @order_form.sharing_user) && @order.total_privilege_amount > 0 %>
     <div class="friend-info border-top">
       <div class="cover">
         <%= image_tag @order_form.sharing_user.avatar_url(:w120) %>
