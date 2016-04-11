@@ -38,8 +38,8 @@ $ ->
       requesting_bill = false
       UBoss.chopper.hideSpinner()
 
-  if pay_amount > 0
-    requestBill(ssid, pay_amount)
+  # if pay_amount > 0
+  #   requestBill(ssid, pay_amount)
 
   $('.req-bill-btn').on 'click', (e)->
     e.preventDefault()
