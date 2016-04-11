@@ -89,6 +89,12 @@ jQuery ($) ->
 
   $('.cooperation').on 'hide.bs.modal', ->
     $('.list-table tr:hover td').removeAttr('style')
+  
+  $('.show-order-modal').on 'show.bs.modal', ->
+    $('.list-table tr:hover td').css('opacity', '1')
+
+  $('.show-order-modal').on 'hide.bs.modal', ->
+    $('.list-table tr:hover td').removeAttr('style')
 
   $('#card-link').hover(->
     $('#card-dropdown-menu').toggle()
