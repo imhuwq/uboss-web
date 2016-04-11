@@ -1,9 +1,10 @@
 .calling-notify-box{
   background: #fff;
-  padding: 10px 10px 10px 50px;
+  padding: 10px;
   margin-bottom: 10px;
   position: relative;
   overflow: hidden;
+  .title{margin-left:40px;}
   .status-icon{
     background: $brand-primary;
     color: #fff;
@@ -22,4 +23,10 @@
   .calling{
     background: #f9ba10;
   }
+}
+.calling-service-local{
+  padding-left: 30px !important;
+  background: image-url('mobile/local-main.png') no-repeat center;
+  background-size: auto 16px ;
+  background-position-x:10px ;
 }
