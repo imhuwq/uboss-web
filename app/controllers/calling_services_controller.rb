@@ -1,10 +1,15 @@
 class CallingServicesController < ApplicationController
+  before_action :authenticate_user!, only: [:store_notifies]
   before_action :find_seller
   before_action :find_unuse_table_numbers, only: [:table_numbers, :set_table_number]
   before_action :find_using_table_number,  only: [:index, :notifies, :calling]
 
   def index
     @calling_services = @seller.calling_services
+  end
+
+  def store_notifies
+    @calling_notifies = @seller.calling_notifies
   end
 
   def table_numbers

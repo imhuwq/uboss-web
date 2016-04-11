@@ -3,11 +3,15 @@
 <% end %>
 
 <div style="width:90%;margin:50% auto;">
-  <% @calling_notifies.each do |calling_notify| %>
-    <p>
-    <span><%= calling_notify.called_at %></span>
-    <span><%= calling_notify.service_name %></span>
-    <span><%= calling_notify.unservice? ? "已呼叫" : (calling_notify.serviced? ? "已服务" : "来服务") %></span>
-    </p>
+  <% if @calling_notifies.blank? %>
+    <p>您尚无呼叫服务</p>
+  <% else %>
+    <% @calling_notifies.each do |calling_notify| %>
+      <p>
+      <span><%= notify_time calling_notify.called_at %></span>
+      <span><%= calling_notify.service_name %></span>
+      <span><%= calling_notify.unservice? ? "已呼叫" : (calling_notify.serviced? ? "已服务" : "来服务") %></span>
+      </p>
+    <% end %>
   <% end %>
 </div>

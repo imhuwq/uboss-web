@@ -1,0 +1,23 @@
+<%= content_for :title do %>
+  去服务
+<% end %>
+
+<div style="width:50%;margin:50% auto;">
+  <br />
+  <% @calling_notifies.each do |calling_notify| %>
+    <p>
+    <span><%= notify_time calling_notify.called_at %></span>
+    <span><%= calling_notify.calling_number %></span>
+    <span><%= calling_notify.service_name %></span>
+
+    <% if can? :update, CallingNotify %>
+      <% if calling_notify.unservice? %>
+        <%= link_to("去服务", "#", method: :patch, class: "btn btn-mid") %>
+      <% else %>
+        <%= link_to("已服务", "javascript:;", method: :patch, class: "btn btn-mid btn-gray") %>
+      <% end %>
+    <% end %>
+    </p>
+    <br />
+  <% end %>
+</div>
