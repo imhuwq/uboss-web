@@ -48,6 +48,7 @@ class DishesOrderForm
   end
 
   def total_privilege_amount
+    return 0 if sharing_node.blank?
     @total_privilege_amount ||= order.order_items.reduce(0) do |sum, item|
       sum + item.privilege_card.amount(item.product_inventory) * item.amount.to_i
     end
