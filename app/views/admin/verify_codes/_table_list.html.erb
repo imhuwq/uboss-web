@@ -16,9 +16,9 @@
               菜品验证
               <%= link_to '详情', '#', class: 'btn' %>
             <% else %>
-              <%= link_to admin_service_product_path(verify_code.order_item.product) do %>
-                <%= image_tag(verify_code.order_item.product.image_url(:thumb), size: "80x80", alt: "-") %>　
-                <%= verify_code.order_item.product.name %>
+              <%= link_to admin_service_product_path(verify_code.target.product) do %>
+                <%= image_tag(verify_code.target.product.image_url(:thumb), size: "80x80", alt: "-") %>　
+                <%= verify_code.target.product.name %>
               <% end %>
             <% end %>
           </td>

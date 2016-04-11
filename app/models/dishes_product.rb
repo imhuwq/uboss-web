@@ -9,11 +9,11 @@ class DishesProduct < Product
   validates_presence_of :categories
 
   def today_verify_code
-    self.user.verify_codes.today
+    self.user.verify_codes.today(self.user)
   end
 
   def total_verify_code
-    self.user.verify_codes.total
+    self.user.verify_codes.total(self.user)
   end
 
   def categories=(id)

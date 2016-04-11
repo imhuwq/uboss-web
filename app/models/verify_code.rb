@@ -35,7 +35,7 @@ class VerifyCode < ActiveRecord::Base
   def self.verify(seller, code)
     result = {}
     verify_code = VerifyCode.find_by(code: code)
-    if verify_code && verify_code.order_item_id
+    if verify_code && verify_code.target_type == 'OrderItem'
       result = VerifyCode.with_user(seller).find_by(code: code).verify_code
       if result[:success] == true
         result[:verfiy_code] = verify_code
@@ -78,7 +78,11 @@ class VerifyCode < ActiveRecord::Base
   end
 
   def order
-    order_item.order
+    if target_type == 'OrderItem'
+      target.order
+    else
+      self
+    end
   end
 
   def verify_time
@@ -100,7 +104,7 @@ class VerifyCode < ActiveRecord::Base
   end
 
   def call_verify_code_verified_handler
-    if order_item_id
+    if self.target_type == 'OrderItem'
       OrderDivideJob.set(wait: 5.seconds).perform_later(self)
     end
   end

@@ -19,11 +19,11 @@ class ServiceProduct < Product
   scope :published, -> { where(status: 1) }
 
   def today_verify_code
-    self.user.verify_codes.today
+    verify_codes.today(self.user)
   end
 
   def total_verify_code
-    self.user.verify_codes.total
+    verify_codes.total(self.user)
   end
 
   def deadline
