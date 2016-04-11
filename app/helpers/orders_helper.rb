@@ -23,7 +23,7 @@ module OrdersHelper
 
   def product_inventory_fullname(item)
     prop = if item.class == OrderItem
-      item.sku_propertie
+      item.sku_properties
     elsif item.class == ProductInventory
       item.sku_attributes_str
     end
