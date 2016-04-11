@@ -17,6 +17,7 @@ class OrderDivideJob < ActiveJob::Base
     when OrdinaryOrder, AgencyOrder  then perform_order_divide(object)
     when VerifyCode     then perform_service_order_divide(object)
     when DishesOrder then perform_dishes_order_divide(object)
+    end
   end
 
   private
