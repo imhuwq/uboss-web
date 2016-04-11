@@ -35,7 +35,7 @@ class ServiceOrder < Order
   end
 
   def check_completed
-    if VerifyCode.where(order_item_id: self.order_item_ids, verified: false).blank?
+    if VerifyCode.where(target: self.order_item, verified: false).blank?
       may_complete? && completed!
     end
   end
