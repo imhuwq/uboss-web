@@ -22,9 +22,9 @@ module OrdersHelper
   end
 
   def product_inventory_fullname(item)
-    prop = if item.is_a?(OrderItem)
-      item.sku_properties
-    elsif item.is_a?(ProductInventory)
+    prop = if item.class == OrderItem
+      item.sku_propertie
+    elsif item.class == ProductInventory
       item.sku_attributes_str
     end
     item.product.name + (prop.blank? ? "" : "(#{prop})")
