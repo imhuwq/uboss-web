@@ -1,6 +1,6 @@
 <div class="container admin-container">
   <div class="container nogap ">
-    <% if params[:type] == "published" && current_user.is_role?(:super_admin) %>
+    <% if params[:type] == "published" && can?(:manage, @promotion_activities) %>
       <div class="box-w20" style="position:relative;left:40%;">
         <a href="javascript:;">
           <div class="admin-box red-bg-color">
@@ -10,7 +10,7 @@
         </a>
       </div>
     <% end %>
-    <% if params[:type] == "unpublish" && current_user.is_role?(:super_admin) %>
+    <% if params[:type] == "unpublish" && can?(:manage, @promotion_activities) %>
       <div class="box-w20" style="position:relative;left:40%;">
         <a href="javascript:;">
           <div class="admin-box blue-bg-color">
@@ -26,7 +26,7 @@
 
 <div class="container  mod-inner">
   <div class="list-search-bar">
-    <% if current_user.is_role?(:super_admin) %>
+    <% if can?(:manage, @promotion_activities) %>
       <%= link_to("+ 绑定商家", url_for(action: :new), class: "btn btn-large", role: "button") %>
     <% else %>
       <%= link_to("创建活动", url_for(action: :new), class: "btn btn-large", role: "button") %>
