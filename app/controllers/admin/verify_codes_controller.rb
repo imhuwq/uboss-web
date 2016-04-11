@@ -26,7 +26,7 @@ class Admin::VerifyCodesController < AdminController
   def verify
     result = VerifyCode.verify(current_user, params[:code])
     if result[:success]
-      flash[:success] = result[:message]
+      flash[:success] = '验证成功'
     else
       flash[:error] = '验证失败'
     end

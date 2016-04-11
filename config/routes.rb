@@ -94,6 +94,7 @@ Rails.application.routes.draw do
     member do
       patch :switch_favour
       get :info
+      get :recommend
     end
     get :get_sku, on: :collection
     post :democontent,  on: :collection
@@ -248,6 +249,7 @@ Rails.application.routes.draw do
 
       resources :evaluations, only: [:index, :destroy] do
         collection do
+          get :dishes_index
           get :statistics
           get :dishes
         end

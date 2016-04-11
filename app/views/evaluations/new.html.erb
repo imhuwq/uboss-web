@@ -14,6 +14,7 @@
 <%= simple_form_for @evaluation, html: {autocomplete: 'off'} do |f| %>
   <%= f.input_field :status, selected: 'good', class:'hidden' %>
   <%= f.hidden_field :order_item_id, class:'hidden' %>
+  <%= f.hidden_field :order_id, class:'hidden' %>
   <%= hidden_field_tag :timestamp, @stale_form_check_timestamp %>
   <%= hidden_field_tag :type, 'new' %>
   <div class="emoticon-box m-top10">
@@ -46,31 +47,28 @@
     	</div><!-- start-box -->
     	<div class="m-top10">
     		<%= f.text_area :content, value: '', checked: false, autocomplete: 'off', placeholder: '写点什么吧...', id:"y_textarea" ,rows:"6",class:"input-block" %>
-    	</div>    	
+    	</div>
   </div><!-- evaluations-box -->
-  <% if (1==1) %>
-  <!-- 有菜品的时候 -->
-    <div class="evaluation-dishes-list bg-white">
-      <!-- 循环  -->
-      <div class="evaluation-dishes-box">
-        <div class="cover" 
-          <% if 0 == 1 %>
-            <!--
-            没有图片的时候 （Ps：不要那种通用的默认图片）
-            -->
-            style="background-image:url('图片地址') ;"
-          <% end %>
-        ></div><!--cover -->
-        <div class="title text-cut">菜品名称</div><!-- title -->
-        <div class="recommend-icon"><span class="active"></span></div><!-- recommend-icon -->
-      </div><!-- evaluation-dishes-box -->
-      
-      <!-- 结束循环 -->
-    </div><!-- evaluation-dishes-list -->
-    <br />
-  <% end %>
 <% end %>
-
+<% @order.order_items.each do |item| %>
+<!-- 有菜品的时候 -->
+  <div class="evaluation-dishes-list bg-white">
+    <!-- 循环  -->
+    <div class="evaluation-dishes-box">
+      <div class="cover"
+        <% if item.product.image_url %>
+          style="background-image:url(<%= item.product.image_url(:thumb) %>) ;"
+        <% end %>
+      ></div><!--cover -->
+      <div class="title text-cut"><%= item.product.name %></div>
+      <div class="recommend-icon">
+        <div class="order-item-box" data-id="<%= item.id %>">
+          <span class="<%= item.recommend ? 'active': '' %>"></span>
+      </div><!-- recommend-icon -->
+    </div><!-- evaluation-dishes-box -->
+  </div><!-- evaluation-dishes-list -->
+  <br />
+<% end %>
 <script type="text/javascript">
   function submitEvaluationStatus() {
     var val = $("#y_textarea").val()

@@ -66,7 +66,7 @@ $ ->
   $(document).on 'click', '.pop-bg', (e) ->
     unless $(e.target).closest('.pop-content').length > 0
       $(this).hide()
-  
+
   $(document).on 'click', '.lottery-modal', (e) ->
     unless $(e.target).closest('.pop-content').length > 0
       $('#lottery-icon').removeClass('hidden')
@@ -91,10 +91,20 @@ $ ->
   $('.category-more-btn').on 'click',->
     $('.category-more-box').toggleClass('hidden')
     $(this).toggleClass('up')
-    
-  $('.recommend-icon span').on 'click',->
-    $(this).toggleClass('active')
-    
+
+  $('.recommend-icon span').on 'click',(e)->
+    e.preventDefault()
+    me = $(this)
+    id  = me.parent().closest('.order-item-box').data('id')
+    $.ajax
+      url: "/products/#{id}/recommend"
+      type: 'GET'
+      success: (res) ->
+        if res['status'] == "ok"
+          me.toggleClass('active')
+        else
+          alert(res['error'])
+
   $('#ucategory-more').on 'click' , ->
     if $(this).hasClass('arrow-top')
       $(this).removeClass('arrow-top')

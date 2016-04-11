@@ -1,0 +1,36 @@
+<div class="container evaluations_wrapper">
+	<table class="list-table" id="verify_codes">
+    <thead>
+      <tr>
+        <th>商品名称</th>
+        <th>消费时间</th>
+        <th>评价时间</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @dishes_orders.each do |order| %>
+        <tr>
+          <td>
+            菜品验证
+          </td>
+          <td><%= order.verified_time %></td>
+          <td><%= order.evaluations.try(:first).try(:created_at) %></td>
+        </tr>
+        <% if order.evaluations.size == 0 %>
+          <tr>
+            <td></td>
+            <td colspan='3' class="text-left">消费者未填写内容评价</td>
+          </tr>
+        <% else %>
+          <% order.evaluations.each do |evaluation| %>
+            <tr>
+              <td></td>
+              <td colspan='2' class="text-left"><%= evaluation.content %></td>
+            </tr>
+          <% end %>
+        <% end %>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>

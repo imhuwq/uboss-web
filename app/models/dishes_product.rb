@@ -9,11 +9,13 @@ class DishesProduct < Product
   validates_presence_of :categories
 
   def today_verify_code
-    self.user.verify_codes.today(self.user)
+    dishes_orders = DishesOrder.includes(:order_items).has_payed.where(order_items: {product_id: id})
+    user.verify_codes.today(user).where(target_type: 'DishesOrder', target_id: dishes_orders.ids)
   end
 
   def total_verify_code
-    self.user.verify_codes.total(self.user)
+    dishes_orders = DishesOrder.includes(:order_items).has_payed.where(order_items: {product_id: id})
+    user.verify_codes.total(user).where(target_type: 'DishesOrder', target_id: dishes_orders.ids)
   end
 
   def categories=(id)
