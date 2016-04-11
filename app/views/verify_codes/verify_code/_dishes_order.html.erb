@@ -2,7 +2,7 @@
 <div class="comfirmed-dishes-box nogap"> 
     <div class="text-cut page-title gray-color gap">商家：<%= order.seller.identify %></div>
     <div class="bg-white">
-      <a href="#" class="gap-lr black-color m-top10" style="display: block;">
+      <a href="<%= account_verify_code_path(id: order.id, type: 'dishes') %>" class="gap-lr black-color m-top10" style="display: block;">
         <% order.order_items.each do |item| %>
           <div class="m-bottom10">
             <span class="pull-right text-cut num text-right gray-color">x <%= item.amount %></span>
