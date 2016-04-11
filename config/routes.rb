@@ -180,6 +180,7 @@ Rails.application.routes.draw do
         get 'yesterday_income_and_balance', to: 'incomes#yesterday_income_and_balance'
         get 'the_income/:date', to: 'incomes#the_income'
         get 'balance', to: 'incomes#balance'
+        resources :bank_cards, only: [:create, :destroy]
       end
       resources :service_stores, only: [:create] do
         get :total_verify_detail, :today_verify_detail
