@@ -60,7 +60,10 @@
   white-space: pre-line;
 }
 .spinner {
-  margin: 100px auto 0;
+  position: absolute;
+  top: 50%;
+  right: 50%;
+  margin-right: -35px;
   width: 70px;
   text-align: center;
 }
@@ -99,4 +102,9 @@
     -webkit-transform: scale(1.0);
     transform: scale(1.0);
   }
+}
+
+body.charges.pay_bill {
+  background: #23272a;
+  color: white;
 }
