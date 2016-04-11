@@ -31,9 +31,9 @@ class ServiceStoresController < ApplicationController
   end
 
   def verify_detail
-    @verify_codes = VerifyCode.today(current_user) + VerifyCode.activity_today(current_user)
-    @total = VerifyCode.total(current_user).size + VerifyCode.activity_total(current_user).size
-    @today = VerifyCode.today(current_user).size + VerifyCode.activity_today(current_user).size
+    @verify_codes = VerifyCode.today(current_user)
+    @total = VerifyCode.total(current_user).size
+    @today = VerifyCode.today(current_user).size
   end
 
   def verify
