@@ -17,7 +17,7 @@
 #     }
 # }
 h=Hash.new {|k,v| k[v] = Hash.new {|x,y| x[y] = ""} }
-skus = @product.product_inventories.reduce(h) do |s, inv|
+skus = @product_inventories.reduce(h) do |s, inv|
   inv.sku_attributes.each do |k,v|
     s[k][v] << ":#{inv.id}"
   end
@@ -189,7 +189,7 @@ end
 #              :price => 20.0
 #   }
 # ]
-items = @product.product_inventories.reduce([]) do |s, i|
+items = @product_inventories.reduce([]) do |s, i|
   s << {id: i.id, properties: i.sku_attributes_str, count: i.count, price: i.price }
 end
 json.id     @product.id
@@ -198,3 +198,4 @@ json.cover  @product.image_url(:w640)
 json.name   @product.name
 json.price  @product.price_ranges.join("-")
 json.items  items
+json.selected items.first

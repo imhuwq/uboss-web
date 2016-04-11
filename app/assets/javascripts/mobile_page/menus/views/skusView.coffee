@@ -9,12 +9,15 @@ class Menus.Views.Skus extends Backbone.View
   initialize: (attributes) ->
     @stack = new Menus.Models.Stack({box: [], elements: {}})
     @stack.context = this
+    this.parent = attributes.parent
     @stack.on "change:elements", @calculateAndDisplay
     @stack.on "change:box", @calculatePrice
 
   selectSpec: (e)->
+    @toggleSpec $(e.target)
+
+  toggleSpec: (target) ->
     elements = @stack.get("elements")
-    target = $(e.target)
     text = target.parent().data("category")
     element = elements[text]
     if element && element.text() == target.text()
@@ -69,8 +72,9 @@ class Menus.Views.Skus extends Backbone.View
         console.log 1
     theSameIds
 
-  render: () ->
+  render: (selected) ->
     console.log 'rendered skus'
     @$el.html @template({skus: @collection})
+    @$el.find(".sku-select span[sid*=':#{selected.id}']").each (i,e) => @toggleSpec $(e)
     Dispatcher.trigger Menus.Events.DISPLAY_BAR, 'show'
     @

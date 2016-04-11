@@ -44,6 +44,7 @@ class ProductsController < ApplicationController
 
   def info
     @product = Product.find params[:id]
+    @product_inventories = @product.product_inventories.saling
   end
 
   def switch_favour
