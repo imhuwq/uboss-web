@@ -15,7 +15,10 @@
   </head>
 
   <body class='<%= controller_name %> <%= action_name %>'>
-
+  
+  <% unless browser.uboss? %>
+    <header> <%= render partial: 'layouts/mobile_header' %> </header>
+  <% end %>
 		<%= render 'layouts/pop' %>
     <div class="container">
       <%= yield %>

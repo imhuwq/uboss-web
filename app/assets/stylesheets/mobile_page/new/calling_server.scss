@@ -1,0 +1,25 @@
+.calling-notify-box{
+  background: #fff;
+  padding: 10px 10px 10px 50px;
+  margin-bottom: 10px;
+  position: relative;
+  overflow: hidden;
+  .status-icon{
+    background: $brand-primary;
+    color: #fff;
+    transform: rotate(-45deg);
+    -webkit-transform: rotate(-45deg);
+    position: absolute;
+    width: 80px;
+    text-align: center;
+    font-size: 8px;
+    left: -26px;
+    top: 6px;
+    height: 16px;
+    line-height: 16px;
+    
+  }
+  .calling{
+    background: #f9ba10;
+  }
+}
