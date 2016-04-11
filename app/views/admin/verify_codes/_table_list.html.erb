@@ -11,9 +11,14 @@
       <% @verify_codes.each do |verify_code| %>
         <tr>
           <td class="text-left">
-            <%= link_to verify_code_target_url(verify_code) do %>
-              <%= image_tag(get_product(verify_code).image_url(:thumb), size: "80x80", alt: "-") %>　
-              <%= get_product(verify_code).name %>
+            <% if verify_code.target_type == 'DishesOrder' %>
+              菜品验证
+              <%= link_to '详情', '#', class: 'btn' %>
+            <% else %>
+              <%= link_to admin_service_product_path(get_product(verify_code)) do %>
+                <%= image_tag(verify_code.order_item.product.image_url(:thumb), size: "80x80", alt: "-") %>　
+                <%= verify_code.order_item.product.name %>
+              <% end %>
             <% end %>
           </td>
           <td><%= verify_code.updated_at %></td>
