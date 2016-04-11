@@ -54,6 +54,7 @@ class User < ActiveRecord::Base
   has_many :sales_returns, through: :order_item_refunds
   has_many :carriage_templates
   has_many :bonus_records
+  has_many :bill_orders
   # for seller
   has_many :seller_addresses, -> { where(seller_address: true) }, class_name: 'UserAddress'
   has_many :sold_orders, class_name: 'Order', foreign_key: 'seller_id'
@@ -67,7 +68,7 @@ class User < ActiveRecord::Base
   has_many :selling_incomes
   belongs_to :agent, class_name: 'User'
   has_many :promotion_activities
-
+  has_many :sold_bill_orders, class_name: 'BillOrder', foreign_key: :seller_id
   #for supplier
   has_one :supplier_store, autosave: true
   has_many :cooperations, foreign_key: 'supplier_id', dependent: :destroy
@@ -129,6 +130,9 @@ class User < ActiveRecord::Base
   before_create :skip_confirmation!
   before_save   :set_service_rate
   after_commit  :invoke_rongcloud_job, on: [:create, :update]
+  after_commit :invoke_bill_order_attach_job, on: [:create, :update], if: -> {
+    weixin_openid.present? && previous_changes.include?(:weixin_openid)
+  }
 
   scope :admin, -> { where(admin: true) }
   scope :agent, -> { role('agent') }
@@ -151,6 +155,11 @@ class User < ActiveRecord::Base
   def has_privilege_card?(object)
     seller_ids = self.privilege_cards.map(&:seller_id)
     seller_ids.include?(object.user_id)
+  end
+
+  def has_promotion_activity?
+    return @has_promotion_activity if instance_variable_defined?('@has_promotion_activity')
+    @has_promotion_activity = PromotionActivity.where(user: self, status: 1).exists?
   end
 
   def service_store
@@ -285,6 +294,10 @@ class User < ActiveRecord::Base
       end
     end
 
+  end
+
+  def invoke_bill_order_attach_job
+    BillOrderAttachJob.perform_later(user: self)
   end
 
   def invoke_rongcloud_job

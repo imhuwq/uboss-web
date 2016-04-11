@@ -1,0 +1,58 @@
+<%= content_for :page_title do %>
+  支付结果
+<% end %>
+
+<%= content_for :header_left do %>
+  <a class="back" onclick="history.go(-1)"><%= image_tag 'mobile/right.png' %></a>
+<% end %>
+
+<div class="box m-top10">
+  <% if @order_charge.unpay? %>
+    <div class="bg-white">
+      <div class="box-m40 text-center">
+        <br />
+        <h2>暂未收到订单支付结果</h2>
+        <br />
+        <div class="gray-color">支付结果可能会有几分钟延迟，您可以刷新结果或稍晚查看我的订单。</div>
+        <br />
+      </div>
+    </div><!-- bg-white -->
+
+  <% else %>
+    <div class="bg-white">
+      <div class="box-m40 text-center">
+        <br />
+        <br />
+        <%= image_tag 'mobile/bill_orders/pay_complete.png' %>
+        <br />
+        <br />
+        <% @order_charge.bill_orders.each do |bill_order|%>
+          <div class="main-color" style='font-size:17px;'>你已成功给 “<%= bill_order.seller.service_store.store_name %>” 商家</div>
+          <br />
+          <!-- <div class="gray&#45;color">交易单号：<%= bill_order.number %></div> -->
+          <!-- <br /> -->
+        <% end %>
+        <!-- <div class="gray&#45;color">付款时间：<%= @order_charge.paid_at %></div> -->
+        <!-- <br /> -->
+        <!-- <div class="gray&#45;color">付款单号：<%= @order_charge.pay_serial_number %></div> -->
+        <div class="main-color" style='font-size:17px;'>付款<span class="like-color" style='font-size:30px;'><%= @order_charge.paid_amount %></span>元</div>
+        <br />
+      </div>
+      <br />
+      <% if @seller.has_promotion_activity? %>
+        <div class="bill-draw-cont text-center">
+          <%= link_to store_qrcode_img_path(sid: @seller.id, type: 'service') do %>
+            <%= image_tag 'activate_page/color-gift.png', width: 100 %>
+          <% end %>
+        </div>
+      <% else %>
+        <div class="bill-sharing-cont">
+          <%= image_tag 'mobile/pay-bg.jpg' %>
+          <p class="text-center">
+            <%= link_to "去分享", store_qrcode_img_path(sid: @seller.id, type: 'service') %>
+          </p>
+        </div>
+      <% end %>
+    </div><!-- bg-white -->
+  <% end %>
+</div><!-- box -->

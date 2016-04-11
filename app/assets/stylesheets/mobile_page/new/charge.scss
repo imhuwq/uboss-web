@@ -1,0 +1,23 @@
+.bill-sharing-cont {
+  position: relative;
+  img {
+    width: 100%;
+  }
+  a {
+    position: absolute;
+    top: 220px;
+    right: 50%;
+    margin-right: -120px;
+    background: image-url('mobile/bill_orders/sharing_btn_bg.png');
+    background-size: 240px 60px;
+    display: inline-block;
+    font-size: 17px;
+    color: #863203;
+    line-height:60px;
+    height:60px;
+    width: 240px;
+  }
+}
+.bill-draw-cont {
+  margin: 20px 20px 50px;
+}

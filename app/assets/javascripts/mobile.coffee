@@ -21,6 +21,7 @@
 #= require mobile_page/service_store
 #= require mobile_page/recommend
 #= require mobile_page/iscroll
+#= require mobile_page/bill_orders
 #= require shared/count_down
 #= require shared/city_select
 
@@ -66,7 +67,7 @@ $ ->
   $(document).on 'click', '.pop-bg', (e) ->
     unless $(e.target).closest('.pop-content').length > 0
       $(this).hide()
-  
+
   $(document).on 'click', '.lottery-modal', (e) ->
     unless $(e.target).closest('.pop-content').length > 0
       $('#lottery-icon').removeClass('hidden')
@@ -91,10 +92,10 @@ $ ->
   $('.category-more-btn').on 'click',->
     $('.category-more-box').toggleClass('hidden')
     $(this).toggleClass('up')
-    
+
   $('.recommend-icon span').on 'click',->
     $(this).toggleClass('active')
-    
+
   $('#ucategory-more').on 'click' , ->
     if $(this).hasClass('arrow-top')
       $(this).removeClass('arrow-top')

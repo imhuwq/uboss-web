@@ -1,14 +1,9 @@
-class DivideIncome < ActiveRecord::Base
-
-  include Orderable
+class BillIncome < ActiveRecord::Base
 
   belongs_to :user
-  belongs_to :order
   belongs_to :bill_order
 
-  validates :user_id, :amount, presence: true
-  validates_presence_of :order_id, if: -> { bill_order.blank? }
-  validates_presence_of :bill_order_id, if: -> { order.blank? }
+  validates_presence_of :user, :bill_order, :amount
 
   after_create :increase_user_income, :record_trade
 
@@ -27,5 +22,4 @@ class DivideIncome < ActiveRecord::Base
       trade_type: 'agent'
     )
   end
-
 end

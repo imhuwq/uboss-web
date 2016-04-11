@@ -2,6 +2,8 @@ class ApplicationController < ActionController::Base
 
   protect_from_forgery with: :exception
 
+  layout 'mobile'
+
   include SimpleCaptcha::ControllerHelpers
   include DetectDevise
   include FilterLogic
@@ -61,6 +63,17 @@ class ApplicationController < ActionController::Base
     end
 
     session[:oauth_callback_redirect_path] = path
+    redirect_to user_omniauth_authorize_path(:wechat)
+  end
+
+  # for actions need weixin openid but not uboss user
+  def authenticate_weixin_user_token!
+    # Force request wehat token
+    # return false if !browser.wechat?
+    return false if current_user && current_user.weixin_openid.present?
+    return false if session["devise.wechat_data"].present?
+
+    session[:oauth_callback_redirect_path] = request.fullpath
     redirect_to user_omniauth_authorize_path(:wechat)
   end
 
@@ -174,4 +187,8 @@ class ApplicationController < ActionController::Base
     return new_user_session_path(redirect: 'activity', redirectUrl: redirect_url)
   end
   helper_method :activity_sign_in_and_redirect_path
+
+  def get_weixin_openid_form_session
+    session["devise.wechat_data"] && session["devise.wechat_data"]["extra"]["raw_info"]["openid"]
+  end
 end
