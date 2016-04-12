@@ -1,14 +1,21 @@
 <%= content_for :title do %>
   乐分享
 <% end %>
+<%= content_for :page_title do %>
+  <div class="text-center" style="padding-right: 10px;">评价</div>
+<% end %>
+<%= content_for :header_right do %>
+  <span class="pull-right">&nbsp;</span>
+<% end %>
+<%= content_for :header_right do %>  
+  <span class="pull-left">&nbsp;</span>
+<% end %>
 
-<div style="width:50%;margin:50% auto;">
-  <div style="text-align:center;">
+<div class="text-center" style="transform: translate(-50%,-50%); top: 50%;left: 50%; position: absolute; width: 100%;">
+    <div class="calling-complete m-bottom10"></div>
     <p>老板服务还是不错是吗？</p>
-    <p>帮商家分享一下吧</p>
-  </div>
-  <br />
-  <a href="<%= store_qrcode_img_path(sid: @seller.id, type: 'service') %>" class="btn btn-large btn-block btn-orange">果断分享</a>
-  <br />
-  <a href="#" class="btn btn-large btn-block btn-white">残忍拒绝</a>
+    <p>帮商家分享一下吧　　　</p>
+    <br />
+    <p class="m-bottom10"><a href="<%= store_qrcode_img_path(sid: @seller.id, type: 'service') %>" class="btn btn-large" style="width: 40%">果断分享</a></p>
+    <p><a href="#" class="btn btn-large disabled" style="width: 40%">残忍拒绝</a></p>
 </div>
