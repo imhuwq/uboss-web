@@ -17,9 +17,6 @@ class MenusController < ApplicationController
       dishe.categories.each do |c|
         h[c.name] << dishe
       end
-      if dishe.categories.blank?
-        h['默认'] << dishe
-      end
       h
     end
 
