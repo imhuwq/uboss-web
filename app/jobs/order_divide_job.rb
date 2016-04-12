@@ -131,21 +131,22 @@ class OrderDivideJob < ActiveJob::Base
 
         SellingIncome.create!(user: @order.seller, amount: order_income, order: @order)
 
-        if @order.class == OrdinaryOrder
+        case @order.type
+        when 'OrdinaryOrder'
           @order.update_columns(income: order_income, sharing_rewared: true)
           @order.complete!
-        elsif @order.is_agency_order?
+        when 'AgencyOrder'
           @order.purchase_order.update(income: supplier_divide_price)
           @order.update_columns(income: order_income, sharing_rewared: true)
           @order.complete!
-        elsif @order.class == ServiceOrder
+        when 'ServiceOrder'
           @verify_code.update_columns(income: order_income, sharing_rewared: true)
           @order.update_columns(income: @order.verify_codes.where(sharing_rewared: true).sum(:income))
 
           if !@order.verify_codes.any? { |code| !code.sharing_rewared? }
             @order.update_columns(sharing_rewared: true)
           end
-        elsif @order.class == DishesOrder
+        when 'DishesOrder'
           @verify_code.update_columns(income: order_income, sharing_rewared: true)
           @order.update_columns(income: order_income)
           @order.update_columns(sharing_rewared: true) 
