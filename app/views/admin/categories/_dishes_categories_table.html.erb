@@ -15,7 +15,7 @@
         <%= hidden_field_tag "categories[#{i}][check]", 'false', class:"form-item-check" %>
 
         <td><%= text_field_tag "categories[#{i}][name]", category.name, class:"update_item", data: { url:  "/admin/categories/#{category.id}/update_category_name"}, disabled: true %></td>
-        <td><%= category.products.size %></td>
+        <td><%= category.products.available.size %></td>
         <td>
           <%= category.position %>
           <% if !category.is_default? && has_many_categories %>
