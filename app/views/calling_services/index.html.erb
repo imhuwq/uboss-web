@@ -11,7 +11,7 @@
   <a class="menu-btn pull-right" href="<%= notifies_seller_calling_services_path(seller_id: @seller.id) %>">呼叫详情 <%= image_tag 'mobile/right.png' %></a>
 <% end %>
 
-<div class="m-top10">
+<div style="margin-top: 5px;">
   <% @calling_services.each do |calling_service| %>
     <% if calling_service.name != "结帐" %>
       <div class="calling-notify-box">

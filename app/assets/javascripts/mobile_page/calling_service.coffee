@@ -17,7 +17,7 @@ $ ->
             count_down = () ->
               time_conut -= 1
               if(time_conut >= 0)
-                $this.find('.time_count').text('('+time_conut+')')
+                $this.find('.time_count').text('('+time_conut+'s)');                
                 setTimeout () ->
                   count_down()
                 , 1000
