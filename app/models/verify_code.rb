@@ -11,7 +11,7 @@ class VerifyCode < ActiveRecord::Base
   scope :with_user, ->(user) { user.verify_codes }
 
   scope :today, ->(user) {
-    with_user(user).where(verified: true)
+    with_user(user).where(verified: true).
     where('verify_codes.updated_at BETWEEN ? AND ?',
           Time.now.beginning_of_day, Time.now.end_of_day) }
 

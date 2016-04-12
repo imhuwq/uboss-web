@@ -21,9 +21,15 @@ class Category < ActiveRecord::Base
   validates_presence_of :user_id, :name
   validates :name, uniqueness: { :scope => [:user_id, :store_id], message: :exists }
   validate :validate_position
+  before_destroy :move_product_to_default_category
+  after_create :move_default_category_to_bottom
 
   def asset_img
     super || build_asset_img
+  end
+
+  def is_default?
+    self.name == '其他'
   end
 
   def self.find_or_new_by(*args)
@@ -42,4 +48,16 @@ class Category < ActiveRecord::Base
     end
   end
 
+  def move_default_category_to_bottom
+    Category.find_by(name: '其他', user_id: user_id).try(:move_to_bottom)
+  end
+
+  def move_product_to_default_category
+    if self.store_type == 'ServiceStore'
+      default_category = self.user.categories.find_or_create_by(name: '其他',store_id: self.store_id, store_type: self.store_type)
+      self.products.find_each do |product|
+        product.categories << default_category
+      end
+    end
+  end
 end

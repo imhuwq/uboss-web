@@ -15,7 +15,7 @@
   <%= hidden_field_tag :tages, current_user.categories.dishes_categories.collect(&:name).join(',') %>
   <label class='optional dishes_categories_label'>分组</label>
   <span class='dishes_categories_select'>
-    <%= f.select :categories, current_user.categories.dishes_categories.collect { |p| [ p.name, p.id ] }, {include_blank: true, selected: @dishes_product.categories.first.try(:id)}%>
+    <%= f.select :categories, current_user.categories.dishes_categories.collect { |p| [ p.name, p.id ] }, {include_blank: '选择一个分组', selected: @dishes_product.categories.first.try(:id)}%>
   </span>
   <%= f.input :present_price, hint: '若菜品有多种规格,价格信息在菜品规格中设置' %>
   <%= f.input :rebate_amount, hint: '若菜品有多种规格,返利金额在菜品规格中设置' %>

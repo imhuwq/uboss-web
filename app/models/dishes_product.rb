@@ -8,6 +8,7 @@ class DishesProduct < Product
   validates_presence_of :product_inventories
 
   after_create :create_default_category
+  after_update :create_default_category
 
   def today_verify_code_count
     codes = VerifyCode.today(user).where(target_type: 'DishesOrder')
@@ -57,7 +58,7 @@ class DishesProduct < Product
   private
   def create_default_category
     if self.categories.blank?
-      self.categories << Category.find_or_create_by(name: '其他',user_id: user_id, store_id: user.service_store.id, store_type: user.service_store.class.name)
+      self.categories << user.categories.find_or_create_by(name: '其他', store_id: user.service_store.id, store_type: user.service_store.class.name)
     end
   end
 
