@@ -1,5 +1,5 @@
 class Admin::DishesProductsController < AdminController
-  load_and_authorize_resource
+  load_and_authorize_resource class: 'DishesProduct'
   def index
     @statistics = {}
     @dishes = @dishes_products.available.page(params[:page])
