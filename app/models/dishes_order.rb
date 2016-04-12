@@ -25,7 +25,7 @@ class DishesOrder < ServiceOrder
   end
 
   def invoke_service_order_payed_job
-    create_verify_code(user_id: self.user_id)
+    create_verify_code(user_id: self.seller_id)
     ServiceOrderPayedJob.perform_later(self)
   end
 end

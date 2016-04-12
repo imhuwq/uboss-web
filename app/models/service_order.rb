@@ -44,7 +44,7 @@ class ServiceOrder < Order
   private
 
   def invoke_service_order_payed_job
-    order_item.amount.times { order_item.verify_codes.create!(user_id: self.user_id) }
+    order_item.amount.times { order_item.verify_codes.create!(user_id: self.seller_id) }
     ServiceOrderPayedJob.perform_later(self)
   end
 
