@@ -57,7 +57,7 @@ class ApplicationController < ActionController::Base
     return false unless browser.wechat?
     return false unless current_user.blank? || current_user.weixin_openid.blank?
 
-    path = request.fullpath
+    path = request.get? ? request.fullpath : request.referer
     if redirect.present?
       path += path.match(/\?/) ? "&redirect=#{redirect}" : "?redirect=#{redirect}"
     end

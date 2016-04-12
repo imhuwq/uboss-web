@@ -66,7 +66,7 @@ Zepto ($) ->
 
     Dispatcher.on Menus.Events.DISPLAY_BAR, (action) ->
       switch action
-        when 'show' then $(".dishes-pop-bg").addClass("show")
+        when 'show' then $("#product-specs").addClass("show")
         when 'hide' then $(".dishes-pop-bg").removeClass("show")
 
     Dispatcher.on Menus.Events.SUBMIT_DISHES, (action='confirm') ->
