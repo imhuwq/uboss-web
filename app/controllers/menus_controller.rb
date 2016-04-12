@@ -18,7 +18,7 @@ class MenusController < ApplicationController
         h[c.name] << dishe
       end
       h
-    end
+    end.reject {|c, d| d.blank? }
 
     respond_to do |format|
       format.html
