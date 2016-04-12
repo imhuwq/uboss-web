@@ -6,30 +6,32 @@
 			<th>呼叫时间</th>
 			<th>操作</th>
 		</thead>
-		<% calling_notifies.each do |calling_notify| %>
-			<tr class="calling_notify" data-number="<%= calling_notify.calling_number %>" data-id="<%= calling_notify.id %>">
-				<td><%= calling_notify.calling_number %></td>
-				<td><%= calling_notify.service_name %></td>
-				<td><%= calling_notify.called_at %></td>
-				<td class='operation'>
-          <% if can? :update, CallingNotify %>
-            <% if calling_notify.unservice? %>
-              <p>
-                <%= link_to("去服务", change_status_admin_calling_notify_path(calling_notify, status: 'serviced'),
-                remote: true, method: :patch, data: { disable_with: '<i class="fa fa-spinner"></i>', text: '去服务' },
-                class: "btn btn-mid change-status-btn") %>
-              </p>
-              <p>
-                <%= link_to("已服务", change_status_admin_calling_notify_path(calling_notify, status: 'serviced', notice: false),
-                remote: true, method: :patch, data: { disable_with: '<i class="fa fa-spinner"></i>', text: '已服务' },
-                class: "btn btn-mid white-btn btn-border change-status-btn") %>
-              </p>
-            <% else %>
-              <p><span>已服务</span></p>
+    <tbody>
+      <% calling_notifies.each do |calling_notify| %>
+        <tr class="calling_notify" data-number="<%= calling_notify.calling_number %>" data-id="<%= calling_notify.id %>">
+          <td><%= calling_notify.calling_number %></td>
+          <td><%= calling_notify.service_name %></td>
+          <td><%= calling_notify.called_at %></td>
+          <td class='operation'>
+            <% if can? :update, CallingNotify %>
+              <% if calling_notify.unservice? %>
+                <p>
+                  <%= link_to("去服务", change_status_admin_calling_notify_path(calling_notify, status: 'serviced'),
+                  remote: true, method: :patch, data: { disable_with: '<i class="fa fa-spinner"></i>', text: '去服务' },
+                  class: "btn btn-mid change-status-btn") %>
+                </p>
+                <p>
+                  <%= link_to("已服务", change_status_admin_calling_notify_path(calling_notify, status: 'serviced', notice: false),
+                  remote: true, method: :patch, data: { disable_with: '<i class="fa fa-spinner"></i>', text: '已服务' },
+                  class: "btn btn-mid white-btn btn-border change-status-btn") %>
+                </p>
+              <% else %>
+                <p><span>已服务</span></p>
+              <% end %>
             <% end %>
-          <% end %>
-        </td>
-      </tr>
-    <% end %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
   </table>
 </div>

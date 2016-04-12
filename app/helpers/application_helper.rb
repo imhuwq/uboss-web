@@ -15,7 +15,7 @@ module ApplicationHelper
   end
 
   def notify_time(time)
-    time.strftime('%Y.%m.%d %H:%M')
+    time.strftime('%H:%M')
   end
 
   def qrcode_image_tag(text, opts = {})

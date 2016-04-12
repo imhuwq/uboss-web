@@ -29,7 +29,7 @@ class CallingServicesController < ApplicationController
     end
 
     if @calling_notify.save
-      trigger_realtime_message(calling_notify_msg)
+      trigger_realtime_message(calling_notify_msg, [@seller.id])
       notify_seller
       render json: { status: "ok", message: "呼叫成功", type: (params[:type] || 'nothing') }
     else
@@ -48,12 +48,12 @@ class CallingServicesController < ApplicationController
     if table_number
       if old_number
         TableNumber.clear_seller_table_number(@seller, cookies[:table_nu])
-        trigger_realtime_message(set_table_number_msg('set_unuse_table', old_number))
+        trigger_realtime_message(set_table_number_msg('set_unuse_table', old_number), [@seller.id])
       end
 
       cookies[:table_nu] = table_number.number
       table_number.update(status: 1)
-      trigger_realtime_message(set_table_number_msg('set_used_table', table_number.number))
+      trigger_realtime_message(set_table_number_msg('set_used_table', table_number.number), [@seller.id])
       redirect_to action: :index
     else
       flash[:error] = "请选择正确的桌号"
@@ -75,10 +75,6 @@ class CallingServicesController < ApplicationController
     unless @table_number = TableNumber.find_by(user: @seller, number: cookies[:table_nu], status: 1)
       redirect_to action: :table_numbers
     end
-  end
-
-  def trigger_realtime_message(message)
-    $redis.publish 'realtime_msg', { msg: message, recipient_user_ids: [@seller.id] }.to_json
   end
 
   def set_table_number_msg(type, number)

@@ -22,7 +22,7 @@
     ">
       <%= calling_notify.unservice?? "已呼叫" : "已接服务" %>
     </span>
-    <span class="pull-right gray-color"><%= calling_notify.called_at %></span>
+    <span class="pull-right gray-color"><%= notify_time calling_notify.called_at %></span>
     <div class="text-cut title"><%= calling_notify.service_name %></div>
   </div>
 <% end %>

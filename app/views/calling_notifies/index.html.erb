@@ -7,24 +7,22 @@
 <%= content_for :header_right do %>
   <span class="pull-right">&nbsp;</span>
 <% end %>
-<%= content_for :header_right do %>  
+<%= content_for :header_right do %>
   <span class="pull-left">&nbsp;</span>
 <% end %>
 <div style="margin-top: 5px;">
-<% @calling_notifies.each do |calling_notify| %>
-  <div class="calling-notify-box gray-color">
-   <% if can? :update, CallingNotify %>
-     <% if calling_notify.unservice? %>
-       <%= link_to("去服务", "javascript:;", class: "btn btn-mid calling-notify-unservice pull-right", data: { id: "#{calling_notify.id}"}) %>
-     <% else %>
-       <%= link_to("已服务", "javascript:;", class: "btn btn-mid btn-gray pull-right") %>
-     <% end %>
-   <% end %>
-   <div class="text-cut pull-left" style="width: 20%; padding: 5px 0; margin-right: 10px;"><%= notify_time calling_notify.called_at %></div>
-   <div class="text-cut pull-left" style="width: 20%; padding: 5px 0; margin-right: 10px;"><%= calling_notify.calling_number %>号桌</div>
-   <div class="text-cut service-name"><%= calling_notify.service_name %></div>
-
-  
-  </div>
-<% end %>
+  <% @calling_notifies.each do |calling_notify| %>
+    <div class="calling-notify-box gray-color">
+      <% if can? :update, CallingNotify %>
+        <% if calling_notify.unservice? %>
+          <%= link_to("去服务", "javascript:;", class: "btn btn-mid calling-notify-unservice pull-right", data: { id: "#{calling_notify.id}"}) %>
+        <% else %>
+          <%= link_to("已服务", "javascript:;", class: "btn btn-mid btn-gray pull-right") %>
+        <% end %>
+      <% end %>
+      <div class="text-cut pull-left" style="width: 20%; padding: 5px 0; margin-right: 10px;"><%= notify_time calling_notify.called_at %></div>
+      <div class="text-cut pull-left" style="width: 20%; padding: 5px 0; margin-right: 10px;"><%= calling_notify.calling_number %>号桌</div>
+      <div class="text-cut service-name"><%= calling_notify.service_name %></div>
+    </div>
+  <% end %>
 </div>
