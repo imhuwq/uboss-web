@@ -5,6 +5,7 @@ class Admin::CategoriesController < AdminController
     @dishes = params[:dishes]
     if @dishes == 'true'
       @categories = current_user.categories.dishes_categories.includes(:products)
+      @has_many_categories = except_other_has_many_categories
     else
       @categories = current_user.categories.electricity_categories.includes(:products)
     end
@@ -83,6 +84,9 @@ class Admin::CategoriesController < AdminController
 
 
   private
+  def except_other_has_many_categories
+    !(@categories.where(name: '其他').present? && @categories.count == 2)
+  end
     # Never trust parameters from the scary internet, only allow the white list through.
     def category_params
       if params[:category][:position].present?

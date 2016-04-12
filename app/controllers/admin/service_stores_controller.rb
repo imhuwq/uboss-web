@@ -29,7 +29,7 @@ class Admin::ServiceStoresController < AdminController
     verified_codes = current_user.verify_codes.group_by{ |verify_code| verify_code.updated_at.to_date }.sort_by{ |key, values| key }.reverse
     verified_codes.each do |date, codes|
       size = codes.count
-      @income_by_date[date] = [size, codes.sum(:income) ]
+      @income_by_date[date] = [size, codes.sum(&:income) ]
     end
   end
 
