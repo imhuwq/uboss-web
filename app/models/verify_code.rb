@@ -112,9 +112,11 @@ class VerifyCode < ActiveRecord::Base
   end
 
   def call_verify_code_verified_handler
-    if self.target_type == 'OrderItem'
-      OrderDivideJob.set(wait: 5.seconds).perform_later(self)
+    arg = case self.target_type
+    when 'OrderItem' then self
+    when 'DishesOrder' then target
     end
+    OrderDivideJob.set(wait: 5.seconds).perform_later(arg) if arg
   end
 
 end
