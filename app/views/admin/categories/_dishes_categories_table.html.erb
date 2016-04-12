@@ -18,22 +18,24 @@
         <td><%= category.products.size %></td>
         <td>
           <%= category.position %>
-          <% if i == 0 %>
-            <span class='font-sort'>
-              <%= link_to sort_admin_category_path(id: category.id, opt: 'down', dishes: true), remote: true do %>
-                <i class='fa fa-caret-down'></i>
-              <% end %>
-            </span>
-          <% else %>
-            <span class='font-sort'>
-              <%= link_to sort_admin_category_path(id: category.id, opt: 'up', dishes: true), remote: true do %>
-                <i class='fa fa-sort-asc'></i>
-              <% end %>
-            </span>
+          <% if !category.is_default? %>
+            <% if i == 0 %>
+              <span class='font-sort'>
+                <%= link_to sort_admin_category_path(id: category.id, opt: 'down', dishes: true), remote: true do %>
+                  <i class='fa fa-caret-down'></i>
+                <% end %>
+              </span>
+            <% else %>
+              <span class='font-sort'>
+                <%= link_to sort_admin_category_path(id: category.id, opt: 'up', dishes: true), remote: true do %>
+                  <i class='fa fa-sort-asc'></i>
+                <% end %>
+              </span>
+            <% end %>
           <% end %>
         </td>
         <td>
-          <% if can? :update, category %>
+          <% if can?(:update, category) && !category.is_default? %>
             <%= link_to url_for(action: :edit, id: category.id, dishes: @dishes), class:'edit-icon', title: '编辑' do %>
               <i class="fa fa-pencil-square-o"></i>
             <% end %>
@@ -41,6 +43,8 @@
               method: :delete, class:'change-status-btn edit-icon', data: { confirm: '确认删除？' } do %>
               <i class="fa fa-trash-o"></i>
             <% end %>
+          <% elsif category.is_default? %>
+            显示未分组的菜品, 没有菜品时不显示该分组
           <% end %>
         </td>
       </tr>
