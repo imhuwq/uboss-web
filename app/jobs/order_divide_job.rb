@@ -62,7 +62,7 @@ class OrderDivideJob < ActiveJob::Base
   def perform_service_order_divide(verify_code)
     @order = verify_code.order
     @verify_code = verify_code
-    @order_items = [verify_code.order_item]
+    @order_items = [verify_code.target]
 
     if verify_code.sharing_rewared?
       logger.error "Break divide verify code: #{@verify_code.code} as it had divided!"
@@ -144,6 +144,11 @@ class OrderDivideJob < ActiveJob::Base
 
           if !@order.verify_codes.any? { |code| !code.sharing_rewared? }
             @order.update_columns(sharing_rewared: true)
+          end
+        elsif @order.class == DishesOrder
+          @verify_code.update_columns(income: order_income, sharing_rewared: true)
+          @order.update_columns(income: order_income)
+          @order.update_columns(sharing_rewared: true)
           end
         end
       rescue => e
