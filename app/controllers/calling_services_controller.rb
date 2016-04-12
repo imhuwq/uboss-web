@@ -31,7 +31,7 @@ class CallingServicesController < ApplicationController
     if @calling_notify.save
       trigger_realtime_message(calling_notify_msg)
       notify_seller
-      render json: { status: "ok", message: "呼叫成功" }
+      render json: { status: "ok", message: "呼叫成功", type: (params[:type] || 'nothing') }
     else
       render json: { status: "failure", error: "呼叫错误，请刷新再尝试" }
     end
@@ -59,10 +59,6 @@ class CallingServicesController < ApplicationController
       flash[:error] = "请选择正确的桌号"
       redirect_to action: :table_numbers
     end
-  end
-
-  def store_notifies
-    @calling_notifies = current_user.calling_notifies
   end
 
   private

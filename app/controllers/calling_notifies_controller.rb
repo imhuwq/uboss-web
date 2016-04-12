@@ -6,4 +6,14 @@ class CallingNotifiesController < ApplicationController
     @calling_notifies = current_user.calling_notifies
   end
 
+  def change_status
+    @calling_notify = CallingNotify.find_by(user: current_user, id: params[:id])
+
+    if @calling_notify.update(status: 'serviced')
+      render json: { status: "ok", id: @calling_notify.id }
+    else
+      render json: { status: "failure", error_msg: @calling_notify.errors.full_messages.join('<br>') }
+    end
+  end
+
 end

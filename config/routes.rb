@@ -130,7 +130,11 @@ Rails.application.routes.draw do
     patch :password, to: 'accounts#update_password'
     resources :user_addresses, except: [:show]
     resources :verify_codes, only: [:index, :show]
-    resources :calling_notifies, only: [:index]
+    resources :calling_notifies, only: [:index] do
+      member do
+        patch :change_status
+      end
+    end
   end
   resource :pay_notify, only: [] do
     collection do

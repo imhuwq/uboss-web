@@ -70,10 +70,10 @@
           $('#realtime-modal').modal();
         }
         if (message.msg.type == "unuse_table") {
-          $('.table-number[data-number="'+ message.msg.number +'"]').removeClass('used unuse main-bg-color beige-bg-color').addClass('unuse beige-bg-color');
+          $('.table-number[data-number="'+ message.msg.number +'"]').removeClass('used main-bg-color').addClass('unuse beige-bg-color');
         }
         if (message.msg.type == "used_table") {
-          $('.table-number[data-number="'+ message.msg.number +'"]').removeClass('used unuse main-bg-color beige-bg-color').addClass('used main-bg-color');
+          $('.table-number[data-number="'+ message.msg.number +'"]').removeClass('unuse beige-bg-color').addClass('used main-bg-color');
         }
       }
     };

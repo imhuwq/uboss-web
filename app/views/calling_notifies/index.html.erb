@@ -12,9 +12,9 @@
 
     <% if can? :update, CallingNotify %>
       <% if calling_notify.unservice? %>
-        <%= link_to("去服务", "#", method: :patch, class: "btn btn-mid") %>
+        <%= link_to("去服务", "javascript:;", class: "btn btn-mid calling-notify-unservice", data: { id: "#{calling_notify.id}"}) %>
       <% else %>
-        <%= link_to("已服务", "javascript:;", method: :patch, class: "btn btn-mid btn-gray") %>
+        <%= link_to("已服务", "javascript:;", class: "btn btn-mid btn-gray") %>
       <% end %>
     <% end %>
     </p>
