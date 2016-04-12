@@ -1,6 +1,6 @@
 class ServiceProduct < Product
   belongs_to :service_store
-  has_many   :verified_codes, -> { where(verified: true) }, through: :order_items, source: :verify_codes
+  has_many   :verify_codes, -> { where(verified: true) }, through: :order_items, source: :verify_codes
 
   validates :service_type, :original_price, :present_price, :monthes, presence: true
   validates :service_type, inclusion: { in: [0, 1] }
