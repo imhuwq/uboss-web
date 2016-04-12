@@ -7,6 +7,11 @@ class Admin::EvaluationsController < AdminController
     total
   end
 
+  def dishes_index
+    @dishes_orders = current_user.dishes_orders.completed
+    total
+  end
+
   def dishes
     @dishes = DishesProduct.where(user_id: current_user.id)
     total

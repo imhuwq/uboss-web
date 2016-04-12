@@ -54,6 +54,10 @@ class Product < ActiveRecord::Base
     false
   end
 
+  def recommend_count
+    order_items.where(recommend: true).count
+  end
+
   def self.official_agent
     official_account = User.official_account
     return nil if official_account.blank?

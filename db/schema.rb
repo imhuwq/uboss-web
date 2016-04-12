@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160330032403) do
+ActiveRecord::Schema.define(version: 20160411071921) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -331,6 +331,7 @@ ActiveRecord::Schema.define(version: 20160330032403) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "sharing_node_id"
+    t.integer  "order_id"
   end
 
   create_table "expresses", force: :cascade do |t|
@@ -453,8 +454,8 @@ ActiveRecord::Schema.define(version: 20160330032403) do
     t.integer  "product_id"
     t.integer  "user_id"
     t.integer  "amount"
-    t.datetime "created_at",                         null: false
-    t.datetime "updated_at",                         null: false
+    t.datetime "created_at",                           null: false
+    t.datetime "updated_at",                           null: false
     t.decimal  "pay_amount",           default: 0.0
     t.integer  "sharing_node_id"
     t.decimal  "present_price",        default: 0.0
@@ -462,6 +463,7 @@ ActiveRecord::Schema.define(version: 20160330032403) do
     t.integer  "product_inventory_id"
     t.integer  "order_item_refund_id"
     t.string   "sku_properties"
+    t.boolean  "recommend",            default: false
   end
 
   create_table "orders", force: :cascade do |t|

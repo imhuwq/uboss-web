@@ -9,12 +9,23 @@ class VerifyCode < ActiveRecord::Base
   default_scope {order("updated_at desc")}
 
   scope :with_user, ->(user) { user.verify_codes }
+
   scope :today, ->(user) {
-    where(verified: true).with_user(user).
+    with_user(user).where(verified: true)
     where('verify_codes.updated_at BETWEEN ? AND ?',
           Time.now.beginning_of_day, Time.now.end_of_day) }
-  scope :total, ->(user) { where(verified: true).with_user(user) }
 
+  scope :total, ->(user) { with_user(user).where(verified: true) }
+
+  scope :with_activity_user, ->(user) {
+    joins(activity_prize:[:promotion_activity]).
+    where('promotion_activities.user_id = ?',user.id) }
+  scope :activity_today, ->(user) {
+    where(verified: true).
+    with_activity_user(user).
+    where('verify_codes.updated_at BETWEEN ? AND ?',
+          Time.now.beginning_of_day, Time.now.end_of_day) }
+  scope :activity_total, ->(user) { where(verified: true).with_activity_user(user) }
   scope :activity_noverified_total_for_customer, ->(user) {
     joins(:activity_prize).
     where(verified: false).
@@ -28,14 +39,19 @@ class VerifyCode < ActiveRecord::Base
     result = {}
     verify_code = VerifyCode.find_by(code: code)
     if verify_code && verify_code.target_type == 'OrderItem'
-      result = VerifyCode.with_user(seller).find_by(code: code).verify_code
+      result[:success] = VerifyCode.with_user(seller).find_by(code: code).verify_code
       if result[:success] == true
-        result[:verfiy_code] = verify_code
+        result[:verfiy_code] = code
+      end
+    elsif verify_code && verify_code.target_type == 'DishesOrder'
+      result[:success] = VerifyCode.with_user(seller).find_by(code: code).verify_code
+      if result[:success] == true
+        result[:verfiy_code] = code
       end
     elsif verify_code && verify_code.activity_prize
-      result =  verify_code.verify_activity_code(seller)
+      result[:success] =  verify_code.verify_activity_code(seller)
       if result[:success] == true
-        result[:verfiy_code] = verify_code
+        result[:verfiy_code] = code
       end
     else
       result[:success] = false

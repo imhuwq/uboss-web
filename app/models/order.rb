@@ -15,6 +15,7 @@ class Order < ActiveRecord::Base
   belongs_to :seller, class_name: "User"
   belongs_to :user_address
   has_many   :order_items
+  has_many   :evaluations
   has_many   :preferential_measures, through: :order_items
   has_many   :preferentials_seller_bonuses, through: :order_items
   has_many   :preferentials_privileges, through: :order_items

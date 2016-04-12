@@ -93,8 +93,18 @@ $ ->
     $('.category-more-box').toggleClass('hidden')
     $(this).toggleClass('up')
 
-  $('.recommend-icon span').on 'click',->
-    $(this).toggleClass('active')
+  $('.recommend-icon span').on 'click',(e)->
+    e.preventDefault()
+    me = $(this)
+    id  = me.parent().closest('.order-item-box').data('id')
+    $.ajax
+      url: "/products/#{id}/recommend"
+      type: 'GET'
+      success: (res) ->
+        if res['status'] == "ok"
+          me.toggleClass('active')
+        else
+          alert(res['error'])
 
   $('#ucategory-more').on 'click' , ->
     if $(this).hasClass('arrow-top')

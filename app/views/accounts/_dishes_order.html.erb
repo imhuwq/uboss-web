@@ -1,4 +1,4 @@
-<% if params[:state] != "completed" || service_order.order_item.evaluations.size == 0 %>
+<% if params[:state] != "completed" || service_order.evaluations.size == 0 %>
   <div class="order-list" timestamp='<%= service_order.created_at %>'>
     <div class="seller-box">
       <span class="pull-right like-color">
@@ -9,7 +9,7 @@
     <%= link_to  service_order_path(service_order) do %>
     <div class="comfirmed-dishes-box bg-white nogap black-color">
       <div class="gap-lr">
-      <% service_order.order_items.each do |order_item| %>        
+      <% service_order.order_items.each do |order_item| %>
           <div class="m-bottom10">
             <span class="pull-right text-cut num text-right gray-color">x <%= order_item.try(:amount) %></span>
             <span class="pull-right text-cut price ">￥ <%= order_item.present_price %></span>
@@ -41,11 +41,14 @@
         <%= link_to "确认付款", payments_charges_path(order_ids: service_order.id, showwxpaytitle: 1), class: 'my_retur my_confir btn btn-orange-border' %>
       </div><!-- order-info -->
     <% end %>
-    <% if service_order.state == 'completed' %>
-      <div class="order-info">
-        <%= link_to "评价", payments_charges_path(order_ids: service_order.id, showwxpaytitle: 1), class: 'my_retur my_confir btn btn-orange-border' %>
-      </div><!-- order-info -->
+    <% if service_order.completed? || service_order.state == 'unevaluate' %>
+        <% if service_order.evaluations.size > 0 %>
+		      <%= link_to "追评", append_evaluation_path(id: service_order.id, type: 'Order'), class: 'btn btn-mid btn-orange' %>
+		    <% else %>
+          <div class="order-info">
+		        <%= link_to "评价", new_evaluation_path(order_id: service_order.id), class: 'btn btn-mid btn-orange' %>
+          </div><!-- order-info -->
+        <% end %>
     <% end %>
-
   </div>
 <% end %>

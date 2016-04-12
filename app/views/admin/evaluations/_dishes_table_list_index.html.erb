@@ -1,0 +1,70 @@
+<div class="container evaluations_wrapper">
+	<table class="list-table" id="verify_codes">
+    <thead>
+      <tr>
+        <th>商品名称</th>
+        <th>消费时间</th>
+        <th>评价时间</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @dishes_orders.each_with_index do |order, index| %>
+        <tr>
+          <td>
+            菜品验证
+            <div id="ordermodal_<%= index + 1 %>" class="modal fade in show-order-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+             <div class="modal-dialog" role="document">
+
+               <div class="modal-content">
+                <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                  <h4 class="modal-title" id="myModalLabel">验证详情</h4>
+                </div>
+                 <div class="modal-body">
+                   <table class="white-table">
+                     <% order.order_items.each do |item| %>
+                       <tr>
+                         <td style="width: 120px;">
+                          <% if item.product.image_url %>
+                            <%= image_tag(item.product.image_url(:thumb), size: "80x80", alt: "-") %>　
+                          <% else %>
+                            <%= image_tag('admin/no-img.png',width:120)%>
+                          <% end %>
+                         </td>
+                         <td class="text-left"><%= item.product.name %></td>
+                         <td class="text-left">X <%= item.amount %></td>
+                         <td class="text-right"><%= item.pay_amount %></td>
+                       </tr>
+                     <% end %>
+                   </table>
+                   <br />
+                   <div class='text-center'>总价: <%= order.present_price %></div>
+                 </div>
+               </div><!-- /.modal-content -->
+             </div><!-- /.modal-dialog -->
+           </div>
+            <button type="button" class="btn " data-toggle="modal" data-target="#ordermodal_<%= index + 1 %>">
+              详情
+            </button>
+          </td>
+          <td><%= order.verified_time %></td>
+          <td><%= order.evaluations.try(:first).try(:created_at) %></td>
+        </tr>
+        <% if order.evaluations.size == 0 %>
+          <tr>
+            <td></td>
+            <td colspan='3' class="text-left">消费者未填写内容评价</td>
+          </tr>
+        <% else %>
+          <% order.evaluations.each do |evaluation| %>
+            <tr>
+              <td></td>
+              <td colspan='2' class="text-left"><%= evaluation.content %></td>
+            </tr>
+          <% end %>
+        <% end %>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>

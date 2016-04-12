@@ -6,8 +6,10 @@
   <a class="back" onclick="history.go(-1)"><%= image_tag 'mobile/right.png' %></a>
 <% end %>
 
-<%= content_for :extra_meta_tags do %>
-  <%= sharing_meta_tags(@product, @sharing_link_node) %>
+<% if @evaluation.order_item_id.present? %>
+  <%= content_for :extra_meta_tags do %>
+    <%= sharing_meta_tags(@product, @sharing_link_node) %>
+  <% end %>
 <% end %>
 
 <br />
@@ -23,7 +25,9 @@
     <h3 class="gray-color"><%= @evaluation.status_i18n %></h3>
     <p>感谢你的评价!</p>
     <br />
-    <%= link_to "分享", '#', class: "btn btn-large btn-block p-sharing-btn" %>
+    <% if @evaluation.order_item_id.present? %>
+      <%= link_to "分享", '#', class: "btn btn-large btn-block p-sharing-btn" %>
+    <% end %>
     <br />
     <%= link_to "返回首页", root_path, class: "btn btn-large btn-block btn-black-border" %>
   </div>
