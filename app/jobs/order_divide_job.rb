@@ -148,8 +148,7 @@ class OrderDivideJob < ActiveJob::Base
         elsif @order.class == DishesOrder
           @verify_code.update_columns(income: order_income, sharing_rewared: true)
           @order.update_columns(income: order_income)
-          @order.update_columns(sharing_rewared: true)
-          end
+          @order.update_columns(sharing_rewared: true) 
         end
       rescue => e
         logger.error "!!!Exception raise up! Dividing order: #{@order.number} ! Message: #{e.message} !!!"
