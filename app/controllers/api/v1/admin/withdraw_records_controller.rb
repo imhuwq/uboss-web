@@ -1,4 +1,4 @@
-class Api::V1::WithdrawRecordsController < ApiBaseController
+class Api::V1::Admin::WithdrawRecordsController < ApiBaseController
 
   def index
     withdraw_infos = [] 

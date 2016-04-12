@@ -1,4 +1,4 @@
-class Api::V1::VerifyCodesController < ApiBaseController
+class Api::V1::Admin::VerifyCodesController < ApiBaseController
 
   before_action :find_orders, only: [:verify_history, :receipt_history]
 

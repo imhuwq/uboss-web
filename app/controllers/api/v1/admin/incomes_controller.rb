@@ -1,4 +1,4 @@
-class Api::V1::IncomesController < ApiBaseController
+class Api::V1::Admin::IncomesController < ApiBaseController
 
   def yesterday_income_and_balance
     yesterday_income = current_user.verified_codes.where(updated_at: Date.yesterday).sum(:income)

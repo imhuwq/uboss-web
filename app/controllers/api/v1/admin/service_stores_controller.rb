@@ -19,6 +19,24 @@ class Api::V1::Admin::ServiceStoresController < ApiBaseController
     end
   end
 
+  def show 
+    store = current_user.service_store
+    banners = Advertisement.where(user_type: 'Service', user_id: current_user.id).order('order_number').select(:id, :advertisement_url)
+    render json: {
+      store_name: store.store_name,
+      address: store.address,
+      #qrcode_url: store.qrcode_url,
+      mobile: store.mobile_phone, 
+      store_short_description: store.store_short_description,
+      opening_time: store.business_hours,
+      store_cover: store.store_cover,
+      store_banners: banners 
+    }
+  end
+
+  def update
+  end
+
   private
   def service_store_params
     params.permit(
