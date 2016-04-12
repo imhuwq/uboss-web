@@ -152,9 +152,4 @@ class ApplicationController < ActionController::Base
     params['shared'] == 'true'
   end
   helper_method :qr_sharing?
-
-  def trigger_realtime_message(message, recipient_user_ids)
-    $redis.publish 'realtime_msg', { msg: message, recipient_user_ids: recipient_user_ids }.to_json
-  end
-
 end

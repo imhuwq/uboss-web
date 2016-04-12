@@ -29,7 +29,7 @@ class CallingServicesController < ApplicationController
     end
 
     if @calling_notify.save
-      trigger_realtime_message(calling_notify_msg, [@seller.id])
+      trigger_realtime_message(calling_notify_msg)
       notify_seller
       render json: { status: "ok", message: "呼叫成功", type: (params[:type] || 'nothing') }
     else
@@ -48,12 +48,12 @@ class CallingServicesController < ApplicationController
     if table_number
       if old_number
         TableNumber.clear_seller_table_number(@seller, cookies[:table_nu])
-        trigger_realtime_message(set_table_number_msg('set_unuse_table', old_number), [@seller.id])
+        trigger_realtime_message(set_table_number_msg('set_unuse_table', old_number))
       end
 
       cookies[:table_nu] = table_number.number
       table_number.update(status: 1)
-      trigger_realtime_message(set_table_number_msg('set_used_table', table_number.number), [@seller.id])
+      trigger_realtime_message(set_table_number_msg('set_used_table', table_number.number))
       redirect_to action: :index
     else
       flash[:error] = "请选择正确的桌号"
@@ -62,6 +62,24 @@ class CallingServicesController < ApplicationController
   end
 
   private
+
+  def find_seller
+    @seller = User.find(params[:seller_id])
+  end
+
+  def find_unuse_table_numbers
+    @table_numbers = TableNumber.where(user: @seller, status: 0).order("number ASC")
+  end
+
+  def find_using_table_number
+    unless @table_number = TableNumber.find_by(user: @seller, number: cookies[:table_nu], status: 1)
+      redirect_to action: :table_numbers
+    end
+  end
+
+  def trigger_realtime_message(message)
+    $redis.publish 'realtime_msg', { msg: message, recipient_user_ids: [@seller.id] }.to_json
+  end
 
   def set_table_number_msg(type, number)
     {
@@ -90,20 +108,6 @@ class CallingServicesController < ApplicationController
 <a href='#{notifies_seller_calling_services_url(seller_id: @seller.id)}'>查看详情</a>
         MSG
       )
-    end
-  end
-
-  def find_seller
-    @seller = User.find(params[:seller_id])
-  end
-
-  def find_unuse_table_numbers
-    @table_numbers = TableNumber.where(user: @seller, status: 0).order("number ASC")
-  end
-
-  def find_using_table_number
-    unless @table_number = TableNumber.find_by(user: @seller, number: cookies[:table_nu], status: 1)
-      redirect_to action: :table_numbers
     end
   end
 end
