@@ -1,8 +1,8 @@
 class MenusController < ApplicationController
   include SharingResource
-  before_action :authenticate_user!, only: [:order]
+  before_action :authenticate_user!, except: :index
   before_action :set_store
-  before_action :authenticate_user_if_browser_wechat, only: [:index, :confirm]
+  before_action :authenticate_user_if_browser_wechat, except: :index
   before_action :set_sharing_link_node, only: [:index]
   layout 'mobile'
 

@@ -27,8 +27,8 @@
               <%= product.name %>
             <% end %>
           </td>
-          <td><%= product.verified_codes.count %></td>
-          <td><%= product.verified_codes.sum(:income) %></td>
+          <td><%= product.verify_codes.count %></td>
+          <td><%= product.verify_codes.sum(:income) %></td>
           <td><%= product.created_at.to_date %></td>
         </tr>
       <% end %>

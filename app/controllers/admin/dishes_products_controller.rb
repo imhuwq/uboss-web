@@ -2,7 +2,7 @@ class Admin::DishesProductsController < AdminController
   load_and_authorize_resource class: 'DishesProduct'
   def index
     @statistics = {}
-    @dishes = @dishes_products.available.page(params[:page])
+    @dishes = @dishes_products.available.order('created_at DESC').page(params[:page])
   end
 
   def edit
@@ -83,7 +83,7 @@ class Admin::DishesProductsController < AdminController
       ))
     end
     ## 目前没有红包优惠, 如果加上红包优惠需要去掉此行
-    dishes[:product_inventories_attributes].each {|k,v| v[:share_amount_lv_1] = v[:share_amount_total] }
+    dishes[:product_inventories_attributes].each {|k,v| v[:share_amount_lv_1] = v[:share_amount_total] } if dishes[:product_inventories_attributes].present?
     dishes
   end
 end

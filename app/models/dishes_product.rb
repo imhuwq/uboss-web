@@ -6,16 +6,21 @@ class DishesProduct < Product
   validate :rebaste_amount_less_price
   validates_presence_of :present_price
   validates_presence_of :product_inventories
-  validates_presence_of :categories
 
-  def today_verify_code
-    dishes_orders = DishesOrder.includes(:order_items).has_payed.where(order_items: {product_id: id})
-    user.verify_codes.today(user).where(target_type: 'DishesOrder', target_id: dishes_orders.ids)
+  after_create :create_default_category
+
+  def today_verify_code_count
+    codes = VerifyCode.today(user).where(target_type: 'DishesOrder')
+    a = codes.map do |code|
+      code.target.order_items.where(product_id: id).sum(:amount)
+    end.sum
   end
 
-  def total_verify_code
-    dishes_orders = DishesOrder.includes(:order_items).has_payed.where(order_items: {product_id: id})
-    user.verify_codes.total(user).where(target_type: 'DishesOrder', target_id: dishes_orders.ids)
+  def total_verify_code_count
+    codes = VerifyCode.total(user).where(target_type: 'DishesOrder')
+    codes.map do |code|
+      code.target.order_items.where(product_id: id).sum(:amount)
+    end.sum
   end
 
   def categories=(id)
@@ -50,6 +55,12 @@ class DishesProduct < Product
   end
 
   private
+  def create_default_category
+    if self.categories.blank?
+      self.categories << Category.find_or_create_by(name: '其他',user_id: user_id, store_id: user.service_store.id, store_type: user.service_store.class.name)
+    end
+  end
+
   def rebaste_amount_less_price
     errors.add(:rebate_amount, '不能大于现价') if self.rebate_amount.present? && self.rebate_amount > self.present_price
   end

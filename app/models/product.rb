@@ -45,7 +45,7 @@ class Product < ActiveRecord::Base
 
   validate :must_has_one_image, unless: :optional_image?
   validate :must_has_one_product_inventory, if: -> { self.class.name != 'DishesProduct'}
-  validates_presence_of :user_id, :name, :asset_img, :type
+  validates_presence_of :user_id, :name, :type
 
   before_create :generate_code
   before_validation :add_categories_after_create
