@@ -9,15 +9,13 @@
       </tr>
     </thead>
     <tbody>
-      <% i = 0 %>
-      <% @verify_codes.each do |verify_code| %>
-      <% i += 1%>
+      <% @verify_codes.each_with_index do |verify_code, index| %>
         <tr>
           <td class="text-left">
             <% if verify_code.target_type == 'DishesOrder' %>
               菜品验证
 
-              <div id="ordermodal_<%= i %>" class="modal fade in show-order-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+              <div id="ordermodal_<%= index + 1 %>" class="modal fade in show-order-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
                <div class="modal-dialog" role="document">
 
                  <div class="modal-content">
@@ -50,7 +48,7 @@
                  </div><!-- /.modal-content -->
                </div><!-- /.modal-dialog -->
              </div>
-              <button type="button" class="btn " data-toggle="modal" data-target="#ordermodal_<%= i %>">
+              <button type="button" class="btn " data-toggle="modal" data-target="#ordermodal_<%= index + 1 %>">
                 详情
               </button>
 
