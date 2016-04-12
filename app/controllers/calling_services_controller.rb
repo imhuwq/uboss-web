@@ -31,7 +31,7 @@ class CallingServicesController < ApplicationController
     if @calling_notify.save
       trigger_realtime_message(calling_notify_msg)
       notify_seller
-      render json: { status: "ok", message: "呼叫成功", service_id: @calling_service.id }
+      render json: { status: "ok", message: "呼叫成功" }
     else
       render json: { status: "failure", error: "呼叫错误，请刷新再尝试" }
     end
@@ -62,7 +62,7 @@ class CallingServicesController < ApplicationController
   end
 
   def store_notifies
-    @calling_notifies = @seller.calling_notifies
+    @calling_notifies = current_user.calling_notifies
   end
 
   private

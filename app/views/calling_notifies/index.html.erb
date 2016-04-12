@@ -7,7 +7,7 @@
   <% @calling_notifies.each do |calling_notify| %>
     <p>
     <span><%= notify_time calling_notify.called_at %></span>
-    <span><%= calling_notify.calling_number %></span>
+    <span><%= calling_notify.calling_number %>号桌</span>
     <span><%= calling_notify.service_name %></span>
 
     <% if can? :update, CallingNotify %>
