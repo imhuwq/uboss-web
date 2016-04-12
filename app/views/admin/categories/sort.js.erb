@@ -1,4 +1,4 @@
-$(".dises-categories-table-wrap").replaceWith("<%= j render(partial: 'dishes_categories_table', locals: { categories: @categories }) %>");
+$(".dises-categories-table-wrap").replaceWith("<%= j render(partial: 'dishes_categories_table', locals: { categories: @categories, has_many_categories: @has_many_categories }) %>");
 $('.category_<%= @category.id %>').addClass("dish-hover");
 setTimeout(function(){
   $('.category_<%= @category.id %>').removeClass("dish-hover");
