@@ -8,26 +8,28 @@
   &nbsp;
 <% end %>
 <%= content_for :header_right do %>
-  <a class="menu-btn pull-right" href="<%= notifies_seller_calling_services_path(seller_id: @seller.id) %>">呼叫详情</a>
+  <a class="menu-btn pull-right" href="<%= notifies_seller_calling_services_path(seller_id: @seller.id) %>">呼叫详情 <%= image_tag 'mobile/right.png' %></a>
 <% end %>
 
 <div class="m-top10">
   <% @calling_services.each do |calling_service| %>
     <% if calling_service.name != "结帐" %>
       <div class="calling-notify-box">
-      <span class="text-cut"><%= calling_service.name %></span>
-      <button type="button" class="btn calling-service-btn pull-right"
-        data-url=<%= calling_seller_calling_services_path(seller_id: @seller.id, service_id: calling_service.id) %>>呼叫</button>
+       <button type="button" class="btn calling-service-btn pull-right"
+         data-url=<%= calling_seller_calling_services_path(seller_id: @seller.id, service_id: calling_service.id) %>>呼叫<span class="time_count"></span></button>
+       <div class="text-cut service-name"><%= calling_service.name %></div>       
       </div>
     <% end %>
   <% end %>
 
   <div class="calling-notify-box">
-  <span class="text-cut">结帐</span>
-  <button type="button" class="btn calling-service-btn pull-right"
-    data-url=<%= calling_seller_calling_services_path(seller_id: @seller.id, type: 'checkout') %>>呼叫</button>
+    <button type="button" class="btn calling-service-btn pull-right"
+     data-url=<%= calling_seller_calling_services_path(seller_id: @seller.id, type: 'checkout') %>>呼叫<span class="time_count"></span></button>
+    <div class="text-cut service-name">结帐</div>  
   </div>
 </div>
 
-<button type="button" class="btn btn-large btn-block btn-orange calling-service-btn" style="position:fixed;bottom:0;"
-  data-url=<%= calling_seller_calling_services_path(seller_id: @seller.id, type: 'checkout') %>>其它服务</button>
+<div class="calling-order-service">
+  <button type="button" class="btn calling-service-btn " 
+    data-url=<%= calling_seller_calling_services_path(seller_id: @seller.id, type: 'checkout') %>>其它服务<span class="time_count"></span></button>
+</div>
