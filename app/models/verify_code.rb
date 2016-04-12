@@ -93,6 +93,12 @@ class VerifyCode < ActiveRecord::Base
     end
   end
 
+  def order_item
+    if target_type == 'OrderItem'
+      target
+    end
+  end
+
   def verify_time
     updated_at.strftime("%H : %M")
   end
