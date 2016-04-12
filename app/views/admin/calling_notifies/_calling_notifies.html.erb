@@ -11,7 +11,7 @@
 				<td><%= calling_notify.calling_number %></td>
 				<td><%= calling_notify.service_name %></td>
 				<td><%= calling_notify.called_at %></td>
-				<td>
+				<td class='operation'>
           <% if can? :update, CallingNotify %>
             <% if calling_notify.unservice? %>
               <p>

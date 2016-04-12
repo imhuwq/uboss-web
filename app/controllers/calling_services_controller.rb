@@ -29,7 +29,7 @@ class CallingServicesController < ApplicationController
     end
 
     if @calling_notify.save
-      trigger_realtime_message(calling_notify_msg)
+      trigger_realtime_message(calling_notify_msg, [@seller.id])
       notify_seller
       render json: { status: "ok", message: "呼叫成功", type: (params[:type] || 'nothing') }
     else
@@ -48,12 +48,12 @@ class CallingServicesController < ApplicationController
     if table_number
       if old_number
         TableNumber.clear_seller_table_number(@seller, cookies[:table_nu])
-        trigger_realtime_message(set_table_number_msg('unuse_table', old_number))
+        trigger_realtime_message(set_table_number_msg('set_unuse_table', old_number), [@seller.id])
       end
 
       cookies[:table_nu] = table_number.number
       table_number.update(status: 1)
-      trigger_realtime_message(set_table_number_msg('used_table', table_number.number))
+      trigger_realtime_message(set_table_number_msg('set_used_table', table_number.number), [@seller.id])
       redirect_to action: :index
     else
       flash[:error] = "请选择正确的桌号"
@@ -74,13 +74,9 @@ class CallingServicesController < ApplicationController
     {
       title: '新服务通知',
       text: "#{@table_number.number}号桌需要#{@calling_service.name}",
-      type: 'notify',
+      type: 'calling',
       calling_notify: { id: @calling_notify.id, table_number: @calling_notify.calling_number, service_name: @calling_notify.service_name, called_at: @calling_notify.called_at.strftime('%Y-%m-%d %H:%M:%S') }
     }
-  end
-
-  def trigger_realtime_message(message)
-    $redis.publish 'realtime_msg', {msg: message, recipient_user_ids: [@seller.id]}.to_json
   end
 
   def notify_seller

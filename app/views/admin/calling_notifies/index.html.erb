@@ -63,17 +63,21 @@
     messageQueueConsoleLogger = function() {
       message = window.realtime.messageQueue.shift();
       if (message) {
-        if (message.msg.type == "notify") {
+        if (message.msg.type == "calling") {
           appendCallingNotityItem(message.msg.calling_notify);
           $('#realtime-modal .modal-body').html(message.msg.text);
           $('#realtime-modal .modal-title').html(message.msg.title);
           $('#realtime-modal').modal();
         }
-        if (message.msg.type == "unuse_table") {
+        if (message.msg.type == "set_unuse_table") {
           $('.table-number[data-number="'+ message.msg.number +'"]').removeClass('used main-bg-color').addClass('unuse beige-bg-color');
         }
-        if (message.msg.type == "used_table") {
+        if (message.msg.type == "set_used_table") {
           $('.table-number[data-number="'+ message.msg.number +'"]').removeClass('unuse beige-bg-color').addClass('used main-bg-color');
+        }
+        if (message.msg.type == "change_status") {
+          var html = '<p><span>已服务</span></p>';
+          $('.calling_notify[data-id="'+ message.msg.calling_notify_id +'"]>.operation').html(html);
         }
       }
     };
