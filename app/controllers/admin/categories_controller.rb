@@ -19,6 +19,7 @@ class Admin::CategoriesController < AdminController
       @category.move_lower
     end
     @categories = current_user.categories.dishes_categories.includes(:products)
+    @has_many_categories = except_other_has_many_categories
   end
 
   def new
