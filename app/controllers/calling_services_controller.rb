@@ -102,7 +102,7 @@ class CallingServicesController < ApplicationController
   end
 
   def find_unuse_table_numbers
-    @table_numbers = TableNumber.where(user: @seller, status: 0)
+    @table_numbers = TableNumber.where(user: @seller, status: 0).order("number ASC")
   end
 
   def find_using_table_number
