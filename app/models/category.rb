@@ -7,7 +7,7 @@ class Category < ActiveRecord::Base
   has_many :advertisements
   has_and_belongs_to_many :products, -> { uniq }
 
-  acts_as_list
+  acts_as_list scope: :user
 
   has_one_image autosave: true
 
@@ -20,6 +20,7 @@ class Category < ActiveRecord::Base
 
   validates_presence_of :user_id, :name
   validates :name, uniqueness: { :scope => [:user_id, :store_id], message: :exists }
+  validate :validate_position
 
   def asset_img
     super || build_asset_img
@@ -32,4 +33,13 @@ class Category < ActiveRecord::Base
     end
     category
   end
+
+  private
+  def validate_position
+    if position.present?
+      max = user.categories.maximum(:position).to_i + 1
+      self.errors.add(:position, "必须小于或等于#{max}") if position.to_i > max
+    end
+  end
+
 end

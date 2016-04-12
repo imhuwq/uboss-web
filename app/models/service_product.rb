@@ -5,6 +5,7 @@ class ServiceProduct < Product
   validates :service_type, :original_price, :present_price, :monthes, presence: true
   validates :service_type, inclusion: { in: [0, 1] }
   validates :monthes, numericality: { greater_than_or_equal_to: 3 }
+  validates_presence_of :asset_img
 
   DataServiceType = { 0 => '代金券', 1 => '商品' }
 
