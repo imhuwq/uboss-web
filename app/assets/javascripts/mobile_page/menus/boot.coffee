@@ -71,7 +71,10 @@ Zepto ($) ->
 
     Dispatcher.on Menus.Events.SUBMIT_DISHES, (action='confirm') ->
       new Menus.Views.Form({collection: window.dishes}).render()
-      $('#dishes-form').submit()
+      if window.dishes.length is 0
+        alert("请选择菜品")
+      else
+        $('#dishes-form').submit()
 
     recalculateBar = ->
       recalculateBarNum()

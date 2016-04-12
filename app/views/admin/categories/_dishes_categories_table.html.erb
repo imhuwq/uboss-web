@@ -18,7 +18,7 @@
         <td><%= category.products.size %></td>
         <td>
           <%= category.position %>
-          <% if !category.is_default? %>
+          <% if !category.is_default? && has_many_categories %>
             <% if i == 0 %>
               <span class='font-sort'>
                 <%= link_to sort_admin_category_path(id: category.id, opt: 'down', dishes: true), remote: true do %>
