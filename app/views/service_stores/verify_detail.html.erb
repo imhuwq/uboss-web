@@ -30,10 +30,12 @@
   <% @verify_codes.each do |verify_code| %>
     <tr>
       <td>
-        <% if verify_code.order_item_id %>
+        <% if verify_code.order_item.try(:id) %>
           <%= truncate(verify_code.order_item.product.name, length:10) %>
         <% elsif activity_prize = verify_code.activity_prize %>
           <%= activity_prize.try(:activity_info).try(:name) %>(活动奖品)
+        <% elsif verify_code.target_type == 'DishesOrder' %>
+            菜品验证
         <% end %>
       </td>
 	    <td><%= verify_code.verify_time %></td>
