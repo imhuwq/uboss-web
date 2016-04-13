@@ -10,7 +10,7 @@ class ServiceOrderPayedJob < ActiveJob::Base
     @order = order.reload
     @seller = order.seller
     @buyer = order.user
-    raise ServiceOrderNotPayed, order if !order.payed?
+    raise ServiceOrderNotPayed, order if !order.effective?
 
     create_privilege_card_if_none
     send_payed_sms_to_buyer
