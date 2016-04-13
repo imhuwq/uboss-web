@@ -45,7 +45,7 @@ class Category < ActiveRecord::Base
     if self.new_record?
       max = user.categories.maximum(:position).to_i + 1
     else
-      max = user.categories.maximum(:position).to_i
+      max = user.categories.maximum(:position).to_i - 1
     end
     self.errors.add(:position, "必须小于或等于#{max}") if position.present? && position.to_i > max
   end
