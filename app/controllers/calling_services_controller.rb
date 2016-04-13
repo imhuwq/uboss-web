@@ -79,7 +79,7 @@ class CallingServicesController < ApplicationController
   def set_table_number_msg(type, number)
     {
       type: type,
-      number: number
+      calling_number: number
     }
   end
 
