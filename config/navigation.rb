@@ -121,7 +121,7 @@ SimpleNavigation::Configuration.run do |navigation|
       sub_nav.item :s_verify,  '验证', admin_verify_codes_path,
         highlights_on: :subpath, if: -> { can?(:manage, VerifyCode) }
 
-      sub_nav.item :s_calling,  '服务', admin_calling_notifies_path, if: -> { can?(:manage, CallingNotify) } do |thr_nav|
+      sub_nav.item :s_calling,  '服务', '#' do |thr_nav|
         thr_nav.item :calling_services, '呼叫服务', admin_calling_notifies_path, highlights_on: :subpath, if: -> { can?(:manage, CallingNotify) }
         thr_nav.item :service_setting, '服务设置', admin_calling_services_path, highlights_on: :subpath,if: -> { can?(:manage, CallingNotify) }
       end

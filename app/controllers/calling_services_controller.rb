@@ -18,7 +18,7 @@ class CallingServicesController < ApplicationController
                       elsif params[:type] == "checkout"
                         CallingService.find_or_create_by(user: @seller, name: "结帐")
                       elsif params[:type] == "other"
-                        CallingService.find_or_create_by(user: @seller, name: "其它")
+                        CallingService.find_or_create_by(user: @seller, name: "其它服务")
                       end
 
     @calling_notify = CallingNotify.find_or_initialize_by(user: @seller, table_number: @table_number, calling_service: @calling_service)
@@ -93,7 +93,7 @@ class CallingServicesController < ApplicationController
       title: '新服务通知',
       text: "#{@table_number.number}号桌需要#{@calling_service.name}",
       type: 'calling',
-      calling_notify: { id: @calling_notify.id, table_number: @calling_notify.calling_number, service_name: @calling_notify.service_name, called_at: @calling_notify.called_at.strftime('%Y-%m-%d %H:%M:%S') }
+      calling_notify: { id: @calling_notify.id, table_number: @calling_notify.calling_number, service_name: @calling_notify.service_name, called_at: @calling_notify.called_at.strftime('%H:%M') }
     }
   end
 

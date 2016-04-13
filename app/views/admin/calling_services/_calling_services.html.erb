@@ -10,7 +10,7 @@
 				<td><%= calling_service.name %></td>
 				<td><%= strftime calling_service.created_at %></td>
 				<td>
-          <% if can? :update, CallingService %>
+          <% if !["结帐", "其它服务"].include?(calling_service.name) && can?(:update, CallingService) %>
             <p>
             <%= link_to url_for(action: :edit, id: calling_service.id), class:'edit-icon', title: '编辑' do %>
               <i class="fa fa-pencil-square-o"></i>

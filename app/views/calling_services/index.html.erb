@@ -13,7 +13,7 @@
 
 <div style="margin-top: 5px;">
   <% @calling_services.each do |calling_service| %>
-    <% if calling_service.name != "结帐" %>
+    <% if !["结帐", "其它服务"].include?(calling_service.name) %>
       <div class="calling-notify-box">
         <button type="button" class="btn calling-service-btn pull-right"
           data-url=<%= calling_seller_calling_services_path(seller_id: @seller.id, service_id: calling_service.id) %>>呼叫<span class="time_count"></span></button>
