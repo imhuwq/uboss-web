@@ -1,7 +1,6 @@
 class CallingServicesController < ApplicationController
   before_action :authenticate_user!, only: [:store_notifies]
   before_action :find_seller
-  before_action :find_unuse_table_numbers, only: [:table_numbers, :set_table_number]
   before_action :find_using_table_number,  only: [:index, :notifies, :calling]
 
   def index
@@ -42,11 +41,11 @@ class CallingServicesController < ApplicationController
   end
 
   def table_numbers
-    @select_arr = @table_numbers.pluck(:number, :id)
+    @table_numbers = TableNumber.order("number ASC")
   end
 
   def set_table_number
-    table_number = @table_numbers.find_by(id: params[:table_number][:id])
+    table_number = TableNumber.find_by(user: @seller, status: 0, number: params[:table_number][:number])
     old_number   = cookies[:table_nu]
 
     if table_number
@@ -69,10 +68,6 @@ class CallingServicesController < ApplicationController
 
   def find_seller
     @seller = User.find(params[:seller_id])
-  end
-
-  def find_unuse_table_numbers
-    @table_numbers = TableNumber.where(user: @seller, status: 0).order("number ASC")
   end
 
   def find_using_table_number
