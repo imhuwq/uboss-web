@@ -8,7 +8,7 @@ class Admin::EvaluationsController < AdminController
   end
 
   def dishes_index
-    @dishes_orders = current_user.dishes_orders.completed
+    @dishes_orders = current_user.dishes_orders.includes(:order_items).completed
     total
   end
 
