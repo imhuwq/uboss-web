@@ -4,6 +4,8 @@ class BillOrderDivideJob < ActiveJob::Base
 
   class OrderNotPayed < StandardError; ;end
 
+  PLATFORM_BILL_RATE = 0.0078
+
   queue_as :orders
 
   def perform(bill_order)
@@ -13,7 +15,7 @@ class BillOrderDivideJob < ActiveJob::Base
 
     paid_amount = bill_order.paid_amount
 
-    official_divide_income = (paid_amount * 0.007).truncate(2)
+    official_divide_income = (paid_amount * PLATFORM_BILL_RATE).truncate(2)
     seller_bill_income = paid_amount - official_divide_income
 
     ActiveRecord::Base.transaction do

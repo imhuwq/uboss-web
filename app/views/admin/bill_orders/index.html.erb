@@ -5,7 +5,8 @@
         <p>
         <span>打印收款二维码</span>
         <br />
-        <%= qrcode_image_tag(pay_bill_charges_url(ssid: current_user.service_store.id), html: {width: '160'}) %>
+        <%= qrcode_image_tag(pay_bill_charges_url(ssid: current_user.service_store.id),
+                             html: {width: '100', style: "padding:10px;background:white;"}) %>
         </p>
       </a>
     </div>
@@ -52,8 +53,12 @@
       </div>
 
       <div class="modal-body">
+        <p>右键保存二维码图片</p>
+        <p class="text-center">
         <%= qrcode_image_tag(pay_bill_charges_url(ssid: current_user.service_store.id), html: {width: '160'}) %>
-        <p>平台店铺支付费率：0.7%</p>
+        </p>
+        <br />
+        <p>平台店铺支付费率：<%= BillOrderDivideJob::PLATFORM_BILL_RATE * 1000 %> ‰</p>
       </div>
 
       <div class="modal-footer">
