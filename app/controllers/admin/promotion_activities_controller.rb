@@ -12,6 +12,18 @@ class Admin::PromotionActivitiesController < AdminController
     end
   end
 
+  def new
+    if @promotion_activity.user_id.present?
+     if !current_user.service_store.valid?
+      flash[:error] = "为验证奖品验证码，请您先开通实体店铺。"
+      redirect_to controller: :service_stores, action: :edit, id: current_user.service_store.id
+     elsif promotion_activity = PromotionActivity.where(status: 1, user_id: current_user.id).first
+      flash[:error] = "你有活动正在进行中，请等待活动结束再创建。"
+      redirect_to controller: :promotion_activities, action: :show, id: promotion_activity.id
+     end
+    end
+  end
+
   def create
     @promotion_activity.status = 1
     if @promotion_activity.save

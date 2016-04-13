@@ -150,13 +150,13 @@ SimpleNavigation::Configuration.run do |navigation|
         if: -> { can?(:manage, PurchaseOrder) }
     end
 
-    primary.item :promotion_activity, '活动商家', '#', {} do |sub_nav|
+    primary.item :promotion_activity, '商家活动', '#', {} do |sub_nav|
       sub_nav.item :s_published_activities, '参与中', admin_promotion_activities_path(type: 'published'),
-        highlights_on: /type=published/,
+        highlights_on: -> { params[:type] == 'published' && controller_name == 'promotion_activities'},
         if: -> { can?(:read, PromotionActivity) }
 
       sub_nav.item :s_unpublish_activities, '已下架', admin_promotion_activities_path(type: 'unpublish'),
-        highlights_on: /type=unpublish/,
+        highlights_on: -> { params[:type] == 'unpublish' && controller_name == 'promotion_activities'},
         if: -> { can?(:read, PromotionActivity) }
     end
 
