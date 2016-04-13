@@ -79,7 +79,7 @@ class AdminController < ApplicationController
   end
 
   def realtime_server_url
-    return 'http://localhost:5001'
+    Rails.application.secrets.realtime_server_url
   end
 
   def check_new_supplier
