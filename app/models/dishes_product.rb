@@ -63,6 +63,6 @@ class DishesProduct < Product
   end
 
   def rebaste_amount_less_price
-    errors.add(:rebate_amount, '不能大于现价') if self.rebate_amount.present? && self.rebate_amount > self.present_price.to_f
+    errors.add(:rebate_amount, '不能大于现价') if self.rebate_amount.present? && self.rebate_amount.to_i > self.present_price.to_i
   end
 end
