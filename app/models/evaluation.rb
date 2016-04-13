@@ -13,7 +13,6 @@ class Evaluation < ActiveRecord::Base
   validates :status, presence: true
   validates :order_item_id, presence: true, if: -> { order_id.blank? }
   validates :order_id, presence: true, if: -> { order_item_id.blank? }
-  scope :has_evaluationed, -> (id) { where(order_item_id: id) }
 
   enum status: { worst: 1, bad: 2, good: 3, better: 4, best: 5 }
 
