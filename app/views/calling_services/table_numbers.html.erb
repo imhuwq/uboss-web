@@ -2,7 +2,7 @@
   呼叫服务
 <% end %>
 <%= content_for :page_title do %>
-  <div class="text-center" style="padding-right: 10px;">所在桌号</div>
+  <div class="text-center" style="padding-right: 10px;">选择桌号</div>
 <% end %>
 <%= content_for :header_right do %>
   <span class="pull-right">&nbsp;</span>
@@ -11,24 +11,31 @@
   <span class="pull-left">&nbsp;</span>
 <% end %>
 
-<%= simple_form_for 'table_number', url: set_table_number_seller_calling_services_path(seller_id: params[:seller_id]) do |f| %>
-  
-    <div class="text-center" style="transform: translate(-50%,-50%); top: 50%;left: 50%; position: absolute; width: 100%;">
-     <div class="m-bottom10">
-       <span class="calling-service-local main-color">所在桌号</span>
-     </div>
-     <div><%= f.select :id, options_for_select([['请选择桌号', '']] + @select_arr), {} %></div>     
-     <br />
-     <div><%= f.submit '确定', class:"btn btn-large btn-orange disabled",style:'width:30%'%><div>
-    </div>
-<% end %>
+<div class="table-number-list box-w100 nogap text-center">
+ <!-- 循环部分 -->
+ <div class="box-w25 active">
+   <div class="number-box"><span>1</span></div>
+   <p>桌号</p>
+ </div><!-- box-w25 -->
+ <!-- 循环部分 结束 -->
+ <div class="box-w25 selected">
+   <div class="number-box"><span>2</span></div>
+   <p>桌号</p>
+ </div>
+ <div class="box-w25">
+   <div class="number-box"><span>3</span></div>
+   <p>桌号</p>
+ </div>
+</div><!-- table-number -->
+<div class="calling-order-service">
+  <button class="btn btn-block btn-large noradius" style="font-size: 16px;">确定</button>
+</div>
 <script>
-$("#table_number_id").on('change',function(){
-  if($("#table_number_id").prop('value') != ''){
-    $('.btn').removeClass('disabled')
-  }else{
-    $('.btn').addClass('disabled')
-  }
-})
+ $('.table-number-list .box-w25').on('click',function(){
+   if(!$(this).hasClass('selected')){
+     $('.table-number-list .box-w25').removeClass('active');
+     $(this).addClass('active')
+   }
+ });
   
 </script>
