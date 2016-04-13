@@ -50,6 +50,7 @@ class Admin::CategoriesController < AdminController
   def update
     @dishes = params[:dishes]
     if @category.update(category_params)
+      Category.find_by(name: '其他', user_id: @category.user_id).try(:move_to_bottom)
       redirect_to admin_categories_url(dishes: @dishes), notice: "成功更新分组#{@category.name}"
     else
       render :edit
