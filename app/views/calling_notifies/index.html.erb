@@ -5,7 +5,9 @@
   服务系统
 <% end %>
 <%= content_for :header_right do %>
-  <button class="btn btn-mid btn-orange pull-right" style="margin:6px 10px 0 0 ; width: ;">退出</button>
+  <% if !browser.wechat? && !session[:app_user] %>
+    <%= link_to "退出", destroy_user_session_path, method: :delete, class: "btn btn-mid btn-orange pull-right", style: "margin:6px 10px 0 0;" %>
+  <% end %>
 <% end %>
 <%= content_for :header_right do %>
   <span class="pull-left">&nbsp;</span>
