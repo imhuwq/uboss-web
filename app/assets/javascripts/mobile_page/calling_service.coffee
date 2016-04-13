@@ -42,11 +42,15 @@ $ ->
       type: 'PATCH'
       success: (res) ->
         if res.status == 'ok'
-          $(".calling-notify-unservice[data-id=\"#{res.id}\"]")
-            .removeClass('calling-notify-unservice')
-            .addClass('btn-gray')
-            .html('已服务')
-          flashPopContent("<div class=\"pop-text\">#{res.msg}</div>")
+          if res.type == 'checkout'
+            $(".calling-notify-box[data-number=\"#{res.number}\"]").remove()
+            flashPopContent("<div class=\"pop-text\">#{res.msg}</div>")
+          else
+            $(".calling-notify-unservice[data-id=\"#{res.id}\"]")
+              .removeClass('calling-notify-unservice')
+              .addClass('btn-gray')
+              .html('已服务')
+            flashPopContent("<div class=\"pop-text\">#{res.msg}</div>")
         if res.status == 'failure'
           flashPopContent("<div class=\"pop-text\">#{res.error_msg}</div>")
       error: (data, status, e) ->

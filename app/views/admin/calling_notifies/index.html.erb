@@ -78,8 +78,13 @@
           $('.table-number[data-number="'+ message.msg.number +'"]').removeClass('unuse beige-bg-color').addClass('used main-bg-color');
         }
         if (message.msg.type == "change_status") {
-          var html = '<p><span>已服务</span></p>';
-          $('.calling_notify[data-id="'+ message.msg.calling_notify_id +'"]>.operation').html(html);
+          if (message.msg.checkout == true) {
+            $('.calling_notify[data-number="'+ message.msg.calling_number +'"]').remove();
+            $('.table-number[data-number="'+ message.msg.calling_number +'"]').removeClass("used main-bg-color").addClass("unuse beige-bg-color");
+          }else{
+            var html = '<p><span>已服务</span></p>';
+            $('.calling_notify[data-id="'+ message.msg.calling_notify_id +'"]>.operation').html(html);
+          }
         }
       }
     };

@@ -12,7 +12,7 @@
 <% end %>
 <div style="margin-top: 5px;">
   <% @calling_notifies.each do |calling_notify| %>
-    <div class="calling-notify-box gray-color">
+    <div class="calling-notify-box gray-color" data-number="<%= calling_notify.calling_number %>">
       <% if can? :update, CallingNotify %>
         <% if calling_notify.unservice? %>
           <%= link_to("去服务", "javascript:;", class: "btn btn-mid calling-notify-unservice pull-right", data: { id: "#{calling_notify.id}"}) %>
