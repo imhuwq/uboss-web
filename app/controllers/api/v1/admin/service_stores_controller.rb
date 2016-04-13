@@ -1,5 +1,7 @@
 class Api::V1::Admin::ServiceStoresController < ApiBaseController
 
+  before_action :set_service_store, only: [:show, :update]
+
   def create
     authorize! :create, ServiceStore
     @service_store = current_user.bulid_service_store(service_store_params)
@@ -20,21 +22,56 @@ class Api::V1::Admin::ServiceStoresController < ApiBaseController
   end
 
   def show 
-    store = current_user.service_store
+    qrcode_url = request_qrcode_url({ text: service_store_url(id: @service_store, shared: true) })
     banners = Advertisement.where(user_type: 'Service', user_id: current_user.id).order('order_number').select(:id, :advertisement_url)
     render json: {
       store_name: store.store_name,
       address: store.address,
-      #qrcode_url: store.qrcode_url,
-      mobile: store.mobile_phone, 
+      qrcode_url: qrcode_url,
+      mobile: store.mobile_phone,
       store_short_description: store.store_short_description,
       opening_time: store.business_hours,
       store_cover: store.store_cover,
-      store_banners: banners 
+      store_banners: banners
     }
   end
 
   def update
+    if store.update(service_store_params)
+      render_model_id store
+    else
+      render_model_errors store
+    end
+  end
+
+  def create_advertisement
+    adv = Advertisement.new(params.permit(:avatar))
+    adv.platform_advertisement = false
+    adv.user_id = current_user.id
+    adv.user_type = 'Service'
+    if adv.save
+      render json: { status: 'success' }
+    else
+      render json: { status: 'fail' }
+    end
+  end
+
+  def remove_advertisement
+    adv = Advertisement.find_by(id: params[:id], user_id: current_user.id, user_type: 'Service')
+    if adv && adv.destroy
+      render json: { status: 'success' }
+    else
+      render json: { status: 'fail' }
+    end
+  end
+
+  def update_advertisement
+    adv = Advertisement.find_by(id: params[:id], user_id: current_user.id, user_type: 'Service')
+    if adv && adv.update(avatar: params[:avatar])
+      render json: { status: 'success' }
+    else
+      render json: { status: 'fail' }
+    end
   end
 
   private
@@ -47,6 +84,10 @@ class Api::V1::Admin::ServiceStoresController < ApiBaseController
         :id, :area_code, :fixed_line, :phone_number, :_destroy
       ]
     )
+  end
+
+  def set_service_store
+    store = current_user.service_store
   end
 
 end

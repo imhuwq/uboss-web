@@ -182,7 +182,11 @@ Rails.application.routes.draw do
         get 'balance', to: 'incomes#balance'
         resources :bank_cards, only: [:create, :destroy]
         resources :withdraw_records, only: [:index, :create]
-        resource :service_stores, only: [:show, :update]
+        resource :service_stores, only: [:show, :update] do
+          post :create_advertisement
+          patch :update_advertisement
+          delete :remove_advertisement
+        end
       end
       resources :service_stores, only: [:create] do
         get :total_verify_detail, :today_verify_detail
