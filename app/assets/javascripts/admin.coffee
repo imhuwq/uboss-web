@@ -13,6 +13,7 @@
 #= require jquery-fileupload/basic
 #= require jquery.bxslider
 #= require querystring
+#= require pnotify.custom.min
 #= require admin/carriage_template
 #= require admin/dashboard
 #= require admin/functions
