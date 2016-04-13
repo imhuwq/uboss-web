@@ -1,4 +1,6 @@
 class Order < ActiveRecord::Base
+  EFFECTIVE_STATES = %w(payed completed unevaluate)
+
   def self.inherited(base)
     Order.class_eval do
       define_method(:"is_#{base.name.underscore}?") { type == base.name }
@@ -55,6 +57,10 @@ class Order < ActiveRecord::Base
   def after_close
   end
   def after_signed
+  end
+
+  def effective?
+    EFFECTIVE_STATES.include?(state.to_s)
   end
 
   def total_privilege_amount
