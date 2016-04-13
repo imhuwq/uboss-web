@@ -41,6 +41,8 @@ class Ability
     can :manage, ServiceStore, user_id: user.id
     can :manage, VerifyCode, user_id: user.id
     can :manage, Evaluation, user_id: user.id
+    can :manage, CallingNotify, user_id: user.id
+    can :manage, CallingService, user_id: user.id
   end
 
   def grant_general_permission(user)
