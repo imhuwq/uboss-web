@@ -84,6 +84,7 @@ class OrderDivideJob < ActiveJob::Base
   def perform_dishes_order_divide(object)
     @order = object
     @order_items = object.order_items
+    @verify_code = @order.verify_code
     @order_income = Rails.env.production? ? @order.paid_amount : @order.pay_amount
     logger.info "Start divide dishes order: #{@order.number}, total_paid: #{@order_income}"
 
