@@ -41,7 +41,7 @@ class CallingServicesController < ApplicationController
   end
 
   def table_numbers
-    @table_numbers = TableNumber.order("number ASC")
+    @table_numbers = TableNumber.where(user: @seller).order("number ASC")
   end
 
   def set_table_number
