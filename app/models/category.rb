@@ -44,12 +44,10 @@ class Category < ActiveRecord::Base
   def validate_position
     if self.new_record?
       max = user.categories.maximum(:position).to_i + 1
-      message = "必须小于或等于#{max}"
     else
       max = user.categories.maximum(:position).to_i
-      message = "必须小于#{max}"
     end
-    self.errors.add(:position, message) if position.present? && position.to_i > max
+    self.errors.add(:position, "必须小于或等于#{max}") if position.present? && position.to_i > max
   end
 
   def move_default_category_to_bottom
