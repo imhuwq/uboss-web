@@ -4,6 +4,7 @@ class DishesOrderForm
 
   validate  :captcha_must_be_valid, :mobile_blank_with_oauth_or_binding, if: :need_bind_mobile
   validate  :product_must_be_valid
+  validate  :order_myst_be_valid
 
   delegate :id  , to: '@order'        , prefix: :order  , allow_nil: true
   delegate :user, to: '@sharing_node' , prefix: :sharing, allow_nil: true
@@ -15,10 +16,7 @@ class DishesOrderForm
   before_save :ensure_valid!
 
   def ensure_valid!
-    order &&
-    valid? &&
-    order.valid? &&
-    order.order_items.all? { |i| i.errors.blank? }
+    valid?
   end
 
   def initialize(order, options={})
@@ -93,6 +91,17 @@ class DishesOrderForm
       end
     end
     errors.add(:base, "菜品必须为同一商家") if product_inventories.any? { |inventory| inventory.product.user_id.to_i != seller_id.to_i }
+  end
+
+  def order_myst_be_valid
+    if order.blank?
+      errors.add(:order, "不能为空")
+    else
+      return if order.valid?
+      order.errors.each do |k, m|
+        errors.add(k, m)
+      end
+    end
   end
 
   def product_inventories
