@@ -1,0 +1,35 @@
+<%= content_for :title do %>
+  呼叫服务
+<% end %>
+<%= content_for :header_left do %>
+  <a class="back calling-service-local" href="<%= table_numbers_seller_calling_services_path(seller_id: @seller.id) %>"><%= cookies[:table_nu] %>号桌</a>
+<% end %>
+<%= content_for :page_title do %>
+  &nbsp;
+<% end %>
+<%= content_for :header_right do %>
+  <a class="menu-btn pull-right" href="<%= notifies_seller_calling_services_path(seller_id: @seller.id) %>">呼叫详情 <%= image_tag 'mobile/right.png' %></a>
+<% end %>
+
+<div style="margin-top: 5px;">
+  <% @calling_services.each do |calling_service| %>
+    <% if !["结帐", "其它服务"].include?(calling_service.name) %>
+      <div class="calling-notify-box">
+        <button type="button" class="btn calling-service-btn pull-right"
+          data-url=<%= calling_seller_calling_services_path(seller_id: @seller.id, service_id: calling_service.id) %>>呼叫<span class="time_count"></span></button>
+        <div class="text-cut service-name"><%= calling_service.name %></div>
+      </div>
+    <% end %>
+  <% end %>
+
+  <div class="calling-notify-box">
+    <button type="button" class="btn calling-service-btn pull-right"
+      data-url=<%= calling_seller_calling_services_path(seller_id: @seller.id, type: 'checkout') %>>呼叫</button>
+    <div class="text-cut service-name">结帐</div>
+  </div>
+</div>
+
+<div class="calling-order-service">
+  <button type="button" class="btn calling-service-btn "
+    data-url=<%= calling_seller_calling_services_path(seller_id: @seller.id, type: 'other') %>>其它服务<span class="time_count"></span></button>
+</div>

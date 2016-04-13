@@ -9,7 +9,7 @@ module OperationLoggable
     return if ["GET", "HEAD"].include?(request.method)
 
     id                    = "id=#{params[:id].nil? ? '-' : params[:id]}"
-    user                  = "User#{current_user.nil? ? '-' : current_user.id}"
+    user                  = "User#{original_current_user.nil? ? '-' : original_current_user.id}"
     status                = "status=#{response.status}"
     request_method        = "#{request.method}"
     controller_and_action = "Admin::#{controller_name.camelcase}##{action_name.camelcase}"

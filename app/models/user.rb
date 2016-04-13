@@ -6,7 +6,7 @@ class User < ActiveRecord::Base
   include Orderable
   include Sellerable
 
-  attr_accessor :code, :mobile_auth_code
+  attr_accessor :being_agency, :code, :mobile_auth_code
   OFFICIAL_ACCOUNT_LOGIN = '13800000000'.freeze
 
   devise :database_authenticatable, :rememberable, :trackable, :recoverable, :validatable, :confirmable,
@@ -30,6 +30,7 @@ class User < ActiveRecord::Base
   has_many :withdraw_records
   has_many :sended_mobile_captchas, class_name: 'MobileCaptcha', foreign_key: 'sender_id'
   has_many :activity_draw_records
+  has_many :store_accounts, class_name: 'SubAccount', foreign_key: 'account_id'
   # for agent
   has_many :divide_incomes
   has_many :sellers, class_name: 'User', foreign_key: 'agent_id'
@@ -66,6 +67,10 @@ class User < ActiveRecord::Base
   has_many :sold_ordinary_order_items, through: :sold_ordinary_orders, source: :order_items
   has_many :categories
   has_many :selling_incomes
+  has_many :sub_accounts
+  has_many :calling_services
+  has_many :calling_notifies
+  has_many :table_numbers
   belongs_to :agent, class_name: 'User'
   has_many :promotion_activities
   has_many :sold_bill_orders, class_name: 'BillOrder', foreign_key: :seller_id
@@ -160,6 +165,11 @@ class User < ActiveRecord::Base
   def has_promotion_activity?
     return @has_promotion_activity if instance_variable_defined?('@has_promotion_activity')
     @has_promotion_activity = PromotionActivity.where(user: self, status: 1).exists?
+  end
+
+  def has_store_account?
+    return @has_store_account if instance_variable_defined?('@has_store_account')
+    @has_store_account = store_accounts.active.exists?
   end
 
   def service_store

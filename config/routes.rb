@@ -143,6 +143,11 @@ Rails.application.routes.draw do
       get :lottery_detail, on: :collection
     end
     resources :bill_orders, only: [:index, :show]
+    resources :calling_notifies, only: [:index] do
+      member do
+        patch :change_status
+      end
+    end
   end
   resource :pay_notify, only: [] do
     collection do
@@ -155,7 +160,17 @@ Rails.application.routes.draw do
       get :edit_rate
     end
   end
-  resources :sellers, only: [:new, :create, :update]
+  resources :sellers, only: [:new, :create, :update] do
+    resources :calling_services, only: [:index] do
+      collection do
+        get   :share
+        get   :table_numbers
+        post  :set_table_number
+        get   :notifies
+        patch :calling
+      end
+    end
+  end
   resources :carts, only: [:index] do
     collection do
       post :checkout
@@ -232,6 +247,10 @@ Rails.application.routes.draw do
 
       get '/refresh_carriage_template', to: 'products#refresh_carriage_template'
 
+      resources :sub_accounts, only: [:index, :update, :create, :new] do
+        patch :active, :block, on: :member
+      end
+
       resources :service_stores, only: [:edit, :update] do
         collection do
           get :income_detail
@@ -247,6 +266,21 @@ Rails.application.routes.draw do
           get :statistics
           get :dishes
           post :verify
+        end
+      end
+
+      resources :calling_notifies, only: [:index] do
+        collection do
+          post  :drop_table
+        end
+        member do
+          patch :change_status
+        end
+      end
+      resources :calling_services, except: [:show] do
+        collection do
+          get :set_table_info
+          patch :update_table_info
         end
       end
 
@@ -358,6 +392,7 @@ Rails.application.routes.draw do
         resource :personal_authentication
         resource :enterprise_authentication
         resource :city_manager_authentication
+        get :search, on: :collection
       end
       resources :agents, except: [:new, :edit, :update, :destroy] do
       end
@@ -378,6 +413,10 @@ Rails.application.routes.draw do
       end
 
       resource :account, only: [:edit, :show, :update] do
+        collection do
+          get :switching_account
+          patch :switch_account
+        end
         get :password, on: :member
         get :binding_agent, :binding_email, :binding_mobile
         patch :binding_agent, to: 'accounts#bind_agent'

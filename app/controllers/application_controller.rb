@@ -191,4 +191,8 @@ class ApplicationController < ActionController::Base
   def get_weixin_openid_form_session
     session["devise.wechat_data"] && session["devise.wechat_data"]["extra"]["raw_info"]["openid"]
   end
+
+  def trigger_realtime_message(message, recipient_user_ids)
+    $redis.publish 'realtime_msg', { msg: message, recipient_user_ids: recipient_user_ids }.to_json
+  end
 end

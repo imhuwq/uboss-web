@@ -5,8 +5,9 @@ html, body {min-width:1220px;}
 .container{ margin: 0 auto; padding:0 10px;width:1200px;overflow: hidden;box-sizing:border-box; }
 .container:after ,.box-w100:after,.box-w100:before{ clear:both;content: ".";   display: block;overflow: hidden; visibility: hidden;    font-size: 0;    line-height: 0;    width: 0;    height: 0;}
 .box-w100{ box-sizing: border-box; padding: 0 10px;}
-.box-w5,.box-w10,.box-w15,.box-w20,.box-w25,.box-w30,.box-w33,.box-w35,.box-w40,.box-w45,.box-w50,.box-w55,.box-w60,.box-w66,.box-w70,.box-w80,.box-w90,.box-w85{ box-sizing:border-box;padding:0 10px;float:left; }
+.box-w5,.box-w8,.box-w10,.box-w15,.box-w20,.box-w25,.box-w30,.box-w33,.box-w35,.box-w40,.box-w45,.box-w50,.box-w55,.box-w60,.box-w66,.box-w70,.box-w80,.box-w90,.box-w85{ box-sizing:border-box;padding:0 10px;float:left; }
 .box-w5{ width:5%;}
+.box-w8{ width:8%;}
 .box-w10{ width:10%;}
 .box-w15{ width:15%;}
 .box-w20{ width:20%;}

@@ -26,3 +26,7 @@ end
 every 1.day, at: "1:55am", roles: [:db] do
   runner "ExpiryActivityVerifyCodeJob.perform_later"
 end
+
+every 5.minutes, roles: [:db] do
+  runner "TableDropJob.perform_now"
+end

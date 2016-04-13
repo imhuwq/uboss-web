@@ -1,0 +1,50 @@
+<%= content_for :title do %>
+  呼叫服务
+<% end %>
+<%= content_for :page_title do %>
+  <div class="text-center" style="padding-right: 10px;">选择桌号</div>
+<% end %>
+<%= content_for :header_right do %>
+  <span class="pull-right">&nbsp;</span>
+<% end %>
+<%= content_for :header_right do %>  
+  <span class="pull-left">&nbsp;</span>
+<% end %>
+
+<div class="table-number-list box-w100 nogap text-center">
+
+  <% @table_numbers.each do |table_number| %>
+    <div class="box-w25 <%= 'selected' if table_number.used? %>">
+      <div class="number-box"><span><%= table_number.number %></span></div>
+      <p>号桌</p>
+    </div><!-- box-w25 -->
+  <% end %>
+
+</div><!-- table-number -->
+
+<div class="calling-order-service">
+  <%= simple_form_for 'table_number', url: set_table_number_seller_calling_services_path(seller_id: params[:seller_id]) do |f| %>
+    <input type="hidden" name="table_number[number]" value="" />
+  <% end %>
+  <button class="btn btn-block btn-large noradius" style="font-size: 16px;">确定</button>
+</div>
+
+<script>
+  $(function() {
+    $('.table-number-list .box-w25').on('click',function(){
+      if(!$(this).hasClass('selected')){
+        $('.table-number-list .box-w25').removeClass('active');
+        $(this).addClass('active');
+        $("input[name='table_number[number]']").val($(this).find('.number-box>span').html());
+      }
+    });
+
+    $('.calling-order-service button').click(function(){
+      if($("input[name='table_number[number]']").val().length == 0){
+        flashPopContent('<div class="pop-text gray">请选择一个号桌</div>');
+      } else {
+        $('form.table_number').submit();
+      }
+    });
+  })
+</script>
