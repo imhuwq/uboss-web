@@ -1,5 +1,6 @@
 class DishesOrder < ServiceOrder
   has_one :verify_code, -> { where(target_type: 'DishesOrder') }, foreign_key: :target_id
+  validates :order_items,  presence: true
   def present_price
     self.order_items.sum("amount * pay_amount")
   end

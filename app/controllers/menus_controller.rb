@@ -42,7 +42,7 @@ class MenusController < ApplicationController
         format.json { render json: { url: payments_charges_path(order_ids: @order_form.order_id, showwxpaytitle: 1) }, status: 200 }
       else
         format.html { redirect_to service_store_menus_path(@store) }
-        format.json   { render json: { errors: @order_form.errors.full_messages } }
+        format.json { render json: { errors: @order_form.errors.full_messages }, status: 406 }
       end
     end
   end

@@ -49,7 +49,9 @@
     });
   <% end %>
   $(document).ready(function(){
-    $("input[name='commit']").on('click', function(){
+    $("input[name='commit']").on('click', function(e){
+      var element = $(e.target);
+      element.attr("disabled", true);
       $.ajax({
         url: "<%= order_service_store_menus_path(@store, format: :json) %>",
         type: 'POST',
@@ -57,8 +59,14 @@
         success: function(data, status, xhr){
           window.location.href = data.url;
         },
-        error: function(xhr, data){
-          console.log(xhr, 'error');
+        error: function(data, status, xhr){
+          var errors = JSON.parse(data.response).errors;
+          if(errors){
+            alert(errors[0]);
+          }
+        },
+        complete: function(){
+          element.removeAttr("disabled");
         }
       })
     });

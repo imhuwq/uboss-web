@@ -5,6 +5,7 @@ class ServiceOrder < Order
   scope :has_payed, -> { where(state: [1, 6]) }
   has_many :verify_codes, through: :order_items
 
+  EFFECTIVE_STATES = %w(payed completed unevaluate)
   aasm column: :state, enum: true, skip_validation_on_save: true, whiny_transitions: false do
     state :unpay
     state :payed,     after_enter: :invoke_service_order_payed_job
@@ -25,6 +26,10 @@ class ServiceOrder < Order
   # 增加未评价状态
   def state
     super == "completed" && order_item.evaluations.size == 0 ? "unevaluate" : super
+  end
+
+  def effective?
+    EFFECTIVE_STATES.include?(state.to_s)
   end
 
   def paid_and_expensed?

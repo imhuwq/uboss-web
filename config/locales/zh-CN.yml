@@ -250,6 +250,11 @@ zh-CN:
     cities: 权限管理
     revenues: 商家营收
     added: 新增商家
+  activemodel:
+    attributes:
+      dishes_order_form:
+        order_items: 菜单
+        order: 订单
   activerecord:
     models:
       withdraw_record: 提现记录
