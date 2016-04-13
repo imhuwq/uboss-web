@@ -2,11 +2,23 @@ $(document).on 'ajax:beforeSend', '#calling_notifies .change-status-btn', (xhr, 
   return confirm("确定#{$(this).data('text')}?")
 
 $(document).on 'ajax:success', "#calling_notifies .change-status-btn", (e, data) ->
-  html = $("<div>#{data}</div>")
-  window.html = html
-  $('.admin-container').prepend(html.find('.alert'))
-  if html.find('tbody .calling_notify').length > 0
-    $(this).closest('.calling_notify').html(html.find('tbody .calling_notify').html())
+  if data.type == "checkout"
+    alert_html =
+      """
+      <div class="alert alert-success" role="alert" data-dismiss="alert">
+      <button class="close"><span>×</span></button>#{data.message}</div>
+      """
+    $(".calling_notify[data-number=\"#{data.number}\"]").remove()
+    $(".table-number[data-number=\"#{data.number}\"]").removeClass("used main-bg-color").addClass("unuse beige-bg-color")
+    $('.admin-container').prepend(alert_html)
+  else
+    html = $("<div>#{data}</div>")
+    window.html = html
+    $('.admin-container').prepend(html.find('.alert'))
+    if html.find('tbody .calling_notify').length > 0
+      $(this).closest('.calling_notify').html(html.find('tbody .calling_notify').html())
+    else
+      $(this).closest('.calling_notify').remove()
 
 $(document).on 'ajax:error', "#calling_notifies .change-status-btn", ->
   alert('操作失败')

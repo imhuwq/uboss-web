@@ -17,10 +17,20 @@ class Admin::CallingNotifiesController < AdminController
     end
 
     unless @calling_notify.save
-      @error = model_errors(@calling_notify).join('<br/>')
+      flash.now[:error] = model_errors(@calling_notify).join('<br/>')
+    end
+
+    if @calling_notify.service_name == "结帐"
+      TableNumber.clear_seller_table_number(current_user, @calling_notify.calling_number)
+      checkout = true
     end
 
     if request.xhr?
+      if checkout
+        render json: { type: 'checkout', number: @calling_notify.calling_number, message: "结帐后自动下桌（#{@calling_notify.calling_number}号桌）" }
+        return
+      end
+
       render(partial: 'calling_notifies', locals: { calling_notifies: [@calling_notify.reload] })
     else
       redirect_to action: :index

@@ -37,6 +37,10 @@ class CallingServicesController < ApplicationController
     end
   end
 
+  def share
+    cookies[:table_nu] = nil
+  end
+
   def table_numbers
     @select_arr = @table_numbers.pluck(:number, :id)
   end
