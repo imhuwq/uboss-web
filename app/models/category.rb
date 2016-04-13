@@ -43,15 +43,15 @@ class Category < ActiveRecord::Base
   private
   def validate_position
     if self.new_record?
-      max = user.categories.maximum(:position).to_i + 1
+      max = user.categories.dishes_categories.maximum(:position).to_i + 1
     else
-      max = user.categories.maximum(:position).to_i
+      max = user.categories.dishes_categories.maximum(:position).to_i
     end
     self.errors.add(:position, "必须小于或等于#{max}") if position.present? && position.to_i > max
   end
 
   def move_default_category_to_bottom
-    Category.find_by(name: '其他', user_id: user_id).try(:move_to_bottom)
+    Category.find_by(name: '其他', user_id: user_id).try(:move_to_bottom) if self.store_type == 'ServiceStore'
   end
 
   def move_product_to_default_category
