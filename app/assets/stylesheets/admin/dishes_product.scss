@@ -1,3 +1,19 @@
+.recommend-icon {
+  width: 10%;
+  text-align: right;
+  margin-right: 26px;
+  span {
+    display: inline-block;
+    height: 22px;
+    width: 22px;
+    background: image-url('mobile/good.png') no-repeat;
+    background-size: 22px auto;
+    &.active{
+      background-position-y: -42px;
+    }
+  }
+}
+
 .dishes_categories_label {
   padding-left: 12px;
 }

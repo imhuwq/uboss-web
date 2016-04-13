@@ -2,6 +2,7 @@
 	<table class="list-table" id="verify_codes">
     <thead>
       <tr>
+        <th></th>
         <th>商品名称</th>
         <th>消费时间</th>
         <th>评价时间</th>
@@ -10,7 +11,14 @@
     <tbody>
       <% @dishes_orders.each_with_index do |order, index| %>
         <tr>
-          <td>
+          <% size = order.evaluations.size + 2%>
+          <td rowspan=<%= size %>>
+            <p><%= order.user.mobile %></p>
+            <% if order.evaluations.present? %>
+              <p><%= Evaluation.statuses[order.evaluations.first.status] %>分</p>
+            <% end %>
+          </td>
+          <td class='text-left'>
             菜品验证
             <div id="ordermodal_<%= index + 1 %>" class="modal fade in show-order-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
              <div class="modal-dialog" role="document">
@@ -50,20 +58,23 @@
           <td><%= order.verified_time %></td>
           <td><%= order.evaluations.try(:first).try(:created_at) %></td>
         </tr>
-        <% if order.evaluations.size == 0 %>
-          <tr>
-            <td></td>
-            <td colspan='3' class="text-left">消费者未填写内容评价</td>
-          </tr>
-        <% else %>
-          <% order.evaluations.each do |evaluation| %>
-            <tr>
-              <td></td>
-              <td colspan='2' class="text-left"><%= evaluation.content %></td>
-            </tr>
-          <% end %>
-        <% end %>
+        <tr>
+          <td colspan='3' class="text-left">
+            <% order.order_items.each do |item| %>
+              <span><%= item.product.name %></span>
+              <span class="recommend-icon">
+                <span class="<%= item.recommend ? 'active': '' %>"></span>
+              </span><!-- recommend-icon -->
+            <% end %>
+          </td>
         </tr>
+        <% order.evaluations.each_with_index do |evaluat, index| %>
+          <tr>
+            <td colspan='3' class="text-left">
+              <%= evaluat.content %>
+            </td>
+          </tr>
+        <% end %>
       <% end %>
     </tbody>
   </table>
