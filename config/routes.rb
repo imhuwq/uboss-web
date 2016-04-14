@@ -392,7 +392,6 @@ Rails.application.routes.draw do
         resource :personal_authentication
         resource :enterprise_authentication
         resource :city_manager_authentication
-        get :search, on: :collection
       end
       resources :agents, except: [:new, :edit, :update, :destroy] do
       end
@@ -409,6 +408,7 @@ Rails.application.routes.draw do
       end
       resources :sellers, only: [:index, :show, :edit, :update] do
         patch :update_service_rate, on: :member
+        get :search, on: :collection
         get :my_suppliers, on: :collection
       end
 

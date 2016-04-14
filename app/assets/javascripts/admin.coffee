@@ -13,6 +13,7 @@
 #= require jquery-fileupload/basic
 #= require jquery.bxslider
 #= require querystring
+#= require pnotify.custom.min
 #= require admin/carriage_template
 #= require admin/dashboard
 #= require admin/functions
@@ -117,7 +118,7 @@ jQuery ($) ->
     allowClear: true
     minimumInputLength: 2
     ajax:
-      url: "/admin/users/search"
+      url: "/admin/sellers/search"
       dataType: 'json'
       data: (term, page) ->
         return { q: term, page_limit: 10 }
@@ -127,6 +128,6 @@ jQuery ($) ->
       #callback({id: 1, text: 'Mock User'})
       id = $(ele).val()
       if(id!="")
-        $.ajax("/admin/users/search", data: {id: id}, dataType: 'json')
+        $.ajax("/admin/sellers/search", data: {id: id}, dataType: 'json')
          .done (data) ->
            callback(data)
