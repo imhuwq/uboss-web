@@ -18,7 +18,7 @@ class StoresController < ApplicationController
     cookies["activity_store_type"] = 'ordinary'
     @products = append_default_filter @seller.ordinary_products.published, order_column: :updated_at
     @hots = @seller.ordinary_products.hots.recent.limit(3)
-    @categories = Category.where(use_in_store: true, user_id: @seller.id).order('use_in_store_at')
+    @categories = Category.electricity_categories.where(use_in_store: true, user_id: @seller.id).order('use_in_store_at')
     if @sharing_node && @sharing_node.user != current_user
       @promotion_activity = PromotionActivity.find_by(user_id: @seller.id, status: 1)
       @draw_record = current_user && @promotion_activity && ActivityDrawRecord.find_by(
