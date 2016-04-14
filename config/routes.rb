@@ -178,7 +178,7 @@ Rails.application.routes.draw do
         get 'verify_history/:date', to: 'verify_codes#verify_history'
         get 'receipt_history/:date', to: 'verify_codes#receipt_history'
         get 'yesterday_income_and_balance', to: 'incomes#yesterday_income_and_balance'
-        get 'the_income/:date', to: 'incomes#the_income'
+        get 'income/:date', to: 'incomes#the_income'
         get 'balance', to: 'incomes#balance'
         resources :bank_cards, only: [:create, :destroy]
         resources :withdraw_records, only: [:index, :create]

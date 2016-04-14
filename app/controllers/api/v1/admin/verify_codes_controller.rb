@@ -16,27 +16,27 @@ class Api::V1::Admin::VerifyCodesController < ApiBaseController
 
   def verify_history
     authorize! :read, VerifyCode
-    unless orders.nil?
-      orders.each do |order|
+    unless @orders.nil?
+      @orders.each do |order|
         order_item = order.order_item
         product = order_item.product
-        code = order_item.verify_codes.where(verified: true)
-        history << { product_name: product.name, verify_code: code, exchange_time: order.created_at, pay_amount: order.pay_amount, paid_amount: order.paid_amount }
+        code = order_item.verify_codes.find_by(verified: true).try(:code)
+        @history << { product_name: product.name, verify_code: code, exchange_time: order.created_at, pay_amount: order.pay_amount, paid_amount: order.paid_amount }
       end
     end
-    render json: history
+    render json: @history
   rescue => e
     render_error :wrong_params
   end
 
   def receipt_history
     authorize! :read, ServiceOrder
-    unless orders.nil?
-      orders.each do |order|
-        history << { buyer_name: order.username, exchange_time: order.created_at, pay_amount: order.pay_amount, paid_amount: order.paid_amount }
+    unless @orders.nil?
+      @orders.each do |order|
+        @history << { buyer_name: order.username, exchange_time: order.created_at, pay_amount: order.pay_amount, paid_amount: order.paid_amount }
       end
     end
-    render json: history
+    render json: @history
   rescue => e
     render_error :wrong_params
   end
@@ -44,9 +44,9 @@ class Api::V1::Admin::VerifyCodesController < ApiBaseController
   private
 
   def find_orders
-    date = params[:date]
-    orders = ServiceOrder.where(created_at: date, seller_id: current_user.id)
-    history = []
+    @date = params[:date]
+    @orders = ServiceOrder.where("date(created_at) = ? and seller_id = ?", @date, current_user.id)
+    @history = []
   end
 
 end

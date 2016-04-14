@@ -23,27 +23,27 @@ class Api::V1::Admin::ServiceStoresController < ApiBaseController
   end
 
   def show 
-    authorize! :read, store
-    qrcode_url = request_qrcode_url({ text: service_store_url(id: store.id, shared: true) })
+    authorize! :read, @store
+    qrcode_url = request_qrcode_url({ text: service_store_url(id: @store.id, shared: true) })
     banners = Advertisement.where(user_type: 'Service', user_id: current_user.id).order('order_number').select(:id, :advertisement_url)
     render json: {
-      store_name: store.store_name,
-      address: store.address,
+      store_name: @store.store_name,
+      address: @store.address,
       qrcode_url: qrcode_url,
-      mobile: store.mobile_phone,
-      store_short_description: store.store_short_description,
-      opening_time: store.business_hours,
-      store_cover: store.store_cover,
+      mobile: @store.mobile_phone,
+      store_short_description: @store.store_short_description,
+      opening_time: @store.business_hours,
+      store_cover: @store.store_cover,
       store_banners: banners
     }
   end
 
   def update
-    authorize! :update, store
-    if store.update(service_store_params)
-      render_model_id store
+    authorize! :update, @store
+    if @store.update(service_store_params)
+      render_model_id @store
     else
-      render_model_errors store
+      render_model_errors @store
     end
   end
 
@@ -93,7 +93,7 @@ class Api::V1::Admin::ServiceStoresController < ApiBaseController
   end
 
   def set_service_store
-    store = current_user.service_store
+    @store = current_user.service_store
   end
 
 end

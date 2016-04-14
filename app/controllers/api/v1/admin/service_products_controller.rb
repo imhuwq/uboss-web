@@ -15,7 +15,7 @@ class Api::V1::Admin::ServiceProductsController < ApiBaseController
   def show
     product = ServiceProduct.find_by(id: params[:id])
     authorize! :read, product
-    codes = product.verified_codes
+    codes = product.verify_codes
     verified_codes = []
     unless codes.nil?
       codes.each do |code|
