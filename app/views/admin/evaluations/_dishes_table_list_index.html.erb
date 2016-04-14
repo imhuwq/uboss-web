@@ -60,11 +60,17 @@
         </tr>
         <tr>
           <td colspan='3' class="text-left">
-            <% order.order_items.each do |item| %>
-              <span><%= item.product.name %></span>
-              <span class="recommend-icon">
-                <span class="<%= item.recommend ? 'active': '' %>"></span>
-              </span><!-- recommend-icon -->
+            <% order.order_items.each_slice(4) do |items| %>
+              <div class="box-100">
+                <% items.each do |i| %>
+                  <div class="box-w25">
+                    <span class="recommend-icon">
+                      <span class="<%= i.recommend ? 'active': '' %>"></span>
+                    </span><!-- recommend-icon -->
+                    <span class="text-cut"><%= i.product.name %></span>
+                  </div>
+                <% end %>
+              </div>
             <% end %>
           </td>
         </tr>
