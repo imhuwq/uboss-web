@@ -67,6 +67,19 @@ class Admin::SellersController < AdminController
     @statistics[:count] = @my_suppliers.total_count
   end
 
+  def search
+    if params[:id]
+      @user = User.admin.find(params[:id])
+      render json: {id: @user.id, text: "#{@user.login} #{@user.email} #{@user.nickname}"}, root: false
+    else
+      @users = User.ransack(login_or_email_cont: params[:q]).result.admin.limit(params[:page_limit])
+
+      render json: @users.map { |u|
+        {text: "#{u.login} #{u.email} #{u.nickname}", id: u.id}
+      }, root: false
+    end
+  end
+
   private
 
   def set_seller
