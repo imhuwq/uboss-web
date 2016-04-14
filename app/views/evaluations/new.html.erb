@@ -50,24 +50,26 @@
     	</div>
   </div><!-- evaluations-box -->
 <% end %>
-<% @order.order_items.each do |item| %>
-<!-- 有菜品的时候 -->
-  <div class="evaluation-dishes-list bg-white">
-    <!-- 循环  -->
-    <div class="evaluation-dishes-box">
-      <div class="cover"
-        <% if item.product.image_url %>
-          style="background-image:url(<%= item.product.image_url(:thumb) %>) ;"
-        <% end %>
-      ></div><!--cover -->
-      <div class="title text-cut"><%= item.product.name %></div>
-      <div class="recommend-icon">
-        <div class="order-item-box" data-id="<%= item.id %>">
-          <span class="<%= item.recommend ? 'active': '' %>"></span>
-      </div><!-- recommend-icon -->
-    </div><!-- evaluation-dishes-box -->
-  </div><!-- evaluation-dishes-list -->
-  <br />
+<% if @order.present? %>
+  <% @order.order_items.each do |item| %>
+  <!-- 有菜品的时候 -->
+    <div class="evaluation-dishes-list bg-white">
+      <!-- 循环  -->
+      <div class="evaluation-dishes-box">
+        <div class="cover"
+          <% if item.product.image_url %>
+            style="background-image:url(<%= item.product.image_url(:thumb) %>) ;"
+          <% end %>
+        ></div><!--cover -->
+        <div class="title text-cut"><%= item.product.name %></div>
+        <div class="recommend-icon">
+          <div class="order-item-box" data-id="<%= item.id %>">
+            <span class="<%= item.recommend ? 'active': '' %>"></span>
+        </div><!-- recommend-icon -->
+      </div><!-- evaluation-dishes-box -->
+    </div><!-- evaluation-dishes-list -->
+    <br />
+  <% end %>
 <% end %>
 <script type="text/javascript">
   function submitEvaluationStatus() {

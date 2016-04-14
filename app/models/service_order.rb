@@ -28,7 +28,7 @@ class ServiceOrder < Order
   end
 
   def paid_and_expensed?
-    paid? && verify_codes.any? { |verify_code| verify_code.verified }
+    (completed? || state == 'unevaluate') && !verify_codes.any? { |verify_code| !verify_code.verified }
   end
 
   def order_item

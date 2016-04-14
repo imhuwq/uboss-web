@@ -41,16 +41,5 @@
         <%= link_to "确认付款", payments_charges_path(order_ids: service_order.id, showwxpaytitle: 1), class: 'my_retur my_confir btn btn-orange-border' %>
       </div><!-- order-info -->
     <% end %>
-    <% if service_order.completed? || service_order.state == 'unevaluate' %>
-        <% if service_order.evaluations.size > 0 %>
-          <div class="order-info">
-            <%= link_to "追评", append_evaluation_path(id: service_order.id, type: 'Order'), class: 'btn btn-mid btn-orange' %>
-          </div><!-- order-info -->
-		    <% else %>
-          <div class="order-info">
-		        <%= link_to "评价", new_evaluation_path(order_id: service_order.id), class: 'btn btn-mid btn-orange' %>
-          </div><!-- order-info -->
-        <% end %>
-    <% end %>
   </div>
 <% end %>

@@ -26,25 +26,22 @@
 <br />
 -->
 <% if !@order.available_pay? && !@order.unpay? && !@order.closed? %>
-  <div class="bg-white m-top10">
+  <div class="bg-white m-bottom10">
     <div class="gap border-box">
       <% if @order.paid_and_expensed? %>
-        <% if @order_item.evaluations.size > 0 %>
-          <%= link_to "追评", append_evaluation_path(id: @order_item.id), class: 'btn btn-small btn-orange pull-right', style: "margin-left:15px;" %>
+        <% if @order.evaluations.size > 0 %>
+          <%= link_to "追评", append_evaluation_path(id: @order.id, type: 'Order'), class: 'btn btn-small btn-orange pull-right', style: 'margin-left:15px;' %>
         <% else %>
-          <%= link_to "评价", new_evaluation_path(id: @order_item.id), class: 'btn btn-small btn-orange pull-right', style: "margin-left:15px;" %>
-        <% end %>
-        <% if !@order.completed? %>
-          <div class="pull-right">有效期至：<%= strftime(@order_item.product.deadline) %></div>
+          <%= link_to "评价", new_evaluation_path(order_id: @order.id), class: 'btn btn-small btn-orange pull-right', style: 'margin-left:15px;' %>
         <% end %>
       <% end %>
-      验证券
+      <div class="text-cut">验证券</div>
     </div>
     	<div class="service-code gap border-box">
     		<div class="pull-right">
     		<% if @order.verify_code.verified %>
       		<span class="red-color">已消费</span>
-      	<% else %>
+        <% else %>
       		<span class="like-color">待消费</span>
       	<% end %>
       	</div>

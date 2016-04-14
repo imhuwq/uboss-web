@@ -5,6 +5,10 @@ class DishesOrder < ServiceOrder
     self.order_items.sum("present_price * amount")
   end
 
+  def paid_and_expensed?
+    (completed? || state == 'unevaluate')  && verify_code.verified
+  end
+
   def verified_time
     verify_code.updated_at if verify_code.verified
   end
