@@ -71,7 +71,7 @@ class Admin::CallingServicesController < AdminController
   end
 
   def validate_service_store_info
-    unless current_user.service_store && current_user.service_store.try(:valid?)
+    unless current_user.service_store.try(:valid?)
       flash[:alert] = '请先完善实体店铺信息再设置服务'
       redirect_to edit_admin_service_store_path(current_user.service_store)
     end

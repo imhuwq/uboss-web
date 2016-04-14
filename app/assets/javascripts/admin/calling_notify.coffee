@@ -1,6 +1,3 @@
-$(document).on 'ajax:beforeSend', '#calling_notifies .change-status-btn', (xhr, settings) ->
-  return confirm("确定#{$(this).data('text')}?")
-
 $(document).on 'ajax:success', "#calling_notifies .change-status-btn", (e, data) ->
   if data.type == "checkout"
     alert_html =
