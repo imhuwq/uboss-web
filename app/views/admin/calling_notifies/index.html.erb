@@ -67,7 +67,6 @@
       message = window.realtime.messageQueue.shift();
       if (message) {
         if (message.msg.type == "calling") {
-          console.log('mages');
           appendCallingNotityItem(message.msg.calling_notify);
           var notice = new PNotify({
             title: message.msg.title,
