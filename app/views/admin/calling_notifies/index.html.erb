@@ -83,10 +83,11 @@
           // $('#realtime-modal').modal();
         }
         if (message.msg.type == "set_unuse_table") {
-          $('.table-number[data-number="'+ message.msg.number +'"]').removeClass('used main-bg-color').addClass('unuse beige-bg-color');
+          $('.table-number[data-number="'+ message.msg.calling_number +'"]').removeClass('used main-bg-color').addClass('unuse beige-bg-color');
+          $('.calling_notify[data-number="'+ message.msg.calling_number +'"]').remove();
         }
         if (message.msg.type == "set_used_table") {
-          $('.table-number[data-number="'+ message.msg.number +'"]').removeClass('unuse beige-bg-color').addClass('used main-bg-color');
+          $('.table-number[data-number="'+ message.msg.calling_number +'"]').removeClass('unuse beige-bg-color').addClass('used main-bg-color');
         }
         if (message.msg.type == "change_status") {
           if (message.msg.checkout == true) {
