@@ -28,10 +28,10 @@ $ ->
                   $this.closest('.calling-notify-box').find('p.like-color').remove()
               count_down()
           if res.status == "failure"
-            flashPopContent('<div class="pop-text">呼叫错误, 请刷新后再尝试</div>')
+            flashPopContent('<div class="pop-text gray">呼叫错误, 请刷新后再尝试</div>')
         error: (data, status, e) ->
           $this.removeClass('disabled')
-          flashPopContent('<div class="pop-text">操作错误, 请刷新后再尝试</div>')
+          flashPopContent('<div class="pop-text gray">操作错误, 请刷新后再尝试</div>')
           location.reload()
 
 
@@ -43,17 +43,17 @@ $ ->
       type: 'PATCH'
       success: (res) ->
         if res.status == 'ok'
-          if res.type == 'checkout'
+          if res.checkout == true
             $(".calling-notify-box[data-number=\"#{res.number}\"]").remove()
-            flashPopContent("<div class=\"pop-text\">#{res.msg}</div>")
+            flashPopContent("<div class=\"pop-text gray\">#{res.msg}</div>")
           else
             $(".calling-notify-unservice[data-id=\"#{res.id}\"]")
               .removeClass('calling-notify-unservice')
               .addClass('btn-gray')
               .html('已服务')
-            flashPopContent("<div class=\"pop-text\">#{res.msg}</div>")
+            flashPopContent("<div class=\"pop-text gray\">#{res.msg}</div>")
         if res.status == 'failure'
-          flashPopContent("<div class=\"pop-text\">#{res.error_msg}</div>")
+          flashPopContent("<div class=\"pop-text gray\">#{res.error_msg}</div>")
       error: (data, status, e) ->
-        flashPopContent('<div class="pop-text">操作错误, 请刷新后再尝试</div>')
+        flashPopContent('<div class="pop-text gray">操作错误, 请刷新后再尝试</div>')
         location.reload()

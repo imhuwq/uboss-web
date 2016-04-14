@@ -5,6 +5,7 @@ class TableNumber < ActiveRecord::Base
   enum status: { unuse: 0, used: 1 }
 
   before_save :set_expired_at
+  after_save  :destroy_all_calling_notifies, if: -> { status_changed? && unuse? }
 
   validates :user, :number, :status, presence: true
   validates :number, uniqueness: { scope: :user_id }
@@ -19,15 +20,19 @@ class TableNumber < ActiveRecord::Base
 
   def self.clear_seller_table_number(seller, number)
     if table_number = find_by(user: seller, number: number)
-      table_number.update(status: 0, expired_at: nil)
-      table_number.calling_notifies.destroy_all
+      table_number.update(status: 'unuse', expired_at: nil)
     end
   end
 
   private
+
   def set_expired_at
     if status == "used"
       self.expired_at = Time.now + user.service_store.table_expired_in.minutes
     end
+  end
+
+  def destroy_all_calling_notifies
+    self.calling_notifies.destroy_all
   end
 end

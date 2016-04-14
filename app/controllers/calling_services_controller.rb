@@ -4,7 +4,9 @@ class CallingServicesController < ApplicationController
   before_action :find_using_table_number,  only: [:index, :notifies, :calling]
 
   def index
-    @calling_services = @seller.calling_services
+    @calling_services = @seller.calling_services.where("name != ? and name != ?", "结帐", "其它服务")
+    @checkout_service = @seller.calling_services.find_or_create_by(name: "结帐")
+    @other_service    = @seller.calling_services.find_or_create_by(name: "其它服务")
   end
 
   def notifies
@@ -12,15 +14,8 @@ class CallingServicesController < ApplicationController
   end
 
   def calling
-    @calling_service = if params[:service_id].present?
-                        CallingService.find_by(user: @seller, id: params[:service_id])
-                      elsif params[:type] == "checkout"
-                        CallingService.find_or_create_by(user: @seller, name: "结帐")
-                      elsif params[:type] == "other"
-                        CallingService.find_or_create_by(user: @seller, name: "其它服务")
-                      end
-
-    @calling_notify = CallingNotify.find_or_initialize_by(user: @seller, table_number: @table_number, calling_service: @calling_service)
+    @calling_service = @seller.calling_services.find(params[:service_id])
+    @calling_notify  = CallingNotify.find_or_initialize_by(user: @seller, table_number: @table_number, calling_service: @calling_service)
 
     unless @calling_notify.new_record?
       @calling_notify.called_at = Time.now
@@ -50,12 +45,12 @@ class CallingServicesController < ApplicationController
 
     if table_number
       if old_number
-        TableNumber.clear_seller_table_number(@seller, cookies[:table_nu])
+        TableNumber.clear_seller_table_number(@seller, old_number)
         trigger_realtime_message(set_table_number_msg('set_unuse_table', old_number), [@seller.id])
       end
 
       cookies[:table_nu] = table_number.number
-      table_number.update(status: 1)
+      table_number.update(status: "used")
       trigger_realtime_message(set_table_number_msg('set_used_table', table_number.number), [@seller.id])
       redirect_to action: :index
     else
