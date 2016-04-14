@@ -72,9 +72,9 @@
           var notice = new PNotify({
             title: message.msg.title,
             text: message.msg.text,
+            animate_speed: 'fast',
             buttons: {
-              closer: false,
-              sticker: false
+              closer: true,
             }
           });
           notice.get().click(function() { notice.remove(); });
