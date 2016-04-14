@@ -1,6 +1,7 @@
 class Api::V1::Admin::ServiceProductsController < ApiBaseController
 
   def index
+    authorize! :read, ServiceProduct
     products = current_user.service_products.available
     product_infos = []
     unless products.nil?
@@ -13,6 +14,7 @@ class Api::V1::Admin::ServiceProductsController < ApiBaseController
 
   def show
     product = ServiceProduct.find_by(id: params[:id])
+    authorize! :read, product
     codes = product.verified_codes
     verified_codes = []
     unless codes.nil?

@@ -13,6 +13,7 @@ class Api::V1::Admin::ServiceStoresController < ApiBaseController
   end
 
   def verify
+    authorize! :manage, VerifyCode
     result = VerifyCode.verify(current_user, params[:code])
     if result[:success]
       render json: { message: result[:message] }
@@ -22,7 +23,8 @@ class Api::V1::Admin::ServiceStoresController < ApiBaseController
   end
 
   def show 
-    qrcode_url = request_qrcode_url({ text: service_store_url(id: @service_store, shared: true) })
+    authorize! :read, store
+    qrcode_url = request_qrcode_url({ text: service_store_url(id: store.id, shared: true) })
     banners = Advertisement.where(user_type: 'Service', user_id: current_user.id).order('order_number').select(:id, :advertisement_url)
     render json: {
       store_name: store.store_name,
@@ -37,6 +39,7 @@ class Api::V1::Admin::ServiceStoresController < ApiBaseController
   end
 
   def update
+    authorize! :update, store
     if store.update(service_store_params)
       render_model_id store
     else
@@ -45,6 +48,7 @@ class Api::V1::Admin::ServiceStoresController < ApiBaseController
   end
 
   def create_advertisement
+    authorize! :create, Advertisement
     adv = Advertisement.new(params.permit(:avatar))
     adv.platform_advertisement = false
     adv.user_id = current_user.id
@@ -57,6 +61,7 @@ class Api::V1::Admin::ServiceStoresController < ApiBaseController
   end
 
   def remove_advertisement
+    authorize! :destroy, Advertisement
     adv = Advertisement.find_by(id: params[:id], user_id: current_user.id, user_type: 'Service')
     if adv && adv.destroy
       render json: { status: 'success' }
@@ -66,6 +71,7 @@ class Api::V1::Admin::ServiceStoresController < ApiBaseController
   end
 
   def update_advertisement
+    authorize! :update, Advertisement
     adv = Advertisement.find_by(id: params[:id], user_id: current_user.id, user_type: 'Service')
     if adv && adv.update(avatar: params[:avatar])
       render json: { status: 'success' }

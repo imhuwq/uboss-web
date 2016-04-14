@@ -3,6 +3,7 @@ class Api::V1::Admin::VerifyCodesController < ApiBaseController
   before_action :find_orders, only: [:verify_history, :receipt_history]
 
   def verify
+    authorize! :manage, VerifyCode
     result = VerifyCode.verify(current_user, params[:code])
     if result[:success]
       verify_code = VerifyCode.find_by(code: params[:code])
@@ -14,6 +15,7 @@ class Api::V1::Admin::VerifyCodesController < ApiBaseController
   end
 
   def verify_history
+    authorize! :read, VerifyCode
     unless orders.nil?
       orders.each do |order|
         order_item = order.order_item
@@ -28,6 +30,7 @@ class Api::V1::Admin::VerifyCodesController < ApiBaseController
   end
 
   def receipt_history
+    authorize! :read, ServiceOrder
     unless orders.nil?
       orders.each do |order|
         history << { buyer_name: order.username, exchange_time: order.created_at, pay_amount: order.pay_amount, paid_amount: order.paid_amount }

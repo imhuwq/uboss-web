@@ -1,7 +1,8 @@
 class Api::V1::Admin::WithdrawRecordsController < ApiBaseController
 
   def index
-    withdraw_infos = [] 
+    authorize! :read, WithdrawRecord
+    withdraw_infos = []
     withdraw_records = current_user.withdraw_records
     unless withdraw_records.nil?
       withdraw_records.each do |wd|
@@ -12,6 +13,7 @@ class Api::V1::Admin::WithdrawRecordsController < ApiBaseController
   end
 
   def create 
+    authorize! :create, WithdrawRecord
     @withdraw_record = current_user.withdraw_records.build(withdraw_record_params)
     if @withdraw_record.save
       head(200)
@@ -22,7 +24,7 @@ class Api::V1::Admin::WithdrawRecordsController < ApiBaseController
 
   private
 
-  def bank_card_params
+  def withdraw_record_params
     params.permit(:bank_card_id, :amount)
   end
 
