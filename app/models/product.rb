@@ -57,11 +57,13 @@ class Product < ActiveRecord::Base
   end
 
   def max_price_inventory
-    @max_price_inventory ||= seling_inventories.order('price DESC').first
+    @max_price_inventory ||=
+      (seling_inventories.order('price DESC').first || ProductInventory.new)
   end
 
   def min_price_inventory
-    @min_price_inventory ||= seling_inventories.order('price DESC').last
+    @min_price_inventory ||=
+      (seling_inventories.order('price DESC').last || ProductInventory.new)
   end
 
   def max_price
