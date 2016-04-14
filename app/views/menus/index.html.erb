@@ -3,16 +3,13 @@
 <% end %>
 
 <%= content_for :page_title do %>
-  <%= @store.store_identify %>
+  在线点单
 <% end %>
 
 <%= content_for :extra_meta_tags do %>
   <%= service_store_menus_sharing_meta_tags(@store, @sharing_link_node) %>
 <% end %>
 
-<%= content_for :header_left do %>
-  <a class="back" onclick="history.go(-1)"><%= image_tag 'mobile/right.png' %></a>
-<% end %>
 <div id="store-dishes-menus" class="dishes-pop-bg">
 	<div class="close-area"></div>
 	<div class="dishes-menus-container">

@@ -42,6 +42,7 @@ class ApplicationController < ActionController::Base
   helper_method :model_errors
 
   def authenticate_user!
+    store_location_for(:user, request.referer) if request.post? && !request.xhr?
     if Rails.env.development? && params[:mode] == 'admin'
       login_with_admin_model
     elsif browser.wechat?
