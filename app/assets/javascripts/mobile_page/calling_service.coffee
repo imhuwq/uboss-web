@@ -4,6 +4,7 @@ $ ->
     if(!$(this).hasClass('disabled'))
       url = $(this).data('url')
       $this = $(this)
+      $this.addClass('disabled')
       $.ajax
         url: url
         type: 'PATCH'
@@ -12,7 +13,6 @@ $ ->
             if res.type == "checkout"
               location.href += '/share'
             else
-              $this.addClass('disabled')
               $this.closest('.calling-notify-box').append('<p class="like-color text-cut"><small>商家正在准备你所需的服务，稍等就来…</small></p>')
               time_conut = 10
               count_down = () ->
@@ -30,6 +30,7 @@ $ ->
           if res.status == "failure"
             flashPopContent('<div class="pop-text">呼叫错误, 请刷新后再尝试</div>')
         error: (data, status, e) ->
+          $this.removeClass('disabled')
           flashPopContent('<div class="pop-text">操作错误, 请刷新后再尝试</div>')
           location.reload()
 
