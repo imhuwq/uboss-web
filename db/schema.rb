@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160408035556) do
+ActiveRecord::Schema.define(version: 20160330032403) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -134,6 +134,29 @@ ActiveRecord::Schema.define(version: 20160408035556) do
     t.datetime "updated_at",      null: false
     t.string   "weixin_openid"
     t.string   "user_identify"
+  end
+
+  create_table "bill_incomes", force: :cascade do |t|
+    t.decimal  "amount"
+    t.integer  "user_id"
+    t.integer  "bill_order_id"
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
+  end
+
+  add_index "bill_incomes", ["user_id", "bill_order_id"], name: "index_bill_incomes_on_user_id_and_bill_order_id", unique: true, using: :btree
+
+  create_table "bill_orders", force: :cascade do |t|
+    t.integer  "user_id"
+    t.integer  "seller_id"
+    t.string   "number"
+    t.integer  "state"
+    t.decimal  "pay_amount"
+    t.decimal  "paid_amount"
+    t.integer  "order_charge_id"
+    t.datetime "created_at",      null: false
+    t.datetime "updated_at",      null: false
+    t.string   "weixin_openid"
   end
 
   add_index "bill_orders", ["number"], name: "index_bill_orders_on_number", unique: true, using: :btree
@@ -1125,6 +1148,8 @@ ActiveRecord::Schema.define(version: 20160408035556) do
   add_foreign_key "product_properties", "users"
   add_foreign_key "product_property_values", "users"
   add_foreign_key "promotion_activities", "users"
+  add_foreign_key "product_properties", "users"
+  add_foreign_key "product_property_values", "users"
   add_foreign_key "refund_messages", "order_item_refunds"
   add_foreign_key "refund_records", "order_item_refunds"
   add_foreign_key "selling_incomes", "orders"

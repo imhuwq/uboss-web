@@ -1,0 +1,18 @@
+<%= content_for :page_title do %>
+  买单详情
+<% end %>
+
+<%= content_for :header_left do %>
+  <a class="back" onclick="history.go(-1)"><%= image_tag 'mobile/right.png' %></a>
+<% end %>
+
+<br />
+<div class="m-bottom10 bg-white"  timestamp='<%= @bill_order.created_at %>'>
+  <div class="text-cut page-title gray-color gap">商家：<%= @bill_order.seller.ordinary_store.store_name %></div>
+  <hr />
+  <div class="content line-gap">
+    <p class="gray-color">用户支付：<%= @bill_order.paid_amount %></h4>
+    <p class="gray-color">订单编号：<%= @bill_order.number %></h4>
+    <p class="gray-color">消费时间：<%= @bill_order.created_at %></h4>
+  </div>
+</div>

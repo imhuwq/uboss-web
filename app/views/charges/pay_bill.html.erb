@@ -1,0 +1,31 @@
+<div>
+  <div class="box-m40">
+    <br />
+    <br />
+    <p class="text-center">
+    <%= image_tag @service_store.store_cover_url(:thumb), width: 60, height: 60 %>
+    </p>
+    <div class="text-center" style="margin-bottom: 7px; line-height: 1; margin-top: 14px;">
+      <%= @service_store.store_identify %>
+    </div>
+    <p class="text-center">向您收款</p>
+    <br />
+    <div>
+      <%= hidden_field_tag :service_store_id, @service_store.id %>
+      <%= text_field_tag :pay_amount, @pay_amount,
+        placeholder: '输入金额（元）',
+        type: :tel, class:'input-radius input-large input-block' %>
+    </div>
+    <br />
+    <br />
+    <div>
+      <%= link_to "微信支付", bill_orders_path, class: 'req-bill-btn btn btn-large btn-block' %>
+    </div>
+  </div>
+</div>
+
+<% if browser.wechat? %>
+  <script type="text/javascript" charset="utf-8">
+$(function(){ UBoss.nami.setPayenv("<%= $wechat_env %>"); })
+  </script>
+<% end %>

@@ -1,0 +1,71 @@
+<div class="container  admin-container">
+  <div class="box-w25 pull-right">
+    <div class="admin-box1">
+      <a href='' data-toggle="modal" data-target="#qrcode-modal">
+        <p>
+        <span>打印收款二维码</span>
+        <br />
+        <%= qrcode_image_tag(pay_bill_charges_url(ssid: current_user.service_store.id),
+                             html: {width: '100', style: "padding:10px;background:white;"}) %>
+        </p>
+      </a>
+    </div>
+  </div>
+
+  <ul class="breadcrumb">
+    <li><a href="/admin">主页</a></li>
+    <li class="divider"><i class="fa fa-caret-right"></i></li>
+    <li>收银管理</li>
+  </ul>
+</div>
+
+<br />
+
+<div class="container">
+  <table class="list-table">
+    <thead>
+      <th>单号</th>
+      <th>付款人</th>
+      <th>付款金额</th>
+      <th>交易时间</th>
+    </thead>
+    <tbody>
+      <% @bill_orders.each do |bill_order| %>
+        <tr>
+          <td><%= bill_order.number.insert(-6, ' - ') %></td>
+          <td><%= bill_order.user_identify %></td>
+          <td><%= bill_order.paid_amount %></td>
+          <td><%= bill_order.created_at %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+  <%= paginate @bill_orders %>
+  <br />
+</div>
+
+<div class="modal fade" id="qrcode-modal" tabindex="-1" role="dialog" aria-labelledby="labelledby">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span class='close' aria-hidden="true">&times;</span></button>
+        <h3 class="modal-title" id="myModalLabel">收款二维码</h3>
+      </div>
+
+      <div class="modal-body">
+        <p>右键保存二维码图片</p>
+        <p class="text-center">
+        <%= qrcode_image_tag(pay_bill_charges_url(ssid: current_user.service_store.id), html: {width: '160'}) %>
+        </p>
+        <br />
+        <p>平台店铺支付费率：<%= BillOrderDivideJob::PLATFORM_BILL_RATE * 1000 %> ‰</p>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-large gray-btn"data-dismiss="modal">
+          确定
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

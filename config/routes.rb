@@ -66,7 +66,6 @@ Rails.application.routes.draw do
   end
   resources :orders, only: [:new, :create, :show] do
     get 'received', on: :member
-    get 'pay_complete', on: :member
     get 'cancel', on: :member
     post 'change_address', on: :collection
     #resource :charge, only: [:create]
@@ -86,8 +85,10 @@ Rails.application.routes.draw do
   end
 
   resources :charges, only: [:show] do
+    get 'pay_bill', on: :collection
     get 'payments',     on: :collection
     get 'pay_complete', on: :member
+    get 'bill_complete', on: :member
   end
 
   resources :products, only: [:index, :show] do
@@ -109,6 +110,7 @@ Rails.application.routes.draw do
     get :success, on: :member
   end
 
+  resources :bill_orders, only: [:create]
   resources :service_stores, only: [:index, :show] do
     get :verify_detail, on: :member
     get :share, on: :member
@@ -134,11 +136,11 @@ Rails.application.routes.draw do
       get :lotteries, on: :collection
       get :lottery_detail, on: :collection
     end
+    resources :bill_orders, only: [:index, :show]
   end
   resource :pay_notify, only: [] do
     collection do
-      post :wechat_notify
-      post :wechat_alarm
+      post :wechat_notify, :wechat_callback, :wechat_alarm
     end
   end
   resources :privilege_cards, only: [:show, :index] do
@@ -196,6 +198,7 @@ Rails.application.routes.draw do
 
   authenticate :user, lambda { |user| user.admin? } do
     namespace :admin do
+      resources :bill_orders, only: [:index]
       resources :wechat_accounts do
         post :set_menu, on: :member
       end

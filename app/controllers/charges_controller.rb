@@ -1,6 +1,27 @@
 class ChargesController < ApplicationController
 
-  before_action :authenticate_user!
+  include SharingResource
+
+  before_action :authenticate_user!, only: [:payments, :pay_complete]
+  before_action :authenticate_weixin_user_token!, only: [:pay_bill, :bill_complete]
+  before_action :set_sharing_link_node, only: [:bill_complete]
+
+  def pay_bill
+    @service_store = ServiceStore.find(params.fetch(:ssid))
+    @pay_amount = params[:pay_amount].present? ? params[:pay_amount].to_f : nil
+  end
+
+  def bill_complete
+    @order_charge = if current_user.present?
+                      current_user.order_charges.find(params[:id])
+                    else
+                      OrderCharge.joins(:bill_orders).
+                        where(bill_orders: { weixin_openid: get_weixin_openid_form_session }).
+                        find(params[:id])
+                    end
+    @order_charge.check_paid?
+    @seller = @order_charge.bill_orders.first.seller
+  end
 
   def payments
     order_ids = params[:order_ids].split(',')
@@ -27,7 +48,6 @@ class ChargesController < ApplicationController
       package: "prepay_id=#{@order_charge.prepay_id}",
       signType: "MD5"
     }
-    p @pay_p
     @pay_sign = WxPay::Sign.generate(@pay_p)
     render layout: 'mobile'
   end

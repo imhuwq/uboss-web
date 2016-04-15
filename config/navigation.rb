@@ -118,8 +118,10 @@ SimpleNavigation::Configuration.run do |navigation|
       sub_nav.item :s_product, '商品', admin_service_products_path,
         highlights_on: :subpath, if: -> { can?(:read, ServiceProduct) }
 
-      sub_nav.item :s_verify,  '验证', admin_verify_codes_path,
-        highlights_on: :subpath, if: -> { can?(:manage, VerifyCode) }
+      sub_nav.item :s_verify,  '验证', '#' do |thr_nav|
+        thr_nav.item :verify_codes, '验证管理', admin_verify_codes_path, highlights_on: :subpath, if: -> { can?(:manage, VerifyCode) }
+        thr_nav.item :verify_codes, '收银管理', admin_bill_orders_path, highlights_on: :subpath, if: -> { can?(:manage, BillOrder) }
+      end
 
       sub_nav.item :s_pj,      '评价', admin_evaluations_path,
         highlights_on: :subpath, if: -> { can?(:manage, Evaluation) }

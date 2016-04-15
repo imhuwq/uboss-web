@@ -1,0 +1,21 @@
+<%= content_for :page_title do %>
+  我的买单
+<% end %>
+
+<%= content_for :header_left do %>
+  <a class="back" onclick="history.go(-1)"><%= image_tag 'mobile/right.png' %></a>
+<% end %>
+
+<% @bill_orders.each do |order| %>
+  <div class="m-bottom10"  timestamp='<%= order.created_at %>'>
+    <div class="text-cut page-title gray-color gap">商家：<%= order.seller.ordinary_store.store_name %></div>
+    <%= link_to account_bill_order_path(id: order.id) do %>
+      <div class="service-order-box bg-white">
+        <div class="content line-gap">
+          <p class="gray-color text-cut">单号：<%= order.number %></p>
+          <p class="gray-color">支付成功：<%= order.paid_amount %></h4>
+        </div>
+      </div><!-- service-order-box -->
+    <% end %>
+  </div>
+<% end %>

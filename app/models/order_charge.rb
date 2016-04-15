@@ -6,12 +6,15 @@ class OrderCharge < ActiveRecord::Base
   WXPAY_SUCCESS_FLAG = "SUCCESS".freeze
 
   belongs_to :user
+  # Bill order
+  has_many :bill_orders
+  # Product order
   has_many :orders
   has_many :order_items, through: :orders
   has_many :preferential_measures, through: :order_items
   has_many :products, -> { uniq }, through: :order_items
 
-  validates_presence_of :user_id
+  #validates_presence_of :user_id
 
   enum payment: { alipay: 0, alipay_wap: 1, alipay_qr: 2, wx: 3, wx_pub: 4, wx_pub_qr: 5, yeepay_wap: 6 }
 
@@ -27,7 +30,11 @@ class OrderCharge < ActiveRecord::Base
   end
 
   def unpay?
-    orders.any? { |order| order.state == 'unpay' }
+    if orders.exists?
+      orders.any? { |order| order.state == 'unpay' }
+    else
+      bill_orders.any? { |order| order.state == 'unpay' }
+    end
   end
 
   def total_privilege_amount
@@ -35,16 +42,22 @@ class OrderCharge < ActiveRecord::Base
   end
 
   def orders_detail
-    @orders_detail ||= products.limit(10).pluck(:name)
+    if orders.exists?
+      @orders_detail ||= products.limit(10).pluck(:name)
+    elsif bill_orders.exists?
+      bill_orders.map do |bill_order|
+        "[#{bill_order.store_name}]-店铺支付"
+      end
+    end
   end
 
   def reset_pay_serial_number
     set_number if number.blank?
-    self.pay_serial_number = "#{number}-#{Time.current.to_i}"
+    self.pay_serial_number = "#{number}-#{(Time.now - Time.parse('2016-1-1')).to_i}"
   end
 
   def pay_amount
-    orders.sum(:pay_amount)
+    orders.sum(:pay_amount) + bill_orders.sum(:pay_amount)
   end
 
   def check_paid?
@@ -62,6 +75,7 @@ class OrderCharge < ActiveRecord::Base
       #TODO
       assign_paid_amount_to_order
       orders.each { |order| order.pay! }
+      bill_orders.each { |order| order.pay! }
       true
     else
       invoke_wx_pay_cheking
@@ -80,7 +94,7 @@ class OrderCharge < ActiveRecord::Base
     distribute_amount = self.paid_amount
     distribute_orders_size = orders.size
 
-    orders.each_with_index do |order, index|
+    (orders + bill_orders).each_with_index do |order, index|
       order_paid_amount = if index == distribute_orders_size - 1
                             distribute_amount
                           else

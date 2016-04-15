@@ -65,7 +65,7 @@ class GoingMerry.Luffy
     if window.wx?
       $(".wx-mod-pop").show()
     else
-      alert('朋友圈分享只在微信浏览器可用')
+      alert('分享到微信，请在微信浏览器中打开此页面')
 
   toggleSharingContent: ->
     $('.share-container').toggleClass('hidden')
@@ -84,16 +84,55 @@ class GoingMerry.Luffy
     )
 
   shareToQQ: ->
-   @openUrl(
-     "http://share.v.t.qq.com/index.php?c=share&a=index&url=#{@sharing_link}&title=#{@sharing_title}&pic=#{@sharing_imgurl}",
-     'fasle'
-   )
+    @openUrl(
+      "http://share.v.t.qq.com/index.php?c=share&a=index&url=#{@sharing_link}&title=#{@sharing_title}&pic=#{@sharing_imgurl}",
+      'fasle'
+    )
 
   shareToQzone: ->
-   @openUrl(
-     "http://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=#{@sharing_link}&title=#{@sharing_imgurl}&pics=#{@sharing_imgurl}&summary=#{@sharing_desc}",
-     'false'
-   )
+    @openUrl(
+      "http://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=#{@sharing_link}&title=#{@sharing_imgurl}&pics=#{@sharing_imgurl}&summary=#{@sharing_desc}",
+      'false'
+    )
+
+  bindPCardTaker: (btn, options = {}) ->
+    $(btn).on 'click', (e) ->
+      e.preventDefault()
+      _this = this
+      element = $(this)
+      options.beforeSendFuc.call(_this) if typeof(options.beforeSendFuc) == 'function'
+      return false if element.hasClass('done')
+      return false if element.hasClass('loading')
+      user_tel= $('.input-tel-value').val()
+      if !element.data('uid')
+        telReg = !!user_tel.match(/^(0|86|17951)?(13[0-9]|15[012356789]|17[678]|18[0-9]|14[57])[0-9]{8}$/)
+        if !telReg
+          alert("请输入正确的手机号码")
+          return false
+      UBoss.chopper.showSpinner()
+      element.addClass('loading')
+      $.ajax
+        url: element.attr("href")
+        type: 'GET'
+        data:
+          mobile: user_tel
+          product_id: element.data("pid")
+          seller_id: element.data("sid")
+      .done (data) ->
+        $('meta[name=sharing_link]').attr( 'content', "#{data.sharing_link}?redirect=#{encodeURIComponent(element.data('path'))}")
+        $('.input-tel-value').remove()
+        UBoss.luffy.resetInvokeSharing()
+        element.addClass('done')
+        options.successFuc.call(_this, data) if typeof(options.successFuc) == 'function'
+      .fail (xhr, textStatus) ->
+        if typeof(options.failFuc) == 'function'
+          options.failFuc(user_tel)
+        else
+          alert('操作失败')
+      .always ->
+        UBoss.chopper.hideSpinner()
+        element.removeClass('loading')
+        options.alwaysFuc() if typeof(options.alwaysFuc) == 'function'
 
 $ ->
   UBoss.luffy = new GoingMerry.Luffy
