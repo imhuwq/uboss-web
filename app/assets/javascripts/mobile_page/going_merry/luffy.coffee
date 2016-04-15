@@ -99,6 +99,7 @@ class GoingMerry.Luffy
     $(btn).on 'click', (e) ->
       e.preventDefault()
       element = $(this)
+      return false if element.hasClass('done')
       user_tel= $('.input-tel-value').val()
       if !element.data('uid')
         telReg = !!user_tel.match(/^(0|86|17951)?(13[0-9]|15[012356789]|17[678]|18[0-9]|14[57])[0-9]{8}$/)
@@ -120,6 +121,7 @@ class GoingMerry.Luffy
         $('meta[name=sharing_link]').attr( 'content', "#{data.sharing_link}?redirect=#{encodeURIComponent(element.data('path'))}")
         $('.input-tel-value').remove()
         UBoss.luffy.resetInvokeSharing()
+        element.addClass('done')
         options.successFuc.call(element, data) if typeof(options.successFuc) == 'function'
       .fail (xhr, textStatus) ->
         if typeof(options.failFuc) == 'function'
