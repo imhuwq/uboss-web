@@ -153,7 +153,7 @@ Rails.application.routes.draw do
       collection do
         get   :share
         get   :table_numbers
-        post  :set_table_number
+        get   :set_table_number
         get   :notifies
         patch :calling
       end

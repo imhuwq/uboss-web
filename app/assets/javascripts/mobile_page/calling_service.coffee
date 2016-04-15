@@ -64,23 +64,10 @@ $ ->
     if !$(this).hasClass('selected')
       $('.table-number-list .box-w25').removeClass('active')
       $(this).addClass('active')
+      number = $(this).find('span').html()
+      url = $('.calling-order-service>input').val() + "?number=#{number}"
+      $('.calling-order-service>.btn').attr('href', url)
 
-  $('.calling-order-service button').on 'click', (e)->
-    e.preventDefault()
+  $('.calling-order-service .btn').on 'click', ()->
     if $('.box-w25.active').length == 0
       flashPopContent('<div class="pop-text gray">请选择一个号桌</div>')
-    else
-      number = $('.box-w25.active span').html()
-      url    = $(this).data('url')
-      $.ajax
-        url: url
-        type: 'POST'
-        data: {number: number}
-        success: (res)->
-          if res.status == "ok"
-            location.href = res.redirect_url
-          if res.status == "failure"
-            flashPopContent("<div class=\"pop-text gray\">#{res.error_msg}</div>")
-        error: (data, status, e)->
-          flashPopContent('<div class="pop-text gray">操作错误, 请刷新后再尝试</div>')
-          location.reload()

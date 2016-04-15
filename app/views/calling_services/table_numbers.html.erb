@@ -23,5 +23,6 @@
 </div><!-- table-number -->
 
 <div class="calling-order-service">
-  <button class="btn btn-block btn-large noradius" style="font-size: 16px;" data-url="<%= set_table_number_seller_calling_services_path(seller_id: params[:seller_id]) %>">确定</button>
+  <input type="hidden" name="set_table_path" value="<%= set_table_number_seller_calling_services_path(seller_id: params[:seller_id]) %>" />
+  <a href="javascript:;" class="btn btn-block btn-large noradius" style="font-size: 16px;">确定</a>
 </div>
