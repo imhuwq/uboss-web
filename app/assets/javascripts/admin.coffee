@@ -32,7 +32,6 @@
 #= require admin/certification
 #= require admin/sellers
 #= require admin/promotion_activity
-#= require admin/websocket_client
 #= require admin/calling_notify
 #= require_self
 
