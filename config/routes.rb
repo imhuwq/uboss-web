@@ -134,6 +134,10 @@ Rails.application.routes.draw do
       member do
         patch :change_status
       end
+      collection do
+        get :switching_account
+        patch :switch_account
+      end
     end
   end
   resource :pay_notify, only: [] do

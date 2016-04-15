@@ -31,6 +31,18 @@ class CallingNotifiesController < ApplicationController
     end
   end
 
+  def switching_account
+    if !current_user.has_store_account?
+      flash[:error] = '你没有子账号'
+      redirect_to action: :index
+    else
+      @store_accounts = current_user.store_accounts.active.includes(user: :service_store)
+    end
+  end
+
+  def switch_account
+  end
+
   private
 
   def change_status_notify_msg(checkout)
