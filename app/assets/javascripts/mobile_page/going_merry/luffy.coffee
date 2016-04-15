@@ -98,17 +98,18 @@ class GoingMerry.Luffy
   bindPCardTaker: (btn, options = {}) ->
     $(btn).on 'click', (e) ->
       e.preventDefault()
+      _this = this
       element = $(this)
+      options.beforeSendFuc.call(_this) if typeof(options.beforeSendFuc) == 'function'
       return false if element.hasClass('done')
+      return false if element.hasClass('loading')
       user_tel= $('.input-tel-value').val()
       if !element.data('uid')
         telReg = !!user_tel.match(/^(0|86|17951)?(13[0-9]|15[012356789]|17[678]|18[0-9]|14[57])[0-9]{8}$/)
         if !telReg
           alert("请输入正确的手机号码")
           return false
-      options.beforeSendFuc(user_tel) if typeof(options.beforeSendFuc) == 'function'
       UBoss.chopper.showSpinner()
-      return false if element.hasClass('loading')
       element.addClass('loading')
       $.ajax
         url: element.attr("href")
@@ -122,7 +123,7 @@ class GoingMerry.Luffy
         $('.input-tel-value').remove()
         UBoss.luffy.resetInvokeSharing()
         element.addClass('done')
-        options.successFuc.call(element, data) if typeof(options.successFuc) == 'function'
+        options.successFuc.call(_this, data) if typeof(options.successFuc) == 'function'
       .fail (xhr, textStatus) ->
         if typeof(options.failFuc) == 'function'
           options.failFuc(user_tel)
