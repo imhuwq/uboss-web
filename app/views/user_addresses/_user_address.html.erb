@@ -13,9 +13,9 @@
 <div class="city-group">
   <%= f.select(:province, options_for_select([['--省份--', '']] + ChinaCity.provinces, selected: f.object.province ), {},
     class: 'city-select ', id: "province", style:"width:70px;display:inline;", 'data-manual-chosen'=>true ) %>
-  <%= f.select :city, options_for_select([['--城市--', '']] + ChinaCity.list(f.object.city), selected: f.object.city ), {},
+  <%= f.select :city, options_for_select([['--城市--', '']] + ChinaCity.list(f.object.province), selected: f.object.city ), {},
     class: 'city-select', id: "city", style:"width:70px;display:inline;", 'data-manual-chosen'=>true %>
-  <%= f.select :area, options_for_select([['--地区--', '']] + ChinaCity.list(f.object.area), selected: f.object.area), {},
+  <%= f.select :area, options_for_select([['--地区--', '']] + ChinaCity.list(f.object.city), selected: f.object.area), {},
     class: 'city-select', id: "area", style:"width:70px;display:inline;", 'data-manual-chosen'=>true %>
 </div>
 </td>
