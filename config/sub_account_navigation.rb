@@ -12,7 +12,7 @@ SimpleNavigation::Configuration.run do |navigation|
 
     primary.item :main,   '主页', admin_root_path,             {}
 
-    primary.item :tuangou, '实体店铺', '#', {} do |sub_nav|
+    primary.item :tuangou, '本地服务', '#', {} do |sub_nav|
       sub_nav.item :s_product, '商品', admin_service_products_path,
         highlights_on: :subpath, if: -> { can?(:read, ServiceProduct) }
 
