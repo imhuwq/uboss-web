@@ -65,7 +65,7 @@ class GoingMerry.Luffy
     if window.wx?
       $(".wx-mod-pop").show()
     else
-      alert('朋友圈分享只在微信浏览器可用')
+      alert('分享到微信，请在微信浏览器中打开此页面')
 
   toggleSharingContent: ->
     $('.share-container').toggleClass('hidden')
