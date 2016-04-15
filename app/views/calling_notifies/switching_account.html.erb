@@ -13,7 +13,7 @@
 
 <div class="container nogap m-top10">
   <% @store_accounts.each do |account| %>
-    <%= link_to '#切换帐户', method: :patch do || %>
+    <%= link_to switch_account_account_calling_notifies_path(sid: account.user_id), method: :patch do || %>
       <div class="bg-white gap" style="margin-bottom: 5px;">
          <div class="pull-left" style="margin-right: 10px;"><%= image_tag account.user.avatar_url(:thumb), height: 82, width: 82 %></div>
          <p class="text-cut black-color" style="margin-bottom: 4px;">账　　户：<%= account.user.identify %></p>
