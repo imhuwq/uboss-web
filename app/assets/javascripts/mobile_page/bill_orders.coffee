@@ -55,7 +55,8 @@ $ ->
 
   UBoss.luffy.bindPCardTaker '.bill-sharing-cont .get-p-card-btn',
     beforeSendFuc: ->
-      console.log 'before'
+      if $(this).hasClass('done')
+        UBoss.luffy.showWxPopTip()
     successFuc: (data)->
       UBoss.luffy.showWxPopTip()
     failFuc: ->
