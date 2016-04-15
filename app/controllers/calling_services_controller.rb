@@ -40,7 +40,7 @@ class CallingServicesController < ApplicationController
   end
 
   def set_table_number
-    table_number = TableNumber.find_by(user: @seller, status: 0, number: params[:table_number][:number])
+    table_number = TableNumber.find_by(user: @seller, status: 0, number: params[:number])
     old_number   = cookies[:table_nu]
 
     if table_number
@@ -52,10 +52,9 @@ class CallingServicesController < ApplicationController
       cookies[:table_nu] = table_number.number
       table_number.update(status: "used")
       trigger_realtime_message(set_table_number_msg('set_used_table', table_number.number), [@seller.id])
-      redirect_to action: :index
+      render json: { status: 'ok', redirect_url: seller_calling_services_path(seller_id: @seller.id) }
     else
-      flash[:error] = "请选择正确的桌号"
-      redirect_to action: :table_numbers
+      render json: { status: 'failure', error_msg: "请选择正确的桌号" }
     end
   end
 
@@ -94,7 +93,6 @@ class CallingServicesController < ApplicationController
         <<-MSG
 服务提醒：
 #{@table_number.number}号桌需要#{@calling_service.name}
----------
 <a href='#{notifies_seller_calling_services_url(seller_id: @seller.id)}'>查看详情</a>
         MSG
       )
