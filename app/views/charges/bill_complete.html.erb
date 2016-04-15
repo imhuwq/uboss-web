@@ -51,7 +51,7 @@
         <% end %>
         <p>
         <%= link_to "分享赢红包", get_seller_sharing_path,
-          class: 'btn btn-block btn-large get-p-card-btn',
+          class: "btn btn-block btn-large get-p-card-btn #{'done' if current_user.present?}",
           data: { sid: @seller.id, uid: current_user.present?, path: service_store_path(@seller.service_store.id) } %>
         </p>
       </div>
