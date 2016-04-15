@@ -94,7 +94,6 @@ class CallingServicesController < ApplicationController
         <<-MSG
 服务提醒：
 #{@table_number.number}号桌需要#{@calling_service.name}
----------
 <a href='#{notifies_seller_calling_services_url(seller_id: @seller.id)}'>查看详情</a>
         MSG
       )
