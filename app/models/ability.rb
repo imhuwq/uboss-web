@@ -21,7 +21,6 @@ class Ability
       rescue NoMethodError
         no_permissions
       end
-      grant_general_permission user
     else
       no_permissions
     end
