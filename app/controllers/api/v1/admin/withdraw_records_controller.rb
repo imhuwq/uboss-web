@@ -6,7 +6,14 @@ class Api::V1::Admin::WithdrawRecordsController < ApiBaseController
     withdraw_records = current_user.withdraw_records
     unless withdraw_records.nil?
       withdraw_records.each do |wd|
-        withdraw_infos << { amount: wd.amount, bank_card_last_four_number: wd.bank_info[:number].last(4), created_at: wd.created_at, state_i18n: wd.state_i18n }
+        bank_card_last_four_number = if wd.bank_info.present?
+                                       wd.bank_info[:number].last(4)
+                                     elsif wd.bank_card.present?
+                                       wd.bank_card.number.last(4)
+                                     else
+                                       nil
+                                     end
+        withdraw_infos << { amount: wd.amount, bank_card_last_four_number: bank_card_last_four_number, created_at: wd.created_at, state: wd.state_i18n }
       end
     end
     render json: withdraw_infos

@@ -33,7 +33,7 @@ class Api::V1::Admin::ServiceStoresController < ApiBaseController
       mobile: @store.mobile_phone,
       store_short_description: @store.store_short_description,
       opening_time: @store.business_hours,
-      store_cover: @store.store_cover,
+      store_cover: @store.store_cover_url,
       store_banners: banners
     }
   end
