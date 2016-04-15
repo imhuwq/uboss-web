@@ -11,17 +11,15 @@
   <span class="pull-left">&nbsp;</span>
 <% end %>
 
-<div class="container nogap">
+<div class="container nogap m-top10">
   <% @store_accounts.each do |account| %>
     <%= link_to '#切换帐户', method: :patch do || %>
-      <div class="box-w33">
-        <div class="admin-box text-center">
-          <%= image_tag account.user.avatar_url(:thumb), height: 64, width: 64 %>
-          <p>账户：<%= account.user.identify %></p>
-          <p>店铺名称：<%= account.user.service_store.store_name %></p>
-          <span class="btn btn-large">切换</span>
-        </div>
-      </div>
+      <div class="bg-white gap" style="margin-bottom: 5px;">
+         <div class="pull-left" style="margin-right: 10px;"><%= image_tag account.user.avatar_url(:thumb), height: 82, width: 82 %></div>
+         <p class="text-cut black-color" style="margin-bottom: 4px;">账　　户：<%= account.user.identify %></p>
+         <p class="text-cut black-color" style="margin-bottom: 10px;">店铺名称：<%= account.user.service_store.store_name %></p>
+         <p><span class="btn text-center" style="width: 80px;">切换</span></p>
+      </div><!-- bg-white -->
     <% end %>
   <% end %>
 </div>
