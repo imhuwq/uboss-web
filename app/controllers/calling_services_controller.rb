@@ -52,9 +52,10 @@ class CallingServicesController < ApplicationController
       cookies[:table_nu] = table_number.number
       table_number.update(status: "used")
       trigger_realtime_message(set_table_number_msg('set_used_table', table_number.number), [@seller.id])
-      render json: { status: 'ok', redirect_url: seller_calling_services_path(seller_id: @seller.id) }
+      redirect_to action: :index
     else
-      render json: { status: 'failure', error_msg: "请选择正确的桌号" }
+      flash[:error] = "请选择正确的桌号"
+      redirect_to action: :table_numbers
     end
   end
 
