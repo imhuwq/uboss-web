@@ -52,3 +52,14 @@ $ ->
       invokePayment(requested_data_cache["bill-#{pay_amount}"])
       return false
     requestBill(ssid, pay_amount)
+
+  UBoss.luffy.bindPCardTaker '.bill-sharing-cont .get-p-card-btn',
+    beforeSendFuc: ->
+      console.log 'before'
+    successFuc: (data)->
+      UBoss.luffy.showWxPopTip()
+    failFuc: ->
+      console.log 'fail'
+    alwaysFuc: ->
+      console.log 'alwaysFuc'
+

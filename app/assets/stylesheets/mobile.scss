@@ -69,6 +69,18 @@
   margin-right: -35px;
   width: 70px;
   text-align: center;
+  z-index: 100;
+}
+.spinner:before{
+  content: '';
+  position: fixed;
+  width: 200%;
+  height: 400%;
+  top: -150%;
+  left: -50%;
+  border-radius: 10px;
+  z-index: 0;
+  background: rgba(0,0,0,0.8);
 }
 
 .spinner > div {

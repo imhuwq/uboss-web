@@ -1,7 +1,10 @@
 class ChargesController < ApplicationController
 
+  include SharingResource
+
   before_action :authenticate_user!, only: [:payments, :pay_complete]
   before_action :authenticate_weixin_user_token!, only: [:pay_bill, :bill_complete]
+  before_action :set_sharing_link_node, only: [:bill_complete]
 
   def pay_bill
     @service_store = ServiceStore.find(params.fetch(:ssid))
