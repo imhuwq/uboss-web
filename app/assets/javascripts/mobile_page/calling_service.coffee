@@ -35,9 +35,15 @@ $ ->
           location.reload()
 
 
-  $('.calling-notify-unservice').on "click", (e)->
-    e.preventDefault()
+  $(document).on 'click', "#notifies-box .calling-notify-unservice", ()->
     id = $(this).data('id')
+    if $(this).parent().find('.service-name').text() == "结帐"
+      if confirm("点击去结帐服务后将自动下桌并清空所有服务通知，确定结帐？")
+        changeCallingNotifyStatus(id)
+    else
+      changeCallingNotifyStatus(id)
+
+  changeCallingNotifyStatus = (id)->
     $.ajax
       url: "/account/calling_notifies/#{id}/change_status"
       type: 'PATCH'
@@ -45,13 +51,12 @@ $ ->
         if res.status == 'ok'
           if res.checkout == true
             $(".calling-notify-box[data-number=\"#{res.number}\"]").remove()
-            flashPopContent("<div class=\"pop-text gray\">#{res.msg}</div>")
           else
             $(".calling-notify-unservice[data-id=\"#{res.id}\"]")
               .removeClass('calling-notify-unservice')
               .addClass('btn-gray')
               .html('已服务')
-            flashPopContent("<div class=\"pop-text gray\">#{res.msg}</div>")
+            flashPopContent("<div class=\"pop-text gray\">去服务吧^_^</div>")
         if res.status == 'failure'
           flashPopContent("<div class=\"pop-text gray\">#{res.error_msg}</div>")
       error: (data, status, e) ->

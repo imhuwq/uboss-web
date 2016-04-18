@@ -80,21 +80,20 @@
           });
           notice.get().click(function() { notice.remove(); });
         }
-        if (message.msg.type == "set_unuse_table") {
-          $('.table-number[data-number="'+ message.msg.calling_number +'"]').removeClass('used main-bg-color').addClass('unuse beige-bg-color');
-          $('.calling_notify[data-number="'+ message.msg.calling_number +'"]').remove();
-        }
-        if (message.msg.type == "set_used_table") {
+        if (message.msg.type == "used_table") {
           $('.table-number[data-number="'+ message.msg.calling_number +'"]').removeClass('unuse beige-bg-color').addClass('used main-bg-color');
         }
         if (message.msg.type == "change_status") {
-          if (message.msg.checkout == true) {
-            $('.calling_notify[data-number="'+ message.msg.calling_number +'"]').remove();
-            $('.table-number[data-number="'+ message.msg.calling_number +'"]').removeClass("used main-bg-color").addClass("unuse beige-bg-color");
-          }else{
+          if (message.msg.checkout != true) {
             var html = '<p><span>已服务</span></p>';
             $('.calling_notify[data-id="'+ message.msg.calling_notify_id +'"]>.operation').html(html);
           }
+        }
+        if (message.msg.type == "drop_table") {
+          $('.table-number[data-number="'+ message.msg.number +'"]').removeClass('used main-bg-color').addClass('unuse beige-bg-color');
+          $.each(message.msg.calling_notify_ids, function(index, id){
+            $('.calling_notify[data-id="'+ id +'"]').remove();
+          });
         }
       }
     };

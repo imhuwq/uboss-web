@@ -1,14 +1,8 @@
+$(document).on 'ajax:beforeSend', '#calling_notifies .change-status-btn', (xhr, settings) ->
+  if $(this).data('service-name') == "结帐"
+    return confirm("点击去结帐服务后将自动下桌并清空所有服务通知，确定结帐？")
+
 $(document).on 'ajax:success', "#calling_notifies .change-status-btn", (e, data) ->
-  if data.type == "checkout"
-    alert_html =
-      """
-      <div class="alert alert-success" role="alert" data-dismiss="alert">
-      <button class="close"><span>×</span></button>#{data.message}</div>
-      """
-    $(".calling_notify[data-number=\"#{data.number}\"]").remove()
-    $(".table-number[data-number=\"#{data.number}\"]").removeClass("used main-bg-color").addClass("unuse beige-bg-color")
-    $('.admin-container').prepend(alert_html)
-  else
     html = $("<div>#{data}</div>")
     window.html = html
     $('.admin-container').prepend(html.find('.alert'))

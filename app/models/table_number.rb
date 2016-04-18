@@ -33,6 +33,10 @@ class TableNumber < ActiveRecord::Base
   end
 
   def destroy_all_calling_notifies
-    self.calling_notifies.destroy_all
+    ids = self.calling_notifies.pluck(:id)
+
+    if self.calling_notifies.destroy_all
+      $redis.publish 'realtime_msg', { msg: { type: 'drop_table', number: self.number, calling_notify_ids: ids }, recipient_user_ids: [self.user_id] }.to_json
+    end
   end
 end
