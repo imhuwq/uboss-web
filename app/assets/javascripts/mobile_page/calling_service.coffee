@@ -68,6 +68,6 @@ $ ->
       url = $('.calling-order-service>input').val() + "?number=#{number}"
       $('.calling-order-service>.btn').attr('href', url)
 
-  $('.calling-order-service .btn').on 'click', ()->
+  $('.calling-order-service .select-number').on 'click', ()->
     if $('.box-w25.active').length == 0
-      flashPopContent('<div class="pop-text gray">请选择一个号桌</div>')
+      flashPopContent('<div class="pop-text gray">请选择一个桌号</div>')
