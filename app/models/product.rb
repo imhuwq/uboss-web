@@ -44,7 +44,7 @@ class Product < ActiveRecord::Base
   scope :commons, -> { where(type: %w(OrdinaryProduct AgencyProduct)) }
 
   validate :must_has_one_image, unless: :optional_image?
-  validate :must_has_one_product_inventory, if: -> { self.class.name != 'DishesProduct'}
+  validate :must_has_one_product_inventory
   validates_presence_of :user_id, :name, :type
 
   before_create :generate_code

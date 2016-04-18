@@ -109,10 +109,6 @@ class OrderDivideJob < ActiveJob::Base
     # ----------------------
     Order.transaction do
       begin
-        if @privilege_amount
-          divide_record = DivideIncome.create!(order: @order,amount: @privilege_amount,user: order.user)
-          logger.info("Divide order: #{@order.number}, [DishesOrder id: #{divide_record.id}, amount: #{@privilege_amount} ]")
-        end
         @order_items.each do |order_item|
           reward_sharing_users order_item do |reward_amount|
             @order_income -= reward_amount

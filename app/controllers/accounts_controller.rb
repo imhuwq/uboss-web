@@ -233,8 +233,7 @@ class AccountsController < ApplicationController
 
   private
   def so_unevaluate(service_orders)
-    order_item_ids = OrderItem.where(order_id: service_orders.ids).ids
-    service_orders.completed.where.not(id: service_orders.includes(order_items: [:evaluations]).where(evaluations: {order_item_id: order_item_ids}).ids)
+    service_orders.unevaluate
   end
 
   def oo_unevaluate(ordinary_orders)

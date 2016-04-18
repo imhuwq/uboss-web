@@ -4,6 +4,7 @@ class ServiceOrder < Order
 
   scope :has_payed, -> { where(state: [1, 6]) }
   has_many :verify_codes, through: :order_items
+  scope :unevaluate, -> { completed.joins("inner join order_items on orders.id = order_items.order_id left join evaluations on order_items.id = evaluations.order_item_id or orders.id = evaluations.order_id").where(evaluations: {id: nil}).uniq }
 
   aasm column: :state, enum: true, skip_validation_on_save: true, whiny_transitions: false do
     state :unpay
