@@ -16,8 +16,6 @@ class AdminController < ApplicationController
     end
   end
 
-  realtime_controller({:queue => :redis})
-
   private
 
   def check_current_account_availability
@@ -73,14 +71,6 @@ class AdminController < ApplicationController
     end
   end
   helper_method :current_navigation_context
-
-  def realtime_user_id
-    (current_user && current_user.id) || 1
-  end
-
-  def realtime_server_url
-    Rails.application.secrets.realtime_server_url
-  end
 
   def check_new_supplier
     if current_user.is_supplier?

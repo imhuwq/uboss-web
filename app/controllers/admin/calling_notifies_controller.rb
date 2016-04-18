@@ -27,17 +27,7 @@ class Admin::CallingNotifiesController < AdminController
       flash.now[:error] = model_errors(@calling_notify).join('<br/>')
     end
 
-    if @calling_notify.service_name == "结帐"
-      TableNumber.clear_seller_table_number(current_user, @calling_notify.calling_number)
-      checkout = true
-    end
-
     if request.xhr?
-      if checkout
-        render json: { type: 'checkout', number: @calling_notify.calling_number, message: "结帐后自动下桌（#{@calling_notify.calling_number}号桌）" }
-        return
-      end
-
       render(partial: 'calling_notifies', locals: { calling_notifies: [@calling_notify.reload] })
     else
       redirect_to action: :index
@@ -55,11 +45,11 @@ class Admin::CallingNotifiesController < AdminController
   end
 
   private
+
   def validate_service_store_info
     unless current_user.service_store.try(:valid?)
       flash[:alert] = '请先完善实体店铺信息'
       redirect_to edit_admin_service_store_path(current_user.service_store)
     end
   end
-
 end

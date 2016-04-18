@@ -12,6 +12,8 @@ class ApplicationController < ActionController::Base
 
   before_action :configure_permitted_parameters, if: :devise_controller?
 
+  realtime_controller({:queue => :redis})
+
   protected
 
   def authentication_token
@@ -193,7 +195,18 @@ class ApplicationController < ActionController::Base
     session["devise.wechat_data"] && session["devise.wechat_data"]["extra"]["raw_info"]["openid"]
   end
 
-  def trigger_realtime_message(message, recipient_user_ids)
-    $redis.publish 'realtime_msg', { msg: message, recipient_user_ids: recipient_user_ids }.to_json
+  private
+
+  def store_account
+    current_user && current_user.store_accounts.active.find_by(user_id: session[:store_account_id]).try(:user)
+  end
+
+  def realtime_user_id
+    (store_account && store_account.id) ||
+    (current_user && current_user.id) || 1
+  end
+
+  def realtime_server_url
+    Rails.application.secrets.realtime_server_url
   end
 end
