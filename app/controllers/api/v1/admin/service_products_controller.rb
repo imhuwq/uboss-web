@@ -2,11 +2,15 @@ class Api::V1::Admin::ServiceProductsController < ApiBaseController
 
   def index
     authorize! :read, ServiceProduct
-    products = current_user.service_products.available
+    if %w{ published unpublish closed }.include?(params[:status])
+      products = current_user.service_products.send(params[:status].to_sym)
+    else
+      products = current_user.service_products.available
+    end
     product_infos = []
     unless products.nil?
       products.each do |product|
-        product_infos << { id: product.id, product_name: product.name, price: product.present_price, sold_amount: product.total_sells }
+        product_infos << { id: product.id, product_image_url: product.image_url(:thumb), product_name: product.name, price: product.present_price, sold_amount: product.total_sells }
       end
     end
     render json: product_infos
@@ -15,14 +19,7 @@ class Api::V1::Admin::ServiceProductsController < ApiBaseController
   def show
     product = ServiceProduct.find_by(id: params[:id])
     authorize! :read, product
-    codes = product.verify_codes
-    verified_codes = []
-    unless codes.nil?
-      codes.each do |code|
-        verified_codes << { verify_code: code.code, exchange_time: code.order_item.order.created_at }
-      end
-    end
-    render json: { product_id: product.id, product_name: product.name, price: product.present_price, sold_amount: product.total_sells, verified_codes: verified_codes }
+    render json: { id: product.id, product_image_url: product.image_url(:thumb), product_name: product.name, price: product.present_price, sold_amount: product.total_sells }
   rescue => e
     render_error :wrong_params
   end

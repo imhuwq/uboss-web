@@ -1,6 +1,6 @@
 class Api::V1::Admin::ServiceStoresController < ApiBaseController
 
-  before_action :set_service_store, only: [:show, :update]
+  before_action :set_service_store, only: [:show, :update, :get_id]
 
   def create
     authorize! :create, ServiceStore
@@ -78,6 +78,11 @@ class Api::V1::Admin::ServiceStoresController < ApiBaseController
     else
       render json: { status: 'fail' }
     end
+  end
+
+  def get_id
+    authorize! :read, @store
+    render json: { service_store_id: @store.id }
   end
 
   private

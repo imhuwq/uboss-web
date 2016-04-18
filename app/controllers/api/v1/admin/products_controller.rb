@@ -1,6 +1,6 @@
 class Api::V1::Admin::ProductsController < ApiBaseController
 
-  before_action :find_product, only: [:show, :inventories, :detail]
+  before_action :find_product, only: [:show, :inventories, :detail, :change_status]
 
   def index
     authorize! :read, Product
@@ -32,19 +32,19 @@ class Api::V1::Admin::ProductsController < ApiBaseController
 
   def change_status
     authorize! :update, @product
-    if params[:status] == 'published'
-      @product.status = "published"
-    elsif params[:status] == 'unpublish'
-      @product.status = 'unpublish'
-    elsif params[:status] == 'closed'
-      @product.status = 'closed'
+    begin
+      if @product.status = params[:status] and @product.save
+        render_model_id @product
+      else
+        render_model_errors @product
+      end
+    rescue => e
+      render_error :wrong_params
     end
+  end
 
-    if @product.save
-      render_model_id @product
-    else
-      render_model_errors @product
-    end
+  def product
+    authorize! :read, Product
   end
 
   private

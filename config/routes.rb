@@ -165,13 +165,15 @@ Rails.application.routes.draw do
     namespace :v1 do
       namespace :admin do
         resources :carriage_templates, only: [:index, :show]
-        resources :service_products, only: [:index, :create, :show]
+        resources :service_products, only: [:index, :create, :show] do
+          patch :change_status, on: :member
+        end
         resources :service_stores, only: [:create] do
           post :verify, on: :collection
         end
         resources :products, only: [:index, :show, :create] do
           member do
-            get :inventories, :detail, :change_status
+            get :inventories, :detail
           end
         end
         post 'verify_codes/verify', to: 'verify_codes#verify'
@@ -186,6 +188,7 @@ Rails.application.routes.draw do
           post :create_advertisement
           patch :update_advertisement
           delete :remove_advertisement
+          get 'get_id', to: 'service_stores#get_id'
         end
       end
       resources :service_stores, only: [:create] do
