@@ -66,6 +66,8 @@
     messageQueueConsoleLogger = function() {
       message = window.realtime.messageQueue.shift();
       if (message) {
+        $('#realtime-modal').modal('hide');
+
         if (message.msg.type == "calling") {
           appendCallingNotityItem(message.msg.calling_notify);
           var notice = new PNotify({
@@ -77,9 +79,6 @@
             }
           });
           notice.get().click(function() { notice.remove(); });
-          // $('#realtime-modal .modal-body').html(message.msg.text);
-          // $('#realtime-modal .modal-title').html(message.msg.title);
-          // $('#realtime-modal').modal();
         }
         if (message.msg.type == "set_unuse_table") {
           $('.table-number[data-number="'+ message.msg.calling_number +'"]').removeClass('used main-bg-color').addClass('unuse beige-bg-color');
