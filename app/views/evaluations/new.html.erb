@@ -10,14 +10,14 @@
   <a href="#" class="submit" onclick="submitEvaluationStatus()">提交</a>
 <% end %>
 
-<br />
 
 <%= simple_form_for @evaluation, html: {autocomplete: 'off'} do |f| %>
   <%= f.input_field :status, selected: 'good', class:'hidden' %>
   <%= f.hidden_field :order_item_id, class:'hidden' %>
+  <%= f.hidden_field :order_id, class:'hidden' %>
   <%= hidden_field_tag :timestamp, @stale_form_check_timestamp %>
   <%= hidden_field_tag :type, 'new' %>
-  <div class="emoticon-box">
+  <div class="emoticon-box m-top10">
     <div class="emoticon" data-star="1">
     	<p><i class="icon worst-icon"></i></p>
     	<p class='worst'>不满 </p>
@@ -40,17 +40,38 @@
     </div>
   </div>
   <div class="evaluations-box bg-white gap">
-  	<div class="star-box">
-  		<div class="star"></div>
-  		<div class="star"></div>
-  		<div class="star"></div>
-  	</div><!-- start-box -->
-  	<div class="gap">
-  		<%= f.text_area :content, value: '', checked: false, autocomplete: 'off', placeholder: '写点什么吧...', id:"y_textarea" ,rows:"6",class:"input-block" %>
-  	</div>
+    	<div class="star-box">
+    		<div class="star"></div>
+    		<div class="star"></div>
+    		<div class="star"></div>
+    	</div><!-- start-box -->
+    	<div class="m-top10">
+    		<%= f.text_area :content, value: '', checked: false, autocomplete: 'off', placeholder: '写点什么吧...', id:"y_textarea" ,rows:"6",class:"input-block" %>
+    	</div>
   </div><!-- evaluations-box -->
 <% end %>
-
+<% if @order.present? %>
+  <% @order.order_items.each do |item| %>
+  <!-- 有菜品的时候 -->
+    <div class="evaluation-dishes-list bg-white">
+      <!-- 循环  -->
+      <div class="evaluation-dishes-box">
+        <div class="cover"
+          <% if item.product.image_url %>
+            style="background-image:url(<%= item.product.image_url(:thumb) %>) ;"
+          <% end %>
+        ></div><!--cover -->
+        <div class="title text-cut"><%= item.product.name %></div>
+        <div class="recommend-icon">
+          <div class="order-item-box" data-id="<%= item.id %>">
+            <span class="<%= item.recommend ? 'active': '' %>"></span>
+          </div>
+        </div><!-- recommend-icon -->
+      </div><!-- evaluation-dishes-box -->
+    </div><!-- evaluation-dishes-list -->
+    <br />
+  <% end %>
+<% end %>
 <script type="text/javascript">
   function submitEvaluationStatus() {
     var val = $("#y_textarea").val()

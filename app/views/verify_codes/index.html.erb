@@ -5,28 +5,12 @@
 <%= content_for :header_left do %>
   <a class="back" href="/account"><%= image_tag 'mobile/right.png' %></a>
 <% end %>
+
 <div class="tab-nav m-top10">
 	<a class="tab border-right active" href="/account/verify_codes">验证券</a>
 	<a class="tab" href="/account/verify_codes/lotteries">奖券</a>
 </div>
 
 <% @service_orders.each do |order| %>
-  <div class="service-order-list m-bottom10"  timestamp='<%= order.created_at %>'>
-		<div class="text-cut page-title gray-color gap">商家：<%= order.seller.identify %></div>
-		<div class="gap-left bg-white">
-    <% order.order_items.each do |order_item| %>
-      <%= link_to account_verify_code_path(id: order_item.id) do %>
-        <div class="service-order-box bg-white">
-        	<div class="cover" style="background-image:url('<%= order_item.item_product.image_url('w120') %>');">
-            <%= image_tag order_item.item_product.image_url('w120') %>
-          </div>
-          <div class="content line-gap">
-            <p class="gray-color text-cut"><%= order_item.product_name %></p>
-            <p class="main-color">有效期至：<%= strftime(order_item.product.deadline) %></p>
-            <p class="gray-color">数量：<%= order_item.amount %></h4>
-          </div>
-        </div><!-- service-order-box -->
-      <% end %>
-    <% end %>
-  </div>
+  <%= render partial: "verify_codes/verify_code/#{order.type.underscore}", locals: { order: order } %>
 <% end %>

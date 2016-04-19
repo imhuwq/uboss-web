@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160330032403) do
+ActiveRecord::Schema.define(version: 20160411071921) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -44,10 +44,10 @@ ActiveRecord::Schema.define(version: 20160330032403) do
     t.integer  "prize_winner_id"
     t.integer  "promotion_activity_id"
     t.integer  "activity_info_id"
-    t.jsonb    "info",                  default: {}
+    t.jsonb    "info"
     t.string   "activity_type"
-    t.datetime "created_at",                         null: false
-    t.datetime "updated_at",                         null: false
+    t.datetime "created_at",            null: false
+    t.datetime "updated_at",            null: false
     t.integer  "sharer_id"
     t.integer  "relate_winner_id"
   end
@@ -95,11 +95,6 @@ ActiveRecord::Schema.define(version: 20160330032403) do
     t.string   "alt"
     t.string   "url"
     t.string   "image_type"
-  end
-
-  create_table "attention_associations", force: :cascade do |t|
-    t.integer "user_id"
-    t.integer "following_id"
   end
 
   create_table "bank_cards", force: :cascade do |t|
@@ -174,29 +169,6 @@ ActiveRecord::Schema.define(version: 20160330032403) do
     t.jsonb    "properties",          default: {}
   end
 
-  create_table "calling_notifies", force: :cascade do |t|
-    t.integer  "user_id"
-    t.integer  "table_number_id"
-    t.integer  "calling_service_id"
-    t.datetime "called_at"
-    t.integer  "status",             default: 0
-    t.datetime "created_at",                     null: false
-    t.datetime "updated_at",                     null: false
-  end
-
-  add_index "calling_notifies", ["calling_service_id"], name: "index_calling_notifies_on_calling_service_id", using: :btree
-  add_index "calling_notifies", ["table_number_id"], name: "index_calling_notifies_on_table_number_id", using: :btree
-  add_index "calling_notifies", ["user_id"], name: "index_calling_notifies_on_user_id", using: :btree
-
-  create_table "calling_services", force: :cascade do |t|
-    t.integer  "user_id"
-    t.string   "name"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
-  add_index "calling_services", ["user_id"], name: "index_calling_services_on_user_id", using: :btree
-
   create_table "captcha_sending_histories", force: :cascade do |t|
     t.string   "code"
     t.datetime "code_sent_at"
@@ -245,11 +217,14 @@ ActiveRecord::Schema.define(version: 20160330032403) do
     t.integer  "user_id",                        null: false
     t.datetime "created_at",                     null: false
     t.datetime "updated_at",                     null: false
-    t.boolean  "use_in_store",    default: true
     t.datetime "use_in_store_at"
+    t.boolean  "use_in_store",    default: true
+    t.integer  "store_id"
+    t.string   "store_type"
+    t.integer  "position"
   end
 
-  add_index "categories", ["user_id", "name"], name: "index_categories_on_user_id_and_name", unique: true, using: :btree
+  add_index "categories", ["user_id", "name", "store_id"], name: "index_categories_on_user_id_and_name_and_store_id", unique: true, using: :btree
 
   create_table "categories_products", id: false, force: :cascade do |t|
     t.integer "product_id",  null: false
@@ -375,6 +350,7 @@ ActiveRecord::Schema.define(version: 20160330032403) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "sharing_node_id"
+    t.integer  "order_id"
   end
 
   create_table "expresses", force: :cascade do |t|
@@ -400,9 +376,21 @@ ActiveRecord::Schema.define(version: 20160330032403) do
 
   add_index "favour_products", ["product_id", "user_id"], name: "index_favour_products_on_product_id_and_user_id", unique: true, using: :btree
 
-  create_table "follower_associations", force: :cascade do |t|
-    t.integer "user_id"
-    t.integer "follower_id"
+  create_table "job_histories", force: :cascade do |t|
+    t.integer  "user_id"
+    t.integer  "status"
+    t.string   "message"
+    t.string   "resource_type"
+    t.string   "resource_id"
+    t.string   "job_class"
+    t.string   "job_method"
+    t.jsonb    "options"
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
+  end
+
+  create_table "json_test", force: :cascade do |t|
+    t.jsonb "data"
   end
 
   create_table "mobile_captchas", force: :cascade do |t|
@@ -497,8 +485,8 @@ ActiveRecord::Schema.define(version: 20160330032403) do
     t.integer  "product_id"
     t.integer  "user_id"
     t.integer  "amount"
-    t.datetime "created_at",                         null: false
-    t.datetime "updated_at",                         null: false
+    t.datetime "created_at",                           null: false
+    t.datetime "updated_at",                           null: false
     t.decimal  "pay_amount",           default: 0.0
     t.integer  "sharing_node_id"
     t.decimal  "present_price",        default: 0.0
@@ -506,6 +494,7 @@ ActiveRecord::Schema.define(version: 20160330032403) do
     t.integer  "product_inventory_id"
     t.integer  "order_item_refund_id"
     t.string   "sku_properties"
+    t.boolean  "recommend",            default: false
   end
 
   create_table "orders", force: :cascade do |t|
@@ -575,11 +564,12 @@ ActiveRecord::Schema.define(version: 20160330032403) do
     t.datetime "updated_at",                                           null: false
     t.boolean  "actived",              default: false
     t.integer  "seller_id"
+    t.integer  "product_inventory_id"
     t.string   "user_img"
     t.string   "service_store_cover"
     t.string   "user_name"
     t.string   "ordinary_store_cover"
-    t.datetime "qrcode_expire_at",     default: '2016-02-27 15:21:26'
+    t.datetime "qrcode_expire_at",     default: '2016-03-03 14:49:49'
     t.string   "service_store_name"
     t.string   "ordinary_store_name"
     t.boolean  "activity",             default: false
@@ -627,7 +617,6 @@ ActiveRecord::Schema.define(version: 20160330032403) do
     t.integer  "product_class_id"
     t.datetime "created_at",                      null: false
     t.datetime "updated_at",                      null: false
-    t.integer  "user_id"
   end
 
   create_table "product_property_values", force: :cascade do |t|
@@ -636,10 +625,7 @@ ActiveRecord::Schema.define(version: 20160330032403) do
     t.integer  "product_class_id"
     t.datetime "created_at",          null: false
     t.datetime "updated_at",          null: false
-    t.integer  "user_id"
   end
-
-  add_index "product_property_values", ["user_id"], name: "index_product_property_values_on_user_id", using: :btree
 
   create_table "product_property_values_products", id: false, force: :cascade do |t|
     t.integer "product_id",                null: false
@@ -685,16 +671,19 @@ ActiveRecord::Schema.define(version: 20160330032403) do
     t.boolean  "full_cut",             default: false
     t.integer  "full_cut_number"
     t.integer  "full_cut_unit"
+    t.integer  "total_sales"
+    t.integer  "comprehensive_order"
+    t.datetime "published_at"
     t.string   "type"
     t.integer  "service_type"
     t.integer  "monthes"
     t.integer  "service_store_id"
-    t.integer  "parent_id"
-    t.integer  "comprehensive_order"
-    t.datetime "published_at"
     t.integer  "sales_amount",         default: 0
     t.integer  "sales_amount_order"
+    t.integer  "parent_id"
     t.integer  "supplier_id"
+    t.decimal  "rebate_amount"
+    t.string   "price_ranges"
   end
 
   add_index "products", ["type"], name: "index_products_on_type", using: :btree
@@ -839,11 +828,12 @@ ActiveRecord::Schema.define(version: 20160330032403) do
     t.integer  "product_id"
     t.string   "code"
     t.integer  "parent_id"
-    t.integer  "lft",        null: false
-    t.integer  "rgt",        null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.integer  "lft",          null: false
+    t.integer  "rgt",          null: false
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
     t.integer  "seller_id"
+    t.integer  "self_page_id"
   end
 
   add_index "sharing_nodes", ["code"], name: "index_sharing_nodes_on_code", unique: true, using: :btree
@@ -882,16 +872,6 @@ ActiveRecord::Schema.define(version: 20160330032403) do
     t.datetime "updated_at",       null: false
   end
 
-  create_table "sub_accounts", force: :cascade do |t|
-    t.integer  "user_id"
-    t.integer  "account_id"
-    t.integer  "state"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
-  add_index "sub_accounts", ["user_id", "account_id"], name: "index_sub_accounts_on_user_id_and_account_id", unique: true, using: :btree
-
   create_table "supplier_product_infos", force: :cascade do |t|
     t.decimal  "cost_price"
     t.decimal  "suggest_price_lower"
@@ -915,16 +895,6 @@ ActiveRecord::Schema.define(version: 20160330032403) do
   end
 
   add_index "supplier_store_infos", ["supplier_store_id"], name: "index_supplier_store_infos_on_supplier_store_id", unique: true, using: :btree
-
-  create_table "table_numbers", force: :cascade do |t|
-    t.integer  "user_id"
-    t.integer  "number"
-    t.integer  "status",     default: 0
-    t.datetime "created_at",             null: false
-    t.datetime "updated_at",             null: false
-  end
-
-  add_index "table_numbers", ["user_id"], name: "index_table_numbers_on_user_id", using: :btree
 
   create_table "transactions", force: :cascade do |t|
     t.integer  "user_id"
@@ -992,8 +962,6 @@ ActiveRecord::Schema.define(version: 20160330032403) do
     t.string   "street"
     t.integer  "platform_service_rate",     default: 0
     t.integer  "agent_service_rate",        default: 0
-    t.integer  "table_count",               default: 0
-    t.integer  "table_expired_in",          default: 0
   end
 
   create_table "user_role_relations", force: :cascade do |t|
@@ -1058,11 +1026,13 @@ ActiveRecord::Schema.define(version: 20160330032403) do
     t.boolean  "verified",          default: false
     t.datetime "created_at",                        null: false
     t.datetime "updated_at",                        null: false
-    t.integer  "order_item_id"
     t.boolean  "sharing_rewared",   default: false
     t.decimal  "income",            default: 0.0
     t.boolean  "expired",           default: false
     t.integer  "activity_prize_id"
+    t.integer  "target_id"
+    t.string   "target_type"
+    t.integer  "user_id"
   end
 
   create_table "versions", force: :cascade do |t|
@@ -1125,10 +1095,6 @@ ActiveRecord::Schema.define(version: 20160330032403) do
   add_foreign_key "bill_orders", "users"
   add_foreign_key "bill_orders", "users", column: "seller_id"
   add_foreign_key "bonus_records", "users"
-  add_foreign_key "calling_notifies", "calling_services"
-  add_foreign_key "calling_notifies", "table_numbers"
-  add_foreign_key "calling_notifies", "users"
-  add_foreign_key "calling_services", "users"
   add_foreign_key "cart_items", "carts"
   add_foreign_key "cart_items", "product_inventories"
   add_foreign_key "cart_items", "users", column: "seller_id"
@@ -1145,8 +1111,6 @@ ActiveRecord::Schema.define(version: 20160330032403) do
   add_foreign_key "orders", "users"
   add_foreign_key "orders", "users", column: "seller_id", name: "fk_order_seller_foreign_key"
   add_foreign_key "privilege_cards", "users"
-  add_foreign_key "product_properties", "users"
-  add_foreign_key "product_property_values", "users"
   add_foreign_key "promotion_activities", "users"
   add_foreign_key "product_properties", "users"
   add_foreign_key "product_property_values", "users"
@@ -1160,9 +1124,6 @@ ActiveRecord::Schema.define(version: 20160330032403) do
   add_foreign_key "sharing_nodes", "products", on_delete: :cascade
   add_foreign_key "sharing_nodes", "users", column: "seller_id"
   add_foreign_key "sharing_nodes", "users", on_delete: :cascade
-  add_foreign_key "sub_accounts", "users"
-  add_foreign_key "sub_accounts", "users", column: "account_id"
-  add_foreign_key "table_numbers", "users"
   add_foreign_key "transactions", "users"
   add_foreign_key "user_addresses", "users"
   add_foreign_key "user_infos", "users", on_delete: :nullify

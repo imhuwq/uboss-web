@@ -1,0 +1,26 @@
+<div class="bg-white gap-left m-top10 m-bottom10">
+  <%= link_to service_product_path(order_item.product) do%>
+    <div class="service-order-box">
+      <div class="cover" style="background-image:url('<%= order_item.product.image_url(:w120) %>');">
+        <%= image_tag order_item.product.image_url(:w120) %>
+      </div>
+      <div class="content line-gap">
+        <p class="gray-color text-cut"><%= order_item.product.name %></p>
+        <p class="main-color">有效期至：<%= strftime(order_item.product.deadline) %></p>
+        <p class="gray-color">数量：<%= order_item.amount %></h4>
+      </div>
+    </div>
+  <%end%>
+</div>
+<% size = order_item.verify_codes.size %>
+<% order_item.verify_codes.each_with_index do |verify_code, index| %>
+  <div class="service-code bg-white gap m-bottom10">
+  	<span class="pull-left gray-color">验证券密码 ：</span>
+  	<span class="main-color"><%= verify_code.code %></span>
+  	<span class="status-icon"><%= verify_code.verified ? '已消费' : '未使用' %></span>
+  </div> 
+<% end %>
+<div class="gap">
+  <p><a href="<%= service_store_path(product.service_store) %>" class="btn btn-block btn-large btn-black-border">返回店铺首页</a></p>
+</div>
+<br />

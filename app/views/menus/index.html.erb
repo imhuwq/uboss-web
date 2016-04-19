@@ -1,0 +1,116 @@
+<%= content_for :title do %>
+  <%= @store.store_title || Rails.application.secrets.metas["title"] %>
+<% end %>
+
+<%= content_for :page_title do %>
+  在线点单
+<% end %>
+
+<%= content_for :extra_meta_tags do %>
+  <%= service_store_menus_sharing_meta_tags(@store, @sharing_link_node) %>
+<% end %>
+
+<div id="store-dishes-menus" class="dishes-pop-bg">
+	<div class="close-area"></div>
+	<div class="dishes-menus-container">
+		<ul class="store-menus-list">
+      <% @index = 1 %>
+      <% @dishes.each do |name, dishes| %>
+        <li class="dishes-menus <%= 'active' if @index == 1 %>" data-chlid="<%= @index %>"><%= name %></li>
+        <% @index += dishes.length %>
+      <% end %>
+		</ul><!-- store-menus-list -->
+	</div>
+</div><!-- store-dishes-menus -->
+
+<div class="dishes-list-container">
+  <ul class="dishes-list">
+    <% @dishes.values.flatten.each do |dishe| %>
+      <li class="dishes-box" style="background-image:url('<%= dishe.image_url(:w640) %>') ;">
+        <div class="dishes-info" data-product-id="<%= dishe.id %>">
+          <div class="title"><%= dishe.name %></div>
+          <br />
+          <div class="price"><small>￥</small><span class="dishes-price"><%= dishe.price_ranges.join(" - ") %></span></div>
+          <div class="num-box">
+            <div class="minus remove-from-dishes disabled"><span>-</span></div>
+            <div class="num disabled">0</div>
+            <div class="plus pselect add-to-dishes"><span>+</span></div>
+          </div>
+        </div><!-- dishes-info -->
+
+      </li><!-- dishes-box-->
+    <% end %>
+  </ul><!-- dishes-list -->
+</div>
+<!-- 商品规格 -->
+<div class="dishes-pop-bg" id="product-specs">
+</div><!-- dishes-sku -->
+<!-- end 商品规格 -->
+<div id="dishes-order-box" class="dishes-pop-bg">
+</div><!-- dishes-order-box -->
+<div class="dishes-buy-bar">
+  <div class="order-icon pull-left">
+    <span class="order-count" id="order-count"></span>
+  </div><!-- order-icon -->
+  <a class="order-buy-btn btn disabled pull-right" id="order-buy-btn">去付款</a><!-- order-buy-btn -->
+  <%= form_tag confirm_service_store_menus_path(@store), style: 'display:none', id: "dishes-form" do %>
+    <div id='dishe-form-container'></div>
+  <% end %>
+  <div class="dishes-order-price text-cut">
+    <small>应付：</small><span id="dishes-total-price">0</span> 元
+  </div><!-- order-info -->
+</div><!-- dishes-buy-bar -->
+<%= content_for :extra_javascript do %>
+  <%= javascript_include_tag "iscroll/iscroll" %>
+  <%= javascript_include_tag "mobile_page/menus/boot" %>
+  <% if browser.wechat? %>
+    <script type="text/javascript" charset="utf-8">
+      wx.ready(function(){ UBoss.luffy.invokeSharing(); });
+    </script>
+  <% end %>
+  <script type="text/javascript">
+  //iscroll 滑动
+  var dishes_list_Scroll;
+  var dishes_menus_Scroll;
+  var dishes_sku_Scroll;
+  var dishes_order_Scroll;
+  function iScrollClick(){
+  	if (/iPhone|iPad|iPod|Macintosh/i.test(navigator.userAgent)) return false;
+  	if (/Chrome/i.test(navigator.userAgent)) return (/Android/i.test(navigator.userAgent));
+  	if (/Silk/i.test(navigator.userAgent)) return false;
+  	if (/Android/i.test(navigator.userAgent)) {
+  	   var s=navigator.userAgent.substr(navigator.userAgent.indexOf('Android')+8,3);
+  	   return parseFloat(s[0]+s[3]) < 44 ? false : true
+      }
+  }
+  function loaded () {
+  	dishes_list_Scroll = new IScroll('.dishes-list-container',{click:iScrollClick()});
+  }
+
+    $('.dishes-pop-bg .close-area').on('click',function(){
+      $(this).closest('.dishes-pop-bg').removeClass('show');
+
+    })
+
+   $(document).ready(function(){
+    //弹出分类菜单栏
+    var Isflag = true;
+    $('.dishes-header .menu-btn').on('click',function(){
+        $('#store-dishes-menus').toggleClass('show');
+        if(Isflag){
+          dishes_menus_Scroll = new IScroll('.dishes-menus-container',{click:iScrollClick()});
+          Isflag = false;
+        }
+
+     })
+
+    $('.dishes-menus').on('click',function(){
+      $('.dishes-menus').removeClass('active')
+      $(this).addClass('active');
+      dishes_list_Scroll.scrollToElement(document.querySelector('.dishes-list-container li:nth-child('+  $(this).attr("data-chlid") +')'))
+    })
+  //
+  })
+  </script>
+<% end %>
+

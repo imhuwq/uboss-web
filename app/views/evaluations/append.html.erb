@@ -25,11 +25,34 @@
     <%= simple_form_for @evaluation, html: {autocomplete: 'off'} do |f| %>
     <%= f.input_field :status, class:'hidden' %>
     <%= f.hidden_field :order_item_id, class:'hidden' %>
+    <%= f.hidden_field :order_id, class:'hidden' %>
     <%= hidden_field_tag :timestamp, @stale_form_check_timestamp %>
     <%= f.text_area :content, value: '', checked: false, autocomplete: 'off', placeholder: '我还想说...', id:"y_textarea" ,rows:"6",class:"input-block" %>
   <% end %>
   </div>
 </div><!-- evaluations-box -->
+<% if @order.present? %>
+  <% @order.order_items.each do |item| %>
+  <!-- 有菜品的时候 -->
+    <div class="evaluation-dishes-list bg-white">
+      <!-- 循环  -->
+      <div class="evaluation-dishes-box">
+        <div class="cover"
+          <% if item.product.image_url %>
+            style="background-image:url(<%= item.product.image_url(:thumb) %>) ;"
+          <% end %>
+        ></div><!--cover -->
+        <div class="title text-cut"><%= item.product.name %></div>
+        <div class="recommend-icon">
+          <div class="order-item-box" data-id="<%= item.id %>">
+            <span class="<%= item.recommend ? 'active': '' %>"></span>
+          </div>
+        </div><!-- recommend-icon -->
+      </div><!-- evaluation-dishes-box -->
+    </div><!-- evaluation-dishes-list -->
+    <br />
+  <% end %>
+<% end %>
 <div class="evaluations-list">
   <% @evaluations.each do |evaluation| %>
     <br />

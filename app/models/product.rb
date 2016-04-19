@@ -14,6 +14,7 @@ class Product < ActiveRecord::Base
   has_one_image autosave: true
   #has_many_images name: :figure_images, accepts_nested: true
   has_one_content name: :purchase_note, type: :purchase_note
+  serialize :price_ranges, Array
 
   belongs_to :user
   belongs_to :carriage_template
@@ -22,9 +23,8 @@ class Product < ActiveRecord::Base
   has_many :different_areas, through: :carriage_template
   has_many :order_items
   has_many :advertisements
-  has_many :categories
   has_and_belongs_to_many :categories, -> { uniq } ,autosave: true
-  has_many :product_inventories, autosave: true, dependent: :destroy
+  has_many :product_inventories, autosave: true, dependent: :destroy, inverse_of: :product
   has_many :cart_items,  through: :product_inventories
   validates_associated :product_inventories
   has_many :seling_inventories, -> { where(saling: true) }, class_name: 'ProductInventory', autosave: true
@@ -43,12 +43,20 @@ class Product < ActiveRecord::Base
   scope :supply_deleted, -> { joins(:supplier_product_info).where('supplier_product_infos.supply_status = 2') }
   scope :commons, -> { where(type: %w(OrdinaryProduct AgencyProduct)) }
 
-  validate :must_has_one_image
+  validate :must_has_one_image, unless: :optional_image?
   validate :must_has_one_product_inventory
-  validates_presence_of :user_id, :name, :asset_img, :type
+  validates_presence_of :user_id, :name, :type
 
   before_create :generate_code
-  after_create :add_categories_after_create
+  before_validation :add_categories_after_create
+
+  def optional_image?
+    false
+  end
+
+  def recommend_count
+    order_items.where(recommend: true).count
+  end
 
   def self.official_agent
     official_account = User.official_account
@@ -215,9 +223,17 @@ class Product < ActiveRecord::Base
       category_names.each do |item|
         category = Category.find_or_new_by(name: item, user_id: self.user_id)
         if category.new_record?
+          if self.type == 'OrdinaryProduct'
+            category.store_id = self.user.ordinary_store.id
+            category.store_type = self.user.ordinary_store.class.name
+          else
+            category.store_id = self.user.service_store.id
+            category.store_type = self.user.service_store.class.name
+          end
           category.use_in_store = false
         end
         category.save
+        category.update(position: nil) if self.type == 'OrdinaryProduct'
         self.categories << category
       end
     end
@@ -231,7 +247,6 @@ class Product < ActiveRecord::Base
         category.save
         categories << category
       end
-      save
     end
   end
 

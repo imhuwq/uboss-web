@@ -79,7 +79,7 @@ SimpleNavigation::Configuration.run do |navigation|
     end
 
     # Add an item which has a sub navigation (same params, but with block)
-    primary.item :seller, '电商店铺', '#', {} do |sub_nav|
+    primary.item :seller, '电商店铺', admin_products_path do |sub_nav|
       # Add an item to the sub navigation (same params again)
       sub_nav.item :products, '商品', admin_products_path, {} do |thr_nav|
         thr_nav.item :new_products, '商品', admin_products_path,
@@ -88,8 +88,8 @@ SimpleNavigation::Configuration.run do |navigation|
         thr_nav.item :new_products, '运费模板', admin_sellers_carriage_templates_path,
           highlights_on: :subpath, if: -> { can?(:read, CarriageTemplate) }
 
-        thr_nav.item :new_products, '商品分组', admin_categories_path,
-          highlights_on: :subpath, if: -> { can?(:read, Category) }
+        thr_nav.item :new_products, '商品分组', admin_categories_path(dishes: false),
+          highlights_on: :subpath, if: -> { can?(:read, Category) && params[:dishes] !='true' }
       end
       sub_nav.item :order,  '订单', '#' do |thr_nav|
         thr_nav.item :orders, '订单', admin_orders_path,
@@ -121,6 +121,14 @@ SimpleNavigation::Configuration.run do |navigation|
       sub_nav.item :s_verify,  '验证', '#' do |thr_nav|
         thr_nav.item :verify_codes, '验证管理', admin_verify_codes_path, highlights_on: :subpath, if: -> { can?(:manage, VerifyCode) }
         thr_nav.item :verify_codes, '收银管理', admin_bill_orders_path, highlights_on: :subpath, if: -> { can?(:manage, BillOrder) }
+      end
+
+      sub_nav.item :s_dishes,  '菜品', admin_dishes_products_path, {} do |thr_nav|
+        thr_nav.item :new_dishes, '菜品', admin_dishes_products_path,
+          highlights_on: :subpath, if: -> { can?(:read, DishesProduct) }
+
+        thr_nav.item :new_dishes, '分组管理', admin_categories_path(dishes: true),
+          highlights_on: :subpath, if: -> { can?(:read, Category) && params[:dishes] != 'false' }
       end
 
       sub_nav.item :s_pj,      '评价', admin_evaluations_path,

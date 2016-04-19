@@ -20,4 +20,13 @@ module OrdersHelper
       @sign_package ||= $weixin_client.get_jssign_package(request.url)
     end
   end
+
+  def product_inventory_fullname(item)
+    prop = if item.class == OrderItem
+      item.sku_properties
+    elsif item.class == ProductInventory
+      item.sku_attributes_str
+    end
+    item.product.name + (prop.blank? ? "" : "(#{prop})")
+  end
 end

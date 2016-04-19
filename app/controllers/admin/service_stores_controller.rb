@@ -26,7 +26,7 @@ class Admin::ServiceStoresController < AdminController
     @total_income = get_total_income
     @income_by_date = {}
 
-    verified_codes = current_user.verified_codes.group_by{ |verify_code| verify_code.updated_at.to_date }.sort_by{ |key, values| key }.reverse
+    verified_codes = current_user.verify_codes.group_by{ |verify_code| verify_code.updated_at.to_date }.sort_by{ |key, values| key }.reverse
     verified_codes.each do |date, codes|
       size = codes.count
       @income_by_date[date] = [size, codes.sum(&:income) ]
@@ -72,7 +72,7 @@ class Admin::ServiceStoresController < AdminController
   end
 
   def get_total_income
-    current_user.verified_codes.sum(:income)
+    current_user.verify_codes.sum(:income)
   end
 
   def service_store_params

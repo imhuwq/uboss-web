@@ -251,13 +251,18 @@ module WxTemplateMsg extend self
   end
 
   def service_order_payed_msg_to_buyer_data(order)
+    content, codes = case order.type
+    when 'DishesOrder'  then ["您已成功在“#{order.seller.identify}”下单, 共 #{order.order_items.sum(:amount)}份菜品\n", order.verify_code.code]
+    when 'ServiceOrder' then ["您已功购买“#{order.order_item.product_name}”\n", order.verify_codes.map(&:code).join('，')]
+    end
+
     {
       first: {
-        value: "您已功购买“#{order.order_item.product_name}”\n",
+        value: content,
         color: "#173177"
       },
       keyword1: {
-        value: order.verify_codes.map(&:code).join('，'),
+        value: codes,
         color: "#000"
       },
       keyword2: {

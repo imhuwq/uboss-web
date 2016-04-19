@@ -1,9 +1,10 @@
 class ServiceOrder < Order
-  has_many :verify_codes, through: :order_items
 
   enum state: { unpay: 0, payed: 1, closed: 5, completed: 6 }
 
   scope :has_payed, -> { where(state: [1, 6]) }
+  has_many :verify_codes, through: :order_items
+  scope :unevaluate, -> { completed.joins("inner join order_items on orders.id = order_items.order_id left join evaluations on order_items.id = evaluations.order_item_id or orders.id = evaluations.order_id").where(evaluations: {id: nil}).uniq }
 
   aasm column: :state, enum: true, skip_validation_on_save: true, whiny_transitions: false do
     state :unpay
@@ -28,7 +29,7 @@ class ServiceOrder < Order
   end
 
   def paid_and_expensed?
-    paid? && verify_codes.any? { |verify_code| verify_code.verified }
+    (completed? || state == 'unevaluate') && !verify_codes.any? { |verify_code| !verify_code.verified }
   end
 
   def order_item
@@ -36,7 +37,7 @@ class ServiceOrder < Order
   end
 
   def check_completed
-    if VerifyCode.where(order_item_id: self.order_item_ids, verified: false).blank?
+    if VerifyCode.where(target: self.order_item, verified: false).blank?
       may_complete? && completed!
     end
   end
@@ -44,7 +45,7 @@ class ServiceOrder < Order
   private
 
   def invoke_service_order_payed_job
-    order_item.amount.times { order_item.verify_codes.create!() }
+    order_item.amount.times { order_item.verify_codes.create!(user_id: self.seller_id) }
     ServiceOrderPayedJob.perform_later(self)
   end
 

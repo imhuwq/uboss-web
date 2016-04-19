@@ -94,6 +94,8 @@ Rails.application.routes.draw do
   resources :products, only: [:index, :show] do
     member do
       patch :switch_favour
+      get :info
+      get :recommend
     end
     get :get_sku, on: :collection
     post :democontent,  on: :collection
@@ -115,6 +117,10 @@ Rails.application.routes.draw do
     get :verify_detail, on: :member
     get :share, on: :member
     post :verify, on: :member
+    resources :menus, only: :index do
+      post :confirm, on: :collection
+      post :order, on: :collection
+    end
   end
 
   resource :chat, only: [:show] do
@@ -239,13 +245,16 @@ Rails.application.routes.draw do
       resources :verify_codes, only: [:index] do
         collection do
           get :statistics
+          get :dishes
           post :verify
         end
       end
 
       resources :evaluations, only: [:index, :destroy] do
         collection do
+          get :dishes_index
           get :statistics
+          get :dishes
         end
       end
 
@@ -281,6 +290,13 @@ Rails.application.routes.draw do
           patch :switch_hot_flag
         end
       end
+
+      resources :dishes_products, except: [:destroy] do
+        member do
+          patch :change_status
+        end
+      end
+
       resources :service_products, except: [:destroy] do
         member do
           patch :change_status
@@ -380,6 +396,7 @@ Rails.application.routes.draw do
       root 'dashboard#index'
 
       resources :categories, except: [:show] do
+        get :sort, on: :member
         post :update_categories, on: :collection
         post :update_category_name,  on: :member
         post :update_category_img, on: :collection

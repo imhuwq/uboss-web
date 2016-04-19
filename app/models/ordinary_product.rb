@@ -6,6 +6,7 @@ class OrdinaryProduct < Product
   belongs_to :ordinary_store
   validates :full_cut_number, :full_cut_unit, presence: true, if: "full_cut"
   validates_numericality_of :full_cut_number, greater_than: 0, if: "full_cut"
+  validates_presence_of :asset_img
   validate do
     if transportation_way == 1    #统一邮费
       self.errors.add(:traffic_expense, "不能小于或等于0") if traffic_expense.to_i <= 0

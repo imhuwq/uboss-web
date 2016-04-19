@@ -1,0 +1,13 @@
+<%= render 'public' %>
+<br />
+<div class="container">
+	<div class="header-tab">
+		<%= link_to "商品评价详情", admin_evaluations_path, class:"tab-title" %>
+		<div class="tab-title active">菜品评价详情</div>
+		<%= link_to "商品统计", statistics_admin_evaluations_path, class:"tab-title" %>
+		<%= link_to "菜品统计", dishes_admin_evaluations_path, class:"tab-title" %>
+	</div>
+</div>
+<br />
+
+<%= render 'dishes_table_list_index' %>

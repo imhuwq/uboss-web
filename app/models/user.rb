@@ -18,6 +18,7 @@ class User < ActiveRecord::Base
   has_one :cart
   has_many :recommends
   has_many :user_infos, autosave: true
+  has_many :verify_codes
   has_many :carriage_templates
   has_many :transactions
   has_many :user_role_relations, dependent: :destroy
@@ -42,6 +43,7 @@ class User < ActiveRecord::Base
   has_many :orders
   has_many :ordinary_orders
   has_many :service_orders
+  has_many :dishes_orders
   has_many :order_charges
   has_many :order_items
   has_many :sharing_incomes
@@ -58,7 +60,6 @@ class User < ActiveRecord::Base
   has_many :sold_orders, class_name: 'Order', foreign_key: 'seller_id'
   has_many :sold_ordinary_orders, class_name: 'OrdinaryOrder', foreign_key: 'seller_id'
   has_many :sold_service_orders,  class_name: 'ServiceOrder',  foreign_key: 'seller_id'
-  has_many :verified_codes, -> { where(verified: true) }, through: :sold_service_orders, source: :verify_codes
   has_many :products
   has_many :ordinary_products
   has_many :service_products

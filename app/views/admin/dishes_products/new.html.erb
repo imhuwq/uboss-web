@@ -1,0 +1,24 @@
+<div class="container admin-container">
+	<ul class="breadcrumb">
+		<li><a href="/admin">主页</a></li>
+		<li class="divider"><i class="fa fa-angle-right"></i></li>
+		<li><%= link_to '菜品管理', [:admin, :dishes_products] %></li>
+		<li class="divider"><i class="fa fa-caret-right"></i></li>
+		<li class="active">发布菜品信息</li>
+	</ul>
+</div><!-- container -->
+
+<br />
+
+<div class="container nogap">
+    <%= horizon_form_for @dishes_product, url: admin_dishes_products_path do |f| %>
+
+      <%= render 'fields', f: f %>
+
+      <div class="form-actions text-center">
+        <%= f.submit "上架", class: "btn btn-large" %>
+        <%= f.submit "上架并继续新增菜品", class: "btn btn-large" %>
+      </div>
+    <% end %>
+
+</div>

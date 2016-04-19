@@ -1,0 +1,41 @@
+.font-sort {
+  vertical-align: middle;
+  margin-left: 10px;
+  font-size: 30px;
+  display: inline-block;
+  .fa-sort-asc {
+    margin-top: 3px;
+    height: 20px;
+  }
+  
+}
+
+.dish-hover td{
+  animation: dish_hover 0.3s 1 ;
+  -moz-animation: dish_hover 0.3s 1; /* Firefox */
+  -webkit-animation: dish_hover 0.3s 1;  /* Safari 和 Chrome */
+  -o-animation: dish_hover 0.3s 1; /* Opera */
+  *background: #43C3AA;background: #43C3AA\9;
+  
+}
+@keyframes dish_hover{
+  0%{background: #383838;}
+  100%{background: rgba(67,195,170,0.8);}
+}
+@-moz-keyframes dish_hover /* Firefox */
+{
+  0%{background: #383838;}
+  100%{background: rgba(67,195,170,0.8);}
+}
+
+@-webkit-keyframes dish_hover /* Safari 和 Chrome */
+{
+  0%{background: #383838;}
+  100%{background: rgba(67,195,170,0.8);}
+}
+
+@-o-keyframes dish_hover /* Opera */
+{
+  0%{background: #383838;}
+  100%{background: rgba(67,195,170,0.8);}
+}

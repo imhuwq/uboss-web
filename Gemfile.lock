@@ -93,6 +93,8 @@ GEM
       minitest (~> 5.1)
       thread_safe (~> 0.3, >= 0.3.4)
       tzinfo (~> 1.1)
+    acts_as_list (0.7.2)
+      activerecord (>= 3.0)
     addressable (2.3.8)
     airbrake (4.3.0)
       builder
@@ -532,6 +534,7 @@ PLATFORMS
 
 DEPENDENCIES
   aasm
+  acts_as_list
   airbrake
   amoeba
   awesome_nested_set

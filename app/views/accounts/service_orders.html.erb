@@ -15,7 +15,14 @@
       <li><a href="<%= service_orders_account_path(state: 'completed') %>">待评价</a></li>
     </ul>
     <div id="u-order-list">
-      <%= render partial: 'service_order', collection: @orders %>
+      <% @orders.each do |order| %>
+      <% case order.type %>
+        <% when 'ServiceOrder' %>
+          <%= render partial: 'service_order', locals: { service_order: order } %>
+        <% when 'DishesOrder' %>
+          <%= render partial: 'dishes_order', locals: { service_order: order } %>
+        <% end %>
+      <% end %>
     </div>
     <% if @orders.blank? %>
       <div class="bg-white text-center gap">
@@ -38,7 +45,7 @@
 <%= render partial: 'new_share' %>
 
 <script>
-	
+
 
   $(document).ready(function(){
     $.each($('.order-sort li'), function(){

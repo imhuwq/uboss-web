@@ -1,8 +1,8 @@
 class Admin::StoresController < AdminController
   def edit
     @advertisements = get_advertisements
-    @categories = Category.where(use_in_store: true, user_id: current_user.id).order('use_in_store_at')
-    @select_categories = Category.where(use_in_store: false, user_id: current_user.id)
+    @categories = Category.electricity_categories.where(use_in_store: true, user_id: current_user.id).order('use_in_store_at')
+    @select_categories = Category.electricity_categories.where(use_in_store: false, user_id: current_user.id)
   end
 
   def update_store_cover
@@ -43,7 +43,7 @@ class Admin::StoresController < AdminController
       render json: { products: arr }
     elsif params[:type] == 'category'
       arr = []
-      (current_user.categories.select(:name, :id).all - current_user.categories.joins(:advertisements).select(:name, :id)).each do |c|
+      (current_user.categories.electricity_categories.select(:name, :id).all - current_user.categories.electricity_categories.joins(:advertisements).select(:name, :id)).each do |c|
         arr += [{ id: c.id, text: c.name }]
       end
       render json: { categories: arr }
@@ -58,7 +58,7 @@ class Admin::StoresController < AdminController
       @adv.user_type = 'Ordinary'
       if params[:advertisement][:type] == 'product' && product = current_user.products.find_by_id(params[:advertisement][:id])
         @adv.product_id = product.id
-      elsif params[:advertisement][:type] == 'category' && category = current_user.categories.find_by_id(params[:advertisement][:id])
+      elsif params[:advertisement][:type] == 'category' && category = current_user.categories.electricity_categories.find_by_id(params[:advertisement][:id])
         @adv.category_id = category.id
       end
       if @adv.save
@@ -72,14 +72,14 @@ class Admin::StoresController < AdminController
   end
 
   def add_category
-    category = Category.where(use_in_store: false).find_by!(id: params[:category][:id], user_id: current_user.id)
+    category = Category.electricity_categories.where(use_in_store: false).find_by!(id: params[:category][:id], user_id: current_user.id)
     if category && params[:category][:avatar] == ''
       category.update(use_in_store: true, use_in_store_at: Time.now)
     elsif category
       category.update(use_in_store: true, use_in_store_at: Time.now, avatar: params.require(:category).permit(:avatar, :order_number)[:avatar])
     end
-    @categories = Category.where(use_in_store: true, user_id: current_user.id).order('use_in_store_at')
-    @select_categories = Category.where(use_in_store: false, user_id: current_user.id)
+    @categories = Category.electricity_categories.where(use_in_store: true, user_id: current_user.id).order('use_in_store_at')
+    @select_categories = Category.electricity_categories.where(use_in_store: false, user_id: current_user.id)
   end
 
   def remove_advertisement_item
@@ -94,14 +94,14 @@ class Admin::StoresController < AdminController
   end
 
   def remove_category_item
-    category = Category.find_by!(id: params[:id], user_id: current_user.id)
+    category = Category.electricity_categories.find_by!(id: params[:id], user_id: current_user.id)
     if category && category.update(use_in_store: false)
       flash.now[:success] = '移除成功'
     else
       flash.now[:error] = '移除失败'
     end
-    @categories = Category.where(use_in_store: true, user_id: current_user.id).order('use_in_store_at')
-    @select_categories = Category.where(use_in_store: false, user_id: current_user.id)
+    @categories = Category.electricity_categories.where(use_in_store: true, user_id: current_user.id).order('use_in_store_at')
+    @select_categories = Category.electricity_categories.where(use_in_store: false, user_id: current_user.id)
     render 'add_category'
   end
 
@@ -134,7 +134,7 @@ class Admin::StoresController < AdminController
         @message = { error: '修改失败' }
       end
     when 'category'
-      category = current_user.categories.find(params[:resource_id])
+      category = current_user.categories.electricity_categories.find(params[:resource_id])
       if category.update(show_advertisement: false)
         @message = { success: '修改成功' }
       else
@@ -145,7 +145,7 @@ class Admin::StoresController < AdminController
   end
 
   def get_category_img
-    if @category = current_user.categories.find(params[:resource_id])
+    if @category = current_user.categories.electricity_categories.find(params[:resource_id])
       @update_image_url = "admin/categories/#{@category.id}/update_category_img"
       if @category.asset_img.avatar.current_path
         avatar_identifier = @category.asset_img.avatar_identifier

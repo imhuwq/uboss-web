@@ -3,6 +3,15 @@ class ProductsController < ApplicationController
 
   before_action :set_product, only: [:switch_favour]
 
+  def recommend
+    @order_item = OrderItem.find(params[:id])
+    if @order_item.update(recommend: !@order_item.recommend)
+      render json: { status: 'ok', message: '操作成功' }
+    else
+      render json: { status: "failure", error: "操作失败，请刷新再尝试" }
+    end
+  end
+
   def index
     @products = append_default_filter scope.includes(:asset_img), order_column: :updated_at
 
@@ -40,6 +49,11 @@ class ProductsController < ApplicationController
   def get_sku
     product = Product.find(params[:product_id])
     render json: product.sku_hash
+  end
+
+  def info
+    @product = Product.find params[:id]
+    @product_inventories = @product.product_inventories.saling
   end
 
   def switch_favour

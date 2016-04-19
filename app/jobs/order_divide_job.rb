@@ -16,6 +16,7 @@ class OrderDivideJob < ActiveJob::Base
     case object
     when OrdinaryOrder, AgencyOrder  then perform_order_divide(object)
     when VerifyCode     then perform_service_order_divide(object)
+    when DishesOrder then perform_dishes_order_divide(object)
     end
   end
 
@@ -61,7 +62,7 @@ class OrderDivideJob < ActiveJob::Base
   def perform_service_order_divide(verify_code)
     @order = verify_code.order
     @verify_code = verify_code
-    @order_items = [verify_code.order_item]
+    @order_items = [verify_code.target]
 
     if verify_code.sharing_rewared?
       logger.error "Break divide verify code: #{@verify_code.code} as it had divided!"
@@ -78,6 +79,25 @@ class OrderDivideJob < ActiveJob::Base
     logger.info "Done divide @order: #{@order.number}, @verify code: #{@verify_code.code}"
   rescue => exception
     send_exception_message(exception,  @verify_code.attributes.merge({order: @order.attributes}))
+  end
+
+  def perform_dishes_order_divide(object)
+    @order = object
+    @order_items = object.order_items
+    @verify_code = @order.verify_code
+    @order_income = Rails.env.production? ? @order.paid_amount : @order.pay_amount
+    logger.info "Start divide dishes order: #{@order.number}, total_paid: #{@order_income}"
+
+    refunded_money = @order.order_item_refunds.successed.sum(:money)
+    logger.info "Divide dishes order: #{@order.number}, reduce refund money #{refunded_money}"
+    @order_income -= refunded_money
+
+    start_divide_order_paid_amount
+
+    logger.info "Done divide dishes order: #{@order.number}"
+
+  rescue => exception
+    send_exception_message(exception, @order.attributes)
   end
 
   def start_divide_order_paid_amount
@@ -108,20 +128,25 @@ class OrderDivideJob < ActiveJob::Base
 
         SellingIncome.create!(user: @order.seller, amount: order_income, order: @order)
 
-        if @order.class == OrdinaryOrder
+        case @order.type
+        when 'OrdinaryOrder'
           @order.update_columns(income: order_income, sharing_rewared: true)
           @order.complete!
-        elsif @order.is_agency_order?
+        when 'AgencyOrder'
           @order.purchase_order.update(income: supplier_divide_price)
           @order.update_columns(income: order_income, sharing_rewared: true)
           @order.complete!
-        elsif @order.class == ServiceOrder
+        when 'ServiceOrder'
           @verify_code.update_columns(income: order_income, sharing_rewared: true)
           @order.update_columns(income: @order.verify_codes.where(sharing_rewared: true).sum(:income))
 
           if !@order.verify_codes.any? { |code| !code.sharing_rewared? }
             @order.update_columns(sharing_rewared: true)
           end
+        when 'DishesOrder'
+          @verify_code.update_columns(income: order_income, sharing_rewared: true)
+          @order.update_columns(income: order_income)
+          @order.update_columns(sharing_rewared: true)
         end
       rescue => e
         logger.error "!!!Exception raise up! Dividing order: #{@order.number} ! Message: #{e.message} !!!"

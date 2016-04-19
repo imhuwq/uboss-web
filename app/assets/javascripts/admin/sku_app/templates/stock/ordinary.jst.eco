@@ -11,7 +11,11 @@
           </th>
         <% end %>
         <th style='width:100px;'>价格</th>
-        <th>库存</th>
+        <% if window.location.pathname.includes('dishes_products'): %>
+          <th>返利</th>
+        <% else: %>
+          <th>库存</th>
+        <% end %>
       </tr>
     </thead>
     <tbody>

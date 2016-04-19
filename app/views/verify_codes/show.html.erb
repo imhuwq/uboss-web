@@ -3,7 +3,7 @@
 <% end %>
 
 <%= content_for :header_left do %>
-  <a class="back" href="/account"><%= image_tag 'mobile/right.png' %></a>
+  <a class="back" href="/account/verify_codes"><%= image_tag 'mobile/right.png' %></a>
 <% end %>
 
 <!--
@@ -22,7 +22,7 @@
     	<span class="pull-left gray-color">验证券密码 ：</span> 
     	<span class="main-color"><%= verify_code.code %></span> 
     	<span class="status-icon"><%= verify_code.verified ? '已消费' : '未使用' %></span>
-    </div>          
+    </div>
   <% end %>
 </div>
 <br />

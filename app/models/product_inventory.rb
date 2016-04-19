@@ -1,8 +1,9 @@
 class ProductInventory < ActiveRecord::Base
+  include DishesProductInventoryAble
 
   SkuProperty = Struct.new(:key, :value)
 
-  belongs_to :product
+  belongs_to :product, inverse_of: :product_inventories
   belongs_to :product_class
   has_many   :cart_items
   has_many   :order_items
@@ -31,6 +32,7 @@ class ProductInventory < ActiveRecord::Base
             :share_amount_lv_2,
             :share_amount_lv_3,
             :privilege_amount ]
+  after_save :cache_product_money
 
   def saling?
     status == 'published' && saling && count > 0
@@ -111,6 +113,21 @@ class ProductInventory < ActiveRecord::Base
     if share_and_privilege_amount_total > price
       errors.add(:share_amount_total, '必须小于对应（商品/规格）的价格')
     end
+  end
+
+  def cache_product_money
+    price_ranges = [*product.price_ranges, price.to_f].compact.sort
+    if price_ranges.length > 2
+      price_ranges = [price_ranges[0], price_ranges[-1]]
+    else
+      price_ranges
+    end
+    if not saling?
+      salings = product.product_inventories.saling.order("price")
+      price_ranges = [salings.first, salings.last].compact.map(&:price)
+    end
+
+    product.update(price_ranges: price_ranges.uniq.compact)
   end
 
 end

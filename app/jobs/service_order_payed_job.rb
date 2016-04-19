@@ -10,7 +10,7 @@ class ServiceOrderPayedJob < ActiveJob::Base
     @order = order.reload
     @seller = order.seller
     @buyer = order.user
-    raise ServiceOrderNotPayed, order if !order.payed?
+    raise ServiceOrderNotPayed, order if !order.effective?
 
     create_privilege_card_if_none
     send_payed_sms_to_buyer
@@ -24,11 +24,18 @@ class ServiceOrderPayedJob < ActiveJob::Base
   end
 
   def send_payed_sms_to_buyer
-    name = order.order_item.product_name
-    codes = order.verify_codes.map(&:code).join(', ')
-    time = order.order_item.product.deadline.strftime('%Y-%m-%d')
-    if buyer
-      PostMan.send_sms(buyer.login, {name: name, codes: codes, time: time}, 1188511)
+    PostMan.send_sms(buyer.login, *sms_content) if buyer
+  end
+
+  def sms_content
+    case order.type
+    when 'DishesOrder'
+      [{ seller_name: seller.identify, code: order.verify_code.code }, 1288347]
+    when 'ServiceOrder'
+      name = order.order_item.product_name
+      time = order.order_item.product.deadline.strftime('%Y-%m-%d')
+      codes = order.verify_codes.map(&:code).join(', ')
+      [{ name: name, time: time, codes: codes }, 1188511]
     end
   end
 

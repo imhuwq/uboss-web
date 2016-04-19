@@ -9,19 +9,57 @@
       </tr>
     </thead>
     <tbody>
-      <% @verify_codes.each do |verify_code| %>
+      <% @verify_codes.each_with_index do |verify_code, index| %>
         <tr>
           <td class="text-left">
-            <% if verify_code.order_item_id %>
-				    	<%= link_to admin_service_product_path(verify_code.order_item.product) do %>
-                <%= image_tag(verify_code.order_item.product.image_url(:thumb), size: "80x80", alt: "-") %>　
-                <%= verify_code.order_item.product.name %>
+            <% if verify_code.target_type == 'DishesOrder' %>
+              菜品验证
+
+              <div id="ordermodal_<%= index + 1 %>" class="modal fade in show-order-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+               <div class="modal-dialog" role="document">
+
+                 <div class="modal-content">
+                  <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                    <h4 class="modal-title" id="myModalLabel">验证详情</h4>
+                  </div>
+                   <div class="modal-body">
+                     <table class="white-table">
+                       <% verify_code.target.order_items.each do |item| %>
+                         <tr>
+                           <td style="width: 120px;">
+                            <% if item.product.image_url %>
+                              <%= image_tag(item.product.image_url(:thumb), size: "80x80", alt: "-") %>　
+                            <% else %>
+                              <%= image_tag('admin/no-img.png',width:120)%>
+                            <% end %>
+                           </td>
+                           <td class="text-left"><%= item.product.name %></td>
+                           <td class="text-left">X <%= item.amount %></td>
+                           <td class="text-right"><%= item.present_price %></td>
+                         </tr>
+                       <% end %>
+                     </table>
+                     <br />
+                     <div class='text-center'>总价: <%= verify_code.target.present_price %></div>
+                   </div>
+
+
+                 </div><!-- /.modal-content -->
+               </div><!-- /.modal-dialog -->
+             </div>
+              <button type="button" class="btn " data-toggle="modal" data-target="#ordermodal_<%= index + 1 %>">
+                详情
+              </button>
+
+            <% else %>
+              <%= link_to admin_service_product_path(verify_code.target.product) do %>
+                <%= image_tag(verify_code.target.product.image_url(:thumb), size: "80x80", alt: "-") %>　
+                <%= verify_code.target.product.name %>
               <% end %>
-            <% elsif activity_prize = verify_code.activity_prize %>
-              <%= activity_prize.try(:activity_info).try(:name) %>(活动奖品)
             <% end %>
           </td>
-          <td><%= verify_code.try(:order_item).try(:present_price)%></td>
+          <td><%= verify_code.target.present_price %></td>
           <td><%= verify_code.updated_at %></td>
           <td><%= verify_code.code %></td>
         </tr>

@@ -1,5 +1,9 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh-CN"
+	<% if controller_name == 'menus' && params[:action] == 'index' %>
+	class="dishes-html"
+	<% end %>
+>
   <head>
     <meta charset="utf-8" />
     <meta id='MobileViewport' name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
@@ -14,9 +18,11 @@
     <%= csrf_meta_tags %>
   </head>
 
-  <body class='<%= controller_name %> <%= action_name %>'>
+  <body class='<%= controller_name %> <%= action_name %>' <% if controller_name == 'menus' && params[:action] == 'index' %>onload="loaded()"<% end %>>
 
-    <% unless browser.uboss? %>
+    <% if controller_name == 'menus' && params[:action] == 'index' %>
+      <%= render partial: 'layouts/menu_nav' %>
+    <% elsif  !browser.uboss? %>
       <header> <%= render partial: 'layouts/mobile_header' %> </header>
     <% end %>
 

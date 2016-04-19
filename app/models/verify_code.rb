@@ -1,5 +1,6 @@
 class VerifyCode < ActiveRecord::Base
-  belongs_to :order_item
+  belongs_to :target, polymorphic: true
+  belongs_to :user
   belongs_to :activity_prize
 
   before_create :generate_code
@@ -7,12 +8,15 @@ class VerifyCode < ActiveRecord::Base
 
   default_scope {order("updated_at desc")}
 
-  scope :with_user, ->(user) { joins(order_item: :service_product).merge(user.service_products) }
+  scope :with_user, ->(user) { user.verify_codes }
+
   scope :today, ->(user) {
-    where(verified: true).with_user(user).
+    with_user(user).where(verified: true).
     where('verify_codes.updated_at BETWEEN ? AND ?',
           Time.now.beginning_of_day, Time.now.end_of_day) }
-  scope :total, ->(user) { where(verified: true).with_user(user) }
+
+  scope :total, ->(user) { with_user(user).where(verified: true) }
+
   scope :with_activity_user, ->(user) {
     joins(activity_prize:[:promotion_activity]).
     where('promotion_activities.user_id = ?',user.id) }
@@ -34,13 +38,18 @@ class VerifyCode < ActiveRecord::Base
   def self.verify(seller, code)
     result = {}
     verify_code = VerifyCode.find_by(code: code)
-    if verify_code && verify_code.order_item_id
-      result = VerifyCode.with_user(seller).find_by(code: code).verify_code
+    if verify_code && verify_code.target_type == 'OrderItem'
+      result[:success] = VerifyCode.with_user(seller).find_by(code: code).verify_code
+      if result[:success] == true
+        result[:verfiy_code] = verify_code
+      end
+    elsif verify_code && verify_code.target_type == 'DishesOrder'
+      result[:success] = VerifyCode.with_user(seller).find_by(code: code).verify_code
       if result[:success] == true
         result[:verfiy_code] = verify_code
       end
     elsif verify_code && verify_code.activity_prize
-      result =  verify_code.verify_activity_code(seller)
+      result[:success] =  verify_code.verify_activity_code(seller)
       if result[:success] == true
         result[:verfiy_code] = verify_code
       end
@@ -52,13 +61,17 @@ class VerifyCode < ActiveRecord::Base
   end
 
   def verify_code
-    if verified
-      return {success: false, message: '已经使用过了。'}
-    elsif update(verified: true)
-      order.try(:check_completed)
-      return {success: true, message: '验证成功。'}
-    end
-  end
+     if !verified && update(verified: true)
+       if target_type == 'DishesOrder'
+         target.try(:check_completed)
+       else
+         target.order.try(:check_completed)
+       end
+       true
+     else
+       false
+     end
+   end
 
   def verify_activity_code(store_admin)
     if activity_prize.promotion_activity.user_id != store_admin.id
@@ -73,7 +86,17 @@ class VerifyCode < ActiveRecord::Base
   end
 
   def order
-    order_item.order
+    if target_type == 'OrderItem'
+      target.order
+    else
+      self
+    end
+  end
+
+  def order_item
+    if target_type == 'OrderItem'
+      target
+    end
   end
 
   def verify_time
@@ -95,9 +118,11 @@ class VerifyCode < ActiveRecord::Base
   end
 
   def call_verify_code_verified_handler
-    if order_item_id
-      OrderDivideJob.set(wait: 5.seconds).perform_later(self)
+    arg = case self.target_type
+    when 'OrderItem' then self
+    when 'DishesOrder' then target
     end
+    OrderDivideJob.set(wait: 5.seconds).perform_later(arg) if arg
   end
 
 end

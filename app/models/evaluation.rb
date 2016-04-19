@@ -2,15 +2,17 @@ class Evaluation < ActiveRecord::Base
 
   belongs_to :sharing_node
   belongs_to :order_item
+  belongs_to :order
   belongs_to :user, foreign_key: :buyer_id
   belongs_to :product
 
   before_save :relate_attrs
-  after_create :count_evaluation, :create_or_attach_sharing_node
+  after_create :count_evaluation, :create_or_attach_sharing_node, if: -> {order_item_id.present?}
   before_destroy :update_count_evaluation
 
-  validates :order_item_id, :status, presence: true
-  scope :has_evaluationed, -> (id) { where(order_item_id: id) }
+  validates :status, presence: true
+  validates :order_item_id, presence: true, if: -> { order_id.blank? }
+  validates :order_id, presence: true, if: -> { order_item_id.blank? }
 
   enum status: { worst: 1, bad: 2, good: 3, better: 4, best: 5 }
 
@@ -19,6 +21,8 @@ class Evaluation < ActiveRecord::Base
       self.buyer_id = order_item.user_id
       self.sharer_id = order_item.sharing_node.try(:user_id)
       self.product_id = order_item.product_id
+    elsif order
+      self.buyer_id = order.user_id
     end
   end
 

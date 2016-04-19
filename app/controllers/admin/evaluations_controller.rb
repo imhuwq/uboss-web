@@ -7,6 +7,16 @@ class Admin::EvaluationsController < AdminController
     total
   end
 
+  def dishes_index
+    @dishes_orders = current_user.dishes_orders.includes(:order_items).completed
+    total
+  end
+
+  def dishes
+    @dishes = DishesProduct.where(user_id: current_user.id)
+    total
+  end
+
   def statistics
     @service_products = ServiceProduct.where(user_id: current_user.id)
     total

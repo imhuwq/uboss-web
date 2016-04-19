@@ -1,0 +1,51 @@
+.evaluation_prodcut_name {
+  width: 70%;
+  display: inline-block;
+}
+.recommend-icon {
+  width: 10%;
+  text-align: right;
+  margin-right: 26px;
+  span {
+    display: inline-block;
+    height: 22px;
+    width: 22px;
+    background: image-url('mobile/good.png') no-repeat;
+    background-size: 22px auto;
+    &.active{
+      background-position-y: -42px;
+    }
+  }
+}
+
+.dishes_categories_label {
+  padding-left: 12px;
+}
+.dishes_categories_select {
+  .chosen-container.chosen-container-single {
+    width: 82% !important;
+    padding-left: 97px;
+    margin-bottom: 17px;
+  }
+
+  .chosen-container-single .chosen-single{
+    background-color: #fff;
+    color: #313030;
+    height: 27px;
+    line-height: 27px;
+  }
+
+  .chosen-single.chosen-default {
+    background: #fff;
+    color: #313030;
+    height: 27px;
+  }
+  .chosen-drop {
+    background-color: #fff;
+    margin-left: 97px;
+    width: 690px !important;
+  }
+  .chosen-search {
+    display: none;
+  }
+}

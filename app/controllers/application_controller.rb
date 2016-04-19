@@ -42,6 +42,7 @@ class ApplicationController < ActionController::Base
   helper_method :model_errors
 
   def authenticate_user!
+    store_location_for(:user, request.referer) if request.post? && !request.xhr?
     if Rails.env.development? && params[:mode] == 'admin'
       login_with_admin_model
     elsif browser.wechat?
@@ -57,7 +58,7 @@ class ApplicationController < ActionController::Base
     return false unless browser.wechat?
     return false unless current_user.blank? || current_user.weixin_openid.blank?
 
-    path = request.fullpath
+    path = request.get? ? request.fullpath : request.referer
     if redirect.present?
       path += path.match(/\?/) ? "&redirect=#{redirect}" : "?redirect=#{redirect}"
     end
@@ -163,6 +164,12 @@ class ApplicationController < ActionController::Base
       current_user.admin? ? admin_root_path : root_path
     else
       root_path
+    end
+  end
+
+  def authenticate_user_if_browser_wechat
+    if browser.wechat? && session['devise.wechat_data'].blank?
+      authenticate_user!
     end
   end
 

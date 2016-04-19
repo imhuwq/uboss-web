@@ -1,0 +1,6 @@
+<div id="dishe-form-container">
+  <% for index, dishe of @dishes: %>
+    <input type="hidden" name="order_items_attributes[<%= index %>][product_inventory_id]" value="<%= dishe.id %>">
+    <input type="hidden" name="order_items_attributes[<%= index %>][amount]" value="<%= dishe.amount %>">
+  <% end %>
+</div>

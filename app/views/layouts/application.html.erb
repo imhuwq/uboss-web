@@ -22,7 +22,7 @@
     <div id="window"></div>
     <div class="upass main bg_grey">
 
-      <%= render partial: 'layouts/mobile_nav' %>
+      <%= render partial: 'layouts/mobile_nav' if display_mobile_nav? %>
       <%= render 'layouts/mobile_flash_alert' %>
       <%= yield %>
 

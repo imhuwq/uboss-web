@@ -91,11 +91,14 @@ zh-CN:
     agency_product_inventories: 库存/规格
     supplier_store_info: 供货商铺信息
     supplier_store: 供货商铺
-
+    categories: 分类
   simple_form:
     labels:
       express:
         name: 名称
+      dishes_product:
+        name: 菜品名称
+        asset_img: 菜品图片
       product: &product
         name: 产品名
         traffic_expense: 运费
@@ -103,6 +106,7 @@ zh-CN:
         cost_price: 成本价
         original_price: 原价
         present_price: 现价
+        rebate_amount: 返利金额
         count: 库存
         content: 图文详情
         transportation_way: 运费
@@ -246,6 +250,11 @@ zh-CN:
     cities: 权限管理
     revenues: 商家营收
     added: 新增商家
+  activemodel:
+    attributes:
+      dishes_order_form:
+        order_items: 菜单
+        order: 订单
   activerecord:
     models:
       withdraw_record: 提现记录
@@ -383,6 +392,7 @@ zh-CN:
         <<: *product
       category:
         name: 分组名
+        position: 手机端排序
         asset_img: 展示图
       promotion_activity:
         user: 商家名称
@@ -463,7 +473,7 @@ zh-CN:
         closed: 关闭
     agency_order:
       <<: *ordinary_order
-    service_order:
+    service_order_states: &service_order_states
       state:
         unpay: 未付款
         payed: 待消费
@@ -479,6 +489,10 @@ zh-CN:
         signed: 已签收
         completed: 已完成
         closed: 关闭
+    service_order:
+      <<: *service_order_states
+    dishes_order:
+      <<: *service_order_states
     order_charge:
       payment:
         alipay: 支付宝手机

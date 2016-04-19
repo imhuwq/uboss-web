@@ -1,6 +1,8 @@
 class Order < ActiveRecord::Base
+  EFFECTIVE_STATES = %w(payed completed unevaluate)
+
   def self.inherited(base)
-    class_eval do
+    Order.class_eval do
       define_method(:"is_#{base.name.underscore}?") { type == base.name }
     end
     super
@@ -15,6 +17,7 @@ class Order < ActiveRecord::Base
   belongs_to :seller, class_name: "User"
   belongs_to :user_address
   has_many   :order_items
+  has_many   :evaluations
   has_many   :preferential_measures, through: :order_items
   has_many   :preferentials_seller_bonuses, through: :order_items
   has_many   :preferentials_privileges, through: :order_items
@@ -26,7 +29,7 @@ class Order < ActiveRecord::Base
 
   accepts_nested_attributes_for :order_items
 
-  validates :type, inclusion: { in: ['OrdinaryOrder', 'ServiceOrder', 'AgencyOrder'] }
+  validates :type, inclusion: { in: ['OrdinaryOrder', 'ServiceOrder','AgencyOrder', 'DishesOrder'] }
   validates :user_id, :seller_id, presence: true
   validates_uniqueness_of :number, allow_blank: true
 
@@ -54,6 +57,10 @@ class Order < ActiveRecord::Base
   def after_close
   end
   def after_signed
+  end
+
+  def effective?
+    EFFECTIVE_STATES.include?(state.to_s)
   end
 
   def total_privilege_amount

@@ -60,6 +60,18 @@
     </div>
 
     <div class="beige-bg-color admin-box">
+      <div class="box-w100">
+        <p>点单系统</p>
+        <div class="box-w80">
+          <%= dishes_url = service_store_menus_url(@service_store) %>
+        </div>
+        <div class="box-w20">
+          <%= qrcode_image_tag(dishes_url, html: {width: '160'}) %>
+        </div>
+      </div>
+    </div>
+
+    <div class="beige-bg-color admin-box">
       <hr />
       <br />
     	<div class="box-w100">

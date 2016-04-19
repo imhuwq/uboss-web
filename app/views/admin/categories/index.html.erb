@@ -11,11 +11,15 @@
 <div class="container  mod-inner">
 
   <div class="list-search-bar">
-    <%= link_to("+ 添加分组", url_for(:action=>:new), :class=>"btn btn-large",:role=>"button") %>
+    <%= link_to("+ 添加分组", url_for(:action=>:new, dishes: @dishes), :class=>"btn btn-large",:role=>"button") %>
   </div>
 
   <br />
 
-  <%= render partial: 'categories', locals: { categories: @categories } %>
+  <% if @dishes == 'true' %>
+    <%= render partial: 'dishes_categories_table', locals: { categories: @categories, has_many_categories: @has_many_categories } %>
+  <% else %>
+    <%= render partial: 'categories', locals: { categories: @categories } %>
+  <% end %>
 
 </div>

@@ -1,0 +1,55 @@
+<%= content_for :page_specific_javascript do %>
+  <script type="text/javascript" charset="utf-8">
+    propertyData = <%== ProductProperty.includes(:product_property_values).dishes_product_property.to_json(only: [:name], include: {product_property_values: {only: [:value]}}) %>;
+    stockData = <%== get_product_seling_inventories_json f.object %>;
+  </script>
+  <%= javascript_include_tag 'admin/sku_app/application' %>
+<% end %>
+
+<%= upyun_meta_tags prefix: 'asset_img/avatar' %>
+<br />
+<div class="admin-box beige-bg-color">
+  <h4 class="edit-title">菜品信息</h4>
+  <%= f.input :name %>
+  <%= hidden_field_tag :pre_load_tages, @dishes_product.categories.dishes_categories.collect(&:name).join(',') %>
+  <%= hidden_field_tag :tages, current_user.categories.dishes_categories.collect(&:name).join(',') %>
+  <label class='optional dishes_categories_label'>分组</label>
+  <span class='dishes_categories_select'>
+    <%= f.select :categories, current_user.categories.dishes_categories.collect { |p| [ p.name, p.id ] }, {include_blank: '选择一个分组', selected: @dishes_product.categories.first.try(:id)}%>
+  </span>
+  <%= f.input :present_price, hint: '若菜品有多种规格,价格信息在菜品规格中设置' %>
+  <%= f.input :rebate_amount, hint: '若菜品有多种规格,返利金额在菜品规格中设置' %>
+  <%= f.input :asset_img, hint:"(点击图片进行替换)"  do %>
+    <%= f.input_field :avatar, type: :hidden, as: :file %>
+    <p><span class="text-margin">建议上传比例为1:1的图片，最佳尺寸为<b style="color: red;">600x600</b>像素</span></p>
+    <p class="fileinput-button">
+        <% if @dishes_product.image_url.blank? %>
+          <%= image_tag("admin/no-img.png") %>
+        <% else %>
+          <%= image_tag(@dishes_product.image_url(:thumb))%>
+        <% end %>
+      <%= file_field_tag "image", class: "upyun_file" %>
+      <b class="loading"><i class="fa fa-spinner"></i></b>
+    </p>
+  <% end %>
+</div>
+<br />
+<div class="admin-box beige-bg-color">
+  <h4 class="edit-title">菜品规格</h4>
+  <div class="form-group product-sku-box box-w100">
+    <label class="control-label box-w20">规格</label>
+    <div id='product-sku' class='control-input box-w80'>
+      <div class="property-list">
+      </div>
+      <a class="btn add-property" href="#">添加规格</a>
+    </div>
+  </div>
+  <div id="product-stock" class="form-group ">
+    <label class="control-label">价格/返利</label>
+    <div  class="stock-list control-input">
+      <p><span class="text-margin">请添加产品规格属性</span></p>
+    </div>
+  </div>
+</div>
+
+<br />
