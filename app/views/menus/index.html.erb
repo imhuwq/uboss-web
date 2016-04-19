@@ -61,6 +61,7 @@
   </div><!-- order-info -->
 </div><!-- dishes-buy-bar -->
 <%= content_for :extra_javascript do %>
+  <%= javascript_include_tag "iscroll/iscroll" %>
   <%= javascript_include_tag "mobile_page/menus/boot" %>
   <% if browser.wechat? %>
     <script type="text/javascript" charset="utf-8">
