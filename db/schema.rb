@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160330032403) do
+ActiveRecord::Schema.define(version: 20160411041910) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -574,20 +574,10 @@ ActiveRecord::Schema.define(version: 20160330032403) do
     t.string   "service_store_cover"
     t.string   "user_name"
     t.string   "ordinary_store_cover"
-    t.datetime "qrcode_expire_at",     default: '2016-02-25 14:44:59'
+    t.datetime "qrcode_expire_at",     default: '2016-03-03 14:49:49'
     t.string   "service_store_name"
     t.string   "ordinary_store_name"
     t.boolean  "activity",             default: false
-  end
-
-  add_index "privilege_cards", ["user_id", "seller_id"], name: "index_privilege_cards_on_user_id_and_seller_id", unique: true, using: :btree
-
-  create_table "product_attribute_names", force: :cascade do |t|
-    t.string   "name"
-    t.boolean  "is_key_attr",      default: true
-    t.integer  "product_class_id"
-    t.datetime "created_at",                      null: false
-    t.datetime "updated_at",                      null: false
   end
 
   create_table "product_classes", force: :cascade do |t|

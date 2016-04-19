@@ -1,5 +1,5 @@
 <% seller = privilege_card.seller %>
-<% if seller.ordinary_products.present? %>
+<% if seller.ordinary_products.exists? %>
   <div class="box-w50">
     <div class="share-card gap" timestamp='<%= privilege_card.updated_at %>'>
       <a href="/privilege_cards/<%= privilege_card.id %>" class="share-store-info text-center">
@@ -55,7 +55,7 @@
 <% end %>
 
 <!-- 实体店铺 -->
-<% if seller.service_products.present? && store = seller.service_store %>
+<% if seller.service_products.exists? && store = seller.service_store %>
   <div class="box-w50">
     <div class="share-card gap" timestamp='<%= privilege_card.updated_at %>'>
       <a href="<%= service_store_path(store) %>" class="share-store-info text-center">

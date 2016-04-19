@@ -91,7 +91,7 @@ jQuery ($) ->
 
   $('.cooperation').on 'hide.bs.modal', ->
     $('.list-table tr:hover td').removeAttr('style')
-  
+
   $('.show-order-modal').on 'show.bs.modal', ->
     $('.list-table tr:hover td').css('opacity', '1')
 

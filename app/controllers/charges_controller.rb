@@ -21,6 +21,7 @@ class ChargesController < ApplicationController
                     end
     @order_charge.check_paid?
     @seller = @order_charge.bill_orders.first.seller
+    @service_store_valid = @seller.service_products.published.exists?
   end
 
   def payments

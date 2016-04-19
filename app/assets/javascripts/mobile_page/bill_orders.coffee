@@ -40,7 +40,59 @@ $ ->
 
   # if pay_amount > 0
   #   requestBill(ssid, pay_amount)
-
+  # 弹出自己的键盘
+  $('#pay-number-box').on 'click', (e)->
+    $('#pay-number-keyboard').removeClass('hidden')
+    $('#close-keyboard').removeClass('hidden')
+    $('#pay-number-box').removeClass("nofoucs")
+    if( $('#pay-number-box').text() != '输入金额（元）' )
+      $('#pay-number-box').addClass("active") 
+  #关闭键盘
+  $('#close-keyboard').on 'click', (e)->
+    $('#pay-number-keyboard').addClass('hidden')
+    $('#close-keyboard').addClass('hidden')
+    $('#pay-number-box').removeClass("active")
+    $('#pay-number-box').addClass("nofoucs")    
+  #输入数字的判断
+  $('#pay-number-keyboard .num').on 'click', (e)->
+    text_number = $('#pay-number-box').text()
+    if(text_number == '输入金额（元）')
+      text_number = $(this).text()
+      $('#pay-number-box').addClass("active")
+    else
+      if(text_number.indexOf("0") == 0 && text_number.length == 1)
+        text_number = $(this).text()
+      else if(text_number.indexOf(".") < 0)
+        text_number += $(this).text()
+      else if (text_number.indexOf(".")+2 >= text_number.length)
+        text_number += $(this).text()
+    $('#pay-number-box').text(text_number)
+    $('#pay_amount').val(text_number)
+    
+  #输入点的判断  
+  $('#pay-number-keyboard .dot').on 'click', (e)->
+    text_number = $('#pay-number-box').text()
+    if(text_number == '输入金额（元）')
+      text_number = "0"
+      $('#pay-number-box').addClass("active")
+    if(text_number.indexOf(".") < 0)
+      text_number += $(this).text()      
+    $('#pay-number-box').text(text_number)
+    $('#pay_amount').val(text_number)
+  
+  #删除键  
+  $('#pay-number-keyboard .back').on 'click', (e)->
+    text_number = $('#pay-number-box').text()
+    if(text_number != '输入金额（元）')    
+      if(text_number.length > 1) 
+        text_number = text_number.substring(0,text_number.length-1 )   
+        $('#pay_amount').val(text_number) 
+      else
+        text_number = '输入金额（元）'        
+        $('#pay_amount').val(0)
+        $('#pay-number-box').removeClass("active")
+    $('#pay-number-box').text(text_number)    
+  
   $('.req-bill-btn').on 'click', (e)->
     e.preventDefault()
     return false if requesting_bill

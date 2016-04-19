@@ -195,8 +195,6 @@ class ApplicationController < ActionController::Base
     session["devise.wechat_data"] && session["devise.wechat_data"]["extra"]["raw_info"]["openid"]
   end
 
-  private
-
   def store_account
     current_user && current_user.store_accounts.active.find_by(user_id: session[:store_account_id]).try(:user)
   end

@@ -1,3 +1,7 @@
+<%= content_for :title do %>
+  <%= @seller.service_store.store_identify %>
+<% end %>
+
 <%= content_for :page_title do %>
   支付结果
 <% end %>
@@ -7,7 +11,11 @@
 <% end %>
 
 <%= content_for :extra_meta_tags do %>
-  <%= service_store_sharing_meta_tags(@seller.service_store, @sharing_link_node) %>
+  <% if @service_store_valid %>
+    <%= service_store_sharing_meta_tags(@seller.service_store, @sharing_link_node) %>
+  <% else %>
+    <%= store_sharing_meta_tags(@seller, @sharing_link_node) %>
+  <% end %>
 <% end %>
 
 <% if browser.wechat? %>
@@ -39,30 +47,39 @@
            <span class="pull-left">价格：</span>￥<%= @order_charge.paid_amount %>
          </div>
          <div class="gray-color text-right"><span class="pull-left">订单号：</span> <%= bill_order.number %></div>
+         <div class="gray-color text-right"><span class="pull-left">支付时间：</span> <%= @order_charge.paid_at %></div>
        <% end %>
 
       </div><!-- bg-wihte -->
       <% if @seller.has_promotion_activity? %>
+        <br />
         <div class="bill-draw-cont text-center">
           <%= link_to store_qrcode_img_path(sid: @seller.id, type: 'service') do %>
             <%= image_tag 'activate_page/color-gift.png', width: 100 %>
           <% end %>
         </div>
+      <% else %>
+        <br />
+        <div class="bill-sharing-cont">
+          <h3 class="text-center" style="font-weight:normal">给好友优惠，赢现金红包</h3>
+          <br/>
+          <% if current_user.blank? %>
+            <p><input type="tel"  class="input-block input-radius input-large input-tel-value" placeholder="请输入手机号码"/></p>
+            <br />
+          <% end %>
+          <p>
+          <% if @service_store_valid %>
+            <%= link_to "分享赢红包", get_seller_sharing_path,
+              class: "btn btn-block btn-large get-p-card-btn #{'done' if current_user.present?}",
+              data: { sid: @seller.id, uid: current_user.present?, path: service_store_path(@seller.service_store.id) } %>
+          <% else %>
+            <%= link_to "分享赢红包", get_seller_sharing_path,
+              class: "btn btn-block btn-large get-p-card-btn #{'done' if current_user.present?}",
+              data: { sid: @seller.id, uid: current_user.present? } %>
+          <% end %>
+          </p>
+        </div>
       <% end %>
-      <br />
-      <div class="bill-sharing-cont">
-        <h3 class="text-center" style="font-weight:normal">给好友优惠，赢现金红包</h3>
-        <br/>
-        <% if current_user.blank? %>
-          <p><input type="tel"  class="input-block input-radius input-large input-tel-value" placeholder="请输入手机号码"/></p>
-          <br />
-        <% end %>
-        <p>
-        <%= link_to "分享赢红包", get_seller_sharing_path,
-          class: "btn btn-block btn-large get-p-card-btn #{'done' if current_user.present?}",
-          data: { sid: @seller.id, uid: current_user.present?, path: service_store_path(@seller.service_store.id) } %>
-        </p>
-      </div>
 
   <% end %>
 </div><!-- box -->
