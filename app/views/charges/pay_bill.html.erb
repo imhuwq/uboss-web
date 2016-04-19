@@ -1,10 +1,18 @@
+<%= content_for :title do %>
+  <%= @service_store.store_identify %>
+<% end %>
+
 <%= content_for :page_title do %>
   付款页面
 <% end %>
 <div class="box-m40 text-center ">
   <br />
   <p class="m-bottom10">
-  <%= image_tag @service_store.store_cover_url(:thumb), width: 60, height: 60 %>
+  <% if @service_store.store_cover_identifier.present? %>
+    <%= image_tag @service_store.store_cover_url(:thumb), width: 60, height: 60 %>
+  <% else %>
+    <%= image_tag 'morendianputouxiang.png', width: 60, height: 60 %>
+  <% end %>
   </p>
   <h3 class="text-cut" style="font-weight: normal;">
     <%= @service_store.store_identify %>
@@ -17,6 +25,7 @@
   <%= link_to "确认支付", bill_orders_path, class: 'req-bill-btn btn btn-large btn-block m-bottom10' %>
   <p>支付完成后，如需退款请及时联系商家</p>
 </div>
+
 <div id="close-keyboard"></div>
 <div id="pay-number-keyboard" class="text-center">
   <div class="box-w100 bg-white nogap">
