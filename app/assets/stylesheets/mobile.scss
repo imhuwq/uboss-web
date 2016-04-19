@@ -171,6 +171,7 @@
   .box-w33{
     border-right: 1px solid #dfdfdf;
     border-top:1px solid #dfdfdf ;
+    color: #1f2a44;
     font-size: 18px;
     padding: 5%;
     font-family: sans-serif;
@@ -178,7 +179,11 @@
   .box-w33:nth-child(3n){
     border-right: none ;
   }
-  .dot,.back{background: #f6f6f6;}
+  .dot{background: #f6f6f6;}
+  .back{
+    background:image-url('mobile/bill_orders/back.png') no-repeat center center #f6f6f6;
+    background-size: auto 20px; 
+   }
 }
 @-webkit-keyframes flash {
   0% { opacity: 0; }
