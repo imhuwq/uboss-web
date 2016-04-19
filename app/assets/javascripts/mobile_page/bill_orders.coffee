@@ -45,6 +45,8 @@ $ ->
     $('#pay-number-keyboard').removeClass('hidden')
     $('#close-keyboard').removeClass('hidden')
     $('#pay-number-box').removeClass("nofoucs")
+    if( $('#pay-number-box').text() != '输入金额（元）' )
+      $('#pay-number-box').addClass("active") 
   #关闭键盘
   $('#close-keyboard').on 'click', (e)->
     $('#pay-number-keyboard').addClass('hidden')
