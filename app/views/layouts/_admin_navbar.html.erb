@@ -25,7 +25,9 @@
               <%= link_to "认证", admin_user_city_manager_authentication_path(user_id: current_user.id) %>
             <% end %>
           </li>
-          <li><%= link_to "切换子账号", switching_account_admin_account_path %></li>
+          <% if current_user.has_store_account? %>
+            <li><%= link_to "切换子账号", switching_account_admin_account_path %></li>
+          <% end %>
           <li><%= link_to '退出', destroy_user_session_path, method: :delete %></li>
         </ul>
       <% end %>
