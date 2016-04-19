@@ -6,6 +6,7 @@ class SellersController < AdminController
   layout :detect_layout, only: [:new]
 
   def new
+    authenticate_user!
     @agent = User.find_by(agent_code: params[:agent_code]) if params[:agent_code].present?
   end
 
