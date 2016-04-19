@@ -42,19 +42,11 @@ class CallingNotifiesController < ApplicationController
 
   private
 
-  def change_status_notify_msg(checkout)
-    {
-      type: 'change_status',
-      calling_notify_id: @calling_notify.id,
-      calling_number: @calling_notify.calling_number,
-      checkout: checkout
-    }
-  end
-
   def find_current_account
     if session[:store_account_id].present?
       @current_account = current_user.store_accounts.active.find_by(user_id: session[:store_account_id]).try(:user)
     end
     @current_account ||= current_user
   end
+
 end
