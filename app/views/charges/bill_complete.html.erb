@@ -7,7 +7,11 @@
 <% end %>
 
 <%= content_for :extra_meta_tags do %>
-  <%= service_store_sharing_meta_tags(@seller.service_store, @sharing_link_node) %>
+  <% if @service_store_valid %>
+    <%= service_store_sharing_meta_tags(@seller.service_store, @sharing_link_node) %>
+  <% else %>
+    <%= store_sharing_meta_tags(@seller, @sharing_link_node) %>
+  <% end %>
 <% end %>
 
 <% if browser.wechat? %>
@@ -58,9 +62,15 @@
           <br />
         <% end %>
         <p>
-        <%= link_to "分享赢红包", get_seller_sharing_path,
-          class: "btn btn-block btn-large get-p-card-btn #{'done' if current_user.present?}",
-          data: { sid: @seller.id, uid: current_user.present?, path: service_store_path(@seller.service_store.id) } %>
+        <% if @service_store_valid %>
+          <%= link_to "分享赢红包", get_seller_sharing_path,
+            class: "btn btn-block btn-large get-p-card-btn #{'done' if current_user.present?}",
+            data: { sid: @seller.id, uid: current_user.present?, path: service_store_path(@seller.service_store.id) } %>
+        <% else %>
+          <%= link_to "分享赢红包", get_seller_sharing_path,
+            class: "btn btn-block btn-large get-p-card-btn #{'done' if current_user.present?}",
+            data: { sid: @seller.id, uid: current_user.present? } %>
+        <% end %>
         </p>
       </div>
 
