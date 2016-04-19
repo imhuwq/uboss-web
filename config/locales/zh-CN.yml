@@ -9,6 +9,7 @@ zh-CN:
         after_sale_only_refund: '售后—仅退款'
         after_sale_return_goods_and_refund: '售后—退款退货'
   attributes: &attributes
+    account_id: 账号
     platform_service_rate: 平台费率
     agent_service_rate: 创客费率
     name: 名称
@@ -333,6 +334,8 @@ zh-CN:
         begin_minute: 开始分
         end_hour: 结束时
         end_minute: 结束分
+        table_count: 桌号数量
+        table_expired_in: 下桌时长
       store_phones:
         fixed_line_or_phone_number: 固定电话或手机号
         phone_number: 手机号
@@ -417,6 +420,10 @@ zh-CN:
     completed: 交易完成
     closed: 订单关闭
   enums:
+    sub_account:
+      state:
+        active: 正常
+        block: 禁用
     city_manager:
       category:
         firstline: 一类城市

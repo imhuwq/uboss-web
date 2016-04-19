@@ -13,7 +13,7 @@
 		<div class="main-container">
 	  <%= render 'layouts/admin_navbar' %>
     <div class='modal'></div>
-    <% thr_navigation = render_navigation(level: 3, skip_if_empty: true) %>
+    <% thr_navigation = render_navigation(level: 3, skip_if_empty: true, context: current_navigation_context) %>
     <div class='container nogap <%= 'content' if thr_navigation.present? %>'>
       <% if thr_navigation.present? %>
         <nav class="nav-v3">

@@ -13,6 +13,7 @@
 #= require jquery-fileupload/basic
 #= require jquery.bxslider
 #= require querystring
+#= require pnotify.custom.min
 #= require admin/carriage_template
 #= require admin/dashboard
 #= require admin/functions
@@ -31,6 +32,7 @@
 #= require admin/certification
 #= require admin/sellers
 #= require admin/promotion_activity
+#= require admin/calling_notify
 #= require_self
 
 App = window.App = {}
@@ -89,7 +91,7 @@ jQuery ($) ->
 
   $('.cooperation').on 'hide.bs.modal', ->
     $('.list-table tr:hover td').removeAttr('style')
-  
+
   $('.show-order-modal').on 'show.bs.modal', ->
     $('.list-table tr:hover td').css('opacity', '1')
 
@@ -107,3 +109,24 @@ jQuery ($) ->
   $(document).on 'click', '.show-value span a', ->
     $(this).closest('.show-value').siblings().show()
     $(this).closest('.show-value').hide()
+
+
+  $(".user_selection").select2
+    width: 500
+    placeholder: '请选择用户'
+    allowClear: true
+    minimumInputLength: 2
+    ajax:
+      url: "/admin/sellers/search"
+      dataType: 'json'
+      data: (term, page) ->
+        return { q: term, page_limit: 10 }
+      results: (data, page) ->
+        return {results: data}
+    initSelection: (ele, callback) ->
+      #callback({id: 1, text: 'Mock User'})
+      id = $(ele).val()
+      if(id!="")
+        $.ajax("/admin/sellers/search", data: {id: id}, dataType: 'json')
+         .done (data) ->
+           callback(data)

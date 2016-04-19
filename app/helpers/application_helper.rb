@@ -14,6 +14,10 @@ module ApplicationHelper
     time.strftime('%Y/%m/%d %H:%M:%S')
   end
 
+  def notify_time(time)
+    time.strftime('%H:%M')
+  end
+
   def qrcode_image_tag(text, opts = {})
     html_opts = opts.delete(:html) || {}
     opts = {

@@ -1,0 +1,113 @@
+<div class="container admin-container">
+</div>
+<div class="container nogap ">
+  <% @table_numbers.each do |table_number| %>
+    <a href="javascript:;">
+      <div class="box-w8">
+        <div class="admin-box text-center table-number <%= table_number.status == 'used' ? "used main-bg-color" : "unuse beige-bg-color" %>" data-number="<%= table_number.number %>" style="margin-bottom:15px;">
+          <span><%= table_number.number %>桌</span>
+        </div>
+      </div>
+    </a>
+  <% end %>
+</div>
+<br />
+
+<div class="container  mod-inner">
+  <%= render partial: 'calling_notifies', locals: { calling_notifies: @calling_notifies } %>
+  <%= paginate @calling_notifies %>
+</div>
+
+<!-- Modal -->
+<div class="modal fade <%= "notice" if @notice.present? %>" id="realtime-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="realtime-lable">新服务通知</h4>
+      </div>
+      <div class="modal-body"><%== @notice %></div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- required: realtime support framework -->
+<%= realtime_support %>
+<script type="text/javascript" charset="utf-8">
+  PNotify.desktop.permission();
+  function appendCallingNotityItem(item){
+    html =
+      '<tr class="calling_notify" data-number="'+ item.table_number +'" data-id="'+ item.id +'">' +
+      '<td>'+ item.table_number +'</td>' +
+      '<td>'+ item.service_name +'</td>' +
+      '<td>'+ item.called_at +'</td>' +
+      '<td class="operation">' +
+      '<p><a data-disable-with="<i class=' + "'fa fa-spinner'" + '></i>" data-text="去服务" class="btn btn-mid change-status-btn" data-remote="true" rel="nofollow" data-method="patch" href="/admin/calling_notifies/'+ item.id +'/change_status?status=serviced">去服务</a></p>' +
+      '<p><a data-disable-with="<i class=' + "'fa fa-spinner'" + '></i>" data-text="已服务" class="btn btn-mid white-btn btn-border change-status-btn" data-remote="true" rel="nofollow" data-method="patch" href="/admin/calling_notifies/'+ item.id +'/change_status?notice=false&status=serviced">已服务</a></p>' +
+      '</td></tr>';
+
+    $('.calling_notify[data-id="'+ item.id +'"]').remove();
+    html += $('#calling_notifies tbody').html();
+    $('#calling_notifies tbody').html(html);
+  }
+
+  if (window.realtime.enabled && window.realtime.eventBus){
+    // handle events in the queue with eventing
+    var realtimeMessageEventConsoleLogger = function(message) {
+      console.log(message);
+    };
+    window.realtime.eventBus.on('realtimeMessage', realtimeMessageEventConsoleLogger);
+  } else if (window.realtime.enabled) {
+    // handle events in the queue without eventing
+    messageQueueConsoleLogger = function() {
+      message = window.realtime.messageQueue.shift();
+      if (message) {
+        $('#realtime-modal').modal('hide');
+
+        if (message.msg.type == "calling") {
+          appendCallingNotityItem(message.msg.calling_notify);
+          var notice = new PNotify({
+            title: message.msg.title,
+            text: message.msg.text,
+            animate_speed: 'fast',
+            buttons: {
+              closer: true,
+              sticker: false,
+              labels: {close: "关闭"}
+            }
+          });
+          notice.get().click(function() { notice.remove(); });
+        }
+        if (message.msg.type == "used_table") {
+          $('.table-number[data-number="'+ message.msg.number +'"]').removeClass('unuse beige-bg-color').addClass('used main-bg-color');
+        }
+        if (message.msg.type == "change_status") {
+          if (message.msg.checkout != true) {
+            var html = '<p><span>已服务</span></p>';
+            $('.calling_notify[data-id="'+ message.msg.calling_notify_id +'"]>.operation').html(html);
+          }
+        }
+        if (message.msg.type == "drop_table") {
+          $('.table-number[data-number="'+ message.msg.number +'"]').removeClass('used main-bg-color').addClass('unuse beige-bg-color');
+          $.each(message.msg.calling_notify_ids, function(index, id){
+            $('.calling_notify[data-id="'+ id +'"]').remove();
+          });
+        }
+      }
+    };
+    setInterval(messageQueueConsoleLogger, 100);
+  } else {
+    console.log('Error: Realtime was not enabled.')
+  }
+
+  $(function() {
+    if($('#realtime-modal').hasClass('notice')){
+      $('#realtime-modal .modal-title').html('服务通知');
+      $('#realtime-modal').modal();
+    }
+  })
+</script>

@@ -1,0 +1,89 @@
+<%= content_for :title do %>
+  服务系统
+<% end %>
+<%= content_for :page_title do %>
+  服务系统
+<% end %>
+<%= content_for :header_right do %>
+  <% if session[:store_account_id].present? %>
+    <%= link_to "退出子帐号", switch_account_account_calling_notifies_path(sid: nil), method: 'PATCH', class: "btn btn-mid btn-orange pull-right", style: "margin:6px 10px 0 0;" %>
+  <% else %>
+    <% if !browser.wechat? && !session[:app_user] %>
+      <%= link_to "退出", destroy_user_session_path, method: :delete, class: "btn btn-mid btn-orange pull-right", style: "margin:6px 10px 0 0;" %>
+    <% end %>
+    <%= link_to "切换子帐号", switching_account_account_calling_notifies_path, class: "btn btn-mid btn-orange pull-right", style: "margin:6px 10px 0 0;" %>
+  <% end %>
+<% end %>
+<%= content_for :header_right do %>
+  <span class="pull-left">&nbsp;</span>
+<% end %>
+<div id="notifies-box" style="margin-top: 5px;">
+  <% @calling_notifies.each do |calling_notify| %>
+    <div class="calling-notify-box gray-color" data-number="<%= calling_notify.calling_number %>" data-id="<%= calling_notify.id %>">
+      <% if can? :update, CallingNotify %>
+        <% if calling_notify.unservice? %>
+          <%= link_to("去服务", "javascript:;", class: "btn btn-mid calling-notify-unservice pull-right", data: { id: "#{calling_notify.id}"}) %>
+        <% else %>
+          <%= link_to("已服务", "javascript:;", class: "btn btn-mid btn-gray pull-right") %>
+        <% end %>
+      <% end %>
+      <div class="text-cut pull-left" style="width: 20%; padding: 5px 0; margin-right: 10px;"><%= notify_time calling_notify.called_at %></div>
+      <div class="text-cut pull-left" style="width: 20%; padding: 5px 0; margin-right: 10px;"><%= calling_notify.calling_number %>号桌</div>
+      <div class="text-cut service-name"><%= calling_notify.service_name %></div>
+    </div>
+  <% end %>
+</div>
+
+
+
+<!-- required: realtime support framework -->
+<%= realtime_support %>
+<script type="text/javascript" charset="utf-8">
+  function appendCallingNotityItem(item){
+    html =
+      '<div class="calling-notify-box gray-color" data-number="'+ item.table_number +'" data-id="'+ item.id +'">' +
+      '<a class="btn btn-mid calling-notify-unservice pull-right" data-id="'+ item.id + '" href="javascript:;">去服务</a>' +
+      '<div class="text-cut pull-left" style="width: 20%; padding: 5px 0; margin-right: 10px;">'+ item.called_at +'</div>' +
+      '<div class="text-cut pull-left" style="width: 20%; padding: 5px 0; margin-right: 10px;">'+ item.table_number +'号桌</div>' +
+      '<div class="text-cut service-name">'+ item.service_name +'</div>' +
+      '</div>'
+
+    $('.calling-notify-box[data-id="'+ item.id +'"]').remove();
+    html += $('#notifies-box').html();
+    $('#notifies-box').html(html);
+  }
+
+  if (window.realtime.enabled && window.realtime.eventBus){
+    // handle events in the queue with eventing
+    var realtimeMessageEventConsoleLogger = function(message) {
+      console.log(message);
+    };
+    window.realtime.eventBus.on('realtimeMessage', realtimeMessageEventConsoleLogger);
+  } else if (window.realtime.enabled) {
+    // handle events in the queue without eventing
+    messageQueueConsoleLogger = function() {
+      message = window.realtime.messageQueue.shift();
+      if (message) {
+        if (message.msg.type == "calling") {
+          appendCallingNotityItem(message.msg.calling_notify);
+        }
+        if (message.msg.type == "change_status") {
+          if (message.msg.checkout != true) {
+            $('.calling-notify-box[data-id="'+ message.msg.calling_notify_id +'"]>.calling-notify-unservice')
+              .removeClass('calling-notify-unservice')
+              .addClass('btn-gray')
+          }
+        }
+        if (message.msg.type == "drop_table") {
+          $.each(message.msg.calling_notify_ids, function(index, id){
+            $('.calling-notify-box[data-id="'+ id +'"]').remove();
+          });
+        }
+      }
+    };
+    setInterval(messageQueueConsoleLogger, 100);
+  } else {
+    console.log('Error: Realtime was not enabled.')
+  }
+
+</script>

@@ -131,6 +131,11 @@ SimpleNavigation::Configuration.run do |navigation|
           highlights_on: :subpath, if: -> { can?(:read, Category) && params[:dishes] != 'false' }
       end
 
+      sub_nav.item :s_calling,  '服务', '#' do |thr_nav|
+        thr_nav.item :calling_services, '呼叫服务', admin_calling_notifies_path, highlights_on: :subpath, if: -> { can?(:manage, CallingNotify) }
+        thr_nav.item :service_setting, '服务设置', admin_calling_services_path, highlights_on: :subpath,if: -> { can?(:manage, CallingNotify) }
+      end
+
       sub_nav.item :s_pj,      '评价', admin_evaluations_path,
         highlights_on: :subpath, if: -> { can?(:manage, Evaluation) }
 
@@ -138,8 +143,12 @@ SimpleNavigation::Configuration.run do |navigation|
         highlights_on: %r(admin/service_stores/income_detail|admin/service_stores/statistics),
         if: -> { can?(:manage, :income) }
 
-      sub_nav.item :s_store,   '设置', edit_admin_service_store_path(current_user.service_store),
-        if: -> { can?(:manage, ServiceStore) }
+      sub_nav.item :s_store,   '设置', edit_admin_service_store_path(current_user.service_store) do |thr_nav|
+        thr_nav.item :edit_store, '店铺设置', edit_admin_service_store_path(current_user.service_store),
+          if: -> { can?(:manage, ServiceStore) }
+        thr_nav.item :sstore_sub_account, '子账号', admin_sub_accounts_path, highlights_on: :subpath,
+          if: -> { can?(:create, SubAccount) }
+      end
     end
 
     primary.item :supplier, '我要供货', '#' do |sub_nav|

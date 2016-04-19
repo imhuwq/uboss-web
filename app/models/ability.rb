@@ -8,16 +8,24 @@ class Ability
     @user ||= User.new # for guest user (not logged in)
     roles = user.user_roles
     if user.admin? && roles.present?
-      roles.order("id ASC").each do |role|
-        begin
-          grant_method = "grant_permissions_to_#{role.name}"
-          __send__ grant_method, user
-        rescue NoMethodError => e
-          Rails.logger.error("ERROR: missing definition for #{role.name}, find me at: #{e.backtrace[0]}")
-          next
+      begin
+        if user.being_agency
+          grant_permissions_to_being_agency(user)
+        else
+          roles.order("id ASC").each do |role|
+            begin
+              grant_method = "grant_permissions_to_#{role.name}"
+              __send__ grant_method, user
+            rescue NoMethodError => e
+              Rails.logger.error("ERROR: missing definition for #{role.name}, find me at: #{e.backtrace[0]}")
+              next
+            end
+          end
+          grant_general_permission user
         end
+      rescue NoMethodError
+        no_permissions
       end
-      grant_general_permission user
     else
       no_permissions
     end
@@ -26,6 +34,20 @@ class Ability
   private
   def no_permissions
     cannot :manage, :all
+  end
+
+  def grant_permissions_to_being_agency(user)
+    can :read, User, id: user.id
+    cannot :delivery, AgencyOrder, seller_id: user.id
+    cannot :delete_agency_product, OrdinaryProduct do |op|
+      op.type == "OrdinaryProduct"
+    end
+    can :manage, ServiceProduct, user_id: user.id
+    can :manage, ServiceStore, user_id: user.id
+    can :manage, VerifyCode, user_id: user.id
+    can :manage, Evaluation, user_id: user.id
+    can :manage, CallingNotify, user_id: user.id
+    can :manage, CallingService, user_id: user.id
   end
 
   def grant_general_permission(user)
@@ -70,6 +92,8 @@ class Ability
     can :manage, DishesProduct, user_id: user.id
     can :manage, ServiceStore, user_id: user.id
     can :manage, VerifyCode, user_id: user.id
+    can :manage, CallingNotify, user_id: user.id
+    can :manage, CallingService, user_id: user.id
     can :manage, Evaluation, user_id: user.id
     can :manage, :income
     can [:read, :create], PersonalAuthentication, user_id: user.id
@@ -94,6 +118,7 @@ class Ability
     end
     can :manage, UserAddress, user_id: user.id
     can :manage, PromotionActivity, user_id: user.id
+    can :manage, SubAccount, user_id: user.id
   end
 
   def grant_permissions_to_agent user
@@ -108,6 +133,8 @@ class Ability
     can :read, ServiceProduct, user_id: user.id
     can :read, ServiceStore, user_id: user.id
     can :read, VerifyCode, user_id: user.id
+    can :read, CallingNotify, user_id: user.id
+    can :read, CallingService, user_id: user.id
     can :read, Evaluation, user_id: user.id
   end
 

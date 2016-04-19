@@ -1,110 +1,110 @@
 <% seller = privilege_card.seller %>
-<div class="box-w50">
-	<div class="share-card gap" timestamp='<%= privilege_card.updated_at %>'>
-		<a href="/privilege_cards/<%= privilege_card.id %>" class="share-store-info text-center">
-	    <div class="cover" style="background-image: url('<%= seller.ordinary_store.store_cover_url(:w120)%>');">
-	      <%= image_tag seller.ordinary_store.store_cover_url(:w120) %>
-	    </div>
-      <p class="title text-cut"><%= seller.ordinary_store.store_identify %></p>
-      <!-- <p class="gray-color">商品共 <%= seller.ordinary_products.published.count %> 件</p> -->
-	 	</a><!-- share-store-info -->
-	  <!-- 固定两个 无论是否有两个商品 -->
-		<div class="share-store-list box-w100 nogap">
-      <% products = seller.ordinary_products.published.limit(2) %>
-			<div class="box-w50 nogap-left">
-				<div class="product-box">
-	      <div class="cover">
-          <% if products[0].present? %>
-            <%= link_to '', product_path(products[0]), style: "background-image:url(#{products[0].image_url(:thumb)})", class:'img', title: products[0].name %>
-          <% else %>
-            <%= link_to '', 'javascript:;', class:'img', title:"UBOSS产品" %>
-          <% end %>
-	        <%= image_tag("mobile/img.jpg") %>
-	      </div>
-	    </div><!-- product-box -->
-			</div>
-
-			<div class="box-w50 nogap-right">
-				<div class="product-box">
-	      <div class="cover">
-          <% if products[1].present? %>
-            <%= link_to '', product_path(products[1]), style: "background-image:url(#{products[1].image_url(:thumb)})", class:'img', title:"products[1].name" %>
-          <% else %>
-            <%= link_to '', 'javascript:;', class:'img', title:"UBOSS产品" %>
-          <% end %>
-	        <%= image_tag("mobile/img.jpg") %>
-	      </div>
-	    </div><!-- product-box -->
-
-			</div>
-		</div><!-- share-store-list -->
-	  <div class="share-bar">
-      <div class="pop-qr-btn pull-right">
-        <input type="hidden" value="<%= privilege_card.ordinary_store_qrcode_img_url %>" />
-      </div>
-      <div class="content">
-        <div class="hidden sharing-meta-container">
-          <%= store_sharing_meta_tags(seller) %>
+<% if seller.ordinary_products.exists? %>
+  <div class="box-w50">
+    <div class="share-card gap" timestamp='<%= privilege_card.updated_at %>'>
+      <a href="/privilege_cards/<%= privilege_card.id %>" class="share-store-info text-center">
+        <div class="cover" style="background-image: url('<%= seller.ordinary_store.store_cover_url(:w120)%>');">
+          <%= image_tag seller.ordinary_store.store_cover_url(:w120) %>
         </div>
-        <%= link_to "分享店铺", get_seller_sharing_path(seller_id: privilege_card.seller_id), remote: true,
-          class: 'btn btn-block btn-orange-border req-favour-p-snode' %>
-        <a href="javascript:;" class="btn btn-block btn-orange-border p-sharing-btn hidden">分享店铺</a>
-      </div>
-	  </div><!-- share-bar -->
-	</div><!-- share-card -->
+        <p class="title text-cut"><%= seller.ordinary_store.store_name || 'UBOSS商家' %></p>
+        <!-- <p class="gray-color">商品共 <%= seller.ordinary_products.published.count %> 件</p> -->
+      </a><!-- share-store-info -->
+      <!-- 固定两个 无论是否有两个商品 -->
+      <div class="share-store-list box-w100 nogap">
+        <% products = seller.ordinary_products.published.limit(2) %>
+        <div class="box-w50 nogap-left">
+          <div class="product-box">
+          <div class="cover">
+            <% if products[0].present? %>
+              <%= link_to '', product_path(products[0]), style: "background-image:url(#{products[0].image_url(:thumb)})", class:'img', title: products[0].name %>
+            <% else %>
+              <%= link_to '', 'javascript:;', style: "background-image:url()", class:'img', title:"UBOSS产品" %>
+            <% end %>
+            <%= image_tag("mobile/img.jpg") %>
+          </div>
+        </div><!-- product-box -->
+        </div>
+        <div class="box-w50 nogap-right">
+          <div class="product-box">
+          <div class="cover">
+            <% if products[1].present? %>
+              <%= link_to '', product_path(products[1]), style: "background-image:url(#{products[1].image_url(:thumb)})", class:'img', title:"products[1].name" %>
+            <% else %>
+              <%= link_to '', '', style: "background-image:url()", class:'img', title:"UBOSS产品" %>
+            <% end %>
+            <%= image_tag("mobile/img.jpg") %>
+          </div>
+        </div><!-- product-box -->
+        </div>
+      </div><!-- share-store-list -->
+      <div class="share-bar">
+        <div class="pop-qr-btn pull-right">
+          <input type="hidden" value="<%= privilege_card.ordinary_store_qrcode_img_url %>" />
+        </div>
+        <div class="content">
+          <div class="hidden sharing-meta-container">
+            <%= store_sharing_meta_tags(seller) %>
+          </div>
+          <%= link_to "分享店铺", get_seller_sharing_path(seller_id: privilege_card.seller_id), remote: true,
+            class: 'btn btn-block btn-orange-border req-favour-p-snode' %>
+          <a href="#" class="btn btn-block btn-orange-border p-sharing-btn hidden">分享店铺</a>
+        </div>
+      </div><!-- share-bar -->
+    </div><!-- share-card -->
+  </div>
+<% end %>
 
-</div>
-<!-- 本地服务 -->
-<% if (store = seller.service_store) && store.valid? %>
-<div class="box-w50">
-	<div class="share-card gap" timestamp='<%= privilege_card.updated_at %>'>
-  		<a href="<%= service_store_path(seller.service_store) %>" class="share-store-info text-center">
-      <div class="cover" style="background-image: url('<%=store.store_cover_url(:w120)%>')">
-        <%= image_tag store.store_cover_url(:w120) %>
-      </div>
-      <p class="title text-cut"><%= store.store_identify %></p>
-      <!-- <p class="gray-color">商品共 <%#= seller.service_products.published.count %> 件</p> -->
-    </a><!-- share-store-info -->
-    <div class="share-store-list box-w100 nogap">
-      <% products = seller.service_products.published.limit(2) %>
-      <div class="box-w50 nogap-left">
-        <div class="product-box">
-        <div class="cover">
-          <% if products[0].present? %>
-            <%= link_to '', service_product_path(products[0]), style: "background-image:url(#{products[0].image_url(:thumb)})", class:'img', title: products[0].name %>
-          <% else %>
-            <%= link_to '', 'javascript:;', class:'img', title:"UBOSS产品" %>
-          <% end %>
-          <%= image_tag("mobile/img.jpg") %>
+<!-- 实体店铺 -->
+<% if seller.service_products.exists? && store = seller.service_store %>
+  <div class="box-w50">
+    <div class="share-card gap" timestamp='<%= privilege_card.updated_at %>'>
+      <a href="<%= service_store_path(store) %>" class="share-store-info text-center">
+        <div class="cover" style="background-image: url('<%= store.store_cover_url(:w120) %>')">
+          <%= image_tag store.store_cover_url(:w120) %>
         </div>
-      </div><!-- product-box -->
-      </div>
-      <div class="box-w50 nogap-right">
-        <div class="product-box">
-        <div class="cover">
-          <% if products[1].present? %>
-            <%= link_to '', service_product_path(products[1]), style: "background-image:url(#{products[1].image_url(:thumb)})", class:'img', title:"products[1].name" %>
-          <% else %>
-            <%= link_to '', 'javascript:;', class:'img', title:"UBOSS产品" %>
-          <% end %>
-          <%= image_tag("mobile/img.jpg") %>
+        <p class="title text-cut"><%= store.store_name %></p>
+        <!-- <p class="gray-color">商品共 <%#= seller.service_products.published.count %> 件</p> -->
+      </a><!-- share-store-info -->
+      <div class="share-store-list box-w100 nogap">
+        <% products = seller.service_products.published.limit(2) %>
+        <div class="box-w50 nogap-left">
+          <div class="product-box">
+            <div class="cover">
+              <% if products[0].present? %>
+                <%= link_to '', service_product_path(products[0]), style: "background-image:url(#{products[0].image_url(:thumb)})", class:'img', title: products[0].name %>
+              <% else %>
+                <%= link_to '', 'javascript:;', style: "background-image:url()", class:'img', title:"UBOSS产品" %>
+              <% end %>
+              <%= image_tag("mobile/img.jpg") %>
+            </div>
+          </div><!-- product-box -->
         </div>
-      </div><!-- product-box -->
-      </div>
-    </div><!-- share-store-list -->
-    <div class="share-bar">
-      <div class="pop-qr-btn pull-right">
-        <input type="hidden" value="<%= privilege_card.service_store_qrcode_img_url %>" />
-      </div>
-      <div class="content">
-	      <div class="hidden sharing-meta-container">
-	        <%= store_sharing_meta_tags(seller, nil, service_store_path(seller.service_store)) %>
-	      </div>
-			  <%= link_to "分享店铺", get_seller_sharing_path(seller_id: privilege_card.seller_id, type: 'service'), remote: true,
-			    class: 'btn btn-block btn-orange-border req-favour-p-snode' %>
-			  <a href="javascript:;" class="btn btn-block btn-orange-border p-sharing-btn hidden">分享店铺</a>
-		  </div>
-	  </div><!-- share-bar -->
-	</div><!-- share-card -->
-</div>
+        <div class="box-w50 nogap-right">
+          <div class="product-box">
+            <div class="cover">
+              <% if products[1].present? %>
+                <%= link_to '', service_product_path(products[1]), style: "background-image:url(#{products[1].image_url(:thumb)})", class:'img', title:"products[1].name" %>
+              <% else %>
+                <%= link_to '', '', style: "background-image:url()", class:'img', title:"UBOSS产品" %>
+              <% end %>
+              <%= image_tag("mobile/img.jpg") %>
+            </div>
+          </div><!-- product-box -->
+        </div>
+      </div><!-- share-store-list -->
+      <div class="share-bar">
+        <div class="pop-qr-btn pull-right">
+          <input type="hidden" value="<%= privilege_card.service_store_qrcode_img_url %>" />
+        </div>
+        <div class="content">
+          <div class="hidden sharing-meta-container">
+            <%= store_sharing_meta_tags(seller, nil, service_store_path(store)) %>
+          </div>
+          <%= link_to "分享店铺", get_seller_sharing_path(seller_id: privilege_card.seller_id, type: 'service'), remote: true,
+            class: 'btn btn-block btn-orange-border req-favour-p-snode' %>
+          <a href="#" class="btn btn-block btn-orange-border p-sharing-btn hidden">分享店铺</a>
+        </div>
+      </div><!-- share-bar -->
+    </div><!-- share-card -->
+  </div>
 <% end %>
