@@ -1,10 +1,10 @@
-class Api::V1::BankCardsController < ApiBaseController
+class Api::V1::Admin::BankCardsController < ApiBaseController
 
   def create
     authorize! :create, BankCard
     @bank_card = current_user.bank_cards.build(bank_card_params)
     if @bank_card.save
-      head(200)
+      render json: {}
     else
       render_model_errors @bank_card
     end

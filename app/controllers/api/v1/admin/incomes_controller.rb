@@ -10,14 +10,14 @@ class Api::V1::Admin::IncomesController < ApiBaseController
   def the_income
     authorize! :read, VerifyCode
     income_by_date = []
-    verified_codes = current_user.verify_codes.where("verify_codes.updated_at > ?", params[:date].to_date.beginning_of_day).group_by{ |verify_code| verify_code.updated_at.to_date }.sort_by{ |key, values| key }
+    verified_codes = current_user.verify_codes.where("verify_codes.updated_at between ? and ?", params[:date].to_date.beginning_of_month.beginning_of_day, params[:date].to_date.end_of_month.end_of_day).group_by{ |verify_code| verify_code.updated_at.to_date }.sort_by{ |key, values| key }
     verified_codes.each do |date, codes|
       data = {}
       data[:date] = date
       data[:income] = codes.sum(&:income)
       income_by_date << data
     end
-    render json: income_by_date.first(5)
+    render json: income_by_date
   rescue => e
     render_error :wrong_params
   end

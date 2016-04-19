@@ -10,7 +10,7 @@ class Api::V1::Admin::ServiceProductsController < ApiBaseController
     product_infos = []
     unless products.nil?
       products.each do |product|
-        product_infos << { id: product.id, product_image_url: product.image_url(:thumb), product_name: product.name, price: product.present_price, sold_amount: product.total_sells }
+        product_infos << { id: product.id, product_image_url: product.image_url(:thumb), product_name: product.name, product_created_at: product.created_at, price: product.present_price, sold_amount: product.total_sells }
       end
     end
     render json: product_infos
@@ -19,7 +19,7 @@ class Api::V1::Admin::ServiceProductsController < ApiBaseController
   def show
     product = ServiceProduct.find_by(id: params[:id])
     authorize! :read, product
-    render json: { id: product.id, product_image_url: product.image_url(:thumb), product_name: product.name, price: product.present_price, sold_amount: product.total_sells }
+    render json: { id: product.id, product_image_url: product.image_url(:thumb), product_name: product.name, product_created_at: product.created_at, price: product.present_price, sold_amount: product.total_sells }
   rescue => e
     render_error :wrong_params
   end
