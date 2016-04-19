@@ -41,17 +41,17 @@ class VerifyCode < ActiveRecord::Base
     if verify_code && verify_code.target_type == 'OrderItem'
       result[:success] = VerifyCode.with_user(seller).find_by(code: code).verify_code
       if result[:success] == true
-        result[:verfiy_code] = code
+        result[:verfiy_code] = verify_code
       end
     elsif verify_code && verify_code.target_type == 'DishesOrder'
       result[:success] = VerifyCode.with_user(seller).find_by(code: code).verify_code
       if result[:success] == true
-        result[:verfiy_code] = code
+        result[:verfiy_code] = verify_code
       end
     elsif verify_code && verify_code.activity_prize
       result[:success] =  verify_code.verify_activity_code(seller)
       if result[:success] == true
-        result[:verfiy_code] = code
+        result[:verfiy_code] = verify_code
       end
     else
       result[:success] = false
