@@ -60,13 +60,15 @@ $ ->
       text_number = $(this).text()
       $('#pay-number-box').addClass("active")
     else
-      if(text_number.indexOf(".") < 0)
+      if(text_number.indexOf("0") == 0 && text_number.length == 1)
+        text_number = $(this).text()
+      else if(text_number.indexOf(".") < 0)
         text_number += $(this).text()
       else if (text_number.indexOf(".")+2 >= text_number.length)
         text_number += $(this).text()
     $('#pay-number-box').text(text_number)
     $('#pay_amount').val(text_number)
-  
+    
   #输入点的判断  
   $('#pay-number-keyboard .dot').on 'click', (e)->
     text_number = $('#pay-number-box').text()
