@@ -28,7 +28,8 @@ class Admin::CallingNotifiesController < AdminController
     end
 
     if request.xhr?
-      render(partial: 'calling_notifies', locals: { calling_notifies: [@calling_notify.reload] })
+      calling_notifies = @calling_notify.service_name == "结帐" ? [] : [@calling_notify.reload]
+      render(partial: 'calling_notifies', locals: { calling_notifies: calling_notifies })
     else
       redirect_to action: :index
     end
