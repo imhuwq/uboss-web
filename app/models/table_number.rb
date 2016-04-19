@@ -5,7 +5,7 @@ class TableNumber < ActiveRecord::Base
   enum status: { unuse: 0, used: 1 }
 
   before_save :set_expired_at
-  after_save  :destroy_all_calling_notifies, if: -> { status_changed? && unuse? }
+  after_save  :trigger_realtime_message, if: -> { status_changed? }
 
   validates :user, :number, :status, presence: true
   validates :number, uniqueness: { scope: :user_id }
@@ -32,11 +32,14 @@ class TableNumber < ActiveRecord::Base
     end
   end
 
-  def destroy_all_calling_notifies
-    ids = self.calling_notifies.pluck(:id)
-
-    if self.calling_notifies.destroy_all
-      $redis.publish 'realtime_msg', { msg: { type: 'drop_table', number: self.number, calling_notify_ids: ids }, recipient_user_ids: [self.user_id] }.to_json
+  def trigger_realtime_message
+    if self.unuse?
+      realtime_msg = { type: 'drop_table', number: self.number, calling_notify_ids: self.calling_notifies.pluck(:id) }
+      self.calling_notifies.destroy_all
+    else
+      realtime_msg = { type: 'used_table', number: self.number }
     end
+
+    $redis.publish 'realtime_msg', { msg: realtime_msg, recipient_user_ids: [self.user_id] }.to_json
   end
 end
