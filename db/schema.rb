@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160411041910) do
+ActiveRecord::Schema.define(version: 20160420065702) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -131,29 +131,6 @@ ActiveRecord::Schema.define(version: 20160411041910) do
     t.string   "user_identify"
   end
 
-  create_table "bill_incomes", force: :cascade do |t|
-    t.decimal  "amount"
-    t.integer  "user_id"
-    t.integer  "bill_order_id"
-    t.datetime "created_at",    null: false
-    t.datetime "updated_at",    null: false
-  end
-
-  add_index "bill_incomes", ["user_id", "bill_order_id"], name: "index_bill_incomes_on_user_id_and_bill_order_id", unique: true, using: :btree
-
-  create_table "bill_orders", force: :cascade do |t|
-    t.integer  "user_id"
-    t.integer  "seller_id"
-    t.string   "number"
-    t.integer  "state"
-    t.decimal  "pay_amount"
-    t.decimal  "paid_amount"
-    t.integer  "order_charge_id"
-    t.datetime "created_at",      null: false
-    t.datetime "updated_at",      null: false
-    t.string   "weixin_openid"
-  end
-
   add_index "bill_orders", ["number"], name: "index_bill_orders_on_number", unique: true, using: :btree
 
   create_table "bonus_records", force: :cascade do |t|
@@ -240,8 +217,8 @@ ActiveRecord::Schema.define(version: 20160411041910) do
     t.integer  "user_id",                        null: false
     t.datetime "created_at",                     null: false
     t.datetime "updated_at",                     null: false
-    t.datetime "use_in_store_at"
     t.boolean  "use_in_store",    default: true
+    t.datetime "use_in_store_at"
     t.integer  "store_id"
     t.string   "store_type"
     t.integer  "position"
@@ -570,18 +547,25 @@ ActiveRecord::Schema.define(version: 20160411041910) do
     t.datetime "updated_at",                                           null: false
     t.boolean  "actived",              default: false
     t.integer  "seller_id"
-    t.integer  "product_inventory_id"
     t.string   "user_img"
     t.string   "service_store_cover"
     t.string   "user_name"
     t.string   "ordinary_store_cover"
-    t.datetime "qrcode_expire_at",     default: '2016-03-03 14:49:49'
+    t.datetime "qrcode_expire_at",     default: '2016-02-25 14:44:59'
     t.string   "service_store_name"
     t.string   "ordinary_store_name"
     t.boolean  "activity",             default: false
   end
 
   add_index "privilege_cards", ["user_id", "seller_id"], name: "index_privilege_cards_on_user_id_and_seller_id", unique: true, using: :btree
+
+  create_table "product_attribute_names", force: :cascade do |t|
+    t.string   "name"
+    t.boolean  "is_key_attr",      default: true
+    t.integer  "product_class_id"
+    t.datetime "created_at",                      null: false
+    t.datetime "updated_at",                      null: false
+  end
 
   create_table "product_classes", force: :cascade do |t|
     t.integer  "parent_id"
@@ -677,9 +661,6 @@ ActiveRecord::Schema.define(version: 20160411041910) do
     t.boolean  "full_cut",             default: false
     t.integer  "full_cut_number"
     t.integer  "full_cut_unit"
-    t.integer  "total_sales"
-    t.integer  "comprehensive_order"
-    t.datetime "published_at"
     t.string   "type"
     t.integer  "service_type"
     t.integer  "monthes"
@@ -836,12 +817,11 @@ ActiveRecord::Schema.define(version: 20160411041910) do
     t.integer  "product_id"
     t.string   "code"
     t.integer  "parent_id"
-    t.integer  "lft",          null: false
-    t.integer  "rgt",          null: false
-    t.datetime "created_at",   null: false
-    t.datetime "updated_at",   null: false
+    t.integer  "lft",        null: false
+    t.integer  "rgt",        null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.integer  "seller_id"
-    t.integer  "self_page_id"
   end
 
   add_index "sharing_nodes", ["code"], name: "index_sharing_nodes_on_code", unique: true, using: :btree
@@ -917,10 +897,11 @@ ActiveRecord::Schema.define(version: 20160411041910) do
   create_table "table_numbers", force: :cascade do |t|
     t.integer  "user_id"
     t.integer  "number"
-    t.integer  "status",     default: 0
-    t.datetime "created_at",             null: false
-    t.datetime "updated_at",             null: false
+    t.integer  "status",        default: 0
+    t.datetime "created_at",                null: false
+    t.datetime "updated_at",                null: false
     t.datetime "expired_at"
+    t.string   "weixin_openid"
   end
 
   add_index "table_numbers", ["user_id"], name: "index_table_numbers_on_user_id", using: :btree
