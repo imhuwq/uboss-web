@@ -1,5 +1,4 @@
 class CallingServicesController < ApplicationController
-  before_action :authenticate_user!, only: [:store_notifies]
   before_action :find_seller
   before_action :find_using_table_number,  only: [:index, :notifies, :calling]
 
@@ -35,6 +34,13 @@ class CallingServicesController < ApplicationController
   end
 
   def table_numbers
+    # for weixin openid but not uboss user
+    if browser.wechat? && session["devise.wechat_data"].blank?
+      session[:oauth_callback_redirect_path] = request.fullpath
+      redirect_to user_omniauth_authorize_path(:wechat)
+      return
+    end
+
     @table_numbers = TableNumber.where(user: @seller).order("number ASC")
   end
 
@@ -48,7 +54,7 @@ class CallingServicesController < ApplicationController
       end
 
       cookies[:table_nu] = table_number.number
-      table_number.update(status: "used")
+      table_number.update(status: "used", weixin_openid: get_weixin_openid_form_session)
       redirect_to action: :index
     else
       flash[:error] = "请选择正确的桌号"
