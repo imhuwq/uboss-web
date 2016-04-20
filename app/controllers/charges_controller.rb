@@ -22,6 +22,7 @@ class ChargesController < ApplicationController
     @seller = @order_charge.bill_orders.first.seller
     @promotion_activity = PromotionActivity.find_by(user: @seller, status: 1)
     @service_store_valid = @seller.service_products.published.exists?
+    @ordinary_store_valid = @seller.ordinary_products.published.exists?
     set_sharing_link_node
   end
 
