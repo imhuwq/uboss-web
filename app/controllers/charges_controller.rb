@@ -4,7 +4,6 @@ class ChargesController < ApplicationController
 
   before_action :authenticate_user!, only: [:payments, :pay_complete]
   before_action :authenticate_weixin_user_token!, only: [:pay_bill, :bill_complete]
-  before_action :set_sharing_link_node, only: [:bill_complete]
 
   def pay_bill
     @service_store = ServiceStore.find(params.fetch(:ssid))
@@ -22,6 +21,7 @@ class ChargesController < ApplicationController
     @order_charge.check_paid?
     @seller = @order_charge.bill_orders.first.seller
     @service_store_valid = @seller.service_products.published.exists?
+    set_sharing_link_node
   end
 
   def payments
