@@ -1,3 +1,17 @@
+.dishes_products {
+  #stock-group {
+    .stock, .sku_count {
+      display: none;
+    }
+    .price {
+      width: auto !important;
+    }
+  }
+  .th-tips-info-pri-lv2, .th-tips-info-pri-lv3, .td-pri-lv2, .td-pri-lv3 {
+    display: none;
+  }
+}
+
 .evaluation_prodcut_name {
   width: 70%;
   display: inline-block;

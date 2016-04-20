@@ -28,10 +28,18 @@
       </div>
     </div><!-- friend-info -->
     <% end %>
+    <% if @order.seller_bonus.to_f > 0 %>
+      <div class="friend-info">
+          <div class="content">
+              <span class="pull-right red-color order-seller-bonus"><%= @order.seller_bonus %></span>
+              红包优惠
+            </div>
+        </div><!-- friend-info -->
+    <% end %>
     <div class="price-box gap">
       合计：￥<%= @order_form.pay_amount %><small class="gray-color"></small>
     </div>
-  </div><!-- bg-white --> 
+  </div><!-- bg-white -->
 </div><!-- dishes-comfirmed-box -->
 <div class="order-price">
    <%= submit_tag '提交订单', class: "accunt_adilbtn cart-btn btn" %>

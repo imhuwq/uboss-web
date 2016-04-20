@@ -10,12 +10,8 @@
             <%= property %>
           </th>
         <% end %>
-        <th style='width:100px;'>价格</th>
-        <% if window.location.pathname.includes('dishes_products'): %>
-          <th>返利</th>
-        <% else: %>
-          <th>库存</th>
-        <% end %>
+        <th style='width:100px;' class='price'>价格</th>
+        <th class='stock'>库存</th>
       </tr>
     </thead>
     <tbody>
