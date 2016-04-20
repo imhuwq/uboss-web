@@ -12,8 +12,6 @@ class ApplicationController < ActionController::Base
 
   before_action :configure_permitted_parameters, if: :devise_controller?
 
-  realtime_controller({:queue => :redis})
-
   protected
 
   def authentication_token
