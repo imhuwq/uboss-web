@@ -123,3 +123,4 @@ $ ->
     alwaysFuc: ->
       console.log 'alwaysFuc'
 
+  FastClick.attach(document.body)
