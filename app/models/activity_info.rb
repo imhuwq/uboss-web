@@ -48,15 +48,15 @@ class ActivityInfo < ActiveRecord::Base
     if !User.find_by_id(winner_id)
       raise ArgumentError.new('winner not found')
     elsif promotion_activity.status != 'published'
-      return {status: 500, message: 'activity not published'}
+      return {status: 500, message: :not_published }
     elsif activity_type != 'share'
       raise RuntimeError.new('wrong method used')
     elsif !User.find_by_id(sharer_id)
-      return {status: 500, message: 'sharer not found'}
+      return {status: 500, message: :not_found }
     elsif ActivityDrawRecord.find_by(user_id: winner_id, sharer_id: sharer_id, activity_info_id: id).present?
-      return {status: 500, message: 'you have already drawed prize'}
+      return {status: 500, message: :already_drawed }
     elsif !prize_arr.present? || prize_arr.last <= draw_count
-      return {status: 500, message: 'No prize surplus'}
+      return {status: 500, message: :no_prize }
     else
       ActivityInfo.transaction do
         self.lock!
@@ -90,13 +90,13 @@ class ActivityInfo < ActiveRecord::Base
     if !User.find_by_id(winner_id)
       raise ArgumentError.new('winner not found')
     elsif promotion_activity.status != 'published'
-      return {status: 500, message: 'activity not published'}
+      return {status: 500, message: :not_published }
     elsif activity_type != 'live'
       raise RuntimeError.new('wrong method used')
     elsif ActivityDrawRecord.find_by(user_id: winner_id, activity_info_id: id).present?
-      return {status: 500, message: 'you have already drawed prize'}
+      return {status: 500, message: :already_drawed }
     elsif !prize_arr.present? || prize_arr.last <= draw_count
-      return {status: 500, message: 'No prize surplus'}
+      return {status: 500, message: :no_prize }
     else
       ActivityInfo.transaction do
         self.lock!
