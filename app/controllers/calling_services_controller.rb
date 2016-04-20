@@ -33,14 +33,15 @@ class CallingServicesController < ApplicationController
   end
 
   def table_numbers
-    # for weixin openid but not uboss user
-    if browser.wechat? && session["devise.wechat_data"].blank?
+    cookies[:table_weixin_openid] = current_user.try(:weixin_openid) || get_weixin_openid_form_session
+
+    if browser.wechat? && cookies[:table_weixin_openid].blank?
+      # for weixin openid but not uboss user
       session[:oauth_callback_redirect_path] = request.fullpath
       redirect_to user_omniauth_authorize_path(:wechat)
-      return
+    else
+      @table_numbers = TableNumber.where(user: @seller).order("number ASC")
     end
-
-    @table_numbers = TableNumber.where(user: @seller).order("number ASC")
   end
 
   def set_table_number
@@ -53,7 +54,7 @@ class CallingServicesController < ApplicationController
       end
 
       cookies[:table_nu] = table_number.number
-      table_number.update(status: "used", weixin_openid: get_weixin_openid_form_session)
+      table_number.update(status: "used", weixin_openid: cookies[:table_weixin_openid])
       redirect_to action: :index
     else
       flash[:error] = "请选择正确的桌号"
