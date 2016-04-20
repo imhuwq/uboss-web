@@ -51,10 +51,10 @@
        <% end %>
 
       </div><!-- bg-wihte -->
-      <% if @seller.has_promotion_activity? %>
+      <% if @promotion_activity.present? %>
         <br />
         <div class="bill-draw-cont text-center">
-          <%= link_to store_qrcode_img_path(sid: @seller.id, type: 'service') do %>
+          <%= link_to live_draw_promotion_activity_path(@promotion_activity, format: :json), class: 'bill_draw_btn' do %>
             <%= image_tag 'activate_page/color-gift.png', width: 100 %>
           <% end %>
         </div>
