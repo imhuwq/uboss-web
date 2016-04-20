@@ -108,8 +108,6 @@ $ ->
     return true if $(e.target).parent('#pay-number-box').length > 0 || $(e.target).attr('id') == 'pay-number-box'
     if $(e.target).parents('#pay-number-keyboard').length == 0
       $('#pay-number-keyboard').addClass('hidden')
-      $('#close-keyboard').addClass('hidden')
-      $('#pay-number-box').removeClass("active")
       $('#pay-number-box').addClass("nofoucs")
 
   UBoss.luffy.bindPCardTaker '.bill-sharing-cont .get-p-card-btn',
