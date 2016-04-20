@@ -1,4 +1,7 @@
 class CallingNotifiesController < ApplicationController
+
+  realtime_controller({queue: :redis})
+
   before_action :authenticate_user!
   before_action :find_current_account
   layout 'calling_services'
