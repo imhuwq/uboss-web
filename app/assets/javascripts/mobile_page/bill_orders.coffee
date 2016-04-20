@@ -47,6 +47,10 @@ $ ->
     $('#pay-number-box').removeClass("nofoucs")
     if( $('#pay-number-box').text() != '输入金额（元）' )
       $('#pay-number-box').addClass("active")
+  $('#pay-number-keyboard .box-w33').on 'touchstart', (e)->
+    $(this).addClass('touched')
+  $('#pay-number-keyboard .box-w33').on 'touchend', (e)->
+    $(this).removeClass('touched')
   #输入数字的判断
   $('#pay-number-keyboard .num').on 'click', (e)->
     text_number = $('#pay-number-box').text()
