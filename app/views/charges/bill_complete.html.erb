@@ -51,14 +51,14 @@
        <% end %>
 
       </div><!-- bg-wihte -->
-      <% if @promotion_activity.present? %>
+      <% if (@service_store_valid || @ordinary_store_valid) && @promotion_activity.present? %>
         <br />
         <div class="bill-draw-cont text-center">
           <%= link_to live_draw_promotion_activity_path(@promotion_activity, format: :json), class: 'bill_draw_btn' do %>
             <%= image_tag 'activate_page/color-gift.png', width: 100 %>
           <% end %>
         </div>
-      <% else %>
+      <% elsif @service_store_valid || @ordinary_store_valid %>
         <br />
         <div class="bill-sharing-cont">
           <h3 class="text-center" style="font-weight:normal">给好友优惠，赢现金红包</h3>
