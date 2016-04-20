@@ -1,5 +1,8 @@
 class Admin::CallingNotifiesController < AdminController
+
   load_and_authorize_resource
+  realtime_controller({queue: :redis})
+
   before_action :validate_service_store_info, only: [:index]
 
   def index
