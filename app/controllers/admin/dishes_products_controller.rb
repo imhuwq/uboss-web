@@ -72,18 +72,16 @@ class Admin::DishesProductsController < AdminController
 
   def dishes_product_params
     dishes = params.require(:dishes_product).permit(
-      :name, :present_price, :rebate_amount, :avatar, :categories
+      :name, :present_price, :avatar, :categories
     )
     if params[:product].present?
       dishes = dishes.merge(params.require(:product).permit(
       product_inventories_attributes: [
-        :id, :price, :share_amount_total,
+        :id, :price, :share_amount_total, :privilege_amount, :share_amount_lv_1,
         sku_attributes: product_propertys_params[:product_propertys_names],
       ]
       ))
     end
-    ## 目前没有红包优惠, 如果加上红包优惠需要去掉此行
-    dishes[:product_inventories_attributes].each {|k,v| v[:share_amount_lv_1] = v[:share_amount_total] } if dishes[:product_inventories_attributes].present?
     dishes
   end
 end

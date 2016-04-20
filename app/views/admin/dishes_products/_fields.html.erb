@@ -18,7 +18,6 @@
     <%= f.select :categories, current_user.categories.dishes_categories.collect { |p| [ p.name, p.id ] }, {include_blank: '选择一个分组', selected: @dishes_product.categories.first.try(:id)}%>
   </span>
   <%= f.input :present_price, hint: '若菜品有多种规格,价格信息在菜品规格中设置' %>
-  <%= f.input :rebate_amount, hint: '若菜品有多种规格,返利金额在菜品规格中设置' %>
   <%= f.input :asset_img, hint:"(点击图片进行替换)"  do %>
     <%= f.input_field :avatar, type: :hidden, as: :file %>
     <p><span class="text-margin">建议上传比例为1:1的图片，最佳尺寸为<b style="color: red;">600x600</b>像素</span></p>
@@ -34,22 +33,37 @@
   <% end %>
 </div>
 <br />
-<div class="admin-box beige-bg-color">
-  <h4 class="edit-title">菜品规格</h4>
-  <div class="form-group product-sku-box box-w100">
-    <label class="control-label box-w20">规格</label>
-    <div id='product-sku' class='control-input box-w80'>
-      <div class="property-list">
+<div class='dishes_products'>
+  <div class="admin-box beige-bg-color">
+    <h4 class="edit-title">菜品规格</h4>
+    <div class="form-group product-sku-box box-w100">
+      <label class="control-label box-w20">规格</label>
+      <div id='product-sku' class='control-input box-w80'>
+        <div class="property-list">
+        </div>
+        <a class="btn add-property" href="#">添加规格</a>
       </div>
-      <a class="btn add-property" href="#">添加规格</a>
+    </div>
+    <div id="product-stock" class="form-group">
+      <label class="control-label">价格</label>
+      <div  class="stock-list control-input">
+        <p><span class="text-margin">请添加产品规格属性</span></p>
+      </div>
     </div>
   </div>
-  <div id="product-stock" class="form-group ">
-    <label class="control-label">价格/返利</label>
-    <div  class="stock-list control-input">
-      <p><span class="text-margin">请添加产品规格属性</span></p>
+  <br />
+  <div id="sku-privelege-group" class="admin-box beige-bg-color">
+    <h4 class="edit-title">分成设置</h4>
+    <div class="form-group sku-privilege-lvs-group">
+      <label class="control-label">返利方案</label>
+      <div class='sku-plvs-btns control-input'>
+        <a href="#" class='btn btn-border' data-level='1'>一级返利</a>
+      </div>
     </div>
-  </div>
+    <div class="form-group sku-privilege-list-group">
+      <label class="control-label">返利金额</label>
+      <div class='sku-privilege-list control-input'></div>
+    </div>
+  </div><!-- admin-box -->
+  <br />
 </div>
-
-<br />

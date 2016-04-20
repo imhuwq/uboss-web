@@ -39,7 +39,9 @@ class DishesProduct < Product
 
   def rebate_amount_range
     if product_inventories.present?
-      "#{product_inventories.min_by { |a| a.share_amount_total }.share_amount_total} - #{product_inventories.max_by { |a| a.share_amount_total }.share_amount_total}"
+      min_value = product_inventories.min_by { |a| a.share_amount_total }.share_amount_total
+      max_value = product_inventories.max_by { |a| a.share_amount_total }.share_amount_total
+      min_value != max_value ? "#{min_value} - #{max_value}" : min_value
     else
       self.rebate_amount
     end
