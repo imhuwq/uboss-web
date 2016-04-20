@@ -12,7 +12,7 @@ class ProductInventory < ActiveRecord::Base
 
   validates_presence_of :sku_attributes, if: -> { self.saling }
   validates_numericality_of :price, :count, greater_than_or_equal_to: 0, if: -> { self.saling }
-  
+
   validate :share_amount_total_must_lt_price
 
   scope :saling, -> { where(saling: true) }

@@ -18,33 +18,33 @@
       <% end %>
       <!-- 结束循环  -->
     </div><!-- gap-lr -->
-    <% if (sharing_user = @order_form.sharing_user) && @order_form.total_privilege_amount > 0 %>
+    <% if (sharing_user = @order_form.sharing_user) && @order_form.total_privilege_bonus > 0 %>
     <div class="friend-info border-top">
       <div class="cover">
         <%= image_tag @order_form.sharing_user.avatar_url(:w120) %>
       </div>
       <div class="content">
-          <span class="pull-right red-color order-privilege-amount"><%= @order_form.total_privilege_amount %></span><span class="main-color"><%= sharing_user.identify %></span> 帮你优惠
+          <span class="pull-right red-color order-privilege-amount"><%= @order_form.total_privilege_bonus %></span><span class="main-color"><%= sharing_user.identify %></span> 帮你优惠
       </div>
     </div><!-- friend-info -->
     <% end %>
-    <% if @order.seller_bonus.to_f > 0 %>
+    <% if @order_form.seller_bonus != 0 %>
       <div class="friend-info">
           <div class="content">
-              <span class="pull-right red-color order-seller-bonus"><%= @order.seller_bonus %></span>
+              <span class="pull-right red-color order-seller-bonus"><%= @order_form.seller_bonus %></span>
               红包优惠
             </div>
         </div><!-- friend-info -->
     <% end %>
     <div class="price-box gap">
-      合计：￥<%= @order_form.pay_amount %><small class="gray-color"></small>
+      合计：￥<%= @order_form.total_price %><small class="gray-color"></small>
     </div>
   </div><!-- bg-white -->
 </div><!-- dishes-comfirmed-box -->
 <div class="order-price">
    <%= submit_tag '提交订单', class: "accunt_adilbtn cart-btn btn" %>
    <div class="content">
-     <p>应付款：<span id="total_price"><%= @order_form.pay_amount %></span></p>
+     <p>应付款：<span id="total_price"><%= @order_form.total_price %></span></p>
      <p class="gray-color"><small>共优惠<%= @order_form.total_privilege_amount %>元</small></p>
    </div>
 </div><!-- order-price -->

@@ -41,20 +41,36 @@ class DishesOrderForm
     end
   end
 
+  def seller_bonus
+    total_privilege_bonus = order.order_items.map do |item|
+      item.product_inventory.privilege_amount * item.amount.to_i
+    end.sum
+    bonus_benefit = buyer.bonus_benefit
+    total_privilege_bonus > bonus_benefit ? bonus_benefit : total_privilege_bonus
+  end
+
+  def total_price
+    pay_amount - total_privilege_bonus - seller_bonus
+  end
+
   def order_items
     order.order_items.each &:reset_payment_info
   end
 
-  def total_privilege_amount
+  def total_privilege_bonus
     return 0 if sharing_node.blank?
-    @total_privilege_amount ||= order.order_items.reduce(0) do |sum, item|
+    @total_privilege_bonus ||= order.order_items.reduce(0) do |sum, item|
       next if !item.privilege_card
       sum + item.privilege_card.amount(item.product_inventory) * item.amount.to_i
     end
   end
 
+  def total_privilege_amount
+    total_privilege_bonus + seller_bonus
+  end
+
   def pay_amount
-    @pay_amount ||= order.order_items.map(&:pay_amount).sum - total_privilege_amount
+    @pay_amount ||= order.order_items.map(&:pay_amount).sum
   end
 
   def create_or_update_user
