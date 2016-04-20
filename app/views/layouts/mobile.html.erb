@@ -2,7 +2,9 @@
 <html lang="zh-CN"
 	<% if controller_name == 'menus' && params[:action] == 'index' %>
 	class="dishes-html"
-	<% end %>
+	<% else %>
+	class='<%= controller_name %> <%= action_name %>'	
+ <% end %>
 >
   <head>
     <meta charset="utf-8" />
@@ -18,7 +20,7 @@
     <%= csrf_meta_tags %>
   </head>
 
-  <body class='<%= controller_name %> <%= action_name %>' <% if controller_name == 'menus' && params[:action] == 'index' %>onload="loaded()"<% end %>>
+  <body  <% if controller_name == 'menus' && params[:action] == 'index' %>onload="loaded()"<% end %>>
 
     <% if controller_name == 'menus' && params[:action] == 'index' %>
       <%= render partial: 'layouts/menu_nav' %>
