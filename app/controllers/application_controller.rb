@@ -70,6 +70,7 @@ class ApplicationController < ActionController::Base
   end
 
   # for actions need weixin openid but not uboss user
+  # skip wechat user confirm page
   def authenticate_weixin_user_token!
     # Force request wehat token
     # return false if !browser.wechat?
@@ -77,7 +78,7 @@ class ApplicationController < ActionController::Base
     return false if session["devise.wechat_data"].present?
 
     session[:oauth_callback_redirect_path] = request.fullpath
-    redirect_to user_omniauth_authorize_path(:wechat)
+    redirect_to user_omniauth_authorize_path(:wechat, scope: 'snsapi_base')
   end
 
   def login_with_admin_model
