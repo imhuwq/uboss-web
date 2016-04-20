@@ -175,14 +175,25 @@
     font-size: 18px;
     padding: 5%;
     font-family: sans-serif;
+    &.touched {
+      background-color: #ddd;
+    }
   }
   .box-w33:nth-child(3n){
     border-right: none ;
   }
-  .dot{background: #f6f6f6;}
+  .dot{
+    background: #f6f6f6;
+    &.touched {
+      background-color: #fff;
+    }
+  }
   .back{
     background:image-url('mobile/bill_orders/back.png') no-repeat center center #f6f6f6;
-    background-size: auto 20px; 
+    background-size: auto 20px;
+    &.touched {
+      background-color: #fff;
+    }
    }
 }
 @-webkit-keyframes flash {
