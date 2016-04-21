@@ -57,11 +57,11 @@
                 <%= image_tag(verify_code.target.product.image_url(:thumb), size: "80x80", alt: "-") %>　
                 <%= verify_code.target.product.name %>
               <% end %>
-            <% elsif verify_code.activity_prize.present? %>
-              <%= verify_code.activity_prize.try(:activity_info).try(:name) %> (活动奖品)
+            <% elsif activity_prize = verify_code.activity_prize %>
+              <%= activity_prize.try(:activity_info).try(:name) %>(活动奖品)
             <% end %>
           </td>
-          <td><%= verify_code.target.try(:present_price) || '--' %></td>
+          <td><%= verify_code.target.present_price if verify_code.target.present? %></td>
           <td><%= verify_code.updated_at %></td>
           <td><%= verify_code.code %></td>
         </tr>

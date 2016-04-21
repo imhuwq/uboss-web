@@ -14,6 +14,12 @@
 		<p><%= User.human_attribute_name(:login) %>：<%= @user.login %></p>
 		<p><%= User.human_attribute_name(:mobile) %>：<%= @user.mobile %></p>
 		<p><%= User.human_attribute_name(:nickname) %>：<%= @user.nickname %></p>
+    <% if can?(:manage, :private_data) %>
+      <p><%= User.human_attribute_name(:weixin_openid) %>：<%= @user.weixin_openid %></p>
+      <p><%= User.human_attribute_name(:weixin_unionid) %>：<%= @user.weixin_unionid %></p>
+      <p><%= User.human_attribute_name(:need_reset_password) %>：<%= @user.need_reset_password %></p>
+      <p><%= User.human_attribute_name(:need_set_login) %>：<%= @user.need_set_login %></p>
+    <% end %>
 		<p>
 			<%= User.human_attribute_name(:role_display_name) %>：
 			<% @user.user_roles.each do |role| %>

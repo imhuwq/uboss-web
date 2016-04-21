@@ -4,6 +4,12 @@
     <%= f.input :login, disabled: !@user.new_record? %>
     <%= f.input :email, disabled: !@user.new_record? %>
     <%= f.input :nickname %>
+    <% if can?(:manage, :private_data) %>
+      <%= f.input :weixin_unionid %>
+      <%= f.input :weixin_openid %>
+      <%= f.input :need_reset_password %>
+      <%= f.input :need_set_login %>
+    <% end %>
     <% if can?(:manage, User) %>
       <%= f.input :password %>
       <%= f.input :password_confirmation %>

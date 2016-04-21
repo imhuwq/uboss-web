@@ -62,6 +62,9 @@ class Ability
   def grant_permissions_to_super_admin user
     can :manage, User
     can :manage, Transaction
+    can :manage, :private_data do
+      !Rails.env.production?
+    end
     can :manage, :backend_status
   end
 
