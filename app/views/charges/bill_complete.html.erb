@@ -55,6 +55,7 @@
         <% if current_user.blank? %>
           <div class="bill-sharing-cont">
             <div class="login-cont">
+              <small class="gray-color">请输入手机号，以便给你发放奖品</small>
               <p class="mobile-cont">
                 <%= text_field_tag :mobile, '',
                   class: 'input-block input-radius input-large',
