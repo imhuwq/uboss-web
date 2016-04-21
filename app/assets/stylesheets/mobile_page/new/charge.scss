@@ -90,20 +90,20 @@
 }
 .bill-draw-cont {
   margin: 20px;
-}
-.bill-draw-btn {
-  display: inline-block;
-  position: relative;
-  img{ width: 120px; }
-  &:before {
-    content: ' ';
-    box-shadow: 5px 7px 25px rgba(0,0,0,0.8);
-    border-radius: 74px;
-    display: block;
-    height: 120px;
-    width: 120px;
-    position: absolute;
-    top: 0;
-    z-index: -1;
+  .bill-draw-btn {
+    display: inline-block;
+    position: relative;
+    img{ width: 120px; }
+    &:before {
+      content: ' ';
+      box-shadow: 5px 7px 25px rgba(0,0,0,0.8);
+      border-radius: 74px;
+      display: block;
+      height: 120px;
+      width: 120px;
+      position: absolute;
+      top: 0;
+      z-index: -1;
+    }
   }
 }
