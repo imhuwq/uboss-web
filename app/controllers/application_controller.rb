@@ -72,6 +72,9 @@ class ApplicationController < ActionController::Base
   def authenticate_weixin_user_token!
     # Force request wehat token
     # return false if !browser.wechat?
+    if params[:mode] == 'test' && Rails.env.development?
+      session["devise.wechat_data"] = {'extra' => { 'raw_info' => { 'openid' => 'fake-openid' } }}
+    end
     return false if current_user && current_user.weixin_openid.present?
     return false if session["devise.wechat_data"].present?
 

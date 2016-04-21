@@ -54,8 +54,10 @@ class Users::SessionsController < Devise::SessionsController
        super do |user|
          Ubonus::Invite.delay.active_by_user_id(resource.id)
          user.update_with_oauth_session(wechat_omniauth_data) if wechat_omniauth_data.present?
-         @csrf_param = request_forgery_protection_token
-         @csrf_token = form_authenticity_token
+         if request.format == 'json'
+           @csrf_param = request_forgery_protection_token
+           @csrf_token = form_authenticity_token
+         end
        end
      end
    end
