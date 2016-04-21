@@ -12,13 +12,39 @@
     height: 40px;
 
   }
+  .mobile-cont {
+    position:relative;
+    .send_mobile {
+      position: absolute;
+      top: 0;
+      right: 0;
+      background: #FF655A;
+      color: white;
+      height: 100%;
+      box-sizing: border-box;
+      padding: 0 10px;
+      border-radius: 0 4px 4px 0;
+      font-size: 14px;
+      line-height: 40px;
+      &.disabled { background: #ddd; }
+    }
+  }
   .btn{
     background: #FF655A;
     font-size: 16px;
     letter-spacing: 1px;
   }
-
-
+}
+.prize-cont {
+  padding: 20px 10px;
+  border: 1px solid #fff;
+  border-radius: 4px;
+  text-align: center;
+  background: image-url('ub.png') repeat center;
+  background-size: 40px 33px;
+  h4 {
+    margin: 30px 0;
+  }
 }
 .bill-sharing-cont:before{
   position: absolute;

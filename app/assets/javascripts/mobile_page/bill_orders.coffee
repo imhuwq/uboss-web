@@ -108,9 +108,64 @@ $ ->
     return true if $(e.target).parent('#pay-number-box').length > 0 || $(e.target).attr('id') == 'pay-number-box'
     if $(e.target).parents('#pay-number-keyboard').length == 0
       $('#pay-number-keyboard').addClass('hidden')
-      $('#close-keyboard').addClass('hidden')
-      $('#pay-number-box').removeClass("active")
       $('#pay-number-box').addClass("nofoucs")
+
+  $(document).on 'click', '.bill-draw-btn', (e) ->
+    e.preventDefault()
+    element = $(this)
+    if element.hasClass('login-require')
+      mobile  = $('#new_mobile').val()
+      captcha = $('#mobile_auth_code').val()
+      UBoss.chopper.showSpinner()
+      $.ajax
+        url: '/sign_in.json'
+        type: 'POST'
+        data:
+          user:
+            login: mobile
+            mobile_auth_code: captcha
+      .done (data)->
+        console.log(data)
+        $('form [name=' + data["csrf_param"] + ']').val(data["csrf_token"])
+        $('meta[name=csrf-token]').attr('content', data['csrf_token'])
+        element.removeClass('login-require')
+        requestDraw element.attr('href'), (data)->
+          element.hide()
+          $('.get-p-card-btn').removeClass('hidden')
+      .fail (xhr, errorType, error)->
+        alert(
+          try
+            JSON.parse(xhr.responseText).error
+          catch error
+            '手机登录失败'
+        )
+      .always ->
+        UBoss.chopper.hideSpinner()
+    else
+      requestDraw element.attr('href'), (data)->
+        $('.bill-draw-cont').remove()
+        $('.bill-sharing-cont').removeClass('hidden')
+
+  requestDraw = (url, callback)->
+    UBoss.chopper.showSpinner()
+    $.ajax
+      url: url
+      type: 'GET'
+    .done (data) ->
+      console.log data
+      $('.login-cont').remove()
+      $('.prize-cont').removeClass('hidden')
+      $('.draw-result-cont').text(data.msg)
+      callback(data) if callback?
+    .fail (xhr, errorType, error) ->
+      alert(
+        try
+          JSON.parse(xhr.responseText).error
+        catch error
+          '手机登录失败'
+      )
+    .always ->
+      UBoss.chopper.hideSpinner()
 
   UBoss.luffy.bindPCardTaker '.bill-sharing-cont .get-p-card-btn',
     beforeSendFuc: ->
@@ -123,3 +178,4 @@ $ ->
     alwaysFuc: ->
       console.log 'alwaysFuc'
 
+  FastClick.attach(document.body)

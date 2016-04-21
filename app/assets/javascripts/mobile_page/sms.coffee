@@ -6,7 +6,6 @@ $ ->
     sendBtn = $(this)
     mobile = $('#new_mobile').val()
     checkNum = /^(\+\d+-)?[1-9]{1}[0-9]{10}$/
-    sendBtn.addClass("disabled")
     if checkNum.test(mobile)
       return false if mobile_submit_time != 0
       mobile_submit_time = 60

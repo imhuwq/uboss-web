@@ -37,18 +37,25 @@ class PromotionActivitiesController < ApplicationController
     @seller ||= @promotion_activity.user
     @message ||= {}
     live_activity_info = @promotion_activity.live_activity_info
-    result = live_activity_info.draw_live_prize(current_user.id)
-    if result[:status] == 200 && result[:winner_activity_prize]
+    @draw_result = live_activity_info.draw_live_prize(current_user.id)
+    if @draw_result[:status] == 200 && @draw_result[:winner_activity_prize]
       @message[:success] = "中奖了，恭喜获得“#{live_activity_info.name}” ！"
-    elsif result[:status] == 200
+    elsif @draw_result[:status] == 200
       @message[:success] = "(*^_^*) 没中，请再接再厉"
-    elsif result[:status] == 500 && result[:message] == 'you have already drawed prize'
+    elsif @draw_result[:status] == 500 && @draw_result[:message] == :already_drawed
       @message[:success] = "^o^ 亲您已抽过，下次再来吧"
-    elsif result[:status] == 500 && result[:message] == 'No prize surplus'
+    elsif @draw_result[:status] == 500 && @draw_result[:message] == :no_prize
       @message[:success] = "^o^ 奖品已经抽完，请关注下次活动"
     end
 
-    get_service_store_qrcode_img_url
+    respond_to do |format|
+      format.html {
+        get_service_store_qrcode_img_url
+      }
+      format.json {
+        render json: { draw_status: @draw_result[:status], msg: @message[:success] }
+      }
+    end
   end
 
   def share_draw
@@ -59,16 +66,16 @@ class PromotionActivitiesController < ApplicationController
 
     @message ||= {}
     share_activity_info = @promotion_activity.share_activity_info
-    result = share_activity_info.draw_share_prize(current_user.id, sharer_id)
-    if result[:status] == 200 && result[:winner_activity_prize]
+    @draw_result = share_activity_info.draw_share_prize(current_user.id, sharer_id)
+    if @draw_result[:status] == 200 && @draw_result[:winner_activity_prize]
       @message[:success] = "中奖了，恭喜获得“#{share_activity_info.name}” ！"
-    elsif result[:status] == 200
+    elsif @draw_result[:status] == 200
       @message[:success] = "(*^_^*) 没中，请再接再厉"
-    elsif result[:status] == 500 && result[:message] == 'you have already drawed prize'
+    elsif @draw_result[:status] == 500 && @draw_result[:message] == :already_drawed
       @message[:success] = "^o^ 亲您已抽过，下次再来吧"
-    elsif result[:status] == 500 && result[:message] == 'No prize surplus'
+    elsif @draw_result[:status] == 500 && @draw_result[:message] == :no_prize
       @message[:success] = "^o^ 奖品已经抽完，请关注下次活动"
-    elsif result[:status] == 500 && result[:message] == 'sharer not found'
+    elsif @draw_result[:status] == 500 && @draw_result[:message] == :not_found
       flash[:error] = "找不到对应的分享者，请重新获取分享信息"
       redirect_to lotteries_account_verify_codes_path
       return
