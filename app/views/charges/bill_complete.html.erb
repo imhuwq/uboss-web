@@ -11,7 +11,7 @@
 <% end %>
 
 <%= content_for :extra_meta_tags do %>
-  <% if @service_store_valid %>
+  <% if @service_store_valid || @promotion_activity.present? %>
     <%= service_store_sharing_meta_tags(@seller.service_store, @sharing_link_node) %>
   <% else %>
     <%= store_sharing_meta_tags(@seller, @sharing_link_node) %>
@@ -51,7 +51,7 @@
        <% end %>
       </div><!-- bg-wihte -->
       <br />
-      <% if (@service_store_valid || @ordinary_store_valid) && @promotion_activity.present? %>
+      <% if @promotion_activity.present? %>
         <% if current_user.blank? %>
           <div class="bill-sharing-cont">
             <div class="login-cont">
