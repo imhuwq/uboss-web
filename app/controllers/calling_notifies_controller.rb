@@ -14,6 +14,7 @@ class CallingNotifiesController < ApplicationController
     @calling_notify = @current_account.calling_notifies.find(params[:id])
 
     if @calling_notify.update(status: 'serviced')
+      @calling_notify.delay.send_weixin_text_custom_to_user
       checkout = @calling_notify.service_name == "结帐"
       render json: { status: "ok", id: @calling_notify.id, checkout: checkout, number: @calling_notify.calling_number }
     else

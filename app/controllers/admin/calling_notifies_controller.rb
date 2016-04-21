@@ -23,15 +23,18 @@ class Admin::CallingNotifiesController < AdminController
   def change_status
     if params[:status] == 'serviced'
       @calling_notify.status = "serviced"
-      flash.now[:success] = "已服务"
     end
 
-    unless @calling_notify.save
+    if @calling_notify.save
+      @calling_notify.delay.send_weixin_text_custom_to_user if params[:notice] != "false"
+      flash.now[:success] = "已服务"
+      calling_notifies = @calling_notify.service_name == "结帐" ? [] : [@calling_notify.reload]
+    else
       flash.now[:error] = model_errors(@calling_notify).join('<br/>')
+      calling_notifies = [@calling_notify]
     end
 
     if request.xhr?
-      calling_notifies = @calling_notify.service_name == "结帐" ? [] : [@calling_notify.reload]
       render(partial: 'calling_notifies', locals: { calling_notifies: calling_notifies })
     else
       redirect_to action: :index
