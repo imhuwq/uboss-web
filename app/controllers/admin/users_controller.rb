@@ -80,6 +80,9 @@ class Admin::UsersController < AdminController
     if not current_user.is_role?(:super_admin)
       permit_keys.delete(:user_role_ids)
     end
+    if can?(:manage, :private_data)
+      permit_keys += [:need_reset_password, :weixin_unionid, :weixin_openid, :need_set_login]
+    end
     if params[:action] == "update" && params[:user][:password].blank?
       permit_keys.delete(:password)
       permit_keys.delete(:password_confirmation)
