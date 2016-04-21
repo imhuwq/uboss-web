@@ -14,7 +14,7 @@
   <div class="lottery-list m-top10 black-color">
     <div class="title text-cut">
       <% seller = activity_prize.promotion_activity.user %>
-      <% if seller.service_products.published.count != 0 %>
+      <% if activity_prize.promotion_activity.store_type == 'service' %>
         <%= link_to truncate(seller.service_store.store_identify, length: 16), service_store_path(seller.service_store.id), class: 'black-color' %>
       <% else %>
         <%= link_to truncate(seller.ordinary_store.store_identify, length: 16), store_path(seller.id), class: 'black-color' %>

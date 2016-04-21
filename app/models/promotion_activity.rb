@@ -5,13 +5,15 @@ class PromotionActivity < ActiveRecord::Base
   has_one  :live_activity_info,  -> { where(activity_type: 'live') },  class_name: 'ActivityInfo'
   has_one  :share_activity_info, -> { where(activity_type: 'share') }, class_name: 'ActivityInfo'
 
-  validates :user, presence: true
+  validates :user, :store_type, presence: true
 
   before_save :seller_can_join_but_one_activity
 
   accepts_nested_attributes_for :activity_infos
 
   enum status: { unpublish: 0, published: 1 }
+
+  DATA_STORE_TYPE = {service: '本地服务', ordinary: '电商店铺'}
 
   def seller_name
       (user.login.present? ? "#{user.login}" : "") +
