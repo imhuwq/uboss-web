@@ -116,6 +116,12 @@ $ ->
     if element.hasClass('login-require')
       mobile  = $('#new_mobile').val()
       captcha = $('#mobile_auth_code').val()
+      unless !!mobile
+        alert('请输入手机号')
+        return false
+      unless !!captcha
+        alert('请输入验证码')
+        return false
       UBoss.chopper.showSpinner()
       $.ajax
         url: '/sign_in.json'
