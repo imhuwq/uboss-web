@@ -72,7 +72,6 @@
             </div>
             <div class="prize-cont hidden">
               <h4 class="draw-result-cont"></h4>
-              <br />
               <small>您的奖品已放入 <%= link_to "【奖券】", lotteries_account_verify_codes_path %></small>
             </div>
             <br />
@@ -89,15 +88,15 @@
         <% else %>
           <div class="bill-sharing-cont hidden">
             <div class="prize-cont hidden">
-              <p class="draw-result-cont"></p>
-              您的奖品已放入 <%= link_to "【奖券】", lotteries_account_verify_codes_path %>
+              <h4 class="draw-result-cont"></h4>
+              <small> 您的奖品已放入 <%= link_to "【奖券】", lotteries_account_verify_codes_path %> </small>
             </div>
             <br />
             <p>
               <%= link_to "找好友一起中奖", get_seller_sharing_path,
-                class: "btn btn-block btn-large get-p-card-btn",
+                class: "btn btn-block btn-large get-p-card-btn done",
                 data: { sid: @seller.id,
-                        uid: true,
+                        uid: current_user.present?,
                         path: service_store_path(@seller.service_store.id) } %>
             </p>
           </div>
