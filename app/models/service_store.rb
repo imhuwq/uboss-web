@@ -16,10 +16,6 @@ class ServiceStore < UserInfo
     if self.store_phones.size < MIN_SECTION_SIZE
       self.errors.add(:store_phones, "至少包含一条信息")
     end
-
-    if (begin_hour.to_i > end_hour.to_i) || (begin_hour.to_i == end_hour.to_i && begin_minute.to_i >= end_minute.to_i)
-      self.errors.add(:begin_time, '不能大于或等于结束时间')
-    end
   end
 
   def total_good_reputation_number
