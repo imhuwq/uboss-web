@@ -14,6 +14,7 @@ class ApiErrorService
     validation_failed:          422002, # 模型验证错误
     captcha_invalid:            422003, # 验证码不匹配或者过期
     already_binding_mobile:     422004, # 该手机号已绑定
+    verify_faild:               422005, # 无效的验证码
     mobile_captcha_fail:        424001, # 短信发送失败
   }
 

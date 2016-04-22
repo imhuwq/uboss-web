@@ -15,10 +15,10 @@ class ApiBaseController < ActionController::API
   before_action :authenticate_user!
 
   rescue_from CanCan::AccessDenied do |exception|
-    render_error :forbidden, exception.message, 403
+    render_error :forbidden
   end
   rescue_from ActionController::ParameterMissing do |exception|
-    render_error :wrong_params, exception.message
+    render_error :wrong_params
   end
 
   protected

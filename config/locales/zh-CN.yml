@@ -534,6 +534,7 @@ zh-CN:
     captcha_invalid: 验证码不匹配或者过期
     already_binding_mobile: 该手机号已绑定
     mobile_captcha_fail: 短信发送失败
+    verify_faild: 无效的验证码
   tags:
     order:
       agency_order: 分销

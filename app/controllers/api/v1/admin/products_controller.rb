@@ -3,6 +3,7 @@ class Api::V1::Admin::ProductsController < ApiBaseController
   before_action :find_product, only: [:show, :inventories, :detail]
 
   def index
+    authorize! :read, Product
     @products = append_default_filter current_user.ordinary_products.available, order_column: :updated_at
   end
 
@@ -17,13 +18,20 @@ class Api::V1::Admin::ProductsController < ApiBaseController
   end
 
   def show
+    authorize! :read, Product
   end
 
   def detail
+    authorize! :read, Product
   end
 
   def inventories
+    authorize! :read, Product
     @product_inventories = @product.seling_inventories
+  end
+
+  def product
+    authorize! :read, Product
   end
 
   private
