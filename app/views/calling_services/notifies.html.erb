@@ -8,7 +8,7 @@
   <a class="back" onclick="history.go(-1)"><%= image_tag 'mobile/right.png' %></a>
 <% end %>
 <%= content_for :header_right do %>
-  <span class="pull-right"></span>
+  <div class="header-calling-btn calling-pop-qr pull-right"><%= image_tag 'mobile/calling-service/qr.png' %></div>
 <% end %>
 
 
@@ -27,3 +27,9 @@
   </div>
 <% end %>
 </div>
+<br />
+<div style="width: 50%;margin: 0 auto;">
+ <a class="btn btn-block btn-large calling-pop-qr">接收服务通知</a>
+</div>
+<br />
+<%= render partial: 'pop_qr' %>
