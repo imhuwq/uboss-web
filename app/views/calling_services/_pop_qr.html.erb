@@ -3,7 +3,11 @@
   <div class="content">
     <div class="calling-pop-header m-bottom10">
       <div class="qr-box">
-        <%= image_tag('mobile/calling-service/real-qr.jpg') %>
+        <% if Rails.env == "production"  %>
+          <%= image_tag('mobile/calling-service/real-qr.jpg') %>
+        <% else %>
+          <%= image_tag('mobile/calling-service/stage-qr.jpg') %>
+        <% end %>
       </div>
       <p class="m-top10">长按识别二维码</p>
     </div><!-- calling-pop-header -->
