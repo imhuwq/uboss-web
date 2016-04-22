@@ -3,7 +3,13 @@
   <div class="index_list">
     <table class="list-table" id="promotion_activities">
       <thead>
-        <th colspan="2">商家帐号</th>
+        <th colspan="2">
+          <% if current_user.has_role?(:super_admin) %>
+            商家帐号
+          <% else %>
+            店铺名称
+          <% end %>
+        </th>
         <th>活动类型</th>
         <th>活动名称</th>
         <th>中奖数量</th>
@@ -24,7 +30,15 @@
           </td>
           <td rowspan="2" class="text-left" style="max-width: 400px;">
             <%= link_to admin_promotion_activity_path(promotion_activity) do %>
-              <p><%= promotion_activity.seller_name %></p>
+              <p>
+              <% if current_user.has_role?(:super_admin) %>
+                <%= promotion_activity.seller_name %>
+              <% elsif promotion_activity.store_type == 'service' %>
+                <%= promotion_activity.user.service_store.store_identify %>
+              <% else %>
+                <%= promotion_activity.user.ordinary_store.store_identify %>
+              <% end %>
+              </p>
               <p><%= PromotionActivity::DATA_STORE_TYPE.stringify_keys[promotion_activity.store_type] %></p>
             <% end %>
           </td>

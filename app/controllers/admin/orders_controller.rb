@@ -2,11 +2,10 @@ class Admin::OrdersController < AdminController
 
   load_and_authorize_resource class: 'OrdinaryOrder'
 
-  before_filter :validate_express_params, only: :set_express
-
   # TODO record use operations
   after_action :record_operation, only: [:update]
   before_action :find_or_create_express, only: :set_express
+  before_filter :validate_express_params, only: :set_express
 
   def select_orders
     @orders = OrdinaryOrder.where(id: params[:ids])
@@ -78,7 +77,11 @@ class Admin::OrdersController < AdminController
 
   def set_express
     authorize! :delivery, @order
-    if @order.update(order_params.merge(express_id: @express.id)) && @order.ship!
+    result = true
+    if params[:method] == 'need'
+      result = @order.update(order_params.merge(express_id: @express.id))
+    end
+    if result && @order.ship!
       flash[:success] = '发货成功'
     else
       flash[:error] = "发货失败,#{@order.errors.full_messages.join('\n')}"
@@ -104,12 +107,14 @@ class Admin::OrdersController < AdminController
   end
 
   def validate_express_params
-    errors = []
-    errors << '快递公司名称不能为空' if express_params.blank?
-    errors << '运单号不能为空' if order_params['ship_number'].blank?
-    if errors.present?
-      flash[:error] = errors.join('; ')
-      redirect_to admin_orders_path and return
+    if params['method'] == 'need'
+      errors = []
+      errors << '快递公司名称不能为空' if express_params.blank?
+      errors << '运单号不能为空' if order_params['ship_number'].blank?
+      if errors.present?
+        flash[:error] = errors.join('; ')
+        redirect_to admin_orders_path and return
+      end
     end
   end
 

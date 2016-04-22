@@ -8,17 +8,37 @@
 
       <%= simple_form_for *args do |f| %>
         <div class="modal-body">
-          <h4>快递公司</h4>
-          <p><%= text_field_tag 'express_name', '', class: 'input-block form-control input-lg js-select2-express-tags select2-offscreen',placeholder:'可输入其他快递公司名称, 按回车结束'%></p>
-          <p>
-          您可在 (订单 -> 快递管理) 中设置您的常用发货快递公司
-          </p>
+          <div id='buyer_addresses'>
+            <h4>收货和物流信息</h4>
+            <p class="text-cut">收货信息 : <span class='ship_express_buyer_info'></span></p>
+            <p class="text-cut">买家留言 : <span class='ship_express_buyer_message'></span></p>
+          </div>
           <br />
-          <h4>快递单号</h4>
-          <p><%= text_field_tag 'order[ship_number]', '', class: 'input-block',placeholder:'快递单号' %></p>
-          <br />
+
           <div id="default_addresses">
             <%= render partial: 'admin/orders/default_address_for_index' %>
+          </div>
+
+          <div>
+            <label class="control-label">发货方式:</label>
+            <span class='ship_express_method_btn'>
+              <button class='btn btn-border' data-method='need'>物流发货</button>
+              <button class='btn btn-link btn-border' data-method='no_need'>无需物流</button>
+              <%= hidden_field_tag 'method', 'need' %>
+            </span>
+          </div>
+          <br />
+
+          <div class='express_info'>
+            <h4>快递公司</h4>
+            <p><%= text_field_tag 'express_name', '', class: 'input-block form-control input-lg js-select2-express-tags select2-offscreen',placeholder:'可输入其他快递公司名称, 按回车结束'%></p>
+            <p>
+            您可在 (订单 -> 快递管理) 中设置您的常用发货快递公司
+            </p>
+            <br />
+            <h4>快递单号</h4>
+            <p><%= text_field_tag 'order[ship_number]', '', class: 'input-block',placeholder:'快递单号' %></p>
+            <br />
           </div>
 
         </div>

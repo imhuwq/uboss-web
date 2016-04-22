@@ -14,10 +14,10 @@
 
     <%= hidden_field_tag 'promotion_activity[store_type]', @promotion_activity.store_type %>
     <div class="form-group activity-store-type">
-      <label class="control-label">店铺类型</label>
+      <label class="control-label">活动店铺</label>
       <div class='control-input'>
         <a href="#" class='btn btn-link btn-border' data-type='service'>上线到本地服务</a>
-        <% if current_user.ordinary_store.valid? %>
+        <% if current_user.ordinary_store.store_name.present? %>
           <a href="#" class='btn btn-link btn-border' data-type='ordinary'>上线到电商店铺</a>
         <% end %>
       </div>

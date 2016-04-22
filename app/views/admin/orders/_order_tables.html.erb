@@ -66,7 +66,7 @@
                 <%= order.state_i18n %>
                 <%= link_to '详情', admin_order_path(order), class: 'main-link-color' %>
                 <% if order.payed? && can?(:manage, order) %>
-                  <%= link_to '发货', set_express_admin_order_path(order), class: 'btn express-order-btn' if can?(:delivery, order) && !order.is_a?(AgencyOrder) %>
+ <%= link_to '发货', set_express_admin_order_path(order), 'data-buyer-info': "#{order.username}, #{order.mobile}, #{order.address}", 'data-message': order.to_seller, class: 'btn express-order-btn' if can?(:delivery, order) && !order.is_a?(AgencyOrder) %>
                 <% end %>
               </td>
               <td rowspan=<%= size %>>
