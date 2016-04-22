@@ -180,7 +180,8 @@ Rails.application.routes.draw do
         get 'verify_history/:date', to: 'verify_codes#verify_history'
         get 'receipt_history/:date', to: 'verify_codes#receipt_history'
         get 'yesterday_income_and_balance', to: 'incomes#yesterday_income_and_balance'
-        get 'income/:date', to: 'incomes#the_income'
+        get 'income_by_day/:date', to: 'incomes#income_by_day'
+        get 'income_by_month/:date', to: 'incomes#income_by_month'
         get 'balance', to: 'incomes#balance'
         resources :bank_cards, only: [:index, :create, :destroy] do
           get 'get_default_bankcard', on: :collection

@@ -3,7 +3,7 @@ class Api::V1::Admin::BankCardsController < ApiBaseController
   def index
     authorize! :read, BankCard
     @bank_cards = current_user.bank_cards
-    render json: { data: @bank_cards }
+    render json: { data: @bank_cards.select(:id, :username, :bankname, :remark, :number) }
   end
 
   def create
@@ -28,14 +28,14 @@ class Api::V1::Admin::BankCardsController < ApiBaseController
 
   def get_default_bankcard
     wd = current_user.withdraw_records.order("created_at DESC").first
-    default_bankcard = if wd.bank_info.present?
-                         wd.bank_info[:number]
-                       elsif wd.bank_card.present?
-                         wd.bank_card.number
-                       else current_user.bank_cards.present?
-                         current_user.bank_cards.order("created_at ASC").first.number
-                       end
-    render json: { data: { default_bankcard: default_bankcard } }
+    bankcard = if wd.bank_card.present?
+                 wd.bank_card
+               elsif current_user.bank_cards.present?
+                 current_user.bank_cards.order("created_at ASC").first
+               else
+                 {}
+               end
+    render json: { data: { id: bankcard.id, number: bankcard.number, username: bankcard.username, remark: bankcard.remark } }
   end
 
   private
