@@ -137,11 +137,11 @@
       <div class="text-center">
         <% if @draw_record.blank? %>
           <%= link_to promotion_activity_path(@promotion_activity, type: 'share') do %>
-            <%= image_tag 'mobile/store/choujiang.png', style: "width:70%" %>
+            <%= image_tag 'mobile/store/choujiang.png', style: "width:50%" %>
           <% end %>
         <% else %>
           <%= link_to share_draw_promotion_activity_path(@promotion_activity) do %>
-            <%= image_tag 'mobile/store/choujiang.png', style: "width:70%" %>
+            <%= image_tag 'mobile/store/choujiang.png', style: "width:50%" %>
           <% end %>
         <% end %>
 
