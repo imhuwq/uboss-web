@@ -168,7 +168,7 @@ $ ->
         try
           JSON.parse(xhr.responseText).error
         catch error
-          '手机登录失败'
+          '抽奖失败'
       )
     .always ->
       UBoss.chopper.hideSpinner()
