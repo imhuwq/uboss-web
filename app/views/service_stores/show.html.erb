@@ -29,6 +29,7 @@
 	</div>
 
 <% end %>
+<% if @group_products.present? || @voucher_products.present? %>
   <div class="bg-white m-bottom10 border-tb gap-left">
     <div class="gap nogap-left">
       <h2 class="name text-cut"><%= @service_store.store_identify %></h2>
@@ -90,6 +91,7 @@
 
     <% end %>
   </div><!-- bg-white -->
+<% end %>
 
 
   <!-- 店铺信息-->
@@ -124,13 +126,30 @@
       <div class="service-title">代金券</div>
       <%= render partial: 'service_product', collection: @voucher_products %>
     </div>
-  <% end %>
-
-  <% if @group_products.present? %>
+  <% elsif @group_products.present? %>
     <div class="bg-white gap-left border-tb service-product-list m-top10">
       <div class="service-title">商品</div>
       <%= render partial: 'service_product', collection: @group_products %>
     </div>
+  <% else %>
+    <% if @sharing_node && @promotion_activity %>
+      <br>
+      <div class="text-center">
+        <% if @draw_record.blank? %>
+          <%= link_to promotion_activity_path(@promotion_activity, type: 'share') do %>
+            <%= image_tag 'mobile/store/choujiang.png', style: "width:70%" %>
+          <% end %>
+        <% else %>
+          <%= link_to share_draw_promotion_activity_path(@promotion_activity) do %>
+            <%= image_tag 'mobile/store/choujiang.png', style: "width:70%" %>
+          <% end %>
+        <% end %>
+
+      </div>
+      <br>
+    <% end %>
+
+
   <% end %>
 </div><!-- fixed-container -->
 </div><!-- container-->
@@ -204,7 +223,7 @@
 <% end %>
 <div>
 <br />
-<% if current_user && current_user.has_privilege_card?(@seller.service_store) %>
+<% if current_user && current_user.has_privilege_card?(@seller.service_store) && (@group_products.present? || @voucher_products.present?) %>
 	<br />
   <div class="friend-box">
     <%= link_to '#', class: "#{current_user.has_recommend?(@seller.service_store) ? 'has_recommend': ''} buy-nav recommend_link", user_id: current_user.id, recommended_id: @seller.service_store.id, recommended_type: @seller.service_store.class do %>

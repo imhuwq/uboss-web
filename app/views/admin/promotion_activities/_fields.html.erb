@@ -11,6 +11,17 @@
         <% end %>
       </div>
     </div>
+
+    <%= hidden_field_tag 'promotion_activity[store_type]', @promotion_activity.store_type %>
+    <div class="form-group activity-store-type">
+      <label class="control-label">活动店铺</label>
+      <div class='control-input'>
+        <a href="#" class='btn btn-link btn-border' data-type='service'>上线到本地服务</a>
+        <% if current_user.ordinary_store.store_name.present? %>
+          <a href="#" class='btn btn-link btn-border' data-type='ordinary'>上线到电商店铺</a>
+        <% end %>
+      </div>
+    </div>
   </div>
 </div>
 <br />
@@ -166,4 +177,22 @@
   }).on("select2-selecting", function(e) {
     console.log(e.val);
   });
+</script>
+<script type="text/javascript" charset="utf-8">
+  $(document).ready(
+      function(){
+        var type = $('#promotion_activity_store_type').val();
+        if(type != ''){
+          $(".activity-store-type .control-input a[data-type="+type+"]").removeClass('btn-link')
+        }
+      }
+  )
+  $('.activity-store-type .control-input a').on('click',this,function(){
+      var $this = $(this);
+      var type = $this.data('type');
+      $('.activity-store-type .control-input a').addClass('btn-link');
+      $this.removeClass('btn-link');
+      $('#promotion_activity_store_type').val(type);
+
+      })
 </script>

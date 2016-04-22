@@ -16,8 +16,14 @@
     <div class="form-group">
       <label class="control-label">商家名称</label>
       <div class="control-input">
-        <span class="control-input" style="padding:8px">
-          <span class='label label-info'><%= @promotion_activity.seller_name %></span>
+        <span class="control-txt"><%= @promotion_activity.seller_name %></span>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="control-label">店铺类型</label>
+      <div class="control-input">
+        <span class="control-input" style="padding:8px;float:left;">
+          <span class='label label-info'><%= PromotionActivity::DATA_STORE_TYPE.stringify_keys[@promotion_activity.store_type] %></span>
         </span>
       </div>
     </div>
