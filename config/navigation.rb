@@ -72,11 +72,11 @@ SimpleNavigation::Configuration.run do |navigation|
         highlights_on: %r(admin/operators/users|admin/operators/new)
         # if: -> { can?(:manage, CityManager) }
 
-      sub_nav.item :added_city_managers, '新增商家', added_admin_city_managers_path,
-        if: -> { can?(:added, CityManager) }
+      if can?(:manage, Shop) && operator=current_user.operator
+        sub_nav.item :revenues, '商家营收', admin_operator_shops_path(operator)
 
-      sub_nav.item :revenues_city_managers, '商家营收', revenues_admin_city_managers_path,
-        if: -> { can?(:revenues, CityManager) }
+        sub_nav.item :add_shop, '新增商家', added_admin_operator_shops_path(operator)
+      end
     end
 
     # Add an item which has a sub navigation (same params, but with block)

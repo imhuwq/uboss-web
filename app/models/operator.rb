@@ -1,6 +1,7 @@
 class Operator < ActiveRecord::Base
   include Userdelegator
   belongs_to :user
+  has_many :shops
   attr_accessor :login
   
   enum state: {active: 0, disable: 1}

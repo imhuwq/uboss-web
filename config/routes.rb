@@ -413,6 +413,8 @@ Rails.application.routes.draw do
       resources :operators do
         put :state, on: :member
         get :users, on: :collection
+        resources :shops do
+          get :added, on: :collection
         end
       end
       resources :sellers, only: [:index, :show, :edit, :update] do

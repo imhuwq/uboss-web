@@ -1,0 +1,46 @@
+<thead>
+  <th>商家名称</th>
+  <th>入驻时间</th>
+  <th>联系方式</th>
+  <th>好评率</th>
+  <th>总销量</th>
+  <th>线上总营业额</th>
+  <th>线下支付总营业额</th>
+</thead>
+<% @shops.each do |shop| %>
+  <tbody class="item">
+    <tr id="shop-<%= shop.user_id%>">
+      <td class="text-left">
+        <%= image_tag(shop.user_avatar.url(:thumb), size: "80x80", alt: "-") %>
+        <%= shop.user_identify %>
+      </td>
+      <td><%= shop.created_at %></td>
+      <td><%= shop.mobile %></td>
+      <td>好评率<%= Evaluation.sharer_good_reputation_rate(shop.user) %></td>
+      <td><%= shop.user_sales(params[:segment]) %></td>
+      <td>1</td>
+      <td><%= number_to_currency shop.user_turnovers(params[:segment]) %></td>
+    </tr>
+  </tbody>
+  <tbody class='hidden'>
+    <tr id="personal_authentication_<%= shop.user_id%>">
+      <% if agent=shop.user.try(:agent) %>
+      <td class="text-left">
+        <%#= link_to url_for(controller: 'admin/city_manager_authentications', action: :show, user_id: shop.user_id) do %>
+        绑定创客
+          <%= image_tag(agent.avatar.url(:thumb), size: "80x80", alt: "-") %>
+          <%= agent.identify %>
+        <%# end %>
+      </td>
+      <td><%= agent.created_at %></td>
+      <td><%= agent.mobile %></td>
+      <td>好评率<%= Evaluation.sharer_good_reputation_rate(agent) %></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <% else %>
+      <td colspan="7"></td>
+      <% end %>
+    </tr>
+  </tbody>
+<% end %>
