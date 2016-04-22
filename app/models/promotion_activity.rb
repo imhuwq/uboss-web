@@ -15,6 +15,14 @@ class PromotionActivity < ActiveRecord::Base
 
   DATA_STORE_TYPE = {service: '本地服务', ordinary: '电商店铺'}
 
+  def service?
+    store_type == 'service'
+  end
+
+  def ordinary?
+    store_type == 'ordinary'
+  end
+
   def seller_name
       (user.login.present? ? "#{user.login}" : "") +
       (user.email.present? ? "-- #{user.email}" : "")

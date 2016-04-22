@@ -11,7 +11,7 @@
 <% end %>
 
 <%= content_for :extra_meta_tags do %>
-  <% if @service_store_valid || @promotion_activity.present? %>
+  <% if (@promotion_activity.present? && @promotion_activity.service?) || (@promotion_activity.blank? && @service_store_valid) %>
     <%= service_store_sharing_meta_tags(@seller.service_store, @sharing_link_node) %>
   <% else %>
     <%= store_sharing_meta_tags(@seller, @sharing_link_node) %>
@@ -79,11 +79,17 @@
             <p>
               <%= link_to "立即抽奖", live_draw_promotion_activity_path(@promotion_activity, format: :json),
                 class: "btn btn-block btn-large bill-draw-btn login-require" %>
-              <%= link_to "找好友一起中奖", get_seller_sharing_path,
-                class: "btn btn-block btn-large get-p-card-btn hidden",
-                data: { sid: @seller.id,
-                        uid: true,
-                        path: service_store_path(@seller.service_store.id) } %>
+              <% if @promotion_activity.service? %>
+                <%= link_to "找好友一起中奖", get_seller_sharing_path,
+                  class: "btn btn-block btn-large get-p-card-btn hidden",
+                  data: { sid: @seller.id,
+                          uid: true,
+                          path: service_store_path(@seller.service_store.id) } %>
+              <% else %>
+                <%= link_to "找好友一起中奖", get_seller_sharing_path,
+                  class: "btn btn-block btn-large get-p-card-btn hidden",
+                  data: { sid: @seller.id, uid: true } %>
+              <% end %>
             </p>
           </div>
         <% else %>
@@ -94,11 +100,17 @@
             </div>
             <br />
             <p>
-              <%= link_to "找好友一起中奖", get_seller_sharing_path,
-                class: "btn btn-block btn-large get-p-card-btn done",
-                data: { sid: @seller.id,
-                        uid: current_user.present?,
-                        path: service_store_path(@seller.service_store.id) } %>
+              <% if @promotion_activity.service? %>
+                <%= link_to "找好友一起中奖", get_seller_sharing_path,
+                  class: "btn btn-block btn-large get-p-card-btn done",
+                  data: { sid: @seller.id,
+                          uid: true,
+                          path: service_store_path(@seller.service_store.id) } %>
+              <% else %>
+                <%= link_to "找好友一起中奖", get_seller_sharing_path,
+                  class: "btn btn-block btn-large get-p-card-btn done",
+                  data: { sid: @seller.id, uid: true } %>
+              <% end %>
             </p>
           </div>
           <div class="bill-draw-cont text-center">
