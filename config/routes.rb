@@ -410,6 +410,11 @@ Rails.application.routes.draw do
           put :unbind
         end
       end
+      resources :operators do
+        put :state, on: :member
+        get :users, on: :collection
+        end
+      end
       resources :sellers, only: [:index, :show, :edit, :update] do
         patch :update_service_rate, on: :member
         get :search, on: :collection

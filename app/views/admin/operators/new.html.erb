@@ -1,0 +1,51 @@
+<div class="container admin-container">
+	<ul class="breadcrumb">
+		<li><a href="/admin">主页</a></li>
+		<li class="divider"><i class="fa fa-angle-right"></i></li>
+		<li><%= link_to '权限管理', users_admin_operators_path %></li>
+		<li class="divider"><i class="fa fa-caret-right"></i></li>
+		<li class="active">添加运营商</li>
+	</ul>
+</div><!-- container -->
+
+<br />
+
+<div class="container nogap">
+  <%= horizon_form_for [:admin, @operator] do |f| %>
+  <div class="admin-box beige-bg-color">
+    <h4 class="edit-title">运营商信息</h4>
+    <div class="form-group">
+      <label class="control-label"><abbr title="必填"></abbr> 企业名称</label>
+      <div class="control-input half-width">
+        <div class="f15 lh36"><%= f.text_field :company %></div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="control-label"><abbr title="必填">*</abbr> 运营商姓名</label>
+      <div class="control-input half-width">
+        <div class="f15 lh36"><%= f.text_field :name %></div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="control-label"><abbr title="必填">*</abbr> 联系方式</label>
+      <div class="control-input half-width">
+        <div class="f15 lh36"><%= f.text_field :mobile %></div>
+      </div>
+    </div>
+  </div>
+  <div class="admin-box beige-bg-color">
+    <h4 class="edit-title">账号信息</h4>
+    <div class="form-group">
+      <label class="control-label"><abbr title="必填">*</abbr> 账号</label>
+      <div class="control-input half-width">
+        <div class="f15 lh36"><%= f.text_field :login %></div>
+      </div>
+    </div>
+  </div>
+  <br />
+
+  <div class="form-actions text-center">
+    <%= f.submit "保存", class: "btn btn-large" %>
+  </div>
+  <% end %>
+</div>

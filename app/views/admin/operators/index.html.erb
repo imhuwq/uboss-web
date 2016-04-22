@@ -1,0 +1,58 @@
+<div class="container  admin-container">
+  <ul class="breadcrumb">
+    <li><a href="/admin">主页</a></li>
+    <li class="divider"><i class="fa fa-caret-right"></i></li>
+    <li>运营商</li>
+  </ul>
+</div>
+<br />
+<div class="container nogap">
+  <div class="box-w100 nogap">
+    <%# cache(['operators/index:box', (EnterpriseAuthentication.pass.maximum(:updated_at)||Time.now).utc.to_i], expires_in: Time.current.seconds_until_end_of_day) do  %>
+      <% %w(今日 本月 累计).each do |name| %>
+        <%= link_to "" do %>
+          <div class="box-w20">
+            <div class="admin-box <%= cycle(%w(main-bg-color yellow-bg-color red-bg-color)) %>">
+              <h4><%= name %>签约商家</h4>
+              <h1 class="num"><%= 1 %></h1>
+            </div>
+            <br />
+          </div><!-- box-w25 -->
+        <% end %>
+      <% end %>
+    <%# end %>
+    <br />
+  </div><!-- box-w25 -->
+</div> <!-- box-w80 -->
+
+<div class="container">
+  <ul class="nav nav-tabs nav-justified">
+    <li class="<%= 'active' if params[:segment] == 'today' %>"><%= link_to "今日新增", {segment: 'today'} %></li>
+    <li class="<%= 'active' if params[:segment] == 'week' %>"><%= link_to "本周新增", {segment: 'week'} %></li>
+    <li class="<%= 'active' if params[:segment] == 'month' %>"><%= link_to "本月新增", {segment: 'month'} %></li>
+  </ul>
+  <table class="list-table">
+    <thead>
+      <th>运营商账号</th>
+      <th>联系方式</th>
+      <th>今日签约商家</th>
+      <th>线上营业额</th>
+      <th>线下支付营业额</th>
+      <th>今日收益</th>
+    </thead>
+    <% @operators.each do |operator| %>
+    <tbody>
+      <tr>
+        <td><%= link_to operator.user_identify, admin_seller_path(operator.user) %></td>
+        <td><%= operator.mobile %></td>
+        <td><%= 1 %></td>
+        <td><%= number_to_currency 1 %></td>
+        <td><%= number_to_currency 1 %></td>
+        <td><%= number_to_currency 1 %></td>
+      </tr>
+    </tbody>
+    <% end %>
+
+  </table>
+  <%= paginate @operators %>
+</div>
