@@ -94,7 +94,10 @@ class PromotionActivitiesController < ApplicationController
 
   def check_current_user
     if current_user.blank?
-      redirect_to root_path
+      respond_to do |format|
+        format.json { render json: { error: '继续操作前请登录' }, status: 401 }
+        format.html { redirect_to root_path }
+      end
     end
   end
 
