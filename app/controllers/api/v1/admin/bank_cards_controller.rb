@@ -26,6 +26,18 @@ class Api::V1::Admin::BankCardsController < ApiBaseController
     end
   end
 
+  def get_default_bankcard
+    wd = current_user.withdraw_records.order("created_at DESC").first
+    default_bankcard = if wd.bank_info.present?
+                         wd.bank_info[:number]
+                       elsif wd.bank_card.present?
+                         wd.bank_card.number
+                       else current_user.bank_cards.present?
+                         current_user.bank_cards.order("created_at ASC").first.number
+                       end
+    render json: { data: { default_bankcard: default_bankcard } }
+  end
+
   private
 
   def bank_card_params

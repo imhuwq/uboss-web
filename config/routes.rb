@@ -210,7 +210,9 @@ Rails.application.routes.draw do
         get 'yesterday_income_and_balance', to: 'incomes#yesterday_income_and_balance'
         get 'income/:date', to: 'incomes#the_income'
         get 'balance', to: 'incomes#balance'
-        resources :bank_cards, only: [:index, :create, :destroy]
+        resources :bank_cards, only: [:index, :create, :destroy] do
+          get 'get_default_bankcard', on: :collection
+        end
         resources :withdraw_records, only: [:index, :create]
         resource :service_store, only: [:show, :update] do
           post :create_advertisement
