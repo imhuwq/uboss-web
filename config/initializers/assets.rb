@@ -21,4 +21,5 @@ iscroll/iscroll.js
 activate/activate.js
 activate/activate.css
 activate_page/nologin.jpg
+mobile/store/choujiang.png
 )
