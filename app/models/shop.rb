@@ -1,4 +1,5 @@
 class Shop < ActiveRecord::Base
+  include Orderable
   include Userdelegator
   include Imagable
   belongs_to :user
@@ -7,6 +8,7 @@ class Shop < ActiveRecord::Base
   has_one_image autosave: true
   delegate :image_url, to: :asset_img, allow_nil: true
   delegate :avatar=, :avatar, to: :asset_img
+  delegate :mobile, :name, to: :clerk, allow_nil: true, prefix: true
 
   attr_accessor :login
 

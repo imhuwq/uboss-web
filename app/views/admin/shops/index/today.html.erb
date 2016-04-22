@@ -17,30 +17,10 @@
       <td><%= shop.created_at %></td>
       <td><%= shop.mobile %></td>
       <td>好评率<%= Evaluation.sharer_good_reputation_rate(shop.user) %></td>
-      <td><%= shop.user_sales(params[:segment]) %></td>
-      <td>1</td>
-      <td><%= number_to_currency shop.user_turnovers(params[:segment]) %></td>
+      <td><%= shop.user_sales("today") %></td>
+      <td><%= number_to_currency shop.user_turnovers("today") %></td>
+      <td><%= number_to_currency 1 %></td>
     </tr>
   </tbody>
-  <tbody class='hidden'>
-    <tr id="personal_authentication_<%= shop.user_id%>">
-      <% if agent=shop.user.try(:agent) %>
-      <td class="text-left">
-        <%#= link_to url_for(controller: 'admin/city_manager_authentications', action: :show, user_id: shop.user_id) do %>
-        绑定创客
-          <%= image_tag(agent.avatar.url(:thumb), size: "80x80", alt: "-") %>
-          <%= agent.identify %>
-        <%# end %>
-      </td>
-      <td><%= agent.created_at %></td>
-      <td><%= agent.mobile %></td>
-      <td>好评率<%= Evaluation.sharer_good_reputation_rate(agent) %></td>
-      <td></td>
-      <td></td>
-      <td></td>
-      <% else %>
-      <td colspan="7"></td>
-      <% end %>
-    </tr>
-  </tbody>
+  <%= render partial: 'clerk', locals: { shop: shop } %>
 <% end %>

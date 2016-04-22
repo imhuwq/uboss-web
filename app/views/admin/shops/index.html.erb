@@ -20,19 +20,19 @@
 	<div class="box-w25">
 		<div class="admin-box blue-bg-color">
 	    <h4>商家今日营业额</h4>
-	    <h1 class="num"><%= @today_sales %></h1>
+	    <h1 class="num"><%= @scope.merge(Order.today).sum("orders.pay_amount") %></h1>
 	  </div>
 	</div>
 	<div class="box-w25">
 		<div class="admin-box yellow-bg-color">
 	    <h4>商家总营业额</h4>
-	    <h1 class="num"><%= number_to_currency @today_turnovers %></h1>
+	    <h1 class="num"><%= number_to_currency @scope.sum("orders.income") %></h1>
 		</div>
 	</div>
 	<div class="box-w25">
 		<div class="admin-box red-bg-color">
 	    <h4>运营商累计收益</h4>
-	    <h1 class="num"><%= @total_sales %></h1>
+	    <h1 class="num"><%= @scope.sum("orders.pay_amount") %></h1>
 		</div>
 	</div>
 	<div class="box-w25">

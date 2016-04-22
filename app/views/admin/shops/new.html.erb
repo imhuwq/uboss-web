@@ -50,8 +50,10 @@
       <%= c.input :mobile %>
     <% end %>
   </div>
+  <br/>
   <div class="form-actions text-center">
-    <%= f.submit "保存", class: "btn btn-large" %>
+    <%= f.submit "绑定并发送信息", class: "btn btn-large" %>&nbsp;
+    <%= link_to "取消", {action: :added}, class: "btn btn-large ",:role=>"button" %>
   </div>
   <% end %>
 </div>

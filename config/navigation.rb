@@ -65,17 +65,17 @@ SimpleNavigation::Configuration.run do |navigation|
     end
     primary.item :agent,  'U客',  admin_sellers_path, if: -> { can?(:read, :sellers) }
     primary.item :operator, '运营商', '#' do |sub_nav|
-      sub_nav.item :operators, '运营商', admin_operators_path
-        # if: -> { can?(:manage, CityManager) }
+      sub_nav.item :operators, '运营商', admin_operators_path,
+        if: -> { can?(:manage, Operator) }
 
       sub_nav.item :new_operator, '权限管理', users_admin_operators_path,
-        highlights_on: %r(admin/operators/users|admin/operators/new)
-        # if: -> { can?(:manage, CityManager) }
+        if: -> { can?(:manage, Operator) }
 
       if can?(:manage, Shop) && operator=current_user.operator
-        sub_nav.item :revenues, '商家营收', admin_operator_shops_path(operator)
+        sub_nav.item :shop, '商家营收', admin_operator_shops_path(operator), if: -> { can?(:manage, Shop) }
 
-        sub_nav.item :add_shop, '新增商家', added_admin_operator_shops_path(operator)
+        sub_nav.item :new_shop, '新增商家', added_admin_operator_shops_path(operator),
+        highlights_on: %r(shops/added|shops/new), if: -> { can?(:manage, Clerk) }
       end
     end
 

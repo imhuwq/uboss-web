@@ -1,10 +1,12 @@
 class Admin::OperatorsController < AdminController
+  authorize_resource
   before_action :set_operator, only: [:show, :edit, :update, :destroy, :state]
 
   # GET /admin/operators
   # GET /admin/operators.json
   def index
-    @operators = Operator.active.page(params[:page])
+    @scope = Operator.active
+    @operators = @scope.page(params[:page])
   end
 
   def users

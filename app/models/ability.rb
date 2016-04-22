@@ -63,6 +63,7 @@ class Ability
     can :manage, User
     can :manage, Transaction
     can :manage, :backend_status
+    can :manage, Operator
   end
 
   def grant_permissions_to_offical_senior(user)
@@ -186,6 +187,11 @@ class Ability
     can :valid_agent_products, SupplierProduct
     can :read, SupplierProduct, supplier: { cooperations: { agency_id: user.id } }
     can :store_or_list_supplier_product, SupplierProduct, supplier: { cooperations: { agency_id: user.id } }
+  end
+
+  def grant_permissions_to_operator user
+    can :manage, Shop
+    can :manage, Clerk
   end
 
   private

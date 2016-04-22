@@ -1,15 +1,18 @@
 class Admin::ShopsController < AdminController
+  authorize_resource
   before_action :set_operator
   before_action :set_shop, only: [:show, :edit, :update, :destroy]
 
   # GET /admin/shops
   # GET /admin/shops.json
   def index
+    %w(today all).include?(params[:segment]) or params[:segment] = 'today'
+    @scope = scope.joins(user: :orders).merge(Order.have_paid)
     @shops = scope.includes(:user).page(params[:page])
   end
 
   def added
-    @shops = scope.includes(:user).page(params[:page])
+    @shops = scope.includes(:user, :clerk).page(params[:page])
   end
 
   # GET /admin/shops/1

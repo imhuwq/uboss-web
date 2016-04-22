@@ -1,4 +1,5 @@
 class Operator < ActiveRecord::Base
+  include Orderable
   include Userdelegator
   belongs_to :user
   has_many :shops
