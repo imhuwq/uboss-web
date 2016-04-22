@@ -8,7 +8,7 @@ class Api::V1::Admin::VerifyCodesController < ApiBaseController
     if result[:success]
       verify_code = VerifyCode.find_by(code: params[:code])
       product = verify_code.order_item.product
-      render json: { product_name: product.name, product_price: product.present_price, inventories: product.seling_inventories }
+      render json: { data: { product_name: product.name, product_price: product.present_price, inventories: product.seling_inventories } }
     else
       render_error :verify_faild
     end
@@ -24,7 +24,7 @@ class Api::V1::Admin::VerifyCodesController < ApiBaseController
         @history << { product_name: product.name, verify_code: code, exchange_time: order.created_at, pay_amount: order.pay_amount, paid_amount: order.paid_amount }
       end
     end
-    render json: @history
+    render json: { data: @history }
   rescue => e
     render_error :wrong_params
   end
@@ -36,7 +36,7 @@ class Api::V1::Admin::VerifyCodesController < ApiBaseController
         @history << { buyer_name: order.username, exchange_time: order.created_at, pay_amount: order.pay_amount, paid_amount: order.paid_amount }
       end
     end
-    render json: @history
+    render json: { data: @history }
   rescue => e
     render_error :wrong_params
   end

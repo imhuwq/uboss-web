@@ -4,7 +4,7 @@ class Api::V1::Admin::IncomesController < ApiBaseController
     authorize! :read, VerifyCode
     yesterday_income = current_user.verify_codes.where(updated_at: Date.yesterday).sum(:income)
     balance = current_user.income
-    render json: { yesterday_income: yesterday_income, balance: balance }
+    render json: { data: { yesterday_income: yesterday_income, balance: balance } }
   end
 
   def the_income
@@ -17,13 +17,13 @@ class Api::V1::Admin::IncomesController < ApiBaseController
       data[:income] = codes.sum(&:income)
       income_by_date << data
     end
-    render json: income_by_date
+    render json: { data: income_by_date }
   rescue => e
     render_error :wrong_params
   end
 
   def balance
-    render json: { balance: current_user.income }
+    render json: { data: { balance: current_user.income } }
   end
 
 end

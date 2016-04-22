@@ -182,12 +182,12 @@ Rails.application.routes.draw do
         get 'yesterday_income_and_balance', to: 'incomes#yesterday_income_and_balance'
         get 'income/:date', to: 'incomes#the_income'
         get 'balance', to: 'incomes#balance'
-        resources :bank_cards, only: [:create, :destroy]
+        resources :bank_cards, only: [:index, :create, :destroy]
         resources :withdraw_records, only: [:index, :create]
         resource :service_store, only: [:show, :update] do
           post :create_advertisement
           patch :update_advertisement
-          delete :remove_advertisement
+          delete 'remove_advertisement/:id', to: 'service_stores#remove_advertisement'
           get 'get_id', to: 'service_stores#get_id'
         end
       end

@@ -1,6 +1,6 @@
 class Api::V1::Admin::ProductsController < ApiBaseController
 
-  before_action :find_product, only: [:show, :inventories, :detail, :change_status]
+  before_action :find_product, only: [:show, :inventories, :detail]
 
   def index
     authorize! :read, Product
@@ -28,19 +28,6 @@ class Api::V1::Admin::ProductsController < ApiBaseController
   def inventories
     authorize! :read, Product
     @product_inventories = @product.seling_inventories
-  end
-
-  def change_status
-    authorize! :update, @product
-    begin
-      if @product.status = params[:status] and @product.save
-        render_model_id @product
-      else
-        render_model_errors @product
-      end
-    rescue => e
-      render_error :wrong_params
-    end
   end
 
   def product
