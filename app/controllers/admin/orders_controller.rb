@@ -2,8 +2,6 @@ class Admin::OrdersController < AdminController
 
   load_and_authorize_resource class: 'OrdinaryOrder'
 
-  before_filter :validate_express_params, only: :set_express
-
   # TODO record use operations
   after_action :record_operation, only: [:update]
   before_action :find_or_create_express, only: :set_express
@@ -78,7 +76,12 @@ class Admin::OrdersController < AdminController
 
   def set_express
     authorize! :delivery, @order
-    if @order.update(order_params.merge(express_id: @express.id)) && @order.ship!
+    result = true
+    if params[:method] == 'need'
+      validate_express_params
+      result = @order.update(order_params.merge(express_id: @express.id))
+    end
+    if result && @order.ship!
       flash[:success] = '发货成功'
     else
       flash[:error] = "发货失败,#{@order.errors.full_messages.join('\n')}"
