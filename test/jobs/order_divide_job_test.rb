@@ -211,7 +211,7 @@ class OrderDivideJobTest < ActiveJob::TestCase
       @order.update_columns(state: 4)
       OrderDivideJob.perform_now(@order.reload)
 
-      assert_equal sharing_reward_lv2 * buy_amount, level1_node.user.reload.income.to_f
+      assert_equal (sharing_reward_lv2 * buy_amount).to_f, level1_node.user.reload.income.to_f
       assert_equal sharing_reward_lv1 * buy_amount, level2_node.user.reload.income
       assert seller.reload.income > 0, 'Seller get selling income'
       assert_equal(
