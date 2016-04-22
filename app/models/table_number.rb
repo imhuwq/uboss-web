@@ -20,7 +20,7 @@ class TableNumber < ActiveRecord::Base
 
   def self.clear_seller_table_number(seller, number)
     if table_number = find_by(user: seller, number: number)
-      table_number.update(status: 'unuse', expired_at: nil)
+      table_number.update(status: 'unuse', expired_at: nil, weixin_openid: nil)
     end
   end
 

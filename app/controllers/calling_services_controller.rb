@@ -1,5 +1,4 @@
 class CallingServicesController < ApplicationController
-  before_action :authenticate_user!, only: [:store_notifies]
   before_action :find_seller
   before_action :find_using_table_number,  only: [:index, :notifies, :calling]
 
@@ -23,7 +22,6 @@ class CallingServicesController < ApplicationController
     end
 
     if @calling_notify.save
-      #notify_seller
       render json: { status: "ok", message: "呼叫成功", type: (params[:type] || 'nothing') }
     else
       render json: { status: "failure", error: "呼叫错误，请刷新再尝试" }
@@ -35,7 +33,15 @@ class CallingServicesController < ApplicationController
   end
 
   def table_numbers
-    @table_numbers = TableNumber.where(user: @seller).order("number ASC")
+    cookies[:table_weixin_openid] = current_user.try(:weixin_openid) || get_weixin_openid_form_session
+
+    if browser.wechat? && cookies[:table_weixin_openid].blank?
+      # for weixin openid but not uboss user
+      session[:oauth_callback_redirect_path] = request.fullpath
+      redirect_to user_omniauth_authorize_path(:wechat)
+    else
+      @table_numbers = TableNumber.where(user: @seller).order("number ASC")
+    end
   end
 
   def set_table_number
@@ -48,7 +54,7 @@ class CallingServicesController < ApplicationController
       end
 
       cookies[:table_nu] = table_number.number
-      table_number.update(status: "used")
+      table_number.update(status: "used", weixin_openid: cookies[:table_weixin_openid])
       redirect_to action: :index
     else
       flash[:error] = "请选择正确的桌号"
@@ -68,16 +74,4 @@ class CallingServicesController < ApplicationController
     end
   end
 
-  def notify_seller
-    if @seller.weixin_openid.present?
-      $weixin_client.send_text_custom(
-        @seller.weixin_openid,
-        <<-MSG
-服务提醒：
-#{@table_number.number}号桌需要#{@calling_service.name}
-<a href='#{notifies_seller_calling_services_url(seller_id: @seller.id)}'>查看详情</a>
-        MSG
-      )
-    end
-  end
 end
