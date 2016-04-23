@@ -406,6 +406,15 @@ zh-CN:
         description: 活动说明
         win_count: 中奖数量
         win_rate: 中奖概率
+      shop:
+        asset_img: 商家协议
+        mobile: 负责人手机号
+        name: 商家名称
+        login: 商家账号
+        address: 商家地址
+      'shop/clerk':
+          name: 业务员
+          mobile: 联系电话
   order_status_bar:
     unpay: 等待买家付款
     payed: 等待卖家发货

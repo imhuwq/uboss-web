@@ -1,0 +1,34 @@
+<div class="container  admin-container">
+  <ul class="breadcrumb">
+    <li><a href="/admin">主页</a></li>
+    <li class="divider"><i class="fa fa-caret-right"></i></li>
+    <li>运营商</li>
+  </ul>
+</div>
+<br />
+<div class="container nogap">
+  <div class="box-w100 nogap">
+    <%# cache(['operators/index:box', (EnterpriseAuthentication.pass.maximum(:updated_at)||Time.now).utc.to_i], expires_in: Time.current.seconds_until_end_of_day) do  %>
+      <% {"今日" => 'today', '本月' => 'current_month', '累计' => 'all'}.each do |name, segment| %>
+        <div class="box-w20">
+          <div class="admin-box <%= cycle(%w(main-bg-color yellow-bg-color red-bg-color)) %>">
+            <h4><%= name %>签约商家</h4>
+            <h1 class="num"><%= Shop.send(segment).count %></h1>
+          </div>
+          <br />
+        </div><!-- box-w25 -->
+      <% end %>
+    <%# end %>
+    <br />
+  </div><!-- box-w25 -->
+</div> <!-- box-w80 -->
+
+<div class="container">
+  <ul class="nav nav-tabs nav-justified">
+    <li class="<%= 'active' if params[:segment] == 'today' %>"><%= link_to "今日", {segment: 'today'} %></li>
+    <li class="<%= 'active' if params[:segment] == 'month' %>"><%= link_to "本月", {segment: 'month'} %></li>
+    <li class="<%= 'active' if params[:segment] == 'all' %>"><%= link_to "累计", {segment: 'all'} %></li>
+  </ul>
+  <%= render template: "admin/operators/index/#{params[:segment]}" %>
+  <%= paginate @operators %>
+</div>

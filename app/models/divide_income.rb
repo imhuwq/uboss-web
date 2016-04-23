@@ -5,6 +5,7 @@ class DivideIncome < ActiveRecord::Base
   belongs_to :user
   belongs_to :order
   belongs_to :bill_order
+  belongs_to :target, polymorphic: true
 
   validates :user_id, :amount, presence: true
   validates_presence_of :order_id, if: -> { bill_order.blank? }

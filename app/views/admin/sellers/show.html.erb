@@ -40,6 +40,9 @@
 		    		<%= link_to @seller.agent.identify, admin_agent_path(@seller.agent) %>
           <% end %>
 				</p>
+        <%= content_tag "p" do %>
+        所属运营商：<%= link_to admin_operator_path(@seller.shop.operator_id) %>
+        <% end if @seller.shop %>
 			</div><!-- box-w45 -->
 			<div class="box-w45">
 				<p>入驻时间： <%= @seller.created_at %></p>

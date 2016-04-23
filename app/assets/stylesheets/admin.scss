@@ -128,6 +128,18 @@ header{ background: #2e2e2e;}
         background-position: -244px 0;
     }
 }
+#admin-nav-operator{
+    width: 60px;
+    &.selected,&:hover{
+      a:before{
+          background-position: -336px -83px;
+      }
+    }
+    > a:before{
+        background-position: -336px 0;
+    }
+}
+
 #admin-nav-seller{
     width: 60px;
     &.selected,&:hover{

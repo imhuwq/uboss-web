@@ -1,0 +1,59 @@
+<div class="container admin-container">
+	<ul class="breadcrumb">
+		<li><a href="/admin">主页</a></li>
+		<li class="divider"><i class="fa fa-angle-right"></i></li>
+		<li><%= link_to '权限管理', users_admin_operators_path %></li>
+		<li class="divider"><i class="fa fa-caret-right"></i></li>
+		<li class="active">添加运营商</li>
+	</ul>
+</div><!-- container -->
+
+<br />
+
+<div class="container nogap">
+  <%= horizon_form_for [:admin, @operator, @shop] do |f| %>
+  <div class="admin-box beige-bg-color">
+    <h4 class="edit-title">商家信息</h4>
+    <%= f.input :asset_img, hint:"(点击图片进行替换)"  do %>
+      <%= f.input_field :avatar, type: :hidden, as: :file %>
+      <p><span class="text-margin">建议上传比例为1:1的图片，最佳尺寸为<b style="color: red;">600x600</b>像素</span></p>
+      <p class="fileinput-button">
+          <% if @shop.image_url.blank? %>
+            <%= image_tag("admin/no-img.png") %>
+          <% else %>
+            <%= image_tag(@shop.image_url(:thumb))%>
+          <% end %>
+        <%= file_field_tag "image", class: "upyun_file" %>
+        <b class="loading"><i class="fa fa-spinner"></i></b>
+      </p>
+    <% end %>
+    <%= f.input :name %>
+    <%= f.input :mobile %>
+    <%= f.input :login %>
+    <div class="form-group string required user_address_mobile">
+      <label class="string required control-label"><abbr title="必填">*</abbr>所在地区</label>
+      <div class="city-group control-input" style="padding-top:7px;">
+          <%= f.select(:province, options_for_select([['--省份--', '']] + ChinaCity.provinces, selected: f.object.province ), {},
+          	class: 'city-select ', id: "province", style:"width:100px;display:inline;", 'data-manual-chosen'=>true ) %>
+          <%= f.select :city, options_for_select([['--城市--', '']] + ChinaCity.list(f.object.province), selected: f.object.city ), {},
+           	:class => 'city-select', id: "city", style:"width:100px;display:inline;", 'data-manual-chosen'=>true %>
+          <%= f.select :district, options_for_select([['--地区--', '']] + ChinaCity.list(f.object.city), selected: f.object.district), {},
+           	:class => 'city-select', id: "area", style:"width:100px;display:inline;", 'data-manual-chosen'=>true %>
+      </div>
+    </div>
+    <%= f.input :address %>
+  </div>
+  <div class="admin-box beige-bg-color">
+    <h4 class="edit-title">业务员信息</h4>
+    <%= f.simple_fields_for :clerk, @shop.clerk || @shop.build_clerk do |c| %>
+      <%= c.input :name %>
+      <%= c.input :mobile %>
+    <% end %>
+  </div>
+  <br/>
+  <div class="form-actions text-center">
+    <%= f.submit "绑定并发送信息", class: "btn btn-large" %>&nbsp;
+    <%= link_to "取消", {action: :added}, class: "btn btn-large ",:role=>"button" %>
+  </div>
+  <% end %>
+</div>

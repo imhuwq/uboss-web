@@ -1,0 +1,69 @@
+<!--
+<div class="container  admin-container">
+  <ul class="breadcrumb">
+    <li><a href="/admin">主页</a></li>
+    <li class="divider"><i class="fa fa-caret-right"></i></li>
+    <li>企业认证</li>
+  </ul>
+</div>
+<br />
+-->
+<div class="container">
+	<div class="header-tab">
+    <%#= link_to_certifications_tabs %>
+	</div>
+</div>
+<br />
+
+<div id="index_list">
+<div class="container nogap">
+	<div class="box-w25">
+		<div class="admin-box blue-bg-color">
+	    <h4>商家今日营业额</h4>
+	    <h1 class="num"><%= @scope.merge(Order.today).sum("orders.pay_amount") %></h1>
+	  </div>
+	</div>
+	<div class="box-w25">
+		<div class="admin-box yellow-bg-color">
+	    <h4>商家总营业额</h4>
+	    <h1 class="num"><%= number_to_currency @scope.sum("orders.income") %></h1>
+		</div>
+	</div>
+	<div class="box-w25">
+		<div class="admin-box red-bg-color">
+	    <h4>运营商累计收益</h4>
+	    <h1 class="num"><%= @operator.total_income %></h1>
+		</div>
+	</div>
+	<div class="box-w25">
+		<% if can?(:create, WithdrawRecord) %>
+		  <%= link_to new_admin_withdraw_record_path, class: 'admin-box main-bg-color' do %>
+		  	<h4>提现申请</h4>
+		  	<br />
+		  	<div class="text-right"><%= image_tag("admin/long-arrow.png") %></div>
+		  <% end %>
+		<% end %>
+	</div>
+</div>
+<br />
+  <div class="container">
+    <ul class="nav nav-tabs nav-justified">
+        <li class="<%= 'active' if params[:segment] == 'today' %>"><%= link_to "今日营业额", {segment: 'today'} %></li>
+        <li class="<%= 'active' if params[:segment] == 'all' %>"><%= link_to "总营业额", {segment: 'all'} %></li>
+    </ul>
+    <table class="list-table" id="personal_authentications">
+      <%= render template: "admin/shops/index/#{params[:segment] || :today}" %>
+    </table>
+      <%= paginate @shops %>
+    <br />
+  </div>
+
+  <script type="text/javascript">
+    $(document).ready(function(){
+      $("body").on("click", "tbody.item>tr", function(){
+        var target = $(this).parent().next();
+        target.toggleClass("hidden");
+      })
+    });
+  </script>
+</div>

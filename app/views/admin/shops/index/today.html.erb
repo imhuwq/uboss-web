@@ -1,0 +1,26 @@
+<thead>
+  <th>商家名称</th>
+  <th>入驻时间</th>
+  <th>联系方式</th>
+  <th>好评率</th>
+  <th>今日销量</th>
+  <th>线上营业额</th>
+  <th>线下支付营业额</th>
+</thead>
+<% @shops.each do |shop| %>
+  <tbody class="item">
+    <tr id="shop-<%= shop.user_id%>">
+      <td class="text-left">
+        <%= image_tag(shop.user_avatar.url(:thumb), size: "80x80", alt: "-") %>
+        <%= shop.user_identify %>
+      </td>
+      <td><%= shop.created_at %></td>
+      <td><%= shop.mobile %></td>
+      <td>好评率<%= Evaluation.sharer_good_reputation_rate(shop.user) %></td>
+      <td><%= shop.user_sales("today") %></td>
+      <td><%= number_to_currency shop.online_turnovers(:today) %></td>
+      <td><%= number_to_currency shop.online_turnovers(:today) %></td>
+    </tr>
+  </tbody>
+  <%= render partial: 'clerk', locals: { shop: shop } %>
+<% end %>
