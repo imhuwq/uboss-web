@@ -410,6 +410,7 @@ Rails.application.routes.draw do
           put :unbind
         end
       end
+      match '/operators/:segment' => 'operators#index', :constraints => { :segment => /today|month|all/ }, via: :get
       resources :operators do
         put :state, on: :member
         get :users, on: :collection

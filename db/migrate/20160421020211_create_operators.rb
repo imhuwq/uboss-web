@@ -7,7 +7,6 @@ class CreateOperators < ActiveRecord::Migration
       t.string  :mobile
       t.decimal :online_rate, precision: 3, scale: 2, default: 0.0
       t.decimal :offline_rate, precision: 3, scale: 2, default: 0.0
-      t.integer :sellers_counter, default: 0
       t.integer :state, default: 0
 
       t.timestamps null: false

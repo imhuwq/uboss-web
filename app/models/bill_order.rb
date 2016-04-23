@@ -16,6 +16,9 @@ class BillOrder < ActiveRecord::Base
   belongs_to :order_charge
   has_many :bill_incomes
 
+  scope :week, -> (time=Time.now) { payed.where(created_at: time.beginning_of_week..time.end_of_week) }
+  scope :month, -> (time=Time.now) { payed.where(created_at: time.beginning_of_month..time.end_of_month) }
+
   validates_presence_of :seller, :pay_amount
   validates_presence_of :weixin_openid, if: -> { self.user.blank? }
   validates_presence_of :user, if: -> { self.weixin_openid.blank? }

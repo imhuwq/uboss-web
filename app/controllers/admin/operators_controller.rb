@@ -5,6 +5,7 @@ class Admin::OperatorsController < AdminController
   # GET /admin/operators
   # GET /admin/operators.json
   def index
+    params[:segment] = 'today' if !%w(today month all).include?(params[:segment])
     @scope = Operator.active
     @operators = @scope.page(params[:page])
   end

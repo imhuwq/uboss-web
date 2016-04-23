@@ -65,7 +65,7 @@ SimpleNavigation::Configuration.run do |navigation|
     end
     primary.item :agent,  'U客',  admin_sellers_path, if: -> { can?(:read, :sellers) }
     primary.item :operator, '运营商', '#' do |sub_nav|
-      sub_nav.item :operators, '运营商', admin_operators_path,
+      sub_nav.item :operators, '运营商', admin_operators_path, highlights_on: %r(operators/today|operators/month|operators/all),
         if: -> { can?(:manage, Operator) }
 
       sub_nav.item :new_operator, '权限管理', users_admin_operators_path,

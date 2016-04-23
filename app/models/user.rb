@@ -17,6 +17,7 @@ class User < ActiveRecord::Base
   has_and_belongs_to_many :expresses, uniq: true
   has_one :cart
   has_one :operator
+  has_one :shop
   has_many :recommends
   has_many :user_infos, autosave: true
   has_many :verify_codes
