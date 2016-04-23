@@ -12,3 +12,4 @@ production:
   - [auto_sign_order, 5]
   - [weixin_api, 7]
   - [mailer, 8]
+  - [sms, 8]
