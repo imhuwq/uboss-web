@@ -38,7 +38,7 @@ class Admin::ShopsController < AdminController
     respond_to do |format|
       if @shop.save
         flash[:success] = "创建成功"
-        format.html { redirect_to action: :index }
+        format.html { redirect_to action: :added }
       else
         flash.now[:error] = @shop.errors.full_messages.join("<br/>")
         format.html { render :new }
