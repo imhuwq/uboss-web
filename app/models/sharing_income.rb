@@ -1,5 +1,5 @@
 class SharingIncome < ActiveRecord::Base
-
+  include UserIncomeable
   include Orderable
   include Numberable
 

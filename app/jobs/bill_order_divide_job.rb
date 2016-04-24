@@ -33,11 +33,10 @@ class BillOrderDivideJob < ActiveJob::Base
         if operator && operator.active?
           operator_income = paid_amount * (operator.offline_rate / 100).truncate(2)
           official_divide_income -= operator_income
-          divide_record = DivideIncome.create!(
-            bill_order: bill_order,
+          divide_record = OperatorIncome.create!(
+            resource: bill_order,
             amount: operator_income,
-            user: operator.user,
-            target: operator
+            user: operator.user
           )
           logger.info(
             "Divide bill order: #{bill_order.number}, [Operator id: #{divide_record.id}, amount: #{operator_income} ]")

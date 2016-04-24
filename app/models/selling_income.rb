@@ -1,5 +1,5 @@
 class SellingIncome < ActiveRecord::Base
-
+  include UserIncomeable
   include Orderable
 
   belongs_to :user

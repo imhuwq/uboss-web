@@ -1,4 +1,5 @@
 class BillIncome < ActiveRecord::Base
+  include UserIncomeable
 
   belongs_to :user
   belongs_to :bill_order
