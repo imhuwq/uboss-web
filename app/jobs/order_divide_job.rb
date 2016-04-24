@@ -180,7 +180,7 @@ class OrderDivideJob < ActiveJob::Base
       # 运营商
       operator = Operator.joins(:shops).where(shops: { user_id: @order.seller_id }).first
 
-      if operator && operator.user
+      if operator && operator.user && operator.active?
         operator_divide_income = (order_income * operator.online_rate / 100).truncate(2)
         if operator_divide_income > platform_divide_income
           operator_divide_income = platform_divide_income
