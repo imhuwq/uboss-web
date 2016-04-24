@@ -24,6 +24,10 @@ class Operator < ActiveRecord::Base
     incomes.send(segment).sum("operator_incomes.amount")
   end
 
+  def turnovers(segment=:all)
+    shops.online_turnovers(segment) + shops.offline_turnovers(segment)
+  end
+
   private
   def login_must_be_exist
     if login.blank?
