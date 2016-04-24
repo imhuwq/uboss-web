@@ -70,6 +70,7 @@ SimpleNavigation::Configuration.run do |navigation|
         if: -> { can?(:manage, Operator) }
 
       sub_nav.item :new_operator, '权限管理', users_admin_operators_path,
+        highlights_on: -> { params[:controller] == 'admin/operators' && %w(users new create).include?(params[:action]) },
         if: -> { can?(:manage, Operator) }
 
       if can?(:manage, Shop) && operator=current_user.operator

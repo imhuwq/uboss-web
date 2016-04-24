@@ -53,29 +53,6 @@ class Admin::OperatorsController < AdminController
     end
   end
 
-  # PATCH/PUT /admin/operators/1
-  # PATCH/PUT /admin/operators/1.json
-  def update
-    respond_to do |format|
-      if @operator.update(operator_params)
-        format.html { redirect_to @operator, notice: 'Operator was successfully updated.' }
-        format.json { render :show, status: :ok, location: @operator }
-      else
-        format.html { render :edit }
-        format.json { render json: @operator.errors, status: :unprocessable_entity }
-      end
-    end
-  end
-
-  # DELETE /admin/operators/1
-  # DELETE /admin/operators/1.json
-  def destroy
-    @operator.destroy
-    respond_to do |format|
-      format.html { redirect_to operators_url, notice: 'Operator was successfully destroyed.' }
-      format.json { head :no_content }
-    end
-  end
 
   private
     # Use callbacks to share common setup or constraints between actions.
