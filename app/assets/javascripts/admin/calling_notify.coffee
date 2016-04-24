@@ -16,6 +16,12 @@ $(document).on 'ajax:error', "#calling_notifies .change-status-btn", ->
 
 
 jQuery ($) ->
+  if $('#realtime-modal').hasClass('notice')
+    $('#realtime-modal .modal-title').html('服务通知')
+    $('#realtime-modal').modal()
+
+  #text: '1.还未提供的服务，点击<a class="btn btn-mid">去服务</a>，让消费者知道所需要的服务即将到来；<br /><br />2.已提供的服务，点击<a class="btn btn-mid white-btn btn-border">已服务</a>，不让消费者收到服务消息的骚扰.',
+
   $(document).on 'click', '.table-number.used', (e)->
     e.preventDefault()
     if confirm("确定下桌?")

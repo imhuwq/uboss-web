@@ -22,7 +22,7 @@
     
   }
   .calling{
-    background: #f9ba10;
+    background: #bbb;
   }
 }
 .calling-service-local{
@@ -148,4 +148,124 @@
     z-index: 2;
   }
   
+}
+.header-calling-btn{
+  padding: 10px 10px 10px 5px;
+  img{ height: 20px; }
+}
+.calling-pop-qr{
+  padding: 10px;
+}
+.calling-service-pop{
+  background:image-url('mobile/calling-service/bg.png') no-repeat center;
+  background-size:cover ;
+  position: fixed;
+  display: -webkit-box;
+  display: flex;
+  align-items: center;
+  -webkit-box-pack: center; 
+  top: 0;
+  left: 0;
+  height: 100%;
+  min-height: 100%;
+  width: 100%;
+  z-index: 999;
+  text-align: center;
+  color: #fff;
+  >.content{
+    width: 100%;
+  }
+  
+}
+.calling-pop-header{
+  background: image-url('mobile/calling-service/decorative-pattern.png') no-repeat center top;
+  background-size:100px auto ;
+  padding-top:60px ;
+  width: 100%;
+  position: relative;  
+  -webkit-box-flex: 1;  
+  flex: 1;
+  .qr-box{
+    padding: 20px;
+    width: 56%;
+    margin: 0 auto;
+    background: rgba(255,255,255,.5);
+  }
+}
+.calling-pop-header:before{
+  content: '';
+  width: calc(50% - 50px);
+  width: -webkit-calc(50% - 50px);
+  height: 1.4px;
+  position: absolute;
+  left: 0;
+  top: 30px;
+  background: linear-gradient(to right ,rgba(255,255,255,0) 10%, rgba(255,255,255,1));
+  background: -webkit-linear-gradient(left ,rgba(255,255,255,0) 10%, rgba(255,255,255,1));
+  
+}
+.calling-pop-header:after{
+  content: '';
+  width: calc(50% - 50px);
+  width: -webkit-calc(50% - 50px);
+  height: 1.4px;
+  position: absolute;
+  right: 0;
+  top: 30px;
+  background: linear-gradient(to left ,rgba(255,255,255,0) 10%, rgba(255,255,255,1));  
+  background: -webkit-linear-gradient(right ,rgba(255,255,255,0) 10%, rgba(255,255,255,1));
+  
+}
+.calling-pop-footer {
+  padding-top:60px ;
+  background:image-url('mobile/calling-service/corolla.png') no-repeat center top ;
+  background-size:150px auto ; 
+  position: relative;
+}
+
+.calling-pop-footer:before{
+  content: '';
+  width: calc(50% - 75px);
+  width: -webkit-calc(50% - 75px);
+  height: 1px;
+  position: absolute;
+  left: 0;
+  top: 49.6px;
+  background: #fff;
+}
+.calling-pop-footer:after{
+  content: '';
+  width: calc(50% - 75px);
+  width: -webkit-calc(50% - 75px);
+  height: 1px;
+  position: absolute;
+  right: 0;
+  top: 49.6px;
+  background: #fff;
+}
+.calling-pop-footer .img-02{
+  padding-bottom: 28px;
+  background:image-url('mobile/calling-service/corolla2.png') no-repeat center bottom ;
+  background-size:150px auto ; 
+  position: relative;
+}
+.calling-pop-footer .img-02:before{
+  content: '';
+  width: calc(50% - 75px);
+  width: -webkit-calc(50% - 75px);
+  height: 1px;
+  position: absolute;
+  left: 0;
+  top:0px;
+  background: #fff;  
+}
+.calling-pop-footer .img-02:after{
+  content: '';
+  width: calc(50% - 75px);
+  width: -webkit-calc(50% - 75px);
+  height: 1px;
+  position: absolute;
+  right: 0;
+  top:0px;
+  background: #fff;  
 }

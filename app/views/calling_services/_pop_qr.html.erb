@@ -1,0 +1,20 @@
+<div class="calling-service-pop hidden">
+  <br />
+  <div class="content">
+    <div class="calling-pop-header m-bottom10">
+      <div class="qr-box">
+        <% if Rails.env == "production"  %>
+          <%= image_tag('mobile/calling-service/real-qr.jpg') %>
+        <% else %>
+          <%= image_tag('mobile/calling-service/stage-qr.jpg') %>
+        <% end %>
+      </div>
+      <p class="m-top10">长按识别二维码</p>
+    </div><!-- calling-pop-header -->
+    <div class="calling-pop-footer">
+      <p style="margin-bottom: 5px;">关注UBOSS星球，接收即时服务消息通知</p>
+      <p class="m-bottom10">还有众多活动邀请你关注参与</p>
+      <div class="img-02 m-top10"></div>
+    </div>
+  </div><!-- content -->
+</div><!-- calling-service-pop -->

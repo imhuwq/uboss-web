@@ -8,7 +8,8 @@
   &nbsp;
 <% end %>
 <%= content_for :header_right do %>
-  <a class="menu-btn pull-right" href="<%= notifies_seller_calling_services_path(seller_id: @seller.id) %>">呼叫详情 <%= image_tag 'mobile/right.png' %></a>
+  <a class="header-calling-btn pull-right" href="<%= notifies_seller_calling_services_path(seller_id: @seller.id) %>"> <%= image_tag 'mobile/calling-service/ling.png', title: "呼叫详情" %></a>
+  <div class="header-calling-btn calling-pop-qr pull-right"><%= image_tag 'mobile/calling-service/qr.png' %></div>
 <% end %>
 
 <div style="margin-top: 5px;">
@@ -31,6 +32,7 @@
   </div>
 </div>
 
+<%= render partial: 'pop_qr' %>
 <div class="calling-order-service">
   <button type="button" class="btn calling-service-btn "
     data-url=<%= calling_seller_calling_services_path(seller_id: @seller.id, service_id: @other_service.id) %>>

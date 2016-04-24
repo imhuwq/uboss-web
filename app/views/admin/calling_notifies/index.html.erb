@@ -104,10 +104,11 @@
     console.log('Error: Realtime was not enabled.')
   }
 
-  $(function() {
-    if($('#realtime-modal').hasClass('notice')){
-      $('#realtime-modal .modal-title').html('服务通知');
-      $('#realtime-modal').modal();
-    }
+  $(document).ready(function(){
+    $('.tips-info').hover(function(){
+      $(this).find('.info-hover').fadeIn();
+    },function(){
+      $('.info-hover').fadeOut();
+    })
   })
 </script>

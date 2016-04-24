@@ -1,7 +1,7 @@
 <div class="container mod-inner">
   <div class="list-search-bar">
-    <%= link_to("+ 添加服务", url_for(action: :new), class: "btn btn-large text-center", role: "button", style: "width:90px;") %>
-    <%= link_to("设置", url_for(action: :set_table_info), class: "btn btn-large text-center", role: "button", style: "width:90px;") %>
+    <%= link_to("+ 添加服务", url_for(action: :new), class: "btn btn-large text-center", role: "button", style: "width:95px;") %>
+    <%= link_to("设置", url_for(action: :set_table_info), class: "btn btn-large text-center", role: "button", style: "width:95px;") %>
   </div>
   <br />
   <%= render partial: 'calling_services', locals: { calling_services: @calling_services } %>
