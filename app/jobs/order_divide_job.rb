@@ -185,11 +185,10 @@ class OrderDivideJob < ActiveJob::Base
         if operator_divide_income > platform_divide_income
           operator_divide_income = platform_divide_income
         end
-        divide_record = DivideIncome.create!(
-          order: @order,
+        divide_record = OperatorIncome.create!(
+          resource: @order,
           amount: operator_divide_income,
-          user: operator.user,
-          target: operator
+          user: operator.user
         )
         logger.info(
           "Divide order: #{@order.number}, [Operator id: #{divide_record.id}, amount: #{operator_divide_income} ]")

@@ -1,15 +1,12 @@
-class DivideIncome < ActiveRecord::Base
+class OperatorIncome < ActiveRecord::Base
   include UserIncomeable
   include Orderable
 
   belongs_to :user
   belongs_to :order
-  belongs_to :bill_order
-  belongs_to :target, polymorphic: true
+  belongs_to :resource, polymorphic: true
 
   validates :user_id, :amount, presence: true
-  validates_presence_of :order_id, if: -> { bill_order.blank? }
-  validates_presence_of :bill_order_id, if: -> { order.blank? }
 
   after_create :increase_user_income, :record_trade
 
@@ -25,7 +22,7 @@ class DivideIncome < ActiveRecord::Base
       source: self,
       adjust_amount: amount,
       current_amount: user.income,
-      trade_type: 'agent'
+      trade_type: 'selling'
     )
   end
 
