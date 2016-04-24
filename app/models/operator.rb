@@ -3,7 +3,7 @@ class Operator < ActiveRecord::Base
   include Userdelegator
   belongs_to :user
   has_many :shops
-  has_many :incomes, class_name: 'UserIncome', foreign_key: :user_id, primary_key: :user_id
+  has_many :incomes, class_name: 'OperatorIncome', foreign_key: :user_id, primary_key: :user_id
   attr_accessor :login
   
   enum state: {active: 0, disable: 1}
@@ -21,7 +21,7 @@ class Operator < ActiveRecord::Base
   def income(segment=:all)
     segment = :all if not %w(today month all).include?(segment)
     segment = :current_month if segment.to_s == "month"
-    incomes.send(segment).sum("user_incomes.amount")
+    incomes.send(segment).sum("operator_incomes.amount")
   end
 
   private

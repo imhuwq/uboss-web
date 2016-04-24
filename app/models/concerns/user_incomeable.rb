@@ -3,7 +3,7 @@ module UserIncomeable
   
   included do
     after_create do
-      create!(resource: self, amount: amount, user_id: user_id)
+      UserIncome.create!(resource: self, amount: amount, user_id: user_id)
     end
   end
 end
