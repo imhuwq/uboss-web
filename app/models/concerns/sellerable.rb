@@ -6,7 +6,7 @@ module Sellerable
       scope_name = %w(today all).include?(segment) ? segment : :all
       # digest = sold_orders.have_paid.maximum(:updated_at).try(:utc).try(:to_s, :number)
       # Rails.cache.fetch("seller:sales:#{id}-#{digest}") do
-        sold_orders.have_paid.send(scope_name).joins(:order_items).sum("order_items.amount") + sold_bill_orders.count
+        sold_orders.have_paid.send(scope_name).joins(:order_items).sum("order_items.amount") + sold_bill_orders.send(segment).count
       # end
     end
 

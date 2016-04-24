@@ -20,13 +20,13 @@
 	<div class="box-w25">
 		<div class="admin-box blue-bg-color">
 	    <h4>商家今日营业额</h4>
-	    <h1 class="num"><%= @scope.merge(Order.today).sum("orders.pay_amount") %></h1>
+	    <h1 class="num"><%= number_to_currency @operator.turnovers(:today) %></h1>
 	  </div>
 	</div>
 	<div class="box-w25">
 		<div class="admin-box yellow-bg-color">
 	    <h4>商家总营业额</h4>
-	    <h1 class="num"><%= number_to_currency @scope.sum("orders.income") %></h1>
+	    <h1 class="num"><%= number_to_currency @operator.turnovers(:all) %></h1>
 		</div>
 	</div>
 	<div class="box-w25">

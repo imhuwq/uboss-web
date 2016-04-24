@@ -7,7 +7,6 @@ class Admin::ShopsController < AdminController
   # GET /admin/shops.json
   def index
     %w(today all).include?(params[:segment]) or params[:segment] = 'today'
-    @scope = scope.joins(user: :orders).merge(Order.have_paid)
     @shops = scope.includes(:user).page(params[:page])
   end
 
