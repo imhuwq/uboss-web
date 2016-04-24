@@ -415,6 +415,8 @@ zh-CN:
       'shop/clerk':
           name: 业务员
           mobile: 联系电话
+      operator:
+        mobile: 联系方式
   order_status_bar:
     unpay: 等待买家付款
     payed: 等待卖家发货
