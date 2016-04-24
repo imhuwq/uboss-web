@@ -11,7 +11,7 @@ class Operator < ActiveRecord::Base
   validates :mobile, numericality: true, :length => { minimum: 11, maximum: 11 }
   before_validation :set_rates, on: :create
   before_validation :binding_user, if: -> { user.blank? }
-  after_create :add_operator_role!
+  after_save :add_or_remove_operator_role!
 
   def binding_user
     self.user = User.find_by(login: login)
@@ -41,7 +41,8 @@ class Operator < ActiveRecord::Base
     self.offline_rate = 0.05
   end
 
-  def add_operator_role!
-    user.add_role :operator
+  def add_or_remove_operator_role!
+    active? && user.add_role(:operator)
+    disable? && user.remove_role(:operator)
   end
 end
