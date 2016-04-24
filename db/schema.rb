@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160411041910) do
+ActiveRecord::Schema.define(version: 20160421041504) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -44,10 +44,10 @@ ActiveRecord::Schema.define(version: 20160411041910) do
     t.integer  "prize_winner_id"
     t.integer  "promotion_activity_id"
     t.integer  "activity_info_id"
-    t.jsonb    "info",                  default: {}
+    t.jsonb    "info"
     t.string   "activity_type"
-    t.datetime "created_at",                         null: false
-    t.datetime "updated_at",                         null: false
+    t.datetime "created_at",            null: false
+    t.datetime "updated_at",            null: false
     t.integer  "sharer_id"
     t.integer  "relate_winner_id"
   end
@@ -129,29 +129,6 @@ ActiveRecord::Schema.define(version: 20160411041910) do
     t.datetime "updated_at",      null: false
     t.string   "weixin_openid"
     t.string   "user_identify"
-  end
-
-  create_table "bill_incomes", force: :cascade do |t|
-    t.decimal  "amount"
-    t.integer  "user_id"
-    t.integer  "bill_order_id"
-    t.datetime "created_at",    null: false
-    t.datetime "updated_at",    null: false
-  end
-
-  add_index "bill_incomes", ["user_id", "bill_order_id"], name: "index_bill_incomes_on_user_id_and_bill_order_id", unique: true, using: :btree
-
-  create_table "bill_orders", force: :cascade do |t|
-    t.integer  "user_id"
-    t.integer  "seller_id"
-    t.string   "number"
-    t.integer  "state"
-    t.decimal  "pay_amount"
-    t.decimal  "paid_amount"
-    t.integer  "order_charge_id"
-    t.datetime "created_at",      null: false
-    t.datetime "updated_at",      null: false
-    t.string   "weixin_openid"
   end
 
   add_index "bill_orders", ["number"], name: "index_bill_orders_on_number", unique: true, using: :btree
@@ -399,6 +376,23 @@ ActiveRecord::Schema.define(version: 20160411041910) do
 
   add_index "favour_products", ["product_id", "user_id"], name: "index_favour_products_on_product_id_and_user_id", unique: true, using: :btree
 
+  create_table "job_histories", force: :cascade do |t|
+    t.integer  "user_id"
+    t.integer  "status"
+    t.string   "message"
+    t.string   "resource_type"
+    t.string   "resource_id"
+    t.string   "job_class"
+    t.string   "job_method"
+    t.jsonb    "options"
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
+  end
+
+  create_table "json_test", force: :cascade do |t|
+    t.jsonb "data"
+  end
+
   create_table "mobile_captchas", force: :cascade do |t|
     t.string   "code"
     t.datetime "expire_at"
@@ -474,13 +468,13 @@ ActiveRecord::Schema.define(version: 20160411041910) do
     t.integer  "refund_reason_id"
     t.string   "description"
     t.integer  "order_item_id"
-    t.datetime "created_at",          null: false
-    t.datetime "updated_at",          null: false
+    t.datetime "created_at",                       null: false
+    t.datetime "updated_at",                       null: false
     t.string   "aasm_state"
     t.integer  "order_state"
     t.string   "refund_type"
     t.integer  "user_id"
-    t.jsonb    "state_at_attributes"
+    t.jsonb    "state_at_attributes", default: {}, null: false
     t.string   "address"
     t.string   "return_explain"
     t.datetime "deal_at"
@@ -488,6 +482,7 @@ ActiveRecord::Schema.define(version: 20160411041910) do
 
   create_table "order_items", force: :cascade do |t|
     t.integer  "order_id"
+    t.integer  "product_id"
     t.integer  "user_id"
     t.integer  "amount"
     t.datetime "created_at",                           null: false
@@ -497,7 +492,6 @@ ActiveRecord::Schema.define(version: 20160411041910) do
     t.decimal  "present_price",        default: 0.0
     t.decimal  "privilege_amount",     default: 0.0
     t.integer  "product_inventory_id"
-    t.integer  "product_id"
     t.integer  "order_item_refund_id"
     t.string   "sku_properties"
     t.boolean  "recommend",            default: false
@@ -522,10 +516,10 @@ ActiveRecord::Schema.define(version: 20160411041910) do
     t.datetime "signed_at"
     t.datetime "shiped_at"
     t.datetime "completed_at"
-    t.string   "to_seller"
-    t.decimal  "ship_price",      default: 0.0
     t.string   "ship_number"
     t.integer  "express_id"
+    t.string   "to_seller"
+    t.decimal  "ship_price",      default: 0.0
     t.integer  "order_charge_id"
     t.decimal  "paid_amount",     default: 0.0
     t.string   "type"
@@ -684,8 +678,6 @@ ActiveRecord::Schema.define(version: 20160411041910) do
     t.integer  "service_type"
     t.integer  "monthes"
     t.integer  "service_store_id"
-    t.integer  "comprehensive_order"
-    t.datetime "published_at"
     t.integer  "sales_amount",         default: 0
     t.integer  "sales_amount_order"
     t.integer  "parent_id"
@@ -699,8 +691,9 @@ ActiveRecord::Schema.define(version: 20160411041910) do
   create_table "promotion_activities", force: :cascade do |t|
     t.integer  "user_id"
     t.integer  "status",     default: 0
-    t.datetime "created_at",             null: false
-    t.datetime "updated_at",             null: false
+    t.datetime "created_at",                     null: false
+    t.datetime "updated_at",                     null: false
+    t.string   "store_type", default: "service"
   end
 
   add_index "promotion_activities", ["user_id"], name: "index_promotion_activities_on_user_id", using: :btree
@@ -981,6 +974,7 @@ ActiveRecord::Schema.define(version: 20160411041910) do
     t.integer  "better_evaluation"
     t.integer  "best_evaluation"
     t.string   "store_cover"
+    t.decimal  "bonus_benefit",             default: 0.0
     t.string   "type"
     t.string   "begin_hour"
     t.string   "begin_minute"
@@ -988,7 +982,6 @@ ActiveRecord::Schema.define(version: 20160411041910) do
     t.string   "end_minute"
     t.string   "area"
     t.string   "street"
-    t.decimal  "bonus_benefit",             default: 0.0
     t.integer  "platform_service_rate",     default: 0
     t.integer  "agent_service_rate",        default: 0
     t.integer  "table_count",               default: 0
