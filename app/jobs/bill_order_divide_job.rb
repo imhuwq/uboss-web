@@ -29,8 +29,9 @@ class BillOrderDivideJob < ActiveJob::Base
 
         # 运营商收入
       if shop=Shop.where(user_id: bill_order.seller_id).first
-        if operator=shop.operator
-          operator_income = official_divide_income * (operator.offline_rate / 100).truncate(2)
+        operator=shop.operator
+        if operator && operator.active?
+          operator_income = paid_amount * (operator.offline_rate / 100).truncate(2)
           official_divide_income -= operator_income
           divide_record = DivideIncome.create!(
             bill_order: bill_order,
