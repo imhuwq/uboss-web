@@ -1,26 +1,45 @@
-<div>
-  <div class="box-m40">
-    <br />
-    <br />
-    <p class="text-center">
+<%= content_for :title do %>
+  <%= @service_store.store_identify %>
+<% end %>
+
+<%= content_for :page_title do %>
+  付款页面
+<% end %>
+<div class="text-center" style="width: 80%; margin: 0 auto;"> 
+  <br />
+  <p class="m-bottom10">
+  <% if @service_store.store_cover_identifier.present? %>
     <%= image_tag @service_store.store_cover_url(:thumb), width: 60, height: 60 %>
-    </p>
-    <div class="text-center" style="margin-bottom: 7px; line-height: 1; margin-top: 14px;">
-      <%= @service_store.store_identify %>
-    </div>
-    <p class="text-center">向您收款</p>
-    <br />
-    <div>
-      <%= hidden_field_tag :service_store_id, @service_store.id %>
-      <%= text_field_tag :pay_amount, @pay_amount,
-        placeholder: '输入金额（元）',
-        type: :tel, class:'input-radius input-large input-block' %>
-    </div>
-    <br />
-    <br />
-    <div>
-      <%= link_to "微信支付", bill_orders_path, class: 'req-bill-btn btn btn-large btn-block' %>
-    </div>
+  <% else %>
+    <%= image_tag 'morendianputouxiang.png', width: 60, height: 60 %>
+  <% end %>
+  </p>
+  <h3 class="text-cut" style="font-weight: normal;">
+    <%= @service_store.store_identify %>
+  </h3>
+  <br />
+  <div id="pay-number-box" class="text-left">输入金额（元）</div>
+  <br />
+  <%= hidden_field_tag :service_store_id, @service_store.id %>
+  <%= hidden_field_tag :pay_amount, @pay_amount,value:0 %>
+  <%= link_to "确认支付", bill_orders_path, class: 'req-bill-btn btn btn-large btn-block m-bottom10' %>
+  <p>支付完成后，如需退款请及时联系商家</p>
+</div>
+
+<div id="pay-number-keyboard" class="text-center">
+  <div class="box-w100 bg-white nogap">
+    <div class="box-w33 num">1</div>
+    <div class="box-w33 num">2</div>
+    <div class="box-w33 num">3</div>
+    <div class="box-w33 num">4</div>
+    <div class="box-w33 num">5</div>
+    <div class="box-w33 num">6</div>
+    <div class="box-w33 num">7</div>
+    <div class="box-w33 num">8</div>
+    <div class="box-w33 num">9</div>
+    <div class="box-w33 dot">.</div>
+    <div class="box-w33 num">0</div>
+    <div class="box-w33 back">　</div>
   </div>
 </div>
 
@@ -29,3 +48,6 @@
 $(function(){ UBoss.nami.setPayenv("<%= $wechat_env %>"); })
   </script>
 <% end %>
+<script>
+ $('header').remove()
+</script>

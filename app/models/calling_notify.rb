@@ -19,7 +19,24 @@ class CallingNotify < ActiveRecord::Base
     @number ||= table_number.try(:number)
   end
 
+  def send_weixin_text_custom_to_user
+    weixin_openid = self.table_number.weixin_openid
+    host = Rails.env.production? ? "http://uboss.me" : "http://stage.uboss.me"
+
+    if weixin_openid.present?
+      $weixin_client.send_text_custom(
+        weixin_openid,
+        <<-MSG
+服务提醒：
+  您需要的 #{self.service_name} 服务，商家已收到，速速就来～
+<a href='#{host}/sellers/#{self.user_id}/calling_services/notifies'>查看详情</a>
+        MSG
+      )
+    end
+  end
+
   private
+
   def init_called_at
     self.called_at = Time.now
   end
@@ -48,4 +65,5 @@ class CallingNotify < ActiveRecord::Base
 
     $redis.publish 'realtime_msg', { msg: message, recipient_user_ids: [self.user_id] }.to_json
   end
+
 end

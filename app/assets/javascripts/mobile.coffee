@@ -24,7 +24,6 @@
 #= require mobile_page/calling_service
 #= require shared/count_down
 #= require shared/city_select
-
 #= require shared/login
 #= reuqire_self
 

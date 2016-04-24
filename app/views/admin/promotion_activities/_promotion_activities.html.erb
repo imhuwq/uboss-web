@@ -3,7 +3,13 @@
   <div class="index_list">
     <table class="list-table" id="promotion_activities">
       <thead>
-        <th colspan="2">商家帐号</th>
+        <th colspan="2">
+          <% if current_user.has_role?(:offical_operating) %>
+            商家帐号
+          <% else %>
+            店铺名称
+          <% end %>
+        </th>
         <th>活动类型</th>
         <th>活动名称</th>
         <th>中奖数量</th>
@@ -19,11 +25,34 @@
         <tr class="promotion_activity">
           <td rowspan="2">
             <%= link_to admin_promotion_activity_path(promotion_activity) do %>
-              <%= image_tag(promotion_activity.user.image_url(:thumb), size: "80x80", alt: "-") %>
+              <% if promotion_activity.store_type == 'service' %>
+                <% if promotion_activity.user.service_store.store_cover_identifier.blank? %>
+                  <%= image_tag(promotion_activity.user.image_url(:thumb), size: "80x80", alt: "-") %>
+                <% else %>
+                  <%= image_tag(promotion_activity.user.service_store.store_cover.url(:w320), size: "80x80", alt: "-") %>
+                <% end %>
+              <% else %>
+                <% if promotion_activity.user.ordinary_store.store_cover_identifier.blank? %>
+                  <%= image_tag(promotion_activity.user.image_url(:thumb), size: "80x80", alt: "-") %>
+                <% else %>
+                  <%= image_tag(promotion_activity.user.ordinary_store.store_cover.url(:w320), size: "80x80", alt: "-") %>
+                <% end %>
+              <% end %>
             <% end %>
           </td>
           <td rowspan="2" class="text-left" style="max-width: 400px;">
-            <%= link_to promotion_activity.seller_name, admin_promotion_activity_path(promotion_activity) %>
+            <%= link_to admin_promotion_activity_path(promotion_activity) do %>
+              <p>
+              <% if current_user.has_role?(:offical_operating) %>
+                <%= promotion_activity.seller_name %>
+              <% elsif promotion_activity.store_type == 'service' %>
+                <%= promotion_activity.user.service_store.store_identify %>
+              <% else %>
+                <%= promotion_activity.user.ordinary_store.store_identify %>
+              <% end %>
+              </p>
+              <p><%= PromotionActivity::DATA_STORE_TYPE.stringify_keys[promotion_activity.store_type] %></p>
+            <% end %>
           </td>
           <td><%= translate_activity_type live_activity_info.activity_type %></td>
           <td><%= live_activity_info.name %></td>
@@ -35,8 +64,8 @@
             <% if promotion_activity.status == 'published' %>
               <p>
               <%= link_to("下架", change_status_admin_promotion_activity_path(promotion_activity, status: 'unpublish'),
-              remote: true, method: :patch, data: { disable_with: '<i class="fa fa-spinner"></i>' },
-              class: "btn btn-mid btn-block change-status-btn") %>
+                          remote: true, method: :patch, data: { disable_with: '<i class="fa fa-spinner"></i>' },
+                          class: "btn btn-mid btn-block change-status-btn") %>
               </p>
               <p>
               <%= link_to url_for(action: :edit, id: promotion_activity.id), class:'edit-icon', title: '编辑' do %>

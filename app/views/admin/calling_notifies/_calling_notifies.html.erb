@@ -5,7 +5,20 @@
 			<th>桌号</th>
 			<th>服务类型</th>
 			<th>呼叫时间</th>
-			<th>操作</th>
+      <th>操作
+        <div class="tips-info">
+          <span style="color:#FD0303;">（操作说明<i class="fa fa-info-circle"></i>）</span>
+          <div class="info-hover" style="display:none;text-align:left;">
+            1. 还未提供的服务，点击“去服务”，让消
+            <br />
+            费者知道所需要的服务即将到来；
+            <br />
+            2.已提供的服务，点击“已服务”，不让消
+            <br />
+            费者收到服务消息的骚扰.
+          </div>
+        </div>
+      </th>
 		</thead>
     <tbody>
       <% calling_notifies.each do |calling_notify| %>

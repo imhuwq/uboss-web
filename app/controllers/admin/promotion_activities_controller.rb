@@ -73,7 +73,7 @@ class Admin::PromotionActivitiesController < AdminController
 
   def promotion_activity_params
     params.require(:promotion_activity)
-      .permit(:user_id, activity_infos_attributes: [:id, :activity_type, :name, :price, :expiry_days, :description, :win_count, :win_rate])
+      .permit(:user_id, :store_type, activity_infos_attributes: [:id, :activity_type, :name, :price, :expiry_days, :description, :win_count, :win_rate])
   end
 
   def promotion_activity_update_params

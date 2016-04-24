@@ -118,8 +118,102 @@
     transform: scale(1.0);
   }
 }
+#pay-number-box{
+  background: image-url('mobile/bill_orders/money.png') no-repeat left center #fff;
+  background-position-x:4% ;
+  background-size:auto 18px ;
+  border: 1px solid #ddd;
+  padding: 0 5% 0 12.5%;  
+  font-size: 18px;
+  line-height: 49px;
+  height: 49px;
+  overflow: hidden;
+  border-radius: 4px;
+  color: #999;
+  position: relative;
+}
+#pay-number-box.active{
+  color: #444;
+  font-size: 24px;
+  
+}
+.req-bill-btn{
+  padding: 5%;
+  font-size: 18px;
+}
+#pay-number-box:before{
+  content: '|';
+  position: absolute; 
+  left: 0;
+  top: 0;
+  margin-left: calc(12.5% - 5px);
+  margin-left: -webkit-calc(12.5% - 5px);
+  font-family: sans-serif;
+  color: $brand-primary;
+  font-size: 24px;
+  font-weight: bold;
+  vertical-align: middle;
+  -webkit-animation: flash 1.5s infinite ease-in-out both;
+  animation: flash 1.5s infinite ease-in-out both;
+}
+#pay-number-box.active:after{
+  content: '|';
+  color: $brand-primary;
+  font-size: 24px;
+  font-family: sans-serif;
+  font-weight: bold;
+  vertical-align: middle;
+  -webkit-animation: flash 1.5s infinite ease-in-out both;
+  animation: flash 1.5s infinite ease-in-out both;
+}
 
-body.charges.pay_bill {
-  background: #23272a;
-  color: white;
+#pay-number-keyboard{
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  z-index: 5;
+  .box-w33{
+    border-right: 1px solid #dfdfdf;
+    border-top:1px solid #dfdfdf ;
+    color: #1f2a44;
+    font-size: 24px;
+    line-height: 1;
+    font-weight: bold;
+    padding: 5%;
+    font-family: sans-serif;
+    &.touched {
+      background-color: #ddd;
+    }
+  }
+  .box-w33:nth-child(3n){
+    border-right: none ;
+  }
+  .dot{
+    background: #f6f6f6;
+    &.touched {
+      background-color: #fff;
+    }
+  }
+  .back{
+    background:image-url('mobile/bill_orders/back.png') no-repeat center center #f6f6f6;
+    background-size: auto 20px;
+    &.touched {
+      background-color: #fff;
+    }
+   }
+}
+
+#pay-number-box.active:before,#pay-number-box.nofoucs:before,#pay-number-box.nofoucs:after{
+  content: '';
+}
+
+@-webkit-keyframes flash {
+  0% { opacity: 0; }
+  80% { opacity: 1; }
+}
+
+@keyframes flash {
+  0% { opacity: 0; }
+  80% { opacity: 1; }
 }

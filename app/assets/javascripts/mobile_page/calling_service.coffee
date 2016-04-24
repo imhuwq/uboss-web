@@ -75,4 +75,10 @@ $ ->
 
   $('.calling-order-service .select-number').on 'click', ()->
     if $('.box-w25.active').length == 0
-      flashPopContent('<div class="pop-text gray">请选择一个桌号</div>')
+      flashPopContent('flashPopContent<div class="pop-text gray">请选择一个桌号</div>')
+
+  $('.calling-pop-qr').on 'click', ()->
+    $('.calling-service-pop').removeClass('hidden')
+
+  $('.calling-service-pop').on 'click', ()->
+    $('.calling-service-pop').addClass('hidden')
