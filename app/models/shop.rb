@@ -67,7 +67,6 @@ class Shop < ActiveRecord::Base
   end
 
   def send_sms
-    content = "恭喜您，成功开通UBOSS账号。您的账号信息如下，账号名：#{login}，登陆密码：#{default_passwd}，登陆地址：http://www.uboss.cn，请勿泄露。关注“UBOSS星球”公众号，获取更多使用教程。您的业务员姓名是：#{clerk_name}，电话号码：#{clerk_mobile}，有问题可随时咨询，感谢您的使用！"
-    SmsJob.perform_later(mobile, content)
+    SmsJob.perform_later(mobile, {login: login, passwd: default_passwd, clerk_name: clerk_name, clerk_mobile: clerk_name })
   end
 end
