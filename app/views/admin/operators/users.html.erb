@@ -17,7 +17,7 @@
       <tr id="operator-<%= operator.id %>">
         <td><%= link_to operator.user_identify, admin_seller_path(operator.user) %></td>
         <td><%= operator.mobile %></td>
-        <td><%= operator.sellers_counter %></td>
+        <td><%= operator.shops.count %></td>
         <td><%= operator.created_at %></td>
         <td><%= link_to "解除账号", state_admin_operator_path(operator), data: { remote: true, confirm: '确认解除账号?' }, method: :put %></td>
       </tr>
