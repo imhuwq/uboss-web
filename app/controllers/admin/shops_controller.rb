@@ -38,35 +38,11 @@ class Admin::ShopsController < AdminController
     respond_to do |format|
       if @shop.save
         flash[:success] = "创建成功"
-        format.html { redirect_to action: :index }
+        format.html { redirect_to action: :added }
       else
         flash.now[:error] = @shop.errors.full_messages.join("<br/>")
         format.html { render :new }
       end
-    end
-  end
-
-  # PATCH/PUT /admin/shops/1
-  # PATCH/PUT /admin/shops/1.json
-  def update
-    respond_to do |format|
-      if @shop.update(shop_params)
-        format.html { redirect_to @shop, notice: 'Shop was successfully updated.' }
-        format.json { render :show, status: :ok, location: @shop }
-      else
-        format.html { render :edit }
-        format.json { render json: @shop.errors, status: :unprocessable_entity }
-      end
-    end
-  end
-
-  # DELETE /admin/shops/1
-  # DELETE /admin/shops/1.json
-  def destroy
-    @shop.destroy
-    respond_to do |format|
-      format.html { redirect_to shops_url, notice: 'Shop was successfully destroyed.' }
-      format.json { head :no_content }
     end
   end
 

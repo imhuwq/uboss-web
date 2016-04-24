@@ -188,7 +188,7 @@ class OrderDivideJob < ActiveJob::Base
         divide_record = DivideIncome.create!(
           order: @order,
           amount: operator_divide_income,
-          user: enterprise.user,
+          user: operator.user,
           target: operator
         )
         logger.info(

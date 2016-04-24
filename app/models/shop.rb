@@ -16,10 +16,12 @@ class Shop < ActiveRecord::Base
 
   attr_accessor :login
 
-  validates :operator_id, :province, :city, :district, :mobile, :name, :address, presence: true
+  validates :operator_id, :province, :city, :district, :mobile, :name, :address, :asset_img, presence: true
+  validates :user_id, uniqueness: true
   validates :mobile, numericality: true, :length => { minimum: 11, maximum: 11 }
+  validate  :asset_img_avatar_not_be_empty
   before_validation :set_login, if: -> { !!login }
-  before_create :binding_user, if: -> { user.blank? }
+  before_validation :binding_user, if: -> { user.blank? }
   after_create :active_user
   after_commit :send_sms, on: :create
   after_save :save_clerk!
@@ -32,6 +34,10 @@ class Shop < ActiveRecord::Base
       user.save(validate: false)
     end
     self.user = user
+  end
+
+  def asset_img
+    super || build_asset_img
   end
 
   def active_user
@@ -54,6 +60,12 @@ class Shop < ActiveRecord::Base
     end
   end
 
+  private
+
+  def asset_img_avatar_not_be_empty
+    errors.add(:asset_img, '不能为空') if asset_img.avatar_identifier.blank?
+  end
+
   def save_clerk!
     clerk.changed? && clerk.save!
   end
@@ -67,7 +79,6 @@ class Shop < ActiveRecord::Base
   end
 
   def send_sms
-    content = "恭喜您，成功开通UBOSS账号。您的账号信息如下，账号名：#{login}，登陆密码：#{default_passwd}，登陆地址：http://www.uboss.cn，请勿泄露。关注“UBOSS星球”公众号，获取更多使用教程。您的业务员姓名是：#{clerk_name}，电话号码：#{clerk_mobile}，有问题可随时咨询，感谢您的使用！"
-    SmsJob.perform_later(mobile, content)
+    SmsJob.perform_later(mobile, {login: login, passwd: default_passwd, clerk_name: clerk_name, clerk_mobile: clerk_name })
   end
 end

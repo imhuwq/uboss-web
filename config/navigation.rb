@@ -66,10 +66,11 @@ SimpleNavigation::Configuration.run do |navigation|
     primary.item :agent,  'U客',  admin_sellers_path, if: -> { can?(:read, :sellers) }
     primary.item :operator, '运营商', '#' do |sub_nav|
       sub_nav.item :operators, '运营商', admin_operators_path,
-        highlights_on: -> { params[:action] == 'index' },
+        highlights_on: -> { params[:controller] == 'admin/operators' && params[:action] == 'index' },
         if: -> { can?(:manage, Operator) }
 
       sub_nav.item :new_operator, '权限管理', users_admin_operators_path,
+        highlights_on: -> { params[:controller] == 'admin/operators' && %w(users new create).include?(params[:action]) },
         if: -> { can?(:manage, Operator) }
 
       if can?(:manage, Shop) && operator=current_user.operator

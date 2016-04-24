@@ -86,6 +86,7 @@ zh-CN:
     country: 国家
     city: 城市
     area: 地区
+    district: 地区
     building: 详细地址
     product_inventories: 库存/规格
     supplier_product_inventories: 库存/规格
@@ -412,9 +413,12 @@ zh-CN:
         name: 商家名称
         login: 商家账号
         address: 商家地址
+        user_id: 商家
       'shop/clerk':
           name: 业务员
           mobile: 联系电话
+      operator:
+        mobile: 联系方式
   order_status_bar:
     unpay: 等待买家付款
     payed: 等待卖家发货
