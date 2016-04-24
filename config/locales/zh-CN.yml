@@ -413,6 +413,7 @@ zh-CN:
         name: 商家名称
         login: 商家账号
         address: 商家地址
+        user_id: 商家
       'shop/clerk':
           name: 业务员
           mobile: 联系电话

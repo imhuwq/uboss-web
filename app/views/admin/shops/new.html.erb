@@ -16,20 +16,20 @@
     <h4 class="edit-title">商家信息</h4>
     <%= f.input :asset_img, hint:"(点击图片进行替换)"  do %>
       <%= f.input_field :avatar, type: :hidden, as: :file %>
-      <p><span class="text-margin">建议上传比例为1:1的图片，最佳尺寸为<b style="color: red;">600x600</b>像素</span></p>
       <p class="fileinput-button">
           <% if @shop.image_url.blank? %>
             <%= image_tag("admin/no-img.png") %>
           <% else %>
             <%= image_tag(@shop.image_url(:thumb))%>
           <% end %>
-        <%= file_field_tag "image", class: "upyun_file" %>
+        <%= upyun_meta_tags prefix: 'shop/protocol' %>
+        <%= file_field_tag "avatar", class: "upyun_file" %>
         <b class="loading"><i class="fa fa-spinner"></i></b>
       </p>
     <% end %>
     <%= f.input :name %>
     <%= f.input :mobile %>
-    <%= f.input :login %>
+    <%= f.input :login, hint: "(商家登录时使用的账号，可为手机号码或邮箱账号。默认为负责人手机号码，密码为手机号码后4位）" %>
     <div class="form-group string required user_address_mobile">
       <label class="string required control-label"><abbr title="必填">*</abbr>所在地区</label>
       <div class="city-group control-input" style="padding-top:7px;">

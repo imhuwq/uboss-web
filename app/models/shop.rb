@@ -16,10 +16,12 @@ class Shop < ActiveRecord::Base
 
   attr_accessor :login
 
-  validates :operator_id, :province, :city, :district, :mobile, :name, :address, presence: true
+  validates :operator_id, :province, :city, :district, :mobile, :name, :address, :asset_img, presence: true
+  validates :user_id, uniqueness: true
   validates :mobile, numericality: true, :length => { minimum: 11, maximum: 11 }
+  validate  :asset_img_avatar_not_be_empty
   before_validation :set_login, if: -> { !!login }
-  before_create :binding_user, if: -> { user.blank? }
+  before_validation :binding_user, if: -> { user.blank? }
   after_create :active_user
   after_commit :send_sms, on: :create
   after_save :save_clerk!
@@ -32,6 +34,10 @@ class Shop < ActiveRecord::Base
       user.save(validate: false)
     end
     self.user = user
+  end
+
+  def asset_img
+    super || build_asset_img
   end
 
   def active_user
@@ -52,6 +58,12 @@ class Shop < ActiveRecord::Base
     else
       super
     end
+  end
+
+  private
+
+  def asset_img_avatar_not_be_empty
+    errors.add(:asset_img, '不能为空') if asset_img.avatar_identifier.blank?
   end
 
   def save_clerk!
