@@ -24,6 +24,14 @@ GIT
     browser (0.8.0)
 
 GIT
+  remote: git://github.com/xEasy/omniauth-wechat-oauth2.git
+  revision: 2e48a6ad9236d297611e530b602f8c8e8e1ef710
+  specs:
+    omniauth-wechat-oauth2 (0.1.0)
+      omniauth (~> 1.0)
+      omniauth-oauth2 (~> 1.0)
+
+GIT
   remote: git://github.com/xEasy/redactor-rails.git
   revision: 47a5a35f1bc12ba167d60fe6410b4ce658e88f99
   specs:
@@ -236,7 +244,7 @@ GEM
     get_process_mem (0.2.0)
     globalid (0.3.6)
       activesupport (>= 4.1.0)
-    hashie (3.4.2)
+    hashie (3.4.3)
     hiredis (0.6.0)
     hitimes (1.2.3)
     htmlentities (4.3.4)
@@ -305,21 +313,18 @@ GEM
       mini_portile2 (~> 2.0.0.rc2)
     nokogumbo (1.4.1)
       nokogiri
-    oauth2 (1.0.0)
+    oauth2 (1.1.0)
       faraday (>= 0.8, < 0.10)
-      jwt (~> 1.0)
+      jwt (~> 1.0, < 1.5.2)
       multi_json (~> 1.3)
       multi_xml (~> 0.5)
-      rack (~> 1.2)
-    omniauth (1.2.2)
+      rack (>= 1.2, < 3)
+    omniauth (1.3.1)
       hashie (>= 1.2, < 4)
-      rack (~> 1.0)
-    omniauth-oauth2 (1.3.1)
+      rack (>= 1.0, < 3)
+    omniauth-oauth2 (1.4.0)
       oauth2 (~> 1.0)
       omniauth (~> 1.2)
-    omniauth-wechat-oauth2 (0.1.0)
-      omniauth (~> 1.0)
-      omniauth-oauth2 (~> 1.0)
     orm_adapter (0.5.0)
     paper_trail (4.0.0)
       activerecord (>= 3.0, < 6.0)
@@ -579,7 +584,7 @@ DEPENDENCIES
   mocha
   mock_redis
   nested_form
-  omniauth-wechat-oauth2
+  omniauth-wechat-oauth2!
   paper_trail (~> 4.0.0)
   pg
   pry-byebug

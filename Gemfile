@@ -70,7 +70,7 @@ gem "carrierwave-upyun"
 gem 'mini_magick'
 
 # oauth
-gem 'omniauth-wechat-oauth2'
+gem 'omniauth-wechat-oauth2', github: 'xEasy/omniauth-wechat-oauth2'
 
 # redis
 gem "redis", "~> 3.0", require: ["redis/connection/hiredis", "redis"]
