@@ -24,7 +24,7 @@ class Operator < ActiveRecord::Base
   end
 
   def total_income
-    DivideIncome.where(target: self).sum(:amount)
+    OperatorIncome.where(user_id: user_id).sum(:amount)
   end
 
   private
