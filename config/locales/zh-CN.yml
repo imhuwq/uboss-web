@@ -86,6 +86,7 @@ zh-CN:
     country: 国家
     city: 城市
     area: 地区
+    district: 地区
     building: 详细地址
     product_inventories: 库存/规格
     supplier_product_inventories: 库存/规格
