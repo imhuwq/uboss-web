@@ -4,7 +4,7 @@
     <table class="list-table" id="promotion_activities">
       <thead>
         <th colspan="2">
-          <% if current_user.has_role?(:super_admin) %>
+          <% if current_user.has_role?(:offical_operating) %>
             商家帐号
           <% else %>
             店铺名称
@@ -43,7 +43,7 @@
           <td rowspan="2" class="text-left" style="max-width: 400px;">
             <%= link_to admin_promotion_activity_path(promotion_activity) do %>
               <p>
-              <% if current_user.has_role?(:super_admin) %>
+              <% if current_user.has_role?(:offical_operating) %>
                 <%= promotion_activity.seller_name %>
               <% elsif promotion_activity.store_type == 'service' %>
                 <%= promotion_activity.user.service_store.store_identify %>
@@ -66,27 +66,27 @@
               <%= link_to("下架", change_status_admin_promotion_activity_path(promotion_activity, status: 'unpublish'),
                           remote: true, method: :patch, data: { disable_with: '<i class="fa fa-spinner"></i>' },
                           class: "btn btn-mid btn-block change-status-btn") %>
-                        </p>
-                        <p>
-                        <%= link_to url_for(action: :edit, id: promotion_activity.id), class:'edit-icon', title: '编辑' do %>
-                          <i class="fa fa-pencil-square-o"></i>
-                        <% end %>
-                        </p>
-                      <% else %>
-                        <p><%= link_to "查看详情", admin_promotion_activity_path(promotion_activity), style: "font-size:12px;" %></p>
-                      <% end %>
-                    </td>
-                  </tr>
+              </p>
+              <p>
+              <%= link_to url_for(action: :edit, id: promotion_activity.id), class:'edit-icon', title: '编辑' do %>
+                <i class="fa fa-pencil-square-o"></i>
+              <% end %>
+              </p>
+            <% else %>
+              <p><%= link_to "查看详情", admin_promotion_activity_path(promotion_activity), style: "font-size:12px;" %></p>
+            <% end %>
+          </td>
+        </tr>
 
-                  <tr class="promotion_activity">
-                    <td><%= translate_activity_type share_activity_info.activity_type %></td>
-                    <td><%= share_activity_info.name %></td>
-                    <td><%= share_activity_info.win_count %></td>
-                    <td><%= share_activity_info.share_prizes.count %></td>
-                    <td><%= share_activity_info.verified_verify_codes.count %></td>
-                  </tr>
+        <tr class="promotion_activity">
+          <td><%= translate_activity_type share_activity_info.activity_type %></td>
+          <td><%= share_activity_info.name %></td>
+          <td><%= share_activity_info.win_count %></td>
+          <td><%= share_activity_info.share_prizes.count %></td>
+          <td><%= share_activity_info.verified_verify_codes.count %></td>
+        </tr>
 
-                <% end %>
-              </table>
-            </div>
-          </div>
+      <% end %>
+    </table>
+  </div>
+</div>

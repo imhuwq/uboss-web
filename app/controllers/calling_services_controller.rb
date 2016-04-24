@@ -37,8 +37,7 @@ class CallingServicesController < ApplicationController
 
     if browser.wechat? && cookies[:table_weixin_openid].blank?
       # for weixin openid but not uboss user
-      session[:oauth_callback_redirect_path] = request.fullpath
-      redirect_to user_omniauth_authorize_path(:wechat)
+      authenticate_weixin_user_token!
     else
       @table_numbers = TableNumber.where(user: @seller).order("number ASC")
     end
