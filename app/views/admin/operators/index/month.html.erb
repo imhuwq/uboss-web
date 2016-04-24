@@ -10,7 +10,7 @@
   <% @operators.each do |operator| %>
   <tbody>
     <tr>
-      <td><%= link_to operator.user_identify, admin_seller_path(operator.user) %></td>
+      <td><%= link_to operator.user_login, admin_seller_path(operator.user) %></td>
       <td><%= operator.mobile %></td>
       <td><%= operator.shops.current_month.count %></td>
       <td><%= number_to_currency operator.shops.online_turnovers(:month) %></td>
