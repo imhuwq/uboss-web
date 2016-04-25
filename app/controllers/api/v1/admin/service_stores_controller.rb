@@ -30,7 +30,7 @@ class Api::V1::Admin::ServiceStoresController < ApiBaseController
     advertisements = Advertisement.where(user_type: 'Service', user_id: current_user.id).order('order_number')
     if advertisements.present?
       advertisements.each do |ad|
-        store_banners << { id: ad.id, advertisement_url: ad.advertisement_url || ad.image_url }
+        store_banners << { advertisement_id: ad.id, advertisement_url: ad.advertisement_url || ad.image_url }
       end
     end
 
