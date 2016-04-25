@@ -79,6 +79,6 @@ class Shop < ActiveRecord::Base
   end
 
   def send_sms
-    SmsJob.perform_later(mobile, {login: login, passwd: default_passwd, clerk_name: clerk_name, clerk_mobile: clerk_name })
+    SmsJob.perform_later(mobile, {login: login, passwd: default_passwd, clerk_name: clerk_name, clerk_mobile: clerk_mobile }, 1340367)
   end
 end
