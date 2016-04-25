@@ -38,7 +38,7 @@ class Operator < ActiveRecord::Base
   end
 
   def set_rates
-    self.online_rate  = 0.5
+    self.online_rate  = 0.05
     self.offline_rate = 0.05
   end
 
