@@ -1,0 +1,23 @@
+<table class="list-table">
+  <thead>
+    <th>运营商账号</th>
+    <th>联系方式</th>
+    <th>今日签约商家</th>
+    <th>线上营业额</th>
+    <th>线下支付营业额</th>
+    <th>今日收益</th>
+  </thead>
+  <% @operators.each do |operator| %>
+  <tbody>
+    <tr>
+      <td><%= link_to operator.user_login, admin_seller_path(operator.user) %></td>
+      <td><%= operator.mobile %></td>
+      <td><%= operator.shops.today.count %></td>
+      <td><%= number_to_currency operator.shops.online_turnovers(:today) %></td>
+      <td><%= number_to_currency operator.shops.offline_turnovers(:today) %></td>
+      <td><%= number_to_currency operator.income(:today) %></td>
+    </tr>
+  </tbody>
+  <% end %>
+
+</table>

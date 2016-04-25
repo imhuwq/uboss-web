@@ -1,0 +1,111 @@
+<!--
+<div class="container  admin-container">
+  <ul class="breadcrumb">
+    <li><a href="/admin">主页</a></li>
+    <li class="divider"><i class="fa fa-caret-right"></i></li>
+    <li>企业认证</li>
+  </ul>
+</div>
+<br /> 
+-->
+<div class="container">
+	<div class="header-tab">
+    <%#= link_to_certifications_tabs %>
+	</div>
+</div>
+<br />
+
+<div id="index_list">
+<div class="container nogap">
+	<div class="box-w25">
+		<div class="admin-box main-bg-color">
+	    <h4>商家总数</h4>
+	    <h1 class="num"><%= @shops.total_count %></h1>
+	  </div>
+	</div>
+	<div class="box-w25">
+		<div class="admin-box yellow-bg-color">
+	    <h4>今日新增商家</h4>
+	    <h1 class="num"><%= @shops.today.count %></h1>
+		</div>
+	</div>
+	<div class="box-w25">
+		<div class="admin-box blue-bg-color">
+	    <h4>本周新增商家</h4>
+	    <h1 class="num"><%= @shops.current_week.count %></h1>
+		</div>
+	</div>
+  <div class="box-w25">
+  	<div class="admin-box red-bg-color">
+	    <h4>本月新增商家</h4>
+	    <h1 class="num"><%= @shops.current_month.count %></h1>
+	  </div>
+  </div>
+</div>
+<br />
+  <div class="container">
+    <div class="list-search-bar">
+        <%= link_to("新增商家", url_for(action: :new), class: "btn btn-large", role: "button") %>
+    </div>
+    <br />
+      <table class="list-table" id="shops">
+        <thead>
+          <th>商家名称</th>
+          <th>商家账号</th>
+          <th>负责人</th>
+          <th>业务员</th>
+          <th>联系方式</th>
+          <th>入驻时间</th>
+          <th>线下支付二维码</th>
+        </thead>
+        <% @shops.each do |shop| %>
+        <tbody class="item">
+          <tr id="personal_authentication_<%= shop.user_id%>">
+            <td class="text-left">
+              <%= image_tag(shop.user_avatar.url(:thumb), size: "80x80", alt: "-") %>
+              <%= shop.user_identify %>
+            </td>
+            <td><%= shop.user_login %></td>
+            <td><%= shop.mobile %></td>
+            <td><%= shop.clerk_name %></td>
+            <td><%= shop.clerk_mobile %></td>
+            <td><%= shop.created_at %></td>
+            <td><%= qrcode_image_tag(pay_bill_charges_url(ssid: shop.user.service_store.id),
+                             html: {width: '100', style: "padding:10px;background:white;"}) %></td>
+          </tr>
+        </tbody>
+        <tbody class='hidden'>
+          <tr id="personal_authentication_<%= shop.user_id%>">
+            <% if agent=shop.user.try(:agent) %>
+            <td class="text-left">
+              <%#= link_to url_for(controller: 'admin/city_manager_authentications', action: :show, user_id: shop.user_id) do %>
+              绑定创客
+              <%= image_tag(agent.avatar.url(:thumb), size: "80x80", alt: "-") %>
+              <%= agent.identify %>
+              <%# end %>
+            </td>
+            <td><%= agent.created_at %></td>
+            <td><%= agent.mobile %></td>
+            <td>好评率<%= Evaluation.sharer_good_reputation_rate(agent) %></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <% else %>
+            <td colspan="7"></td>
+            <% end %>
+          </tr>
+        </tbody>
+        <% end %>
+      </table>
+    <br />
+  </div>
+
+  <script type="text/javascript">
+    $(document).ready(function(){
+      $("body").on("click", "tbody.item>tr", function(){
+        var target = $(this).parent().next();
+        target.toggleClass("hidden");
+      })
+    });
+  </script>
+</div>

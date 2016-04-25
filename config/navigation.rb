@@ -64,18 +64,23 @@ SimpleNavigation::Configuration.run do |navigation|
         if: -> { can?(:read, BankCard) }
     end
     primary.item :agent,  'U客',  admin_sellers_path, if: -> { can?(:read, :sellers) }
-    primary.item :city_manager, '城市运营商', '#' do |sub_nav|
-      sub_nav.item :city_managers, '城市运营商', admin_city_managers_path,
-        if: -> { can?(:manage, CityManager) }
+    primary.item :operator, '运营商', '#' do |sub_nav|
+      sub_nav.item :operators, '运营商', admin_operators_path,
+        highlights_on: -> { params[:controller] == 'admin/operators' && params[:action] == 'index' },
+        if: -> { can?(:manage, Operator) }
 
-      sub_nav.item :cities_city_managers, '权限管理', cities_admin_city_managers_path,
-        if: -> { can?(:manage, CityManager) }
+      sub_nav.item :new_operator, '权限管理', users_admin_operators_path,
+        highlights_on: -> { params[:controller] == 'admin/operators' && %w(users new create).include?(params[:action]) },
+        if: -> { can?(:manage, Operator) }
 
-      sub_nav.item :added_city_managers, '新增商家', added_admin_city_managers_path,
-        if: -> { can?(:added, CityManager) }
+      if can?(:manage, Shop) && operator=current_user.operator
+        sub_nav.item :shop, '商家营收', admin_operator_shops_path(operator),
+        if: -> { can?(:manage, Shop) }
 
-      sub_nav.item :revenues_city_managers, '商家营收', revenues_admin_city_managers_path,
-        if: -> { can?(:revenues, CityManager) }
+        sub_nav.item :new_shop, '新增商家', added_admin_operator_shops_path(operator),
+          highlights_on: %r(shops/added|shops/new),
+          if: -> { can?(:manage, Clerk) }
+      end
     end
 
     # Add an item which has a sub navigation (same params, but with block)

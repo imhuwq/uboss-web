@@ -103,4 +103,12 @@
   } else {
     console.log('Error: Realtime was not enabled.')
   }
+
+  $(document).ready(function(){
+    $('.tips-info').hover(function(){
+      $(this).find('.info-hover').fadeIn();
+    },function(){
+      $('.info-hover').fadeOut();
+    })
+  })
 </script>

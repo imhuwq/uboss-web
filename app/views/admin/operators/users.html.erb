@@ -1,0 +1,29 @@
+<div class="container">
+  <div class="list-search-bar">
+      <%= link_to("添加运营商", url_for(action: :new), class: "btn btn-large", role: "button") %>
+  </div>
+  <br />
+  
+  <table class="list-table">
+    <thead>
+      <th>运营商账号</th>
+      <th>联系方式</th>
+      <th>总签约商家</th>
+      <th>入驻时间</th>
+      <th>操作</th>
+    </thead>
+    <% @operators.each do |operator| %>
+    <tbody>
+      <tr id="operator-<%= operator.id %>">
+        <td><%= link_to operator.user_login, admin_seller_path(operator.user) %></td>
+        <td><%= operator.mobile %></td>
+        <td><%= operator.shops.count %></td>
+        <td><%= operator.created_at %></td>
+        <td><%= link_to "解除账号", state_admin_operator_path(operator), data: { remote: true, confirm: '确认解除账号?' }, method: :put %></td>
+      </tr>
+    </tbody>
+    <% end %>
+
+  </table>
+  <%#= paginate @operators %>
+</div>

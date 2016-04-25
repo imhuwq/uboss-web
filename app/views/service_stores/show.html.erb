@@ -25,15 +25,14 @@
 <% else %>
 	<div class="sstore-slider">
 		<%= image_tag ('mobile/s-bg.jpg') %>
-		<h3 class="store-name text-cut"><%= @service_store.store_identify %></h3>
+    <!--<h3 class="store-name text-cut"><%= @service_store.store_identify %></h3>-->
 	</div>
 
 <% end %>
-<% if @group_products.present? || @voucher_products.present? %>
   <div class="bg-white m-bottom10 border-tb gap-left">
     <div class="gap nogap-left">
       <h2 class="name text-cut"><%= @service_store.store_identify %></h2>
-      <% if @service_store.store_short_description.present?  %>
+      <% if @service_store.store_short_description.present? && (@group_products.present? || @voucher_products.present?)  %>
         <div class="gray-color text-cut">
           <div class="pull-right">
             <span class="main-color"><%= number_to_percentage(@service_store.good_reputation_rate, precision: 0) %></span> 好评（<%= @service_store.total_reputations %>）
@@ -42,7 +41,7 @@
         </div>
       <% end %>
     </div><!-- gap -->
-    <% if qr_sharing? %>
+    <% if qr_sharing? && (@group_products.present? || @voucher_products.present?) %>
       <div class="gap nogap-left border-top">
         <a href="/about" class="gray-color pull-right gap nogap-right">查看说明</a>
         <% if current_user && current_user.has_seller_privilege_card?(@seller) %>
@@ -57,7 +56,7 @@
       </div>
     <% end %>
 
-    <% if @sharing_node %>
+    <% if @sharing_node && (@group_products.present? || @voucher_products.present?) %>
       <div class="service-share-box border-top gap nogap-left">
         <% if @promotion_activity %>
           <% if @draw_record.blank? %>
@@ -91,7 +90,6 @@
 
     <% end %>
   </div><!-- bg-white -->
-<% end %>
 
 
   <!-- 店铺信息-->

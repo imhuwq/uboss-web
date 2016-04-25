@@ -163,7 +163,7 @@ class OrderDivideJob < ActiveJob::Base
       agent_divide_income = (order_income * seller.agent_service_rate / 1000).truncate(2)
 
       divide_income = platform_divide_income
-      city_divide_income = 0
+      operator_divide_income = 0
 
       # 商家创客分成
       if agent = seller.agent
@@ -177,31 +177,25 @@ class OrderDivideJob < ActiveJob::Base
           "Divide order: #{@order.number}, [CAgent id: #{divide_record.id}, amount: #{agent_divide_income} ]")
       end
 
-      # 区域运营商
-      enterprise = Certification.pass.find_by(
-        user_id: @order.seller_id,
-        type: %w(EnterpriseAuthentication PersonalAuthentication))
-      city_manager = if enterprise.present? && enterprise.city_code
-                       CityManager.find_by(city: enterprise.city_code)
-                     else
-                       nil
-                     end
-      if city_manager && city_manager.user
-        city_divide_income = (order_income * city_manager.rate / 100).truncate(2)
-        if city_divide_income > platform_divide_income
-          city_divide_income = platform_divide_income
+      # 运营商
+      operator = Operator.joins(:shops).where(shops: { user_id: @order.seller_id }).first
+
+      if operator && operator.user && operator.active?
+        operator_divide_income = (order_income * operator.online_rate / 100).truncate(2)
+        if operator_divide_income > platform_divide_income
+          operator_divide_income = platform_divide_income
         end
-        divide_record = DivideIncome.create!(
-          order: @order,
-          amount: city_divide_income,
-          user: city_manager.user
+        divide_record = OperatorIncome.create!(
+          resource: @order,
+          amount: operator_divide_income,
+          user: operator.user
         )
         logger.info(
-          "Divide order: #{@order.number}, [CityManager id: #{divide_record.id}, amount: #{city_divide_income} ]")
+          "Divide order: #{@order.number}, [Operator id: #{divide_record.id}, amount: #{operator_divide_income} ]")
       end
 
       # UBOSS平台
-      official_divide_income = platform_divide_income - city_divide_income
+      official_divide_income = platform_divide_income - operator_divide_income
       if official_divide_income > 0
         divide_record = DivideIncome.create!(
           order: @order,
