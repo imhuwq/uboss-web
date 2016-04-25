@@ -26,12 +26,19 @@ class Api::V1::Admin::ServiceStoresController < ApiBaseController
     authorize! :read, @store
     qrcode_url = request_qrcode_url({ text: service_store_url(id: @store.id, shared: true) })
     store_phones = @store.store_phones.select(:id, :area_code, :fixed_line, :phone_number)
-    store_banners = Advertisement.where(user_type: 'Service', user_id: current_user.id).order('order_number').select(:id, :advertisement_url)
+    store_banners = []
+    advertisements = Advertisement.where(user_type: 'Service', user_id: current_user.id).order('order_number')
+    if advertisements.present?
+      advertisements.each do |ad|
+        store_banners << { id: ad.id, advertisement_url: ad.advertisement_url || ad.image_url }
+      end
+    end
+
     render json: {
       data: {
         store_name: @store.store_name,
         store_short_description: @store.store_short_description,
-        store_cover: @store.store_cover,
+        store_cover: @store.store_cover_url,
         province: ChinaCity.get(@store.province),
         city: ChinaCity.get(@store.city),
         area: ChinaCity.get(@store.area),

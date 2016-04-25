@@ -3,7 +3,7 @@ class Api::V1::Admin::WithdrawRecordsController < ApiBaseController
   def index
     authorize! :read, WithdrawRecord
     withdraw_infos = []
-    withdraw_records = current_user.withdraw_records
+    withdraw_records = current_user.withdraw_records.order("created_at DESC")
     unless withdraw_records.nil?
       withdraw_records.each do |wd|
         bank_card_number = if wd.bank_info.present?
